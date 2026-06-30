@@ -478,8 +478,14 @@ class _GamePageInnerState extends State<_GamePageInner> {
                     final double maxWidth = constraints.maxWidth;
                     final double maxHeight =
                         constraints.maxHeight - toolbarHeight;
+                    final bool useWideGameLayout =
+                        isLandscape &&
+                        controller.gameInstance.gameMode == GameMode.humanVsAi;
                     final BoxConstraints constraint = BoxConstraints(
-                      maxWidth: (maxHeight > 0 && maxHeight < maxWidth)
+                      maxWidth:
+                          !useWideGameLayout &&
+                              maxHeight > 0 &&
+                              maxHeight < maxWidth
                           ? maxHeight
                           : maxWidth,
                     );

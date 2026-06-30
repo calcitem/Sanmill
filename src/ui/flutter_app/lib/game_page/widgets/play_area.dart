@@ -4,6 +4,7 @@
 // play_area.dart
 
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
@@ -1267,6 +1268,136 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
+  Widget _buildHumanAiBottomBar(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      key: const Key('play_area_lichess_bottom_bar_builder'),
+      valueListenable: AnalysisMode.stateNotifier,
+      builder: (BuildContext context, _, _) {
+        return _LichessGameBottomBar(
+          onMenuPressed: _showHumanAiGameMenu,
+          onResignOrResultPressed: _isHumanAiGameOver
+              ? _showHumanAiGameResult
+              : _canResignFromBottomBar
+              ? () => _showResignConfirmation(context)
+              : null,
+          onTakeBackPressed: _canTakeBackFromBottomBar
+              ? () => _takeBackFromBottomBar(context)
+              : null,
+          onHintPressed: _canShowHintFromBottomBar
+              ? () => _showHintFromBottomBar(context)
+              : null,
+          isShowingResult: _isHumanAiGameOver,
+          isHintHighlighted: AnalysisMode.isHint,
+        );
+      },
+    );
+  }
+
+  Widget _buildHumanAiLandscapeContent({
+    required BuildContext context,
+    required BoxConstraints constraints,
+    required Widget? humanDatabaseStatsStrip,
+  }) {
+    assert(
+      constraints.hasBoundedHeight,
+      'Human vs AI landscape layout requires bounded height.',
+    );
+    final Size viewport = constraints.biggest;
+    const double horizontalPadding = AppStyles.bodyPadding;
+    const double verticalPadding = 8;
+    const double gap = AppStyles.bodyPadding;
+    final double availableWidth = math.max(
+      0,
+      viewport.width - horizontalPadding * 2,
+    );
+    final double availableHeight = math.max(
+      0,
+      viewport.height - verticalPadding * 2,
+    );
+    const double targetSidePanelWidth = 280;
+    final double boardWidthWithPanel = math.max(
+      0,
+      availableWidth - targetSidePanelWidth - gap,
+    );
+    final double boardSize = math.min(
+      availableHeight,
+      boardWidthWithPanel > 0 ? boardWidthWithPanel : availableWidth * 0.58,
+    );
+
+    return SizedBox(
+      key: const Key('play_area_human_ai_landscape_content'),
+      width: viewport.width,
+      height: viewport.height,
+      child: SafeArea(
+        bottom: false,
+        right: false,
+        left: false,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: horizontalPadding,
+            vertical: verticalPadding,
+          ),
+          child: Row(
+            children: <Widget>[
+              SizedBox.square(
+                key: const Key('play_area_human_ai_landscape_board_pane'),
+                dimension: boardSize,
+                child: _buildBoardScreenshot(),
+              ),
+              const SizedBox(width: gap),
+              Expanded(
+                child: Column(
+                  key: const Key('play_area_human_ai_landscape_side_panel'),
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    const _HumanAiPlayerPanel(
+                      key: Key('play_area_human_ai_landscape_robot_panel'),
+                      isRobot: true,
+                    ),
+                    ?humanDatabaseStatsStrip,
+                    const Expanded(
+                      child: _InlineMoveList(
+                        key: Key('play_area_human_ai_landscape_move_list'),
+                        wrapKey: Key(
+                          'play_area_human_ai_landscape_move_list_wrap',
+                        ),
+                        roundKeyPrefix: 'play_area_human_ai_landscape_round_',
+                        moveKeyPrefix: 'play_area_human_ai_landscape_move_',
+                        layout: _InlineMoveListLayout.stacked,
+                        groupByRound: true,
+                      ),
+                    ),
+                    _buildHumanAiBottomBar(context),
+                    const SizedBox(height: verticalPadding),
+                    const _HumanAiPlayerPanel(
+                      key: Key('play_area_human_ai_landscape_player_panel'),
+                      isRobot: false,
+                    ),
+                    if (DB().displaySettings.isAdvantageGraphShown &&
+                        advantageData.isNotEmpty)
+                      SizedBox(
+                        key: const Key(
+                          'play_area_human_ai_landscape_advantage_graph',
+                        ),
+                        height: 80,
+                        width: double.infinity,
+                        child: CustomPaint(
+                          key: const Key(
+                            'play_area_human_ai_landscape_advantage_paint',
+                          ),
+                          painter: AdvantageGraphPainter(advantageData),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -1300,6 +1431,18 @@ class PlayAreaState extends State<PlayArea> {
         final Widget? humanDatabaseStatsStrip = _buildHumanDatabaseStatsStrip(
           context,
         );
+        final bool useHumanAiLandscapeLayout =
+            usesLichessHumanAiToolbar &&
+            constraints.hasBoundedHeight &&
+            constraints.maxWidth > constraints.maxHeight;
+
+        if (useHumanAiLandscapeLayout) {
+          return _buildHumanAiLandscapeContent(
+            context: context,
+            constraints: constraints,
+            humanDatabaseStatsStrip: humanDatabaseStatsStrip,
+          );
+        }
 
         // Main content without bottom toolbars:
         final Widget mainContent = SizedBox(
@@ -1420,28 +1563,7 @@ class PlayAreaState extends State<PlayArea> {
 
                 // Main toolbar (or setup-position toolbar)
                 if (usesLichessHumanAiToolbar)
-                  ValueListenableBuilder<bool>(
-                    key: const Key('play_area_lichess_bottom_bar_builder'),
-                    valueListenable: AnalysisMode.stateNotifier,
-                    builder: (BuildContext context, _, _) {
-                      return _LichessGameBottomBar(
-                        onMenuPressed: _showHumanAiGameMenu,
-                        onResignOrResultPressed: _isHumanAiGameOver
-                            ? _showHumanAiGameResult
-                            : _canResignFromBottomBar
-                            ? () => _showResignConfirmation(context)
-                            : null,
-                        onTakeBackPressed: _canTakeBackFromBottomBar
-                            ? () => _takeBackFromBottomBar(context)
-                            : null,
-                        onHintPressed: _canShowHintFromBottomBar
-                            ? () => _showHintFromBottomBar(context)
-                            : null,
-                        isShowingResult: _isHumanAiGameOver,
-                        isHintHighlighted: AnalysisMode.isHint,
-                      );
-                    },
-                  )
+                  _buildHumanAiBottomBar(context)
                 else if (isSetupPosition)
                   const SetupPositionToolbar(
                     key: Key('play_area_setup_position_toolbar_bottom'),
@@ -1559,9 +1681,13 @@ class _InlineMoveListState extends State<_InlineMoveList> {
         return Container(
           key: widget.wrapKey,
           width: double.infinity,
-          constraints: widget.layout == _InlineMoveListLayout.horizontal
-              ? const BoxConstraints.tightFor(height: 40)
-              : const BoxConstraints(minHeight: 40),
+          constraints: switch (widget.layout) {
+            _InlineMoveListLayout.horizontal => const BoxConstraints.tightFor(
+              height: 40,
+            ),
+            _InlineMoveListLayout.wrap || _InlineMoveListLayout.stacked =>
+              const BoxConstraints(minHeight: 40),
+          },
           padding: widget.layout == _InlineMoveListLayout.horizontal
               ? const EdgeInsets.only(left: 5)
               : const EdgeInsets.fromLTRB(12, 6, 12, 4),
@@ -1604,8 +1730,9 @@ class _InlineMoveListState extends State<_InlineMoveList> {
   }) {
     if (widget.groupByRound) {
       assert(
-        widget.layout == _InlineMoveListLayout.horizontal,
-        'Grouped inline move lists are only supported in horizontal layout.',
+        widget.layout == _InlineMoveListLayout.horizontal ||
+            widget.layout == _InlineMoveListLayout.stacked,
+        'Grouped inline move lists require horizontal or stacked layout.',
       );
       return _buildGroupedMoves(context: context, nodes: nodes);
     }
@@ -1619,6 +1746,10 @@ class _InlineMoveListState extends State<_InlineMoveList> {
         spacing: 4,
         runSpacing: 4,
         children: chips,
+      ),
+      _InlineMoveListLayout.stacked => SingleChildScrollView(
+        key: const Key('play_area_inline_move_list_scroll_view'),
+        child: Wrap(spacing: 4, runSpacing: 4, children: chips),
       ),
       _InlineMoveListLayout.horizontal => SingleChildScrollView(
         key: const Key('play_area_inline_move_list_scroll_view'),
@@ -1638,11 +1769,22 @@ class _InlineMoveListState extends State<_InlineMoveList> {
         _buildMoveRound(context, round),
     ];
 
-    return SingleChildScrollView(
-      key: const Key('play_area_inline_move_list_scroll_view'),
-      scrollDirection: Axis.horizontal,
-      child: Row(children: _spaceMoveChips(children)),
-    );
+    return switch (widget.layout) {
+      _InlineMoveListLayout.horizontal => SingleChildScrollView(
+        key: const Key('play_area_inline_move_list_scroll_view'),
+        scrollDirection: Axis.horizontal,
+        child: Row(children: _spaceMoveChips(children)),
+      ),
+      _InlineMoveListLayout.stacked => SingleChildScrollView(
+        key: const Key('play_area_inline_move_list_scroll_view'),
+        child: Wrap(spacing: 10, runSpacing: 6, children: children),
+      ),
+      _InlineMoveListLayout.wrap => Wrap(
+        spacing: 10,
+        runSpacing: 6,
+        children: children,
+      ),
+    };
   }
 
   List<_InlineMoveRound> _buildMoveRounds(List<PgnNode<ExtMove>> nodes) {
@@ -1895,7 +2037,7 @@ class _IndexedMoveNode {
   final PgnNode<ExtMove> node;
 }
 
-enum _InlineMoveListLayout { wrap, horizontal }
+enum _InlineMoveListLayout { wrap, horizontal, stacked }
 
 enum _GameMoveChipStyle { filled, inlineText }
 
