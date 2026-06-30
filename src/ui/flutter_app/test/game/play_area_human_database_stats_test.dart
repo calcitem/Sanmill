@@ -1848,6 +1848,49 @@ void main() {
     );
   });
 
+  testWidgets('analysis engine button shows progress while analyzing', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    AnalysisMode.enable(<MoveAnalysisResult>[
+      const MoveAnalysisResult(
+        move: 'd6',
+        outcome: AnalysisOutcome.advantage,
+        rank: 1,
+        depth: 8,
+        nodes: 128000,
+        line: <String>['d6', 'f4', 'a1'],
+      ),
+    ], source: AnalysisSource.engine);
+
+    await _pumpSessionPlayArea(tester, session);
+    AnalysisMode.setAnalyzing(true);
+    await tester.pump();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_bottom_bar_engine_progress')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
+      findsNothing,
+    );
+
+    AnalysisMode.setAnalyzing(false);
+    await tester.pump();
+
+    final Text engineValue = tester.widget<Text>(
+      find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
+    );
+    expect(engineValue.data, '8');
+  });
+
   testWidgets('analysis settings sheet toggles engine lines', (
     WidgetTester tester,
   ) async {

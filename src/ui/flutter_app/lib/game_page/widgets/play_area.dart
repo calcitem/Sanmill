@@ -4811,6 +4811,7 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
     final Color textColor = highlighted || AnalysisMode.isAnalyzing
         ? activeColor
         : foreground;
+    final bool isAnalyzing = AnalysisMode.isAnalyzing;
     final String chipText = _chipText;
 
     return Semantics(
@@ -4841,27 +4842,41 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
                         size: const Size.square(28),
                         painter: _AnalysisEngineChipPainter(chipColor),
                       ),
-                      Text(
-                        chipText,
-                        key: const Key(
-                          'play_area_analysis_bottom_bar_engine_value',
-                        ),
-                        style: TextStyle(
-                          color: textColor,
-                          fontSize: chipText.length > 2 ? 9 : 11,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 0,
-                          shadows: <Shadow>[
-                            Shadow(
-                              color: textColor.computeLuminance() < 0.5
-                                  ? Colors.white.withValues(alpha: 0.48)
-                                  : Colors.black.withValues(alpha: 0.48),
-                              blurRadius: 2,
-                              offset: const Offset(0, 1),
+                      if (isAnalyzing)
+                        SizedBox.square(
+                          key: const Key(
+                            'play_area_analysis_bottom_bar_engine_progress',
+                          ),
+                          dimension: 12,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              textColor.withValues(alpha: 0.82),
                             ),
-                          ],
+                          ),
+                        )
+                      else
+                        Text(
+                          chipText,
+                          key: const Key(
+                            'play_area_analysis_bottom_bar_engine_value',
+                          ),
+                          style: TextStyle(
+                            color: textColor,
+                            fontSize: chipText.length > 2 ? 9 : 11,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0,
+                            shadows: <Shadow>[
+                              Shadow(
+                                color: textColor.computeLuminance() < 0.5
+                                    ? Colors.white.withValues(alpha: 0.48)
+                                    : Colors.black.withValues(alpha: 0.48),
+                                blurRadius: 2,
+                                offset: const Offset(0, 1),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),
