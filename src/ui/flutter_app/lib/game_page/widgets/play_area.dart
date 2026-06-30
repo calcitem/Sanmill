@@ -613,8 +613,12 @@ class PlayAreaState extends State<PlayArea> {
       return;
     }
 
-    AnalysisMode.disable();
+    final bool shouldRefreshAnalysis =
+        AnalysisMode.isFullAnalysis && !AnalysisMode.isAnalyzing;
     await session.apply(selectedAction);
+    if (shouldRefreshAnalysis && context.mounted) {
+      await AnalysisService.refresh(context);
+    }
   }
 
   void _openBoardEditorFromAnalysis() {

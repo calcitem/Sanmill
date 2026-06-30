@@ -20,6 +20,7 @@ import 'package:sanmill/game_platform/game_session.dart' as platform;
 import 'package:sanmill/game_shell/game_session_scope.dart';
 import 'package:sanmill/games/mill/mill_session_recorder_bridge.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
+import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/shared/config/constants.dart';
@@ -1990,6 +1991,37 @@ void main() {
     );
   });
 
+  testWidgets('analysis engine line tap keeps analysis active', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    _bindExistingNativeGame(GameMode.analysis, session);
+
+    AnalysisMode.enable(const <MoveAnalysisResult>[
+      MoveAnalysisResult(
+        move: 'a7',
+        outcome: AnalysisOutcome.draw,
+        rank: 1,
+        depth: 1,
+        nodes: 1,
+        line: <String>['a7'],
+      ),
+    ], source: AnalysisSource.engine);
+
+    await _pumpSessionPlayArea(tester, session);
+
+    await tester.tap(find.byKey(const Key('play_area_analysis_engine_line_0')));
+    await tester.pumpAndSettle();
+
+    expect(AnalysisMode.isFullAnalysis, isTrue);
+    expect(session.requestedMultiPvValues, <int>[1]);
+    expect(AnalysisMode.analysisResults.single.move, 'd6');
+  });
+
   testWidgets('analysis settings sheet toggles evaluation displays', (
     WidgetTester tester,
   ) async {
@@ -3254,10 +3286,15 @@ Future<NativeMillGameSession> _bindNativeHumanAiGame() {
 }
 
 Future<NativeMillGameSession> _bindNativeGame(GameMode gameMode) async {
+  final NativeMillGameSession session = NativeMillGameSession();
+  _bindExistingNativeGame(gameMode, session);
+  return session;
+}
+
+void _bindExistingNativeGame(GameMode gameMode, NativeMillGameSession session) {
   final GameController controller = GameController();
   controller.reset(force: true);
   controller.gameInstance.gameMode = gameMode;
-  final NativeMillGameSession session = NativeMillGameSession();
   controller.bindActiveSession(session);
 
   void listener() {
@@ -3271,7 +3308,6 @@ Future<NativeMillGameSession> _bindNativeGame(GameMode gameMode) async {
     controller.unbindActiveSession(session);
     session.dispose();
   });
-  return session;
 }
 
 List<ExtMove> _takeBackCaptureFixture() {
@@ -3343,6 +3379,32 @@ class _GamePageDb extends MockDB {
   @override
   ValueListenable<Box<DisplaySettings>> get listenDisplaySettings {
     return _displaySettingsListenable;
+  }
+}
+
+class _RecordingAnalysisSession extends NativeMillGameSession {
+  _RecordingAnalysisSession() : super.fromPort(NativeMillRulesPort());
+
+  final List<int> requestedMultiPvValues = <int>[];
+
+  @override
+  Future<List<NativeMillPrincipalVariation>> searchPrincipalVariations({
+    int depth = 1,
+    int moveLimitMs = 0,
+    required int multiPv,
+    GeneralSettings? engineSettings,
+  }) async {
+    requestedMultiPvValues.add(multiPv);
+    return const <NativeMillPrincipalVariation>[
+      NativeMillPrincipalVariation(
+        rank: 1,
+        move: 'd6',
+        score: 0,
+        nodes: 1,
+        depth: 1,
+        line: <String>['d6'],
+      ),
+    ];
   }
 }
 

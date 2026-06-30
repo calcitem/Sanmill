@@ -45,7 +45,18 @@ class AnalysisService {
       AnalysisMode.disable();
       return;
     }
+    await refresh(context);
+  }
 
+  /// Re-run analysis for the position currently shown by the active session.
+  static Future<void> refresh(BuildContext context) async {
+    assert(
+      !AnalysisMode.isAnalyzing,
+      'Cannot refresh analysis while another analysis pass is running.',
+    );
+    if (AnalysisMode.isAnalyzing) {
+      return;
+    }
     final NativeMillGameSession? session = _activeNativeSession(context);
     if (session == null) {
       logger.w("$_logTag No active native Mill session to analyze.");
