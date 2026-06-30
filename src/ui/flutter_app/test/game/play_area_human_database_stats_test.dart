@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/appearance_settings/models/color_settings.dart';
 import 'package:sanmill/appearance_settings/models/display_settings.dart';
+import 'package:sanmill/game_page/services/analysis_mode.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/player_timer.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
@@ -55,10 +56,14 @@ void main() {
     controller.gameRecorder.reset();
     controller.isEngineRunning = false;
     controller.isEngineInDelay = false;
+    AnalysisMode.disable();
+    AnalysisMode.setShowEngineLines(true);
     PlayerTimer().reset();
   });
 
   tearDown(() {
+    AnalysisMode.disable();
+    AnalysisMode.setShowEngineLines(true);
     PlayerTimer().reset();
     DB.instance = null;
   });
@@ -1048,6 +1053,10 @@ void main() {
       findsNothing,
     );
     expect(
+      find.byKey(const Key('play_area_regular_game_menu_toggle_engine_lines')),
+      findsOne,
+    );
+    expect(
       find.byKey(const Key('play_area_regular_game_menu_continue_from_here')),
       findsOne,
     );
@@ -1070,6 +1079,84 @@ void main() {
     expect(
       find.byKey(const Key('play_area_analysis_continue_over_the_board')),
       findsOne,
+    );
+  });
+
+  testWidgets('analysis menu toggles engine lines', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    GameController().gameInstance.gameMode = GameMode.analysis;
+    AnalysisMode.enable(<MoveAnalysisResult>[
+      const MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.win),
+    ]);
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_lines')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_toggle_engine_lines')),
+      findsOneWidget,
+    );
+    expect(find.text('Hide Engine Lines'), findsOneWidget);
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_game_menu_toggle_engine_lines')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_lines_hidden')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_lines')),
+      findsNothing,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Show Engine Lines'), findsOneWidget);
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_game_menu_toggle_engine_lines')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_lines')),
+      findsOneWidget,
     );
   });
 

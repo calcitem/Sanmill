@@ -102,6 +102,7 @@ enum AnalysisOverlayMode {
 class AnalysisMode {
   static bool _isEnabled = false;
   static bool _isAnalyzing = false;
+  static bool _showEngineLines = true;
   static AnalysisOverlayMode? _overlayMode;
   static List<MoveAnalysisResult> _analysisResults = <MoveAnalysisResult>[];
   static List<String> _trapMoves = <String>[];
@@ -123,6 +124,9 @@ class AnalysisMode {
 
   /// Whether an analysis pass is currently running.
   static bool get isAnalyzing => _isAnalyzing;
+
+  /// Whether the analysis screen shows the engine move lines.
+  static bool get showEngineLines => _showEngineLines;
 
   /// The current per-move analysis results.
   static List<MoveAnalysisResult> get analysisResults => _analysisResults;
@@ -167,6 +171,20 @@ class AnalysisMode {
   /// Mark whether an analysis pass is in progress.
   static void setAnalyzing(bool analyzing) {
     _isAnalyzing = analyzing;
+    _publishState();
+  }
+
+  /// Toggle visibility of the engine line panel.
+  static void toggleEngineLines() {
+    setShowEngineLines(!_showEngineLines);
+  }
+
+  /// Set visibility of the engine line panel.
+  static void setShowEngineLines(bool value) {
+    if (_showEngineLines == value) {
+      return;
+    }
+    _showEngineLines = value;
     _publishState();
   }
 

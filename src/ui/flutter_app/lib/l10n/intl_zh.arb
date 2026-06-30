@@ -4677,5 +4677,9 @@
     "engine": "引擎",
     "@engine": {},
     "continueFromHere": "从这里继续",
-    "@continueFromHere": {}
+    "@continueFromHere": {},
+    "showEngineLines": "显示引擎线",
+    "@showEngineLines": {},
+    "hideEngineLines": "隐藏引擎线",
+    "@hideEngineLines": {}
 }

@@ -927,6 +927,17 @@ class PlayAreaState extends State<PlayArea> {
     GameController().gameResultNotifier.showResult(force: true);
   }
 
+  void _toggleAnalysisEngineLines() {
+    assert(_isAnalysisMode, 'Engine line visibility is analysis-mode only.');
+    RecordingService()
+        .recordEvent(RecordingEventType.toolbarAction, <String, dynamic>{
+          'toolbar': 'analysisMenu',
+          'action': 'toggleEngineLines',
+          'visible': !AnalysisMode.showEngineLines,
+        });
+    AnalysisMode.toggleEngineLines();
+  }
+
   void _showRegularGameMenu() {
     assert(!_usesLichessHumanAiToolbar);
     final BuildContext hostContext = context;
@@ -964,6 +975,21 @@ class PlayAreaState extends State<PlayArea> {
             leading: const Icon(Icons.format_list_numbered),
             makeLabel: (BuildContext context) => Text(S.of(context).moveList),
             onPressed: () => _openMovesWithNavigator(hostNavigator),
+          ),
+        if (_isAnalysisMode)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_toggle_engine_lines'),
+            leading: Icon(
+              AnalysisMode.showEngineLines
+                  ? Icons.subtitles_outlined
+                  : Icons.subtitles_off_outlined,
+            ),
+            makeLabel: (BuildContext context) => Text(
+              AnalysisMode.showEngineLines
+                  ? strings.hideEngineLines
+                  : strings.showEngineLines,
+            ),
+            onPressed: _toggleAnalysisEngineLines,
           ),
         if (_isAnalysisMode)
           LichessActionSheetAction(
@@ -1666,58 +1692,69 @@ class PlayAreaState extends State<PlayArea> {
     required BuildContext context,
     required bool showPieceCountRows,
   }) {
-    return SafeArea(
-      top: MediaQuery.of(context).orientation == Orientation.portrait,
-      bottom: false,
-      right: false,
-      left: false,
-      child: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          final double maxHeight = constraints.hasBoundedHeight
-              ? constraints.maxHeight
-              : MediaQuery.sizeOf(context).height;
-          const double engineLinesReserve = 74;
-          const double tabPanelMinHeight = 174;
-          final double pieceRowsHeight = showPieceCountRows
-              ? 48
-              : AppTheme.boardMargin * 2;
-          final double boardSize = math.min(
-            constraints.maxWidth,
-            math.max(
-              160,
-              maxHeight -
-                  engineLinesReserve -
-                  tabPanelMinHeight -
-                  pieceRowsHeight,
-            ),
-          );
+    return ValueListenableBuilder<bool>(
+      valueListenable: AnalysisMode.stateNotifier,
+      builder: (BuildContext context, _, _) {
+        final bool hasEngineLinesSlot =
+            AnalysisMode.showEngineLines &&
+            (AnalysisMode.isAnalyzing ||
+                (AnalysisMode.isFullAnalysis &&
+                    AnalysisMode.analysisResults.isNotEmpty));
 
-          return Column(
-            key: const Key('play_area_analysis_column'),
-            children: <Widget>[
-              _buildAnalysisEngineLines(context),
-              if (showPieceCountRows)
-                _isBoardFlipped
-                    ? _buildRemovedPieceCountRow()
-                    : _buildPieceCountRow()
-              else
-                const SizedBox(height: AppTheme.boardMargin),
-              SizedBox.square(
-                key: const Key('play_area_analysis_board'),
-                dimension: boardSize,
-                child: _buildBoardScreenshot(),
-              ),
-              if (showPieceCountRows)
-                _isBoardFlipped
-                    ? _buildPieceCountRow()
-                    : _buildRemovedPieceCountRow()
-              else
-                const SizedBox(height: AppTheme.boardMargin),
-              Expanded(child: _buildAnalysisTabs(context)),
-            ],
-          );
-        },
-      ),
+        return SafeArea(
+          top: MediaQuery.of(context).orientation == Orientation.portrait,
+          bottom: false,
+          right: false,
+          left: false,
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              final double maxHeight = constraints.hasBoundedHeight
+                  ? constraints.maxHeight
+                  : MediaQuery.sizeOf(context).height;
+              final double engineLinesReserve = hasEngineLinesSlot ? 74 : 0;
+              const double tabPanelMinHeight = 174;
+              final double pieceRowsHeight = showPieceCountRows
+                  ? 48
+                  : AppTheme.boardMargin * 2;
+              final double boardSize = math.min(
+                constraints.maxWidth,
+                math.max(
+                  160,
+                  maxHeight -
+                      engineLinesReserve -
+                      tabPanelMinHeight -
+                      pieceRowsHeight,
+                ),
+              );
+
+              return Column(
+                key: const Key('play_area_analysis_column'),
+                children: <Widget>[
+                  _buildAnalysisEngineLines(context),
+                  if (showPieceCountRows)
+                    _isBoardFlipped
+                        ? _buildRemovedPieceCountRow()
+                        : _buildPieceCountRow()
+                  else
+                    const SizedBox(height: AppTheme.boardMargin),
+                  SizedBox.square(
+                    key: const Key('play_area_analysis_board'),
+                    dimension: boardSize,
+                    child: _buildBoardScreenshot(),
+                  ),
+                  if (showPieceCountRows)
+                    _isBoardFlipped
+                        ? _buildPieceCountRow()
+                        : _buildRemovedPieceCountRow()
+                  else
+                    const SizedBox(height: AppTheme.boardMargin),
+                  Expanded(child: _buildAnalysisTabs(context)),
+                ],
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
@@ -1750,6 +1787,12 @@ class PlayAreaState extends State<PlayArea> {
       key: const Key('play_area_analysis_engine_lines_builder'),
       valueListenable: AnalysisMode.stateNotifier,
       builder: (BuildContext context, _, _) {
+        if (!AnalysisMode.showEngineLines) {
+          return const SizedBox.shrink(
+            key: Key('play_area_analysis_engine_lines_hidden'),
+          );
+        }
+
         if (AnalysisMode.isAnalyzing) {
           final Color color = DB().colorSettings.messageColor;
           return Padding(
