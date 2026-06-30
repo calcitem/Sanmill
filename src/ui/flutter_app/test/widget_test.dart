@@ -1767,7 +1767,7 @@ void main() {
   );
 
   testWidgets(
-    'Setup position toolbar uses a Lichess-style bottom bar',
+    'Setup position toolbar keeps legacy three-row editor controls',
     (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
@@ -1785,66 +1785,37 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(
-        find.byKey(const Key('setup_position_lichess_bottom_bar')),
+        find.byKey(const Key('setup_position_three_row_toolbar')),
         findsOneWidget,
       );
-      expect(find.byKey(const Key('setup_menu_button')), findsOneWidget);
-      expect(find.byKey(const Key('setup_paint_color_button')), findsOneWidget);
-      expect(find.byKey(const Key('setup_phase_button')), findsOneWidget);
-      expect(
-        find.byKey(const Key('setup_transform_menu_button')),
-        findsOneWidget,
-      );
-      expect(find.byKey(const Key('setup_done_button')), findsOneWidget);
       expect(
         find.byKey(const Key('setup_position_buttons_container_row1')),
-        findsNothing,
-      );
-
-      await tester.tap(find.byKey(const Key('setup_transform_menu_button')));
-      await tester.pumpAndSettle();
-
-      expect(
-        find.byKey(const Key('setup_transform_action_sheet')),
-        findsOneWidget,
-      );
-      expect(find.byKey(const Key('setup_rotate_button')), findsOneWidget);
-      expect(
-        find.byKey(const Key('setup_horizontal_flip_button')),
         findsOneWidget,
       );
       expect(
-        find.byKey(const Key('setup_vertical_flip_button')),
+        find.byKey(const Key('setup_position_buttons_container_row2')),
         findsOneWidget,
       );
       expect(
-        find.byKey(const Key('setup_inner_outer_flip_button')),
+        find.byKey(const Key('setup_position_buttons_container_row3')),
         findsOneWidget,
       );
 
-      await tester.binding.handlePopRoute();
-      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('paint_color_button')), findsOneWidget);
+      expect(find.byKey(const Key('phase_button')), findsOneWidget);
+      expect(find.byKey(const Key('remove_button')), findsOneWidget);
+      expect(find.byKey(const Key('placed_button')), findsOneWidget);
 
-      await tester.tap(find.byKey(const Key('setup_menu_button')));
-      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('rotate_button')), findsOneWidget);
+      expect(find.byKey(const Key('horizontal_flip_button')), findsOneWidget);
+      expect(find.byKey(const Key('vertical_flip_button')), findsOneWidget);
+      expect(find.byKey(const Key('inner_outer_flip_button')), findsOneWidget);
 
-      expect(
-        find.byKey(const Key('setup_position_action_sheet')),
-        findsOneWidget,
-      );
-      expect(find.text('Board editor'), findsOneWidget);
-      expect(
-        find.byKey(const Key('setup_placed_count_button')),
-        findsOneWidget,
-      );
-      expect(find.byKey(const Key('setup_need_remove_button')), findsOneWidget);
-      expect(find.byKey(const Key('setup_copy_button')), findsOneWidget);
-      expect(find.byKey(const Key('setup_paste_button')), findsOneWidget);
-      expect(find.byKey(const Key('setup_clear_button')), findsOneWidget);
-      expect(find.byKey(const Key('setup_cancel_button')), findsOneWidget);
-
-      await tester.binding.handlePopRoute();
-      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('copy_button')), findsOneWidget);
+      expect(find.byKey(const Key('paste_button')), findsOneWidget);
+      expect(find.byKey(const Key('clear_button')), findsOneWidget);
+      expect(find.byKey(const Key('cancel_button')), findsOneWidget);
+      expect(find.byKey(const Key('done_button')), findsOneWidget);
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));

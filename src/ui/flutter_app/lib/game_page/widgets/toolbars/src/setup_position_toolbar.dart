@@ -22,8 +22,8 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   MillSetupPositionController? get _controller =>
       GameController().setupPositionController;
 
-  /// Fixed Lichess-style action bar height.
-  static double get height => kLichessBottomBarHeight;
+  /// Fixed height for the three-row setup-position toolbar.
+  static double get height => kLichessBottomBarHeight * 3;
 
   @override
   void initState() {
@@ -280,122 +280,195 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     };
   }
 
-  void _showSetupMenu() {
-    final int placed = _controller?.placedCount ?? 0;
-
-    unawaited(
-      showLichessActionSheet<void>(
-        context: context,
-        sheetKey: const Key('setup_position_action_sheet'),
-        title: Text(S.of(context).boardEditor),
-        actions: <LichessActionSheetAction>[
-          LichessActionSheetAction(
-            key: const Key('setup_placed_count_button'),
-            leading: const Icon(FluentIcons.text_word_count_24_regular),
-            makeLabel: (BuildContext context) =>
-                Text(S.of(context).placedCount(placed)),
-            onPressed: () => unawaited(_showPlacedCountPicker()),
-          ),
-          LichessActionSheetAction(
-            key: const Key('setup_need_remove_button'),
-            leading: Icon(_needRemoveIcon()),
-            makeLabel: (BuildContext context) => Text(S.of(context).remove),
-            onPressed: _cycleNeedRemove,
-          ),
-          LichessActionSheetAction(
-            key: const Key('setup_copy_button'),
-            leading: const Icon(FluentIcons.copy_24_regular),
-            makeLabel: (BuildContext context) => Text(S.of(context).copy),
-            onPressed: () => unawaited(_copyFen()),
-          ),
-          LichessActionSheetAction(
-            key: const Key('setup_paste_button'),
-            leading: const Icon(FluentIcons.clipboard_paste_24_regular),
-            makeLabel: (BuildContext context) => Text(S.of(context).paste),
-            onPressed: () => unawaited(_pasteFen()),
-          ),
-          LichessActionSheetAction(
-            key: const Key('setup_clear_button'),
-            leading: const Icon(FluentIcons.eraser_24_regular),
-            makeLabel: (BuildContext context) => Text(S.of(context).clean),
-            onPressed: _clear,
-          ),
-          LichessActionSheetAction(
-            key: const Key('setup_cancel_button'),
-            leading: const Icon(FluentIcons.dismiss_24_regular),
-            makeLabel: (BuildContext context) => Text(S.of(context).cancel),
-            onPressed: _cancel,
-            isDestructiveAction: true,
-          ),
-        ],
-      ),
-    );
+  String _transformRecordingValue(String id) {
+    switch (id) {
+      case 'rotate':
+        return 'rotate90';
+      case 'horizontal_flip':
+        return 'mirrorHorizontal';
+      case 'vertical_flip':
+        return 'mirrorVertical';
+      case 'inner_outer_flip':
+        return 'innerOuterFlip';
+    }
+    assert(false, 'Unknown setup-position transform action: $id');
+    return id;
   }
 
-  void _showTransformMenu() {
-    unawaited(
-      showLichessActionSheet<void>(
-        context: context,
-        sheetKey: const Key('setup_transform_action_sheet'),
-        title: Text(S.of(context).boardOrientation),
-        actions: <LichessActionSheetAction>[
-          for (final MillBoardTransformAction action
-              in millBoardTransformActions)
-            LichessActionSheetAction(
-              key: Key('setup_${action.id}_button'),
-              leading: Icon(action.icon),
-              makeLabel: (BuildContext context) =>
-                  Text(action.label(S.of(context))),
-              onPressed: () => _transform(action.type, action.id),
-            ),
-        ],
-      ),
+  ToolbarItem _toolbarButton({
+    required Key key,
+    required IconData icon,
+    required String label,
+    required VoidCallback? onPressed,
+    Color? iconColor,
+  }) {
+    return ToolbarItem.icon(
+      key: key,
+      onPressed: onPressed,
+      icon: Icon(icon, color: iconColor),
+      label: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return LichessBottomBar(
-      key: const Key('setup_position_lichess_bottom_bar'),
-      children: <Widget>[
-        LichessBottomBarButton(
-          key: const Key('setup_menu_button'),
-          icon: Icons.menu_rounded,
-          label: S.of(context).menu,
-          showLabel: true,
-          onTap: _showSetupMenu,
-        ),
-        LichessBottomBarButton(
-          key: const Key('setup_paint_color_button'),
+    final MillSetupPositionController? controller = _controller;
+    final S strings = S.of(context);
+    final int placed = controller?.placedCount ?? 0;
+
+    final List<Widget> row1 = <Widget>[
+      Expanded(
+        child: _toolbarButton(
+          key: const Key('paint_color_button'),
           icon: _paintColorIcon(),
           label: _paintColorLabel(context),
-          showLabel: true,
-          highlighted: true,
-          onTap: _cyclePaintColor,
+          onPressed: _cyclePaintColor,
         ),
-        LichessBottomBarButton(
-          key: const Key('setup_phase_button'),
+      ),
+      Expanded(
+        child: _toolbarButton(
+          key: const Key('phase_button'),
           icon: _phaseIcon(),
           label: _phaseLabel(context),
-          showLabel: true,
-          onTap: _togglePhase,
+          onPressed: _togglePhase,
         ),
-        LichessBottomBarButton(
-          key: const Key('setup_transform_menu_button'),
-          icon: FluentIcons.arrow_rotate_clockwise_24_regular,
-          label: S.of(context).boardOrientation,
-          showLabel: true,
-          onTap: _showTransformMenu,
+      ),
+      Expanded(
+        child: _toolbarButton(
+          key: const Key('remove_button'),
+          icon: _needRemoveIcon(),
+          label: strings.remove,
+          onPressed: _cycleNeedRemove,
         ),
-        LichessBottomBarButton(
-          key: const Key('setup_done_button'),
+      ),
+      Expanded(
+        child: _toolbarButton(
+          key: const Key('placed_button'),
+          icon: FluentIcons.text_word_count_24_regular,
+          label: strings.placedCount(placed),
+          onPressed: () => unawaited(_showPlacedCountPicker()),
+        ),
+      ),
+    ];
+
+    final List<Widget> row2 = <Widget>[
+      for (final MillBoardTransformAction action in millBoardTransformActions)
+        Expanded(
+          child: _toolbarButton(
+            key: Key('${action.id}_button'),
+            icon: action.icon,
+            label: action.label(strings),
+            onPressed: () =>
+                _transform(action.type, _transformRecordingValue(action.id)),
+          ),
+        ),
+    ];
+
+    final List<Widget> row3 = <Widget>[
+      Expanded(
+        child: _toolbarButton(
+          key: const Key('copy_button'),
+          icon: FluentIcons.copy_24_regular,
+          label: strings.copy,
+          onPressed: () => unawaited(_copyFen()),
+        ),
+      ),
+      Expanded(
+        child: _toolbarButton(
+          key: const Key('paste_button'),
+          icon: FluentIcons.clipboard_paste_24_regular,
+          label: strings.paste,
+          onPressed: () => unawaited(_pasteFen()),
+        ),
+      ),
+      Expanded(
+        child: _toolbarButton(
+          key: const Key('clear_button'),
+          icon: FluentIcons.eraser_24_regular,
+          label: strings.clean,
+          onPressed: _clear,
+        ),
+      ),
+      Expanded(
+        child: _toolbarButton(
+          key: const Key('cancel_button'),
+          icon: FluentIcons.dismiss_24_regular,
+          label: strings.cancel,
+          onPressed: _cancel,
+        ),
+      ),
+      Expanded(
+        child: _toolbarButton(
+          key: const Key('done_button'),
           icon: FluentIcons.checkmark_24_regular,
-          label: S.of(context).done,
-          showLabel: true,
-          highlighted: true,
-          onTap: _done,
+          label: strings.done,
+          onPressed: _done,
         ),
-      ],
+      ),
+    ];
+
+    return MediaQuery.withClampedTextScaling(
+      maxScaleFactor: 1.2,
+      child: Column(
+        key: const Key('setup_position_three_row_toolbar'),
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SetupPositionButtonsContainer(
+            key: const Key('setup_position_buttons_container_row1'),
+            children: row1,
+          ),
+          SetupPositionButtonsContainer(
+            key: const Key('setup_position_buttons_container_row2'),
+            children: row2,
+          ),
+          SetupPositionButtonsContainer(
+            key: const Key('setup_position_buttons_container_row3'),
+            children: row3,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SetupPositionButtonsContainer extends StatelessWidget {
+  const SetupPositionButtonsContainer({super.key, required this.children})
+    : assert(children.length > 0, 'Toolbar row must contain buttons.');
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+    return Container(
+      height: kLichessBottomBarHeight,
+      decoration: BoxDecoration(
+        color: theme.bottomAppBarTheme.color ?? colorScheme.surfaceContainer,
+        border: Border(
+          top: BorderSide(
+            color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+          ),
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+      child: ToolbarItemTheme(
+        data: ToolbarItemThemeData(
+          style: ToolbarItem.styleFrom(
+            primary: colorScheme.onSurfaceVariant,
+            padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+            minimumSize: Size.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+        ),
+        child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: children,
+          ),
+        ),
+      ),
     );
   }
 }

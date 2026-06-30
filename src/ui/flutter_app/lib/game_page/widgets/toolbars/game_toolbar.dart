@@ -22,7 +22,6 @@ import '../../../games/mill/mill_setup_position_controller.dart';
 import '../../../generated/intl/l10n.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/screenshot_service.dart';
-import '../../../shared/widgets/lichess_action_sheet.dart';
 import '../../../shared/widgets/lichess_bottom_bar.dart';
 import '../../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../services/annotation/annotation_manager.dart';
