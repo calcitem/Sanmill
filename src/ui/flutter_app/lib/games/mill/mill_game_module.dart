@@ -9,7 +9,6 @@ import '../../game_page/services/painters/painters.dart' show deviceWidth;
 import '../../game_page/widgets/dialogs/lan_config_dialog.dart';
 import '../../game_page/widgets/game_page.dart' show GamePage;
 import '../../game_page/widgets/import_game_page.dart';
-import '../../game_page/widgets/moves_list_page.dart';
 import '../../game_platform/board_geometry.dart';
 import '../../game_platform/engine/engine_port.dart';
 import '../../game_platform/engine/native_topology.dart';
@@ -391,17 +390,6 @@ class MillGameModule extends GameModule {
         contentKey: const Key('import_game'),
         builder: (BuildContext context, {Key? key, GameSession? session}) {
           return ImportGamePage(key: key);
-        },
-      ),
-      GameMenuContribution(
-        id: MillRouteIds.analysis,
-        label: s.analysis,
-        section: GameMenuSection.tools,
-        icon: FluentIcons.beaker_24_regular,
-        menuKey: const Key('drawer_item_analysis'),
-        contentKey: const Key('analysis_panel'),
-        builder: (BuildContext context, {Key? key, GameSession? session}) {
-          return MovesListPage.analysisPanel(key: key);
         },
       ),
       GameMenuContribution(

@@ -67,18 +67,11 @@ class _ActivePathRowData {
 /// The user can pick from a set of layout options via a single active icon which,
 /// when tapped, reveals a row of layout icons.
 class MovesListPage extends StatefulWidget {
-  const MovesListPage({super.key}) : panelMode = MovesListPanelMode.moveList;
-
-  const MovesListPage.analysisPanel({super.key})
-    : panelMode = MovesListPanelMode.analysis;
-
-  final MovesListPanelMode panelMode;
+  const MovesListPage({super.key});
 
   @override
   MovesListPageState createState() => MovesListPageState();
 }
-
-enum MovesListPanelMode { moveList, analysis }
 
 class MovesListPageState extends State<MovesListPage> {
   /// A flat list of all PGN nodes (collected recursively).
@@ -2752,25 +2745,13 @@ class MovesListPageState extends State<MovesListPage> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
-    final bool isAnalysisPanel =
-        widget.panelMode == MovesListPanelMode.analysis;
 
     return Scaffold(
-      key: Key(
-        isAnalysisPanel
-            ? 'analysis_panel_page_scaffold'
-            : 'moves_list_page_scaffold',
-      ),
+      key: const Key('moves_list_page_scaffold'),
       backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        key: Key(
-          isAnalysisPanel
-              ? 'analysis_panel_page_appbar'
-              : 'moves_list_page_appbar',
-        ),
-        title: Text(
-          isAnalysisPanel ? S.of(context).analysis : S.of(context).moveList,
-        ),
+        key: const Key('moves_list_page_appbar'),
+        title: Text(S.of(context).moveList),
         actions: <Widget>[
           // Jump to main line (only show when on variation branch)
           if (_isOnVariationBranch())

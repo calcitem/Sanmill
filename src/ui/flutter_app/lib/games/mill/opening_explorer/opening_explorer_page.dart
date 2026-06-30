@@ -1357,8 +1357,10 @@ class _MoveCell extends StatelessWidget {
     final S strings = S.of(context);
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Wrap(
+      spacing: 5,
+      runSpacing: 3,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: <Widget>[
         Text(
           move.notation,
@@ -1370,31 +1372,24 @@ class _MoveCell extends StatelessWidget {
             letterSpacing: 0,
           ),
         ),
-        const SizedBox(height: 4),
-        Wrap(
-          spacing: 5,
-          runSpacing: 4,
-          children: <Widget>[
-            if (move.isPerfectMove)
-              _SourceBadge(
-                label: strings.perfectDatabaseSettings,
-                color: colorScheme.primary,
-                icon: Icons.verified_rounded,
-              ),
-            if (move.bookRank != null)
-              _SourceBadge(
-                label: '${strings.openingBookSettings} #${move.bookRank! + 1}',
-                color: colorScheme.tertiary,
-                icon: Icons.menu_book_rounded,
-              ),
-            if (move.humanStats != null)
-              _SourceBadge(
-                label: strings.humanGameDatabaseSettings,
-                color: colorScheme.secondary,
-                icon: Icons.people_alt_rounded,
-              ),
-          ],
-        ),
+        if (move.isPerfectMove)
+          _SourceBadge(
+            label: strings.perfectDatabaseSettings,
+            color: colorScheme.primary,
+            icon: Icons.verified_rounded,
+          ),
+        if (move.bookRank != null)
+          _SourceBadge(
+            label: '${strings.openingBookSettings} #${move.bookRank! + 1}',
+            color: colorScheme.tertiary,
+            icon: Icons.menu_book_rounded,
+          ),
+        if (move.humanStats != null)
+          _SourceBadge(
+            label: strings.humanGameDatabaseSettings,
+            color: colorScheme.secondary,
+            icon: Icons.people_alt_rounded,
+          ),
       ],
     );
   }
@@ -1526,8 +1521,8 @@ class _SourceBadge extends StatelessWidget {
             borderRadius: BorderRadius.circular(999),
           ),
           child: SizedBox.square(
-            dimension: 22,
-            child: Icon(icon, size: 14, color: color),
+            dimension: 18,
+            child: Icon(icon, size: 12, color: color),
           ),
         ),
       ),

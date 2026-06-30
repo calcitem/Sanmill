@@ -268,7 +268,7 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_analysis')),
-      findsOne,
+      findsNothing,
     );
     expect(find.byKey(const Key('play_area_toolbar_item_game')), findsOne);
     expect(find.text('New game'), findsOne);
@@ -673,7 +673,7 @@ void main() {
       find.byKey(const Key('play_area_game_menu_transform_swap_rotate_180')),
       findsNothing,
     );
-    expect(find.byKey(const Key('play_area_game_menu_analysis')), findsOne);
+    expect(find.byKey(const Key('play_area_game_menu_analysis')), findsNothing);
     expect(find.byKey(const Key('play_area_game_menu_move_list')), findsOne);
     expect(find.byKey(const Key('play_area_game_menu_move_now')), findsOne);
     expect(find.byKey(const Key('play_area_game_menu_resign')), findsNothing);
@@ -732,29 +732,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('human_ai_new_game_sheet')), findsNothing);
-
-    await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.byKey(const Key('play_area_game_menu_analysis')));
-    await tester.pumpAndSettle();
-
-    final Finder analysisPanel = find.byKey(
-      const Key('analysis_panel_page_scaffold'),
-    );
-    expect(analysisPanel, findsOneWidget);
-    final BuildContext analysisPanelContext = tester.element(analysisPanel);
-    final Scaffold analysisPanelScaffold = tester.widget<Scaffold>(
-      analysisPanel,
-    );
-    expect(
-      analysisPanelScaffold.backgroundColor,
-      Theme.of(analysisPanelContext).colorScheme.surface,
-    );
-    expect(find.text('Analysis'), findsOneWidget);
-
-    await tester.binding.handlePopRoute();
-    await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
     await tester.pumpAndSettle();

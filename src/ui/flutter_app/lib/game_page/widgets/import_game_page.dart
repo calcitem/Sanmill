@@ -138,7 +138,7 @@ class _ImportGamePageState extends State<ImportGamePage> {
 
     await Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
-        builder: (BuildContext context) => const MovesListPage.analysisPanel(),
+        builder: (BuildContext context) => const MovesListPage(),
       ),
     );
   }

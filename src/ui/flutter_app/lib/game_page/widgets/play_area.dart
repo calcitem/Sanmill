@@ -613,23 +613,6 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
-  Future<void> _openAnalysisPanelFromBottomBar(
-    NavigatorState navigator, {
-    required String toolbar,
-  }) async {
-    RecordingService().recordEvent(
-      RecordingEventType.toolbarAction,
-      <String, dynamic>{'toolbar': toolbar, 'action': 'analysisPanel'},
-    );
-    AnalysisMode.disable();
-    await navigator.push(
-      MaterialPageRoute<void>(
-        settings: const RouteSettings(name: '/movesList'),
-        builder: (BuildContext context) => const MovesListPage.analysisPanel(),
-      ),
-    );
-  }
-
   Future<void> _moveNowFromGameMenu(
     BuildContext context, {
     required String toolbar,
@@ -804,17 +787,6 @@ class PlayAreaState extends State<PlayArea> {
           ),
         ),
         LichessActionSheetAction(
-          key: const Key('play_area_regular_game_menu_analysis'),
-          leading: const Icon(Icons.analytics_outlined),
-          makeLabel: (BuildContext context) => Text(S.of(context).analysis),
-          onPressed: () => unawaited(
-            _openAnalysisPanelFromBottomBar(
-              hostNavigator,
-              toolbar: 'regularBottom',
-            ),
-          ),
-        ),
-        LichessActionSheetAction(
           key: const Key('play_area_toolbar_item_game'),
           leading: const Icon(Icons.add_circle_outline),
           makeLabel: (BuildContext context) => Text(S.of(context).newGame),
@@ -906,17 +878,6 @@ class PlayAreaState extends State<PlayArea> {
             hostContext,
             sheetKey: const Key('play_area_board_transform_sheet'),
             keyPrefix: 'play_area_board_transform',
-          ),
-        ),
-        LichessActionSheetAction(
-          key: const Key('play_area_game_menu_analysis'),
-          leading: const Icon(Icons.analytics_outlined),
-          makeLabel: (BuildContext context) => Text(S.of(context).analysis),
-          onPressed: () => unawaited(
-            _openAnalysisPanelFromBottomBar(
-              hostNavigator,
-              toolbar: 'lichessBottom',
-            ),
           ),
         ),
         LichessActionSheetAction(
