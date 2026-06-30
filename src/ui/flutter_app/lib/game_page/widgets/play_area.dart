@@ -793,6 +793,28 @@ class PlayAreaState extends State<PlayArea> {
           makeLabel: (BuildContext context) => Text(S.of(context).moveList),
           onPressed: () => _openMovesWithNavigator(hostNavigator),
         ),
+        if (_canStepBackFromRegularBottomBar)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_previous'),
+            leading: const Icon(CupertinoIcons.chevron_back),
+            makeLabel: (BuildContext context) => Text(S.of(context).previous),
+            onPressed: () =>
+                unawaited(_stepBackFromRegularBottomBar(hostContext)),
+          ),
+        if (_canStepForwardFromRegularBottomBar)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_next'),
+            leading: const Icon(CupertinoIcons.chevron_forward),
+            makeLabel: (BuildContext context) =>
+                Text(S.of(context).stepForward),
+            onPressed: () => unawaited(
+              HistoryNavigator.stepForward(
+                hostContext,
+                pop: false,
+                toolbar: true,
+              ),
+            ),
+          ),
         if (_shouldShowMoveNowMenuAction)
           LichessActionSheetAction(
             key: const Key('play_area_regular_game_menu_move_now'),
@@ -1279,15 +1301,8 @@ class PlayAreaState extends State<PlayArea> {
               isClockPaused: status == PlayerTimerStatus.paused,
               isShowingResult: _isRegularGameOver,
               onClockPressed: _regularClockControlAction(status),
-              onPreviousPressed: _canStepBackFromRegularBottomBar
-                  ? () => _stepBackFromRegularBottomBar(context)
-                  : null,
-              onNextPressed: _canStepForwardFromRegularBottomBar
-                  ? () => HistoryNavigator.stepForward(
-                      context,
-                      pop: false,
-                      toolbar: true,
-                    )
+              onTakeBackPressed: _canTakeBackFromRegularBottomBar
+                  ? () => _takeBackFromRegularBottomBar(context)
                   : null,
             );
           },
@@ -2404,8 +2419,7 @@ class _RegularGameBottomBar extends StatelessWidget {
     required this.isClockPaused,
     required this.isShowingResult,
     required this.onClockPressed,
-    required this.onPreviousPressed,
-    required this.onNextPressed,
+    required this.onTakeBackPressed,
   });
 
   final VoidCallback onMenuPressed;
@@ -2414,8 +2428,7 @@ class _RegularGameBottomBar extends StatelessWidget {
   final bool isClockPaused;
   final bool isShowingResult;
   final VoidCallback? onClockPressed;
-  final VoidCallback? onPreviousPressed;
-  final VoidCallback? onNextPressed;
+  final VoidCallback? onTakeBackPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -2443,18 +2456,10 @@ class _RegularGameBottomBar extends StatelessWidget {
             onTap: onClockPressed,
           ),
         LichessBottomBarButton(
-          key: const Key('play_area_regular_bottom_bar_previous'),
-          icon: CupertinoIcons.chevron_back,
-          label: S.of(context).previous,
-          onTap: onPreviousPressed,
-          showTooltip: false,
-        ),
-        LichessBottomBarButton(
-          key: const Key('play_area_regular_bottom_bar_next'),
-          icon: CupertinoIcons.chevron_forward,
-          label: S.of(context).stepForward,
-          onTap: onNextPressed,
-          showTooltip: false,
+          key: const Key('play_area_regular_bottom_bar_take_back'),
+          icon: CupertinoIcons.arrow_uturn_left,
+          label: S.of(context).takeBack,
+          onTap: onTakeBackPressed,
         ),
       ],
     );
