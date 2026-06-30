@@ -1457,6 +1457,21 @@ class PlayAreaState extends State<PlayArea> {
       foregroundColor: _actionSheetForeground(sheetContext),
       actions: <LichessActionSheetAction>[
         LichessActionSheetAction(
+          key: const Key('play_area_analysis_engine_toggle_engine_lines'),
+          leading: Icon(
+            AnalysisMode.showEngineLines
+                ? Icons.subtitles_outlined
+                : Icons.subtitles_off_outlined,
+          ),
+          makeLabel: (BuildContext context) => Text(
+            AnalysisMode.showEngineLines
+                ? strings.hideEngineLines
+                : strings.showEngineLines,
+          ),
+          onPressed: () =>
+              _toggleEngineLinesFromAnalysis(toolbar: 'analysisEngine'),
+        ),
+        LichessActionSheetAction(
           key: const Key('play_area_analysis_engine_settings'),
           leading: const Icon(Icons.tune_outlined),
           trailing: const Icon(Icons.chevron_right),
@@ -1475,6 +1490,17 @@ class PlayAreaState extends State<PlayArea> {
       <String, dynamic>{'toolbar': 'analysisEngine', 'action': 'goDeeper'},
     );
     await AnalysisService.goDeeper(context);
+  }
+
+  void _toggleEngineLinesFromAnalysis({required String toolbar}) {
+    assert(_isAnalysisMode, 'Engine line visibility is analysis-mode only.');
+    RecordingService()
+        .recordEvent(RecordingEventType.toolbarAction, <String, dynamic>{
+          'toolbar': toolbar,
+          'action': 'toggleEngineLines',
+          'visible': !AnalysisMode.showEngineLines,
+        });
+    AnalysisMode.toggleEngineLines(persist: true);
   }
 
   int? _currentAnalysisEngineDepth() {
@@ -1541,40 +1567,6 @@ class PlayAreaState extends State<PlayArea> {
                 Text(_analysisThreatActionLabel(strings)),
             onPressed: () =>
                 unawaited(_toggleAnalysisThreatFromMenu(actionContext)),
-          ),
-        if (_isAnalysisMode)
-          LichessActionSheetAction(
-            key: const Key('play_area_regular_game_menu_analysis_settings'),
-            leading: const Icon(Icons.settings_outlined),
-            trailing: const Icon(Icons.chevron_right),
-            makeLabel: (BuildContext context) => Text(strings.settings),
-            onPressed: () =>
-                _showAnalysisSettingsSheet(actionContext, strings: strings),
-          ),
-        if (_isAnalysisMode)
-          LichessActionSheetAction(
-            key: const Key('play_area_regular_game_menu_toggle_engine_lines'),
-            leading: Icon(
-              AnalysisMode.showEngineLines
-                  ? Icons.subtitles_outlined
-                  : Icons.subtitles_off_outlined,
-            ),
-            makeLabel: (BuildContext context) => Text(
-              AnalysisMode.showEngineLines
-                  ? strings.hideEngineLines
-                  : strings.showEngineLines,
-            ),
-            onPressed: () {
-              RecordingService().recordEvent(
-                RecordingEventType.toolbarAction,
-                <String, dynamic>{
-                  'toolbar': 'analysisBottom',
-                  'action': 'toggleEngineLines',
-                  'visible': !AnalysisMode.showEngineLines,
-                },
-              );
-              AnalysisMode.toggleEngineLines(persist: true);
-            },
           ),
         LichessActionSheetAction(
           key: const Key('play_area_regular_game_menu_flip_board'),
@@ -4694,7 +4686,7 @@ class _AnalysisBottomBar extends StatelessWidget {
           key: const Key('play_area_analysis_bottom_bar_engine'),
           label: S.of(context).engine,
           sourceLabel: _sourceLabel(context),
-          onTap: onEnginePressed,
+          onTap: AnalysisMode.isAnalyzing ? null : onEnginePressed,
           onLongPress: onEngineLongPressed,
           highlighted: isEngineHighlighted,
         ),

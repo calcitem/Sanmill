@@ -1638,11 +1638,11 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_toggle_engine_lines')),
-      findsOne,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_analysis_settings')),
-      findsOne,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_show_threat')),
@@ -1656,23 +1656,6 @@ void main() {
       find.byKey(const Key('play_area_regular_game_menu_share_export')),
       findsOne,
     );
-
-    await tester.tap(
-      find.byKey(const Key('play_area_regular_game_menu_toggle_engine_lines')),
-    );
-    await tester.pumpAndSettle();
-
-    expect(AnalysisMode.showEngineLines, isFalse);
-    expect(db.displaySettings.analysisShowEngineLines, isFalse);
-    expect(
-      find.byKey(const Key('play_area_analysis_engine_lines_hidden')),
-      findsOneWidget,
-    );
-
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
-    );
-    await tester.pumpAndSettle();
 
     await tester.tap(
       find.byKey(const Key('play_area_regular_game_menu_share_export')),
@@ -1925,6 +1908,10 @@ void main() {
       findsOneWidget,
     );
     expect(
+      find.byKey(const Key('play_area_analysis_engine_toggle_engine_lines')),
+      findsOneWidget,
+    );
+    expect(
       find.byKey(const Key('play_area_analysis_engine_settings')),
       findsOneWidget,
     );
@@ -1959,6 +1946,51 @@ void main() {
     );
   });
 
+  testWidgets('analysis engine sheet toggles engine lines', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    AnalysisMode.enable(<MoveAnalysisResult>[
+      const MoveAnalysisResult(
+        move: 'd6',
+        outcome: AnalysisOutcome.advantage,
+        rank: 1,
+        depth: 8,
+        nodes: 128000,
+        line: <String>['d6', 'f4', 'a1'],
+      ),
+    ], source: AnalysisSource.engine);
+
+    await _pumpSessionPlayArea(tester, session);
+    expect(AnalysisMode.showEngineLines, isTrue);
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_lines')),
+      findsOneWidget,
+    );
+
+    await tester.longPress(
+      find.byKey(const Key('play_area_analysis_bottom_bar_engine')),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_engine_toggle_engine_lines')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(AnalysisMode.showEngineLines, isFalse);
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_lines_hidden')),
+      findsOneWidget,
+    );
+    expect(db.displaySettings.analysisShowEngineLines, isFalse);
+  });
+
   testWidgets('analysis engine button shows progress while analyzing', (
     WidgetTester tester,
   ) async {
@@ -1991,6 +2023,18 @@ void main() {
     expect(
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
       findsNothing,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_bottom_bar_engine')),
+    );
+    await tester.pump();
+
+    expect(AnalysisMode.isFullAnalysis, isTrue);
+    expect(AnalysisMode.isAnalyzing, isTrue);
+    expect(
+      find.byKey(const Key('play_area_analysis_bottom_bar_engine_progress')),
+      findsOneWidget,
     );
 
     AnalysisMode.setAnalyzing(false);

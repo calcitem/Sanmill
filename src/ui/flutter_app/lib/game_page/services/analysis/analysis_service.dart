@@ -202,9 +202,13 @@ class AnalysisService {
     String? fenOverride,
     bool isThreatMode = false,
   }) async {
-    final GeneralSettings engineSettings = DB().generalSettings.copyWith(
+    final int requestedLineCount = AnalysisMode.showEngineLines
+        ? math.max(1, AnalysisMode.engineLineCount)
+        : 1;
+    final GeneralSettings currentSettings = DB().generalSettings;
+    final GeneralSettings engineSettings = currentSettings.copyWith(
       resignIfMostLose: false,
-      useLazySmp: false,
+      useLazySmp: requestedLineCount <= 1 && currentSettings.useLazySmp,
     );
     final NativeMillAiTurnController analysisSearch =
         NativeMillAiTurnController(generalSettings: engineSettings);
@@ -212,10 +216,6 @@ class AnalysisService {
     final int searchDepth = requestedDepth == null
         ? defaultDepth
         : math.min(64, math.max(defaultDepth, requestedDepth));
-    final int requestedLineCount = AnalysisMode.showEngineLines
-        ? math.max(1, AnalysisMode.engineLineCount)
-        : 1;
-
     NativeMillGameSession? temporarySession;
     final NativeMillGameSession searchSession;
     if (fenOverride == null) {
