@@ -1074,6 +1074,30 @@ class GameController {
     // It will be started in tap_handler after the first human move.
   }
 
+  bool startGameFromFen({required GameMode mode, required String fen}) {
+    assert(
+      mode == GameMode.humanVsAi || mode == GameMode.humanVsHuman,
+      'Continue from here only supports local playable modes.',
+    );
+    final String trimmedFen = fen.trim();
+    assert(trimmedFen.isNotEmpty, 'Continue from here requires a FEN.');
+
+    gameInstance.gameMode = mode;
+    reset(force: true);
+
+    final NativeMillGameSession session = activeNativeMillSession!;
+
+    final bool loaded = session.loadFen(trimmedFen);
+    assert(loaded, 'Continue from here FEN must be loadable.');
+
+    gameRecorder.setupPosition = trimmedFen;
+    gameRecorder.lastPositionWithRemove = trimmedFen;
+    activeSessionSnapshot = session.state.value;
+    headerIconsNotifier.showIcons();
+    boardSemanticsNotifier.updateSemantics();
+    return true;
+  }
+
   /// S.of(context).starts the current game.
   ///
   /// This method is suitable to use for starting a new game.

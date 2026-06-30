@@ -1034,10 +1034,40 @@ void main() {
       findsOne,
     );
     expect(
+      find.byKey(
+        const Key('play_area_regular_game_menu_play_against_computer'),
+      ),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_over_the_board')),
+      findsOne,
+    );
+    expect(
       find.byKey(const Key('play_area_regular_game_menu_analysis')),
       findsOne,
     );
   });
+
+  test(
+    'controller starts a playable game from the current analysis FEN',
+    () async {
+      final NativeMillGameSession session = await _bindNativeGame(
+        GameMode.analysis,
+      );
+      final String fen = session.getFen();
+
+      final bool started = GameController().startGameFromFen(
+        mode: GameMode.humanVsHuman,
+        fen: fen,
+      );
+
+      expect(started, isTrue);
+      expect(GameController().gameInstance.gameMode, GameMode.humanVsHuman);
+      expect(GameController().gameRecorder.setupPosition, fen);
+      expect(GameController().activeNativeMillSession?.getFen(), fen);
+    },
+  );
 
   testWidgets('human vs ai move list uses a horizontal lichess layout', (
     WidgetTester tester,

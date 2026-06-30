@@ -358,6 +358,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
     if (widget.controller.gameRecorder.currentPath.isNotEmpty) {
       return;
     }
+    if (widget.controller.isPositionSetup) {
+      return;
+    }
     _didShowInitialHumanAiNewGameSheet = true;
     await GameOptionsModal.showHumanAiNewGameSheet(context);
   }

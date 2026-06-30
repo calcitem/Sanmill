@@ -18,6 +18,7 @@ import '../../game_platform/game_session.dart'
 import '../../game_shell/game_session_scope.dart';
 import '../../games/mill/mill_action_codec.dart';
 import '../../games/mill/mill_board_transform_actions.dart';
+import '../../games/mill/native_mill_game_session.dart';
 import '../../games/mill/native_mill_rules_port.dart';
 import '../../games/mill/opening_explorer/opening_explorer_page.dart';
 import '../../general_settings/widgets/general_settings_page.dart';
@@ -335,6 +336,45 @@ class PlayAreaState extends State<PlayArea> {
     if (mounted) {
       setState(() {});
     }
+  }
+
+  void _continueFromHere(BuildContext context, GameMode mode) {
+    assert(_isAnalysisMode, 'Continue from here is analysis-mode only.');
+    assert(
+      mode == GameMode.humanVsAi || mode == GameMode.humanVsHuman,
+      'Continue from here only supports local playable modes.',
+    );
+    final GameSession? scopedSession = GameSessionScope.sessionOf(context);
+    assert(
+      scopedSession is NativeMillGameSession,
+      'Continue from here requires a native Mill session.',
+    );
+    final NativeMillGameSession session =
+        scopedSession! as NativeMillGameSession;
+
+    final String fen = session.getFen();
+    final bool started = GameController().startGameFromFen(
+      mode: mode,
+      fen: fen,
+    );
+    assert(started, 'Continue from here must start from the current FEN.');
+
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{
+        'toolbar': 'analysisMenu',
+        'action': 'continueFromHere',
+        'mode': mode.toString(),
+      },
+    );
+
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute<void>(
+        settings: RouteSettings(name: '/continueFromHere/${mode.name}'),
+        builder: (BuildContext routeContext) =>
+            _ContinueFromHereGameRoute(mode: mode),
+      ),
+    );
   }
 
   bool get _shouldShowAiChatMenuAction {
@@ -904,6 +944,23 @@ class PlayAreaState extends State<PlayArea> {
             makeLabel: (BuildContext context) =>
                 Text(S.of(context).boardEditor),
             onPressed: _openBoardEditorFromAnalysis,
+          ),
+        if (_isAnalysisMode)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_play_against_computer'),
+            leading: const Icon(Icons.smart_toy_outlined),
+            makeLabel: (BuildContext context) =>
+                Text(S.of(context).playAgainstComputer),
+            onPressed: () => _continueFromHere(hostContext, GameMode.humanVsAi),
+          ),
+        if (_isAnalysisMode)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_over_the_board'),
+            leading: const Icon(Icons.groups_2_outlined),
+            makeLabel: (BuildContext context) =>
+                Text(S.of(context).overTheBoard),
+            onPressed: () =>
+                _continueFromHere(hostContext, GameMode.humanVsHuman),
           ),
         if (_isAnalysisMode)
           LichessActionSheetAction(
@@ -3261,6 +3318,38 @@ class _AnalysisEngineLine extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _ContinueFromHereGameRoute extends StatefulWidget {
+  const _ContinueFromHereGameRoute({required this.mode});
+
+  final GameMode mode;
+
+  @override
+  State<_ContinueFromHereGameRoute> createState() =>
+      _ContinueFromHereGameRouteState();
+}
+
+class _ContinueFromHereGameRouteState
+    extends State<_ContinueFromHereGameRoute> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || widget.mode != GameMode.humanVsAi) {
+        return;
+      }
+      final GameController controller = GameController();
+      if (controller.gameInstance.isAiSideToMove) {
+        unawaited(controller.engineToGo(context, isMoveNow: false));
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GamePage(widget.mode);
   }
 }
 
