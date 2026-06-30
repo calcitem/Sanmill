@@ -288,6 +288,73 @@ void main() {
   );
 
   testWidgets(
+    'More tools follow Lichess-style order',
+    (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(390, 844)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(const SanmillApp());
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      await tester.tap(find.byKey(const Key('sanmill_tab_more')));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('drawer_item_opening_explorer')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('drawer_item_setup_position')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('drawer_item_clock')), findsOneWidget);
+      expect(find.byKey(const Key('drawer_item_variants')), findsOneWidget);
+      expect(find.byKey(const Key('drawer_item_import_game')), findsOneWidget);
+      expect(find.byKey(const Key('drawer_item_analysis')), findsNothing);
+      expect(
+        tester
+            .getTopLeft(find.byKey(const Key('drawer_item_opening_explorer')))
+            .dy,
+        lessThan(
+          tester
+              .getTopLeft(find.byKey(const Key('drawer_item_setup_position')))
+              .dy,
+        ),
+      );
+      expect(
+        tester
+            .getTopLeft(find.byKey(const Key('drawer_item_setup_position')))
+            .dy,
+        lessThan(
+          tester.getTopLeft(find.byKey(const Key('drawer_item_clock'))).dy,
+        ),
+      );
+      expect(
+        tester.getTopLeft(find.byKey(const Key('drawer_item_clock'))).dy,
+        lessThan(
+          tester.getTopLeft(find.byKey(const Key('drawer_item_variants'))).dy,
+        ),
+      );
+      expect(
+        tester.getTopLeft(find.byKey(const Key('drawer_item_variants'))).dy,
+        lessThan(
+          tester
+              .getTopLeft(find.byKey(const Key('drawer_item_import_game')))
+              .dy,
+        ),
+      );
+
+      // Drain any settings-save debounce timer (see the smoke test above).
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Verify mobile shell bottom navigation and more menu',
     (WidgetTester tester) async {
       tester.view

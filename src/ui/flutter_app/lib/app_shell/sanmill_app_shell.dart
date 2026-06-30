@@ -30,6 +30,7 @@ import '../game_platform/game_session.dart';
 import '../game_platform/game_session_handle.dart';
 import '../game_shell/game_session_scope.dart';
 import '../game_shell/shell_route_ids.dart';
+import '../games/mill/mill_route_ids.dart';
 import '../games/mill/mill_session_animation_bridge.dart';
 import '../games/mill/mill_session_recorder_bridge.dart';
 import '../games/mill/native_mill_snapshot_board_view.dart';
@@ -2423,6 +2424,24 @@ class _MenuEntries extends StatelessWidget {
               mode.availableIn(context),
         )
         .toList(growable: false);
+    final Map<String, GameMenuContribution> contributionToolsById =
+        <String, GameMenuContribution>{
+          for (final GameMenuContribution tool in contributionTools)
+            tool.id.value: tool,
+        };
+    final Map<String, GameModeEntry> playModeToolsById =
+        <String, GameModeEntry>{
+          for (final GameModeEntry tool in tools) tool.id.value: tool,
+        };
+    final GameMenuContribution? openingExplorer = contributionToolsById.remove(
+      MillRouteIds.openingExplorer.value,
+    );
+    final GameModeEntry? boardEditor = playModeToolsById.remove(
+      MillRouteIds.setupPosition.value,
+    );
+    final GameMenuContribution? importGame = contributionToolsById.remove(
+      MillRouteIds.importGame.value,
+    );
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -2431,20 +2450,9 @@ class _MenuEntries extends StatelessWidget {
           title: strings.tools,
           headerKey: const Key('drawer_item_tools_group'),
           children: <Widget>[
-            for (final GameMenuContribution tool in contributionTools)
-              _MoreTile(
-                key: tool.menuKey ?? Key('more_tool_${tool.id.value}'),
-                icon: tool.icon ?? Icons.build_rounded,
-                title: tool.label,
-                onTap: () => onAppRouteSelected(tool.id.value),
-              ),
-            for (final GameModeEntry tool in tools)
-              _MoreTile(
-                key: tool.menuKey ?? Key('more_tool_${tool.id.value}'),
-                icon: tool.icon ?? Icons.build_rounded,
-                title: tool.label,
-                onTap: () => onAppRouteSelected(tool.id.value),
-              ),
+            if (openingExplorer != null)
+              _buildContributionToolTile(openingExplorer),
+            if (boardEditor != null) _buildPlayModeToolTile(boardEditor),
             _MoreTile(
               key: const Key('drawer_item_clock'),
               icon: Icons.alarm_outlined,
@@ -2459,6 +2467,12 @@ class _MenuEntries extends StatelessWidget {
                 onTap: () =>
                     onAppRouteSelected(ShellRouteIds.appVariants.value),
               ),
+            if (importGame != null) _buildContributionToolTile(importGame),
+            for (final GameMenuContribution tool
+                in contributionToolsById.values)
+              _buildContributionToolTile(tool),
+            for (final GameModeEntry tool in playModeToolsById.values)
+              _buildPlayModeToolTile(tool),
           ],
         ),
         _MoreSection(
@@ -2512,6 +2526,24 @@ class _MenuEntries extends StatelessWidget {
             ],
           ),
       ],
+    );
+  }
+
+  Widget _buildContributionToolTile(GameMenuContribution tool) {
+    return _MoreTile(
+      key: tool.menuKey ?? Key('more_tool_${tool.id.value}'),
+      icon: tool.icon ?? Icons.build_rounded,
+      title: tool.label,
+      onTap: () => onAppRouteSelected(tool.id.value),
+    );
+  }
+
+  Widget _buildPlayModeToolTile(GameModeEntry tool) {
+    return _MoreTile(
+      key: tool.menuKey ?? Key('more_tool_${tool.id.value}'),
+      icon: tool.icon ?? Icons.build_rounded,
+      title: tool.label,
+      onTap: () => onAppRouteSelected(tool.id.value),
     );
   }
 }
