@@ -1063,7 +1063,10 @@ void main() {
     expect(landscapeContent, findsOneWidget);
     expect(boardPane, findsOneWidget);
     expect(sidePanel, findsOneWidget);
-    expect(find.byKey(const Key('play_area_lichess_bottom_bar')), findsOne);
+    final Finder bottomBar = find.byKey(
+      const Key('play_area_lichess_bottom_bar'),
+    );
+    expect(bottomBar, findsOne);
     expect(
       find.byKey(const Key('play_area_human_ai_landscape_move_list')),
       findsOneWidget,
@@ -1075,6 +1078,14 @@ void main() {
     expect(
       tester.getTopLeft(boardPane).dx,
       lessThan(tester.getTopLeft(sidePanel).dx),
+    );
+    expect(
+      tester.getTopLeft(bottomBar).dy,
+      greaterThan(tester.getBottomLeft(sidePanel).dy),
+    );
+    expect(
+      tester.getBottomLeft(bottomBar).dy,
+      tester.getBottomLeft(landscapeContent).dy,
     );
     expect(
       find.byKey(const Key('play_area_sized_box_toolbar_bottom')),
@@ -1128,7 +1139,10 @@ void main() {
     expect(landscapeContent, findsOneWidget);
     expect(boardPane, findsOneWidget);
     expect(sidePanel, findsOneWidget);
-    expect(find.byKey(const Key('play_area_main_toolbar_bottom')), findsOne);
+    final Finder bottomBar = find.byKey(
+      const Key('play_area_main_toolbar_bottom'),
+    );
+    expect(bottomBar, findsOne);
     expect(
       find.byKey(const Key('play_area_regular_landscape_move_list')),
       findsOneWidget,
@@ -1140,6 +1154,14 @@ void main() {
     expect(
       tester.getTopLeft(boardPane).dx,
       lessThan(tester.getTopLeft(sidePanel).dx),
+    );
+    expect(
+      tester.getTopLeft(bottomBar).dy,
+      greaterThan(tester.getBottomLeft(sidePanel).dy),
+    );
+    expect(
+      tester.getBottomLeft(bottomBar).dy,
+      tester.getBottomLeft(landscapeContent).dy,
     );
     expect(
       find.byKey(const Key('play_area_sized_box_toolbar_bottom')),

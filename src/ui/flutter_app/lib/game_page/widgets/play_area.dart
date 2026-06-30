@@ -69,6 +69,7 @@ class PlayAreaState extends State<PlayArea> {
   bool _isBoardFlipped = false;
   bool _isHintSearching = false;
   static const double _kMoveListRouteTopInset = 64;
+  static const double _kHumanDatabaseStatsStripHeight = 40;
 
   @override
   void initState() {
@@ -1581,9 +1582,12 @@ class PlayAreaState extends State<PlayArea> {
       0,
       viewport.width - horizontalPadding * 2,
     );
+    final double bottomReservedHeight =
+        kLichessBottomBarHeight +
+        (humanDatabaseStatsStrip == null ? 0 : _kHumanDatabaseStatsStripHeight);
     final double availableHeight = math.max(
       0,
-      viewport.height - verticalPadding * 2,
+      viewport.height - bottomReservedHeight - verticalPadding * 2,
     );
     const double targetSidePanelWidth = 280;
     final double boardHeightAllowance = math.max(
@@ -1607,90 +1611,108 @@ class PlayAreaState extends State<PlayArea> {
         bottom: false,
         right: false,
         left: false,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: horizontalPadding,
-            vertical: verticalPadding,
-          ),
-          child: Row(
-            children: <Widget>[
-              SizedBox(
-                key: const Key('play_area_human_ai_landscape_board_pane'),
-                width: boardSize,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    if (showPieceCountRows)
-                      SizedBox(
-                        height: pieceRowHeight,
-                        child: _isBoardFlipped
-                            ? _buildRemovedPieceCountRow()
-                            : _buildPieceCountRow(),
-                      ),
-                    SizedBox.square(
-                      key: const Key('play_area_human_ai_landscape_board'),
-                      dimension: boardSize,
-                      child: _buildBoardScreenshot(),
-                    ),
-                    if (showPieceCountRows)
-                      SizedBox(
-                        height: pieceRowHeight,
-                        child: _isBoardFlipped
-                            ? _buildPieceCountRow()
-                            : _buildRemovedPieceCountRow(),
-                      ),
-                  ],
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: horizontalPadding,
+                  vertical: verticalPadding,
                 ),
-              ),
-              const SizedBox(width: gap),
-              Expanded(
-                child: Column(
-                  key: const Key('play_area_human_ai_landscape_side_panel'),
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                child: Row(
                   children: <Widget>[
-                    const _HumanAiPlayerPanel(
-                      key: Key('play_area_human_ai_landscape_robot_panel'),
-                      isRobot: true,
-                    ),
-                    const Expanded(
-                      child: _InlineMoveList(
-                        key: Key('play_area_human_ai_landscape_move_list'),
-                        wrapKey: Key(
-                          'play_area_human_ai_landscape_move_list_wrap',
-                        ),
-                        roundKeyPrefix: 'play_area_human_ai_landscape_round_',
-                        moveKeyPrefix: 'play_area_human_ai_landscape_move_',
-                        layout: _InlineMoveListLayout.stacked,
-                        groupByRound: true,
-                      ),
-                    ),
-                    ?humanDatabaseStatsStrip,
-                    _buildHumanAiBottomBar(context),
-                    const SizedBox(height: verticalPadding),
-                    const _HumanAiPlayerPanel(
-                      key: Key('play_area_human_ai_landscape_player_panel'),
-                      isRobot: false,
-                    ),
-                    if (DB().displaySettings.isAdvantageGraphShown &&
-                        advantageData.isNotEmpty)
-                      SizedBox(
-                        key: const Key(
-                          'play_area_human_ai_landscape_advantage_graph',
-                        ),
-                        height: 80,
-                        width: double.infinity,
-                        child: CustomPaint(
-                          key: const Key(
-                            'play_area_human_ai_landscape_advantage_paint',
+                    SizedBox(
+                      key: const Key('play_area_human_ai_landscape_board_pane'),
+                      width: boardSize,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          if (showPieceCountRows)
+                            SizedBox(
+                              height: pieceRowHeight,
+                              child: _isBoardFlipped
+                                  ? _buildRemovedPieceCountRow()
+                                  : _buildPieceCountRow(),
+                            ),
+                          SizedBox.square(
+                            key: const Key(
+                              'play_area_human_ai_landscape_board',
+                            ),
+                            dimension: boardSize,
+                            child: _buildBoardScreenshot(),
                           ),
-                          painter: AdvantageGraphPainter(advantageData),
-                        ),
+                          if (showPieceCountRows)
+                            SizedBox(
+                              height: pieceRowHeight,
+                              child: _isBoardFlipped
+                                  ? _buildPieceCountRow()
+                                  : _buildRemovedPieceCountRow(),
+                            ),
+                        ],
                       ),
+                    ),
+                    const SizedBox(width: gap),
+                    Expanded(
+                      child: Column(
+                        key: const Key(
+                          'play_area_human_ai_landscape_side_panel',
+                        ),
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          const _HumanAiPlayerPanel(
+                            key: Key(
+                              'play_area_human_ai_landscape_robot_panel',
+                            ),
+                            isRobot: true,
+                          ),
+                          const Expanded(
+                            child: _InlineMoveList(
+                              key: Key(
+                                'play_area_human_ai_landscape_move_list',
+                              ),
+                              wrapKey: Key(
+                                'play_area_human_ai_landscape_move_list_wrap',
+                              ),
+                              roundKeyPrefix:
+                                  'play_area_human_ai_landscape_round_',
+                              moveKeyPrefix:
+                                  'play_area_human_ai_landscape_move_',
+                              layout: _InlineMoveListLayout.stacked,
+                              groupByRound: true,
+                            ),
+                          ),
+                          const SizedBox(height: verticalPadding),
+                          const _HumanAiPlayerPanel(
+                            key: Key(
+                              'play_area_human_ai_landscape_player_panel',
+                            ),
+                            isRobot: false,
+                          ),
+                          if (DB().displaySettings.isAdvantageGraphShown &&
+                              advantageData.isNotEmpty)
+                            SizedBox(
+                              key: const Key(
+                                'play_area_human_ai_landscape_advantage_graph',
+                              ),
+                              height: 80,
+                              width: double.infinity,
+                              child: CustomPaint(
+                                key: const Key(
+                                  'play_area_human_ai_landscape_advantage_paint',
+                                ),
+                                painter: AdvantageGraphPainter(advantageData),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+            ?humanDatabaseStatsStrip,
+            _buildHumanAiBottomBar(context),
+          ],
         ),
       ),
     );
@@ -1716,9 +1738,12 @@ class PlayAreaState extends State<PlayArea> {
       0,
       viewport.width - horizontalPadding * 2,
     );
+    final double bottomReservedHeight =
+        kLichessBottomBarHeight +
+        (humanDatabaseStatsStrip == null ? 0 : _kHumanDatabaseStatsStripHeight);
     final double availableHeight = math.max(
       0,
-      viewport.height - verticalPadding * 2,
+      viewport.height - bottomReservedHeight - verticalPadding * 2,
     );
     final double boardHeightAllowance = math.max(
       0,
@@ -1741,93 +1766,110 @@ class PlayAreaState extends State<PlayArea> {
         bottom: false,
         right: false,
         left: false,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: horizontalPadding,
-            vertical: verticalPadding,
-          ),
-          child: Row(
-            children: <Widget>[
-              SizedBox(
-                key: const Key('play_area_regular_landscape_board_pane'),
-                width: boardSize,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    if (showPieceCountRows)
-                      SizedBox(
-                        height: pieceRowHeight,
-                        child: _isBoardFlipped
-                            ? _buildRemovedPieceCountRow()
-                            : _buildPieceCountRow(),
-                      ),
-                    SizedBox.square(
-                      key: const Key('play_area_regular_landscape_board'),
-                      dimension: boardSize,
-                      child: _buildBoardScreenshot(),
-                    ),
-                    if (showPieceCountRows)
-                      SizedBox(
-                        height: pieceRowHeight,
-                        child: _isBoardFlipped
-                            ? _buildPieceCountRow()
-                            : _buildRemovedPieceCountRow(),
-                      ),
-                  ],
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: horizontalPadding,
+                  vertical: verticalPadding,
                 ),
-              ),
-              const SizedBox(width: gap),
-              Expanded(
-                child: Column(
-                  key: const Key('play_area_regular_landscape_side_panel'),
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                child: Row(
                   children: <Widget>[
-                    GameHeader(
-                      key: const Key('play_area_regular_landscape_header'),
-                    ),
-                    Expanded(
-                      child: _InlineMoveList(
-                        key: const Key('play_area_regular_landscape_move_list'),
-                        wrapKey: const Key(
-                          'play_area_regular_landscape_move_list_wrap',
-                        ),
-                        roundKeyPrefix: 'play_area_regular_landscape_round_',
-                        moveKeyPrefix: 'play_area_regular_landscape_move_',
-                        onMoveTap:
-                            (BuildContext context, PgnNode<ExtMove> node) {
-                              return HistoryNavigator.gotoNode(
-                                context,
-                                node,
-                                pop: false,
-                              );
-                            },
-                        showMovePreview: true,
-                        layout: _InlineMoveListLayout.stacked,
-                        groupByRound: true,
-                      ),
-                    ),
-                    ?humanDatabaseStatsStrip,
-                    _buildRegularBottomBar(context),
-                    if (DB().displaySettings.isAdvantageGraphShown &&
-                        advantageData.isNotEmpty)
-                      SizedBox(
-                        key: const Key(
-                          'play_area_regular_landscape_advantage_graph',
-                        ),
-                        height: 80,
-                        width: double.infinity,
-                        child: CustomPaint(
-                          key: const Key(
-                            'play_area_regular_landscape_advantage_paint',
+                    SizedBox(
+                      key: const Key('play_area_regular_landscape_board_pane'),
+                      width: boardSize,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          if (showPieceCountRows)
+                            SizedBox(
+                              height: pieceRowHeight,
+                              child: _isBoardFlipped
+                                  ? _buildRemovedPieceCountRow()
+                                  : _buildPieceCountRow(),
+                            ),
+                          SizedBox.square(
+                            key: const Key('play_area_regular_landscape_board'),
+                            dimension: boardSize,
+                            child: _buildBoardScreenshot(),
                           ),
-                          painter: AdvantageGraphPainter(advantageData),
-                        ),
+                          if (showPieceCountRows)
+                            SizedBox(
+                              height: pieceRowHeight,
+                              child: _isBoardFlipped
+                                  ? _buildPieceCountRow()
+                                  : _buildRemovedPieceCountRow(),
+                            ),
+                        ],
                       ),
+                    ),
+                    const SizedBox(width: gap),
+                    Expanded(
+                      child: Column(
+                        key: const Key(
+                          'play_area_regular_landscape_side_panel',
+                        ),
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          GameHeader(
+                            key: const Key(
+                              'play_area_regular_landscape_header',
+                            ),
+                          ),
+                          Expanded(
+                            child: _InlineMoveList(
+                              key: const Key(
+                                'play_area_regular_landscape_move_list',
+                              ),
+                              wrapKey: const Key(
+                                'play_area_regular_landscape_move_list_wrap',
+                              ),
+                              roundKeyPrefix:
+                                  'play_area_regular_landscape_round_',
+                              moveKeyPrefix:
+                                  'play_area_regular_landscape_move_',
+                              onMoveTap:
+                                  (
+                                    BuildContext context,
+                                    PgnNode<ExtMove> node,
+                                  ) {
+                                    return HistoryNavigator.gotoNode(
+                                      context,
+                                      node,
+                                      pop: false,
+                                    );
+                                  },
+                              showMovePreview: true,
+                              layout: _InlineMoveListLayout.stacked,
+                              groupByRound: true,
+                            ),
+                          ),
+                          if (DB().displaySettings.isAdvantageGraphShown &&
+                              advantageData.isNotEmpty)
+                            SizedBox(
+                              key: const Key(
+                                'play_area_regular_landscape_advantage_graph',
+                              ),
+                              height: 80,
+                              width: double.infinity,
+                              child: CustomPaint(
+                                key: const Key(
+                                  'play_area_regular_landscape_advantage_paint',
+                                ),
+                                painter: AdvantageGraphPainter(advantageData),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+            ?humanDatabaseStatsStrip,
+            _buildRegularBottomBar(context),
+          ],
         ),
       ),
     );
