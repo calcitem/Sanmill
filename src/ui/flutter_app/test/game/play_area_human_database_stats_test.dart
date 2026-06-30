@@ -1572,7 +1572,11 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_toggle_engine_lines')),
-      findsOne,
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_analysis_settings')),
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_continue_from_here')),
@@ -1717,7 +1721,7 @@ void main() {
     expect(find.text('Analysis moves cleared.'), findsOneWidget);
   });
 
-  testWidgets('analysis menu toggles engine lines', (
+  testWidgets('analysis engine button shows source and opens settings', (
     WidgetTester tester,
   ) async {
     db.displaySettings = const DisplaySettings(
@@ -1825,56 +1829,6 @@ void main() {
       find.byKey(const Key('play_area_analysis_engine_lines')),
       findsOneWidget,
     );
-
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
-    );
-    await tester.pumpAndSettle();
-
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_toggle_engine_lines')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_previous')),
-      findsNothing,
-    );
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_next')),
-      findsNothing,
-    );
-    expect(find.text('Hide Engine Lines'), findsOneWidget);
-
-    await tester.tap(
-      find.byKey(const Key('play_area_regular_game_menu_toggle_engine_lines')),
-    );
-    await tester.pumpAndSettle();
-
-    expect(
-      find.byKey(const Key('play_area_analysis_engine_lines_hidden')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const Key('play_area_analysis_engine_lines')),
-      findsNothing,
-    );
-
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
-    );
-    await tester.pumpAndSettle();
-
-    expect(find.text('Show Engine Lines'), findsOneWidget);
-
-    await tester.tap(
-      find.byKey(const Key('play_area_regular_game_menu_toggle_engine_lines')),
-    );
-    await tester.pumpAndSettle();
-
-    expect(
-      find.byKey(const Key('play_area_analysis_engine_lines')),
-      findsOneWidget,
-    );
   });
 
   testWidgets('analysis engine button shows progress while analyzing', (
@@ -1959,6 +1913,7 @@ void main() {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
+      isPositionalAdvantageIndicatorShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -1978,20 +1933,7 @@ void main() {
       findsNothing,
     );
 
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
-    );
-    await tester.pumpAndSettle();
-
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_analysis_settings')),
-      findsOneWidget,
-    );
-
-    await tester.tap(
-      find.byKey(const Key('play_area_regular_game_menu_analysis_settings')),
-    );
-    await tester.pumpAndSettle();
+    await _openAnalysisSettingsFromEnginePopup(tester);
 
     expect(
       find.byKey(const Key('play_area_analysis_settings_sheet')),
@@ -2048,15 +1990,7 @@ void main() {
       findsOneWidget,
     );
 
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
-    );
-    await tester.pumpAndSettle();
-
-    await tester.tap(
-      find.byKey(const Key('play_area_regular_game_menu_analysis_settings')),
-    );
-    await tester.pumpAndSettle();
+    await _openAnalysisSettingsFromEnginePopup(tester);
 
     expect(
       find.byKey(
@@ -2144,15 +2078,7 @@ void main() {
 
     await _pumpSessionPlayArea(tester, session);
 
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
-    );
-    await tester.pumpAndSettle();
-
-    await tester.tap(
-      find.byKey(const Key('play_area_regular_game_menu_analysis_settings')),
-    );
-    await tester.pumpAndSettle();
+    await _openAnalysisSettingsFromEnginePopup(tester);
 
     expect(
       find.byKey(const Key('play_area_analysis_settings_evaluation_gauge')),
@@ -2202,15 +2128,7 @@ void main() {
       find.byKey(const Key('play_area_analysis_board')),
     );
 
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
-    );
-    await tester.pumpAndSettle();
-
-    await tester.tap(
-      find.byKey(const Key('play_area_regular_game_menu_analysis_settings')),
-    );
-    await tester.pumpAndSettle();
+    await _openAnalysisSettingsFromEnginePopup(tester);
 
     expect(
       find.byKey(const Key('play_area_analysis_settings_small_board')),
@@ -3383,6 +3301,19 @@ Future<void> _holdBottomBarButton(WidgetTester tester, Key key) async {
   );
   await tester.pump(const Duration(milliseconds: 900));
   await gesture.up();
+  await tester.pumpAndSettle();
+}
+
+Future<void> _openAnalysisSettingsFromEnginePopup(WidgetTester tester) async {
+  await tester.longPress(
+    find.byKey(const Key('play_area_analysis_bottom_bar_engine')),
+  );
+  await tester.pumpAndSettle();
+  expect(
+    find.byKey(const Key('play_area_analysis_engine_settings')),
+    findsOneWidget,
+  );
+  await tester.tap(find.byKey(const Key('play_area_analysis_engine_settings')));
   await tester.pumpAndSettle();
 }
 

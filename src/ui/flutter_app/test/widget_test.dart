@@ -15,6 +15,7 @@ import 'package:sanmill/appearance_settings/models/color_settings.dart';
 import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/appearance_settings/widgets/appearance_settings_page.dart';
 import 'package:sanmill/appearance_settings/widgets/theme_selection_page.dart';
+import 'package:sanmill/game_page/services/analysis_mode.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/mini_board.dart';
 import 'package:sanmill/game_page/widgets/toolbars/game_toolbar.dart';
@@ -425,7 +426,11 @@ void main() {
       );
       addTearDown(() {
         DB().generalSettings = originalGeneralSettings;
+        AnalysisMode.setShowEngineLines(true);
+        AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
       });
+      AnalysisMode.setShowEngineLines(true);
+      AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
 
       await tester.pumpWidget(const SanmillApp());
 
@@ -1056,6 +1061,17 @@ void main() {
         find.byKey(const Key('game_page_analysis_menu_engine_lines')),
         findsOneWidget,
       );
+      expect(AnalysisMode.showEngineLines, isTrue);
+
+      await tester.tap(
+        find.byKey(const Key('game_page_analysis_menu_engine_lines')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(AnalysisMode.showEngineLines, isFalse);
+
+      await tester.tap(find.byKey(const Key('game_page_analysis_menu_button')));
+      await tester.pumpAndSettle();
 
       await tester.tap(
         find.byKey(const Key('game_page_analysis_menu_settings')),

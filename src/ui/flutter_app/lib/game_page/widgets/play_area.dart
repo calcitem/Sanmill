@@ -1412,17 +1412,6 @@ class PlayAreaState extends State<PlayArea> {
     GameController().gameResultNotifier.showResult(force: true);
   }
 
-  void _toggleAnalysisEngineLines() {
-    assert(_isAnalysisMode, 'Engine line visibility is analysis-mode only.');
-    RecordingService()
-        .recordEvent(RecordingEventType.toolbarAction, <String, dynamic>{
-          'toolbar': 'analysisMenu',
-          'action': 'toggleEngineLines',
-          'visible': !AnalysisMode.showEngineLines,
-        });
-    AnalysisMode.toggleEngineLines();
-  }
-
   Future<void> _showAnalysisSettingsSheet(
     BuildContext context, {
     required S strings,
@@ -1547,30 +1536,6 @@ class PlayAreaState extends State<PlayArea> {
             leading: const Icon(Icons.format_list_numbered),
             makeLabel: (BuildContext context) => Text(S.of(context).moveList),
             onPressed: () => _openMovesWithNavigator(hostNavigator),
-          ),
-        if (_isAnalysisMode)
-          LichessActionSheetAction(
-            key: const Key('play_area_regular_game_menu_analysis_settings'),
-            leading: const Icon(Icons.settings_outlined),
-            trailing: const Icon(Icons.chevron_right),
-            makeLabel: (BuildContext context) => Text(strings.settings),
-            onPressed: () =>
-                _showAnalysisSettingsSheet(actionContext, strings: strings),
-          ),
-        if (_isAnalysisMode)
-          LichessActionSheetAction(
-            key: const Key('play_area_regular_game_menu_toggle_engine_lines'),
-            leading: Icon(
-              AnalysisMode.showEngineLines
-                  ? Icons.subtitles_outlined
-                  : Icons.subtitles_off_outlined,
-            ),
-            makeLabel: (BuildContext context) => Text(
-              AnalysisMode.showEngineLines
-                  ? strings.hideEngineLines
-                  : strings.showEngineLines,
-            ),
-            onPressed: _toggleAnalysisEngineLines,
           ),
         if (_isAnalysisMode)
           LichessActionSheetAction(
