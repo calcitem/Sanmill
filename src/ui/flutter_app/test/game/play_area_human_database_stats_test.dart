@@ -1144,6 +1144,55 @@ void main() {
     expect(GameController().gameInstance.isHumanToMove, isFalse);
   });
 
+  testWidgets('move now skips the AI vs AI animation delay', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings(
+      animationDuration: 20,
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final _MoveNowFakeSearchSession session = _MoveNowFakeSearchSession(
+      actionLimit: 1,
+    );
+    _bindExistingNativeGame(GameMode.aiVsAi, session);
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    await _pumpSessionPlayArea(tester, session);
+    final BuildContext context = tester.element(find.byType(PlayArea));
+    final Future<EngineResponse> engineLoop = GameController().engineToGo(
+      context,
+      isMoveNow: false,
+      session: session,
+    );
+
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 20));
+    expect(session.searchCalls, 1);
+    expect(GameController().isEngineInDelay, isTrue);
+
+    await GameController().moveNow(
+      context,
+      session: session,
+      messages: const MoveNowMessages(
+        aiIsDelaying: 'AI delay',
+        analyzing: 'Analyzing',
+        notAIsTurn: 'Not AI turn',
+        timeout: 'Timeout',
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 20));
+
+    expect(find.text('AI delay'), findsNothing);
+    expect(session.searchCalls, 2);
+    expect(GameController().isEngineInDelay, isFalse);
+    expect(await engineLoop, const EngineResponseOK());
+  });
+
   testWidgets('human vs ai balanced layout fits with advantage graph', (
     WidgetTester tester,
   ) async {
@@ -3748,7 +3797,10 @@ Future<NativeMillGameSession> _bindNativeHumanAiGame() {
 }
 
 class _MoveNowFakeSearchSession extends NativeMillGameSession {
-  _MoveNowFakeSearchSession() : super.fromPort(NativeMillRulesPort());
+  _MoveNowFakeSearchSession({this.actionLimit})
+    : super.fromPort(NativeMillRulesPort());
+
+  final int? actionLimit;
 
   int searchCalls = 0;
 
@@ -3759,6 +3811,9 @@ class _MoveNowFakeSearchSession extends NativeMillGameSession {
     GeneralSettings? engineSettings,
   }) async {
     searchCalls++;
+    if (actionLimit != null && searchCalls > actionLimit!) {
+      return null;
+    }
     return legalActions.isEmpty ? null : legalActions.first;
   }
 }

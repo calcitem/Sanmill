@@ -64,6 +64,7 @@ class GameController {
   bool isControllerActive = false;
   bool _isEngineRunning = false;
   bool _isEngineInDelay = false;
+  Completer<void>? _engineDelaySkipCompleter;
 
   final ValueNotifier<bool> engineActivityNotifier = ValueNotifier<bool>(false);
 
@@ -1983,11 +1984,9 @@ class GameController {
         // navigated away or pressed New Game) a chance to break the loop.
         final double animationDuration = DB().displaySettings.animationDuration;
         if (animationDuration > 0) {
-          isEngineInDelay = true;
-          await Future<void>.delayed(
+          await _waitEngineDelay(
             Duration(milliseconds: (animationDuration * 1000).toInt()),
           );
-          isEngineInDelay = false;
         } else {
           // Even with zero animation time we must yield once so the event
           // loop can flush taps and lifecycle callbacks.
@@ -1999,6 +1998,7 @@ class GameController {
           : const EngineResponseHumanOK();
     } finally {
       isEngineInDelay = false;
+      _engineDelaySkipCompleter = null;
       // Only release running flag / show dialog when this loop is
       // still the *current* one (epoch matches) AND owns the active
       // session.  If a New Game raced ahead the new loop has already
@@ -2032,9 +2032,8 @@ class GameController {
     loadedGameFilenamePrefix = null;
 
     if (isEngineInDelay) {
-      return rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-        effectiveMessages.aiIsDelaying,
-      );
+      _skipEngineDelayIfActive();
+      return;
     }
 
     if (AnalysisMode.isEnabled || AnalysisMode.isAnalyzing) {
@@ -2113,6 +2112,48 @@ class GameController {
     if (reversed) {
       gameInstance.reverseWhoIsAi();
     }
+  }
+
+  Future<void> _waitEngineDelay(Duration duration) async {
+    assert(!isEngineInDelay, 'Engine delay must not be nested.');
+    assert(
+      _engineDelaySkipCompleter == null,
+      'Engine delay skip completer must be clear before waiting.',
+    );
+    final Completer<void> skipCompleter = Completer<void>();
+    final Completer<void> delayCompleter = Completer<void>();
+    final Timer delayTimer = Timer(duration, () {
+      if (!delayCompleter.isCompleted) {
+        delayCompleter.complete();
+      }
+    });
+    _engineDelaySkipCompleter = skipCompleter;
+    isEngineInDelay = true;
+    try {
+      await Future.any(<Future<void>>[
+        delayCompleter.future,
+        skipCompleter.future,
+      ]);
+    } finally {
+      delayTimer.cancel();
+      if (identical(_engineDelaySkipCompleter, skipCompleter)) {
+        _engineDelaySkipCompleter = null;
+      }
+      isEngineInDelay = false;
+    }
+  }
+
+  void _skipEngineDelayIfActive() {
+    assert(isEngineInDelay, 'Move Now can skip only an active engine delay.');
+    final Completer<void>? skipCompleter = _engineDelaySkipCompleter;
+    assert(
+      skipCompleter != null,
+      'Engine delay flag requires a skip completer.',
+    );
+    if (skipCompleter == null || skipCompleter.isCompleted) {
+      return;
+    }
+    skipCompleter.complete();
   }
 
   void showSnakeBarHumanNotation(String humanStr) {
