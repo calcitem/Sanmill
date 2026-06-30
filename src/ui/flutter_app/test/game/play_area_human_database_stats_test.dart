@@ -1317,32 +1317,40 @@ void main() {
     expect(find.byKey(const Key('opening_explorer_embedded')), findsNothing);
     expect(find.byKey(const Key('play_area_main_toolbar_bottom')), findsOne);
     expect(
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_bottom_bar_engine')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_bottom_bar_previous')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_bottom_bar_next')),
+      findsOne,
+    );
+    expect(
       find.byKey(const Key('play_area_regular_bottom_bar_menu')),
-      findsOne,
-    );
-    expect(
-      find.byKey(const Key('play_area_regular_bottom_bar_engine')),
-      findsOne,
-    );
-    expect(
-      find.byKey(const Key('play_area_regular_bottom_bar_previous')),
-      findsOne,
-    );
-    expect(
-      find.byKey(const Key('play_area_regular_bottom_bar_next')),
-      findsOne,
-    );
-    expect(
-      find.byKey(const Key('play_area_regular_bottom_bar_take_back')),
       findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_regular_bottom_bar_resign_result')),
       findsNothing,
     );
+    expect(
+      find.byKey(const Key('play_area_regular_bottom_bar_take_back')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_bottom_bar_clock')),
+      findsNothing,
+    );
 
     await tester.tap(
-      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
     );
     await tester.pumpAndSettle();
 
@@ -1404,7 +1412,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(
-      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
     );
     await tester.pumpAndSettle();
 
@@ -1457,7 +1465,7 @@ void main() {
 
     await _pumpSessionPlayArea(tester, session);
     await tester.tap(
-      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
     );
     await tester.pumpAndSettle();
 
@@ -1499,7 +1507,7 @@ void main() {
     );
 
     await tester.tap(
-      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
     );
     await tester.pumpAndSettle();
 
@@ -1524,7 +1532,7 @@ void main() {
     );
 
     await tester.tap(
-      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
     );
     await tester.pumpAndSettle();
 
@@ -1558,7 +1566,7 @@ void main() {
     await _pumpSessionPlayArea(tester, session);
 
     await tester.tap(
-      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
     );
     await tester.pumpAndSettle();
 
@@ -1613,7 +1621,7 @@ void main() {
     );
 
     await tester.tap(
-      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
     );
     await tester.pumpAndSettle();
 
@@ -1817,7 +1825,7 @@ void main() {
     await _pumpSessionPlayArea(tester, session);
 
     await tester.tap(
-      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
     );
     await tester.pumpAndSettle();
 

@@ -2072,12 +2072,36 @@ class PlayAreaState extends State<PlayArea> {
       key: const Key('play_area_regular_bottom_bar_builder'),
       valueListenable: GameController().gameRecorder.moveCountNotifier,
       builder: (BuildContext context, _, _) {
-        return ValueListenableBuilder<PlayerTimerStatus>(
-          valueListenable: PlayerTimer().statusNotifier,
-          builder: (BuildContext context, PlayerTimerStatus status, _) {
-            return ValueListenableBuilder<bool>(
-              valueListenable: AnalysisMode.stateNotifier,
-              builder: (BuildContext context, _, _) {
+        return ValueListenableBuilder<bool>(
+          valueListenable: AnalysisMode.stateNotifier,
+          builder: (BuildContext context, _, _) {
+            if (_isAnalysisMode) {
+              return _AnalysisBottomBar(
+                onMenuPressed: _showRegularGameMenu,
+                onEnginePressed: () =>
+                    unawaited(AnalysisService.toggle(context)),
+                onEngineLongPressed: () => unawaited(
+                  _showAnalysisSettingsSheet(context, strings: S.of(context)),
+                ),
+                isEngineHighlighted: AnalysisMode.isFullAnalysis,
+                onPreviousPressed: _canStepBackFromRegularBottomBar
+                    ? () => unawaited(_stepBackFromRegularBottomBar(context))
+                    : null,
+                onNextPressed: _canStepForwardFromRegularBottomBar
+                    ? () => unawaited(
+                        HistoryNavigator.stepForward(
+                          context,
+                          pop: false,
+                          toolbar: true,
+                        ),
+                      )
+                    : null,
+              );
+            }
+
+            return ValueListenableBuilder<PlayerTimerStatus>(
+              valueListenable: PlayerTimer().statusNotifier,
+              builder: (BuildContext context, PlayerTimerStatus status, _) {
                 return _RegularGameBottomBar(
                   onMenuPressed: _showRegularGameMenu,
                   onResignOrResultPressed: _isRegularGameOver
@@ -2085,39 +2109,12 @@ class PlayAreaState extends State<PlayArea> {
                       : _canResignFromRegularBottomBar
                       ? () => _showRegularResignConfirmation(context)
                       : null,
-                  onAnalyzePressed: _isAnalysisMode
-                      ? () => unawaited(AnalysisService.toggle(context))
-                      : null,
-                  onAnalyzeLongPressed: _isAnalysisMode
-                      ? () => unawaited(
-                          _showAnalysisSettingsSheet(
-                            context,
-                            strings: S.of(context),
-                          ),
-                        )
-                      : null,
                   showClockControl: _shouldShowRegularClockControl,
                   isClockPaused: status == PlayerTimerStatus.paused,
-                  isAnalysisMode: _isAnalysisMode,
-                  isAnalysisHighlighted: AnalysisMode.isFullAnalysis,
                   isShowingResult: _isRegularGameOver,
                   onClockPressed: _regularClockControlAction(status),
                   onTakeBackPressed: _canTakeBackFromRegularBottomBar
                       ? () => _takeBackFromRegularBottomBar(context)
-                      : null,
-                  onPreviousPressed:
-                      _isAnalysisMode && _canStepBackFromRegularBottomBar
-                      ? () => unawaited(_stepBackFromRegularBottomBar(context))
-                      : null,
-                  onNextPressed:
-                      _isAnalysisMode && _canStepForwardFromRegularBottomBar
-                      ? () => unawaited(
-                          HistoryNavigator.stepForward(
-                            context,
-                            pop: false,
-                            toolbar: true,
-                          ),
-                        )
                       : null,
                 );
               },
@@ -4068,36 +4065,83 @@ class _ContinueFromHereGameRouteState
   }
 }
 
-class _RegularGameBottomBar extends StatelessWidget {
-  const _RegularGameBottomBar({
+class _AnalysisBottomBar extends StatelessWidget {
+  const _AnalysisBottomBar({
     required this.onMenuPressed,
-    required this.onResignOrResultPressed,
-    required this.onAnalyzePressed,
-    required this.onAnalyzeLongPressed,
-    required this.showClockControl,
-    required this.isClockPaused,
-    required this.isAnalysisMode,
-    required this.isAnalysisHighlighted,
-    required this.isShowingResult,
-    required this.onClockPressed,
-    required this.onTakeBackPressed,
+    required this.onEnginePressed,
+    required this.onEngineLongPressed,
+    required this.isEngineHighlighted,
     required this.onPreviousPressed,
     required this.onNextPressed,
   });
 
   final VoidCallback onMenuPressed;
+  final VoidCallback? onEnginePressed;
+  final VoidCallback? onEngineLongPressed;
+  final bool isEngineHighlighted;
+  final VoidCallback? onPreviousPressed;
+  final VoidCallback? onNextPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color messageColor = DB().colorSettings.messageColor;
+
+    return LichessBottomBar(
+      key: const Key('play_area_main_toolbar_bottom'),
+      backgroundColor: Colors.transparent,
+      foregroundColor: messageColor,
+      children: <Widget>[
+        LichessBottomBarButton(
+          key: const Key('play_area_analysis_bottom_bar_menu'),
+          icon: Icons.menu,
+          label: S.of(context).menu,
+          onTap: onMenuPressed,
+          withShadow: true,
+        ),
+        _AnalysisEngineBottomBarButton(
+          key: const Key('play_area_analysis_bottom_bar_engine'),
+          label: S.of(context).engine,
+          onTap: onEnginePressed,
+          onLongPress: onEngineLongPressed,
+          highlighted: isEngineHighlighted,
+        ),
+        LichessBottomBarButton(
+          key: const Key('play_area_analysis_bottom_bar_previous'),
+          icon: CupertinoIcons.chevron_back,
+          label: S.of(context).previous,
+          onTap: onPreviousPressed,
+          withShadow: true,
+        ),
+        LichessBottomBarButton(
+          key: const Key('play_area_analysis_bottom_bar_next'),
+          icon: CupertinoIcons.chevron_forward,
+          label: S.of(context).next,
+          onTap: onNextPressed,
+          withShadow: true,
+        ),
+      ],
+    );
+  }
+}
+
+class _RegularGameBottomBar extends StatelessWidget {
+  const _RegularGameBottomBar({
+    required this.onMenuPressed,
+    required this.onResignOrResultPressed,
+    required this.showClockControl,
+    required this.isClockPaused,
+    required this.isShowingResult,
+    required this.onClockPressed,
+    required this.onTakeBackPressed,
+  });
+
+  final VoidCallback onMenuPressed;
   final VoidCallback? onResignOrResultPressed;
-  final VoidCallback? onAnalyzePressed;
-  final VoidCallback? onAnalyzeLongPressed;
   final bool showClockControl;
   final bool isClockPaused;
-  final bool isAnalysisMode;
-  final bool isAnalysisHighlighted;
   final bool isShowingResult;
   final VoidCallback? onClockPressed;
   final VoidCallback? onTakeBackPressed;
-  final VoidCallback? onPreviousPressed;
-  final VoidCallback? onNextPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -4115,25 +4159,14 @@ class _RegularGameBottomBar extends StatelessWidget {
           onTap: onMenuPressed,
           withShadow: true,
         ),
-        if (isAnalysisMode)
-          _AnalysisEngineBottomBarButton(
-            key: const Key('play_area_regular_bottom_bar_engine'),
-            label: S.of(context).engine,
-            onTap: onAnalyzePressed,
-            onLongPress: onAnalyzeLongPressed,
-            highlighted: isAnalysisHighlighted,
-          )
-        else
-          LichessBottomBarButton(
-            key: const Key('play_area_regular_bottom_bar_resign_result'),
-            icon: isShowingResult ? Icons.info_outline : CupertinoIcons.flag,
-            label: isShowingResult
-                ? S.of(context).results
-                : S.of(context).resign,
-            onTap: onResignOrResultPressed,
-            highlighted: isShowingResult,
-            withShadow: true,
-          ),
+        LichessBottomBarButton(
+          key: const Key('play_area_regular_bottom_bar_resign_result'),
+          icon: isShowingResult ? Icons.info_outline : CupertinoIcons.flag,
+          label: isShowingResult ? S.of(context).results : S.of(context).resign,
+          onTap: onResignOrResultPressed,
+          highlighted: isShowingResult,
+          withShadow: true,
+        ),
         if (showClockControl)
           LichessBottomBarButton(
             key: const Key('play_area_regular_bottom_bar_clock'),
@@ -4142,29 +4175,13 @@ class _RegularGameBottomBar extends StatelessWidget {
             onTap: onClockPressed,
             withShadow: true,
           ),
-        if (isAnalysisMode) ...<Widget>[
-          LichessBottomBarButton(
-            key: const Key('play_area_regular_bottom_bar_previous'),
-            icon: CupertinoIcons.chevron_back,
-            label: S.of(context).previous,
-            onTap: onPreviousPressed,
-            withShadow: true,
-          ),
-          LichessBottomBarButton(
-            key: const Key('play_area_regular_bottom_bar_next'),
-            icon: CupertinoIcons.chevron_forward,
-            label: S.of(context).next,
-            onTap: onNextPressed,
-            withShadow: true,
-          ),
-        ] else
-          LichessBottomBarButton(
-            key: const Key('play_area_regular_bottom_bar_take_back'),
-            icon: CupertinoIcons.arrow_uturn_left,
-            label: S.of(context).takeBack,
-            onTap: onTakeBackPressed,
-            withShadow: true,
-          ),
+        LichessBottomBarButton(
+          key: const Key('play_area_regular_bottom_bar_take_back'),
+          icon: CupertinoIcons.arrow_uturn_left,
+          label: S.of(context).takeBack,
+          onTap: onTakeBackPressed,
+          withShadow: true,
+        ),
       ],
     );
   }
@@ -4233,7 +4250,7 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
                       Text(
                         chipText,
                         key: const Key(
-                          'play_area_regular_bottom_bar_engine_value',
+                          'play_area_analysis_bottom_bar_engine_value',
                         ),
                         style: TextStyle(
                           color: textColor,
@@ -4256,7 +4273,7 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
                 ),
                 Text(
                   'DB',
-                  key: const Key('play_area_regular_bottom_bar_engine_label'),
+                  key: const Key('play_area_analysis_bottom_bar_engine_label'),
                   style: TextStyle(
                     color: textColor.withValues(alpha: 0.82),
                     fontSize: 10,
