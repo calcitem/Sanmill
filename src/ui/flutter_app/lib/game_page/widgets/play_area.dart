@@ -5797,10 +5797,14 @@ class _AnalysisSummaryResultsSubtitle extends StatefulWidget {
 class _AnalysisSummaryResultsSubtitleState
     extends State<_AnalysisSummaryResultsSubtitle> {
   String? _selectedOutcomeName;
+  bool _showAllCandidates = false;
 
   @override
   void didUpdateWidget(_AnalysisSummaryResultsSubtitle oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (!identical(widget.candidates, oldWidget.candidates)) {
+      _showAllCandidates = false;
+    }
     if (_selectedOutcomeName == null) {
       return;
     }
@@ -5810,12 +5814,18 @@ class _AnalysisSummaryResultsSubtitleState
     );
     if (!selectedOutcomeStillExists) {
       _selectedOutcomeName = null;
+      _showAllCandidates = false;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<MoveAnalysisResult> visibleCandidates = _visibleCandidates();
+    final List<MoveAnalysisResult> filteredCandidates = _filteredCandidates();
+    final List<MoveAnalysisResult> visibleCandidates = _visibleCandidates(
+      filteredCandidates,
+    );
+    final int remainingCandidateCount =
+        filteredCandidates.length - visibleCandidates.length;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -5833,22 +5843,36 @@ class _AnalysisSummaryResultsSubtitleState
           const SizedBox(height: 8),
           _AnalysisSummaryResultCandidates(
             candidates: visibleCandidates,
+            remainingCandidateCount: remainingCandidateCount,
             canApplyCandidates: widget.canApplyCandidates,
             onCandidateTap: widget.onCandidateTap,
+            onShowMore: _showMoreCandidates,
           ),
         ],
       ],
     );
   }
 
-  List<MoveAnalysisResult> _visibleCandidates() {
+  List<MoveAnalysisResult> _filteredCandidates() {
     final String? selectedOutcomeName = _selectedOutcomeName;
-    final Iterable<MoveAnalysisResult> candidates = selectedOutcomeName == null
-        ? widget.candidates
-        : widget.candidates.where(
-            (MoveAnalysisResult result) =>
-                result.outcome.name == selectedOutcomeName,
-          );
+    final Iterable<MoveAnalysisResult> candidates;
+    if (selectedOutcomeName == null) {
+      candidates = widget.candidates;
+    } else {
+      candidates = widget.candidates.where(
+        (MoveAnalysisResult result) =>
+            result.outcome.name == selectedOutcomeName,
+      );
+    }
+    return candidates.toList(growable: false);
+  }
+
+  List<MoveAnalysisResult> _visibleCandidates(
+    List<MoveAnalysisResult> candidates,
+  ) {
+    if (_showAllCandidates) {
+      return candidates;
+    }
     return candidates
         .take(_AnalysisSummaryPanel._maxResultCandidates)
         .toList(growable: false);
@@ -5859,6 +5883,13 @@ class _AnalysisSummaryResultsSubtitleState
       _selectedOutcomeName = outcomeName == _selectedOutcomeName
           ? null
           : outcomeName;
+      _showAllCandidates = false;
+    });
+  }
+
+  void _showMoreCandidates() {
+    setState(() {
+      _showAllCandidates = true;
     });
   }
 }
@@ -5866,13 +5897,17 @@ class _AnalysisSummaryResultsSubtitleState
 class _AnalysisSummaryResultCandidates extends StatelessWidget {
   const _AnalysisSummaryResultCandidates({
     required this.candidates,
+    required this.remainingCandidateCount,
     required this.canApplyCandidates,
     required this.onCandidateTap,
+    required this.onShowMore,
   });
 
   final List<MoveAnalysisResult> candidates;
+  final int remainingCandidateCount;
   final bool canApplyCandidates;
   final Future<void> Function(String move) onCandidateTap;
+  final VoidCallback onShowMore;
 
   @override
   Widget build(BuildContext context) {
@@ -5894,6 +5929,26 @@ class _AnalysisSummaryResultCandidates extends StatelessWidget {
             onTap: canApplyCandidates
                 ? () => unawaited(onCandidateTap(candidates[index].move))
                 : null,
+          ),
+        if (remainingCandidateCount > 0)
+          ActionChip(
+            key: const Key('play_area_analysis_summary_result_candidates_more'),
+            avatar: const Icon(Icons.more_horiz, size: 16),
+            label: Text('+$remainingCandidateCount ${S.of(context).more}'),
+            labelStyle: theme.textTheme.labelMedium?.copyWith(
+              color: colorScheme.primary,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0,
+            ),
+            backgroundColor: colorScheme.primaryContainer.withValues(
+              alpha: 0.36,
+            ),
+            side: BorderSide(
+              color: colorScheme.primary.withValues(alpha: 0.42),
+            ),
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            visualDensity: VisualDensity.compact,
+            onPressed: onShowMore,
           ),
       ],
     );

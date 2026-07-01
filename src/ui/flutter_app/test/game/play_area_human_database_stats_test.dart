@@ -2564,6 +2564,87 @@ void main() {
     expect(_currentPathMoves(), <String>['d6']);
   });
 
+  testWidgets('analysis summary expands hidden result candidates', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    AnalysisMode.enable(<MoveAnalysisResult>[
+      const MoveAnalysisResult(move: 'a1', outcome: AnalysisOutcome.win),
+      const MoveAnalysisResult(move: 'd1', outcome: AnalysisOutcome.win),
+      const MoveAnalysisResult(move: 'a4', outcome: AnalysisOutcome.win),
+      const MoveAnalysisResult(move: 'd2', outcome: AnalysisOutcome.win),
+      const MoveAnalysisResult(move: 'a7', outcome: AnalysisOutcome.win),
+      const MoveAnalysisResult(move: 'd3', outcome: AnalysisOutcome.win),
+      const MoveAnalysisResult(move: 'g7', outcome: AnalysisOutcome.win),
+      const MoveAnalysisResult(move: 'b2', outcome: AnalysisOutcome.win),
+    ], source: AnalysisSource.perfectDatabase);
+
+    await _pumpSessionPlayArea(tester, session);
+
+    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
+    await tester.pumpAndSettle();
+
+    final Finder candidateList = find.byKey(
+      const Key('play_area_analysis_summary_result_candidates'),
+    );
+    expect(candidateList, findsOneWidget);
+    expect(
+      find.descendant(of: candidateList, matching: find.text('d3')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: candidateList, matching: find.text('g7')),
+      findsNothing,
+    );
+    expect(
+      find.descendant(of: candidateList, matching: find.text('b2')),
+      findsNothing,
+    );
+
+    final Finder moreCandidates = find.byKey(
+      const Key('play_area_analysis_summary_result_candidates_more'),
+    );
+    expect(moreCandidates, findsOneWidget);
+    expect(
+      find.descendant(of: moreCandidates, matching: find.text('+2 More')),
+      findsOneWidget,
+    );
+
+    final Finder summaryScrollable = find.descendant(
+      of: find.byKey(const Key('play_area_analysis_summary')),
+      matching: find.byType(Scrollable),
+    );
+    await tester.scrollUntilVisible(
+      moreCandidates,
+      120,
+      scrollable: summaryScrollable,
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(moreCandidates);
+    await tester.pumpAndSettle();
+
+    expect(moreCandidates, findsNothing);
+    expect(
+      find.descendant(of: candidateList, matching: find.text('g7')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: candidateList, matching: find.text('b2')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_summary_result_candidate_7')),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('analysis summary result candidate applies the move', (
     WidgetTester tester,
   ) async {
