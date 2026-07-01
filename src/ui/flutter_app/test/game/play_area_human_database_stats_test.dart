@@ -2951,6 +2951,18 @@ void main() {
       findsOneWidget,
     );
     expect(
+      find.byTooltip('Continue from here · Move 3 · +48 · a1'),
+      findsOneWidget,
+    );
+    expect(
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Semantics &&
+            widget.properties.label == 'Continue from here · Move 3 · +48 · a1',
+      ),
+      findsOneWidget,
+    );
+    expect(
       find.descendant(of: secondKeyMoment, matching: find.text('Move 2')),
       findsOneWidget,
     );

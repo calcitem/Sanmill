@@ -5350,30 +5350,11 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                         keyMomentIndex < keyMoments.length;
                         keyMomentIndex++
                       )
-                        ListTile(
-                          key: keyMomentIndex == 0
-                              ? const Key(
-                                  'play_area_analysis_summary_key_moment',
-                                )
-                              : Key(
-                                  'play_area_analysis_summary_key_moment_'
-                                  '${keyMoments[keyMomentIndex].dataIndex}',
-                                ),
-                          leading: const Icon(Icons.timeline_outlined),
-                          title: Text(
-                            '${strings.move} '
-                            '${keyMoments[keyMomentIndex].moveNumber}',
-                          ),
-                          subtitle: _AnalysisSummaryKeyMomentLine(
-                            moment: keyMoments[keyMomentIndex],
-                          ),
-                          trailing: const Icon(Icons.chevron_right),
-                          onTap: () => unawaited(
-                            _jumpToKeyMoment(
-                              context,
-                              keyMoments[keyMomentIndex],
-                            ),
-                          ),
+                        _keyMomentTile(
+                          context,
+                          strings,
+                          keyMoments[keyMomentIndex],
+                          keyMomentIndex,
                         ),
                       if (showAdvantageGraph)
                         _AnalysisSummaryAdvantageGraph(data: advantageData),
@@ -5714,6 +5695,46 @@ class _AnalysisSummaryPanel extends StatelessWidget {
           'dataIndex': moment.dataIndex,
         });
     await HistoryNavigator.gotoNode(context, moment.node, pop: false);
+  }
+
+  Widget _keyMomentTile(
+    BuildContext context,
+    S strings,
+    _AnalysisKeyMoment moment,
+    int keyMomentIndex,
+  ) {
+    final String actionLabel = _keyMomentActionLabel(strings, moment);
+
+    return Tooltip(
+      message: actionLabel,
+      child: Semantics(
+        button: true,
+        label: actionLabel,
+        excludeSemantics: true,
+        child: ListTile(
+          key: keyMomentIndex == 0
+              ? const Key('play_area_analysis_summary_key_moment')
+              : Key(
+                  'play_area_analysis_summary_key_moment_'
+                  '${moment.dataIndex}',
+                ),
+          leading: const Icon(Icons.timeline_outlined),
+          title: Text('${strings.move} ${moment.moveNumber}'),
+          subtitle: _AnalysisSummaryKeyMomentLine(moment: moment),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: () => unawaited(_jumpToKeyMoment(context, moment)),
+        ),
+      ),
+    );
+  }
+
+  String _keyMomentActionLabel(S strings, _AnalysisKeyMoment moment) {
+    return <String>[
+      strings.continueFromHere,
+      '${strings.move} ${moment.moveNumber}',
+      _signedAnalysisValue(moment.swing),
+      moment.move,
+    ].join(' · ');
   }
 
   String _moveLineSummary(
