@@ -245,6 +245,22 @@ flutter run
 flutter test
 ```
 
+**Agentic Flutter debug loop (Flutter 3.44+):**
+
+* When a debug `flutter run` session is already active, prefer using any
+  available Flutter/Dart MCP or Dart Tooling Daemon (DTD) integration to
+  inspect the running app, read widget/tree state, and trigger hot reload after
+  Dart-only edits.
+* If no MCP/DTD bridge is available in the current environment, keep the
+  `flutter run` process alive and send `r` for hot reload or `R` for hot
+  restart instead of stopping and rebuilding for every UI tweak.
+* Do not rely on hot reload after native, generated-code, dependency, asset,
+  platform, or Rust/FRB boundary changes. Re-run `./flutter-init.sh` and the
+  relevant `flutter build ...` command for those changes.
+* Treat hot reload as a fast feedback loop, not final validation. Before
+  finishing Flutter work, still run `flutter analyze`, focused tests, and the
+  relevant platform build.
+
 **Code Generation:**
 
 The project uses code generation for several purposes. Understanding this
@@ -284,7 +300,7 @@ is critical to avoid common mistakes.
   - After adding/modifying `@HiveType` or `@HiveField` annotations
   - After changing `@JsonSerializable()` models
   - After updating `@CopyWith()` classes
-  - Run: `cd src/ui/flutter_app && dart run build_runner build --delete-conflicting-outputs`
+  - Run: `cd src/ui/flutter_app && dart run build_runner build`
 
 * **Common Pitfalls:**
   - ❌ Don't commit `.g.dart` files to git
@@ -435,7 +451,7 @@ cargo clippy --workspace --all-targets --all-features -- -D warnings
 
 # Regenerate code (after model changes)
 cd src/ui/flutter_app
-dart run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 
 # Run Flutter app
 cd src/ui/flutter_app

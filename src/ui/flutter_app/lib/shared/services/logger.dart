@@ -77,11 +77,11 @@ String _formatLogLevelLabel(Level level) {
     Level.error => 'ERROR',
     Level.fatal => 'FATAL',
     Level.all => 'ALL',
-    // ignore: deprecated_member_use
+
     Level.verbose => 'VERBOSE',
-    // ignore: deprecated_member_use
+
     Level.wtf => 'WTF',
-    // ignore: deprecated_member_use
+
     Level.nothing => 'NOTHING',
     Level.off => 'OFF',
   };

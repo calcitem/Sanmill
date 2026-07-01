@@ -3,8 +3,6 @@
 
 // ratio_modal.dart
 
-// ignore_for_file: deprecated_member_use
-
 part of 'package:sanmill/general_settings/widgets/general_settings_page.dart';
 
 class _RatioModal extends StatelessWidget {

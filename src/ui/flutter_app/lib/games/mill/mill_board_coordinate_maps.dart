@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
-// ignore_for_file: avoid_classes_with_only_static_members
-
 /// Stable coordinate maps for the 24-point Mill board.
 ///
 /// These values preserve the legacy Flutter 7x7 grid indices and C++ square

@@ -3,8 +3,6 @@
 
 // analysis_renderer.dart
 
-// ignore_for_file: avoid_classes_with_only_static_members
-
 part of '../../../game_page/services/painters/painters.dart';
 
 /// Type of analysis result visualization.

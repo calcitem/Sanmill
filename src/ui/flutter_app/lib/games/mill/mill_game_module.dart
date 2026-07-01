@@ -259,11 +259,11 @@ class MillGameModule extends GameModule {
       logger.i(
         'Game switch: leaving LAN mode, disposing network and resetting board.',
       );
-      // ignore: deprecated_member_use_from_same_package
+
       GameController().networkService?.dispose();
-      // ignore: deprecated_member_use_from_same_package
+
       GameController().networkService = null;
-      // ignore: deprecated_member_use_from_same_package
+
       GameController().reset(force: true);
     }
   }
@@ -300,11 +300,11 @@ class MillGameModule extends GameModule {
     if (previousRouteId == MillRouteIds.humanVsLan.value &&
         nextRouteId != MillRouteIds.humanVsLan.value) {
       logger.i('Leaving LAN mode: disposing network and resetting the board.');
-      // ignore: deprecated_member_use_from_same_package
+
       GameController().networkService?.dispose();
-      // ignore: deprecated_member_use_from_same_package
+
       GameController().networkService = null;
-      // ignore: deprecated_member_use_from_same_package
+
       GameController().reset(force: true);
     }
     if (isPlayModeRoute(nextRouteId, context)) {

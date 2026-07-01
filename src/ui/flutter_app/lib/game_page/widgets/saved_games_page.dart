@@ -441,7 +441,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
           ? ''
           : DB().generalSettings.lastPgnSaveDirectory;
 
-      final FilePickerResult? result = await FilePicker.platform.pickFiles(
+      final FilePickerResult? result = await FilePicker.pickFiles(
         type: FileType.custom,
         allowedExtensions: <String>['pgn'],
         initialDirectory: lastDirectory.isNotEmpty ? lastDirectory : null,
@@ -535,7 +535,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
   Future<void> _batchImportFromZip() async {
     try {
       // Use FilePicker to select a zip file
-      final FilePickerResult? result = await FilePicker.platform.pickFiles(
+      final FilePickerResult? result = await FilePicker.pickFiles(
         type: FileType.custom,
         allowedExtensions: <String>['zip'],
       );

@@ -12,7 +12,10 @@ class LoadService {
   static const String _logTag = "[Loader]";
 
   /// Retrieves the file path with optional content bytes for Android/iOS.
-  static Future<String?> getFilePath(BuildContext context) async {
+  static Future<String?> getFilePath(
+    BuildContext context, {
+    String? contents,
+  }) async {
     final bool isMobilePlatform =
         !kIsWeb && (Platform.isAndroid || Platform.isIOS);
 
@@ -60,12 +63,14 @@ class LoadService {
 
       final String lastDirectory = DB().generalSettings.lastPgnSaveDirectory;
 
-      String? outputFile = await FilePicker.platform.saveFile(
+      assert(contents != null, 'Desktop save requires PGN contents.');
+      String? outputFile = await FilePicker.saveFile(
         dialogTitle: S.of(context).saveGame,
         fileName: defaultFileName,
         type: FileType.custom,
         allowedExtensions: <String>['pgn'],
         initialDirectory: lastDirectory.isNotEmpty ? lastDirectory : null,
+        bytes: Uint8List.fromList(utf8.encode(contents!)),
       );
 
       if (outputFile == null) {
@@ -73,7 +78,11 @@ class LoadService {
       }
 
       if (!outputFile.toLowerCase().endsWith('.pgn')) {
-        outputFile = '$outputFile.pgn';
+        final File savedFile = File(outputFile);
+        assert(savedFile.existsSync(), 'Saved PGN file is missing.');
+        final String normalizedOutputFile = '$outputFile.pgn';
+        await savedFile.rename(normalizedOutputFile);
+        outputFile = normalizedOutputFile;
       }
 
       GameController().loadedGameFilenamePrefix = extractPgnFilenamePrefix(
@@ -138,7 +147,7 @@ class LoadService {
 
       final String lastDirectory = DB().generalSettings.lastPgnSaveDirectory;
 
-      final FilePickerResult? result = await FilePicker.platform.pickFiles(
+      final FilePickerResult? result = await FilePicker.pickFiles(
         type: FileType.custom,
         allowedExtensions: <String>['pgn'],
         initialDirectory: lastDirectory.isNotEmpty ? lastDirectory : null,
@@ -198,7 +207,8 @@ class LoadService {
       return null;
     }
 
-    final String? filename = await getFilePath(context);
+    final String pgnContents = ImportService.addTagPairs(moveHistoryText);
+    final String? filename = await getFilePath(context, contents: pgnContents);
 
     if (filename == null) {
       safePop();
@@ -208,9 +218,12 @@ class LoadService {
     // Save the directory path for next time (desktop only)
     _saveLastPgnDirectory(filename);
 
-    // Write file content
-    final File file = File(filename);
-    await file.writeAsString(ImportService.addTagPairs(moveHistoryText));
+    final bool shouldWriteFile =
+        !kIsWeb && (Platform.isAndroid || Platform.isIOS);
+    if (shouldWriteFile) {
+      final File file = File(filename);
+      await file.writeAsString(pgnContents);
+    }
 
     // Show success message with experimental warning if all variations included
     final String message = showExperimentalWarning

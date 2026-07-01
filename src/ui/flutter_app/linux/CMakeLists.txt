@@ -2,6 +2,10 @@
 cmake_minimum_required(VERSION 3.10)
 project(sanmill LANGUAGES CXX)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 option(ENABLE_ASAN "Enable AddressSanitizer" OFF)
 option(ENABLE_MSAN "Enable MemorySanitizer" OFF)
 option(ENABLE_TSAN "Enable ThreadSanitizer" OFF)
@@ -65,7 +69,7 @@ endif()
 # default. In most cases, you should add new options to specific targets instead
 # of modifying this function.
 function(APPLY_STANDARD_SETTINGS TARGET)
-  target_compile_features(${TARGET} PUBLIC cxx_std_17)
+  target_compile_features(${TARGET} PUBLIC cxx_std_20)
   target_compile_options(${TARGET} PRIVATE -Wall -Wextra -Wno-unused-parameter)
   target_compile_options(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:-O3>")
   target_compile_definitions(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:NDEBUG>")

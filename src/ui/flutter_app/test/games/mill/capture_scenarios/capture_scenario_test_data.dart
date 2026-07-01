@@ -16,8 +16,6 @@
 // Rule correctness for custodian / intervention captures is covered directly
 // by `crates/tgf-mill/src/rules/tests.rs` and the legacy oracle replay.
 
-// ignore_for_file: avoid_classes_with_only_static_members
-
 import 'capture_scenario_test_models.dart';
 
 abstract final class CaptureScenarioTestData {

@@ -3,8 +3,6 @@
 
 // analysis_mode.dart
 
-// ignore_for_file: avoid_classes_with_only_static_members
-
 import 'package:flutter/material.dart';
 
 import '../../appearance_settings/models/display_settings.dart';

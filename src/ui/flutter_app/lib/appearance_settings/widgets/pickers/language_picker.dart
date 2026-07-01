@@ -3,8 +3,6 @@
 
 // language_picker.dart
 
-// ignore_for_file: deprecated_member_use
-
 part of 'package:sanmill/appearance_settings/widgets/appearance_settings_page.dart';
 
 class _LanguagePicker extends StatefulWidget {

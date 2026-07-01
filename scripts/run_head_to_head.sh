@@ -257,7 +257,7 @@ build_master_with_gxx() {
     fi
     (
         cd "$src"
-        "$cxx" -std=c++17 -O3 -DNDEBUG -DIS_64BIT \
+        "$cxx" -std=c++20 -O3 -DNDEBUG -DIS_64BIT \
             -Wall -Wextra -Wshadow -fno-exceptions \
             -I../include -Iperfect -I. \
             *.cpp perfect/*.cpp $pthread_flag -o "$out"

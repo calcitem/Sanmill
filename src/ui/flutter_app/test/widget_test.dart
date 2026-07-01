@@ -171,10 +171,9 @@ void main() {
       final DisplaySettings originalDisplaySettings = DB().displaySettings;
       final bool originalTestEnvironment = EnvironmentConfig.test;
 
-      DB().generalSettings = GeneralSettings.fromJson(
-        Map<String, dynamic>.from(originalGeneralSettings.toJson())
-          ..['firstRun'] = false
-          ..['showTutorial'] = true,
+      DB().generalSettings = originalGeneralSettings.copyWith(
+        firstRun: true,
+        showTutorial: true,
       );
       DB().displaySettings = originalDisplaySettings.copyWith(
         locale: const Locale('zh'),
@@ -182,11 +181,13 @@ void main() {
       EnvironmentConfig.test = false;
 
       try {
+        final S zhStrings = await S.delegate.load(const Locale('zh'));
+
         await tester.pumpWidget(const SanmillApp());
         await tester.pumpAndSettle();
 
-        expect(find.text('配置规则'), findsOneWidget);
-        await tester.tap(find.text('否'));
+        expect(find.text(zhStrings.configureRules), findsOneWidget);
+        await tester.tap(find.text(zhStrings.no));
         await tester.pumpAndSettle();
         expect(DB().generalSettings.showTutorial, isFalse);
 
@@ -195,7 +196,7 @@ void main() {
         await tester.pumpWidget(const SanmillApp());
         await tester.pumpAndSettle();
 
-        expect(find.text('配置规则'), findsNothing);
+        expect(find.text(zhStrings.configureRules), findsNothing);
       } finally {
         EnvironmentConfig.test = originalTestEnvironment;
         DB().generalSettings = originalGeneralSettings;
@@ -421,12 +422,14 @@ void main() {
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
       final GeneralSettings originalGeneralSettings = DB().generalSettings;
+      final DisplaySettings originalDisplaySettings = DB().displaySettings;
       DB().generalSettings = GeneralSettings.fromJson(
         Map<String, dynamic>.from(originalGeneralSettings.toJson())
           ..['aiChatEnabled'] = true,
       );
       addTearDown(() {
         DB().generalSettings = originalGeneralSettings;
+        DB().displaySettings = originalDisplaySettings;
         AnalysisMode.setShowEngineLines(true);
         AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
       });
@@ -1926,6 +1929,10 @@ void main() {
   testWidgets(
     'Appearance piece set uses full-screen selector',
     (WidgetTester tester) async {
+      final DisplaySettings previousDisplaySettings = DB().displaySettings;
+      addTearDown(() => DB().displaySettings = previousDisplaySettings);
+      DB().displaySettings = const DisplaySettings();
+
       await tester.pumpWidget(
         const MaterialApp(
           localizationsDelegates: sanmillLocalizationsDelegates,

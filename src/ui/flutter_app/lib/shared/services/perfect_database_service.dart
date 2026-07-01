@@ -71,7 +71,7 @@ Future<bool> copyPerfectDatabaseFiles({bool force = false}) async {
     final Directory directory = Directory(perfectDatabasePath);
 
     try {
-      if (!await _exists(directory)) {
+      if (!_exists(directory)) {
         await directory.create(recursive: true);
         logger.i('Created directory at $perfectDatabasePath');
       }
@@ -84,7 +84,7 @@ Future<bool> copyPerfectDatabaseFiles({bool force = false}) async {
       final String asset = perfectDatabaseAssetPath(fileName);
       try {
         final File file = File('${directory.path}/$fileName');
-        final bool exists = await _exists(file);
+        final bool exists = _exists(file);
         if (!exists || force) {
           final ByteData byteData = await rootBundle.load(asset);
           final ByteBuffer buffer = byteData.buffer;
@@ -156,6 +156,6 @@ void disablePerfectDatabase() {
   tgf.millPerfectDbDeinit();
 }
 
-Future<bool> _exists(FileSystemEntity entity) async {
-  return entity.exists();
+bool _exists(FileSystemEntity entity) {
+  return entity.existsSync();
 }

@@ -2128,7 +2128,7 @@ class _OpeningExplorerSnapshot {
     }
 
     bool perfectMoveAvailable = false;
-    // ignore: deprecated_member_use
+
     if (generalSettings.usePerfectDatabase) {
       final GameAction? perfectAction = session.perfectDatabaseBestAction(
         engineSettings: generalSettings,

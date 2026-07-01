@@ -3,8 +3,6 @@
 
 // mill_formation_action_in_placing_phase_modal.dart
 
-// ignore_for_file: deprecated_member_use
-
 part of 'package:sanmill/rule_settings/widgets/rule_settings_page.dart';
 
 class _MillFormationActionInPlacingPhaseModal extends StatelessWidget {

@@ -304,7 +304,7 @@ class _SessionListPageState extends State<SessionListPage> {
   /// Imports a session from a file selected via the system file picker.
   Future<void> _importFromFile() async {
     try {
-      final FilePickerResult? result = await FilePicker.platform.pickFiles(
+      final FilePickerResult? result = await FilePicker.pickFiles(
         type: FileType.custom,
         allowedExtensions: <String>['json'],
       );

@@ -1,96 +1,96 @@
 name: sanmill
 description: Sanmill is a open-source, powerful UCI-like Nine Men's Morris (and its variants) program.
 publish_to: none
-version: 8.0.0+6539
+version: 8.0.0+6541
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
 
 dependencies:
-  animated_text_kit: 4.3.0
-  archive: 4.0.7
-  audioplayers: 6.5.1
-  camera: 0.11.4
-  catcher_2: 2.1.5
-  collection: 1.19.1
-  confetti: 0.8.0
-  crop_your_image: 2.0.0
-  copy_with_extension: 10.0.1
-  crypto: 3.0.7
-  cupertino_icons: 1.0.8
-  device_info_plus: 12.3.0
-  extended_sliver: 2.1.3
-  fast_immutable_collections: 11.1.0
-  feedback: 3.2.0
-  file_picker: 10.3.8
-  fluentui_system_icons: 1.1.273
+  animated_text_kit: ^4.3.0
+  archive: ^4.0.9
+  audioplayers: ^6.8.1
+  camera: ^0.12.0+1
+  catcher_2: ^2.1.9
+  collection: ^1.19.1
+  confetti: ^0.8.0
+  crop_your_image: ^2.0.0
+  copy_with_extension: ^15.0.1
+  crypto: ^3.0.7
+  cupertino_icons: ^1.0.9
+  device_info_plus: ^13.2.0
+  extended_sliver: ^2.1.3
+  fast_immutable_collections: ^11.2.0
+  feedback: ^3.2.0
+  file_picker: ^12.0.0-beta.7
+  fluentui_system_icons: ^1.1.273
   flutter:
     sdk: flutter
-  flutter_colorpicker: 1.1.0
-  flutter_email_sender: 8.0.0
+  flutter_colorpicker: ^1.1.0
+  flutter_email_sender: ^10.0.1
   flutter_localizations:
     sdk: flutter
-  flutter_markdown_plus: 1.0.7
-  flutter_platform_alert: 0.8.0
-  flutter_picker: 2.1.0
-  flutter_sharing_intent: 1.1.1
-  hive_ce: 2.13.2
-  hive_ce_flutter: 2.3.2
-  http: 1.6.0
-  langchain: 0.7.9
-  langchain_google: 0.6.5+2
-  langchain_ollama: 0.3.3+3
-  langchain_openai: 0.7.6+2
-  image: 4.7.2
-  image_gallery_saver_plus: 4.0.1
-  image_picker: 1.2.1
-  intl: 0.20.2
-  json_annotation: 4.9.0
-  logger: 2.6.2
-  marquee: 2.3.0
-  material_symbols_icons: 4.2858.1
-  meta: 1.17.0
-  flutter_zxing: 2.2.1
-  native_screenshot_widget: 0.0.8
-  network_info_plus: 7.0.0
-  package_info_plus: 9.0.0
-  path: 1.9.1
-  path_provider: 2.1.5
-  permission_handler: 12.0.1
-  qr_flutter: 4.1.0
-  share_plus: 12.0.1
-  vibration: 3.1.5
-  url_launcher: 6.3.2
-  uuid: 4.5.2
+  flutter_markdown_plus: ^1.0.7
+  flutter_platform_alert: ^0.9.1
+  flutter_picker: ^2.1.0
+  flutter_sharing_intent: ^2.0.4
+  hive_ce: ^2.19.3
+  hive_ce_flutter: ^2.3.4
+  http: ^1.6.0
+  langchain: ^0.8.1
+  langchain_google: ^0.7.1+2
+  langchain_ollama: ^0.4.1
+  langchain_openai: ^0.8.1+1
+  image: ^4.8.0
+  image_gallery_saver_plus: ^5.0.0
+  image_picker: ^1.2.3
+  intl: ^0.20.2
+  json_annotation: ^4.12.0
+  logger: ^2.7.0
+  marquee: ^2.3.0
+  material_symbols_icons: ^4.2951.0
+  meta: ^1.18.0
+  flutter_zxing: ^2.3.0
+  native_screenshot_widget: ^0.0.8
+  network_info_plus: ^8.2.0
+  package_info_plus: ^10.2.0
+  path: ^1.9.1
+  path_provider: ^2.1.6
+  permission_handler: ^12.0.3
+  qr_flutter: ^4.1.0
+  share_plus: ^13.2.0
+  vibration: ^3.2.0
+  url_launcher: ^6.3.2
+  uuid: ^4.5.3
   # Vendored: pub 0.1.0 CMake target is screenshot_plugin; Flutter expects
   # just_screenshot_plugin. See third_party/just_screenshot/PATCHES.md.
   just_screenshot:
     path: third_party/just_screenshot
   rust_lib_sanmill:
     path: rust_builder
-  flutter_rust_bridge: 2.12.0
+  flutter_rust_bridge: ^2.12.0
   # Voice assistant plugins removed - voice assistant functionality disabled
   # whisper_ggml: 1.7.0
   # record: 6.1.2
 
 dev_dependencies:
-  analyzer: 8.2.0
-  build_runner: 2.10.5
-  copy_with_extension_gen: 10.0.1
+  analyzer: ^12.1.0
+  build_runner: ^2.15.0
+  copy_with_extension_gen: ^15.0.1
   flutter_driver:
     sdk: flutter
-  flutter_gen_runner: 5.12.0
-  flutter_native_splash: 2.4.7
+  flutter_gen_runner: ^5.14.1
+  flutter_native_splash: ^2.4.8
   flutter_test:
     sdk: flutter
   integration_test:
     sdk: flutter
-  hive_ce_generator: any
-  json_serializable: 6.11.1
-  flutter_lints: 6.0.0
-  mockito: 5.6.3
-  msix: 3.16.12
-  source_gen: 4.1.2
+  hive_ce_generator: ^1.11.2
+  json_serializable: ^6.14.0
+  flutter_lints: ^6.0.0
+  mockito: ^5.6.4
+  msix: ^3.18.0
+  source_gen: ^4.2.3
 
 flutter_gen:
   output: lib/generated/assets/

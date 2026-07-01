@@ -3,8 +3,6 @@
 
 // board_image_recognition.dart
 
-// ignore_for_file: avoid_classes_with_only_static_members
-
 import 'dart:async';
 import 'dart:collection'; // Needed for Queue in CCA
 import 'dart:math' as math;

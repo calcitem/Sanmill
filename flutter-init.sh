@@ -83,7 +83,7 @@ flutter --version --machine | tee -a "${FLUTTER_VERSION_FILE}"
 sed -i.bak -e ':a' -e 'N' -e '$!ba' -e 's/}\([[:space:]]*\)$/};\1/' "${FLUTTER_VERSION_FILE}" && rm "${FLUTTER_VERSION_FILE}.bak"
 dart format "${FLUTTER_VERSION_FILE}" >/dev/null
 
-( cd "${APP_DIR}" && dart run build_runner build --delete-conflicting-outputs )
+( cd "${APP_DIR}" && dart run build_runner build )
 ( cd "${APP_DIR}" && flutter gen-l10n )
 
 # ---------------------------------------------------------------------------

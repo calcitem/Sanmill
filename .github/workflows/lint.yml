@@ -1,10 +1,7 @@
 name: Lint & Static Analysis
 
-# Phase 0 safety-net: runs on every PR to enforce code-quality gates for
-# the TGF refactoring.  Three gates:
-#   1. dart analyze — Dart/Flutter strict analysis
-#   2. cargo clippy — Rust lints (once crates/ workspace is added in Phase 1)
-#   3. clang-tidy   — C++ static analysis (informational until Rust migration)
+# Runs static analysis and Rust validation on changes that affect the Flutter
+# frontend, FRB bindings, or Rust/TGF workspace.
 
 on:
   push:
@@ -26,8 +23,6 @@ on:
       - 'src/ui/flutter_app/pubspec.lock'
       - 'src/ui/flutter_app/flutter_rust_bridge.yaml'
       - 'src/ui/flutter_app/rust_builder/**'
-      - 'src/**/*.cpp'
-      - 'src/**/*.h'
   pull_request:
     types: [review_requested, ready_for_review]
     paths:
@@ -47,8 +42,6 @@ on:
       - 'src/ui/flutter_app/pubspec.lock'
       - 'src/ui/flutter_app/flutter_rust_bridge.yaml'
       - 'src/ui/flutter_app/rust_builder/**'
-      - 'src/**/*.cpp'
-      - 'src/**/*.h'
 
 jobs:
   # -------------------------------------------------------------------------
@@ -64,6 +57,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.44.4'
           channel: stable
 
       - name: Install Flutter dependencies

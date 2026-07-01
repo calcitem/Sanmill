@@ -346,7 +346,10 @@ class MillEngineConfig {
   /// clamps the value to a conservative range.
   final int engineThreads;
 
-  /// Requested MultiPV line count.  `1` keeps the legacy single-line stream.
+  /// Requested MultiPV line count.  `1` keeps the legacy stream shape and
+  /// avoids extra work; values greater than one ask the engine to emit
+  /// additional root candidate events when the selected search path already
+  /// has root move summaries available.
   final int multiPv;
 
   const MillEngineConfig({

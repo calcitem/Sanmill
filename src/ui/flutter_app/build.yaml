@@ -5,6 +5,12 @@
 targets:
   $default:
     builders:
+      # FlutterGen asset output is imported by application code during builds.
+      flutter_gen_runner:
+        enabled: true
+        options:
+          output: lib/generated/assets/
+
       # CopyWith extension builder - only scan model directories
       copy_with_extension_gen|copy_with_extension_gen:
         enabled: true

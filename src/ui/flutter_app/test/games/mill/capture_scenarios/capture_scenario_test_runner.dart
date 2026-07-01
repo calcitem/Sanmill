@@ -11,8 +11,6 @@
 //   * negative cases must be rejected by the importer;
 //   * positive cases must import, replay, and yield a legal search move.
 
-// ignore_for_file: avoid_classes_with_only_static_members
-
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_action_codec.dart';

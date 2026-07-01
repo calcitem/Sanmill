@@ -73,7 +73,7 @@ target/release/tgf compiler
 ### Flutter App
 
 To build the Flutter app, run `./flutter-init.sh`, and then use Android Studio or Visual Studio Code to open `src/ui/flutter_app`.
-The script automatically provisions Flutter **3.38.7** in `.tools/flutter` when the required SDK
+The script automatically provisions Flutter **3.44.4** in `.tools/flutter` when the required SDK
 isn't already available on your system, ensuring the repository always uses the expected version.
 
 We use compile-time environment configs to enable specific parts of the code:

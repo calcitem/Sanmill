@@ -6,6 +6,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
@@ -495,7 +496,7 @@ class _LogsPageState extends State<LogsPage> {
       itemCount: _logs.length,
       // Limit the cache extent to reduce memory usage during stress testing.
       // Only pre-render a small amount of off-screen content.
-      cacheExtent: 100,
+      scrollCacheExtent: const ScrollCacheExtent.pixels(100),
       itemBuilder: (BuildContext context, int index) {
         return _LogItem(
           log: _logs[index],
@@ -730,13 +731,13 @@ class _LogsPageState extends State<LogsPage> {
         return 'FATAL';
       case Level.all:
         return 'ALL';
-      // ignore: deprecated_member_use
+
       case Level.verbose:
         return 'VERBOSE';
-      // ignore: deprecated_member_use
+
       case Level.wtf:
         return 'WTF';
-      // ignore: deprecated_member_use
+
       case Level.nothing:
         return 'NOTHING';
       case Level.off:
@@ -868,13 +869,13 @@ class _LogItem extends StatelessWidget {
         return Colors.purple;
       case Level.all:
         return Colors.blueGrey;
-      // ignore: deprecated_member_use
+
       case Level.verbose:
         return Colors.grey;
-      // ignore: deprecated_member_use
+
       case Level.wtf:
         return Colors.deepPurple;
-      // ignore: deprecated_member_use
+
       case Level.nothing:
         return Colors.grey;
       case Level.off:
@@ -898,13 +899,13 @@ class _LogItem extends StatelessWidget {
         return 'FATAL';
       case Level.all:
         return 'ALL';
-      // ignore: deprecated_member_use
+
       case Level.verbose:
         return 'VERBOSE';
-      // ignore: deprecated_member_use
+
       case Level.wtf:
         return 'WTF';
-      // ignore: deprecated_member_use
+
       case Level.nothing:
         return 'NOTHING';
       case Level.off:
@@ -928,13 +929,13 @@ class _LogItem extends StatelessWidget {
         return Icons.dangerous_outlined;
       case Level.all:
         return Icons.list_alt;
-      // ignore: deprecated_member_use
+
       case Level.verbose:
         return Icons.article_outlined;
-      // ignore: deprecated_member_use
+
       case Level.wtf:
         return Icons.whatshot_outlined;
-      // ignore: deprecated_member_use
+
       case Level.nothing:
         return Icons.block;
       case Level.off:

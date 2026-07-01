@@ -5,6 +5,10 @@ project(sanmill LANGUAGES CXX)
 # Flutter Windows plugins (e.g. audioplayers_windows, permission_handler_windows).
 add_compile_definitions(_SILENCE_EXPERIMENTAL_COROUTINE_DEPRECATION_WARNINGS)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 set(BINARY_NAME "mill")
 
 cmake_policy(SET CMP0063 NEW)
@@ -35,7 +39,7 @@ add_definitions(-DUNICODE -D_UNICODE)
 
 # Compilation settings that should be applied to most targets.
 function(APPLY_STANDARD_SETTINGS TARGET)
-  target_compile_features(${TARGET} PUBLIC cxx_std_17)
+  target_compile_features(${TARGET} PUBLIC cxx_std_20)
   target_compile_options(${TARGET} PRIVATE /MP /W4 /WX /wd"4100")
   target_compile_options(${TARGET} PRIVATE /EHsc)
   target_compile_definitions(${TARGET} PRIVATE "_HAS_EXCEPTIONS=0")

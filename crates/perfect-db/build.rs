@@ -58,11 +58,17 @@ fn build_cpp_oracle() {
     }
 
     let mut build = cc::Build::new();
-    build.cpp(true).std("c++17").include(&csrc).warnings(false);
+    build.cpp(true).include(&csrc).warnings(false);
 
     if cfg!(target_env = "msvc") {
+        build.std("c++20");
         build.flag("/EHsc");
     } else {
+        // Older GCC/Clang releases used c++2a for the C++20 draft mode.
+        // Keep both probes so local Linux builds and newer MSVC builds agree
+        // on the language level without pinning the host compiler version.
+        build.flag_if_supported("-std=c++20");
+        build.flag_if_supported("-std=c++2a");
         build.flag_if_supported("-Wno-unused-parameter");
         build.flag_if_supported("-Wno-sign-compare");
     }

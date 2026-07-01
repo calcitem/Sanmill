@@ -16,8 +16,6 @@
 // UI calls, so adding new sources (camera, screenshot, file) later only
 // needs another `pick*` helper that funnels into [applyRecognizedPieces].
 
-// ignore_for_file: avoid_classes_with_only_static_members
-
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';

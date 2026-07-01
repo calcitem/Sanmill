@@ -29,7 +29,7 @@ Run the following command in the `src/ui/flutter_app` directory to generate the 
 ```bash
 cd src/ui/flutter_app
 flutter pub get
-flutter pub run build_runner build --delete-conflicting-outputs
+dart run build_runner build
 ```
 
 This will generate:

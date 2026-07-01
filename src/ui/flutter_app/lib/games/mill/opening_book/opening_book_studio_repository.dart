@@ -3,6 +3,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -63,26 +64,33 @@ class OpeningBookStudioRepository {
     }
     final String defaultFileName =
         '${package.book.id}_${DateTime.now().millisecondsSinceEpoch}.sbook.json';
-    final String? outputPath = await FilePicker.platform.saveFile(
+    final Uint8List packageBytes = Uint8List.fromList(
+      utf8.encode('${encodeSourcePackage(package)}\n'),
+    );
+    final String? outputPath = await FilePicker.saveFile(
       dialogTitle: dialogTitle,
       fileName: defaultFileName,
       type: FileType.custom,
       allowedExtensions: const <String>[fileExtension],
+      bytes: packageBytes,
     );
     if (outputPath == null) {
       return null;
     }
 
-    final String path = outputPath.toLowerCase().endsWith('.json')
-        ? outputPath
-        : '$outputPath.json';
-    await File(path).writeAsString('${encodeSourcePackage(package)}\n');
+    String path = outputPath;
+    if (!path.toLowerCase().endsWith('.json')) {
+      final File savedFile = File(path);
+      assert(savedFile.existsSync(), 'Saved opening book package is missing.');
+      path = '$path.json';
+      await savedFile.rename(path);
+    }
     logger.i('$_logTag Exported source package to $path');
     return true;
   }
 
   Future<SanmillOpeningBookSourcePackage?> importSourcePackage() async {
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(
+    final FilePickerResult? result = await FilePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: const <String>[fileExtension],
     );

@@ -39,7 +39,7 @@ void main() {
     DB.instance = null;
   });
 
-  testWidgets('hidden engine lines request a single PV only', (
+  testWidgets('hidden engine lines keep configured PV count', (
     WidgetTester tester,
   ) async {
     final _RecordingAnalysisSession session = _RecordingAnalysisSession();
@@ -52,7 +52,9 @@ void main() {
     await tester.tap(find.byKey(const Key('analysis_service_toggle')));
     await tester.pump();
 
-    expect(session.requestedMultiPvValues, <int>[1]);
+    expect(session.requestedMultiPvValues, <int>[
+      AnalysisMode.maxEngineLineCount,
+    ]);
   });
 
   testWidgets('visible engine lines request the default PV count', (

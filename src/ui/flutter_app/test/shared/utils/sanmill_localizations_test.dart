@@ -24,16 +24,16 @@ void main() {
     }
   });
 
-  test('falls back for Tibetan WidgetsLocalizations', () async {
+  test('uses Flutter Tibetan WidgetsLocalizations', () async {
     const Locale tibetan = Locale('bo');
 
-    expect(GlobalWidgetsLocalizations.delegate.isSupported(tibetan), isFalse);
+    expect(GlobalWidgetsLocalizations.delegate.isSupported(tibetan), isTrue);
     expect(S.supportedLocales, contains(tibetan));
 
     final WidgetsLocalizations widgetsLocalizations =
         await _loadFirstSupportedLocalization<WidgetsLocalizations>(tibetan);
 
-    expect(widgetsLocalizations, isA<DefaultWidgetsLocalizations>());
+    expect(widgetsLocalizations, isNot(isA<DefaultWidgetsLocalizations>()));
   });
 }
 

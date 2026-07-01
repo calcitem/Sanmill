@@ -64,10 +64,9 @@ class _ImportGamePageState extends State<ImportGamePage> {
       return;
     }
 
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(
+    final FilePickerResult? result = await FilePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: <String>['pgn'],
-      withData: true,
     );
     if (!mounted || result == null) {
       return;
@@ -75,16 +74,15 @@ class _ImportGamePageState extends State<ImportGamePage> {
 
     assert(result.files.length == 1, 'Expected exactly one PGN file.');
     final PlatformFile file = result.files.single;
-    final String? text = file.bytes != null
-        ? utf8.decode(file.bytes!, allowMalformed: true)
-        : file.path != null
-        ? await LoadService.readFileContent(file.path!)
-        : null;
+    final String text = utf8.decode(
+      await file.readAsBytes(),
+      allowMalformed: true,
+    );
     if (!mounted) {
       return;
     }
 
-    if (text == null || text.trim().isEmpty) {
+    if (text.trim().isEmpty) {
       rootScaffoldMessengerKey.currentState?.showSnackBarClear(
         S.of(context).importFailed,
       );

@@ -132,11 +132,13 @@ class ConfigImportExportService {
       try {
         final String defaultFileName =
             'sanmill_config_${DateTime.now().millisecondsSinceEpoch}.$fileExtension';
-        final String? outputPath = await FilePicker.platform.saveFile(
+        final Uint8List archiveBytes = await tempFile.readAsBytes();
+        final String? outputPath = await FilePicker.saveFile(
           dialogTitle: saveDialogTitle,
           fileName: defaultFileName,
           type: FileType.custom,
           allowedExtensions: <String>[fileExtension],
+          bytes: archiveBytes,
         );
 
         if (outputPath == null) {
@@ -147,10 +149,12 @@ class ConfigImportExportService {
         String dest = outputPath;
         final String lower = dest.toLowerCase();
         if (!lower.endsWith('.$fileExtension')) {
+          final File savedFile = File(dest);
+          assert(savedFile.existsSync(), 'Saved config archive is missing.');
           dest = '$dest.$fileExtension';
+          await savedFile.rename(dest);
         }
 
-        await tempFile.copy(dest);
         await tempFile.delete();
         logger.i('$_logTag Exported config to $dest');
         return true;
@@ -239,7 +243,7 @@ class ConfigImportExportService {
   /// Let the user pick a `.sanmill_config` file and import it.
   static Future<ConfigImportResult> importConfig() async {
     try {
-      final FilePickerResult? result = await FilePicker.platform.pickFiles();
+      final FilePickerResult? result = await FilePicker.pickFiles();
 
       if (result == null ||
           result.files.isEmpty ||

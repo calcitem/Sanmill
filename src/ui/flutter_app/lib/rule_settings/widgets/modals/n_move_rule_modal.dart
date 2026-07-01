@@ -3,8 +3,6 @@
 
 // n_move_rule_modal.dart
 
-// ignore_for_file: deprecated_member_use
-
 part of 'package:sanmill/rule_settings/widgets/rule_settings_page.dart';
 
 class _NMoveRuleModal extends StatelessWidget {

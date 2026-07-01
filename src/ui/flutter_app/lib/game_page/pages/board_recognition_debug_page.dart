@@ -16,8 +16,6 @@
 // directly and was never wired to a route.  Applying a recognised board
 // now goes through the native setup session via [BoardRecognitionImport].
 
-// ignore_for_file: avoid_classes_with_only_static_members
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

@@ -89,7 +89,7 @@ class GeneralSettingsPage extends StatelessWidget {
   Future<void> _importSettings(BuildContext context) async {
     FilePickerResult? pickResult;
     try {
-      pickResult = await FilePicker.platform.pickFiles(
+      pickResult = await FilePicker.pickFiles(
         type: FileType.custom,
         allowedExtensions: <String>[
           ConfigImportExportService.fileExtension,
@@ -461,7 +461,7 @@ class GeneralSettingsPage extends StatelessWidget {
       return;
     }
 
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(
+    final FilePickerResult? result = await FilePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: <String>['sqlite', 'sqlite3', 'db'],
     );
@@ -715,7 +715,7 @@ class GeneralSettingsPage extends StatelessWidget {
     // Use FilePicker to allow users to select audio files from any accessible directory.
     // This solves the issue where users could not access their own music folders on Android
     // without requiring the MANAGE_EXTERNAL_STORAGE permission.
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(
+    final FilePickerResult? result = await FilePicker.pickFiles(
       type: FileType.audio,
     );
 

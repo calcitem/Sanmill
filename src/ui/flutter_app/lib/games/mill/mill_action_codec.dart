@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
-// ignore_for_file: avoid_classes_with_only_static_members
-
 import '../../game_page/services/mill.dart' show ExtMove, MoveType;
 import '../../game_platform/game_session.dart';
 import '../../src/rust/api/kernel.dart' as tgf_kernel;
