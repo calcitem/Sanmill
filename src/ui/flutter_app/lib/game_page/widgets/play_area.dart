@@ -4489,6 +4489,14 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       foregroundColor: Theme.of(context).colorScheme.onSurface,
       actions: <LichessActionSheetAction>[
+        if (_hasPreviewBoard(node))
+          LichessActionSheetAction(
+            key: const Key('play_area_analysis_move_action_preview_board'),
+            leading: const Icon(Icons.grid_view_rounded),
+            makeLabel: (BuildContext context) => Text(S.of(context).board),
+            onPressed: () =>
+                unawaited(_showMovePreview(context, node, moveNumber)),
+          ),
         if (canPromote)
           LichessActionSheetAction(
             key: const Key(

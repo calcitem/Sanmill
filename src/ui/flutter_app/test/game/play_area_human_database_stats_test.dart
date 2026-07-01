@@ -1595,6 +1595,7 @@ void main() {
         roundIndex: 1,
         nags: <int>[1],
         comments: <String>['Good opening'],
+        boardLayout: '********/********/O*******',
       ),
     );
     GameController().gameRecorder.appendMove(
@@ -1654,6 +1655,48 @@ void main() {
     expect(find.text('d6! {Good opening}'), findsOne);
     expect(find.text('f4? {Check this}'), findsOne);
     expect(find.byKey(const Key('opening_explorer_embedded')), findsNothing);
+
+    await tester.longPress(find.byKey(const Key('play_area_analysis_move_1')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_move_actions_sheet')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_move_action_preview_board')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_move_action_preview_board')),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
+
+    expect(
+      find.byKey(const Key('play_area_move_preview_dialog')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_move_preview_board')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_move_preview_dialog')),
+        matching: find.text('1. d6'),
+      ),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_move_preview_close_button')),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
 
     AnalysisMode.enable(<MoveAnalysisResult>[
       MoveAnalysisResult(
@@ -1841,7 +1884,9 @@ void main() {
     await tester.tap(
       find.byKey(const Key('play_area_analysis_game_menu_move_list')),
     );
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
 
     expect(find.byType(MovesListPage), findsOneWidget);
     expect(
@@ -1850,17 +1895,23 @@ void main() {
     );
 
     Navigator.of(tester.element(find.byType(MovesListPage))).pop();
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
 
     await tester.tap(
       find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
     );
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
 
     await tester.tap(
       find.byKey(const Key('play_area_regular_game_menu_analysis_settings')),
     );
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
 
     expect(
       find.byKey(const Key('play_area_analysis_settings_sheet')),
@@ -1872,17 +1923,23 @@ void main() {
         find.byKey(const Key('play_area_analysis_settings_sheet')),
       ),
     ).pop();
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
 
     await tester.tap(
       find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
     );
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
 
     await tester.tap(
       find.byKey(const Key('play_area_regular_game_menu_toggle_engine_lines')),
     );
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
 
     expect(AnalysisMode.showEngineLines, isFalse);
     expect(
