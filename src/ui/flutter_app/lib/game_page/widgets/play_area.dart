@@ -6773,6 +6773,7 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
     final ColorScheme colorScheme = theme.colorScheme;
     final S strings = S.of(context);
     final String? subtitle = _subtitle(strings);
+    final String continueSearchLabel = _continueSearchLabel(strings);
 
     return ListTile(
       key: const Key('play_area_analysis_engine_status'),
@@ -6781,7 +6782,7 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
       trailing: canGoDeeper
           ? IconButton(
               key: const Key('play_area_analysis_engine_go_deeper'),
-              tooltip: strings.more,
+              tooltip: continueSearchLabel,
               onPressed: onGoDeeper,
               icon: const Icon(Icons.add_circle_outline),
               color: colorScheme.primary,
@@ -6821,11 +6822,17 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
         _analysisSearchTimeValueLabel(AnalysisMode.maxEngineSearchTimeMs),
       ?nodesText,
       ?nodesPerSecondText,
+      if (canGoDeeper) _continueSearchLabel(strings),
     ];
     if (parts.isEmpty) {
       return null;
     }
     return parts.join(' · ');
+  }
+
+  String _continueSearchLabel(S strings) {
+    return '${strings.continueFromHere} · '
+        '${_analysisSearchTimeValueLabel(AnalysisMode.maxEngineSearchTimeMs)}';
   }
 }
 

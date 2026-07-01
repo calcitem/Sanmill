@@ -3342,6 +3342,10 @@ void main() {
       find.byKey(const Key('play_area_analysis_engine_go_deeper')),
       findsOneWidget,
     );
+    final IconButton goDeeperButton = tester.widget<IconButton>(
+      find.byKey(const Key('play_area_analysis_engine_go_deeper')),
+    );
+    expect(goDeeperButton.tooltip, 'Continue from here · ∞');
     expect(
       find.byKey(const Key('play_area_analysis_engine_toggle_engine_lines')),
       findsOneWidget,
@@ -3368,6 +3372,13 @@ void main() {
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_engine_status')),
         matching: find.textContaining('32k n/s'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_engine_status')),
+        matching: find.textContaining('Continue from here · ∞'),
       ),
       findsOneWidget,
     );
