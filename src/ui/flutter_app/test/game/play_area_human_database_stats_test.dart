@@ -3362,12 +3362,15 @@ void main() {
       ),
       findsOneWidget,
     );
-    expect(find.byTooltip('Move list · 3 · d6 a1 g7'), findsOneWidget);
+    expect(
+      find.byTooltip('Move list · Small board · 3 · d6 a1 g7'),
+      findsOneWidget,
+    );
     expect(
       find.byWidgetPredicate(
         (Widget widget) =>
             widget is Semantics &&
-            widget.properties.label == 'Move list · 3 · d6 a1 g7',
+            widget.properties.label == 'Move list · Small board · 3 · d6 a1 g7',
       ),
       findsOneWidget,
     );

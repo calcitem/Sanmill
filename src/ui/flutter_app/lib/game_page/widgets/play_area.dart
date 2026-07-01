@@ -5475,6 +5475,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                       key: const Key('play_area_analysis_summary_moves'),
                       leading: const Icon(Icons.account_tree_outlined),
                       title: strings.moveList,
+                      actionDetails: <String>[strings.smallBoard],
                       subtitleKey: const Key(
                         'play_area_analysis_summary_moves_preview',
                       ),
@@ -5612,11 +5613,16 @@ class _AnalysisSummaryPanel extends StatelessWidget {
     required Key key,
     required Widget leading,
     required String title,
+    List<String> actionDetails = const <String>[],
     required Key subtitleKey,
     required String subtitle,
     required VoidCallback onTap,
   }) {
-    final String actionLabel = _summaryNavigationLabel(title, subtitle);
+    final String actionLabel = _summaryNavigationLabel(
+      title,
+      actionDetails,
+      subtitle,
+    );
 
     return Tooltip(
       message: actionLabel,
@@ -5639,11 +5645,16 @@ class _AnalysisSummaryPanel extends StatelessWidget {
     );
   }
 
-  String _summaryNavigationLabel(String title, String subtitle) {
-    if (subtitle.isEmpty) {
-      return title;
-    }
-    return '$title · $subtitle';
+  String _summaryNavigationLabel(
+    String title,
+    List<String> actionDetails,
+    String subtitle,
+  ) {
+    return <String>[
+      title,
+      ...actionDetails,
+      if (subtitle.isNotEmpty) subtitle,
+    ].join(' · ');
   }
 
   Widget? _engineTrailing(
