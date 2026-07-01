@@ -1947,26 +1947,29 @@ class MovesListPageState extends State<MovesListPage> {
     // Use two-step preview for better branch recognition
     final String notation = _generateBranchPreview(variationNode);
 
-    return GestureDetector(
-      onTap: () => _navigateToNode(variationNode),
-      onLongPress: () => _showVariationPreviewDialog(variationNode),
-      child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        onEnter: (_) => _showVariationHoverPreview(variationNode),
-        onExit: (_) => _hideVariationHoverPreview(),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-          decoration: BoxDecoration(
-            color: colorScheme.surfaceContainerHighest,
-            borderRadius: BorderRadius.circular(4),
-            border: Border.all(color: colorScheme.outlineVariant),
-          ),
-          child: Text(
-            notation,
-            style: TextStyle(
-              color: colorScheme.onSurfaceVariant,
-              fontFamily: 'monospace',
-              fontSize: 11,
+    return Tooltip(
+      message: S.of(context).variationNotation(notation),
+      child: GestureDetector(
+        onTap: () => _navigateToNode(variationNode),
+        onLongPress: () => _showVariationPreviewDialog(variationNode),
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          onEnter: (_) => _showVariationHoverPreview(variationNode),
+          onExit: (_) => _hideVariationHoverPreview(),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+              color: colorScheme.surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(color: colorScheme.outlineVariant),
+            ),
+            child: Text(
+              notation,
+              style: TextStyle(
+                color: colorScheme.onSurfaceVariant,
+                fontFamily: 'monospace',
+                fontSize: 11,
+              ),
             ),
           ),
         ),
@@ -2018,7 +2021,7 @@ class MovesListPageState extends State<MovesListPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        'Variation: $notation',
+                        S.of(context).variationNotation(notation),
                         style: TextStyle(
                           color: colorScheme.onPrimaryContainer,
                           fontFamily: 'monospace',
@@ -2053,7 +2056,7 @@ class MovesListPageState extends State<MovesListPage> {
                   Padding(
                     padding: const EdgeInsets.all(32),
                     child: Text(
-                      'No board preview available',
+                      S.of(context).openingExplorerNoDataShort,
                       style: TextStyle(color: colorScheme.onSurfaceVariant),
                     ),
                   ),
@@ -2182,7 +2185,7 @@ class MovesListPageState extends State<MovesListPage> {
     }
 
     rootScaffoldMessengerKey.currentState?.showSnackBarClear(
-      'Set as main variation',
+      S.of(context).setAsMainLine,
     );
 
     // Refresh the display
