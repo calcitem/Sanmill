@@ -139,6 +139,11 @@ void main() {
     expect(session.requestedUseLazySmpValues, <bool>[true]);
     expect(session.requestedEngineThreadsValues, <int>[8]);
     expect(session.requestedShufflingValues, <bool>[true]);
+    expect(session.requestedSearchAlgorithmValues, <SearchAlgorithm?>[
+      SearchAlgorithm.pvs,
+    ]);
+    expect(session.requestedAiIsLazyValues, <bool>[false]);
+    expect(session.requestedSkillLevelValues, <int>[30]);
   });
 
   testWidgets('multiple engine lines keep analysis single-threaded', (
@@ -161,6 +166,33 @@ void main() {
     expect(session.requestedUseLazySmpValues, <bool>[false]);
     expect(session.requestedEngineThreadsValues, <int>[8]);
     expect(session.requestedShufflingValues, <bool>[false]);
+  });
+
+  testWidgets('analysis ignores weak play search settings', (
+    WidgetTester tester,
+  ) async {
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    addTearDown(session.dispose);
+
+    DB().generalSettings = const GeneralSettings(
+      searchAlgorithm: SearchAlgorithm.random,
+      aiIsLazy: true,
+      skillLevel: 3,
+      shufflingEnabled: true,
+    );
+    AnalysisMode.setEngineLineCount(2);
+
+    await _pumpAnalysisButton(tester, session);
+    await tester.tap(find.byKey(const Key('analysis_service_toggle')));
+    await tester.pump();
+
+    expect(session.requestedSearchAlgorithmValues, <SearchAlgorithm?>[
+      SearchAlgorithm.pvs,
+    ]);
+    expect(session.requestedAiIsLazyValues, <bool>[false]);
+    expect(session.requestedSkillLevelValues, <int>[30]);
+    expect(session.requestedShufflingValues, <bool>[false]);
+    expect(session.requestedUseLazySmpValues, <bool>[false]);
   });
 
   testWidgets('go deeper requests long analysis time', (
@@ -260,6 +292,10 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
   final List<bool> requestedUseLazySmpValues = <bool>[];
   final List<int> requestedEngineThreadsValues = <int>[];
   final List<bool> requestedShufflingValues = <bool>[];
+  final List<SearchAlgorithm?> requestedSearchAlgorithmValues =
+      <SearchAlgorithm?>[];
+  final List<bool> requestedAiIsLazyValues = <bool>[];
+  final List<int> requestedSkillLevelValues = <int>[];
   late final Completer<List<NativeMillPrincipalVariation>> _pendingSearch;
 
   void completePendingSearch() {
@@ -283,6 +319,9 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
     requestedUseLazySmpValues.add(engineSettings?.useLazySmp ?? false);
     requestedEngineThreadsValues.add(engineSettings?.engineThreads ?? -1);
     requestedShufflingValues.add(engineSettings?.shufflingEnabled ?? false);
+    requestedSearchAlgorithmValues.add(engineSettings?.searchAlgorithm);
+    requestedAiIsLazyValues.add(engineSettings?.aiIsLazy ?? false);
+    requestedSkillLevelValues.add(engineSettings?.skillLevel ?? -1);
     onUpdate?.call(_variations);
     if (completeSearchManually) {
       final Completer<List<NativeMillPrincipalVariation>> completer =

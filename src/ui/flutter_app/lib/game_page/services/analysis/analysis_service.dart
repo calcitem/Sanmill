@@ -34,6 +34,7 @@ class AnalysisService {
 
   static const String _logTag = "[AnalysisService]";
   static const int _analysisSearchDepth = 64;
+  static const int _analysisSkillLevel = 30;
 
   static int _analysisSearchGeneration = 0;
   static Future<void>? _activeEngineAnalysis;
@@ -263,10 +264,9 @@ class AnalysisService {
     );
     final bool useAnalysisThreads =
         requestedLineCount == 1 && currentSettings.engineThreads > 1;
-    final GeneralSettings engineSettings = currentSettings.copyWith(
-      resignIfMostLose: false,
-      shufflingEnabled: useAnalysisThreads || currentSettings.shufflingEnabled,
-      useLazySmp: useAnalysisThreads,
+    final GeneralSettings engineSettings = _analysisEngineSettings(
+      currentSettings,
+      useAnalysisThreads: useAnalysisThreads,
     );
     const int searchDepth = _analysisSearchDepth;
     final int moveLimitMs = isDeepSearch
@@ -344,6 +344,24 @@ class AnalysisService {
         AnalysisMode.setAnalyzing(false);
       }
     }
+  }
+
+  static GeneralSettings _analysisEngineSettings(
+    GeneralSettings currentSettings, {
+    required bool useAnalysisThreads,
+  }) {
+    // Analysis must not inherit weak play knobs such as Random, MCTS, lazy
+    // search, or low skill levels. Lichess treats analysis as a full-strength
+    // evaluation path while keeping user-selected line count, time, and
+    // thread preferences.
+    return currentSettings.copyWith(
+      searchAlgorithm: SearchAlgorithm.pvs,
+      aiIsLazy: false,
+      skillLevel: _analysisSkillLevel,
+      resignIfMostLose: false,
+      shufflingEnabled: useAnalysisThreads,
+      useLazySmp: useAnalysisThreads,
+    );
   }
 
   static void _publishEngineVariations(
