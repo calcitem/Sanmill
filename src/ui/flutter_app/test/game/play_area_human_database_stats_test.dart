@@ -1763,6 +1763,13 @@ void main() {
       ),
       findsOne,
     );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_best_move')),
+        matching: find.text('Best Move'),
+      ),
+      findsOne,
+    );
 
     AnalysisMode.enable(
       <MoveAnalysisResult>[
@@ -1785,6 +1792,20 @@ void main() {
         matching: find.text('Threat · Engine'),
       ),
       findsOne,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_best_move')),
+        matching: find.text('Threat'),
+      ),
+      findsOne,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_best_move')),
+        matching: find.text('Best Move'),
+      ),
+      findsNothing,
     );
 
     expect(find.byKey(const Key('play_area_main_toolbar_bottom')), findsOne);

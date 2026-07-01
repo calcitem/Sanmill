@@ -5398,8 +5398,8 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                     if (bestResult != null)
                       ListTile(
                         key: const Key('play_area_analysis_summary_best_move'),
-                        leading: const Icon(Icons.auto_awesome_outlined),
-                        title: Text(strings.puzzleCategoryFindBestMove),
+                        leading: Icon(_bestLineIcon()),
+                        title: Text(_bestLineTitle(strings)),
                         subtitle: _AnalysisSummaryBestLine(result: bestResult),
                         trailing: canApplyBestMove
                             ? const Icon(Icons.play_arrow_rounded)
@@ -5529,6 +5529,18 @@ class _AnalysisSummaryPanel extends StatelessWidget {
       AnalysisSource.perfectDatabase => strings.perfectDatabaseSettings,
       _ => strings.engine,
     };
+  }
+
+  IconData _bestLineIcon() {
+    return AnalysisMode.isThreatMode
+        ? Icons.online_prediction_outlined
+        : Icons.auto_awesome_outlined;
+  }
+
+  String _bestLineTitle(S strings) {
+    return AnalysisMode.isThreatMode
+        ? _analysisThreatLabel(strings)
+        : strings.puzzleCategoryFindBestMove;
   }
 
   Widget? _engineTrailing(BuildContext context, bool canRequestAnalysis) {
