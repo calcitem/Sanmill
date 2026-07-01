@@ -607,8 +607,12 @@ class NativeMillGameSession implements GameSessionHandle {
                 event,
                 lastInfoDepth ?? depth,
               );
-          variationsByRank[variation.rank] = variation;
-          onUpdate?.call(_sortedPrincipalVariations(variationsByRank));
+          final NativeMillPrincipalVariation? existing =
+              variationsByRank[variation.rank];
+          if (_shouldUseBestMoveFallback(existing, variation)) {
+            variationsByRank[variation.rank] = variation;
+            onUpdate?.call(_sortedPrincipalVariations(variationsByRank));
+          }
         }
       }
       if (!currentBatchPublished) {
@@ -715,6 +719,22 @@ class NativeMillGameSession implements GameSessionHandle {
       depth: depth,
       line: <String>[notation],
     );
+  }
+
+  static bool _shouldUseBestMoveFallback(
+    NativeMillPrincipalVariation? existing,
+    NativeMillPrincipalVariation fallback,
+  ) {
+    if (existing == null) {
+      return true;
+    }
+    if (fallback.depth > existing.depth) {
+      return true;
+    }
+    if (fallback.depth < existing.depth) {
+      return false;
+    }
+    return existing.line.length <= 1 && fallback.nodes > existing.nodes;
   }
 
   static List<NativeMillPrincipalVariation> _sortedPrincipalVariations(

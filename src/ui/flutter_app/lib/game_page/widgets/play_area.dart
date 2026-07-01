@@ -1993,6 +1993,13 @@ class PlayAreaState extends State<PlayArea> {
           ),
         if (_isAnalysisMode)
           LichessActionSheetAction(
+            key: const Key('play_area_analysis_game_menu_move_list'),
+            leading: const Icon(Icons.format_list_numbered),
+            makeLabel: (BuildContext context) => Text(S.of(context).moveList),
+            onPressed: () => _openMovesWithNavigator(hostNavigator),
+          ),
+        if (_isAnalysisMode)
+          LichessActionSheetAction(
             key: const Key('play_area_regular_game_menu_board_editor'),
             leading: const Icon(Icons.dashboard_customize_outlined),
             makeLabel: (BuildContext context) =>

@@ -15,6 +15,7 @@ import 'package:sanmill/game_page/services/analysis_mode.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/player_timer.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
+import 'package:sanmill/game_page/widgets/moves_list_page.dart';
 import 'package:sanmill/game_page/widgets/play_area.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart' as platform;
@@ -1718,6 +1719,17 @@ void main() {
 
     expect(find.byKey(const Key('play_area_toolbar_item_move')), findsNothing);
     expect(
+      find.byKey(const Key('play_area_analysis_game_menu_move_list')),
+      findsOne,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_game_menu_move_list')),
+        matching: find.text('Move list'),
+      ),
+      findsOneWidget,
+    );
+    expect(
       find.byKey(const Key('play_area_regular_game_menu_opening_explorer')),
       findsNothing,
     );
@@ -1759,6 +1771,25 @@ void main() {
       find.byKey(const Key('play_area_regular_game_menu_share_export')),
       findsOne,
     );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_game_menu_move_list')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(MovesListPage), findsOneWidget);
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_sheet')),
+      findsNothing,
+    );
+
+    Navigator.of(tester.element(find.byType(MovesListPage))).pop();
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
 
     await tester.tap(
       find.byKey(const Key('play_area_regular_game_menu_analysis_settings')),
