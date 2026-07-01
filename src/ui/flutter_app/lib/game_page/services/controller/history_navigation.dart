@@ -110,6 +110,7 @@ class HistoryNavigator {
     // `_nativeDoEachMove`; only genuine single-step navigation may take the
     // fast `_nativeSessionHistory` undo/redo path.
     final bool useRecorderReplay =
+        GameController().gameInstance.gameMode == GameMode.analysis ||
         GameController().newGameRecorder != null ||
         navMode == HistoryNavMode.takeBackAll ||
         navMode == HistoryNavMode.stepForwardAll;
@@ -591,20 +592,28 @@ class HistoryNavigator {
   }
 
   /// Move HEAD up by `n` steps if possible.
-  /// Records the child we came from at each step so that subsequent forward
-  /// navigation can resume along the same variation branch.
+  ///
+  /// Regular play records the child we came from so that subsequent forward
+  /// navigation can resume along the same variation branch. Analysis mode
+  /// intentionally clears that preference so forward navigation follows the
+  /// main line from a branching position.
   static void _takeBack(int n) {
     final GameRecorder rec = GameController().gameRecorder;
+    final bool preferMainlineForward =
+        GameController().gameInstance.gameMode == GameMode.analysis;
+    if (preferMainlineForward) {
+      rec.clearPreferredChildren();
+    }
     while (n-- > 0) {
       final PgnNode<ExtMove>? node = rec.activeNode;
       if (node == null || node.parent == null) {
         break;
       }
       // Record the preferred child before moving up so that _stepForward
-      // knows which branch to resume.
+      // knows which branch to resume in regular play.
       final PgnNode<ExtMove> parent = node.parent!;
       final int childIdx = parent.children.indexOf(node);
-      if (childIdx >= 0) {
+      if (!preferMainlineForward && childIdx >= 0) {
         rec.setPreferredChild(parent, childIdx);
       }
       rec.activeNode = parent;
@@ -615,17 +624,23 @@ class HistoryNavigator {
   }
 
   /// Move HEAD to the root.
-  /// Records preferred children along the full path so that a subsequent
-  /// _stepForwardAll can retrace the exact same variation.
+  ///
+  /// Regular play records preferred children along the full path so that a
+  /// subsequent _stepForwardAll can retrace the exact same variation.
   static void _takeBackAll() {
     final GameRecorder rec = GameController().gameRecorder;
+    final bool preferMainlineForward =
+        GameController().gameInstance.gameMode == GameMode.analysis;
+    if (preferMainlineForward) {
+      rec.clearPreferredChildren();
+    }
     // Walk from current position to root, recording preferred child at every
     // branching point.
     PgnNode<ExtMove>? node = rec.activeNode;
     while (node != null && node.parent != null) {
       final PgnNode<ExtMove> parent = node.parent!;
       final int childIdx = parent.children.indexOf(node);
-      if (childIdx >= 0) {
+      if (!preferMainlineForward && childIdx >= 0) {
         rec.setPreferredChild(parent, childIdx);
       }
       node = parent;

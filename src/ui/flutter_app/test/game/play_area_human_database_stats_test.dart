@@ -3327,6 +3327,24 @@ void main() {
       find.byKey(const Key('play_area_analysis_variations_bar_empty')),
       findsOneWidget,
     );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_bottom_bar_previous')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(_currentPathMoves(), isEmpty);
+    expect(
+      find.byKey(const Key('play_area_analysis_variations_bar_content')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_bottom_bar_next')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(_currentPathMoves(), <String>['d6']);
   });
 
   testWidgets('analysis uses a framed side panel in landscape', (
