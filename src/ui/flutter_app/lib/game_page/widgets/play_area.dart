@@ -5119,19 +5119,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                         leading: const Icon(Icons.show_chart_outlined),
                         title: Text(strings.showAdvantageGraph),
                       ),
-                      SizedBox(
-                        key: const Key(
-                          'play_area_analysis_summary_advantage_graph',
-                        ),
-                        height: 112,
-                        width: double.infinity,
-                        child: CustomPaint(
-                          key: const Key(
-                            'play_area_analysis_summary_advantage_paint',
-                          ),
-                          painter: AdvantageGraphPainter(advantageData),
-                        ),
-                      ),
+                      _AnalysisSummaryAdvantageGraph(data: advantageData),
                     ],
                   ),
                 LichessListSection(
@@ -5300,6 +5288,106 @@ class _AnalysisSummaryPanel extends StatelessWidget {
       return null;
     }
     return AnalysisMode.trapMoves.join(' ');
+  }
+}
+
+class _AnalysisSummaryAdvantageGraph extends StatelessWidget {
+  const _AnalysisSummaryAdvantageGraph({required this.data});
+
+  static const double _height = 112;
+  static const double _chartMargin = 10;
+
+  final List<int> data;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<int>(
+      valueListenable: GameController().gameRecorder.moveCountNotifier,
+      builder: (BuildContext context, _, _) {
+        return SizedBox(
+          key: const Key('play_area_analysis_summary_advantage_graph'),
+          height: _height,
+          width: double.infinity,
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTapUp: (TapUpDetails details) {
+                  _jumpToGraphPosition(
+                    context,
+                    details.localPosition,
+                    Size(constraints.maxWidth, _height),
+                  );
+                },
+                child: CustomPaint(
+                  key: const Key('play_area_analysis_summary_advantage_paint'),
+                  painter: AdvantageGraphPainter(data),
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  void _jumpToGraphPosition(
+    BuildContext context,
+    Offset localPosition,
+    Size size,
+  ) {
+    final int? dataIndex = _dataIndexForHorizontalPosition(
+      localPosition.dx,
+      size.width,
+    );
+    if (dataIndex == null) {
+      return;
+    }
+
+    final PgnNode<ExtMove>? targetNode = _nodeForDataIndex(
+      GameController().gameRecorder,
+      dataIndex,
+    );
+    if (targetNode == null) {
+      return;
+    }
+    unawaited(HistoryNavigator.gotoNode(context, targetNode, pop: false));
+  }
+
+  int? _dataIndexForHorizontalPosition(double dx, double width) {
+    if (data.isEmpty || width <= _chartMargin * 2) {
+      return null;
+    }
+
+    final int shownCount = math.min(50, data.length);
+    final int dataOffset = data.length - shownCount;
+    final double chartWidth = width - _chartMargin * 2;
+    final double stepWidth = chartWidth / 49;
+    final double chartDx = (dx - _chartMargin).clamp(0.0, chartWidth);
+    final int localIndex = math.min(
+      shownCount - 1,
+      math.max(0, (chartDx / stepWidth).round()),
+    );
+    return dataOffset + localIndex;
+  }
+
+  PgnNode<ExtMove>? _nodeForDataIndex(GameRecorder recorder, int dataIndex) {
+    if (dataIndex == 0) {
+      return recorder.pgnRoot;
+    }
+
+    final List<PgnNode<ExtMove>> nodes = _recorderPathWithMainlineContinuation(
+      recorder,
+    );
+    final int nodeIndex = dataIndex - 1;
+    if (nodeIndex >= nodes.length) {
+      assert(
+        false,
+        'Advantage graph data point $dataIndex has no matching recorder node.',
+      );
+      return null;
+    }
+    return nodes[nodeIndex];
   }
 }
 
