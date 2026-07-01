@@ -2214,6 +2214,65 @@ void main() {
     );
   });
 
+  testWidgets(
+    'deep analysis marks max search time in summary and engine sheet',
+    (WidgetTester tester) async {
+      db.displaySettings = const DisplaySettings(
+        isUnplacedAndRemovedPiecesShown: false,
+        isHistoryNavigationToolbarShown: false,
+      );
+      final NativeMillGameSession session = await _bindNativeGame(
+        GameMode.analysis,
+      );
+
+      AnalysisMode.enable(
+        <MoveAnalysisResult>[
+          const MoveAnalysisResult(
+            move: 'd6',
+            outcome: AnalysisOutcome.advantage,
+            rank: 1,
+            depth: 12,
+            nodes: 256000,
+            nodesPerSecond: 64000,
+            line: <String>['d6', 'f4', 'a1'],
+          ),
+        ],
+        source: AnalysisSource.engine,
+        isEngineAnalysisDeep: true,
+      );
+
+      await _pumpSessionPlayArea(tester, session);
+
+      await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('play_area_analysis_summary_engine')),
+          matching: find.textContaining('∞'),
+        ),
+        findsOneWidget,
+      );
+
+      await tester.longPress(
+        find.byKey(const Key('play_area_analysis_bottom_bar_engine')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('play_area_analysis_engine_status')),
+          matching: find.textContaining('∞'),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('play_area_analysis_engine_go_deeper')),
+        findsNothing,
+      );
+    },
+  );
+
   testWidgets('analysis summary opens the full move list page', (
     WidgetTester tester,
   ) async {

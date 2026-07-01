@@ -1891,6 +1891,7 @@ class PlayAreaState extends State<PlayArea> {
         nodes: nodes,
         nodesPerSecond: nodesPerSecond,
         isAnalyzing: AnalysisMode.isAnalyzing,
+        isDeepSearch: AnalysisMode.isEngineAnalysisDeep,
         canGoDeeper:
             !AnalysisMode.isAnalyzing && !AnalysisMode.isEngineAnalysisDeep,
         onGoDeeper: () =>
@@ -5161,6 +5162,8 @@ class _AnalysisSummaryPanel extends StatelessWidget {
     final List<String> parts = <String>[
       _analysisEvalLabel(result.outcome),
       if (depth != null) 'd$depth',
+      if (AnalysisMode.isEngineAnalysisDeep)
+        _analysisSearchTimeValueLabel(AnalysisMode.maxEngineSearchTimeMs),
       if (result.nodes != null && result.nodes! > 0)
         _compactAnalysisCount(result.nodes!),
       if (nodesPerSecond != null) _compactAnalysisRate(nodesPerSecond),
@@ -5502,6 +5505,7 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
     required this.nodes,
     required this.nodesPerSecond,
     required this.isAnalyzing,
+    required this.isDeepSearch,
     required this.canGoDeeper,
     required this.onGoDeeper,
   });
@@ -5510,6 +5514,7 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
   final int? nodes;
   final int? nodesPerSecond;
   final bool isAnalyzing;
+  final bool isDeepSearch;
   final bool canGoDeeper;
   final VoidCallback onGoDeeper;
 
@@ -5563,6 +5568,8 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
     final List<String> parts = <String>[
       if (isAnalyzing) strings.thinking,
       ?depthText,
+      if (isDeepSearch)
+        _analysisSearchTimeValueLabel(AnalysisMode.maxEngineSearchTimeMs),
       ?nodesText,
       ?nodesPerSecondText,
     ];
