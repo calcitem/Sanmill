@@ -2285,6 +2285,35 @@ void main() {
       ),
       findsOneWidget,
     );
+    final Finder bestMove = find.byKey(
+      const Key('play_area_analysis_summary_best_move'),
+    );
+    expect(bestMove, findsOneWidget);
+    expect(
+      find.descendant(of: bestMove, matching: find.text('Best Move')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: bestMove,
+        matching: find.byKey(
+          const Key('play_area_analysis_summary_best_move_eval'),
+        ),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: bestMove, matching: find.textContaining('+32')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: bestMove, matching: find.textContaining('d12')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: bestMove, matching: find.textContaining('g7 b2')),
+      findsOneWidget,
+    );
 
     final Finder results = find.byKey(
       const Key('play_area_analysis_summary_results'),
@@ -2356,6 +2385,65 @@ void main() {
       ),
       findsOneWidget,
     );
+  });
+
+  testWidgets('analysis summary best move applies the candidate', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    AnalysisMode.enable(
+      <MoveAnalysisResult>[
+        const MoveAnalysisResult(
+          move: 'd6',
+          outcome: AnalysisOutcome.advantage,
+        ),
+      ],
+      lineResults: <MoveAnalysisResult>[
+        const MoveAnalysisResult(
+          move: 'd6',
+          outcome: AnalysisOutcome.advantage,
+          rank: 1,
+          depth: 8,
+          nodes: 128000,
+          line: <String>['d6', 'f4'],
+        ),
+      ],
+      source: AnalysisSource.engine,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
+    await tester.pumpAndSettle();
+
+    final Finder bestMove = find.byKey(
+      const Key('play_area_analysis_summary_best_move'),
+    );
+    expect(bestMove, findsOneWidget);
+    expect(
+      find.descendant(of: bestMove, matching: find.textContaining('d8')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: bestMove, matching: find.textContaining('d6 f4')),
+      findsOneWidget,
+    );
+
+    await tester.tap(bestMove);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
+
+    expect(_currentPathMoves(), <String>['d6']);
   });
 
   testWidgets('analysis summary offers request and waiting states', (

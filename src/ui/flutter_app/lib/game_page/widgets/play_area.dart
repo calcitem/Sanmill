@@ -3040,6 +3040,19 @@ class PlayAreaState extends State<PlayArea> {
             advantageData: advantageData,
             onOpenFullMoveList: () =>
                 _openMovesWithNavigator(Navigator.of(context)),
+            onBestMoveTap: (String move) async {
+              final bool applied = await _applyAnalysisMove(context, move);
+              if (!applied) {
+                return;
+              }
+              RecordingService().recordEvent(
+                RecordingEventType.toolbarAction,
+                <String, dynamic>{
+                  'toolbar': 'analysisSummary',
+                  'action': 'applyBestMove',
+                },
+              );
+            },
             onAnalyze: () {
               RecordingService().recordEvent(
                 RecordingEventType.toolbarAction,
@@ -5128,11 +5141,13 @@ class _AnalysisSummaryPanel extends StatelessWidget {
   const _AnalysisSummaryPanel({
     required this.advantageData,
     required this.onOpenFullMoveList,
+    required this.onBestMoveTap,
     required this.onAnalyze,
   });
 
   final List<int> advantageData;
   final VoidCallback onOpenFullMoveList;
+  final Future<void> Function(String move) onBestMoveTap;
   final VoidCallback onAnalyze;
 
   @override
@@ -5157,6 +5172,10 @@ class _AnalysisSummaryPanel extends StatelessWidget {
             final String? trapSummary = _trapSummary();
             final bool canRequestAnalysis =
                 !AnalysisMode.isFullAnalysis && !AnalysisMode.isAnalyzing;
+            final bool canApplyBestMove =
+                bestResult != null &&
+                !AnalysisMode.isThreatMode &&
+                !AnalysisMode.isAnalyzing;
             final bool showAdvantageGraph =
                 DB().displaySettings.isAdvantageGraphShown &&
                 advantageData.isNotEmpty;
@@ -5198,6 +5217,19 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                       trailing: _engineTrailing(context, canRequestAnalysis),
                       onTap: canRequestAnalysis ? onAnalyze : null,
                     ),
+                    if (bestResult != null)
+                      ListTile(
+                        key: const Key('play_area_analysis_summary_best_move'),
+                        leading: const Icon(Icons.auto_awesome_outlined),
+                        title: Text(strings.puzzleCategoryFindBestMove),
+                        subtitle: _AnalysisSummaryBestLine(result: bestResult),
+                        trailing: canApplyBestMove
+                            ? const Icon(Icons.play_arrow_rounded)
+                            : null,
+                        onTap: canApplyBestMove
+                            ? () => unawaited(onBestMoveTap(bestResult.move))
+                            : null,
+                      ),
                     if (resultSummary != null)
                       ListTile(
                         key: const Key('play_area_analysis_summary_results'),
@@ -5408,6 +5440,68 @@ class _AnalysisOutcomeBucket {
   final String label;
   final int count;
   final Color color;
+}
+
+class _AnalysisSummaryBestLine extends StatelessWidget {
+  const _AnalysisSummaryBestLine({required this.result});
+
+  final MoveAnalysisResult result;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+    final Color outcomeColor = AnalysisMode.getColorForOutcome(result.outcome);
+    final Color chipTextColor =
+        ThemeData.estimateBrightnessForColor(outcomeColor) == Brightness.dark
+        ? Colors.white
+        : Colors.black;
+
+    return Semantics(
+      key: const Key('play_area_analysis_summary_best_move_semantics'),
+      label:
+          '${_analysisEvalLabel(result.outcome)} '
+          '${_analysisLineText(result)}',
+      child: Row(
+        key: const Key('play_area_analysis_summary_best_move_line'),
+        children: <Widget>[
+          DecoratedBox(
+            key: const Key('play_area_analysis_summary_best_move_eval'),
+            decoration: BoxDecoration(
+              color: outcomeColor,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              child: Text(
+                _analysisEvalLabel(result.outcome),
+                textAlign: TextAlign.center,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: chipTextColor,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              _analysisSummaryBestLineText(result),
+              key: const Key('play_area_analysis_summary_best_move_text'),
+              maxLines: 1,
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+                letterSpacing: 0,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _AnalysisSummaryResultsSubtitle extends StatelessWidget {
@@ -6158,44 +6252,7 @@ class _AnalysisEngineLine extends StatelessWidget {
   }
 
   String _lineText(MoveAnalysisResult result) {
-    final List<String> line = result.displayLine;
-    final String rawLine = line.join(' ');
-    final PgnNode<ExtMove>? activeNode =
-        GameController().gameRecorder.activeNode;
-    final ExtMove? lastMove = activeNode?.data;
-    final PieceColor? sideToMove =
-        GameController().activeSessionSideToMove ??
-        _nextSideToMoveAfter(lastMove);
-    if (sideToMove != PieceColor.white && sideToMove != PieceColor.black) {
-      return rawLine;
-    }
-
-    final PieceColor playableSideToMove = sideToMove!;
-    final int moveNumber = _nextAnalysisMoveNumber(
-      lastMove,
-      playableSideToMove,
-    );
-    final String marker = playableSideToMove == PieceColor.black ? '...' : '.';
-    return '$moveNumber$marker $rawLine';
-  }
-
-  PieceColor? _nextSideToMoveAfter(ExtMove? lastMove) {
-    return switch (lastMove?.side) {
-      PieceColor.white => PieceColor.black,
-      PieceColor.black => PieceColor.white,
-      _ => PieceColor.white,
-    };
-  }
-
-  int _nextAnalysisMoveNumber(ExtMove? lastMove, PieceColor sideToMove) {
-    final int round = lastMove?.roundIndex ?? 1;
-    if (lastMove == null) {
-      return round;
-    }
-    if (sideToMove == PieceColor.white && lastMove.side == PieceColor.black) {
-      return round + 1;
-    }
-    return round;
+    return _analysisLineText(result);
   }
 
   String _evalLabel(AnalysisOutcome outcome) {
@@ -6274,6 +6331,54 @@ String _analysisEvalLabel(AnalysisOutcome outcome) {
     'disadvantage' => '-',
     _ => '?',
   };
+}
+
+String _analysisSummaryBestLineText(MoveAnalysisResult result) {
+  final List<String> parts = <String>[
+    if (result.depth != null && result.depth! > 0) 'd${result.depth}',
+    if (result.nodes != null && result.nodes! > 0)
+      _compactAnalysisCount(result.nodes!),
+    if (result.nodesPerSecond != null && result.nodesPerSecond! > 0)
+      _compactAnalysisRate(result.nodesPerSecond!),
+    _analysisLineText(result),
+  ];
+  return parts.join(' · ');
+}
+
+String _analysisLineText(MoveAnalysisResult result) {
+  final String rawLine = result.displayLine.join(' ');
+  final PgnNode<ExtMove>? activeNode = GameController().gameRecorder.activeNode;
+  final ExtMove? lastMove = activeNode?.data;
+  final PieceColor? sideToMove =
+      GameController().activeSessionSideToMove ??
+      _nextAnalysisSideToMoveAfter(lastMove);
+  if (sideToMove != PieceColor.white && sideToMove != PieceColor.black) {
+    return rawLine;
+  }
+
+  final PieceColor playableSideToMove = sideToMove!;
+  final int moveNumber = _nextAnalysisMoveNumber(lastMove, playableSideToMove);
+  final String marker = playableSideToMove == PieceColor.black ? '...' : '.';
+  return '$moveNumber$marker $rawLine';
+}
+
+PieceColor? _nextAnalysisSideToMoveAfter(ExtMove? lastMove) {
+  return switch (lastMove?.side) {
+    PieceColor.white => PieceColor.black,
+    PieceColor.black => PieceColor.white,
+    _ => PieceColor.white,
+  };
+}
+
+int _nextAnalysisMoveNumber(ExtMove? lastMove, PieceColor sideToMove) {
+  final int round = lastMove?.roundIndex ?? 1;
+  if (lastMove == null) {
+    return round;
+  }
+  if (sideToMove == PieceColor.white && lastMove.side == PieceColor.black) {
+    return round + 1;
+  }
+  return round;
 }
 
 int? _analysisEngineDepth() {
