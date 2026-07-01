@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 
 import '../../appearance_settings/models/display_settings.dart';
+import '../../general_settings/models/general_settings.dart';
 import '../../shared/database/database.dart';
 
 /// Verdict for a single analysed move.
@@ -142,6 +143,8 @@ class AnalysisMode {
   static const int defaultEngineLineCount =
       DisplaySettings.defaultAnalysisEngineLineCount;
   static const int maxEngineLineCount = 3;
+  static const List<int> engineThreadOptions =
+      GeneralSettings.supportedEngineThreadCounts;
   static const List<int> engineSearchTimeOptionsMs = <int>[
     2000,
     4000,
@@ -376,6 +379,24 @@ class AnalysisMode {
       'Analysis engine search time option index is out of range.',
     );
     return engineSearchTimeOptionsMs[index];
+  }
+
+  /// Search thread option at [index].
+  static int engineThreadOptionAt(int index) {
+    assert(
+      index >= 0 && index < engineThreadOptions.length,
+      'Analysis engine thread option index is out of range.',
+    );
+    return engineThreadOptions[index];
+  }
+
+  /// Index of [threadCount] in the supported search-thread options.
+  static int engineThreadOptionIndexFor(int threadCount) {
+    assert(
+      engineThreadOptions.contains(threadCount),
+      'Analysis engine thread count must be one of the supported options.',
+    );
+    return engineThreadOptions.indexOf(threadCount);
   }
 
   /// Load persisted analysis display preferences.

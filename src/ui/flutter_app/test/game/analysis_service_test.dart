@@ -119,6 +119,50 @@ void main() {
     expect(session.requestedMoveLimitValues, <int>[20000]);
   });
 
+  testWidgets('single engine line uses configured analysis threads', (
+    WidgetTester tester,
+  ) async {
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    addTearDown(session.dispose);
+
+    DB().generalSettings = const GeneralSettings(
+      engineThreads: 8,
+      shufflingEnabled: false,
+    );
+    AnalysisMode.setEngineLineCount(1);
+
+    await _pumpAnalysisButton(tester, session);
+    await tester.tap(find.byKey(const Key('analysis_service_toggle')));
+    await tester.pump();
+
+    expect(session.requestedMultiPvValues, <int>[1]);
+    expect(session.requestedUseLazySmpValues, <bool>[true]);
+    expect(session.requestedEngineThreadsValues, <int>[8]);
+    expect(session.requestedShufflingValues, <bool>[true]);
+  });
+
+  testWidgets('multiple engine lines keep analysis single-threaded', (
+    WidgetTester tester,
+  ) async {
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    addTearDown(session.dispose);
+
+    DB().generalSettings = const GeneralSettings(
+      engineThreads: 8,
+      shufflingEnabled: false,
+    );
+    AnalysisMode.setEngineLineCount(2);
+
+    await _pumpAnalysisButton(tester, session);
+    await tester.tap(find.byKey(const Key('analysis_service_toggle')));
+    await tester.pump();
+
+    expect(session.requestedMultiPvValues, <int>[2]);
+    expect(session.requestedUseLazySmpValues, <bool>[false]);
+    expect(session.requestedEngineThreadsValues, <int>[8]);
+    expect(session.requestedShufflingValues, <bool>[false]);
+  });
+
   testWidgets('go deeper requests long analysis time', (
     WidgetTester tester,
   ) async {
@@ -213,6 +257,9 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
   final List<int> requestedMultiPvValues = <int>[];
   final List<int> requestedDepthValues = <int>[];
   final List<int> requestedMoveLimitValues = <int>[];
+  final List<bool> requestedUseLazySmpValues = <bool>[];
+  final List<int> requestedEngineThreadsValues = <int>[];
+  final List<bool> requestedShufflingValues = <bool>[];
   late final Completer<List<NativeMillPrincipalVariation>> _pendingSearch;
 
   void completePendingSearch() {
@@ -233,6 +280,9 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
     requestedMultiPvValues.add(multiPv);
     requestedDepthValues.add(depth);
     requestedMoveLimitValues.add(moveLimitMs);
+    requestedUseLazySmpValues.add(engineSettings?.useLazySmp ?? false);
+    requestedEngineThreadsValues.add(engineSettings?.engineThreads ?? -1);
+    requestedShufflingValues.add(engineSettings?.shufflingEnabled ?? false);
     onUpdate?.call(_variations);
     if (completeSearchManually) {
       final Completer<List<NativeMillPrincipalVariation>> completer =

@@ -23,6 +23,7 @@ import '../../games/mill/mill_board_transform_actions.dart';
 import '../../games/mill/native_mill_game_session.dart';
 import '../../games/mill/native_mill_rules_port.dart';
 import '../../games/mill/opening_explorer/opening_explorer_page.dart';
+import '../../general_settings/models/general_settings.dart';
 import '../../general_settings/widgets/general_settings_page.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/config/constants.dart';
@@ -72,6 +73,10 @@ Future<void> showAnalysisSettingsSheet(
           child: ValueListenableBuilder<bool>(
             valueListenable: AnalysisMode.stateNotifier,
             builder: (BuildContext context, _, Widget? child) {
+              final int currentEngineThreads =
+                  DB().generalSettings.engineThreads;
+              final bool canUseAnalysisThreads =
+                  AnalysisMode.engineLineCount == 1;
               return SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -267,10 +272,63 @@ Future<void> showAnalysisSettingsSheet(
                         ),
                         ListTile(
                           key: const Key(
+                            'play_area_analysis_settings_engine_threads',
+                          ),
+                          leading: const Icon(Icons.memory_outlined),
+                          title: Text(strings.engineThreads),
+                          subtitle: Text(currentEngineThreads.toString()),
+                          trailing: SizedBox(
+                            width: 180,
+                            child: Slider(
+                              key: const Key(
+                                'play_area_analysis_settings_engine_threads_control',
+                              ),
+                              value: AnalysisMode.engineThreadOptionIndexFor(
+                                currentEngineThreads,
+                              ).toDouble(),
+                              max: (AnalysisMode.engineThreadOptions.length - 1)
+                                  .toDouble(),
+                              divisions:
+                                  AnalysisMode.engineThreadOptions.length - 1,
+                              label: currentEngineThreads.toString(),
+                              onChanged: canUseAnalysisThreads
+                                  ? (double value) {
+                                      final int threads =
+                                          AnalysisMode.engineThreadOptionAt(
+                                            value.round(),
+                                          );
+                                      RecordingService().recordEvent(
+                                        RecordingEventType.toolbarAction,
+                                        <String, dynamic>{
+                                          'toolbar': 'analysisSettings',
+                                          'action': 'setEngineThreads',
+                                          'threads': threads,
+                                        },
+                                      );
+                                      _setAnalysisEngineThreads(threads);
+                                    }
+                                  : null,
+                              onChangeEnd: canUseAnalysisThreads
+                                  ? (double value) {
+                                      final int threads =
+                                          AnalysisMode.engineThreadOptionAt(
+                                            value.round(),
+                                          );
+                                      _setAnalysisEngineThreads(threads);
+                                      _refreshEngineAnalysisAfterSettingsChange(
+                                        context,
+                                      );
+                                    }
+                                  : null,
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          key: const Key(
                             'play_area_analysis_settings_engine_line_count',
                           ),
                           leading: const Icon(Icons.format_list_numbered),
-                          title: Text(_analysisMultipleLinesLabel(strings)),
+                          title: Text(strings.multipleLines),
                           subtitle: Text('${AnalysisMode.engineLineCount}'),
                           trailing: SizedBox(
                             width: 180,
@@ -329,11 +387,17 @@ void _refreshEngineAnalysisAfterSettingsChange(BuildContext context) {
   unawaited(AnalysisService.refresh(context));
 }
 
-String _analysisMultipleLinesLabel(S strings) {
-  return switch (strings.localeName.split('_').first) {
-    'zh' => '多条分析线',
-    _ => 'Multiple lines',
-  };
+void _setAnalysisEngineThreads(int threads) {
+  assert(
+    AnalysisMode.engineThreadOptions.contains(threads),
+    'Unsupported analysis engine thread count: $threads.',
+  );
+  final current = DB().generalSettings;
+  if (current.engineThreads == threads) {
+    return;
+  }
+  DB().generalSettings = current.copyWith(engineThreads: threads);
+  AnalysisMode.refresh();
 }
 
 String _analysisSearchTimeLabel(S strings) {

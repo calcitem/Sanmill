@@ -256,9 +256,17 @@ class AnalysisService {
     _activeEngineAnalysis = activeEngineAnalysis.future;
     final int requestedLineCount = math.max(1, AnalysisMode.engineLineCount);
     final GeneralSettings currentSettings = DB().generalSettings;
+    assert(
+      AnalysisMode.engineThreadOptions.contains(currentSettings.engineThreads),
+      'Unsupported analysis engine thread count: '
+      '${currentSettings.engineThreads}.',
+    );
+    final bool useAnalysisThreads =
+        requestedLineCount == 1 && currentSettings.engineThreads > 1;
     final GeneralSettings engineSettings = currentSettings.copyWith(
       resignIfMostLose: false,
-      useLazySmp: false,
+      shufflingEnabled: useAnalysisThreads || currentSettings.shufflingEnabled,
+      useLazySmp: useAnalysisThreads,
     );
     const int searchDepth = _analysisSearchDepth;
     final int moveLimitMs = isDeepSearch

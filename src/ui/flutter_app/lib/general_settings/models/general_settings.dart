@@ -190,6 +190,16 @@ class GeneralSettings {
   factory GeneralSettings.fromJson(Map<String, dynamic> json) =>
       _$GeneralSettingsFromJson(json);
 
+  static const List<int> supportedEngineThreadCounts = <int>[
+    1,
+    2,
+    4,
+    6,
+    8,
+    12,
+    16,
+  ];
+
   @HiveField(0, defaultValue: false)
   final bool isPrivacyPolicyAccepted;
 

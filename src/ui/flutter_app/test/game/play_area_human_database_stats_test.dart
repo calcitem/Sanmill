@@ -2308,9 +2308,22 @@ void main() {
       ),
       findsOneWidget,
     );
+    expect(
+      find.byKey(
+        const Key('play_area_analysis_settings_engine_threads_control'),
+      ),
+      findsOneWidget,
+    );
     expect(find.text('Search time'), findsOneWidget);
     expect(find.text('6s'), findsOneWidget);
+    expect(find.text('Search threads'), findsOneWidget);
     expect(find.text('Multiple lines'), findsOneWidget);
+
+    final Finder threadSliderFinder = find.byKey(
+      const Key('play_area_analysis_settings_engine_threads_control'),
+    );
+    Slider threadSlider = tester.widget<Slider>(threadSliderFinder);
+    expect(threadSlider.onChanged, isNull);
 
     final Finder searchTimeSliderFinder = find.byKey(
       const Key('play_area_analysis_settings_engine_search_time_control'),
@@ -2349,6 +2362,16 @@ void main() {
       find.byKey(const Key('play_area_analysis_engine_line_empty_1')),
       findsNothing,
     );
+
+    threadSlider = tester.widget<Slider>(threadSliderFinder);
+    expect(threadSlider.onChanged, isNotNull);
+    threadSlider.onChanged!(4);
+    threadSlider.onChangeEnd!(4);
+    await tester.pumpAndSettle();
+
+    expect(db.generalSettings.engineThreads, 8);
+    threadSlider = tester.widget<Slider>(threadSliderFinder);
+    expect(threadSlider.value, 4);
 
     lineCountSlider = tester.widget<Slider>(lineCountSliderFinder);
     lineCountSlider.onChanged!(0);
