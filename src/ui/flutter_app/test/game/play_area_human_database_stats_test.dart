@@ -3479,6 +3479,53 @@ void main() {
     expect(find.byKey(const Key('moves_list_page_scaffold')), findsOneWidget);
   });
 
+  testWidgets('analysis full move list opens near the active node', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+      movesViewLayout: MovesViewLayout.medium,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    final GameRecorder recorder = GameController().gameRecorder;
+    recorder.reset();
+    <ExtMove>[
+      ExtMove('a1', side: PieceColor.white),
+      ExtMove('d1', side: PieceColor.black),
+      ExtMove('a4', side: PieceColor.white),
+      ExtMove('d2', side: PieceColor.black),
+      ExtMove('a7', side: PieceColor.white),
+      ExtMove('d3', side: PieceColor.black),
+      ExtMove('d6', side: PieceColor.white),
+      ExtMove('f4', side: PieceColor.black),
+      ExtMove('g1', side: PieceColor.white),
+      ExtMove('g4', side: PieceColor.black),
+      ExtMove('g7', side: PieceColor.white),
+      ExtMove('b2', side: PieceColor.black),
+      ExtMove('d5', side: PieceColor.white),
+      ExtMove('f6', side: PieceColor.black),
+    ].forEach(recorder.appendMove);
+
+    await _pumpSessionPlayArea(tester, session);
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_open_full_move_list')),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
+
+    expect(find.byKey(const Key('moves_list_page_scaffold')), findsOneWidget);
+    expect(
+      find.byKey(const Key('moves_list_active_node_item')),
+      findsOneWidget,
+    );
+    expect(find.text('7... f6'), findsOneWidget);
+  });
+
   testWidgets('analysis moves tab shows a variations bar', (
     WidgetTester tester,
   ) async {

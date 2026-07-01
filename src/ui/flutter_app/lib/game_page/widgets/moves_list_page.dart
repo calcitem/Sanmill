@@ -74,6 +74,13 @@ class MovesListPage extends StatefulWidget {
 }
 
 class MovesListPageState extends State<MovesListPage> {
+  static const double _initialScrollLeadingPadding = 80.0;
+  static const double _estimatedListRowExtent = 46.0;
+  static const double _estimatedDetailsItemExtent = 64.0;
+  static const double _estimatedMediumItemExtent = 150.0;
+  static const double _estimatedLargeItemExtent = 360.0;
+  static const double _estimatedSmallGridRowExtent = 132.0;
+
   /// A flat list of all PGN nodes (collected recursively).
   final List<PgnNode<ExtMove>> _allNodes = <PgnNode<ExtMove>>[];
 
@@ -81,7 +88,7 @@ class MovesListPageState extends State<MovesListPage> {
   bool _isReversedOrder = false;
 
   /// ScrollController to control the scrolling of the ListView or GridView.
-  final ScrollController _scrollController = ScrollController();
+  late final ScrollController _scrollController;
 
   /// Current layout selection, loaded from DB settings
   MovesViewLayout _currentLayout = DB().displaySettings.movesViewLayout;
@@ -99,6 +106,9 @@ class MovesListPageState extends State<MovesListPage> {
     // final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
     // _collectAllNodes(root);
     _refreshAllNodes();
+    _scrollController = ScrollController(
+      initialScrollOffset: _initialScrollOffsetForActiveNode(),
+    );
 
     // Listen to move changes to auto-refresh the list when moves are made
     GameController().gameRecorder.moveCountNotifier.addListener(
@@ -190,8 +200,7 @@ class MovesListPageState extends State<MovesListPage> {
   /// - Whether it's the current activeNode
   List<_ActivePathRowData> _calculateActivePathWithVariations() {
     final List<PgnNode<ExtMove>> activePathNodes = _calculateActivePathNodes();
-    final PgnNode<ExtMove>? activeNode =
-        GameController().gameRecorder.activeNode;
+    final PgnNode<ExtMove>? activeNode = _activeDisplayNode();
 
     final List<_ActivePathRowData> rows = <_ActivePathRowData>[];
 
@@ -242,6 +251,75 @@ class MovesListPageState extends State<MovesListPage> {
     }
 
     return rows;
+  }
+
+  PgnNode<ExtMove>? _activeDisplayNode() {
+    final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
+    PgnNode<ExtMove>? activeNode = GameController().gameRecorder.activeNode;
+    while (activeNode != null &&
+        activeNode != root &&
+        activeNode.data?.type == MoveType.remove) {
+      activeNode = activeNode.parent;
+    }
+    return activeNode == root ? null : activeNode;
+  }
+
+  double _initialScrollOffsetForActiveNode() {
+    final int? displayIndex = _initialDisplayIndexForActiveNode();
+    if (displayIndex == null || displayIndex <= 0) {
+      return 0;
+    }
+
+    final double rawOffset =
+        displayIndex * _estimatedExtentForCurrentLayout() -
+        _initialScrollLeadingPadding;
+    if (rawOffset <= 0) {
+      return 0;
+    }
+    return rawOffset;
+  }
+
+  int? _initialDisplayIndexForActiveNode() {
+    final PgnNode<ExtMove>? activeNode = _activeDisplayNode();
+    if (activeNode == null) {
+      return null;
+    }
+
+    if (_currentLayout == MovesViewLayout.list) {
+      final List<_ActivePathRowData> rows =
+          _calculateActivePathWithVariations();
+      _ActivePathRowData? activeRow;
+      for (final _ActivePathRowData row in rows) {
+        if (row.isActiveNode) {
+          activeRow = row;
+          break;
+        }
+      }
+      if (activeRow == null) {
+        return null;
+      }
+      final List<int> sortedRoundsAsc =
+          rows.map((_ActivePathRowData row) => row.roundIndex).toSet().toList()
+            ..sort();
+      return sortedRoundsAsc.indexOf(activeRow.roundIndex);
+    }
+
+    final bool showFullTree = DB().displaySettings.showBranchTree;
+    final List<PgnNode<ExtMove>> nodesToDisplay = showFullTree
+        ? (_allNodes.isNotEmpty ? _allNodes : _calculateActivePathNodes())
+        : _calculateActivePathNodes();
+    final int index = nodesToDisplay.indexOf(activeNode);
+    return index == -1 ? null : index;
+  }
+
+  double _estimatedExtentForCurrentLayout() {
+    return switch (_currentLayout) {
+      MovesViewLayout.large => _estimatedLargeItemExtent,
+      MovesViewLayout.medium => _estimatedMediumItemExtent,
+      MovesViewLayout.small => _estimatedSmallGridRowExtent,
+      MovesViewLayout.list => _estimatedListRowExtent,
+      MovesViewLayout.details => _estimatedDetailsItemExtent,
+    };
   }
 
   /// Clears and refreshes _allNodes from the game recorder.
@@ -1669,6 +1747,7 @@ class MovesListPageState extends State<MovesListPage> {
         : colorScheme.surfaceContainerLowest;
 
     return Container(
+      key: isActiveRow ? const Key('moves_list_active_round_row') : null,
       color: backgroundColor,
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
       child: Row(
@@ -1728,6 +1807,9 @@ class MovesListPageState extends State<MovesListPage> {
     const double gutterWidth = 14.0;
 
     return GestureDetector(
+      key: rowData.isActiveNode
+          ? const Key('moves_list_active_node_cell')
+          : null,
       onTap: () => _navigateToNode(rowData.node),
       child: CustomPaint(
         foregroundPainter: ActiveLineGutterPainter(
@@ -2633,6 +2715,7 @@ class MovesListPageState extends State<MovesListPage> {
     // Default: hide side branches for readability.
     // Advanced: show full tree when branch tree mode is enabled.
     final bool showFullTree = DB().displaySettings.showBranchTree;
+    final PgnNode<ExtMove>? activeNode = _activeDisplayNode();
 
     // For list view, always use Active Path (showFullTree ignored)
     if (_currentLayout == MovesViewLayout.list) {
@@ -2658,6 +2741,9 @@ class MovesListPageState extends State<MovesListPage> {
                 : index;
             final PgnNode<ExtMove> node = nodesToDisplay[idx];
             return MoveListItem(
+              key: identical(node, activeNode)
+                  ? const Key('moves_list_active_node_item')
+                  : null,
               node: node,
               layout: _currentLayout,
               showNextMoveChips: !showFullTree,
@@ -2683,8 +2769,12 @@ class MovesListPageState extends State<MovesListPage> {
             final int idx = _isReversedOrder
                 ? (nodesToDisplay.length - 1 - index)
                 : index;
+            final PgnNode<ExtMove> node = nodesToDisplay[idx];
             return MoveListItem(
-              node: nodesToDisplay[idx],
+              key: identical(node, activeNode)
+                  ? const Key('moves_list_active_node_item')
+                  : null,
+              node: node,
               layout: _currentLayout,
               onNavigate: _navigateToNode,
             );
