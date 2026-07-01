@@ -5291,13 +5291,28 @@ class _AnalysisSummaryPanel extends StatelessWidget {
   }
 }
 
-class _AnalysisSummaryAdvantageGraph extends StatelessWidget {
+class _AnalysisSummaryAdvantageGraph extends StatefulWidget {
   const _AnalysisSummaryAdvantageGraph({required this.data});
 
   static const double _height = 112;
   static const double _chartMargin = 10;
 
   final List<int> data;
+
+  @override
+  State<_AnalysisSummaryAdvantageGraph> createState() =>
+      _AnalysisSummaryAdvantageGraphState();
+}
+
+class _AnalysisSummaryAdvantageGraphState
+    extends State<_AnalysisSummaryAdvantageGraph> {
+  static const double _height = _AnalysisSummaryAdvantageGraph._height;
+  static const double _chartMargin =
+      _AnalysisSummaryAdvantageGraph._chartMargin;
+
+  PgnNode<ExtMove>? _lastRequestedTargetNode;
+  PgnNode<ExtMove>? _pendingTargetNode;
+  bool _isNavigating = false;
 
   @override
   Widget build(BuildContext context) {
@@ -5316,7 +5331,35 @@ class _AnalysisSummaryAdvantageGraph extends StatelessWidget {
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTapUp: (TapUpDetails details) {
-                  _jumpToGraphPosition(
+                  _requestGraphJump(
+                    context,
+                    details.localPosition,
+                    Size(constraints.maxWidth, _height),
+                  );
+                },
+                onPanStart: (DragStartDetails details) {
+                  _requestGraphJump(
+                    context,
+                    details.localPosition,
+                    Size(constraints.maxWidth, _height),
+                  );
+                },
+                onPanUpdate: (DragUpdateDetails details) {
+                  _requestGraphJump(
+                    context,
+                    details.localPosition,
+                    Size(constraints.maxWidth, _height),
+                  );
+                },
+                onLongPressStart: (LongPressStartDetails details) {
+                  _requestGraphJump(
+                    context,
+                    details.localPosition,
+                    Size(constraints.maxWidth, _height),
+                  );
+                },
+                onLongPressMoveUpdate: (LongPressMoveUpdateDetails details) {
+                  _requestGraphJump(
                     context,
                     details.localPosition,
                     Size(constraints.maxWidth, _height),
@@ -5325,7 +5368,7 @@ class _AnalysisSummaryAdvantageGraph extends StatelessWidget {
                 child: CustomPaint(
                   key: const Key('play_area_analysis_summary_advantage_paint'),
                   painter: AdvantageGraphPainter(
-                    data,
+                    widget.data,
                     currentIndex: currentIndex,
                   ),
                 ),
@@ -5337,7 +5380,7 @@ class _AnalysisSummaryAdvantageGraph extends StatelessWidget {
     );
   }
 
-  void _jumpToGraphPosition(
+  void _requestGraphJump(
     BuildContext context,
     Offset localPosition,
     Size size,
@@ -5357,16 +5400,40 @@ class _AnalysisSummaryAdvantageGraph extends StatelessWidget {
     if (targetNode == null) {
       return;
     }
-    unawaited(HistoryNavigator.gotoNode(context, targetNode, pop: false));
+    if (identical(targetNode, _lastRequestedTargetNode) &&
+        _pendingTargetNode == null) {
+      return;
+    }
+
+    _pendingTargetNode = targetNode;
+    unawaited(_drainNavigationQueue(context));
+  }
+
+  Future<void> _drainNavigationQueue(BuildContext context) async {
+    if (_isNavigating) {
+      return;
+    }
+
+    _isNavigating = true;
+    try {
+      while (mounted && _pendingTargetNode != null) {
+        final PgnNode<ExtMove> targetNode = _pendingTargetNode!;
+        _pendingTargetNode = null;
+        _lastRequestedTargetNode = targetNode;
+        await HistoryNavigator.gotoNode(context, targetNode, pop: false);
+      }
+    } finally {
+      _isNavigating = false;
+    }
   }
 
   int? _dataIndexForHorizontalPosition(double dx, double width) {
-    if (data.isEmpty || width <= _chartMargin * 2) {
+    if (widget.data.isEmpty || width <= _chartMargin * 2) {
       return null;
     }
 
-    final int shownCount = math.min(50, data.length);
-    final int dataOffset = data.length - shownCount;
+    final int shownCount = math.min(50, widget.data.length);
+    final int dataOffset = widget.data.length - shownCount;
     final double chartWidth = width - _chartMargin * 2;
     final double stepWidth = chartWidth / 49;
     final double chartDx = (dx - _chartMargin).clamp(0.0, chartWidth);
@@ -5378,7 +5445,7 @@ class _AnalysisSummaryAdvantageGraph extends StatelessWidget {
   }
 
   int? _currentDataIndex(GameRecorder recorder) {
-    if (data.isEmpty) {
+    if (widget.data.isEmpty) {
       return null;
     }
 
@@ -5402,7 +5469,7 @@ class _AnalysisSummaryAdvantageGraph extends StatelessWidget {
     }
 
     final int dataIndex = nodeIndex + 1;
-    if (dataIndex >= data.length) {
+    if (dataIndex >= widget.data.length) {
       return null;
     }
     return dataIndex;

@@ -2341,6 +2341,58 @@ void main() {
     expect(_summaryAdvantagePainter(tester).currentIndex, 2);
   });
 
+  testWidgets('analysis summary advantage graph scrubs while dragging', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+      isAdvantageGraphShown: true,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    final GameRecorder recorder = GameController().gameRecorder;
+    recorder.reset();
+    recorder.appendMove(ExtMove('d6', side: PieceColor.white));
+    recorder.appendMove(ExtMove('f4', side: PieceColor.black));
+    recorder.appendMove(ExtMove('a1', side: PieceColor.white));
+
+    await _pumpSessionPlayArea(tester, session);
+    final PlayAreaState playAreaState = tester.state<PlayAreaState>(
+      find.byType(PlayArea),
+    );
+    playAreaState.advantageData
+      ..clear()
+      ..addAll(<int>[0, 24, -12, 36]);
+
+    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
+    await tester.pumpAndSettle();
+
+    final Finder graph = find.byKey(
+      const Key('play_area_analysis_summary_advantage_graph'),
+    );
+    final Size graphSize = tester.getSize(graph);
+    final Offset graphTopLeft = tester.getTopLeft(graph);
+    const double chartMargin = 10;
+    final double stepWidth = (graphSize.width - chartMargin * 2) / 49;
+    final Offset firstMovePoint =
+        graphTopLeft + Offset(chartMargin + stepWidth, graphSize.height / 2);
+    final Offset thirdMovePoint =
+        graphTopLeft +
+        Offset(chartMargin + stepWidth * 3, graphSize.height / 2);
+
+    final TestGesture gesture = await tester.startGesture(firstMovePoint);
+    await tester.pump();
+    await gesture.moveTo(thirdMovePoint);
+    await tester.pumpAndSettle();
+    await gesture.up();
+    await tester.pumpAndSettle();
+
+    expect(_currentPathMoves(), <String>['d6', 'f4', 'a1']);
+    expect(_summaryAdvantagePainter(tester).currentIndex, 3);
+  });
+
   testWidgets(
     'deep analysis marks max search time in summary and engine sheet',
     (WidgetTester tester) async {
