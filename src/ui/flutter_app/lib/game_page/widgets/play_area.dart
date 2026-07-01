@@ -5195,6 +5195,8 @@ class _AnalysisSummaryPanel extends StatelessWidget {
     required this.onAnalyze,
   });
 
+  static const int _maxKeyMoments = 3;
+
   final List<int> advantageData;
   final VoidCallback onOpenFullMoveList;
   final Future<void> Function(String move) onBestMoveTap;
@@ -5219,7 +5221,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
             final List<_AnalysisOutcomeBucket> resultBuckets = _resultBuckets(
               strings,
             );
-            final _AnalysisKeyMoment? keyMoment = _keyMoment(recorder);
+            final List<_AnalysisKeyMoment> keyMoments = _keyMoments(recorder);
             final String? trapSummary = _trapSummary();
             final bool canRequestAnalysis =
                 !AnalysisMode.isFullAnalysis && !AnalysisMode.isAnalyzing;
@@ -5248,21 +5250,35 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                         leading: const Icon(Icons.show_chart_outlined),
                         title: Text(strings.showAdvantageGraph),
                       ),
-                      if (keyMoment != null)
+                      for (
+                        int keyMomentIndex = 0;
+                        keyMomentIndex < keyMoments.length;
+                        keyMomentIndex++
+                      )
                         ListTile(
-                          key: const Key(
-                            'play_area_analysis_summary_key_moment',
-                          ),
+                          key: keyMomentIndex == 0
+                              ? const Key(
+                                  'play_area_analysis_summary_key_moment',
+                                )
+                              : Key(
+                                  'play_area_analysis_summary_key_moment_'
+                                  '${keyMoments[keyMomentIndex].dataIndex}',
+                                ),
                           leading: const Icon(Icons.timeline_outlined),
                           title: Text(
-                            '${strings.move} ${keyMoment.moveNumber}',
+                            '${strings.move} '
+                            '${keyMoments[keyMomentIndex].moveNumber}',
                           ),
                           subtitle: _AnalysisSummaryKeyMomentLine(
-                            moment: keyMoment,
+                            moment: keyMoments[keyMomentIndex],
                           ),
                           trailing: const Icon(Icons.chevron_right),
-                          onTap: () =>
-                              unawaited(_jumpToKeyMoment(context, keyMoment)),
+                          onTap: () => unawaited(
+                            _jumpToKeyMoment(
+                              context,
+                              keyMoments[keyMomentIndex],
+                            ),
+                          ),
                         ),
                       _AnalysisSummaryAdvantageGraph(data: advantageData),
                     ],
@@ -5493,9 +5509,9 @@ class _AnalysisSummaryPanel extends StatelessWidget {
     return AnalysisMode.trapMoves.join(' ');
   }
 
-  _AnalysisKeyMoment? _keyMoment(GameRecorder recorder) {
+  List<_AnalysisKeyMoment> _keyMoments(GameRecorder recorder) {
     if (advantageData.length < 2) {
-      return null;
+      return const <_AnalysisKeyMoment>[];
     }
 
     final int lastDataIndex = math.min(
@@ -5503,41 +5519,49 @@ class _AnalysisSummaryPanel extends StatelessWidget {
       _recorderPathWithMainlineContinuation(recorder).length,
     );
     if (lastDataIndex <= 0) {
-      return null;
+      return const <_AnalysisKeyMoment>[];
     }
 
-    int? bestDataIndex;
-    int bestSwing = 0;
+    final List<_AnalysisKeyMoment> moments = <_AnalysisKeyMoment>[];
     for (int dataIndex = 1; dataIndex <= lastDataIndex; dataIndex++) {
       final int swing = advantageData[dataIndex] - advantageData[dataIndex - 1];
-      final int absoluteSwing = swing.abs();
-      if (absoluteSwing <= bestSwing) {
+      if (swing == 0) {
         continue;
       }
-      bestDataIndex = dataIndex;
-      bestSwing = absoluteSwing;
+
+      final PgnNode<ExtMove>? node = _analysisNodeForDataIndex(
+        recorder,
+        dataIndex,
+      );
+      assert(node != null, 'Analysis data index must map to a move node.');
+      final ExtMove? move = node?.data;
+      assert(move != null, 'Analysis key moment node must carry move data.');
+      if (node == null || move == null) {
+        continue;
+      }
+
+      moments.add(
+        _AnalysisKeyMoment(
+          dataIndex: dataIndex,
+          moveNumber: dataIndex,
+          move: move.move,
+          swing: swing,
+          node: node,
+        ),
+      );
     }
 
-    if (bestDataIndex == null || bestSwing == 0) {
-      return null;
-    }
+    moments.sort((_AnalysisKeyMoment left, _AnalysisKeyMoment right) {
+      final int magnitudeOrder = right.absoluteSwing.compareTo(
+        left.absoluteSwing,
+      );
+      if (magnitudeOrder != 0) {
+        return magnitudeOrder;
+      }
+      return left.dataIndex.compareTo(right.dataIndex);
+    });
 
-    final PgnNode<ExtMove>? node = _analysisNodeForDataIndex(
-      recorder,
-      bestDataIndex,
-    );
-    final ExtMove? move = node?.data;
-    if (node == null || move == null) {
-      return null;
-    }
-
-    return _AnalysisKeyMoment(
-      dataIndex: bestDataIndex,
-      moveNumber: bestDataIndex,
-      move: move.move,
-      swing: advantageData[bestDataIndex] - advantageData[bestDataIndex - 1],
-      node: node,
-    );
+    return moments.take(_maxKeyMoments).toList(growable: false);
   }
 
   Future<void> _jumpToKeyMoment(
@@ -5569,6 +5593,8 @@ class _AnalysisKeyMoment {
   final String move;
   final int swing;
   final PgnNode<ExtMove> node;
+
+  int get absoluteSwing => swing.abs();
 }
 
 @immutable
