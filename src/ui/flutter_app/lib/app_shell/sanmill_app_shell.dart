@@ -685,6 +685,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
           hasOpenedCurrentPlaySession: _hasOpenedCurrentPlaySession,
           onContinueGame: _continueCurrentGame,
           onPlayRouteSelected: _selectPlayRoute,
+          onAppRouteSelected: _pushAppRoute,
           onSavedGameSelected: _openSavedGame,
         );
       case SanmillShellTab.puzzles:
@@ -1186,6 +1187,7 @@ class _HomeTabRoot extends StatefulWidget {
     required this.hasOpenedCurrentPlaySession,
     required this.onContinueGame,
     required this.onPlayRouteSelected,
+    required this.onAppRouteSelected,
     required this.onSavedGameSelected,
   });
 
@@ -1196,6 +1198,7 @@ class _HomeTabRoot extends StatefulWidget {
   final bool hasOpenedCurrentPlaySession;
   final VoidCallback onContinueGame;
   final ValueChanged<String> onPlayRouteSelected;
+  final ValueChanged<String> onAppRouteSelected;
   final ValueChanged<String> onSavedGameSelected;
 
   @override
@@ -1305,6 +1308,7 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
         tabInteraction: widget.tabInteraction,
         onContinueGame: widget.onContinueGame,
         onPlayRouteSelected: widget.onPlayRouteSelected,
+        onAppRouteSelected: widget.onAppRouteSelected,
         onShowAll: _openSavedGamesPage,
         onSavedGameSelected: widget.onSavedGameSelected,
       ),
@@ -1343,6 +1347,7 @@ class _HomeGamesOverview extends StatelessWidget {
     required this.tabInteraction,
     required this.onContinueGame,
     required this.onPlayRouteSelected,
+    required this.onAppRouteSelected,
     required this.onShowAll,
     required this.onSavedGameSelected,
   });
@@ -1356,6 +1361,7 @@ class _HomeGamesOverview extends StatelessWidget {
   final Listenable tabInteraction;
   final VoidCallback onContinueGame;
   final ValueChanged<String> onPlayRouteSelected;
+  final ValueChanged<String> onAppRouteSelected;
   final VoidCallback onShowAll;
   final ValueChanged<String> onSavedGameSelected;
 
@@ -1397,7 +1403,12 @@ class _HomeGamesOverview extends StatelessWidget {
                 if (activeGame == null &&
                     ongoingGames.isEmpty &&
                     recentGames.isEmpty) {
-                  return _HomeEmptyContent(onShowAll: onShowAll);
+                  return _HomeEmptyContent(
+                    playModes: playModes,
+                    onShowAll: onShowAll,
+                    onPlayRouteSelected: onPlayRouteSelected,
+                    onAppRouteSelected: onAppRouteSelected,
+                  );
                 }
 
                 final bool useCarousel = !useWideLayout;
@@ -1498,13 +1509,28 @@ class _HomeGamesLoadingSection extends StatelessWidget {
 }
 
 class _HomeEmptyContent extends StatelessWidget {
-  const _HomeEmptyContent({required this.onShowAll});
+  const _HomeEmptyContent({
+    required this.playModes,
+    required this.onShowAll,
+    required this.onPlayRouteSelected,
+    required this.onAppRouteSelected,
+  });
 
+  final List<GameModeEntry> playModes;
   final VoidCallback onShowAll;
+  final ValueChanged<String> onPlayRouteSelected;
+  final ValueChanged<String> onAppRouteSelected;
 
   @override
   Widget build(BuildContext context) {
     final S strings = S.of(context);
+    final GameModeEntry? playComputerMode = _modeById(
+      MillRouteIds.humanVsAi.value,
+    );
+    final GameModeEntry? overTheBoardMode = _modeById(
+      MillRouteIds.humanVsHuman.value,
+    );
+
     return Column(
       key: const Key('sanmill_home_empty_start'),
       mainAxisSize: MainAxisSize.min,
@@ -1537,8 +1563,51 @@ class _HomeEmptyContent extends StatelessWidget {
             ),
           ],
         ),
+        LichessListSection(
+          key: const Key('sanmill_home_quick_start_section'),
+          header: Text(strings.quickStart),
+          headerKey: const Key('sanmill_home_quick_start_group'),
+          cardKey: const Key('sanmill_home_quick_start_card'),
+          children: <Widget>[
+            if (playComputerMode != null)
+              _MoreTile(
+                key: const Key('sanmill_home_quick_start_play_computer'),
+                icon: playComputerMode.icon ?? Icons.sports_esports_rounded,
+                title: playComputerMode.label,
+                onTap: () => onPlayRouteSelected(playComputerMode.id.value),
+              ),
+            if (overTheBoardMode != null)
+              _MoreTile(
+                key: const Key('sanmill_home_quick_start_over_the_board'),
+                icon: overTheBoardMode.icon ?? Icons.table_bar_rounded,
+                title: overTheBoardMode.label,
+                onTap: () => onPlayRouteSelected(overTheBoardMode.id.value),
+              ),
+            _MoreTile(
+              key: const Key('sanmill_home_quick_start_variants'),
+              icon: Icons.rule_rounded,
+              title: strings.variants,
+              onTap: () => onAppRouteSelected(ShellRouteIds.appVariants.value),
+            ),
+            _MoreTile(
+              key: const Key('sanmill_home_quick_start_how_to_play'),
+              icon: Icons.help_outline_rounded,
+              title: strings.howToPlay,
+              onTap: () => onAppRouteSelected(ShellRouteIds.appHowToPlay.value),
+            ),
+          ],
+        ),
       ],
     );
+  }
+
+  GameModeEntry? _modeById(String routeId) {
+    for (final GameModeEntry mode in playModes) {
+      if (mode.id.value == routeId) {
+        return mode;
+      }
+    }
+    return null;
   }
 }
 

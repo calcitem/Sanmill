@@ -313,7 +313,27 @@ void main() {
       expect(find.byKey(const Key('sanmill_home_welcome_group')), findsNothing);
       expect(
         find.byKey(const Key('sanmill_home_quick_start_group')),
-        findsNothing,
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_quick_start_card')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_quick_start_play_computer')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_quick_start_over_the_board')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_quick_start_variants')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_quick_start_how_to_play')),
+        findsOneWidget,
       );
       expect(
         find.byKey(const Key('sanmill_home_empty_recent_group')),
