@@ -3804,6 +3804,19 @@ List<PgnNode<ExtMove>> _recorderPathWithMainlineContinuation(
   return nodes;
 }
 
+int _recorderVariationBranchCount(GameRecorder recorder) {
+  int countBranches(PgnNode<ExtMove> node) {
+    final int sidelineCount = math.max(0, node.children.length - 1);
+    int total = sidelineCount;
+    for (final PgnNode<ExtMove> child in node.children) {
+      total += countBranches(child);
+    }
+    return total;
+  }
+
+  return countBranches(recorder.pgnRoot);
+}
+
 class _InlineMoveListState extends State<_InlineMoveList> {
   final GlobalKey _currentMoveKey = GlobalKey();
   PgnNode<ExtMove>? _lastAutoScrolledNode;
@@ -5080,9 +5093,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
             final int moveCount = _recorderPathWithMainlineContinuation(
               recorder,
             ).length;
-            final PgnNode<ExtMove> currentNode =
-                recorder.activeNode ?? recorder.pgnRoot;
-            final int variationCount = currentNode.children.length;
+            final int variationCount = _recorderVariationBranchCount(recorder);
             final String? resultSummary = _resultSummary(strings);
             final String? trapSummary = _trapSummary();
             final bool canRequestAnalysis =

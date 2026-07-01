@@ -2376,12 +2376,52 @@ void main() {
 
     await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('play_area_analysis_summary_moves')));
+    final Finder summaryMoves = find.byKey(
+      const Key('play_area_analysis_summary_moves'),
+    );
+    await tester.ensureVisible(summaryMoves);
+    await tester.tapAt(tester.getTopLeft(summaryMoves) + const Offset(48, 12));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
     await tester.pump();
 
     expect(find.byKey(const Key('moves_list_page_scaffold')), findsOneWidget);
+  });
+
+  testWidgets('analysis summary counts the whole variation tree', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    final GameRecorder recorder = GameController().gameRecorder;
+    recorder.reset();
+    recorder.appendMove(ExtMove('d6', side: PieceColor.white));
+    recorder.appendMove(ExtMove('a1', side: PieceColor.black));
+    final a1Node = recorder.activeNode!;
+    recorder.appendMove(ExtMove('d1', side: PieceColor.white));
+    recorder.activeNode = recorder.pgnRoot;
+    recorder.appendMove(ExtMove('f4', side: PieceColor.white));
+    recorder.activeNode = a1Node;
+    recorder.appendMove(ExtMove('g7', side: PieceColor.white));
+
+    await _pumpSessionPlayArea(tester, session);
+
+    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
+    await tester.pumpAndSettle();
+
+    expect(_currentPathMoves(), <String>['d6', 'a1', 'g7']);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_variations')),
+        matching: find.text('2'),
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets('analysis menu clears saved moves back to the start position', (
