@@ -3,6 +3,19 @@
 
 part of '../mill.dart';
 
+class _MoveCountNotifier extends ValueNotifier<int> {
+  _MoveCountNotifier(super.value);
+
+  @override
+  set value(int newValue) {
+    final bool unchanged = super.value == newValue;
+    super.value = newValue;
+    if (unchanged) {
+      notifyListeners();
+    }
+  }
+}
+
 /// GameRecorder holds the move history and maintains
 /// a PGN tree internally. It now provides PGN-based APIs.
 class GameRecorder {
@@ -18,7 +31,7 @@ class GameRecorder {
 
   /// Notifier that fires whenever a move is made or undone.
   /// Listeners can use this to react to move changes in business logic.
-  final ValueNotifier<int> moveCountNotifier = ValueNotifier<int>(0);
+  final ValueNotifier<int> moveCountNotifier = _MoveCountNotifier(0);
 
   /// PGN tree root node.
   /// Multiple branches are allowed; activeNode tracks the "current" branch.

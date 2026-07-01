@@ -169,6 +169,24 @@ void main() {
       expect(notificationCount, 3);
     });
 
+    test('moveCountNotifier fires on same-depth variation changes', () {
+      final GameRecorder recorder = GameRecorder();
+      int notificationCount = 0;
+
+      recorder.moveCountNotifier.addListener(() {
+        notificationCount++;
+      });
+
+      recorder.appendMove(ExtMove('d6', side: PieceColor.white));
+      expect(notificationCount, 1);
+
+      recorder.activeNode = recorder.pgnRoot;
+      recorder.appendMove(ExtMove('a1', side: PieceColor.white));
+
+      expect(recorder.currentPath.length, 1);
+      expect(notificationCount, 2);
+    });
+
     test('mainlineNodes returns correct sequence', () {
       final GameRecorder recorder = GameRecorder();
 

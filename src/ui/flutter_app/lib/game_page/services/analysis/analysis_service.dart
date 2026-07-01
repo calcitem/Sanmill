@@ -3,6 +3,7 @@
 
 // analysis_service.dart
 
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -37,6 +38,7 @@ class AnalysisService {
   static const int _analysisDeepMoveLimitMs = 60 * 60 * 1000;
 
   static int _analysisSearchGeneration = 0;
+  static Future<void>? _activeEngineAnalysis;
 
   /// Toggle the analysis overlay for the position currently shown by the
   /// session in scope of [context].
@@ -104,6 +106,25 @@ class AnalysisService {
       baseResults: perfectDatabaseAnalysis?.results,
       baseTrapMoves: perfectDatabaseAnalysis?.trapMoves ?? const <String>[],
     );
+  }
+
+  /// Restart analysis after the current analysis-board position changes.
+  ///
+  /// This mirrors Lichess' path-change evaluation flow: the previous search is
+  /// stopped before the new position requests its enabled analysis sources.
+  static Future<void> refreshForCurrentPosition(BuildContext context) async {
+    if (AnalysisMode.isAnalyzing) {
+      final Future<void>? activeEngineAnalysis = _activeEngineAnalysis;
+      _stopCurrentEngineAnalysis();
+      AnalysisMode.setAnalyzing(false);
+      if (activeEngineAnalysis != null) {
+        await activeEngineAnalysis;
+      }
+    }
+    if (!context.mounted) {
+      return;
+    }
+    await refresh(context);
   }
 
   /// Request a deeper local engine MultiPV pass for the current analysis
@@ -233,6 +254,8 @@ class AnalysisService {
     List<String> baseTrapMoves = const <String>[],
   }) async {
     final int searchGeneration = ++_analysisSearchGeneration;
+    final Completer<void> activeEngineAnalysis = Completer<void>();
+    _activeEngineAnalysis = activeEngineAnalysis.future;
     final int requestedLineCount = math.max(1, AnalysisMode.engineLineCount);
     final GeneralSettings currentSettings = DB().generalSettings;
     final GeneralSettings engineSettings = currentSettings.copyWith(
@@ -307,6 +330,12 @@ class AnalysisService {
       }
     } finally {
       temporarySession?.dispose();
+      if (identical(_activeEngineAnalysis, activeEngineAnalysis.future)) {
+        _activeEngineAnalysis = null;
+      }
+      if (!activeEngineAnalysis.isCompleted) {
+        activeEngineAnalysis.complete();
+      }
       if (searchGeneration == _analysisSearchGeneration) {
         AnalysisMode.setAnalyzing(false);
       }

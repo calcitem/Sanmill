@@ -313,6 +313,12 @@ class PlayAreaState extends State<PlayArea> {
 
   bool _isBoardFlipped = false;
   bool _isHintSearching = false;
+  bool _analysisRefreshScheduled = false;
+  GameRecorder? _analysisMoveRecorder;
+  PgnNode<ExtMove>? _lastAnalysisRefreshNode;
+  PgnNode<ExtMove>? _scheduledAnalysisRefreshNode;
+  List<MoveAnalysisResult>? _scheduledAnalysisRefreshResults;
+  List<MoveAnalysisResult>? _scheduledAnalysisRefreshLineResults;
   static const double _kMoveListRouteTopInset = 80;
   static const double _kInlineMoveListHeight = 40;
   static const double _kWrappedMoveListMaxHeight = 104;
@@ -333,6 +339,7 @@ class PlayAreaState extends State<PlayArea> {
     super.initState();
     // Listen to changes in header icons (usually triggered after a move).
     GameController().headerIconsNotifier.addListener(_updateUI);
+    _syncAnalysisMoveListener();
 
     // Optionally, initialize advantageData with the current value:
     advantageData.add(_getCurrentAdvantageValue());
@@ -341,7 +348,72 @@ class PlayAreaState extends State<PlayArea> {
   @override
   void dispose() {
     GameController().headerIconsNotifier.removeListener(_updateUI);
+    _analysisMoveRecorder?.moveCountNotifier.removeListener(
+      _handleAnalysisPositionChanged,
+    );
     super.dispose();
+  }
+
+  void _syncAnalysisMoveListener() {
+    final GameRecorder recorder = GameController().gameRecorder;
+    if (identical(_analysisMoveRecorder, recorder)) {
+      return;
+    }
+    _analysisMoveRecorder?.moveCountNotifier.removeListener(
+      _handleAnalysisPositionChanged,
+    );
+    _analysisMoveRecorder = recorder;
+    _lastAnalysisRefreshNode = recorder.activeNode ?? recorder.pgnRoot;
+    recorder.moveCountNotifier.addListener(_handleAnalysisPositionChanged);
+  }
+
+  void _handleAnalysisPositionChanged() {
+    _syncAnalysisMoveListener();
+    final GameRecorder recorder = GameController().gameRecorder;
+    final PgnNode<ExtMove> currentNode =
+        recorder.activeNode ?? recorder.pgnRoot;
+    if (identical(_lastAnalysisRefreshNode, currentNode)) {
+      return;
+    }
+    _lastAnalysisRefreshNode = currentNode;
+    if (!AnalysisMode.isFullAnalysis) {
+      return;
+    }
+    _scheduleAnalysisRefreshForCurrentPosition();
+  }
+
+  void _scheduleAnalysisRefreshForCurrentPosition() {
+    final GameRecorder recorder = GameController().gameRecorder;
+    _scheduledAnalysisRefreshNode = recorder.activeNode ?? recorder.pgnRoot;
+    _scheduledAnalysisRefreshResults = AnalysisMode.analysisResults;
+    _scheduledAnalysisRefreshLineResults = AnalysisMode.analysisLineResults;
+    if (_analysisRefreshScheduled) {
+      return;
+    }
+    _analysisRefreshScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _analysisRefreshScheduled = false;
+      if (!mounted || !AnalysisMode.isFullAnalysis) {
+        return;
+      }
+      final PgnNode<ExtMove>? scheduledNode = _scheduledAnalysisRefreshNode;
+      final List<MoveAnalysisResult>? scheduledResults =
+          _scheduledAnalysisRefreshResults;
+      final List<MoveAnalysisResult>? scheduledLineResults =
+          _scheduledAnalysisRefreshLineResults;
+      _scheduledAnalysisRefreshNode = null;
+      _scheduledAnalysisRefreshResults = null;
+      _scheduledAnalysisRefreshLineResults = null;
+      final GameRecorder recorder = GameController().gameRecorder;
+      final PgnNode<ExtMove> currentNode =
+          recorder.activeNode ?? recorder.pgnRoot;
+      if (!identical(scheduledNode, currentNode) ||
+          !identical(scheduledResults, AnalysisMode.analysisResults) ||
+          !identical(scheduledLineResults, AnalysisMode.analysisLineResults)) {
+        return;
+      }
+      unawaited(AnalysisService.refreshForCurrentPosition(context));
+    });
   }
 
   /// Retrieve the current advantage value from GameController.
@@ -622,7 +694,7 @@ class PlayAreaState extends State<PlayArea> {
         AnalysisMode.isFullAnalysis && !AnalysisMode.isAnalyzing;
     await session.apply(selectedAction);
     if (shouldRefreshAnalysis && context.mounted) {
-      await AnalysisService.refresh(context);
+      _scheduleAnalysisRefreshForCurrentPosition();
     }
   }
 
@@ -3087,6 +3159,7 @@ class PlayAreaState extends State<PlayArea> {
 
   @override
   Widget build(BuildContext context) {
+    _syncAnalysisMoveListener();
     return LayoutBuilder(
       key: const Key('play_area_layout_builder'),
       builder: (BuildContext context, BoxConstraints constraints) {
