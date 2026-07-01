@@ -2019,6 +2019,17 @@ void main() {
       findsOneWidget,
     );
 
+    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_moves')),
+        matching: find.text('2'),
+      ),
+      findsOneWidget,
+    );
+
     await _holdBottomBarButton(
       tester,
       const Key('play_area_analysis_bottom_bar_next'),

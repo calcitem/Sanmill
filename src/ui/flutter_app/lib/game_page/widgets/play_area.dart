@@ -3688,38 +3688,45 @@ class _InlineMoveList extends StatefulWidget {
   State<_InlineMoveList> createState() => _InlineMoveListState();
 }
 
+List<PgnNode<ExtMove>> _recorderCurrentPathNodes(GameRecorder recorder) {
+  final List<PgnNode<ExtMove>> nodes = <PgnNode<ExtMove>>[];
+  PgnNode<ExtMove>? node = recorder.activeNode;
+  while (node != null && node.data != null) {
+    nodes.insert(0, node);
+    node = node.parent;
+  }
+  return nodes;
+}
+
+List<PgnNode<ExtMove>> _recorderPathWithMainlineContinuation(
+  GameRecorder recorder,
+) {
+  final List<PgnNode<ExtMove>> nodes = _recorderCurrentPathNodes(recorder);
+  PgnNode<ExtMove>? node = recorder.activeNode ?? recorder.pgnRoot;
+  while (node != null && node.children.isNotEmpty) {
+    final PgnNode<ExtMove> next = node.children.first;
+    if (nodes.contains(next)) {
+      break;
+    }
+    nodes.add(next);
+    node = next;
+  }
+  return nodes;
+}
+
 class _InlineMoveListState extends State<_InlineMoveList> {
   final GlobalKey _currentMoveKey = GlobalKey();
   PgnNode<ExtMove>? _lastAutoScrolledNode;
 
   List<PgnNode<ExtMove>> _currentPathNodes() {
-    final List<PgnNode<ExtMove>> nodes = <PgnNode<ExtMove>>[];
-    PgnNode<ExtMove>? node = GameController().gameRecorder.activeNode;
-    while (node != null && node.data != null) {
-      nodes.insert(0, node);
-      node = node.parent;
-    }
-    return nodes;
+    return _recorderCurrentPathNodes(GameController().gameRecorder);
   }
 
   List<PgnNode<ExtMove>> _displayPathNodes() {
-    final List<PgnNode<ExtMove>> nodes = _currentPathNodes();
     if (!widget.showMainlineContinuation) {
-      return nodes;
+      return _currentPathNodes();
     }
-
-    PgnNode<ExtMove>? node =
-        GameController().gameRecorder.activeNode ??
-        GameController().gameRecorder.pgnRoot;
-    while (node != null && node.children.isNotEmpty) {
-      final PgnNode<ExtMove> next = node.children.first;
-      if (nodes.contains(next)) {
-        break;
-      }
-      nodes.add(next);
-      node = next;
-    }
-    return nodes;
+    return _recorderPathWithMainlineContinuation(GameController().gameRecorder);
   }
 
   @override
@@ -4709,12 +4716,15 @@ class _AnalysisSummaryPanel extends StatelessWidget {
       builder: (BuildContext context, _, _) {
         return ValueListenableBuilder<int>(
           valueListenable: GameController().gameRecorder.moveCountNotifier,
-          builder: (BuildContext context, int moveCount, _) {
+          builder: (BuildContext context, _, _) {
             final S strings = S.of(context);
             final MoveAnalysisResult? bestResult = _bestResult();
+            final GameRecorder recorder = GameController().gameRecorder;
+            final int moveCount = _recorderPathWithMainlineContinuation(
+              recorder,
+            ).length;
             final PgnNode<ExtMove> currentNode =
-                GameController().gameRecorder.activeNode ??
-                GameController().gameRecorder.pgnRoot;
+                recorder.activeNode ?? recorder.pgnRoot;
             final int variationCount = currentNode.children.length;
 
             return ListView(
