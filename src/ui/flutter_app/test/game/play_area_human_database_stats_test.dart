@@ -2990,7 +2990,8 @@ void main() {
       find.byWidgetPredicate(
         (Widget widget) =>
             widget is Semantics &&
-            widget.properties.label == 'Show advantage graph · Move 3 · +36',
+            widget.properties.label ==
+                'Continue from here · Show advantage graph · Move 3 · +36',
       ),
       findsOneWidget,
     );
@@ -3089,10 +3090,17 @@ void main() {
     expect(_currentPathMoves(), <String>['d6', 'f4']);
     expect(_summaryAdvantagePainter(tester).currentIndex, 2);
     expect(
+      find.byTooltip(
+        'Continue from here · Show advantage graph · Move 2 · -12',
+      ),
+      findsOneWidget,
+    );
+    expect(
       find.byWidgetPredicate(
         (Widget widget) =>
             widget is Semantics &&
-            widget.properties.label == 'Show advantage graph · Move 2 · -12',
+            widget.properties.label ==
+                'Continue from here · Show advantage graph · Move 2 · -12',
       ),
       findsOneWidget,
     );
@@ -3311,7 +3319,8 @@ void main() {
       const Key('play_area_analysis_summary_moves'),
     );
     await tester.ensureVisible(summaryMoves);
-    await tester.tapAt(tester.getTopLeft(summaryMoves) + const Offset(48, 12));
+    await tester.pumpAndSettle();
+    await tester.tap(summaryMoves);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
     await tester.pump();
