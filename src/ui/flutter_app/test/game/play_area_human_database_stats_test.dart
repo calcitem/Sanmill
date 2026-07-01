@@ -2214,6 +2214,37 @@ void main() {
     );
   });
 
+  testWidgets('analysis summary opens the full move list page', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    GameController().gameRecorder.reset();
+    GameController().gameRecorder.appendMove(
+      ExtMove(
+        'd6',
+        side: PieceColor.white,
+        boardLayout: '********/********/O*******',
+      ),
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('play_area_analysis_summary_moves')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
+
+    expect(find.byKey(const Key('moves_list_page_scaffold')), findsOneWidget);
+  });
+
   testWidgets('analysis menu clears saved moves back to the start position', (
     WidgetTester tester,
   ) async {

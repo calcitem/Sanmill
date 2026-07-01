@@ -2979,7 +2979,10 @@ class PlayAreaState extends State<PlayArea> {
               ),
             ],
           ),
-          summary: const _AnalysisSummaryPanel(),
+          summary: _AnalysisSummaryPanel(
+            onOpenFullMoveList: () =>
+                _openMovesWithNavigator(Navigator.of(context)),
+          ),
         );
       },
     );
@@ -5041,7 +5044,9 @@ class _AnalysisPanel extends StatelessWidget {
 }
 
 class _AnalysisSummaryPanel extends StatelessWidget {
-  const _AnalysisSummaryPanel();
+  const _AnalysisSummaryPanel({required this.onOpenFullMoveList});
+
+  final VoidCallback onOpenFullMoveList;
 
   @override
   Widget build(BuildContext context) {
@@ -5103,12 +5108,16 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                       leading: const Icon(Icons.account_tree_outlined),
                       title: Text(strings.moveList),
                       subtitle: Text('$moveCount'),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: onOpenFullMoveList,
                     ),
                     ListTile(
                       key: const Key('play_area_analysis_summary_variations'),
                       leading: const Icon(Icons.fork_right_outlined),
                       title: Text(strings.variations),
                       subtitle: Text('$variationCount'),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: onOpenFullMoveList,
                     ),
                   ],
                 ),
