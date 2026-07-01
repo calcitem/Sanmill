@@ -16,6 +16,7 @@ import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/painters/advantage_graph_painter.dart';
 import 'package:sanmill/game_page/services/player_timer.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
+import 'package:sanmill/game_page/widgets/mini_board.dart';
 import 'package:sanmill/game_page/widgets/moves_list_page.dart';
 import 'package:sanmill/game_page/widgets/play_area.dart';
 import 'package:sanmill/game_platform/game_id.dart';
@@ -3945,6 +3946,7 @@ void main() {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
+      movesViewLayout: MovesViewLayout.list,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -3973,6 +3975,8 @@ void main() {
     await tester.pump();
 
     expect(find.byKey(const Key('moves_list_page_scaffold')), findsOneWidget);
+    expect(find.byType(MiniBoard), findsOneWidget);
+    expect(db.displaySettings.movesViewLayout, MovesViewLayout.list);
   });
 
   testWidgets('analysis full move list opens near the active node', (

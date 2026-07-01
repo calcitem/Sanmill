@@ -67,7 +67,11 @@ class _ActivePathRowData {
 /// The user can pick from a set of layout options via a single active icon which,
 /// when tapped, reveals a row of layout icons.
 class MovesListPage extends StatefulWidget {
-  const MovesListPage({super.key});
+  const MovesListPage({super.key, this.initialLayout});
+
+  /// Optional route-local layout used by callers that need a specific
+  /// first view without changing the persisted move-list preference.
+  final MovesViewLayout? initialLayout;
 
   @override
   MovesListPageState createState() => MovesListPageState();
@@ -90,8 +94,8 @@ class MovesListPageState extends State<MovesListPage> {
   /// ScrollController to control the scrolling of the ListView or GridView.
   late final ScrollController _scrollController;
 
-  /// Current layout selection, loaded from DB settings
-  MovesViewLayout _currentLayout = DB().displaySettings.movesViewLayout;
+  /// Current layout selection, loaded from DB settings unless overridden.
+  late MovesViewLayout _currentLayout;
 
   // Timer to track elapsed seconds while waiting for LLM response
   Timer? loadingTimer;
@@ -101,6 +105,8 @@ class MovesListPageState extends State<MovesListPage> {
   @override
   void initState() {
     super.initState();
+    _currentLayout =
+        widget.initialLayout ?? DB().displaySettings.movesViewLayout;
     // Collect all nodes from the PGN tree into _allNodes.
     // For example:
     // final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;

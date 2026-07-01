@@ -965,7 +965,9 @@ class PlayAreaState extends State<PlayArea> {
     navigator.push(
       MaterialPageRoute<void>(
         settings: const RouteSettings(name: '/movesList'),
-        builder: (BuildContext context) => const MovesListPage(),
+        builder: (BuildContext context) => MovesListPage(
+          initialLayout: _isAnalysisMode ? MovesViewLayout.medium : null,
+        ),
       ),
     );
   }
