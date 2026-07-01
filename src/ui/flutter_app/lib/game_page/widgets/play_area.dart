@@ -618,7 +618,7 @@ class PlayAreaState extends State<PlayArea> {
 
   bool _isBoardFlipped = false;
   bool _isHintSearching = false;
-  bool _analysisRefreshScheduled = false;
+  Timer? _analysisRefreshDebounceTimer;
   GameRecorder? _analysisMoveRecorder;
   PgnNode<ExtMove>? _lastAnalysisRefreshNode;
   PgnNode<ExtMove>? _scheduledAnalysisRefreshNode;
@@ -632,6 +632,9 @@ class PlayAreaState extends State<PlayArea> {
   static const double _kPlayerPanelHeight = 56;
   static const double _kAnalysisEngineLinesReserveHeight = 90;
   static const double _kAnalysisSmallBoardScale = 0.8;
+  static const Duration _kAnalysisRefreshDebounceDelay = Duration(
+    milliseconds: 250,
+  );
 
   static const double _kBalancedLayoutSafetyMargin = 24;
   static const double _kBalancedLayoutMinWidth = 240;
@@ -656,6 +659,7 @@ class PlayAreaState extends State<PlayArea> {
     _analysisMoveRecorder?.moveCountNotifier.removeListener(
       _handleAnalysisPositionChanged,
     );
+    _analysisRefreshDebounceTimer?.cancel();
     super.dispose();
   }
 
@@ -692,12 +696,8 @@ class PlayAreaState extends State<PlayArea> {
     _scheduledAnalysisRefreshNode = recorder.activeNode ?? recorder.pgnRoot;
     _scheduledAnalysisRefreshResults = AnalysisMode.analysisResults;
     _scheduledAnalysisRefreshLineResults = AnalysisMode.analysisLineResults;
-    if (_analysisRefreshScheduled) {
-      return;
-    }
-    _analysisRefreshScheduled = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _analysisRefreshScheduled = false;
+    _analysisRefreshDebounceTimer?.cancel();
+    _analysisRefreshDebounceTimer = Timer(_kAnalysisRefreshDebounceDelay, () {
       if (!mounted || !AnalysisMode.isFullAnalysis) {
         return;
       }

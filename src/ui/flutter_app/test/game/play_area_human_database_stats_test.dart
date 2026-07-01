@@ -2826,6 +2826,48 @@ void main() {
     expect(session.requestedMultiPvValues.last, 3);
   });
 
+  testWidgets('analysis position refresh is debounced during fast navigation', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    _bindExistingNativeGame(GameMode.analysis, session);
+    GameController().gameRecorder.appendMove(
+      ExtMove('d6', side: PieceColor.white, roundIndex: 1),
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    AnalysisMode.enable(const <MoveAnalysisResult>[
+      MoveAnalysisResult(
+        move: 'd6',
+        outcome: AnalysisOutcome.draw,
+        rank: 1,
+        depth: 1,
+        nodes: 1,
+        line: <String>['d6'],
+      ),
+    ], source: AnalysisSource.engine);
+
+    GameController().gameRecorder.appendMove(
+      ExtMove('f4', side: PieceColor.black, roundIndex: 1),
+    );
+    GameController().gameRecorder.appendMove(
+      ExtMove('a1', side: PieceColor.white, roundIndex: 2),
+    );
+
+    await tester.pump(const Duration(milliseconds: 249));
+    expect(session.requestedMultiPvValues, isEmpty);
+
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.pumpAndSettle();
+
+    expect(session.requestedMultiPvValues, hasLength(1));
+  });
+
   testWidgets('analysis engine line tap keeps analysis active', (
     WidgetTester tester,
   ) async {
