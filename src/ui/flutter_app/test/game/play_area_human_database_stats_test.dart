@@ -3133,6 +3133,54 @@ void main() {
     expect(_summaryAdvantagePainter(tester).currentIndex, 3);
   });
 
+  testWidgets('analysis summary can request deeper engine analysis', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    _bindExistingNativeGame(GameMode.analysis, session);
+
+    AnalysisMode.enable(<MoveAnalysisResult>[
+      const MoveAnalysisResult(
+        move: 'd6',
+        outcome: AnalysisOutcome.advantage,
+        rank: 1,
+        depth: 8,
+        nodes: 128000,
+        nodesPerSecond: 64000,
+        line: <String>['d6', 'f4', 'a1'],
+      ),
+    ], source: AnalysisSource.engine);
+
+    await _pumpSessionPlayArea(tester, session);
+
+    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_summary_go_deeper')),
+      findsOneWidget,
+    );
+    expect(find.byTooltip('Continue from here · ∞'), findsOneWidget);
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_summary_go_deeper')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      session.requestedMoveLimitValues.last,
+      AnalysisMode.maxEngineSearchTimeMs,
+    );
+    expect(
+      session.requestedMultiPvValues.last,
+      AnalysisMode.defaultEngineLineCount,
+    );
+  });
+
   testWidgets(
     'deep analysis marks max search time in summary and engine sheet',
     (WidgetTester tester) async {
@@ -3171,6 +3219,10 @@ void main() {
           matching: find.textContaining('∞'),
         ),
         findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('play_area_analysis_summary_go_deeper')),
+        findsNothing,
       );
 
       await tester.longPress(
@@ -6431,6 +6483,7 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
   _RecordingAnalysisSession() : super.fromPort(NativeMillRulesPort());
 
   final List<int> requestedMultiPvValues = <int>[];
+  final List<int> requestedMoveLimitValues = <int>[];
 
   @override
   Future<List<NativeMillPrincipalVariation>> searchPrincipalVariations({
@@ -6441,6 +6494,7 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
     void Function(List<NativeMillPrincipalVariation> variations)? onUpdate,
   }) async {
     requestedMultiPvValues.add(multiPv);
+    requestedMoveLimitValues.add(moveLimitMs);
     const List<NativeMillPrincipalVariation> variations =
         <NativeMillPrincipalVariation>[
           NativeMillPrincipalVariation(

@@ -3171,6 +3171,16 @@ class PlayAreaState extends State<PlayArea> {
               );
               unawaited(AnalysisService.toggle(context));
             },
+            onGoDeeper: () {
+              RecordingService().recordEvent(
+                RecordingEventType.toolbarAction,
+                <String, dynamic>{
+                  'toolbar': 'analysisSummary',
+                  'action': 'goDeeper',
+                },
+              );
+              unawaited(AnalysisService.goDeeper(context));
+            },
           ),
         );
       },
@@ -5310,6 +5320,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
     required this.onBestMoveTap,
     required this.onResultCandidateTap,
     required this.onAnalyze,
+    required this.onGoDeeper,
   });
 
   static const int _maxKeyMoments = 3;
@@ -5322,6 +5333,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
   final Future<void> Function(String move) onBestMoveTap;
   final Future<void> Function(String move) onResultCandidateTap;
   final VoidCallback onAnalyze;
+  final VoidCallback onGoDeeper;
 
   @override
   Widget build(BuildContext context) {
@@ -5358,6 +5370,11 @@ class _AnalysisSummaryPanel extends StatelessWidget {
             );
             final bool canRequestAnalysis =
                 !AnalysisMode.isFullAnalysis && !AnalysisMode.isAnalyzing;
+            final bool canGoDeeper =
+                AnalysisMode.isFullAnalysis &&
+                AnalysisMode.hasEngineLinesSource &&
+                !AnalysisMode.isAnalyzing &&
+                !AnalysisMode.isEngineAnalysisDeep;
             final bool canApplyBestMove =
                 bestResult != null &&
                 !AnalysisMode.isThreatMode &&
@@ -5417,7 +5434,11 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                       leading: const Icon(Icons.memory_outlined),
                       title: Text(_analysisDetailsTitle(strings)),
                       subtitle: Text(_engineSummary(context, bestResult)),
-                      trailing: _engineTrailing(context, canRequestAnalysis),
+                      trailing: _engineTrailing(
+                        context,
+                        canRequestAnalysis: canRequestAnalysis,
+                        canGoDeeper: canGoDeeper,
+                      ),
                       onTap: canRequestAnalysis ? onAnalyze : null,
                     ),
                     if (bestResult != null)
@@ -5617,7 +5638,11 @@ class _AnalysisSummaryPanel extends StatelessWidget {
     return '$title · $subtitle';
   }
 
-  Widget? _engineTrailing(BuildContext context, bool canRequestAnalysis) {
+  Widget? _engineTrailing(
+    BuildContext context, {
+    required bool canRequestAnalysis,
+    required bool canGoDeeper,
+  }) {
     final S strings = S.of(context);
     if (AnalysisMode.isAnalyzing) {
       return SizedBox.square(
@@ -5630,7 +5655,18 @@ class _AnalysisSummaryPanel extends StatelessWidget {
       );
     }
     if (!canRequestAnalysis) {
-      return null;
+      if (!canGoDeeper) {
+        return null;
+      }
+      final String continueSearchLabel =
+          '${strings.continueFromHere} · '
+          '${_analysisSearchTimeValueLabel(AnalysisMode.maxEngineSearchTimeMs)}';
+      return IconButton(
+        key: const Key('play_area_analysis_summary_go_deeper'),
+        tooltip: continueSearchLabel,
+        onPressed: onGoDeeper,
+        icon: const Icon(Icons.add_circle_outline),
+      );
     }
     return FilledButton.tonal(
       key: const Key('play_area_analysis_summary_analyze'),
