@@ -6948,6 +6948,7 @@ class _AnalysisEngineLine extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
+    final S strings = S.of(context);
     final Color outcomeColor = AnalysisMode.isThreatMode
         ? Colors.red.shade600
         : AnalysisMode.getColorForOutcome(result.outcome);
@@ -6956,69 +6957,83 @@ class _AnalysisEngineLine extends StatelessWidget {
         ? Colors.white
         : Colors.black;
     final String? depthLabel = _depthLabel(result);
+    final String lineText = _lineText(result);
+    final String lineLabel = _lineLabel(strings, result, depthLabel, lineText);
 
-    return InkWell(
-      borderRadius: BorderRadius.circular(AppStyles.compactRadius),
-      onTap: onTap,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minHeight: height),
-        child: Padding(
-          padding: const EdgeInsets.all(2),
-          child: Row(
-            children: <Widget>[
-              Container(
-                constraints: const BoxConstraints(minWidth: 34),
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                decoration: BoxDecoration(
-                  color: outcomeColor,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(
-                  _evalLabel(result.outcome),
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: chipTextColor,
-                    fontSize: fontSize,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              if (depthLabel != null) ...<Widget>[
-                Text(
-                  depthLabel,
-                  key: const Key('play_area_analysis_engine_line_depth'),
-                  maxLines: 1,
-                  softWrap: false,
-                  overflow: TextOverflow.clip,
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant.withValues(
-                      alpha: onTap == null ? 0.72 : 0.9,
+    return Tooltip(
+      message: lineLabel,
+      child: Semantics(
+        button: onTap != null,
+        enabled: onTap != null,
+        label: lineLabel,
+        excludeSemantics: true,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(AppStyles.compactRadius),
+          onTap: onTap,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: height),
+            child: Padding(
+              padding: const EdgeInsets.all(2),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    constraints: const BoxConstraints(minWidth: 34),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4,
+                      vertical: 2,
                     ),
-                    fontSize: fontSize,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0,
-                  ),
-                ),
-                const SizedBox(width: 6),
-              ],
-              Expanded(
-                child: Text(
-                  _lineText(result),
-                  maxLines: 1,
-                  softWrap: false,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: colorScheme.onSurface.withValues(
-                      alpha: onTap == null ? 0.72 : 1,
+                    decoration: BoxDecoration(
+                      color: outcomeColor,
+                      borderRadius: BorderRadius.circular(4),
                     ),
-                    fontSize: fontSize,
-                    letterSpacing: 0,
+                    child: Text(
+                      _evalLabel(result.outcome),
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: chipTextColor,
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0,
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(width: 8),
+                  if (depthLabel != null) ...<Widget>[
+                    Text(
+                      depthLabel,
+                      key: const Key('play_area_analysis_engine_line_depth'),
+                      maxLines: 1,
+                      softWrap: false,
+                      overflow: TextOverflow.clip,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant.withValues(
+                          alpha: onTap == null ? 0.72 : 0.9,
+                        ),
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                  ],
+                  Expanded(
+                    child: Text(
+                      lineText,
+                      maxLines: 1,
+                      softWrap: false,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: colorScheme.onSurface.withValues(
+                          alpha: onTap == null ? 0.72 : 1,
+                        ),
+                        fontSize: fontSize,
+                        letterSpacing: 0,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -7031,6 +7046,24 @@ class _AnalysisEngineLine extends StatelessWidget {
 
   String _evalLabel(AnalysisOutcome outcome) {
     return _analysisEvalLabel(outcome);
+  }
+
+  String _lineLabel(
+    S strings,
+    MoveAnalysisResult result,
+    String? depthLabel,
+    String lineText,
+  ) {
+    final List<String> parts = <String>[
+      if (AnalysisMode.isThreatMode)
+        _analysisThreatLabel(strings)
+      else
+        strings.engine,
+      _evalLabel(result.outcome),
+      ?depthLabel,
+      lineText,
+    ];
+    return parts.join(' · ');
   }
 
   String? _depthLabel(MoveAnalysisResult result) {

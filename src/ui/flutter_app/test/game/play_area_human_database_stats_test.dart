@@ -4099,6 +4099,8 @@ void main() {
 
     await _pumpSessionPlayArea(tester, session);
 
+    expect(find.byTooltip('Engine · = · d1 · 1. a7'), findsOneWidget);
+
     await tester.tap(find.byKey(const Key('play_area_analysis_engine_line_0')));
     await tester.pumpAndSettle();
 
@@ -4123,6 +4125,19 @@ void main() {
       isThreatMode: true,
     );
     await tester.pump();
+
+    expect(
+      find.byWidgetPredicate((Widget widget) {
+        if (widget is! Tooltip) {
+          return false;
+        }
+        final String? message = widget.message;
+        return message != null &&
+            message.startsWith('Threat · + · d2 · ') &&
+            message.contains('f4');
+      }),
+      findsOneWidget,
+    );
 
     await tester.tap(find.byKey(const Key('play_area_analysis_engine_line_0')));
     await tester.pumpAndSettle();
