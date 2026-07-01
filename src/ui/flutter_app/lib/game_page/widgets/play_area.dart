@@ -6246,33 +6246,42 @@ class _AnalysisOutcomeDistribution extends StatelessWidget {
     assert(buckets.isNotEmpty, 'Outcome distribution requires data.');
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
+    final S strings = S.of(context);
+    final String distributionLabel = _distributionLabel(strings);
 
     return Column(
       key: const Key('play_area_analysis_summary_outcome_distribution'),
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        ClipRRect(
-          borderRadius: BorderRadius.circular(4),
-          child: SizedBox(
-            key: const Key('play_area_analysis_summary_outcome_meter'),
-            height: 8,
-            width: double.infinity,
-            child: Row(
-              children: <Widget>[
-                for (final _AnalysisOutcomeBucket bucket in buckets)
-                  Expanded(
-                    key: Key(
-                      'play_area_analysis_summary_outcome_segment_'
-                      '${bucket.outcomeName}',
+        Semantics(
+          container: true,
+          label: distributionLabel,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: SizedBox(
+              key: const Key('play_area_analysis_summary_outcome_meter'),
+              height: 8,
+              width: double.infinity,
+              child: Row(
+                children: <Widget>[
+                  for (final _AnalysisOutcomeBucket bucket in buckets)
+                    Expanded(
+                      key: Key(
+                        'play_area_analysis_summary_outcome_segment_'
+                        '${bucket.outcomeName}',
+                      ),
+                      flex: bucket.count,
+                      child: Tooltip(
+                        message: _bucketLabel(bucket),
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () => onOutcomeSelected(bucket.outcomeName),
+                          child: ColoredBox(color: bucket.color),
+                        ),
+                      ),
                     ),
-                    flex: bucket.count,
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () => onOutcomeSelected(bucket.outcomeName),
-                      child: ColoredBox(color: bucket.color),
-                    ),
-                  ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -6282,47 +6291,57 @@ class _AnalysisOutcomeDistribution extends StatelessWidget {
           runSpacing: 4,
           children: <Widget>[
             for (final _AnalysisOutcomeBucket bucket in buckets)
-              FilterChip(
-                key: Key(
-                  'play_area_analysis_summary_outcome_legend_'
-                  '${bucket.outcomeName}',
-                ),
-                selected: bucket.outcomeName == selectedOutcomeName,
-                showCheckmark: false,
-                avatar: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: bucket.color,
-                    shape: BoxShape.circle,
+              Tooltip(
+                message: _bucketLabel(bucket),
+                child: FilterChip(
+                  key: Key(
+                    'play_area_analysis_summary_outcome_legend_'
+                    '${bucket.outcomeName}',
                   ),
-                  child: const SizedBox.square(dimension: 8),
+                  selected: bucket.outcomeName == selectedOutcomeName,
+                  showCheckmark: false,
+                  avatar: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: bucket.color,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const SizedBox.square(dimension: 8),
+                  ),
+                  label: Text(_bucketLabel(bucket)),
+                  labelStyle: theme.textTheme.labelSmall?.copyWith(
+                    color: bucket.outcomeName == selectedOutcomeName
+                        ? colorScheme.onSecondaryContainer
+                        : colorScheme.onSurfaceVariant,
+                    fontWeight: bucket.outcomeName == selectedOutcomeName
+                        ? FontWeight.w700
+                        : FontWeight.w500,
+                    letterSpacing: 0,
+                  ),
+                  backgroundColor: colorScheme.surfaceContainerHighest
+                      .withValues(alpha: 0.56),
+                  selectedColor: colorScheme.secondaryContainer,
+                  side: BorderSide(
+                    color: bucket.outcomeName == selectedOutcomeName
+                        ? colorScheme.secondary
+                        : colorScheme.outlineVariant,
+                  ),
+                  visualDensity: VisualDensity.compact,
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  onSelected: (_) => onOutcomeSelected(bucket.outcomeName),
                 ),
-                label: Text('${bucket.label} ${bucket.count}'),
-                labelStyle: theme.textTheme.labelSmall?.copyWith(
-                  color: bucket.outcomeName == selectedOutcomeName
-                      ? colorScheme.onSecondaryContainer
-                      : colorScheme.onSurfaceVariant,
-                  fontWeight: bucket.outcomeName == selectedOutcomeName
-                      ? FontWeight.w700
-                      : FontWeight.w500,
-                  letterSpacing: 0,
-                ),
-                backgroundColor: colorScheme.surfaceContainerHighest.withValues(
-                  alpha: 0.56,
-                ),
-                selectedColor: colorScheme.secondaryContainer,
-                side: BorderSide(
-                  color: bucket.outcomeName == selectedOutcomeName
-                      ? colorScheme.secondary
-                      : colorScheme.outlineVariant,
-                ),
-                visualDensity: VisualDensity.compact,
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                onSelected: (_) => onOutcomeSelected(bucket.outcomeName),
               ),
           ],
         ),
       ],
     );
+  }
+
+  String _distributionLabel(S strings) {
+    return <String>[strings.results, ...buckets.map(_bucketLabel)].join(' · ');
+  }
+
+  String _bucketLabel(_AnalysisOutcomeBucket bucket) {
+    return '${bucket.label} ${bucket.count}';
   }
 }
 

@@ -2442,7 +2442,17 @@ void main() {
         find.descendant(of: results, matching: find.textContaining(label)),
         findsWidgets,
       );
+      expect(find.byTooltip(label), findsWidgets);
     }
+    expect(
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Semantics &&
+            widget.properties.label ==
+                'Results · Wins 1 · Draws 1 · Losses 1 · + 1 · - 1 · Unknown 1',
+      ),
+      findsOneWidget,
+    );
     for (final String outcome in <String>[
       'win',
       'draw',
