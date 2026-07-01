@@ -6729,6 +6729,7 @@ class _AnalysisVariationButton extends StatelessWidget {
     assert(move != null, 'Analysis variation buttons require move data.');
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
+    final S strings = S.of(context);
     final bool usePrimaryStyle =
         isSelected || (!hasSelectedVariation && isMainline);
     final Color backgroundColor = usePrimaryStyle
@@ -6741,6 +6742,10 @@ class _AnalysisVariationButton extends StatelessWidget {
         : isMainline
         ? colorScheme.onTertiaryContainer
         : colorScheme.onSecondaryContainer;
+    final String displayText = showAnnotations
+        ? _notationWithNagSymbols(move!.notation, move.getAllNags())
+        : move!.notation;
+    final String variationLabel = strings.variationNotation(displayText);
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -6749,28 +6754,36 @@ class _AnalysisVariationButton extends StatelessWidget {
           bottom: BorderSide(color: theme.dividerColor),
         ),
       ),
-      child: Material(
-        color: backgroundColor,
-        child: InkWell(
-          onTap: () =>
-              unawaited(HistoryNavigator.gotoNode(context, node, pop: false)),
-          child: Container(
-            alignment: Alignment.center,
-            constraints: const BoxConstraints(
-              minHeight: kMinInteractiveDimension,
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                showAnnotations
-                    ? _notationWithNagSymbols(move!.notation, move.getAllNags())
-                    : move!.notation,
-                maxLines: 1,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: foregroundColor,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 0,
+      child: Tooltip(
+        message: variationLabel,
+        child: Semantics(
+          button: true,
+          selected: usePrimaryStyle,
+          label: variationLabel,
+          excludeSemantics: true,
+          child: Material(
+            color: backgroundColor,
+            child: InkWell(
+              onTap: () => unawaited(
+                HistoryNavigator.gotoNode(context, node, pop: false),
+              ),
+              child: Container(
+                alignment: Alignment.center,
+                constraints: const BoxConstraints(
+                  minHeight: kMinInteractiveDimension,
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    displayText,
+                    maxLines: 1,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: foregroundColor,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0,
+                    ),
+                  ),
                 ),
               ),
             ),

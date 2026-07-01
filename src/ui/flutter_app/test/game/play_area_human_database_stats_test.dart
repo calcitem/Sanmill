@@ -4842,6 +4842,8 @@ void main() {
       ),
       findsOneWidget,
     );
+    expect(find.byTooltip('Variation: d6!'), findsOneWidget);
+    expect(find.byTooltip('Variation: f4?'), findsOneWidget);
 
     AnalysisMode.setShowMoveAnnotations(false);
     await tester.pumpAndSettle();
@@ -4874,6 +4876,8 @@ void main() {
       ),
       findsNothing,
     );
+    expect(find.byTooltip('Variation: d6'), findsOneWidget);
+    expect(find.byTooltip('Variation: f4'), findsOneWidget);
 
     await tester.tap(find.byKey(const Key('play_area_analysis_variation_2')));
     await tester.pumpAndSettle();
