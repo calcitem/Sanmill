@@ -32,7 +32,11 @@ class AnalysisService {
   AnalysisService._();
 
   static const String _logTag = "[AnalysisService]";
-  static const int _goDeeperDepthStep = 2;
+  static const int _analysisSearchDepth = 64;
+  static const int _analysisDefaultMoveLimitMs = 6000;
+  static const int _analysisDeepMoveLimitMs = 60 * 60 * 1000;
+
+  static int _analysisSearchGeneration = 0;
 
   /// Toggle the analysis overlay for the position currently shown by the
   /// session in scope of [context].
@@ -43,6 +47,10 @@ class AnalysisService {
   /// position and the overlay shows those candidate moves.
   static Future<void> toggle(BuildContext context) async {
     if (AnalysisMode.isFullAnalysis) {
+      if (AnalysisMode.isAnalyzing &&
+          AnalysisMode.source == AnalysisSource.engine) {
+        _stopCurrentEngineAnalysis();
+      }
       AnalysisMode.disable();
       return;
     }
@@ -90,14 +98,7 @@ class AnalysisService {
       return;
     }
 
-    final int requestedDepth =
-        (_currentEngineDepth() ?? _defaultEngineDepth(session)) +
-        _goDeeperDepthStep;
-    await _enableEngineMultiPvAnalysis(
-      context,
-      session,
-      requestedDepth: requestedDepth,
-    );
+    await _enableEngineMultiPvAnalysis(context, session, isDeepSearch: true);
   }
 
   /// Whether threat mode can be requested without fabricating an impossible Mill
@@ -203,22 +204,23 @@ class AnalysisService {
   static Future<void> _enableEngineMultiPvAnalysis(
     BuildContext context,
     NativeMillGameSession session, {
-    int? requestedDepth,
+    bool isDeepSearch = false,
     String? fenOverride,
     bool isThreatMode = false,
   }) async {
+    final int searchGeneration = ++_analysisSearchGeneration;
     final int requestedLineCount = math.max(1, AnalysisMode.engineLineCount);
     final GeneralSettings currentSettings = DB().generalSettings;
     final GeneralSettings engineSettings = currentSettings.copyWith(
       resignIfMostLose: false,
-      useLazySmp: requestedLineCount <= 1 && currentSettings.useLazySmp,
+      useLazySmp: false,
     );
     final NativeMillAiTurnController analysisSearch =
         NativeMillAiTurnController(generalSettings: engineSettings);
-    final int defaultDepth = analysisSearch.searchDepthForSession(session);
-    final int searchDepth = requestedDepth == null
-        ? defaultDepth
-        : math.min(64, math.max(defaultDepth, requestedDepth));
+    const int searchDepth = _analysisSearchDepth;
+    final int moveLimitMs = isDeepSearch
+        ? _analysisDeepMoveLimitMs
+        : math.max(analysisSearch.moveLimitMs, _analysisDefaultMoveLimitMs);
     NativeMillGameSession? temporarySession;
     final NativeMillGameSession searchSession;
     if (fenOverride == null) {
@@ -238,42 +240,69 @@ class AnalysisService {
     }
 
     AnalysisMode.setAnalyzing(true);
+    bool published = false;
     try {
       final List<NativeMillPrincipalVariation> variations = await searchSession
           .searchPrincipalVariations(
             depth: searchDepth,
-            moveLimitMs: analysisSearch.moveLimitMs,
+            moveLimitMs: moveLimitMs,
             multiPv: requestedLineCount,
             engineSettings: engineSettings,
+            onUpdate: (List<NativeMillPrincipalVariation> current) {
+              if (searchGeneration != _analysisSearchGeneration) {
+                return;
+              }
+              published = true;
+              _publishEngineVariations(current, isThreatMode: isThreatMode);
+            },
           );
+      if (searchGeneration != _analysisSearchGeneration) {
+        return;
+      }
       if (variations.isEmpty) {
-        if (context.mounted) {
+        if (!published && context.mounted) {
           _showSnackBar(context, S.of(context).noMoreHintsAvailable);
         }
         return;
       }
-      AnalysisMode.enable(
-        variations
-            .map(
-              (NativeMillPrincipalVariation variation) => MoveAnalysisResult(
-                move: variation.move,
-                outcome: _engineOutcome(variation.score),
-                rank: variation.rank,
-                depth: variation.depth,
-                nodes: variation.nodes,
-                line: variation.line,
-              ),
-            )
-            .toList(growable: false),
-        source: AnalysisSource.engine,
-        isThreatMode: isThreatMode,
-      );
+      _publishEngineVariations(variations, isThreatMode: isThreatMode);
     } catch (e, st) {
-      logger.e("$_logTag Engine MultiPV analysis failed: $e", stackTrace: st);
+      if (searchGeneration == _analysisSearchGeneration) {
+        logger.e("$_logTag Engine MultiPV analysis failed: $e", stackTrace: st);
+      }
     } finally {
       temporarySession?.dispose();
-      AnalysisMode.setAnalyzing(false);
+      if (searchGeneration == _analysisSearchGeneration) {
+        AnalysisMode.setAnalyzing(false);
+      }
     }
+  }
+
+  static void _publishEngineVariations(
+    List<NativeMillPrincipalVariation> variations, {
+    required bool isThreatMode,
+  }) {
+    AnalysisMode.enable(
+      variations
+          .map(
+            (NativeMillPrincipalVariation variation) => MoveAnalysisResult(
+              move: variation.move,
+              outcome: _engineOutcome(variation.score),
+              rank: variation.rank,
+              depth: variation.depth,
+              nodes: variation.nodes,
+              line: variation.line,
+            ),
+          )
+          .toList(growable: false),
+      source: AnalysisSource.engine,
+      isThreatMode: isThreatMode,
+    );
+  }
+
+  static void _stopCurrentEngineAnalysis() {
+    _analysisSearchGeneration++;
+    tgf.nativeMillSearchStop();
   }
 
   /// Show a Lichess-style single best-move hint without applying the move.
@@ -341,31 +370,6 @@ class AnalysisService {
       return session;
     }
     return GameController().activeNativeMillSession;
-  }
-
-  static int _defaultEngineDepth(NativeMillGameSession session) {
-    final GeneralSettings engineSettings = DB().generalSettings.copyWith(
-      resignIfMostLose: false,
-      useLazySmp: false,
-    );
-    return NativeMillAiTurnController(
-      generalSettings: engineSettings,
-    ).searchDepthForSession(session);
-  }
-
-  static int? _currentEngineDepth() {
-    if (AnalysisMode.source != AnalysisSource.engine) {
-      return null;
-    }
-    int? depth;
-    for (final MoveAnalysisResult result in AnalysisMode.analysisLineResults) {
-      final int? candidate = result.depth;
-      if (candidate == null || candidate <= 0) {
-        continue;
-      }
-      depth = depth == null ? candidate : math.max(depth, candidate);
-    }
-    return depth;
   }
 
   static String _fenWithOppositeSideToMove(String fen) {

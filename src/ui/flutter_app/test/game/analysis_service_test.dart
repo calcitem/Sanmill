@@ -55,6 +55,8 @@ void main() {
     expect(session.requestedMultiPvValues, <int>[
       AnalysisMode.maxEngineLineCount,
     ]);
+    expect(session.requestedDepthValues, <int>[64]);
+    expect(session.requestedMoveLimitValues, <int>[6000]);
   });
 
   testWidgets('visible engine lines request the default PV count', (
@@ -70,6 +72,8 @@ void main() {
     expect(session.requestedMultiPvValues, <int>[
       AnalysisMode.defaultEngineLineCount,
     ]);
+    expect(session.requestedDepthValues, <int>[64]);
+    expect(session.requestedMoveLimitValues, <int>[6000]);
   });
 
   testWidgets('visible engine lines request the selected PV count', (
@@ -88,6 +92,27 @@ void main() {
     expect(session.requestedMultiPvValues, <int>[
       AnalysisMode.maxEngineLineCount,
     ]);
+    expect(session.requestedDepthValues, <int>[64]);
+    expect(session.requestedMoveLimitValues, <int>[6000]);
+  });
+
+  testWidgets('go deeper requests long analysis time', (
+    WidgetTester tester,
+  ) async {
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    addTearDown(session.dispose);
+
+    await _pumpAnalysisButton(tester, session);
+    await AnalysisService.goDeeper(
+      tester.element(find.byKey(const Key('analysis_service_toggle'))),
+    );
+    await tester.pump();
+
+    expect(session.requestedMultiPvValues, <int>[
+      AnalysisMode.defaultEngineLineCount,
+    ]);
+    expect(session.requestedDepthValues, <int>[64]);
+    expect(session.requestedMoveLimitValues, <int>[60 * 60 * 1000]);
   });
 }
 
@@ -122,6 +147,8 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
   _RecordingAnalysisSession() : super.fromPort(NativeMillRulesPort());
 
   final List<int> requestedMultiPvValues = <int>[];
+  final List<int> requestedDepthValues = <int>[];
+  final List<int> requestedMoveLimitValues = <int>[];
 
   @override
   Future<List<NativeMillPrincipalVariation>> searchPrincipalVariations({
@@ -129,17 +156,23 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
     int moveLimitMs = 0,
     required int multiPv,
     GeneralSettings? engineSettings,
+    void Function(List<NativeMillPrincipalVariation> variations)? onUpdate,
   }) async {
     requestedMultiPvValues.add(multiPv);
-    return const <NativeMillPrincipalVariation>[
-      NativeMillPrincipalVariation(
-        rank: 1,
-        move: 'a7',
-        score: 0,
-        nodes: 1,
-        depth: 1,
-        line: <String>['a7'],
-      ),
-    ];
+    requestedDepthValues.add(depth);
+    requestedMoveLimitValues.add(moveLimitMs);
+    const List<NativeMillPrincipalVariation> variations =
+        <NativeMillPrincipalVariation>[
+          NativeMillPrincipalVariation(
+            rank: 1,
+            move: 'a7',
+            score: 0,
+            nodes: 1,
+            depth: 1,
+            line: <String>['a7'],
+          ),
+        ];
+    onUpdate?.call(variations);
+    return variations;
   }
 }

@@ -3996,18 +3996,22 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
     int moveLimitMs = 0,
     required int multiPv,
     GeneralSettings? engineSettings,
+    void Function(List<NativeMillPrincipalVariation> variations)? onUpdate,
   }) async {
     requestedMultiPvValues.add(multiPv);
-    return const <NativeMillPrincipalVariation>[
-      NativeMillPrincipalVariation(
-        rank: 1,
-        move: 'd6',
-        score: 0,
-        nodes: 1,
-        depth: 1,
-        line: <String>['d6'],
-      ),
-    ];
+    const List<NativeMillPrincipalVariation> variations =
+        <NativeMillPrincipalVariation>[
+          NativeMillPrincipalVariation(
+            rank: 1,
+            move: 'd6',
+            score: 0,
+            nodes: 1,
+            depth: 1,
+            line: <String>['d6'],
+          ),
+        ];
+    onUpdate?.call(variations);
+    return variations;
   }
 }
 

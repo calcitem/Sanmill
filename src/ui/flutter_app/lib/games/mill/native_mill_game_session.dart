@@ -537,6 +537,7 @@ class NativeMillGameSession implements GameSessionHandle {
     int moveLimitMs = 0,
     required int multiPv,
     GeneralSettings? engineSettings,
+    void Function(List<NativeMillPrincipalVariation> variations)? onUpdate,
   }) async {
     if (_disposed || outcome.isTerminal) {
       return const <NativeMillPrincipalVariation>[];
@@ -554,6 +555,23 @@ class NativeMillGameSession implements GameSessionHandle {
 
     final Map<int, NativeMillPrincipalVariation> variationsByRank =
         <int, NativeMillPrincipalVariation>{};
+    final Map<int, NativeMillPrincipalVariation> currentBatchByRank =
+        <int, NativeMillPrincipalVariation>{};
+    int? currentBatchDepth;
+    int? lastInfoDepth;
+    bool currentBatchPublished = false;
+
+    void publishBatch() {
+      if (currentBatchByRank.isEmpty) {
+        return;
+      }
+      variationsByRank
+        ..clear()
+        ..addAll(currentBatchByRank);
+      currentBatchPublished = true;
+      onUpdate?.call(_sortedPrincipalVariations(variationsByRank));
+    }
+
     try {
       await for (final tgf.EngineEvent event in millSearchEvents(
         depth: depth,
@@ -564,14 +582,35 @@ class NativeMillGameSession implements GameSessionHandle {
         if (event.kind == 'pv') {
           final NativeMillPrincipalVariation variation =
               _principalVariationFromEvent(event);
-          variationsByRank[variation.rank] = variation;
+          if (currentBatchDepth != variation.depth) {
+            if (!currentBatchPublished) {
+              publishBatch();
+            }
+            currentBatchDepth = variation.depth;
+            currentBatchByRank.clear();
+            currentBatchPublished = false;
+          }
+          currentBatchByRank[variation.rank] = variation;
+          currentBatchPublished = false;
+          if (currentBatchByRank.length >= multiPv) {
+            publishBatch();
+          }
+        } else if (event.kind == 'info' && event.depth > 0) {
+          lastInfoDepth = event.depth;
         } else if (event.kind == 'bestMove' &&
             multiPv == 1 &&
             event.toNode >= 0) {
           final NativeMillPrincipalVariation variation =
-              _principalVariationFromBestMoveEvent(event, depth);
+              _principalVariationFromBestMoveEvent(
+                event,
+                lastInfoDepth ?? depth,
+              );
           variationsByRank[variation.rank] = variation;
+          onUpdate?.call(_sortedPrincipalVariations(variationsByRank));
         }
+      }
+      if (!currentBatchPublished) {
+        publishBatch();
       }
     } catch (e) {
       logger.e('$_logTag searchPrincipalVariations stream error: $e');
@@ -579,14 +618,7 @@ class NativeMillGameSession implements GameSessionHandle {
     } finally {
       _searchInFlight = false;
     }
-    final List<NativeMillPrincipalVariation> variations = variationsByRank
-        .values
-        .toList(growable: false);
-    variations.sort(
-      (NativeMillPrincipalVariation a, NativeMillPrincipalVariation b) =>
-          a.rank.compareTo(b.rank),
-    );
-    return variations;
+    return _sortedPrincipalVariations(variationsByRank);
   }
 
   /// Query the perfect database for the current position without running
@@ -682,6 +714,19 @@ class NativeMillGameSession implements GameSessionHandle {
       depth: depth,
       line: <String>[notation],
     );
+  }
+
+  static List<NativeMillPrincipalVariation> _sortedPrincipalVariations(
+    Map<int, NativeMillPrincipalVariation> variationsByRank,
+  ) {
+    final List<NativeMillPrincipalVariation> variations = variationsByRank
+        .values
+        .toList(growable: false);
+    variations.sort(
+      (NativeMillPrincipalVariation a, NativeMillPrincipalVariation b) =>
+          a.rank.compareTo(b.rank),
+    );
+    return variations;
   }
 
   static List<String> _pvLineFromReason(

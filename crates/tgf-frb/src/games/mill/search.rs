@@ -266,7 +266,7 @@ fn run_ab_like_search(
     wb: &mut tgf_mill::MillWorkbench,
     config: &MillEngineConfigPlan,
     max_depth: i32,
-    mut on_info: impl FnMut(i32, &SearchResult),
+    mut on_info: impl FnMut(&Searcher<MillGame>, i32, &SearchResult),
 ) -> SearchResult {
     let mut result = SearchResult::default_none();
     let mut first_guess = 0;
@@ -277,12 +277,12 @@ fn run_ab_like_search(
             }
             result = run_searcher_algorithm(searcher, wb, config.algorithm, d, first_guess);
             first_guess = result.score;
-            on_info(d, &result);
+            on_info(searcher, d, &result);
         }
     }
     if !searcher.was_aborted() || result.best_action.is_none() {
         result = run_searcher_algorithm(searcher, wb, config.algorithm, max_depth, first_guess);
-        on_info(max_depth, &result);
+        on_info(searcher, max_depth, &result);
     }
     result
 }
@@ -402,6 +402,31 @@ fn emit_multi_pv_events(
     }
 }
 
+struct SearchProgressEmitter<'a> {
+    game: &'a MillGame,
+    snapshot: &'a GameStateSnapshot,
+    sink: &'a StreamSink<EngineEvent>,
+    root_side_to_move: i8,
+    config: &'a MillEngineConfigPlan,
+}
+
+impl SearchProgressEmitter<'_> {
+    fn emit(&self, searcher: &Searcher<MillGame>, depth: i32, result: &SearchResult) {
+        let _ = self
+            .sink
+            .add(crate::engine_event::info(depth, result.score, result.nodes));
+        emit_multi_pv_events(
+            self.game,
+            self.snapshot,
+            searcher,
+            self.sink,
+            depth,
+            self.root_side_to_move,
+            self.config,
+        );
+    }
+}
+
 fn mix_lazy_smp_worker_seed(seed: u64, worker_index: u64) -> u64 {
     let mut x = seed ^ worker_index.wrapping_mul(0x9E37_79B9_7F4A_7C15);
     x = (x ^ (x >> 30)).wrapping_mul(0xBF58_476D_1CE4_E5B9);
@@ -447,7 +472,7 @@ fn run_lazy_smp_ab_like_search(
                 &mut wb,
                 &worker_config,
                 worker_depth,
-                |_, _| {},
+                |_, _, _| {},
             );
             (worker_depth, result)
         }));
@@ -672,6 +697,13 @@ fn run_mill_engine_config_event_stream(
             result
         }
         SearchAlgorithm::AlphaBeta | SearchAlgorithm::Pvs | SearchAlgorithm::Mtdf => {
+            let progress = SearchProgressEmitter {
+                game: &game,
+                snapshot: &snapshot,
+                sink: &sink,
+                root_side_to_move: snapshot.side_to_move,
+                config: &config,
+            };
             if multi_thread_search_is_allowed(&config) {
                 #[cfg(not(target_arch = "wasm32"))]
                 {
@@ -698,12 +730,8 @@ fn run_mill_engine_config_event_stream(
                         &mut wb,
                         &config,
                         max_depth,
-                        |depth, current| {
-                            let _ = sink.add(crate::engine_event::info(
-                                depth,
-                                current.score,
-                                current.nodes,
-                            ));
+                        |progress_searcher, depth, current| {
+                            progress.emit(progress_searcher, depth, current);
                         },
                     )
                 }
@@ -713,12 +741,8 @@ fn run_mill_engine_config_event_stream(
                     &mut wb,
                     &config,
                     max_depth,
-                    |depth, current| {
-                        let _ = sink.add(crate::engine_event::info(
-                            depth,
-                            current.score,
-                            current.nodes,
-                        ));
+                    |progress_searcher, depth, current| {
+                        progress.emit(progress_searcher, depth, current);
                     },
                 )
             }
