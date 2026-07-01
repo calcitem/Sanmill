@@ -39,6 +39,10 @@ class AnalysisService {
   static int _analysisSearchGeneration = 0;
   static Future<void>? _activeEngineAnalysis;
 
+  @visibleForTesting
+  static NativeMillGameSession Function(GeneralSettings engineSettings)?
+  debugCreateTemporarySession;
+
   /// Toggle the analysis overlay for the position currently shown by the
   /// session in scope of [context].
   ///
@@ -146,10 +150,25 @@ class AnalysisService {
     final bool preservePerfectDatabase =
         AnalysisMode.source == AnalysisSource.perfectDatabase ||
         AnalysisMode.source == AnalysisSource.perfectDatabaseAndEngine;
+    String? fenOverride;
+    final bool isThreatMode = AnalysisMode.isThreatMode;
+    if (isThreatMode) {
+      if (!canShowThreat(session)) {
+        logger.w("$_logTag Threat mode is not available for deeper search.");
+        return;
+      }
+      fenOverride = _fenWithOppositeSideToMove(session.getFen());
+      if (fenOverride.isEmpty) {
+        logger.w("$_logTag Could not build threat-mode FEN for deep search.");
+        return;
+      }
+    }
     await _enableEngineMultiPvAnalysis(
       context,
       session,
       isDeepSearch: true,
+      fenOverride: fenOverride,
+      isThreatMode: isThreatMode,
       baseResults: preservePerfectDatabase
           ? AnalysisMode.analysisResults
           : null,
@@ -290,10 +309,12 @@ class AnalysisService {
     if (fenOverride == null) {
       searchSession = session;
     } else {
-      temporarySession = NativeMillGameSession(
-        rules: DB().ruleSettings,
-        generalSettings: engineSettings,
-      );
+      temporarySession =
+          debugCreateTemporarySession?.call(engineSettings) ??
+          NativeMillGameSession(
+            rules: DB().ruleSettings,
+            generalSettings: engineSettings,
+          );
       final bool loaded = temporarySession.loadFen(fenOverride);
       assert(loaded, 'Threat-mode FEN must load into the temporary session.');
       if (!loaded) {

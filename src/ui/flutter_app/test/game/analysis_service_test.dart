@@ -33,6 +33,7 @@ void main() {
     AnalysisMode.setShowEngineLines(true);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
     AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
+    AnalysisService.debugCreateTemporarySession = null;
   });
 
   tearDown(() {
@@ -40,6 +41,7 @@ void main() {
     AnalysisMode.setShowEngineLines(true);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
     AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
+    AnalysisService.debugCreateTemporarySession = null;
     DB.instance = null;
   });
 
@@ -253,6 +255,48 @@ void main() {
     expect(AnalysisMode.analysisLineResults.single.move, 'a7');
     expect(AnalysisMode.analysisLineResults.single.depth, 1);
     expect(session.requestedMoveLimitValues, <int>[
+      AnalysisMode.maxEngineSearchTimeMs,
+    ]);
+  });
+
+  testWidgets('go deeper keeps threat-mode analysis', (
+    WidgetTester tester,
+  ) async {
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    final List<_RecordingAnalysisSession> temporarySessions =
+        <_RecordingAnalysisSession>[];
+    addTearDown(session.dispose);
+    AnalysisService
+        .debugCreateTemporarySession = (GeneralSettings engineSettings) {
+      final _RecordingAnalysisSession temporary = _RecordingAnalysisSession();
+      temporarySessions.add(temporary);
+      return temporary;
+    };
+
+    AnalysisMode.enable(
+      const <MoveAnalysisResult>[
+        MoveAnalysisResult(
+          move: 'f4',
+          outcome: AnalysisOutcome.advantage,
+          depth: 6,
+          line: <String>['f4', 'a1'],
+        ),
+      ],
+      source: AnalysisSource.engine,
+      isThreatMode: true,
+    );
+
+    await _pumpAnalysisButton(tester, session);
+    await AnalysisService.goDeeper(
+      tester.element(find.byKey(const Key('analysis_service_toggle'))),
+    );
+    await tester.pump();
+
+    expect(AnalysisMode.isThreatMode, isTrue);
+    expect(AnalysisMode.source, AnalysisSource.engine);
+    expect(AnalysisMode.analysisLineResults.single.move, 'a7');
+    expect(temporarySessions, hasLength(1));
+    expect(temporarySessions.single.requestedMoveLimitValues, <int>[
       AnalysisMode.maxEngineSearchTimeMs,
     ]);
   });
