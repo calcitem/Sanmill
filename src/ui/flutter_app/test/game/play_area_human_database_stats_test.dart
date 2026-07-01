@@ -66,6 +66,7 @@ void main() {
     AnalysisMode.setShowMoveAnnotations(true);
     AnalysisMode.setShowMoveComments(true);
     AnalysisMode.setShowBestMoveArrow(true);
+    AnalysisMode.setShowEvaluationGauge(true);
     AnalysisMode.setInlineNotation(false);
     AnalysisMode.setSmallBoard(false);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
@@ -79,6 +80,7 @@ void main() {
     AnalysisMode.setShowMoveAnnotations(true);
     AnalysisMode.setShowMoveComments(true);
     AnalysisMode.setShowBestMoveArrow(true);
+    AnalysisMode.setShowEvaluationGauge(true);
     AnalysisMode.setInlineNotation(false);
     AnalysisMode.setSmallBoard(false);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
@@ -3454,9 +3456,11 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isPositionalAdvantageIndicatorShown: false,
+      analysisShowEvaluationGauge: false,
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
     );
+    AnalysisMode.setShowEvaluationGauge(false);
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
     );
@@ -3476,13 +3480,18 @@ void main() {
       find.byKey(const Key('play_area_analysis_settings_advantage_graph')),
       findsOneWidget,
     );
+    expect(
+      find.byKey(const Key('play_area_analysis_evaluation_gauge')),
+      findsNothing,
+    );
 
     await tester.tap(
       find.byKey(const Key('play_area_analysis_settings_evaluation_gauge')),
     );
     await tester.pumpAndSettle();
 
-    expect(db.displaySettings.isPositionalAdvantageIndicatorShown, isTrue);
+    expect(db.displaySettings.analysisShowEvaluationGauge, isTrue);
+    expect(db.displaySettings.isPositionalAdvantageIndicatorShown, isFalse);
     expect(
       find.byKey(const Key('play_area_analysis_evaluation_gauge')),
       findsOneWidget,

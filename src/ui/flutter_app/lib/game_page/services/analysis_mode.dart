@@ -167,6 +167,7 @@ class AnalysisMode {
   static bool _showMoveAnnotations = true;
   static bool _showMoveComments = true;
   static bool _showBestMoveArrow = true;
+  static bool _showEvaluationGauge = true;
   static bool _inlineNotation = false;
   static bool _smallBoard = false;
   static bool _isThreatMode = false;
@@ -213,6 +214,9 @@ class AnalysisMode {
 
   /// Whether the analysis board shows the best engine move arrow.
   static bool get showBestMoveArrow => _showBestMoveArrow;
+
+  /// Whether the analysis board shows the engine evaluation gauge.
+  static bool get showEvaluationGauge => _showEvaluationGauge;
 
   /// Whether the analysis move list uses compact inline notation.
   static bool get inlineNotation => _inlineNotation;
@@ -392,6 +396,21 @@ class AnalysisMode {
     _publishState();
   }
 
+  /// Set whether the analysis board shows the engine evaluation gauge.
+  static void setShowEvaluationGauge(bool value, {bool persist = false}) {
+    if (_showEvaluationGauge == value) {
+      if (persist) {
+        _saveDisplayPreferences(showEvaluationGauge: value);
+      }
+      return;
+    }
+    _showEvaluationGauge = value;
+    if (persist) {
+      _saveDisplayPreferences(showEvaluationGauge: value);
+    }
+    _publishState();
+  }
+
   /// Set whether the analysis move list uses compact inline notation.
   static void setInlineNotation(bool value, {bool persist = false}) {
     if (_inlineNotation == value) {
@@ -494,6 +513,7 @@ class AnalysisMode {
     required bool showMoveAnnotations,
     required bool showMoveComments,
     required bool showBestMoveArrow,
+    required bool showEvaluationGauge,
     required int engineLineCount,
     required int engineSearchTimeMs,
     bool notify = true,
@@ -508,6 +528,7 @@ class AnalysisMode {
         _showMoveAnnotations == showMoveAnnotations &&
         _showMoveComments == showMoveComments &&
         _showBestMoveArrow == showBestMoveArrow &&
+        _showEvaluationGauge == showEvaluationGauge &&
         _engineLineCount == nextLineCount &&
         _engineSearchTimeMs == nextSearchTimeMs) {
       return;
@@ -518,6 +539,7 @@ class AnalysisMode {
     _showMoveAnnotations = showMoveAnnotations;
     _showMoveComments = showMoveComments;
     _showBestMoveArrow = showBestMoveArrow;
+    _showEvaluationGauge = showEvaluationGauge;
     _engineLineCount = nextLineCount;
     _engineSearchTimeMs = nextSearchTimeMs;
     if (notify) {
@@ -544,6 +566,7 @@ class AnalysisMode {
     bool? showMoveAnnotations,
     bool? showMoveComments,
     bool? showBestMoveArrow,
+    bool? showEvaluationGauge,
     int? engineLineCount,
     int? engineSearchTimeMs,
   }) {
@@ -559,6 +582,8 @@ class AnalysisMode {
           showMoveComments ?? settings.analysisShowMoveComments,
       analysisShowBestMoveArrow:
           showBestMoveArrow ?? settings.analysisShowBestMoveArrow,
+      analysisShowEvaluationGauge:
+          showEvaluationGauge ?? settings.analysisShowEvaluationGauge,
       analysisEngineLineCount:
           engineLineCount ?? settings.analysisEngineLineCount,
       analysisEngineSearchTimeMs:

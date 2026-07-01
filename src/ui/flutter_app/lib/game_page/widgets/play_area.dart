@@ -232,9 +232,7 @@ Future<void> showAnalysisSettingsSheet(
                           ),
                           secondary: const Icon(Icons.stacked_bar_chart),
                           title: Text(strings.showPositionalAdvantageIndicator),
-                          value: DB()
-                              .displaySettings
-                              .isPositionalAdvantageIndicatorShown,
+                          value: AnalysisMode.showEvaluationGauge,
                           onChanged: (bool value) {
                             RecordingService().recordEvent(
                               RecordingEventType.toolbarAction,
@@ -244,11 +242,10 @@ Future<void> showAnalysisSettingsSheet(
                                 'visible': value,
                               },
                             );
-                            DB().displaySettings = DB().displaySettings
-                                .copyWith(
-                                  isPositionalAdvantageIndicatorShown: value,
-                                );
-                            AnalysisMode.refresh();
+                            AnalysisMode.setShowEvaluationGauge(
+                              value,
+                              persist: true,
+                            );
                           },
                         ),
                         SwitchListTile.adaptive(
@@ -2907,7 +2904,7 @@ class PlayAreaState extends State<PlayArea> {
 
   bool _shouldShowAnalysisEvaluationGauge() {
     return _isAnalysisMode &&
-        DB().displaySettings.isPositionalAdvantageIndicatorShown &&
+        AnalysisMode.showEvaluationGauge &&
         AnalysisMode.isFullAnalysis &&
         AnalysisMode.analysisLineResults.isNotEmpty;
   }

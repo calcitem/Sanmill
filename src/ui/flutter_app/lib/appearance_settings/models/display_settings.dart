@@ -125,6 +125,7 @@ class DisplaySettings {
     this.analysisShowMoveAnnotations = true,
     this.analysisShowMoveComments = true,
     this.analysisShowBestMoveArrow = true,
+    this.analysisShowEvaluationGauge = true,
     this.analysisEngineLineCount = kDefaultAnalysisEngineLineCount,
     this.analysisEngineSearchTimeMs = kDefaultAnalysisEngineSearchTimeMs,
   });
@@ -326,6 +327,10 @@ class DisplaySettings {
   @HiveField(53, defaultValue: true)
   final bool analysisShowBestMoveArrow;
 
+  /// Whether analysis boards show the engine evaluation gauge.
+  @HiveField(55, defaultValue: true)
+  final bool analysisShowEvaluationGauge;
+
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);
 
@@ -336,6 +341,7 @@ class DisplaySettings {
     bool? analysisShowMoveAnnotations,
     bool? analysisShowMoveComments,
     bool? analysisShowBestMoveArrow,
+    bool? analysisShowEvaluationGauge,
     int? analysisEngineLineCount,
     int? analysisEngineSearchTimeMs,
   }) {
@@ -398,6 +404,8 @@ class DisplaySettings {
           analysisShowMoveComments ?? this.analysisShowMoveComments,
       analysisShowBestMoveArrow:
           analysisShowBestMoveArrow ?? this.analysisShowBestMoveArrow,
+      analysisShowEvaluationGauge:
+          analysisShowEvaluationGauge ?? this.analysisShowEvaluationGauge,
       analysisEngineLineCount:
           analysisEngineLineCount ?? this.analysisEngineLineCount,
       analysisEngineSearchTimeMs:

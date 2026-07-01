@@ -63,6 +63,7 @@ void main() {
       expect(d.analysisShowMoveAnnotations, isTrue);
       expect(d.analysisShowMoveComments, isTrue);
       expect(d.analysisShowBestMoveArrow, isTrue);
+      expect(d.analysisShowEvaluationGauge, isTrue);
       expect(
         d.analysisEngineLineCount,
         DisplaySettings.defaultAnalysisEngineLineCount,
