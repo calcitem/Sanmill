@@ -2334,6 +2334,7 @@ void main() {
         MoveAnalysisResult(
           move: 'g7',
           outcome: AnalysisOutcome.withValue(AnalysisOutcome.advantage, '+32'),
+          rank: 1,
           depth: 12,
           nodes: 45678,
           nodesPerSecond: 91000,
@@ -2361,6 +2362,13 @@ void main() {
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_summary_source')),
         matching: find.text('Perfect database · Engine'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_engine')),
+        matching: find.textContaining('PV 1'),
       ),
       findsOneWidget,
     );
@@ -2397,6 +2405,10 @@ void main() {
     );
     expect(
       find.descendant(of: bestMove, matching: find.textContaining('+32')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: bestMove, matching: find.textContaining('PV 1')),
       findsOneWidget,
     );
     expect(

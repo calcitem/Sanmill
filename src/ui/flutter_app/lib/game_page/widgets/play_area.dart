@@ -5512,6 +5512,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
     final int? depth = _analysisEngineDepth();
     final int? nodesPerSecond = _analysisEngineNodesPerSecond();
     final List<String> parts = <String>[
+      if (result.rank != null) _analysisPvRankLabel(result.rank!),
       _analysisEvalLabel(result.outcome),
       if (depth != null) 'd$depth',
       if (AnalysisMode.isEngineAnalysisDeep)
@@ -7269,7 +7270,7 @@ class _AnalysisEngineLine extends StatelessWidget {
   }
 
   String _rankLabel(int rank) {
-    return 'PV $rank';
+    return _analysisPvRankLabel(rank);
   }
 
   String _lineLabel(
@@ -7377,6 +7378,7 @@ String _analysisEvalLabel(AnalysisOutcome outcome) {
 
 String _analysisSummaryBestLineText(MoveAnalysisResult result) {
   final List<String> parts = <String>[
+    if (result.rank != null) _analysisPvRankLabel(result.rank!),
     if (result.depth != null && result.depth! > 0) 'd${result.depth}',
     if (result.nodes != null && result.nodes! > 0)
       _compactAnalysisCount(result.nodes!),
@@ -7389,6 +7391,11 @@ String _analysisSummaryBestLineText(MoveAnalysisResult result) {
 
 String _analysisResultLabel(MoveAnalysisResult result) {
   return '${_analysisEvalLabel(result.outcome)} ${_analysisLineText(result)}';
+}
+
+String _analysisPvRankLabel(int rank) {
+  assert(rank > 0, 'Principal variation rank must be one-based.');
+  return 'PV $rank';
 }
 
 String _analysisApplyResultLabel(S strings, MoveAnalysisResult result) {
