@@ -9,31 +9,59 @@ import '../../../shared/database/database.dart';
 import '../../../shared/utils/helpers/color_helpers/color_helper.dart';
 
 /// A custom painter to draw the advantage trend line for up to 50 moves.
-/// The horizontal axis is always conceptually divided into 50 segments.
-/// If fewer than 50 moves are present, the moves are drawn starting from the left side,
-/// using the same segment spacing, but not scaling to fill the entire width.
-/// Once 50 moves are available, they fill the entire width. As more moves come in,
-/// older moves are discarded and the line shifts left, always showing the last 50 moves.
+/// By default, the horizontal axis uses a stable 50-point window.
+/// If fewer than 50 moves are present, the moves are drawn starting from the
+/// left side using the same segment spacing, which keeps live-game graphs
+/// visually stable as moves are added. When [fillWidth] is true, the currently
+/// visible points fill the available width, which is better for review graphs
+/// that represent a fixed line.
+/// Once 50 moves are available, they fill the entire width. As more moves come
+/// in, older moves are discarded and the line shifts left, always showing the
+/// last 50 moves.
 ///
 /// In addition, the entire graph area is enclosed by a rectangle.
 /// Above the advantage line is filled with DB().colorSettings.blackPieceColor at 50% opacity.
 /// Below the advantage line is filled with DB().colorSettings.whitePieceColor at 50% opacity.
 /// The advantage line thus appears as a boundary line within a semi-transparent overlay.
 class AdvantageGraphPainter extends CustomPainter {
-  AdvantageGraphPainter(List<int> data, {this.currentIndex})
-    : assert(
-        currentIndex == null || currentIndex >= 0,
-        'Advantage graph current index must be non-negative.',
-      ),
-      data = List<int>.unmodifiable(data);
+  AdvantageGraphPainter(
+    List<int> data, {
+    this.currentIndex,
+    this.fillWidth = false,
+  }) : assert(
+         currentIndex == null || currentIndex >= 0,
+         'Advantage graph current index must be non-negative.',
+       ),
+       data = List<int>.unmodifiable(data);
+
+  static const int maxVisiblePoints = 50;
+
+  static int visiblePointCount(int dataLength) {
+    assert(dataLength >= 0, 'Advantage graph data length must be valid.');
+    return math.min(maxVisiblePoints, dataLength);
+  }
+
+  static double horizontalStepWidth({
+    required double chartWidth,
+    required int shownCount,
+    required bool fillWidth,
+  }) {
+    assert(chartWidth > 0, 'Advantage graph chart width must be positive.');
+    assert(shownCount >= 0, 'Advantage graph shown count must be valid.');
+    final int intervalCount = fillWidth
+        ? math.max(1, shownCount - 1)
+        : maxVisiblePoints - 1;
+    return chartWidth / intervalCount;
+  }
 
   final List<int> data;
   final int? currentIndex;
+  final bool fillWidth;
 
   @override
   void paint(Canvas canvas, Size size) {
     // Determine how many data points to show (up to 50).
-    final int showCount = math.min(50, data.length);
+    final int showCount = visiblePointCount(data.length);
 
     // Choose between boardBackgroundColor and boardLineColor based on which has
     // a larger difference from darkBackgroundColor.
@@ -60,9 +88,11 @@ class AdvantageGraphPainter extends CustomPainter {
     // Zero line (value=0) in the vertical center.
     final double zeroY = margin + chartHeight / 2;
 
-    // Always divide the horizontal axis into 50 segments.
-    // For 50 moves, there are 49 intervals.
-    final double dxStep = chartWidth / 49.0;
+    final double dxStep = horizontalStepWidth(
+      chartWidth: chartWidth,
+      shownCount: showCount,
+      fillWidth: fillWidth,
+    );
 
     // Clip the canvas to a rounded rectangle to restrict drawing to the rounded area.
     canvas.clipRRect(
@@ -75,7 +105,7 @@ class AdvantageGraphPainter extends CustomPainter {
     // Draw zero advantage line (spanning full width) even if not enough data points.
     canvas.drawLine(
       Offset(margin, zeroY),
-      Offset(margin + 49 * dxStep, zeroY),
+      Offset(margin + chartWidth, zeroY),
       zeroLinePaint,
     );
 
@@ -246,6 +276,8 @@ class AdvantageGraphPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(AdvantageGraphPainter oldDelegate) {
-    return oldDelegate.data != data || oldDelegate.currentIndex != currentIndex;
+    return oldDelegate.data != data ||
+        oldDelegate.currentIndex != currentIndex ||
+        oldDelegate.fillWidth != fillWidth;
   }
 }

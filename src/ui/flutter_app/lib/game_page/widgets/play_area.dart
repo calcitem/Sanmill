@@ -6620,6 +6620,7 @@ class _AnalysisSummaryAdvantageGraphState
                     painter: AdvantageGraphPainter(
                       widget.data,
                       currentIndex: currentIndex,
+                      fillWidth: true,
                     ),
                   ),
                 );
@@ -6683,10 +6684,16 @@ class _AnalysisSummaryAdvantageGraphState
       return null;
     }
 
-    final int shownCount = math.min(50, widget.data.length);
+    final int shownCount = AdvantageGraphPainter.visiblePointCount(
+      widget.data.length,
+    );
     final int dataOffset = widget.data.length - shownCount;
     final double chartWidth = width - _chartMargin * 2;
-    final double stepWidth = chartWidth / 49;
+    final double stepWidth = AdvantageGraphPainter.horizontalStepWidth(
+      chartWidth: chartWidth,
+      shownCount: shownCount,
+      fillWidth: true,
+    );
     final double chartDx = (dx - _chartMargin).clamp(0.0, chartWidth);
     final int localIndex = math.min(
       shownCount - 1,

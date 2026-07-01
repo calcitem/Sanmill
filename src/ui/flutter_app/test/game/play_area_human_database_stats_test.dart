@@ -2889,6 +2889,7 @@ void main() {
       find.byKey(const Key('play_area_analysis_summary_advantage_paint')),
       findsOneWidget,
     );
+    expect(_summaryAdvantagePainter(tester).fillWidth, isTrue);
   });
 
   testWidgets('analysis summary keeps key moments when graph is hidden', (
@@ -3075,7 +3076,11 @@ void main() {
     final Size graphSize = tester.getSize(graph);
     final Offset graphTopLeft = tester.getTopLeft(graph);
     const double chartMargin = 10;
-    final double stepWidth = (graphSize.width - chartMargin * 2) / 49;
+    final double stepWidth = AdvantageGraphPainter.horizontalStepWidth(
+      chartWidth: graphSize.width - chartMargin * 2,
+      shownCount: 4,
+      fillWidth: true,
+    );
     await tester.tapAt(
       graphTopLeft + Offset(chartMargin + stepWidth * 2, graphSize.height / 2),
     );
@@ -3146,7 +3151,11 @@ void main() {
     final Size graphSize = tester.getSize(graph);
     final Offset graphTopLeft = tester.getTopLeft(graph);
     const double chartMargin = 10;
-    final double stepWidth = (graphSize.width - chartMargin * 2) / 49;
+    final double stepWidth = AdvantageGraphPainter.horizontalStepWidth(
+      chartWidth: graphSize.width - chartMargin * 2,
+      shownCount: 4,
+      fillWidth: true,
+    );
     final Offset firstMovePoint =
         graphTopLeft + Offset(chartMargin + stepWidth, graphSize.height / 2);
     final Offset thirdMovePoint =
