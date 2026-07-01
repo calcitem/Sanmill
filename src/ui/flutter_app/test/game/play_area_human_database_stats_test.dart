@@ -2015,7 +2015,20 @@ void main() {
       find.byKey(const Key('play_area_analysis_engine_settings')),
       findsOneWidget,
     );
-    expect(find.text('d8'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_engine_status')),
+        matching: find.textContaining('d8'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_engine_status')),
+        matching: find.textContaining('128k'),
+      ),
+      findsOneWidget,
+    );
     expect(
       find.byKey(const Key('play_area_analysis_settings_sheet')),
       findsNothing,

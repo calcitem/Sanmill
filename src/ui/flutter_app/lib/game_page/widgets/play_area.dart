@@ -1515,11 +1515,13 @@ class PlayAreaState extends State<PlayArea> {
     assert(_isAnalysisMode, 'Engine popup is analysis-mode only.');
     final BuildContext sheetContext = _stableActionContext(context);
     final int? depth = _currentAnalysisEngineDepth();
+    final int? nodes = _analysisEngineNodes();
     showLichessActionSheet<void>(
       context: sheetContext,
       sheetKey: const Key('play_area_analysis_engine_sheet'),
       content: _AnalysisEngineSheetStatus(
         depth: depth,
+        nodes: nodes,
         isAnalyzing: AnalysisMode.isAnalyzing,
         onGoDeeper: () =>
             unawaited(_goDeeperFromAnalysisEngineSheet(sheetContext)),
@@ -4288,7 +4290,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
       _analysisEvalLabel(result.outcome),
       if (depth != null) 'd$depth',
       if (result.nodes != null && result.nodes! > 0)
-        _compactCount(result.nodes!),
+        _compactAnalysisCount(result.nodes!),
       result.displayLine.join(' '),
     ];
     return parts.join(' · ');
@@ -4299,16 +4301,6 @@ class _AnalysisSummaryPanel extends StatelessWidget {
       AnalysisSource.perfectDatabase => strings.perfectDatabaseSettings,
       _ => strings.engine,
     };
-  }
-
-  String _compactCount(int value) {
-    if (value >= 1000000) {
-      return '${(value / 1000000).toStringAsFixed(value >= 10000000 ? 0 : 1)}M';
-    }
-    if (value >= 1000) {
-      return '${(value / 1000).toStringAsFixed(value >= 10000 ? 0 : 1)}k';
-    }
-    return '$value';
   }
 }
 
@@ -4483,11 +4475,13 @@ class _AnalysisEngineLines extends StatelessWidget {
 class _AnalysisEngineSheetStatus extends StatelessWidget {
   const _AnalysisEngineSheetStatus({
     required this.depth,
+    required this.nodes,
     required this.isAnalyzing,
     required this.onGoDeeper,
   });
 
   final int? depth;
+  final int? nodes;
   final bool isAnalyzing;
   final VoidCallback onGoDeeper;
 
@@ -4496,12 +4490,7 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final S strings = S.of(context);
-    final String? subtitle = switch ((isAnalyzing, depth)) {
-      (true, final int value) => '${strings.thinking} · d$value',
-      (true, null) => strings.thinking,
-      (false, final int value) => 'd$value',
-      (false, null) => null,
-    };
+    final String? subtitle = _subtitle(strings);
 
     return ListTile(
       key: const Key('play_area_analysis_engine_status'),
@@ -4531,6 +4520,22 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
               ),
             ),
     );
+  }
+
+  String? _subtitle(S strings) {
+    final String? depthText = depth == null ? null : 'd$depth';
+    final String? nodesText = nodes == null
+        ? null
+        : _compactAnalysisCount(nodes!);
+    final List<String> parts = <String>[
+      if (isAnalyzing) strings.thinking,
+      ?depthText,
+      ?nodesText,
+    ];
+    if (parts.isEmpty) {
+      return null;
+    }
+    return parts.join(' · ');
   }
 }
 
@@ -4685,6 +4690,31 @@ int? _analysisEngineDepth() {
     depth = depth == null ? candidate : math.max(depth, candidate);
   }
   return depth;
+}
+
+int? _analysisEngineNodes() {
+  if (!AnalysisMode.hasEngineLinesSource) {
+    return null;
+  }
+  int? nodes;
+  for (final MoveAnalysisResult result in AnalysisMode.analysisLineResults) {
+    final int? candidate = result.nodes;
+    if (candidate == null || candidate <= 0) {
+      continue;
+    }
+    nodes = nodes == null ? candidate : math.max(nodes, candidate);
+  }
+  return nodes;
+}
+
+String _compactAnalysisCount(int value) {
+  if (value >= 1000000) {
+    return '${(value / 1000000).toStringAsFixed(value >= 10000000 ? 0 : 1)}M';
+  }
+  if (value >= 1000) {
+    return '${(value / 1000).toStringAsFixed(value >= 10000 ? 0 : 1)}k';
+  }
+  return '$value';
 }
 
 int _analysisOutcomeGaugeValue(AnalysisOutcome outcome) {
