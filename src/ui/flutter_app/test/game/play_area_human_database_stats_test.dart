@@ -2377,6 +2377,30 @@ void main() {
         findsOneWidget,
       );
     }
+    final Finder candidateChips = find.descendant(
+      of: results,
+      matching: find.byKey(
+        const Key('play_area_analysis_summary_result_candidates'),
+      ),
+    );
+    expect(candidateChips, findsOneWidget);
+    expect(
+      find.descendant(
+        of: results,
+        matching: find.byKey(
+          const Key('play_area_analysis_summary_result_candidate_0'),
+        ),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: results, matching: find.text('a1')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: results, matching: find.text('d1')),
+      findsOneWidget,
+    );
 
     expect(
       find.descendant(
@@ -2439,6 +2463,62 @@ void main() {
     );
 
     await tester.tap(bestMove);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
+
+    expect(_currentPathMoves(), <String>['d6']);
+  });
+
+  testWidgets('analysis summary result candidate applies the move', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    AnalysisMode.enable(
+      <MoveAnalysisResult>[
+        const MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.win),
+        const MoveAnalysisResult(move: 'a1', outcome: AnalysisOutcome.draw),
+      ],
+      lineResults: <MoveAnalysisResult>[
+        const MoveAnalysisResult(
+          move: 'd6',
+          outcome: AnalysisOutcome.win,
+          rank: 1,
+          depth: 8,
+          line: <String>['d6', 'f4'],
+        ),
+      ],
+      source: AnalysisSource.engine,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
+    await tester.pumpAndSettle();
+
+    final Finder candidate = find.byKey(
+      const Key('play_area_analysis_summary_result_candidate_0'),
+    );
+    expect(candidate, findsOneWidget);
+    expect(
+      find.descendant(of: candidate, matching: find.text('d6')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: candidate, matching: find.text('W')),
+      findsOneWidget,
+    );
+
+    await tester.tap(candidate);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
     await tester.pump();

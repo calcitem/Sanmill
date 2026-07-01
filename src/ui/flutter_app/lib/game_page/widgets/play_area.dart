@@ -3053,6 +3053,19 @@ class PlayAreaState extends State<PlayArea> {
                 },
               );
             },
+            onResultCandidateTap: (String move) async {
+              final bool applied = await _applyAnalysisMove(context, move);
+              if (!applied) {
+                return;
+              }
+              RecordingService().recordEvent(
+                RecordingEventType.toolbarAction,
+                <String, dynamic>{
+                  'toolbar': 'analysisSummary',
+                  'action': 'applyResultCandidate',
+                },
+              );
+            },
             onAnalyze: () {
               RecordingService().recordEvent(
                 RecordingEventType.toolbarAction,
@@ -5192,14 +5205,17 @@ class _AnalysisSummaryPanel extends StatelessWidget {
     required this.advantageData,
     required this.onOpenFullMoveList,
     required this.onBestMoveTap,
+    required this.onResultCandidateTap,
     required this.onAnalyze,
   });
 
   static const int _maxKeyMoments = 3;
+  static const int _maxResultCandidates = 6;
 
   final List<int> advantageData;
   final VoidCallback onOpenFullMoveList;
   final Future<void> Function(String move) onBestMoveTap;
+  final Future<void> Function(String move) onResultCandidateTap;
   final VoidCallback onAnalyze;
 
   @override
@@ -5221,6 +5237,8 @@ class _AnalysisSummaryPanel extends StatelessWidget {
             final List<_AnalysisOutcomeBucket> resultBuckets = _resultBuckets(
               strings,
             );
+            final List<MoveAnalysisResult> resultCandidates =
+                _resultCandidates();
             final List<_AnalysisKeyMoment> keyMoments = _keyMoments(recorder);
             final String? trapSummary = _trapSummary();
             final bool canRequestAnalysis =
@@ -5229,6 +5247,8 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                 bestResult != null &&
                 !AnalysisMode.isThreatMode &&
                 !AnalysisMode.isAnalyzing;
+            final bool canApplyResultCandidate =
+                !AnalysisMode.isThreatMode && !AnalysisMode.isAnalyzing;
             final bool showAdvantageGraph =
                 DB().displaySettings.isAdvantageGraphShown &&
                 advantageData.isNotEmpty;
@@ -5321,6 +5341,9 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                         subtitle: _AnalysisSummaryResultsSubtitle(
                           summary: resultSummary,
                           buckets: resultBuckets,
+                          candidates: resultCandidates,
+                          canApplyCandidates: canApplyResultCandidate,
+                          onCandidateTap: onResultCandidateTap,
                         ),
                       ),
                     if (trapSummary != null)
@@ -5362,6 +5385,15 @@ class _AnalysisSummaryPanel extends StatelessWidget {
       return null;
     }
     return AnalysisMode.analysisLineResults.first;
+  }
+
+  List<MoveAnalysisResult> _resultCandidates() {
+    if (!AnalysisMode.isFullAnalysis || AnalysisMode.analysisResults.isEmpty) {
+      return const <MoveAnalysisResult>[];
+    }
+    return AnalysisMode.analysisResults
+        .take(_maxResultCandidates)
+        .toList(growable: false);
   }
 
   String _sourceLabel(BuildContext context) {
@@ -5736,10 +5768,16 @@ class _AnalysisSummaryResultsSubtitle extends StatelessWidget {
   const _AnalysisSummaryResultsSubtitle({
     required this.summary,
     required this.buckets,
+    required this.candidates,
+    required this.canApplyCandidates,
+    required this.onCandidateTap,
   });
 
   final String summary;
   final List<_AnalysisOutcomeBucket> buckets;
+  final List<MoveAnalysisResult> candidates;
+  final bool canApplyCandidates;
+  final Future<void> Function(String move) onCandidateTap;
 
   @override
   Widget build(BuildContext context) {
@@ -5751,7 +5789,122 @@ class _AnalysisSummaryResultsSubtitle extends StatelessWidget {
           const SizedBox(height: 8),
           _AnalysisOutcomeDistribution(buckets: buckets),
         ],
+        if (candidates.isNotEmpty) ...<Widget>[
+          const SizedBox(height: 8),
+          _AnalysisSummaryResultCandidates(
+            candidates: candidates,
+            canApplyCandidates: canApplyCandidates,
+            onCandidateTap: onCandidateTap,
+          ),
+        ],
       ],
+    );
+  }
+}
+
+class _AnalysisSummaryResultCandidates extends StatelessWidget {
+  const _AnalysisSummaryResultCandidates({
+    required this.candidates,
+    required this.canApplyCandidates,
+    required this.onCandidateTap,
+  });
+
+  final List<MoveAnalysisResult> candidates;
+  final bool canApplyCandidates;
+  final Future<void> Function(String move) onCandidateTap;
+
+  @override
+  Widget build(BuildContext context) {
+    assert(candidates.isNotEmpty, 'Result candidate chips require data.');
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+
+    return Wrap(
+      key: const Key('play_area_analysis_summary_result_candidates'),
+      spacing: 8,
+      runSpacing: 6,
+      children: <Widget>[
+        for (int index = 0; index < candidates.length; index++)
+          _AnalysisSummaryResultCandidateChip(
+            key: Key('play_area_analysis_summary_result_candidate_$index'),
+            result: candidates[index],
+            colorScheme: colorScheme,
+            textStyle: theme.textTheme.labelMedium,
+            onTap: canApplyCandidates
+                ? () => unawaited(onCandidateTap(candidates[index].move))
+                : null,
+          ),
+      ],
+    );
+  }
+}
+
+class _AnalysisSummaryResultCandidateChip extends StatelessWidget {
+  const _AnalysisSummaryResultCandidateChip({
+    super.key,
+    required this.result,
+    required this.colorScheme,
+    required this.textStyle,
+    required this.onTap,
+  });
+
+  final MoveAnalysisResult result;
+  final ColorScheme colorScheme;
+  final TextStyle? textStyle;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color outcomeColor = AnalysisMode.getColorForOutcome(result.outcome);
+    final Color chipTextColor =
+        ThemeData.estimateBrightnessForColor(outcomeColor) == Brightness.dark
+        ? Colors.white
+        : Colors.black;
+
+    return Semantics(
+      label:
+          '${_analysisEvalLabel(result.outcome)} '
+          '${_analysisLineText(result)}',
+      button: onTap != null,
+      child: ActionChip(
+        avatar: DecoratedBox(
+          key: const Key('play_area_analysis_summary_result_candidate_eval'),
+          decoration: BoxDecoration(
+            color: outcomeColor,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+            child: Text(
+              _analysisEvalLabel(result.outcome),
+              textAlign: TextAlign.center,
+              style: textStyle?.copyWith(
+                color: chipTextColor,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0,
+              ),
+            ),
+          ),
+        ),
+        label: Text(
+          result.move,
+          key: const Key('play_area_analysis_summary_result_candidate_move'),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        labelStyle: textStyle?.copyWith(
+          color: onTap == null
+              ? colorScheme.onSurfaceVariant
+              : colorScheme.onSurface,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0,
+        ),
+        backgroundColor: outcomeColor.withValues(alpha: 0.12),
+        side: BorderSide(color: outcomeColor.withValues(alpha: 0.44)),
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        visualDensity: VisualDensity.compact,
+        onPressed: onTap,
+      ),
     );
   }
 }
