@@ -633,6 +633,13 @@ String _analysisThreatActionLabel(S strings) {
   };
 }
 
+String _analysisPerfectDatabaseShortLabel(S strings) {
+  return switch (strings.localeName.split('_').first) {
+    'zh' => '库',
+    _ => 'DB',
+  };
+}
+
 /// The PlayArea widget is the main content of the game page.
 class PlayArea extends StatefulWidget {
   /// Creates a PlayArea widget.
@@ -7240,7 +7247,7 @@ class _AnalysisBottomBar extends StatelessWidget {
         _AnalysisEngineBottomBarButton(
           key: const Key('play_area_analysis_bottom_bar_engine'),
           label: S.of(context).engine,
-          sourceLabel: _sourceLabel(context),
+          sourceLabel: _compactSourceLabel(context),
           onTap: AnalysisMode.isAnalyzing ? null : onEnginePressed,
           onLongPress: onEngineLongPressed,
           highlighted: isEngineHighlighted,
@@ -7271,7 +7278,7 @@ class _AnalysisBottomBar extends StatelessWidget {
     );
   }
 
-  String _sourceLabel(BuildContext context) {
+  String _compactSourceLabel(BuildContext context) {
     final S strings = S.of(context);
     return switch (AnalysisMode.source) {
       AnalysisSource.engine =>
@@ -7279,8 +7286,10 @@ class _AnalysisBottomBar extends StatelessWidget {
             ? _analysisThreatLabel(strings)
             : strings.engine,
       AnalysisSource.perfectDatabaseAndEngine =>
-        '${strings.perfectDatabaseSettings} · ${strings.engine}',
-      AnalysisSource.perfectDatabase => strings.perfectDatabaseSettings,
+        '${_analysisPerfectDatabaseShortLabel(strings)} · ${strings.engine}',
+      AnalysisSource.perfectDatabase => _analysisPerfectDatabaseShortLabel(
+        strings,
+      ),
       null => strings.engine,
     };
   }

@@ -2318,6 +2318,14 @@ void main() {
 
     await _pumpSessionPlayArea(tester, session);
 
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_bottom_bar_engine')),
+        matching: find.text('DB · Engine'),
+      ),
+      findsOneWidget,
+    );
+
     await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
     await tester.pumpAndSettle();
 
