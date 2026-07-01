@@ -73,7 +73,9 @@ class MillSessionAnimationBridge {
       ..blurIndex = null
       ..focusIndex = gridIndexForNode(_toNode(event));
     _prepareLandingSound(event, isMove: false);
-    mill.GameController().animationManager.animatePlace();
+    if (mill.GameController().hasAnimationManager) {
+      mill.GameController().animationManager.animatePlace();
+    }
   }
 
   void _animateMove(GameSessionEvent event) {
@@ -82,7 +84,9 @@ class MillSessionAnimationBridge {
       ..blurIndex = gridIndexForNode(_fromNode(event))
       ..focusIndex = gridIndexForNode(_toNode(event));
     _prepareLandingSound(event, isMove: true);
-    mill.GameController().animationManager.animateMove();
+    if (mill.GameController().hasAnimationManager) {
+      mill.GameController().animationManager.animateMove();
+    }
   }
 
   void _animateRemove(GameSessionEvent event) {
@@ -96,7 +100,9 @@ class MillSessionAnimationBridge {
     // The remove sound always plays immediately at capture time, matching the
     // legacy behaviour; the fly-out animation runs in parallel.
     mill.SoundManager().playTone(mill.Sound.remove);
-    mill.GameController().animationManager.animateRemove();
+    if (mill.GameController().hasAnimationManager) {
+      mill.GameController().animationManager.animateRemove();
+    }
   }
 
   /// Decide how the landing sound for a place / move is produced.
@@ -114,7 +120,11 @@ class MillSessionAnimationBridge {
   void _prepareLandingSound(GameSessionEvent event, {required bool isMove}) {
     final DisplaySettings display = DB().displaySettings;
     final bool pickUpEnabled = display.isPiecePickUpAnimationEnabled;
+    // No GameBoard means no put-down listener will ever fire to consume a
+    // deferred landing sound, so treat animations as not-allowed and play
+    // sounds immediately below (matches the no-animation branch).
     final bool animationsAllowed =
+        mill.GameController().hasAnimationManager &&
         mill.GameController().animationManager.allowAnimations;
 
     if (_moveFormedMill(event)) {

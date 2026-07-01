@@ -150,9 +150,10 @@ class HistoryNavigator {
     _isGoingToHistory = true;
     SoundManager().mute();
 
-    if (navMode == HistoryNavMode.takeBackAll ||
-        navMode == HistoryNavMode.takeBackN ||
-        navMode == HistoryNavMode.takeBack) {
+    if ((navMode == HistoryNavMode.takeBackAll ||
+            navMode == HistoryNavMode.takeBackN ||
+            navMode == HistoryNavMode.takeBack) &&
+        GameController().hasAnimationManager) {
       GameController().animationManager.allowAnimations = false;
     }
 
@@ -163,7 +164,9 @@ class HistoryNavigator {
       // Session resolution uses the controller binding (not this context).
       final HistoryResponse resp = await doEachMove(navMode, number);
 
-      GameController().animationManager.allowAnimations = true;
+      if (GameController().hasAnimationManager) {
+        GameController().animationManager.allowAnimations = true;
+      }
 
       if (context.mounted) {
         switch (resp) {

@@ -558,7 +558,28 @@ class GameController {
 
   String? loadedGameFilenamePrefix;
 
-  late AnimationManager animationManager;
+  AnimationManager? _animationManager;
+
+  /// True once a [GameBoard] has assigned [animationManager] at least once
+  /// this session. History navigation can run before any board has ever
+  /// mounted (e.g. loading a saved game from the Home tab, which replays
+  /// moves via [HistoryNavigator] before navigating to the game page), so
+  /// callers that may run in that window must check this first instead of
+  /// touching [animationManager] directly.
+  bool get hasAnimationManager => _animationManager != null;
+
+  AnimationManager get animationManager {
+    assert(
+      _animationManager != null,
+      'animationManager accessed before a GameBoard assigned it; '
+      'guard with hasAnimationManager first.',
+    );
+    return _animationManager!;
+  }
+
+  set animationManager(AnimationManager value) {
+    _animationManager = value;
+  }
 
   bool _isInitialized = false;
 

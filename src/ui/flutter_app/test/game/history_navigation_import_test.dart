@@ -158,6 +158,80 @@ void main() {
     },
     skip: nativeLibrarySkipReason() != null,
   );
+
+  // Regression: loading a short, freshly-started game (only a few placing
+  // moves, full PGN tag pairs, tab/space-padded move text) reported "Load
+  // failed" even though ImportService.import succeeded. Reproduces the
+  // exact saved-game content from the bug report on a session with no prior
+  // history, mirroring a fresh app launch.
+  testWidgets(
+    'import replays a short tag-paired PGN on a fresh session',
+    (WidgetTester tester) async {
+      final NativeMillGameSession session = NativeMillGameSession();
+      addTearDown(session.dispose);
+
+      GameController().bindActiveSession(session);
+      addTearDown(() => GameController().unbindActiveSession(session));
+
+      late BuildContext aboveScopeContext;
+      await tester.pumpWidget(
+        MaterialApp(
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: const Locale('en'),
+          home: Builder(
+            builder: (BuildContext context) {
+              aboveScopeContext = context;
+              return GameSessionScope(
+                session: session,
+                child: const SizedBox.shrink(),
+              );
+            },
+          ),
+        ),
+      );
+
+      const String pgn = '''
+[Event "Sanmill-Game"]
+[Site "Sanmill"]
+[Date "2026.1.27"]
+[Round "1"]
+[White "Human"]
+[Black "AI"]
+[Result "*"]
+[Variant "Nine Men's Morris"]
+[PlyCount "4"]
+
+ 1.    d2    f4
+ 2.    f2    d6''';
+
+      ImportService.import(pgn);
+      expect(GameController().newGameRecorder, isNotNull);
+
+      final HistoryResponse? takeBackResp = await HistoryNavigator.takeBackAll(
+        aboveScopeContext,
+        pop: false,
+      );
+      expect(takeBackResp, const HistoryOK());
+      expect(GameController().newGameRecorder, isNull);
+
+      final HistoryResponse? forwardResp =
+          await HistoryNavigator.stepForwardAll(aboveScopeContext, pop: false);
+      expect(forwardResp, const HistoryOK());
+
+      final List<String> expectedMoves = GameController()
+          .gameRecorder
+          .mainlineMoves
+          .map((ExtMove m) => m.move)
+          .toList();
+      expect(expectedMoves, <String>['d2', 'f4', 'f2', 'd6']);
+      expect(session.getFen(), _expectedFenAfter(expectedMoves));
+
+      await tester.pumpAndSettle();
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
 }
 
 GameAction _findAction(List<GameAction> actions, String move) {

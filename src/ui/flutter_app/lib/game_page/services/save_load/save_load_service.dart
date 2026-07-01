@@ -374,7 +374,14 @@ class LoadService {
           Navigator.pop(context); // Only pop if used in a dialog context.
         }
       }
-    } catch (exception) {
+    } catch (exception, stackTrace) {
+      // Surface the root cause instead of only showing a generic tip: a
+      // silently-swallowed exception here previously made "Load failed"
+      // indistinguishable from a genuine parse error, a replay/navigation
+      // bug, or a AI-move side effect triggered right after loading.
+      logger.e(
+        '$_logTag loadGame failed for "$filePath": $exception\n$stackTrace',
+      );
       if (!context.mounted) {
         return;
       }
