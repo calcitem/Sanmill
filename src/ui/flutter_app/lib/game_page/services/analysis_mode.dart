@@ -164,6 +164,9 @@ class AnalysisMode {
   static bool _isEnabled = false;
   static bool _isAnalyzing = false;
   static bool _showEngineLines = true;
+  static bool _showMoveAnnotations = true;
+  static bool _showMoveComments = true;
+  static bool _showBestMoveArrow = true;
   static bool _smallBoard = false;
   static bool _isThreatMode = false;
   static bool _isEngineAnalysisDeep = false;
@@ -200,6 +203,15 @@ class AnalysisMode {
 
   /// Whether the analysis screen shows the engine move lines.
   static bool get showEngineLines => _showEngineLines;
+
+  /// Whether the analysis move list shows PGN NAG glyphs.
+  static bool get showMoveAnnotations => _showMoveAnnotations;
+
+  /// Whether the analysis move list shows PGN comments.
+  static bool get showMoveComments => _showMoveComments;
+
+  /// Whether the analysis board shows the best engine move arrow.
+  static bool get showBestMoveArrow => _showBestMoveArrow;
 
   /// Whether the analysis screen uses a reduced board size in portrait mode.
   static bool get smallBoard => _smallBoard;
@@ -331,6 +343,51 @@ class AnalysisMode {
     _publishState();
   }
 
+  /// Set whether the analysis move list shows PGN NAG glyphs.
+  static void setShowMoveAnnotations(bool value, {bool persist = false}) {
+    if (_showMoveAnnotations == value) {
+      if (persist) {
+        _saveDisplayPreferences(showMoveAnnotations: value);
+      }
+      return;
+    }
+    _showMoveAnnotations = value;
+    if (persist) {
+      _saveDisplayPreferences(showMoveAnnotations: value);
+    }
+    _publishState();
+  }
+
+  /// Set whether the analysis move list shows PGN comments.
+  static void setShowMoveComments(bool value, {bool persist = false}) {
+    if (_showMoveComments == value) {
+      if (persist) {
+        _saveDisplayPreferences(showMoveComments: value);
+      }
+      return;
+    }
+    _showMoveComments = value;
+    if (persist) {
+      _saveDisplayPreferences(showMoveComments: value);
+    }
+    _publishState();
+  }
+
+  /// Set whether the analysis board shows the best engine move arrow.
+  static void setShowBestMoveArrow(bool value, {bool persist = false}) {
+    if (_showBestMoveArrow == value) {
+      if (persist) {
+        _saveDisplayPreferences(showBestMoveArrow: value);
+      }
+      return;
+    }
+    _showBestMoveArrow = value;
+    if (persist) {
+      _saveDisplayPreferences(showBestMoveArrow: value);
+    }
+    _publishState();
+  }
+
   /// Toggle the reduced portrait analysis board layout.
   static void toggleSmallBoard({bool persist = false}) {
     setSmallBoard(!_smallBoard, persist: persist);
@@ -414,6 +471,9 @@ class AnalysisMode {
   static void configurePreferences({
     required bool smallBoard,
     required bool showEngineLines,
+    required bool showMoveAnnotations,
+    required bool showMoveComments,
+    required bool showBestMoveArrow,
     required int engineLineCount,
     required int engineSearchTimeMs,
     bool notify = true,
@@ -424,12 +484,18 @@ class AnalysisMode {
     );
     if (_smallBoard == smallBoard &&
         _showEngineLines == showEngineLines &&
+        _showMoveAnnotations == showMoveAnnotations &&
+        _showMoveComments == showMoveComments &&
+        _showBestMoveArrow == showBestMoveArrow &&
         _engineLineCount == nextLineCount &&
         _engineSearchTimeMs == nextSearchTimeMs) {
       return;
     }
     _smallBoard = smallBoard;
     _showEngineLines = showEngineLines;
+    _showMoveAnnotations = showMoveAnnotations;
+    _showMoveComments = showMoveComments;
+    _showBestMoveArrow = showBestMoveArrow;
     _engineLineCount = nextLineCount;
     _engineSearchTimeMs = nextSearchTimeMs;
     if (notify) {
@@ -452,6 +518,9 @@ class AnalysisMode {
   static void _saveDisplayPreferences({
     bool? smallBoard,
     bool? showEngineLines,
+    bool? showMoveAnnotations,
+    bool? showMoveComments,
+    bool? showBestMoveArrow,
     int? engineLineCount,
     int? engineSearchTimeMs,
   }) {
@@ -460,6 +529,12 @@ class AnalysisMode {
       analysisSmallBoard: smallBoard ?? settings.analysisSmallBoard,
       analysisShowEngineLines:
           showEngineLines ?? settings.analysisShowEngineLines,
+      analysisShowMoveAnnotations:
+          showMoveAnnotations ?? settings.analysisShowMoveAnnotations,
+      analysisShowMoveComments:
+          showMoveComments ?? settings.analysisShowMoveComments,
+      analysisShowBestMoveArrow:
+          showBestMoveArrow ?? settings.analysisShowBestMoveArrow,
       analysisEngineLineCount:
           engineLineCount ?? settings.analysisEngineLineCount,
       analysisEngineSearchTimeMs:

@@ -12,6 +12,9 @@ void main() {
     AnalysisMode.setSmallBoard(false);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
     AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
+    AnalysisMode.setShowMoveAnnotations(true);
+    AnalysisMode.setShowMoveComments(true);
+    AnalysisMode.setShowBestMoveArrow(true);
   });
 
   test('tracks full analysis and hint overlay modes separately', () {
@@ -191,6 +194,30 @@ void main() {
       ),
       AnalysisMode.maxEngineSearchTimeMs,
     );
+  });
+
+  test('tracks analysis move display preferences', () {
+    AnalysisMode.configurePreferences(
+      smallBoard: false,
+      showEngineLines: true,
+      showMoveAnnotations: false,
+      showMoveComments: false,
+      showBestMoveArrow: false,
+      engineLineCount: AnalysisMode.defaultEngineLineCount,
+      engineSearchTimeMs: AnalysisMode.defaultEngineSearchTimeMs,
+    );
+
+    expect(AnalysisMode.showMoveAnnotations, isFalse);
+    expect(AnalysisMode.showMoveComments, isFalse);
+    expect(AnalysisMode.showBestMoveArrow, isFalse);
+
+    AnalysisMode.setShowMoveAnnotations(true);
+    AnalysisMode.setShowMoveComments(true);
+    AnalysisMode.setShowBestMoveArrow(true);
+
+    expect(AnalysisMode.showMoveAnnotations, isTrue);
+    expect(AnalysisMode.showMoveComments, isTrue);
+    expect(AnalysisMode.showBestMoveArrow, isTrue);
   });
 
   test('tracks deep engine analysis state', () {

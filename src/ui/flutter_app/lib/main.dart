@@ -368,6 +368,9 @@ class SanmillAppState extends State<SanmillApp> {
     AnalysisMode.configurePreferences(
       smallBoard: displaySettings.analysisSmallBoard,
       showEngineLines: displaySettings.analysisShowEngineLines,
+      showMoveAnnotations: displaySettings.analysisShowMoveAnnotations,
+      showMoveComments: displaySettings.analysisShowMoveComments,
+      showBestMoveArrow: displaySettings.analysisShowBestMoveArrow,
       engineLineCount: displaySettings.analysisEngineLineCount,
       engineSearchTimeMs: displaySettings.analysisEngineSearchTimeMs,
       notify: false,

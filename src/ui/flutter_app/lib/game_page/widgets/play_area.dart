@@ -128,6 +128,50 @@ Future<void> showAnalysisSettingsSheet(
                             AnalysisMode.setSmallBoard(value, persist: true);
                           },
                         ),
+                        SwitchListTile.adaptive(
+                          key: const Key(
+                            'play_area_analysis_settings_move_annotations',
+                          ),
+                          secondary: const Icon(Icons.rate_review_outlined),
+                          title: Text(_analysisMoveAnnotationsLabel(strings)),
+                          value: AnalysisMode.showMoveAnnotations,
+                          onChanged: (bool value) {
+                            RecordingService().recordEvent(
+                              RecordingEventType.toolbarAction,
+                              <String, dynamic>{
+                                'toolbar': 'analysisSettings',
+                                'action': 'setMoveAnnotations',
+                                'visible': value,
+                              },
+                            );
+                            AnalysisMode.setShowMoveAnnotations(
+                              value,
+                              persist: true,
+                            );
+                          },
+                        ),
+                        SwitchListTile.adaptive(
+                          key: const Key(
+                            'play_area_analysis_settings_move_comments',
+                          ),
+                          secondary: const Icon(Icons.notes_outlined),
+                          title: Text(_analysisMoveCommentsLabel(strings)),
+                          value: AnalysisMode.showMoveComments,
+                          onChanged: (bool value) {
+                            RecordingService().recordEvent(
+                              RecordingEventType.toolbarAction,
+                              <String, dynamic>{
+                                'toolbar': 'analysisSettings',
+                                'action': 'setMoveComments',
+                                'visible': value,
+                              },
+                            );
+                            AnalysisMode.setShowMoveComments(
+                              value,
+                              persist: true,
+                            );
+                          },
+                        ),
                       ],
                     ),
                     LichessListSection(
@@ -222,6 +266,28 @@ Future<void> showAnalysisSettingsSheet(
                               },
                             );
                             AnalysisMode.setShowEngineLines(
+                              value,
+                              persist: true,
+                            );
+                          },
+                        ),
+                        SwitchListTile.adaptive(
+                          key: const Key(
+                            'play_area_analysis_settings_best_move_arrow',
+                          ),
+                          secondary: const Icon(Icons.near_me_outlined),
+                          title: Text(_analysisBestMoveArrowLabel(strings)),
+                          value: AnalysisMode.showBestMoveArrow,
+                          onChanged: (bool value) {
+                            RecordingService().recordEvent(
+                              RecordingEventType.toolbarAction,
+                              <String, dynamic>{
+                                'toolbar': 'analysisSettings',
+                                'action': 'setBestMoveArrow',
+                                'visible': value,
+                              },
+                            );
+                            AnalysisMode.setShowBestMoveArrow(
                               value,
                               persist: true,
                             );
@@ -457,6 +523,27 @@ String _analysisSearchTimeValueLabel(int valueMs) {
   }
   assert(valueMs % 1000 == 0, 'Analysis search time must be whole seconds.');
   return '${valueMs ~/ 1000}s';
+}
+
+String _analysisMoveAnnotationsLabel(S strings) {
+  return switch (strings.localeName.split('_').first) {
+    'zh' => '显示走法标注',
+    _ => 'Show move annotations',
+  };
+}
+
+String _analysisMoveCommentsLabel(S strings) {
+  return switch (strings.localeName.split('_').first) {
+    'zh' => '显示走法评论',
+    _ => 'Show move comments',
+  };
+}
+
+String _analysisBestMoveArrowLabel(S strings) {
+  return switch (strings.localeName.split('_').first) {
+    'zh' => '最佳着法箭头',
+    _ => 'Best move arrow',
+  };
 }
 
 String _analysisThreatLabel(S strings) {
@@ -2769,7 +2856,8 @@ class PlayAreaState extends State<PlayArea> {
                 return HistoryNavigator.gotoNode(context, node, pop: false);
               },
               showMovePreview: true,
-              showMoveAnnotations: true,
+              showMoveAnnotations: AnalysisMode.showMoveAnnotations,
+              showMoveComments: AnalysisMode.showMoveComments,
               layout: _InlineMoveListLayout.stacked,
               groupByRound: true,
             ),
@@ -3528,6 +3616,7 @@ class _InlineMoveList extends StatefulWidget {
     this.onMoveTap,
     this.showMovePreview = false,
     this.showMoveAnnotations = false,
+    this.showMoveComments = false,
     this.layout = _InlineMoveListLayout.wrap,
     this.groupByRound = false,
     this.maxHeight,
@@ -3543,6 +3632,7 @@ class _InlineMoveList extends StatefulWidget {
   onMoveTap;
   final bool showMovePreview;
   final bool showMoveAnnotations;
+  final bool showMoveComments;
   final _InlineMoveListLayout layout;
   final bool groupByRound;
   final double? maxHeight;
@@ -3873,11 +3963,9 @@ class _InlineMoveListState extends State<_InlineMoveList> {
   }
 
   String _moveLabel(ExtMove move, {required bool includeComments}) {
-    if (!widget.showMoveAnnotations) {
-      return move.notation;
-    }
-
-    String label = _withNagSymbols(move.notation, move.getAllNags());
+    String label = widget.showMoveAnnotations
+        ? _withNagSymbols(move.notation, move.getAllNags())
+        : move.notation;
     if (includeComments) {
       label = _withMoveComments(label, move);
     }
@@ -3924,7 +4012,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
   }
 
   String _withMoveComments(String label, ExtMove move) {
-    if (!widget.showMoveAnnotations) {
+    if (!widget.showMoveComments) {
       return label;
     }
 

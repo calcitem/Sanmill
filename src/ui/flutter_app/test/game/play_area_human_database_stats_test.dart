@@ -61,6 +61,9 @@ void main() {
     controller.isEngineInDelay = false;
     AnalysisMode.disable();
     AnalysisMode.setShowEngineLines(true);
+    AnalysisMode.setShowMoveAnnotations(true);
+    AnalysisMode.setShowMoveComments(true);
+    AnalysisMode.setShowBestMoveArrow(true);
     AnalysisMode.setSmallBoard(false);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
     AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
@@ -70,6 +73,9 @@ void main() {
   tearDown(() {
     AnalysisMode.disable();
     AnalysisMode.setShowEngineLines(true);
+    AnalysisMode.setShowMoveAnnotations(true);
+    AnalysisMode.setShowMoveComments(true);
+    AnalysisMode.setShowBestMoveArrow(true);
     AnalysisMode.setSmallBoard(false);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
     AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
@@ -1838,6 +1844,65 @@ void main() {
     );
   });
 
+  testWidgets('analysis move list toggles annotations and comments', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    GameController().gameRecorder.appendMove(
+      ExtMove(
+        'd6',
+        side: PieceColor.white,
+        roundIndex: 1,
+        nags: <int>[1],
+        comments: <String>['Good opening'],
+      ),
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    final Finder movesPanel = find.byKey(const Key('play_area_analysis_moves'));
+    expect(
+      find.descendant(
+        of: movesPanel,
+        matching: find.text('d6! {Good opening}'),
+      ),
+      findsOne,
+    );
+
+    AnalysisMode.setShowMoveAnnotations(false);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.descendant(of: movesPanel, matching: find.text('d6 {Good opening}')),
+      findsOne,
+    );
+    expect(
+      find.descendant(
+        of: movesPanel,
+        matching: find.text('d6! {Good opening}'),
+      ),
+      findsNothing,
+    );
+
+    AnalysisMode.setShowMoveComments(false);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.descendant(of: movesPanel, matching: find.text('d6')),
+      findsOne,
+    );
+    expect(
+      find.descendant(of: movesPanel, matching: find.text('d6 {Good opening}')),
+      findsNothing,
+    );
+  });
+
   testWidgets('analysis previous and next repeat while long pressed', (
     WidgetTester tester,
   ) async {
@@ -2813,6 +2878,46 @@ void main() {
     expect(smallBoardSize.width, lessThan(regularBoardSize.width));
     expect(smallBoardSize.height, lessThan(regularBoardSize.height));
     expect(db.displaySettings.analysisSmallBoard, isTrue);
+  });
+
+  testWidgets('analysis settings sheet toggles move display preferences', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    await _openAnalysisSettingsFromEnginePopup(tester);
+
+    final Finder annotationsTile = find.byKey(
+      const Key('play_area_analysis_settings_move_annotations'),
+    );
+    final Finder commentsTile = find.byKey(
+      const Key('play_area_analysis_settings_move_comments'),
+    );
+    final Finder bestMoveArrowTile = find.byKey(
+      const Key('play_area_analysis_settings_best_move_arrow'),
+    );
+
+    await tester.tap(annotationsTile);
+    await tester.pumpAndSettle();
+    await tester.tap(commentsTile);
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(bestMoveArrowTile);
+    await tester.tap(bestMoveArrowTile);
+    await tester.pumpAndSettle();
+
+    expect(AnalysisMode.showMoveAnnotations, isFalse);
+    expect(AnalysisMode.showMoveComments, isFalse);
+    expect(AnalysisMode.showBestMoveArrow, isFalse);
+    expect(db.displaySettings.analysisShowMoveAnnotations, isFalse);
+    expect(db.displaySettings.analysisShowMoveComments, isFalse);
+    expect(db.displaySettings.analysisShowBestMoveArrow, isFalse);
   });
 
   test(

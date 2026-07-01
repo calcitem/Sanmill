@@ -59,6 +59,9 @@ void main() {
       expect(d.themeMode, AppThemeMode.system);
       expect(d.analysisSmallBoard, isFalse);
       expect(d.analysisShowEngineLines, isTrue);
+      expect(d.analysisShowMoveAnnotations, isTrue);
+      expect(d.analysisShowMoveComments, isTrue);
+      expect(d.analysisShowBestMoveArrow, isTrue);
       expect(
         d.analysisEngineLineCount,
         DisplaySettings.defaultAnalysisEngineLineCount,

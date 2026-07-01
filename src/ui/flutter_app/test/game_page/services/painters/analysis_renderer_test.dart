@@ -19,11 +19,13 @@ void main() {
     AppTheme.boardPadding = 28.0;
     GameController().reset();
     AnalysisMode.disable();
+    AnalysisMode.setShowBestMoveArrow(true);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
   });
 
   tearDown(() {
     AnalysisMode.disable();
+    AnalysisMode.setShowBestMoveArrow(true);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
     DB.instance = null;
   });
@@ -63,4 +65,41 @@ void main() {
       );
     },
   );
+
+  testWidgets('hides the best engine line when disabled', (
+    WidgetTester tester,
+  ) async {
+    const Size size = Size.square(350);
+    final double squareSize = (size.width - boardMargin * 2) / 6;
+    final Offset startPoint = pointFromSquare(notationToSquare('a1'), size);
+
+    AnalysisMode.setShowBestMoveArrow(false);
+    AnalysisMode.enable(
+      const <MoveAnalysisResult>[
+        MoveAnalysisResult(move: 'a1', outcome: AnalysisOutcome.loss),
+      ],
+      lineResults: const <MoveAnalysisResult>[
+        MoveAnalysisResult(
+          move: 'a1-d1',
+          outcome: AnalysisOutcome.advantage,
+          rank: 1,
+          depth: 12,
+          line: <String>['a1-d1', 'd7'],
+        ),
+      ],
+      source: AnalysisSource.perfectDatabaseAndEngine,
+    );
+
+    void paint(Canvas canvas) {
+      AnalysisRenderer.render(canvas, size, squareSize);
+    }
+
+    expect(
+      paint,
+      isNot(
+        paints
+          ..line(p1: startPoint, strokeWidth: 5.0, style: PaintingStyle.stroke),
+      ),
+    );
+  });
 }

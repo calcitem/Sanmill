@@ -174,6 +174,7 @@ class AnalysisRenderer {
   ) {
     if (!AnalysisMode.isFullAnalysis ||
         !AnalysisMode.hasEngineLinesSource ||
+        !AnalysisMode.showBestMoveArrow ||
         AnalysisMode.analysisLineResults.isEmpty) {
       return;
     }

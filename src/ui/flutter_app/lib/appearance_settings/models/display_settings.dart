@@ -121,6 +121,9 @@ class DisplaySettings {
     this.themeMode = AppThemeMode.system,
     this.analysisSmallBoard = false,
     this.analysisShowEngineLines = true,
+    this.analysisShowMoveAnnotations = true,
+    this.analysisShowMoveComments = true,
+    this.analysisShowBestMoveArrow = true,
     this.analysisEngineLineCount = kDefaultAnalysisEngineLineCount,
     this.analysisEngineSearchTimeMs = kDefaultAnalysisEngineSearchTimeMs,
   });
@@ -306,12 +309,27 @@ class DisplaySettings {
   @HiveField(50, defaultValue: kDefaultAnalysisEngineSearchTimeMs)
   final int analysisEngineSearchTimeMs;
 
+  /// Whether analysis move lists show PGN NAG glyphs.
+  @HiveField(51, defaultValue: true)
+  final bool analysisShowMoveAnnotations;
+
+  /// Whether analysis move lists show PGN comments.
+  @HiveField(52, defaultValue: true)
+  final bool analysisShowMoveComments;
+
+  /// Whether analysis boards show the best engine move arrow.
+  @HiveField(53, defaultValue: true)
+  final bool analysisShowBestMoveArrow;
+
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);
 
   DisplaySettings copyWithAnalysisPreferences({
     bool? analysisSmallBoard,
     bool? analysisShowEngineLines,
+    bool? analysisShowMoveAnnotations,
+    bool? analysisShowMoveComments,
+    bool? analysisShowBestMoveArrow,
     int? analysisEngineLineCount,
     int? analysisEngineSearchTimeMs,
   }) {
@@ -366,6 +384,12 @@ class DisplaySettings {
       analysisSmallBoard: analysisSmallBoard ?? this.analysisSmallBoard,
       analysisShowEngineLines:
           analysisShowEngineLines ?? this.analysisShowEngineLines,
+      analysisShowMoveAnnotations:
+          analysisShowMoveAnnotations ?? this.analysisShowMoveAnnotations,
+      analysisShowMoveComments:
+          analysisShowMoveComments ?? this.analysisShowMoveComments,
+      analysisShowBestMoveArrow:
+          analysisShowBestMoveArrow ?? this.analysisShowBestMoveArrow,
       analysisEngineLineCount:
           analysisEngineLineCount ?? this.analysisEngineLineCount,
       analysisEngineSearchTimeMs:
