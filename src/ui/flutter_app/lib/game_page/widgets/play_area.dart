@@ -2885,6 +2885,10 @@ class PlayAreaState extends State<PlayArea> {
           ),
           moves: Column(
             children: <Widget>[
+              _AnalysisMovesHeader(
+                onOpenFullMoveList: () =>
+                    _openMovesWithNavigator(Navigator.of(context)),
+              ),
               Expanded(
                 child: _InlineMoveList(
                   key: const Key('play_area_analysis_moves'),
@@ -4815,6 +4819,41 @@ class _AnalysisSummaryPanel extends StatelessWidget {
       AnalysisSource.perfectDatabase => strings.perfectDatabaseSettings,
       _ => strings.engine,
     };
+  }
+}
+
+class _AnalysisMovesHeader extends StatelessWidget {
+  const _AnalysisMovesHeader({required this.onOpenFullMoveList});
+
+  final VoidCallback onOpenFullMoveList;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerLowest,
+        border: Border(
+          bottom: BorderSide(color: theme.dividerColor.withValues(alpha: 0.65)),
+        ),
+      ),
+      child: SizedBox(
+        height: 40,
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 6),
+            child: IconButton(
+              key: const Key('play_area_analysis_open_full_move_list'),
+              tooltip: S.of(context).moveList,
+              visualDensity: VisualDensity.compact,
+              icon: const Icon(Icons.format_list_numbered),
+              onPressed: onOpenFullMoveList,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 

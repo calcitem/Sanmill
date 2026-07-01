@@ -3311,6 +3311,42 @@ void main() {
     expect(find.byKey(const Key('opening_explorer_embedded')), findsOneWidget);
   });
 
+  testWidgets('analysis moves tab opens the full move list page', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    GameController().gameRecorder.reset();
+    GameController().gameRecorder.appendMove(
+      ExtMove(
+        'd6',
+        side: PieceColor.white,
+        boardLayout: '********/********/O*******',
+      ),
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    expect(
+      find.byKey(const Key('play_area_analysis_open_full_move_list')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_open_full_move_list')),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
+
+    expect(find.byKey(const Key('moves_list_page_scaffold')), findsOneWidget);
+  });
+
   testWidgets('analysis moves tab shows a variations bar', (
     WidgetTester tester,
   ) async {
@@ -3343,16 +3379,52 @@ void main() {
       find.byKey(const Key('play_area_analysis_variation_2')),
       findsOneWidget,
     );
-    expect(find.text('d6!'), findsOneWidget);
-    expect(find.text('f4?'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_variation_1')),
+        matching: find.text('d6!'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_variation_2')),
+        matching: find.text('f4?'),
+      ),
+      findsOneWidget,
+    );
 
     AnalysisMode.setShowMoveAnnotations(false);
     await tester.pumpAndSettle();
 
-    expect(find.text('d6'), findsOneWidget);
-    expect(find.text('f4'), findsOneWidget);
-    expect(find.text('d6!'), findsNothing);
-    expect(find.text('f4?'), findsNothing);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_variation_1')),
+        matching: find.text('d6'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_variation_2')),
+        matching: find.text('f4'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_variation_1')),
+        matching: find.text('d6!'),
+      ),
+      findsNothing,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_variation_2')),
+        matching: find.text('f4?'),
+      ),
+      findsNothing,
+    );
 
     await tester.tap(find.byKey(const Key('play_area_analysis_variation_2')));
     await tester.pumpAndSettle();
