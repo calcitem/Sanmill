@@ -36,6 +36,7 @@ class NativeMillPrincipalVariation {
     required this.score,
     required this.nodes,
     required this.depth,
+    this.nodesPerSecond,
     this.line = const <String>[],
   });
 
@@ -44,6 +45,7 @@ class NativeMillPrincipalVariation {
   final int score;
   final int nodes;
   final int depth;
+  final int? nodesPerSecond;
   final List<String> line;
 }
 
@@ -676,18 +678,17 @@ class NativeMillGameSession implements GameSessionHandle {
     if (notation.isEmpty) {
       throw StateError('pv event carries no move notation: ${event.reason}');
     }
-    final RegExpMatch? rankMatch = RegExp(
-      r'(?:^|\s)rank=(\d+)(?:\s|$)',
-    ).firstMatch(event.reason);
-    if (rankMatch == null) {
+    final int? rank = _integerAnnotationFromReason(event.reason, 'rank');
+    if (rank == null) {
       throw StateError('pv event carries no rank: ${event.reason}');
     }
     return NativeMillPrincipalVariation(
-      rank: int.parse(rankMatch.group(1)!),
+      rank: rank,
       move: notation,
       score: event.score,
       nodes: event.nodes.toInt(),
       depth: event.depth,
+      nodesPerSecond: _integerAnnotationFromReason(event.reason, 'nps'),
       line: _pvLineFromReason(event.reason, fallbackMove: notation),
     );
   }
@@ -745,6 +746,13 @@ class NativeMillGameSession implements GameSessionHandle {
         .where((String move) => move.isNotEmpty)
         .toList(growable: false);
     return line.isEmpty ? <String>[fallbackMove] : line;
+  }
+
+  static int? _integerAnnotationFromReason(String reason, String name) {
+    final RegExpMatch? match = RegExp(
+      '(?:^|\\s)${RegExp.escape(name)}=(\\d+)(?:\\s|\$)',
+    ).firstMatch(reason);
+    return match == null ? null : int.parse(match.group(1)!);
   }
 
   static PlayerSeat _opponentSeat(PlayerSeat seat) {

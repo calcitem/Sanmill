@@ -18,7 +18,7 @@ use std::sync::atomic::AtomicBool;
 use std::sync::{Arc, Mutex};
 #[cfg(not(target_arch = "wasm32"))]
 use std::thread;
-use std::time::Instant;
+use std::time::{Duration, Instant};
 
 use once_cell::sync::Lazy;
 
@@ -250,6 +250,20 @@ fn remaining_time_limit_ms(move_time_ms: u32, elapsed_ms: u128) -> Option<u64> {
     Some(remaining as u64)
 }
 
+fn nodes_per_second(nodes: u64, elapsed: Duration) -> u64 {
+    if nodes == 0 {
+        return 0;
+    }
+    let elapsed_nanos = elapsed.as_nanos();
+    if elapsed_nanos == 0 {
+        return 0;
+    }
+    let value = u128::from(nodes)
+        .saturating_mul(1_000_000_000)
+        .saturating_div(elapsed_nanos);
+    value.min(u128::from(u64::MAX)) as u64
+}
+
 fn set_iteration_search_options(
     searcher: &mut Searcher<MillGame>,
     config: &MillEngineConfigPlan,
@@ -357,6 +371,7 @@ fn multi_pv_events(
     depth: i32,
     root_side_to_move: i8,
     config: &MillEngineConfigPlan,
+    nodes_per_second: u64,
 ) -> Vec<EngineEvent> {
     if config.multi_pv <= 1 {
         return Vec::new();
@@ -386,6 +401,7 @@ fn multi_pv_events(
                 notation: &notation,
                 pv_notation: &pv_notation,
                 nodes: row.nodes,
+                nodes_per_second,
                 depth,
                 cutoff: row.cutoff,
             },
@@ -425,42 +441,32 @@ fn multi_pv_ply_limit(depth: i32) -> usize {
     (depth.max(1) as usize).min(MAX_MULTI_PV_PLIES)
 }
 
-fn emit_multi_pv_events(
-    game: &MillGame,
-    snapshot: &GameStateSnapshot,
-    searcher: &Searcher<MillGame>,
-    sink: &StreamSink<EngineEvent>,
-    depth: i32,
-    root_side_to_move: i8,
-    config: &MillEngineConfigPlan,
-) {
-    for event in multi_pv_events(game, snapshot, searcher, depth, root_side_to_move, config) {
-        let _ = sink.add(event);
-    }
-}
-
 struct SearchProgressEmitter<'a> {
     game: &'a MillGame,
     snapshot: &'a GameStateSnapshot,
     sink: &'a StreamSink<EngineEvent>,
     root_side_to_move: i8,
     config: &'a MillEngineConfigPlan,
+    started_at: Instant,
 }
 
 impl SearchProgressEmitter<'_> {
     fn emit(&self, searcher: &Searcher<MillGame>, depth: i32, result: &SearchResult) {
+        let current_nodes_per_second = nodes_per_second(result.nodes, self.started_at.elapsed());
         let _ = self
             .sink
             .add(crate::engine_event::info(depth, result.score, result.nodes));
-        emit_multi_pv_events(
+        for event in multi_pv_events(
             self.game,
             self.snapshot,
             searcher,
-            self.sink,
             depth,
             self.root_side_to_move,
             self.config,
-        );
+            current_nodes_per_second,
+        ) {
+            let _ = self.sink.add(event);
+        }
     }
 }
 
@@ -722,6 +728,7 @@ fn run_mill_engine_config_event_stream(
     };
     let max_depth = origin_depth;
 
+    let search_started_at = Instant::now();
     let mut result = match algorithm_to_search(config.algorithm) {
         SearchAlgorithm::Random => {
             // Use time-seeded random to match master's rand()+time() behaviour.
@@ -741,6 +748,7 @@ fn run_mill_engine_config_event_stream(
                 sink: &sink,
                 root_side_to_move: snapshot.side_to_move,
                 config: &config,
+                started_at: search_started_at,
             };
             if multi_thread_search_is_allowed(&config) {
                 #[cfg(not(target_arch = "wasm32"))]
@@ -876,15 +884,17 @@ fn run_mill_engine_config_event_stream(
     };
 
     if config.multi_pv > 1 {
-        emit_multi_pv_events(
+        for event in multi_pv_events(
             &game,
             &snapshot,
             &searcher,
-            &sink,
             max_depth,
             snapshot.side_to_move,
             &config,
-        );
+            nodes_per_second(result.nodes, search_started_at.elapsed()),
+        ) {
+            let _ = sink.add(event);
+        }
     }
 
     let search_action = result.best_action;
@@ -1004,6 +1014,7 @@ mod tests {
                 1,
                 snapshot.side_to_move,
                 &MillEngineConfigPlan::default(),
+                0,
             )
             .is_empty()
         );
@@ -1025,11 +1036,13 @@ mod tests {
                 multi_pv: 3,
                 ..MillEngineConfigPlan::default()
             },
+            2048,
         );
         assert!(!events.is_empty());
         assert!(events.len() <= 3);
         assert!(events.iter().all(|event| event.kind == "pv"));
         assert!(events[0].reason.contains("rank=1"));
+        assert!(events[0].reason.contains("nps=2048"));
         assert!(events.iter().any(|event| event.reason.contains(',')));
     }
 
@@ -1040,6 +1053,13 @@ mod tests {
         assert_eq!(remaining_time_limit_ms(6000, 2500), Some(3500));
         assert_eq!(remaining_time_limit_ms(6000, 6000), Some(0));
         assert_eq!(remaining_time_limit_ms(6000, 7000), Some(0));
+    }
+
+    #[test]
+    fn nodes_per_second_handles_empty_and_elapsed_searches() {
+        assert_eq!(nodes_per_second(0, Duration::from_millis(1)), 0);
+        assert_eq!(nodes_per_second(10, Duration::ZERO), 0);
+        assert_eq!(nodes_per_second(2_000, Duration::from_millis(500)), 4_000);
     }
 
     #[cfg(not(target_arch = "wasm32"))]

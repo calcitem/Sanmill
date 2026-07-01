@@ -353,6 +353,7 @@ class AnalysisService {
             rank: variation.rank,
             depth: variation.depth,
             nodes: variation.nodes,
+            nodesPerSecond: variation.nodesPerSecond,
             line: variation.line,
           ),
         )

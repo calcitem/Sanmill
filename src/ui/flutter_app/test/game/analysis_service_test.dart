@@ -155,6 +155,7 @@ void main() {
     expect(AnalysisMode.isFullAnalysis, isTrue);
     expect(AnalysisMode.isAnalyzing, isTrue);
     expect(AnalysisMode.analysisLineResults.single.depth, 1);
+    expect(AnalysisMode.analysisLineResults.single.nodesPerSecond, 4000);
 
     session.completePendingSearch();
     await tester.pumpAndSettle();
@@ -203,6 +204,7 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
           score: 0,
           nodes: 1,
           depth: 1,
+          nodesPerSecond: 4000,
           line: <String>['a7'],
         ),
       ];

@@ -1566,6 +1566,7 @@ void main() {
         outcome: AnalysisOutcome.withValue(AnalysisOutcome.advantage, '+42'),
         depth: 1,
         nodes: 12345,
+        nodesPerSecond: 32000,
         line: const <String>['d6', 'f4'],
       ),
       const MoveAnalysisResult(
@@ -1573,6 +1574,7 @@ void main() {
         outcome: AnalysisOutcome.draw,
         depth: 8,
         nodes: 67890,
+        nodesPerSecond: 64000,
         line: <String>['a1'],
       ),
     ], source: AnalysisSource.engine);
@@ -1599,6 +1601,13 @@ void main() {
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_summary_engine')),
         matching: find.textContaining('d8'),
+      ),
+      findsOne,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_engine')),
+        matching: find.textContaining('64k n/s'),
       ),
       findsOne,
     );
@@ -1977,6 +1986,7 @@ void main() {
         rank: 1,
         depth: 8,
         nodes: 128000,
+        nodesPerSecond: 32000,
         line: <String>['f4', 'a1'],
       ),
     ], source: AnalysisSource.engine);
@@ -2028,6 +2038,13 @@ void main() {
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_engine_status')),
         matching: find.textContaining('128k'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_engine_status')),
+        matching: find.textContaining('32k n/s'),
       ),
       findsOneWidget,
     );

@@ -1597,12 +1597,14 @@ class PlayAreaState extends State<PlayArea> {
     final BuildContext sheetContext = _stableActionContext(context);
     final int? depth = _currentAnalysisEngineDepth();
     final int? nodes = _analysisEngineNodes();
+    final int? nodesPerSecond = _analysisEngineNodesPerSecond();
     showLichessActionSheet<void>(
       context: sheetContext,
       sheetKey: const Key('play_area_analysis_engine_sheet'),
       content: _AnalysisEngineSheetStatus(
         depth: depth,
         nodes: nodes,
+        nodesPerSecond: nodesPerSecond,
         isAnalyzing: AnalysisMode.isAnalyzing,
         onGoDeeper: () =>
             unawaited(_goDeeperFromAnalysisEngineSheet(sheetContext)),
@@ -4367,11 +4369,13 @@ class _AnalysisSummaryPanel extends StatelessWidget {
     }
 
     final int? depth = _analysisEngineDepth();
+    final int? nodesPerSecond = _analysisEngineNodesPerSecond();
     final List<String> parts = <String>[
       _analysisEvalLabel(result.outcome),
       if (depth != null) 'd$depth',
       if (result.nodes != null && result.nodes! > 0)
         _compactAnalysisCount(result.nodes!),
+      if (nodesPerSecond != null) _compactAnalysisRate(nodesPerSecond),
       result.displayLine.join(' '),
     ];
     return parts.join(' · ');
@@ -4557,12 +4561,14 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
   const _AnalysisEngineSheetStatus({
     required this.depth,
     required this.nodes,
+    required this.nodesPerSecond,
     required this.isAnalyzing,
     required this.onGoDeeper,
   });
 
   final int? depth;
   final int? nodes;
+  final int? nodesPerSecond;
   final bool isAnalyzing;
   final VoidCallback onGoDeeper;
 
@@ -4608,10 +4614,14 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
     final String? nodesText = nodes == null
         ? null
         : _compactAnalysisCount(nodes!);
+    final String? nodesPerSecondText = nodesPerSecond == null
+        ? null
+        : _compactAnalysisRate(nodesPerSecond!);
     final List<String> parts = <String>[
       if (isAnalyzing) strings.thinking,
       ?depthText,
       ?nodesText,
+      ?nodesPerSecondText,
     ];
     if (parts.isEmpty) {
       return null;
@@ -4788,6 +4798,23 @@ int? _analysisEngineNodes() {
   return nodes;
 }
 
+int? _analysisEngineNodesPerSecond() {
+  if (!AnalysisMode.hasEngineLinesSource) {
+    return null;
+  }
+  int? nodesPerSecond;
+  for (final MoveAnalysisResult result in AnalysisMode.analysisLineResults) {
+    final int? candidate = result.nodesPerSecond;
+    if (candidate == null || candidate <= 0) {
+      continue;
+    }
+    nodesPerSecond = nodesPerSecond == null
+        ? candidate
+        : math.max(nodesPerSecond, candidate);
+  }
+  return nodesPerSecond;
+}
+
 String _compactAnalysisCount(int value) {
   if (value >= 1000000) {
     return '${(value / 1000000).toStringAsFixed(value >= 10000000 ? 0 : 1)}M';
@@ -4796,6 +4823,10 @@ String _compactAnalysisCount(int value) {
     return '${(value / 1000).toStringAsFixed(value >= 10000 ? 0 : 1)}k';
   }
   return '$value';
+}
+
+String _compactAnalysisRate(int value) {
+  return '${_compactAnalysisCount(value)} n/s';
 }
 
 int _analysisOutcomeGaugeValue(AnalysisOutcome outcome) {

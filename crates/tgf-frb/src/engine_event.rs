@@ -103,6 +103,7 @@ pub(crate) struct PrincipalVariationEvent<'a> {
     pub notation: &'a str,
     pub pv_notation: &'a str,
     pub nodes: u64,
+    pub nodes_per_second: u64,
     pub depth: i32,
     pub cutoff: bool,
 }
@@ -125,8 +126,13 @@ pub(crate) fn principal_variation(event: PrincipalVariationEvent<'_>) -> EngineE
         nodes: event.nodes,
         to_node: event.action.to_node as i32,
         reason: format!(
-            "{} rank={} rawScore={} cutoff={} pv={}",
-            event.notation, event.rank, event.score, event.cutoff, event.pv_notation
+            "{} rank={} rawScore={} cutoff={} nps={} pv={}",
+            event.notation,
+            event.rank,
+            event.score,
+            event.cutoff,
+            event.nodes_per_second,
+            event.pv_notation
         ),
     }
 }
@@ -196,6 +202,7 @@ mod tests {
             notation: "d6",
             pv_notation: "d6,f4",
             nodes: 128,
+            nodes_per_second: 4096,
             depth: 3,
             cutoff: false,
         });
@@ -207,6 +214,7 @@ mod tests {
             notation: "d6",
             pv_notation: "d6,f4",
             nodes: 128,
+            nodes_per_second: 4096,
             depth: 3,
             cutoff: false,
         });
@@ -215,6 +223,7 @@ mod tests {
         assert_eq!(second_player.score, 27);
         assert!(second_player.reason.contains("rawScore=-27"));
         assert!(second_player.reason.contains("rank=1"));
+        assert!(second_player.reason.contains("nps=4096"));
         assert!(second_player.reason.contains("pv=d6,f4"));
     }
 }

@@ -86,6 +86,7 @@ class MoveAnalysisResult {
     this.rank,
     this.depth,
     this.nodes,
+    this.nodesPerSecond,
     this.line = const <String>[],
   });
 
@@ -100,6 +101,9 @@ class MoveAnalysisResult {
 
   /// Searched node count for this engine line, when available.
   final int? nodes;
+
+  /// Estimated search speed in nodes per second, when available.
+  final int? nodesPerSecond;
 
   /// Principal variation move tokens. Perfect-database entries usually carry
   /// only the root move; engine entries may carry a deeper PV.
