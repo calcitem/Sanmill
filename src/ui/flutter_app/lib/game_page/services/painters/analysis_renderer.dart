@@ -27,21 +27,41 @@ class AnalysisRenderer {
   /// Tolerance for treating two evaluation values as equal.
   static const double valueTolerance = 0.001;
 
+  static const double _engineBestMoveStrokeWidth = 5.0;
+  static const double _engineSecondaryMoveStrokeWidth = 3.25;
+  static const Color _engineBestMoveColor = Color(0xFF1E88E5);
+  static const Color _engineSecondaryMoveColor = Color(0xFF546E7A);
+  static const Color _engineThreatMoveColor = Color(0xFFD32F2F);
+  static final RegExp _standardSquarePattern = RegExp(r'^[a-g][1-7]$');
+  static final RegExp _standardMovePattern = RegExp(r'^[a-g][1-7]-[a-g][1-7]$');
+
   static void render(Canvas canvas, Size size, double squareSize) {
-    if (!AnalysisMode.isEnabled || AnalysisMode.analysisResults.isEmpty) {
+    if (!AnalysisMode.isEnabled) {
       return;
     }
 
-    if (AnalysisMode.isThreatMode) {
-      _renderNormalBestMove(canvas, size, squareSize);
+    final bool hasAnalysisResults = AnalysisMode.analysisResults.isNotEmpty;
+    final bool hasEngineLineResults =
+        AnalysisMode.isFullAnalysis &&
+        AnalysisMode.hasEngineLinesSource &&
+        AnalysisMode.analysisLineResults.isNotEmpty;
+    if (!hasAnalysisResults && !hasEngineLineResults) {
+      return;
     }
-    _renderResults(
-      canvas,
-      size,
-      squareSize,
-      AnalysisMode.analysisResults,
-      useThreatColors: AnalysisMode.isThreatMode,
-    );
+
+    if (hasAnalysisResults) {
+      if (AnalysisMode.isThreatMode) {
+        _renderNormalBestMove(canvas, size, squareSize);
+      }
+      _renderResults(
+        canvas,
+        size,
+        squareSize,
+        AnalysisMode.analysisResults,
+        useThreatColors: AnalysisMode.isThreatMode,
+      );
+    }
+    _renderEngineLineHighlights(canvas, size, squareSize);
   }
 
   static void _renderNormalBestMove(
@@ -102,7 +122,7 @@ class AnalysisRenderer {
       switch (resultType) {
         case AnalysisResultType.place:
           if (result.move.length == 2 &&
-              RegExp(r'^[a-g][1-7]$').hasMatch(result.move)) {
+              _standardSquarePattern.hasMatch(result.move)) {
             final Offset position = _getPositionFromStandardNotation(
               result.move,
               size,
@@ -145,6 +165,187 @@ class AnalysisRenderer {
           break;
       }
     }
+  }
+
+  static void _renderEngineLineHighlights(
+    Canvas canvas,
+    Size size,
+    double squareSize,
+  ) {
+    if (!AnalysisMode.isFullAnalysis ||
+        !AnalysisMode.hasEngineLinesSource ||
+        AnalysisMode.analysisLineResults.isEmpty) {
+      return;
+    }
+
+    final int visibleLineCount = max(1, AnalysisMode.engineLineCount);
+    if (AnalysisMode.isThreatMode) {
+      final List<MoveAnalysisResult> normalResults = _engineLineResultsToRender(
+        AnalysisMode.normalEngineAnalysisResults,
+        1,
+      );
+      if (normalResults.isNotEmpty) {
+        _drawEngineLineHighlight(
+          canvas,
+          normalResults.first,
+          size,
+          squareSize,
+          color: _engineBestMoveColor,
+          isPrimary: true,
+        );
+      }
+
+      final List<MoveAnalysisResult> threatResults = _engineLineResultsToRender(
+        AnalysisMode.analysisLineResults,
+        visibleLineCount,
+      );
+      for (int i = 0; i < threatResults.length; i++) {
+        _drawEngineLineHighlight(
+          canvas,
+          threatResults[i],
+          size,
+          squareSize,
+          color: _engineThreatMoveColor,
+          isPrimary: i == 0,
+        );
+      }
+      return;
+    }
+
+    final List<MoveAnalysisResult> resultsToRender = _engineLineResultsToRender(
+      AnalysisMode.analysisLineResults,
+      visibleLineCount,
+    );
+    for (int i = 0; i < resultsToRender.length; i++) {
+      _drawEngineLineHighlight(
+        canvas,
+        resultsToRender[i],
+        size,
+        squareSize,
+        color: i == 0 ? _engineBestMoveColor : _engineSecondaryMoveColor,
+        isPrimary: i == 0,
+      );
+    }
+  }
+
+  static List<MoveAnalysisResult> _engineLineResultsToRender(
+    List<MoveAnalysisResult> results,
+    int count,
+  ) {
+    assert(count >= 1, 'Engine line overlay count must be positive.');
+    if (results.isEmpty) {
+      return const <MoveAnalysisResult>[];
+    }
+    return results.take(min(results.length, count)).toList(growable: false);
+  }
+
+  static void _drawEngineLineHighlight(
+    Canvas canvas,
+    MoveAnalysisResult result,
+    Size size,
+    double squareSize, {
+    required Color color,
+    required bool isPrimary,
+  }) {
+    final String move = _rootMoveForLine(result);
+    final Color highlightColor = color.withValues(
+      alpha: isPrimary ? 0.82 : 0.6,
+    );
+    final double strokeWidth = isPrimary
+        ? _engineBestMoveStrokeWidth
+        : _engineSecondaryMoveStrokeWidth;
+
+    switch (_determineResultType(move)) {
+      case AnalysisResultType.move:
+        _drawEngineMoveArrow(
+          canvas,
+          move,
+          highlightColor,
+          size,
+          strokeWidth: strokeWidth,
+        );
+        break;
+      case AnalysisResultType.place:
+        _drawEngineTargetMark(
+          canvas,
+          move,
+          highlightColor,
+          size,
+          squareSize * 0.48,
+          strokeWidth: strokeWidth,
+        );
+        break;
+      case AnalysisResultType.remove:
+        _drawEngineTargetMark(
+          canvas,
+          move.substring(1),
+          highlightColor,
+          size,
+          squareSize * 0.58,
+          strokeWidth: strokeWidth,
+        );
+        break;
+    }
+  }
+
+  static String _rootMoveForLine(MoveAnalysisResult result) {
+    final String move = result.line.isNotEmpty
+        ? result.line.first
+        : result.move;
+    assert(move.trim().isNotEmpty, 'Engine line result must contain a move.');
+    return move.trim();
+  }
+
+  static void _drawEngineMoveArrow(
+    Canvas canvas,
+    String moveStr,
+    Color color,
+    Size size, {
+    required double strokeWidth,
+  }) {
+    assert(
+      _standardMovePattern.hasMatch(moveStr),
+      'Engine line move must use from-to notation.',
+    );
+    if (!_standardMovePattern.hasMatch(moveStr)) {
+      return;
+    }
+
+    final List<String> squares = moveStr.split('-');
+    final Offset startPos = _getPositionFromStandardNotation(squares[0], size);
+    final Offset endPos = _getPositionFromStandardNotation(squares[1], size);
+    _drawArrow(canvas, startPos, endPos, color, strokeWidth: strokeWidth);
+  }
+
+  static void _drawEngineTargetMark(
+    Canvas canvas,
+    String squareNotation,
+    Color color,
+    Size size,
+    double radius, {
+    required double strokeWidth,
+  }) {
+    assert(
+      _standardSquarePattern.hasMatch(squareNotation),
+      'Engine line target must use standard square notation.',
+    );
+    if (!_standardSquarePattern.hasMatch(squareNotation)) {
+      return;
+    }
+
+    final Offset position = _getPositionFromStandardNotation(
+      squareNotation,
+      size,
+    );
+    final Paint fillPaint = Paint()
+      ..color = color.withValues(alpha: 0.16)
+      ..style = PaintingStyle.fill;
+    final Paint strokePaint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth;
+    canvas.drawCircle(position, radius, fillPaint);
+    canvas.drawCircle(position, radius, strokePaint);
   }
 
   /// Best (highest) evaluation value among the sorted results, if any.
@@ -601,9 +802,9 @@ class AnalysisRenderer {
       return AnalysisResultType.remove;
     } else if (move.contains('-') &&
         move.length == 5 &&
-        RegExp(r'^[a-g][1-7]-[a-g][1-7]$').hasMatch(move)) {
+        _standardMovePattern.hasMatch(move)) {
       return AnalysisResultType.move;
-    } else if (move.length == 2 && RegExp(r'^[a-g][1-7]$').hasMatch(move)) {
+    } else if (move.length == 2 && _standardSquarePattern.hasMatch(move)) {
       return AnalysisResultType.place;
     }
     return AnalysisResultType.place;
@@ -644,7 +845,7 @@ class AnalysisRenderer {
     Size size,
   ) {
     if (squareNotation.length != 2 ||
-        !RegExp(r'^[a-g][1-7]$').hasMatch(squareNotation)) {
+        !_standardSquarePattern.hasMatch(squareNotation)) {
       logger.w("Invalid standard notation: $squareNotation");
       return size.center(Offset.zero);
     }
