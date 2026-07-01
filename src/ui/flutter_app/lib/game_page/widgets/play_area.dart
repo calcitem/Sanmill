@@ -410,7 +410,13 @@ Future<void> showAnalysisSettingsSheet(
                           ),
                           leading: const Icon(Icons.memory_outlined),
                           title: Text(strings.engineThreads),
-                          subtitle: Text(currentEngineThreads.toString()),
+                          subtitle: Text(
+                            _analysisEngineThreadsSubtitle(
+                              strings,
+                              currentEngineThreads,
+                              canUseAnalysisThreads,
+                            ),
+                          ),
                           trailing: SizedBox(
                             width: 180,
                             child: Slider(
@@ -568,6 +574,20 @@ String _analysisSearchTimeValueLabel(int valueMs) {
   }
   assert(valueMs % 1000 == 0, 'Analysis search time must be whole seconds.');
   return '${valueMs ~/ 1000}s';
+}
+
+String _analysisEngineThreadsSubtitle(
+  S strings,
+  int currentEngineThreads,
+  bool canUseAnalysisThreads,
+) {
+  if (canUseAnalysisThreads) {
+    return '$currentEngineThreads';
+  }
+  return switch (strings.localeName.split('_').first) {
+    'zh' => '仅单条引擎线可调',
+    _ => 'Only available with one engine line',
+  };
 }
 
 String _analysisMoveAnnotationsLabel(S strings) {

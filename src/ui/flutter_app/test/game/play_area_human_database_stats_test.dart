@@ -3731,6 +3731,13 @@ void main() {
     );
     Slider threadSlider = tester.widget<Slider>(threadSliderFinder);
     expect(threadSlider.onChanged, isNull);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_settings_engine_threads')),
+        matching: find.text('Only available with one engine line'),
+      ),
+      findsOneWidget,
+    );
 
     final Finder searchTimeSliderFinder = find.byKey(
       const Key('play_area_analysis_settings_engine_search_time_control'),
@@ -3772,6 +3779,20 @@ void main() {
 
     threadSlider = tester.widget<Slider>(threadSliderFinder);
     expect(threadSlider.onChanged, isNotNull);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_settings_engine_threads')),
+        matching: find.text('Only available with one engine line'),
+      ),
+      findsNothing,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_settings_engine_threads')),
+        matching: find.text(db.generalSettings.engineThreads.toString()),
+      ),
+      findsOneWidget,
+    );
     threadSlider.onChanged!(4);
     threadSlider.onChangeEnd!(4);
     await tester.pumpAndSettle();
