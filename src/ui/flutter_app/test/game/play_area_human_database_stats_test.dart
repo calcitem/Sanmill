@@ -3382,17 +3382,36 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.byTooltip('Variations · 2 · Branch moves: f4, g7'),
+      find.byTooltip(
+        'Variations · Switch to Full Tree View · 2 · Branch moves: f4, g7',
+      ),
       findsOneWidget,
     );
     expect(
       find.byWidgetPredicate(
         (Widget widget) =>
             widget is Semantics &&
-            widget.properties.label == 'Variations · 2 · Branch moves: f4, g7',
+            widget.properties.label ==
+                'Variations · Switch to Full Tree View · 2 · Branch moves: f4, g7',
       ),
       findsOneWidget,
     );
+    expect(db.displaySettings.showBranchTree, isFalse);
+
+    final Finder summaryVariations = find.byKey(
+      const Key('play_area_analysis_summary_variations'),
+    );
+    await tester.ensureVisible(summaryVariations);
+    await tester.pumpAndSettle();
+    await tester.tap(summaryVariations);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
+
+    expect(find.byKey(const Key('moves_list_page_scaffold')), findsOneWidget);
+    expect(find.byTooltip('Switch to Active Line View'), findsOneWidget);
+    expect(find.text('1. f4'), findsOneWidget);
+    expect(db.displaySettings.showBranchTree, isFalse);
   });
 
   testWidgets('analysis menu clears saved moves back to the start position', (

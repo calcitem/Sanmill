@@ -67,11 +67,19 @@ class _ActivePathRowData {
 /// The user can pick from a set of layout options via a single active icon which,
 /// when tapped, reveals a row of layout icons.
 class MovesListPage extends StatefulWidget {
-  const MovesListPage({super.key, this.initialLayout});
+  const MovesListPage({
+    super.key,
+    this.initialLayout,
+    this.initialShowBranchTree,
+  });
 
   /// Optional route-local layout used by callers that need a specific
   /// first view without changing the persisted move-list preference.
   final MovesViewLayout? initialLayout;
+
+  /// Optional route-local branch-tree mode used by callers that open the
+  /// move list from a variation-focused entry point.
+  final bool? initialShowBranchTree;
 
   @override
   MovesListPageState createState() => MovesListPageState();
@@ -97,6 +105,9 @@ class MovesListPageState extends State<MovesListPage> {
   /// Current layout selection, loaded from DB settings unless overridden.
   late MovesViewLayout _currentLayout;
 
+  /// Current branch-tree mode, loaded from DB settings unless overridden.
+  late bool _showBranchTree;
+
   // Timer to track elapsed seconds while waiting for LLM response
   Timer? loadingTimer;
   DateTime? requestStartTime;
@@ -107,6 +118,8 @@ class MovesListPageState extends State<MovesListPage> {
     super.initState();
     _currentLayout =
         widget.initialLayout ?? DB().displaySettings.movesViewLayout;
+    _showBranchTree =
+        widget.initialShowBranchTree ?? DB().displaySettings.showBranchTree;
     // Collect all nodes from the PGN tree into _allNodes.
     // For example:
     // final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
@@ -142,8 +155,7 @@ class MovesListPageState extends State<MovesListPage> {
     setState(() {
       // For non-list views showing full tree, refresh _allNodes (expensive DFS)
       // For list view or Active Path mode, the data is calculated on-the-fly in build()
-      if (_currentLayout != MovesViewLayout.list &&
-          DB().displaySettings.showBranchTree) {
+      if (_currentLayout != MovesViewLayout.list && _showBranchTree) {
         _refreshAllNodes();
       }
       // Note: setState will trigger rebuild, so _calculateActivePathNodes()
@@ -310,8 +322,7 @@ class MovesListPageState extends State<MovesListPage> {
       return sortedRoundsAsc.indexOf(activeRow.roundIndex);
     }
 
-    final bool showFullTree = DB().displaySettings.showBranchTree;
-    final List<PgnNode<ExtMove>> nodesToDisplay = showFullTree
+    final List<PgnNode<ExtMove>> nodesToDisplay = _showBranchTree
         ? (_allNodes.isNotEmpty ? _allNodes : _calculateActivePathNodes())
         : _calculateActivePathNodes();
     final int index = nodesToDisplay.indexOf(activeNode);
@@ -2723,16 +2734,15 @@ class MovesListPageState extends State<MovesListPage> {
 
     // Default: hide side branches for readability.
     // Advanced: show full tree when branch tree mode is enabled.
-    final bool showFullTree = DB().displaySettings.showBranchTree;
     final PgnNode<ExtMove>? activeNode = _activeDisplayNode();
 
-    // For list view, always use Active Path (showFullTree ignored)
+    // For list view, always use Active Path (branch-tree mode ignored).
     if (_currentLayout == MovesViewLayout.list) {
       return _buildThreeColumnListLayout();
     }
 
     // For other views, use Active Path by default, or full tree if enabled
-    final List<PgnNode<ExtMove>> nodesToDisplay = showFullTree
+    final List<PgnNode<ExtMove>> nodesToDisplay = _showBranchTree
         ? (_allNodes.isNotEmpty ? _allNodes : _calculateActivePathNodes())
         : _calculateActivePathNodes();
 
@@ -2755,7 +2765,8 @@ class MovesListPageState extends State<MovesListPage> {
                   : null,
               node: node,
               layout: _currentLayout,
-              showNextMoveChips: !showFullTree,
+              showBranchTree: _showBranchTree,
+              showNextMoveChips: !_showBranchTree,
               onNavigate: _navigateToNode,
             );
           },
@@ -2785,6 +2796,7 @@ class MovesListPageState extends State<MovesListPage> {
                   : null,
               node: node,
               layout: _currentLayout,
+              showBranchTree: _showBranchTree,
               onNavigate: _navigateToNode,
             );
           },
@@ -2858,17 +2870,18 @@ class MovesListPageState extends State<MovesListPage> {
           if (_currentLayout != MovesViewLayout.list)
             IconButton(
               icon: Icon(
-                DB().displaySettings.showBranchTree
+                _showBranchTree
                     ? FluentIcons.branch_fork_24_regular
                     : FluentIcons.branch_24_regular,
               ),
-              tooltip: DB().displaySettings.showBranchTree
+              tooltip: _showBranchTree
                   ? S.of(context).switchToActiveLineView
                   : S.of(context).switchToFullTreeView,
               onPressed: () {
                 setState(() {
+                  _showBranchTree = !_showBranchTree;
                   DB().displaySettings = DB().displaySettings.copyWith(
-                    showBranchTree: !DB().displaySettings.showBranchTree,
+                    showBranchTree: _showBranchTree,
                   );
                   _refreshAllNodes();
                 });
@@ -3150,7 +3163,7 @@ class MovesListPageState extends State<MovesListPage> {
       body: Column(
         children: <Widget>[
           // Branch indicator banner (only for list view)
-          if (!DB().displaySettings.showBranchTree && _isOnVariationBranch())
+          if (!_showBranchTree && _isOnVariationBranch())
             _buildVariationBanner(),
           // Main content
           Expanded(
@@ -3176,6 +3189,7 @@ class MoveListItem extends StatefulWidget {
   const MoveListItem({
     required this.node,
     required this.layout,
+    required this.showBranchTree,
     this.showNextMoveChips = false,
     this.onNavigate,
     super.key,
@@ -3183,6 +3197,7 @@ class MoveListItem extends StatefulWidget {
 
   final PgnNode<ExtMove> node;
   final MovesViewLayout layout;
+  final bool showBranchTree;
 
   /// Whether to show child-branch chips (next move options) under this move.
   /// This is used for the simplified active-path view.
@@ -3373,8 +3388,7 @@ class MoveListItemState extends State<MoveListItem> {
     );
 
     // Build branch tree widget (only if enabled)
-    final Widget branchTree =
-        DB().displaySettings.showBranchTree && branchColumns.isNotEmpty
+    final Widget branchTree = widget.showBranchTree && branchColumns.isNotEmpty
         ? BranchTreeWidget(
             branchColumns: branchColumns,
             branchColumn: branchColumn,
@@ -3431,7 +3445,7 @@ class MoveListItemState extends State<MoveListItem> {
     }
 
     // If branch tree is disabled, add simple indentation for variations
-    if (!DB().displaySettings.showBranchTree &&
+    if (!widget.showBranchTree &&
         isVariation &&
         widget.layout != MovesViewLayout.list) {
       return Padding(

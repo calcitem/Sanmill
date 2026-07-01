@@ -1036,7 +1036,10 @@ class PlayAreaState extends State<PlayArea> {
     _openGameOptions(navigator.context);
   }
 
-  void _openMovesWithNavigator(NavigatorState navigator) {
+  void _openMovesWithNavigator(
+    NavigatorState navigator, {
+    bool? initialShowBranchTree,
+  }) {
     if (DB().generalSettings.screenReaderSupport) {
       // On screen readers, use a bottom sheet.
       final BuildContext navigatorContext = navigator.context;
@@ -1052,6 +1055,7 @@ class PlayAreaState extends State<PlayArea> {
         settings: const RouteSettings(name: '/movesList'),
         builder: (BuildContext context) => MovesListPage(
           initialLayout: _isAnalysisMode ? MovesViewLayout.medium : null,
+          initialShowBranchTree: initialShowBranchTree,
         ),
       ),
     );
@@ -3135,6 +3139,10 @@ class PlayAreaState extends State<PlayArea> {
             advantageData: advantageData,
             onOpenFullMoveList: () =>
                 _openMovesWithNavigator(Navigator.of(context)),
+            onOpenVariationTree: () => _openMovesWithNavigator(
+              Navigator.of(context),
+              initialShowBranchTree: true,
+            ),
             onBestMoveTap: (String move) async {
               final bool applied = await _applyAnalysisMove(context, move);
               if (!applied) {
@@ -5317,6 +5325,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
   const _AnalysisSummaryPanel({
     required this.advantageData,
     required this.onOpenFullMoveList,
+    required this.onOpenVariationTree,
     required this.onBestMoveTap,
     required this.onResultCandidateTap,
     required this.onAnalyze,
@@ -5330,6 +5339,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
 
   final List<int> advantageData;
   final VoidCallback onOpenFullMoveList;
+  final VoidCallback onOpenVariationTree;
   final Future<void> Function(String move) onBestMoveTap;
   final Future<void> Function(String move) onResultCandidateTap;
   final VoidCallback onAnalyze;
@@ -5486,11 +5496,12 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                       key: const Key('play_area_analysis_summary_variations'),
                       leading: const Icon(Icons.fork_right_outlined),
                       title: strings.variations,
+                      actionDetails: <String>[strings.switchToFullTreeView],
                       subtitleKey: const Key(
                         'play_area_analysis_summary_variations_preview',
                       ),
                       subtitle: variationSummary,
-                      onTap: onOpenFullMoveList,
+                      onTap: onOpenVariationTree,
                     ),
                   ],
                 ),
