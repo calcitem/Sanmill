@@ -19,7 +19,11 @@ class _MoveCountNotifier extends ValueNotifier<int> {
 /// GameRecorder holds the move history and maintains
 /// a PGN tree internally. It now provides PGN-based APIs.
 class GameRecorder {
-  GameRecorder({this.lastPositionWithRemove, this.setupPosition}) {
+  GameRecorder({
+    this.lastPositionWithRemove,
+    this.setupPosition,
+    List<String> rootComments = const <String>[],
+  }) : rootComments = List<String>.of(rootComments) {
     activeNode = _pgnRoot;
   }
 
@@ -28,6 +32,9 @@ class GameRecorder {
 
   /// Custom setup position. If not null, it will be used instead of current FEN.
   String? setupPosition;
+
+  /// Comments attached to the PGN root before the first move.
+  final List<String> rootComments;
 
   /// Notifier that fires whenever a move is made or undone.
   /// Listeners can use this to react to move changes in business logic.
@@ -155,6 +162,7 @@ class GameRecorder {
   /// Resets the game recorder by clearing all moves and resetting the active node.
   void reset() {
     _pgnRoot.children.clear();
+    rootComments.clear();
     // Set activeNode to pgnRoot (root position) instead of null
     // to maintain consistency with history navigation behavior.
     activeNode = _pgnRoot;
@@ -482,9 +490,18 @@ class GameRecorder {
     // Obtain mainline nodes (not just moves) for richer comment merging.
     final List<PgnNode<ExtMove>> nodes = mainlineNodes;
 
+    final String rootCommentsText = _formatRootComments();
+
     if (nodes.isEmpty) {
       if (GameController().isPositionSetup) {
-        return buildTagPairs();
+        final String tagPairs = buildTagPairs();
+        if (rootCommentsText.isNotEmpty) {
+          return '$tagPairs$rootCommentsText $gameResultPgn';
+        }
+        return tagPairs;
+      }
+      if (rootCommentsText.isNotEmpty) {
+        return '$rootCommentsText $gameResultPgn';
       }
       return "";
     }
@@ -558,6 +575,7 @@ class GameRecorder {
     if (GameController().isPositionSetup) {
       sb.write(buildTagPairs());
     }
+    _writeRootComments(sb, rootCommentsText);
 
     // PGN standard: if the game starts with black's move, output the
     // initial black half-move with "N..." notation before entering
@@ -601,6 +619,25 @@ class GameRecorder {
     }
 
     return sb.toString();
+  }
+
+  String _formatRootComments() {
+    if (rootComments.isEmpty) {
+      return '';
+    }
+    return rootComments
+        .map((String comment) => safeComment(comment).trim())
+        .where((String comment) => comment.isNotEmpty)
+        .map((String comment) => '{$comment}')
+        .join(' ');
+  }
+
+  void _writeRootComments(StringBuffer sb, String rootCommentsText) {
+    if (rootCommentsText.isEmpty) {
+      return;
+    }
+    sb.write(rootCommentsText);
+    sb.write(' ');
   }
 
   /// Formats a single move with its annotations (startingComments, NAGs, and comments).
@@ -1083,9 +1120,18 @@ class GameRecorder {
 
     final List<ExtMove> path = currentPath;
 
+    final String rootCommentsText = _formatRootComments();
+
     if (path.isEmpty) {
       if (GameController().isPositionSetup) {
-        return buildTagPairs();
+        final String tagPairs = buildTagPairs();
+        if (rootCommentsText.isNotEmpty) {
+          return '$tagPairs$rootCommentsText $gameResultPgn';
+        }
+        return tagPairs;
+      }
+      if (rootCommentsText.isNotEmpty) {
+        return '$rootCommentsText $gameResultPgn';
       }
       return "";
     }
@@ -1122,6 +1168,7 @@ class GameRecorder {
     if (GameController().isPositionSetup) {
       sb.write(buildTagPairs());
     }
+    _writeRootComments(sb, rootCommentsText);
 
     // PGN standard: if the game starts with black's move, output the
     // initial black half-move with "N..." notation.
@@ -1200,9 +1247,18 @@ class GameRecorder {
 
     final List<PgnNode<ExtMove>> nodes = mainlineNodes;
 
+    final String rootCommentsText = _formatRootComments();
+
     if (nodes.isEmpty) {
       if (GameController().isPositionSetup) {
-        return buildTagPairs();
+        final String tagPairs = buildTagPairs();
+        if (rootCommentsText.isNotEmpty) {
+          return '$tagPairs$rootCommentsText $gameResultPgn';
+        }
+        return tagPairs;
+      }
+      if (rootCommentsText.isNotEmpty) {
+        return '$rootCommentsText $gameResultPgn';
       }
       return "";
     }
@@ -1241,6 +1297,7 @@ class GameRecorder {
     if (GameController().isPositionSetup) {
       sb.write(buildTagPairs());
     }
+    _writeRootComments(sb, rootCommentsText);
 
     // PGN standard: if the game starts with black's move, output the
     // initial black half-move with "N..." notation.

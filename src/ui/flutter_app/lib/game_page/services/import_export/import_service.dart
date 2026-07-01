@@ -591,6 +591,7 @@ class ImportService {
       final GameRecorder newHistory = GameRecorder(
         lastPositionWithRemove: fen ?? GameController().activeFen,
         setupPosition: fen,
+        rootComments: game.comments,
       );
 
       // Convert the entire PGN tree (with variations) to an ExtMove tree,

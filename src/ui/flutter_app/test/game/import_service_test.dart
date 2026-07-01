@@ -80,6 +80,22 @@ void main() {
     );
   });
 
+  group("ImportService PGN comments", () {
+    test("Root comments are preserved on import", () {
+      const String pgnText = '{Imported study note} 1. a7 d7';
+
+      ImportService.import(pgnText);
+
+      final GameRecorder? recorder = GameController().newGameRecorder;
+      expect(recorder, isNotNull);
+      expect(recorder!.rootComments, <String>['Imported study note']);
+      expect(
+        recorder.moveHistoryText,
+        startsWith('{Imported study note} 1. a7 d7'),
+      );
+    }, skip: nativeLibrarySkipReason());
+  });
+
   group("ImportService rule variants", () {
     test(
       "Twelve Men's Morris PGN validates under the active rules",

@@ -2903,6 +2903,7 @@ class PlayAreaState extends State<PlayArea> {
                   showMoveActions: true,
                   showMoveAnnotations: AnalysisMode.showMoveAnnotations,
                   showMoveComments: AnalysisMode.showMoveComments,
+                  showRootComments: true,
                   layout: AnalysisMode.inlineNotation
                       ? _InlineMoveListLayout.stacked
                       : _InlineMoveListLayout.twoColumn,
@@ -3668,6 +3669,7 @@ class _InlineMoveList extends StatefulWidget {
     this.showMoveActions = false,
     this.showMoveAnnotations = false,
     this.showMoveComments = false,
+    this.showRootComments = false,
     this.showMainlineContinuation = false,
     this.layout = _InlineMoveListLayout.wrap,
     this.groupByRound = false,
@@ -3686,6 +3688,7 @@ class _InlineMoveList extends StatefulWidget {
   final bool showMoveActions;
   final bool showMoveAnnotations;
   final bool showMoveComments;
+  final bool showRootComments;
   final bool showMainlineContinuation;
   final _InlineMoveListLayout layout;
   final bool groupByRound;
@@ -3746,6 +3749,8 @@ class _InlineMoveListState extends State<_InlineMoveList> {
             GameController().gameRecorder.activeNode;
         _scheduleCurrentMoveAutoScroll(activeNode);
 
+        final bool hasRootComments = _hasRootComments();
+
         return Container(
           key: widget.wrapKey,
           width: double.infinity,
@@ -3763,7 +3768,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
           padding: widget.layout == _InlineMoveListLayout.horizontal
               ? const EdgeInsets.only(left: 5)
               : const EdgeInsets.fromLTRB(12, 6, 12, 4),
-          child: nodes.isEmpty
+          child: nodes.isEmpty && !hasRootComments
               ? const SizedBox(height: 30)
               : _buildMoves(context: context, nodes: nodes),
         );
@@ -3804,7 +3809,9 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       return _buildGroupedMoves(context: context, nodes: nodes);
     }
 
+    final Widget? rootComments = _buildRootCommentsBlock(context);
     final List<Widget> chips = <Widget>[
+      ?rootComments,
       for (int i = 0; i < nodes.length; i++) _buildMoveChip(context, nodes, i),
     ];
 
@@ -3835,11 +3842,14 @@ class _InlineMoveListState extends State<_InlineMoveList> {
     required List<PgnNode<ExtMove>> nodes,
   }) {
     final List<_InlineMoveRound> rounds = _buildMoveRounds(nodes);
+    final Widget? rootComments = _buildRootCommentsBlock(context);
     final List<Widget> roundChildren = <Widget>[
+      ?rootComments,
       for (final _InlineMoveRound round in rounds)
         _buildMoveRound(context, round),
     ];
     final List<Widget> wrappedChildren = <Widget>[
+      ?rootComments,
       for (final _InlineMoveRound round in rounds)
         ..._buildMoveRoundWrapChildren(context, round),
     ];
@@ -3865,6 +3875,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
           key: const Key('play_area_inline_move_list_two_column'),
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            ?rootComments,
             for (final _InlineMoveRound round in rounds)
               _buildMoveRoundTableRow(context, round),
           ],
@@ -3921,6 +3932,42 @@ class _InlineMoveListState extends State<_InlineMoveList> {
     }
 
     return rounds;
+  }
+
+  bool _hasRootComments() {
+    return widget.layout != _InlineMoveListLayout.horizontal &&
+        _rootCommentsLabel().isNotEmpty;
+  }
+
+  Widget? _buildRootCommentsBlock(BuildContext context) {
+    final String label = _rootCommentsLabel();
+    if (label.isEmpty || widget.layout == _InlineMoveListLayout.horizontal) {
+      return null;
+    }
+
+    final ThemeData theme = Theme.of(context);
+    final TextStyle? style = theme.textTheme.bodySmall?.copyWith(
+      color: theme.colorScheme.onSurfaceVariant,
+    );
+    return LayoutBuilder(
+      key: const Key('play_area_analysis_root_comments'),
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return SizedBox(
+          width: constraints.maxWidth,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Text(label, style: style, textDirection: TextDirection.ltr),
+          ),
+        );
+      },
+    );
+  }
+
+  String _rootCommentsLabel() {
+    if (!widget.showRootComments || !widget.showMoveComments) {
+      return '';
+    }
+    return _commentsLabel(GameController().gameRecorder.rootComments);
   }
 
   Widget _buildMoveRound(BuildContext context, _InlineMoveRound round) {

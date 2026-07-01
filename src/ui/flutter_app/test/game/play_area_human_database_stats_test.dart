@@ -1887,6 +1887,7 @@ void main() {
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
     );
+    GameController().gameRecorder.rootComments.add('Imported study note');
     GameController().gameRecorder.appendMove(
       ExtMove(
         'd6',
@@ -1907,6 +1908,13 @@ void main() {
       find.descendant(
         of: movesPanel,
         matching: find.text('d6! {Good opening}'),
+      ),
+      findsOne,
+    );
+    expect(
+      find.descendant(
+        of: movesPanel,
+        matching: find.text('{Imported study note}'),
       ),
       findsOne,
     );
@@ -1947,6 +1955,13 @@ void main() {
     );
     expect(
       find.descendant(of: movesPanel, matching: find.text('d6 {Good opening}')),
+      findsNothing,
+    );
+    expect(
+      find.descendant(
+        of: movesPanel,
+        matching: find.text('{Imported study note}'),
+      ),
       findsNothing,
     );
   });

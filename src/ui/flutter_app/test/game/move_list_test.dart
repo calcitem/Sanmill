@@ -87,6 +87,27 @@ void main() {
       expect(text, contains('b2xf4'));
     });
 
+    test('Preserves root comments in PGN move text', () {
+      final GameRecorder recorder = GameController().gameRecorder;
+
+      recorder.rootComments.add('Imported study note');
+      recorder.appendMove(ExtMove('d6', side: PieceColor.white));
+      recorder.appendMove(ExtMove('f4', side: PieceColor.black));
+
+      expect(
+        recorder.moveHistoryText,
+        startsWith('{Imported study note} 1. d6 f4'),
+      );
+      expect(
+        recorder.moveHistoryTextCurrentLine,
+        startsWith('{Imported study note} 1. d6 f4'),
+      );
+      expect(
+        recorder.moveHistoryTextWithoutVariations,
+        startsWith('{Imported study note} 1. d6 f4'),
+      );
+    });
+
     test('Move list prompt includes metadata and board layout', () {
       final GameRecorder recorder = GameController().gameRecorder;
 
