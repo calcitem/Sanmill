@@ -1795,6 +1795,13 @@ void main() {
     );
     expect(
       find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_engine')),
+        matching: find.text('Threat'),
+      ),
+      findsOne,
+    );
+    expect(
+      find.descendant(
         of: find.byKey(const Key('play_area_analysis_summary_best_move')),
         matching: find.text('Threat'),
       ),
@@ -3503,6 +3510,51 @@ void main() {
       findsOneWidget,
     );
     expect(db.displaySettings.analysisShowEngineLines, isFalse);
+  });
+
+  testWidgets('analysis engine sheet labels threat mode', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    AnalysisMode.enable(
+      <MoveAnalysisResult>[
+        const MoveAnalysisResult(
+          move: 'd6',
+          outcome: AnalysisOutcome.advantage,
+          rank: 1,
+          depth: 8,
+          nodes: 128000,
+          line: <String>['d6', 'f4', 'a1'],
+        ),
+      ],
+      source: AnalysisSource.engine,
+      isThreatMode: true,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.longPress(
+      find.byKey(const Key('play_area_analysis_bottom_bar_engine')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_engine_status')),
+        matching: find.text('Threat'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_show_threat')),
+      findsOneWidget,
+    );
+    expect(find.text('Stop showing threat'), findsOneWidget);
   });
 
   testWidgets('analysis engine button shows progress while analyzing', (

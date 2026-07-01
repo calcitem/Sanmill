@@ -1956,6 +1956,7 @@ class PlayAreaState extends State<PlayArea> {
         nodesPerSecond: nodesPerSecond,
         isAnalyzing: AnalysisMode.isAnalyzing,
         isDeepSearch: AnalysisMode.isEngineAnalysisDeep,
+        isThreatMode: AnalysisMode.isThreatMode,
         canGoDeeper:
             !AnalysisMode.isAnalyzing && !AnalysisMode.isEngineAnalysisDeep,
         onGoDeeper: () =>
@@ -5525,6 +5526,9 @@ class _AnalysisSummaryPanel extends StatelessWidget {
   }
 
   String _analysisDetailsTitle(S strings) {
+    if (AnalysisMode.isThreatMode) {
+      return _analysisThreatLabel(strings);
+    }
     return switch (AnalysisMode.source) {
       AnalysisSource.perfectDatabase => strings.perfectDatabaseSettings,
       _ => strings.engine,
@@ -6828,6 +6832,7 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
     required this.nodesPerSecond,
     required this.isAnalyzing,
     required this.isDeepSearch,
+    required this.isThreatMode,
     required this.canGoDeeper,
     required this.onGoDeeper,
   });
@@ -6837,6 +6842,7 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
   final int? nodesPerSecond;
   final bool isAnalyzing;
   final bool isDeepSearch;
+  final bool isThreatMode;
   final bool canGoDeeper;
   final VoidCallback onGoDeeper;
 
@@ -6851,7 +6857,10 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
     return ListTile(
       key: const Key('play_area_analysis_engine_status'),
       contentPadding: const EdgeInsets.only(left: 16),
-      leading: Icon(Icons.memory_outlined, color: colorScheme.primary),
+      leading: Icon(
+        isThreatMode ? Icons.online_prediction_outlined : Icons.memory_outlined,
+        color: colorScheme.primary,
+      ),
       trailing: canGoDeeper
           ? IconButton(
               key: const Key('play_area_analysis_engine_go_deeper'),
@@ -6862,7 +6871,7 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
             )
           : null,
       title: Text(
-        strings.engine,
+        isThreatMode ? _analysisThreatLabel(strings) : strings.engine,
         style: theme.textTheme.titleMedium?.copyWith(
           color: colorScheme.onSurface,
           fontWeight: FontWeight.w600,
