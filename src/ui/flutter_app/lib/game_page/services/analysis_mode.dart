@@ -209,6 +209,7 @@ class AnalysisMode {
     AnalysisOverlayMode mode = AnalysisOverlayMode.analysis,
     AnalysisSource source = AnalysisSource.perfectDatabase,
     bool isThreatMode = false,
+    bool isAnalyzing = false,
   }) {
     _analysisResults = results;
     _analysisLineResults = lineResults ?? results;
@@ -224,7 +225,7 @@ class AnalysisMode {
     _source = source;
     _isThreatMode = isThreatMode;
     _isEnabled = true;
-    _isAnalyzing = false;
+    _isAnalyzing = isAnalyzing;
     _publishState();
   }
 

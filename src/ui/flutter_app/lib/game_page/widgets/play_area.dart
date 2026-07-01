@@ -4431,11 +4431,12 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final S strings = S.of(context);
-    final String? subtitle = isAnalyzing
-        ? strings.thinking
-        : depth == null
-        ? null
-        : 'd$depth';
+    final String? subtitle = switch ((isAnalyzing, depth)) {
+      (true, final int value) => '${strings.thinking} · d$value',
+      (true, null) => strings.thinking,
+      (false, final int value) => 'd$value',
+      (false, null) => null,
+    };
 
     return ListTile(
       key: const Key('play_area_analysis_engine_status'),

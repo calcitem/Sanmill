@@ -253,7 +253,11 @@ class AnalysisService {
                 return;
               }
               published = true;
-              _publishEngineVariations(current, isThreatMode: isThreatMode);
+              _publishEngineVariations(
+                current,
+                isThreatMode: isThreatMode,
+                isAnalyzing: true,
+              );
             },
           );
       if (searchGeneration != _analysisSearchGeneration) {
@@ -281,6 +285,7 @@ class AnalysisService {
   static void _publishEngineVariations(
     List<NativeMillPrincipalVariation> variations, {
     required bool isThreatMode,
+    bool isAnalyzing = false,
   }) {
     AnalysisMode.enable(
       variations
@@ -297,6 +302,7 @@ class AnalysisService {
           .toList(growable: false),
       source: AnalysisSource.engine,
       isThreatMode: isThreatMode,
+      isAnalyzing: isAnalyzing,
     );
   }
 

@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/analysis/analysis_service.dart';
@@ -114,6 +116,29 @@ void main() {
     expect(session.requestedDepthValues, <int>[64]);
     expect(session.requestedMoveLimitValues, <int>[60 * 60 * 1000]);
   });
+
+  testWidgets('progressive engine updates keep analysis running', (
+    WidgetTester tester,
+  ) async {
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession(
+      completeSearchManually: true,
+    );
+    addTearDown(session.dispose);
+
+    await _pumpAnalysisButton(tester, session);
+    await tester.tap(find.byKey(const Key('analysis_service_toggle')));
+    await tester.pump();
+
+    expect(AnalysisMode.isFullAnalysis, isTrue);
+    expect(AnalysisMode.isAnalyzing, isTrue);
+    expect(AnalysisMode.analysisLineResults.single.depth, 1);
+
+    session.completePendingSearch();
+    await tester.pumpAndSettle();
+
+    expect(AnalysisMode.isFullAnalysis, isTrue);
+    expect(AnalysisMode.isAnalyzing, isFalse);
+  });
 }
 
 Future<void> _pumpAnalysisButton(
@@ -144,11 +169,33 @@ Future<void> _pumpAnalysisButton(
 }
 
 class _RecordingAnalysisSession extends NativeMillGameSession {
-  _RecordingAnalysisSession() : super.fromPort(NativeMillRulesPort());
+  _RecordingAnalysisSession({this.completeSearchManually = false})
+    : super.fromPort(NativeMillRulesPort());
 
+  static const List<NativeMillPrincipalVariation> _variations =
+      <NativeMillPrincipalVariation>[
+        NativeMillPrincipalVariation(
+          rank: 1,
+          move: 'a7',
+          score: 0,
+          nodes: 1,
+          depth: 1,
+          line: <String>['a7'],
+        ),
+      ];
+
+  final bool completeSearchManually;
   final List<int> requestedMultiPvValues = <int>[];
   final List<int> requestedDepthValues = <int>[];
   final List<int> requestedMoveLimitValues = <int>[];
+  late final Completer<List<NativeMillPrincipalVariation>> _pendingSearch;
+
+  void completePendingSearch() {
+    final Completer<List<NativeMillPrincipalVariation>> pending =
+        _pendingSearch;
+    assert(!pending.isCompleted, 'Pending analysis search already completed.');
+    pending.complete(_variations);
+  }
 
   @override
   Future<List<NativeMillPrincipalVariation>> searchPrincipalVariations({
@@ -161,18 +208,13 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
     requestedMultiPvValues.add(multiPv);
     requestedDepthValues.add(depth);
     requestedMoveLimitValues.add(moveLimitMs);
-    const List<NativeMillPrincipalVariation> variations =
-        <NativeMillPrincipalVariation>[
-          NativeMillPrincipalVariation(
-            rank: 1,
-            move: 'a7',
-            score: 0,
-            nodes: 1,
-            depth: 1,
-            line: <String>['a7'],
-          ),
-        ];
-    onUpdate?.call(variations);
-    return variations;
+    onUpdate?.call(_variations);
+    if (completeSearchManually) {
+      final Completer<List<NativeMillPrincipalVariation>> completer =
+          Completer<List<NativeMillPrincipalVariation>>();
+      _pendingSearch = completer;
+      return completer.future;
+    }
+    return _variations;
   }
 }
