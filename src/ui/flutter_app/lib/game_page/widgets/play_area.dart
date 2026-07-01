@@ -5313,6 +5313,16 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                 _resultCandidates();
             final List<_AnalysisKeyMoment> keyMoments = _keyMoments(recorder);
             final String? trapSummary = _trapSummary();
+            final String moveLineSummary = _moveLineSummary(
+              strings,
+              moveLineNodes,
+              moveCount,
+            );
+            final String variationSummary = _variationSummary(
+              strings,
+              recorder,
+              variationCount,
+            );
             final bool canRequestAnalysis =
                 !AnalysisMode.isFullAnalysis && !AnalysisMode.isAnalyzing;
             final bool canApplyBestMove =
@@ -5399,38 +5409,24 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                         title: Text(strings.trapAwareness),
                         subtitle: Text(trapSummary),
                       ),
-                    ListTile(
+                    _summaryNavigationTile(
                       key: const Key('play_area_analysis_summary_moves'),
                       leading: const Icon(Icons.account_tree_outlined),
-                      title: Text(strings.moveList),
-                      subtitle: _AnalysisSummaryTileSubtitle(
-                        key: const Key(
-                          'play_area_analysis_summary_moves_preview',
-                        ),
-                        text: _moveLineSummary(
-                          strings,
-                          moveLineNodes,
-                          moveCount,
-                        ),
+                      title: strings.moveList,
+                      subtitleKey: const Key(
+                        'play_area_analysis_summary_moves_preview',
                       ),
-                      trailing: const Icon(Icons.chevron_right),
+                      subtitle: moveLineSummary,
                       onTap: onOpenFullMoveList,
                     ),
-                    ListTile(
+                    _summaryNavigationTile(
                       key: const Key('play_area_analysis_summary_variations'),
                       leading: const Icon(Icons.fork_right_outlined),
-                      title: Text(strings.variations),
-                      subtitle: _AnalysisSummaryTileSubtitle(
-                        key: const Key(
-                          'play_area_analysis_summary_variations_preview',
-                        ),
-                        text: _variationSummary(
-                          strings,
-                          recorder,
-                          variationCount,
-                        ),
+                      title: strings.variations,
+                      subtitleKey: const Key(
+                        'play_area_analysis_summary_variations_preview',
                       ),
-                      trailing: const Icon(Icons.chevron_right),
+                      subtitle: variationSummary,
                       onTap: onOpenFullMoveList,
                     ),
                   ],
@@ -5547,6 +5543,44 @@ class _AnalysisSummaryPanel extends StatelessWidget {
         child: tile,
       ),
     );
+  }
+
+  Widget _summaryNavigationTile({
+    required Key key,
+    required Widget leading,
+    required String title,
+    required Key subtitleKey,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    final String actionLabel = _summaryNavigationLabel(title, subtitle);
+
+    return Tooltip(
+      message: actionLabel,
+      child: Semantics(
+        button: true,
+        label: actionLabel,
+        excludeSemantics: true,
+        child: ListTile(
+          key: key,
+          leading: leading,
+          title: Text(title),
+          subtitle: _AnalysisSummaryTileSubtitle(
+            key: subtitleKey,
+            text: subtitle,
+          ),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: onTap,
+        ),
+      ),
+    );
+  }
+
+  String _summaryNavigationLabel(String title, String subtitle) {
+    if (subtitle.isEmpty) {
+      return title;
+    }
+    return '$title · $subtitle';
   }
 
   Widget? _engineTrailing(BuildContext context, bool canRequestAnalysis) {

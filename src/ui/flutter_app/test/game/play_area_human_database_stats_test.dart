@@ -3231,10 +3231,31 @@ void main() {
       ),
       findsOneWidget,
     );
+    expect(find.byTooltip('Move list · 3 · d6 a1 g7'), findsOneWidget);
+    expect(
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Semantics &&
+            widget.properties.label == 'Move list · 3 · d6 a1 g7',
+      ),
+      findsOneWidget,
+    );
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_summary_variations')),
         matching: find.textContaining('2 · Branch moves: f4, g7'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.byTooltip('Variations · 2 · Branch moves: f4, g7'),
+      findsOneWidget,
+    );
+    expect(
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Semantics &&
+            widget.properties.label == 'Variations · 2 · Branch moves: f4, g7',
       ),
       findsOneWidget,
     );
