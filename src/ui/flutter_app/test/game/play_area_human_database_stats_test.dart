@@ -25,6 +25,7 @@ import 'package:sanmill/game_shell/game_session_scope.dart';
 import 'package:sanmill/games/mill/mill_session_recorder_bridge.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
+import 'package:sanmill/games/mill/opening_book/opening_book_repository.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/shared/config/constants.dart';
@@ -34,6 +35,7 @@ import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 import 'package:sanmill/shared/widgets/lichess_bottom_bar.dart';
 import 'package:sanmill/shared/widgets/snackbars/scaffold_messenger.dart';
 
+import '../games/mill/opening_book/opening_book_test_assets.dart';
 import '../helpers/mocks/mock_animation_manager.dart';
 import '../helpers/mocks/mock_audios.dart';
 import '../helpers/mocks/mock_database.dart';
@@ -42,8 +44,17 @@ import '../helpers/test_native_library.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  setUpAll(initRustLibForTests);
-  tearDownAll(disposeRustLibForTests);
+  setUpAll(() async {
+    await initRustLibForTests();
+    OpeningBookRepository.instance.resetForTest();
+    OpeningBookRepository.instance.assetLoader = loadOpeningBookAssetFromDisk;
+    await OpeningBookRepository.instance.ensureLoaded();
+  });
+
+  tearDownAll(() {
+    OpeningBookRepository.instance.resetForTest();
+    disposeRustLibForTests();
+  });
 
   late MockDB db;
 
@@ -1885,9 +1896,11 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(
-      find.byKey(const Key('play_area_regular_game_menu_share_export')),
+    final Finder shareExportTile = find.byKey(
+      const Key('play_area_regular_game_menu_share_export'),
     );
+    await tester.ensureVisible(shareExportTile);
+    await tester.tap(shareExportTile);
     await tester.pumpAndSettle();
 
     expect(
@@ -2277,6 +2290,24 @@ void main() {
       const Key('play_area_analysis_summary_results'),
     );
     expect(results, findsOneWidget);
+    expect(
+      find.descendant(
+        of: results,
+        matching: find.byKey(
+          const Key('play_area_analysis_summary_outcome_distribution'),
+        ),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: results,
+        matching: find.byKey(
+          const Key('play_area_analysis_summary_outcome_meter'),
+        ),
+      ),
+      findsOneWidget,
+    );
     for (final String label in <String>[
       'Wins 1',
       'Draws 1',
@@ -2287,6 +2318,33 @@ void main() {
     ]) {
       expect(
         find.descendant(of: results, matching: find.textContaining(label)),
+        findsOneWidget,
+      );
+    }
+    for (final String outcome in <String>[
+      'win',
+      'draw',
+      'loss',
+      'advantage',
+      'disadvantage',
+      'unknown',
+    ]) {
+      expect(
+        find.descendant(
+          of: results,
+          matching: find.byKey(
+            Key('play_area_analysis_summary_outcome_segment_$outcome'),
+          ),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: results,
+          matching: find.byKey(
+            Key('play_area_analysis_summary_outcome_legend_$outcome'),
+          ),
+        ),
         findsOneWidget,
       );
     }
@@ -3539,9 +3597,11 @@ void main() {
       findsNothing,
     );
 
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_settings_evaluation_gauge')),
+    final Finder evaluationGaugeTile = find.byKey(
+      const Key('play_area_analysis_settings_evaluation_gauge'),
     );
+    await tester.ensureVisible(evaluationGaugeTile);
+    await tester.tap(evaluationGaugeTile);
     await tester.pumpAndSettle();
 
     expect(db.displaySettings.analysisShowEvaluationGauge, isTrue);
@@ -3555,9 +3615,11 @@ void main() {
       findsNothing,
     );
 
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_settings_advantage_graph')),
+    final Finder advantageGraphTile = find.byKey(
+      const Key('play_area_analysis_settings_advantage_graph'),
     );
+    await tester.ensureVisible(advantageGraphTile);
+    await tester.tap(advantageGraphTile);
     await tester.pumpAndSettle();
 
     expect(db.displaySettings.isAdvantageGraphShown, isTrue);

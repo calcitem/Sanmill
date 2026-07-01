@@ -5151,6 +5151,9 @@ class _AnalysisSummaryPanel extends StatelessWidget {
             ).length;
             final int variationCount = _recorderVariationBranchCount(recorder);
             final String? resultSummary = _resultSummary(strings);
+            final List<_AnalysisOutcomeBucket> resultBuckets = _resultBuckets(
+              strings,
+            );
             final String? trapSummary = _trapSummary();
             final bool canRequestAnalysis =
                 !AnalysisMode.isFullAnalysis && !AnalysisMode.isAnalyzing;
@@ -5200,7 +5203,10 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                         key: const Key('play_area_analysis_summary_results'),
                         leading: const Icon(Icons.fact_check_outlined),
                         title: Text(strings.results),
-                        subtitle: Text(resultSummary),
+                        subtitle: _AnalysisSummaryResultsSubtitle(
+                          summary: resultSummary,
+                          buckets: resultBuckets,
+                        ),
                       ),
                     if (trapSummary != null)
                       ListTile(
@@ -5339,11 +5345,177 @@ class _AnalysisSummaryPanel extends StatelessWidget {
     return parts.isEmpty ? null : parts.join(' · ');
   }
 
+  List<_AnalysisOutcomeBucket> _resultBuckets(S strings) {
+    if (!AnalysisMode.isFullAnalysis || AnalysisMode.analysisResults.isEmpty) {
+      return const <_AnalysisOutcomeBucket>[];
+    }
+
+    final Map<String, int> counts = <String, int>{};
+    for (final MoveAnalysisResult result in AnalysisMode.analysisResults) {
+      counts[result.outcome.name] = (counts[result.outcome.name] ?? 0) + 1;
+    }
+
+    final List<_AnalysisOutcomeBucket> buckets = <_AnalysisOutcomeBucket>[];
+    void addBucket({required AnalysisOutcome outcome, required String label}) {
+      final int count = counts[outcome.name] ?? 0;
+      if (count == 0) {
+        return;
+      }
+      buckets.add(
+        _AnalysisOutcomeBucket(
+          outcomeName: outcome.name,
+          label: label,
+          count: count,
+          color: AnalysisMode.getColorForOutcome(outcome),
+        ),
+      );
+    }
+
+    addBucket(outcome: AnalysisOutcome.win, label: strings.wins);
+    addBucket(outcome: AnalysisOutcome.draw, label: strings.draws);
+    addBucket(outcome: AnalysisOutcome.loss, label: strings.losses);
+    addBucket(
+      outcome: AnalysisOutcome.advantage,
+      label: _analysisEvalLabel(AnalysisOutcome.advantage),
+    );
+    addBucket(
+      outcome: AnalysisOutcome.disadvantage,
+      label: _analysisEvalLabel(AnalysisOutcome.disadvantage),
+    );
+    addBucket(outcome: AnalysisOutcome.unknown, label: strings.unknown);
+
+    return buckets;
+  }
+
   String? _trapSummary() {
     if (!AnalysisMode.isFullAnalysis || AnalysisMode.trapMoves.isEmpty) {
       return null;
     }
     return AnalysisMode.trapMoves.join(' ');
+  }
+}
+
+@immutable
+class _AnalysisOutcomeBucket {
+  const _AnalysisOutcomeBucket({
+    required this.outcomeName,
+    required this.label,
+    required this.count,
+    required this.color,
+  });
+
+  final String outcomeName;
+  final String label;
+  final int count;
+  final Color color;
+}
+
+class _AnalysisSummaryResultsSubtitle extends StatelessWidget {
+  const _AnalysisSummaryResultsSubtitle({
+    required this.summary,
+    required this.buckets,
+  });
+
+  final String summary;
+  final List<_AnalysisOutcomeBucket> buckets;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(summary),
+        if (buckets.isNotEmpty) ...<Widget>[
+          const SizedBox(height: 8),
+          _AnalysisOutcomeDistribution(buckets: buckets),
+        ],
+      ],
+    );
+  }
+}
+
+class _AnalysisOutcomeDistribution extends StatelessWidget {
+  const _AnalysisOutcomeDistribution({required this.buckets});
+
+  final List<_AnalysisOutcomeBucket> buckets;
+
+  @override
+  Widget build(BuildContext context) {
+    assert(buckets.isNotEmpty, 'Outcome distribution requires data.');
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+
+    return Column(
+      key: const Key('play_area_analysis_summary_outcome_distribution'),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        ClipRRect(
+          borderRadius: BorderRadius.circular(4),
+          child: SizedBox(
+            key: const Key('play_area_analysis_summary_outcome_meter'),
+            height: 8,
+            width: double.infinity,
+            child: Row(
+              children: <Widget>[
+                for (final _AnalysisOutcomeBucket bucket in buckets)
+                  Expanded(
+                    key: Key(
+                      'play_area_analysis_summary_outcome_segment_'
+                      '${bucket.outcomeName}',
+                    ),
+                    flex: bucket.count,
+                    child: ColoredBox(color: bucket.color),
+                  ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 6),
+        Wrap(
+          spacing: 10,
+          runSpacing: 4,
+          children: <Widget>[
+            for (final _AnalysisOutcomeBucket bucket in buckets)
+              Semantics(
+                key: Key(
+                  'play_area_analysis_summary_outcome_legend_'
+                  '${bucket.outcomeName}',
+                ),
+                label: '${bucket.label} ${bucket.count}',
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: bucket.color,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const SizedBox.square(dimension: 8),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      bucket.label,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                        letterSpacing: 0,
+                      ),
+                    ),
+                    const SizedBox(width: 3),
+                    Text(
+                      '${bucket.count}',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ],
+    );
   }
 }
 
