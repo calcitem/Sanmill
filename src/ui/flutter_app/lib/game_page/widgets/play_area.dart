@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:native_screenshot_widget/native_screenshot_widget.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../appearance_settings/models/display_settings.dart';
 import '../../experience_recording/models/recording_models.dart';
@@ -1155,11 +1156,40 @@ class PlayAreaState extends State<PlayArea> {
     final String pgn = recorder.moveHistoryText.trim();
     final String mainlinePgn = recorder.moveHistoryTextWithoutVariations.trim();
     final String currentLinePgn = recorder.moveHistoryTextCurrentLine.trim();
+    final String sharePgn = hasVariations ? pgn : mainlinePgn;
     final String? fen =
         GameController().activeFen ??
         GameController().activeNativeMillSession?.getFen();
 
     final List<LichessActionSheetAction> actions = <LichessActionSheetAction>[
+      if (sharePgn.isNotEmpty)
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_share_export_share_pgn'),
+          leading: const Icon(Icons.ios_share_outlined),
+          makeLabel: (BuildContext context) =>
+              Text('${effectiveStrings.shareQrCode} PGN'),
+          onPressed: () => unawaited(
+            _shareAnalysisText(
+              text: sharePgn,
+              subject: 'Sanmill PGN',
+              eventAction: 'sharePgn',
+            ),
+          ),
+        ),
+      if (fen != null && fen.trim().isNotEmpty)
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_share_export_share_fen'),
+          leading: const Icon(Icons.ios_share_outlined),
+          makeLabel: (BuildContext context) =>
+              Text('${effectiveStrings.shareQrCode} FEN'),
+          onPressed: () => unawaited(
+            _shareAnalysisText(
+              text: fen,
+              subject: 'Sanmill FEN',
+              eventAction: 'shareFen',
+            ),
+          ),
+        ),
       if (!hasVariations && mainlinePgn.isNotEmpty)
         LichessActionSheetAction(
           key: const Key('play_area_analysis_share_export_copy_pgn'),
@@ -1266,6 +1296,21 @@ class PlayAreaState extends State<PlayArea> {
       'Analysis export feedback requires the root scaffold messenger.',
     );
     rootScaffoldMessengerKey.currentState!.showSnackBarClear(message);
+  }
+
+  Future<void> _shareAnalysisText({
+    required String text,
+    required String subject,
+    required String eventAction,
+  }) async {
+    assert(_isAnalysisMode, 'Analysis sharing is analysis-mode only.');
+    assert(text.trim().isNotEmpty, 'Analysis sharing text must not be empty.');
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'analysisMenu', 'action': eventAction},
+    );
+
+    await SharePlus.instance.share(ShareParams(text: text, subject: subject));
   }
 
   bool get _shouldShowAiChatMenuAction {

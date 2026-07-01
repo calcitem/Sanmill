@@ -1843,6 +1843,10 @@ void main() {
       find.byKey(const Key('play_area_analysis_share_export_copy_fen')),
       findsOne,
     );
+    expect(
+      find.byKey(const Key('play_area_analysis_share_export_share_fen')),
+      findsOne,
+    );
 
     Navigator.of(
       tester.element(
@@ -1874,6 +1878,55 @@ void main() {
     expect(
       find.byKey(const Key('play_area_analysis_continue_over_the_board')),
       findsOne,
+    );
+  });
+
+  testWidgets('analysis share export offers system PGN and FEN sharing', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    GameController().gameRecorder.reset();
+    GameController().gameRecorder.appendMove(
+      ExtMove('d6', side: PieceColor.white, roundIndex: 1),
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_game_menu_share_export')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_share_export_sheet')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_share_export_share_pgn')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_share_export_share_fen')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_share_export_copy_pgn')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_share_export_copy_fen')),
+      findsOneWidget,
     );
   });
 
