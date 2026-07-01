@@ -5060,6 +5060,8 @@ class _AnalysisSummaryPanel extends StatelessWidget {
             final PgnNode<ExtMove> currentNode =
                 recorder.activeNode ?? recorder.pgnRoot;
             final int variationCount = currentNode.children.length;
+            final String? resultSummary = _resultSummary(strings);
+            final String? trapSummary = _trapSummary();
 
             return ListView(
               key: const Key('play_area_analysis_summary'),
@@ -5082,6 +5084,20 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                       title: Text(_analysisDetailsTitle(strings)),
                       subtitle: Text(_engineSummary(context, bestResult)),
                     ),
+                    if (resultSummary != null)
+                      ListTile(
+                        key: const Key('play_area_analysis_summary_results'),
+                        leading: const Icon(Icons.fact_check_outlined),
+                        title: Text(strings.results),
+                        subtitle: Text(resultSummary),
+                      ),
+                    if (trapSummary != null)
+                      ListTile(
+                        key: const Key('play_area_analysis_summary_traps'),
+                        leading: const Icon(Icons.warning_amber_outlined),
+                        title: Text(strings.trapAwareness),
+                        subtitle: Text(trapSummary),
+                      ),
                     ListTile(
                       key: const Key('play_area_analysis_summary_moves'),
                       leading: const Icon(Icons.account_tree_outlined),
@@ -5149,6 +5165,47 @@ class _AnalysisSummaryPanel extends StatelessWidget {
       AnalysisSource.perfectDatabase => strings.perfectDatabaseSettings,
       _ => strings.engine,
     };
+  }
+
+  String? _resultSummary(S strings) {
+    if (!AnalysisMode.isFullAnalysis || AnalysisMode.analysisResults.isEmpty) {
+      return null;
+    }
+
+    final Map<String, int> counts = <String, int>{};
+    for (final MoveAnalysisResult result in AnalysisMode.analysisResults) {
+      counts[result.outcome.name] = (counts[result.outcome.name] ?? 0) + 1;
+    }
+
+    final List<String> parts = <String>[];
+    void addPart(String label, String outcomeName) {
+      final int count = counts[outcomeName] ?? 0;
+      if (count > 0) {
+        parts.add('$label $count');
+      }
+    }
+
+    addPart(strings.wins, AnalysisOutcome.win.name);
+    addPart(strings.draws, AnalysisOutcome.draw.name);
+    addPart(strings.losses, AnalysisOutcome.loss.name);
+    addPart(
+      _analysisEvalLabel(AnalysisOutcome.advantage),
+      AnalysisOutcome.advantage.name,
+    );
+    addPart(
+      _analysisEvalLabel(AnalysisOutcome.disadvantage),
+      AnalysisOutcome.disadvantage.name,
+    );
+    addPart(strings.unknown, AnalysisOutcome.unknown.name);
+
+    return parts.isEmpty ? null : parts.join(' · ');
+  }
+
+  String? _trapSummary() {
+    if (!AnalysisMode.isFullAnalysis || AnalysisMode.trapMoves.isEmpty) {
+      return null;
+    }
+    return AnalysisMode.trapMoves.join(' ');
   }
 }
 

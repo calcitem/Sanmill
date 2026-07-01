@@ -2120,6 +2120,100 @@ void main() {
     expect(_currentPathMoves(), <String>['d6', 'f4']);
   });
 
+  testWidgets('analysis summary shows combined source details', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    AnalysisMode.enable(
+      <MoveAnalysisResult>[
+        const MoveAnalysisResult(move: 'a1', outcome: AnalysisOutcome.win),
+        const MoveAnalysisResult(move: 'd1', outcome: AnalysisOutcome.draw),
+        const MoveAnalysisResult(move: 'a4', outcome: AnalysisOutcome.loss),
+        const MoveAnalysisResult(
+          move: 'd2',
+          outcome: AnalysisOutcome.advantage,
+        ),
+        const MoveAnalysisResult(
+          move: 'a7',
+          outcome: AnalysisOutcome.disadvantage,
+        ),
+        const MoveAnalysisResult(move: 'd3', outcome: AnalysisOutcome.unknown),
+      ],
+      lineResults: <MoveAnalysisResult>[
+        MoveAnalysisResult(
+          move: 'g7',
+          outcome: AnalysisOutcome.withValue(AnalysisOutcome.advantage, '+32'),
+          depth: 12,
+          nodes: 45678,
+          nodesPerSecond: 91000,
+          line: const <String>['g7', 'b2'],
+        ),
+      ],
+      trapMoves: const <String>['a1', 'd6'],
+      source: AnalysisSource.perfectDatabaseAndEngine,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_source')),
+        matching: find.text('Perfect database · Engine'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_engine')),
+        matching: find.textContaining('d12'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_engine')),
+        matching: find.textContaining('g7 b2'),
+      ),
+      findsOneWidget,
+    );
+
+    final Finder results = find.byKey(
+      const Key('play_area_analysis_summary_results'),
+    );
+    expect(results, findsOneWidget);
+    for (final String label in <String>[
+      'Wins 1',
+      'Draws 1',
+      'Losses 1',
+      '+ 1',
+      '- 1',
+      'Unknown 1',
+    ]) {
+      expect(
+        find.descendant(of: results, matching: find.textContaining(label)),
+        findsOneWidget,
+      );
+    }
+
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_traps')),
+        matching: find.text('a1 d6'),
+      ),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('analysis menu clears saved moves back to the start position', (
     WidgetTester tester,
   ) async {
