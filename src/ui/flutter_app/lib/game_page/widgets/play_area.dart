@@ -1103,11 +1103,14 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
-  Future<void> _toggleAnalysisThreatFromMenu(BuildContext context) async {
+  Future<void> _toggleAnalysisThreatFromAnalysis(
+    BuildContext context, {
+    required String toolbar,
+  }) async {
     assert(_isAnalysisMode, 'Threat mode is analysis-mode only.');
     RecordingService()
         .recordEvent(RecordingEventType.toolbarAction, <String, dynamic>{
-          'toolbar': 'analysisMenu',
+          'toolbar': toolbar,
           'action': AnalysisMode.isThreatMode ? 'stopThreat' : 'showThreat',
         });
 
@@ -1934,6 +1937,16 @@ class PlayAreaState extends State<PlayArea> {
     final int? depth = _currentAnalysisEngineDepth();
     final int? nodes = _analysisEngineNodes();
     final int? nodesPerSecond = _analysisEngineNodesPerSecond();
+    final GameSession? sheetSession =
+        GameSessionScope.sessionOf(sheetContext) ??
+        GameController().activeNativeMillSession;
+    final NativeMillGameSession? nativeSheetSession =
+        sheetSession is NativeMillGameSession
+        ? sheetSession
+        : GameController().activeNativeMillSession;
+    final bool canShowThreat =
+        nativeSheetSession != null &&
+        AnalysisService.canShowThreat(nativeSheetSession);
     showLichessActionSheet<void>(
       context: sheetContext,
       sheetKey: const Key('play_area_analysis_engine_sheet'),
@@ -1966,6 +1979,23 @@ class PlayAreaState extends State<PlayArea> {
           onPressed: () =>
               _toggleEngineLinesFromAnalysis(toolbar: 'analysisEngine'),
         ),
+        if (canShowThreat)
+          LichessActionSheetAction(
+            key: const Key('play_area_analysis_engine_show_threat'),
+            leading: Icon(
+              AnalysisMode.isThreatMode
+                  ? Icons.visibility_off_outlined
+                  : Icons.online_prediction_outlined,
+            ),
+            makeLabel: (BuildContext context) =>
+                Text(_analysisThreatActionLabel(strings)),
+            onPressed: () => unawaited(
+              _toggleAnalysisThreatFromAnalysis(
+                sheetContext,
+                toolbar: 'analysisEngine',
+              ),
+            ),
+          ),
         LichessActionSheetAction(
           key: const Key('play_area_analysis_engine_settings'),
           leading: const Icon(Icons.tune_outlined),
@@ -2106,8 +2136,12 @@ class PlayAreaState extends State<PlayArea> {
             ),
             makeLabel: (BuildContext context) =>
                 Text(_analysisThreatActionLabel(strings)),
-            onPressed: () =>
-                unawaited(_toggleAnalysisThreatFromMenu(actionContext)),
+            onPressed: () => unawaited(
+              _toggleAnalysisThreatFromAnalysis(
+                actionContext,
+                toolbar: 'analysisMenu',
+              ),
+            ),
           ),
         LichessActionSheetAction(
           key: const Key('play_area_regular_game_menu_flip_board'),

@@ -3215,7 +3215,7 @@ void main() {
     Text sourceLabel = tester.widget<Text>(
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_label')),
     );
-    expect(sourceLabel.data, 'Perfect database');
+    expect(sourceLabel.data, 'DB');
 
     AnalysisMode.enable(<MoveAnalysisResult>[
       const MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.advantage),
@@ -3308,7 +3308,7 @@ void main() {
     sourceLabel = tester.widget<Text>(
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_label')),
     );
-    expect(sourceLabel.data, 'Perfect database · Engine');
+    expect(sourceLabel.data, 'DB · Engine');
     engineValue = tester.widget<Text>(
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
     );
@@ -3372,6 +3372,11 @@ void main() {
       find.byKey(const Key('play_area_analysis_engine_toggle_engine_lines')),
       findsOneWidget,
     );
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_show_threat')),
+      findsOneWidget,
+    );
+    expect(find.text('Show threat'), findsOneWidget);
     expect(
       find.byKey(const Key('play_area_analysis_engine_settings')),
       findsOneWidget,
