@@ -397,6 +397,51 @@ void main() {
     ]);
   });
 
+  testWidgets('position refresh clears threat mode before new engine result', (
+    WidgetTester tester,
+  ) async {
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession(
+      completeSearchManually: true,
+      emitProgressUpdate: false,
+    );
+    addTearDown(session.dispose);
+
+    AnalysisMode.enable(
+      const <MoveAnalysisResult>[
+        MoveAnalysisResult(
+          move: 'f4',
+          outcome: AnalysisOutcome.advantage,
+          depth: 6,
+          line: <String>['f4', 'a1'],
+        ),
+      ],
+      source: AnalysisSource.engine,
+      isThreatMode: true,
+    );
+
+    await _pumpAnalysisButton(tester, session);
+
+    final Future<void> refresh = AnalysisService.refreshForCurrentPosition(
+      tester.element(find.byKey(const Key('analysis_service_toggle'))),
+    );
+    await tester.pump();
+
+    expect(AnalysisMode.isThreatMode, isFalse);
+    expect(AnalysisMode.isAnalyzing, isTrue);
+    expect(AnalysisMode.isFullAnalysis, isFalse);
+    expect(session.requestedMoveLimitValues, <int>[
+      AnalysisMode.engineSearchTimeMs,
+    ]);
+
+    session.completePendingSearch();
+    await refresh;
+    await tester.pump();
+
+    expect(AnalysisMode.isThreatMode, isFalse);
+    expect(AnalysisMode.source, AnalysisSource.engine);
+    expect(AnalysisMode.analysisLineResults.single.move, 'a7');
+  });
+
   testWidgets('progressive engine updates keep analysis running', (
     WidgetTester tester,
   ) async {
@@ -452,6 +497,7 @@ Future<void> _pumpAnalysisButton(
 class _RecordingAnalysisSession extends NativeMillGameSession {
   _RecordingAnalysisSession({
     this.completeSearchManually = false,
+    this.emitProgressUpdate = true,
     this.variations = _defaultVariations,
   }) : super.fromPort(NativeMillRulesPort());
 
@@ -469,6 +515,7 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
       ];
 
   final bool completeSearchManually;
+  final bool emitProgressUpdate;
   final List<NativeMillPrincipalVariation> variations;
   final List<int> requestedMultiPvValues = <int>[];
   final List<int> requestedDepthValues = <int>[];
@@ -506,7 +553,9 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
     requestedSearchAlgorithmValues.add(engineSettings?.searchAlgorithm);
     requestedAiIsLazyValues.add(engineSettings?.aiIsLazy ?? false);
     requestedSkillLevelValues.add(engineSettings?.skillLevel ?? -1);
-    onUpdate?.call(variations);
+    if (emitProgressUpdate) {
+      onUpdate?.call(variations);
+    }
     if (completeSearchManually) {
       final Completer<List<NativeMillPrincipalVariation>> completer =
           Completer<List<NativeMillPrincipalVariation>>();

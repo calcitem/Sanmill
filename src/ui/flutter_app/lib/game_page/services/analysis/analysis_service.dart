@@ -116,13 +116,17 @@ class AnalysisService {
   /// This mirrors Lichess' path-change evaluation flow: the previous search is
   /// stopped before the new position requests its enabled analysis sources.
   static Future<void> refreshForCurrentPosition(BuildContext context) async {
-    if (AnalysisMode.isAnalyzing) {
-      final Future<void>? activeEngineAnalysis = _activeEngineAnalysis;
+    final bool wasAnalyzing = AnalysisMode.isAnalyzing;
+    final Future<void>? activeEngineAnalysis = _activeEngineAnalysis;
+    if (wasAnalyzing) {
       _stopCurrentEngineAnalysis();
       AnalysisMode.setAnalyzing(false);
-      if (activeEngineAnalysis != null) {
-        await activeEngineAnalysis;
-      }
+    }
+    if (AnalysisMode.isThreatMode) {
+      AnalysisMode.disable();
+    }
+    if (wasAnalyzing && activeEngineAnalysis != null) {
+      await activeEngineAnalysis;
     }
     if (!context.mounted) {
       return;
