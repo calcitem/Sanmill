@@ -6979,6 +6979,7 @@ class _AnalysisEngineLines extends StatelessWidget {
             if (index < visibleResults.length)
               _AnalysisEngineLine(
                 key: Key('play_area_analysis_engine_line_$index'),
+                lineRank: visibleResults[index].rank ?? index + 1,
                 result: visibleResults[index],
                 onTap: canApplyEngineLine
                     ? () => unawaited(onMoveTap(visibleResults[index].move))
@@ -7091,6 +7092,7 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
 class _AnalysisEngineLine extends StatelessWidget {
   const _AnalysisEngineLine({
     super.key,
+    required this.lineRank,
     required this.result,
     required this.onTap,
   });
@@ -7098,11 +7100,13 @@ class _AnalysisEngineLine extends StatelessWidget {
   static const double height = 24;
   static const double fontSize = 11;
 
+  final int lineRank;
   final MoveAnalysisResult result;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
+    assert(lineRank > 0, 'Engine line rank must be one-based.');
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final S strings = S.of(context);
@@ -7114,8 +7118,15 @@ class _AnalysisEngineLine extends StatelessWidget {
         ? Colors.white
         : Colors.black;
     final String? depthLabel = _depthLabel(result);
+    final String rankLabel = _rankLabel(lineRank);
     final String lineText = _lineText(result);
-    final String lineLabel = _lineLabel(strings, result, depthLabel, lineText);
+    final String lineLabel = _lineLabel(
+      strings,
+      result,
+      rankLabel,
+      depthLabel,
+      lineText,
+    );
 
     return Tooltip(
       message: lineLabel,
@@ -7133,6 +7144,25 @@ class _AnalysisEngineLine extends StatelessWidget {
               padding: const EdgeInsets.all(2),
               child: Row(
                 children: <Widget>[
+                  SizedBox(
+                    width: 30,
+                    child: Text(
+                      rankLabel,
+                      key: Key('play_area_analysis_engine_line_rank_$lineRank'),
+                      maxLines: 1,
+                      softWrap: false,
+                      overflow: TextOverflow.fade,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant.withValues(
+                          alpha: onTap == null ? 0.72 : 0.9,
+                        ),
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
                   Container(
                     constraints: const BoxConstraints(minWidth: 34),
                     padding: const EdgeInsets.symmetric(
@@ -7205,9 +7235,14 @@ class _AnalysisEngineLine extends StatelessWidget {
     return _analysisEvalLabel(outcome);
   }
 
+  String _rankLabel(int rank) {
+    return 'PV $rank';
+  }
+
   String _lineLabel(
     S strings,
     MoveAnalysisResult result,
+    String rankLabel,
     String? depthLabel,
     String lineText,
   ) {
@@ -7216,6 +7251,7 @@ class _AnalysisEngineLine extends StatelessWidget {
         _analysisThreatLabel(strings)
       else
         strings.engine,
+      rankLabel,
       _evalLabel(result.outcome),
       ?depthLabel,
       lineText,

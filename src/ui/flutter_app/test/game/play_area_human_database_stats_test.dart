@@ -3407,6 +3407,20 @@ void main() {
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_engine_line_0')),
+        matching: find.text('PV 1'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_engine_line_1')),
+        matching: find.text('PV 2'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_engine_line_0')),
         matching: find.text('d1'),
       ),
       findsOneWidget,
