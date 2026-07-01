@@ -2900,6 +2900,7 @@ class PlayAreaState extends State<PlayArea> {
                   },
                   showMainlineContinuation: true,
                   showMovePreview: true,
+                  showMoveActions: true,
                   showMoveAnnotations: AnalysisMode.showMoveAnnotations,
                   showMoveComments: AnalysisMode.showMoveComments,
                   layout: AnalysisMode.inlineNotation
@@ -3664,6 +3665,7 @@ class _InlineMoveList extends StatefulWidget {
     this.roundKeyPrefix,
     this.onMoveTap,
     this.showMovePreview = false,
+    this.showMoveActions = false,
     this.showMoveAnnotations = false,
     this.showMoveComments = false,
     this.showMainlineContinuation = false,
@@ -3681,6 +3683,7 @@ class _InlineMoveList extends StatefulWidget {
   final Future<void> Function(BuildContext context, PgnNode<ExtMove> node)?
   onMoveTap;
   final bool showMovePreview;
+  final bool showMoveActions;
   final bool showMoveAnnotations;
   final bool showMoveComments;
   final bool showMainlineContinuation;
@@ -4071,8 +4074,10 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       onTap: widget.onMoveTap == null
           ? null
           : () => unawaited(widget.onMoveTap!(context, targetNode)),
-      onLongPress: widget.showMovePreview && _hasPreviewBoard(targetNode)
-          ? () => _showMovePreview(context, targetNode, lastNode.index + 1)
+      onLongPress:
+          widget.showMoveActions ||
+              (widget.showMovePreview && _hasPreviewBoard(targetNode))
+          ? () => _handleMoveLongPress(context, targetNode, lastNode.index + 1)
           : null,
     );
     final Widget result = maxWidth == null
@@ -4112,8 +4117,10 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       onTap: widget.onMoveTap == null
           ? null
           : () => unawaited(widget.onMoveTap!(context, node)),
-      onLongPress: widget.showMovePreview && _hasPreviewBoard(node)
-          ? () => _showMovePreview(context, node, index + 1)
+      onLongPress:
+          widget.showMoveActions ||
+              (widget.showMovePreview && _hasPreviewBoard(node))
+          ? () => _handleMoveLongPress(context, node, index + 1)
           : null,
     );
 
@@ -4173,6 +4180,217 @@ class _InlineMoveListState extends State<_InlineMoveList> {
   bool _hasPreviewBoard(PgnNode<ExtMove> node) {
     final String? boardLayout = node.data?.boardLayout;
     return boardLayout != null && boardLayout.isNotEmpty;
+  }
+
+  void _handleMoveLongPress(
+    BuildContext context,
+    PgnNode<ExtMove> node,
+    int moveNumber,
+  ) {
+    if (widget.showMoveActions) {
+      _showMoveActions(context, node, moveNumber);
+      return;
+    }
+
+    if (widget.showMovePreview && _hasPreviewBoard(node)) {
+      _showMovePreview(context, node, moveNumber);
+    }
+  }
+
+  void _showMoveActions(
+    BuildContext context,
+    PgnNode<ExtMove> node,
+    int moveNumber,
+  ) {
+    final ExtMove? move = node.data;
+    assert(move != null, 'Move actions require node data.');
+    final bool canPromote = _isNodeOnVariationBranch(node);
+    showLichessActionSheet<void>(
+      context: context,
+      sheetKey: const Key('play_area_analysis_move_actions_sheet'),
+      title: Text(
+        '$moveNumber. ${_moveLabel(move!, includeComments: false)}',
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        textDirection: TextDirection.ltr,
+      ),
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
+      foregroundColor: Theme.of(context).colorScheme.onSurface,
+      actions: <LichessActionSheetAction>[
+        if (canPromote)
+          LichessActionSheetAction(
+            key: const Key(
+              'play_area_analysis_move_action_make_primary_variation',
+            ),
+            leading: const Icon(Icons.vertical_align_top_rounded),
+            makeLabel: (BuildContext context) =>
+                Text(S.of(context).makeThisPrimaryVariation),
+            onPressed: () => unawaited(_promoteNearestVariation(context, node)),
+          ),
+        if (canPromote)
+          LichessActionSheetAction(
+            key: const Key('play_area_analysis_move_action_set_main_line'),
+            leading: const Icon(Icons.check),
+            makeLabel: (BuildContext context) =>
+                Text(S.of(context).setAsMainLine),
+            onPressed: () =>
+                unawaited(_promoteMovePathToMainline(context, node)),
+          ),
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_move_action_delete_from_here'),
+          leading: const Icon(Icons.delete_outline),
+          isDestructiveAction: true,
+          makeLabel: (BuildContext context) =>
+              Text(S.of(context).deleteCurrentBranch),
+          onPressed: () => unawaited(_deleteMoveFromHere(context, node)),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _promoteNearestVariation(
+    BuildContext context,
+    PgnNode<ExtMove> node,
+  ) async {
+    final PgnNode<ExtMove>? variationNode = _nearestVariationNode(node);
+    assert(
+      variationNode != null,
+      'Only variation paths can promote a primary variation.',
+    );
+    if (variationNode == null) {
+      return;
+    }
+
+    final bool promoted = GameController().gameRecorder
+        .promoteVariationToMainline(variationNode);
+    assert(promoted, 'Variation promotion must update the recorder tree.');
+    if (!promoted || !context.mounted) {
+      return;
+    }
+    await HistoryNavigator.gotoNode(context, node, pop: false);
+  }
+
+  Future<void> _promoteMovePathToMainline(
+    BuildContext context,
+    PgnNode<ExtMove> node,
+  ) async {
+    assert(
+      _isNodeOnVariationBranch(node),
+      'Only variation paths can be promoted to mainline.',
+    );
+    final GameRecorder recorder = GameController().gameRecorder;
+    bool changed = false;
+    for (final PgnNode<ExtMove> pathNode in _pathNodesFromRoot(node)) {
+      final PgnNode<ExtMove>? nullableParent = pathNode.parent;
+      assert(nullableParent != null, 'Move path nodes must have a parent.');
+      if (nullableParent == null) {
+        return;
+      }
+      final PgnNode<ExtMove> parent = nullableParent;
+      assert(
+        parent.children.contains(pathNode),
+        'Move path nodes must be attached to their parent.',
+      );
+      if (parent.children.isNotEmpty &&
+          !identical(parent.children.first, pathNode)) {
+        final bool promoted = recorder.promoteVariationToMainline(pathNode);
+        assert(promoted, 'Variation promotion must update the recorder tree.');
+        if (!promoted) {
+          return;
+        }
+        changed = true;
+      }
+    }
+
+    assert(
+      changed,
+      'Promoting a variation path must update at least one node.',
+    );
+    if (!changed || !context.mounted) {
+      return;
+    }
+    await HistoryNavigator.gotoNode(context, node, pop: false);
+  }
+
+  Future<void> _deleteMoveFromHere(
+    BuildContext context,
+    PgnNode<ExtMove> node,
+  ) async {
+    final PgnNode<ExtMove>? parent = node.parent;
+    assert(parent != null, 'Cannot delete from the root move list node.');
+    if (parent == null) {
+      return;
+    }
+
+    final GameRecorder recorder = GameController().gameRecorder;
+    final bool activeWasDeleted = _isNodeOrDescendant(
+      node,
+      recorder.activeNode,
+    );
+    final bool deleted = recorder.deleteBranch(node);
+    assert(deleted, 'Move deletion must update the recorder tree.');
+    if (!deleted || !activeWasDeleted || !context.mounted) {
+      return;
+    }
+    await HistoryNavigator.gotoNode(context, parent, pop: false);
+  }
+
+  List<PgnNode<ExtMove>> _pathNodesFromRoot(PgnNode<ExtMove> node) {
+    final List<PgnNode<ExtMove>> nodes = <PgnNode<ExtMove>>[];
+    PgnNode<ExtMove>? current = node;
+    while (current != null && current.data != null) {
+      nodes.insert(0, current);
+      current = current.parent;
+    }
+    return nodes;
+  }
+
+  bool _isNodeOnVariationBranch(PgnNode<ExtMove> node) {
+    PgnNode<ExtMove>? current = node;
+    while (current != null && current.parent != null) {
+      final PgnNode<ExtMove> parent = current.parent!;
+      assert(
+        parent.children.contains(current),
+        'Move node must be attached to its parent.',
+      );
+      if (parent.children.isNotEmpty &&
+          !identical(parent.children.first, current)) {
+        return true;
+      }
+      current = parent;
+    }
+    return false;
+  }
+
+  PgnNode<ExtMove>? _nearestVariationNode(PgnNode<ExtMove> node) {
+    PgnNode<ExtMove>? current = node;
+    while (current != null && current.parent != null) {
+      final PgnNode<ExtMove> parent = current.parent!;
+      assert(
+        parent.children.contains(current),
+        'Move node must be attached to its parent.',
+      );
+      if (parent.children.isNotEmpty &&
+          !identical(parent.children.first, current)) {
+        return current;
+      }
+      current = parent;
+    }
+    return null;
+  }
+
+  bool _isNodeOrDescendant(
+    PgnNode<ExtMove> node,
+    PgnNode<ExtMove>? targetNode,
+  ) {
+    PgnNode<ExtMove>? current = targetNode;
+    while (current != null) {
+      if (identical(current, node)) {
+        return true;
+      }
+      current = current.parent;
+    }
+    return false;
   }
 
   Future<void> _showMovePreview(

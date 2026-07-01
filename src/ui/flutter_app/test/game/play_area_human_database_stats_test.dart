@@ -3454,6 +3454,142 @@ void main() {
     expect(_currentPathMoves(), <String>['d6']);
   });
 
+  testWidgets('analysis move actions promote a sideline to mainline', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    final GameRecorder recorder = GameController().gameRecorder;
+    recorder.reset();
+    recorder.appendMove(ExtMove('d6', side: PieceColor.white));
+    recorder.activeNode = recorder.pgnRoot;
+    recorder.appendMove(ExtMove('f4', side: PieceColor.white));
+    recorder.activeNode = recorder.pgnRoot;
+    recorder.moveCountNotifier.value = 0;
+
+    await _pumpSessionPlayArea(tester, session);
+
+    await tester.tap(find.byKey(const Key('play_area_analysis_variation_2')));
+    await tester.pumpAndSettle();
+    expect(_currentPathMoves(), <String>['f4']);
+
+    await tester.longPress(find.byKey(const Key('play_area_analysis_move_1')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_move_actions_sheet')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_move_action_set_main_line')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_move_action_set_main_line')),
+    );
+    await tester.pump();
+    await tester.pumpAndSettle();
+
+    expect(recorder.pgnRoot.children.first.data?.move, 'f4');
+    expect(_currentPathMoves(), <String>['f4']);
+  });
+
+  testWidgets('analysis move actions promote the nearest variation only', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    final GameRecorder recorder = GameController().gameRecorder;
+    recorder.reset();
+    recorder.appendMove(ExtMove('d6', side: PieceColor.white));
+    recorder.activeNode = recorder.pgnRoot;
+    recorder.appendMove(ExtMove('f4', side: PieceColor.white));
+    recorder.appendMove(ExtMove('a1', side: PieceColor.black));
+    final a1Node = recorder.activeNode!;
+    recorder.appendMove(ExtMove('d1', side: PieceColor.white));
+    recorder.activeNode = a1Node;
+    recorder.appendMove(ExtMove('g7', side: PieceColor.white));
+
+    await _pumpSessionPlayArea(tester, session);
+    expect(_currentPathMoves(), <String>['f4', 'a1', 'g7']);
+    expect(recorder.pgnRoot.children.first.data?.move, 'd6');
+    expect(a1Node.children.first.data?.move, 'd1');
+
+    await tester.longPress(find.byKey(const Key('play_area_analysis_move_3')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(
+        const Key('play_area_analysis_move_action_make_primary_variation'),
+      ),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(
+        const Key('play_area_analysis_move_action_make_primary_variation'),
+      ),
+    );
+    await tester.pump();
+    await tester.pumpAndSettle();
+
+    expect(recorder.pgnRoot.children.first.data?.move, 'd6');
+    expect(a1Node.children.first.data?.move, 'g7');
+    expect(_currentPathMoves(), <String>['f4', 'a1', 'g7']);
+  });
+
+  testWidgets('analysis move actions delete from the selected move', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    final GameRecorder recorder = GameController().gameRecorder;
+    recorder.reset();
+    recorder.appendMove(ExtMove('d6', side: PieceColor.white));
+    recorder.appendMove(ExtMove('f4', side: PieceColor.black));
+
+    await _pumpSessionPlayArea(tester, session);
+    expect(_currentPathMoves(), <String>['d6', 'f4']);
+
+    await tester.longPress(find.byKey(const Key('play_area_analysis_move_2')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_move_actions_sheet')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_move_action_delete_from_here')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_move_action_delete_from_here')),
+    );
+    await tester.pump();
+    await tester.pumpAndSettle();
+
+    expect(_currentPathMoves(), <String>['d6']);
+    expect(recorder.pgnRoot.children.single.children, isEmpty);
+    expect(find.byKey(const Key('play_area_analysis_move_2')), findsNothing);
+  });
+
   testWidgets('analysis uses a framed side panel in landscape', (
     WidgetTester tester,
   ) async {
