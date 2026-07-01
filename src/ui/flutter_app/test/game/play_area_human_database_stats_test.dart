@@ -2675,6 +2675,14 @@ void main() {
       find.descendant(of: moreCandidates, matching: find.text('+2 More')),
       findsOneWidget,
     );
+    expect(find.byTooltip('+2 More'), findsOneWidget);
+    expect(
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Semantics && widget.properties.label == '+2 More',
+      ),
+      findsOneWidget,
+    );
 
     final Finder summaryScrollable = find.descendant(
       of: find.byKey(const Key('play_area_analysis_summary')),

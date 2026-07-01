@@ -6191,6 +6191,8 @@ class _AnalysisSummaryResultCandidates extends StatelessWidget {
     assert(candidates.isNotEmpty, 'Result candidate chips require data.');
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
+    final String moreCandidatesLabel =
+        '+$remainingCandidateCount ${S.of(context).more}';
 
     return Wrap(
       key: const Key('play_area_analysis_summary_result_candidates'),
@@ -6208,24 +6210,35 @@ class _AnalysisSummaryResultCandidates extends StatelessWidget {
                 : null,
           ),
         if (remainingCandidateCount > 0)
-          ActionChip(
-            key: const Key('play_area_analysis_summary_result_candidates_more'),
-            avatar: const Icon(Icons.more_horiz, size: 16),
-            label: Text('+$remainingCandidateCount ${S.of(context).more}'),
-            labelStyle: theme.textTheme.labelMedium?.copyWith(
-              color: colorScheme.primary,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0,
+          Tooltip(
+            message: moreCandidatesLabel,
+            child: Semantics(
+              button: true,
+              enabled: true,
+              label: moreCandidatesLabel,
+              excludeSemantics: true,
+              child: ActionChip(
+                key: const Key(
+                  'play_area_analysis_summary_result_candidates_more',
+                ),
+                avatar: const Icon(Icons.more_horiz, size: 16),
+                label: Text(moreCandidatesLabel),
+                labelStyle: theme.textTheme.labelMedium?.copyWith(
+                  color: colorScheme.primary,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0,
+                ),
+                backgroundColor: colorScheme.primaryContainer.withValues(
+                  alpha: 0.36,
+                ),
+                side: BorderSide(
+                  color: colorScheme.primary.withValues(alpha: 0.42),
+                ),
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                visualDensity: VisualDensity.compact,
+                onPressed: onShowMore,
+              ),
             ),
-            backgroundColor: colorScheme.primaryContainer.withValues(
-              alpha: 0.36,
-            ),
-            side: BorderSide(
-              color: colorScheme.primary.withValues(alpha: 0.42),
-            ),
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            visualDensity: VisualDensity.compact,
-            onPressed: onShowMore,
           ),
       ],
     );
