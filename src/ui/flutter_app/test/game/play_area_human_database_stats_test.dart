@@ -2930,7 +2930,7 @@ void main() {
     expect(topKeyMoment, findsOneWidget);
     expect(secondKeyMoment, findsOneWidget);
     expect(
-      find.descendant(of: topKeyMoment, matching: find.text('Move 3')),
+      find.descendant(of: topKeyMoment, matching: find.text('Gain · Move 3')),
       findsOneWidget,
     );
     expect(
@@ -2994,7 +2994,7 @@ void main() {
     expect(secondKeyMoment, findsOneWidget);
     expect(thirdKeyMoment, findsOneWidget);
     expect(
-      find.descendant(of: topKeyMoment, matching: find.text('Move 3')),
+      find.descendant(of: topKeyMoment, matching: find.text('Gain · Move 3')),
       findsOneWidget,
     );
     expect(
@@ -3006,19 +3006,23 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.byTooltip('Continue from here · Move 3 · +48 · a1'),
+      find.byTooltip('Continue from here · Gain · Move 3 · +48 · a1'),
       findsOneWidget,
     );
     expect(
       find.byWidgetPredicate(
         (Widget widget) =>
             widget is Semantics &&
-            widget.properties.label == 'Continue from here · Move 3 · +48 · a1',
+            widget.properties.label ==
+                'Continue from here · Gain · Move 3 · +48 · a1',
       ),
       findsOneWidget,
     );
     expect(
-      find.descendant(of: secondKeyMoment, matching: find.text('Move 2')),
+      find.descendant(
+        of: secondKeyMoment,
+        matching: find.text('Drop · Move 2'),
+      ),
       findsOneWidget,
     );
     expect(
@@ -3033,7 +3037,7 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.descendant(of: thirdKeyMoment, matching: find.text('Move 1')),
+      find.descendant(of: thirdKeyMoment, matching: find.text('Gain · Move 1')),
       findsOneWidget,
     );
     expect(
@@ -3048,6 +3052,9 @@ void main() {
     final Finder graph = find.byKey(
       const Key('play_area_analysis_summary_advantage_graph'),
     );
+    await tester.ensureVisible(graph);
+    await tester.pumpAndSettle();
+
     final Size graphSize = tester.getSize(graph);
     final Offset graphTopLeft = tester.getTopLeft(graph);
     const double chartMargin = 10;
@@ -3068,12 +3075,16 @@ void main() {
       findsOneWidget,
     );
 
+    await tester.ensureVisible(topKeyMoment);
+    await tester.pumpAndSettle();
     await tester.tap(topKeyMoment);
     await tester.pumpAndSettle();
 
     expect(_currentPathMoves(), <String>['d6', 'f4', 'a1']);
     expect(_summaryAdvantagePainter(tester).currentIndex, 3);
 
+    await tester.ensureVisible(secondKeyMoment);
+    await tester.pumpAndSettle();
     await tester.tap(secondKeyMoment);
     await tester.pumpAndSettle();
 
@@ -3112,6 +3123,9 @@ void main() {
     final Finder graph = find.byKey(
       const Key('play_area_analysis_summary_advantage_graph'),
     );
+    await tester.ensureVisible(graph);
+    await tester.pumpAndSettle();
+
     final Size graphSize = tester.getSize(graph);
     final Offset graphTopLeft = tester.getTopLeft(graph);
     const double chartMargin = 10;

@@ -4281,5 +4281,9 @@
     "nativeMillSessionDeveloperOption": "Rust / TGF Mill session",
     "@nativeMillSessionDeveloperOption": {},
     "nativeMillSessionDeveloperDescription": "New Mill games use the Rust rules engine. Start a new game for it to take effect.",
-    "@nativeMillSessionDeveloperDescription": {}
+    "@nativeMillSessionDeveloperDescription": {},
+    "analysisKeyMomentGain": "優勢上升",
+    "@analysisKeyMomentGain": {},
+    "analysisKeyMomentDrop": "優勢下滑",
+    "@analysisKeyMomentDrop": {}
 }

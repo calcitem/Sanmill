@@ -5848,7 +5848,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                   '${moment.dataIndex}',
                 ),
           leading: const Icon(Icons.timeline_outlined),
-          title: Text('${strings.move} ${moment.moveNumber}'),
+          title: Text(_keyMomentTitle(strings, moment)),
           subtitle: _AnalysisSummaryKeyMomentLine(moment: moment),
           trailing: const Icon(Icons.chevron_right),
           onTap: () => unawaited(_jumpToKeyMoment(context, moment)),
@@ -5860,10 +5860,24 @@ class _AnalysisSummaryPanel extends StatelessWidget {
   String _keyMomentActionLabel(S strings, _AnalysisKeyMoment moment) {
     return <String>[
       strings.continueFromHere,
+      _keyMomentDirectionLabel(strings, moment),
       '${strings.move} ${moment.moveNumber}',
       _signedAnalysisValue(moment.swing),
       moment.move,
     ].join(' · ');
+  }
+
+  String _keyMomentTitle(S strings, _AnalysisKeyMoment moment) {
+    return <String>[
+      _keyMomentDirectionLabel(strings, moment),
+      '${strings.move} ${moment.moveNumber}',
+    ].join(' · ');
+  }
+
+  String _keyMomentDirectionLabel(S strings, _AnalysisKeyMoment moment) {
+    return moment.swing > 0
+        ? strings.analysisKeyMomentGain
+        : strings.analysisKeyMomentDrop;
   }
 
   String _moveLineSummary(
