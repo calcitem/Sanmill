@@ -1562,9 +1562,16 @@ void main() {
       MoveAnalysisResult(
         move: 'd6',
         outcome: AnalysisOutcome.withValue(AnalysisOutcome.advantage, '+42'),
-        depth: 6,
+        depth: 1,
         nodes: 12345,
         line: const <String>['d6', 'f4'],
+      ),
+      const MoveAnalysisResult(
+        move: 'a1',
+        outcome: AnalysisOutcome.draw,
+        depth: 8,
+        nodes: 67890,
+        line: <String>['a1'],
       ),
     ], source: AnalysisSource.engine);
     await tester.pumpAndSettle();
@@ -1584,6 +1591,13 @@ void main() {
     expect(find.byKey(const Key('play_area_analysis_summary_moves')), findsOne);
     expect(
       find.byKey(const Key('play_area_analysis_summary_variations')),
+      findsOne,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_engine')),
+        matching: find.textContaining('d8'),
+      ),
       findsOne,
     );
     expect(
@@ -1895,9 +1909,17 @@ void main() {
         move: 'd6',
         outcome: AnalysisOutcome.advantage,
         rank: 1,
+        depth: 1,
+        nodes: 12000,
+        line: <String>['d6', 'f4', 'a1'],
+      ),
+      const MoveAnalysisResult(
+        move: 'a1',
+        outcome: AnalysisOutcome.draw,
+        rank: 2,
         depth: 8,
         nodes: 128000,
-        line: <String>['d6', 'f4', 'a1'],
+        line: <String>['a1'],
       ),
     ], source: AnalysisSource.engine);
     await tester.pump();

@@ -1575,18 +1575,7 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   int? _currentAnalysisEngineDepth() {
-    if (!AnalysisMode.hasEngineLinesSource) {
-      return null;
-    }
-    int? depth;
-    for (final MoveAnalysisResult result in AnalysisMode.analysisLineResults) {
-      final int? candidate = result.depth;
-      if (candidate == null || candidate <= 0) {
-        continue;
-      }
-      depth = depth == null ? candidate : math.max(depth, candidate);
-    }
-    return depth;
+    return _analysisEngineDepth();
   }
 
   void _showRegularGameMenu() {
@@ -4294,9 +4283,10 @@ class _AnalysisSummaryPanel extends StatelessWidget {
       return S.of(context).openingExplorerNoDataShort;
     }
 
+    final int? depth = _analysisEngineDepth();
     final List<String> parts = <String>[
       _analysisEvalLabel(result.outcome),
-      if (result.depth != null && result.depth! > 0) 'd${result.depth}',
+      if (depth != null) 'd$depth',
       if (result.nodes != null && result.nodes! > 0)
         _compactCount(result.nodes!),
       result.displayLine.join(' '),
@@ -4680,6 +4670,21 @@ String _analysisEvalLabel(AnalysisOutcome outcome) {
     'disadvantage' => '-',
     _ => '?',
   };
+}
+
+int? _analysisEngineDepth() {
+  if (!AnalysisMode.hasEngineLinesSource) {
+    return null;
+  }
+  int? depth;
+  for (final MoveAnalysisResult result in AnalysisMode.analysisLineResults) {
+    final int? candidate = result.depth;
+    if (candidate == null || candidate <= 0) {
+      continue;
+    }
+    depth = depth == null ? candidate : math.max(depth, candidate);
+  }
+  return depth;
 }
 
 int _analysisOutcomeGaugeValue(AnalysisOutcome outcome) {
@@ -5112,7 +5117,7 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
     assert(count > 0, 'Full analysis mode must have at least one line.');
     if (AnalysisMode.hasEngineLinesSource &&
         AnalysisMode.analysisLineResults.isNotEmpty) {
-      final int? depth = AnalysisMode.analysisLineResults.first.depth;
+      final int? depth = _analysisEngineDepth();
       if (depth != null && depth > 0) {
         return math.min(99, depth).toString();
       }
