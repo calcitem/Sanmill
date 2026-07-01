@@ -369,6 +369,7 @@ class SanmillAppState extends State<SanmillApp> {
       smallBoard: displaySettings.analysisSmallBoard,
       showEngineLines: displaySettings.analysisShowEngineLines,
       engineLineCount: displaySettings.analysisEngineLineCount,
+      engineSearchTimeMs: displaySettings.analysisEngineSearchTimeMs,
       notify: false,
     );
   }

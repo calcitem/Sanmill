@@ -11,6 +11,7 @@ void main() {
     AnalysisMode.disable();
     AnalysisMode.setSmallBoard(false);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
+    AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
   });
 
   test('tracks full analysis and hint overlay modes separately', () {
@@ -172,6 +173,24 @@ void main() {
 
     AnalysisMode.setEngineLineCount(99);
     expect(AnalysisMode.engineLineCount, AnalysisMode.maxEngineLineCount);
+  });
+
+  test('tracks engine search time as an analysis preference', () {
+    expect(
+      AnalysisMode.engineSearchTimeMs,
+      AnalysisMode.defaultEngineSearchTimeMs,
+    );
+    expect(AnalysisMode.engineSearchTimeOptionIndex, 2);
+
+    AnalysisMode.setEngineSearchTimeMs(AnalysisMode.maxEngineSearchTimeMs);
+
+    expect(AnalysisMode.engineSearchTimeMs, AnalysisMode.maxEngineSearchTimeMs);
+    expect(
+      AnalysisMode.engineSearchTimeOptionAt(
+        AnalysisMode.engineSearchTimeOptionIndex,
+      ),
+      AnalysisMode.maxEngineSearchTimeMs,
+    );
   });
 
   test('does not notify when analyzing state is unchanged', () {

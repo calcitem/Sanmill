@@ -63,6 +63,7 @@ void main() {
     AnalysisMode.setShowEngineLines(true);
     AnalysisMode.setSmallBoard(false);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
+    AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
     PlayerTimer().reset();
   });
 
@@ -71,6 +72,7 @@ void main() {
     AnalysisMode.setShowEngineLines(true);
     AnalysisMode.setSmallBoard(false);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
+    AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
     PlayerTimer().reset();
     DB.instance = null;
   });
@@ -2283,7 +2285,34 @@ void main() {
       ),
       findsOneWidget,
     );
+    expect(
+      find.byKey(
+        const Key('play_area_analysis_settings_engine_search_time_control'),
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('Search time'), findsOneWidget);
+    expect(find.text('6s'), findsOneWidget);
     expect(find.text('Multiple lines'), findsOneWidget);
+
+    final Finder searchTimeSliderFinder = find.byKey(
+      const Key('play_area_analysis_settings_engine_search_time_control'),
+    );
+    final Slider searchTimeSlider = tester.widget<Slider>(
+      searchTimeSliderFinder,
+    );
+    final double maxSearchTimeIndex =
+        (AnalysisMode.engineSearchTimeOptionsMs.length - 1).toDouble();
+    searchTimeSlider.onChanged!(maxSearchTimeIndex);
+    searchTimeSlider.onChangeEnd!(maxSearchTimeIndex);
+    await tester.pumpAndSettle();
+
+    expect(AnalysisMode.engineSearchTimeMs, AnalysisMode.maxEngineSearchTimeMs);
+    expect(
+      db.displaySettings.analysisEngineSearchTimeMs,
+      AnalysisMode.maxEngineSearchTimeMs,
+    );
+    expect(find.text('∞'), findsOneWidget);
 
     final Finder lineCountSliderFinder = find.byKey(
       const Key('play_area_analysis_settings_engine_line_count_control'),

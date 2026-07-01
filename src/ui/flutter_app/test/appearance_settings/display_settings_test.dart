@@ -63,6 +63,10 @@ void main() {
         d.analysisEngineLineCount,
         DisplaySettings.defaultAnalysisEngineLineCount,
       );
+      expect(
+        d.analysisEngineSearchTimeMs,
+        DisplaySettings.defaultAnalysisEngineSearchTimeMs,
+      );
     });
   });
 

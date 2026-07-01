@@ -138,6 +138,21 @@ class AnalysisMode {
   static const int defaultEngineLineCount =
       DisplaySettings.defaultAnalysisEngineLineCount;
   static const int maxEngineLineCount = 3;
+  static const List<int> engineSearchTimeOptionsMs = <int>[
+    2000,
+    4000,
+    6000,
+    8000,
+    10000,
+    12000,
+    15000,
+    20000,
+    30000,
+    maxEngineSearchTimeMs,
+  ];
+  static const int defaultEngineSearchTimeMs =
+      DisplaySettings.defaultAnalysisEngineSearchTimeMs;
+  static const int maxEngineSearchTimeMs = 60 * 60 * 1000;
 
   static bool _isEnabled = false;
   static bool _isAnalyzing = false;
@@ -145,6 +160,7 @@ class AnalysisMode {
   static bool _smallBoard = false;
   static bool _isThreatMode = false;
   static int _engineLineCount = defaultEngineLineCount;
+  static int _engineSearchTimeMs = defaultEngineSearchTimeMs;
   static AnalysisOverlayMode? _overlayMode;
   static AnalysisSource? _source;
   static List<MoveAnalysisResult> _analysisResults = <MoveAnalysisResult>[];
@@ -185,6 +201,13 @@ class AnalysisMode {
 
   /// Number of engine candidate lines to show in analysis mode.
   static int get engineLineCount => _engineLineCount;
+
+  /// Search time budget for normal analysis engine passes.
+  static int get engineSearchTimeMs => _engineSearchTimeMs;
+
+  /// Index of the current search-time option for the analysis settings slider.
+  static int get engineSearchTimeOptionIndex =>
+      engineSearchTimeOptionsMs.indexOf(_engineSearchTimeMs);
 
   /// The current full per-move analysis results used by the board overlay.
   static List<MoveAnalysisResult> get analysisResults => _analysisResults;
@@ -326,22 +349,53 @@ class AnalysisMode {
     _publishState();
   }
 
+  /// Set the search time budget used by normal analysis engine passes.
+  static void setEngineSearchTimeMs(int value, {bool persist = false}) {
+    final int next = _normalizeEngineSearchTimeMs(value);
+    if (_engineSearchTimeMs == next) {
+      if (persist) {
+        _saveDisplayPreferences(engineSearchTimeMs: next);
+      }
+      return;
+    }
+    _engineSearchTimeMs = next;
+    if (persist) {
+      _saveDisplayPreferences(engineSearchTimeMs: next);
+    }
+    _publishState();
+  }
+
+  /// Search time option at [index].
+  static int engineSearchTimeOptionAt(int index) {
+    assert(
+      index >= 0 && index < engineSearchTimeOptionsMs.length,
+      'Analysis engine search time option index is out of range.',
+    );
+    return engineSearchTimeOptionsMs[index];
+  }
+
   /// Load persisted analysis display preferences.
   static void configurePreferences({
     required bool smallBoard,
     required bool showEngineLines,
     required int engineLineCount,
+    required int engineSearchTimeMs,
     bool notify = true,
   }) {
     final int nextLineCount = engineLineCount.clamp(0, maxEngineLineCount);
+    final int nextSearchTimeMs = _normalizeEngineSearchTimeMs(
+      engineSearchTimeMs,
+    );
     if (_smallBoard == smallBoard &&
         _showEngineLines == showEngineLines &&
-        _engineLineCount == nextLineCount) {
+        _engineLineCount == nextLineCount &&
+        _engineSearchTimeMs == nextSearchTimeMs) {
       return;
     }
     _smallBoard = smallBoard;
     _showEngineLines = showEngineLines;
     _engineLineCount = nextLineCount;
+    _engineSearchTimeMs = nextSearchTimeMs;
     if (notify) {
       _publishState();
     }
@@ -363,6 +417,7 @@ class AnalysisMode {
     bool? smallBoard,
     bool? showEngineLines,
     int? engineLineCount,
+    int? engineSearchTimeMs,
   }) {
     final DisplaySettings settings = DB().displaySettings;
     DB().displaySettings = settings.copyWithAnalysisPreferences(
@@ -371,7 +426,20 @@ class AnalysisMode {
           showEngineLines ?? settings.analysisShowEngineLines,
       analysisEngineLineCount:
           engineLineCount ?? settings.analysisEngineLineCount,
+      analysisEngineSearchTimeMs:
+          engineSearchTimeMs ?? settings.analysisEngineSearchTimeMs,
     );
+  }
+
+  static int _normalizeEngineSearchTimeMs(int value) {
+    assert(
+      engineSearchTimeOptionsMs.contains(value),
+      'Analysis engine search time must be one of the supported options.',
+    );
+    if (engineSearchTimeOptionsMs.contains(value)) {
+      return value;
+    }
+    return defaultEngineSearchTimeMs;
   }
 
   /// Colorblind-friendly color for an outcome.

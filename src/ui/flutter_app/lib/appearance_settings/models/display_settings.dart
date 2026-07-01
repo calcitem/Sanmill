@@ -13,6 +13,7 @@ import '../../shared/database/adapters/adapters.dart';
 part 'display_settings.g.dart';
 
 const int kDefaultAnalysisEngineLineCount = 2;
+const int kDefaultAnalysisEngineSearchTimeMs = 6000;
 
 /// Strategies for painting shapes and paths on points.
 @HiveType(typeId: 9)
@@ -121,6 +122,7 @@ class DisplaySettings {
     this.analysisSmallBoard = false,
     this.analysisShowEngineLines = true,
     this.analysisEngineLineCount = kDefaultAnalysisEngineLineCount,
+    this.analysisEngineSearchTimeMs = kDefaultAnalysisEngineSearchTimeMs,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -129,6 +131,8 @@ class DisplaySettings {
 
   static const int defaultAnalysisEngineLineCount =
       kDefaultAnalysisEngineLineCount;
+  static const int defaultAnalysisEngineSearchTimeMs =
+      kDefaultAnalysisEngineSearchTimeMs;
 
   @Deprecated("Use [locale] instead.")
   @HiveField(0, defaultValue: "Default")
@@ -298,6 +302,10 @@ class DisplaySettings {
   @HiveField(49, defaultValue: kDefaultAnalysisEngineLineCount)
   final int analysisEngineLineCount;
 
+  /// Search time budget for analysis engine passes, in milliseconds.
+  @HiveField(50, defaultValue: kDefaultAnalysisEngineSearchTimeMs)
+  final int analysisEngineSearchTimeMs;
+
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);
 
@@ -305,6 +313,7 @@ class DisplaySettings {
     bool? analysisSmallBoard,
     bool? analysisShowEngineLines,
     int? analysisEngineLineCount,
+    int? analysisEngineSearchTimeMs,
   }) {
     return DisplaySettings(
       languageCode: languageCode,
@@ -359,6 +368,8 @@ class DisplaySettings {
           analysisShowEngineLines ?? this.analysisShowEngineLines,
       analysisEngineLineCount:
           analysisEngineLineCount ?? this.analysisEngineLineCount,
+      analysisEngineSearchTimeMs:
+          analysisEngineSearchTimeMs ?? this.analysisEngineSearchTimeMs,
     );
   }
 }

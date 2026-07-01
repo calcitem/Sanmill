@@ -34,8 +34,6 @@ class AnalysisService {
 
   static const String _logTag = "[AnalysisService]";
   static const int _analysisSearchDepth = 64;
-  static const int _analysisDefaultMoveLimitMs = 6000;
-  static const int _analysisDeepMoveLimitMs = 60 * 60 * 1000;
 
   static int _analysisSearchGeneration = 0;
   static Future<void>? _activeEngineAnalysis;
@@ -262,12 +260,10 @@ class AnalysisService {
       resignIfMostLose: false,
       useLazySmp: false,
     );
-    final NativeMillAiTurnController analysisSearch =
-        NativeMillAiTurnController(generalSettings: engineSettings);
     const int searchDepth = _analysisSearchDepth;
     final int moveLimitMs = isDeepSearch
-        ? _analysisDeepMoveLimitMs
-        : math.max(analysisSearch.moveLimitMs, _analysisDefaultMoveLimitMs);
+        ? AnalysisMode.maxEngineSearchTimeMs
+        : AnalysisMode.engineSearchTimeMs;
     NativeMillGameSession? temporarySession;
     final NativeMillGameSession searchSession;
     if (fenOverride == null) {

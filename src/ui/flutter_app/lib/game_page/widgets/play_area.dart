@@ -201,6 +201,72 @@ Future<void> showAnalysisSettingsSheet(
                         ),
                         ListTile(
                           key: const Key(
+                            'play_area_analysis_settings_engine_search_time',
+                          ),
+                          leading: const Icon(Icons.timer_outlined),
+                          title: Text(_analysisSearchTimeLabel(strings)),
+                          subtitle: Text(
+                            _analysisSearchTimeValueLabel(
+                              AnalysisMode.engineSearchTimeMs,
+                            ),
+                          ),
+                          trailing: SizedBox(
+                            width: 180,
+                            child: Slider(
+                              key: const Key(
+                                'play_area_analysis_settings_engine_search_time_control',
+                              ),
+                              value: AnalysisMode.engineSearchTimeOptionIndex
+                                  .toDouble(),
+                              max:
+                                  (AnalysisMode
+                                              .engineSearchTimeOptionsMs
+                                              .length -
+                                          1)
+                                      .toDouble(),
+                              divisions:
+                                  AnalysisMode
+                                      .engineSearchTimeOptionsMs
+                                      .length -
+                                  1,
+                              label: _analysisSearchTimeValueLabel(
+                                AnalysisMode.engineSearchTimeMs,
+                              ),
+                              onChanged: (double value) {
+                                final int searchTimeMs =
+                                    AnalysisMode.engineSearchTimeOptionAt(
+                                      value.round(),
+                                    );
+                                RecordingService().recordEvent(
+                                  RecordingEventType.toolbarAction,
+                                  <String, dynamic>{
+                                    'toolbar': 'analysisSettings',
+                                    'action': 'setEngineSearchTime',
+                                    'searchTimeMs': searchTimeMs,
+                                  },
+                                );
+                                AnalysisMode.setEngineSearchTimeMs(
+                                  searchTimeMs,
+                                );
+                              },
+                              onChangeEnd: (double value) {
+                                final int searchTimeMs =
+                                    AnalysisMode.engineSearchTimeOptionAt(
+                                      value.round(),
+                                    );
+                                AnalysisMode.setEngineSearchTimeMs(
+                                  searchTimeMs,
+                                  persist: true,
+                                );
+                                _refreshEngineAnalysisAfterSettingsChange(
+                                  context,
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        ListTile(
+                          key: const Key(
                             'play_area_analysis_settings_engine_line_count',
                           ),
                           leading: const Icon(Icons.format_list_numbered),
@@ -268,6 +334,21 @@ String _analysisMultipleLinesLabel(S strings) {
     'zh' => '多条分析线',
     _ => 'Multiple lines',
   };
+}
+
+String _analysisSearchTimeLabel(S strings) {
+  return switch (strings.localeName.split('_').first) {
+    'zh' => '搜索时间',
+    _ => 'Search time',
+  };
+}
+
+String _analysisSearchTimeValueLabel(int valueMs) {
+  if (valueMs == AnalysisMode.maxEngineSearchTimeMs) {
+    return '∞';
+  }
+  assert(valueMs % 1000 == 0, 'Analysis search time must be whole seconds.');
+  return '${valueMs ~/ 1000}s';
 }
 
 String _analysisThreatLabel(S strings) {

@@ -32,12 +32,14 @@ void main() {
     AnalysisMode.disable();
     AnalysisMode.setShowEngineLines(true);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
+    AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
   });
 
   tearDown(() {
     AnalysisMode.disable();
     AnalysisMode.setShowEngineLines(true);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
+    AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
     DB.instance = null;
   });
 
@@ -98,6 +100,25 @@ void main() {
     expect(session.requestedMoveLimitValues, <int>[6000]);
   });
 
+  testWidgets('normal analysis uses the selected search time', (
+    WidgetTester tester,
+  ) async {
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    addTearDown(session.dispose);
+
+    AnalysisMode.setEngineSearchTimeMs(20000);
+
+    await _pumpAnalysisButton(tester, session);
+    await tester.tap(find.byKey(const Key('analysis_service_toggle')));
+    await tester.pump();
+
+    expect(session.requestedMultiPvValues, <int>[
+      AnalysisMode.defaultEngineLineCount,
+    ]);
+    expect(session.requestedDepthValues, <int>[64]);
+    expect(session.requestedMoveLimitValues, <int>[20000]);
+  });
+
   testWidgets('go deeper requests long analysis time', (
     WidgetTester tester,
   ) async {
@@ -114,7 +135,9 @@ void main() {
       AnalysisMode.defaultEngineLineCount,
     ]);
     expect(session.requestedDepthValues, <int>[64]);
-    expect(session.requestedMoveLimitValues, <int>[60 * 60 * 1000]);
+    expect(session.requestedMoveLimitValues, <int>[
+      AnalysisMode.maxEngineSearchTimeMs,
+    ]);
   });
 
   testWidgets('progressive engine updates keep analysis running', (
