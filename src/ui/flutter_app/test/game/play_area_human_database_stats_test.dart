@@ -2347,7 +2347,7 @@ void main() {
     ]) {
       expect(
         find.descendant(of: results, matching: find.textContaining(label)),
-        findsOneWidget,
+        findsWidgets,
       );
     }
     for (final String outcome in <String>[
@@ -2399,6 +2399,43 @@ void main() {
     );
     expect(
       find.descendant(of: results, matching: find.text('d1')),
+      findsOneWidget,
+    );
+    final Finder drawLegend = find.descendant(
+      of: results,
+      matching: find.byKey(
+        const Key('play_area_analysis_summary_outcome_legend_draw'),
+      ),
+    );
+    await tester.ensureVisible(drawLegend);
+    await tester.pumpAndSettle();
+    await tester.tap(drawLegend);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.descendant(of: candidateChips, matching: find.text('d1')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: candidateChips, matching: find.text('a1')),
+      findsNothing,
+    );
+    expect(
+      find.descendant(of: candidateChips, matching: find.text('a4')),
+      findsNothing,
+    );
+
+    await tester.ensureVisible(drawLegend);
+    await tester.pumpAndSettle();
+    await tester.tap(drawLegend);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.descendant(of: candidateChips, matching: find.text('a1')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: candidateChips, matching: find.text('d1')),
       findsOneWidget,
     );
 
@@ -2518,6 +2555,8 @@ void main() {
       findsOneWidget,
     );
 
+    await tester.ensureVisible(candidate);
+    await tester.pumpAndSettle();
     await tester.tap(candidate);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));

@@ -5391,9 +5391,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
     if (!AnalysisMode.isFullAnalysis || AnalysisMode.analysisResults.isEmpty) {
       return const <MoveAnalysisResult>[];
     }
-    return AnalysisMode.analysisResults
-        .take(_maxResultCandidates)
-        .toList(growable: false);
+    return AnalysisMode.analysisResults;
   }
 
   String _sourceLabel(BuildContext context) {
@@ -5764,7 +5762,7 @@ class _AnalysisSummaryKeyMomentLine extends StatelessWidget {
   }
 }
 
-class _AnalysisSummaryResultsSubtitle extends StatelessWidget {
+class _AnalysisSummaryResultsSubtitle extends StatefulWidget {
   const _AnalysisSummaryResultsSubtitle({
     required this.summary,
     required this.buckets,
@@ -5780,25 +5778,76 @@ class _AnalysisSummaryResultsSubtitle extends StatelessWidget {
   final Future<void> Function(String move) onCandidateTap;
 
   @override
+  State<_AnalysisSummaryResultsSubtitle> createState() =>
+      _AnalysisSummaryResultsSubtitleState();
+}
+
+class _AnalysisSummaryResultsSubtitleState
+    extends State<_AnalysisSummaryResultsSubtitle> {
+  String? _selectedOutcomeName;
+
+  @override
+  void didUpdateWidget(_AnalysisSummaryResultsSubtitle oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (_selectedOutcomeName == null) {
+      return;
+    }
+    final bool selectedOutcomeStillExists = widget.buckets.any(
+      (_AnalysisOutcomeBucket bucket) =>
+          bucket.outcomeName == _selectedOutcomeName,
+    );
+    if (!selectedOutcomeStillExists) {
+      _selectedOutcomeName = null;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final List<MoveAnalysisResult> visibleCandidates = _visibleCandidates();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(summary),
-        if (buckets.isNotEmpty) ...<Widget>[
+        Text(widget.summary),
+        if (widget.buckets.isNotEmpty) ...<Widget>[
           const SizedBox(height: 8),
-          _AnalysisOutcomeDistribution(buckets: buckets),
+          _AnalysisOutcomeDistribution(
+            buckets: widget.buckets,
+            selectedOutcomeName: _selectedOutcomeName,
+            onOutcomeSelected: _selectOutcome,
+          ),
         ],
-        if (candidates.isNotEmpty) ...<Widget>[
+        if (visibleCandidates.isNotEmpty) ...<Widget>[
           const SizedBox(height: 8),
           _AnalysisSummaryResultCandidates(
-            candidates: candidates,
-            canApplyCandidates: canApplyCandidates,
-            onCandidateTap: onCandidateTap,
+            candidates: visibleCandidates,
+            canApplyCandidates: widget.canApplyCandidates,
+            onCandidateTap: widget.onCandidateTap,
           ),
         ],
       ],
     );
+  }
+
+  List<MoveAnalysisResult> _visibleCandidates() {
+    final String? selectedOutcomeName = _selectedOutcomeName;
+    final Iterable<MoveAnalysisResult> candidates = selectedOutcomeName == null
+        ? widget.candidates
+        : widget.candidates.where(
+            (MoveAnalysisResult result) =>
+                result.outcome.name == selectedOutcomeName,
+          );
+    return candidates
+        .take(_AnalysisSummaryPanel._maxResultCandidates)
+        .toList(growable: false);
+  }
+
+  void _selectOutcome(String? outcomeName) {
+    setState(() {
+      _selectedOutcomeName = outcomeName == _selectedOutcomeName
+          ? null
+          : outcomeName;
+    });
   }
 }
 
@@ -5826,7 +5875,7 @@ class _AnalysisSummaryResultCandidates extends StatelessWidget {
       children: <Widget>[
         for (int index = 0; index < candidates.length; index++)
           _AnalysisSummaryResultCandidateChip(
-            key: Key('play_area_analysis_summary_result_candidate_$index'),
+            chipKey: Key('play_area_analysis_summary_result_candidate_$index'),
             result: candidates[index],
             colorScheme: colorScheme,
             textStyle: theme.textTheme.labelMedium,
@@ -5841,13 +5890,14 @@ class _AnalysisSummaryResultCandidates extends StatelessWidget {
 
 class _AnalysisSummaryResultCandidateChip extends StatelessWidget {
   const _AnalysisSummaryResultCandidateChip({
-    super.key,
+    required this.chipKey,
     required this.result,
     required this.colorScheme,
     required this.textStyle,
     required this.onTap,
   });
 
+  final Key chipKey;
   final MoveAnalysisResult result;
   final ColorScheme colorScheme;
   final TextStyle? textStyle;
@@ -5867,6 +5917,7 @@ class _AnalysisSummaryResultCandidateChip extends StatelessWidget {
           '${_analysisLineText(result)}',
       button: onTap != null,
       child: ActionChip(
+        key: chipKey,
         avatar: DecoratedBox(
           key: const Key('play_area_analysis_summary_result_candidate_eval'),
           decoration: BoxDecoration(
@@ -5910,9 +5961,15 @@ class _AnalysisSummaryResultCandidateChip extends StatelessWidget {
 }
 
 class _AnalysisOutcomeDistribution extends StatelessWidget {
-  const _AnalysisOutcomeDistribution({required this.buckets});
+  const _AnalysisOutcomeDistribution({
+    required this.buckets,
+    required this.selectedOutcomeName,
+    required this.onOutcomeSelected,
+  });
 
   final List<_AnalysisOutcomeBucket> buckets;
+  final String? selectedOutcomeName;
+  final ValueChanged<String?> onOutcomeSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -5939,7 +5996,11 @@ class _AnalysisOutcomeDistribution extends StatelessWidget {
                       '${bucket.outcomeName}',
                     ),
                     flex: bucket.count,
-                    child: ColoredBox(color: bucket.color),
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => onOutcomeSelected(bucket.outcomeName),
+                      child: ColoredBox(color: bucket.color),
+                    ),
                   ),
               ],
             ),
@@ -5951,41 +6012,42 @@ class _AnalysisOutcomeDistribution extends StatelessWidget {
           runSpacing: 4,
           children: <Widget>[
             for (final _AnalysisOutcomeBucket bucket in buckets)
-              Semantics(
+              FilterChip(
                 key: Key(
                   'play_area_analysis_summary_outcome_legend_'
                   '${bucket.outcomeName}',
                 ),
-                label: '${bucket.label} ${bucket.count}',
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: bucket.color,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const SizedBox.square(dimension: 8),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      bucket.label,
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: colorScheme.onSurfaceVariant,
-                        letterSpacing: 0,
-                      ),
-                    ),
-                    const SizedBox(width: 3),
-                    Text(
-                      '${bucket.count}',
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: colorScheme.onSurface,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0,
-                      ),
-                    ),
-                  ],
+                selected: bucket.outcomeName == selectedOutcomeName,
+                showCheckmark: false,
+                avatar: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: bucket.color,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const SizedBox.square(dimension: 8),
                 ),
+                label: Text('${bucket.label} ${bucket.count}'),
+                labelStyle: theme.textTheme.labelSmall?.copyWith(
+                  color: bucket.outcomeName == selectedOutcomeName
+                      ? colorScheme.onSecondaryContainer
+                      : colorScheme.onSurfaceVariant,
+                  fontWeight: bucket.outcomeName == selectedOutcomeName
+                      ? FontWeight.w700
+                      : FontWeight.w500,
+                  letterSpacing: 0,
+                ),
+                backgroundColor: colorScheme.surfaceContainerHighest.withValues(
+                  alpha: 0.56,
+                ),
+                selectedColor: colorScheme.secondaryContainer,
+                side: BorderSide(
+                  color: bucket.outcomeName == selectedOutcomeName
+                      ? colorScheme.secondary
+                      : colorScheme.outlineVariant,
+                ),
+                visualDensity: VisualDensity.compact,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                onSelected: (_) => onOutcomeSelected(bucket.outcomeName),
               ),
           ],
         ),
