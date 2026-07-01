@@ -3368,6 +3368,81 @@ void main() {
     expect(find.byKey(const Key('opening_explorer_embedded')), findsOneWidget);
   });
 
+  testWidgets('analysis explorer moves are applied to the analysis tree', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    await _pumpSessionPlayArea(tester, session);
+    expect(_currentPathMoves(), isEmpty);
+
+    await tester.tap(find.byIcon(Icons.explore_outlined));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('opening_explorer_embedded')), findsOneWidget);
+
+    for (
+      int i = 0;
+      i < 20 &&
+          find
+              .byKey(const Key('opening_explorer_loading_row_0'))
+              .evaluate()
+              .isNotEmpty;
+      i++
+    ) {
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 50)),
+      );
+      await tester.pump();
+    }
+    await tester.pumpAndSettle();
+
+    final Finder moveRows = find.byWidgetPredicate((Widget widget) {
+      final Key? key = widget.key;
+      return key is ValueKey<String> &&
+          key.value.startsWith('opening_explorer_move_');
+    }, description: 'rendered opening explorer move row');
+    expect(moveRows, findsWidgets);
+    final Finder firstMoveFinder = moveRows.first;
+    expect(firstMoveFinder, findsOneWidget);
+
+    final Widget firstMoveWidget = tester.widget<Widget>(firstMoveFinder);
+    final String selectedMove = (firstMoveWidget.key! as ValueKey<String>).value
+        .substring('opening_explorer_move_'.length);
+
+    await tester.tap(firstMoveFinder);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
+
+    expect(_currentPathMoves(), <String>[selectedMove]);
+    expect(
+      find.byKey(Key('opening_explorer_move_$selectedMove')),
+      findsNothing,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_bottom_bar_previous')),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
+
+    expect(_currentPathMoves(), isEmpty);
+    expect(
+      find.byKey(Key('opening_explorer_move_$selectedMove')),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('analysis moves tab opens the full move list page', (
     WidgetTester tester,
   ) async {

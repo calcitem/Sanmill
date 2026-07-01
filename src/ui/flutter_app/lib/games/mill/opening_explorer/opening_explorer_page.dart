@@ -4,6 +4,7 @@
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -38,6 +39,8 @@ import '../opening_book/mill_opening_recognizer.dart';
 import '../opening_book/opening_book_models.dart';
 import '../opening_book/opening_book_repository.dart';
 
+typedef OpeningExplorerMoveSelected = Future<bool> Function(GameAction action);
+
 class OpeningExplorerPage extends StatefulWidget {
   const OpeningExplorerPage({
     super.key,
@@ -45,12 +48,14 @@ class OpeningExplorerPage extends StatefulWidget {
     this.startFromSession = false,
     this.embedded = false,
     this.showBoard = true,
+    this.onMoveSelected,
   });
 
   final GameSession? session;
   final bool startFromSession;
   final bool embedded;
   final bool showBoard;
+  final OpeningExplorerMoveSelected? onMoveSelected;
 
   @override
   State<OpeningExplorerPage> createState() => _OpeningExplorerPageState();
@@ -129,13 +134,16 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
   final List<_OpeningExplorerHistoryEntry> _explorerHistory =
       <_OpeningExplorerHistoryEntry>[];
   NativeMillGameSession? _explorerSession;
+  ValueListenable<GameStateSnapshot>? _sourceState;
   String? _initialExplorerFen;
+  String? _lastSourceFen;
   List<String> _initialPlacementMoves = const <String>[];
   int _explorerCursor = 0;
 
   @override
   void initState() {
     super.initState();
+    _attachSourceStateListener();
     _recreateExplorerSession();
   }
 
@@ -143,15 +151,62 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
   void didUpdateWidget(covariant OpeningExplorerPage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (!identical(widget.session, oldWidget.session) ||
-        widget.startFromSession != oldWidget.startFromSession) {
+        widget.startFromSession != oldWidget.startFromSession ||
+        widget.embedded != oldWidget.embedded) {
+      _detachSourceStateListener();
+      _attachSourceStateListener();
       _recreateExplorerSession();
     }
   }
 
   @override
   void dispose() {
+    _detachSourceStateListener();
     _explorerSession?.dispose();
     super.dispose();
+  }
+
+  NativeMillGameSession? _sourceNativeSession() {
+    if (!widget.startFromSession) {
+      return null;
+    }
+    final GameSession? source = widget.session;
+    return source is NativeMillGameSession ? source : null;
+  }
+
+  void _attachSourceStateListener() {
+    if (!widget.embedded) {
+      return;
+    }
+    final NativeMillGameSession? source = _sourceNativeSession();
+    if (source == null) {
+      _lastSourceFen = null;
+      return;
+    }
+    _sourceState = source.state;
+    _lastSourceFen = source.getFen();
+    _sourceState!.addListener(_handleSourceStateChanged);
+  }
+
+  void _detachSourceStateListener() {
+    _sourceState?.removeListener(_handleSourceStateChanged);
+    _sourceState = null;
+  }
+
+  void _handleSourceStateChanged() {
+    final NativeMillGameSession? source = _sourceNativeSession();
+    if (source == null) {
+      return;
+    }
+    final String sourceFen = source.getFen();
+    if (sourceFen == _lastSourceFen) {
+      return;
+    }
+    _lastSourceFen = sourceFen;
+    if (!mounted) {
+      return;
+    }
+    setState(_recreateExplorerSession);
   }
 
   void _recreateExplorerSession() {
@@ -169,6 +224,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
     );
     final GameSession? source = widget.startFromSession ? widget.session : null;
     if (source is NativeMillGameSession) {
+      _lastSourceFen = source.getFen();
       final bool loaded = explorer.loadFen(source.getFen());
       assert(loaded, 'Opening explorer source FEN must load into its session.');
       if (!loaded) {
@@ -196,6 +252,13 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
   }
 
   Future<void> _applyExplorerAction(GameAction action) async {
+    final OpeningExplorerMoveSelected? applyToSource = widget.onMoveSelected;
+    if (applyToSource != null) {
+      final bool applied = await applyToSource(action);
+      assert(applied, 'Embedded opening explorer move must apply to source.');
+      return;
+    }
+
     final NativeMillGameSession? session = _explorerSession;
     if (session == null) {
       return;

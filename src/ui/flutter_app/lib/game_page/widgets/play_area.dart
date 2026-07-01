@@ -972,11 +972,26 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
-  Future<void> _applyAnalysisMove(BuildContext context, String move) async {
+  Future<bool> _applyAnalysisExplorerMove(
+    BuildContext context,
+    GameAction action,
+  ) async {
+    final String? move = MillActionCodec.moveStringFrom(action);
+    assert(
+      move != null && move.isNotEmpty,
+      'Analysis explorer move selection requires move notation.',
+    );
+    if (move == null || move.isEmpty) {
+      return false;
+    }
+    return _applyAnalysisMove(context, move);
+  }
+
+  Future<bool> _applyAnalysisMove(BuildContext context, String move) async {
     final GameSession? session = GameSessionScope.sessionOf(context);
     assert(session != null, 'Analysis move application requires a session.');
     if (session == null) {
-      return;
+      return false;
     }
 
     GameAction? selectedAction;
@@ -992,7 +1007,7 @@ class PlayAreaState extends State<PlayArea> {
       'Analysis move "$move" must be legal in the active session.',
     );
     if (selectedAction == null) {
-      return;
+      return false;
     }
 
     final bool shouldRefreshAnalysis =
@@ -1001,6 +1016,7 @@ class PlayAreaState extends State<PlayArea> {
     if (shouldRefreshAnalysis && context.mounted) {
       _scheduleAnalysisRefreshForCurrentPosition();
     }
+    return true;
   }
 
   void _openBoardEditorFromAnalysis() {
@@ -2882,6 +2898,8 @@ class PlayAreaState extends State<PlayArea> {
             startFromSession: true,
             embedded: true,
             showBoard: false,
+            onMoveSelected: (GameAction action) =>
+                _applyAnalysisExplorerMove(context, action),
           ),
           moves: Column(
             children: <Widget>[
@@ -2943,7 +2961,9 @@ class PlayAreaState extends State<PlayArea> {
           results: AnalysisMode.isFullAnalysis
               ? AnalysisMode.analysisLineResults
               : const <MoveAnalysisResult>[],
-          onMoveTap: (String move) => _applyAnalysisMove(context, move),
+          onMoveTap: (String move) async {
+            await _applyAnalysisMove(context, move);
+          },
         );
       },
     );
