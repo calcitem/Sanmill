@@ -1896,6 +1896,9 @@ void main() {
         comments: <String>['Good opening'],
       ),
     );
+    GameController().gameRecorder.appendMove(
+      ExtMove('f4', side: PieceColor.black, roundIndex: 1, nags: <int>[16]),
+    );
 
     await _pumpSessionPlayArea(tester, session);
 
@@ -1905,6 +1908,10 @@ void main() {
         of: movesPanel,
         matching: find.text('d6! {Good opening}'),
       ),
+      findsOne,
+    );
+    expect(
+      find.descendant(of: movesPanel, matching: find.text('f4±')),
       findsOne,
     );
 
@@ -1920,6 +1927,14 @@ void main() {
         of: movesPanel,
         matching: find.text('d6! {Good opening}'),
       ),
+      findsNothing,
+    );
+    expect(
+      find.descendant(of: movesPanel, matching: find.text('f4')),
+      findsOne,
+    );
+    expect(
+      find.descendant(of: movesPanel, matching: find.text('f4±')),
       findsNothing,
     );
 
