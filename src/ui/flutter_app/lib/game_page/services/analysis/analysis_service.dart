@@ -143,7 +143,20 @@ class AnalysisService {
       return;
     }
 
-    await _enableEngineMultiPvAnalysis(context, session, isDeepSearch: true);
+    final bool preservePerfectDatabase =
+        AnalysisMode.source == AnalysisSource.perfectDatabase ||
+        AnalysisMode.source == AnalysisSource.perfectDatabaseAndEngine;
+    await _enableEngineMultiPvAnalysis(
+      context,
+      session,
+      isDeepSearch: true,
+      baseResults: preservePerfectDatabase
+          ? AnalysisMode.analysisResults
+          : null,
+      baseTrapMoves: preservePerfectDatabase
+          ? AnalysisMode.trapMoves
+          : const <String>[],
+    );
   }
 
   /// Whether threat mode can be requested without fabricating an impossible Mill

@@ -216,6 +216,47 @@ void main() {
     ]);
   });
 
+  testWidgets('go deeper preserves perfect database analysis source', (
+    WidgetTester tester,
+  ) async {
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    addTearDown(session.dispose);
+
+    const List<MoveAnalysisResult> databaseResults = <MoveAnalysisResult>[
+      MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.win),
+      MoveAnalysisResult(move: 'a1', outcome: AnalysisOutcome.draw),
+    ];
+    AnalysisMode.enable(
+      databaseResults,
+      lineResults: const <MoveAnalysisResult>[
+        MoveAnalysisResult(
+          move: 'f4',
+          outcome: AnalysisOutcome.advantage,
+          rank: 1,
+          depth: 6,
+          line: <String>['f4', 'a1'],
+        ),
+      ],
+      trapMoves: const <String>['a1'],
+      source: AnalysisSource.perfectDatabaseAndEngine,
+    );
+
+    await _pumpAnalysisButton(tester, session);
+    await AnalysisService.goDeeper(
+      tester.element(find.byKey(const Key('analysis_service_toggle'))),
+    );
+    await tester.pump();
+
+    expect(AnalysisMode.source, AnalysisSource.perfectDatabaseAndEngine);
+    expect(AnalysisMode.analysisResults, databaseResults);
+    expect(AnalysisMode.trapMoves, <String>['a1']);
+    expect(AnalysisMode.analysisLineResults.single.move, 'a7');
+    expect(AnalysisMode.analysisLineResults.single.depth, 1);
+    expect(session.requestedMoveLimitValues, <int>[
+      AnalysisMode.maxEngineSearchTimeMs,
+    ]);
+  });
+
   testWidgets('progressive engine updates keep analysis running', (
     WidgetTester tester,
   ) async {
