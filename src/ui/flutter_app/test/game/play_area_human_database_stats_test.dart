@@ -2927,6 +2927,11 @@ void main() {
       find.byKey(const Key('play_area_analysis_summary_graph_header')),
       findsNothing,
     );
+    expect(
+      find.byKey(const Key('play_area_analysis_summary_key_moments_header')),
+      findsOneWidget,
+    );
+    expect(find.text('Key moments'), findsOneWidget);
 
     final Finder topKeyMoment = find.byKey(
       const Key('play_area_analysis_summary_key_moment'),
@@ -2988,6 +2993,11 @@ void main() {
       ),
       findsOneWidget,
     );
+    expect(
+      find.byKey(const Key('play_area_analysis_summary_key_moments_header')),
+      findsOneWidget,
+    );
+    expect(find.text('Key moments'), findsOneWidget);
     final Finder topKeyMoment = find.byKey(
       const Key('play_area_analysis_summary_key_moment'),
     );

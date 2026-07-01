@@ -5405,6 +5405,14 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                           leading: const Icon(Icons.show_chart_outlined),
                           title: Text(strings.showAdvantageGraph),
                         ),
+                      if (keyMoments.isNotEmpty)
+                        ListTile(
+                          key: const Key(
+                            'play_area_analysis_summary_key_moments_header',
+                          ),
+                          leading: const Icon(Icons.timeline_outlined),
+                          title: Text(strings.analysisKeyMoments),
+                        ),
                       for (
                         int keyMomentIndex = 0;
                         keyMomentIndex < keyMoments.length;
@@ -5847,7 +5855,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                   'play_area_analysis_summary_key_moment_'
                   '${moment.dataIndex}',
                 ),
-          leading: const Icon(Icons.timeline_outlined),
+          leading: const Icon(Icons.arrow_right_alt_rounded),
           title: Text(_keyMomentTitle(strings, moment)),
           subtitle: _AnalysisSummaryKeyMomentLine(moment: moment),
           trailing: const Icon(Icons.chevron_right),

@@ -4830,6 +4830,8 @@
     "@analysisKeyMomentGain": {},
     "analysisKeyMomentDrop": "Drop",
     "@analysisKeyMomentDrop": {},
+    "analysisKeyMoments": "Key moments",
+    "@analysisKeyMoments": {},
     "analysisSummaryEmptyHint": "Run analysis to review this position.",
     "@analysisSummaryEmptyHint": {},
     "showEngineLines": "Show Engine Lines",
