@@ -2981,6 +2981,7 @@ class PlayAreaState extends State<PlayArea> {
             ],
           ),
           summary: _AnalysisSummaryPanel(
+            advantageData: advantageData,
             onOpenFullMoveList: () =>
                 _openMovesWithNavigator(Navigator.of(context)),
             onAnalyze: () {
@@ -5056,10 +5057,12 @@ class _AnalysisPanel extends StatelessWidget {
 
 class _AnalysisSummaryPanel extends StatelessWidget {
   const _AnalysisSummaryPanel({
+    required this.advantageData,
     required this.onOpenFullMoveList,
     required this.onAnalyze,
   });
 
+  final List<int> advantageData;
   final VoidCallback onOpenFullMoveList;
   final VoidCallback onAnalyze;
 
@@ -5084,6 +5087,9 @@ class _AnalysisSummaryPanel extends StatelessWidget {
             final String? trapSummary = _trapSummary();
             final bool canRequestAnalysis =
                 !AnalysisMode.isFullAnalysis && !AnalysisMode.isAnalyzing;
+            final bool showAdvantageGraph =
+                DB().displaySettings.isAdvantageGraphShown &&
+                advantageData.isNotEmpty;
 
             return ListView(
               key: const Key('play_area_analysis_summary'),
@@ -5091,6 +5097,32 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                 vertical: AppStyles.bodyPadding,
               ),
               children: <Widget>[
+                if (showAdvantageGraph)
+                  LichessListSection(
+                    cardKey: const Key('play_area_analysis_summary_graph_card'),
+                    children: <Widget>[
+                      ListTile(
+                        key: const Key(
+                          'play_area_analysis_summary_graph_header',
+                        ),
+                        leading: const Icon(Icons.show_chart_outlined),
+                        title: Text(strings.showAdvantageGraph),
+                      ),
+                      SizedBox(
+                        key: const Key(
+                          'play_area_analysis_summary_advantage_graph',
+                        ),
+                        height: 112,
+                        width: double.infinity,
+                        child: CustomPaint(
+                          key: const Key(
+                            'play_area_analysis_summary_advantage_paint',
+                          ),
+                          painter: AdvantageGraphPainter(advantageData),
+                        ),
+                      ),
+                    ],
+                  ),
                 LichessListSection(
                   cardKey: const Key('play_area_analysis_summary_card'),
                   children: <Widget>[

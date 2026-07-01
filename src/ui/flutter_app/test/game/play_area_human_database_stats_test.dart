@@ -2261,6 +2261,39 @@ void main() {
     AnalysisMode.setAnalyzing(false);
   });
 
+  testWidgets('analysis summary shows the advantage graph', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+      isAdvantageGraphShown: true,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    final PlayAreaState playAreaState = tester.state<PlayAreaState>(
+      find.byType(PlayArea),
+    );
+    playAreaState.advantageData
+      ..clear()
+      ..addAll(<int>[0, 24, -12, 36]);
+
+    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_summary_advantage_graph')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_summary_advantage_paint')),
+      findsOneWidget,
+    );
+  });
+
   testWidgets(
     'deep analysis marks max search time in summary and engine sheet',
     (WidgetTester tester) async {

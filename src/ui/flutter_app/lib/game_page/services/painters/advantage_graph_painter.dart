@@ -20,7 +20,7 @@ import '../../../shared/utils/helpers/color_helpers/color_helper.dart';
 /// Below the advantage line is filled with DB().colorSettings.whitePieceColor at 50% opacity.
 /// The advantage line thus appears as a boundary line within a semi-transparent overlay.
 class AdvantageGraphPainter extends CustomPainter {
-  AdvantageGraphPainter(this.data);
+  AdvantageGraphPainter(List<int> data) : data = List<int>.unmodifiable(data);
 
   final List<int> data;
 
