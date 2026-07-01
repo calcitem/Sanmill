@@ -6640,7 +6640,7 @@ class _AnalysisMovesHeader extends StatelessWidget {
         final ColorScheme colorScheme = theme.colorScheme;
         final S strings = S.of(context);
         final GameRecorder recorder = GameController().gameRecorder;
-        final String subtitle = _subtitle(strings, recorder);
+        final _AnalysisMovesHeaderLabels labels = _labels(strings, recorder);
 
         return DecoratedBox(
           decoration: BoxDecoration(
@@ -6676,7 +6676,7 @@ class _AnalysisMovesHeader extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          subtitle,
+                          labels.subtitle,
                           key: const Key(
                             'play_area_analysis_moves_header_subtitle',
                           ),
@@ -6692,7 +6692,7 @@ class _AnalysisMovesHeader extends StatelessWidget {
                   ),
                   IconButton(
                     key: const Key('play_area_analysis_open_full_move_list'),
-                    tooltip: strings.moveList,
+                    tooltip: labels.fullMoveListAction,
                     visualDensity: VisualDensity.compact,
                     icon: const Icon(Icons.format_list_numbered),
                     onPressed: onOpenFullMoveList,
@@ -6706,7 +6706,7 @@ class _AnalysisMovesHeader extends StatelessWidget {
     );
   }
 
-  String _subtitle(S strings, GameRecorder recorder) {
+  _AnalysisMovesHeaderLabels _labels(S strings, GameRecorder recorder) {
     final int moveCount = _recorderPathWithMainlineContinuation(
       recorder,
     ).length;
@@ -6716,8 +6716,27 @@ class _AnalysisMovesHeader extends StatelessWidget {
       '$moveCount',
       if (variationCount > 0) '${strings.variations} $variationCount',
     ];
-    return parts.join(' · ');
+    final String subtitle = parts.join(' · ');
+
+    return _AnalysisMovesHeaderLabels(
+      subtitle: subtitle,
+      fullMoveListAction: <String>[
+        strings.moveList,
+        strings.smallBoard,
+        subtitle,
+      ].join(' · '),
+    );
   }
+}
+
+class _AnalysisMovesHeaderLabels {
+  const _AnalysisMovesHeaderLabels({
+    required this.subtitle,
+    required this.fullMoveListAction,
+  });
+
+  final String subtitle;
+  final String fullMoveListAction;
 }
 
 class _AnalysisVariationsBar extends StatelessWidget {

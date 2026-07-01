@@ -4866,6 +4866,10 @@ void main() {
       find.byKey(const Key('play_area_analysis_open_full_move_list')),
       findsOneWidget,
     );
+    expect(
+      find.byTooltip('Move list · Small board · Current line only · 1'),
+      findsOneWidget,
+    );
 
     await tester.tap(
       find.byKey(const Key('play_area_analysis_open_full_move_list')),
