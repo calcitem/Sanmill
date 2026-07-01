@@ -1859,7 +1859,7 @@ void main() {
     Text sourceLabel = tester.widget<Text>(
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_label')),
     );
-    expect(sourceLabel.data, 'DB');
+    expect(sourceLabel.data, 'Perfect database');
 
     AnalysisMode.enable(<MoveAnalysisResult>[
       const MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.advantage),
@@ -2254,6 +2254,76 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_analysis_engine_lines')),
+      findsNothing,
+    );
+  });
+
+  testWidgets('perfect database analysis lines use display candidates', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    final MoveAnalysisResult weak = MoveAnalysisResult(
+      move: 'a1',
+      outcome: AnalysisOutcome.withValueAndSteps(AnalysisOutcome.loss, '-1', 6),
+    );
+    final MoveAnalysisResult best = MoveAnalysisResult(
+      move: 'd6',
+      outcome: AnalysisOutcome.withValueAndSteps(AnalysisOutcome.win, '1', 2),
+    );
+    final MoveAnalysisResult draw = MoveAnalysisResult(
+      move: 'f4',
+      outcome: AnalysisOutcome.withValueAndSteps(AnalysisOutcome.draw, '0', 0),
+    );
+
+    AnalysisMode.setEngineLineCount(2);
+    AnalysisMode.enable(
+      <MoveAnalysisResult>[weak, best, draw],
+      lineResults: <MoveAnalysisResult>[best, draw, weak],
+      source: AnalysisSource.perfectDatabase,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    expect(AnalysisMode.analysisResults, hasLength(3));
+    expect(AnalysisMode.analysisLineResults, hasLength(3));
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_line_0')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_line_1')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_engine_line_2')),
+      findsNothing,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_engine_line_0')),
+        matching: find.textContaining('d6'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_engine_line_1')),
+        matching: find.textContaining('f4'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_engine_lines')),
+        matching: find.textContaining('a1'),
+      ),
       findsNothing,
     );
   });

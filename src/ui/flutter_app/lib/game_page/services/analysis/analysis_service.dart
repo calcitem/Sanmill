@@ -187,7 +187,12 @@ class AnalysisService {
       final List<MoveAnalysisResult> results = report.moves
           .map(_resultFromDto)
           .toList(growable: false);
-      AnalysisMode.enable(results, trapMoves: report.traps);
+      AnalysisMode.enable(
+        results,
+        lineResults: _rankedLineResults(results),
+        trapMoves: report.traps,
+        source: AnalysisSource.perfectDatabase,
+      );
     } catch (e, st) {
       logger.e("$_logTag Analysis failed: $e", stackTrace: st);
     } finally {
@@ -353,7 +358,7 @@ class AnalysisService {
       return null;
     }
     int? depth;
-    for (final MoveAnalysisResult result in AnalysisMode.analysisResults) {
+    for (final MoveAnalysisResult result in AnalysisMode.analysisLineResults) {
       final int? candidate = result.depth;
       if (candidate == null || candidate <= 0) {
         continue;
@@ -412,6 +417,74 @@ class AnalysisService {
         dto.steps >= 0 ? dto.steps : null,
       ),
     );
+  }
+
+  static List<MoveAnalysisResult> _rankedLineResults(
+    List<MoveAnalysisResult> results,
+  ) {
+    final List<MoveAnalysisResult> ranked = List<MoveAnalysisResult>.from(
+      results,
+    );
+    ranked.sort(_compareLineResults);
+    return ranked;
+  }
+
+  static int _compareLineResults(MoveAnalysisResult a, MoveAnalysisResult b) {
+    final int valueOrder = _lineSortValue(b).compareTo(_lineSortValue(a));
+    if (valueOrder != 0) {
+      return valueOrder;
+    }
+
+    final int stepOrder = _compareStepTie(a, b);
+    if (stepOrder != 0) {
+      return stepOrder;
+    }
+
+    const int noRank = 1 << 30;
+    final int rankOrder = (a.rank ?? noRank).compareTo(b.rank ?? noRank);
+    if (rankOrder != 0) {
+      return rankOrder;
+    }
+
+    return a.move.compareTo(b.move);
+  }
+
+  static int _compareStepTie(MoveAnalysisResult a, MoveAnalysisResult b) {
+    final int? aSteps = a.outcome.stepCount;
+    final int? bSteps = b.outcome.stepCount;
+    if (aSteps == null && bSteps == null) {
+      return 0;
+    }
+    if (aSteps == null) {
+      return 1;
+    }
+    if (bSteps == null) {
+      return -1;
+    }
+
+    final double value = _lineSortValue(a);
+    if (value < 0) {
+      return bSteps.compareTo(aSteps);
+    }
+    return aSteps.compareTo(bSteps);
+  }
+
+  static double _lineSortValue(MoveAnalysisResult result) {
+    final String? value = result.outcome.valueStr;
+    if (value != null && value.isNotEmpty) {
+      final double? parsed = double.tryParse(value);
+      if (parsed != null) {
+        return parsed;
+      }
+    }
+    return switch (result.outcome.name) {
+      'win' => 1.0,
+      'advantage' => 0.5,
+      'draw' => 0.0,
+      'disadvantage' => -0.5,
+      'loss' => -1.0,
+      _ => double.negativeInfinity,
+    };
   }
 
   static void _showSnackBar(BuildContext context, String message) {

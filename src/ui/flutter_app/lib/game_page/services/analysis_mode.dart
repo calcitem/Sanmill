@@ -101,9 +101,8 @@ class MoveAnalysisResult {
   /// Searched node count for this engine line, when available.
   final int? nodes;
 
-  /// Principal variation move tokens.  Current Mill engine support may only
-  /// provide the root move; the UI keeps this shape so deeper PVs can be wired
-  /// in without another model change.
+  /// Principal variation move tokens. Perfect-database entries usually carry
+  /// only the root move; engine entries may carry a deeper PV.
   final List<String> line;
 
   List<String> get displayLine => line.isEmpty ? <String>[move] : line;
@@ -146,6 +145,7 @@ class AnalysisMode {
   static AnalysisOverlayMode? _overlayMode;
   static AnalysisSource? _source;
   static List<MoveAnalysisResult> _analysisResults = <MoveAnalysisResult>[];
+  static List<MoveAnalysisResult> _analysisLineResults = <MoveAnalysisResult>[];
   static List<MoveAnalysisResult> _normalEngineAnalysisResults =
       <MoveAnalysisResult>[];
   static List<String> _trapMoves = <String>[];
@@ -183,8 +183,12 @@ class AnalysisMode {
   /// Number of engine candidate lines to show in analysis mode.
   static int get engineLineCount => _engineLineCount;
 
-  /// The current per-move analysis results.
+  /// The current full per-move analysis results used by the board overlay.
   static List<MoveAnalysisResult> get analysisResults => _analysisResults;
+
+  /// Candidate lines used by the analysis line panel and summary.
+  static List<MoveAnalysisResult> get analysisLineResults =>
+      _analysisLineResults;
 
   /// The most recent non-threat engine results for the same analysis session.
   static List<MoveAnalysisResult> get normalEngineAnalysisResults =>
@@ -200,17 +204,19 @@ class AnalysisMode {
   /// Enable the overlay with the given [results] (and optional [trapMoves]).
   static void enable(
     List<MoveAnalysisResult> results, {
+    List<MoveAnalysisResult>? lineResults,
     List<String> trapMoves = const <String>[],
     AnalysisOverlayMode mode = AnalysisOverlayMode.analysis,
     AnalysisSource source = AnalysisSource.perfectDatabase,
     bool isThreatMode = false,
   }) {
     _analysisResults = results;
+    _analysisLineResults = lineResults ?? results;
     if (!isThreatMode) {
       _normalEngineAnalysisResults =
           source == AnalysisSource.engine &&
               mode == AnalysisOverlayMode.analysis
-          ? results
+          ? _analysisLineResults
           : <MoveAnalysisResult>[];
     }
     _trapMoves = trapMoves;
@@ -228,10 +234,12 @@ class AnalysisMode {
         !_isAnalyzing &&
         !_isThreatMode &&
         _analysisResults.isEmpty &&
+        _analysisLineResults.isEmpty &&
         _trapMoves.isEmpty) {
       return;
     }
     _analysisResults = <MoveAnalysisResult>[];
+    _analysisLineResults = <MoveAnalysisResult>[];
     _normalEngineAnalysisResults = <MoveAnalysisResult>[];
     _trapMoves = <String>[];
     _overlayMode = null;

@@ -50,6 +50,34 @@ void main() {
     expect(AnalysisMode.isHint, isFalse);
     expect(AnalysisMode.source, isNull);
     expect(AnalysisMode.analysisResults, isEmpty);
+    expect(AnalysisMode.analysisLineResults, isEmpty);
+  });
+
+  test('stores display lines separately from full overlay results', () {
+    const List<MoveAnalysisResult> fullResults = <MoveAnalysisResult>[
+      MoveAnalysisResult(move: 'a1', outcome: AnalysisOutcome.loss),
+      MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.win),
+      MoveAnalysisResult(move: 'f4', outcome: AnalysisOutcome.draw),
+    ];
+    const List<MoveAnalysisResult> lineResults = <MoveAnalysisResult>[
+      MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.win),
+      MoveAnalysisResult(move: 'f4', outcome: AnalysisOutcome.draw),
+    ];
+
+    AnalysisMode.enable(fullResults, lineResults: lineResults);
+
+    expect(
+      AnalysisMode.analysisResults.map(
+        (MoveAnalysisResult result) => result.move,
+      ),
+      <String>['a1', 'd6', 'f4'],
+    );
+    expect(
+      AnalysisMode.analysisLineResults.map(
+        (MoveAnalysisResult result) => result.move,
+      ),
+      <String>['d6', 'f4'],
+    );
   });
 
   test('tracks threat mode independently from analysis results', () {

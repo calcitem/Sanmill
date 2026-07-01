@@ -1507,7 +1507,7 @@ class PlayAreaState extends State<PlayArea> {
       return null;
     }
     int? depth;
-    for (final MoveAnalysisResult result in AnalysisMode.analysisResults) {
+    for (final MoveAnalysisResult result in AnalysisMode.analysisLineResults) {
       final int? candidate = result.depth;
       if (candidate == null || candidate <= 0) {
         continue;
@@ -2411,15 +2411,16 @@ class PlayAreaState extends State<PlayArea> {
     return _isAnalysisMode &&
         DB().displaySettings.isPositionalAdvantageIndicatorShown &&
         AnalysisMode.isFullAnalysis &&
-        AnalysisMode.analysisResults.isNotEmpty;
+        AnalysisMode.analysisLineResults.isNotEmpty;
   }
 
   int _analysisEvaluationGaugeValue() {
-    if (!AnalysisMode.isFullAnalysis || AnalysisMode.analysisResults.isEmpty) {
+    if (!AnalysisMode.isFullAnalysis ||
+        AnalysisMode.analysisLineResults.isEmpty) {
       return 0;
     }
     return _analysisOutcomeGaugeValue(
-      AnalysisMode.analysisResults.first.outcome,
+      AnalysisMode.analysisLineResults.first.outcome,
     );
   }
 
@@ -2519,7 +2520,7 @@ class PlayAreaState extends State<PlayArea> {
         return _AnalysisEngineLines(
           key: const Key('play_area_analysis_engine_lines'),
           results: AnalysisMode.isFullAnalysis
-              ? AnalysisMode.analysisResults
+              ? AnalysisMode.analysisLineResults
               : const <MoveAnalysisResult>[],
           onMoveTap: (String move) => _applyAnalysisMove(context, move),
         );
@@ -4168,7 +4169,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                     ListTile(
                       key: const Key('play_area_analysis_summary_engine'),
                       leading: const Icon(Icons.memory_outlined),
-                      title: Text(strings.engine),
+                      title: Text(_analysisDetailsTitle(strings)),
                       subtitle: Text(_engineSummary(context, bestResult)),
                     ),
                     ListTile(
@@ -4194,10 +4195,11 @@ class _AnalysisSummaryPanel extends StatelessWidget {
   }
 
   MoveAnalysisResult? _bestResult() {
-    if (!AnalysisMode.isFullAnalysis || AnalysisMode.analysisResults.isEmpty) {
+    if (!AnalysisMode.isFullAnalysis ||
+        AnalysisMode.analysisLineResults.isEmpty) {
       return null;
     }
-    return AnalysisMode.analysisResults.first;
+    return AnalysisMode.analysisLineResults.first;
   }
 
   String _sourceLabel(BuildContext context) {
@@ -4207,7 +4209,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
         AnalysisMode.isThreatMode
             ? '${_analysisThreatLabel(strings)} · ${strings.engine}'
             : strings.engine,
-      AnalysisSource.perfectDatabase => 'DB',
+      AnalysisSource.perfectDatabase => strings.perfectDatabaseSettings,
       null => strings.openingExplorerNoDataShort,
     };
   }
@@ -4225,6 +4227,13 @@ class _AnalysisSummaryPanel extends StatelessWidget {
       result.displayLine.join(' '),
     ];
     return parts.join(' · ');
+  }
+
+  String _analysisDetailsTitle(S strings) {
+    return switch (AnalysisMode.source) {
+      AnalysisSource.perfectDatabase => strings.perfectDatabaseSettings,
+      _ => strings.engine,
+    };
   }
 
   String _compactCount(int value) {
@@ -4722,7 +4731,7 @@ class _AnalysisBottomBar extends StatelessWidget {
         AnalysisMode.isThreatMode
             ? _analysisThreatLabel(strings)
             : strings.engine,
-      AnalysisSource.perfectDatabase => 'DB',
+      AnalysisSource.perfectDatabase => strings.perfectDatabaseSettings,
       null => strings.engine,
     };
   }
