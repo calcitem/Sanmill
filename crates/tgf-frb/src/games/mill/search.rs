@@ -23,7 +23,8 @@ use std::time::{Duration, Instant};
 use once_cell::sync::Lazy;
 
 use tgf_core::{
-    Action, Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext, Workbench,
+    Action, Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext,
+    SearchActionList, Workbench,
 };
 use tgf_mill::{
     EngineRuntimeOptions, MillActionKind, MillGame, MillRules, MillSearchAlgorithmKind,
@@ -82,6 +83,22 @@ fn algorithm_to_search(kind: MillSearchAlgorithmKind) -> SearchAlgorithm {
         MillSearchAlgorithmKind::Mtdf => SearchAlgorithm::Mtdf,
         MillSearchAlgorithmKind::Mcts => SearchAlgorithm::Mcts,
         MillSearchAlgorithmKind::Random => SearchAlgorithm::Random,
+    }
+}
+
+fn search_context_for_config(config: &MillEngineConfigPlan) -> MoveOrderContext {
+    MoveOrderContext {
+        algorithm: match algorithm_to_search(config.algorithm) {
+            SearchAlgorithm::AlphaBeta => MoveOrderAlgorithm::AlphaBeta,
+            SearchAlgorithm::Pvs => MoveOrderAlgorithm::Pvs,
+            SearchAlgorithm::Mtdf => MoveOrderAlgorithm::Mtdf,
+            SearchAlgorithm::Mcts => MoveOrderAlgorithm::Mcts,
+            SearchAlgorithm::Random => MoveOrderAlgorithm::Random,
+        },
+        skill_level: config.skill_level,
+        shuffling: config.shuffling,
+        hash_move: None,
+        shuffle_seed: search_shuffle_seed(),
     }
 }
 
@@ -364,20 +381,23 @@ fn multi_pv_limit(config: &MillEngineConfigPlan) -> usize {
     usize::from(config.multi_pv).clamp(1, MAX_MULTI_PV_LINES)
 }
 
-fn multi_pv_events(
-    game: &MillGame,
-    snapshot: &GameStateSnapshot,
-    searcher: &Searcher<MillGame>,
-    depth: i32,
+struct MultiPvEventContext<'a> {
+    game: &'a MillGame,
+    snapshot: &'a GameStateSnapshot,
+    searcher: &'a Searcher<MillGame>,
     root_side_to_move: i8,
-    config: &MillEngineConfigPlan,
+    config: &'a MillEngineConfigPlan,
+    search_context: MoveOrderContext,
     nodes_per_second: u64,
-) -> Vec<EngineEvent> {
-    if config.multi_pv <= 1 {
+    complete_tail: bool,
+}
+
+fn multi_pv_events(ctx: &MultiPvEventContext<'_>, depth: i32) -> Vec<EngineEvent> {
+    if ctx.config.multi_pv <= 1 {
         return Vec::new();
     }
 
-    let mut rows = searcher.root_moves().to_vec();
+    let mut rows = ctx.searcher.root_moves().to_vec();
     if rows.is_empty() {
         return Vec::new();
     }
@@ -390,55 +410,109 @@ fn multi_pv_events(
             continue;
         }
         let notation = action_to_uci_str(row.action);
-        let pv_notation = multi_pv_notation(game, snapshot, searcher, row.action, depth);
+        let pv_notation = multi_pv_notation(ctx, row.action, depth);
         let rank = emitted.len() + 1;
         events.push(crate::engine_event::principal_variation(
             crate::engine_event::PrincipalVariationEvent {
                 rank,
                 action: row.action,
                 score: row.value,
-                root_side_to_move,
+                root_side_to_move: ctx.root_side_to_move,
                 notation: &notation,
                 pv_notation: &pv_notation,
                 nodes: row.nodes,
-                nodes_per_second,
+                nodes_per_second: ctx.nodes_per_second,
                 depth,
                 cutoff: row.cutoff,
             },
         ));
         emitted.push(row.action);
-        if emitted.len() >= multi_pv_limit(config) {
+        if emitted.len() >= multi_pv_limit(ctx.config) {
             break;
         }
     }
     events
 }
 
-fn multi_pv_notation(
-    game: &MillGame,
-    snapshot: &GameStateSnapshot,
-    searcher: &Searcher<MillGame>,
-    root_action: Action,
-    depth: i32,
-) -> String {
+fn multi_pv_notation(ctx: &MultiPvEventContext<'_>, root_action: Action, depth: i32) -> String {
     let mut line = Vec::<String>::new();
     line.push(action_to_uci_str(root_action));
     if root_action.is_none() {
         return line.join(",");
     }
 
-    let mut wb = game.build_workbench(snapshot);
+    let mut wb = ctx.game.build_workbench(ctx.snapshot);
     wb.do_move(root_action);
     let max_tail = multi_pv_ply_limit(depth).saturating_sub(1);
-    for action in searcher.principal_variation(&mut wb, max_tail) {
+    let mut applied = 1_usize;
+    for action in ctx.searcher.principal_variation(&mut wb, max_tail) {
+        if action.is_none() {
+            break;
+        }
+        wb.do_move(action);
+        applied += 1;
         line.push(action_to_uci_str(action));
     }
-    wb.undo_move();
+    if ctx.complete_tail && line.len() < max_tail + 1 {
+        // Keep iterative progress cheap; only final PV events synthesize a
+        // shallow continuation when TT move hints do not cover the whole line.
+        let remaining_tail = max_tail + 1 - line.len();
+        applied += append_shallow_pv_tail(
+            &mut wb,
+            &mut line,
+            ctx.config,
+            ctx.search_context,
+            remaining_tail,
+        );
+    }
+    for _ in 0..applied {
+        wb.undo_move();
+    }
     line.join(",")
 }
 
 fn multi_pv_ply_limit(depth: i32) -> usize {
     (depth.max(1) as usize).min(MAX_MULTI_PV_PLIES)
+}
+
+fn append_shallow_pv_tail(
+    wb: &mut tgf_mill::MillWorkbench,
+    line: &mut Vec<String>,
+    config: &MillEngineConfigPlan,
+    search_context: MoveOrderContext,
+    max_extra_plies: usize,
+) -> usize {
+    if max_extra_plies == 0 {
+        return 0;
+    }
+
+    let mut tail_config = config.clone();
+    tail_config.depth = 1;
+    tail_config.move_time_ms = 0;
+    tail_config.multi_pv = 1;
+    tail_config.use_lazy_smp = false;
+
+    let mut tail_searcher = Searcher::new();
+    configure_mill_searcher_defaults(&mut tail_searcher);
+    tail_searcher.set_options(configured_search_options(&tail_config, search_context));
+
+    let mut applied = 0_usize;
+    while applied < max_extra_plies && !wb.is_terminal() {
+        let result = run_searcher_algorithm(&mut tail_searcher, wb, tail_config.algorithm, 1, 0);
+        let action = result.best_action;
+        if action.is_none() {
+            break;
+        }
+        let mut legal = SearchActionList::new();
+        MillGame::generate_legal_ctx(wb, &mut legal, &search_context);
+        if !legal.contains(&action) {
+            break;
+        }
+        wb.do_move(action);
+        line.push(action_to_uci_str(action));
+        applied += 1;
+    }
+    applied
 }
 
 struct SearchProgressEmitter<'a> {
@@ -456,15 +530,17 @@ impl SearchProgressEmitter<'_> {
         let _ = self
             .sink
             .add(crate::engine_event::info(depth, result.score, result.nodes));
-        for event in multi_pv_events(
-            self.game,
-            self.snapshot,
+        let ctx = MultiPvEventContext {
+            game: self.game,
+            snapshot: self.snapshot,
             searcher,
-            depth,
-            self.root_side_to_move,
-            self.config,
-            current_nodes_per_second,
-        ) {
+            root_side_to_move: self.root_side_to_move,
+            config: self.config,
+            search_context: search_context_for_config(self.config),
+            nodes_per_second: current_nodes_per_second,
+            complete_tail: false,
+        };
+        for event in multi_pv_events(&ctx, depth) {
             let _ = self.sink.add(event);
         }
     }
@@ -676,19 +752,7 @@ fn run_mill_engine_config_event_stream(
     let mut wb = game.build_workbench(&snapshot);
     let mut searcher = mill_searcher_for_config(&config);
     let abort = Arc::new(AtomicBool::new(false));
-    let search_context = MoveOrderContext {
-        algorithm: match algorithm_to_search(config.algorithm) {
-            SearchAlgorithm::AlphaBeta => MoveOrderAlgorithm::AlphaBeta,
-            SearchAlgorithm::Pvs => MoveOrderAlgorithm::Pvs,
-            SearchAlgorithm::Mtdf => MoveOrderAlgorithm::Mtdf,
-            SearchAlgorithm::Mcts => MoveOrderAlgorithm::Mcts,
-            SearchAlgorithm::Random => MoveOrderAlgorithm::Random,
-        },
-        skill_level: config.skill_level,
-        shuffling: config.shuffling,
-        hash_move: None,
-        shuffle_seed: search_shuffle_seed(),
-    };
+    let search_context = search_context_for_config(&config);
     searcher.set_abort_flag(Arc::clone(&abort));
     searcher.set_options(configured_search_options(&config, search_context));
 
@@ -884,15 +948,17 @@ fn run_mill_engine_config_event_stream(
     };
 
     if config.multi_pv > 1 {
-        for event in multi_pv_events(
-            &game,
-            &snapshot,
-            &searcher,
-            max_depth,
-            snapshot.side_to_move,
-            &config,
-            nodes_per_second(result.nodes, search_started_at.elapsed()),
-        ) {
+        let ctx = MultiPvEventContext {
+            game: &game,
+            snapshot: &snapshot,
+            searcher: &searcher,
+            root_side_to_move: snapshot.side_to_move,
+            config: &config,
+            search_context,
+            nodes_per_second: nodes_per_second(result.nodes, search_started_at.elapsed()),
+            complete_tail: true,
+        };
+        for event in multi_pv_events(&ctx, max_depth) {
             let _ = sink.add(event);
         }
     }
@@ -1006,38 +1072,38 @@ mod tests {
         assert!(!default_config_searcher.root_move_summaries_enabled());
         let _ = searcher.search(&mut wb, 1);
 
-        assert!(
-            multi_pv_events(
-                &game,
-                &snapshot,
-                &searcher,
-                1,
-                snapshot.side_to_move,
-                &MillEngineConfigPlan::default(),
-                0,
-            )
-            .is_empty()
-        );
+        let default_config = MillEngineConfigPlan::default();
+        let default_ctx = MultiPvEventContext {
+            game: &game,
+            snapshot: &snapshot,
+            searcher: &searcher,
+            root_side_to_move: snapshot.side_to_move,
+            config: &default_config,
+            search_context: search_context_for_config(&default_config),
+            nodes_per_second: 0,
+            complete_tail: false,
+        };
+        assert!(multi_pv_events(&default_ctx, 1).is_empty());
 
-        let mut pv_searcher = mill_searcher_for_config(&MillEngineConfigPlan {
+        let pv_config = MillEngineConfigPlan {
             multi_pv: 3,
             ..MillEngineConfigPlan::default()
-        });
+        };
+        let mut pv_searcher = mill_searcher_for_config(&pv_config);
         assert!(pv_searcher.tt_move_enabled());
         assert!(pv_searcher.root_move_summaries_enabled());
         let _ = pv_searcher.search(&mut wb, 2);
-        let events = multi_pv_events(
-            &game,
-            &snapshot,
-            &pv_searcher,
-            2,
-            snapshot.side_to_move,
-            &MillEngineConfigPlan {
-                multi_pv: 3,
-                ..MillEngineConfigPlan::default()
-            },
-            2048,
-        );
+        let pv_ctx = MultiPvEventContext {
+            game: &game,
+            snapshot: &snapshot,
+            searcher: &pv_searcher,
+            root_side_to_move: snapshot.side_to_move,
+            config: &pv_config,
+            search_context: search_context_for_config(&pv_config),
+            nodes_per_second: 2048,
+            complete_tail: false,
+        };
+        let events = multi_pv_events(&pv_ctx, 2);
         assert!(!events.is_empty());
         assert!(events.len() <= 3);
         assert!(events.iter().all(|event| event.kind == "pv"));
@@ -1092,18 +1158,20 @@ mod tests {
             config.depth,
             |progress_searcher, depth, current| {
                 reported_depths.push(depth);
+                let ctx = MultiPvEventContext {
+                    game: &game,
+                    snapshot: &snapshot,
+                    searcher: progress_searcher,
+                    root_side_to_move: snapshot.side_to_move,
+                    config: &config,
+                    search_context,
+                    nodes_per_second: nodes_per_second(current.nodes, Duration::from_millis(1)),
+                    complete_tail: false,
+                };
                 pv_depths.extend(
-                    multi_pv_events(
-                        &game,
-                        &snapshot,
-                        progress_searcher,
-                        depth,
-                        snapshot.side_to_move,
-                        &config,
-                        nodes_per_second(current.nodes, Duration::from_millis(1)),
-                    )
-                    .into_iter()
-                    .map(|event| event.depth),
+                    multi_pv_events(&ctx, depth)
+                        .into_iter()
+                        .map(|event| event.depth),
                 );
             },
         );
@@ -1119,6 +1187,47 @@ mod tests {
         assert!(
             pv_depths.iter().any(|depth| *depth > 1),
             "MultiPV events should report iterative depths: {pv_depths:?}"
+        );
+    }
+
+    #[test]
+    fn final_multi_pv_events_complete_missing_tt_tails() {
+        let game = MillGame::default();
+        let snapshot = MillRules::default().initial_state(&[]);
+        let mut wb = game.build_workbench(&snapshot);
+        let config = MillEngineConfigPlan {
+            algorithm: MillSearchAlgorithmKind::Pvs,
+            depth: 4,
+            skill_level: 30,
+            shuffling: false,
+            multi_pv: 2,
+            ..MillEngineConfigPlan::default()
+        };
+        let search_context = search_context_for_config(&config);
+        let mut searcher = mill_searcher_for_config(&config);
+        searcher.set_options(configured_search_options(&config, search_context));
+        let result = searcher.search(&mut wb, 1);
+        assert!(
+            !result.best_action.is_none(),
+            "root search must produce a move for final PV event completion"
+        );
+
+        let ctx = MultiPvEventContext {
+            game: &game,
+            snapshot: &snapshot,
+            searcher: &searcher,
+            root_side_to_move: snapshot.side_to_move,
+            config: &config,
+            search_context,
+            nodes_per_second: nodes_per_second(result.nodes, Duration::from_millis(1)),
+            complete_tail: true,
+        };
+        let events = multi_pv_events(&ctx, config.depth);
+
+        assert!(!events.is_empty());
+        assert!(
+            events.iter().all(|event| event.reason.contains(',')),
+            "final MultiPV events should complete shallow tails: {events:?}"
         );
     }
 
