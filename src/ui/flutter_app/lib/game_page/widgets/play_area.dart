@@ -2894,6 +2894,7 @@ class PlayAreaState extends State<PlayArea> {
                   onMoveTap: (BuildContext context, PgnNode<ExtMove> node) {
                     return HistoryNavigator.gotoNode(context, node, pop: false);
                   },
+                  showMainlineContinuation: true,
                   showMovePreview: true,
                   showMoveAnnotations: AnalysisMode.showMoveAnnotations,
                   showMoveComments: AnalysisMode.showMoveComments,
@@ -3661,6 +3662,7 @@ class _InlineMoveList extends StatefulWidget {
     this.showMovePreview = false,
     this.showMoveAnnotations = false,
     this.showMoveComments = false,
+    this.showMainlineContinuation = false,
     this.layout = _InlineMoveListLayout.wrap,
     this.groupByRound = false,
     this.maxHeight,
@@ -3677,6 +3679,7 @@ class _InlineMoveList extends StatefulWidget {
   final bool showMovePreview;
   final bool showMoveAnnotations;
   final bool showMoveComments;
+  final bool showMainlineContinuation;
   final _InlineMoveListLayout layout;
   final bool groupByRound;
   final double? maxHeight;
@@ -3699,12 +3702,32 @@ class _InlineMoveListState extends State<_InlineMoveList> {
     return nodes;
   }
 
+  List<PgnNode<ExtMove>> _displayPathNodes() {
+    final List<PgnNode<ExtMove>> nodes = _currentPathNodes();
+    if (!widget.showMainlineContinuation) {
+      return nodes;
+    }
+
+    PgnNode<ExtMove>? node =
+        GameController().gameRecorder.activeNode ??
+        GameController().gameRecorder.pgnRoot;
+    while (node != null && node.children.isNotEmpty) {
+      final PgnNode<ExtMove> next = node.children.first;
+      if (nodes.contains(next)) {
+        break;
+      }
+      nodes.add(next);
+      node = next;
+    }
+    return nodes;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<int>(
       valueListenable: GameController().gameRecorder.moveCountNotifier,
       builder: (BuildContext context, _, _) {
-        final List<PgnNode<ExtMove>> nodes = _currentPathNodes();
+        final List<PgnNode<ExtMove>> nodes = _displayPathNodes();
         final PgnNode<ExtMove>? activeNode =
             GameController().gameRecorder.activeNode;
         _scheduleCurrentMoveAutoScroll(activeNode);

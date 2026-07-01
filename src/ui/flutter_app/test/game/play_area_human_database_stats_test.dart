@@ -2009,6 +2009,15 @@ void main() {
       const Key('play_area_analysis_bottom_bar_previous'),
     );
     expect(_currentPathMoves(), isEmpty);
+    final Finder movesPanel = find.byKey(const Key('play_area_analysis_moves'));
+    expect(
+      find.descendant(of: movesPanel, matching: find.text('d6')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: movesPanel, matching: find.text('f4')),
+      findsOneWidget,
+    );
 
     await _holdBottomBarButton(
       tester,
