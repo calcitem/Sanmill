@@ -1947,6 +1947,26 @@ class PlayAreaState extends State<PlayArea> {
     AnalysisMode.toggleEngineLines(persist: true);
   }
 
+  void _toggleAnalysisSoundFromMenu() {
+    assert(_isAnalysisMode, 'Analysis sound toggle is analysis-mode only.');
+    final GeneralSettings current = DB().generalSettings;
+    final bool enabled = !current.toneEnabled;
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{
+        'toolbar': 'analysisMenu',
+        'action': 'toggleSound',
+        'enabled': enabled,
+      },
+    );
+    DB().generalSettings = current.copyWith(toneEnabled: enabled);
+    if (enabled) {
+      unawaited(SoundManager().startBackgroundMusic());
+    } else {
+      unawaited(SoundManager().stopBackgroundMusic());
+    }
+  }
+
   int? _currentAnalysisEngineDepth() {
     return _analysisEngineDepth();
   }
@@ -1975,6 +1995,18 @@ class PlayAreaState extends State<PlayArea> {
       backgroundColor: _actionSheetBackground(hostContext),
       foregroundColor: _actionSheetForeground(hostContext),
       actions: <LichessActionSheetAction>[
+        if (_isAnalysisMode)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_toggle_sound'),
+            leading: Icon(
+              DB().generalSettings.toneEnabled
+                  ? Icons.volume_up_outlined
+                  : Icons.volume_off_outlined,
+            ),
+            makeLabel: (BuildContext context) =>
+                Text(S.of(context).playSoundsInTheGame),
+            onPressed: _toggleAnalysisSoundFromMenu,
+          ),
         if (_isAnalysisMode && nativeHostSession != null)
           LichessActionSheetAction(
             key: const Key('play_area_regular_game_menu_clear_saved_moves'),

@@ -23,6 +23,12 @@ class MockAudios extends Mock implements SoundManager {
   }) async {}
 
   @override
+  Future<void> startBackgroundMusic() async {}
+
+  @override
+  Future<void> stopBackgroundMusic() async {}
+
+  @override
   void mute() {}
 
   @override

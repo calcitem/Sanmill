@@ -1931,6 +1931,37 @@ void main() {
     );
   });
 
+  testWidgets('analysis menu toggles game sounds', (WidgetTester tester) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    db.generalSettings = db.generalSettings.copyWith(toneEnabled: true);
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_toggle_sound')),
+      findsOneWidget,
+    );
+    expect(db.generalSettings.toneEnabled, isTrue);
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_game_menu_toggle_sound')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(db.generalSettings.toneEnabled, isFalse);
+  });
+
   testWidgets('analysis move list toggles annotations and comments', (
     WidgetTester tester,
   ) async {
