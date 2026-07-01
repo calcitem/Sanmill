@@ -1513,6 +1513,24 @@ void main() {
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
     );
+    GameController().gameRecorder.appendMove(
+      ExtMove(
+        'd6',
+        side: PieceColor.white,
+        roundIndex: 1,
+        nags: <int>[1],
+        comments: <String>['Good opening'],
+      ),
+    );
+    GameController().gameRecorder.appendMove(
+      ExtMove(
+        'f4',
+        side: PieceColor.black,
+        roundIndex: 1,
+        nags: <int>[2],
+        comments: <String>['Check this'],
+      ),
+    );
     await _pumpSessionPlayArea(tester, session);
 
     expect(find.byKey(const Key('play_area_analysis_board')), findsOne);
@@ -1558,6 +1576,8 @@ void main() {
     expect(movesTabIcon.size, 18);
     expect(summaryTabIcon.size, 18);
     expect(find.byKey(const Key('play_area_analysis_moves')), findsOne);
+    expect(find.text('d6! {Good opening}'), findsOne);
+    expect(find.text('f4? {Check this}'), findsOne);
     expect(find.byKey(const Key('opening_explorer_embedded')), findsNothing);
 
     AnalysisMode.enable(<MoveAnalysisResult>[

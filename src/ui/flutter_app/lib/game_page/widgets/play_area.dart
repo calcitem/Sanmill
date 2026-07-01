@@ -2769,6 +2769,7 @@ class PlayAreaState extends State<PlayArea> {
                 return HistoryNavigator.gotoNode(context, node, pop: false);
               },
               showMovePreview: true,
+              showMoveAnnotations: true,
               layout: _InlineMoveListLayout.stacked,
               groupByRound: true,
             ),
@@ -3526,6 +3527,7 @@ class _InlineMoveList extends StatefulWidget {
     this.roundKeyPrefix,
     this.onMoveTap,
     this.showMovePreview = false,
+    this.showMoveAnnotations = false,
     this.layout = _InlineMoveListLayout.wrap,
     this.groupByRound = false,
     this.maxHeight,
@@ -3540,6 +3542,7 @@ class _InlineMoveList extends StatefulWidget {
   final Future<void> Function(BuildContext context, PgnNode<ExtMove> node)?
   onMoveTap;
   final bool showMovePreview;
+  final bool showMoveAnnotations;
   final _InlineMoveListLayout layout;
   final bool groupByRound;
   final double? maxHeight;
@@ -3798,12 +3801,16 @@ class _InlineMoveListState extends State<_InlineMoveList> {
     );
     final _IndexedMoveNode lastNode = segment.nodes.last;
     final String label = segment.nodes
-        .map((_IndexedMoveNode indexed) => indexed.node.data!.notation)
+        .map(
+          (_IndexedMoveNode indexed) =>
+              _moveLabel(indexed.node.data!, includeComments: false),
+        )
         .join(' ');
+    final String displayLabel = _withMoveComments(label, lastNode.node.data!);
     final PgnNode<ExtMove> targetNode = lastNode.node;
     final Widget chip = _GameMoveChip(
       key: Key('${widget.moveKeyPrefix}${lastNode.index + 1}'),
-      label: label,
+      label: displayLabel,
       selected: selected,
       selectedColor: colorScheme.primaryContainer,
       selectedTextColor: colorScheme.onPrimaryContainer,
@@ -3843,7 +3850,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
     final bool selected = node == activeNode;
     final Widget chip = _GameMoveChip(
       key: Key('${widget.moveKeyPrefix}${index + 1}'),
-      label: '${index + 1}. ${node.data!.notation}',
+      label: '${index + 1}. ${_moveLabel(node.data!, includeComments: true)}',
       selected: selected,
       selectedColor: colorScheme.primaryContainer,
       selectedTextColor: colorScheme.onPrimaryContainer,
@@ -3863,6 +3870,83 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       return KeyedSubtree(key: _currentMoveKey, child: chip);
     }
     return chip;
+  }
+
+  String _moveLabel(ExtMove move, {required bool includeComments}) {
+    if (!widget.showMoveAnnotations) {
+      return move.notation;
+    }
+
+    String label = _withNagSymbols(move.notation, move.getAllNags());
+    if (includeComments) {
+      label = _withMoveComments(label, move);
+    }
+    return label;
+  }
+
+  String _withNagSymbols(String notation, List<int> nags) {
+    if (nags.isEmpty) {
+      return notation;
+    }
+
+    final List<String> suffixSymbols = <String>[];
+    final List<String> numericSymbols = <String>[];
+    for (final int nag in nags) {
+      final String symbol = _nagSymbol(nag);
+      if (symbol.startsWith(r'$')) {
+        numericSymbols.add(symbol);
+      } else {
+        suffixSymbols.add(symbol);
+      }
+    }
+
+    final StringBuffer buffer = StringBuffer(notation);
+    if (suffixSymbols.isNotEmpty) {
+      buffer.write(suffixSymbols.join());
+    }
+    if (numericSymbols.isNotEmpty) {
+      buffer.write(' ');
+      buffer.write(numericSymbols.join(' '));
+    }
+    return buffer.toString();
+  }
+
+  String _nagSymbol(int nag) {
+    return switch (nag) {
+      1 => '!',
+      2 => '?',
+      3 => '!!',
+      4 => '??',
+      5 => '!?',
+      6 => '?!',
+      _ => '\$$nag',
+    };
+  }
+
+  String _withMoveComments(String label, ExtMove move) {
+    if (!widget.showMoveAnnotations) {
+      return label;
+    }
+
+    final String startingComments = _commentsLabel(move.startingComments);
+    final String comments = _commentsLabel(move.comments);
+    final List<String> parts = <String>[
+      if (startingComments.isNotEmpty) startingComments,
+      label,
+      if (comments.isNotEmpty) comments,
+    ];
+    return parts.join(' ');
+  }
+
+  String _commentsLabel(List<String>? comments) {
+    if (comments == null || comments.isEmpty) {
+      return '';
+    }
+    return comments
+        .map((String comment) => safeComment(comment).trim())
+        .where((String comment) => comment.isNotEmpty)
+        .map((String comment) => '{$comment}')
+        .join(' ');
   }
 
   List<Widget> _spaceMoveChips(List<Widget> chips) {
