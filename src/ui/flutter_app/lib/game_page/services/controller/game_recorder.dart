@@ -373,6 +373,7 @@ class GameRecorder {
     newChild.parent = node;
     node.children.insert(0, newChild);
     activeNode = newChild;
+    moveCountNotifier.value = currentPath.length;
   }
 
   /// Creates a new branch node under the current activeNode and sets it as active.
@@ -400,6 +401,69 @@ class GameRecorder {
     where.children.add(newChild);
     activeNode = newChild;
     moveCountNotifier.value = currentPath.length;
+  }
+
+  /// Promotes [variationNode] to the mainline child of its parent.
+  bool promoteVariationToMainline(PgnNode<ExtMove> variationNode) {
+    final PgnNode<ExtMove>? parent = variationNode.parent;
+    assert(parent != null, 'Cannot promote a branch without a parent.');
+    if (parent == null) {
+      return false;
+    }
+    assert(
+      parent.children.contains(variationNode),
+      'Cannot promote a branch that is not attached to its parent.',
+    );
+    if (!parent.children.contains(variationNode) ||
+        (parent.children.isNotEmpty &&
+            identical(parent.children.first, variationNode))) {
+      return false;
+    }
+
+    _preferredChildIndex.clear();
+    parent.children.remove(variationNode);
+    parent.children.insert(0, variationNode);
+    activeNode = variationNode;
+    moveCountNotifier.value = currentPath.length;
+    return true;
+  }
+
+  /// Deletes [branchNode] and moves the active node to its parent if needed.
+  bool deleteBranch(PgnNode<ExtMove> branchNode) {
+    final PgnNode<ExtMove>? parent = branchNode.parent;
+    assert(parent != null, 'Cannot delete the root branch.');
+    if (parent == null) {
+      return false;
+    }
+    assert(
+      parent.children.contains(branchNode),
+      'Cannot delete a branch that is not attached to its parent.',
+    );
+    if (!parent.children.contains(branchNode)) {
+      return false;
+    }
+
+    if (_isNodeOrDescendant(branchNode, activeNode)) {
+      activeNode = parent;
+    }
+    _preferredChildIndex.clear();
+    parent.children.remove(branchNode);
+    moveCountNotifier.value = currentPath.length;
+    return true;
+  }
+
+  bool _isNodeOrDescendant(
+    PgnNode<ExtMove> node,
+    PgnNode<ExtMove>? targetNode,
+  ) {
+    PgnNode<ExtMove>? current = targetNode;
+    while (current != null) {
+      if (identical(current, node)) {
+        return true;
+      }
+      current = current.parent;
+    }
+    return false;
   }
 
   /// Returns a textual representation of the move history including NAG, comments,

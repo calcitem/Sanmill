@@ -187,6 +187,41 @@ void main() {
       expect(notificationCount, 2);
     });
 
+    test('branch operations notify move listeners', () {
+      final GameRecorder recorder = GameRecorder();
+
+      recorder.appendMove(ExtMove('d6', side: PieceColor.white));
+      recorder.appendMove(ExtMove('f4', side: PieceColor.black));
+
+      int notificationCount = 0;
+      recorder.moveCountNotifier.addListener(() {
+        notificationCount++;
+      });
+
+      recorder.branchNewMove(1, ExtMove('a1', side: PieceColor.black));
+      expect(notificationCount, 1);
+      expect(recorder.currentPath.map((ExtMove move) => move.move), <String>[
+        'd6',
+        'a1',
+      ]);
+
+      final PgnNode<ExtMove> d6Node = recorder.pgnRoot.children.first;
+      final PgnNode<ExtMove> f4Node = d6Node.children.firstWhere(
+        (PgnNode<ExtMove> node) => node.data?.move == 'f4',
+      );
+      final bool promoted = recorder.promoteVariationToMainline(f4Node);
+      expect(promoted, isTrue);
+      expect(notificationCount, 2);
+      expect(d6Node.children.first, f4Node);
+      expect(recorder.activeNode, f4Node);
+
+      final bool deleted = recorder.deleteBranch(f4Node);
+      expect(deleted, isTrue);
+      expect(notificationCount, 3);
+      expect(d6Node.children.contains(f4Node), isFalse);
+      expect(recorder.activeNode, d6Node);
+    });
+
     test('mainlineNodes returns correct sequence', () {
       final GameRecorder recorder = GameRecorder();
 

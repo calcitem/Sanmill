@@ -2086,22 +2086,19 @@ class MovesListPageState extends State<MovesListPage> {
       return;
     }
 
-    setState(() {
-      // Remove from current position
-      parent.children.remove(variationNode);
-      // Insert at position 0 (main line)
-      parent.children.insert(0, variationNode);
-
-      // Checkout to this node
-      GameController().gameRecorder.activeNode = variationNode;
-    });
+    final bool promoted = GameController().gameRecorder
+        .promoteVariationToMainline(variationNode);
+    assert(promoted, 'Variation promotion must change the recorder tree.');
+    if (!promoted) {
+      return;
+    }
 
     rootScaffoldMessengerKey.currentState?.showSnackBarClear(
       'Set as main variation',
     );
 
     // Refresh the display
-    _refreshAllNodes();
+    setState(_refreshAllNodes);
   }
 
   /// Shows confirmation dialog before deleting a branch
@@ -2205,29 +2202,20 @@ class MovesListPageState extends State<MovesListPage> {
       return;
     }
 
-    final PgnNode<ExtMove>? activeNode =
-        GameController().gameRecorder.activeNode;
-    final bool containsActiveNode = _isNodeOrDescendant(
+    final bool deleted = GameController().gameRecorder.deleteBranch(
       variationNode,
-      activeNode,
     );
-
-    setState(() {
-      // If deleting a branch that contains activeNode, move activeNode to parent
-      if (containsActiveNode) {
-        GameController().gameRecorder.activeNode = parent;
-      }
-
-      // Remove the variation node from parent's children
-      parent.children.remove(variationNode);
-    });
+    assert(deleted, 'Branch deletion must change the recorder tree.');
+    if (!deleted) {
+      return;
+    }
 
     rootScaffoldMessengerKey.currentState?.showSnackBarClear(
       S.of(context).branchDeleted,
     );
 
     // Refresh the display
-    _refreshAllNodes();
+    setState(_refreshAllNodes);
   }
 
   /// Builds an overflow chip showing "+K" for hidden variations
@@ -2493,20 +2481,20 @@ class MovesListPageState extends State<MovesListPage> {
       return;
     }
 
-    setState(() {
-      // Move activeNode to parent before deleting
-      GameController().gameRecorder.activeNode = parent;
-
-      // Remove the variation node from parent's children
-      parent.children.remove(variationNode);
-    });
+    final bool deleted = GameController().gameRecorder.deleteBranch(
+      variationNode,
+    );
+    assert(deleted, 'Current branch deletion must change the recorder tree.');
+    if (!deleted) {
+      return;
+    }
 
     rootScaffoldMessengerKey.currentState?.showSnackBarClear(
       S.of(context).branchDeleted,
     );
 
     // Refresh the display
-    _refreshAllNodes();
+    setState(_refreshAllNodes);
   }
 
   /// Finds all branch points (nodes with multiple children) in the active path
