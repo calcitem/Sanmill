@@ -5527,7 +5527,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
       if (AnalysisMode.isAnalyzing) {
         return S.of(context).analyzing;
       }
-      return S.of(context).openingExplorerNoDataShort;
+      return S.of(context).analysisSummaryEmptyHint;
     }
 
     final int? depth = _analysisEngineDepth();

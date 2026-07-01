@@ -4285,5 +4285,7 @@
     "analysisKeyMomentGain": "優勢上升",
     "@analysisKeyMomentGain": {},
     "analysisKeyMomentDrop": "優勢下滑",
-    "@analysisKeyMomentDrop": {}
+    "@analysisKeyMomentDrop": {},
+    "analysisSummaryEmptyHint": "執行分析來複盤目前局面。",
+    "@analysisSummaryEmptyHint": {}
 }

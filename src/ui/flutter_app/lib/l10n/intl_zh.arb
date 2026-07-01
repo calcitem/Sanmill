@@ -4682,6 +4682,8 @@
     "@analysisKeyMomentGain": {},
     "analysisKeyMomentDrop": "优势下滑",
     "@analysisKeyMomentDrop": {},
+    "analysisSummaryEmptyHint": "运行分析来复盘当前局面。",
+    "@analysisSummaryEmptyHint": {},
     "showEngineLines": "显示引擎线",
     "@showEngineLines": {},
     "hideEngineLines": "隐藏引擎线",

@@ -2818,6 +2818,13 @@ void main() {
       find.byKey(const Key('play_area_analysis_summary_engine_progress')),
       findsNothing,
     );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_engine')),
+        matching: find.text('Run analysis to review this position.'),
+      ),
+      findsOneWidget,
+    );
 
     AnalysisMode.setAnalyzing(true);
     await tester.pump();
