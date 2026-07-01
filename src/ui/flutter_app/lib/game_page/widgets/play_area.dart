@@ -300,6 +300,7 @@ Future<void> showAnalysisSettingsSheet(
                           ),
                           secondary: const Icon(Icons.subtitles_outlined),
                           title: Text(strings.showEngineLines),
+                          subtitle: Text(_analysisEngineLinesSubtitle(strings)),
                           value: AnalysisMode.showEngineLines,
                           onChanged: (bool value) {
                             RecordingService().recordEvent(
@@ -322,6 +323,9 @@ Future<void> showAnalysisSettingsSheet(
                           ),
                           secondary: const Icon(Icons.near_me_outlined),
                           title: Text(_analysisBestMoveArrowLabel(strings)),
+                          subtitle: Text(
+                            _analysisBestMoveArrowSubtitle(strings),
+                          ),
                           value: AnalysisMode.showBestMoveArrow,
                           onChanged: (bool value) {
                             RecordingService().recordEvent(
@@ -469,7 +473,9 @@ Future<void> showAnalysisSettingsSheet(
                           ),
                           leading: const Icon(Icons.format_list_numbered),
                           title: Text(strings.multipleLines),
-                          subtitle: Text('${AnalysisMode.engineLineCount}'),
+                          subtitle: Text(
+                            _analysisEngineLineCountSubtitle(strings),
+                          ),
                           trailing: SizedBox(
                             width: 180,
                             child: Slider(
@@ -590,6 +596,26 @@ String _analysisEngineThreadsSubtitle(
   };
 }
 
+String _analysisEngineLinesSubtitle(S strings) {
+  return switch (strings.localeName.split('_').first) {
+    'zh' => '显示棋盘下方的 PV 文本线路',
+    _ => 'Show PV text lines below the board',
+  };
+}
+
+String _analysisEngineLineCountSubtitle(S strings) {
+  final String countLabel = AnalysisMode.engineLineCount == 0
+      ? switch (strings.localeName.split('_').first) {
+          'zh' => '关闭',
+          _ => 'Off',
+        }
+      : '${AnalysisMode.engineLineCount}';
+  return switch (strings.localeName.split('_').first) {
+    'zh' => '$countLabel · PV 文本和棋盘标记',
+    _ => '$countLabel · PV text and board markers',
+  };
+}
+
 String _analysisMoveAnnotationsLabel(S strings) {
   return switch (strings.localeName.split('_').first) {
     'zh' => '显示走法标注',
@@ -615,6 +641,13 @@ String _analysisBestMoveArrowLabel(S strings) {
   return switch (strings.localeName.split('_').first) {
     'zh' => '最佳着法箭头',
     _ => 'Best move arrow',
+  };
+}
+
+String _analysisBestMoveArrowSubtitle(S strings) {
+  return switch (strings.localeName.split('_').first) {
+    'zh' => '在棋盘上标出可见 PV 线路',
+    _ => 'Mark visible PV lines on the board',
   };
 }
 

@@ -3934,6 +3934,9 @@ void main() {
     expect(find.text('Use perfect database'), findsOneWidget);
     expect(find.text('Search threads'), findsOneWidget);
     expect(find.text('Multiple lines'), findsOneWidget);
+    expect(find.text('Show PV text lines below the board'), findsOneWidget);
+    expect(find.text('Mark visible PV lines on the board'), findsOneWidget);
+    expect(find.text('3 · PV text and board markers'), findsOneWidget);
 
     final Finder perfectDatabaseSwitchFinder = find.byKey(
       const Key('play_area_analysis_settings_perfect_database'),
