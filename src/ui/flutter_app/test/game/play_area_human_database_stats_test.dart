@@ -173,6 +173,57 @@ void main() {
     expect(find.textContaining('d6'), findsOneWidget);
   });
 
+  testWidgets('screen reader board uses a stable semantics grid', (
+    WidgetTester tester,
+  ) async {
+    db = _GamePageDb(
+      generalSettings: const GeneralSettings(screenReaderSupport: true),
+      displaySettings: const DisplaySettings(
+        isUnplacedAndRemovedPiecesShown: false,
+        isHistoryNavigationToolbarShown: false,
+      ),
+    );
+    DB.instance = db;
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.humanVsHuman,
+    );
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        GameSessionScope(
+          session: session,
+          child: const Scaffold(
+            body: Center(
+              child: SizedBox.square(
+                dimension: 390,
+                child: GameBoard(boardImage: null),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.runAsync(() async {
+      await Future<void>.delayed(const Duration(milliseconds: 300));
+    });
+    await tester.pump();
+
+    expect(find.byKey(const Key('board_semantics_grid')), findsOneWidget);
+    expect(find.byKey(const Key('board_grid_view')), findsNothing);
+    expect(find.byType(GridView), findsNothing);
+    expect(_boardSquareSemanticsFinder(), findsNWidgets(49));
+
+    GameController().boardSemanticsNotifier.updateSemantics();
+    await tester.pump();
+
+    expect(find.byKey(const Key('board_semantics_grid')), findsOneWidget);
+    expect(_boardSquareSemanticsFinder(), findsNWidgets(49));
+  });
+
   testWidgets('regular game uses a Lichess-style inline move list', (
     WidgetTester tester,
   ) async {
@@ -5448,6 +5499,15 @@ Future<void> _pumpSessionPlayArea(
     ),
   );
   await tester.pumpAndSettle();
+}
+
+Finder _boardSquareSemanticsFinder() {
+  return find.byWidgetPredicate((Widget widget) {
+    final Key? key = widget.key;
+    return widget is Semantics &&
+        key is ValueKey<String> &&
+        key.value.startsWith('board_square_');
+  });
 }
 
 List<String> _currentPathMoves() {

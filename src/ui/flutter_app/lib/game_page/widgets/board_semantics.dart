@@ -30,22 +30,30 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
   Widget build(BuildContext context) {
     final List<String> squareDesc = _buildSquareDescription(context);
 
-    return GridView(
-      key: const Key('board_grid_view'),
-      scrollDirection: Axis.horizontal,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 7,
-      ),
-      children: List<Widget>.generate(
-        7 * 7,
-        (int index) => Center(
-          child: Semantics(
-            key: Key('board_square_$index'),
-            // The current label exposes the square coordinate and occupancy.
-            // Action-specific hints need legal move context from the game state.
-            label: squareDesc[index],
-          ),
-        ),
+    return SizedBox.expand(
+      key: const Key('board_semantics_grid'),
+      child: Column(
+        children: <Widget>[
+          for (int row = 0; row < 7; row++)
+            Expanded(
+              child: Row(
+                children: <Widget>[
+                  for (int column = 0; column < 7; column++)
+                    Expanded(
+                      child: Center(
+                        child: Semantics(
+                          key: Key('board_square_${row * 7 + column}'),
+                          // The current label exposes the square coordinate and
+                          // occupancy. Action-specific hints need legal move
+                          // context from the game state.
+                          label: squareDesc[row * 7 + column],
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+        ],
       ),
     );
   }
