@@ -42,13 +42,12 @@ class AnalysisService {
   /// session in scope of [context].
   ///
   /// When the overlay is already enabled it is simply disabled.  Otherwise
-  /// Perfect Database verdicts are preferred when available.  Otherwise the
-  /// native engine emits a lightweight root MultiPV list for the current
-  /// position and the overlay shows those candidate moves.
+  /// Perfect Database verdicts are shown when available.  The native engine
+  /// still emits root MultiPV lines so enabled analysis sources can be shown
+  /// together.
   static Future<void> toggle(BuildContext context) async {
-    if (AnalysisMode.isFullAnalysis) {
-      if (AnalysisMode.isAnalyzing &&
-          AnalysisMode.source == AnalysisSource.engine) {
+    if (AnalysisMode.isFullAnalysis || AnalysisMode.isAnalyzing) {
+      if (AnalysisMode.isAnalyzing) {
         _stopCurrentEngineAnalysis();
       }
       AnalysisMode.disable();
@@ -72,13 +71,39 @@ class AnalysisService {
       return;
     }
 
+    final int refreshGeneration = ++_analysisSearchGeneration;
+    _PerfectDatabaseAnalysis? perfectDatabaseAnalysis;
     if (isRuleSupportingPerfectDatabase() &&
         DB().generalSettings.usePerfectDatabase) {
-      await _enablePerfectDatabaseAnalysis(context, session);
-      return;
+      AnalysisMode.setAnalyzing(true);
+      perfectDatabaseAnalysis = await _loadPerfectDatabaseAnalysis(
+        context,
+        session,
+      );
+      if (refreshGeneration != _analysisSearchGeneration) {
+        return;
+      }
+      if (!context.mounted) {
+        AnalysisMode.setAnalyzing(false);
+        return;
+      }
+      if (perfectDatabaseAnalysis != null) {
+        AnalysisMode.enable(
+          perfectDatabaseAnalysis.results,
+          lineResults: perfectDatabaseAnalysis.lineResults,
+          trapMoves: perfectDatabaseAnalysis.trapMoves,
+          source: AnalysisSource.perfectDatabase,
+          isAnalyzing: true,
+        );
+      }
     }
 
-    await _enableEngineMultiPvAnalysis(context, session);
+    await _enableEngineMultiPvAnalysis(
+      context,
+      session,
+      baseResults: perfectDatabaseAnalysis?.results,
+      baseTrapMoves: perfectDatabaseAnalysis?.trapMoves ?? const <String>[],
+    );
   }
 
   /// Request a deeper local engine MultiPV pass for the current analysis
@@ -161,11 +186,10 @@ class AnalysisService {
     );
   }
 
-  static Future<void> _enablePerfectDatabaseAnalysis(
+  static Future<_PerfectDatabaseAnalysis?> _loadPerfectDatabaseAnalysis(
     BuildContext context,
     NativeMillGameSession session,
   ) async {
-    AnalysisMode.setAnalyzing(true);
     try {
       // The overlay needs the database initialized; ensure copy + init has
       // run.  Idempotent after the first successful call.
@@ -174,7 +198,7 @@ class AnalysisService {
         if (context.mounted) {
           _showSnackBar(context, S.of(context).perfectDatabaseNotEnabled);
         }
-        return;
+        return null;
       }
 
       final tgf.MillAnalysisReport report = session.analyzePerfectDb();
@@ -182,22 +206,20 @@ class AnalysisService {
         if (context.mounted) {
           _showSnackBar(context, S.of(context).currentRulesNoPerfectDatabase);
         }
-        return;
+        return null;
       }
 
       final List<MoveAnalysisResult> results = report.moves
           .map(_resultFromDto)
           .toList(growable: false);
-      AnalysisMode.enable(
+      return _PerfectDatabaseAnalysis(
         results,
-        lineResults: _rankedLineResults(results),
-        trapMoves: report.traps,
-        source: AnalysisSource.perfectDatabase,
+        _rankedLineResults(results),
+        report.traps,
       );
     } catch (e, st) {
       logger.e("$_logTag Analysis failed: $e", stackTrace: st);
-    } finally {
-      AnalysisMode.setAnalyzing(false);
+      return null;
     }
   }
 
@@ -207,6 +229,8 @@ class AnalysisService {
     bool isDeepSearch = false,
     String? fenOverride,
     bool isThreatMode = false,
+    List<MoveAnalysisResult>? baseResults,
+    List<String> baseTrapMoves = const <String>[],
   }) async {
     final int searchGeneration = ++_analysisSearchGeneration;
     final int requestedLineCount = math.max(1, AnalysisMode.engineLineCount);
@@ -257,6 +281,8 @@ class AnalysisService {
                 current,
                 isThreatMode: isThreatMode,
                 isAnalyzing: true,
+                baseResults: baseResults,
+                baseTrapMoves: baseTrapMoves,
               );
             },
           );
@@ -269,7 +295,12 @@ class AnalysisService {
         }
         return;
       }
-      _publishEngineVariations(variations, isThreatMode: isThreatMode);
+      _publishEngineVariations(
+        variations,
+        isThreatMode: isThreatMode,
+        baseResults: baseResults,
+        baseTrapMoves: baseTrapMoves,
+      );
     } catch (e, st) {
       if (searchGeneration == _analysisSearchGeneration) {
         logger.e("$_logTag Engine MultiPV analysis failed: $e", stackTrace: st);
@@ -286,21 +317,29 @@ class AnalysisService {
     List<NativeMillPrincipalVariation> variations, {
     required bool isThreatMode,
     bool isAnalyzing = false,
+    List<MoveAnalysisResult>? baseResults,
+    List<String> baseTrapMoves = const <String>[],
   }) {
+    final List<MoveAnalysisResult> engineResults = variations
+        .map(
+          (NativeMillPrincipalVariation variation) => MoveAnalysisResult(
+            move: variation.move,
+            outcome: _engineOutcome(variation.score),
+            rank: variation.rank,
+            depth: variation.depth,
+            nodes: variation.nodes,
+            line: variation.line,
+          ),
+        )
+        .toList(growable: false);
+    final bool hasBaseResults = baseResults != null;
     AnalysisMode.enable(
-      variations
-          .map(
-            (NativeMillPrincipalVariation variation) => MoveAnalysisResult(
-              move: variation.move,
-              outcome: _engineOutcome(variation.score),
-              rank: variation.rank,
-              depth: variation.depth,
-              nodes: variation.nodes,
-              line: variation.line,
-            ),
-          )
-          .toList(growable: false),
-      source: AnalysisSource.engine,
+      baseResults ?? engineResults,
+      lineResults: hasBaseResults ? engineResults : null,
+      trapMoves: hasBaseResults ? baseTrapMoves : const <String>[],
+      source: hasBaseResults
+          ? AnalysisSource.perfectDatabaseAndEngine
+          : AnalysisSource.engine,
       isThreatMode: isThreatMode,
       isAnalyzing: isAnalyzing,
     );
@@ -502,4 +541,16 @@ class AnalysisService {
       context,
     ).showSnackBar(SnackBar(content: Text(message)));
   }
+}
+
+class _PerfectDatabaseAnalysis {
+  const _PerfectDatabaseAnalysis(
+    this.results,
+    this.lineResults,
+    this.trapMoves,
+  );
+
+  final List<MoveAnalysisResult> results;
+  final List<MoveAnalysisResult> lineResults;
+  final List<String> trapMoves;
 }

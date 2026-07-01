@@ -124,6 +124,9 @@ enum AnalysisSource {
 
   /// Local engine search output.
   engine,
+
+  /// Perfect database board verdicts with local engine candidate lines.
+  perfectDatabaseAndEngine,
 }
 
 /// Holds the analysis-overlay state for the board.
@@ -194,6 +197,11 @@ class AnalysisMode {
   static List<MoveAnalysisResult> get normalEngineAnalysisResults =>
       _normalEngineAnalysisResults;
 
+  /// Whether the current analysis includes local engine candidate lines.
+  static bool get hasEngineLinesSource =>
+      _source == AnalysisSource.engine ||
+      _source == AnalysisSource.perfectDatabaseAndEngine;
+
   /// Moves flagged as traps (aggressive moves with a worse verdict than the
   /// available alternatives).  Empty unless trap detection is populated.
   static List<String> get trapMoves => _trapMoves;
@@ -214,9 +222,11 @@ class AnalysisMode {
     _analysisResults = results;
     _analysisLineResults = lineResults ?? results;
     if (!isThreatMode) {
+      final bool sourceHasEngineLines =
+          source == AnalysisSource.engine ||
+          source == AnalysisSource.perfectDatabaseAndEngine;
       _normalEngineAnalysisResults =
-          source == AnalysisSource.engine &&
-              mode == AnalysisOverlayMode.analysis
+          sourceHasEngineLines && mode == AnalysisOverlayMode.analysis
           ? _analysisLineResults
           : <MoveAnalysisResult>[];
     }

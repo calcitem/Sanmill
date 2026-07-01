@@ -256,7 +256,7 @@ Future<void> showAnalysisSettingsSheet(
 
 void _refreshEngineAnalysisAfterSettingsChange(BuildContext context) {
   if (!AnalysisMode.isFullAnalysis ||
-      AnalysisMode.source != AnalysisSource.engine ||
+      !AnalysisMode.hasEngineLinesSource ||
       AnalysisMode.isAnalyzing) {
     return;
   }
@@ -1503,7 +1503,7 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   int? _currentAnalysisEngineDepth() {
-    if (AnalysisMode.source != AnalysisSource.engine) {
+    if (!AnalysisMode.hasEngineLinesSource) {
       return null;
     }
     int? depth;
@@ -4209,6 +4209,8 @@ class _AnalysisSummaryPanel extends StatelessWidget {
         AnalysisMode.isThreatMode
             ? '${_analysisThreatLabel(strings)} · ${strings.engine}'
             : strings.engine,
+      AnalysisSource.perfectDatabaseAndEngine =>
+        '${strings.perfectDatabaseSettings} · ${strings.engine}',
       AnalysisSource.perfectDatabase => strings.perfectDatabaseSettings,
       null => strings.openingExplorerNoDataShort,
     };
@@ -4732,6 +4734,8 @@ class _AnalysisBottomBar extends StatelessWidget {
         AnalysisMode.isThreatMode
             ? _analysisThreatLabel(strings)
             : strings.engine,
+      AnalysisSource.perfectDatabaseAndEngine =>
+        '${strings.perfectDatabaseSettings} · ${strings.engine}',
       AnalysisSource.perfectDatabase => strings.perfectDatabaseSettings,
       null => strings.engine,
     };
@@ -5033,8 +5037,9 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
     }
     final int count = AnalysisMode.analysisResults.length;
     assert(count > 0, 'Full analysis mode must have at least one line.');
-    if (AnalysisMode.source == AnalysisSource.engine) {
-      final int? depth = AnalysisMode.analysisResults.first.depth;
+    if (AnalysisMode.hasEngineLinesSource &&
+        AnalysisMode.analysisLineResults.isNotEmpty) {
+      final int? depth = AnalysisMode.analysisLineResults.first.depth;
       if (depth != null && depth > 0) {
         return math.min(99, depth).toString();
       }

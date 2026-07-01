@@ -80,6 +80,35 @@ void main() {
     );
   });
 
+  test('tracks perfect database overlay with engine line results', () {
+    const List<MoveAnalysisResult> databaseResults = <MoveAnalysisResult>[
+      MoveAnalysisResult(move: 'a1', outcome: AnalysisOutcome.loss),
+      MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.win),
+    ];
+    const List<MoveAnalysisResult> engineLines = <MoveAnalysisResult>[
+      MoveAnalysisResult(
+        move: 'f4',
+        outcome: AnalysisOutcome.advantage,
+        rank: 1,
+        depth: 7,
+        nodes: 1024,
+        line: <String>['f4', 'a1'],
+      ),
+    ];
+
+    AnalysisMode.enable(
+      databaseResults,
+      lineResults: engineLines,
+      source: AnalysisSource.perfectDatabaseAndEngine,
+    );
+
+    expect(AnalysisMode.source, AnalysisSource.perfectDatabaseAndEngine);
+    expect(AnalysisMode.hasEngineLinesSource, isTrue);
+    expect(AnalysisMode.analysisResults, databaseResults);
+    expect(AnalysisMode.analysisLineResults, engineLines);
+    expect(AnalysisMode.normalEngineAnalysisResults, engineLines);
+  });
+
   test('tracks threat mode independently from analysis results', () {
     AnalysisMode.enable(const <MoveAnalysisResult>[
       MoveAnalysisResult(move: 'a1', outcome: AnalysisOutcome.win),

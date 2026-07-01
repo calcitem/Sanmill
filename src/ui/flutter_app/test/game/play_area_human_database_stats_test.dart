@@ -1909,6 +1909,34 @@ void main() {
     final Text engineLineText = tester.widget<Text>(find.text('1. d6 f4 a1'));
     expect(engineLineText.style?.fontSize, 11);
 
+    AnalysisMode.enable(
+      <MoveAnalysisResult>[
+        const MoveAnalysisResult(move: 'a1', outcome: AnalysisOutcome.loss),
+        const MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.win),
+      ],
+      lineResults: <MoveAnalysisResult>[
+        const MoveAnalysisResult(
+          move: 'f4',
+          outcome: AnalysisOutcome.advantage,
+          rank: 1,
+          depth: 7,
+          nodes: 64000,
+          line: <String>['f4', 'a1'],
+        ),
+      ],
+      source: AnalysisSource.perfectDatabaseAndEngine,
+    );
+    await tester.pump();
+    sourceLabel = tester.widget<Text>(
+      find.byKey(const Key('play_area_analysis_bottom_bar_engine_label')),
+    );
+    expect(sourceLabel.data, 'Perfect database · Engine');
+    engineValue = tester.widget<Text>(
+      find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
+    );
+    expect(engineValue.data, '7');
+    expect(find.text('1. f4 a1'), findsOneWidget);
+
     GameController().gameRecorder.appendMove(
       ExtMove('d6', side: PieceColor.white, roundIndex: 1),
     );
