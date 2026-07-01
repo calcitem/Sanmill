@@ -6860,6 +6860,7 @@ class _AnalysisEngineLine extends StatelessWidget {
         ThemeData.estimateBrightnessForColor(outcomeColor) == Brightness.dark
         ? Colors.white
         : Colors.black;
+    final String? depthLabel = _depthLabel(result);
 
     return InkWell(
       borderRadius: BorderRadius.circular(AppStyles.compactRadius),
@@ -6889,6 +6890,24 @@ class _AnalysisEngineLine extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
+              if (depthLabel != null) ...<Widget>[
+                Text(
+                  depthLabel,
+                  key: const Key('play_area_analysis_engine_line_depth'),
+                  maxLines: 1,
+                  softWrap: false,
+                  overflow: TextOverflow.clip,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant.withValues(
+                      alpha: onTap == null ? 0.72 : 0.9,
+                    ),
+                    fontSize: fontSize,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0,
+                  ),
+                ),
+                const SizedBox(width: 6),
+              ],
               Expanded(
                 child: Text(
                   _lineText(result),
@@ -6917,6 +6936,14 @@ class _AnalysisEngineLine extends StatelessWidget {
 
   String _evalLabel(AnalysisOutcome outcome) {
     return _analysisEvalLabel(outcome);
+  }
+
+  String? _depthLabel(MoveAnalysisResult result) {
+    final int? depth = result.depth;
+    if (depth == null || depth <= 0) {
+      return null;
+    }
+    return 'd$depth';
   }
 }
 

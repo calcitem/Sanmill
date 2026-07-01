@@ -3262,6 +3262,20 @@ void main() {
     );
     expect(engineValue.data, '8');
     expect(find.text('1. d6 f4 a1'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_engine_line_0')),
+        matching: find.text('d1'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_engine_line_1')),
+        matching: find.text('d8'),
+      ),
+      findsOneWidget,
+    );
     final Text engineLineText = tester.widget<Text>(find.text('1. d6 f4 a1'));
     expect(engineLineText.style?.fontSize, 11);
 
