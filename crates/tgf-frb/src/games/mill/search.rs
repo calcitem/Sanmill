@@ -18,6 +18,7 @@ use std::sync::atomic::AtomicBool;
 use std::sync::{Arc, Mutex};
 #[cfg(not(target_arch = "wasm32"))]
 use std::thread;
+use std::time::Instant;
 
 use once_cell::sync::Lazy;
 
@@ -241,6 +242,30 @@ fn configured_search_options(
     }
 }
 
+fn remaining_time_limit_ms(move_time_ms: u32, elapsed_ms: u128) -> Option<u64> {
+    if move_time_ms == 0 {
+        return None;
+    }
+    let remaining = u128::from(move_time_ms).saturating_sub(elapsed_ms);
+    Some(remaining as u64)
+}
+
+fn set_iteration_search_options(
+    searcher: &mut Searcher<MillGame>,
+    config: &MillEngineConfigPlan,
+    search_context: MoveOrderContext,
+    search_started_at: Instant,
+) -> Option<u64> {
+    let mut options = configured_search_options(config, search_context);
+    let remaining_ms =
+        remaining_time_limit_ms(config.move_time_ms, search_started_at.elapsed().as_millis());
+    if let Some(remaining_ms) = remaining_ms {
+        options.time_limit_ms = Some(remaining_ms);
+    }
+    searcher.set_options(options);
+    remaining_ms
+}
+
 fn run_searcher_algorithm(
     searcher: &mut Searcher<MillGame>,
     wb: &mut tgf_mill::MillWorkbench,
@@ -265,14 +290,21 @@ fn run_ab_like_search(
     searcher: &mut Searcher<MillGame>,
     wb: &mut tgf_mill::MillWorkbench,
     config: &MillEngineConfigPlan,
+    search_context: MoveOrderContext,
     max_depth: i32,
     mut on_info: impl FnMut(&Searcher<MillGame>, i32, &SearchResult),
 ) -> SearchResult {
     let mut result = SearchResult::default_none();
     let mut first_guess = 0;
+    let search_started_at = Instant::now();
     if config.move_time_ms > 0 {
         for d in 2..max_depth {
             if searcher.was_aborted() {
+                break;
+            }
+            let remaining_ms =
+                set_iteration_search_options(searcher, config, search_context, search_started_at);
+            if remaining_ms == Some(0) && !result.best_action.is_none() {
                 break;
             }
             result = run_searcher_algorithm(searcher, wb, config.algorithm, d, first_guess);
@@ -281,6 +313,11 @@ fn run_ab_like_search(
         }
     }
     if !searcher.was_aborted() || result.best_action.is_none() {
+        let remaining_ms =
+            set_iteration_search_options(searcher, config, search_context, search_started_at);
+        if remaining_ms == Some(0) && !result.best_action.is_none() {
+            return result;
+        }
         result = run_searcher_algorithm(searcher, wb, config.algorithm, max_depth, first_guess);
         on_info(searcher, max_depth, &result);
     }
@@ -471,6 +508,7 @@ fn run_lazy_smp_ab_like_search(
                 &mut searcher,
                 &mut wb,
                 &worker_config,
+                worker_context,
                 worker_depth,
                 |_, _, _| {},
             );
@@ -729,6 +767,7 @@ fn run_mill_engine_config_event_stream(
                         &mut searcher,
                         &mut wb,
                         &config,
+                        search_context,
                         max_depth,
                         |progress_searcher, depth, current| {
                             progress.emit(progress_searcher, depth, current);
@@ -740,6 +779,7 @@ fn run_mill_engine_config_event_stream(
                     &mut searcher,
                     &mut wb,
                     &config,
+                    search_context,
                     max_depth,
                     |progress_searcher, depth, current| {
                         progress.emit(progress_searcher, depth, current);
@@ -991,6 +1031,15 @@ mod tests {
         assert!(events.iter().all(|event| event.kind == "pv"));
         assert!(events[0].reason.contains("rank=1"));
         assert!(events.iter().any(|event| event.reason.contains(',')));
+    }
+
+    #[test]
+    fn remaining_time_limit_uses_one_search_budget() {
+        assert_eq!(remaining_time_limit_ms(0, 500), None);
+        assert_eq!(remaining_time_limit_ms(6000, 0), Some(6000));
+        assert_eq!(remaining_time_limit_ms(6000, 2500), Some(3500));
+        assert_eq!(remaining_time_limit_ms(6000, 6000), Some(0));
+        assert_eq!(remaining_time_limit_ms(6000, 7000), Some(0));
     }
 
     #[cfg(not(target_arch = "wasm32"))]
