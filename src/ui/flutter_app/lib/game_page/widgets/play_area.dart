@@ -2903,8 +2903,9 @@ class PlayAreaState extends State<PlayArea> {
                   groupByRound: true,
                 ),
               ),
-              const _AnalysisVariationsBar(
-                key: Key('play_area_analysis_variations_bar'),
+              _AnalysisVariationsBar(
+                key: const Key('play_area_analysis_variations_bar'),
+                showAnnotations: AnalysisMode.showMoveAnnotations,
               ),
             ],
           ),
@@ -4090,51 +4091,12 @@ class _InlineMoveListState extends State<_InlineMoveList> {
 
   String _moveLabel(ExtMove move, {required bool includeComments}) {
     String label = widget.showMoveAnnotations
-        ? _withNagSymbols(move.notation, move.getAllNags())
+        ? _notationWithNagSymbols(move.notation, move.getAllNags())
         : move.notation;
     if (includeComments) {
       label = _withMoveComments(label, move);
     }
     return label;
-  }
-
-  String _withNagSymbols(String notation, List<int> nags) {
-    if (nags.isEmpty) {
-      return notation;
-    }
-
-    final List<String> suffixSymbols = <String>[];
-    final List<String> numericSymbols = <String>[];
-    for (final int nag in nags) {
-      final String symbol = _nagSymbol(nag);
-      if (symbol.startsWith(r'$')) {
-        numericSymbols.add(symbol);
-      } else {
-        suffixSymbols.add(symbol);
-      }
-    }
-
-    final StringBuffer buffer = StringBuffer(notation);
-    if (suffixSymbols.isNotEmpty) {
-      buffer.write(suffixSymbols.join());
-    }
-    if (numericSymbols.isNotEmpty) {
-      buffer.write(' ');
-      buffer.write(numericSymbols.join(' '));
-    }
-    return buffer.toString();
-  }
-
-  String _nagSymbol(int nag) {
-    return switch (nag) {
-      1 => '!',
-      2 => '?',
-      3 => '!!',
-      4 => '??',
-      5 => '!?',
-      6 => '?!',
-      _ => '\$$nag',
-    };
   }
 
   String _withMoveComments(String label, ExtMove move) {
@@ -4824,9 +4786,11 @@ class _AnalysisSummaryPanel extends StatelessWidget {
 }
 
 class _AnalysisVariationsBar extends StatelessWidget {
-  const _AnalysisVariationsBar({super.key});
+  const _AnalysisVariationsBar({super.key, required this.showAnnotations});
 
   static const double _maxVariationWidth = 72;
+
+  final bool showAnnotations;
 
   @override
   Widget build(BuildContext context) {
@@ -4867,6 +4831,7 @@ class _AnalysisVariationsBar extends StatelessWidget {
                           ),
                           node: variation,
                           isMainline: identical(variation, variations.first),
+                          showAnnotations: showAnnotations,
                         ),
                       ),
                   ],
@@ -4892,10 +4857,12 @@ class _AnalysisVariationButton extends StatelessWidget {
     super.key,
     required this.node,
     required this.isMainline,
+    required this.showAnnotations,
   });
 
   final PgnNode<ExtMove> node;
   final bool isMainline;
+  final bool showAnnotations;
 
   @override
   Widget build(BuildContext context) {
@@ -4931,7 +4898,9 @@ class _AnalysisVariationButton extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                move!.notation,
+                showAnnotations
+                    ? _notationWithNagSymbols(move!.notation, move.getAllNags())
+                    : move!.notation,
                 maxLines: 1,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: foregroundColor,
@@ -5187,6 +5156,45 @@ class _AnalysisEngineLine extends StatelessWidget {
   String _evalLabel(AnalysisOutcome outcome) {
     return _analysisEvalLabel(outcome);
   }
+}
+
+String _notationWithNagSymbols(String notation, List<int> nags) {
+  if (nags.isEmpty) {
+    return notation;
+  }
+
+  final List<String> suffixSymbols = <String>[];
+  final List<String> numericSymbols = <String>[];
+  for (final int nag in nags) {
+    final String symbol = _nagSymbol(nag);
+    if (symbol.startsWith(r'$')) {
+      numericSymbols.add(symbol);
+    } else {
+      suffixSymbols.add(symbol);
+    }
+  }
+
+  final StringBuffer buffer = StringBuffer(notation);
+  if (suffixSymbols.isNotEmpty) {
+    buffer.write(suffixSymbols.join());
+  }
+  if (numericSymbols.isNotEmpty) {
+    buffer.write(' ');
+    buffer.write(numericSymbols.join(' '));
+  }
+  return buffer.toString();
+}
+
+String _nagSymbol(int nag) {
+  return switch (nag) {
+    1 => '!',
+    2 => '?',
+    3 => '!!',
+    4 => '??',
+    5 => '!?',
+    6 => '?!',
+    _ => '\$$nag',
+  };
 }
 
 String _analysisEvalLabel(AnalysisOutcome outcome) {

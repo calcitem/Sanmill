@@ -3288,9 +3288,9 @@ void main() {
     );
     final GameRecorder recorder = GameController().gameRecorder;
     recorder.reset();
-    recorder.appendMove(ExtMove('d6', side: PieceColor.white));
+    recorder.appendMove(ExtMove('d6', side: PieceColor.white, nags: <int>[1]));
     recorder.activeNode = recorder.pgnRoot;
-    recorder.appendMove(ExtMove('f4', side: PieceColor.white));
+    recorder.appendMove(ExtMove('f4', side: PieceColor.white, nags: <int>[2]));
     recorder.activeNode = recorder.pgnRoot;
     recorder.moveCountNotifier.value = 0;
 
@@ -3308,8 +3308,16 @@ void main() {
       find.byKey(const Key('play_area_analysis_variation_2')),
       findsOneWidget,
     );
+    expect(find.text('d6!'), findsOneWidget);
+    expect(find.text('f4?'), findsOneWidget);
+
+    AnalysisMode.setShowMoveAnnotations(false);
+    await tester.pumpAndSettle();
+
     expect(find.text('d6'), findsOneWidget);
     expect(find.text('f4'), findsOneWidget);
+    expect(find.text('d6!'), findsNothing);
+    expect(find.text('f4?'), findsNothing);
 
     await tester.tap(find.byKey(const Key('play_area_analysis_variation_2')));
     await tester.pumpAndSettle();
