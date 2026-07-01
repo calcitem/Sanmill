@@ -5312,7 +5312,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
             final List<MoveAnalysisResult> resultCandidates =
                 _resultCandidates();
             final List<_AnalysisKeyMoment> keyMoments = _keyMoments(recorder);
-            final String? trapSummary = _trapSummary();
+            final String? trapSummary = _trapSummary(strings);
             final String moveLineSummary = _moveLineSummary(
               strings,
               moveLineNodes,
@@ -5677,11 +5677,11 @@ class _AnalysisSummaryPanel extends StatelessWidget {
     return buckets;
   }
 
-  String? _trapSummary() {
+  String? _trapSummary(S strings) {
     if (!AnalysisMode.isFullAnalysis || AnalysisMode.trapMoves.isEmpty) {
       return null;
     }
-    return AnalysisMode.trapMoves.join(' ');
+    return strings.trapExists(AnalysisMode.trapMoves.join(' '));
   }
 
   List<_AnalysisKeyMoment> _keyMoments(GameRecorder recorder) {

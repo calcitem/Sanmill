@@ -2545,7 +2545,7 @@ void main() {
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_summary_traps')),
-        matching: find.text('a1 d6'),
+        matching: find.text('Trap exists. Trap moves: a1 d6'),
       ),
       findsOneWidget,
     );
