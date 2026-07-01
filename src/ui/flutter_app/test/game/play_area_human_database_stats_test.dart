@@ -4673,6 +4673,17 @@ void main() {
 
     await _pumpSessionPlayArea(tester, session);
 
+    final Text movesHeaderTitle = tester.widget<Text>(
+      find.byKey(const Key('play_area_analysis_moves_header_title')),
+    );
+    expect(movesHeaderTitle.data, 'Move list');
+    final Text movesHeaderSubtitle = tester.widget<Text>(
+      find.byKey(const Key('play_area_analysis_moves_header_subtitle')),
+    );
+    expect(
+      movesHeaderSubtitle.data,
+      contains('Current line only · 1 · Variations 1'),
+    );
     expect(
       find.byKey(const Key('play_area_analysis_variations_bar_content')),
       findsOneWidget,

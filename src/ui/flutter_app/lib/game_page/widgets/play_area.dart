@@ -6418,31 +6418,90 @@ class _AnalysisMovesHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerLowest,
-        border: Border(
-          bottom: BorderSide(color: theme.dividerColor.withValues(alpha: 0.65)),
-        ),
-      ),
-      child: SizedBox(
-        height: 40,
-        child: Align(
-          alignment: Alignment.centerRight,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 6),
-            child: IconButton(
-              key: const Key('play_area_analysis_open_full_move_list'),
-              tooltip: S.of(context).moveList,
-              visualDensity: VisualDensity.compact,
-              icon: const Icon(Icons.format_list_numbered),
-              onPressed: onOpenFullMoveList,
+    return ValueListenableBuilder<int>(
+      valueListenable: GameController().gameRecorder.moveCountNotifier,
+      builder: (BuildContext context, _, _) {
+        final ThemeData theme = Theme.of(context);
+        final ColorScheme colorScheme = theme.colorScheme;
+        final S strings = S.of(context);
+        final GameRecorder recorder = GameController().gameRecorder;
+        final String subtitle = _subtitle(strings, recorder);
+
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            color: colorScheme.surfaceContainerLowest,
+            border: Border(
+              bottom: BorderSide(
+                color: theme.dividerColor.withValues(alpha: 0.65),
+              ),
             ),
           ),
-        ),
-      ),
+          child: SizedBox(
+            height: 48,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 12, right: 6),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          strings.moveList,
+                          key: const Key(
+                            'play_area_analysis_moves_header_title',
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.labelLarge?.copyWith(
+                            color: colorScheme.onSurface,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 0,
+                          ),
+                        ),
+                        Text(
+                          subtitle,
+                          key: const Key(
+                            'play_area_analysis_moves_header_subtitle',
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                            letterSpacing: 0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    key: const Key('play_area_analysis_open_full_move_list'),
+                    tooltip: strings.moveList,
+                    visualDensity: VisualDensity.compact,
+                    icon: const Icon(Icons.format_list_numbered),
+                    onPressed: onOpenFullMoveList,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
+  }
+
+  String _subtitle(S strings, GameRecorder recorder) {
+    final int moveCount = _recorderPathWithMainlineContinuation(
+      recorder,
+    ).length;
+    final int variationCount = _recorderVariationBranchCount(recorder);
+    final List<String> parts = <String>[
+      strings.includeVariationsCurrentLine,
+      '$moveCount',
+      if (variationCount > 0) '${strings.variations} $variationCount',
+    ];
+    return parts.join(' · ');
   }
 }
 
