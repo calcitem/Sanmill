@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
-import 'dart:io';
-
-import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart'
-    show ExternalLibrary;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart' as mill;
 import 'package:sanmill/game_platform/game_id.dart';
@@ -19,13 +15,10 @@ import 'package:sanmill/games/mill/native_mill_snapshot_board_view.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/src/rust/api/simple.dart' as tgf;
-import 'package:sanmill/src/rust/frb_generated.dart';
 
-final File _nativeLibrary = File('../../../target/debug/rust_lib_sanmill.dll');
-final String? _nativeLibrarySkipReason = _nativeLibrary.existsSync()
-    ? null
-    : 'Run `cargo build -p rust_lib_sanmill` before this FFI smoke test.';
-bool _rustLibInitialized = false;
+import '../../helpers/test_native_library.dart';
+
+final String? _nativeLibrarySkipReason = nativeLibrarySkipReason();
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -34,16 +27,11 @@ void main() {
     if (_nativeLibrarySkipReason != null) {
       return;
     }
-    await RustLib.init(
-      externalLibrary: ExternalLibrary.open(_nativeLibrary.absolute.path),
-    );
-    _rustLibInitialized = true;
+    await initRustLibForTests();
   });
 
   tearDownAll(() {
-    if (_rustLibInitialized) {
-      RustLib.dispose();
-    }
+    disposeRustLibForTests();
   });
 
   group('NativeMillRulesPort FFI smoke', () {
@@ -278,6 +266,35 @@ void main() {
         );
         expect(bestAction, isNotNull);
         expect(bestAction!.type, MillActionTypes.place);
+      },
+      skip: _nativeLibrarySkipReason,
+    );
+
+    test(
+      'timed MultiPV analysis emits depths beyond the root ply',
+      () async {
+        final NativeMillGameSession session = NativeMillGameSession();
+        addTearDown(session.dispose);
+
+        final List<int> pvDepths = <int>[];
+        await for (final tgf.EngineEvent event in session.millSearchEvents(
+          depth: 4,
+          moveLimitMs: 500,
+          multiPv: 2,
+          engineSettings: const GeneralSettings(
+            searchAlgorithm: SearchAlgorithm.pvs,
+            skillLevel: 30,
+            shufflingEnabled: false,
+            useLazySmp: false,
+          ),
+        )) {
+          if (event.kind == 'pv') {
+            pvDepths.add(event.depth);
+          }
+        }
+
+        expect(pvDepths, isNotEmpty);
+        expect(pvDepths.any((int depth) => depth > 1), isTrue);
       },
       skip: _nativeLibrarySkipReason,
     );

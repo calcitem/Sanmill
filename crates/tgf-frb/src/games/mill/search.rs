@@ -1056,6 +1056,70 @@ mod tests {
     }
 
     #[test]
+    fn timed_multi_pv_search_reports_iterative_depths() {
+        let game = MillGame::default();
+        let snapshot = MillRules::default().initial_state(&[]);
+        let mut wb = game.build_workbench(&snapshot);
+        let config = MillEngineConfigPlan {
+            algorithm: MillSearchAlgorithmKind::Pvs,
+            depth: 4,
+            move_time_ms: 500,
+            skill_level: 30,
+            shuffling: false,
+            multi_pv: 2,
+            ..MillEngineConfigPlan::default()
+        };
+        let mut searcher = mill_searcher_for_config(&config);
+        let search_context = MoveOrderContext {
+            algorithm: MoveOrderAlgorithm::Pvs,
+            skill_level: config.skill_level,
+            shuffling: config.shuffling,
+            hash_move: None,
+            shuffle_seed: search_shuffle_seed(),
+        };
+        searcher.set_options(configured_search_options(&config, search_context));
+
+        let mut reported_depths = Vec::<i32>::new();
+        let mut pv_depths = Vec::<i32>::new();
+        let result = run_ab_like_search(
+            &mut searcher,
+            &mut wb,
+            &config,
+            search_context,
+            config.depth,
+            |progress_searcher, depth, current| {
+                reported_depths.push(depth);
+                pv_depths.extend(
+                    multi_pv_events(
+                        &game,
+                        &snapshot,
+                        progress_searcher,
+                        depth,
+                        snapshot.side_to_move,
+                        &config,
+                        nodes_per_second(current.nodes, Duration::from_millis(1)),
+                    )
+                    .into_iter()
+                    .map(|event| event.depth),
+                );
+            },
+        );
+
+        assert!(
+            !result.best_action.is_none(),
+            "timed MultiPV search must find a move"
+        );
+        assert!(
+            reported_depths.iter().any(|depth| *depth > 1),
+            "timed search should iterate beyond depth 1: {reported_depths:?}"
+        );
+        assert!(
+            pv_depths.iter().any(|depth| *depth > 1),
+            "MultiPV events should report iterative depths: {pv_depths:?}"
+        );
+    }
+
+    #[test]
     fn nodes_per_second_handles_empty_and_elapsed_searches() {
         assert_eq!(nodes_per_second(0, Duration::from_millis(1)), 0);
         assert_eq!(nodes_per_second(10, Duration::ZERO), 0);
