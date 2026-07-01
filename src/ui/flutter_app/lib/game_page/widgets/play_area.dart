@@ -5304,6 +5304,9 @@ class _AnalysisSummaryAdvantageGraph extends StatelessWidget {
     return ValueListenableBuilder<int>(
       valueListenable: GameController().gameRecorder.moveCountNotifier,
       builder: (BuildContext context, _, _) {
+        final int? currentIndex = _currentDataIndex(
+          GameController().gameRecorder,
+        );
         return SizedBox(
           key: const Key('play_area_analysis_summary_advantage_graph'),
           height: _height,
@@ -5321,7 +5324,10 @@ class _AnalysisSummaryAdvantageGraph extends StatelessWidget {
                 },
                 child: CustomPaint(
                   key: const Key('play_area_analysis_summary_advantage_paint'),
-                  painter: AdvantageGraphPainter(data),
+                  painter: AdvantageGraphPainter(
+                    data,
+                    currentIndex: currentIndex,
+                  ),
                 ),
               );
             },
@@ -5369,6 +5375,37 @@ class _AnalysisSummaryAdvantageGraph extends StatelessWidget {
       math.max(0, (chartDx / stepWidth).round()),
     );
     return dataOffset + localIndex;
+  }
+
+  int? _currentDataIndex(GameRecorder recorder) {
+    if (data.isEmpty) {
+      return null;
+    }
+
+    final PgnNode<ExtMove>? activeNode = recorder.activeNode;
+    if (activeNode == null || identical(activeNode, recorder.pgnRoot)) {
+      return 0;
+    }
+
+    final List<PgnNode<ExtMove>> nodes = _recorderPathWithMainlineContinuation(
+      recorder,
+    );
+    final int nodeIndex = nodes.indexWhere(
+      (PgnNode<ExtMove> node) => identical(node, activeNode),
+    );
+    if (nodeIndex < 0) {
+      assert(
+        false,
+        'Active recorder node must be present in the visible path.',
+      );
+      return null;
+    }
+
+    final int dataIndex = nodeIndex + 1;
+    if (dataIndex >= data.length) {
+      return null;
+    }
+    return dataIndex;
   }
 
   PgnNode<ExtMove>? _nodeForDataIndex(GameRecorder recorder, int dataIndex) {

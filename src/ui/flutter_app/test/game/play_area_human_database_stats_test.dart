@@ -13,6 +13,7 @@ import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/analysis/analysis_service.dart';
 import 'package:sanmill/game_page/services/analysis_mode.dart';
 import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/game_page/services/painters/advantage_graph_painter.dart';
 import 'package:sanmill/game_page/services/player_timer.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
 import 'package:sanmill/game_page/widgets/moves_list_page.dart';
@@ -2322,6 +2323,8 @@ void main() {
     await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
     await tester.pumpAndSettle();
 
+    expect(_summaryAdvantagePainter(tester).currentIndex, 3);
+
     final Finder graph = find.byKey(
       const Key('play_area_analysis_summary_advantage_graph'),
     );
@@ -2335,6 +2338,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(_currentPathMoves(), <String>['d6', 'f4']);
+    expect(_summaryAdvantagePainter(tester).currentIndex, 2);
   });
 
   testWidgets(
@@ -5315,6 +5319,18 @@ List<String> _currentPathMoves() {
   return GameController().gameRecorder.currentPath
       .map((ExtMove move) => move.move)
       .toList();
+}
+
+AdvantageGraphPainter _summaryAdvantagePainter(WidgetTester tester) {
+  final CustomPaint paint = tester.widget<CustomPaint>(
+    find.byKey(const Key('play_area_analysis_summary_advantage_paint')),
+  );
+  final CustomPainter? painter = paint.painter;
+  assert(
+    painter is AdvantageGraphPainter,
+    'Analysis summary graph must use AdvantageGraphPainter.',
+  );
+  return painter! as AdvantageGraphPainter;
 }
 
 class _GamePageDb extends MockDB {

@@ -20,9 +20,15 @@ import '../../../shared/utils/helpers/color_helpers/color_helper.dart';
 /// Below the advantage line is filled with DB().colorSettings.whitePieceColor at 50% opacity.
 /// The advantage line thus appears as a boundary line within a semi-transparent overlay.
 class AdvantageGraphPainter extends CustomPainter {
-  AdvantageGraphPainter(List<int> data) : data = List<int>.unmodifiable(data);
+  AdvantageGraphPainter(List<int> data, {this.currentIndex})
+    : assert(
+        currentIndex == null || currentIndex >= 0,
+        'Advantage graph current index must be non-negative.',
+      ),
+      data = List<int>.unmodifiable(data);
 
   final List<int> data;
+  final int? currentIndex;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -80,6 +86,15 @@ class AdvantageGraphPainter extends CustomPainter {
         const Radius.circular(5),
       ),
       zeroLinePaint,
+    );
+
+    _drawCurrentPositionMarker(
+      canvas,
+      margin,
+      chartHeight,
+      dxStep,
+      showCount,
+      chosenColor,
     );
 
     // If not enough data points, do not draw the advantage line or fill areas.
@@ -198,8 +213,39 @@ class AdvantageGraphPainter extends CustomPainter {
     canvas.drawPath(path, linePaint);
   }
 
+  void _drawCurrentPositionMarker(
+    Canvas canvas,
+    double margin,
+    double chartHeight,
+    double dxStep,
+    int showCount,
+    Color color,
+  ) {
+    final int? index = currentIndex;
+    if (index == null || showCount == 0) {
+      return;
+    }
+
+    final int dataOffset = data.length - showCount;
+    if (index < dataOffset || index >= dataOffset + showCount) {
+      return;
+    }
+
+    final int localIndex = index - dataOffset;
+    final double x = margin + localIndex * dxStep;
+    final Paint markerPaint = Paint()
+      ..color = color.withValues(alpha: 0.95)
+      ..strokeWidth = 1.5
+      ..style = PaintingStyle.stroke;
+    canvas.drawLine(
+      Offset(x, margin),
+      Offset(x, margin + chartHeight),
+      markerPaint,
+    );
+  }
+
   @override
   bool shouldRepaint(AdvantageGraphPainter oldDelegate) {
-    return oldDelegate.data != data;
+    return oldDelegate.data != data || oldDelegate.currentIndex != currentIndex;
   }
 }
