@@ -5087,11 +5087,10 @@ class _AnalysisVariationsBar extends StatelessWidget {
     return ValueListenableBuilder<int>(
       valueListenable: GameController().gameRecorder.moveCountNotifier,
       builder: (BuildContext context, _, _) {
-        final PgnNode<ExtMove> currentNode =
-            GameController().gameRecorder.activeNode ??
-            GameController().gameRecorder.pgnRoot;
-        final List<PgnNode<ExtMove>> variations = currentNode.children;
-        if (variations.length <= 1) {
+        final GameRecorder recorder = GameController().gameRecorder;
+        final List<_AnalysisVariationGroup> variationGroups =
+            _buildVariationGroups(recorder);
+        if (variationGroups.isEmpty) {
           return const SizedBox.shrink(
             key: Key('play_area_analysis_variations_bar_empty'),
           );
@@ -5105,28 +5104,34 @@ class _AnalysisVariationsBar extends StatelessWidget {
             );
             final List<Widget> rows = <Widget>[];
 
-            for (int i = 0; i < variations.length; i += crossAxisCount) {
-              final List<PgnNode<ExtMove>> rowVariations = variations
-                  .skip(i)
-                  .take(crossAxisCount)
-                  .toList(growable: false);
-              rows.add(
-                Row(
-                  children: <Widget>[
-                    for (final PgnNode<ExtMove> variation in rowVariations)
-                      Expanded(
-                        child: _AnalysisVariationButton(
-                          key: Key(
-                            'play_area_analysis_variation_${variations.indexOf(variation) + 1}',
+            for (final _AnalysisVariationGroup group in variationGroups) {
+              final List<PgnNode<ExtMove>> variations = group.variations;
+              for (int i = 0; i < variations.length; i += crossAxisCount) {
+                final List<PgnNode<ExtMove>> rowVariations = variations
+                    .skip(i)
+                    .take(crossAxisCount)
+                    .toList(growable: false);
+                rows.add(
+                  Row(
+                    key: i == 0 ? group.rowKey : null,
+                    children: <Widget>[
+                      for (final PgnNode<ExtMove> variation in rowVariations)
+                        Expanded(
+                          child: _AnalysisVariationButton(
+                            key: Key(
+                              '${group.keyPrefix}_${variations.indexOf(variation) + 1}',
+                            ),
+                            node: variation,
+                            isMainline: identical(variation, variations.first),
+                            isSelected: identical(variation, group.selected),
+                            hasSelectedVariation: group.selected != null,
+                            showAnnotations: showAnnotations,
                           ),
-                          node: variation,
-                          isMainline: identical(variation, variations.first),
-                          showAnnotations: showAnnotations,
                         ),
-                      ),
-                  ],
-                ),
-              );
+                    ],
+                  ),
+                );
+              }
             }
 
             return Column(
@@ -5140,6 +5145,59 @@ class _AnalysisVariationsBar extends StatelessWidget {
       },
     );
   }
+
+  List<_AnalysisVariationGroup> _buildVariationGroups(GameRecorder recorder) {
+    final List<_AnalysisVariationGroup> groups = <_AnalysisVariationGroup>[];
+    final List<PgnNode<ExtMove>> pathNodes = _recorderCurrentPathNodes(
+      recorder,
+    );
+
+    for (int i = 0; i < pathNodes.length; i++) {
+      final PgnNode<ExtMove> selected = pathNodes[i];
+      final PgnNode<ExtMove>? parent = selected.parent;
+      assert(parent != null, 'Path move nodes must have a parent.');
+      if (parent == null || parent.children.length <= 1) {
+        continue;
+      }
+      groups.add(
+        _AnalysisVariationGroup(
+          variations: parent.children,
+          selected: selected,
+          keyPrefix: 'play_area_analysis_path_variation_${i + 1}',
+          rowKey: Key('play_area_analysis_path_variation_group_${i + 1}'),
+        ),
+      );
+    }
+
+    final PgnNode<ExtMove> currentNode =
+        recorder.activeNode ?? recorder.pgnRoot;
+    if (currentNode.children.length > 1) {
+      groups.add(
+        _AnalysisVariationGroup(
+          variations: currentNode.children,
+          selected: null,
+          keyPrefix: 'play_area_analysis_variation',
+          rowKey: const Key('play_area_analysis_current_variation_group'),
+        ),
+      );
+    }
+
+    return groups;
+  }
+}
+
+class _AnalysisVariationGroup {
+  const _AnalysisVariationGroup({
+    required this.variations,
+    required this.selected,
+    required this.keyPrefix,
+    required this.rowKey,
+  });
+
+  final List<PgnNode<ExtMove>> variations;
+  final PgnNode<ExtMove>? selected;
+  final String keyPrefix;
+  final Key rowKey;
 }
 
 class _AnalysisVariationButton extends StatelessWidget {
@@ -5147,11 +5205,15 @@ class _AnalysisVariationButton extends StatelessWidget {
     super.key,
     required this.node,
     required this.isMainline,
+    required this.isSelected,
+    required this.hasSelectedVariation,
     required this.showAnnotations,
   });
 
   final PgnNode<ExtMove> node;
   final bool isMainline;
+  final bool isSelected;
+  final bool hasSelectedVariation;
   final bool showAnnotations;
 
   @override
@@ -5160,11 +5222,17 @@ class _AnalysisVariationButton extends StatelessWidget {
     assert(move != null, 'Analysis variation buttons require move data.');
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
-    final Color backgroundColor = isMainline
+    final bool usePrimaryStyle =
+        isSelected || (!hasSelectedVariation && isMainline);
+    final Color backgroundColor = usePrimaryStyle
         ? colorScheme.primaryContainer
+        : isMainline
+        ? colorScheme.tertiaryContainer
         : colorScheme.secondaryContainer;
-    final Color foregroundColor = isMainline
+    final Color foregroundColor = usePrimaryStyle
         ? colorScheme.onPrimaryContainer
+        : isMainline
+        ? colorScheme.onTertiaryContainer
         : colorScheme.onSecondaryContainer;
 
     return DecoratedBox(

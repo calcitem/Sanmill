@@ -3431,7 +3431,15 @@ void main() {
 
     expect(_currentPathMoves(), <String>['f4']);
     expect(
-      find.byKey(const Key('play_area_analysis_variations_bar_empty')),
+      find.byKey(const Key('play_area_analysis_variations_bar_content')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_path_variation_1_1')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_path_variation_1_2')),
       findsOneWidget,
     );
 
@@ -3448,6 +3456,75 @@ void main() {
 
     await tester.tap(
       find.byKey(const Key('play_area_analysis_bottom_bar_next')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(_currentPathMoves(), <String>['d6']);
+  });
+
+  testWidgets('analysis variations bar keeps ancestor branches visible', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    final GameRecorder recorder = GameController().gameRecorder;
+    recorder.reset();
+    recorder.appendMove(ExtMove('d6', side: PieceColor.white));
+    recorder.activeNode = recorder.pgnRoot;
+    recorder.appendMove(ExtMove('f4', side: PieceColor.white));
+    recorder.appendMove(ExtMove('a1', side: PieceColor.black));
+    final a1Node = recorder.activeNode!;
+    recorder.appendMove(ExtMove('d1', side: PieceColor.white));
+    recorder.activeNode = a1Node;
+    recorder.appendMove(ExtMove('g7', side: PieceColor.white));
+
+    await _pumpSessionPlayArea(tester, session);
+
+    expect(_currentPathMoves(), <String>['f4', 'a1', 'g7']);
+    expect(
+      find.byKey(const Key('play_area_analysis_path_variation_group_1')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_path_variation_group_3')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_path_variation_1_1')),
+        matching: find.text('d6'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_path_variation_1_2')),
+        matching: find.text('f4'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_path_variation_3_1')),
+        matching: find.text('d1'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_path_variation_3_2')),
+        matching: find.text('g7'),
+      ),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_path_variation_1_1')),
     );
     await tester.pumpAndSettle();
 
