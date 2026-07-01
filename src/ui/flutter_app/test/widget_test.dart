@@ -1085,6 +1085,7 @@ void main() {
         find.byKey(const Key('game_page_analysis_menu_engine_lines')),
         findsOneWidget,
       );
+      expect(find.text('Engine · Multiple lines 2'), findsOneWidget);
       expect(AnalysisMode.showEngineLines, isTrue);
 
       await tester.tap(

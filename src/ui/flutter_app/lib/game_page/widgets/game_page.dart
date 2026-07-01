@@ -523,6 +523,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
                             ? strings.hideEngineLines
                             : strings.showEngineLines,
                       ),
+                      subtitle: Text(
+                        _analysisAppBarEngineLinesSubtitle(strings),
+                      ),
                       contentPadding: EdgeInsets.zero,
                     ),
                   ),
@@ -533,6 +536,38 @@ class _GamePageInnerState extends State<_GamePageInner> {
         ),
       ],
     );
+  }
+
+  String _analysisAppBarEngineLinesSubtitle(S strings) {
+    final int lineCount = AnalysisMode.engineLineCount;
+    final String lineCountLabel = lineCount <= 0
+        ? strings.openingExplorerNoDataShort
+        : '${strings.multipleLines} $lineCount';
+    return <String>[
+      _analysisAppBarSourceLabel(strings),
+      lineCountLabel,
+    ].join(' · ');
+  }
+
+  String _analysisAppBarSourceLabel(S strings) {
+    return switch (AnalysisMode.source) {
+      AnalysisSource.engine =>
+        AnalysisMode.isThreatMode
+            ? '${strings.analysisThreat} · ${strings.engine}'
+            : strings.engine,
+      AnalysisSource.perfectDatabaseAndEngine =>
+        '${_analysisAppBarPerfectDatabaseShortLabel(strings)} · ${strings.engine}',
+      AnalysisSource.perfectDatabase =>
+        _analysisAppBarPerfectDatabaseShortLabel(strings),
+      null => strings.engine,
+    };
+  }
+
+  String _analysisAppBarPerfectDatabaseShortLabel(S strings) {
+    return switch (strings.localeName.split('_').first) {
+      'zh' => '库',
+      _ => 'DB',
+    };
   }
 
   // Builds the background widget based on display settings.
