@@ -2702,6 +2702,66 @@ void main() {
     );
   });
 
+  testWidgets('analysis summary keeps key moments when graph is hidden', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+      isAdvantageGraphShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    final GameRecorder recorder = GameController().gameRecorder;
+    recorder.reset();
+    recorder.appendMove(ExtMove('d6', side: PieceColor.white));
+    recorder.appendMove(ExtMove('f4', side: PieceColor.black));
+    recorder.appendMove(ExtMove('a1', side: PieceColor.white));
+
+    await _pumpSessionPlayArea(tester, session);
+    final PlayAreaState playAreaState = tester.state<PlayAreaState>(
+      find.byType(PlayArea),
+    );
+    playAreaState.advantageData
+      ..clear()
+      ..addAll(<int>[0, 24, -12, 36]);
+
+    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_summary_advantage_graph')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_summary_graph_header')),
+      findsNothing,
+    );
+
+    final Finder topKeyMoment = find.byKey(
+      const Key('play_area_analysis_summary_key_moment'),
+    );
+    final Finder secondKeyMoment = find.byKey(
+      const Key('play_area_analysis_summary_key_moment_2'),
+    );
+    expect(topKeyMoment, findsOneWidget);
+    expect(secondKeyMoment, findsOneWidget);
+    expect(
+      find.descendant(of: topKeyMoment, matching: find.text('Move 3')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: topKeyMoment, matching: find.textContaining('+48')),
+      findsOneWidget,
+    );
+
+    await tester.tap(secondKeyMoment);
+    await tester.pumpAndSettle();
+
+    expect(_currentPathMoves(), <String>['d6', 'f4']);
+  });
+
   testWidgets('analysis summary advantage graph jumps to tapped move', (
     WidgetTester tester,
   ) async {

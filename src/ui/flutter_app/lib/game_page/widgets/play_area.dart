@@ -5260,6 +5260,8 @@ class _AnalysisSummaryPanel extends StatelessWidget {
             final bool showAdvantageGraph =
                 DB().displaySettings.isAdvantageGraphShown &&
                 advantageData.isNotEmpty;
+            final bool showReviewMoments =
+                showAdvantageGraph || keyMoments.isNotEmpty;
 
             return ListView(
               key: const Key('play_area_analysis_summary'),
@@ -5267,17 +5269,18 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                 vertical: AppStyles.bodyPadding,
               ),
               children: <Widget>[
-                if (showAdvantageGraph)
+                if (showReviewMoments)
                   LichessListSection(
                     cardKey: const Key('play_area_analysis_summary_graph_card'),
                     children: <Widget>[
-                      ListTile(
-                        key: const Key(
-                          'play_area_analysis_summary_graph_header',
+                      if (showAdvantageGraph)
+                        ListTile(
+                          key: const Key(
+                            'play_area_analysis_summary_graph_header',
+                          ),
+                          leading: const Icon(Icons.show_chart_outlined),
+                          title: Text(strings.showAdvantageGraph),
                         ),
-                        leading: const Icon(Icons.show_chart_outlined),
-                        title: Text(strings.showAdvantageGraph),
-                      ),
                       for (
                         int keyMomentIndex = 0;
                         keyMomentIndex < keyMoments.length;
@@ -5308,7 +5311,8 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                             ),
                           ),
                         ),
-                      _AnalysisSummaryAdvantageGraph(data: advantageData),
+                      if (showAdvantageGraph)
+                        _AnalysisSummaryAdvantageGraph(data: advantageData),
                     ],
                   ),
                 LichessListSection(
