@@ -4242,7 +4242,7 @@ void main() {
 
     await _pumpSessionPlayArea(tester, session);
 
-    expect(find.byTooltip('Engine · = · d1 · 1. a7'), findsOneWidget);
+    expect(find.byTooltip('Engine · PV 1 · = · d1 · 1. a7'), findsOneWidget);
 
     await tester.tap(find.byKey(const Key('play_area_analysis_engine_line_0')));
     await tester.pumpAndSettle();
@@ -4276,7 +4276,7 @@ void main() {
         }
         final String? message = widget.message;
         return message != null &&
-            message.startsWith('Threat · + · d2 · ') &&
+            message.startsWith('Threat · PV 1 · + · d2 · ') &&
             message.contains('f4');
       }),
       findsOneWidget,
@@ -4316,6 +4316,11 @@ void main() {
     await _pumpSessionPlayArea(tester, session);
     AnalysisMode.setAnalyzing(true);
     await tester.pump();
+
+    expect(
+      find.byTooltip('Engine · Thinking… · PV 1 · = · d1 · 1. a7'),
+      findsOneWidget,
+    );
 
     await tester.tap(find.byKey(const Key('play_area_analysis_engine_line_0')));
     await tester.pump();

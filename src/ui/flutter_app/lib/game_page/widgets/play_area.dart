@@ -7284,6 +7284,7 @@ class _AnalysisEngineLine extends StatelessWidget {
         _analysisThreatLabel(strings)
       else
         strings.engine,
+      if (AnalysisMode.isAnalyzing) strings.thinking,
       rankLabel,
       _evalLabel(result.outcome),
       ?depthLabel,
