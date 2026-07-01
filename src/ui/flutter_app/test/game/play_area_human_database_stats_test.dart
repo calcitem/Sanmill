@@ -2818,6 +2818,16 @@ void main() {
       find.byKey(const Key('play_area_analysis_summary_engine_progress')),
       findsOneWidget,
     );
+    final CircularProgressIndicator summaryProgress = tester
+        .widget<CircularProgressIndicator>(
+          find.descendant(
+            of: find.byKey(
+              const Key('play_area_analysis_summary_engine_progress'),
+            ),
+            matching: find.byType(CircularProgressIndicator),
+          ),
+        );
+    expect(summaryProgress.semanticsLabel, 'Analyzing…');
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_summary_engine')),
@@ -3683,6 +3693,16 @@ void main() {
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_progress')),
       findsOneWidget,
     );
+    final CircularProgressIndicator bottomBarProgress = tester
+        .widget<CircularProgressIndicator>(
+          find.descendant(
+            of: find.byKey(
+              const Key('play_area_analysis_bottom_bar_engine_progress'),
+            ),
+            matching: find.byType(CircularProgressIndicator),
+          ),
+        );
+    expect(bottomBarProgress.semanticsLabel, 'Analyzing…');
     expect(
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
       findsNothing,

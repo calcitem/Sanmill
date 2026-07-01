@@ -5584,11 +5584,15 @@ class _AnalysisSummaryPanel extends StatelessWidget {
   }
 
   Widget? _engineTrailing(BuildContext context, bool canRequestAnalysis) {
+    final S strings = S.of(context);
     if (AnalysisMode.isAnalyzing) {
-      return const SizedBox.square(
-        key: Key('play_area_analysis_summary_engine_progress'),
+      return SizedBox.square(
+        key: const Key('play_area_analysis_summary_engine_progress'),
         dimension: 20,
-        child: CircularProgressIndicator(strokeWidth: 2),
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          semanticsLabel: strings.analyzing,
+        ),
       );
     }
     if (!canRequestAnalysis) {
@@ -5597,7 +5601,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
     return FilledButton.tonal(
       key: const Key('play_area_analysis_summary_analyze'),
       onPressed: onAnalyze,
-      child: Text(S.of(context).analyze),
+      child: Text(strings.analyze),
     );
   }
 
@@ -7776,6 +7780,7 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
                           dimension: 12,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
+                            semanticsLabel: strings.analyzing,
                             valueColor: AlwaysStoppedAnimation<Color>(
                               textColor.withValues(alpha: 0.82),
                             ),
