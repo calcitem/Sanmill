@@ -2217,7 +2217,7 @@ void main() {
     expect(engineValue.data, '8');
   });
 
-  testWidgets('analysis engine popup disables go deeper while analyzing', (
+  testWidgets('analysis engine popup hides go deeper while analyzing', (
     WidgetTester tester,
   ) async {
     final NativeMillGameSession session = await _bindNativeGame(
@@ -2242,15 +2242,15 @@ void main() {
     );
     await tester.pump();
 
-    final IconButton goDeeper = tester.widget<IconButton>(
+    expect(
       find.byKey(const Key('play_area_analysis_engine_go_deeper')),
+      findsNothing,
     );
-    expect(goDeeper.onPressed, isNull);
 
     AnalysisMode.setAnalyzing(false);
   });
 
-  testWidgets('analysis engine popup disables go deeper after deep search', (
+  testWidgets('analysis engine popup hides go deeper after deep search', (
     WidgetTester tester,
   ) async {
     final NativeMillGameSession session = await _bindNativeGame(
@@ -2277,10 +2277,10 @@ void main() {
     );
     await tester.pump();
 
-    final IconButton goDeeper = tester.widget<IconButton>(
+    expect(
       find.byKey(const Key('play_area_analysis_engine_go_deeper')),
+      findsNothing,
     );
-    expect(goDeeper.onPressed, isNull);
   });
 
   testWidgets('analysis settings sheet toggles engine lines', (

@@ -4720,13 +4720,15 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
       key: const Key('play_area_analysis_engine_status'),
       contentPadding: const EdgeInsets.only(left: 16),
       leading: Icon(Icons.memory_outlined, color: colorScheme.primary),
-      trailing: IconButton(
-        key: const Key('play_area_analysis_engine_go_deeper'),
-        tooltip: strings.more,
-        onPressed: canGoDeeper ? onGoDeeper : null,
-        icon: const Icon(Icons.add_circle_outline),
-        color: colorScheme.primary,
-      ),
+      trailing: canGoDeeper
+          ? IconButton(
+              key: const Key('play_area_analysis_engine_go_deeper'),
+              tooltip: strings.more,
+              onPressed: onGoDeeper,
+              icon: const Icon(Icons.add_circle_outline),
+              color: colorScheme.primary,
+            )
+          : null,
       title: Text(
         strings.engine,
         style: theme.textTheme.titleMedium?.copyWith(
