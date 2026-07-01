@@ -2983,6 +2983,16 @@ class PlayAreaState extends State<PlayArea> {
           summary: _AnalysisSummaryPanel(
             onOpenFullMoveList: () =>
                 _openMovesWithNavigator(Navigator.of(context)),
+            onAnalyze: () {
+              RecordingService().recordEvent(
+                RecordingEventType.toolbarAction,
+                <String, dynamic>{
+                  'toolbar': 'analysisSummary',
+                  'action': 'analyze',
+                },
+              );
+              unawaited(AnalysisService.toggle(context));
+            },
           ),
         );
       },
@@ -5045,9 +5055,13 @@ class _AnalysisPanel extends StatelessWidget {
 }
 
 class _AnalysisSummaryPanel extends StatelessWidget {
-  const _AnalysisSummaryPanel({required this.onOpenFullMoveList});
+  const _AnalysisSummaryPanel({
+    required this.onOpenFullMoveList,
+    required this.onAnalyze,
+  });
 
   final VoidCallback onOpenFullMoveList;
+  final VoidCallback onAnalyze;
 
   @override
   Widget build(BuildContext context) {
@@ -5068,6 +5082,8 @@ class _AnalysisSummaryPanel extends StatelessWidget {
             final int variationCount = currentNode.children.length;
             final String? resultSummary = _resultSummary(strings);
             final String? trapSummary = _trapSummary();
+            final bool canRequestAnalysis =
+                !AnalysisMode.isFullAnalysis && !AnalysisMode.isAnalyzing;
 
             return ListView(
               key: const Key('play_area_analysis_summary'),
@@ -5089,6 +5105,8 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                       leading: const Icon(Icons.memory_outlined),
                       title: Text(_analysisDetailsTitle(strings)),
                       subtitle: Text(_engineSummary(context, bestResult)),
+                      trailing: _engineTrailing(context, canRequestAnalysis),
+                      onTap: canRequestAnalysis ? onAnalyze : null,
                     ),
                     if (resultSummary != null)
                       ListTile(
@@ -5154,6 +5172,9 @@ class _AnalysisSummaryPanel extends StatelessWidget {
 
   String _engineSummary(BuildContext context, MoveAnalysisResult? result) {
     if (result == null) {
+      if (AnalysisMode.isAnalyzing) {
+        return S.of(context).analyzing;
+      }
       return S.of(context).openingExplorerNoDataShort;
     }
 
@@ -5177,6 +5198,24 @@ class _AnalysisSummaryPanel extends StatelessWidget {
       AnalysisSource.perfectDatabase => strings.perfectDatabaseSettings,
       _ => strings.engine,
     };
+  }
+
+  Widget? _engineTrailing(BuildContext context, bool canRequestAnalysis) {
+    if (AnalysisMode.isAnalyzing) {
+      return const SizedBox.square(
+        key: Key('play_area_analysis_summary_engine_progress'),
+        dimension: 20,
+        child: CircularProgressIndicator(strokeWidth: 2),
+      );
+    }
+    if (!canRequestAnalysis) {
+      return null;
+    }
+    return FilledButton.tonal(
+      key: const Key('play_area_analysis_summary_analyze'),
+      onPressed: onAnalyze,
+      child: Text(S.of(context).analyze),
+    );
   }
 
   String? _resultSummary(S strings) {

@@ -2214,6 +2214,53 @@ void main() {
     );
   });
 
+  testWidgets('analysis summary offers request and waiting states', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_summary_analyze')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_summary_engine_progress')),
+      findsNothing,
+    );
+
+    AnalysisMode.setAnalyzing(true);
+    await tester.pump();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_summary_analyze')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_summary_engine_progress')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_engine')),
+        matching: find.text('Analyzing…'),
+      ),
+      findsOneWidget,
+    );
+
+    AnalysisMode.setAnalyzing(false);
+  });
+
   testWidgets(
     'deep analysis marks max search time in summary and engine sheet',
     (WidgetTester tester) async {
