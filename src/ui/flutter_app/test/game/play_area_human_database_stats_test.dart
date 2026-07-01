@@ -2264,7 +2264,7 @@ void main() {
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_summary_moves')),
-        matching: find.text('2'),
+        matching: find.textContaining('2 · d6 f4'),
       ),
       findsOneWidget,
     );
@@ -3127,8 +3127,15 @@ void main() {
     expect(_currentPathMoves(), <String>['d6', 'a1', 'g7']);
     expect(
       find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_moves')),
+        matching: find.textContaining('3 · d6 a1 g7'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
         of: find.byKey(const Key('play_area_analysis_summary_variations')),
-        matching: find.text('2'),
+        matching: find.textContaining('2 · Branch moves: f4, g7'),
       ),
       findsOneWidget,
     );

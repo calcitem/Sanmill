@@ -5219,6 +5219,8 @@ class _AnalysisSummaryPanel extends StatelessWidget {
 
   static const int _maxKeyMoments = 3;
   static const int _maxResultCandidates = 6;
+  static const int _maxMovePreviewMoves = 8;
+  static const int _maxVariationPreviewMoves = 4;
 
   final List<int> advantageData;
   final VoidCallback onOpenFullMoveList;
@@ -5237,9 +5239,9 @@ class _AnalysisSummaryPanel extends StatelessWidget {
             final S strings = S.of(context);
             final MoveAnalysisResult? bestResult = _bestResult();
             final GameRecorder recorder = GameController().gameRecorder;
-            final int moveCount = _recorderPathWithMainlineContinuation(
-              recorder,
-            ).length;
+            final List<PgnNode<ExtMove>> moveLineNodes =
+                _recorderPathWithMainlineContinuation(recorder);
+            final int moveCount = moveLineNodes.length;
             final int variationCount = _recorderVariationBranchCount(recorder);
             final String? resultSummary = _resultSummary(strings);
             final List<_AnalysisOutcomeBucket> resultBuckets = _resultBuckets(
@@ -5369,7 +5371,16 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                       key: const Key('play_area_analysis_summary_moves'),
                       leading: const Icon(Icons.account_tree_outlined),
                       title: Text(strings.moveList),
-                      subtitle: Text('$moveCount'),
+                      subtitle: _AnalysisSummaryTileSubtitle(
+                        key: const Key(
+                          'play_area_analysis_summary_moves_preview',
+                        ),
+                        text: _moveLineSummary(
+                          strings,
+                          moveLineNodes,
+                          moveCount,
+                        ),
+                      ),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: onOpenFullMoveList,
                     ),
@@ -5377,7 +5388,16 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                       key: const Key('play_area_analysis_summary_variations'),
                       leading: const Icon(Icons.fork_right_outlined),
                       title: Text(strings.variations),
-                      subtitle: Text('$variationCount'),
+                      subtitle: _AnalysisSummaryTileSubtitle(
+                        key: const Key(
+                          'play_area_analysis_summary_variations_preview',
+                        ),
+                        text: _variationSummary(
+                          strings,
+                          recorder,
+                          variationCount,
+                        ),
+                      ),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: onOpenFullMoveList,
                     ),
@@ -5618,6 +5638,101 @@ class _AnalysisSummaryPanel extends StatelessWidget {
         });
     await HistoryNavigator.gotoNode(context, moment.node, pop: false);
   }
+
+  String _moveLineSummary(
+    S strings,
+    List<PgnNode<ExtMove>> nodes,
+    int moveCount,
+  ) {
+    final String preview = _nodeMovePreview(
+      strings: strings,
+      nodes: nodes,
+      maxMoves: _maxMovePreviewMoves,
+    );
+    if (preview.isEmpty) {
+      return '$moveCount';
+    }
+    return '$moveCount · $preview';
+  }
+
+  String _variationSummary(
+    S strings,
+    GameRecorder recorder,
+    int variationCount,
+  ) {
+    if (variationCount == 0) {
+      return '0';
+    }
+
+    final List<PgnNode<ExtMove>> branchNodes = _recorderVariationBranchNodes(
+      recorder,
+    );
+    assert(
+      branchNodes.length == variationCount,
+      'Variation summary must match the recorder variation count.',
+    );
+    final String preview = _nodeMovePreview(
+      strings: strings,
+      nodes: branchNodes,
+      maxMoves: _maxVariationPreviewMoves,
+      separator: ', ',
+    );
+    if (preview.isEmpty) {
+      return '$variationCount';
+    }
+    return '$variationCount · ${strings.branchMoves}: $preview';
+  }
+
+  List<PgnNode<ExtMove>> _recorderVariationBranchNodes(GameRecorder recorder) {
+    final List<PgnNode<ExtMove>> branchNodes = <PgnNode<ExtMove>>[];
+
+    void collectBranches(PgnNode<ExtMove> node) {
+      for (final PgnNode<ExtMove> child in node.children.skip(1)) {
+        assert(
+          child.data != null,
+          'Variation branch nodes must carry move data.',
+        );
+        branchNodes.add(child);
+      }
+      for (final PgnNode<ExtMove> child in node.children) {
+        collectBranches(child);
+      }
+    }
+
+    collectBranches(recorder.pgnRoot);
+    return branchNodes;
+  }
+
+  String _nodeMovePreview({
+    required S strings,
+    required List<PgnNode<ExtMove>> nodes,
+    required int maxMoves,
+    String separator = ' ',
+  }) {
+    assert(maxMoves > 0, 'Move preview limit must be positive.');
+    final List<String> labels = <String>[];
+    for (final PgnNode<ExtMove> node in nodes.take(maxMoves)) {
+      final ExtMove? move = node.data;
+      assert(move != null, 'Move preview nodes must carry move data.');
+      if (move == null) {
+        continue;
+      }
+      labels.add(
+        AnalysisMode.showMoveAnnotations
+            ? _notationWithNagSymbols(move.notation, move.getAllNags())
+            : move.notation,
+      );
+    }
+    if (labels.isEmpty) {
+      return '';
+    }
+
+    final int remaining = nodes.length - labels.length;
+    if (remaining > 0) {
+      labels.add('+$remaining ${strings.more}');
+    }
+    return labels.join(separator);
+  }
 }
 
 @immutable
@@ -5771,6 +5886,17 @@ class _AnalysisSummaryKeyMomentLine extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class _AnalysisSummaryTileSubtitle extends StatelessWidget {
+  const _AnalysisSummaryTileSubtitle({super.key, required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(text, maxLines: 2, overflow: TextOverflow.ellipsis);
   }
 }
 
