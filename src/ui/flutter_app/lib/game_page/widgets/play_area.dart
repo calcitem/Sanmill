@@ -130,6 +130,28 @@ Future<void> showAnalysisSettingsSheet(
                         ),
                         SwitchListTile.adaptive(
                           key: const Key(
+                            'play_area_analysis_settings_inline_notation',
+                          ),
+                          secondary: const Icon(Icons.short_text_outlined),
+                          title: Text(_analysisInlineNotationLabel(strings)),
+                          value: AnalysisMode.inlineNotation,
+                          onChanged: (bool value) {
+                            RecordingService().recordEvent(
+                              RecordingEventType.toolbarAction,
+                              <String, dynamic>{
+                                'toolbar': 'analysisSettings',
+                                'action': 'setInlineNotation',
+                                'enabled': value,
+                              },
+                            );
+                            AnalysisMode.setInlineNotation(
+                              value,
+                              persist: true,
+                            );
+                          },
+                        ),
+                        SwitchListTile.adaptive(
+                          key: const Key(
                             'play_area_analysis_settings_move_annotations',
                           ),
                           secondary: const Icon(Icons.rate_review_outlined),
@@ -529,6 +551,13 @@ String _analysisMoveAnnotationsLabel(S strings) {
   return switch (strings.localeName.split('_').first) {
     'zh' => '显示走法标注',
     _ => 'Show move annotations',
+  };
+}
+
+String _analysisInlineNotationLabel(S strings) {
+  return switch (strings.localeName.split('_').first) {
+    'zh' => '内联记谱',
+    _ => 'Inline notation',
   };
 }
 
@@ -2835,39 +2864,46 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   Widget _buildAnalysisTabs(BuildContext context, {bool framed = false}) {
-    final GameSession? session = GameSessionScope.sessionOf(context);
-    return _AnalysisPanel(
-      framed: framed,
-      explorer: OpeningExplorerPage(
-        session: session,
-        startFromSession: true,
-        embedded: true,
-        showBoard: false,
-      ),
-      moves: Column(
-        children: <Widget>[
-          Expanded(
-            child: _InlineMoveList(
-              key: const Key('play_area_analysis_moves'),
-              wrapKey: const Key('play_area_analysis_moves_wrap'),
-              roundKeyPrefix: 'play_area_analysis_round_',
-              moveKeyPrefix: 'play_area_analysis_move_',
-              onMoveTap: (BuildContext context, PgnNode<ExtMove> node) {
-                return HistoryNavigator.gotoNode(context, node, pop: false);
-              },
-              showMovePreview: true,
-              showMoveAnnotations: AnalysisMode.showMoveAnnotations,
-              showMoveComments: AnalysisMode.showMoveComments,
-              layout: _InlineMoveListLayout.stacked,
-              groupByRound: true,
-            ),
+    return ValueListenableBuilder<bool>(
+      valueListenable: AnalysisMode.stateNotifier,
+      builder: (BuildContext context, _, _) {
+        final GameSession? session = GameSessionScope.sessionOf(context);
+        return _AnalysisPanel(
+          framed: framed,
+          explorer: OpeningExplorerPage(
+            session: session,
+            startFromSession: true,
+            embedded: true,
+            showBoard: false,
           ),
-          const _AnalysisVariationsBar(
-            key: Key('play_area_analysis_variations_bar'),
+          moves: Column(
+            children: <Widget>[
+              Expanded(
+                child: _InlineMoveList(
+                  key: const Key('play_area_analysis_moves'),
+                  wrapKey: const Key('play_area_analysis_moves_wrap'),
+                  roundKeyPrefix: 'play_area_analysis_round_',
+                  moveKeyPrefix: 'play_area_analysis_move_',
+                  onMoveTap: (BuildContext context, PgnNode<ExtMove> node) {
+                    return HistoryNavigator.gotoNode(context, node, pop: false);
+                  },
+                  showMovePreview: true,
+                  showMoveAnnotations: AnalysisMode.showMoveAnnotations,
+                  showMoveComments: AnalysisMode.showMoveComments,
+                  layout: AnalysisMode.inlineNotation
+                      ? _InlineMoveListLayout.stacked
+                      : _InlineMoveListLayout.twoColumn,
+                  groupByRound: true,
+                ),
+              ),
+              const _AnalysisVariationsBar(
+                key: Key('play_area_analysis_variations_bar'),
+              ),
+            ],
           ),
-        ],
-      ),
-      summary: const _AnalysisSummaryPanel(),
+          summary: const _AnalysisSummaryPanel(),
+        );
+      },
     );
   }
 
@@ -3673,7 +3709,8 @@ class _InlineMoveListState extends State<_InlineMoveList> {
               height: PlayAreaState._kInlineMoveListHeight,
             ),
             _InlineMoveListLayout.wrap ||
-            _InlineMoveListLayout.stacked => BoxConstraints(
+            _InlineMoveListLayout.stacked ||
+            _InlineMoveListLayout.twoColumn => BoxConstraints(
               minHeight: 40,
               maxHeight: widget.maxHeight ?? double.infinity,
             ),
@@ -3736,6 +3773,10 @@ class _InlineMoveListState extends State<_InlineMoveList> {
         key: const Key('play_area_inline_move_list_scroll_view'),
         child: _BoundedMoveWrap(spacing: 4, runSpacing: 4, children: chips),
       ),
+      _InlineMoveListLayout.twoColumn => SingleChildScrollView(
+        key: const Key('play_area_inline_move_list_scroll_view'),
+        child: _BoundedMoveWrap(spacing: 4, runSpacing: 4, children: chips),
+      ),
       _InlineMoveListLayout.horizontal => SingleChildScrollView(
         key: const Key('play_area_inline_move_list_scroll_view'),
         scrollDirection: Axis.horizontal,
@@ -3767,9 +3808,21 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       _InlineMoveListLayout.stacked => SingleChildScrollView(
         key: const Key('play_area_inline_move_list_scroll_view'),
         child: _BoundedMoveWrap(
+          key: const Key('play_area_inline_move_list_inline_notation'),
           spacing: 8,
           runSpacing: 6,
           children: wrappedChildren,
+        ),
+      ),
+      _InlineMoveListLayout.twoColumn => SingleChildScrollView(
+        key: const Key('play_area_inline_move_list_scroll_view'),
+        child: Column(
+          key: const Key('play_area_inline_move_list_two_column'),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            for (final _InlineMoveRound round in rounds)
+              _buildMoveRoundTableRow(context, round),
+          ],
         ),
       ),
       _InlineMoveListLayout.wrap => Wrap(
@@ -3835,6 +3888,72 @@ class _InlineMoveListState extends State<_InlineMoveList> {
         for (final _InlineMoveSegment segment in round.segments)
           _buildMoveSegment(context, segment),
       ],
+    );
+  }
+
+  Widget _buildMoveRoundTableRow(BuildContext context, _InlineMoveRound round) {
+    final ThemeData theme = Theme.of(context);
+    final String roundKeyPrefix = widget.roundKeyPrefix!;
+    return DecoratedBox(
+      key: Key('$roundKeyPrefix${round.number}'),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: theme.dividerColor.withValues(alpha: 0.7)),
+        ),
+      ),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 36),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              width: 34,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 9, left: 2),
+                child: _InlineMoveCount(count: round.number),
+              ),
+            ),
+            Expanded(
+              child: _buildMoveRoundTableCell(context, round, PieceColor.white),
+            ),
+            SizedBox(
+              height: 36,
+              child: VerticalDivider(
+                width: 1,
+                thickness: 1,
+                color: theme.dividerColor.withValues(alpha: 0.5),
+              ),
+            ),
+            Expanded(
+              child: _buildMoveRoundTableCell(context, round, PieceColor.black),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMoveRoundTableCell(
+    BuildContext context,
+    _InlineMoveRound round,
+    PieceColor side,
+  ) {
+    final List<_InlineMoveSegment> segments = round.segments
+        .where((_InlineMoveSegment segment) => segment.side == side)
+        .toList(growable: false);
+    if (segments.isEmpty) {
+      return const SizedBox(height: 36);
+    }
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+      child: Wrap(
+        spacing: 6,
+        runSpacing: 4,
+        children: <Widget>[
+          for (final _InlineMoveSegment segment in segments)
+            _buildMoveSegment(context, segment, allowMultiline: true),
+        ],
+      ),
     );
   }
 
@@ -4242,12 +4361,13 @@ class _IndexedMoveNode {
   final PgnNode<ExtMove> node;
 }
 
-enum _InlineMoveListLayout { wrap, horizontal, stacked }
+enum _InlineMoveListLayout { wrap, horizontal, stacked, twoColumn }
 
 enum _GameMoveChipStyle { filled, inlineText }
 
 class _BoundedMoveWrap extends StatelessWidget {
   const _BoundedMoveWrap({
+    super.key,
     required this.spacing,
     required this.runSpacing,
     required this.children,

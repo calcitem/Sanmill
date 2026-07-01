@@ -120,6 +120,7 @@ class DisplaySettings {
     this.showBranchTree = false,
     this.themeMode = AppThemeMode.system,
     this.analysisSmallBoard = false,
+    this.analysisInlineNotation = false,
     this.analysisShowEngineLines = true,
     this.analysisShowMoveAnnotations = true,
     this.analysisShowMoveComments = true,
@@ -297,6 +298,10 @@ class DisplaySettings {
   @HiveField(47, defaultValue: false)
   final bool analysisSmallBoard;
 
+  /// Whether analysis move lists use compact inline notation.
+  @HiveField(54, defaultValue: false)
+  final bool analysisInlineNotation;
+
   /// Whether analysis screens show engine candidate lines.
   @HiveField(48, defaultValue: true)
   final bool analysisShowEngineLines;
@@ -326,6 +331,7 @@ class DisplaySettings {
 
   DisplaySettings copyWithAnalysisPreferences({
     bool? analysisSmallBoard,
+    bool? analysisInlineNotation,
     bool? analysisShowEngineLines,
     bool? analysisShowMoveAnnotations,
     bool? analysisShowMoveComments,
@@ -382,6 +388,8 @@ class DisplaySettings {
       showBranchTree: showBranchTree,
       themeMode: themeMode,
       analysisSmallBoard: analysisSmallBoard ?? this.analysisSmallBoard,
+      analysisInlineNotation:
+          analysisInlineNotation ?? this.analysisInlineNotation,
       analysisShowEngineLines:
           analysisShowEngineLines ?? this.analysisShowEngineLines,
       analysisShowMoveAnnotations:

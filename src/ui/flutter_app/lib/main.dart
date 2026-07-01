@@ -367,6 +367,7 @@ class SanmillAppState extends State<SanmillApp> {
   void _syncAnalysisPreferences(DisplaySettings displaySettings) {
     AnalysisMode.configurePreferences(
       smallBoard: displaySettings.analysisSmallBoard,
+      inlineNotation: displaySettings.analysisInlineNotation,
       showEngineLines: displaySettings.analysisShowEngineLines,
       showMoveAnnotations: displaySettings.analysisShowMoveAnnotations,
       showMoveComments: displaySettings.analysisShowMoveComments,

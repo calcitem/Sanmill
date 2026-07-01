@@ -167,6 +167,7 @@ class AnalysisMode {
   static bool _showMoveAnnotations = true;
   static bool _showMoveComments = true;
   static bool _showBestMoveArrow = true;
+  static bool _inlineNotation = false;
   static bool _smallBoard = false;
   static bool _isThreatMode = false;
   static bool _isEngineAnalysisDeep = false;
@@ -212,6 +213,9 @@ class AnalysisMode {
 
   /// Whether the analysis board shows the best engine move arrow.
   static bool get showBestMoveArrow => _showBestMoveArrow;
+
+  /// Whether the analysis move list uses compact inline notation.
+  static bool get inlineNotation => _inlineNotation;
 
   /// Whether the analysis screen uses a reduced board size in portrait mode.
   static bool get smallBoard => _smallBoard;
@@ -388,6 +392,21 @@ class AnalysisMode {
     _publishState();
   }
 
+  /// Set whether the analysis move list uses compact inline notation.
+  static void setInlineNotation(bool value, {bool persist = false}) {
+    if (_inlineNotation == value) {
+      if (persist) {
+        _saveDisplayPreferences(inlineNotation: value);
+      }
+      return;
+    }
+    _inlineNotation = value;
+    if (persist) {
+      _saveDisplayPreferences(inlineNotation: value);
+    }
+    _publishState();
+  }
+
   /// Toggle the reduced portrait analysis board layout.
   static void toggleSmallBoard({bool persist = false}) {
     setSmallBoard(!_smallBoard, persist: persist);
@@ -470,6 +489,7 @@ class AnalysisMode {
   /// Load persisted analysis display preferences.
   static void configurePreferences({
     required bool smallBoard,
+    required bool inlineNotation,
     required bool showEngineLines,
     required bool showMoveAnnotations,
     required bool showMoveComments,
@@ -483,6 +503,7 @@ class AnalysisMode {
       engineSearchTimeMs,
     );
     if (_smallBoard == smallBoard &&
+        _inlineNotation == inlineNotation &&
         _showEngineLines == showEngineLines &&
         _showMoveAnnotations == showMoveAnnotations &&
         _showMoveComments == showMoveComments &&
@@ -492,6 +513,7 @@ class AnalysisMode {
       return;
     }
     _smallBoard = smallBoard;
+    _inlineNotation = inlineNotation;
     _showEngineLines = showEngineLines;
     _showMoveAnnotations = showMoveAnnotations;
     _showMoveComments = showMoveComments;
@@ -517,6 +539,7 @@ class AnalysisMode {
 
   static void _saveDisplayPreferences({
     bool? smallBoard,
+    bool? inlineNotation,
     bool? showEngineLines,
     bool? showMoveAnnotations,
     bool? showMoveComments,
@@ -527,6 +550,7 @@ class AnalysisMode {
     final DisplaySettings settings = DB().displaySettings;
     DB().displaySettings = settings.copyWithAnalysisPreferences(
       analysisSmallBoard: smallBoard ?? settings.analysisSmallBoard,
+      analysisInlineNotation: inlineNotation ?? settings.analysisInlineNotation,
       analysisShowEngineLines:
           showEngineLines ?? settings.analysisShowEngineLines,
       analysisShowMoveAnnotations:

@@ -10,6 +10,7 @@ void main() {
   tearDown(() {
     AnalysisMode.disable();
     AnalysisMode.setSmallBoard(false);
+    AnalysisMode.setInlineNotation(false);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
     AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
     AnalysisMode.setShowMoveAnnotations(true);
@@ -199,6 +200,7 @@ void main() {
   test('tracks analysis move display preferences', () {
     AnalysisMode.configurePreferences(
       smallBoard: false,
+      inlineNotation: true,
       showEngineLines: true,
       showMoveAnnotations: false,
       showMoveComments: false,
@@ -207,14 +209,17 @@ void main() {
       engineSearchTimeMs: AnalysisMode.defaultEngineSearchTimeMs,
     );
 
+    expect(AnalysisMode.inlineNotation, isTrue);
     expect(AnalysisMode.showMoveAnnotations, isFalse);
     expect(AnalysisMode.showMoveComments, isFalse);
     expect(AnalysisMode.showBestMoveArrow, isFalse);
 
+    AnalysisMode.setInlineNotation(false);
     AnalysisMode.setShowMoveAnnotations(true);
     AnalysisMode.setShowMoveComments(true);
     AnalysisMode.setShowBestMoveArrow(true);
 
+    expect(AnalysisMode.inlineNotation, isFalse);
     expect(AnalysisMode.showMoveAnnotations, isTrue);
     expect(AnalysisMode.showMoveComments, isTrue);
     expect(AnalysisMode.showBestMoveArrow, isTrue);

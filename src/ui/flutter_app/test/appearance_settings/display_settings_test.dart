@@ -58,6 +58,7 @@ void main() {
       expect(d.showBranchTree, isFalse);
       expect(d.themeMode, AppThemeMode.system);
       expect(d.analysisSmallBoard, isFalse);
+      expect(d.analysisInlineNotation, isFalse);
       expect(d.analysisShowEngineLines, isTrue);
       expect(d.analysisShowMoveAnnotations, isTrue);
       expect(d.analysisShowMoveComments, isTrue);

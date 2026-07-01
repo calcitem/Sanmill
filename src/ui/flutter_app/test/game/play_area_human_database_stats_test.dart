@@ -64,6 +64,7 @@ void main() {
     AnalysisMode.setShowMoveAnnotations(true);
     AnalysisMode.setShowMoveComments(true);
     AnalysisMode.setShowBestMoveArrow(true);
+    AnalysisMode.setInlineNotation(false);
     AnalysisMode.setSmallBoard(false);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
     AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
@@ -76,6 +77,7 @@ void main() {
     AnalysisMode.setShowMoveAnnotations(true);
     AnalysisMode.setShowMoveComments(true);
     AnalysisMode.setShowBestMoveArrow(true);
+    AnalysisMode.setInlineNotation(false);
     AnalysisMode.setSmallBoard(false);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
     AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
@@ -1903,6 +1905,48 @@ void main() {
     );
   });
 
+  testWidgets('analysis move list toggles inline notation layout', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    GameController().gameRecorder.appendMove(
+      ExtMove('d6', side: PieceColor.white, roundIndex: 1),
+    );
+    GameController().gameRecorder.appendMove(
+      ExtMove('f4', side: PieceColor.black, roundIndex: 1),
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    expect(AnalysisMode.inlineNotation, isFalse);
+    expect(
+      find.byKey(const Key('play_area_inline_move_list_two_column')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_inline_move_list_inline_notation')),
+      findsNothing,
+    );
+
+    AnalysisMode.setInlineNotation(true);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_inline_move_list_two_column')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_inline_move_list_inline_notation')),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('analysis previous and next repeat while long pressed', (
     WidgetTester tester,
   ) async {
@@ -2404,9 +2448,11 @@ void main() {
       findsOneWidget,
     );
 
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_settings_engine_lines')),
+    final Finder engineLinesTile = find.byKey(
+      const Key('play_area_analysis_settings_engine_lines'),
     );
+    await tester.ensureVisible(engineLinesTile);
+    await tester.tap(engineLinesTile);
     await tester.pumpAndSettle();
 
     expect(
@@ -2897,6 +2943,9 @@ void main() {
     final Finder annotationsTile = find.byKey(
       const Key('play_area_analysis_settings_move_annotations'),
     );
+    final Finder inlineNotationTile = find.byKey(
+      const Key('play_area_analysis_settings_inline_notation'),
+    );
     final Finder commentsTile = find.byKey(
       const Key('play_area_analysis_settings_move_comments'),
     );
@@ -2904,6 +2953,8 @@ void main() {
       const Key('play_area_analysis_settings_best_move_arrow'),
     );
 
+    await tester.tap(inlineNotationTile);
+    await tester.pumpAndSettle();
     await tester.tap(annotationsTile);
     await tester.pumpAndSettle();
     await tester.tap(commentsTile);
@@ -2912,9 +2963,11 @@ void main() {
     await tester.tap(bestMoveArrowTile);
     await tester.pumpAndSettle();
 
+    expect(AnalysisMode.inlineNotation, isTrue);
     expect(AnalysisMode.showMoveAnnotations, isFalse);
     expect(AnalysisMode.showMoveComments, isFalse);
     expect(AnalysisMode.showBestMoveArrow, isFalse);
+    expect(db.displaySettings.analysisInlineNotation, isTrue);
     expect(db.displaySettings.analysisShowMoveAnnotations, isFalse);
     expect(db.displaySettings.analysisShowMoveComments, isFalse);
     expect(db.displaySettings.analysisShowBestMoveArrow, isFalse);
