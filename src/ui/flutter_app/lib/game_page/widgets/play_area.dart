@@ -1808,6 +1808,31 @@ class PlayAreaState extends State<PlayArea> {
               strings: strings,
             ),
           ),
+        if (_isAnalysisMode)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_toggle_engine_lines'),
+            leading: Icon(
+              AnalysisMode.showEngineLines
+                  ? Icons.subtitles_outlined
+                  : Icons.subtitles_off_outlined,
+            ),
+            makeLabel: (BuildContext context) => Text(
+              AnalysisMode.showEngineLines
+                  ? strings.hideEngineLines
+                  : strings.showEngineLines,
+            ),
+            onPressed: () =>
+                _toggleEngineLinesFromAnalysis(toolbar: 'analysisMenu'),
+          ),
+        if (_isAnalysisMode)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_analysis_settings'),
+            leading: const Icon(Icons.tune_outlined),
+            trailing: const Icon(Icons.chevron_right),
+            makeLabel: (BuildContext context) => Text(strings.settings),
+            onPressed: () =>
+                _showAnalysisSettingsSheet(actionContext, strings: strings),
+          ),
         if (_isAnalysisMode &&
             nativeHostSession != null &&
             AnalysisService.canShowThreat(nativeHostSession))
