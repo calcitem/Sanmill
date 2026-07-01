@@ -193,6 +193,34 @@ void main() {
     );
   });
 
+  test('tracks deep engine analysis state', () {
+    AnalysisMode.enable(
+      const <MoveAnalysisResult>[
+        MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.advantage),
+      ],
+      source: AnalysisSource.engine,
+      isEngineAnalysisDeep: true,
+    );
+
+    expect(AnalysisMode.isEngineAnalysisDeep, isTrue);
+
+    AnalysisMode.enable(const <MoveAnalysisResult>[
+      MoveAnalysisResult(move: 'a1', outcome: AnalysisOutcome.draw),
+    ], source: AnalysisSource.engine);
+
+    expect(AnalysisMode.isEngineAnalysisDeep, isFalse);
+
+    AnalysisMode.enable(const <MoveAnalysisResult>[
+      MoveAnalysisResult(move: 'f4', outcome: AnalysisOutcome.win),
+    ], isEngineAnalysisDeep: true);
+
+    expect(AnalysisMode.isEngineAnalysisDeep, isFalse);
+
+    AnalysisMode.disable();
+
+    expect(AnalysisMode.isEngineAnalysisDeep, isFalse);
+  });
+
   test('does not notify when analyzing state is unchanged', () {
     int notifications = 0;
     void listener() {

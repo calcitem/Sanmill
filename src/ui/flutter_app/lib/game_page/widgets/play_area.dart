@@ -1714,6 +1714,8 @@ class PlayAreaState extends State<PlayArea> {
         nodes: nodes,
         nodesPerSecond: nodesPerSecond,
         isAnalyzing: AnalysisMode.isAnalyzing,
+        canGoDeeper:
+            !AnalysisMode.isAnalyzing && !AnalysisMode.isEngineAnalysisDeep,
         onGoDeeper: () =>
             unawaited(_goDeeperFromAnalysisEngineSheet(sheetContext)),
       ),
@@ -4671,6 +4673,7 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
     required this.nodes,
     required this.nodesPerSecond,
     required this.isAnalyzing,
+    required this.canGoDeeper,
     required this.onGoDeeper,
   });
 
@@ -4678,6 +4681,7 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
   final int? nodes;
   final int? nodesPerSecond;
   final bool isAnalyzing;
+  final bool canGoDeeper;
   final VoidCallback onGoDeeper;
 
   @override
@@ -4694,7 +4698,7 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
       trailing: IconButton(
         key: const Key('play_area_analysis_engine_go_deeper'),
         tooltip: strings.more,
-        onPressed: isAnalyzing ? null : onGoDeeper,
+        onPressed: canGoDeeper ? onGoDeeper : null,
         icon: const Icon(Icons.add_circle_outline),
         color: colorScheme.primary,
       ),

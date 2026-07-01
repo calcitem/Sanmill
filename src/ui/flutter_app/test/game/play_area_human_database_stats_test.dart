@@ -2211,6 +2211,39 @@ void main() {
     AnalysisMode.setAnalyzing(false);
   });
 
+  testWidgets('analysis engine popup disables go deeper after deep search', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    AnalysisMode.enable(
+      <MoveAnalysisResult>[
+        const MoveAnalysisResult(
+          move: 'd6',
+          outcome: AnalysisOutcome.advantage,
+          depth: 12,
+          nodes: 256000,
+          line: <String>['d6', 'f4'],
+        ),
+      ],
+      source: AnalysisSource.engine,
+      isEngineAnalysisDeep: true,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    await tester.longPress(
+      find.byKey(const Key('play_area_analysis_bottom_bar_engine')),
+    );
+    await tester.pump();
+
+    final IconButton goDeeper = tester.widget<IconButton>(
+      find.byKey(const Key('play_area_analysis_engine_go_deeper')),
+    );
+    expect(goDeeper.onPressed, isNull);
+  });
+
   testWidgets('analysis settings sheet toggles engine lines', (
     WidgetTester tester,
   ) async {

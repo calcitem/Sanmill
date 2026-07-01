@@ -166,6 +166,7 @@ class AnalysisMode {
   static bool _showEngineLines = true;
   static bool _smallBoard = false;
   static bool _isThreatMode = false;
+  static bool _isEngineAnalysisDeep = false;
   static int _engineLineCount = defaultEngineLineCount;
   static int _engineSearchTimeMs = defaultEngineSearchTimeMs;
   static AnalysisOverlayMode? _overlayMode;
@@ -205,6 +206,9 @@ class AnalysisMode {
 
   /// Whether the current engine analysis is showing the opponent's threat.
   static bool get isThreatMode => _isThreatMode;
+
+  /// Whether the current engine lines already came from a deep search.
+  static bool get isEngineAnalysisDeep => _isEngineAnalysisDeep;
 
   /// Number of engine candidate lines to show in analysis mode.
   static int get engineLineCount => _engineLineCount;
@@ -247,6 +251,7 @@ class AnalysisMode {
     AnalysisOverlayMode mode = AnalysisOverlayMode.analysis,
     AnalysisSource source = AnalysisSource.perfectDatabase,
     bool isThreatMode = false,
+    bool isEngineAnalysisDeep = false,
     bool isAnalyzing = false,
   }) {
     _analysisResults = results;
@@ -264,6 +269,10 @@ class AnalysisMode {
     _overlayMode = mode;
     _source = source;
     _isThreatMode = isThreatMode;
+    _isEngineAnalysisDeep =
+        (source == AnalysisSource.engine ||
+            source == AnalysisSource.perfectDatabaseAndEngine) &&
+        isEngineAnalysisDeep;
     _isEnabled = true;
     _isAnalyzing = isAnalyzing;
     _publishState();
@@ -274,6 +283,7 @@ class AnalysisMode {
     if (!_isEnabled &&
         !_isAnalyzing &&
         !_isThreatMode &&
+        !_isEngineAnalysisDeep &&
         _analysisResults.isEmpty &&
         _analysisLineResults.isEmpty &&
         _trapMoves.isEmpty) {
@@ -286,6 +296,7 @@ class AnalysisMode {
     _overlayMode = null;
     _source = null;
     _isThreatMode = false;
+    _isEngineAnalysisDeep = false;
     _isEnabled = false;
     _isAnalyzing = false;
     _publishState();

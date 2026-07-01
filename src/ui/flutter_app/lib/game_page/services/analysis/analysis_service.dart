@@ -140,6 +140,9 @@ class AnalysisService {
     if (AnalysisMode.isAnalyzing) {
       return;
     }
+    if (AnalysisMode.isEngineAnalysisDeep) {
+      return;
+    }
 
     final NativeMillGameSession? session = _activeNativeSession(context);
     if (session == null) {
@@ -310,6 +313,8 @@ class AnalysisService {
     final int moveLimitMs = isDeepSearch
         ? AnalysisMode.maxEngineSearchTimeMs
         : AnalysisMode.engineSearchTimeMs;
+    final bool isDeepEngineAnalysis =
+        moveLimitMs == AnalysisMode.maxEngineSearchTimeMs;
     NativeMillGameSession? temporarySession;
     final NativeMillGameSession searchSession;
     if (fenOverride == null) {
@@ -351,6 +356,7 @@ class AnalysisService {
                 baseResults: baseResults,
                 baseTrapMoves: baseTrapMoves,
                 previousEngineLines: previousEngineLines,
+                isDeepEngineAnalysis: isDeepEngineAnalysis,
               );
             },
           );
@@ -369,6 +375,7 @@ class AnalysisService {
         baseResults: baseResults,
         baseTrapMoves: baseTrapMoves,
         previousEngineLines: previousEngineLines,
+        isDeepEngineAnalysis: isDeepEngineAnalysis,
       );
     } catch (e, st) {
       if (searchGeneration == _analysisSearchGeneration) {
@@ -413,6 +420,7 @@ class AnalysisService {
     List<MoveAnalysisResult>? baseResults,
     List<String> baseTrapMoves = const <String>[],
     List<MoveAnalysisResult> previousEngineLines = const <MoveAnalysisResult>[],
+    required bool isDeepEngineAnalysis,
   }) {
     final List<MoveAnalysisResult> currentEngineResults = variations
         .map(
@@ -440,6 +448,7 @@ class AnalysisService {
           ? AnalysisSource.perfectDatabaseAndEngine
           : AnalysisSource.engine,
       isThreatMode: isThreatMode,
+      isEngineAnalysisDeep: isDeepEngineAnalysis,
       isAnalyzing: isAnalyzing,
     );
   }

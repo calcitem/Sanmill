@@ -216,6 +216,16 @@ void main() {
     expect(session.requestedMoveLimitValues, <int>[
       AnalysisMode.maxEngineSearchTimeMs,
     ]);
+    expect(AnalysisMode.isEngineAnalysisDeep, isTrue);
+
+    await AnalysisService.goDeeper(
+      tester.element(find.byKey(const Key('analysis_service_toggle'))),
+    );
+    await tester.pump();
+
+    expect(session.requestedMoveLimitValues, <int>[
+      AnalysisMode.maxEngineSearchTimeMs,
+    ]);
   });
 
   testWidgets('go deeper keeps deeper existing engine lines', (
