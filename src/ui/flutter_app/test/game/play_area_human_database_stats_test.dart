@@ -2555,6 +2555,22 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(_summaryAdvantagePainter(tester).currentIndex, 3);
+    final Finder keyMoment = find.byKey(
+      const Key('play_area_analysis_summary_key_moment'),
+    );
+    expect(keyMoment, findsOneWidget);
+    expect(
+      find.descendant(of: keyMoment, matching: find.text('Move 3')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: keyMoment, matching: find.textContaining('+48')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(of: keyMoment, matching: find.textContaining('a1')),
+      findsOneWidget,
+    );
 
     final Finder graph = find.byKey(
       const Key('play_area_analysis_summary_advantage_graph'),
@@ -2570,6 +2586,12 @@ void main() {
 
     expect(_currentPathMoves(), <String>['d6', 'f4']);
     expect(_summaryAdvantagePainter(tester).currentIndex, 2);
+
+    await tester.tap(keyMoment);
+    await tester.pumpAndSettle();
+
+    expect(_currentPathMoves(), <String>['d6', 'f4', 'a1']);
+    expect(_summaryAdvantagePainter(tester).currentIndex, 3);
   });
 
   testWidgets('analysis summary advantage graph scrubs while dragging', (

@@ -3886,6 +3886,56 @@ int _recorderVariationBranchCount(GameRecorder recorder) {
   return countBranches(recorder.pgnRoot);
 }
 
+int? _analysisCurrentDataIndex(GameRecorder recorder, int dataLength) {
+  if (dataLength == 0) {
+    return null;
+  }
+
+  final PgnNode<ExtMove>? activeNode = recorder.activeNode;
+  if (activeNode == null || identical(activeNode, recorder.pgnRoot)) {
+    return 0;
+  }
+
+  final List<PgnNode<ExtMove>> nodes = _recorderPathWithMainlineContinuation(
+    recorder,
+  );
+  final int nodeIndex = nodes.indexWhere(
+    (PgnNode<ExtMove> node) => identical(node, activeNode),
+  );
+  if (nodeIndex < 0) {
+    assert(false, 'Active recorder node must be present in the visible path.');
+    return null;
+  }
+
+  final int dataIndex = nodeIndex + 1;
+  if (dataIndex >= dataLength) {
+    return null;
+  }
+  return dataIndex;
+}
+
+PgnNode<ExtMove>? _analysisNodeForDataIndex(
+  GameRecorder recorder,
+  int dataIndex,
+) {
+  if (dataIndex == 0) {
+    return recorder.pgnRoot;
+  }
+
+  final List<PgnNode<ExtMove>> nodes = _recorderPathWithMainlineContinuation(
+    recorder,
+  );
+  final int nodeIndex = dataIndex - 1;
+  if (nodeIndex >= nodes.length) {
+    assert(
+      false,
+      'Advantage graph data point $dataIndex has no matching recorder node.',
+    );
+    return null;
+  }
+  return nodes[nodeIndex];
+}
+
 class _InlineMoveListState extends State<_InlineMoveList> {
   final GlobalKey _currentMoveKey = GlobalKey();
   PgnNode<ExtMove>? _lastAutoScrolledNode;
@@ -5169,6 +5219,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
             final List<_AnalysisOutcomeBucket> resultBuckets = _resultBuckets(
               strings,
             );
+            final _AnalysisKeyMoment? keyMoment = _keyMoment(recorder);
             final String? trapSummary = _trapSummary();
             final bool canRequestAnalysis =
                 !AnalysisMode.isFullAnalysis && !AnalysisMode.isAnalyzing;
@@ -5197,6 +5248,22 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                         leading: const Icon(Icons.show_chart_outlined),
                         title: Text(strings.showAdvantageGraph),
                       ),
+                      if (keyMoment != null)
+                        ListTile(
+                          key: const Key(
+                            'play_area_analysis_summary_key_moment',
+                          ),
+                          leading: const Icon(Icons.timeline_outlined),
+                          title: Text(
+                            '${strings.move} ${keyMoment.moveNumber}',
+                          ),
+                          subtitle: _AnalysisSummaryKeyMomentLine(
+                            moment: keyMoment,
+                          ),
+                          trailing: const Icon(Icons.chevron_right),
+                          onTap: () =>
+                              unawaited(_jumpToKeyMoment(context, keyMoment)),
+                        ),
                       _AnalysisSummaryAdvantageGraph(data: advantageData),
                     ],
                   ),
@@ -5425,6 +5492,83 @@ class _AnalysisSummaryPanel extends StatelessWidget {
     }
     return AnalysisMode.trapMoves.join(' ');
   }
+
+  _AnalysisKeyMoment? _keyMoment(GameRecorder recorder) {
+    if (advantageData.length < 2) {
+      return null;
+    }
+
+    final int lastDataIndex = math.min(
+      advantageData.length - 1,
+      _recorderPathWithMainlineContinuation(recorder).length,
+    );
+    if (lastDataIndex <= 0) {
+      return null;
+    }
+
+    int? bestDataIndex;
+    int bestSwing = 0;
+    for (int dataIndex = 1; dataIndex <= lastDataIndex; dataIndex++) {
+      final int swing = advantageData[dataIndex] - advantageData[dataIndex - 1];
+      final int absoluteSwing = swing.abs();
+      if (absoluteSwing <= bestSwing) {
+        continue;
+      }
+      bestDataIndex = dataIndex;
+      bestSwing = absoluteSwing;
+    }
+
+    if (bestDataIndex == null || bestSwing == 0) {
+      return null;
+    }
+
+    final PgnNode<ExtMove>? node = _analysisNodeForDataIndex(
+      recorder,
+      bestDataIndex,
+    );
+    final ExtMove? move = node?.data;
+    if (node == null || move == null) {
+      return null;
+    }
+
+    return _AnalysisKeyMoment(
+      dataIndex: bestDataIndex,
+      moveNumber: bestDataIndex,
+      move: move.move,
+      swing: advantageData[bestDataIndex] - advantageData[bestDataIndex - 1],
+      node: node,
+    );
+  }
+
+  Future<void> _jumpToKeyMoment(
+    BuildContext context,
+    _AnalysisKeyMoment moment,
+  ) async {
+    RecordingService()
+        .recordEvent(RecordingEventType.toolbarAction, <String, dynamic>{
+          'toolbar': 'analysisSummary',
+          'action': 'jumpToKeyMoment',
+          'dataIndex': moment.dataIndex,
+        });
+    await HistoryNavigator.gotoNode(context, moment.node, pop: false);
+  }
+}
+
+@immutable
+class _AnalysisKeyMoment {
+  const _AnalysisKeyMoment({
+    required this.dataIndex,
+    required this.moveNumber,
+    required this.move,
+    required this.swing,
+    required this.node,
+  });
+
+  final int dataIndex;
+  final int moveNumber;
+  final String move;
+  final int swing;
+  final PgnNode<ExtMove> node;
 }
 
 @immutable
@@ -5500,6 +5644,64 @@ class _AnalysisSummaryBestLine extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _AnalysisSummaryKeyMomentLine extends StatelessWidget {
+  const _AnalysisSummaryKeyMomentLine({required this.moment});
+
+  final _AnalysisKeyMoment moment;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+    final Color swingColor = moment.swing >= 0
+        ? Colors.green.shade600
+        : Colors.red.shade600;
+    final Color chipTextColor =
+        ThemeData.estimateBrightnessForColor(swingColor) == Brightness.dark
+        ? Colors.white
+        : Colors.black;
+
+    return Row(
+      key: const Key('play_area_analysis_summary_key_moment_line'),
+      children: <Widget>[
+        DecoratedBox(
+          key: const Key('play_area_analysis_summary_key_moment_swing'),
+          decoration: BoxDecoration(
+            color: swingColor,
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            child: Text(
+              _signedAnalysisValue(moment.swing),
+              textAlign: TextAlign.center,
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: chipTextColor,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            moment.move,
+            key: const Key('play_area_analysis_summary_key_moment_move'),
+            maxLines: 1,
+            softWrap: false,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+              letterSpacing: 0,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -5767,53 +5969,11 @@ class _AnalysisSummaryAdvantageGraphState
   }
 
   int? _currentDataIndex(GameRecorder recorder) {
-    if (widget.data.isEmpty) {
-      return null;
-    }
-
-    final PgnNode<ExtMove>? activeNode = recorder.activeNode;
-    if (activeNode == null || identical(activeNode, recorder.pgnRoot)) {
-      return 0;
-    }
-
-    final List<PgnNode<ExtMove>> nodes = _recorderPathWithMainlineContinuation(
-      recorder,
-    );
-    final int nodeIndex = nodes.indexWhere(
-      (PgnNode<ExtMove> node) => identical(node, activeNode),
-    );
-    if (nodeIndex < 0) {
-      assert(
-        false,
-        'Active recorder node must be present in the visible path.',
-      );
-      return null;
-    }
-
-    final int dataIndex = nodeIndex + 1;
-    if (dataIndex >= widget.data.length) {
-      return null;
-    }
-    return dataIndex;
+    return _analysisCurrentDataIndex(recorder, widget.data.length);
   }
 
   PgnNode<ExtMove>? _nodeForDataIndex(GameRecorder recorder, int dataIndex) {
-    if (dataIndex == 0) {
-      return recorder.pgnRoot;
-    }
-
-    final List<PgnNode<ExtMove>> nodes = _recorderPathWithMainlineContinuation(
-      recorder,
-    );
-    final int nodeIndex = dataIndex - 1;
-    if (nodeIndex >= nodes.length) {
-      assert(
-        false,
-        'Advantage graph data point $dataIndex has no matching recorder node.',
-      );
-      return null;
-    }
-    return nodes[nodeIndex];
+    return _analysisNodeForDataIndex(recorder, dataIndex);
   }
 }
 
@@ -6343,6 +6503,10 @@ String _analysisSummaryBestLineText(MoveAnalysisResult result) {
     _analysisLineText(result),
   ];
   return parts.join(' · ');
+}
+
+String _signedAnalysisValue(int value) {
+  return value > 0 ? '+$value' : '$value';
 }
 
 String _analysisLineText(MoveAnalysisResult result) {
