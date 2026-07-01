@@ -218,6 +218,92 @@ void main() {
     ]);
   });
 
+  testWidgets('go deeper keeps deeper existing engine lines', (
+    WidgetTester tester,
+  ) async {
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession(
+      variations: const <NativeMillPrincipalVariation>[
+        NativeMillPrincipalVariation(
+          rank: 1,
+          move: 'a7',
+          score: 0,
+          nodes: 64,
+          depth: 2,
+          line: <String>['a7', 'd6'],
+        ),
+      ],
+    );
+    addTearDown(session.dispose);
+
+    AnalysisMode.enable(const <MoveAnalysisResult>[
+      MoveAnalysisResult(
+        move: 'd6',
+        outcome: AnalysisOutcome.advantage,
+        rank: 1,
+        depth: 8,
+        nodes: 4096,
+        line: <String>['d6', 'f4', 'a1'],
+      ),
+    ], source: AnalysisSource.engine);
+
+    await _pumpAnalysisButton(tester, session);
+    await AnalysisService.goDeeper(
+      tester.element(find.byKey(const Key('analysis_service_toggle'))),
+    );
+    await tester.pump();
+
+    expect(AnalysisMode.analysisLineResults.single.move, 'd6');
+    expect(AnalysisMode.analysisLineResults.single.depth, 8);
+    expect(AnalysisMode.analysisLineResults.single.line, <String>[
+      'd6',
+      'f4',
+      'a1',
+    ]);
+  });
+
+  testWidgets('go deeper replaces engine lines after reaching deeper depth', (
+    WidgetTester tester,
+  ) async {
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession(
+      variations: const <NativeMillPrincipalVariation>[
+        NativeMillPrincipalVariation(
+          rank: 1,
+          move: 'a7',
+          score: 0,
+          nodes: 8192,
+          depth: 12,
+          line: <String>['a7', 'd6', 'f4'],
+        ),
+      ],
+    );
+    addTearDown(session.dispose);
+
+    AnalysisMode.enable(const <MoveAnalysisResult>[
+      MoveAnalysisResult(
+        move: 'd6',
+        outcome: AnalysisOutcome.advantage,
+        rank: 1,
+        depth: 8,
+        nodes: 4096,
+        line: <String>['d6', 'f4', 'a1'],
+      ),
+    ], source: AnalysisSource.engine);
+
+    await _pumpAnalysisButton(tester, session);
+    await AnalysisService.goDeeper(
+      tester.element(find.byKey(const Key('analysis_service_toggle'))),
+    );
+    await tester.pump();
+
+    expect(AnalysisMode.analysisLineResults.single.move, 'a7');
+    expect(AnalysisMode.analysisLineResults.single.depth, 12);
+    expect(AnalysisMode.analysisLineResults.single.line, <String>[
+      'a7',
+      'd6',
+      'f4',
+    ]);
+  });
+
   testWidgets('go deeper preserves perfect database analysis source', (
     WidgetTester tester,
   ) async {
@@ -252,8 +338,8 @@ void main() {
     expect(AnalysisMode.source, AnalysisSource.perfectDatabaseAndEngine);
     expect(AnalysisMode.analysisResults, databaseResults);
     expect(AnalysisMode.trapMoves, <String>['a1']);
-    expect(AnalysisMode.analysisLineResults.single.move, 'a7');
-    expect(AnalysisMode.analysisLineResults.single.depth, 1);
+    expect(AnalysisMode.analysisLineResults.single.move, 'f4');
+    expect(AnalysisMode.analysisLineResults.single.depth, 6);
     expect(session.requestedMoveLimitValues, <int>[
       AnalysisMode.maxEngineSearchTimeMs,
     ]);
@@ -354,10 +440,12 @@ Future<void> _pumpAnalysisButton(
 }
 
 class _RecordingAnalysisSession extends NativeMillGameSession {
-  _RecordingAnalysisSession({this.completeSearchManually = false})
-    : super.fromPort(NativeMillRulesPort());
+  _RecordingAnalysisSession({
+    this.completeSearchManually = false,
+    this.variations = _defaultVariations,
+  }) : super.fromPort(NativeMillRulesPort());
 
-  static const List<NativeMillPrincipalVariation> _variations =
+  static const List<NativeMillPrincipalVariation> _defaultVariations =
       <NativeMillPrincipalVariation>[
         NativeMillPrincipalVariation(
           rank: 1,
@@ -371,6 +459,7 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
       ];
 
   final bool completeSearchManually;
+  final List<NativeMillPrincipalVariation> variations;
   final List<int> requestedMultiPvValues = <int>[];
   final List<int> requestedDepthValues = <int>[];
   final List<int> requestedMoveLimitValues = <int>[];
@@ -387,7 +476,7 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
     final Completer<List<NativeMillPrincipalVariation>> pending =
         _pendingSearch;
     assert(!pending.isCompleted, 'Pending analysis search already completed.');
-    pending.complete(_variations);
+    pending.complete(variations);
   }
 
   @override
@@ -407,13 +496,13 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
     requestedSearchAlgorithmValues.add(engineSettings?.searchAlgorithm);
     requestedAiIsLazyValues.add(engineSettings?.aiIsLazy ?? false);
     requestedSkillLevelValues.add(engineSettings?.skillLevel ?? -1);
-    onUpdate?.call(_variations);
+    onUpdate?.call(variations);
     if (completeSearchManually) {
       final Completer<List<NativeMillPrincipalVariation>> completer =
           Completer<List<NativeMillPrincipalVariation>>();
       _pendingSearch = completer;
       return completer.future;
     }
-    return _variations;
+    return variations;
   }
 }

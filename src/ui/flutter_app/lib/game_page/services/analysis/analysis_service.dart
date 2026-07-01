@@ -150,6 +150,10 @@ class AnalysisService {
     final bool preservePerfectDatabase =
         AnalysisMode.source == AnalysisSource.perfectDatabase ||
         AnalysisMode.source == AnalysisSource.perfectDatabaseAndEngine;
+    final List<MoveAnalysisResult> previousEngineLines =
+        AnalysisMode.hasEngineLinesSource
+        ? AnalysisMode.analysisLineResults
+        : const <MoveAnalysisResult>[];
     String? fenOverride;
     final bool isThreatMode = AnalysisMode.isThreatMode;
     if (isThreatMode) {
@@ -175,6 +179,7 @@ class AnalysisService {
       baseTrapMoves: preservePerfectDatabase
           ? AnalysisMode.trapMoves
           : const <String>[],
+      previousEngineLines: previousEngineLines,
     );
   }
 
@@ -283,6 +288,7 @@ class AnalysisService {
     bool isThreatMode = false,
     List<MoveAnalysisResult>? baseResults,
     List<String> baseTrapMoves = const <String>[],
+    List<MoveAnalysisResult> previousEngineLines = const <MoveAnalysisResult>[],
   }) async {
     final int searchGeneration = ++_analysisSearchGeneration;
     final Completer<void> activeEngineAnalysis = Completer<void>();
@@ -344,6 +350,7 @@ class AnalysisService {
                 isAnalyzing: true,
                 baseResults: baseResults,
                 baseTrapMoves: baseTrapMoves,
+                previousEngineLines: previousEngineLines,
               );
             },
           );
@@ -361,6 +368,7 @@ class AnalysisService {
         isThreatMode: isThreatMode,
         baseResults: baseResults,
         baseTrapMoves: baseTrapMoves,
+        previousEngineLines: previousEngineLines,
       );
     } catch (e, st) {
       if (searchGeneration == _analysisSearchGeneration) {
@@ -404,8 +412,9 @@ class AnalysisService {
     bool isAnalyzing = false,
     List<MoveAnalysisResult>? baseResults,
     List<String> baseTrapMoves = const <String>[],
+    List<MoveAnalysisResult> previousEngineLines = const <MoveAnalysisResult>[],
   }) {
-    final List<MoveAnalysisResult> engineResults = variations
+    final List<MoveAnalysisResult> currentEngineResults = variations
         .map(
           (NativeMillPrincipalVariation variation) => MoveAnalysisResult(
             move: variation.move,
@@ -418,6 +427,10 @@ class AnalysisService {
           ),
         )
         .toList(growable: false);
+    final List<MoveAnalysisResult> engineResults = _preferDeeperEngineResults(
+      currentEngineResults,
+      previousEngineLines,
+    );
     final bool hasBaseResults = baseResults != null;
     AnalysisMode.enable(
       baseResults ?? engineResults,
@@ -429,6 +442,82 @@ class AnalysisService {
       isThreatMode: isThreatMode,
       isAnalyzing: isAnalyzing,
     );
+  }
+
+  static List<MoveAnalysisResult> _preferDeeperEngineResults(
+    List<MoveAnalysisResult> currentResults,
+    List<MoveAnalysisResult> previousResults,
+  ) {
+    if (previousResults.isEmpty) {
+      return currentResults;
+    }
+    if (currentResults.isEmpty) {
+      return previousResults;
+    }
+    final Map<int, MoveAnalysisResult> previousByRank =
+        <int, MoveAnalysisResult>{};
+    final Map<String, MoveAnalysisResult> previousByMove =
+        <String, MoveAnalysisResult>{};
+    for (final MoveAnalysisResult previous in previousResults) {
+      final int? rank = previous.rank;
+      if (rank != null) {
+        previousByRank[rank] = previous;
+      }
+      previousByMove[previous.move] = previous;
+    }
+
+    final Set<int> currentRanks = <int>{};
+    final List<MoveAnalysisResult> merged = <MoveAnalysisResult>[];
+    for (final MoveAnalysisResult current in currentResults) {
+      final int? rank = current.rank;
+      if (rank != null) {
+        currentRanks.add(rank);
+      }
+      final MoveAnalysisResult? previous = rank == null
+          ? previousByMove[current.move]
+          : previousByRank[rank];
+      merged.add(
+        _isDeeperEngineResult(previous, current) ? previous! : current,
+      );
+    }
+
+    for (final MoveAnalysisResult previous in previousResults) {
+      final int? rank = previous.rank;
+      if (rank != null && !currentRanks.contains(rank)) {
+        merged.add(previous);
+      }
+    }
+    merged.sort(_compareEngineLineResults);
+    return merged;
+  }
+
+  static int _compareEngineLineResults(
+    MoveAnalysisResult a,
+    MoveAnalysisResult b,
+  ) {
+    const int noRank = 1 << 30;
+    final int rankOrder = (a.rank ?? noRank).compareTo(b.rank ?? noRank);
+    if (rankOrder != 0) {
+      return rankOrder;
+    }
+    return a.move.compareTo(b.move);
+  }
+
+  static bool _isDeeperEngineResult(
+    MoveAnalysisResult? previous,
+    MoveAnalysisResult current,
+  ) {
+    if (previous == null) {
+      return false;
+    }
+    final int previousDepth = previous.depth ?? 0;
+    final int currentDepth = current.depth ?? 0;
+    if (previousDepth != currentDepth) {
+      return previousDepth > currentDepth;
+    }
+    final int previousNodes = previous.nodes ?? 0;
+    final int currentNodes = current.nodes ?? 0;
+    return previousNodes > currentNodes;
   }
 
   static void _stopCurrentEngineAnalysis() {
