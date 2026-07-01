@@ -7594,16 +7594,19 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
         : foreground;
     final bool isAnalyzing = AnalysisMode.isAnalyzing;
     final String chipText = _chipText;
+    final S strings = S.of(context);
+    final String statusLabel = _statusLabel(strings);
+    final String accessibleLabel = _accessibleLabel(statusLabel);
 
     return Semantics(
       container: true,
       button: true,
       enabled: _enabled,
-      label: label,
+      label: accessibleLabel,
       excludeSemantics: true,
       child: Tooltip(
         excludeFromSemantics: true,
-        message: label,
+        message: accessibleLabel,
         triggerMode: TooltipTriggerMode.longPress,
         child: InkWell(
           borderRadius: BorderRadius.zero,
@@ -7699,6 +7702,34 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
       }
     }
     return math.min(99, count).toString();
+  }
+
+  String _statusLabel(S strings) {
+    if (AnalysisMode.isAnalyzing) {
+      return strings.analyzing;
+    }
+    if (!AnalysisMode.isFullAnalysis) {
+      return strings.openingExplorerNoDataShort;
+    }
+    final int count = AnalysisMode.analysisResults.length;
+    assert(count > 0, 'Full analysis mode must have at least one line.');
+    if (AnalysisMode.hasEngineLinesSource &&
+        AnalysisMode.analysisLineResults.isNotEmpty) {
+      final int? depth = _analysisEngineDepth();
+      if (depth != null && depth > 0) {
+        return 'd${math.min(99, depth)}';
+      }
+    }
+    return math.min(99, count).toString();
+  }
+
+  String _accessibleLabel(String statusLabel) {
+    final bool sourceIncludesLabel = sourceLabel.contains(label);
+    return <String>[
+      if (sourceIncludesLabel) sourceLabel else label,
+      if (!sourceIncludesLabel && sourceLabel != label) sourceLabel,
+      statusLabel,
+    ].join(' · ');
   }
 }
 

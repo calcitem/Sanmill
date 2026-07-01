@@ -3244,6 +3244,7 @@ void main() {
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_label')),
     );
     expect(sourceLabel.data, 'DB');
+    expect(find.byTooltip('Engine · DB · 1'), findsOneWidget);
 
     AnalysisMode.enable(<MoveAnalysisResult>[
       const MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.advantage),
@@ -3257,6 +3258,7 @@ void main() {
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
     );
     expect(engineValue.data, '1');
+    expect(find.byTooltip('Engine · 1'), findsOneWidget);
 
     AnalysisMode.enable(
       <MoveAnalysisResult>[
@@ -3273,6 +3275,7 @@ void main() {
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_label')),
     );
     expect(sourceLabel.data, 'Threat');
+    expect(find.byTooltip('Engine · Threat · 1'), findsOneWidget);
 
     AnalysisMode.enable(<MoveAnalysisResult>[
       const MoveAnalysisResult(
@@ -3297,6 +3300,7 @@ void main() {
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
     );
     expect(engineValue.data, '8');
+    expect(find.byTooltip('Engine · d8'), findsOneWidget);
     expect(find.text('1. d6 f4 a1'), findsOneWidget);
     expect(
       find.descendant(
@@ -3341,6 +3345,7 @@ void main() {
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
     );
     expect(engineValue.data, '7');
+    expect(find.byTooltip('DB · Engine · d7'), findsOneWidget);
     expect(find.text('1. f4 a1'), findsOneWidget);
 
     GameController().gameRecorder.appendMove(
@@ -3589,6 +3594,15 @@ void main() {
     expect(
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
       findsNothing,
+    );
+    expect(
+      find.byWidgetPredicate((Widget widget) {
+        if (widget is! Tooltip) {
+          return false;
+        }
+        return widget.message?.startsWith('Engine · Analyzing') ?? false;
+      }),
+      findsOneWidget,
     );
 
     await tester.tap(
