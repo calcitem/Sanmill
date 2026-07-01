@@ -56,6 +56,15 @@ class GeneralSettingsPage extends StatelessWidget {
   static const String _logTag = "[general_settings_page]";
   static Timer? _databaseCopyDebounce;
 
+  static PageRoute<void> aiKnowledgeSourcesRoute() =>
+      _settingsDrillInRoute<void>(
+        const _AiKnowledgeSourcesPage(parent: GeneralSettingsPage()),
+      );
+
+  static void openAiKnowledgeSourcesPage(BuildContext context) {
+    Navigator.of(context).push(aiKnowledgeSourcesRoute());
+  }
+
   SettingsRepository get _settingsRepository =>
       SettingsRepositories.instance.current.repository;
 
@@ -314,9 +323,7 @@ class GeneralSettingsPage extends StatelessWidget {
   );
 
   void _openAiKnowledgeSources(BuildContext context) {
-    Navigator.of(
-      context,
-    ).push(_settingsDrillInRoute<void>(_AiKnowledgeSourcesPage(parent: this)));
+    GeneralSettingsPage.openAiKnowledgeSourcesPage(context);
   }
 
   void _openAdvancedAiSearch(BuildContext context) {

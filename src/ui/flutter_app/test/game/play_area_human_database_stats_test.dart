@@ -2990,9 +2990,11 @@ void main() {
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
       isPositionalAdvantageIndicatorShown: false,
+      analysisShowEvaluationGauge: false,
     );
     final _RecordingAnalysisSession session = _RecordingAnalysisSession();
     _bindExistingNativeGame(GameMode.analysis, session);
+    AnalysisMode.setShowEvaluationGauge(false);
     AnalysisMode.enable(<MoveAnalysisResult>[
       const MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.win),
     ], source: AnalysisSource.engine);
@@ -3544,6 +3546,43 @@ void main() {
     expect(smallBoardSize.width, lessThan(regularBoardSize.width));
     expect(smallBoardSize.height, lessThan(regularBoardSize.height));
     expect(db.displaySettings.analysisSmallBoard, isTrue);
+  });
+
+  testWidgets('analysis settings sheet opens explorer source settings', (
+    WidgetTester tester,
+  ) async {
+    db = _GamePageDb(
+      generalSettings: const GeneralSettings(),
+      displaySettings: const DisplaySettings(
+        isUnplacedAndRemovedPiecesShown: false,
+        isHistoryNavigationToolbarShown: false,
+      ),
+    );
+    DB.instance = db;
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    await _openAnalysisSettingsFromEnginePopup(tester);
+
+    final Finder explorerSourcesTile = find.byKey(
+      const Key('play_area_analysis_settings_opening_explorer_sources'),
+    );
+    expect(explorerSourcesTile, findsOneWidget);
+    await tester.ensureVisible(explorerSourcesTile);
+    await tester.tap(explorerSourcesTile);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_sheet')),
+      findsNothing,
+    );
+    expect(find.byKey(const Key('ai_knowledge_sources_page')), findsOneWidget);
+    expect(
+      find.byKey(const Key('ai_knowledge_sources_page_opening_book_card')),
+      findsOneWidget,
+    );
   });
 
   testWidgets('analysis settings sheet toggles move display preferences', (

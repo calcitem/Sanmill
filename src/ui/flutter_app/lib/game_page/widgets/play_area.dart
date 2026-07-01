@@ -195,6 +195,31 @@ Future<void> showAnalysisSettingsSheet(
                             );
                           },
                         ),
+                        ListTile(
+                          key: const Key(
+                            'play_area_analysis_settings_opening_explorer_sources',
+                          ),
+                          leading: const Icon(Icons.travel_explore_outlined),
+                          title: Text(strings.openingExplorer),
+                          subtitle: Text(strings.aiKnowledgeSources),
+                          trailing: const Icon(Icons.chevron_right),
+                          onTap: () {
+                            RecordingService().recordEvent(
+                              RecordingEventType.toolbarAction,
+                              <String, dynamic>{
+                                'toolbar': 'analysisSettings',
+                                'action': 'openExplorerSources',
+                              },
+                            );
+                            final NavigatorState navigator = Navigator.of(
+                              context,
+                            );
+                            Navigator.of(dialogContext).pop();
+                            navigator.push(
+                              GeneralSettingsPage.aiKnowledgeSourcesRoute(),
+                            );
+                          },
+                        ),
                       ],
                     ),
                     LichessListSection(
