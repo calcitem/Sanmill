@@ -42,6 +42,16 @@ function(APPLY_STANDARD_SETTINGS TARGET)
   target_compile_features(${TARGET} PUBLIC cxx_std_20)
   target_compile_options(${TARGET} PRIVATE /MP /W4 /WX /wd"4100")
   target_compile_options(${TARGET} PRIVATE /EHsc)
+
+  # MSVC 14.50+ (VS 2026) flips /permissive to off by default under
+  # /std:c++20 (i.e. strict standards conformance, equivalent to the old
+  # opt-in /permissive-), whereas older toolsets (VS 2022 and earlier)
+  # defaulted to the lenient/nonconforming behavior. Several Flutter Windows
+  # plugins (e.g. share_plus's vendored WinRT vector.h) rely on legacy
+  # nonconforming lookups and declarations and fail to compile under the new
+  # default. Explicitly restore the legacy permissive behavior for all
+  # targets.
+  target_compile_options(${TARGET} PRIVATE /permissive)
   target_compile_definitions(${TARGET} PRIVATE "_HAS_EXCEPTIONS=0")
   target_compile_definitions(${TARGET} PRIVATE "$<$<CONFIG:Debug>:_DEBUG>")
   

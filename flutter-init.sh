@@ -83,7 +83,23 @@ flutter --version --machine | tee -a "${FLUTTER_VERSION_FILE}"
 sed -i.bak -e ':a' -e 'N' -e '$!ba' -e 's/}\([[:space:]]*\)$/};\1/' "${FLUTTER_VERSION_FILE}" && rm "${FLUTTER_VERSION_FILE}.bak"
 dart format "${FLUTTER_VERSION_FILE}" >/dev/null
 
-( cd "${APP_DIR}" && dart run build_runner build )
+ASSETS_GEN_FILE="${APP_DIR}/lib/generated/assets/assets.gen.dart"
+
+run_build_runner() {
+  ( cd "${APP_DIR}" && dart run build_runner build )
+}
+
+run_build_runner
+if [[ ! -f "${ASSETS_GEN_FILE}" ]]; then
+  echo "[flutter-init] WARN: ${ASSETS_GEN_FILE} missing after build_runner; cleaning cache and retrying..."
+  ( cd "${APP_DIR}" && dart run build_runner clean )
+  run_build_runner
+fi
+if [[ ! -f "${ASSETS_GEN_FILE}" ]]; then
+  echo "[flutter-init] ERROR: failed to generate assets.gen.dart (flutter_gen_runner)." >&2
+  exit 1
+fi
+
 ( cd "${APP_DIR}" && flutter gen-l10n )
 
 # ---------------------------------------------------------------------------
