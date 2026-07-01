@@ -136,6 +136,29 @@ Future<void> showAnalysisSettingsSheet(
                         'play_area_analysis_settings_engine_card',
                       ),
                       children: <Widget>[
+                        if (isRuleSupportingPerfectDatabase())
+                          SwitchListTile.adaptive(
+                            key: const Key(
+                              'play_area_analysis_settings_perfect_database',
+                            ),
+                            secondary: const Icon(Icons.storage_outlined),
+                            title: Text(strings.usePerfectDatabase),
+                            value: DB().generalSettings.usePerfectDatabase,
+                            onChanged: (bool value) {
+                              RecordingService().recordEvent(
+                                RecordingEventType.toolbarAction,
+                                <String, dynamic>{
+                                  'toolbar': 'analysisSettings',
+                                  'action': 'setPerfectDatabase',
+                                  'enabled': value,
+                                },
+                              );
+                              _setAnalysisPerfectDatabaseEnabled(
+                                context,
+                                value,
+                              );
+                            },
+                          ),
                         SwitchListTile.adaptive(
                           key: const Key(
                             'play_area_analysis_settings_evaluation_gauge',
@@ -385,6 +408,27 @@ void _refreshEngineAnalysisAfterSettingsChange(BuildContext context) {
     return;
   }
   unawaited(AnalysisService.refresh(context));
+}
+
+void _refreshAnalysisSourcesAfterSettingsChange(BuildContext context) {
+  if (!AnalysisMode.isFullAnalysis || AnalysisMode.isAnalyzing) {
+    return;
+  }
+  unawaited(AnalysisService.refresh(context));
+}
+
+void _setAnalysisPerfectDatabaseEnabled(BuildContext context, bool enabled) {
+  assert(
+    isRuleSupportingPerfectDatabase(),
+    'Perfect database analysis toggle requires supported rules.',
+  );
+  final GeneralSettings current = DB().generalSettings;
+  if (current.usePerfectDatabase == enabled) {
+    return;
+  }
+  DB().generalSettings = current.copyWith(usePerfectDatabase: enabled);
+  AnalysisMode.refresh();
+  _refreshAnalysisSourcesAfterSettingsChange(context);
 }
 
 void _setAnalysisEngineThreads(int threads) {

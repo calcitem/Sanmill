@@ -2314,10 +2314,32 @@ void main() {
       ),
       findsOneWidget,
     );
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_perfect_database')),
+      findsOneWidget,
+    );
     expect(find.text('Search time'), findsOneWidget);
     expect(find.text('6s'), findsOneWidget);
+    expect(find.text('Use perfect database'), findsOneWidget);
     expect(find.text('Search threads'), findsOneWidget);
     expect(find.text('Multiple lines'), findsOneWidget);
+
+    final Finder perfectDatabaseSwitchFinder = find.byKey(
+      const Key('play_area_analysis_settings_perfect_database'),
+    );
+    SwitchListTile perfectDatabaseSwitch = tester.widget<SwitchListTile>(
+      perfectDatabaseSwitchFinder,
+    );
+    expect(perfectDatabaseSwitch.value, isFalse);
+
+    await tester.tap(perfectDatabaseSwitchFinder);
+    await tester.pumpAndSettle();
+
+    expect(db.generalSettings.usePerfectDatabase, isTrue);
+    perfectDatabaseSwitch = tester.widget<SwitchListTile>(
+      perfectDatabaseSwitchFinder,
+    );
+    expect(perfectDatabaseSwitch.value, isTrue);
 
     final Finder threadSliderFinder = find.byKey(
       const Key('play_area_analysis_settings_engine_threads_control'),
