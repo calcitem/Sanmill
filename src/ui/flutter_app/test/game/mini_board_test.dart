@@ -9,6 +9,7 @@ import 'package:sanmill/game_page/services/mill.dart' show PieceColor;
 import 'package:sanmill/game_page/widgets/mini_board.dart';
 import 'package:sanmill/shared/database/database.dart';
 
+import '../helpers/locale_helper.dart';
 import '../helpers/mocks/mock_database.dart';
 
 void main() {
@@ -22,14 +23,12 @@ void main() {
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
-      const MaterialApp(
-        home: Scaffold(
-          body: Center(
-            child: SizedBox(
-              width: 120,
-              height: 120,
-              child: MiniBoard(boardLayout: 'O*******/********/@*******'),
-            ),
+      makeTestableWidget(
+        const Center(
+          child: SizedBox(
+            width: 120,
+            height: 120,
+            child: MiniBoard(boardLayout: 'O*******/********/@*******'),
           ),
         ),
       ),

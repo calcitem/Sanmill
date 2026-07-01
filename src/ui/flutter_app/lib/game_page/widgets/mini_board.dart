@@ -6,6 +6,7 @@ import 'dart:ui' as ui;
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
+import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
@@ -130,53 +131,81 @@ class MiniBoardState extends State<MiniBoard>
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.0,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        // Tapping anywhere on the board shows the navigation icon (and hides icons on other boards).
-        onTap: _handleBoardTap,
-        child: Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            // The board background and drawing are rendered by CustomPaint.
-            ClipRRect(
-              borderRadius: BorderRadius.circular(
-                DB().displaySettings.boardCornerRadius,
-              ),
-              child: ColoredBox(
-                color: DB().colorSettings.boardBackgroundColor,
-                child: CustomPaint(
-                  painter: MiniBoardPainter(
-                    boardLayout: widget.boardLayout,
-                    extMove: widget.extMove,
+    final String boardLabel = _boardLabel(context);
+    final ExtMove? move = widget.extMove;
+
+    return Tooltip(
+      excludeFromSemantics: true,
+      message: boardLabel,
+      child: Semantics(
+        button: move != null,
+        label: boardLabel,
+        onTap: move == null ? null : _handleBoardTap,
+        child: AspectRatio(
+          aspectRatio: 1.0,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            excludeFromSemantics: true,
+            // Tapping anywhere on the board shows the navigation icon (and hides icons on other boards).
+            onTap: _handleBoardTap,
+            child: Stack(
+              fit: StackFit.expand,
+              children: <Widget>[
+                // The board background and drawing are rendered by CustomPaint.
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(
+                    DB().displaySettings.boardCornerRadius,
                   ),
-                  child: const SizedBox.expand(),
-                ),
-              ),
-            ),
-            // Display the navigation icon overlay in the center only if:
-            // 1. _showNavigationIcon is true (board is active)
-            // 2. extMove is provided (there is a move to navigate to)
-            if (_showNavigationIcon && widget.extMove != null)
-              Center(
-                child: ScaleTransition(
-                  scale: _scaleAnimation,
-                  child: IconButton(
-                    // Use the Fluent UI arrow icon.
-                    icon: Icon(
-                      FluentIcons.arrow_undo_48_regular,
-                      color: DB().colorSettings.boardLineColor,
-                      size: 48.0,
+                  child: ColoredBox(
+                    color: DB().colorSettings.boardBackgroundColor,
+                    child: CustomPaint(
+                      painter: MiniBoardPainter(
+                        boardLayout: widget.boardLayout,
+                        extMove: widget.extMove,
+                      ),
+                      child: const SizedBox.expand(),
                     ),
-                    onPressed: _handleNavigationIconTap,
                   ),
                 ),
-              ),
-          ],
+                // Display the navigation icon overlay in the center only if:
+                // 1. _showNavigationIcon is true (board is active)
+                // 2. extMove is provided (there is a move to navigate to)
+                if (_showNavigationIcon && widget.extMove != null)
+                  Center(
+                    child: ScaleTransition(
+                      scale: _scaleAnimation,
+                      child: IconButton(
+                        // Use the Fluent UI arrow icon.
+                        tooltip: boardLabel,
+                        icon: Icon(
+                          FluentIcons.arrow_undo_48_regular,
+                          color: DB().colorSettings.boardLineColor,
+                          size: 48.0,
+                        ),
+                        onPressed: _handleNavigationIconTap,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
         ),
       ),
     );
+  }
+
+  String _boardLabel(BuildContext context) {
+    final S strings = S.of(context);
+    final ExtMove? move = widget.extMove;
+    if (move == null) {
+      return strings.board;
+    }
+
+    assert(
+      move.notation.isNotEmpty,
+      'MiniBoard move previews require display notation.',
+    );
+    return '${strings.board}: ${strings.move} ${move.notation}';
   }
 }
 

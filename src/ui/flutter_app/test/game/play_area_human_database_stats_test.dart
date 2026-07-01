@@ -4876,6 +4876,14 @@ void main() {
 
     expect(find.byKey(const Key('moves_list_page_scaffold')), findsOneWidget);
     expect(find.byType(MiniBoard), findsOneWidget);
+    expect(find.byTooltip('Board: Move d6'), findsOneWidget);
+    expect(
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Semantics && widget.properties.label == 'Board: Move d6',
+      ),
+      findsOneWidget,
+    );
     expect(db.displaySettings.movesViewLayout, MovesViewLayout.list);
   });
 
