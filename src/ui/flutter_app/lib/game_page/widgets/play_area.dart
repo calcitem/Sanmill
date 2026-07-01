@@ -5378,18 +5378,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                       onTap: canRequestAnalysis ? onAnalyze : null,
                     ),
                     if (bestResult != null)
-                      ListTile(
-                        key: const Key('play_area_analysis_summary_best_move'),
-                        leading: Icon(_bestLineIcon()),
-                        title: Text(_bestLineTitle(strings)),
-                        subtitle: _AnalysisSummaryBestLine(result: bestResult),
-                        trailing: canApplyBestMove
-                            ? const Icon(Icons.play_arrow_rounded)
-                            : null,
-                        onTap: canApplyBestMove
-                            ? () => unawaited(onBestMoveTap(bestResult.move))
-                            : null,
-                      ),
+                      _bestMoveTile(strings, bestResult, canApplyBestMove),
                     if (resultSummary != null)
                       ListTile(
                         key: const Key('play_area_analysis_summary_results'),
@@ -5526,6 +5515,38 @@ class _AnalysisSummaryPanel extends StatelessWidget {
     return AnalysisMode.isThreatMode
         ? _analysisThreatLabel(strings)
         : strings.puzzleCategoryFindBestMove;
+  }
+
+  Widget _bestMoveTile(
+    S strings,
+    MoveAnalysisResult result,
+    bool canApplyBestMove,
+  ) {
+    final Widget tile = ListTile(
+      key: const Key('play_area_analysis_summary_best_move'),
+      leading: Icon(_bestLineIcon()),
+      title: Text(_bestLineTitle(strings)),
+      subtitle: _AnalysisSummaryBestLine(result: result),
+      trailing: canApplyBestMove ? const Icon(Icons.play_arrow_rounded) : null,
+      onTap: canApplyBestMove
+          ? () => unawaited(onBestMoveTap(result.move))
+          : null,
+    );
+
+    if (!canApplyBestMove) {
+      return tile;
+    }
+
+    final String actionLabel = _analysisApplyResultLabel(strings, result);
+    return Tooltip(
+      message: actionLabel,
+      child: Semantics(
+        button: true,
+        label: actionLabel,
+        excludeSemantics: true,
+        child: tile,
+      ),
+    );
   }
 
   Widget? _engineTrailing(BuildContext context, bool canRequestAnalysis) {
@@ -5884,9 +5905,7 @@ class _AnalysisSummaryBestLine extends StatelessWidget {
 
     return Semantics(
       key: const Key('play_area_analysis_summary_best_move_semantics'),
-      label:
-          '${_analysisEvalLabel(result.outcome)} '
-          '${_analysisLineText(result)}',
+      label: _analysisResultLabel(result),
       child: Row(
         key: const Key('play_area_analysis_summary_best_move_line'),
         children: <Widget>[
@@ -6196,56 +6215,63 @@ class _AnalysisSummaryResultCandidateChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final S strings = S.of(context);
     final Color outcomeColor = AnalysisMode.getColorForOutcome(result.outcome);
     final Color chipTextColor =
         ThemeData.estimateBrightnessForColor(outcomeColor) == Brightness.dark
         ? Colors.white
         : Colors.black;
+    final String label = onTap == null
+        ? _analysisResultLabel(result)
+        : _analysisApplyResultLabel(strings, result);
 
-    return Semantics(
-      label:
-          '${_analysisEvalLabel(result.outcome)} '
-          '${_analysisLineText(result)}',
-      button: onTap != null,
-      child: ActionChip(
-        key: chipKey,
-        avatar: DecoratedBox(
-          key: const Key('play_area_analysis_summary_result_candidate_eval'),
-          decoration: BoxDecoration(
-            color: outcomeColor,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-            child: Text(
-              _analysisEvalLabel(result.outcome),
-              textAlign: TextAlign.center,
-              style: textStyle?.copyWith(
-                color: chipTextColor,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0,
+    return Tooltip(
+      message: label,
+      child: Semantics(
+        label: label,
+        button: onTap != null,
+        enabled: onTap != null,
+        excludeSemantics: true,
+        child: ActionChip(
+          key: chipKey,
+          avatar: DecoratedBox(
+            key: const Key('play_area_analysis_summary_result_candidate_eval'),
+            decoration: BoxDecoration(
+              color: outcomeColor,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+              child: Text(
+                _analysisEvalLabel(result.outcome),
+                textAlign: TextAlign.center,
+                style: textStyle?.copyWith(
+                  color: chipTextColor,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0,
+                ),
               ),
             ),
           ),
+          label: Text(
+            result.move,
+            key: const Key('play_area_analysis_summary_result_candidate_move'),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          labelStyle: textStyle?.copyWith(
+            color: onTap == null
+                ? colorScheme.onSurfaceVariant
+                : colorScheme.onSurface,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0,
+          ),
+          backgroundColor: outcomeColor.withValues(alpha: 0.12),
+          side: BorderSide(color: outcomeColor.withValues(alpha: 0.44)),
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          visualDensity: VisualDensity.compact,
+          onPressed: onTap,
         ),
-        label: Text(
-          result.move,
-          key: const Key('play_area_analysis_summary_result_candidate_move'),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        labelStyle: textStyle?.copyWith(
-          color: onTap == null
-              ? colorScheme.onSurfaceVariant
-              : colorScheme.onSurface,
-          fontWeight: FontWeight.w600,
-          letterSpacing: 0,
-        ),
-        backgroundColor: outcomeColor.withValues(alpha: 0.12),
-        side: BorderSide(color: outcomeColor.withValues(alpha: 0.44)),
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        visualDensity: VisualDensity.compact,
-        onPressed: onTap,
       ),
     );
   }
@@ -7219,6 +7245,14 @@ String _analysisSummaryBestLineText(MoveAnalysisResult result) {
     _analysisLineText(result),
   ];
   return parts.join(' · ');
+}
+
+String _analysisResultLabel(MoveAnalysisResult result) {
+  return '${_analysisEvalLabel(result.outcome)} ${_analysisLineText(result)}';
+}
+
+String _analysisApplyResultLabel(S strings, MoveAnalysisResult result) {
+  return '${strings.applyThisResultToBoard} · ${_analysisResultLabel(result)}';
 }
 
 String _signedAnalysisValue(int value) {

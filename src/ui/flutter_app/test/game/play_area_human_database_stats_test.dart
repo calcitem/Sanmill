@@ -2601,6 +2601,19 @@ void main() {
       find.descendant(of: bestMove, matching: find.textContaining('d6 f4')),
       findsOneWidget,
     );
+    expect(
+      find.byTooltip('Apply this result to board · + 1. d6 f4'),
+      findsOneWidget,
+    );
+    expect(
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Semantics &&
+            widget.properties.label ==
+                'Apply this result to board · + 1. d6 f4',
+      ),
+      findsOneWidget,
+    );
 
     await tester.tap(bestMove);
     await tester.pump();
@@ -2736,6 +2749,18 @@ void main() {
     );
     expect(
       find.descendant(of: candidate, matching: find.text('W')),
+      findsOneWidget,
+    );
+    expect(
+      find.byTooltip('Apply this result to board · W 1. d6'),
+      findsOneWidget,
+    );
+    expect(
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Semantics &&
+            widget.properties.label == 'Apply this result to board · W 1. d6',
+      ),
       findsOneWidget,
     );
 
