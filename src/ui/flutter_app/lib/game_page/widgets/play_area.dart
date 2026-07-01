@@ -6357,58 +6357,65 @@ class _AnalysisSummaryAdvantageGraphState
         final int? currentIndex = _currentDataIndex(
           GameController().gameRecorder,
         );
-        return SizedBox(
-          key: const Key('play_area_analysis_summary_advantage_graph'),
-          height: _height,
-          width: double.infinity,
-          child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTapUp: (TapUpDetails details) {
-                  _requestGraphJump(
-                    context,
-                    details.localPosition,
-                    Size(constraints.maxWidth, _height),
-                  );
-                },
-                onPanStart: (DragStartDetails details) {
-                  _requestGraphJump(
-                    context,
-                    details.localPosition,
-                    Size(constraints.maxWidth, _height),
-                  );
-                },
-                onPanUpdate: (DragUpdateDetails details) {
-                  _requestGraphJump(
-                    context,
-                    details.localPosition,
-                    Size(constraints.maxWidth, _height),
-                  );
-                },
-                onLongPressStart: (LongPressStartDetails details) {
-                  _requestGraphJump(
-                    context,
-                    details.localPosition,
-                    Size(constraints.maxWidth, _height),
-                  );
-                },
-                onLongPressMoveUpdate: (LongPressMoveUpdateDetails details) {
-                  _requestGraphJump(
-                    context,
-                    details.localPosition,
-                    Size(constraints.maxWidth, _height),
-                  );
-                },
-                child: CustomPaint(
-                  key: const Key('play_area_analysis_summary_advantage_paint'),
-                  painter: AdvantageGraphPainter(
-                    widget.data,
-                    currentIndex: currentIndex,
+        return Semantics(
+          container: true,
+          button: true,
+          label: _semanticsLabel(S.of(context), currentIndex),
+          child: SizedBox(
+            key: const Key('play_area_analysis_summary_advantage_graph'),
+            height: _height,
+            width: double.infinity,
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTapUp: (TapUpDetails details) {
+                    _requestGraphJump(
+                      context,
+                      details.localPosition,
+                      Size(constraints.maxWidth, _height),
+                    );
+                  },
+                  onPanStart: (DragStartDetails details) {
+                    _requestGraphJump(
+                      context,
+                      details.localPosition,
+                      Size(constraints.maxWidth, _height),
+                    );
+                  },
+                  onPanUpdate: (DragUpdateDetails details) {
+                    _requestGraphJump(
+                      context,
+                      details.localPosition,
+                      Size(constraints.maxWidth, _height),
+                    );
+                  },
+                  onLongPressStart: (LongPressStartDetails details) {
+                    _requestGraphJump(
+                      context,
+                      details.localPosition,
+                      Size(constraints.maxWidth, _height),
+                    );
+                  },
+                  onLongPressMoveUpdate: (LongPressMoveUpdateDetails details) {
+                    _requestGraphJump(
+                      context,
+                      details.localPosition,
+                      Size(constraints.maxWidth, _height),
+                    );
+                  },
+                  child: CustomPaint(
+                    key: const Key(
+                      'play_area_analysis_summary_advantage_paint',
+                    ),
+                    painter: AdvantageGraphPainter(
+                      widget.data,
+                      currentIndex: currentIndex,
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         );
       },
@@ -6485,6 +6492,20 @@ class _AnalysisSummaryAdvantageGraphState
 
   PgnNode<ExtMove>? _nodeForDataIndex(GameRecorder recorder, int dataIndex) {
     return _analysisNodeForDataIndex(recorder, dataIndex);
+  }
+
+  String _semanticsLabel(S strings, int? currentIndex) {
+    assert(widget.data.isNotEmpty, 'Analysis summary graph requires data.');
+    final int effectiveIndex = currentIndex ?? widget.data.length - 1;
+    assert(
+      effectiveIndex >= 0 && effectiveIndex < widget.data.length,
+      'Analysis summary graph index must point to an advantage sample.',
+    );
+    return <String>[
+      strings.showAdvantageGraph,
+      '${strings.move} $effectiveIndex',
+      _signedAnalysisValue(widget.data[effectiveIndex]),
+    ].join(' · ');
   }
 }
 

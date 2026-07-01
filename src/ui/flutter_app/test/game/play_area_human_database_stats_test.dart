@@ -2908,6 +2908,14 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(_summaryAdvantagePainter(tester).currentIndex, 3);
+    expect(
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Semantics &&
+            widget.properties.label == 'Show advantage graph · Move 3 · +36',
+      ),
+      findsOneWidget,
+    );
     final Finder topKeyMoment = find.byKey(
       const Key('play_area_analysis_summary_key_moment'),
     );
@@ -2974,6 +2982,14 @@ void main() {
 
     expect(_currentPathMoves(), <String>['d6', 'f4']);
     expect(_summaryAdvantagePainter(tester).currentIndex, 2);
+    expect(
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Semantics &&
+            widget.properties.label == 'Show advantage graph · Move 2 · -12',
+      ),
+      findsOneWidget,
+    );
 
     await tester.tap(topKeyMoment);
     await tester.pumpAndSettle();
