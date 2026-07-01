@@ -277,6 +277,7 @@ void main() {
         addTearDown(session.dispose);
 
         final List<int> pvDepths = <int>[];
+        final List<List<String>> pvLines = <List<String>>[];
         await for (final tgf.EngineEvent event in session.millSearchEvents(
           depth: 4,
           moveLimitMs: 500,
@@ -290,11 +291,18 @@ void main() {
         )) {
           if (event.kind == 'pv') {
             pvDepths.add(event.depth);
+            final RegExpMatch? match = RegExp(
+              r'(?:^|\s)pv=([^\s]+)',
+            ).firstMatch(event.reason);
+            assert(match != null, 'PV event must include pv= notation.');
+            pvLines.add(match!.group(1)!.split(','));
           }
         }
 
         expect(pvDepths, isNotEmpty);
         expect(pvDepths.any((int depth) => depth > 1), isTrue);
+        expect(pvLines, isNotEmpty);
+        expect(pvLines.every((List<String> line) => line.length > 1), isTrue);
       },
       skip: _nativeLibrarySkipReason,
     );

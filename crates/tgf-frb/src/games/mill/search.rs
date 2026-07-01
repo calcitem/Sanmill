@@ -1043,7 +1043,10 @@ mod tests {
         assert!(events.iter().all(|event| event.kind == "pv"));
         assert!(events[0].reason.contains("rank=1"));
         assert!(events[0].reason.contains("nps=2048"));
-        assert!(events.iter().any(|event| event.reason.contains(',')));
+        assert!(
+            events.iter().all(|event| event.reason.contains(',')),
+            "every emitted MultiPV line should include a continuation: {events:?}"
+        );
     }
 
     #[test]
