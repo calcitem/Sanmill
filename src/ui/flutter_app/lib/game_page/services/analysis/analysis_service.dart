@@ -125,10 +125,19 @@ class AnalysisService {
     if (AnalysisMode.isThreatMode) {
       AnalysisMode.disable();
     }
-    if (wasAnalyzing && activeEngineAnalysis != null) {
+    // The previous engine pass keeps draining after its stop request (the
+    // Rust-side abort is asynchronous) and `isAnalyzing` may already have
+    // been cleared by a concurrent refresh, so gate the wait on the pass
+    // future itself rather than on the `wasAnalyzing` flag.
+    if (activeEngineAnalysis != null) {
       await activeEngineAnalysis;
     }
     if (!context.mounted) {
+      return;
+    }
+    if (AnalysisMode.isAnalyzing) {
+      // A newer analysis request restarted while this one waited for the
+      // old pass to drain; it already covers the current position.
       return;
     }
     await refresh(context);
@@ -298,6 +307,24 @@ class AnalysisService {
     List<MoveAnalysisResult> previousEngineLines = const <MoveAnalysisResult>[],
   }) async {
     final int searchGeneration = ++_analysisSearchGeneration;
+    // Exactly one engine search may run at a time (see the
+    // NativeMillGameSession `_searchInFlight` tripwire).  A previous pass
+    // keeps draining after `nativeMillSearchStop()` because the Rust-side
+    // abort is asynchronous, so request a stop and wait for it to fully
+    // unwind before starting this pass.  The generation bump above already
+    // detaches the draining pass from publishing.  When several requests
+    // pile up here, the newest generation wins and older ones return.
+    while (_activeEngineAnalysis != null) {
+      if (searchGeneration != _analysisSearchGeneration) {
+        return;
+      }
+      final Future<void> drainingPass = _activeEngineAnalysis!;
+      tgf.nativeMillSearchStop();
+      await drainingPass;
+    }
+    if (searchGeneration != _analysisSearchGeneration) {
+      return;
+    }
     final Completer<void> activeEngineAnalysis = Completer<void>();
     _activeEngineAnalysis = activeEngineAnalysis.future;
     final int requestedLineCount = math.max(1, AnalysisMode.engineLineCount);

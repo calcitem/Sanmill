@@ -2057,6 +2057,18 @@ class GameController {
       return;
     }
 
+    // Move Now only makes sense in modes with an engine driver; the other
+    // modes (analysis, humanVsHuman, setupPosition, puzzle, ...) have no AI
+    // side, and engineToGo would hit its unreachable-game-mode tripwire.
+    final GameMode moveNowMode = gameInstance.gameMode;
+    if (moveNowMode != GameMode.humanVsAi &&
+        moveNowMode != GameMode.aiVsAi &&
+        moveNowMode != GameMode.humanVsLAN) {
+      return rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+        effectiveMessages.notAIsTurn,
+      );
+    }
+
     if (AnalysisMode.isEnabled || AnalysisMode.isAnalyzing) {
       return rootScaffoldMessengerKey.currentState!.showSnackBarClear(
         effectiveMessages.analyzing,
