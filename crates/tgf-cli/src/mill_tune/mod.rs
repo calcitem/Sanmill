@@ -37,6 +37,12 @@ pub(crate) use fit::run_fit;
 pub(crate) use label::run_label;
 pub(crate) use stats::run_stats;
 
+// Re-exported so existing `super::{parse_flag, flag_present}` imports in the
+// sibling `datagen*`/`label`/`fit` modules keep working unchanged; the
+// canonical definitions live in `crate::cli_args` so `mill_puzzle` can share
+// them too.
+pub(crate) use crate::cli_args::{flag_present, parse_flag};
+
 /// One sampled position, including extracted features.
 #[derive(Clone, Debug)]
 pub(crate) struct PositionRecord {
@@ -112,29 +118,3 @@ impl PositionRecord {
     }
 }
 
-/// Parse a `--flag value` or `--flag=value` pair from an args slice.
-pub(crate) fn parse_flag<T: std::str::FromStr>(args: &[String], flag: &str, default: T) -> T {
-    let eq_prefix = format!("{flag}=");
-    let mut iter = args.iter();
-    while let Some(tok) = iter.next() {
-        if tok == flag {
-            if let Some(val) = iter.next()
-                && let Ok(v) = val.parse::<T>()
-            {
-                return v;
-            }
-            return default;
-        }
-        if let Some(val) = tok.strip_prefix(&eq_prefix)
-            && let Ok(v) = val.parse::<T>()
-        {
-            return v;
-        }
-    }
-    default
-}
-
-/// Check whether `--flag` (bare boolean) is present in args.
-pub(crate) fn flag_present(args: &[String], flag: &str) -> bool {
-    args.iter().any(|a| a == flag)
-}

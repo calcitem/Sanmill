@@ -314,9 +314,12 @@ PuzzlesHomePage (main hub)
 
 ## Known Limitations & Future Work
 
-1. **Built-in Puzzles**: Currently empty (`getBuiltInPuzzles() returns []`)
-   - All puzzles are user-created or imported
-   - **Impact**: New users need to import or create puzzles to start
+1. **Built-in Puzzles**: `getBuiltInPuzzles()` loads
+   `assets/puzzles/malom_perfect_db_puzzles.sanmill_puzzles`, a pack
+   generated offline from the Malom Perfect DB by `tgf puzzle-gen`
+   (`crates/tgf-cli/src/mill_puzzle/`). `PuzzleManager.loadBuiltInPuzzles()`
+   merges it with any custom puzzles on every app launch.
+   - **Impact**: New users get a starter set without importing anything
 
 2. **Rule Schema Migration**:
    - v2 migration not implemented (TODO: L341 in rule_schema_version.dart)

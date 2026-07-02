@@ -6,8 +6,10 @@
 // touching this entry point.
 
 mod cli;
+mod cli_args;
 mod game_adapter;
 mod games;
+mod mill_puzzle;
 mod mill_tune;
 mod mill_uci;
 mod selfplay;

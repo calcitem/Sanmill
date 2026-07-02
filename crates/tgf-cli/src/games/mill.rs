@@ -15,6 +15,7 @@ const CMD_TUNE_GEN_HUMAN: CommandId = CommandId::new("tune-gen-human");
 const CMD_TUNE_LABEL: CommandId = CommandId::new("tune-label");
 const CMD_TUNE_STATS: CommandId = CommandId::new("tune-stats");
 const CMD_TUNE_FIT: CommandId = CommandId::new("tune-fit");
+const CMD_PUZZLE_GEN: CommandId = CommandId::new("puzzle-gen");
 
 const MILL_COMMANDS: &[CommandSpec] = &[
     CommandSpec {
@@ -65,6 +66,12 @@ const MILL_COMMANDS: &[CommandSpec] = &[
         aliases: &["tune fit"],
         description: "fit eval weights via Texel logistic regression",
     },
+    CommandSpec {
+        id: CMD_PUZZLE_GEN,
+        name: "puzzle-gen",
+        aliases: &["puzzle gen"],
+        description: "generate forced-win puzzles from a Perfect DB",
+    },
 ];
 
 impl CliGame for MillCli {
@@ -96,6 +103,7 @@ impl CliGame for MillCli {
             CMD_TUNE_LABEL => crate::mill_tune::run_label(args),
             CMD_TUNE_STATS => crate::mill_tune::run_stats(args),
             CMD_TUNE_FIT => crate::mill_tune::run_fit(args),
+            CMD_PUZZLE_GEN => crate::mill_puzzle::run_puzzle_gen(args),
             CMD_UCI => {
                 warn_unused_args("uci", args);
                 crate::mill_uci::run_uci_loop();

@@ -62,7 +62,7 @@ class PuzzleManager {
   /// them, so user-created puzzles are never lost.
   Future<void> loadBuiltInPuzzles() async {
     logger.i("$_tag Loading built-in puzzles");
-    final List<PuzzleInfo> builtInPuzzles = _getBuiltInPuzzles();
+    final List<PuzzleInfo> builtInPuzzles = await _getBuiltInPuzzles();
 
     // Collect IDs of built-in puzzles for fast lookup.
     final Set<String> builtInIds = builtInPuzzles
@@ -309,7 +309,7 @@ class PuzzleManager {
   }
 
   /// Get built-in puzzles collection
-  List<PuzzleInfo> _getBuiltInPuzzles() {
+  Future<List<PuzzleInfo>> _getBuiltInPuzzles() {
     return getBuiltInPuzzles();
   }
 

@@ -1,0 +1,3391 @@
+{
+  "formatVersion": "1.0",
+  "exportedBy": {
+    "appName": "Sanmill",
+    "platform": "tgf-cli"
+  },
+  "exportDate": "2026-07-02T03:57:13.000Z",
+  "puzzleCount": 52,
+  "metadata": {
+    "id": "malom_perfect_db_v1",
+    "name": "Malom Perfect DB Puzzles",
+    "description": "Forced-win puzzles generated from the Malom Nine Men's Morris perfect-play database, with the opponent always replying via a heuristic search rather than the theoretically hardest defense.",
+    "author": "Sanmill Perfect DB Generator",
+    "version": "1.0.0",
+    "tags": [
+      "generated",
+      "malom-db"
+    ],
+    "isOfficial": true,
+    "ruleVariantId": "standard_9mm"
+  },
+  "puzzles": [
+    {
+      "id": "malom_placement_black_4_b3d53a76",
+      "title": "Forced win in 4 (placement, black to move)",
+      "description": "Black to move: find the forced win in 4 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "opening",
+      "difficulty": "hard",
+      "initialPosition": "*O*O*@@O/*@**@@**/*****@** b p p 3 1 6 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "f2",
+              "side": "black"
+            },
+            {
+              "notation": "xc5",
+              "side": "black"
+            },
+            {
+              "notation": "e4",
+              "side": "white"
+            },
+            {
+              "notation": "xa1",
+              "side": "white"
+            },
+            {
+              "notation": "c5",
+              "side": "black"
+            },
+            {
+              "notation": "xe3",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-4",
+        "phase:placement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1410,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_white_3_52298d1e",
+      "title": "Forced win in 3 (movement, white to move)",
+      "description": "White to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "**OO**@*/O******O/*@O@**** w m p 5 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "e4-f4",
+              "side": "white"
+            },
+            {
+              "notation": "g1-f6",
+              "side": "black"
+            },
+            {
+              "notation": "e3-e4",
+              "side": "white"
+            },
+            {
+              "notation": "xg7",
+              "side": "white"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:white"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_white_3_d003d3be",
+      "title": "Forced win in 3 (movement, white to move)",
+      "description": "White to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "@*O*****/O***OO*O/**@*@*** w m p 5 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "e4-f4",
+              "side": "white"
+            },
+            {
+              "notation": "d5-f6",
+              "side": "black"
+            },
+            {
+              "notation": "f4-f2",
+              "side": "white"
+            },
+            {
+              "notation": "xd1",
+              "side": "white"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:white"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_5_6f4bddda",
+      "title": "Forced win in 5 (movement, black to move)",
+      "description": "Black to move: find the forced win in 5 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "hard",
+      "initialPosition": "*O*OOO@*/@*@@@***/O**@**** b m p 5 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "f4-e4",
+              "side": "black"
+            },
+            {
+              "notation": "e5-d5",
+              "side": "white"
+            },
+            {
+              "notation": "g1-g4",
+              "side": "black"
+            },
+            {
+              "notation": "d5-e5",
+              "side": "white"
+            },
+            {
+              "notation": "d6-d5",
+              "side": "black"
+            },
+            {
+              "notation": "d7-d6",
+              "side": "white"
+            },
+            {
+              "notation": "f2-f4",
+              "side": "black"
+            },
+            {
+              "notation": "xd6",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-5",
+        "phase:movement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1430,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_white_6_8f2c0ba0",
+      "title": "Forced win in 6 (movement, white to move)",
+      "description": "White to move: find the forced win in 6 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "hard",
+      "initialPosition": "O*O*O***/OO@**O**/*@*O***@ w m p 7 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "d6-d7",
+              "side": "white"
+            },
+            {
+              "notation": "a7-d6",
+              "side": "black"
+            },
+            {
+              "notation": "d3-e3",
+              "side": "white"
+            },
+            {
+              "notation": "f4-e5",
+              "side": "black"
+            },
+            {
+              "notation": "g1-g4",
+              "side": "white"
+            },
+            {
+              "notation": "g7-f4",
+              "side": "black"
+            },
+            {
+              "notation": "b2-b4",
+              "side": "white"
+            },
+            {
+              "notation": "e5-d3",
+              "side": "black"
+            },
+            {
+              "notation": "d5-e5",
+              "side": "white"
+            },
+            {
+              "notation": "xf4",
+              "side": "white"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-6",
+        "phase:movement",
+        "side:white"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1550,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_white_6_a5355f62",
+      "title": "Forced win in 6 (movement, white to move)",
+      "description": "White to move: find the forced win in 6 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "hard",
+      "initialPosition": "*O*O@O@*/******@O/*O****OO w m p 7 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "a7-d7",
+              "side": "white"
+            },
+            {
+              "notation": "c4-a7",
+              "side": "black"
+            },
+            {
+              "notation": "e5-d5",
+              "side": "white"
+            },
+            {
+              "notation": "b4-d6",
+              "side": "black"
+            },
+            {
+              "notation": "c3-c4",
+              "side": "white"
+            },
+            {
+              "notation": "d3-b4",
+              "side": "black"
+            },
+            {
+              "notation": "e3-d3",
+              "side": "white"
+            },
+            {
+              "notation": "a7-e5",
+              "side": "black"
+            },
+            {
+              "notation": "a4-a7",
+              "side": "white"
+            },
+            {
+              "notation": "xb4",
+              "side": "white"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-6",
+        "phase:movement",
+        "side:white"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1550,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_3_9961bf00",
+      "title": "Forced win in 3 (movement, black to move)",
+      "description": "Black to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "*O******/*O*@@@**/*@O@**@* b m p 3 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "d2-d1",
+              "side": "black"
+            },
+            {
+              "notation": "e5-d2",
+              "side": "white"
+            },
+            {
+              "notation": "a4-a1",
+              "side": "black"
+            },
+            {
+              "notation": "xg4",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_3_ba4bbb80",
+      "title": "Forced win in 3 (movement, black to move)",
+      "description": "Black to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "@O*****O/**@*@*O*/*@@**@** b m p 3 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "g4-g1",
+              "side": "black"
+            },
+            {
+              "notation": "c5-g4",
+              "side": "white"
+            },
+            {
+              "notation": "d2-d1",
+              "side": "black"
+            },
+            {
+              "notation": "xg4",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_3_27531682",
+      "title": "Forced win in 3 (movement, black to move)",
+      "description": "Black to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "O**O****/O****@@*/@@*@@*** b m p 3 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "b4-a4",
+              "side": "black"
+            },
+            {
+              "notation": "e3-a1",
+              "side": "white"
+            },
+            {
+              "notation": "a4-a7",
+              "side": "black"
+            },
+            {
+              "notation": "xa1",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_3_04efa208",
+      "title": "Forced win in 3 (movement, black to move)",
+      "description": "Black to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "***O****/@*@O***O/**@@*@@* b m p 3 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "d6-d7",
+              "side": "black"
+            },
+            {
+              "notation": "e3-g7",
+              "side": "white"
+            },
+            {
+              "notation": "d7-a7",
+              "side": "black"
+            },
+            {
+              "notation": "xg7",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_3_18727006",
+      "title": "Forced win in 3 (movement, black to move)",
+      "description": "Black to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "***O*@**/*****O@*/*O@@@**@ b m p 3 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "a7-a4",
+              "side": "black"
+            },
+            {
+              "notation": "e3-a1",
+              "side": "white"
+            },
+            {
+              "notation": "c3-c4",
+              "side": "black"
+            },
+            {
+              "notation": "xa1",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_3_3b184d04",
+      "title": "Forced win in 3 (movement, black to move)",
+      "description": "Black to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "**O***@*/@O***@**/*O**@@*@ b m p 3 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "a1-a4",
+              "side": "black"
+            },
+            {
+              "notation": "g7-b4",
+              "side": "white"
+            },
+            {
+              "notation": "d1-a1",
+              "side": "black"
+            },
+            {
+              "notation": "xb4",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        },
+        {
+          "moves": [
+            {
+              "notation": "c4-b4",
+              "side": "black"
+            },
+            {
+              "notation": "g7-b6",
+              "side": "white"
+            },
+            {
+              "notation": "b4-a4",
+              "side": "black"
+            },
+            {
+              "notation": "xb6",
+              "side": "black"
+            }
+          ],
+          "description": "Alternative solution 2",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1110,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_3_04c4afa8",
+      "title": "Forced win in 3 (movement, black to move)",
+      "description": "Black to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "**O@**@*/O**O*@**/***@@**@ b m p 3 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "a7-a4",
+              "side": "black"
+            },
+            {
+              "notation": "f2-b4",
+              "side": "white"
+            },
+            {
+              "notation": "a4-a1",
+              "side": "black"
+            },
+            {
+              "notation": "xb4",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        },
+        {
+          "moves": [
+            {
+              "notation": "e3-d3",
+              "side": "black"
+            },
+            {
+              "notation": "f2-d2",
+              "side": "white"
+            },
+            {
+              "notation": "a7-a4",
+              "side": "black"
+            },
+            {
+              "notation": "e4-b4",
+              "side": "white"
+            },
+            {
+              "notation": "a4-a1",
+              "side": "black"
+            },
+            {
+              "notation": "xb4",
+              "side": "black"
+            }
+          ],
+          "description": "Alternative solution 2",
+          "isOptimal": false
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1110,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_6_f326fee1",
+      "title": "Forced win in 6 (movement, black to move)",
+      "description": "Black to move: find the forced win in 6 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "hard",
+      "initialPosition": "O**@***@/********/*OO**@** b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "c5-g1",
+              "side": "black"
+            },
+            {
+              "notation": "g7-d1",
+              "side": "white"
+            },
+            {
+              "notation": "g1-a4",
+              "side": "black"
+            },
+            {
+              "notation": "d5-a7",
+              "side": "white"
+            },
+            {
+              "notation": "a1-c4",
+              "side": "black"
+            },
+            {
+              "notation": "a7-b4",
+              "side": "white"
+            },
+            {
+              "notation": "a4-c3",
+              "side": "black"
+            },
+            {
+              "notation": "d1-d5",
+              "side": "white"
+            },
+            {
+              "notation": "c4-d3",
+              "side": "black"
+            },
+            {
+              "notation": "xg4",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        },
+        {
+          "moves": [
+            {
+              "notation": "e3-g1",
+              "side": "black"
+            },
+            {
+              "notation": "d5-d1",
+              "side": "white"
+            },
+            {
+              "notation": "a1-c3",
+              "side": "black"
+            },
+            {
+              "notation": "g7-c4",
+              "side": "white"
+            },
+            {
+              "notation": "g1-e5",
+              "side": "black"
+            },
+            {
+              "notation": "d1-d5",
+              "side": "white"
+            },
+            {
+              "notation": "c5-e3",
+              "side": "black"
+            },
+            {
+              "notation": "c4-e4",
+              "side": "white"
+            },
+            {
+              "notation": "e5-d3",
+              "side": "black"
+            },
+            {
+              "notation": "xg4",
+              "side": "black"
+            }
+          ],
+          "description": "Alternative solution 2",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-6",
+        "phase:movement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1470,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_3_64dde673",
+      "title": "Forced win in 3 (movement, black to move)",
+      "description": "Black to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "***OOO@@/********/@******* b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "c4-d5",
+              "side": "black"
+            },
+            {
+              "notation": "c3-e5",
+              "side": "white"
+            },
+            {
+              "notation": "c5-d6",
+              "side": "black"
+            },
+            {
+              "notation": "xd3",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_3_6c759489",
+      "title": "Forced win in 3 (movement, black to move)",
+      "description": "Black to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "****@***/*OOO*@**/******@* b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "d3-b4",
+              "side": "black"
+            },
+            {
+              "notation": "f2-d5",
+              "side": "white"
+            },
+            {
+              "notation": "a4-b6",
+              "side": "black"
+            },
+            {
+              "notation": "xf4",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_5_06a7df9b",
+      "title": "Forced win in 5 (movement, black to move)",
+      "description": "Black to move: find the forced win in 5 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "winGame",
+      "difficulty": "hard",
+      "initialPosition": "**O@@**@/****@**@/O*O*@@** b m p 3 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "a1-a4",
+              "side": "black"
+            },
+            {
+              "notation": "d7-f4",
+              "side": "white"
+            },
+            {
+              "notation": "xa4",
+              "side": "white"
+            },
+            {
+              "notation": "d2-b2",
+              "side": "black"
+            },
+            {
+              "notation": "e4-d2",
+              "side": "white"
+            },
+            {
+              "notation": "c5-c4",
+              "side": "black"
+            },
+            {
+              "notation": "d2-e4",
+              "side": "white"
+            },
+            {
+              "notation": "xc4",
+              "side": "white"
+            },
+            {
+              "notation": "b2-d2",
+              "side": "black"
+            },
+            {
+              "notation": "xg4",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-5",
+        "phase:movement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1580,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_4_de58e0d3",
+      "title": "Forced win in 4 (movement, black to move)",
+      "description": "Black to move: find the forced win in 4 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "winGame",
+      "difficulty": "hard",
+      "initialPosition": "*******@/*@O**@@@/O**@@**O b m p 3 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "c5-d5",
+              "side": "black"
+            },
+            {
+              "notation": "f4-g7",
+              "side": "white"
+            },
+            {
+              "notation": "xd5",
+              "side": "white"
+            },
+            {
+              "notation": "b4-a4",
+              "side": "black"
+            },
+            {
+              "notation": "a7-b4",
+              "side": "white"
+            },
+            {
+              "notation": "a4-a1",
+              "side": "black"
+            },
+            {
+              "notation": "xg7",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-4",
+        "phase:movement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1460,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_4_8d0f19c7",
+      "title": "Forced win in 4 (movement, black to move)",
+      "description": "Black to move: find the forced win in 4 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "winGame",
+      "difficulty": "hard",
+      "initialPosition": "*****@*O/@*O@*@**/**O**@@@ b m p 3 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "f2-d2",
+              "side": "black"
+            },
+            {
+              "notation": "c5-d5",
+              "side": "white"
+            },
+            {
+              "notation": "d6-b6",
+              "side": "black"
+            },
+            {
+              "notation": "d5-e4",
+              "side": "white"
+            },
+            {
+              "notation": "xb6",
+              "side": "white"
+            },
+            {
+              "notation": "a1-d1",
+              "side": "black"
+            },
+            {
+              "notation": "e4-a1",
+              "side": "white"
+            },
+            {
+              "notation": "c3-d3",
+              "side": "black"
+            },
+            {
+              "notation": "xa1",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": false
+        },
+        {
+          "moves": [
+            {
+              "notation": "c3-d3",
+              "side": "black"
+            },
+            {
+              "notation": "c5-e4",
+              "side": "white"
+            },
+            {
+              "notation": "xd3",
+              "side": "white"
+            },
+            {
+              "notation": "a4-b4",
+              "side": "black"
+            },
+            {
+              "notation": "e4-b6",
+              "side": "white"
+            },
+            {
+              "notation": "b4-a4",
+              "side": "black"
+            },
+            {
+              "notation": "xg4",
+              "side": "black"
+            }
+          ],
+          "description": "Alternative solution 2",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-4",
+        "phase:movement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1380,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_4_0f09103d",
+      "title": "Forced win in 4 (movement, black to move)",
+      "description": "Black to move: find the forced win in 4 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "winGame",
+      "difficulty": "hard",
+      "initialPosition": "O**@***O/@@@@****/O***@*@* b m p 3 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "a4-b4",
+              "side": "black"
+            },
+            {
+              "notation": "d7-e5",
+              "side": "white"
+            },
+            {
+              "notation": "xb4",
+              "side": "white"
+            },
+            {
+              "notation": "f2-d2",
+              "side": "black"
+            },
+            {
+              "notation": "c5-f2",
+              "side": "white"
+            },
+            {
+              "notation": "e3-d3",
+              "side": "black"
+            },
+            {
+              "notation": "xf2",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-4",
+        "phase:movement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1460,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_4_fba0ac7f",
+      "title": "Forced win in 4 (movement, black to move)",
+      "description": "Black to move: find the forced win in 4 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "winGame",
+      "difficulty": "hard",
+      "initialPosition": "*@O**@@@/**O@@***/***@*O** b m p 3 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "g1-d1",
+              "side": "black"
+            },
+            {
+              "notation": "a1-g4",
+              "side": "white"
+            },
+            {
+              "notation": "xd1",
+              "side": "white"
+            },
+            {
+              "notation": "c4-b4",
+              "side": "black"
+            },
+            {
+              "notation": "e4-c4",
+              "side": "white"
+            },
+            {
+              "notation": "b4-b2",
+              "side": "black"
+            },
+            {
+              "notation": "xg4",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-4",
+        "phase:movement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1460,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_4_eb84b3a7",
+      "title": "Forced win in 4 (movement, black to move)",
+      "description": "Black to move: find the forced win in 4 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "winGame",
+      "difficulty": "hard",
+      "initialPosition": "O*****@*/O@*@@***/*O*@@@** b m p 3 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "d2-b2",
+              "side": "black"
+            },
+            {
+              "notation": "g7-d7",
+              "side": "white"
+            },
+            {
+              "notation": "xb2",
+              "side": "white"
+            },
+            {
+              "notation": "g1-g4",
+              "side": "black"
+            },
+            {
+              "notation": "d5-f4",
+              "side": "white"
+            },
+            {
+              "notation": "g4-g1",
+              "side": "black"
+            },
+            {
+              "notation": "xd7",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        },
+        {
+          "moves": [
+            {
+              "notation": "c4-c3",
+              "side": "black"
+            },
+            {
+              "notation": "g7-d7",
+              "side": "white"
+            },
+            {
+              "notation": "xc3",
+              "side": "white"
+            },
+            {
+              "notation": "g1-g4",
+              "side": "black"
+            },
+            {
+              "notation": "d5-f4",
+              "side": "white"
+            },
+            {
+              "notation": "g4-g1",
+              "side": "black"
+            },
+            {
+              "notation": "xd7",
+              "side": "black"
+            }
+          ],
+          "description": "Alternative solution 2",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-4",
+        "phase:movement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1380,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_4_e79fdc15",
+      "title": "Forced win in 4 (movement, black to move)",
+      "description": "Black to move: find the forced win in 4 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "winGame",
+      "difficulty": "hard",
+      "initialPosition": "@**@**@@/***O*@@*/@**OO*** b m p 3 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "e3-d3",
+              "side": "black"
+            },
+            {
+              "notation": "f2-a1",
+              "side": "white"
+            },
+            {
+              "notation": "xd3",
+              "side": "white"
+            },
+            {
+              "notation": "b4-b6",
+              "side": "black"
+            },
+            {
+              "notation": "a1-d6",
+              "side": "white"
+            },
+            {
+              "notation": "c4-b4",
+              "side": "black"
+            },
+            {
+              "notation": "xd1",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-4",
+        "phase:movement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1460,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_placement_black_4_291f1891",
+      "title": "Forced win in 4 (placement, black to move)",
+      "description": "Black to move: find the forced win in 4 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "opening",
+      "difficulty": "hard",
+      "initialPosition": "@*@**@O@/*****OO*/****@*** b p p 3 1 5 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "e5",
+              "side": "black"
+            },
+            {
+              "notation": "xc4",
+              "side": "black"
+            },
+            {
+              "notation": "b6",
+              "side": "white"
+            },
+            {
+              "notation": "xd1",
+              "side": "white"
+            },
+            {
+              "notation": "e3",
+              "side": "black"
+            },
+            {
+              "notation": "xb6",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-4",
+        "phase:placement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1410,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_placement_black_4_d04d1359",
+      "title": "Forced win in 4 (placement, black to move)",
+      "description": "Black to move: find the forced win in 4 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "opening",
+      "difficulty": "hard",
+      "initialPosition": "********/**@@***@/*O*O*O@@ b p p 3 1 5 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "f6",
+              "side": "black"
+            },
+            {
+              "notation": "xa1",
+              "side": "black"
+            },
+            {
+              "notation": "g4",
+              "side": "white"
+            },
+            {
+              "notation": "xb6",
+              "side": "white"
+            },
+            {
+              "notation": "a1",
+              "side": "black"
+            },
+            {
+              "notation": "xg1",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-4",
+        "phase:placement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1410,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_placement_black_6_0b4b2e65",
+      "title": "Forced win in 6 (placement, black to move)",
+      "description": "Black to move: find the forced win in 6 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "opening",
+      "difficulty": "expert",
+      "initialPosition": "**OO***@/******@*/@*O*@@** b p p 3 1 5 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "g1",
+              "side": "black"
+            },
+            {
+              "notation": "xe4",
+              "side": "black"
+            },
+            {
+              "notation": "f4",
+              "side": "white"
+            },
+            {
+              "notation": "a4",
+              "side": "black"
+            },
+            {
+              "notation": "e3-e4",
+              "side": "white"
+            },
+            {
+              "notation": "xa4",
+              "side": "white"
+            },
+            {
+              "notation": "a1-a4",
+              "side": "black"
+            },
+            {
+              "notation": "e4-a1",
+              "side": "white"
+            },
+            {
+              "notation": "c5-c4",
+              "side": "black"
+            },
+            {
+              "notation": "xa1",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-6",
+        "phase:placement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1650,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_placement_black_4_d3b02b65",
+      "title": "Forced win in 4 (placement, black to move)",
+      "description": "Black to move: find the forced win in 4 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "opening",
+      "difficulty": "hard",
+      "initialPosition": "@***@@**/@*******/O***@*OO b p p 3 1 5 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "e3",
+              "side": "black"
+            },
+            {
+              "notation": "xd7",
+              "side": "black"
+            },
+            {
+              "notation": "a1",
+              "side": "white"
+            },
+            {
+              "notation": "xd6",
+              "side": "white"
+            },
+            {
+              "notation": "d2",
+              "side": "black"
+            },
+            {
+              "notation": "xa7",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        },
+        {
+          "moves": [
+            {
+              "notation": "d2",
+              "side": "black"
+            },
+            {
+              "notation": "xd7",
+              "side": "black"
+            },
+            {
+              "notation": "a1",
+              "side": "white"
+            },
+            {
+              "notation": "xd6",
+              "side": "white"
+            },
+            {
+              "notation": "e3",
+              "side": "black"
+            },
+            {
+              "notation": "xa7",
+              "side": "black"
+            }
+          ],
+          "description": "Alternative solution 2",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-4",
+        "phase:placement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1330,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_placement_black_4_c7f7fdfb",
+      "title": "Forced win in 4 (placement, black to move)",
+      "description": "Black to move: find the forced win in 4 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "opening",
+      "difficulty": "hard",
+      "initialPosition": "@*@**@@*/O******O/@O****** b p p 3 1 5 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "c5",
+              "side": "black"
+            },
+            {
+              "notation": "xd6",
+              "side": "black"
+            },
+            {
+              "notation": "d6",
+              "side": "white"
+            },
+            {
+              "notation": "e5",
+              "side": "black"
+            },
+            {
+              "notation": "xg7",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        },
+        {
+          "moves": [
+            {
+              "notation": "f6",
+              "side": "black"
+            },
+            {
+              "notation": "b2",
+              "side": "white"
+            },
+            {
+              "notation": "c5",
+              "side": "black"
+            },
+            {
+              "notation": "xd6",
+              "side": "black"
+            },
+            {
+              "notation": "g7-b4",
+              "side": "white"
+            },
+            {
+              "notation": "xd5",
+              "side": "white"
+            },
+            {
+              "notation": "c5-d5",
+              "side": "black"
+            },
+            {
+              "notation": "b6-c5",
+              "side": "white"
+            },
+            {
+              "notation": "f6-d6",
+              "side": "black"
+            },
+            {
+              "notation": "xb4",
+              "side": "black"
+            }
+          ],
+          "description": "Alternative solution 2",
+          "isOptimal": false
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-4",
+        "phase:placement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1330,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_placement_black_4_b115f3f5",
+      "title": "Forced win in 4 (placement, black to move)",
+      "description": "Black to move: find the forced win in 4 move(s) even against the opponent's best practical defense.",
+      "category": "opening",
+      "difficulty": "medium",
+      "initialPosition": "***@****/**@**@*O/*@@*OO** b p p 3 1 5 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "e4",
+              "side": "black"
+            },
+            {
+              "notation": "xa1",
+              "side": "black"
+            },
+            {
+              "notation": "g1",
+              "side": "white"
+            },
+            {
+              "notation": "e5",
+              "side": "black"
+            },
+            {
+              "notation": "xd1",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        },
+        {
+          "moves": [
+            {
+              "notation": "g1",
+              "side": "black"
+            },
+            {
+              "notation": "xd1",
+              "side": "black"
+            },
+            {
+              "notation": "e4",
+              "side": "white"
+            },
+            {
+              "notation": "d2",
+              "side": "black"
+            },
+            {
+              "notation": "a1-f2",
+              "side": "white"
+            },
+            {
+              "notation": "g1-d1",
+              "side": "black"
+            },
+            {
+              "notation": "b6-g1",
+              "side": "white"
+            },
+            {
+              "notation": "e3-d3",
+              "side": "black"
+            },
+            {
+              "notation": "xg1",
+              "side": "black"
+            }
+          ],
+          "description": "Alternative solution 2",
+          "isOptimal": false
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-4",
+        "phase:placement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1180,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_placement_black_6_2981bdfd",
+      "title": "Forced win in 6 (placement, black to move)",
+      "description": "Black to move: find the forced win in 6 move(s) even against the opponent's best practical defense.",
+      "category": "opening",
+      "difficulty": "hard",
+      "initialPosition": "@***O***/*@@**@**/O**@***O b p p 3 1 5 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "g7",
+              "side": "black"
+            },
+            {
+              "notation": "c4",
+              "side": "white"
+            },
+            {
+              "notation": "f2",
+              "side": "black"
+            },
+            {
+              "notation": "xd7",
+              "side": "black"
+            },
+            {
+              "notation": "a7-g4",
+              "side": "white"
+            },
+            {
+              "notation": "f6-d6",
+              "side": "black"
+            },
+            {
+              "notation": "c4-f6",
+              "side": "white"
+            },
+            {
+              "notation": "g7-d7",
+              "side": "black"
+            },
+            {
+              "notation": "xg4",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-6",
+        "phase:placement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:57:13.000Z",
+      "version": 1,
+      "rating": 1500,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_placement_white_6_c88a90c1",
+      "title": "Forced win in 6 (placement, white to move)",
+      "description": "White to move: find the forced win in 6 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "opening",
+      "difficulty": "hard",
+      "initialPosition": "***@*@*O/O***O***/**@*OOOO w p p 7 1 3 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "d3",
+              "side": "white"
+            },
+            {
+              "notation": "xg4",
+              "side": "white"
+            },
+            {
+              "notation": "e4",
+              "side": "black"
+            },
+            {
+              "notation": "d1-g1",
+              "side": "white"
+            },
+            {
+              "notation": "c3-d1",
+              "side": "black"
+            },
+            {
+              "notation": "a7-d7",
+              "side": "white"
+            },
+            {
+              "notation": "d1-e5",
+              "side": "black"
+            },
+            {
+              "notation": "xd2",
+              "side": "black"
+            },
+            {
+              "notation": "d7-a7",
+              "side": "white"
+            },
+            {
+              "notation": "xe3",
+              "side": "white"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        },
+        {
+          "moves": [
+            {
+              "notation": "g1",
+              "side": "white"
+            },
+            {
+              "notation": "xc3",
+              "side": "white"
+            },
+            {
+              "notation": "d3",
+              "side": "black"
+            },
+            {
+              "notation": "d2-f2",
+              "side": "white"
+            },
+            {
+              "notation": "g4-c3",
+              "side": "black"
+            },
+            {
+              "notation": "xd6",
+              "side": "black"
+            },
+            {
+              "notation": "a4-b4",
+              "side": "white"
+            },
+            {
+              "notation": "c3-a4",
+              "side": "black"
+            },
+            {
+              "notation": "d1-d2",
+              "side": "white"
+            },
+            {
+              "notation": "a4-c3",
+              "side": "black"
+            },
+            {
+              "notation": "xb4",
+              "side": "black"
+            },
+            {
+              "notation": "d2-d1",
+              "side": "white"
+            },
+            {
+              "notation": "xc3",
+              "side": "white"
+            }
+          ],
+          "description": "Alternative solution 2",
+          "isOptimal": false
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-6",
+        "phase:placement",
+        "side:white",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:58:49.000Z",
+      "version": 1,
+      "rating": 1570,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_placement_white_6_9db13787",
+      "title": "Forced win in 6 (placement, white to move)",
+      "description": "White to move: find the forced win in 6 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "opening",
+      "difficulty": "expert",
+      "initialPosition": "*O*OOO@*/**@****O/O*@**O** w p p 7 1 3 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "e4",
+              "side": "white"
+            },
+            {
+              "notation": "xg4",
+              "side": "white"
+            },
+            {
+              "notation": "b4",
+              "side": "black"
+            },
+            {
+              "notation": "d3-d2",
+              "side": "white"
+            },
+            {
+              "notation": "f4-a4",
+              "side": "black"
+            },
+            {
+              "notation": "xd2",
+              "side": "black"
+            },
+            {
+              "notation": "e5-d5",
+              "side": "white"
+            },
+            {
+              "notation": "c4-e5",
+              "side": "black"
+            },
+            {
+              "notation": "b6-d6",
+              "side": "white"
+            },
+            {
+              "notation": "xa4",
+              "side": "white"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-6",
+        "phase:placement",
+        "side:white",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:58:49.000Z",
+      "version": 1,
+      "rating": 1650,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_placement_white_7_83b25307",
+      "title": "Forced win in 7 (placement, white to move)",
+      "description": "White to move: find the forced win in 7 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "opening",
+      "difficulty": "expert",
+      "initialPosition": "@OOO****/**O****O/***OO*@@ w p p 7 1 3 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "g4",
+              "side": "white"
+            },
+            {
+              "notation": "xa7",
+              "side": "white"
+            },
+            {
+              "notation": "a1",
+              "side": "black"
+            },
+            {
+              "notation": "d1-d2",
+              "side": "white"
+            },
+            {
+              "notation": "d5-a7",
+              "side": "black"
+            },
+            {
+              "notation": "xd2",
+              "side": "black"
+            },
+            {
+              "notation": "f4-f6",
+              "side": "white"
+            },
+            {
+              "notation": "a7-f4",
+              "side": "black"
+            },
+            {
+              "notation": "e5-d5",
+              "side": "white"
+            },
+            {
+              "notation": "f4-a7",
+              "side": "black"
+            },
+            {
+              "notation": "xd5",
+              "side": "black"
+            },
+            {
+              "notation": "f6-f4",
+              "side": "white"
+            },
+            {
+              "notation": "xa7",
+              "side": "white"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        },
+        {
+          "moves": [
+            {
+              "notation": "a1",
+              "side": "white"
+            },
+            {
+              "notation": "xa7",
+              "side": "white"
+            },
+            {
+              "notation": "g4",
+              "side": "black"
+            },
+            {
+              "notation": "d1-d2",
+              "side": "white"
+            },
+            {
+              "notation": "d5-d1",
+              "side": "black"
+            },
+            {
+              "notation": "f4-f6",
+              "side": "white"
+            },
+            {
+              "notation": "g4-c4",
+              "side": "black"
+            },
+            {
+              "notation": "e4-f4",
+              "side": "white"
+            },
+            {
+              "notation": "d1-b4",
+              "side": "black"
+            },
+            {
+              "notation": "xd2",
+              "side": "black"
+            },
+            {
+              "notation": "f4-e4",
+              "side": "white"
+            },
+            {
+              "notation": "xa4",
+              "side": "white"
+            }
+          ],
+          "description": "Alternative solution 2",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-7",
+        "phase:placement",
+        "side:white",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:58:49.000Z",
+      "version": 1,
+      "rating": 1690,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_white_4_b3c2b59a",
+      "title": "Forced win in 4 (movement, white to move)",
+      "description": "White to move: find the forced win in 4 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "winGame",
+      "difficulty": "hard",
+      "initialPosition": "***@*O*O/@@*OO**O/*****O** w m p 6 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "a1-d1",
+              "side": "white"
+            },
+            {
+              "notation": "e3-d3",
+              "side": "black"
+            },
+            {
+              "notation": "b6-b4",
+              "side": "white"
+            },
+            {
+              "notation": "d3-b6",
+              "side": "black"
+            },
+            {
+              "notation": "xb4",
+              "side": "black"
+            },
+            {
+              "notation": "c3-d3",
+              "side": "white"
+            },
+            {
+              "notation": "xb6",
+              "side": "white"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-4",
+        "phase:movement",
+        "side:white",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:58:49.000Z",
+      "version": 1,
+      "rating": 1460,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_6_6070af2d",
+      "title": "Forced win in 6 (movement, black to move)",
+      "description": "Black to move: find the forced win in 6 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "winGame",
+      "difficulty": "expert",
+      "initialPosition": "*O**@@*O/****@*O@/****@@@* b m p 3 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "c3-c4",
+              "side": "black"
+            },
+            {
+              "notation": "c5-d5",
+              "side": "white"
+            },
+            {
+              "notation": "a4-a7",
+              "side": "black"
+            },
+            {
+              "notation": "b4-c5",
+              "side": "white"
+            },
+            {
+              "notation": "xb6",
+              "side": "white"
+            },
+            {
+              "notation": "a1-a4",
+              "side": "black"
+            },
+            {
+              "notation": "c5-a1",
+              "side": "white"
+            },
+            {
+              "notation": "d2-b2",
+              "side": "black"
+            },
+            {
+              "notation": "a1-c5",
+              "side": "white"
+            },
+            {
+              "notation": "xd3",
+              "side": "white"
+            },
+            {
+              "notation": "d1-a1",
+              "side": "black"
+            },
+            {
+              "notation": "xc5",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-6",
+        "phase:movement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:58:49.000Z",
+      "version": 1,
+      "rating": 1700,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_3_25331f83",
+      "title": "Forced win in 3 (movement, black to move)",
+      "description": "Black to move: find the forced win in 3 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "**@***@@/**O@@@**/OO**@*** b m p 3 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "d2-d3",
+              "side": "black"
+            },
+            {
+              "notation": "f4-a7",
+              "side": "white"
+            },
+            {
+              "notation": "xd3",
+              "side": "white"
+            },
+            {
+              "notation": "d1-d2",
+              "side": "black"
+            },
+            {
+              "notation": "xa7",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        },
+        {
+          "moves": [
+            {
+              "notation": "e4-e3",
+              "side": "black"
+            },
+            {
+              "notation": "f4-d3",
+              "side": "white"
+            },
+            {
+              "notation": "b2-b4",
+              "side": "black"
+            },
+            {
+              "notation": "g7-b2",
+              "side": "white"
+            },
+            {
+              "notation": "c4-c3",
+              "side": "black"
+            },
+            {
+              "notation": "d7-c4",
+              "side": "white"
+            },
+            {
+              "notation": "d1-a1",
+              "side": "black"
+            },
+            {
+              "notation": "b2-d5",
+              "side": "white"
+            },
+            {
+              "notation": "b4-b2",
+              "side": "black"
+            },
+            {
+              "notation": "xc4",
+              "side": "black"
+            }
+          ],
+          "description": "Alternative solution 2",
+          "isOptimal": false
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:58:49.000Z",
+      "version": 1,
+      "rating": 1260,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_5_6ecf6edb",
+      "title": "Forced win in 5 (movement, black to move)",
+      "description": "Black to move: find the forced win in 5 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "winGame",
+      "difficulty": "hard",
+      "initialPosition": "******@O/**O@**@@/@*O@@*** b m p 3 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "d7-a7",
+              "side": "black"
+            },
+            {
+              "notation": "c5-e4",
+              "side": "white"
+            },
+            {
+              "notation": "xc4",
+              "side": "white"
+            },
+            {
+              "notation": "a7-a4",
+              "side": "black"
+            },
+            {
+              "notation": "e4-a1",
+              "side": "white"
+            },
+            {
+              "notation": "b4-b2",
+              "side": "black"
+            },
+            {
+              "notation": "a1-e4",
+              "side": "white"
+            },
+            {
+              "notation": "xa4",
+              "side": "white"
+            },
+            {
+              "notation": "d1-d2",
+              "side": "black"
+            },
+            {
+              "notation": "xg4",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-5",
+        "phase:movement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:58:49.000Z",
+      "version": 1,
+      "rating": 1580,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_7_36055f99",
+      "title": "Forced win in 7 (movement, black to move)",
+      "description": "Black to move: find the forced win in 7 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "winGame",
+      "difficulty": "expert",
+      "initialPosition": "*@@*OO**/****@**@/*@@@O*** b m p 3 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "e4-e3",
+              "side": "black"
+            },
+            {
+              "notation": "d3-c4",
+              "side": "white"
+            },
+            {
+              "notation": "b6-d6",
+              "side": "black"
+            },
+            {
+              "notation": "c3-c5",
+              "side": "white"
+            },
+            {
+              "notation": "d2-f2",
+              "side": "black"
+            },
+            {
+              "notation": "c5-d3",
+              "side": "white"
+            },
+            {
+              "notation": "g4-f4",
+              "side": "black"
+            },
+            {
+              "notation": "c4-d2",
+              "side": "white"
+            },
+            {
+              "notation": "xf4",
+              "side": "white"
+            },
+            {
+              "notation": "f2-f4",
+              "side": "black"
+            },
+            {
+              "notation": "d3-e4",
+              "side": "white"
+            },
+            {
+              "notation": "f4-g4",
+              "side": "black"
+            },
+            {
+              "notation": "xd1",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-7",
+        "phase:movement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:58:49.000Z",
+      "version": 1,
+      "rating": 1820,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_4_fa21bb71",
+      "title": "Forced win in 4 (movement, black to move)",
+      "description": "Black to move: find the forced win in 4 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "winGame",
+      "difficulty": "hard",
+      "initialPosition": "OO**O***/**@**@*@/@@@****@ b m p 3 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "g4-g1",
+              "side": "black"
+            },
+            {
+              "notation": "d3-c5",
+              "side": "white"
+            },
+            {
+              "notation": "xf4",
+              "side": "white"
+            },
+            {
+              "notation": "a7-a4",
+              "side": "black"
+            },
+            {
+              "notation": "c5-b4",
+              "side": "white"
+            },
+            {
+              "notation": "a4-a7",
+              "side": "black"
+            },
+            {
+              "notation": "xb4",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-4",
+        "phase:movement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:58:49.000Z",
+      "version": 1,
+      "rating": 1460,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_6_d419bcc9",
+      "title": "Forced win in 6 (movement, black to move)",
+      "description": "Black to move: find the forced win in 6 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "winGame",
+      "difficulty": "expert",
+      "initialPosition": "**@OO*O*/**@*@O@*/@**@**@* b m p 4 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "g1-g4",
+              "side": "black"
+            },
+            {
+              "notation": "xb2",
+              "side": "black"
+            },
+            {
+              "notation": "e3-c3",
+              "side": "white"
+            },
+            {
+              "notation": "a4-a7",
+              "side": "black"
+            },
+            {
+              "notation": "c4-e3",
+              "side": "white"
+            },
+            {
+              "notation": "xd7",
+              "side": "white"
+            },
+            {
+              "notation": "f4-f2",
+              "side": "black"
+            },
+            {
+              "notation": "c3-f4",
+              "side": "white"
+            },
+            {
+              "notation": "b4-b2",
+              "side": "black"
+            },
+            {
+              "notation": "xf4",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-6",
+        "phase:movement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:58:49.000Z",
+      "version": 1,
+      "rating": 1700,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_6_f98199ed",
+      "title": "Forced win in 6 (movement, black to move)",
+      "description": "Black to move: find the forced win in 6 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "winGame",
+      "difficulty": "expert",
+      "initialPosition": "@OO*O@**/*@*@***@/O@****@* b m p 4 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "d5-d6",
+              "side": "black"
+            },
+            {
+              "notation": "xe4",
+              "side": "black"
+            },
+            {
+              "notation": "e5-d2",
+              "side": "white"
+            },
+            {
+              "notation": "g7-g4",
+              "side": "black"
+            },
+            {
+              "notation": "d7-d1",
+              "side": "white"
+            },
+            {
+              "notation": "xg4",
+              "side": "white"
+            },
+            {
+              "notation": "b6-b4",
+              "side": "black"
+            },
+            {
+              "notation": "d3-b6",
+              "side": "white"
+            },
+            {
+              "notation": "c3-c4",
+              "side": "black"
+            },
+            {
+              "notation": "xd1",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-6",
+        "phase:movement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:58:49.000Z",
+      "version": 1,
+      "rating": 1700,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_7_e99322f7",
+      "title": "Forced win in 7 (movement, black to move)",
+      "description": "Black to move: find the forced win in 7 move(s) even against the opponent's best practical defense. Requires accepting a material sacrifice along the way.",
+      "category": "winGame",
+      "difficulty": "expert",
+      "initialPosition": "@@*@@***/@****O@*/O**@O*O* b m p 4 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "d5-c5",
+              "side": "black"
+            },
+            {
+              "notation": "d1-a1",
+              "side": "white"
+            },
+            {
+              "notation": "d6-d5",
+              "side": "black"
+            },
+            {
+              "notation": "xa4",
+              "side": "black"
+            },
+            {
+              "notation": "a1-f2",
+              "side": "white"
+            },
+            {
+              "notation": "c5-c4",
+              "side": "black"
+            },
+            {
+              "notation": "d7-d2",
+              "side": "white"
+            },
+            {
+              "notation": "xc4",
+              "side": "white"
+            },
+            {
+              "notation": "b4-c4",
+              "side": "black"
+            },
+            {
+              "notation": "b2-c3",
+              "side": "white"
+            },
+            {
+              "notation": "c4-c5",
+              "side": "black"
+            },
+            {
+              "notation": "xd2",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-7",
+        "phase:movement",
+        "side:black",
+        "sacrifice"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:58:49.000Z",
+      "version": 1,
+      "rating": 1820,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_3_b58d0925",
+      "title": "Forced win in 3 (movement, black to move)",
+      "description": "Black to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "*****@**/@OOO****/*******@ b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "c3-d7",
+              "side": "black"
+            },
+            {
+              "notation": "f2-d5",
+              "side": "white"
+            },
+            {
+              "notation": "d6-g7",
+              "side": "black"
+            },
+            {
+              "notation": "xf4",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:59:29.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_3_0d8d7687",
+      "title": "Forced win in 3 (movement, black to move)",
+      "description": "Black to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "**@OOO*@/***@****/******** b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "c5-f4",
+              "side": "black"
+            },
+            {
+              "notation": "c3-d5",
+              "side": "white"
+            },
+            {
+              "notation": "f2-g4",
+              "side": "black"
+            },
+            {
+              "notation": "xd3",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:59:29.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_3_8332eef3",
+      "title": "Forced win in 3 (movement, black to move)",
+      "description": "Black to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "*******@/****@**@/*OOO**** b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "c5-b2",
+              "side": "black"
+            },
+            {
+              "notation": "g1-d5",
+              "side": "white"
+            },
+            {
+              "notation": "b6-f2",
+              "side": "black"
+            },
+            {
+              "notation": "xg4",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:59:29.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_white_3_26483ff6",
+      "title": "Forced win in 3 (movement, white to move)",
+      "description": "White to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "*****@@@/*****O**/O**O**** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "b2-g7",
+              "side": "white"
+            },
+            {
+              "notation": "c5-d5",
+              "side": "black"
+            },
+            {
+              "notation": "g1-a7",
+              "side": "white"
+            },
+            {
+              "notation": "xc4",
+              "side": "white"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:white"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:59:29.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_white_3_7f7c327c",
+      "title": "Forced win in 3 (movement, white to move)",
+      "description": "White to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "***@@@**/*O****O*/***O**** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "g1-b6",
+              "side": "white"
+            },
+            {
+              "notation": "c3-d5",
+              "side": "black"
+            },
+            {
+              "notation": "b4-d6",
+              "side": "white"
+            },
+            {
+              "notation": "xd3",
+              "side": "white"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:white"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:59:29.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_white_3_e30a3a46",
+      "title": "Forced win in 3 (movement, white to move)",
+      "description": "White to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "*@******/O*@***O*/*O*@*OO* w m p 5 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "a4-a7",
+              "side": "white"
+            },
+            {
+              "notation": "e5-d7",
+              "side": "black"
+            },
+            {
+              "notation": "b4-a4",
+              "side": "white"
+            },
+            {
+              "notation": "xg1",
+              "side": "white"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:white"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:59:29.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_white_3_6b6fe432",
+      "title": "Forced win in 3 (movement, white to move)",
+      "description": "White to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "*@@@**O*/****O*O*/****O*O* w m p 5 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "c4-c3",
+              "side": "white"
+            },
+            {
+              "notation": "e3-d5",
+              "side": "black"
+            },
+            {
+              "notation": "c3-c4",
+              "side": "white"
+            },
+            {
+              "notation": "xe4",
+              "side": "white"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:white"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:59:29.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_3_b93b7d19",
+      "title": "Forced win in 3 (movement, black to move)",
+      "description": "Black to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "****@O**/*@@**@**/O**O*@** b m p 3 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "b2-d2",
+              "side": "black"
+            },
+            {
+              "notation": "c3-f2",
+              "side": "white"
+            },
+            {
+              "notation": "a1-d1",
+              "side": "black"
+            },
+            {
+              "notation": "xg1",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:59:29.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_3_522938a3",
+      "title": "Forced win in 3 (movement, black to move)",
+      "description": "Black to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "**@**O**/*@@*O***/*O**@@** b m p 3 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "f4-g4",
+              "side": "black"
+            },
+            {
+              "notation": "c3-f4",
+              "side": "white"
+            },
+            {
+              "notation": "g4-g1",
+              "side": "black"
+            },
+            {
+              "notation": "xg7",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:59:29.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_movement_black_3_08356607",
+      "title": "Forced win in 3 (movement, black to move)",
+      "description": "Black to move: find the forced win in 3 move(s) even against the opponent's best practical defense.",
+      "category": "winGame",
+      "difficulty": "medium",
+      "initialPosition": "**@***O*/*@****O*/***@@@O* b m p 3 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "g1-g4",
+              "side": "black"
+            },
+            {
+              "notation": "c4-f4",
+              "side": "white"
+            },
+            {
+              "notation": "g4-g1",
+              "side": "black"
+            },
+            {
+              "notation": "xa4",
+              "side": "black"
+            }
+          ],
+          "description": "Main solution",
+          "isOptimal": true
+        }
+      ],
+      "tags": [
+        "generated",
+        "malom-db",
+        "win-in-3",
+        "phase:movement",
+        "side:black"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-02T03:59:29.000Z",
+      "version": 1,
+      "rating": 1190,
+      "ruleVariantId": "standard_9mm"
+    }
+  ]
+}

@@ -548,6 +548,57 @@ pub fn best_move_token_with_ordering<P: DatabaseProvider>(
     )
 }
 
+/// Every legal action's database outcome from the root side's perspective, in
+/// legal-action order (same order as [`GameRules::legal_actions`] would
+/// produce for `snap`).
+///
+/// Unlike [`best_move_choices_with_ordering`], which only returns the moves
+/// tied for the single best outcome, this returns *every* legal move's
+/// outcome — wins, draws, and losses alike. Puzzle generation uses this to
+/// classify how many legal replies keep a forced win alive (a low count
+/// makes for a sharper, more instructive puzzle) and to distinguish "the"
+/// winning move from moves that merely draw or lose.
+///
+/// Returns `None` under the same conditions as
+/// [`best_move_choices_with_ordering`]: the database variant does not match
+/// `options`, the side to move is invalid, or any candidate line runs into a
+/// position the database does not cover.
+pub fn all_move_outcomes_with_ordering<P: DatabaseProvider>(
+    database: &mut Database<P>,
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    options: &MillVariantOptions,
+    ordering: PerfectMoveOrdering,
+) -> Result<Option<Vec<PerfectMoveChoice>>, DatabaseError> {
+    let root_side = snap.side_to_move;
+    if !database_matches_options(database, options) {
+        return Ok(None);
+    }
+    if root_side != 0 && root_side != 1 {
+        return Ok(None);
+    }
+
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(snap, &mut actions);
+
+    let mut results = Vec::with_capacity(actions.as_slice().len());
+    for &action in actions.as_slice() {
+        let child_snap = rules.apply(snap, action);
+        let outcome = match child_outcome_for_root(
+            database, rules, &child_snap, options, root_side, ordering,
+        )? {
+            Some(outcome) => outcome,
+            None => return Ok(None),
+        };
+        results.push(PerfectMoveChoice {
+            token: MillUciCodec::encode_action(action),
+            outcome,
+        });
+    }
+
+    Ok(Some(results))
+}
+
 fn child_outcome_for_root<P: DatabaseProvider>(
     database: &mut Database<P>,
     rules: &MillRules,
@@ -647,6 +698,73 @@ fn terminal_outcome_for_root(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::database::{DatabaseOptions, FileDatabaseProvider};
+
+    fn asset_root() -> std::path::PathBuf {
+        std::path::Path::new(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/../../src/ui/flutter_app/assets/databases"
+        ))
+        .to_path_buf()
+    }
+
+    #[test]
+    fn all_move_outcomes_covers_every_legal_action_and_matches_best_choice() {
+        let options = MillVariantOptions::default();
+        let rules = MillRules::new(options.clone());
+        let variant = DatabaseVariant::from_mill_options(&options).unwrap();
+        let mut db = Database::open_variant_with_options(
+            FileDatabaseProvider::new(asset_root()),
+            variant,
+            DatabaseOptions::with_sector_cache_capacity(8),
+        )
+        .expect("bundled Perfect DB assets must open");
+
+        // `std_3_3_0_0.sec2` is bundled with the app, so a 3-vs-3 flying
+        // position with both hands empty is guaranteed to be queryable.
+        let query = PerfectQuery::new(0b0000_0111, 0b0011_1000_0000_0000_0000, 0, 0, 0, false);
+        let snap = snapshot_from_perfect_query(&rules, &options, query);
+
+        let Some(all_outcomes) =
+            all_move_outcomes_with_ordering(&mut db, &rules, &snap, &options, PerfectMoveOrdering::StrictSteps)
+                .expect("database read must not fail")
+        else {
+            // The exact bitboard above may legitimately fall outside the
+            // bundled subset on some builds; skip rather than assert a
+            // brittle coverage guarantee about third-party asset files.
+            return;
+        };
+
+        let mut legal = ActionList::<256>::new();
+        rules.legal_actions(&snap, &mut legal);
+        assert_eq!(
+            all_outcomes.len(),
+            legal.as_slice().len(),
+            "every legal action must get exactly one outcome"
+        );
+
+        let best = best_move_choices_with_ordering(
+            &mut db,
+            &rules,
+            &snap,
+            &options,
+            PerfectMoveOrdering::StrictSteps,
+        )
+        .expect("database read must not fail")
+        .expect("bundled sector must resolve a best move for this position");
+
+        let best_outcome_from_all = all_outcomes
+            .iter()
+            .filter(|choice| best.iter().any(|b| b.token == choice.token))
+            .map(|choice| choice.outcome)
+            .max_by(|a, b| PerfectMoveOrdering::StrictSteps.compare(*a, *b))
+            .expect("best-move token must appear in the full enumeration");
+        assert_eq!(
+            best_outcome_from_all.wdl(),
+            best[0].outcome.wdl(),
+            "full enumeration must agree with best_move_choices on the winning WDL"
+        );
+    }
 
     #[test]
     fn perfect_index_labels_match_topology() {

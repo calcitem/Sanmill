@@ -101,6 +101,10 @@ Future<void> main() async {
 
   // Initialize Puzzle Manager
   await PuzzleManager().init();
+  // Merge in the bundled built-in puzzle pack (never overwrites custom
+  // puzzles; safe to call on every launch since it degrades to a no-op if
+  // the asset is missing or malformed).
+  await PuzzleManager().loadBuiltInPuzzles();
 
   // Initialize Screenshot service (if not in test mode)
   if (!EnvironmentConfig.test) {
