@@ -15,6 +15,9 @@ import '../../game_platform/game_session.dart';
 import '../../game_platform/game_session_handle.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../rule_settings/models/rule_settings.dart';
+// #region agent log
+import '../../shared/services/debug_instrumentation_bb5e74.dart';
+// #endregion
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
 import '../../src/rust/api/kernel.dart' as tgf_kernel;
@@ -789,10 +792,37 @@ class NativeMillGameSession implements GameSessionHandle {
   /// caller remains responsible for keeping any external PGN active-node
   /// pointer in sync with its chosen target node.
   Future<bool> replayMainline(Iterable<ExtMove> moves) async {
+    // #region agent log
+    final List<ExtMove> movesList = moves.toList(growable: false);
+    agentDbg(
+      'native_mill_game_session.dart:replayMainline:enter',
+      'replayMainline enter',
+      <String, Object?>{
+        'session': identityHashCode(this),
+        'moves': movesList.map((ExtMove m) => m.move).toList(),
+        'undoDepthAtEntry': undoDepth,
+      },
+      hypothesisId: 'RACE,STALE,NOTATION',
+    );
+    // #endregion
     while (undoDepth > 0) {
       await undo();
     }
-    for (final ExtMove move in moves) {
+    // #region agent log
+    if (undoDepth != 0) {
+      agentDbg(
+        'native_mill_game_session.dart:replayMainline:undoLoopExit',
+        'undoDepth not zero after undo loop',
+        <String, Object?>{
+          'session': identityHashCode(this),
+          'undoDepthAfterLoop': undoDepth,
+        },
+        hypothesisId: 'RACE',
+      );
+    }
+    // #endregion
+    int ply = 0;
+    for (final ExtMove move in movesList) {
       final String moveString = move.move;
       GameAction? action;
       for (final GameAction legal in legalActions) {
@@ -802,9 +832,29 @@ class NativeMillGameSession implements GameSessionHandle {
         }
       }
       if (action == null) {
+        // #region agent log
+        agentDbg(
+          'native_mill_game_session.dart:replayMainline:mismatch',
+          'replayMainline notation mismatch',
+          <String, Object?>{
+            'session': identityHashCode(this),
+            'ply': ply,
+            'wantedMove': moveString,
+            'legalActionNotations': legalActions
+                .map((GameAction a) => MillActionCodec.moveStringFrom(a))
+                .toList(),
+            'phase': state.value.phase,
+            'activeSeat': state.value.activeSeat.toString(),
+            'undoDepth': undoDepth,
+            'fen': getFen(),
+          },
+          hypothesisId: 'RACE,STALE,NOTATION',
+        );
+        // #endregion
         return false;
       }
       await apply(action);
+      ply++;
     }
     return true;
   }

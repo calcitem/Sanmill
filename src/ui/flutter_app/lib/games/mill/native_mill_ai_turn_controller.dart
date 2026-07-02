@@ -4,6 +4,9 @@
 import '../../game_platform/game_session.dart';
 import '../../game_platform/opening_book_provider.dart';
 import '../../general_settings/models/general_settings.dart';
+// #region agent log
+import '../../shared/services/debug_instrumentation_bb5e74.dart';
+// #endregion
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
 import '../../src/rust/api/simple.dart' as tgf;
@@ -293,6 +296,19 @@ class NativeMillAiTurnController {
           session.lastAiMoveType == AiMoveType.consensus) {
         session.lastAiBestValue = _perfectDatabaseGraphScore(session, action);
       }
+      // #region agent log
+      agentDbg(
+        'native_mill_ai_turn_controller.dart:playIfAiTurn:beforeApply',
+        'AI about to apply searched action',
+        <String, Object?>{
+          'session': identityHashCode(session),
+          'move': action.payload['move'],
+          'undoDepthBefore': session.undoDepth,
+          'searchElapsedMs': sw.elapsedMilliseconds,
+        },
+        hypothesisId: 'RACE',
+      );
+      // #endregion
       await session.apply(action);
       sw.stop();
       if (EnvironmentConfig.devMode) {

@@ -52,6 +52,9 @@ import '../../rule_settings/models/rule_settings.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/config/prompt_defaults.dart';
 import '../../shared/database/database.dart';
+// #region agent log
+import '../../shared/services/debug_instrumentation_bb5e74.dart';
+// #endregion
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/game_interaction_coordinator.dart';
 import '../../shared/services/logger.dart';

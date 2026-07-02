@@ -24,6 +24,23 @@ class HistoryNavigator {
     bool toolbar = false,
     int? number,
   }) async {
+    // #region agent log
+    agentDbg(
+      'history_navigation.dart:_gotoHistory:enter',
+      'gotoHistory enter',
+      <String, Object?>{
+        'navMode': navMode.toString(),
+        'number': number,
+        'gameMode': GameController().gameInstance.gameMode.toString(),
+        'isEngineRunning': GameController().isEngineRunning,
+        'isGoingToHistory': _isGoingToHistory,
+        'analysisIsAnalyzing': AnalysisMode.isAnalyzing,
+        'analysisIsEnabled': AnalysisMode.isEnabled,
+        'session': identityHashCode(_activeNativeSession(context)),
+      },
+      hypothesisId: 'RACE,ANALYSIS_RACE',
+    );
+    // #endregion
     // Clear any existing analysis markers when player makes a move
     AnalysisMode.disable();
 
@@ -565,7 +582,37 @@ class HistoryNavigator {
     final List<ExtMove> pathMoves = _collectPathMoves(
       GameController().gameRecorder,
     );
+    // #region agent log
+    agentDbg(
+      'history_navigation.dart:_nativeDoEachMove:beforeReplay',
+      'nativeDoEachMove before replayMainline',
+      <String, Object?>{
+        'navMode': navMode.toString(),
+        'number': number,
+        'pathMoves': pathMoves.map((ExtMove m) => m.move).toList(),
+        'session': identityHashCode(session),
+        'undoDepthBefore': session.undoDepth,
+        'redoDepthBefore': session.redoDepth,
+        'phase': session.state.value.phase,
+        'activeSeat': session.state.value.activeSeat.toString(),
+      },
+      hypothesisId: 'RACE,STALE',
+    );
+    // #endregion
     final bool success = await session.replayMainline(pathMoves);
+    // #region agent log
+    agentDbg(
+      'history_navigation.dart:_nativeDoEachMove:afterReplay',
+      'nativeDoEachMove after replayMainline',
+      <String, Object?>{
+        'success': success,
+        'session': identityHashCode(session),
+        'undoDepthAfter': session.undoDepth,
+        'redoDepthAfter': session.redoDepth,
+      },
+      hypothesisId: 'RACE,STALE',
+    );
+    // #endregion
     if (!success && pathMoves.isNotEmpty) {
       importFailedStr = pathMoves.last.notation;
     }
