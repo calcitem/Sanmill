@@ -254,7 +254,7 @@ void main() {
     int previous = -1;
     for (int i = 0; i < 16; i++) {
       await tester.pump(const Duration(milliseconds: 16));
-      final int current = controller.gameRecorder.mainlineMoves.length;
+      final int current = controller.gameRecorder.currentPath.length;
       if (current == previous && i > 2) {
         break;
       }
@@ -423,6 +423,43 @@ void main() {
           controller.activeNativeMillSession?.getFen(),
           transformed.initialPosition,
         );
+        await teardownPuzzlePage(tester);
+      },
+      skip: nativeLibrarySkipReason() != null,
+    );
+
+    testWidgets(
+      'allows correct retry after a rolled-back wrong move',
+      (WidgetTester tester) async {
+        final PuzzleInfo puzzle = buildPuzzle(
+          solutions: const <List<String>>[
+            <String>['a1', 'd7'],
+          ],
+        );
+        await pumpPuzzlePage(tester, puzzle);
+
+        final GameController controller = GameController();
+        final PuzzleInfo transformed = loadedTransformedPuzzle(puzzle);
+        final String correctMove =
+            transformed.solutions.first.moves[0].notation;
+        final String opponentMove =
+            transformed.solutions.first.moves[1].notation;
+        final String wrongMove = pickWrongFirstMove(transformed);
+
+        await applyHumanMoveViaNativeSession(wrongMove);
+        await drainUi(tester);
+
+        expect(find.text('Wrong move. Try again.'), findsOneWidget);
+        expect(controller.gameRecorder.currentPath, isEmpty);
+        await tester.pump(const Duration(seconds: 3));
+
+        await applyHumanMoveViaNativeSession(correctMove);
+        await drainUi(tester);
+
+        final List<String> moves = controller.gameRecorder.currentPath
+            .map((ExtMove m) => m.move)
+            .toList(growable: false);
+        expect(moves, <String>[correctMove, opponentMove]);
         await teardownPuzzlePage(tester);
       },
       skip: nativeLibrarySkipReason() != null,

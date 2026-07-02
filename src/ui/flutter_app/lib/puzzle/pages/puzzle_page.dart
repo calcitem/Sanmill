@@ -814,7 +814,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
   void _onPlayerMove() {
     // Get the latest move from the game recorder
     final GameController controller = GameController();
-    final List<ExtMove> moves = controller.gameRecorder.mainlineMoves;
+    final List<ExtMove> moves = _activePuzzleMoves(controller);
 
     if (moves.length <= _lastRecordedMoveIndex + 1) {
       return;
@@ -859,7 +859,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
         final ValidationFeedback feedback = ValidationFeedback(
           result: ValidationResult.correct,
           isOptimal: matchedSolution.isOptimal,
-          moveCount: controller.gameRecorder.mainlineMoves.length,
+          moveCount: _activePuzzleMoves(controller).length,
         );
         _onPuzzleSolved(feedback);
         return feedback;
@@ -874,15 +874,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
       }
       return ValidationFeedback(
         result: ValidationResult.inProgress,
-        moveCount: controller.gameRecorder.mainlineMoves.length,
+        moveCount: _activePuzzleMoves(controller).length,
       );
     }
   }
 
   PuzzleSolution? _findMatchingPuzzleSolutionFromRecorder() {
-    final List<String> moves = GameController().gameRecorder.mainlineMoves
-        .map((ExtMove m) => PuzzleAutoPlayer.normalizeMove(m.move))
-        .toList(growable: false);
+    final List<String> moves = _activePuzzleMoveNotations(GameController());
     for (final PuzzleSolution solution in _transformedPuzzle.solutions) {
       final List<String> expected = solution.moves
           .map((PuzzleMove m) => PuzzleAutoPlayer.normalizeMove(m.notation))
@@ -1094,9 +1092,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
           humanColor: humanColor,
           isGameOver: () => !mounted || nativeSession.outcome.isTerminal,
           sideToMove: () => _nativePuzzleSideToAct(nativeSession),
-          movesSoFar: () => controller.gameRecorder.mainlineMoves
-              .map((ExtMove m) => m.move)
-              .toList(growable: false),
+          movesSoFar: () => _activePuzzleMoveNotations(controller),
           applyMove: (String move) {
             final bool ok = nativeSession.applyMoveString(move);
             if (!ok) {
@@ -1477,7 +1473,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
   Future<void> _undoMove({bool allowDuringAutoPlay = false}) async {
     final GameController controller = GameController();
-    if (controller.gameRecorder.mainlineMoves.isEmpty) {
+    if (_activePuzzleMoves(controller).isEmpty) {
       return;
     }
 
@@ -1500,12 +1496,11 @@ class _PuzzlePageState extends State<PuzzlePage> {
     GameController controller,
     PieceColor? humanColor,
   ) async {
-    final int maxSteps = controller.gameRecorder.mainlineMoves.length;
+    final int maxSteps = _activePuzzleMoves(controller).length;
     int undone = 0;
 
-    while (controller.gameRecorder.mainlineMoves.isNotEmpty &&
-        undone < maxSteps) {
-      final ExtMove lastMove = controller.gameRecorder.mainlineMoves.last;
+    while (_activePuzzleMoves(controller).isNotEmpty && undone < maxSteps) {
+      final ExtMove lastMove = _activePuzzleMoves(controller).last;
       final bool ok = await controller.undoNativeMove();
       assert(ok, 'Native puzzle undo failed with a non-empty move history.');
       if (!ok) {
@@ -1552,6 +1547,20 @@ class _PuzzlePageState extends State<PuzzlePage> {
     _isSolved = false;
     _isAutoPlayingOpponent = false;
     GameController().headerIconsNotifier.showIcons();
+  }
+
+  /// Active puzzle line from root to the current position.
+  ///
+  /// Undo keeps rolled-back moves as PGN variations, so [GameRecorder.mainlineMoves]
+  /// can still contain a prior wrong attempt even when [currentPath] is empty.
+  List<ExtMove> _activePuzzleMoves(GameController controller) {
+    return controller.gameRecorder.currentPath;
+  }
+
+  List<String> _activePuzzleMoveNotations(GameController controller) {
+    return _activePuzzleMoves(controller)
+        .map((ExtMove m) => PuzzleAutoPlayer.normalizeMove(m.move))
+        .toList(growable: false);
   }
 
   void _giveUp() {
