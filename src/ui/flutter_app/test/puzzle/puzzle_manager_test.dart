@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/puzzle/models/puzzle_models.dart';
+import 'package:sanmill/puzzle/services/built_in_puzzles.dart';
 import 'package:sanmill/puzzle/services/puzzle_manager.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
@@ -376,6 +377,81 @@ void main() {
         expect(settings.showHints, isTrue);
         expect(settings.autoShowSolution, isTrue);
         expect(settings.soundEnabled, isFalse);
+      });
+    });
+
+    group('Persistence', () {
+      late PuzzleInfo importedPuzzle;
+
+      setUp(() async {
+        DB().puzzleSettings = const PuzzleSettings();
+        manager.settingsNotifier.value = const PuzzleSettings();
+        importedPuzzle = PuzzleInfo(
+          id: 'imported_persist_001',
+          title: 'Imported Puzzle',
+          description: 'Should survive restart',
+          category: PuzzleCategory.formMill,
+          difficulty: PuzzleDifficulty.easy,
+          initialPosition:
+              '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
+          solutions: const <PuzzleSolution>[
+            PuzzleSolution(
+              moves: <PuzzleMove>[
+                PuzzleMove(notation: 'a1', side: PieceColor.white),
+              ],
+            ),
+          ],
+          isCustom: true,
+        );
+        builtInPuzzlesAssetLoader = (_) async =>
+            '{"formatVersion":"1.0","puzzles":[]}';
+      });
+
+      test('imported custom puzzles survive init and loadBuiltInPuzzles', () async {
+        await manager.init();
+        await manager.loadBuiltInPuzzles();
+
+        expect(manager.addCustomPuzzle(importedPuzzle), isTrue);
+        expect(DB().puzzleSettings.allPuzzles.length, equals(1));
+        expect(DB().puzzleSettings.allPuzzles.single.id, equals('imported_persist_001'));
+
+        await manager.init();
+        await manager.loadBuiltInPuzzles();
+
+        expect(manager.getPuzzleById('imported_persist_001'), isNotNull);
+        expect(manager.getCustomPuzzles().length, equals(1));
+      });
+
+      test('loadBuiltInPuzzles does not persist built-in puzzles to Hive', () async {
+        builtInPuzzlesAssetLoader = (_) async => '''
+{
+  "formatVersion": "1.0",
+  "puzzles": [
+    {
+      "id": "builtin_persist_001",
+      "title": "Built-in",
+      "description": "Bundled puzzle",
+      "category": "formMill",
+      "difficulty": "easy",
+      "initialPosition": "********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {"notation": "a1", "side": "white"}
+          ]
+        }
+      ],
+      "isCustom": false
+    }
+  ]
+}
+''';
+
+        await manager.init();
+        await manager.loadBuiltInPuzzles();
+
+        expect(manager.getAllPuzzles().length, equals(1));
+        expect(DB().puzzleSettings.allPuzzles, isEmpty);
       });
     });
   });

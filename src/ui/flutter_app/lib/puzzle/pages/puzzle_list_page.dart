@@ -46,12 +46,6 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
   bool _isMultiSelectMode = false;
   final Set<String> _selectedPuzzleIds = <String>{};
 
-  @override
-  void initState() {
-    super.initState();
-    _puzzleManager.init();
-  }
-
   void _toggleMultiSelectMode() {
     setState(() {
       _isMultiSelectMode = !_isMultiSelectMode;

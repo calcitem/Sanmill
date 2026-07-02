@@ -32,26 +32,26 @@ class PuzzleManager {
   /// Initialize the puzzle manager
   Future<void> init() async {
     logger.i("$_tag Initializing PuzzleManager");
-    final PuzzleSettings settings = DB().puzzleSettings;
+    final PuzzleSettings stored = DB().puzzleSettings;
 
-    // Remove all built-in puzzles from stored data
-    final List<PuzzleInfo> customPuzzlesOnly = settings.allPuzzles
+    // Hive only stores custom puzzles. Older builds may have persisted
+    // built-in puzzles too; strip them before loading the in-memory list.
+    final List<PuzzleInfo> customPuzzlesOnly = stored.allPuzzles
         .where((PuzzleInfo p) => p.isCustom)
         .toList();
 
-    if (customPuzzlesOnly.length < settings.allPuzzles.length) {
+    if (customPuzzlesOnly.length < stored.allPuzzles.length) {
       logger.i(
-        "$_tag Removed ${settings.allPuzzles.length - customPuzzlesOnly.length} "
+        "$_tag Removed ${stored.allPuzzles.length - customPuzzlesOnly.length} "
         "built-in puzzles, keeping ${customPuzzlesOnly.length} custom puzzles",
       );
-      final PuzzleSettings cleanedSettings = settings.copyWith(
-        allPuzzles: customPuzzlesOnly,
-      );
-      settingsNotifier.value = cleanedSettings;
-      _saveSettings(cleanedSettings);
-    } else {
-      settingsNotifier.value = settings;
     }
+
+    final PuzzleSettings customSettings = stored.copyWith(
+      allPuzzles: customPuzzlesOnly,
+    );
+    settingsNotifier.value = customSettings;
+    _persistToDatabase(customSettings);
 
     logger.i("$_tag Ready - ${customPuzzlesOnly.length} custom puzzles loaded");
   }
@@ -305,7 +305,20 @@ class PuzzleManager {
   /// Save settings to database
   void _saveSettings(PuzzleSettings settings) {
     settingsNotifier.value = settings;
-    DB().puzzleSettings = settings;
+    _persistToDatabase(settings);
+  }
+
+  /// Persist puzzle settings to Hive.
+  ///
+  /// Only custom puzzles are written to disk. Built-in puzzles are merged into
+  /// [settingsNotifier] at runtime by [loadBuiltInPuzzles] and must not be
+  /// stored, otherwise a later [init] call can race with imports and drop
+  /// newly added custom puzzles.
+  void _persistToDatabase(PuzzleSettings displaySettings) {
+    final List<PuzzleInfo> customPuzzles = displaySettings.allPuzzles
+        .where((PuzzleInfo p) => p.isCustom)
+        .toList();
+    DB().puzzleSettings = displaySettings.copyWith(allPuzzles: customPuzzles);
   }
 
   /// Get built-in puzzles collection
