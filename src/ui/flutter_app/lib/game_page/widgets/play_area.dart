@@ -710,8 +710,6 @@ class PlayAreaState extends State<PlayArea> {
   static const double _kMoveListRouteTopInset = 80;
   static const double _kInlineMoveListHeight = 40;
   static const double _kWrappedMoveListMaxHeight = 104;
-  static const int _kWrappedMoveListSingleLineMoveLimit = 8;
-  static const double _kWrappedMoveListEstimatedMoveWidth = 56;
   static const double _kPlayerPanelHeight = 56;
   static const double _kAnalysisEngineLinesReserveHeight = 90;
   static const double _kAnalysisSmallBoardScale = 0.8;
@@ -900,22 +898,8 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
-  double _wrappedMoveListReservedHeightForRoute(
-    BuildContext context,
-    double width,
-  ) {
-    final int moveCount = GameController().gameRecorder.currentPath.length;
-    final double usableWidth = math.max(1, width - AppStyles.bodyPadding * 1.5);
-    final int singleLineMoveLimit = math.max(
-      2,
-      (usableWidth / _kWrappedMoveListEstimatedMoveWidth).floor(),
-    );
-    final double moveListHeight =
-        moveCount >
-            math.min(_kWrappedMoveListSingleLineMoveLimit, singleLineMoveLimit)
-        ? _kWrappedMoveListMaxHeight
-        : _kInlineMoveListHeight;
-    return moveListHeight + _moveListRouteTopInset(context);
+  double _wrappedMoveListReservedHeightForRoute(BuildContext context) {
+    return _kWrappedMoveListMaxHeight + _moveListRouteTopInset(context);
   }
 
   Color _actionSheetBackground(BuildContext context) {
@@ -2682,7 +2666,7 @@ class PlayAreaState extends State<PlayArea> {
         moveKeyPrefix: 'play_area_human_ai_move_',
         layout: _InlineMoveListLayout.stacked,
         groupByRound: true,
-        maxHeight: _kWrappedMoveListMaxHeight,
+        fixedHeight: _kWrappedMoveListMaxHeight,
       ),
     );
   }
@@ -2701,7 +2685,7 @@ class PlayAreaState extends State<PlayArea> {
         showMovePreview: true,
         layout: _InlineMoveListLayout.stacked,
         groupByRound: true,
-        maxHeight: _kWrappedMoveListMaxHeight,
+        fixedHeight: _kWrappedMoveListMaxHeight,
       ),
     );
   }
@@ -2760,13 +2744,7 @@ class PlayAreaState extends State<PlayArea> {
             ];
 
             final double moveListHeight =
-                _wrappedMoveListReservedHeightForRoute(
-                  context,
-                  constraints.maxWidth,
-                );
-            final bool hasMultiLineMoveList =
-                moveListHeight - _moveListRouteTopInset(context) >
-                _kInlineMoveListHeight;
+                _wrappedMoveListReservedHeightForRoute(context);
             final double boardRowsHeight = showPieceCountRows
                 ? _pieceRowsHeightForLayout(context)
                 : 0;
@@ -2785,7 +2763,6 @@ class PlayAreaState extends State<PlayArea> {
                 bottomPanelHeight;
             final bool canBalance =
                 constraints.maxWidth >= _kBalancedLayoutMinWidth &&
-                !hasMultiLineMoveList &&
                 constraints.hasBoundedHeight &&
                 constraints.maxHeight >=
                     estimatedRequiredHeight + _kBalancedLayoutSafetyMargin;
@@ -3285,10 +3262,7 @@ class PlayAreaState extends State<PlayArea> {
           final double estimatedRequiredHeight =
               constraints.maxWidth +
               (isPlayableGame
-                  ? _wrappedMoveListReservedHeightForRoute(
-                      context,
-                      constraints.maxWidth,
-                    )
+                  ? _wrappedMoveListReservedHeightForRoute(context)
                   : 0) +
               topPanelHeight +
               (showPieceCountRows
@@ -3296,18 +3270,9 @@ class PlayAreaState extends State<PlayArea> {
                   : AppTheme.boardMargin * 2) +
               (showAdvantageGraph ? 150 : 0) +
               AppTheme.boardMargin;
-          final bool hasMultiLineMoveList =
-              isPlayableGame &&
-              _wrappedMoveListReservedHeightForRoute(
-                        context,
-                        constraints.maxWidth,
-                      ) -
-                      _moveListRouteTopInset(context) >
-                  _kInlineMoveListHeight;
           final bool canBalance =
               isPlayableGame &&
               constraints.maxWidth >= _kBalancedLayoutMinWidth &&
-              !hasMultiLineMoveList &&
               constraints.hasBoundedHeight &&
               constraints.maxHeight >=
                   estimatedRequiredHeight + _kBalancedLayoutSafetyMargin;
@@ -3949,9 +3914,18 @@ class _InlineMoveList extends StatefulWidget {
     this.layout = _InlineMoveListLayout.wrap,
     this.groupByRound = false,
     this.maxHeight,
+    this.fixedHeight,
   }) : assert(
          !groupByRound || roundKeyPrefix != null,
          'Grouped inline move lists require a round key prefix.',
+       ),
+       assert(
+         fixedHeight == null || maxHeight == null,
+         'Inline move lists must use either fixedHeight or maxHeight.',
+       ),
+       assert(
+         fixedHeight == null || fixedHeight > 0,
+         'Inline move list fixedHeight must be positive.',
        );
 
   final Key wrapKey;
@@ -3968,6 +3942,7 @@ class _InlineMoveList extends StatefulWidget {
   final _InlineMoveListLayout layout;
   final bool groupByRound;
   final double? maxHeight;
+  final double? fixedHeight;
 
   @override
   State<_InlineMoveList> createState() => _InlineMoveListState();
@@ -4092,17 +4067,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
         return Container(
           key: widget.wrapKey,
           width: double.infinity,
-          constraints: switch (widget.layout) {
-            _InlineMoveListLayout.horizontal => const BoxConstraints.tightFor(
-              height: PlayAreaState._kInlineMoveListHeight,
-            ),
-            _InlineMoveListLayout.wrap ||
-            _InlineMoveListLayout.stacked ||
-            _InlineMoveListLayout.twoColumn => BoxConstraints(
-              minHeight: 40,
-              maxHeight: widget.maxHeight ?? double.infinity,
-            ),
-          },
+          constraints: _containerConstraints(),
           padding: widget.layout == _InlineMoveListLayout.horizontal
               ? const EdgeInsets.only(left: 5)
               : const EdgeInsets.fromLTRB(12, 6, 12, 4),
@@ -4112,6 +4077,24 @@ class _InlineMoveListState extends State<_InlineMoveList> {
         );
       },
     );
+  }
+
+  BoxConstraints _containerConstraints() {
+    if (widget.fixedHeight != null) {
+      return BoxConstraints.tightFor(height: widget.fixedHeight);
+    }
+
+    return switch (widget.layout) {
+      _InlineMoveListLayout.horizontal => const BoxConstraints.tightFor(
+        height: PlayAreaState._kInlineMoveListHeight,
+      ),
+      _InlineMoveListLayout.wrap ||
+      _InlineMoveListLayout.stacked ||
+      _InlineMoveListLayout.twoColumn => BoxConstraints(
+        minHeight: 40,
+        maxHeight: widget.maxHeight ?? double.infinity,
+      ),
+    };
   }
 
   void _scheduleCurrentMoveAutoScroll(PgnNode<ExtMove>? activeNode) {

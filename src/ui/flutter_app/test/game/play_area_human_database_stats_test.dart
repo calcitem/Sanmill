@@ -516,6 +516,66 @@ void main() {
     );
   });
 
+  testWidgets('regular game move list keeps board position stable', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final GameController controller = GameController();
+    controller.gameInstance.gameMode = GameMode.humanVsHuman;
+    controller.gameRecorder.reset();
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final Finder board = find.byKey(const Key('test_board_square'));
+    final Finder moveList = find.byKey(
+      const Key('play_area_regular_move_list_wrap'),
+    );
+    expect(moveList, findsOneWidget);
+    final double initialBoardTop = tester.getTopLeft(board).dy;
+    expect(tester.getSize(moveList).height, 104);
+
+    controller.gameRecorder.appendMove(ExtMove('d6', side: PieceColor.white));
+    controller.gameRecorder.appendMove(ExtMove('f4', side: PieceColor.black));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 250));
+
+    expect(tester.getSize(moveList).height, 104);
+    expect(tester.getTopLeft(board).dy, initialBoardTop);
+
+    for (int i = 0; i < 18; i++) {
+      controller.gameRecorder.appendMove(
+        ExtMove(
+          i.isEven ? 'd6' : 'f4',
+          side: i.isEven ? PieceColor.white : PieceColor.black,
+        ),
+      );
+    }
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 250));
+
+    expect(tester.getSize(moveList).height, 104);
+    expect(tester.getTopLeft(board).dy, initialBoardTop);
+  });
+
   testWidgets('regular game move list wraps when the line is full', (
     WidgetTester tester,
   ) async {
@@ -4669,6 +4729,64 @@ void main() {
       expect(GameController().activeNativeMillSession?.getFen(), fen);
     },
   );
+
+  testWidgets('human vs ai move list keeps board position stable', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings();
+    final GameController controller = GameController();
+    controller.gameInstance.gameMode = GameMode.humanVsAi;
+    controller.gameRecorder.reset();
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final Finder board = find.byKey(const Key('test_board_square'));
+    final Finder moveList = find.byKey(
+      const Key('play_area_human_ai_move_list_wrap'),
+    );
+    expect(moveList, findsOneWidget);
+    final double initialBoardTop = tester.getTopLeft(board).dy;
+    expect(tester.getSize(moveList).height, 104);
+
+    controller.gameRecorder.appendMove(ExtMove('d6', side: PieceColor.white));
+    controller.gameRecorder.appendMove(ExtMove('f4', side: PieceColor.black));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 250));
+
+    expect(tester.getSize(moveList).height, 104);
+    expect(tester.getTopLeft(board).dy, initialBoardTop);
+
+    for (int i = 0; i < 18; i++) {
+      controller.gameRecorder.appendMove(
+        ExtMove(
+          i.isEven ? 'd6' : 'f4',
+          side: i.isEven ? PieceColor.white : PieceColor.black,
+        ),
+      );
+    }
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 250));
+
+    expect(tester.getSize(moveList).height, 104);
+    expect(tester.getTopLeft(board).dy, initialBoardTop);
+  });
 
   testWidgets('human vs ai move list wraps when the line is full', (
     WidgetTester tester,
