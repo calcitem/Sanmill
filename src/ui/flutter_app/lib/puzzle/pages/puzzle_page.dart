@@ -14,6 +14,7 @@ import 'package:flutter/scheduler.dart';
 
 import '../../game_page/services/mill.dart';
 import '../../game_page/services/transform/transform.dart';
+import '../../game_platform/game_session.dart';
 import '../../games/mill/native_mill_game_session.dart';
 import '../../generated/intl/l10n.dart';
 import '../../rule_settings/models/rule_settings.dart';
@@ -255,6 +256,25 @@ class _PuzzlePageState extends State<PuzzlePage> {
     });
   }
 
+  /// Publishes session/UI listenable updates after the current build frame.
+  ///
+  /// The app shell listens to [GameController.activeSessionSnapshotNotifier]
+  /// via [ListenableBuilder]. Updating it from [initState] or
+  /// [didUpdateWidget] triggers `setState() during build`.
+  void _publishGameUiAfterBuild({
+    required GameStateSnapshot snapshot,
+  }) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      final GameController controller = GameController();
+      controller.activeSessionSnapshot = snapshot;
+      controller.headerIconsNotifier.showIcons();
+      controller.boardSemanticsNotifier.updateSemantics();
+    });
+  }
+
   void _initializePuzzle() {
     // Ensure the engine uses the correct rules for this puzzle.
     _applyPuzzleRulesIfNeeded();
@@ -294,7 +314,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     // loadFen updates the native session immediately, but the app-shell
     // snapshot listener may publish only on the next frame. Sync here so
     // puzzleHumanColor reflects the loaded position, not the reset() board.
-    controller.activeSessionSnapshot = nativeSession.state.value;
+    _publishGameUiAfterBuild(snapshot: nativeSession.state.value);
 
     // Puzzle mode: the human plays the side-to-move from the initial position.
     _puzzleHumanColor = nativeSession.sideToMove;
@@ -307,10 +327,6 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     // Store the starting position for exports and history
     controller.gameRecorder.setupPosition = _transformedPuzzle.initialPosition;
-
-    // Refresh UI elements that depend on game state
-    controller.headerIconsNotifier.showIcons();
-    controller.boardSemanticsNotifier.updateSemantics();
 
     // Reset state
     _moveCountNotifier.value = 0;
