@@ -177,12 +177,13 @@ fn derive_difficulty_and_rating(
     let rating = rating.clamp(400, 2400);
 
     let difficulty = match rating {
-        r if r < 800 => "beginner",
-        r if r < 1000 => "easy",
-        r if r < 1300 => "medium",
-        r if r < 1600 => "hard",
-        r if r < 1900 => "expert",
-        _ => "master",
+        // Thresholds are shifted up by one bucket so the same rating maps to an
+        // easier label (e.g. old "medium" 1000–1299 becomes "easy").
+        r if r < 1000 => "beginner",
+        r if r < 1300 => "easy",
+        r if r < 1600 => "medium",
+        r if r < 1900 => "hard",
+        _ => "expert",
     };
     (difficulty, rating)
 }

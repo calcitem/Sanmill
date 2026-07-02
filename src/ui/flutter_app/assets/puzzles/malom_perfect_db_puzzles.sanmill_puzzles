@@ -25,7 +25,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "Black to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 9 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "@O****O*/*****O*@/*@****@@ b m p 3 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -75,7 +75,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "Black to move and win in 3 move(s) against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "*******@/*****@**/*OOO**@* b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -147,7 +147,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "***O**@*/****O*@*/*****O@* w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -219,7 +219,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "****@***/****@*O*/*O**@O** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -291,7 +291,7 @@
       "title": "Win in 5: ground the flying defense",
       "description": "White to move and win in 5 move(s) against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "*OOO****/@O**O@*@/****O*@* w m p 6 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -352,7 +352,7 @@
       "title": "Win in 4: resist the tempting mill",
       "description": "White to move and win in 4 move(s) against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "O@**O@@@/O******@/O****OO* w m p 6 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -410,7 +410,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "Black to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "**@****@/*OOO****/*******@ b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -460,7 +460,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "Black to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "**O*@***/*@O@****/**O***** b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -510,7 +510,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "Black to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "*OOO****/**@*****/*@****@* b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -560,7 +560,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "****O***/**O**O**/***@@@** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -610,7 +610,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "******O*/*******O/@@*O***@ w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -660,7 +660,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "******O*/**O*O***/***@@@** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -710,7 +710,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "**O***O*/*******O/***@@@** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -760,7 +760,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "**@*O***/**@*****/*O@O**** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -810,7 +810,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "@@*O***@/**O*****/****O*** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -860,7 +860,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "O*******/***O****/****O@@@ w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -910,7 +910,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "Black to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "****@@*O/O@@*****/****@O** b m p 3 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -960,7 +960,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "Black to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "**O*@***/O****@@@/*O*@**** b m p 3 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -1010,7 +1010,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 9 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "**@O****/***O**OO/@***O@** w m p 5 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -1060,7 +1060,7 @@
       "title": "Win in 3: a quiet move wins",
       "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "****O**@/@****OOO/***O***@ w m p 5 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -1110,7 +1110,7 @@
       "title": "Win in 6: a quiet move wins",
       "description": "White to move and win in 6 move(s) against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
       "category": "winGame",
-      "difficulty": "medium",
+      "difficulty": "easy",
       "initialPosition": "**O***@*/***O****/@**O***@ w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -1230,7 +1230,7 @@
       "title": "Win in 4: resist the tempting mill",
       "description": "Black to move and win in 4 move(s) against the opponent's best practical defense. Only 1 of the 16 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "********/**@**@@*/*O*O@OO* b p p 4 0 4 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -1292,7 +1292,7 @@
       "title": "Win in 5: pick the right capture",
       "description": "Black to move and win in 5 move(s) against the opponent's best practical defense. Only 1 of the 14 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "@*O*OOOO/****@@*@/@O@***@* b m p 6 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -1354,7 +1354,7 @@
       "title": "Win in 5: leave them no move",
       "description": "White to move and win in 5 move(s) against the opponent's best practical defense. Only 1 of the 10 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "****OO**/O*****O@/@@O****@ w m p 5 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -1423,7 +1423,7 @@
       "title": "Win in 5: resist the tempting mill",
       "description": "Black to move and win in 5 move(s) against the opponent's best practical defense. Only 1 of the 14 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "*O@**OOO/***@@O@*/**@***** b p p 5 1 5 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -1489,7 +1489,7 @@
       "title": "Win in 5: resist the tempting mill",
       "description": "Black to move and win in 5 move(s) against the opponent's best practical defense. Only 1 of the 10 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "***@O*O@/**@OOO@*/*@@O*O*@ b p p 7 0 7 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -1555,7 +1555,7 @@
       "title": "Win in 6: resist the tempting mill",
       "description": "White to move and win in 6 move(s) against the opponent's best practical defense. Only 2 of the 12 legal first moves keep the win alive.",
       "category": "winGame",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "O@O@@@O*/O*@O*O**/****@*O* w m p 7 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -1668,7 +1668,7 @@
       "title": "Win in 6: resist the tempting mill",
       "description": "Black to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 12 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "O@**@OOO/@O***@*O/****@*O* b p p 7 0 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -1738,7 +1738,7 @@
       "title": "Win in 6: resist the tempting mill",
       "description": "Black to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "*@@@*O*@/@*@*@*O*/OOO@OO*O b p p 8 0 8 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -1812,7 +1812,7 @@
       "title": "Win in 6: resist the tempting mill",
       "description": "Black to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 10 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "*@@*O***/*O@@O*@*/O@OOO**@ b p p 7 1 7 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -1890,7 +1890,7 @@
       "title": "Win in 7: resist the tempting mill",
       "description": "Black to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 12 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "*@****@*/@O@**@*O/OO@**OO* b p p 6 0 6 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -1968,7 +1968,7 @@
       "title": "Win in 7: resist the tempting mill",
       "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "@O**O@@@/O*****@@/*OOO@O@O w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -2046,7 +2046,7 @@
       "title": "Win in 5: resist the tempting mill",
       "description": "White to move and win in 5 move(s) against the opponent's best practical defense. Only 2 of the 10 legal first moves keep the win alive. Requires accepting a material sacrifice along the way.",
       "category": "opening",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "***O**O*/***@@@OO/O@O@@@*O w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -2160,7 +2160,7 @@
       "title": "Win in 7: resist the tempting mill",
       "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "@*O@@@O*/O*O@*@@*/OO**O*** w m p 7 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -2238,7 +2238,7 @@
       "title": "Win in 6: resist the tempting mill",
       "description": "Black to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 14 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "*@*@****/*@O@**O*/@OOO**** b p p 5 0 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -2312,7 +2312,7 @@
       "title": "Win in 6: resist the tempting mill",
       "description": "White to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 13 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "***O*O*O/O*******/@@*OO@@@ w p p 6 1 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -2386,7 +2386,7 @@
       "title": "Win in 7: resist the tempting mill",
       "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 9 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "@@*@@O*@/O**@O*O@/@O****OO w p p 7 1 8 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -2464,7 +2464,7 @@
       "title": "Win in 7: resist the tempting mill",
       "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "@@@@OOO@/*O***O**/O*@****O w p p 7 1 6 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -2543,7 +2543,7 @@
       "title": "Win in 5: resist the tempting mill",
       "description": "Black to move and win in 5 move(s) against the opponent's best practical defense. Only 1 of the 14 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "*@******/@@O*****/*OO*@O@O b p p 5 0 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -2609,7 +2609,7 @@
       "title": "Win in 7: pick the right capture",
       "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "***@O***/*O@@*O*O/O@@@O**O w m p 7 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -2687,7 +2687,7 @@
       "title": "Win in 5: a quiet move wins",
       "description": "White to move and win in 5 move(s) against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
       "category": "winGame",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "*@**@***/********/*OOO@*** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -2807,7 +2807,7 @@
       "title": "Win in 5: resist the tempting mill",
       "description": "Black to move and win in 5 move(s) against the opponent's best practical defense. Only 1 of the 13 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "***O@OOO/@*****OO/*@**@*@* b p p 6 0 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -2873,7 +2873,7 @@
       "title": "Win in 6: leave them no move",
       "description": "White to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 15 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "hard",
+      "difficulty": "medium",
       "initialPosition": "***@@@@O/O****O**/**O****O w p p 5 1 4 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -2950,7 +2950,7 @@
       "title": "Win in 6: resist the tempting mill",
       "description": "White to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "expert",
+      "difficulty": "hard",
       "initialPosition": "****O***/*@OO*O*@/@@@O*O@@ w p p 6 1 7 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -3024,7 +3024,7 @@
       "title": "Win in 6: resist the tempting mill",
       "description": "White to move and win in 6 move(s) against the opponent's best practical defense. Only 2 of the 10 legal first moves keep the win alive. Requires accepting a material sacrifice along the way.",
       "category": "opening",
-      "difficulty": "expert",
+      "difficulty": "hard",
       "initialPosition": "****O@@@/@@O***O@/@**O*OOO w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -3157,7 +3157,7 @@
       "title": "Win in 7: pick the right capture",
       "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 51 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "expert",
+      "difficulty": "hard",
       "initialPosition": "@*******/*O**@*OO/****@**@ w m p 3 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -3235,7 +3235,7 @@
       "title": "Win in 6: resist the tempting mill",
       "description": "Black to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "expert",
+      "difficulty": "hard",
       "initialPosition": "@@@@OOOO/O**@*OO*/@***@@O* b p p 8 0 8 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -3309,7 +3309,7 @@
       "title": "Win in 6: resist the tempting mill",
       "description": "White to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 13 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "expert",
+      "difficulty": "hard",
       "initialPosition": "*@*@O**O/*@@@O**O/**O**O** w p p 6 1 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -3383,7 +3383,7 @@
       "title": "Win in 7: resist the tempting mill",
       "description": "Black to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 10 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "expert",
+      "difficulty": "hard",
       "initialPosition": "*@@O*@*O/@**O*O@*/@**@OOO* b p p 7 0 7 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -3469,7 +3469,7 @@
       "title": "Win in 7: resist the tempting mill",
       "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "expert",
+      "difficulty": "hard",
       "initialPosition": "O***@*OO/**O@*@**/*O*@@@OO w p p 7 1 6 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -3551,7 +3551,7 @@
       "title": "Win in 7: a quiet move wins",
       "description": "Black to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "expert",
+      "difficulty": "hard",
       "initialPosition": "O**@***O/O**@****/@******* b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -3633,7 +3633,7 @@
       "title": "Win in 6: a quiet move wins",
       "description": "White to move and win in 6 move(s) against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
       "category": "winGame",
-      "difficulty": "expert",
+      "difficulty": "hard",
       "initialPosition": "***O**@@/@****O**/O******* w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -3753,7 +3753,7 @@
       "title": "Win in 7: pick the right capture",
       "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 12 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "expert",
+      "difficulty": "hard",
       "initialPosition": "*@**@***/O*@O*OO*/***@@O*O w m p 6 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -3828,7 +3828,7 @@
       "title": "Win in 7: resist the tempting mill",
       "description": "Black to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive. Requires accepting a material sacrifice along the way.",
       "category": "opening",
-      "difficulty": "expert",
+      "difficulty": "hard",
       "initialPosition": "**@OO*@*/@*O*@@**/OOO@**O* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -3915,7 +3915,7 @@
       "title": "Win in 7: resist the tempting mill",
       "description": "Black to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 12 legal first moves keeps the win alive.",
       "category": "opening",
-      "difficulty": "expert",
+      "difficulty": "hard",
       "initialPosition": "*@@OOOO*/@O**@@O@/******** b p p 6 0 6 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -3993,7 +3993,7 @@
       "title": "Win in 6: resist the tempting mill",
       "description": "Black to move and win in 6 move(s) against the opponent's best practical defense. Only 2 of the 11 legal first moves keep the win alive.",
       "category": "opening",
-      "difficulty": "master",
+      "difficulty": "expert",
       "initialPosition": "*@O*O@**/***OOO**/@**@O@O@ b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -4121,7 +4121,7 @@
       "title": "Win in 7: pick the right capture",
       "description": "Black to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 51 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "master",
+      "difficulty": "expert",
       "initialPosition": "*@@**O*@/****O***/**O***O* b m p 4 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -4199,7 +4199,7 @@
       "title": "Win in 7: resist the tempting mill",
       "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive. Requires accepting a material sacrifice along the way.",
       "category": "opening",
-      "difficulty": "master",
+      "difficulty": "expert",
       "initialPosition": "**O**O@O/@*O**O@@/*O*O**@@ w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -4290,7 +4290,7 @@
       "title": "Win in 7: pick the right capture",
       "description": "Black to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 12 legal first moves keeps the win alive.",
       "category": "winGame",
-      "difficulty": "master",
+      "difficulty": "expert",
       "initialPosition": "@O*@*@*@/****@*@O/**O*O**O b m p 5 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
@@ -4365,7 +4365,7 @@
       "title": "Win in 6: resist the tempting mill",
       "description": "Black to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive. Requires accepting a material sacrifice along the way.",
       "category": "opening",
-      "difficulty": "master",
+      "difficulty": "expert",
       "initialPosition": "**@@@***/@OO*@***/*@OOOOO* b p p 7 1 6 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
       "solutions": [
         {
