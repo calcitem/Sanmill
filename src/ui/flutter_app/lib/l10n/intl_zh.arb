@@ -4707,5 +4707,19 @@
     "analysisThreat": "威胁",
     "@analysisThreat": {},
     "multipleLines": "多条分析线",
-    "@multipleLines": {}
+    "@multipleLines": {},
+    "openingExplorerEngineSource": "引擎",
+    "@openingExplorerEngineSource": {},
+    "openingExplorerEngineBadge": "引擎建议",
+    "@openingExplorerEngineBadge": {},
+    "openingExplorerEngineSearching": "正在搜索引擎建议…",
+    "@openingExplorerEngineSearching": {},
+    "search": "搜索",
+    "@search": {},
+    "openingExplorerPractice": "练习",
+    "@openingExplorerPractice": {},
+    "openingExplorerSelectLine": "选择开局路线",
+    "@openingExplorerSelectLine": {},
+    "openingExplorerCurrentLine": "当前路线",
+    "@openingExplorerCurrentLine": {}
 }

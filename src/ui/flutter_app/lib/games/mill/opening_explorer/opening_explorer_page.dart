@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
+import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
@@ -11,14 +12,16 @@ import 'package:intl/intl.dart';
 
 import '../../../appearance_settings/models/color_settings.dart';
 import '../../../game_page/services/mill.dart'
-    show ExtMove, GameController, MoveType;
+    show ExtMove, GameController, GameMode, MoveType;
 import '../../../game_page/services/transform/transform.dart';
+import '../../../game_page/widgets/game_page.dart';
 import '../../../game_platform/game_session.dart';
 import '../../../general_settings/models/general_settings.dart';
 import '../../../generated/intl/l10n.dart';
 import '../../../rule_settings/models/rule_settings.dart';
 import '../../../shared/database/database.dart' show DB;
 import '../../../shared/services/human_database_service.dart';
+import '../../../shared/services/logger.dart';
 import '../../../shared/services/snackbar_service.dart';
 import '../../../shared/themes/app_styles.dart';
 import '../../../shared/themes/app_theme.dart';
@@ -94,6 +97,24 @@ const List<String> _openingExplorerHorizontalCoordinates = <String>[
   'g',
 ];
 
+/// Sentinel used only for sorting engine-backfill rows: any real evaluation
+/// outranks a missing one.
+const int _engineScoreFloor = -1 << 30;
+
+/// Search parameters for the engine heuristic-fill backfill. Deliberately a
+/// small, fixed budget independent of the user's Analysis-panel settings:
+/// this runs automatically in the background whenever the book/human/perfect
+/// sources have nothing at all for the current position, so it must stay
+/// fast rather than reflect the user's (possibly much longer) deliberate
+/// analysis time preference.
+const int _explorerEngineBackfillDepth = 20;
+const int _explorerEngineBackfillMoveLimitMs = 1200;
+const int _explorerEngineBackfillLineCount = 4;
+const String _openingExplorerLogTag = '[OpeningExplorer]';
+
+/// Delay between plies while "watching a line play out".
+const Duration _explorerLinePlaybackStepInterval = Duration(milliseconds: 650);
+
 class _OpeningExplorerHistoryEntry {
   const _OpeningExplorerHistoryEntry({required this.label, required this.fen});
 
@@ -140,6 +161,20 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
   List<String> _initialPlacementMoves = const <String>[];
   int _explorerCursor = 0;
 
+  // Engine heuristic-fill state (see `_maybeStartEngineBackfill`). Keyed by
+  // FEN so a stale result never gets applied after the user has already
+  // navigated elsewhere by the time the background search completes.
+  String? _engineFillFen;
+  List<NativeMillPrincipalVariation> _engineFillMoves =
+      const <NativeMillPrincipalVariation>[];
+  bool _engineFillInFlight = false;
+
+  // "Watch it play out" line-playback state. `_linePlaybackToken` is bumped
+  // on every start/stop so an in-flight async playback loop can notice it
+  // has been superseded or cancelled without needing a raw `Timer` handle.
+  bool _isLinePlaybackActive = false;
+  int _linePlaybackToken = 0;
+
   @override
   void initState() {
     super.initState();
@@ -162,6 +197,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
   @override
   void dispose() {
     _detachSourceStateListener();
+    _linePlaybackToken++;
     _explorerSession?.dispose();
     super.dispose();
   }
@@ -217,6 +253,10 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
     _explorerHistory.clear();
     _explorerCursor = 0;
     _tapController.clearSelection();
+    _engineFillFen = null;
+    _engineFillMoves = const <NativeMillPrincipalVariation>[];
+    _linePlaybackToken++;
+    _isLinePlaybackActive = false;
 
     final NativeMillGameSession explorer = NativeMillGameSession(
       rules: DB().ruleSettings,
@@ -249,6 +289,202 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
       ))
         if (_isPlacementMoveLabel(entry.label)) entry.label,
     ];
+  }
+
+  /// Kicks off a background heuristic-search backfill for [snapshot.fen]
+  /// when the book/human/perfect sources found nothing at all. Safe to call
+  /// from every `build()` (including the two independent snapshot
+  /// constructions for the body and the bottom bar): the FEN/in-flight
+  /// guards make repeated calls for the same position a no-op.
+  void _maybeStartEngineBackfill(_OpeningExplorerSnapshot snapshot) {
+    if (!snapshot.needsEngineFallback) {
+      return;
+    }
+    if (_engineFillInFlight || _engineFillFen == snapshot.fen) {
+      return;
+    }
+    unawaited(_runEngineBackfill(snapshot.fen));
+  }
+
+  Future<void> _runEngineBackfill(String fen) async {
+    final NativeMillGameSession? session = _explorerSession;
+    if (session == null) {
+      return;
+    }
+    _engineFillInFlight = true;
+    try {
+      final List<NativeMillPrincipalVariation> variations = await session
+          .searchPrincipalVariations(
+            depth: _explorerEngineBackfillDepth,
+            moveLimitMs: _explorerEngineBackfillMoveLimitMs,
+            multiPv: _explorerEngineBackfillLineCount,
+            engineSettings: DB().generalSettings,
+          );
+      // The explorer may have navigated away (or even torn down its
+      // session) while the search was running; only apply a result that
+      // still matches where the user currently is.
+      if (!mounted ||
+          !identical(session, _explorerSession) ||
+          session.getFen() != fen) {
+        return;
+      }
+      setState(() {
+        _engineFillFen = fen;
+        _engineFillMoves = variations;
+      });
+    } on Object catch (e) {
+      logger.w('$_openingExplorerLogTag engine backfill failed for $fen: $e');
+    } finally {
+      _engineFillInFlight = false;
+    }
+  }
+
+  List<NativeMillPrincipalVariation> _engineSuggestionsFor(String fen) {
+    return _engineFillFen == fen
+        ? _engineFillMoves
+        : const <NativeMillPrincipalVariation>[];
+  }
+
+  /// The standard starting FEN for the currently active rule settings. Used
+  /// to rewind the board before "watching a line play out", since named
+  /// opening lines are always placement sequences from an empty board,
+  /// regardless of where the explorer currently happens to be browsing.
+  String _standardInitialFen() {
+    final NativeMillGameSession scratch = NativeMillGameSession(
+      rules: DB().ruleSettings,
+      generalSettings: DB().generalSettings,
+    );
+    final String fen = scratch.getFen();
+    scratch.dispose();
+    return fen;
+  }
+
+  /// Plays [moves] one at a time on the explorer's own session, starting
+  /// from the standard empty board, pausing [_explorerLinePlaybackStepInterval]
+  /// between plies so the user can watch the line unfold. Stops early and
+  /// cleanly if the explorer is disposed, the session is recreated, or
+  /// [_stopLinePlayback] is called (including implicitly, by starting a new
+  /// playback before this one finishes).
+  Future<void> _startLinePlayback(List<String> moves) async {
+    final NativeMillGameSession? session = _explorerSession;
+    if (session == null || moves.isEmpty) {
+      return;
+    }
+    final int token = ++_linePlaybackToken;
+    final bool loaded = session.loadFen(_standardInitialFen());
+    assert(loaded, 'Opening explorer line playback needs a fresh start FEN.');
+    if (!loaded) {
+      return;
+    }
+    setState(() {
+      _explorerHistory.clear();
+      _explorerCursor = 0;
+      _tapController.clearSelection();
+      _isLinePlaybackActive = true;
+    });
+
+    for (final String notation in moves) {
+      if (!mounted || token != _linePlaybackToken) {
+        return;
+      }
+      await Future<void>.delayed(_explorerLinePlaybackStepInterval);
+      if (!mounted || token != _linePlaybackToken) {
+        return;
+      }
+      GameAction? action;
+      for (final GameAction candidate in session.legalActions) {
+        if (MillActionCodec.moveStringFrom(candidate) == notation) {
+          action = candidate;
+          break;
+        }
+      }
+      if (action == null) {
+        // The line no longer matches a legal move under the active rule
+        // set (e.g. rules changed since the book line was curated); stop
+        // cleanly at whatever position playback reached.
+        break;
+      }
+      final String previousFen = session.getFen();
+      await session.apply(action);
+      if (!mounted || token != _linePlaybackToken) {
+        return;
+      }
+      _recordExplorerPositionChange(
+        previousFen: previousFen,
+        currentFen: session.getFen(),
+        label: notation,
+      );
+    }
+
+    if (mounted && token == _linePlaybackToken) {
+      setState(() => _isLinePlaybackActive = false);
+    }
+  }
+
+  void _stopLinePlayback() {
+    _linePlaybackToken++;
+    if (_isLinePlaybackActive) {
+      setState(() => _isLinePlaybackActive = false);
+    }
+  }
+
+  void _showPracticeSheet(BuildContext context) {
+    final NativeMillGameSession? session = _explorerSession;
+    if (session == null) {
+      return;
+    }
+    final bool isElFilja = DB().ruleSettings.isLikelyElFilja();
+    final List<OpeningEntry> openings = OpeningBookRepository.instance
+        .openingsFor(isElFilja: isElFilja);
+    final List<String> currentLine = <String>[
+      for (final _OpeningExplorerHistoryEntry entry in _explorerHistory.take(
+        _explorerCursor,
+      ))
+        entry.label,
+    ];
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (BuildContext sheetContext) {
+        return _OpeningExplorerPracticeSheet(
+          openings: openings,
+          currentLine: currentLine,
+          onSelectLine: (List<String> moves) {
+            Navigator.of(sheetContext).pop();
+            unawaited(_startLinePlayback(moves));
+          },
+          onContinueVsAi: (GameMode mode) {
+            Navigator.of(sheetContext).pop();
+            _continueVsAi(context, mode: mode);
+          },
+        );
+      },
+    );
+  }
+
+  void _continueVsAi(BuildContext context, {required GameMode mode}) {
+    final NativeMillGameSession? session = _explorerSession;
+    if (session == null) {
+      return;
+    }
+    _stopLinePlayback();
+    final String fen = session.getFen();
+    final bool started = GameController().startGameFromFen(
+      mode: mode,
+      fen: fen,
+    );
+    assert(started, 'Opening explorer practice must start from its own FEN.');
+    if (!started) {
+      return;
+    }
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute<void>(
+        settings: RouteSettings(name: '/openingExplorerPractice/${mode.name}'),
+        builder: (BuildContext routeContext) =>
+            _OpeningExplorerContinueGameRoute(mode: mode),
+      ),
+    );
   }
 
   Future<void> _applyExplorerAction(GameAction action) async {
@@ -413,7 +649,13 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
                                 ruleSettings: DB().ruleSettings,
                                 generalSettings: DB().generalSettings,
                                 placementMoves: _currentPlacementMoves(),
+                                engineSuggestions: _engineSuggestionsFor(
+                                  session.getFen(),
+                                ),
                               );
+                          WidgetsBinding.instance.addPostFrameCallback(
+                            (_) => _maybeStartEngineBackfill(snapshot),
+                          );
                           return _OpeningExplorerContent(
                             session: session,
                             snapshot: snapshot,
@@ -424,6 +666,9 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
                             isLoading:
                                 openingBookSnapshot.connectionState !=
                                 ConnectionState.done,
+                            isEngineBackfilling:
+                                snapshot.needsEngineFallback &&
+                                _engineFillInFlight,
                           );
                         },
                   );
@@ -461,7 +706,13 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
                           ruleSettings: DB().ruleSettings,
                           generalSettings: DB().generalSettings,
                           placementMoves: _currentPlacementMoves(),
+                          engineSuggestions: _engineSuggestionsFor(
+                            session.getFen(),
+                          ),
                         );
+                    WidgetsBinding.instance.addPostFrameCallback(
+                      (_) => _maybeStartEngineBackfill(snapshot),
+                    );
                     return _OpeningExplorerBottomBar(
                       snapshot: snapshot,
                       canGoPrevious: _explorerCursor > 0,
@@ -469,6 +720,9 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
                       onPrevious: _goToPreviousExplorerPosition,
                       onNext: _goToNextExplorerPosition,
                       onTransform: _transformExplorerPosition,
+                      isLinePlaybackActive: _isLinePlaybackActive,
+                      onOpenPractice: _showPracticeSheet,
+                      onStopPlayback: _stopLinePlayback,
                     );
                   },
             ),
@@ -574,6 +828,7 @@ class _OpeningExplorerContent extends StatelessWidget {
     required this.onPositionChanged,
     required this.showBoard,
     required this.isLoading,
+    required this.isEngineBackfilling,
   });
 
   final NativeMillGameSession session;
@@ -583,6 +838,7 @@ class _OpeningExplorerContent extends StatelessWidget {
   final _OpeningExplorerPositionChanged onPositionChanged;
   final bool showBoard;
   final bool isLoading;
+  final bool isEngineBackfilling;
 
   @override
   Widget build(BuildContext context) {
@@ -673,7 +929,9 @@ class _OpeningExplorerContent extends StatelessWidget {
             for (int index = 0; index < 6; index++)
               _OpeningExplorerLoadingTile(index: index)
           else if (snapshot.moves.isEmpty)
-            const _OpeningExplorerNoDataTile()
+            isEngineBackfilling
+                ? const _OpeningExplorerEngineSearchingTile()
+                : const _OpeningExplorerNoDataTile()
           else ...<Widget>[
             for (final (int index, _OpeningExplorerMove move)
                 in snapshot.moves.indexed)
@@ -911,6 +1169,9 @@ class _OpeningExplorerBottomBar extends StatelessWidget {
     required this.onPrevious,
     required this.onNext,
     required this.onTransform,
+    required this.isLinePlaybackActive,
+    required this.onOpenPractice,
+    required this.onStopPlayback,
   });
 
   final _OpeningExplorerSnapshot snapshot;
@@ -919,6 +1180,9 @@ class _OpeningExplorerBottomBar extends StatelessWidget {
   final VoidCallback onPrevious;
   final VoidCallback onNext;
   final _OpeningExplorerTransformSelected onTransform;
+  final bool isLinePlaybackActive;
+  final ValueChanged<BuildContext> onOpenPractice;
+  final VoidCallback onStopPlayback;
 
   void _showSources(BuildContext context) {
     final S strings = S.of(context);
@@ -987,12 +1251,25 @@ class _OpeningExplorerBottomBar extends StatelessWidget {
           onTap: () => _showTransformSheet(context),
         ),
         LichessBottomBarButton(
+          key: const Key('opening_explorer_practice_button'),
+          icon: isLinePlaybackActive
+              ? Icons.stop_circle_outlined
+              : Icons.school_outlined,
+          label: isLinePlaybackActive
+              ? strings.stop
+              : strings.openingExplorerPractice,
+          showLabel: true,
+          onTap: isLinePlaybackActive
+              ? onStopPlayback
+              : () => onOpenPractice(context),
+        ),
+        LichessBottomBarButton(
           key: const Key('opening_explorer_previous_button'),
           icon: Icons.chevron_left_rounded,
           label: strings.previous,
           showLabel: true,
           showTooltip: false,
-          onTap: canGoPrevious ? onPrevious : null,
+          onTap: !isLinePlaybackActive && canGoPrevious ? onPrevious : null,
         ),
         LichessBottomBarButton(
           key: const Key('opening_explorer_next_button'),
@@ -1000,9 +1277,245 @@ class _OpeningExplorerBottomBar extends StatelessWidget {
           label: strings.next,
           showLabel: true,
           showTooltip: false,
-          onTap: canGoNext ? onNext : null,
+          onTap: !isLinePlaybackActive && canGoNext ? onNext : null,
         ),
       ],
+    );
+  }
+}
+
+/// Hosts a freshly-started game after "Continue vs AI" / "Over the board"
+/// from the opening explorer. Mirrors `play_area.dart`'s private
+/// `_ContinueFromHereGameRoute` (same reasoning: kick off the engine's first
+/// move immediately when the practiced line hands the very first move to
+/// the AI), duplicated locally rather than shared because that route is a
+/// private implementation detail of a large, unrelated widget file.
+class _OpeningExplorerContinueGameRoute extends StatefulWidget {
+  const _OpeningExplorerContinueGameRoute({required this.mode});
+
+  final GameMode mode;
+
+  @override
+  State<_OpeningExplorerContinueGameRoute> createState() =>
+      _OpeningExplorerContinueGameRouteState();
+}
+
+class _OpeningExplorerContinueGameRouteState
+    extends State<_OpeningExplorerContinueGameRoute> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || widget.mode != GameMode.humanVsAi) {
+        return;
+      }
+      final GameController controller = GameController();
+      if (controller.gameInstance.isAiSideToMove) {
+        unawaited(controller.engineToGo(context, isMoveNow: false));
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GamePage(widget.mode);
+  }
+}
+
+typedef _OpeningExplorerLineSelected = void Function(List<String> moves);
+typedef _OpeningExplorerContinueVsAiSelected = void Function(GameMode mode);
+
+/// "Practice" sheet: continue the current position against the AI, or pick
+/// a named opening line (or the line already browsed) to watch play out
+/// from the start.
+class _OpeningExplorerPracticeSheet extends StatefulWidget {
+  const _OpeningExplorerPracticeSheet({
+    required this.openings,
+    required this.currentLine,
+    required this.onSelectLine,
+    required this.onContinueVsAi,
+  });
+
+  final List<OpeningEntry> openings;
+  final List<String> currentLine;
+  final _OpeningExplorerLineSelected onSelectLine;
+  final _OpeningExplorerContinueVsAiSelected onContinueVsAi;
+
+  @override
+  State<_OpeningExplorerPracticeSheet> createState() =>
+      _OpeningExplorerPracticeSheetState();
+}
+
+class _OpeningExplorerPracticeSheetState
+    extends State<_OpeningExplorerPracticeSheet> {
+  final TextEditingController _searchController = TextEditingController();
+  String _query = '';
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  List<OpeningEntry> get _filteredOpenings {
+    if (_query.isEmpty) {
+      return widget.openings;
+    }
+    final String needle = _query.toLowerCase();
+    return widget.openings
+        .where(
+          (OpeningEntry entry) =>
+              entry.name.toLowerCase().contains(needle) ||
+              entry.family.toLowerCase().contains(needle) ||
+              entry.aliases.any(
+                (String alias) => alias.toLowerCase().contains(needle),
+              ),
+        )
+        .toList(growable: false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final List<OpeningEntry> openings = _filteredOpenings;
+
+    return DraggableScrollableSheet(
+      key: const Key('opening_explorer_practice_sheet'),
+      expand: false,
+      initialChildSize: 0.72,
+      minChildSize: 0.4,
+      maxChildSize: 0.95,
+      builder: (BuildContext context, ScrollController scrollController) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+              child: Text(
+                strings.openingExplorerPractice,
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: FilledButton.tonalIcon(
+                      key: const Key(
+                        'opening_explorer_practice_vs_computer_button',
+                      ),
+                      onPressed: () =>
+                          widget.onContinueVsAi(GameMode.humanVsAi),
+                      icon: const Icon(Icons.smart_toy_outlined),
+                      label: Text(
+                        strings.playAgainstComputer,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      key: const Key(
+                        'opening_explorer_practice_over_the_board_button',
+                      ),
+                      onPressed: () =>
+                          widget.onContinueVsAi(GameMode.humanVsHuman),
+                      icon: const Icon(Icons.groups_2_outlined),
+                      label: Text(
+                        strings.overTheBoard,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(height: 1),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+              child: Text(
+                strings.openingExplorerSelectLine,
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
+                key: const Key('opening_explorer_practice_search_field'),
+                controller: _searchController,
+                decoration: InputDecoration(
+                  isDense: true,
+                  prefixIcon: const Icon(Icons.search_rounded),
+                  hintText: strings.search,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(
+                      AppStyles.compactRadius,
+                    ),
+                  ),
+                ),
+                onChanged: (String value) => setState(() => _query = value),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Expanded(
+              child: ListView(
+                controller: scrollController,
+                padding: const EdgeInsets.only(bottom: 16),
+                children: <Widget>[
+                  if (widget.currentLine.isNotEmpty)
+                    ListTile(
+                      key: const Key('opening_explorer_practice_current_line'),
+                      leading: const Icon(Icons.route_outlined),
+                      title: Text(strings.openingExplorerCurrentLine),
+                      subtitle: Text(
+                        widget.currentLine.join(' '),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      onTap: () => widget.onSelectLine(widget.currentLine),
+                    ),
+                  if (openings.isEmpty)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 24,
+                      ),
+                      child: Text(
+                        strings.openingExplorerNoData,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: colorScheme.onSurfaceVariant),
+                      ),
+                    )
+                  else
+                    for (final OpeningEntry entry in openings)
+                      ListTile(
+                        key: Key('opening_explorer_practice_line_${entry.id}'),
+                        leading: const Icon(Icons.menu_book_rounded),
+                        title: Text(entry.name),
+                        subtitle: entry.family.isEmpty
+                            ? null
+                            : Text(
+                                entry.family,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                        onTap: entry.lineMoves.isEmpty
+                            ? null
+                            : () => widget.onSelectLine(entry.lineMoves),
+                      ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -1756,6 +2269,50 @@ class _OpeningExplorerNoDataTile extends StatelessWidget {
   }
 }
 
+class _OpeningExplorerEngineSearchingTile extends StatelessWidget {
+  const _OpeningExplorerEngineSearchingTile();
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextStyle? textStyle = Theme.of(context).textTheme.bodyMedium
+        ?.copyWith(color: colorScheme.onSurfaceVariant, letterSpacing: 0);
+
+    return ColoredBox(
+      color: _openingExplorerRowColor(context, 0),
+      child: Padding(
+        key: const Key('opening_explorer_engine_searching_row'),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              flex: _explorerMoveColumnFlex,
+              child: SizedBox(
+                width: 16,
+                height: 16,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+            const SizedBox(width: _explorerColumnGap),
+            Expanded(
+              flex: _explorerGamesColumnFlex + _explorerStatsColumnFlex,
+              child: Text(
+                S.of(context).openingExplorerEngineSearching,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: textStyle,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _MoveCell extends StatelessWidget {
   const _MoveCell({required this.move});
 
@@ -1799,6 +2356,12 @@ class _MoveCell extends StatelessWidget {
             color: colorScheme.secondary,
             icon: Icons.people_alt_rounded,
           ),
+        if (move.engineScore != null)
+          _SourceBadge(
+            label: strings.openingExplorerEngineBadge,
+            color: colorScheme.outline,
+            icon: Icons.auto_awesome_rounded,
+          ),
       ],
     );
   }
@@ -1812,14 +2375,18 @@ class _MoveGamesCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _HumanMoveStats? stats = move.humanStats;
-    final String text = _formatExplorerGamesText(
-      games: stats?.total ?? 0,
-      percent: stats == null ? 0 : move.gamesPercent,
-    );
+    final int? engineScore = move.engineScore;
     final TextStyle? style = Theme.of(context).textTheme.bodySmall?.copyWith(
       fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
       letterSpacing: 0,
     );
+
+    final String text = stats == null && engineScore != null
+        ? _formatExplorerEngineScore(engineScore)
+        : _formatExplorerGamesText(
+            games: stats?.total ?? 0,
+            percent: stats == null ? 0 : move.gamesPercent,
+          );
 
     return Align(
       alignment: Alignment.centerLeft,
@@ -2011,6 +2578,12 @@ String _formatExplorerGamesText({required int games, required int percent}) {
   return '${_formatExplorerSampleCount(games)} ($percent%)';
 }
 
+/// Formats a heuristic engine evaluation (mover's perspective) as a signed
+/// number, e.g. `+42`, `-15`, `0`.
+String _formatExplorerEngineScore(int score) {
+  return score > 0 ? '+$score' : '$score';
+}
+
 int _explorerBarFlex(int count, int total) {
   assert(count > 0, 'Opening explorer bar segment count must be positive.');
   assert(total > 0, 'Opening explorer bar total must be positive.');
@@ -2092,6 +2665,7 @@ class _OpeningExplorerSnapshot {
     required this.openingBookMoveCount,
     required this.humanDatabaseMoveCount,
     required this.perfectMoveAvailable,
+    required this.usedEngineFallback,
     required this.openingRecognition,
     required this.aggregateHumanStats,
     required this.moves,
@@ -2102,6 +2676,8 @@ class _OpeningExplorerSnapshot {
     required RuleSettings ruleSettings,
     required GeneralSettings generalSettings,
     required List<String> placementMoves,
+    List<NativeMillPrincipalVariation> engineSuggestions =
+        const <NativeMillPrincipalVariation>[],
   }) {
     final String fen = session.getFen();
     final bool isRuleSupported =
@@ -2205,6 +2781,22 @@ class _OpeningExplorerSnapshot {
       }
     }
 
+    // Heuristic fill: when the opening book, human database, and perfect
+    // database all have nothing for this exact position, fall back to
+    // whatever engine suggestions the caller already fetched (if any) so
+    // the explorer is never simply empty for well-motivated deviations that
+    // happen to be absent from every curated/recorded source.
+    bool usedEngineFallback = false;
+    if (moves.isEmpty && engineSuggestions.isNotEmpty) {
+      for (final NativeMillPrincipalVariation variation in engineSuggestions) {
+        if (!legalActions.containsKey(variation.move)) {
+          continue;
+        }
+        ensureMove(variation.move).engineScore = variation.score;
+        usedEngineFallback = true;
+      }
+    }
+
     final List<_OpeningExplorerMove> sortedMoves = moves.values.toList();
     sortedMoves.sort(_compareExplorerMoves);
     final int totalHumanSamples = sortedMoves.fold<int>(
@@ -2246,6 +2838,7 @@ class _OpeningExplorerSnapshot {
       openingBookMoveCount: openingBookMoveCount,
       humanDatabaseMoveCount: humanDatabaseMoveCount,
       perfectMoveAvailable: perfectMoveAvailable,
+      usedEngineFallback: usedEngineFallback,
       openingRecognition: openingRecognition,
       aggregateHumanStats: aggregateHumanStats,
       moves: sortedMoves,
@@ -2257,15 +2850,24 @@ class _OpeningExplorerSnapshot {
   final int openingBookMoveCount;
   final int humanDatabaseMoveCount;
   final bool perfectMoveAvailable;
+  final bool usedEngineFallback;
   final MillOpeningRecognition openingRecognition;
   final _HumanMoveStats? aggregateHumanStats;
   final List<_OpeningExplorerMove> moves;
+
+  /// True exactly when the book/human/perfect sources had nothing at all
+  /// for this position and every listed move is instead a heuristic engine
+  /// suggestion (see [_OpeningExplorerMove.engineScore]).
+  bool get needsEngineFallback =>
+      !usedEngineFallback && moves.isEmpty && isRuleSupported;
 
   String sourceSummary(S strings) {
     final List<String> parts = <String>[
       '${strings.openingBookSettings}: $openingBookMoveCount',
       '${strings.humanGameDatabaseSettings}: $humanDatabaseMoveCount',
       '${strings.perfectDatabaseSettings}: ${perfectMoveAvailable ? strings.openingExplorerAvailable : strings.openingExplorerNoDataShort}',
+      if (usedEngineFallback)
+        '${strings.openingExplorerEngineSource}: ${strings.openingExplorerAvailable}',
     ];
     return parts.join(' · ');
   }
@@ -2332,6 +2934,15 @@ class _OpeningExplorerSnapshot {
     if (humanScoreCompare != 0) {
       return humanScoreCompare;
     }
+    // Only ever discriminates when every move is an engine-only backfill
+    // suggestion (book/human/perfect fields above are all null/false/0 for
+    // every candidate in that case); higher mover-relative eval sorts first.
+    final int engineCompare = (b.engineScore ?? _engineScoreFloor).compareTo(
+      a.engineScore ?? _engineScoreFloor,
+    );
+    if (engineCompare != 0) {
+      return engineCompare;
+    }
     return a.notation.compareTo(b.notation);
   }
 
@@ -2358,6 +2969,13 @@ class _OpeningExplorerMove {
   _HumanMoveStats? humanStats;
   int gamesPercent = 0;
   bool isPerfectMove = false;
+
+  /// Heuristic search evaluation (mover's perspective; positive favors the
+  /// side to move), populated only when [OpeningExplorerPage] had to fall
+  /// back to an engine suggestion because the opening book, human database,
+  /// and perfect database had no entry for this position at all. `null`
+  /// whenever any real data source covers the move.
+  int? engineScore;
 }
 
 class _HumanMoveStats {

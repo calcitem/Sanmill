@@ -4855,5 +4855,19 @@
     "analysisThreat": "Threat",
     "@analysisThreat": {},
     "multipleLines": "Multiple lines",
-    "@multipleLines": {}
+    "@multipleLines": {},
+    "openingExplorerEngineSource": "Engine",
+    "@openingExplorerEngineSource": {},
+    "openingExplorerEngineBadge": "Engine suggestion",
+    "@openingExplorerEngineBadge": {},
+    "openingExplorerEngineSearching": "Searching for an engine suggestion...",
+    "@openingExplorerEngineSearching": {},
+    "search": "Search",
+    "@search": {},
+    "openingExplorerPractice": "Practice",
+    "@openingExplorerPractice": {},
+    "openingExplorerSelectLine": "Select an opening line",
+    "@openingExplorerSelectLine": {},
+    "openingExplorerCurrentLine": "Current line",
+    "@openingExplorerCurrentLine": {}
 }
