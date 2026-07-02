@@ -31,7 +31,6 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_markdown_plus: ^1.0.7
-  flutter_platform_alert: ^0.9.1
   flutter_picker: ^2.1.0
   flutter_sharing_intent: ^2.0.4
   hive_ce: ^2.19.3
