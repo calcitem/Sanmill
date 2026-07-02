@@ -551,7 +551,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerLow,
         border: Border(
@@ -597,15 +597,19 @@ class _PuzzlePageState extends State<PuzzlePage> {
                 ],
               ),
             ),
-          Text(
-            widget.puzzle.description,
-            style: theme.textTheme.titleMedium?.copyWith(
-              color: colorScheme.onSurface,
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 56),
+            child: SingleChildScrollView(
+              child: Text(
+                widget.puzzle.description,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                  height: 1.35,
+                ),
+              ),
             ),
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           Row(
             children: <Widget>[
               Flexible(
@@ -693,7 +697,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     final ColorScheme colorScheme = theme.colorScheme;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(8),

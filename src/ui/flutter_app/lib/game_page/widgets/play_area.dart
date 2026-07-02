@@ -2999,6 +2999,7 @@ class PlayAreaState extends State<PlayArea> {
   Widget _buildHumanAiMainContent({
     required BuildContext context,
     required bool showPieceCountRows,
+    bool showMoveList = true,
   }) {
     final bool showAdvantageGraph = _shouldShowAdvantageGraph(
       isGameSurface: true,
@@ -3013,7 +3014,11 @@ class PlayAreaState extends State<PlayArea> {
         left: false,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            final Widget moveList = _buildMoveListForHumanAi(context);
+            final Widget moveList = showMoveList
+                ? _buildMoveListForHumanAi(context)
+                : const SizedBox.shrink(
+                    key: Key('play_area_human_ai_move_list_hidden'),
+                  );
             const Widget topTable = _HumanAiPlayerPanel(
               key: Key('play_area_human_ai_robot_panel'),
               isRobot: true,
@@ -3049,8 +3054,9 @@ class PlayAreaState extends State<PlayArea> {
                 ),
             ];
 
-            final double moveListHeight =
-                _wrappedMoveListReservedHeightForRoute(context);
+            final double moveListHeight = showMoveList
+                ? _wrappedMoveListReservedHeightForRoute(context)
+                : 0;
             final double boardRowsHeight = showPieceCountRows
                 ? _pieceRowsHeightForLayout(context)
                 : 0;
@@ -4076,6 +4082,8 @@ class PlayAreaState extends State<PlayArea> {
         final bool isAnalysisMode = _isAnalysisMode;
         final bool usesLichessHumanAiToolbar =
             _usesLichessHumanAiToolbar && !isSetupPosition && !isPuzzle;
+        final bool usesHumanAiBoardLayout =
+            usesLichessHumanAiToolbar || isPuzzle;
         final bool showPieceCountRows =
             DB().displaySettings.isUnplacedAndRemovedPiecesShown;
 
@@ -4090,7 +4098,7 @@ class PlayAreaState extends State<PlayArea> {
             ? humanDatabaseStatsStrip
             : null;
         final bool useHumanAiLandscapeLayout =
-            usesLichessHumanAiToolbar &&
+            usesHumanAiBoardLayout &&
             constraints.hasBoundedHeight &&
             constraints.maxWidth > constraints.maxHeight;
 
@@ -4135,10 +4143,11 @@ class PlayAreaState extends State<PlayArea> {
         final Widget mainContent = SizedBox(
           key: const Key('play_area_main_content'),
           width: dimension,
-          child: usesLichessHumanAiToolbar
+          child: usesHumanAiBoardLayout
               ? _buildHumanAiMainContent(
                   context: context,
                   showPieceCountRows: showPieceCountRows,
+                  showMoveList: !isPuzzle,
                 )
               : isAnalysisMode
               ? _buildAnalysisMainContent(

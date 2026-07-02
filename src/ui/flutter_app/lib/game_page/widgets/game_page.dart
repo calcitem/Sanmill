@@ -217,7 +217,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
               // Game board widget.
               _buildGameBoard(context, widget.controller),
               // Back button in the top-left corner when this route can pop.
-              if (!_isAnalysisPage)
+              // PuzzlePage hosts its own AppBar back affordance.
+              if (!_isAnalysisPage && !_isPuzzleGame)
                 Align(
                   key: const Key('game_page_top_left_button_align'),
                   alignment: AlignmentDirectional.topStart,
@@ -355,6 +356,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
   bool get _isAnalysisPage =>
       widget.controller.gameInstance.gameMode == GameMode.analysis;
+
+  bool get _isPuzzleGame =>
+      widget.controller.gameInstance.gameMode == GameMode.puzzle;
 
   bool get _isPlayGameRoute {
     return switch (widget.controller.gameInstance.gameMode) {
