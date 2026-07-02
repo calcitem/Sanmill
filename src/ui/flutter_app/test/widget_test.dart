@@ -1217,6 +1217,26 @@ void main() {
       );
       expect(find.byKey(const Key('settings_hub_appearance')), findsOneWidget);
       expect(
+        find.byKey(const Key('settings_hub_config_import_export_card')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('settings_hub_export_all_settings')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('settings_hub_import_all_settings')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('settings_hub_restore_card')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('settings_hub_restore_default_settings')),
+        findsOneWidget,
+      );
+      expect(
         find.descendant(
           of: find.byKey(const Key('settings_hub_appearance')),
           matching: find.text('Board'),
@@ -1231,6 +1251,28 @@ void main() {
         findsNothing,
       );
 
+      await tester.ensureVisible(
+        find.byKey(const Key('settings_hub_restore_default_settings')),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.byKey(const Key('settings_hub_restore_default_settings')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('reset_settings_alert_dialog_alert_dialog')),
+        findsOneWidget,
+      );
+      await tester.tap(
+        find.byKey(const Key('reset_settings_alert_dialog_cancel_button')),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(
+        find.byKey(const Key('settings_hub_general_settings')),
+      );
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('settings_hub_general_settings')));
       await tester.pumpAndSettle();
 
@@ -1247,6 +1289,16 @@ void main() {
       expect(
         shellState.debugCurrentRouteId,
         ShellRouteIds.appSettingsGroup.value,
+      );
+      expect(
+        find.byKey(
+          const Key('general_settings_page_settings_card_config_import_export'),
+        ),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const Key('general_settings_page_settings_card_restore')),
+        findsNothing,
       );
 
       await tester.ensureVisible(

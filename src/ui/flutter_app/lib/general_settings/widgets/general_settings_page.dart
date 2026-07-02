@@ -31,12 +31,10 @@ import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../models/general_settings.dart';
-import '../services/config_import_export_service.dart';
 import 'developer_options_page.dart';
 import 'dialogs/llm_config_dialog.dart';
 import 'dialogs/llm_prompt_dialog.dart';
 
-part 'dialogs/reset_settings_alert_dialog.dart';
 part 'dialogs/use_perfect_database_dialog.dart';
 part 'pages/settings_sub_page.dart';
 part 'pages/advanced_ai_search_page.dart';
@@ -67,116 +65,6 @@ class GeneralSettingsPage extends StatelessWidget {
 
   SettingsRepository get _settingsRepository =>
       SettingsRepositories.instance.current.repository;
-
-  // Restore
-  void _restoreFactoryDefaultSettings(BuildContext context) => showDialog(
-    context: context,
-    builder: (_) => const _ResetSettingsAlertDialog(),
-  );
-
-  Future<void> _exportSettings(BuildContext context) async {
-    final S strings = S.of(context);
-    final bool? success = await ConfigImportExportService.shareConfig(
-      shareSubject: strings.configImportShareSubject,
-      saveDialogTitle: strings.exportAllSettings,
-    );
-    if (!context.mounted) {
-      return;
-    }
-    if (success == null) {
-      return;
-    }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          success ? strings.configExportSuccess : strings.configExportFailed,
-        ),
-      ),
-    );
-  }
-
-  Future<void> _importSettings(BuildContext context) async {
-    FilePickerResult? pickResult;
-    try {
-      pickResult = await FilePicker.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: <String>[
-          ConfigImportExportService.fileExtension,
-          'json',
-        ],
-      );
-    } catch (e, st) {
-      logger.e('$_logTag Import file pick failed: $e\n$st');
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(S.of(context).configImportErrorReadFailed)),
-        );
-      }
-      return;
-    }
-
-    if (pickResult == null ||
-        pickResult.files.isEmpty ||
-        pickResult.files.single.path == null) {
-      return;
-    }
-    final String filePath = pickResult.files.single.path!;
-
-    if (!context.mounted) {
-      return;
-    }
-
-    final bool? confirmed = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext ctx) => AlertDialog(
-        title: Text(
-          S.of(ctx).importAllSettings,
-          style: TextStyle(
-            fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
-          ),
-        ),
-        content: Text(S.of(ctx).configImportConfirmation),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: Text(S.of(ctx).cancel),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            child: Text(S.of(ctx).confirm),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed != true || !context.mounted) {
-      return;
-    }
-
-    final ConfigImportResult result =
-        await ConfigImportExportService.importConfigFromPath(filePath);
-
-    if (!context.mounted) {
-      return;
-    }
-
-    if (result.success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(S.of(context).configImportSuccess)),
-      );
-    } else if (!result.userCancelled) {
-      final S s = S.of(context);
-      final String message = switch (result.errorKind) {
-        ConfigImportErrorKind.fileNotFound => s.configImportErrorFileNotFound,
-        ConfigImportErrorKind.invalidFile => s.configImportErrorInvalidFile,
-        ConfigImportErrorKind.readFailed => s.configImportErrorReadFailed,
-        null => s.configImportErrorReadFailed,
-      };
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(message)));
-    }
-  }
 
   void _setSkillLevel(BuildContext context) => showDialog(
     context: context,
@@ -1258,50 +1146,6 @@ class GeneralSettingsPage extends StatelessWidget {
                       const DeveloperOptionsPage(),
                 ),
               ),
-            ),
-          ],
-        ),
-        if (!kIsWeb)
-          SettingsCard(
-            key: const Key(
-              'general_settings_page_settings_card_config_import_export',
-            ),
-            title: Text(
-              S.of(context).configImportExport,
-              key: const Key(
-                'general_settings_page_settings_card_config_import_export_title',
-              ),
-            ),
-            children: <Widget>[
-              SettingsListTile(
-                key: const Key(
-                  'general_settings_page_settings_card_export_all_settings',
-                ),
-                titleString: S.of(context).exportAllSettings,
-                onTap: () => _exportSettings(context),
-              ),
-              SettingsListTile(
-                key: const Key(
-                  'general_settings_page_settings_card_import_all_settings',
-                ),
-                titleString: S.of(context).importAllSettings,
-                onTap: () => _importSettings(context),
-              ),
-            ],
-          ),
-        SettingsCard(
-          key: const Key('general_settings_page_settings_card_restore'),
-          title: Text(
-            S.of(context).restore,
-            key: const Key('general_settings_page_settings_card_restore_title'),
-          ),
-          children: <Widget>[
-            SettingsListTile(
-              key: const Key(
-                'general_settings_page_settings_card_restore_default_settings',
-              ),
-              titleString: S.of(context).restoreDefaultSettings,
-              onTap: () => _restoreFactoryDefaultSettings(context),
             ),
           ],
         ),
