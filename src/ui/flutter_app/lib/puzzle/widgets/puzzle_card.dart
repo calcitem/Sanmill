@@ -188,8 +188,8 @@ class PuzzleCard extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       puzzle.title,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
