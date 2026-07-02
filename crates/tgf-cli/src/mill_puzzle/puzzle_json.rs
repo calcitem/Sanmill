@@ -23,6 +23,8 @@ pub(crate) struct PuzzlePackageJson {
     pub export_date: String,
     #[serde(rename = "puzzleCount")]
     pub puzzle_count: usize,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<PuzzlePackMetadataJson>,
     pub puzzles: Vec<PuzzleInfoJson>,
 }
 
@@ -31,6 +33,22 @@ pub(crate) struct ExportedByJson {
     #[serde(rename = "appName")]
     pub app_name: &'static str,
     pub platform: &'static str,
+}
+
+/// Optional puzzle-pack metadata block, matching the `metadata` object in
+/// `docs/PUZZLE_FORMAT.md`. Emitted when the caller passes `--pack-id`, so
+/// the committed built-in asset can be regenerated entirely from the CLI.
+#[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct PuzzlePackMetadataJson {
+    pub id: String,
+    pub name: String,
+    pub description: String,
+    pub author: String,
+    pub version: &'static str,
+    pub tags: Vec<String>,
+    pub is_official: bool,
+    pub rule_variant_id: String,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -45,6 +63,8 @@ pub(crate) struct PuzzleInfoJson {
     pub solutions: Vec<PuzzleSolutionJson>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub hint: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub completion_message: Option<String>,
     pub tags: Vec<String>,
     pub is_custom: bool,
     pub author: String,
@@ -92,26 +112,67 @@ fn short_hash(text: &str) -> String {
     format!("{:08x}", hash & 0xFFFF_FFFF)
 }
 
-/// Heuristic difficulty/rating derived from how "sharp" the generated
-/// puzzle is. This is intentionally simple and documented rather than
-/// precise: deeper forced wins, fewer alternative winning first moves, and
-/// lines that require a sacrifice all make a puzzle harder to find over the
-/// board, so each nudges the rating up.
+/// The tactical fingerprint of one generated puzzle, aggregated from the
+/// root-move classification and every constructed solution line. This is
+/// what difficulty rating, tags, and all human-facing prose key off.
+#[derive(Debug, Clone, Copy)]
+pub(crate) struct PuzzleTraits {
+    /// Number of legal first moves that immediately throw the win away.
+    pub mistake_count: usize,
+    /// A mill-closing (capturing) first move exists that loses or draws:
+    /// the most tempting move on the board is the trap.
+    pub tempting_mill_mistake: bool,
+    /// No winning first move closes a mill; the solution starts quietly.
+    pub quiet_first_move: bool,
+    /// Shallowest heuristic-search depth (from
+    /// [`super::analysis::PROBE_DEPTHS`]) whose principal move keeps the
+    /// win; `None` when every probe failed, i.e. only database-grade
+    /// precision solves the puzzle.
+    pub solve_depth: Option<i32>,
+}
+
+/// Heuristic difficulty/rating derived from how the puzzle resisted the
+/// simulated human solver and how sharp its lines are. The dominant term is
+/// `solve_depth` -- the search depth a player effectively needs to find the
+/// first move -- because that tracks perceived difficulty far better than
+/// the raw length of the win.
 fn derive_difficulty_and_rating(
     target_moves: i32,
     winning_first_move_count: usize,
-    sacrifice: bool,
+    traits: &PuzzleTraits,
+    line: &LineTraits,
     is_moving_phase: bool,
 ) -> (&'static str, i32) {
-    let mut rating = 700 + target_moves * 120;
+    let mut rating = 600 + target_moves * 60;
+    rating += match traits.solve_depth {
+        Some(2) => 0,
+        Some(4) => 180,
+        Some(6) => 360,
+        Some(8) => 540,
+        Some(other) => unreachable!("unexpected probe depth {other}"),
+        None => 700,
+    };
     if winning_first_move_count <= 1 {
         rating += 80;
     }
-    if sacrifice {
-        rating += 150;
+    rating += (line.only_move_count * 50).min(200);
+    if line.sacrifice {
+        rating += 120;
+    }
+    if traits.tempting_mill_mistake {
+        rating += 60;
+    }
+    if traits.quiet_first_move {
+        rating += 60;
+    }
+    if line.vs_flying {
+        rating += 40;
+    }
+    if line.immobilization_win {
+        rating += 80;
     }
     if is_moving_phase {
-        rating += 50;
+        rating += 30;
     }
     let rating = rating.clamp(400, 2400);
 
@@ -126,6 +187,30 @@ fn derive_difficulty_and_rating(
     (difficulty, rating)
 }
 
+/// Line-level traits aggregated over every constructed solution.
+#[derive(Debug, Clone, Copy, Default)]
+struct LineTraits {
+    sacrifice: bool,
+    double_mill: bool,
+    vs_flying: bool,
+    immobilization_win: bool,
+    only_move_count: i32,
+    decision_point_count: i32,
+}
+
+fn aggregate_line_traits(solutions: &[BuiltSolution]) -> LineTraits {
+    let mut traits = LineTraits::default();
+    for built in solutions {
+        traits.sacrifice |= built.sacrifice;
+        traits.double_mill |= built.double_mill;
+        traits.vs_flying |= built.vs_flying;
+        traits.immobilization_win |= built.immobilization_win;
+        traits.only_move_count = traits.only_move_count.max(built.only_move_count);
+        traits.decision_point_count = traits.decision_point_count.max(built.decision_point_count);
+    }
+    traits
+}
+
 /// Everything needed to render one [`PuzzleInfoJson`] from a solved root
 /// position plus its constructed solution lines.
 pub(crate) struct PuzzleBuildInput<'a> {
@@ -133,9 +218,103 @@ pub(crate) struct PuzzleBuildInput<'a> {
     pub solver_side: i8,
     pub is_moving_phase: bool,
     pub solutions: &'a [BuiltSolution],
+    pub traits: PuzzleTraits,
     pub author: &'a str,
     pub rule_variant_id: &'a str,
     pub generated_at: &'a str,
+}
+
+/// Human-facing prose for one theme: headline fragment, hint, and
+/// completion-message lead. Kept non-spoiling: the hint points at the idea
+/// without naming a square.
+struct ThemeProse {
+    tag: &'static str,
+    headline: &'static str,
+    hint: &'static str,
+    completion: &'static str,
+}
+
+/// Pick the puzzle's headline theme by fixed precedence: the trap at the
+/// first decision defines the puzzle's face; execution motifs (swing mill,
+/// immobilization, sacrifice, flying defense) come next; a plain forced win
+/// is the fallback.
+fn select_theme(traits: &PuzzleTraits, line: &LineTraits) -> ThemeProse {
+    if traits.tempting_mill_mistake && traits.quiet_first_move {
+        return ThemeProse {
+            tag: "trap:greedy-mill",
+            headline: "resist the tempting mill",
+            hint: "The capture that jumps out at you does not win. Look for the move that \
+                   sets up an unstoppable threat instead.",
+            completion: "The tempting mill would have thrown the win away -- the quiet move \
+                         was the only path.",
+        };
+    }
+    if traits.tempting_mill_mistake {
+        return ThemeProse {
+            tag: "trap:wrong-mill",
+            headline: "pick the right capture",
+            hint: "More than one capture is on the board, but only one keeps the win. \
+                   Compare what each removal leaves behind.",
+            completion: "Only one of the tempting captures kept the forced win; the others \
+                         handed the game back.",
+        };
+    }
+    if line.double_mill {
+        return ThemeProse {
+            tag: "double-mill",
+            headline: "set up the swing mill",
+            hint: "Arrange your pieces so one of them can close a mill on every move.",
+            completion: "The swing mill ground the defense down: every solver move closed a \
+                         mill and took a piece.",
+        };
+    }
+    if line.immobilization_win {
+        return ThemeProse {
+            tag: "immobilization",
+            headline: "leave them no move",
+            hint: "You do not need to capture everything. Herd the opponent's pieces until \
+                   none of them can move.",
+            completion: "The win came by immobilization: the opponent still had material but \
+                         no legal move left.",
+        };
+    }
+    if line.sacrifice {
+        return ThemeProse {
+            tag: "sacrifice",
+            headline: "give up a piece to win",
+            hint: "Letting the opponent capture is part of the plan. Count the resulting \
+                   threats, not the material.",
+            completion: "The sacrifice bought a decisive attack -- material handed over, game \
+                         taken back.",
+        };
+    }
+    if traits.quiet_first_move {
+        return ThemeProse {
+            tag: "quiet-move",
+            headline: "a quiet move wins",
+            hint: "No capture starts this win. Improve a piece and the threats appear by \
+                   themselves.",
+            completion: "The winning idea started with a quiet move -- the kind that is \
+                         easiest to overlook over the board.",
+        };
+    }
+    if line.vs_flying {
+        return ThemeProse {
+            tag: "vs-flying",
+            headline: "ground the flying defense",
+            hint: "The opponent will start flying anywhere on the board. Your net has to \
+                   close faster than they can escape.",
+            completion: "Even the flying defense could not escape: the mating net closed \
+                         first.",
+        };
+    }
+    ThemeProse {
+        tag: "forced-win",
+        headline: "find the forced win",
+        hint: "Every reply has been accounted for. Find the move that keeps all the doors \
+               closed.",
+        completion: "A clean forced win, carried through against the best practical defense.",
+    }
 }
 
 pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson {
@@ -155,13 +334,15 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
         .map(|s| s.solver_move_count)
         .min()
         .expect("solutions is non-empty");
-    let has_sacrifice = input.solutions.iter().any(|s| s.sacrifice);
     let winning_first_move_count = input.solutions.len();
+    let line = aggregate_line_traits(input.solutions);
+    let theme = select_theme(&input.traits, &line);
 
     let (difficulty, rating) = derive_difficulty_and_rating(
         target_moves,
         winning_first_move_count,
-        has_sacrifice,
+        &input.traits,
+        &line,
         input.is_moving_phase,
     );
     // Movement-phase puzzles are plain "win the game" tactics; placement-
@@ -179,14 +360,39 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
         "placement"
     };
     let side_word = side_label(input.solver_side);
-    let title = format!("Forced win in {target_moves} ({phase_word}, {side_word} to move)");
+    let title = format!(
+        "Win in {target_moves}: {headline}",
+        headline = theme.headline
+    );
+
+    let total_first_moves = winning_first_move_count + input.traits.mistake_count;
     let mut description = format!(
-        "{side} to move: find the forced win in {target_moves} move(s) even \
-         against the opponent's best practical defense.",
+        "{side} to move and win in {target_moves} move(s) against the opponent's best \
+         practical defense.",
         side = capitalize(side_word),
     );
-    if has_sacrifice {
+    if input.traits.mistake_count > 0 {
+        description.push_str(&format!(
+            " Only {winning_first_move_count} of the {total_first_moves} legal first moves \
+             keep{s} the win alive.",
+            s = if winning_first_move_count == 1 {
+                "s"
+            } else {
+                ""
+            },
+        ));
+    }
+    if line.sacrifice {
         description.push_str(" Requires accepting a material sacrifice along the way.");
+    }
+
+    let mut completion = String::from(theme.completion);
+    if line.only_move_count > 0 && line.decision_point_count > 0 {
+        completion.push_str(&format!(
+            " {only} of the {total} follow-up decision(s) allowed exactly one winning move.",
+            only = line.only_move_count,
+            total = line.decision_point_count,
+        ));
     }
 
     let mut tags = vec![
@@ -195,9 +401,26 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
         format!("win-in-{target_moves}"),
         format!("phase:{phase_word}"),
         format!("side:{side_word}"),
+        theme.tag.to_string(),
     ];
-    if has_sacrifice {
+    if line.sacrifice && theme.tag != "sacrifice" {
         tags.push("sacrifice".to_string());
+    }
+    if line.double_mill && theme.tag != "double-mill" {
+        tags.push("double-mill".to_string());
+    }
+    if line.immobilization_win && theme.tag != "immobilization" {
+        tags.push("immobilization".to_string());
+    }
+    if line.vs_flying && theme.tag != "vs-flying" {
+        tags.push("vs-flying".to_string());
+    }
+    if traits_only_moves_throughout(&line) {
+        tags.push("precision".to_string());
+    }
+    match input.traits.solve_depth {
+        Some(depth) => tags.push(format!("solve-depth:{depth}")),
+        None => tags.push("solve-depth:deep".to_string()),
     }
 
     let id = format!(
@@ -239,7 +462,8 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
         difficulty,
         initial_position: input.fen.to_string(),
         solutions,
-        hint: None,
+        hint: Some(theme.hint.to_string()),
+        completion_message: Some(completion),
         tags,
         is_custom: false,
         author: input.author.to_string(),
@@ -248,6 +472,12 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
         rating: Some(rating),
         rule_variant_id: input.rule_variant_id.to_string(),
     }
+}
+
+/// True when every solver decision after the first move had exactly one
+/// winning choice -- the line demands perfect precision throughout.
+fn traits_only_moves_throughout(line: &LineTraits) -> bool {
+    line.decision_point_count > 0 && line.only_move_count == line.decision_point_count
 }
 
 fn capitalize(word: &str) -> String {
@@ -277,21 +507,81 @@ mod tests {
             ],
             solver_move_count,
             sacrifice,
+            only_move_count: 0,
+            decision_point_count: 0,
+            double_mill: false,
+            vs_flying: false,
+            immobilization_win: false,
+        }
+    }
+
+    fn plain_traits() -> PuzzleTraits {
+        PuzzleTraits {
+            mistake_count: 0,
+            tempting_mill_mistake: false,
+            quiet_first_move: false,
+            solve_depth: Some(2),
         }
     }
 
     #[test]
     fn harder_puzzles_rate_higher_than_easier_ones() {
-        let (easy_diff, easy_rating) = derive_difficulty_and_rating(2, 3, false, false);
-        let (hard_diff, hard_rating) = derive_difficulty_and_rating(7, 1, true, true);
+        let easy_line = LineTraits::default();
+        let hard_line = LineTraits {
+            sacrifice: true,
+            only_move_count: 3,
+            decision_point_count: 3,
+            ..LineTraits::default()
+        };
+        let hard_traits = PuzzleTraits {
+            mistake_count: 10,
+            tempting_mill_mistake: true,
+            quiet_first_move: true,
+            solve_depth: None,
+        };
+        let (easy_diff, easy_rating) =
+            derive_difficulty_and_rating(2, 3, &plain_traits(), &easy_line, false);
+        let (hard_diff, hard_rating) =
+            derive_difficulty_and_rating(7, 1, &hard_traits, &hard_line, true);
         assert!(hard_rating > easy_rating);
         assert_ne!(easy_diff, hard_diff);
     }
 
     #[test]
+    fn deeper_solve_depth_always_raises_the_rating() {
+        let line = LineTraits::default();
+        let rating_for = |solve_depth: Option<i32>| {
+            let traits = PuzzleTraits {
+                solve_depth,
+                ..plain_traits()
+            };
+            derive_difficulty_and_rating(4, 1, &traits, &line, true).1
+        };
+        assert!(rating_for(Some(4)) > rating_for(Some(2)));
+        assert!(rating_for(Some(6)) > rating_for(Some(4)));
+        assert!(rating_for(Some(8)) > rating_for(Some(6)));
+        assert!(rating_for(None) > rating_for(Some(8)));
+    }
+
+    #[test]
     fn rating_is_always_clamped_to_the_documented_range() {
-        let (_, low) = derive_difficulty_and_rating(0, 99, false, false);
-        let (_, high) = derive_difficulty_and_rating(999, 1, true, true);
+        let line = LineTraits::default();
+        let (_, low) = derive_difficulty_and_rating(0, 99, &plain_traits(), &line, false);
+        let max_line = LineTraits {
+            sacrifice: true,
+            double_mill: true,
+            vs_flying: true,
+            immobilization_win: true,
+            only_move_count: 99,
+            decision_point_count: 99,
+        };
+        let max_traits = PuzzleTraits {
+            mistake_count: 30,
+            tempting_mill_mistake: true,
+            quiet_first_move: true,
+            solve_depth: None,
+        };
+        let (_, high) = derive_difficulty_and_rating(999, 1, &max_traits, &max_line, true);
         assert!((400..=2400).contains(&low));
         assert!((400..=2400).contains(&high));
     }
@@ -304,15 +594,24 @@ mod tests {
             solver_side: 0,
             is_moving_phase: true,
             solutions: &solutions,
+            traits: PuzzleTraits {
+                mistake_count: 5,
+                tempting_mill_mistake: false,
+                quiet_first_move: false,
+                solve_depth: Some(4),
+            },
             author: "Test Author",
             rule_variant_id: "standard_9mm",
             generated_at: "2026-01-01T00:00:00.000Z",
         };
         let info = build_puzzle_info(&input);
 
-        assert!(info.title.contains("in 2"));
+        assert!(info.title.starts_with("Win in 2:"));
         assert!(info.tags.contains(&"win-in-2".to_string()));
         assert!(info.tags.contains(&"sacrifice".to_string()));
+        assert!(info.tags.contains(&"solve-depth:4".to_string()));
+        assert!(info.hint.is_some());
+        assert!(info.completion_message.is_some());
         assert_eq!(info.solutions.len(), 2);
         assert!(
             info.solutions[1].is_optimal,
@@ -326,6 +625,36 @@ mod tests {
         assert_eq!(info.rule_variant_id, "standard_9mm");
         assert_eq!(info.version, 1);
         assert!(!info.is_custom);
+    }
+
+    #[test]
+    fn trap_theme_takes_precedence_and_prose_stays_consistent() {
+        let solutions = vec![built(3, false)];
+        let input = PuzzleBuildInput {
+            fen: "trap-fen",
+            solver_side: 1,
+            is_moving_phase: false,
+            solutions: &solutions,
+            traits: PuzzleTraits {
+                mistake_count: 8,
+                tempting_mill_mistake: true,
+                quiet_first_move: true,
+                solve_depth: None,
+            },
+            author: "Test Author",
+            rule_variant_id: "standard_9mm",
+            generated_at: "2026-01-01T00:00:00.000Z",
+        };
+        let info = build_puzzle_info(&input);
+
+        assert_eq!(info.title, "Win in 3: resist the tempting mill");
+        assert!(info.tags.contains(&"trap:greedy-mill".to_string()));
+        assert!(info.tags.contains(&"solve-depth:deep".to_string()));
+        assert!(
+            info.description
+                .contains("Only 1 of the 9 legal first moves")
+        );
+        assert_eq!(info.category, "opening");
     }
 
     #[test]

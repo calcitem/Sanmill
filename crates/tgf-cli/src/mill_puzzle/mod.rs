@@ -28,35 +28,73 @@
 //   --max-depth N          Maximum solver-move win distance (default 7)
 //   --max-solutions N      Reject roots with more than N winning first
 //                          moves; keeps puzzles unambiguous (default 2)
+//   --min-mistakes N       Require at least N legal first moves that
+//                          immediately throw the win away; a puzzle with no
+//                          way to go wrong is not a puzzle (default 2)
+//   --max-piece-diff N     Maximum material advantage (board + hand) the
+//                          solving side may start with; the opponent may
+//                          always outnumber the solver (default 1)
+//   --min-solve-depth D    Reject puzzles whose first move is already found
+//                          by a heuristic search shallower than D plies;
+//                          probes run at depths 2/4/6/8, so 4 rejects
+//                          one-glance tactics and anything above 8 keeps
+//                          only puzzles that defeat every probe (default 4)
+//   --require-trap         Only accept roots where a mill-closing capture
+//                          exists that loses or draws -- the "tempting mill
+//                          fails" motif (off by default)
 //   --sacrifice include|exclude|only
 //                          Filter on whether the solver must give up a
 //                          piece somewhere in the line (default include)
 //   --opponent-depth N     Heuristic search depth used for the opponent's
 //                          replies (default 6)
 //
-// Misc:
+// Output:
 //   --out PATH            Output `.sanmill_puzzles` JSON path
 //                          (default puzzles.sanmill_puzzles)
-//   --max-attempts N       Sampling attempt budget (default count * 500)
+//   --pack-id ID           Emit a puzzle-pack `metadata` block with this id
+//                          (needed when regenerating the built-in asset)
+//   --pack-name NAME       Pack display name (defaults to the pack id)
+//   --pack-description S   Pack description text
+//
+// Misc:
+//   --max-attempts N       Sampling attempt budget (default count * 6000;
+//                          the challenge filters accept roughly one root in
+//                          several thousand samples)
 //   --seed HEX             xorshift64* seed; "0" means time-based (default 0)
 //   --cache N              Perfect DB sector cache capacity (default 64)
 //   --author STR           Author string written into each puzzle (default
 //                          "Perfect DB Generator")
 //
-// A puzzle is accepted only when: the root is a genuine forced win for the
-// side to move (not already mid-removal), the number of legal first moves
-// that keep the win alive is within `--max-solutions`, and every one of
-// those first moves can be played out to an actual win -- with the *solver*
-// always playing the Perfect DB's fastest move and the *opponent* always
-// playing a heuristic engine's best reply (never the DB's best defense) --
-// within the requested depth window. This is what makes a puzzle solvable
-// against a realistic opponent rather than only against a defense that
-// deliberately prolongs the loss.
+// A root position is accepted only when all of the following hold, which is
+// what separates a *puzzle* from a mere winning position:
+//
+//   * it is a genuine forced win for the side to move (not mid-removal),
+//     with the material-balance cap respected;
+//   * at most `--max-solutions` first moves keep the win and at least
+//     `--min-mistakes` first moves throw it away, so the solver has real
+//     choices and real ways to fail;
+//   * a heuristic search probe (depths 2/4/6/8) standing in for a human
+//     solver does NOT find a winning first move below `--min-solve-depth`
+//     -- shallow, obvious tactics are rejected, and the shallowest solving
+//     depth drives the exported difficulty rating;
+//   * every winning first move plays out to an actual win -- the *solver*
+//     always following the Perfect DB's fastest move and the *opponent*
+//     always playing a heuristic engine's best reply (never the DB's
+//     deliberately slowest losing defense) -- within the requested depth
+//     window;
+//   * the position is not a board symmetry of an already accepted puzzle.
+//
+// Along the way the generator fingerprints each puzzle's tactics (tempting
+// mill traps, quiet first moves, only-move precision, swing mills,
+// immobilization wins, sacrifices, wins against a flying defense) and turns
+// that into the title, hint, completion message, tags, and rating.
 
+mod analysis;
 mod puzzle_json;
 mod sampler;
 mod solver;
 
+use std::collections::HashSet;
 use std::time::{Instant, SystemTime, UNIX_EPOCH};
 
 use perfect_db::database::{
@@ -67,11 +105,15 @@ use perfect_db::{
     PerfectMoveOrdering, all_move_outcomes_with_ordering, evaluate_state_outcome_with_database,
     snapshot_from_perfect_query,
 };
-use tgf_core::{Action, ActionList, GameRules, OutcomeKind};
+use tgf_core::{ActionList, GameRules, OutcomeKind};
 use tgf_mill::{MillGame, MillPhase, MillRules, MillVariantOptions};
 
-use crate::cli_args::parse_flag;
-use puzzle_json::{ExportedByJson, PuzzleBuildInput, PuzzleInfoJson, PuzzlePackageJson};
+use crate::cli_args::{flag_present, parse_flag};
+use analysis::{canonical_symmetry_key, classify_root_moves, shallowest_solving_depth};
+use puzzle_json::{
+    ExportedByJson, PuzzleBuildInput, PuzzleInfoJson, PuzzlePackMetadataJson, PuzzlePackageJson,
+    PuzzleTraits,
+};
 use sampler::{
     PhaseChoice, SampleSpec, SideChoice, next_u64, sample_bits_for_shape, sample_sector_shape,
 };
@@ -124,6 +166,15 @@ struct GenConfig {
     min_pieces: u8,
     max_pieces: u8,
     max_solutions: usize,
+    /// Minimum number of immediately losing/drawing legal first moves.
+    min_mistakes: usize,
+    /// Maximum material advantage (board + hand) of the solving side.
+    max_piece_diff: i32,
+    /// Reject candidates whose winning first move is found by a heuristic
+    /// probe shallower than this depth. See [`analysis::PROBE_DEPTHS`].
+    min_solve_depth: i32,
+    /// Require a mill-closing first move that throws the win away.
+    require_trap: bool,
     sacrifice_filter: SacrificeFilter,
     opponent_depth: i32,
     max_attempts: usize,
@@ -131,6 +182,10 @@ struct GenConfig {
     cache_capacity: usize,
     author: String,
     rule_variant_id: &'static str,
+    /// Non-empty enables the exported `metadata` pack block.
+    pack_id: String,
+    pack_name: String,
+    pack_description: String,
 }
 
 fn variant_options_for(name: &str) -> (MillVariantOptions, &'static str) {
@@ -188,6 +243,7 @@ pub(crate) fn run_puzzle_gen(args: &[String]) {
     let count: usize = parse_flag(args, "--count", 20usize);
     let variant_name: String = parse_flag(args, "--variant", "std".to_string());
     let (options, rule_variant_id) = variant_options_for(&variant_name);
+    let pack_id: String = parse_flag(args, "--pack-id", String::new());
 
     let cfg = GenConfig {
         db_path,
@@ -200,6 +256,10 @@ pub(crate) fn run_puzzle_gen(args: &[String]) {
         min_pieces,
         max_pieces,
         max_solutions: parse_flag(args, "--max-solutions", 2usize).max(1),
+        min_mistakes: parse_flag(args, "--min-mistakes", 2usize),
+        max_piece_diff: parse_flag(args, "--max-piece-diff", 1i32),
+        min_solve_depth: parse_flag(args, "--min-solve-depth", 4i32),
+        require_trap: flag_present(args, "--require-trap"),
         sacrifice_filter: SacrificeFilter::parse(&parse_flag(
             args,
             "--sacrifice",
@@ -211,7 +271,7 @@ pub(crate) fn run_puzzle_gen(args: &[String]) {
             if requested > 0 {
                 requested
             } else {
-                count.saturating_mul(500).max(2000)
+                count.saturating_mul(6000).max(20000)
             }
         },
         seed: {
@@ -229,11 +289,15 @@ pub(crate) fn run_puzzle_gen(args: &[String]) {
         cache_capacity: parse_flag(args, "--cache", 64usize),
         author: parse_flag(args, "--author", "Perfect DB Generator".to_string()),
         rule_variant_id,
+        pack_name: parse_flag(args, "--pack-name", pack_id.clone()),
+        pack_description: parse_flag(args, "--pack-description", String::new()),
+        pack_id,
     };
 
     eprintln!(
         "[puzzle-gen] db={} variant={variant_name} out={} count={} depth=[{},{}] \
-         pieces=[{},{}] side={:?} phase={:?} max_solutions={} sacrifice={:?} \
+         pieces=[{},{}] side={:?} phase={:?} max_solutions={} min_mistakes={} \
+         max_piece_diff={} min_solve_depth={} require_trap={} sacrifice={:?} \
          opponent_depth={} seed={:#018x}",
         cfg.db_path,
         cfg.out_path,
@@ -245,6 +309,10 @@ pub(crate) fn run_puzzle_gen(args: &[String]) {
         cfg.side,
         cfg.phase,
         cfg.max_solutions,
+        cfg.min_mistakes,
+        cfg.max_piece_diff,
+        cfg.min_solve_depth,
+        cfg.require_trap,
         cfg.sacrifice_filter,
         cfg.opponent_depth,
         cfg.seed,
@@ -279,6 +347,7 @@ pub(crate) fn run_puzzle_gen(args: &[String]) {
     };
     let mut rng = cfg.seed;
     let mut puzzles: Vec<PuzzleInfoJson> = Vec::with_capacity(cfg.count);
+    let mut seen_roots: HashSet<u64> = HashSet::new();
     let mut attempts = 0usize;
     let start = Instant::now();
     let progress_every = (cfg.max_attempts / 20).max(1);
@@ -309,14 +378,20 @@ pub(crate) fn run_puzzle_gen(args: &[String]) {
             attempts += 1;
             let root_query = sample_bits_for_shape(&mut rng, &shape);
 
-            if let Some(info) =
-                try_build_puzzle(&mut database, &env, root_query, &generated_at, &mut rng)
-            {
+            if let Some(info) = try_build_puzzle(
+                &mut database,
+                &env,
+                root_query,
+                &generated_at,
+                &mut rng,
+                &mut seen_roots,
+            ) {
                 eprintln!(
-                    "[puzzle-gen] {}/{} generated: {} (attempt {attempts})",
+                    "[puzzle-gen] {}/{} generated: {} [{}] (attempt {attempts})",
                     puzzles.len() + 1,
                     cfg.count,
-                    info.title
+                    info.title,
+                    info.difficulty,
                 );
                 puzzles.push(info);
             }
@@ -337,8 +412,8 @@ pub(crate) fn run_puzzle_gen(args: &[String]) {
     if puzzles.len() < cfg.count {
         eprintln!(
             "[puzzle-gen] WARNING: only found {}/{} puzzles within the {} attempt budget; \
-             consider widening --min-pieces/--max-pieces/--min-depth/--max-depth or raising \
-             --max-attempts",
+             consider widening --min-pieces/--max-pieces/--min-depth/--max-depth, relaxing \
+             --min-solve-depth/--min-mistakes/--require-trap, or raising --max-attempts",
             puzzles.len(),
             cfg.count,
             cfg.max_attempts,
@@ -353,6 +428,7 @@ pub(crate) fn run_puzzle_gen(args: &[String]) {
         },
         export_date: generated_at,
         puzzle_count: puzzles.len(),
+        metadata: build_pack_metadata(&cfg),
         puzzles,
     };
     let json_text =
@@ -367,11 +443,52 @@ pub(crate) fn run_puzzle_gen(args: &[String]) {
     );
 }
 
+/// Build the optional pack `metadata` block. Only emitted when `--pack-id`
+/// was given; packs produced this way are marked official because that is
+/// exactly the path used to regenerate the committed built-in asset.
+fn build_pack_metadata(cfg: &GenConfig) -> Option<PuzzlePackMetadataJson> {
+    if cfg.pack_id.is_empty() {
+        return None;
+    }
+    let description = if cfg.pack_description.is_empty() {
+        "Forced-win puzzles generated from the Malom perfect-play database. Every puzzle \
+         is filtered for challenge: few winning first moves, real ways to go wrong, and \
+         a first move that shallow tactics do not find; the opponent replies with a \
+         practical engine defense rather than the theoretically slowest loss."
+            .to_string()
+    } else {
+        cfg.pack_description.clone()
+    };
+    Some(PuzzlePackMetadataJson {
+        id: cfg.pack_id.clone(),
+        name: cfg.pack_name.clone(),
+        description,
+        author: cfg.author.clone(),
+        version: "1.0.0",
+        tags: vec!["generated".to_string(), "malom-db".to_string()],
+        is_official: true,
+        rule_variant_id: cfg.rule_variant_id.to_string(),
+    })
+}
+
+/// Material advantage of the side to move in `query`, counting board and
+/// hand together. Positive means the solver outnumbers the defender.
+fn solver_material_advantage(query: &PerfectQuery) -> i32 {
+    let white_total = query.white_bits.count_ones() as i32 + i32::from(query.white_in_hand);
+    let black_total = query.black_bits.count_ones() as i32 + i32::from(query.black_in_hand);
+    if query.side_to_move == 0 {
+        white_total - black_total
+    } else {
+        black_total - white_total
+    }
+}
+
 /// Evaluate one sampled root position and, if it makes a good puzzle,
 /// return the fully rendered [`PuzzleInfoJson`].
 ///
 /// Every rejection path is an ordinary, expected sampling miss (wrong WDL,
-/// wrong depth, too many/few winning replies, sacrifice filter mismatch,
+/// wrong depth, too many winning or too few losing replies, no trap when
+/// one is required, a shallow probe solving it, a symmetry duplicate,
 /// database does not cover a position the line reaches) and simply returns
 /// `None` so the caller tries another sample. Only genuine internal
 /// inconsistencies (an enumerated move count mismatch, a database variant
@@ -382,6 +499,7 @@ fn try_build_puzzle<P: DatabaseProvider>(
     root_query: PerfectQuery,
     generated_at: &str,
     rng: &mut u64,
+    seen_roots: &mut HashSet<u64>,
 ) -> Option<PuzzleInfoJson> {
     let GenEnv {
         rules,
@@ -389,6 +507,12 @@ fn try_build_puzzle<P: DatabaseProvider>(
         options,
         cfg,
     } = *env;
+    if solver_material_advantage(&root_query) > cfg.max_piece_diff {
+        // Steamroller positions (e.g. five pieces against three) win no
+        // matter what the solver plays; they are never good puzzles.
+        return None;
+    }
+
     let root_snap = snapshot_from_perfect_query(rules, options, root_query);
     let root_side = root_snap.side_to_move;
     if root_side != 0 && root_side != 1 {
@@ -401,6 +525,11 @@ fn try_build_puzzle<P: DatabaseProvider>(
     let root_state = MillRules::decode_snapshot(root_snap);
     if root_state.pending_removals()[root_side as usize] > 0 {
         // Mid-removal is not a clean puzzle starting point.
+        return None;
+    }
+
+    let dedup_key = canonical_symmetry_key(&root_query);
+    if seen_roots.contains(&dedup_key) {
         return None;
     }
 
@@ -444,29 +573,40 @@ fn try_build_puzzle<P: DatabaseProvider>(
 
     let mut legal = ActionList::<256>::new();
     rules.legal_actions(&root_snap, &mut legal);
-    assert_eq!(
-        legal.as_slice().len(),
-        all_outcomes.len(),
-        "move outcome enumeration must align 1:1 with legal_actions"
+    let breakdown = classify_root_moves(
+        rules,
+        &root_snap,
+        legal.as_slice(),
+        &all_outcomes,
+        root_side,
     );
-
-    let winning: Vec<Action> = legal
-        .as_slice()
-        .iter()
-        .zip(all_outcomes.iter())
-        .filter(|(_, choice)| choice.outcome.wdl() == 1)
-        .map(|(&action, _)| action)
-        .collect();
     assert!(
-        !winning.is_empty(),
+        !breakdown.winning.is_empty(),
         "a forced-win root must have at least one winning legal move"
     );
-    if winning.len() > cfg.max_solutions {
+    if breakdown.winning.len() > cfg.max_solutions {
+        return None;
+    }
+    if breakdown.mistake_count < cfg.min_mistakes {
+        // With (almost) every legal move winning, the puzzle solves itself.
+        return None;
+    }
+    if cfg.require_trap && !breakdown.tempting_mill_mistake {
         return None;
     }
 
-    let mut solutions: Vec<BuiltSolution> = Vec::with_capacity(winning.len());
-    for &first_action in &winning {
+    // Simulated human solver: reject anything a shallow probe already
+    // cracks, and keep the shallowest solving depth as the difficulty
+    // backbone of the exported rating.
+    let solve_depth = shallowest_solving_depth(game, &root_snap, &breakdown.winning, next_u64(rng));
+    if let Some(depth) = solve_depth
+        && depth < cfg.min_solve_depth
+    {
+        return None;
+    }
+
+    let mut solutions: Vec<BuiltSolution> = Vec::with_capacity(breakdown.winning.len());
+    for &first_action in &breakdown.winning {
         let opponent_seed = next_u64(rng);
         let built = build_solution_line(
             database,
@@ -496,11 +636,19 @@ fn try_build_puzzle<P: DatabaseProvider>(
         solver_side: root_side,
         is_moving_phase: root_state.phase() == MillPhase::Moving,
         solutions: &solutions,
+        traits: PuzzleTraits {
+            mistake_count: breakdown.mistake_count,
+            tempting_mill_mistake: breakdown.tempting_mill_mistake,
+            quiet_first_move: breakdown.quiet_first_move,
+            solve_depth,
+        },
         author: &cfg.author,
         rule_variant_id: cfg.rule_variant_id,
         generated_at,
     };
-    Some(puzzle_json::build_puzzle_info(&input))
+    let info = puzzle_json::build_puzzle_info(&input);
+    seen_roots.insert(dedup_key);
+    Some(info)
 }
 
 /// Convert a Unix timestamp (seconds since 1970-01-01T00:00:00Z) to an
