@@ -585,7 +585,12 @@ pub fn all_move_outcomes_with_ordering<P: DatabaseProvider>(
     for &action in actions.as_slice() {
         let child_snap = rules.apply(snap, action);
         let outcome = match child_outcome_for_root(
-            database, rules, &child_snap, options, root_side, ordering,
+            database,
+            rules,
+            &child_snap,
+            options,
+            root_side,
+            ordering,
         )? {
             Some(outcome) => outcome,
             None => return Ok(None),
@@ -725,10 +730,14 @@ mod tests {
         let query = PerfectQuery::new(0b0000_0111, 0b0011_1000_0000_0000_0000, 0, 0, 0, false);
         let snap = snapshot_from_perfect_query(&rules, &options, query);
 
-        let Some(all_outcomes) =
-            all_move_outcomes_with_ordering(&mut db, &rules, &snap, &options, PerfectMoveOrdering::StrictSteps)
-                .expect("database read must not fail")
-        else {
+        let Some(all_outcomes) = all_move_outcomes_with_ordering(
+            &mut db,
+            &rules,
+            &snap,
+            &options,
+            PerfectMoveOrdering::StrictSteps,
+        )
+        .expect("database read must not fail") else {
             // The exact bitboard above may legitimately fall outside the
             // bundled subset on some builds; skip rather than assert a
             // brittle coverage guarantee about third-party asset files.

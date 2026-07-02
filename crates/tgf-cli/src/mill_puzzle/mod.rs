@@ -173,7 +173,9 @@ pub(crate) fn run_puzzle_gen(args: &[String]) {
     let min_pieces: u8 = parse_flag(args, "--min-pieces", 3);
     let max_pieces: u8 = parse_flag(args, "--max-pieces", 7);
     if min_depth > max_depth {
-        eprintln!("[puzzle-gen] ERROR: --min-depth ({min_depth}) must be <= --max-depth ({max_depth})");
+        eprintln!(
+            "[puzzle-gen] ERROR: --min-depth ({min_depth}) must be <= --max-depth ({max_depth})"
+        );
         std::process::exit(1);
     }
     if min_pieces > max_pieces {
@@ -402,14 +404,15 @@ fn try_build_puzzle<P: DatabaseProvider>(
         return None;
     }
 
-    let root_outcome = match evaluate_state_outcome_with_database(
-        database, &root_state, options, root_side,
-    ) {
-        Ok(Some(outcome)) => outcome,
-        Ok(None) => return None,
-        Err(err) if err.is_missing_asset() => return None,
-        Err(err) => panic!("[puzzle-gen] Perfect DB error while evaluating a sampled root: {err}"),
-    };
+    let root_outcome =
+        match evaluate_state_outcome_with_database(database, &root_state, options, root_side) {
+            Ok(Some(outcome)) => outcome,
+            Ok(None) => return None,
+            Err(err) if err.is_missing_asset() => return None,
+            Err(err) => {
+                panic!("[puzzle-gen] Perfect DB error while evaluating a sampled root: {err}")
+            }
+        };
     if root_outcome.wdl() != 1 {
         return None;
     }

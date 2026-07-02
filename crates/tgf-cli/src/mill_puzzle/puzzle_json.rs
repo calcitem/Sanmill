@@ -179,9 +179,7 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
         "placement"
     };
     let side_word = side_label(input.solver_side);
-    let title = format!(
-        "Forced win in {target_moves} ({phase_word}, {side_word} to move)"
-    );
+    let title = format!("Forced win in {target_moves} ({phase_word}, {side_word} to move)");
     let mut description = format!(
         "{side} to move: find the forced win in {target_moves} move(s) even \
          against the opponent's best practical defense.",
@@ -316,8 +314,14 @@ mod tests {
         assert!(info.tags.contains(&"win-in-2".to_string()));
         assert!(info.tags.contains(&"sacrifice".to_string()));
         assert_eq!(info.solutions.len(), 2);
-        assert!(info.solutions[1].is_optimal, "the 2-move line must be optimal");
-        assert!(!info.solutions[0].is_optimal, "the 4-move line must not be optimal");
+        assert!(
+            info.solutions[1].is_optimal,
+            "the 2-move line must be optimal"
+        );
+        assert!(
+            !info.solutions[0].is_optimal,
+            "the 4-move line must not be optimal"
+        );
         assert_eq!(info.category, "winGame");
         assert_eq!(info.rule_variant_id, "standard_9mm");
         assert_eq!(info.version, 1);

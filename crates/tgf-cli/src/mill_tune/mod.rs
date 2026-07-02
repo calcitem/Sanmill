@@ -117,4 +117,3 @@ impl PositionRecord {
         })
     }
 }
-

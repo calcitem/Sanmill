@@ -65,12 +65,16 @@ void main() {
       expect(puzzles, isEmpty);
     });
 
-    test('a JSON object without a puzzles array yields an empty list', () async {
-      builtInPuzzlesAssetLoader = (String key) async => '{"formatVersion": "1.0"}';
+    test(
+      'a JSON object without a puzzles array yields an empty list',
+      () async {
+        builtInPuzzlesAssetLoader = (String key) async =>
+            '{"formatVersion": "1.0"}';
 
-      final List<PuzzleInfo> puzzles = await getBuiltInPuzzles();
+        final List<PuzzleInfo> puzzles = await getBuiltInPuzzles();
 
-      expect(puzzles, isEmpty);
-    });
+        expect(puzzles, isEmpty);
+      },
+    );
   });
 }
