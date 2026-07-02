@@ -370,4 +370,73 @@ void main() {
       });
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // spatialTransformationTypes
+  // ---------------------------------------------------------------------------
+  group('spatialTransformationTypes', () {
+    // Positions 0-7 are the inner ring, 8-15 the middle ring, 16-23 the
+    // outer ring (see the comment on `transformationMap`).
+    int ringOf(int position) => position ~/ 8;
+
+    test('has exactly the 8 non-swap TransformationType values', () {
+      expect(spatialTransformationTypes.length, 8);
+      for (final TransformationType t in spatialTransformationTypes) {
+        expect(
+          t.name.startsWith('swap'),
+          isFalse,
+          reason: '$t is a ring-swap transformation',
+        );
+      }
+      // Every non-swap-named value must be present (guards against the
+      // curated list silently drifting from the enum if it is ever
+      // reordered or extended).
+      for (final TransformationType t in TransformationType.values) {
+        if (!t.name.startsWith('swap')) {
+          expect(
+            spatialTransformationTypes.contains(t),
+            isTrue,
+            reason: '$t is missing from spatialTransformationTypes',
+          );
+        }
+      }
+    });
+
+    test('every spatial transformation keeps each position in its own ring '
+        '(this is what makes it achievable by physically rotating/flipping '
+        'a real board)', () {
+      for (final TransformationType t in spatialTransformationTypes) {
+        final List<int> mapping = transformationMap[t]!;
+        for (int position = 0; position < 24; position++) {
+          expect(
+            ringOf(mapping[position]),
+            ringOf(position),
+            reason: '$t must not move position $position into a different ring',
+          );
+        }
+      }
+    });
+
+    test('the excluded ring-swap transformations do cross rings (sanity check '
+        'that the ring-preservation test above is actually meaningful)', () {
+      final List<TransformationType> swapTypes = TransformationType.values
+          .where((TransformationType t) => t.name.startsWith('swap'))
+          .toList();
+      expect(swapTypes, isNotEmpty);
+      for (final TransformationType t in swapTypes) {
+        final List<int> mapping = transformationMap[t]!;
+        final bool crossesRing = List<int>.generate(
+          24,
+          (int i) => i,
+        ).any((int position) => ringOf(mapping[position]) != ringOf(position));
+        expect(
+          crossesRing,
+          isTrue,
+          reason:
+              '$t was expected to move at least one position '
+              'across rings',
+        );
+      }
+    });
+  });
 }

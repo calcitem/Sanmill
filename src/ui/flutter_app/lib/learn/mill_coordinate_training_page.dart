@@ -245,9 +245,17 @@ class _MillCoordinateTrainingPageState
   ) {
     return switch (choice) {
       _CoordinateTrainingOrientationChoice.board => TransformationType.identity,
+      // Only sample the 8 physically-realizable rotations/reflections.
+      // The other 8 `TransformationType` values additionally swap the
+      // inner and outer ring, which has no physical board manipulation
+      // counterpart: the rendered board still looks valid, but the quiz
+      // target's stated coordinate (e.g. "d5", conventionally an inner-ring
+      // point) would be drawn on the *outer* ring instead, so a correct tap
+      // on the visually-obvious matching point is scored as wrong. See
+      // `spatialTransformationTypes` for the full explanation.
       _CoordinateTrainingOrientationChoice.random =>
-        TransformationType.values[_random.nextInt(
-          TransformationType.values.length,
+        spatialTransformationTypes[_random.nextInt(
+          spatialTransformationTypes.length,
         )],
     };
   }

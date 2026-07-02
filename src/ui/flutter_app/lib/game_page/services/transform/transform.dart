@@ -45,6 +45,30 @@ enum TransformationType {
   swapMirrorSlash,
 }
 
+/// The 8 "pure spatial" transformations (the D4 dihedral group: 4 rotations
+/// x 2 reflections) that a physical board can actually be put through by
+/// rotating or flipping it.
+///
+/// The remaining 8 [TransformationType] values additionally swap the inner
+/// and outer ring. Ring swap is a genuine symmetry of the board's abstract
+/// connectivity graph (useful for Perfect DB indexing and for shuffling how
+/// a puzzle position is *presented* so it cannot be memorized by rote), but
+/// it has no physical counterpart: no rotation or flip of a real board ever
+/// changes which ring a given point belongs to. Callers that ask the user to
+/// physically/visually reorient the board -- as opposed to just permuting an
+/// abstract encoding -- must sample only from this list.
+const List<TransformationType> spatialTransformationTypes =
+    <TransformationType>[
+      TransformationType.identity,
+      TransformationType.rotate90,
+      TransformationType.rotate180,
+      TransformationType.rotate270,
+      TransformationType.mirrorVertical,
+      TransformationType.mirrorHorizontal,
+      TransformationType.mirrorBackslash,
+      TransformationType.mirrorSlash,
+    ];
+
 // ---------------------------------------------------------------------------
 // Transformation mapping tables
 // ---------------------------------------------------------------------------
