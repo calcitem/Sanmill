@@ -116,11 +116,8 @@ void main() {
 
       expect(
         paint,
-        paints..circle(
-          x: sourcePoint.dx,
-          y: sourcePoint.dy,
-          radius: pieceRadius,
-        ),
+        paints
+          ..circle(x: sourcePoint.dx, y: sourcePoint.dy, radius: pieceRadius),
       );
       expect(
         paint,

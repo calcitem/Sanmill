@@ -407,23 +407,31 @@ void main() {
             '{"formatVersion":"1.0","puzzles":[]}';
       });
 
-      test('imported custom puzzles survive init and loadBuiltInPuzzles', () async {
-        await manager.init();
-        await manager.loadBuiltInPuzzles();
+      test(
+        'imported custom puzzles survive init and loadBuiltInPuzzles',
+        () async {
+          await manager.init();
+          await manager.loadBuiltInPuzzles();
 
-        expect(manager.addCustomPuzzle(importedPuzzle), isTrue);
-        expect(DB().puzzleSettings.allPuzzles.length, equals(1));
-        expect(DB().puzzleSettings.allPuzzles.single.id, equals('imported_persist_001'));
+          expect(manager.addCustomPuzzle(importedPuzzle), isTrue);
+          expect(DB().puzzleSettings.allPuzzles.length, equals(1));
+          expect(
+            DB().puzzleSettings.allPuzzles.single.id,
+            equals('imported_persist_001'),
+          );
 
-        await manager.init();
-        await manager.loadBuiltInPuzzles();
+          await manager.init();
+          await manager.loadBuiltInPuzzles();
 
-        expect(manager.getPuzzleById('imported_persist_001'), isNotNull);
-        expect(manager.getCustomPuzzles().length, equals(1));
-      });
+          expect(manager.getPuzzleById('imported_persist_001'), isNotNull);
+          expect(manager.getCustomPuzzles().length, equals(1));
+        },
+      );
 
-      test('loadBuiltInPuzzles does not persist built-in puzzles to Hive', () async {
-        builtInPuzzlesAssetLoader = (_) async => '''
+      test(
+        'loadBuiltInPuzzles does not persist built-in puzzles to Hive',
+        () async {
+          builtInPuzzlesAssetLoader = (_) async => '''
 {
   "formatVersion": "1.0",
   "puzzles": [
@@ -447,12 +455,13 @@ void main() {
 }
 ''';
 
-        await manager.init();
-        await manager.loadBuiltInPuzzles();
+          await manager.init();
+          await manager.loadBuiltInPuzzles();
 
-        expect(manager.getAllPuzzles().length, equals(1));
-        expect(DB().puzzleSettings.allPuzzles, isEmpty);
-      });
+          expect(manager.getAllPuzzles().length, equals(1));
+          expect(DB().puzzleSettings.allPuzzles, isEmpty);
+        },
+      );
     });
   });
 }

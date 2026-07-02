@@ -275,8 +275,7 @@ class PiecePainter extends CustomPainter {
               isCapturerOpponent = true;
             }
           } else if (mode == GameMode.puzzle) {
-            final PieceColor? humanColor =
-                GameController().puzzleHumanColor;
+            final PieceColor? humanColor = GameController().puzzleHumanColor;
             if (humanColor != null && capturerColor != humanColor) {
               isCapturerOpponent = true;
             }
@@ -333,8 +332,7 @@ class PiecePainter extends CustomPainter {
               isOpponent = true;
             }
           } else if (mode == GameMode.puzzle) {
-            final PieceColor? humanColor =
-                GameController().puzzleHumanColor;
+            final PieceColor? humanColor = GameController().puzzleHumanColor;
             if (humanColor != null && pieceColor != humanColor) {
               isOpponent = true;
             }

@@ -261,9 +261,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
   /// The app shell listens to [GameController.activeSessionSnapshotNotifier]
   /// via [ListenableBuilder]. Updating it from [initState] or
   /// [didUpdateWidget] triggers `setState() during build`.
-  void _publishGameUiAfterBuild({
-    required GameStateSnapshot snapshot,
-  }) {
+  void _publishGameUiAfterBuild({required GameStateSnapshot snapshot}) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) {
         return;
@@ -584,51 +582,19 @@ class _PuzzlePageState extends State<PuzzlePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          if (_isPlayingSolution)
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-              margin: const EdgeInsets.only(bottom: 12),
-              decoration: BoxDecoration(
-                color: colorScheme.primaryContainer,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: colorScheme.primary),
-              ),
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        colorScheme.primary,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      s.puzzlePlayingSolution,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: colorScheme.onPrimaryContainer,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 56),
-            child: SingleChildScrollView(
-              child: Text(
-                widget.puzzle.description,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
-                  height: 1.35,
-                ),
-              ),
-            ),
+            constraints: const BoxConstraints(minHeight: 40, maxHeight: 56),
+            child: _isPlayingSolution
+                ? _buildPlayingSolutionBanner(context, s)
+                : SingleChildScrollView(
+                    child: Text(
+                      widget.puzzle.description,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                        height: 1.35,
+                      ),
+                    ),
+                  ),
           ),
           const SizedBox(height: 8),
           Row(
@@ -702,6 +668,45 @@ class _PuzzlePageState extends State<PuzzlePage> {
                   }
                   return const SizedBox.shrink();
                 },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPlayingSolutionBanner(BuildContext context, S s) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      decoration: BoxDecoration(
+        color: colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: colorScheme.primary),
+      ),
+      child: Row(
+        children: <Widget>[
+          SizedBox(
+            width: 16,
+            height: 16,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              s.puzzlePlayingSolution,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onPrimaryContainer,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
@@ -1001,17 +1006,6 @@ class _PuzzlePageState extends State<PuzzlePage> {
       _isPlayingSolution = true;
       _solutionViewed = true;
     });
-
-    // Show info message
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(S.of(context).puzzlePlayingSolution),
-          duration: const Duration(seconds: 2),
-          backgroundColor: Colors.blue,
-        ),
-      );
-    }
 
     // Wait a moment before starting playback
     await Future<void>.delayed(const Duration(milliseconds: 500));
