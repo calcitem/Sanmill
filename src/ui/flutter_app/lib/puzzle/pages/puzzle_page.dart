@@ -282,7 +282,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
         controller.activeNativeMillSession;
     final bool loaded =
         nativeSession?.loadFen(_transformedPuzzle.initialPosition) ?? false;
-    if (!loaded) {
+    if (!loaded || nativeSession == null) {
       logger.e(
         '[PuzzlePage] Failed to load puzzle position: '
         '${_transformedPuzzle.initialPosition}',
@@ -291,8 +291,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
       return;
     }
 
+    // loadFen updates the native session immediately, but the app-shell
+    // snapshot listener may publish only on the next frame. Sync here so
+    // puzzleHumanColor reflects the loaded position, not the reset() board.
+    controller.activeSessionSnapshot = nativeSession.state.value;
+
     // Puzzle mode: the human plays the side-to-move from the initial position.
-    _puzzleHumanColor = controller.activeBoardView.sideToMove;
+    _puzzleHumanColor = nativeSession.sideToMove;
     controller.puzzleHumanColor = _puzzleHumanColor;
     controller.isPuzzleAutoMoveInProgress = false;
     // Re-apply puzzle mode so whoIsAI can reflect the resolved human side.

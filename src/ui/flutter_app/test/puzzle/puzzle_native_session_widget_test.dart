@@ -496,5 +496,35 @@ void main() {
       },
       skip: nativeLibrarySkipReason() != null,
     );
+
+    testWidgets(
+      'assigns human to black when puzzle starts with black to move',
+      (WidgetTester tester) async {
+        const String blackToMoveFen =
+            '@O****O*/*****O*@/*@****@@ b m p 3 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes';
+        final PuzzleInfo puzzle = buildPuzzle(
+          initialPosition: blackToMoveFen,
+          solutions: const <List<String>>[
+            <String>['c4', 'g7'],
+          ],
+        );
+        await pumpPuzzlePage(tester, puzzle);
+
+        final GameController controller = GameController();
+        expect(controller.puzzleHumanColor, PieceColor.black);
+        expect(controller.activeBoardView.sideToMove, PieceColor.black);
+        expect(
+          controller.gameInstance.gameMode.whoIsAI[PieceColor.black],
+          isFalse,
+        );
+        expect(
+          controller.gameInstance.gameMode.whoIsAI[PieceColor.white],
+          isTrue,
+        );
+
+        await teardownPuzzlePage(tester);
+      },
+      skip: nativeLibrarySkipReason() != null,
+    );
   });
 }
