@@ -207,6 +207,7 @@ class PiecePainter extends CustomPainter {
 
         // Check if this piece is currently placing.
         final bool isPlacingPiece =
+            (_phase == Phase.placing) &&
             (placeAnimationValue < 1.0) &&
             (focusIndex != null) &&
             (blurIndex == null) &&
@@ -273,6 +274,12 @@ class PiecePainter extends CustomPainter {
             if (capturerColor == aiColor) {
               isCapturerOpponent = true;
             }
+          } else if (mode == GameMode.puzzle) {
+            final PieceColor? humanColor =
+                GameController().puzzleHumanColor;
+            if (humanColor != null && capturerColor != humanColor) {
+              isCapturerOpponent = true;
+            }
           } else if (mode == GameMode.humanVsLAN) {
             final PieceColor localColor = GameController().getLocalColor();
             if (capturerColor != localColor) {
@@ -323,6 +330,12 @@ class PiecePainter extends CustomPainter {
                 ? PieceColor.white
                 : PieceColor.black;
             if (pieceColor == aiColor) {
+              isOpponent = true;
+            }
+          } else if (mode == GameMode.puzzle) {
+            final PieceColor? humanColor =
+                GameController().puzzleHumanColor;
+            if (humanColor != null && pieceColor != humanColor) {
               isOpponent = true;
             }
           } else if (mode == GameMode.humanVsLAN) {

@@ -263,8 +263,8 @@ class TapHandler {
         ? null
         : MillBoardCoordinateMaps.squareToGridIndex[square];
     controller.gameInstance
-      ..focusIndex = gridIndex
-      ..blurIndex = null;
+      ..blurIndex = gridIndex
+      ..focusIndex = null;
     controller.animationManager.animatePickUp();
     SoundManager().playTone(Sound.select);
   }

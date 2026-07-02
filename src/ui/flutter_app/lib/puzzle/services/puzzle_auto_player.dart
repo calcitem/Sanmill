@@ -80,6 +80,7 @@ class PuzzleAutoPlayer {
     required List<String> Function() movesSoFar,
     required bool Function(String move) applyMove,
     required Future<void> Function() onWrongMove,
+    Future<void> Function()? onAfterApplyMove,
     int maxAutoPlies = 64,
   }) async {
     if (isGameOver()) {
@@ -129,6 +130,9 @@ class PuzzleAutoPlayer {
 
       line.add(expectedMove);
       played++;
+      if (onAfterApplyMove != null) {
+        await onAfterApplyMove();
+      }
       assert(
         played <= maxAutoPlies,
         'Puzzle auto-play exceeded maxAutoPlies=$maxAutoPlies. '

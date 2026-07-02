@@ -408,6 +408,45 @@ class AnimationManager {
     return !_isDisposed && _removeAnimationController.isAnimating;
   }
 
+  /// Whether any board piece animation (place / move / remove / pick-up /
+  /// put-down) is still running.
+  bool get isBoardAnimationInProgress {
+    if (_isDisposed || !allowAnimations) {
+      return false;
+    }
+    return _placeAnimationController.isAnimating ||
+        _moveAnimationController.isAnimating ||
+        _removeAnimationController.isAnimating ||
+        _pickUpAnimationController.isAnimating ||
+        _putDownAnimationController.isAnimating;
+  }
+
+  /// Waits until [isBoardAnimationInProgress] is false.
+  ///
+  /// Puzzle auto-play uses this so opponent replies do not reset a human move
+  /// animation mid-flight (which would skip the put-down landing effect).
+  Future<void> waitForBoardAnimations({
+    Duration pollInterval = const Duration(milliseconds: 16),
+    Duration timeout = const Duration(seconds: 5),
+  }) async {
+    if (_isDisposed || !allowAnimations) {
+      return;
+    }
+
+    final Stopwatch stopwatch = Stopwatch()..start();
+    while (isBoardAnimationInProgress) {
+      if (stopwatch.elapsed > timeout) {
+        assert(
+          false,
+          'Timed out waiting for board animations after '
+          '${timeout.inMilliseconds}ms.',
+        );
+        break;
+      }
+      await Future<void>.delayed(pollInterval);
+    }
+  }
+
   // Handle Place Animation with proper disposal check
   void animatePlace() {
     if (_isDisposed) {
@@ -420,6 +459,7 @@ class AnimationManager {
       // Note: Put-down animation is triggered automatically via status listener
     } else {
       _placeAnimationController.value = 1.0;
+      _onPlaceAnimationStatus(AnimationStatus.completed);
     }
   }
 
@@ -435,6 +475,7 @@ class AnimationManager {
       // Note: Put-down animation is triggered automatically via status listener
     } else {
       _moveAnimationController.value = 1.0;
+      _onMoveAnimationStatus(AnimationStatus.completed);
     }
   }
 

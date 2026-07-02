@@ -1086,6 +1086,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
         return;
       }
       try {
+        if (controller.hasAnimationManager) {
+          await controller.animationManager.waitForBoardAnimations();
+        }
         await PuzzleAutoPlayer.autoPlayOpponentResponses(
           solutions: legacySolutions,
           humanColor: humanColor,
@@ -1101,6 +1104,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
             }
             return ok;
           },
+          onAfterApplyMove: controller.hasAnimationManager
+              ? controller.animationManager.waitForBoardAnimations
+              : null,
           onWrongMove: () async {
             // No solution matches the current line. Undo the last move to prevent
             // a deadlock (human input is restricted to one side in puzzle mode).

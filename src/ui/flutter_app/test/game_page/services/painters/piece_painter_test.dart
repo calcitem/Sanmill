@@ -77,6 +77,59 @@ void main() {
         ),
       );
     });
+
+    testWidgets('paints selected moving piece at its board square', (
+      WidgetTester tester,
+    ) async {
+      final GameController controller = GameController();
+      controller.reset();
+      controller.animationManager = HeadlessAnimationManager();
+      controller.gameInstance.gameMode = GameMode.puzzle;
+      controller.puzzleHumanColor = PieceColor.black;
+
+      final int sourceIndex = _legacyGridIndex('d3');
+      controller.gameInstance
+        ..blurIndex = sourceIndex
+        ..focusIndex = null;
+
+      const Size size = Size.square(350);
+      final Offset sourcePoint = pointFromIndex(sourceIndex, size);
+      final Offset bottomRight = Offset(size.width, size.height);
+      final double pieceRadius = _pieceRadius(size);
+
+      final NativeMillSnapshotBoardView view = _viewWithBlackAtNode(
+        _nodeFor('d3'),
+      );
+      final PiecePainter painter = PiecePainter(
+        placeAnimationValue: 0.0,
+        moveAnimationValue: 1.0,
+        removeAnimationValue: 1.0,
+        pickUpAnimationValue: 0.5,
+        putDownAnimationValue: 1.0,
+        isPutDownAnimating: false,
+        pieceImages: null,
+        placeEffectAnimation: RadialPieceEffectAnimation(),
+        removeEffectAnimation: ExplodePieceEffectAnimation(),
+        nativeBoardView: view,
+      );
+      void paint(Canvas canvas) => painter.paint(canvas, size);
+
+      expect(
+        paint,
+        paints..circle(
+          x: sourcePoint.dx,
+          y: sourcePoint.dy,
+          radius: pieceRadius,
+        ),
+      );
+      expect(
+        paint,
+        isNot(
+          paints
+            ..circle(x: bottomRight.dx, y: bottomRight.dy, radius: pieceRadius),
+        ),
+      );
+    });
   });
 }
 
