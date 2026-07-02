@@ -73,7 +73,7 @@ void main() {
   // ---------------------------------------------------------------------------
   group('GameOverReason', () {
     test('should include all expected values', () {
-      expect(GameOverReason.values.length, 10);
+      expect(GameOverReason.values.length, 11);
       expect(
         GameOverReason.values,
         containsAll(<GameOverReason>[
@@ -87,6 +87,7 @@ void main() {
           GameOverReason.drawEndgameFiftyMove,
           GameOverReason.drawFullBoard,
           GameOverReason.drawStalemateCondition,
+          GameOverReason.drawAgreement,
         ]),
       );
     });

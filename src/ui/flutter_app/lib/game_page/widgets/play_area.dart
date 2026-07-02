@@ -21,6 +21,9 @@ import '../../game_platform/game_session.dart'
 import '../../game_shell/game_session_scope.dart';
 import '../../games/mill/mill_action_codec.dart';
 import '../../games/mill/mill_board_transform_actions.dart';
+import '../../games/mill/mill_human_database_provider.dart';
+import '../../games/mill/mill_opening_book_provider.dart';
+import '../../games/mill/native_mill_ai_turn_controller.dart';
 import '../../games/mill/native_mill_game_session.dart';
 import '../../games/mill/native_mill_rules_port.dart';
 import '../../games/mill/opening_explorer/opening_explorer_page.dart';
@@ -1426,6 +1429,28 @@ class PlayAreaState extends State<PlayArea> {
         _activePhase != Phase.gameOver;
   }
 
+  /// Offer draw is only wired up for humanVsAi (the AI decides for itself)
+  /// and local humanVsHuman (the other player decides on the same device).
+  /// LAN draw offers would need a new bilateral request/response network
+  /// message -- unlike resignation, a draw cannot be unilaterally declared
+  /// -- and are intentionally out of scope for now; resign remains
+  /// available there instead.
+  bool get _canOfferDrawFromBottomBar {
+    return _usesLichessHumanAiToolbar &&
+        GameController().gameRecorder.currentPath.length >= 2 &&
+        _activePhase != Phase.ready &&
+        _activePhase != Phase.gameOver &&
+        !GameController().isEngineRunning &&
+        !GameController().isEngineInDelay;
+  }
+
+  bool get _canOfferDrawFromRegularBottomBar {
+    return GameController().gameInstance.gameMode == GameMode.humanVsHuman &&
+        GameController().gameRecorder.currentPath.length >= 2 &&
+        _activePhase != Phase.ready &&
+        _activePhase != Phase.gameOver;
+  }
+
   bool get _canTakeBackFromBottomBar {
     return _usesLichessHumanAiToolbar &&
         GameController().gameRecorder.currentPath.isNotEmpty &&
@@ -1806,6 +1831,138 @@ class PlayAreaState extends State<PlayArea> {
     return mode == GameMode.humanVsAi || mode == GameMode.aiVsAi;
   }
 
+  /// Whether "Let AI reconsider" can currently act: humanVsAi, no search in
+  /// flight, and the most recent ply was actually played by the AI (i.e. it
+  /// is now the human's turn, mirroring the precondition of the take-back
+  /// button so both features stay consistent about "whose turn is it").
+  bool get _canForceAiRedo {
+    if (GameController().gameInstance.gameMode != GameMode.humanVsAi) {
+      return false;
+    }
+    if (GameController().isEngineRunning || GameController().isEngineInDelay) {
+      return false;
+    }
+    if (GameController().gameRecorder.currentPath.isEmpty) {
+      return false;
+    }
+    if (GameController().gameInstance.isAiSideToMove) {
+      // It is still the AI's turn (or the human hasn't moved yet); there is
+      // no AI move to reconsider.
+      return false;
+    }
+    return _takeBackStepCountForRequesterOrNull(
+          _humanAiTakeBackRequesterSide.opponent,
+        ) !=
+        null;
+  }
+
+  /// Undoes the AI's last turn (place/move, plus any trailing capture it
+  /// made) and lets it search again, excluding the move it just played, so
+  /// it commits to a genuinely different choice. If no distinct legal
+  /// alternative exists, the original move is restored unchanged and the
+  /// user is told there was nothing else to try.
+  ///
+  /// This is a practice/study aid, not a fairness mechanic: it deliberately
+  /// bypasses the opening book / human database lookups that a normal AI
+  /// turn consults first, since "try a different move" only makes sense
+  /// against the engine's own search.
+  Future<void> _forceAiRedoFromGameMenu(BuildContext context) async {
+    assert(_usesLichessHumanAiToolbar);
+    if (!_canForceAiRedo) {
+      return;
+    }
+    final PieceColor aiColor = _humanAiTakeBackRequesterSide.opponent;
+    final int? steps = _takeBackStepCountForRequesterOrNull(aiColor);
+    if (steps == null) {
+      return;
+    }
+    final String? originalMove =
+        GameController().gameRecorder.currentPath.lastOrNull?.move;
+    assert(
+      originalMove != null,
+      'Force AI redo requires a most-recent move to reconsider.',
+    );
+
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'forceAiRedo'},
+    );
+
+    await HistoryNavigator.takeBackN(context, steps, pop: false, toolbar: true);
+    if (!context.mounted) {
+      return;
+    }
+
+    final NativeMillGameSession? session =
+        GameController().activeNativeMillSession;
+    if (session == null) {
+      return;
+    }
+
+    final List<NativeMillPrincipalVariation> variations = await session
+        .searchPrincipalVariations(
+          depth: 24,
+          moveLimitMs: 2000,
+          multiPv: 4,
+          engineSettings: DB().generalSettings,
+        );
+    if (!context.mounted) {
+      return;
+    }
+    final NativeMillPrincipalVariation? alternative = variations
+        .cast<NativeMillPrincipalVariation?>()
+        .firstWhere(
+          (NativeMillPrincipalVariation? v) => v!.move != originalMove,
+          orElse: () => null,
+        );
+
+    if (alternative == null) {
+      GameController().headerTipNotifier.showTip(
+        S.of(context).aiNoAlternativeMove,
+      );
+      // Restore exactly what was there before, since we already took the
+      // original move back above.
+      final NativeMillAiTurnController restoreController =
+          NativeMillAiTurnController(
+            generalSettings: DB().generalSettings,
+            openingBook: MillOpeningBookProvider(
+              ruleSettings: DB().ruleSettings,
+              generalSettings: DB().generalSettings,
+              placementHistory: openingBookPlacementHistory,
+            ),
+            humanDatabase: MillHumanDatabaseProvider(
+              ruleSettings: DB().ruleSettings,
+              generalSettings: DB().generalSettings,
+            ),
+          );
+      await restoreController.playIfAiTurn(session);
+      return;
+    }
+
+    GameAction? action;
+    for (final GameAction candidate in session.legalActions) {
+      if (MillActionCodec.moveStringFrom(candidate) == alternative.move) {
+        action = candidate;
+        break;
+      }
+    }
+    assert(action != null, 'Alternative move must still be legal.');
+    if (action == null) {
+      return;
+    }
+    await session.apply(action);
+    if (session.outcome.isTerminal) {
+      return;
+    }
+    // Consume any trailing removal from the alternative move the same way a
+    // normal AI turn would; the removal choice itself does not need to be
+    // "forced different" -- only the move that triggered this action does.
+    final NativeMillAiTurnController continuation = NativeMillAiTurnController(
+      generalSettings: DB().generalSettings,
+    );
+    await continuation.playIfAiTurn(session);
+  }
+
   Future<void> _showResignConfirmation(BuildContext context) async {
     assert(_usesLichessHumanAiToolbar);
     final bool? confirmed = await showDialog<bool>(
@@ -1838,6 +1995,124 @@ class PlayAreaState extends State<PlayArea> {
       <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'resign'},
     );
     GameController().requestResignation();
+  }
+
+  /// Score margin (same scale as [NativeMillPrincipalVariation.score]) below
+  /// which the AI is willing to accept a draw offer, evaluated from the
+  /// AI's own perspective. A small positive tolerance is used rather than
+  /// requiring dead equality, since a genuinely balanced position rarely
+  /// evaluates to exactly zero.
+  static const int _drawOfferAiAcceptThreshold = 10;
+
+  Future<void> _showOfferDrawConfirmation(BuildContext context) async {
+    assert(_usesLichessHumanAiToolbar);
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(S.of(dialogContext).confirmOfferDraw),
+          content: Text(S.of(dialogContext).areYouSureYouWantToOfferADraw),
+          actions: <Widget>[
+            TextButton(
+              key: const Key('play_area_offer_draw_cancel_button'),
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(S.of(dialogContext).cancel),
+            ),
+            TextButton(
+              key: const Key('play_area_offer_draw_confirm_button'),
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text(S.of(dialogContext).offerDraw),
+            ),
+          ],
+        );
+      },
+    );
+    if (confirmed != true || !context.mounted) {
+      return;
+    }
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'offerDraw'},
+    );
+    await _resolveDrawOfferVsAi(context);
+  }
+
+  Future<void> _resolveDrawOfferVsAi(BuildContext context) async {
+    final NativeMillGameSession? session =
+        GameController().activeNativeMillSession;
+    if (session == null) {
+      return;
+    }
+    final List<NativeMillPrincipalVariation> variations = await session
+        .searchPrincipalVariations(
+          depth: 18,
+          moveLimitMs: 1200,
+          multiPv: 1,
+          engineSettings: DB().generalSettings,
+        );
+    if (!context.mounted) {
+      return;
+    }
+    final int sideToMoveScore = variations.isEmpty ? 0 : variations.first.score;
+    // `score` is relative to whoever is currently to move, which may be
+    // either player depending on when the offer happens; normalise to the
+    // AI's own perspective before comparing against the acceptance
+    // threshold so the sign is correct regardless of whose turn it is.
+    final PieceColor aiColor = _humanAiTakeBackRequesterSide.opponent;
+    final PieceColor mover = GameController().activeBoardView.sideToMove;
+    final int aiPerspectiveScore = mover == aiColor
+        ? sideToMoveScore
+        : -sideToMoveScore;
+    final bool aiAccepts = aiPerspectiveScore <= _drawOfferAiAcceptThreshold;
+
+    if (!aiAccepts) {
+      GameController().headerTipNotifier.showTip(S.of(context).aiDeclinedDraw);
+      return;
+    }
+    GameController().forceGameOver(
+      PieceColor.draw,
+      GameOverReason.drawAgreement,
+    );
+    GameController().gameResultNotifier.showResult();
+  }
+
+  Future<void> _showOfferDrawConfirmationRegular(BuildContext context) async {
+    assert(!_usesLichessHumanAiToolbar);
+    final bool? accepted = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text(S.of(dialogContext).offerDraw),
+          content: Text(S.of(dialogContext).opponentAcceptDrawPrompt),
+          actions: <Widget>[
+            TextButton(
+              key: const Key('play_area_regular_offer_draw_decline_button'),
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(S.of(dialogContext).decline),
+            ),
+            TextButton(
+              key: const Key('play_area_regular_offer_draw_accept_button'),
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text(S.of(dialogContext).accept),
+            ),
+          ],
+        );
+      },
+    );
+    if (accepted != true || !context.mounted) {
+      return;
+    }
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'regularBottom', 'action': 'offerDraw'},
+    );
+    GameController().forceGameOver(
+      PieceColor.draw,
+      GameOverReason.drawAgreement,
+    );
+    GameController().gameResultNotifier.showResult();
   }
 
   Future<void> _takeBackFromBottomBar(BuildContext context) async {
@@ -2267,14 +2542,25 @@ class PlayAreaState extends State<PlayArea> {
             makeLabel: (BuildContext context) => Text(S.of(context).results),
             onPressed: _showRegularGameResult,
           )
-        else if (_canResignFromRegularBottomBar)
-          LichessActionSheetAction(
-            key: const Key('play_area_regular_game_menu_resign'),
-            leading: const Icon(CupertinoIcons.flag),
-            makeLabel: (BuildContext context) => Text(S.of(context).resign),
-            onPressed: () =>
-                unawaited(_showRegularResignConfirmation(actionContext)),
-          ),
+        else ...<LichessActionSheetAction>[
+          if (_canOfferDrawFromRegularBottomBar)
+            LichessActionSheetAction(
+              key: const Key('play_area_regular_game_menu_offer_draw'),
+              leading: const Icon(Icons.handshake_outlined),
+              makeLabel: (BuildContext context) =>
+                  Text(S.of(context).offerDraw),
+              onPressed: () =>
+                  unawaited(_showOfferDrawConfirmationRegular(actionContext)),
+            ),
+          if (_canResignFromRegularBottomBar)
+            LichessActionSheetAction(
+              key: const Key('play_area_regular_game_menu_resign'),
+              leading: const Icon(CupertinoIcons.flag),
+              makeLabel: (BuildContext context) => Text(S.of(context).resign),
+              onPressed: () =>
+                  unawaited(_showRegularResignConfirmation(actionContext)),
+            ),
+        ],
         LichessActionSheetAction(
           key: const Key('play_area_toolbar_item_options'),
           leading: const Icon(Icons.settings_outlined),
@@ -2340,6 +2626,14 @@ class PlayAreaState extends State<PlayArea> {
               ),
             ),
           ),
+        if (_canForceAiRedo)
+          LichessActionSheetAction(
+            key: const Key('play_area_game_menu_force_ai_redo'),
+            leading: const Icon(Icons.refresh_rounded),
+            makeLabel: (BuildContext context) =>
+                Text(S.of(context).forceAiRedo),
+            onPressed: () => unawaited(_forceAiRedoFromGameMenu(actionContext)),
+          ),
         if (_shouldShowAiChatMenuAction)
           LichessActionSheetAction(
             key: const Key('play_area_game_menu_ai_chat'),
@@ -2355,13 +2649,25 @@ class PlayAreaState extends State<PlayArea> {
             makeLabel: (BuildContext context) => Text(S.of(context).results),
             onPressed: _showHumanAiGameResult,
           )
-        else if (_canResignFromBottomBar)
-          LichessActionSheetAction(
-            key: const Key('play_area_game_menu_resign'),
-            leading: const Icon(CupertinoIcons.flag),
-            makeLabel: (BuildContext context) => Text(S.of(context).resign),
-            onPressed: () => unawaited(_showResignConfirmation(actionContext)),
-          ),
+        else ...<LichessActionSheetAction>[
+          if (_canOfferDrawFromBottomBar)
+            LichessActionSheetAction(
+              key: const Key('play_area_game_menu_offer_draw'),
+              leading: const Icon(Icons.handshake_outlined),
+              makeLabel: (BuildContext context) =>
+                  Text(S.of(context).offerDraw),
+              onPressed: () =>
+                  unawaited(_showOfferDrawConfirmation(actionContext)),
+            ),
+          if (_canResignFromBottomBar)
+            LichessActionSheetAction(
+              key: const Key('play_area_game_menu_resign'),
+              leading: const Icon(CupertinoIcons.flag),
+              makeLabel: (BuildContext context) => Text(S.of(context).resign),
+              onPressed: () =>
+                  unawaited(_showResignConfirmation(actionContext)),
+            ),
+        ],
         LichessActionSheetAction(
           key: const Key('play_area_game_menu_new_game'),
           leading: const Icon(Icons.add_circle_outline),

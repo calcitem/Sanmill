@@ -157,8 +157,8 @@ void main() {
   // GameOverReason comprehensive
   // ---------------------------------------------------------------------------
   group('GameOverReason comprehensive', () {
-    test('should have ten reasons', () {
-      expect(GameOverReason.values.length, 10);
+    test('should have eleven reasons', () {
+      expect(GameOverReason.values.length, 11);
     });
 
     test('lose reasons should start with "lose"', () {
@@ -172,7 +172,7 @@ void main() {
       final List<GameOverReason> drawReasons = GameOverReason.values
           .where((GameOverReason r) => r.name.startsWith('draw'))
           .toList();
-      expect(drawReasons.length, 5);
+      expect(drawReasons.length, 6);
     });
   });
 

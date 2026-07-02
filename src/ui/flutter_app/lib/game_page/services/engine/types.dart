@@ -293,6 +293,7 @@ enum GameOverReason {
   drawEndgameFiftyMove,
   drawFullBoard,
   drawStalemateCondition,
+  drawAgreement,
 }
 
 extension GameOverReasonExtension on GameOverReason {
@@ -322,6 +323,8 @@ extension GameOverReasonExtension on GameOverReason {
         return S.of(context).endWithStalemateDraw;
       case GameOverReason.drawThreefoldRepetition:
         return S.of(context).drawReasonThreefoldRepetition;
+      case GameOverReason.drawAgreement:
+        return S.of(context).drawReasonAgreement;
     }
   }
 
@@ -355,6 +358,8 @@ extension GameOverReasonExtension on GameOverReason {
         return 'drawFullBoard';
       case GameOverReason.drawStalemateCondition:
         return 'drawStalemateCondition';
+      case GameOverReason.drawAgreement:
+        return 'drawAgreement';
     }
   }
 }
@@ -387,6 +392,8 @@ GameOverReason? gameOverReasonFromTgfReason(String? reason) {
       return GameOverReason.drawFullBoard;
     case 'drawStalemateCondition':
       return GameOverReason.drawStalemateCondition;
+    case 'drawAgreement':
+      return GameOverReason.drawAgreement;
     default:
       return null;
   }
