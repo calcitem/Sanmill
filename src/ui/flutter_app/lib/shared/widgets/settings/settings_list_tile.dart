@@ -100,7 +100,7 @@ class SettingsListTile extends StatelessWidget {
       style: titleStyle,
     );
     final Widget? subTitle = subtitleString != null
-        ? Text(subtitleString!, maxLines: 5, style: subtitleStyle)
+        ? Text(subtitleString!, style: subtitleStyle)
         : null;
 
     switch (_type) {
