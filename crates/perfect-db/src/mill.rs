@@ -15,7 +15,8 @@ use std::sync::OnceLock;
 use crate::database::{
     Database, DatabaseError, DatabaseProvider, DatabaseVariant, PerfectOutcome, PerfectQuery,
 };
-use tgf_core::{ActionList, GameRules, GameStateSnapshot, OutcomeKind};
+use crate::wdl_plane::WdlPlaneCache;
+use tgf_core::{Action, ActionList, GameRules, GameStateSnapshot, OutcomeKind};
 use tgf_mill::rules::MillState;
 use tgf_mill::{MillPhase, MillRules, MillUciCodec, MillVariantOptions, default_mill_topology};
 
@@ -125,7 +126,13 @@ pub fn snapshot_from_perfect_query(
     rules.encode_state(state)
 }
 
-fn query_from_state(
+/// Build a [`PerfectQuery`] from a `tgf-mill` state, or `None` when the
+/// variant/side is not one the perfect database supports.  Public because
+/// mining and other tooling that needs the database's canonical
+/// `(sector, bitboard)` view of a position (not just a WDL/best-move answer)
+/// has no other way to reach it: the node<->perfect-index bitboard
+/// conversion is otherwise private to this module.
+pub fn query_from_state(
     state: &MillState,
     options: &MillVariantOptions,
     side_to_move: i8,
@@ -349,6 +356,207 @@ pub fn evaluate_state_outcome_with_database<P: DatabaseProvider>(
         return Ok(None);
     };
     database.evaluate_outcome(query)
+}
+
+/// Canonical key for a *mid-removal* position (`pending_removals[side] > 0`).
+///
+/// Mid-removal positions have no entry in the database's own sector
+/// indexing at all: the sector-fold convention requires the mover to have
+/// placed at most as many pieces as the opponent (verified empirically
+/// against every shipped `.secval`), which a mover's own just-completed
+/// placement/move momentarily violates until the forced removal resolves
+/// it. [`crate::wdl_plane::WdlPlaneCache::canonical_key_for_query`]'s
+/// `(sector, slot)` scheme is therefore not just unavailable but
+/// *meaningless* here -- Malom's solver never represents these states
+/// directly (see [`resolve_wdl_with_plane`]'s removal recursion, which
+/// resolves values without ever querying a mid-removal sector).
+///
+/// This instead folds the raw board through the same 16 board symmetries
+/// the database uses and hashes the canonical form directly, so two
+/// concrete boards that are symmetric or color-mirror images still key
+/// identically (matching the guarantee `pack_canonical_key` gives settled
+/// positions). Bit 63 is always set to tag this key space; a
+/// `pack_canonical_key` result never sets it (sector piece counts are
+/// always `<= 12`), so the two key spaces can never collide.
+pub fn mid_removal_key(state: &MillState) -> Option<u64> {
+    let side = state.side_to_move();
+    if side != 0 && side != 1 {
+        return None;
+    }
+    let (white_bits, black_bits) = bitboards_from_state(state);
+    let board = u64::from(white_bits) | (u64::from(black_bits) << 24);
+    let canonical_board = (0..16_u8)
+        .map(|op| crate::index::symmetry::transform48(op, board))
+        .min()
+        .expect("16 symmetry operations always yield at least one candidate");
+
+    let hand = state.pieces_in_hand();
+    let pending = state.pending_removals();
+    let mut hash = 0xcbf2_9ce4_8422_2325_u64;
+    let mut mix = |value: u64| {
+        for byte in value.to_le_bytes() {
+            hash ^= u64::from(byte);
+            hash = hash.wrapping_mul(0x0000_0100_0000_01b3);
+        }
+    };
+    mix(canonical_board);
+    mix(u64::from(hand[0]));
+    mix(u64::from(hand[1]));
+    mix(u64::from(pending[0]));
+    mix(u64::from(pending[1]));
+    mix(u64::from(side as u8));
+
+    Some(crate::wdl_plane::MID_REMOVAL_KEY_TAG | (hash & !crate::wdl_plane::MID_REMOVAL_KEY_TAG))
+}
+
+/// Canonical mining/runtime key for any (settled or mid-removal) Mill
+/// state: the database's own `(sector, slot)` key for settled positions
+/// (see [`crate::wdl_plane::WdlPlaneCache::canonical_key_for_query`]), or
+/// [`mid_removal_key`] for mid-removal ones. Every caller that needs a
+/// stable position identity -- the mining pipeline's dedup keys and the
+/// runtime patch lookup alike -- should go through this single entry point
+/// rather than re-deriving the settled/mid-removal fork itself.
+pub fn canonical_key<P: DatabaseProvider>(
+    plane_cache: &mut WdlPlaneCache<P>,
+    state: &MillState,
+    options: &MillVariantOptions,
+) -> Option<u64> {
+    let side = state.side_to_move();
+    if side != 0 && side != 1 {
+        return None;
+    }
+    if state.pending_removals()[side as usize] > 0 {
+        return mid_removal_key(state);
+    }
+    let query = query_from_state(state, options, side)?;
+    Some(plane_cache.canonical_key_for_query(query))
+}
+
+/// Resolve `snap`'s WDL (`-1`/`0`/`1`) from its own side-to-move's
+/// perspective using the fast [`WdlPlaneCache`] instead of the precise
+/// (steps-carrying) database.
+///
+/// Mid-removal snapshots have no direct database entry (mirrors
+/// [`Database::evaluate`], which returns `None` for `only_stone_taking`
+/// queries): this resolves them by recursing one ply into each removal
+/// choice and negating, exactly like the precise-database
+/// `continuation_outcome_for_root` path below. The Perfect-DB-compatible
+/// ruleset never chains more than one removal per turn
+/// (`may_remove_multiple` is always false there), so the recursion is
+/// shallow; [`MAX_REMOVAL_CONTINUATION_DEPTH`] is kept as a defensive bound
+/// shared with the precise path rather than a expected depth.
+///
+/// This is the primitive the mining pipeline's cheap tier-2 pre-filter is
+/// built on: it is cheap enough to call once per legal move at every
+/// visited node (a handful of plane lookups), unlike a full engine search.
+pub fn resolve_wdl_with_plane<P: DatabaseProvider>(
+    plane_cache: &mut WdlPlaneCache<P>,
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    options: &MillVariantOptions,
+) -> Result<Option<i8>, DatabaseError> {
+    resolve_wdl_with_plane_inner(plane_cache, rules, snap, options, 0)
+}
+
+fn resolve_wdl_with_plane_inner<P: DatabaseProvider>(
+    plane_cache: &mut WdlPlaneCache<P>,
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    options: &MillVariantOptions,
+    depth: u8,
+) -> Result<Option<i8>, DatabaseError> {
+    assert!(
+        depth <= MAX_REMOVAL_CONTINUATION_DEPTH,
+        "Perfect DB plane removal continuation exceeded the expected Mill bound"
+    );
+
+    match rules.outcome(snap).kind {
+        OutcomeKind::Ongoing => {}
+        OutcomeKind::Draw => return Ok(Some(0)),
+        OutcomeKind::Win(side) => {
+            return Ok(Some(if side == snap.side_to_move { 1 } else { -1 }));
+        }
+        OutcomeKind::Abandoned | OutcomeKind::WinTeam(_) => return Ok(None),
+    }
+
+    let side_to_move = snap.side_to_move;
+    if side_to_move != 0 && side_to_move != 1 {
+        return Ok(None);
+    }
+
+    let state = MillRules::decode_snapshot(*snap);
+    if state.pending_removals()[side_to_move as usize] > 0 {
+        assert!(
+            depth < MAX_REMOVAL_CONTINUATION_DEPTH,
+            "Perfect DB plane removal continuation must finish before the depth cap"
+        );
+        let mut actions = ActionList::<256>::new();
+        rules.legal_actions(snap, &mut actions);
+        let mut best: Option<i8> = None;
+        for &action in actions.as_slice() {
+            let next = rules.apply(snap, action);
+            let Some(child_wdl) =
+                resolve_wdl_with_plane_inner(plane_cache, rules, &next, options, depth + 1)?
+            else {
+                return Ok(None);
+            };
+            let value = if next.side_to_move == side_to_move {
+                child_wdl
+            } else {
+                -child_wdl
+            };
+            if best.is_none_or(|incumbent| value > incumbent) {
+                best = Some(value);
+            }
+        }
+        return Ok(best);
+    }
+
+    let Some(query) = query_from_state(&state, options, side_to_move) else {
+        return Ok(None);
+    };
+    plane_cache.wdl_for_query(query)
+}
+
+/// Every legal action's fast-plane WDL from the root side's perspective, in
+/// legal-action order.  The tier-2 pre-filter counterpart of
+/// [`all_move_outcomes_with_ordering`]: cheaper (no step counts, no disk
+/// symmetry probe once the sector's plane is cached) but otherwise the same
+/// child-enumeration shape.
+///
+/// Returns `None` under the same conditions as
+/// [`all_move_outcomes_with_ordering`]: an invalid side to move, or any
+/// candidate line running into a position the plane cache cannot resolve
+/// (unsupported variant, or the underlying provider is missing the sector).
+pub fn all_move_wdl_fast<P: DatabaseProvider>(
+    plane_cache: &mut WdlPlaneCache<P>,
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    options: &MillVariantOptions,
+) -> Result<Option<Vec<(Action, i8)>>, DatabaseError> {
+    let root_side = snap.side_to_move;
+    if root_side != 0 && root_side != 1 {
+        return Ok(None);
+    }
+
+    let mut actions = ActionList::<256>::new();
+    rules.legal_actions(snap, &mut actions);
+
+    let mut results = Vec::with_capacity(actions.as_slice().len());
+    for &action in actions.as_slice() {
+        let child_snap = rules.apply(snap, action);
+        let Some(child_wdl) = resolve_wdl_with_plane(plane_cache, rules, &child_snap, options)?
+        else {
+            return Ok(None);
+        };
+        let value = if child_snap.side_to_move == root_side {
+            child_wdl
+        } else {
+            -child_wdl
+        };
+        results.push((action, value));
+    }
+    Ok(Some(results))
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -704,6 +912,7 @@ fn terminal_outcome_for_root(
 mod tests {
     use super::*;
     use crate::database::{DatabaseOptions, FileDatabaseProvider};
+    use crate::wdl_plane::WdlPlaneCache;
 
     fn asset_root() -> std::path::PathBuf {
         std::path::Path::new(concat!(
@@ -711,6 +920,167 @@ mod tests {
             "/../../src/ui/flutter_app/assets/databases"
         ))
         .to_path_buf()
+    }
+
+    /// Play forward from the initial position, greedily preferring a
+    /// mill-forming action, until we reach a genuine mid-removal state
+    /// (`pending_removals[side_to_move] > 0`). Used to exercise
+    /// [`mid_removal_key`] / [`canonical_key`] against a real reachable
+    /// position instead of a hand-constructed one.
+    fn find_mid_removal_state(rules: &MillRules, _options: &MillVariantOptions) -> MillState {
+        let mut snap = rules.initial_state(&[]);
+        for _ in 0..40 {
+            let state = MillRules::decode_snapshot(snap);
+            let side = state.side_to_move();
+            if side >= 0 && state.pending_removals()[side as usize] > 0 {
+                return state;
+            }
+            let mut actions = ActionList::<256>::new();
+            rules.legal_actions(&snap, &mut actions);
+            assert!(
+                !actions.as_slice().is_empty(),
+                "ran out of legal moves before a mill formed"
+            );
+            // Prefer whichever action creates a pending removal, else the
+            // first legal action, to reach a mid-removal state quickly and
+            // deterministically.
+            let chosen = actions
+                .as_slice()
+                .iter()
+                .copied()
+                .find(|&a| {
+                    let next = MillRules::decode_snapshot(rules.apply(&snap, a));
+                    let s = next.side_to_move();
+                    s >= 0 && next.pending_removals()[s as usize] > 0
+                })
+                .unwrap_or(actions.as_slice()[0]);
+            snap = rules.apply(&snap, chosen);
+        }
+        panic!("did not reach a mid-removal state within 40 plies of greedy play");
+    }
+
+    /// End-to-end regression for the stabilizer canonicalization bug at
+    /// the `canonical_key` level, using the real pair of positions the
+    /// `mill arena` investigation surfaced: two FENs presenting the same
+    /// abstract (4,3)-sector position (related by symmetry op 13 plus the
+    /// mover/waiter color swap). Both the *parent* keys and the full
+    /// per-move *child* key sets must coincide -- the child sets are what
+    /// the old arbitrary-stabilizer fold silently broke (disjoint sets, so
+    /// `PatchLookup::correct_action` could never match its recorded
+    /// `best_child` from the other presentation).
+    #[test]
+    fn canonical_key_and_child_keys_are_presentation_invariant() {
+        let options = MillVariantOptions::default();
+        let rules = MillRules::new(options.clone());
+        let provider = crate::database::FileDatabaseProvider::new(asset_root());
+        let mut planes = WdlPlaneCache::new(provider, DatabaseVariant::STANDARD).unwrap();
+
+        let fen_a = "OOO****@/@**@**@*/******** b m s 3 0 4 0 0 0 -1 -1 -1 -1 0 10 25 ids:nodes";
+        let fen_b = "********/O**O**O*/****@@@O w m p 4 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes";
+
+        let mut keysets = Vec::new();
+        for fen in [fen_a, fen_b] {
+            let state = rules.set_from_fen(fen).unwrap();
+            let snap = rules.encode_state(state.clone());
+            let parent = canonical_key(&mut planes, &state, &options).unwrap();
+
+            let mut child_keys = std::collections::BTreeSet::new();
+            let mut actions = ActionList::<256>::new();
+            rules.legal_actions(&snap, &mut actions);
+            for &action in actions.as_slice() {
+                let child = MillRules::decode_snapshot(rules.apply(&snap, action));
+                child_keys.insert(canonical_key(&mut planes, &child, &options).unwrap());
+            }
+            keysets.push((parent, child_keys));
+        }
+
+        assert_eq!(
+            keysets[0].0, keysets[1].0,
+            "symmetric presentations must share one parent canonical key"
+        );
+        assert_eq!(
+            keysets[0].1, keysets[1].1,
+            "symmetric presentations must produce identical child key sets"
+        );
+    }
+
+    #[test]
+    fn mid_removal_key_is_tagged_and_defined_only_for_valid_sides() {
+        let options = MillVariantOptions::default();
+        let rules = MillRules::new(options.clone());
+        let state = find_mid_removal_state(&rules, &options);
+        assert!(state.pending_removals()[state.side_to_move() as usize] > 0);
+
+        let key = mid_removal_key(&state).expect("valid side must produce a key");
+        assert_ne!(
+            key & (1_u64 << 63),
+            0,
+            "mid-removal keys must always tag bit 63"
+        );
+    }
+
+    #[test]
+    fn mid_removal_key_is_invariant_under_board_symmetry() {
+        let options = MillVariantOptions::default();
+        let rules = MillRules::new(options.clone());
+        let state = find_mid_removal_state(&rules, &options);
+        let key = mid_removal_key(&state).unwrap();
+
+        // Rotate the raw board through every symmetry op and rebuild an
+        // equivalent state; every rotation must key identically.
+        let (white_bits, black_bits) = bitboards_from_state(&state);
+        let board = u64::from(white_bits) | (u64::from(black_bits) << 24);
+        for op in 0_u8..16 {
+            let transformed = crate::index::symmetry::transform48(op, board);
+            let t_white = (transformed & 0x00ff_ffff) as u32;
+            let t_black = ((transformed >> 24) & 0x00ff_ffff) as u32;
+            let query = PerfectQuery::new(
+                t_white,
+                t_black,
+                state.pieces_in_hand()[0],
+                state.pieces_in_hand()[1],
+                0,
+                false,
+            );
+            let snap = snapshot_from_perfect_query(&rules, &options, query);
+            let mut rotated = MillRules::decode_snapshot(snap);
+            rotated.set_pending_removal(0, state.pending_removals()[0]);
+            rotated.set_pending_removal(1, state.pending_removals()[1]);
+            assert_eq!(
+                mid_removal_key(&rotated),
+                Some(key),
+                "symmetry op {op} must not change the mid-removal key"
+            );
+        }
+    }
+
+    #[test]
+    fn canonical_key_dispatches_to_mid_removal_key_only_when_pending() {
+        let options = MillVariantOptions::default();
+        let rules = MillRules::new(options.clone());
+        let variant = DatabaseVariant::from_mill_options(&options).unwrap();
+        let mut planes =
+            WdlPlaneCache::new(FileDatabaseProvider::new(asset_root()), variant).unwrap();
+
+        let mid_removal_state = find_mid_removal_state(&rules, &options);
+        assert_eq!(
+            canonical_key(&mut planes, &mid_removal_state, &options),
+            mid_removal_key(&mid_removal_state)
+        );
+
+        let settled_snap = rules.initial_state(&[]);
+        let settled_state = MillRules::decode_snapshot(settled_snap);
+        let side = settled_state.side_to_move();
+        let query = query_from_state(&settled_state, &options, side).unwrap();
+        assert_eq!(
+            canonical_key(&mut planes, &settled_state, &options),
+            Some(planes.canonical_key_for_query(query))
+        );
+        // Settled keys must never collide with the mid-removal tag bit.
+        assert_eq!(
+            canonical_key(&mut planes, &settled_state, &options).unwrap() & (1 << 63),
+            0
+        );
     }
 
     #[test]

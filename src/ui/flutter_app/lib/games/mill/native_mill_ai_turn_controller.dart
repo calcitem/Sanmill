@@ -210,18 +210,19 @@ class NativeMillAiTurnController {
       }
       final GameAction? bookAction = openingBook?.lookup(session);
       if (bookAction != null) {
-        if (bookAction.type == MillActionTypes.remove) {
+        final GameAction action = _applyErrorPatch(session, bookAction);
+        if (action.type == MillActionTypes.remove) {
           await onBeforeRemoveApply?.call();
         }
-        await session.apply(bookAction);
+        await session.apply(action);
         session.lastAiMoveType = AiMoveType.openingBook;
         session.lastAiBestValue = 0;
         session.lastHumanDatabaseMoveStats = null;
-        lastApplied = bookAction;
+        lastApplied = action;
         if (EnvironmentConfig.devMode) {
           logger.i(
             '[NativeMillAiTurnController] step=$step opening-book '
-            'applied=${bookAction.payload['move']}',
+            'applied=${action.payload['move']}',
           );
         }
         continue;
@@ -236,15 +237,16 @@ class NativeMillAiTurnController {
         final bool correctedByPerfect =
             perfectAction != null &&
             !_isSameAction(perfectAction, humanDatabaseAction);
-        final GameAction action = correctedByPerfect
+        final GameAction preliminary = correctedByPerfect
             ? perfectAction
             : humanDatabaseAction;
         final int graphScore = correctedByPerfect
-            ? _perfectDatabaseGraphScore(session, action)
+            ? _perfectDatabaseGraphScore(session, preliminary)
             : _humanDatabaseGraphScore(session, stats);
         if (correctedByPerfect) {
           humanDatabase?.discardPendingMove();
         }
+        final GameAction action = _applyErrorPatch(session, preliminary);
 
         if (action.type == MillActionTypes.remove) {
           await onBeforeRemoveApply?.call();
@@ -276,12 +278,12 @@ class NativeMillAiTurnController {
       // time, so toggling e.g. the shuffling switch mid-session would have no
       // effect — diverging from the master engine, which read `gameOptions`
       // live on every search.
-      final GameAction? action = await session.searchBestAction(
+      final GameAction? searchedAction = await session.searchBestAction(
         depth: searchDepth,
         moveLimitMs: timeLimit,
         engineSettings: generalSettings,
       );
-      if (action == null) {
+      if (searchedAction == null) {
         sw.stop();
         logger.w(
           '[NativeMillAiTurnController] step=$step searchBestAction=null; '
@@ -289,6 +291,7 @@ class NativeMillAiTurnController {
         );
         break;
       }
+      final GameAction action = _applyErrorPatch(session, searchedAction);
       if (action.type == MillActionTypes.remove) {
         await onBeforeRemoveApply?.call();
       }
@@ -327,6 +330,31 @@ class NativeMillAiTurnController {
       );
     }
     return lastApplied;
+  }
+
+  /// "Avoid traps": if [generalSettings.patchAvoidTraps] is on and the
+  /// bundled error patch says [action] throws away value at the session's
+  /// current position, return the corrected action instead. Returns
+  /// [action] unchanged otherwise (setting off, no patch entry, or already
+  /// safe) -- always safe to call unconditionally on every AI move source.
+  GameAction _applyErrorPatch(
+    NativeMillGameSession session,
+    GameAction action,
+  ) {
+    final GameAction? corrected = session.patchCorrectAction(
+      action,
+      engineSettings: generalSettings,
+    );
+    if (corrected == null) {
+      return action;
+    }
+    if (EnvironmentConfig.devMode) {
+      logger.i(
+        '[NativeMillAiTurnController] error patch corrected '
+        '${action.payload['move']} -> ${corrected.payload['move']}',
+      );
+    }
+    return corrected;
   }
 
   bool _isSameAction(GameAction left, GameAction right) {

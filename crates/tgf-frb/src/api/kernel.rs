@@ -34,7 +34,7 @@ pub struct TgfAction {
 }
 
 impl TgfAction {
-    fn into_action(self) -> Action {
+    pub(super) fn into_action(self) -> Action {
         assert!(
             self.payload_bits <= u32::MAX as u64,
             "TgfAction.payload_bits exceeds native Action payload width"

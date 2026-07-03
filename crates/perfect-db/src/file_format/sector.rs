@@ -125,6 +125,62 @@ impl fmt::Debug for SectorFile {
     }
 }
 
+/// Parse the trailing `em_set` table (the "value did not fit in the packed
+/// field" escape list) out of a whole-sector-file buffer, and validate that
+/// `bytes` is exactly as long as the header + eval array + em_set table
+/// require. Shared by [`SectorFile::parse`] and
+/// [`SectorFile::decode_all_from_bytes`] so the two whole-buffer entry
+/// points can never disagree on this layout.
+fn parse_em_set(bytes: &[u8], eval_size: usize) -> ParseResult<BTreeMap<usize, i32>> {
+    let em_set_count_offset =
+        DD_HEADER_SIZE
+            .checked_add(eval_size)
+            .ok_or(ParseError::InvalidLength {
+                expected: usize::MAX,
+                actual: bytes.len(),
+            })?;
+    let em_set_count = read_i32_le(bytes, em_set_count_offset)?;
+    if em_set_count < 0 {
+        return Err(ParseError::InvalidHeader {
+            message: format!("negative em_set length {em_set_count}"),
+        });
+    }
+
+    let em_set_len = em_set_count as usize;
+    let expected_len = em_set_count_offset
+        .checked_add(4)
+        .and_then(|base| base.checked_add(em_set_len.checked_mul(8)?))
+        .ok_or(ParseError::InvalidLength {
+            expected: usize::MAX,
+            actual: bytes.len(),
+        })?;
+    if bytes.len() != expected_len {
+        return Err(ParseError::InvalidLength {
+            expected: expected_len,
+            actual: bytes.len(),
+        });
+    }
+
+    let mut em_set = BTreeMap::new();
+    let mut offset = em_set_count_offset + 4;
+    for _ in 0..em_set_len {
+        let index = read_i32_le(bytes, offset)?;
+        let value = read_i32_le(bytes, offset + 4)?;
+        if index < 0 {
+            return Err(ParseError::InvalidHeader {
+                message: format!("negative em_set index {index}"),
+            });
+        }
+        let index = index as usize;
+        assert!(
+            em_set.insert(index, value).is_none(),
+            "duplicate em_set entry for eval index {index}"
+        );
+        offset += 8;
+    }
+    Ok(em_set)
+}
+
 impl SectorFile {
     /// Parse a sector from an already-loaded byte buffer.
     ///
@@ -140,54 +196,7 @@ impl SectorFile {
                     expected: usize::MAX,
                     actual: bytes.len(),
                 })?;
-        let em_set_offset =
-            DD_HEADER_SIZE
-                .checked_add(eval_size)
-                .ok_or(ParseError::InvalidLength {
-                    expected: usize::MAX,
-                    actual: bytes.len(),
-                })?;
-        let em_set_count_offset = em_set_offset;
-        let em_set_count = read_i32_le(bytes, em_set_count_offset)?;
-        if em_set_count < 0 {
-            return Err(ParseError::InvalidHeader {
-                message: format!("negative em_set length {em_set_count}"),
-            });
-        }
-
-        let em_set_len = em_set_count as usize;
-        let expected_len = em_set_count_offset
-            .checked_add(4)
-            .and_then(|base| base.checked_add(em_set_len.checked_mul(8)?))
-            .ok_or(ParseError::InvalidLength {
-                expected: usize::MAX,
-                actual: bytes.len(),
-            })?;
-        if bytes.len() != expected_len {
-            return Err(ParseError::InvalidLength {
-                expected: expected_len,
-                actual: bytes.len(),
-            });
-        }
-
-        let mut em_set = BTreeMap::new();
-        let mut offset = em_set_count_offset + 4;
-        for _ in 0..em_set_len {
-            let index = read_i32_le(bytes, offset)?;
-            let value = read_i32_le(bytes, offset + 4)?;
-            if index < 0 {
-                return Err(ParseError::InvalidHeader {
-                    message: format!("negative em_set index {index}"),
-                });
-            }
-            let index = index as usize;
-            assert!(
-                em_set.insert(index, value).is_none(),
-                "duplicate em_set entry for eval index {index}"
-            );
-            offset += 8;
-        }
-
+        let em_set = parse_em_set(bytes, eval_size)?;
         let reader = std::io::Cursor::new(bytes.to_vec());
 
         Ok(Self {
@@ -196,6 +205,51 @@ impl SectorFile {
             em_set,
             reader: Box::new(reader),
         })
+    }
+
+    /// Bulk-decode every slot's *resolved* `(key1, key2)` pair (the em_set
+    /// escape is followed, but `Symmetry` redirects are left as-is -- see
+    /// [`RawEval::kind`]) directly from a whole-sector-file buffer.
+    ///
+    /// This is the fast path for callers that touch every slot once, such as
+    /// [`crate::wdl_plane::WdlPlane::build`]: unlike repeated [`Self::eval_at`]
+    /// calls (designed for lazy, random-access probing through a
+    /// `Box<dyn Read + Seek>`), this indexes straight into `bytes` in a tight
+    /// loop with no per-slot dynamic dispatch or `Seek`.
+    pub fn decode_all_from_bytes(bytes: &[u8], eval_count: usize) -> ParseResult<Vec<RawEval>> {
+        let header = SectorHeader::parse(bytes)?;
+        let eval_size =
+            eval_count
+                .checked_mul(header.eval_struct_size)
+                .ok_or(ParseError::InvalidLength {
+                    expected: usize::MAX,
+                    actual: bytes.len(),
+                })?;
+        let em_set = parse_em_set(bytes, eval_size)?;
+
+        let n = header.eval_struct_size;
+        let field1_bits = header.field2_offset;
+        let field2_bits = (header.eval_struct_size as u8 * 8) - field1_bits;
+        let field1_mask = (1_u32 << field1_bits) - 1;
+        let spec_field2 = -(1_i32 << (field2_bits - 1));
+
+        let mut out = Vec::with_capacity(eval_count);
+        for index in 0..eval_count {
+            let offset = DD_HEADER_SIZE + index * n;
+            let mut raw = 0_u32;
+            for (byte_index, &byte) in bytes[offset..offset + n].iter().enumerate() {
+                raw |= u32::from(byte) << (8 * byte_index);
+            }
+            let key1 = sign_extend(raw & field1_mask, field1_bits);
+            let mut key2 = sign_extend(raw >> field1_bits, field2_bits);
+            if key2 == spec_field2 {
+                key2 = *em_set
+                    .get(&index)
+                    .ok_or(ParseError::MissingEmSetEntry { index })?;
+            }
+            out.push(RawEval::new(key1, key2));
+        }
+        Ok(out)
     }
 
     /// Open a sector from a seekable reader (file-backed provider), reading

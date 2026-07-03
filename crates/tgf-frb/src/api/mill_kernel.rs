@@ -348,6 +348,101 @@ pub fn tgf_kernel_mill_perfect_db_best_action(
     .map(TgfAction::from_action))
 }
 
+/// "Avoid traps" support: if the lightweight error patch has an entry for
+/// the kernel's **current** Mill position and `chosen` is not the recorded
+/// safe reply, return the legal action that is. Returns `Ok(None)` when no
+/// patch is loaded, the position has no entry, or `chosen` is already safe
+/// -- callers should keep `chosen` unchanged in that case.
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_mill_patch_correct_action(
+    handle: u32,
+    chosen: TgfAction,
+) -> Result<Option<TgfAction>, String> {
+    let game_id = with_kernel(handle, |k| k.game_id().to_owned())?;
+    if game_id != "mill" {
+        return Err(format!("kernel game_id is {game_id}, expected mill"));
+    }
+    let snapshot = with_kernel(handle, |k| k.snapshot())?;
+    let options = variant_extras::options_for(handle);
+    Ok(
+        crate::games::mill::patch::try_patch_correction(&snapshot, &options, chosen.into_action())
+            .map(TgfAction::from_action),
+    )
+}
+
+/// "Make traps" support: trap score (0..=255) of the position reached by
+/// playing `action` from the kernel's **current** Mill position, or `None`
+/// when no patch is loaded or the resulting position has no entry.
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_mill_patch_trap_score_after(
+    handle: u32,
+    action: TgfAction,
+) -> Result<Option<i32>, String> {
+    let game_id = with_kernel(handle, |k| k.game_id().to_owned())?;
+    if game_id != "mill" {
+        return Err(format!("kernel game_id is {game_id}, expected mill"));
+    }
+    let snapshot = with_kernel(handle, |k| k.snapshot())?;
+    let options = variant_extras::options_for(handle);
+    Ok(crate::games::mill::patch::trap_score_after_action(
+        &snapshot,
+        &options,
+        action.into_action(),
+    )
+    .map(i32::from))
+}
+
+/// Query the perfect database for the best legal action, like
+/// [`tgf_kernel_mill_perfect_db_best_action`], but when `make_traps` is set
+/// and several moves are tied for best, prefer whichever one hands the
+/// opponent the highest lightweight-patch trap score instead of shuffling
+/// uniformly (see `crate::games::mill::patch`). Every candidate considered
+/// is already database-verified equally optimal, so this can never pick a
+/// worse move than the plain tied-best pick -- it only reorders among ties.
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_mill_patch_trap_aware_best_action(
+    handle: u32,
+    config: MillEngineConfig,
+    make_traps: bool,
+) -> Result<Option<TgfAction>, String> {
+    let plan: crate::games::mill::search::MillEngineConfigPlan = config.into();
+    if !plan.use_perfect_database {
+        return Ok(None);
+    }
+
+    let game_id = with_kernel(handle, |k| k.game_id().to_owned())?;
+    if game_id != "mill" {
+        return Err(format!("kernel game_id is {game_id}, expected mill"));
+    }
+
+    let snapshot = with_kernel(handle, |k| k.snapshot())?;
+    let options = variant_extras::options_for(handle);
+    let rules = MillRules::new(options.clone());
+    let mut legal = ActionList::<256>::default();
+    rules.legal_actions(&snapshot, &mut legal);
+    let ordering = search::perfect_move_ordering(&plan);
+
+    if make_traps {
+        return Ok(perfect::try_perfect_best_action_trap_aware(
+            &snapshot,
+            rules.options(),
+            legal.as_slice(),
+            ordering,
+        )
+        .map(TgfAction::from_action));
+    }
+    Ok(perfect::try_perfect_best_action_with_ref(
+        &snapshot,
+        rules.options(),
+        legal.as_slice(),
+        ordering,
+        Action::NONE,
+        plan.shuffling,
+        search::search_shuffle_seed(),
+    )
+    .map(TgfAction::from_action))
+}
+
 /// Export the current Mill kernel state as a FEN string.
 #[flutter_rust_bridge::frb(sync)]
 pub fn tgf_kernel_export_fen(handle: u32) -> Result<String, String> {

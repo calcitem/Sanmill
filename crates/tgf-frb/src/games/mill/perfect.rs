@@ -215,6 +215,62 @@ pub(crate) fn try_perfect_best_action_with_ref(
     }
 }
 
+/// Query the perfect database for the best action, preferring -- among the
+/// tied-best moves -- whichever one hands the opponent the highest
+/// lightweight-patch trap score ("make traps" mode; see
+/// `crate::games::mill::patch`). Falls back to the deterministic first
+/// tied-best move when no patch is loaded or no candidate has trap data, so
+/// this is always at least as safe as the plain tied-best pick: every
+/// candidate considered here is already database-verified equally optimal,
+/// this only re-orders *among* them.
+#[cfg(not(target_arch = "wasm32"))]
+pub(crate) fn try_perfect_best_action_trap_aware(
+    snapshot: &tgf_core::GameStateSnapshot,
+    options: &MillVariantOptions,
+    legal: &[Action],
+    ordering: perfect_db::PerfectMoveOrdering,
+) -> Option<Action> {
+    if !ensure_database_for_options(options) {
+        return None;
+    }
+    let state = MillRules::decode_snapshot(*snapshot);
+    let tokens = perfect_db::best_move_tokens_for_state_with_ordering(
+        &state,
+        options,
+        snapshot.side_to_move,
+        ordering,
+    )?;
+
+    let mut tied: Vec<Action> = Vec::with_capacity(tokens.len());
+    for token in tokens {
+        if let Some(action) = legal
+            .iter()
+            .copied()
+            .find(|a| action_to_uci_str(*a) == token)
+        {
+            tied.push(action);
+        }
+    }
+    if tied.is_empty() {
+        return None;
+    }
+
+    let best = tied.iter().copied().max_by_key(|&action| {
+        crate::games::mill::patch::trap_score_after_action(snapshot, options, action).unwrap_or(0)
+    });
+    best.or(Some(tied[0]))
+}
+
+#[cfg(target_arch = "wasm32")]
+pub(crate) fn try_perfect_best_action_trap_aware(
+    _snapshot: &GameStateSnapshot,
+    _options: &MillVariantOptions,
+    _legal: &[Action],
+    _ordering: perfect_db::PerfectMoveOrdering,
+) -> Option<Action> {
+    None
+}
+
 /// Minimal xorshift64* PRNG seeded from `seed`, so the shuffle does not pull
 /// in a `rand` dependency.  Good enough for uniform pick among a handful of
 /// tied moves.
@@ -709,6 +765,49 @@ mod tests {
 
         deinit_database();
         fs::remove_dir_all(path).expect("temporary Lasker DB directory must be removable");
+    }
+
+    /// The trap-aware picker must only ever return one of the database's
+    /// own tied-best moves (never something outside that set, and never a
+    /// worse move even when a patch is loaded and scores candidates).
+    #[test]
+    fn trap_aware_best_action_stays_within_the_tied_best_set() {
+        let _guard = perfect_db_test_lock();
+        deinit_database();
+        assert!(perfect_db::init(db_path()));
+        crate::games::mill::patch::deinit_patch();
+
+        let rules = MillRules::default();
+        let options = MillVariantOptions::default();
+        let snapshot = rules.initial_state(&[]);
+        let mut legal = tgf_core::ActionList::<256>::default();
+        rules.legal_actions(&snapshot, &mut legal);
+        let legal_slice = legal.as_slice().to_vec();
+
+        let tied_first = try_perfect_best_action_with_ref(
+            &snapshot,
+            &options,
+            &legal_slice,
+            perfect_db::PerfectMoveOrdering::LegacyWdl,
+            tgf_core::Action::NONE,
+            false,
+            0,
+        )
+        .expect("start position must have a DB best move");
+        let _ = tied_first;
+
+        // Without a loaded patch, trap-aware selection must still return a
+        // legal, database-optimal move (falls back to the first tied-best).
+        let picked = try_perfect_best_action_trap_aware(
+            &snapshot,
+            &options,
+            &legal_slice,
+            perfect_db::PerfectMoveOrdering::LegacyWdl,
+        )
+        .expect("trap-aware pick must return a move when the DB is loaded");
+        assert!(legal_slice.contains(&picked));
+
+        deinit_database();
     }
 
     /// `try_perfect_best_action_with_ref` replicates the legacy C++

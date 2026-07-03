@@ -734,6 +734,47 @@ pub fn mill_human_db_deinit() {
     mill_human_db::deinit_database();
 }
 
+/// Status of the loaded lightweight "error patch" file (see
+/// `docs/` mining-pipeline design notes). Unlike the Perfect Database this
+/// file is small enough to bundle as a Flutter asset and never touches the
+/// multi-gigabyte `.sec2` sector files it was mined from.
+#[derive(Clone, Debug)]
+pub struct MillPatchStatus {
+    pub loaded: bool,
+    pub entry_count: u32,
+    pub error: String,
+}
+
+impl From<crate::games::mill::patch::PatchStatus> for MillPatchStatus {
+    fn from(value: crate::games::mill::patch::PatchStatus) -> Self {
+        Self {
+            loaded: value.loaded,
+            entry_count: value.entry_count,
+            error: value.error,
+        }
+    }
+}
+
+/// Load a lightweight error-patch file from `path`. Returns `false` when the
+/// file is missing, unreadable, or fails the format/engine-fingerprint
+/// checks.
+#[flutter_rust_bridge::frb(sync)]
+pub fn mill_patch_init(path: String) -> bool {
+    crate::games::mill::patch::init_patch_path(path)
+}
+
+/// Inspect the currently loaded patch, if any.
+#[flutter_rust_bridge::frb(sync)]
+pub fn mill_patch_status() -> MillPatchStatus {
+    crate::games::mill::patch::patch_status().into()
+}
+
+/// Release the loaded patch's resources for the current process.
+#[flutter_rust_bridge::frb(sync)]
+pub fn mill_patch_deinit() {
+    crate::games::mill::patch::deinit_patch();
+}
+
 /// Perfect-database verdict for one legal move, used by the analysis overlay.
 ///
 /// `value` and `outcome` are expressed from the perspective of the side that

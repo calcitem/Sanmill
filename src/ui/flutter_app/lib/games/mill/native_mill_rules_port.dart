@@ -228,8 +228,47 @@ class NativeMillRulesPort implements RulesPort {
       usePerfectDatabase: usePerfectDatabase,
       aiIsLazy: settings.aiIsLazy,
       shuffling: settings.shufflingEnabled,
+      makeTraps: settings.patchMakeTraps,
     );
     return action == null ? null : MillActionCodec.fromTgfAction(action);
+  }
+
+  /// "Avoid traps" support: if the bundled error patch says [chosen] throws
+  /// away value at the current position, return the corrected action.
+  /// Returns `null` when the setting is off, [chosen] cannot be converted to
+  /// an FRB action, or the patch has nothing to say here.
+  GameAction? patchCorrectAction(
+    GameAction chosen, {
+    GeneralSettings? engineSettings,
+  }) {
+    final GeneralSettings settings = engineSettings ?? _generalSettings;
+    if (!settings.patchAvoidTraps) {
+      return null;
+    }
+    final tgf.TgfAction? chosenTgf = MillActionCodec.toTgfAction(chosen);
+    if (chosenTgf == null) {
+      return null;
+    }
+    final tgf.TgfAction? corrected = _session.rawPatchCorrectAction(chosenTgf);
+    return corrected == null ? null : MillActionCodec.fromTgfAction(corrected);
+  }
+
+  /// "Make traps" support: trap score (0..=255) of the position reached by
+  /// [action], or `null` when the setting is off or the patch has no entry
+  /// for the resulting position.
+  int? patchTrapScoreAfter(
+    GameAction action, {
+    GeneralSettings? engineSettings,
+  }) {
+    final GeneralSettings settings = engineSettings ?? _generalSettings;
+    if (!settings.patchMakeTraps) {
+      return null;
+    }
+    final tgf.TgfAction? actionTgf = MillActionCodec.toTgfAction(action);
+    if (actionTgf == null) {
+      return null;
+    }
+    return _session.rawPatchTrapScoreAfter(actionTgf);
   }
 
   /// Map the persisted Dart [SearchAlgorithm] enum onto the FRB

@@ -15,6 +15,12 @@ pub struct PerfectHasher {
     positions_per_white: usize,
     white_lookup: BTreeMap<u32, WhiteEntry>,
     black_rank: BTreeMap<u32, usize>,
+    /// `white_orbit_index -> canonical (seed) white bitboard`.  Inverse of
+    /// [`WhiteEntry::index`], used by [`PerfectHasher::inverse_board`].
+    white_inverse: Vec<u32>,
+    /// `black_rank_index -> collapsed black bitboard`.  Inverse of
+    /// `black_rank`, used by [`PerfectHasher::inverse_board`].
+    black_inverse: Vec<u32>,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -26,7 +32,24 @@ pub struct HashProbe {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 struct WhiteEntry {
     index: usize,
-    transform_to_canonical: u8,
+    /// Bitmask over the 16 symmetry operations: bit `op` is set iff
+    /// `transform24(op, white) == seed`, i.e. *every* operation mapping
+    /// this white pattern onto its orbit's canonical seed -- not just one.
+    ///
+    /// Storing the full set matters whenever the seed has a nontrivial
+    /// stabilizer (a symmetry fixing the white pattern but not the whole
+    /// board): the operations then differ in what they do to the *black*
+    /// pieces, and [`PerfectHasher::hash_probe`] must consider all of them
+    /// to fold every symmetric presentation of a position onto one
+    /// canonical board. An earlier version stored a single arbitrary
+    /// ("last one wins") operation, which made `hash_probe` return
+    /// *different* indices for symmetric presentations of the same
+    /// position in every sector whose white patterns have stabilizers --
+    /// harmless for raw database value reads (the on-disk format's
+    /// `Symmetry` redirect entries give every presentation's slot a
+    /// correct value) but fatal for canonical-key users like the error
+    /// patch, which need one key per abstract position.
+    transforms_to_canonical: u16,
 }
 
 impl PerfectHasher {
@@ -40,9 +63,15 @@ impl PerfectHasher {
             "white and black pieces must not exceed board size"
         );
 
-        let white_lookup = build_white_lookup(white_count);
+        let (white_lookup, white_inverse) = build_white_lookup(white_count);
         let compact_points = BOARD_POINTS - white_count;
-        let black_rank = build_rank_lookup(compact_points, black_count);
+        let black_inverse = combination_masks(compact_points, black_count);
+        let black_rank = black_inverse
+            .iter()
+            .copied()
+            .enumerate()
+            .map(|(index, mask)| (mask, index))
+            .collect();
         let positions_per_white = binom(compact_points, black_count);
 
         Self {
@@ -51,6 +80,8 @@ impl PerfectHasher {
             positions_per_white,
             white_lookup,
             black_rank,
+            white_inverse,
+            black_inverse,
         }
     }
 
@@ -58,12 +89,14 @@ impl PerfectHasher {
         self.canonical_white_count() * self.positions_per_white
     }
 
+    /// Number of distinct white-piece orbits (== number of canonical seeds
+    /// in `white_inverse`). `O(1)`: earlier code recomputed this by scanning
+    /// every entry of `white_lookup` (up to 16 entries per orbit) for its
+    /// max index, which turned any per-slot caller (e.g. resolving a
+    /// `Symmetry` redirect for every slot of a sector while building a WDL
+    /// plane) into an accidental O(hash_count * white_lookup.len()) scan.
     pub fn canonical_white_count(&self) -> usize {
-        self.white_lookup
-            .values()
-            .map(|entry| entry.index)
-            .max()
-            .map_or(0, |max| max + 1)
+        self.white_inverse.len()
     }
 
     pub fn hash_probe(&self, board: u64) -> HashProbe {
@@ -90,16 +123,31 @@ impl PerfectHasher {
             .get(&white)
             .copied()
             .expect("white bitboard with matching popcount must be indexed");
-        let canonical = transform48(entry.transform_to_canonical, board);
-        let canonical_white = (canonical & MASK24) as u32;
-        let canonical_entry = self
-            .white_lookup
-            .get(&canonical_white)
-            .expect("canonical white bitboard must be indexed");
-        assert_eq!(
-            canonical_entry.index, entry.index,
-            "canonical transform must stay in the same white orbit"
+        let seed = self.white_inverse[entry.index];
+
+        // Every operation in the set maps `white` onto the orbit seed but
+        // may transform the black pieces differently (they differ by a
+        // stabilizer of the seed). Taking the minimum resulting board makes
+        // the fold a true invariant: all 16 symmetric presentations of a
+        // position converge to the same canonical board, and hence the same
+        // index. See `WhiteEntry::transforms_to_canonical`.
+        let mut ops = entry.transforms_to_canonical;
+        debug_assert_ne!(
+            ops, 0,
+            "every indexed white pattern has at least one transform"
         );
+        let mut canonical = u64::MAX;
+        while ops != 0 {
+            let op = ops.trailing_zeros() as u8;
+            ops &= ops - 1;
+            let candidate = transform48(op, board);
+            debug_assert_eq!(
+                (candidate & MASK24) as u32,
+                seed,
+                "every recorded transform must map the white pattern to its orbit seed"
+            );
+            canonical = canonical.min(candidate);
+        }
 
         let compact_black = collapse(canonical);
         let black_index = self
@@ -116,6 +164,24 @@ impl PerfectHasher {
 
     pub fn hash_index(&self, board: u64) -> usize {
         self.hash_probe(board).index
+    }
+
+    /// Inverse of [`Self::direct_hash_index`]: reconstruct the canonical
+    /// board stored at `index`.  Mirrors legacy C++ `Hash::inv_hash`
+    /// (`index/hash.cpp`), which the DD solver uses to enumerate every state
+    /// in a sector.  Used by the WDL-plane bulk builder to recover the board
+    /// a `Symmetry` redirect slot needs to transform, since a bare index
+    /// carries no board information on its own.
+    pub fn inverse_board(&self, index: usize) -> u64 {
+        assert!(
+            index < self.hash_count(),
+            "Perfect DB inverse_board index out of range"
+        );
+        let white_index = index / self.positions_per_white;
+        let black_index = index % self.positions_per_white;
+        let white = self.white_inverse[white_index];
+        let compact_black = self.black_inverse[black_index];
+        uncollapse(u64::from(white) | (u64::from(compact_black) << 24))
     }
 
     pub fn direct_hash_index(&self, board: u64) -> usize {
@@ -202,8 +268,19 @@ pub fn uncollapse(board: u64) -> u64 {
     u64::from(white) | (u64::from(black) << 24)
 }
 
-fn build_white_lookup(white_count: u8) -> BTreeMap<u32, WhiteEntry> {
-    let mut lookup = BTreeMap::new();
+/// Build the forward `white bitboard -> (orbit index, transforms to
+/// canonical)` lookup, plus its inverse `orbit index -> canonical (seed)
+/// white bitboard`.
+///
+/// The seed is the first `white` bitboard [`combination_masks`] produces
+/// for each new orbit; it is its own canonical representative (the
+/// identity operation is always in its `transforms_to_canonical` set).
+/// Every operation reaching a given member from the seed contributes its
+/// inverse to that member's transform set (see
+/// [`WhiteEntry::transforms_to_canonical`] for why the whole set is kept).
+fn build_white_lookup(white_count: u8) -> (BTreeMap<u32, WhiteEntry>, Vec<u32>) {
+    let mut lookup: BTreeMap<u32, WhiteEntry> = BTreeMap::new();
+    let mut inverse = Vec::new();
     let mut orbit_index = 0_usize;
     for white in combination_masks(BOARD_POINTS, white_count) {
         if lookup.contains_key(&white) {
@@ -211,25 +288,20 @@ fn build_white_lookup(white_count: u8) -> BTreeMap<u32, WhiteEntry> {
         }
         for op in 0_u8..16 {
             let transformed = transform24(op, white);
-            lookup.insert(
-                transformed,
-                WhiteEntry {
-                    index: orbit_index,
-                    transform_to_canonical: inverse_op(op),
-                },
+            let entry = lookup.entry(transformed).or_insert(WhiteEntry {
+                index: orbit_index,
+                transforms_to_canonical: 0,
+            });
+            assert_eq!(
+                entry.index, orbit_index,
+                "a white pattern must not appear in two orbits"
             );
+            entry.transforms_to_canonical |= 1_u16 << inverse_op(op);
         }
+        inverse.push(white);
         orbit_index += 1;
     }
-    lookup
-}
-
-fn build_rank_lookup(universe: u8, count: u8) -> BTreeMap<u32, usize> {
-    combination_masks(universe, count)
-        .into_iter()
-        .enumerate()
-        .map(|(index, mask)| (mask, index))
-        .collect()
+    (lookup, inverse)
 }
 
 fn combination_masks(universe: u8, count: u8) -> Vec<u32> {
@@ -311,8 +383,126 @@ mod tests {
         assert_eq!(hasher.hash_count(), 24);
         assert_eq!(hasher.hash_index(first), 0);
         assert_eq!(sector.eval_at(0).unwrap(), RawEval::new(18, 1));
-        assert_eq!(hasher.hash_index(last), 23);
+        // Grid semantics (matching the on-disk enumeration): slot 23 is
+        // the un-folded position of a black stone on point 23, and the
+        // solver stored a `Symmetry` redirect there.
+        assert_eq!(hasher.direct_hash_index(last), 23);
         let redirect = sector.eval_at(23).unwrap();
         assert_eq!(redirect.kind(), RawEvalKind::Symmetry { operation: 8 });
+        // Probe semantics: `hash_probe` folds the same board onto its
+        // orbit's canonical slot, which must carry the *resolved* eval the
+        // redirect points at (the empty white pattern is stabilized by all
+        // 16 operations, so the canonical fold is the minimum board over
+        // the stone's whole orbit).
+        let probe = hasher.hash_probe(last);
+        assert!(probe.index < 23);
+        assert_eq!(hasher.direct_hash_index(probe.canonical_board), probe.index);
+        let folded = sector.eval_at(probe.index).unwrap();
+        assert!(!matches!(folded.kind(), RawEvalKind::Symmetry { .. }));
+    }
+
+    /// The canonical-key invariant the error patch (and the mining
+    /// pipeline's dedup) depend on: every symmetric presentation of a
+    /// position must fold to the same probe index and the same canonical
+    /// board. Regression for the "arbitrary stabilizer transform" bug,
+    /// which broke this for ~21% of (4,3) boards (every white pattern
+    /// whose orbit seed has a nontrivial stabilizer).
+    #[test]
+    fn hash_probe_is_invariant_across_all_symmetric_presentations() {
+        // Small sectors exhaustively; the larger (4,3) strided so the test
+        // stays fast in debug builds while still crossing many
+        // stabilizer-affected orbits.
+        for (white_count, black_count, stride) in [
+            (0u8, 1u8, 1usize),
+            (1, 1, 1),
+            (2, 2, 1),
+            (3, 2, 7),
+            (4, 3, 97),
+        ] {
+            let hasher = PerfectHasher::new(white_count, black_count);
+            for index in (0..hasher.hash_count()).step_by(stride) {
+                let board = hasher.inverse_board(index);
+                let reference = hasher.hash_probe(board);
+                for op in 0_u8..16 {
+                    let presented = transform48(op, board);
+                    let probe = hasher.hash_probe(presented);
+                    assert_eq!(
+                        probe.index, reference.index,
+                        "W={white_count} B={black_count} slot={index} op={op}: symmetric \
+                         presentations must fold to one index"
+                    );
+                    assert_eq!(
+                        probe.canonical_board, reference.canonical_board,
+                        "W={white_count} B={black_count} slot={index} op={op}: symmetric \
+                         presentations must fold to one canonical board"
+                    );
+                }
+            }
+        }
+    }
+
+    /// The concrete (4,3) pair from the arena investigation that exposed
+    /// the stabilizer bug: two presentations of the same abstract position
+    /// (`transform48(13, arena) == entry`) which the old code folded to
+    /// the same *parent* slot only by luck while folding their children
+    /// apart. They must produce identical probes.
+    #[test]
+    fn regression_arena_collision_pair_folds_identically() {
+        let arena_board: u64 = 0x022500 | (0x001c_0000_u64 << 24);
+        let entry_board: u64 = 0x002502 | (0x0000_00c1_u64 << 24);
+        assert_eq!(
+            transform48(13, arena_board),
+            entry_board,
+            "the two boards are symmetric presentations of one position"
+        );
+        let hasher = PerfectHasher::new(4, 3);
+        let arena_probe = hasher.hash_probe(arena_board);
+        let entry_probe = hasher.hash_probe(entry_board);
+        assert_eq!(arena_probe.index, entry_probe.index);
+        assert_eq!(arena_probe.canonical_board, entry_probe.canonical_board);
+    }
+
+    #[test]
+    fn inverse_board_round_trips_direct_hash_index() {
+        for (white_count, black_count) in [(0, 0), (0, 1), (1, 1), (2, 2), (3, 3)] {
+            let hasher = PerfectHasher::new(white_count, black_count);
+            for index in 0..hasher.hash_count() {
+                let board = hasher.inverse_board(index);
+                assert_eq!(
+                    hasher.direct_hash_index(board),
+                    index,
+                    "round trip failed for W={white_count} B={black_count} index={index}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn inverse_board_probe_is_idempotent_and_grid_consistent() {
+        // `inverse_board` enumerates the on-disk *grid* (every
+        // seed-white × collapsed-black combination), which is a superset
+        // of `hash_probe`'s canonical representatives whenever a seed has
+        // a nontrivial stabilizer: the extra grid slots are the ones the
+        // solver stored `Symmetry` redirects in. Probing therefore need
+        // not return the slot itself, but it must be stable: the fold of
+        // a grid board is a fixed point of further folding, and its
+        // canonical board sits at exactly the folded grid slot (the
+        // property the redirect-resolution path in `Database::evaluate_raw`
+        // relies on when it calls `direct_hash_index` afterwards).
+        for (white_count, black_count) in [(1u8, 1u8), (3, 2), (4, 3)] {
+            let hasher = PerfectHasher::new(white_count, black_count);
+            for index in (0..hasher.hash_count()).step_by(41) {
+                let board = hasher.inverse_board(index);
+                let probe = hasher.hash_probe(board);
+                assert_eq!(
+                    hasher.direct_hash_index(probe.canonical_board),
+                    probe.index,
+                    "canonical board must live at the folded grid slot"
+                );
+                let refold = hasher.hash_probe(probe.canonical_board);
+                assert_eq!(refold.index, probe.index, "folding must be idempotent");
+                assert_eq!(refold.canonical_board, probe.canonical_board);
+            }
+        }
     }
 }

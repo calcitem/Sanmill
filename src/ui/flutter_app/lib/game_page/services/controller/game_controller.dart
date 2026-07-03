@@ -726,6 +726,14 @@ class GameController {
       unawaited(ensurePerfectDatabaseReady());
     }
 
+    // Only load the bundled error-patch asset when at least one of the two
+    // switches that consume it is on, so devices that never enable either
+    // toggle pay no extra startup/memory cost.
+    final GeneralSettings settings = DB().generalSettings;
+    if (settings.patchAvoidTraps || settings.patchMakeTraps) {
+      unawaited(ensureMillPatchReady());
+    }
+
     _isInitialized = true;
     logger.i("$_logTag initialized");
   }

@@ -176,6 +176,8 @@ class GeneralSettings {
     this.openingRandomness = 60,
     this.useLazySmp = false,
     this.engineThreads = 4,
+    this.patchAvoidTraps = false,
+    this.patchMakeTraps = false,
 
     /// Deprecated: always true. Retained to preserve the Hive `@HiveField(46)`
     /// slot for existing saved data. The field will be removed in a future
@@ -395,6 +397,21 @@ class GeneralSettings {
   // enabled, and still clamped by the Rust engine for safety.
   @HiveField(54, defaultValue: 4)
   final int engineThreads;
+
+  // Apply the bundled lightweight "error patch" (mined offline against the
+  // Perfect Database) to correct an AI move -- from search, the opening
+  // book, or the Human Database -- that the patch has verified throws away
+  // value. Works standalone without the full multi-gigabyte Perfect
+  // Database. Off by default.
+  @HiveField(55, defaultValue: false)
+  final bool patchAvoidTraps;
+
+  // Among already-safe candidate replies, prefer whichever one the bundled
+  // error patch scores as most likely to make the opponent blunder. Never
+  // picks a worse move than the underlying decision would have; it only
+  // reorders among moves already known to be equally good. Off by default.
+  @HiveField(56, defaultValue: false)
+  final bool patchMakeTraps;
 
   /// Deprecated field retained for Hive backward compatibility.
   ///

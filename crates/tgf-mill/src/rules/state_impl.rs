@@ -268,6 +268,25 @@ impl MillState {
         self.phase = phase;
     }
 
+    /// Reset the "plies since a capture" counter (the legacy
+    /// `Rule::nMoveRule` / `endgame_n_move_rule` draw-by-inactivity
+    /// counter) to zero, leaving every other field untouched.
+    ///
+    /// A position's canonical database / error-patch key never depends on
+    /// this counter (see `perfect_db::mill::query_from_state`, which reads
+    /// only the board, hands, and side to move), but *applying a move* to
+    /// compute a child does: a quiet reply can push the live counter over
+    /// `n_move_rule` and end the game on the spot, even though the exact
+    /// same board reached with a fresh counter would not. That makes the
+    /// two otherwise-identical children differ in exactly one respect --
+    /// terminal or not -- which breaks any caller that needs the
+    /// counter-independent identity back, such as
+    /// `perfect_db::patch::PatchLookup::correct_action` re-deriving a
+    /// stored correction's key from a live, history-laden snapshot.
+    pub fn reset_ply_since_capture(&mut self) {
+        self.ply_since_capture = 0;
+    }
+
     pub fn phase(&self) -> MillPhase {
         self.phase
     }

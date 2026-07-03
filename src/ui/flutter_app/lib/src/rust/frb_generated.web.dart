@@ -37,6 +37,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   bool dco_decode_bool(dynamic raw);
 
   @protected
+  int dco_decode_box_autoadd_i_32(dynamic raw);
+
+  @protected
   MillEngineConfig dco_decode_box_autoadd_mill_engine_config(dynamic raw);
 
   @protected
@@ -119,6 +122,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MillMoveAnalysis dco_decode_mill_move_analysis(dynamic raw);
 
   @protected
+  MillPatchStatus dco_decode_mill_patch_status(dynamic raw);
+
+  @protected
   MillPerfectDatabaseStatus dco_decode_mill_perfect_database_status(
     dynamic raw,
   );
@@ -132,6 +138,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   MillVariantOptions dco_decode_mill_variant_options(dynamic raw);
+
+  @protected
+  int? dco_decode_opt_box_autoadd_i_32(dynamic raw);
 
   @protected
   TgfAction? dco_decode_opt_box_autoadd_tgf_action(dynamic raw);
@@ -188,6 +197,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   bool sse_decode_bool(SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_box_autoadd_i_32(SseDeserializer deserializer);
 
   @protected
   MillEngineConfig sse_decode_box_autoadd_mill_engine_config(
@@ -300,6 +312,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MillMoveAnalysis sse_decode_mill_move_analysis(SseDeserializer deserializer);
 
   @protected
+  MillPatchStatus sse_decode_mill_patch_status(SseDeserializer deserializer);
+
+  @protected
   MillPerfectDatabaseStatus sse_decode_mill_perfect_database_status(
     SseDeserializer deserializer,
   );
@@ -317,6 +332,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MillVariantOptions sse_decode_mill_variant_options(
     SseDeserializer deserializer,
   );
+
+  @protected
+  int? sse_decode_opt_box_autoadd_i_32(SseDeserializer deserializer);
 
   @protected
   TgfAction? sse_decode_opt_box_autoadd_tgf_action(
@@ -379,6 +397,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_bool(bool self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_i_32(int self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_mill_engine_config(
@@ -522,6 +543,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_mill_patch_status(
+    MillPatchStatus self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_mill_perfect_database_status(
     MillPerfectDatabaseStatus self,
     SseSerializer serializer,
@@ -544,6 +571,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     MillVariantOptions self,
     SseSerializer serializer,
   );
+
+  @protected
+  void sse_encode_opt_box_autoadd_i_32(int? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_tgf_action(

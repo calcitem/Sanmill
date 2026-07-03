@@ -79,29 +79,73 @@ class MillKernelSession {
 
   /// Query the perfect database for the current kernel position without
   /// running search or mutating the session.
+  ///
+  /// When [makeTraps] is set and several moves are tied for best, prefers
+  /// whichever one hands the opponent the highest bundled-error-patch trap
+  /// score instead of shuffling uniformly (see
+  /// `tgfKernelMillPatchTrapAwareBestAction`'s docs); every candidate
+  /// considered is already database-verified equally optimal, so this can
+  /// never pick a worse move than the plain tied-best pick.
   tgf.TgfAction? rawPerfectDbBestAction({
     required bool usePerfectDatabase,
     bool aiIsLazy = false,
     bool shuffling = true,
+    bool makeTraps = false,
   }) {
     if (kernel.isDisposed) {
       throw KernelException('handle already disposed');
     }
+    final tgf_simple.MillEngineConfig config = tgf_simple.MillEngineConfig(
+      algorithm: tgf_simple.MillSearchAlgorithm.pvs,
+      depth: 1,
+      moveTimeMs: 0,
+      aiIsLazy: aiIsLazy,
+      lastBestValue: _lastRawBestValue,
+      skillLevel: 1,
+      usePerfectDatabase: usePerfectDatabase,
+      shuffling: shuffling,
+      useLazySmp: false,
+      engineThreads: 4,
+      multiPv: 1,
+    );
+    if (makeTraps) {
+      return tgf_mill.tgfKernelMillPatchTrapAwareBestAction(
+        handle: kernel.rawHandle,
+        config: config,
+        makeTraps: true,
+      );
+    }
     return tgf_mill.tgfKernelMillPerfectDbBestAction(
       handle: kernel.rawHandle,
-      config: tgf_simple.MillEngineConfig(
-        algorithm: tgf_simple.MillSearchAlgorithm.pvs,
-        depth: 1,
-        moveTimeMs: 0,
-        aiIsLazy: aiIsLazy,
-        lastBestValue: _lastRawBestValue,
-        skillLevel: 1,
-        usePerfectDatabase: usePerfectDatabase,
-        shuffling: shuffling,
-        useLazySmp: false,
-        engineThreads: 4,
-        multiPv: 1,
-      ),
+      config: config,
+    );
+  }
+
+  /// "Avoid traps" support: ask the lightweight error patch whether
+  /// [chosen] (from search, the opening book, or the Human Database) throws
+  /// away value at the kernel's current position, returning the corrected
+  /// action if so, or `null` when [chosen] is already safe / no patch entry
+  /// exists here / no patch is loaded.
+  tgf.TgfAction? rawPatchCorrectAction(tgf.TgfAction chosen) {
+    if (kernel.isDisposed) {
+      throw KernelException('handle already disposed');
+    }
+    return tgf_mill.tgfKernelMillPatchCorrectAction(
+      handle: kernel.rawHandle,
+      chosen: chosen,
+    );
+  }
+
+  /// "Make traps" support: trap score (0..=255) of the position reached by
+  /// playing [action] from the kernel's current position, or `null` when no
+  /// patch is loaded or the resulting position has no entry.
+  int? rawPatchTrapScoreAfter(tgf.TgfAction action) {
+    if (kernel.isDisposed) {
+      throw KernelException('handle already disposed');
+    }
+    return tgf_mill.tgfKernelMillPatchTrapScoreAfter(
+      handle: kernel.rawHandle,
+      action: action,
     );
   }
 

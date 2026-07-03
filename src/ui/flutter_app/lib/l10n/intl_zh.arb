@@ -4739,5 +4739,15 @@
     "opponentAcceptDrawPrompt": "对方是否接受和棋?",
     "@opponentAcceptDrawPrompt": {},
     "drawReasonAgreement": "双方协议和棋。",
-    "@drawReasonAgreement": {}
+    "@drawReasonAgreement": {},
+    "patchAvoidTraps": "努力避开陷阱",
+    "@patchAvoidTraps": {},
+    "patchAvoidTraps_Detail": "使用内置的轻量补丁库,修正搜索、开局库或人类对局数据库给出的、已被验证会丢掉胜局或和局的 AI 着法。无需下载完整的完美数据库即可生效。",
+    "@patchAvoidTraps_Detail": {},
+    "patchMakeTraps": "努力制造陷阱",
+    "@patchMakeTraps": {},
+    "patchMakeTraps_Detail": "在多个同样好的着法之间,优先选择内置补丁库判断最容易让对手出错的那一个。",
+    "@patchMakeTraps_Detail": {},
+    "errorPatchSettings": "错误补丁库",
+    "@errorPatchSettings": {}
 }

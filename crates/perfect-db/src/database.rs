@@ -336,7 +336,7 @@ impl DatabaseVariant {
         format!("{}.secval", self.name)
     }
 
-    fn sector_file_name(self, id: SectorId) -> String {
+    pub(crate) fn sector_file_name(self, id: SectorId) -> String {
         format!(
             "{}_{}_{}_{}_{}.sec2",
             self.name, id.white_on_board, id.black_on_board, id.white_in_hand, id.black_in_hand
@@ -490,7 +490,7 @@ impl PerfectQuery {
         }
     }
 
-    fn sector_and_board(self) -> (SectorId, u64) {
+    pub(crate) fn sector_and_board(self) -> (SectorId, u64) {
         let white_on_board = self.white_bits.count_ones() as u8;
         let black_on_board = self.black_bits.count_ones() as u8;
         if self.side_to_move == 0 {
@@ -831,7 +831,7 @@ impl<P: DatabaseProvider> Database<P> {
     }
 }
 
-fn read_secval(
+pub(crate) fn read_secval(
     provider: &impl DatabaseProvider,
     variant: DatabaseVariant,
 ) -> Result<SecValTable, DatabaseError> {

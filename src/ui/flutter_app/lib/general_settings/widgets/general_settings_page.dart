@@ -228,6 +228,22 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag trapAwareness: $value");
   }
 
+  void _setPatchAvoidTraps(GeneralSettings generalSettings, bool value) {
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      patchAvoidTraps: value,
+    );
+
+    logger.t("$_logTag patchAvoidTraps: $value");
+  }
+
+  void _setPatchMakeTraps(GeneralSettings generalSettings, bool value) {
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      patchMakeTraps: value,
+    );
+
+    logger.t("$_logTag patchMakeTraps: $value");
+  }
+
   void _setUseOpeningBook(GeneralSettings generalSettings, bool value) {
     _settingsRepository.generalSettings = generalSettings.copyWith(
       useOpeningBook: value,

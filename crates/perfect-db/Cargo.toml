@@ -12,6 +12,7 @@ cpp-oracle = ["dep:cc"]
 [dependencies]
 tgf-core = { path = "../tgf-core" }
 tgf-mill = { path = "../tgf-mill" }
+zstd = "0.13.3"
 
 [build-dependencies]
 cc = { version = "1", optional = true }

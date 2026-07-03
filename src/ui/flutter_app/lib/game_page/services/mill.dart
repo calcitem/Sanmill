@@ -58,6 +58,7 @@ import '../../shared/services/debug_instrumentation_bb5e74.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/game_interaction_coordinator.dart';
 import '../../shared/services/logger.dart';
+import '../../shared/services/mill_patch_service.dart';
 import '../../shared/services/native_methods.dart';
 import '../../shared/services/perfect_database_service.dart';
 import '../../shared/services/system_ui_service.dart';

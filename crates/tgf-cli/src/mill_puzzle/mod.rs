@@ -188,7 +188,7 @@ struct GenConfig {
     pack_description: String,
 }
 
-fn variant_options_for(name: &str) -> (MillVariantOptions, &'static str) {
+pub(crate) fn variant_options_for(name: &str) -> (MillVariantOptions, &'static str) {
     match name {
         "lask" | "lasker" => (
             MillVariantOptions {

@@ -639,6 +639,34 @@ class NativeMillGameSession implements GameSessionHandle {
     return rulesPort.perfectDatabaseBestAction(engineSettings: engineSettings);
   }
 
+  /// "Avoid traps": correct [chosen] via the bundled lightweight error patch
+  /// if it throws away value at the current position. See
+  /// [NativeMillRulesPort.patchCorrectAction].
+  GameAction? patchCorrectAction(
+    GameAction chosen, {
+    GeneralSettings? engineSettings,
+  }) {
+    if (_disposed || outcome.isTerminal) {
+      return null;
+    }
+    return rulesPort.patchCorrectAction(chosen, engineSettings: engineSettings);
+  }
+
+  /// "Make traps": trap score of the position reached by [action]. See
+  /// [NativeMillRulesPort.patchTrapScoreAfter].
+  int? patchTrapScoreAfter(
+    GameAction action, {
+    GeneralSettings? engineSettings,
+  }) {
+    if (_disposed || outcome.isTerminal) {
+      return null;
+    }
+    return rulesPort.patchTrapScoreAfter(
+      action,
+      engineSettings: engineSettings,
+    );
+  }
+
   /// Run Rust search from the current session, apply the best action if
   /// available, and return it to the caller for recording / UI feedback.
   ///

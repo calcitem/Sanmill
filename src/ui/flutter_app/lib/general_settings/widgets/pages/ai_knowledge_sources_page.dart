@@ -187,6 +187,43 @@ class _AiKnowledgeSourcesPage extends StatelessWidget {
     );
   }
 
+  SettingsCard _buildErrorPatchCard(
+    BuildContext context,
+    GeneralSettings generalSettings,
+  ) {
+    return SettingsCard(
+      key: const Key('ai_knowledge_sources_page_error_patch_card'),
+      title: Text(
+        S.of(context).errorPatchSettings,
+        key: const Key('ai_knowledge_sources_page_error_patch_title'),
+      ),
+      children: <Widget>[
+        SettingsListTile.switchTile(
+          key: const Key(
+            'general_settings_page_settings_card_ais_play_style_patch_avoid_traps',
+          ),
+          value: generalSettings.patchAvoidTraps,
+          onChanged: (bool val) {
+            parent._setPatchAvoidTraps(generalSettings, val);
+          },
+          titleString: S.of(context).patchAvoidTraps,
+          subtitleString: S.of(context).patchAvoidTraps_Detail,
+        ),
+        SettingsListTile.switchTile(
+          key: const Key(
+            'general_settings_page_settings_card_ais_play_style_patch_make_traps',
+          ),
+          value: generalSettings.patchMakeTraps,
+          onChanged: (bool val) {
+            parent._setPatchMakeTraps(generalSettings, val);
+          },
+          titleString: S.of(context).patchMakeTraps,
+          subtitleString: S.of(context).patchMakeTraps_Detail,
+        ),
+      ],
+    );
+  }
+
   SettingsList _buildSettingsList(
     BuildContext context,
     Box<GeneralSettings> box,
@@ -211,6 +248,10 @@ class _AiKnowledgeSourcesPage extends StatelessWidget {
         if (!kIsWeb)
           _AnimatedSettingsCard(
             child: _buildPerfectDatabaseCard(context, generalSettings),
+          ),
+        if (!kIsWeb)
+          _AnimatedSettingsCard(
+            child: _buildErrorPatchCard(context, generalSettings),
           ),
       ],
     );

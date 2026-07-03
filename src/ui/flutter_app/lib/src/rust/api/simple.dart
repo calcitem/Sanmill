@@ -7,7 +7,7 @@ import '../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
 // These functions are ignored because they are not marked as `pub`: `spawn_mill_engine_config_event_stream`, `spawn_mill_pvs_event_stream`
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_fields_are_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`, `from`
 
 /// Returns a greeting string confirming that the Rust → Dart bridge works.
 /// Called from Dart as `tgfHelloWorld()` after `await RustLib.init()`.
@@ -65,6 +65,19 @@ MillHumanDatabaseQuery millHumanDbQuery({
 /// Release Human Database resources for the current process.
 void millHumanDbDeinit() =>
     RustLib.instance.api.crateApiSimpleMillHumanDbDeinit();
+
+/// Load a lightweight error-patch file from `path`. Returns `false` when the
+/// file is missing, unreadable, or fails the format/engine-fingerprint
+/// checks.
+bool millPatchInit({required String path}) =>
+    RustLib.instance.api.crateApiSimpleMillPatchInit(path: path);
+
+/// Inspect the currently loaded patch, if any.
+MillPatchStatus millPatchStatus() =>
+    RustLib.instance.api.crateApiSimpleMillPatchStatus();
+
+/// Release the loaded patch's resources for the current process.
+void millPatchDeinit() => RustLib.instance.api.crateApiSimpleMillPatchDeinit();
 
 /// Return the Rust-native standard 24-point Mill topology.
 ///
@@ -590,6 +603,34 @@ class MillMoveAnalysis {
           outcome == other.outcome &&
           value == other.value &&
           steps == other.steps;
+}
+
+/// Status of the loaded lightweight "error patch" file (see
+/// `docs/` mining-pipeline design notes). Unlike the Perfect Database this
+/// file is small enough to bundle as a Flutter asset and never touches the
+/// multi-gigabyte `.sec2` sector files it was mined from.
+class MillPatchStatus {
+  final bool loaded;
+  final int entryCount;
+  final String error;
+
+  const MillPatchStatus({
+    required this.loaded,
+    required this.entryCount,
+    required this.error,
+  });
+
+  @override
+  int get hashCode => loaded.hashCode ^ entryCount.hashCode ^ error.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MillPatchStatus &&
+          runtimeType == other.runtimeType &&
+          loaded == other.loaded &&
+          entryCount == other.entryCount &&
+          error == other.error;
 }
 
 /// Perfect Database directory status used for setup diagnostics.

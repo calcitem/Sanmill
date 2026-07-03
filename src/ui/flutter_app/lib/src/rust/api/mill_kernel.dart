@@ -137,6 +137,48 @@ TgfAction? tgfKernelMillPerfectDbBestAction({
   config: config,
 );
 
+/// "Avoid traps" support: if the lightweight error patch has an entry for
+/// the kernel's **current** Mill position and `chosen` is not the recorded
+/// safe reply, return the legal action that is. Returns `Ok(None)` when no
+/// patch is loaded, the position has no entry, or `chosen` is already safe
+/// -- callers should keep `chosen` unchanged in that case.
+TgfAction? tgfKernelMillPatchCorrectAction({
+  required int handle,
+  required TgfAction chosen,
+}) => RustLib.instance.api.crateApiMillKernelTgfKernelMillPatchCorrectAction(
+  handle: handle,
+  chosen: chosen,
+);
+
+/// "Make traps" support: trap score (0..=255) of the position reached by
+/// playing `action` from the kernel's **current** Mill position, or `None`
+/// when no patch is loaded or the resulting position has no entry.
+int? tgfKernelMillPatchTrapScoreAfter({
+  required int handle,
+  required TgfAction action,
+}) => RustLib.instance.api.crateApiMillKernelTgfKernelMillPatchTrapScoreAfter(
+  handle: handle,
+  action: action,
+);
+
+/// Query the perfect database for the best legal action, like
+/// [`tgf_kernel_mill_perfect_db_best_action`], but when `make_traps` is set
+/// and several moves are tied for best, prefer whichever one hands the
+/// opponent the highest lightweight-patch trap score instead of shuffling
+/// uniformly (see `crate::games::mill::patch`). Every candidate considered
+/// is already database-verified equally optimal, so this can never pick a
+/// worse move than the plain tied-best pick -- it only reorders among ties.
+TgfAction? tgfKernelMillPatchTrapAwareBestAction({
+  required int handle,
+  required MillEngineConfig config,
+  required bool makeTraps,
+}) => RustLib.instance.api
+    .crateApiMillKernelTgfKernelMillPatchTrapAwareBestAction(
+      handle: handle,
+      config: config,
+      makeTraps: makeTraps,
+    );
+
 /// Export the current Mill kernel state as a FEN string.
 String tgfKernelExportFen({required int handle}) =>
     RustLib.instance.api.crateApiMillKernelTgfKernelExportFen(handle: handle);

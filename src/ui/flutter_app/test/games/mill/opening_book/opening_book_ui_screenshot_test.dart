@@ -424,6 +424,18 @@ class _HeaderTestRulesPort implements NativeMillRulesPort {
   }
 
   @override
+  GameAction? patchCorrectAction(
+    GameAction chosen, {
+    GeneralSettings? engineSettings,
+  }) => null;
+
+  @override
+  int? patchTrapScoreAfter(
+    GameAction action, {
+    GeneralSettings? engineSettings,
+  }) => null;
+
+  @override
   GameStateSnapshot redo() => _snapshot;
 
   @override

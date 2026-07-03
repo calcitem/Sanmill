@@ -1,7 +1,7 @@
 name: sanmill
 description: Sanmill is a open-source, powerful UCI-like Nine Men's Morris (and its variants) program.
 publish_to: none
-version: 8.0.0+6673
+version: 8.0.0+6674
 
 environment:
   sdk: ">=3.8.0 <4.0.0"
@@ -182,6 +182,7 @@ flutter:
     - assets/opening_books/nmm/opening_book.json
     - assets/opening_books/el_filja/opening_book.json
     - assets/puzzles/malom_perfect_db_puzzles.sanmill_puzzles
+    - assets/patches/std.mill_patch
 
 msix_config:
   display_name: Mill (N Men's Morris)

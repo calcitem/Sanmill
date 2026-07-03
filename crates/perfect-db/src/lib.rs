@@ -15,16 +15,18 @@ pub mod database;
 pub mod file_format;
 pub mod index;
 mod mill;
+pub mod patch;
 mod rust_global;
+pub mod wdl_plane;
 pub use mill::{
-    PerfectMoveChoice, PerfectMoveOrdering, all_move_outcomes_with_ordering,
+    PerfectMoveChoice, PerfectMoveOrdering, all_move_outcomes_with_ordering, all_move_wdl_fast,
     best_move_choice_for_query_with_database, best_move_choice_for_query_with_ordering,
     best_move_choice_with_database, best_move_choice_with_ordering,
     best_move_choices_with_database, best_move_choices_with_ordering, best_move_token_for_state,
     best_move_token_for_state_with_ordering, best_move_token_with_database,
-    best_move_token_with_ordering, best_move_tokens_for_state_with_ordering, evaluate_state_for,
-    evaluate_state_outcome_with_database, evaluate_state_with_database,
-    snapshot_from_perfect_query,
+    best_move_token_with_ordering, best_move_tokens_for_state_with_ordering, canonical_key,
+    evaluate_state_for, evaluate_state_outcome_with_database, evaluate_state_with_database,
+    mid_removal_key, query_from_state, resolve_wdl_with_plane, snapshot_from_perfect_query,
 };
 pub use rust_global::{
     best_move_choice_for_rust_database, best_move_choice_for_rust_database_with_ordering,

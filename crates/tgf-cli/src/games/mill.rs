@@ -16,6 +16,10 @@ const CMD_TUNE_LABEL: CommandId = CommandId::new("tune-label");
 const CMD_TUNE_STATS: CommandId = CommandId::new("tune-stats");
 const CMD_TUNE_FIT: CommandId = CommandId::new("tune-fit");
 const CMD_PUZZLE_GEN: CommandId = CommandId::new("puzzle-gen");
+const CMD_MINE: CommandId = CommandId::new("mine");
+const CMD_MINE_ENDGAME: CommandId = CommandId::new("mine-endgame");
+const CMD_PATCH_PACK: CommandId = CommandId::new("patch-pack");
+const CMD_ARENA: CommandId = CommandId::new("arena");
 
 const MILL_COMMANDS: &[CommandSpec] = &[
     CommandSpec {
@@ -72,6 +76,30 @@ const MILL_COMMANDS: &[CommandSpec] = &[
         aliases: &["puzzle gen"],
         description: "generate forced-win puzzles from a Perfect DB",
     },
+    CommandSpec {
+        id: CMD_MINE,
+        name: "mine",
+        aliases: &[],
+        description: "mine engine-blunder positions against a Perfect DB",
+    },
+    CommandSpec {
+        id: CMD_MINE_ENDGAME,
+        name: "mine-endgame",
+        aliases: &["mine endgame"],
+        description: "exhaustively mine every position in small endgame sectors",
+    },
+    CommandSpec {
+        id: CMD_PATCH_PACK,
+        name: "patch-pack",
+        aliases: &["patch pack"],
+        description: "pack mined JSONL entries into a compact patch file",
+    },
+    CommandSpec {
+        id: CMD_ARENA,
+        name: "arena",
+        aliases: &[],
+        description: "play full-rules engine-vs-Perfect-DB games (patched vs unpatched KPI)",
+    },
 ];
 
 impl CliGame for MillCli {
@@ -104,6 +132,10 @@ impl CliGame for MillCli {
             CMD_TUNE_STATS => crate::mill_tune::run_stats(args),
             CMD_TUNE_FIT => crate::mill_tune::run_fit(args),
             CMD_PUZZLE_GEN => crate::mill_puzzle::run_puzzle_gen(args),
+            CMD_MINE => crate::mill_mine::run_mill_mine(args),
+            CMD_MINE_ENDGAME => crate::mill_endgame::run_mill_endgame(args),
+            CMD_PATCH_PACK => crate::mill_pack::run_patch_pack(args),
+            CMD_ARENA => crate::mill_arena::run_mill_arena(args),
             CMD_UCI => {
                 warn_unused_args("uci", args);
                 crate::mill_uci::run_uci_loop();
