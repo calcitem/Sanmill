@@ -17,6 +17,7 @@ class BoardPainter extends CustomPainter {
     this.shouldDrawOptionalElements = true,
     this.shouldDrawMillLines = true,
     this.shouldDrawAnalysisOverlay = true,
+    this.boardMarginOverride,
   });
 
   final BuildContext context;
@@ -25,6 +26,7 @@ class BoardPainter extends CustomPainter {
   final bool shouldDrawOptionalElements;
   final bool shouldDrawMillLines;
   final bool shouldDrawAnalysisOverlay;
+  final double? boardMarginOverride;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -45,7 +47,7 @@ class BoardPainter extends CustomPainter {
     }
 
     final List<Offset> offset = points
-        .map((Offset e) => offsetFromPointWithInnerSize(e, size))
+        .map((Offset e) => _offsetFromPointWithOptionalMargin(e, size))
         .toList();
     _drawLines(offset, canvas, paint, size);
     _drawPoints(offset, canvas, paint);
@@ -60,6 +62,37 @@ class BoardPainter extends CustomPainter {
       final double squareSize = (size.width - boardMargin * 2) / 6;
       AnalysisRenderer.render(canvas, size, squareSize);
     }
+  }
+
+  Offset _offsetFromPointWithOptionalMargin(Offset point, Size size) {
+    final double? margin = boardMarginOverride;
+    if (margin == null) {
+      return offsetFromPointWithInnerSize(point, size);
+    }
+
+    final double innerRingSize = DB().displaySettings.boardInnerRingSize;
+    final Offset center = Offset(size.width / 2, size.height / 2);
+    final double unitDistance = (size.width - margin * 2) / 6;
+    final Offset originalPos = (point * unitDistance) + Offset(margin, margin);
+    final Offset vectorFromCenter = originalPos - center;
+    final int ringOriginal = max(
+      (point.dx - 3).abs().toInt().clamp(0, 3),
+      (point.dy - 3).abs().toInt().clamp(0, 3),
+    );
+    if (ringOriginal == 0) {
+      return originalPos;
+    }
+
+    const double targetOuter = 3.0;
+    final double targetInner = innerRingSize;
+    final double targetMiddle = (targetOuter + targetInner) / 2.0;
+    final double targetLen = switch (ringOriginal) {
+      1 => targetInner,
+      2 => targetMiddle,
+      _ => targetOuter,
+    };
+
+    return center + vectorFromCenter * (targetLen / ringOriginal);
   }
 
   Paint _createPaint(

@@ -693,6 +693,7 @@ class _HumanAiNewGamePreview extends StatelessWidget {
                         shouldDrawOptionalElements: false,
                         shouldDrawMillLines: false,
                         shouldDrawAnalysisOverlay: false,
+                        boardMarginOverride: AppTheme.boardMargin,
                       ),
                       foregroundPainter: _HumanAiNewGamePreviewPiecesPainter(
                         colors,
@@ -724,10 +725,7 @@ class _HumanAiNewGamePreviewPiecesPainter extends CustomPainter {
     final double pieceRadius = side * 0.045;
     final Size boardSize = Size.square(side);
     final List<Offset> previewPoints = points
-        .map(
-          (Offset point) =>
-              origin + offsetFromPointWithInnerSize(point, boardSize),
-        )
+        .map((Offset point) => origin + _offsetFromPoint(point, boardSize))
         .toList();
 
     void drawPiece(Offset center, Color color, {bool highlighted = false}) {
@@ -769,6 +767,34 @@ class _HumanAiNewGamePreviewPiecesPainter extends CustomPainter {
     covariant _HumanAiNewGamePreviewPiecesPainter oldDelegate,
   ) {
     return oldDelegate.colors != colors;
+  }
+
+  Offset _offsetFromPoint(Offset point, Size size) {
+    const double margin = AppTheme.boardMargin;
+    final double innerRingSize = DB().displaySettings.boardInnerRingSize;
+    final Offset center = Offset(size.width / 2, size.height / 2);
+    final double unitDistance = (size.width - margin * 2) / 6;
+    final Offset originalPos =
+        (point * unitDistance) + const Offset(margin, margin);
+    final Offset vectorFromCenter = originalPos - center;
+    final int ringOriginal = math.max(
+      (point.dx - 3).abs().toInt().clamp(0, 3),
+      (point.dy - 3).abs().toInt().clamp(0, 3),
+    );
+    if (ringOriginal == 0) {
+      return originalPos;
+    }
+
+    const double targetOuter = 3.0;
+    final double targetInner = innerRingSize;
+    final double targetMiddle = (targetOuter + targetInner) / 2.0;
+    final double targetLen = switch (ringOriginal) {
+      1 => targetInner,
+      2 => targetMiddle,
+      _ => targetOuter,
+    };
+
+    return center + vectorFromCenter * (targetLen / ringOriginal);
   }
 }
 

@@ -443,55 +443,20 @@ void main() {
       find.byKey(const Key('play_area_regular_board_transform_sheet')),
       findsOne,
     );
-    final BuildContext regularRotateActionContext = tester.element(
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_sheet')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_board_transform_grid')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_board_transform_identity')),
+      findsOne,
+    );
+    expect(
       find.byKey(const Key('play_area_regular_board_transform_rotate')),
-    );
-    expect(
-      IconTheme.of(regularRotateActionContext).color,
-      Theme.of(regularRotateActionContext).colorScheme.onSurface,
-    );
-    expect(
-      find.byKey(const Key('play_area_regular_board_transform_rotate')),
-      findsOne,
-    );
-    expect(
-      find.byKey(
-        const Key('play_area_regular_board_transform_horizontal_flip'),
-      ),
-      findsOne,
-    );
-    expect(
-      find.byKey(const Key('play_area_regular_board_transform_vertical_flip')),
-      findsOne,
-    );
-    expect(
-      tester
-          .getTopLeft(
-            find.byKey(
-              const Key('play_area_regular_board_transform_vertical_flip'),
-            ),
-          )
-          .dy,
-      lessThan(
-        tester
-            .getTopLeft(
-              find.byKey(
-                const Key('play_area_regular_board_transform_horizontal_flip'),
-              ),
-            )
-            .dy,
-      ),
-    );
-    expect(
-      find.byKey(
-        const Key('play_area_regular_board_transform_inner_outer_flip'),
-      ),
-      findsOne,
-    );
-    expect(
-      find.byKey(
-        const Key('play_area_regular_board_transform_swap_rotate_180'),
-      ),
       findsNothing,
     );
 
@@ -1090,48 +1055,20 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('play_area_board_transform_sheet')), findsOne);
-    final BuildContext rotateActionContext = tester.element(
+    expect(find.byKey(const Key('play_area_game_menu_sheet')), findsNothing);
+    expect(find.byKey(const Key('play_area_board_transform_grid')), findsOne);
+    expect(
+      find.byKey(const Key('play_area_board_transform_identity')),
+      findsOne,
+    );
+    expect(
       find.byKey(const Key('play_area_board_transform_rotate')),
-    );
-    expect(
-      IconTheme.of(rotateActionContext).color,
-      Theme.of(rotateActionContext).colorScheme.onSurface,
-    );
-    expect(find.byKey(const Key('play_area_board_transform_rotate')), findsOne);
-    expect(
-      find.byKey(const Key('play_area_board_transform_horizontal_flip')),
-      findsOne,
-    );
-    expect(
-      find.byKey(const Key('play_area_board_transform_vertical_flip')),
-      findsOne,
-    );
-    expect(
-      tester
-          .getTopLeft(
-            find.byKey(const Key('play_area_board_transform_vertical_flip')),
-          )
-          .dy,
-      lessThan(
-        tester
-            .getTopLeft(
-              find.byKey(
-                const Key('play_area_board_transform_horizontal_flip'),
-              ),
-            )
-            .dy,
-      ),
-    );
-    expect(
-      find.byKey(const Key('play_area_board_transform_inner_outer_flip')),
-      findsOne,
-    );
-    expect(
-      find.byKey(const Key('play_area_board_transform_swap_rotate_180')),
       findsNothing,
     );
 
-    await tester.tap(find.byKey(const Key('play_area_board_transform_rotate')));
+    await tester.tap(
+      find.byKey(const Key('play_area_board_transform_identity')),
+    );
     await tester.pumpAndSettle();
 
     expect(
@@ -1175,7 +1112,16 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('play_area_board_transform_sheet')), findsOne);
-    expect(find.byKey(const Key('play_area_board_transform_rotate')), findsOne);
+    expect(find.byKey(const Key('play_area_game_menu_sheet')), findsNothing);
+    expect(find.byKey(const Key('play_area_board_transform_grid')), findsOne);
+    expect(
+      find.byKey(const Key('play_area_board_transform_identity')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_board_transform_rotate')),
+      findsNothing,
+    );
     expect(find.byKey(const Key('play_area_human_ai_robot_panel')), findsOne);
     expect(find.byKey(const Key('play_area_human_ai_player_panel')), findsOne);
   });

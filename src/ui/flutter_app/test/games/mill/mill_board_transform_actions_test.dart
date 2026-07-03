@@ -29,4 +29,23 @@ void main() {
       ],
     );
   });
+
+  test('all board transform actions cover every symmetry once', () {
+    final Set<String> ids = allMillBoardTransformActions
+        .map((MillBoardTransformAction action) => action.id)
+        .toSet();
+    final Set<TransformationType> types = allMillBoardTransformActions
+        .map((MillBoardTransformAction action) => action.type)
+        .toSet();
+
+    expect(allMillBoardTransformActions, hasLength(16));
+    expect(ids, hasLength(allMillBoardTransformActions.length));
+    expect(types, TransformationType.values.toSet());
+    expect(
+      allMillBoardTransformActions.map(
+        (MillBoardTransformAction action) => action.type,
+      ),
+      TransformationType.values,
+    );
+  });
 }

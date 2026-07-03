@@ -154,6 +154,7 @@ class LichessActionSheetAction {
   LichessActionSheetAction({
     required this.makeLabel,
     required this.onPressed,
+    this.onPressedWithContext,
     this.key,
     this.dismissOnPress = true,
     this.leading,
@@ -165,6 +166,7 @@ class LichessActionSheetAction {
   final Key? key;
   final Widget Function(BuildContext context) makeLabel;
   final VoidCallback onPressed;
+  final void Function(BuildContext context)? onPressedWithContext;
   final bool dismissOnPress;
   final Widget? leading;
   final Widget? trailing;
@@ -226,12 +228,22 @@ void _handleActionPressed(
   BuildContext context,
   LichessActionSheetAction action,
 ) {
-  if (!action.dismissOnPress) {
+  void runAction() {
+    final void Function(BuildContext context)? onPressedWithContext =
+        action.onPressedWithContext;
+    if (onPressedWithContext != null) {
+      onPressedWithContext(context);
+      return;
+    }
     action.onPressed();
+  }
+
+  if (!action.dismissOnPress) {
+    runAction();
     return;
   }
 
   final NavigatorState navigator = Navigator.of(context);
   navigator.pop();
-  WidgetsBinding.instance.addPostFrameCallback((_) => action.onPressed());
+  WidgetsBinding.instance.addPostFrameCallback((_) => runAction());
 }

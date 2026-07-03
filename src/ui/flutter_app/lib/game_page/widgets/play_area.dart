@@ -20,6 +20,7 @@ import '../../game_platform/game_session.dart'
     show GameAction, GameSession, PlayerSeat;
 import '../../game_shell/game_session_scope.dart';
 import '../../games/mill/mill_action_codec.dart';
+import '../../games/mill/mill_board_coordinate_maps.dart';
 import '../../games/mill/mill_board_transform_actions.dart';
 import '../../games/mill/mill_human_database_provider.dart';
 import '../../games/mill/mill_opening_book_provider.dart';
@@ -46,6 +47,7 @@ import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
 import '../services/painters/advantage_graph_painter.dart';
 import '../services/player_timer.dart';
+import '../services/transform/transform.dart';
 import 'ai_chat_dialog.dart';
 import 'game_page.dart';
 import 'mini_board.dart';
@@ -1186,7 +1188,9 @@ class PlayAreaState extends State<PlayArea> {
     if (!mounted) {
       return;
     }
-    final BuildContext sheetContext = _stableActionContext(context);
+    final BuildContext sheetContext = context.mounted
+        ? context
+        : _stableActionContext(context);
     final S effectiveStrings = strings ?? S.of(sheetContext);
     showLichessActionSheet<void>(
       context: sheetContext,
@@ -1743,9 +1747,11 @@ class PlayAreaState extends State<PlayArea> {
       action.type,
     );
     if (transformed) {
-      setState(() {
-        _isBoardFlipped = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isBoardFlipped = false;
+        });
+      }
       if (_usesLichessHumanAiToolbar &&
           GameController().gameInstance.isAiSideToMove) {
         unawaited(
@@ -1766,47 +1772,60 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
-  List<LichessActionSheetAction> _buildBoardTransformActions({
-    required String keyPrefix,
-    required S strings,
-    GameSession? session,
-  }) {
-    return <LichessActionSheetAction>[
-      for (final MillBoardTransformAction action in millBoardTransformActions)
-        LichessActionSheetAction(
-          key: Key('${keyPrefix}_${action.id}'),
-          leading: Icon(action.icon),
-          makeLabel: (BuildContext context) => Text(action.label(strings)),
-          onPressed: () =>
-              _transformActiveBoard(action, strings: strings, session: session),
-        ),
-    ];
-  }
-
-  void _showBoardTransformSheet(
-    BuildContext context, {
+  void _replaceMenuWithBoardTransformPicker(
+    NavigatorState navigator, {
     required Key sheetKey,
     required String keyPrefix,
-    S? strings,
+    required S strings,
+    required String currentBoardLayout,
     GameSession? session,
   }) {
-    if (!mounted) {
-      return;
-    }
-    final BuildContext sheetContext = _stableActionContext(context);
-    final S effectiveStrings = strings ?? S.of(sheetContext);
-    showLichessActionSheet<void>(
-      context: sheetContext,
-      sheetKey: sheetKey,
-      title: Text(effectiveStrings.flipBoard),
-      backgroundColor: _actionSheetBackground(sheetContext),
-      foregroundColor: _actionSheetForeground(sheetContext),
-      actions: _buildBoardTransformActions(
-        keyPrefix: keyPrefix,
-        strings: effectiveStrings,
-        session: session,
+    assert(
+      navigator.mounted,
+      'Board transform picker requires a mounted navigator.',
+    );
+    navigator.pushReplacement<void, void>(
+      DialogRoute<void>(
+        context: navigator.context,
+        builder: (BuildContext dialogContext) => _BoardTransformPickerDialog(
+          sheetKey: sheetKey,
+          keyPrefix: keyPrefix,
+          strings: strings,
+          currentBoardLayout: currentBoardLayout,
+          backgroundColor: _actionSheetBackground(dialogContext),
+          foregroundColor: _actionSheetForeground(dialogContext),
+          onSelected: (MillBoardTransformAction action) =>
+              _transformActiveBoard(action, strings: strings, session: session),
+        ),
       ),
     );
+  }
+
+  String _activeBoardLayoutForTransformPreview() {
+    final String? fen =
+        GameController().activeNativeMillSession?.getFen() ??
+        GameController().activeFen;
+    if (fen != null && fen.length >= 26) {
+      return fen.substring(0, 26);
+    }
+
+    return _boardLayoutFromBoardView(GameController().activeBoardView);
+  }
+
+  String _boardLayoutFromBoardView(MillBoardView view) {
+    final StringBuffer buffer = StringBuffer();
+    for (int square = 8; square <= 31; square++) {
+      if (square == 16 || square == 24) {
+        buffer.write('/');
+      }
+      final int? gridIndex = MillBoardCoordinateMaps.squareToGridIndex[square];
+      assert(gridIndex != null, 'Mill square must map to a grid index.');
+      final PieceColor piece = view.markedGridIndices.contains(gridIndex)
+          ? PieceColor.marked
+          : view.pieceOnGrid(gridIndex!);
+      buffer.write(piece.string);
+    }
+    return buffer.toString();
   }
 
   Future<void> _moveNowFromGameMenu(
@@ -2367,6 +2386,7 @@ class PlayAreaState extends State<PlayArea> {
       !_isAnalysisMode || nativeHostSession != null,
       'Analysis menu requires a native Mill session.',
     );
+    final String boardTransformLayout = _activeBoardLayoutForTransformPreview();
     showLichessActionSheet<void>(
       context: hostContext,
       sheetKey: const Key('play_area_regular_game_menu_sheet'),
@@ -2444,14 +2464,18 @@ class PlayAreaState extends State<PlayArea> {
           key: const Key('play_area_regular_game_menu_flip_board'),
           leading: const Icon(Icons.flip_camera_android_outlined),
           trailing: const Icon(Icons.chevron_right),
+          dismissOnPress: false,
           makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
-          onPressed: () => _showBoardTransformSheet(
-            actionContext,
-            sheetKey: const Key('play_area_regular_board_transform_sheet'),
-            keyPrefix: 'play_area_regular_board_transform',
-            strings: strings,
-            session: hostSession,
-          ),
+          onPressed: () {},
+          onPressedWithContext: (BuildContext menuActionContext) =>
+              _replaceMenuWithBoardTransformPicker(
+                Navigator.of(menuActionContext),
+                sheetKey: const Key('play_area_regular_board_transform_sheet'),
+                keyPrefix: 'play_area_regular_board_transform',
+                strings: strings,
+                currentBoardLayout: boardTransformLayout,
+                session: hostSession,
+              ),
         ),
         if (!_isAnalysisMode)
           LichessActionSheetAction(
@@ -2587,6 +2611,7 @@ class PlayAreaState extends State<PlayArea> {
     final GameSession? hostSession =
         GameSessionScope.sessionOf(hostContext) ??
         GameController().activeNativeMillSession;
+    final String boardTransformLayout = _activeBoardLayoutForTransformPreview();
     showLichessActionSheet<void>(
       context: hostContext,
       sheetKey: const Key('play_area_game_menu_sheet'),
@@ -2597,14 +2622,18 @@ class PlayAreaState extends State<PlayArea> {
           key: const Key('play_area_game_menu_flip_board'),
           leading: const Icon(Icons.flip_camera_android_outlined),
           trailing: const Icon(Icons.chevron_right),
+          dismissOnPress: false,
           makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
-          onPressed: () => _showBoardTransformSheet(
-            actionContext,
-            sheetKey: const Key('play_area_board_transform_sheet'),
-            keyPrefix: 'play_area_board_transform',
-            strings: strings,
-            session: hostSession,
-          ),
+          onPressed: () {},
+          onPressedWithContext: (BuildContext menuActionContext) =>
+              _replaceMenuWithBoardTransformPicker(
+                Navigator.of(menuActionContext),
+                sheetKey: const Key('play_area_board_transform_sheet'),
+                keyPrefix: 'play_area_board_transform',
+                strings: strings,
+                currentBoardLayout: boardTransformLayout,
+                session: hostSession,
+              ),
         ),
         LichessActionSheetAction(
           key: const Key('play_area_game_menu_move_list'),
@@ -8434,6 +8463,188 @@ class _TakeBackRequesterSwatch extends StatelessWidget {
         border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
       ),
       child: const SizedBox.square(dimension: 24),
+    );
+  }
+}
+
+class _BoardTransformPickerDialog extends StatelessWidget {
+  const _BoardTransformPickerDialog({
+    required this.sheetKey,
+    required this.keyPrefix,
+    required this.strings,
+    required this.currentBoardLayout,
+    required this.backgroundColor,
+    required this.foregroundColor,
+    required this.onSelected,
+  });
+
+  final Key sheetKey;
+  final String keyPrefix;
+  final S strings;
+  final String currentBoardLayout;
+  final Color backgroundColor;
+  final Color foregroundColor;
+  final ValueChanged<MillBoardTransformAction> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final List<_BoardTransformPreview> previews = _uniquePreviews();
+    assert(previews.isNotEmpty, 'Board transform picker must show options.');
+    final int crossAxisCount = math.min(4, math.max(1, previews.length));
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return Dialog(
+      key: sheetKey,
+      backgroundColor: backgroundColor,
+      surfaceTintColor: Colors.transparent,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: math.min(MediaQuery.sizeOf(context).width, 560),
+          maxHeight: MediaQuery.sizeOf(context).height * 0.9,
+        ),
+        child: IconTheme.merge(
+          data: IconThemeData(color: foregroundColor),
+          child: DefaultTextStyle.merge(
+            style: TextStyle(color: foregroundColor),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 18),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Center(
+                    child: Text(
+                      strings.flipBoard,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleMedium?.copyWith(color: foregroundColor),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  GridView.builder(
+                    key: Key('${keyPrefix}_grid'),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemCount: previews.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final _BoardTransformPreview preview = previews[index];
+                      return _BoardTransformPreviewTile(
+                        key: Key('${keyPrefix}_${preview.action.id}'),
+                        semanticsLabel: '${strings.flipBoard} ${index + 1}',
+                        boardLayout: preview.boardLayout,
+                        borderColor: colorScheme.outlineVariant,
+                        onTap: () {
+                          final NavigatorState navigator = Navigator.of(
+                            context,
+                          );
+                          navigator.pop();
+                          WidgetsBinding.instance.addPostFrameCallback(
+                            (_) => onSelected(preview.action),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<_BoardTransformPreview> _uniquePreviews() {
+    final Map<String, _BoardTransformPreview> previews =
+        <String, _BoardTransformPreview>{};
+    for (final MillBoardTransformAction action
+        in allMillBoardTransformActions) {
+      final String boardLayout = _boardLayoutAfter(action.type);
+      previews.putIfAbsent(
+        boardLayout,
+        () => _BoardTransformPreview(action: action, boardLayout: boardLayout),
+      );
+    }
+    return previews.values.toList(growable: false);
+  }
+
+  String _boardLayoutAfter(TransformationType type) {
+    assert(
+      currentBoardLayout.length == 26,
+      'Board transform preview requires inner/middle/outer layout.',
+    );
+    final String boardOnly = currentBoardLayout.replaceAll('/', '');
+    assert(boardOnly.length == 24, 'Board layout must contain 24 points.');
+    final String transformed = transformString(boardOnly, type);
+    return '${transformed.substring(0, 8)}/'
+        '${transformed.substring(8, 16)}/'
+        '${transformed.substring(16, 24)}';
+  }
+}
+
+class _BoardTransformPreview {
+  const _BoardTransformPreview({
+    required this.action,
+    required this.boardLayout,
+  });
+
+  final MillBoardTransformAction action;
+  final String boardLayout;
+}
+
+class _BoardTransformPreviewTile extends StatelessWidget {
+  const _BoardTransformPreviewTile({
+    super.key,
+    required this.semanticsLabel,
+    required this.boardLayout,
+    required this.borderColor,
+    required this.onTap,
+  });
+
+  final String semanticsLabel;
+  final String boardLayout;
+  final Color borderColor;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: semanticsLabel,
+      child: Semantics(
+        button: true,
+        label: semanticsLabel,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(AppStyles.compactRadius),
+            onTap: onTap,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppStyles.compactRadius),
+                border: Border.all(color: borderColor),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(6),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(AppStyles.compactRadius),
+                  child: ColoredBox(
+                    color: DB().colorSettings.boardBackgroundColor,
+                    child: CustomPaint(
+                      painter: MiniBoardPainter(boardLayout: boardLayout),
+                      child: const SizedBox.expand(),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
