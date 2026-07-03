@@ -4565,7 +4565,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
 
     final ThemeData theme = Theme.of(context);
     final TextStyle? style = theme.textTheme.bodySmall?.copyWith(
-      color: theme.colorScheme.onSurfaceVariant,
+      color: DB().colorSettings.messageColor.withValues(alpha: 0.8),
     );
     return LayoutBuilder(
       key: const Key('play_area_analysis_root_comments'),
@@ -7048,6 +7048,7 @@ class _AnalysisMovesHeader extends StatelessWidget {
       builder: (BuildContext context, _, _) {
         final ThemeData theme = Theme.of(context);
         final ColorScheme colorScheme = theme.colorScheme;
+        final Color messageColor = DB().colorSettings.messageColor;
         final S strings = S.of(context);
         final GameRecorder recorder = GameController().gameRecorder;
         final _AnalysisMovesHeaderLabels labels = _labels(strings, recorder);
@@ -7080,7 +7081,7 @@ class _AnalysisMovesHeader extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.labelLarge?.copyWith(
-                            color: colorScheme.onSurface,
+                            color: messageColor,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 0,
                           ),
@@ -7093,7 +7094,7 @@ class _AnalysisMovesHeader extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: colorScheme.onSurfaceVariant,
+                            color: messageColor.withValues(alpha: 0.8),
                             letterSpacing: 0,
                           ),
                         ),
@@ -7104,7 +7105,10 @@ class _AnalysisMovesHeader extends StatelessWidget {
                     key: const Key('play_area_analysis_open_full_move_list'),
                     tooltip: labels.fullMoveListAction,
                     visualDensity: VisualDensity.compact,
-                    icon: const Icon(Icons.format_list_numbered),
+                    icon: Icon(
+                      Icons.format_list_numbered,
+                      color: messageColor.withValues(alpha: 0.9),
+                    ),
                     onPressed: onOpenFullMoveList,
                   ),
                 ],
@@ -7518,8 +7522,8 @@ class _AnalysisEngineLine extends StatelessWidget {
   Widget build(BuildContext context) {
     assert(lineRank > 0, 'Engine line rank must be one-based.');
     final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
     final S strings = S.of(context);
+    final Color messageColor = DB().colorSettings.messageColor;
     final Color outcomeColor = AnalysisMode.isThreatMode
         ? Colors.red.shade600
         : AnalysisMode.getColorForOutcome(result.outcome);
@@ -7563,7 +7567,7 @@ class _AnalysisEngineLine extends StatelessWidget {
                       softWrap: false,
                       overflow: TextOverflow.fade,
                       style: theme.textTheme.labelSmall?.copyWith(
-                        color: colorScheme.onSurfaceVariant.withValues(
+                        color: messageColor.withValues(
                           alpha: onTap == null ? 0.72 : 0.9,
                         ),
                         fontSize: 10,
@@ -7603,7 +7607,7 @@ class _AnalysisEngineLine extends StatelessWidget {
                       softWrap: false,
                       overflow: TextOverflow.clip,
                       style: theme.textTheme.labelSmall?.copyWith(
-                        color: colorScheme.onSurfaceVariant.withValues(
+                        color: messageColor.withValues(
                           alpha: onTap == null ? 0.72 : 0.9,
                         ),
                         fontSize: fontSize,
@@ -7620,7 +7624,7 @@ class _AnalysisEngineLine extends StatelessWidget {
                       softWrap: false,
                       overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: colorScheme.onSurface.withValues(
+                        color: messageColor.withValues(
                           alpha: onTap == null ? 0.72 : 1,
                         ),
                         fontSize: fontSize,
