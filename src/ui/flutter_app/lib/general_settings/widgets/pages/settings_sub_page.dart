@@ -67,6 +67,9 @@ int _aiKnowledgeSourcesAvailableCount() {
   if (_humanDatabaseSettingsAvailable()) {
     count++;
   }
+  if (!kIsWeb) {
+    count++;
+  }
   return count;
 }
 
@@ -79,6 +82,9 @@ int _aiKnowledgeSourcesEnabledCount(GeneralSettings settings) {
     count++;
   }
   if (_humanDatabaseSettingsAvailable() && settings.humanDatabaseEnabled) {
+    count++;
+  }
+  if (!kIsWeb && (settings.patchAvoidTraps || settings.patchMakeTraps)) {
     count++;
   }
   return count;

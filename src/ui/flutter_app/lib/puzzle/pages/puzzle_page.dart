@@ -1348,10 +1348,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
         : s.puzzleSolvedAgain;
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 3),
-      ),
+      SnackBar(content: Text(message), duration: const Duration(seconds: 3)),
     );
   }
 
