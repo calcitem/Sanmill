@@ -258,28 +258,6 @@ Future<void> showAnalysisSettingsSheet(
                           ),
                         SwitchListTile.adaptive(
                           key: const Key(
-                            'play_area_analysis_settings_evaluation_gauge',
-                          ),
-                          secondary: const Icon(Icons.stacked_bar_chart),
-                          title: Text(strings.showPositionalAdvantageIndicator),
-                          value: AnalysisMode.showEvaluationGauge,
-                          onChanged: (bool value) {
-                            RecordingService().recordEvent(
-                              RecordingEventType.toolbarAction,
-                              <String, dynamic>{
-                                'toolbar': 'analysisSettings',
-                                'action': 'setEvaluationGauge',
-                                'visible': value,
-                              },
-                            );
-                            AnalysisMode.setShowEvaluationGauge(
-                              value,
-                              persist: true,
-                            );
-                          },
-                        ),
-                        SwitchListTile.adaptive(
-                          key: const Key(
                             'play_area_analysis_settings_advantage_graph',
                           ),
                           secondary: const Icon(Icons.show_chart_outlined),
@@ -3287,11 +3265,8 @@ class PlayAreaState extends State<PlayArea> {
               final double engineLinesReserve = hasEngineLinesSlot
                   ? _kAnalysisEngineLinesReserveHeight
                   : 0;
-              final bool showEvaluationGauge =
-                  _shouldShowAnalysisEvaluationGauge();
-              final double evaluationGaugeReserve = showEvaluationGauge
-                  ? _kAdvantageIndicatorWidth + _kAdvantageIndicatorGap
-                  : 0;
+              final double evaluationGaugeReserve =
+                  _kAdvantageIndicatorWidth + _kAdvantageIndicatorGap;
               const double tabPanelMinHeight = 174;
               final double pieceRowsHeight = showPieceCountRows
                   ? _pieceRowsHeightForLayout(context)
@@ -3325,10 +3300,7 @@ class PlayAreaState extends State<PlayArea> {
                         : _buildPieceCountRow()
                   else
                     const SizedBox(height: AppTheme.boardMargin),
-                  _buildAnalysisBoardWithEvaluationGauge(
-                    boardSize: boardSize,
-                    showEvaluationGauge: showEvaluationGauge,
-                  ),
+                  _buildAnalysisBoardWithEvaluationGauge(boardSize: boardSize),
                   if (showPieceCountRows)
                     _isBoardFlipped
                         ? _buildPieceCountRow()
@@ -3345,37 +3317,19 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
-  bool _shouldShowAnalysisEvaluationGauge() {
-    return _isAnalysisMode &&
-        AnalysisMode.showEvaluationGauge &&
-        AnalysisMode.isFullAnalysis &&
-        AnalysisMode.analysisLineResults.isNotEmpty;
-  }
-
   int _analysisEvaluationGaugeValue() {
-    if (!AnalysisMode.isFullAnalysis ||
-        AnalysisMode.analysisLineResults.isEmpty) {
-      return 0;
+    if (AnalysisMode.isFullAnalysis &&
+        AnalysisMode.analysisLineResults.isNotEmpty) {
+      return _analysisOutcomeGaugeValue(
+        AnalysisMode.analysisLineResults.first.outcome,
+      );
     }
-    return _analysisOutcomeGaugeValue(
-      AnalysisMode.analysisLineResults.first.outcome,
-    );
+    return _getCurrentAdvantageValue();
   }
 
   Widget _buildAnalysisBoardWithEvaluationGauge({
     required double boardSize,
-    required bool showEvaluationGauge,
   }) {
-    if (!showEvaluationGauge) {
-      return Center(
-        child: SizedBox.square(
-          key: const Key('play_area_analysis_board'),
-          dimension: boardSize,
-          child: _buildBoardScreenshot(includeAdvantageIndicator: false),
-        ),
-      );
-    }
-
     return Center(
       child: SizedBox(
         key: const Key('play_area_analysis_board_with_gauge'),
@@ -3385,18 +3339,18 @@ class PlayAreaState extends State<PlayArea> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            SizedBox.square(
-              key: const Key('play_area_analysis_board'),
-              dimension: boardSize,
-              child: _buildBoardScreenshot(includeAdvantageIndicator: false),
-            ),
-            const SizedBox(width: _kAdvantageIndicatorGap),
             SizedBox(
               key: const Key('play_area_analysis_evaluation_gauge'),
               width: _kAdvantageIndicatorWidth,
               child: _PositionalAdvantageIndicator(
                 value: _analysisEvaluationGaugeValue(),
               ),
+            ),
+            const SizedBox(width: _kAdvantageIndicatorGap),
+            SizedBox.square(
+              key: const Key('play_area_analysis_board'),
+              dimension: boardSize,
+              child: _buildBoardScreenshot(includeAdvantageIndicator: false),
             ),
           ],
         ),

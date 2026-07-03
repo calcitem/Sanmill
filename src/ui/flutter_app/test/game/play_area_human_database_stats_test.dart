@@ -1439,6 +1439,10 @@ void main() {
     await _pumpSessionPlayArea(tester, session);
 
     expect(
+      find.byKey(const Key('play_area_analysis_evaluation_gauge')),
+      findsOneWidget,
+    );
+    expect(
       find.byKey(const Key('play_area_analysis_engine_lines')),
       findsOneWidget,
     );
@@ -3966,7 +3970,6 @@ void main() {
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
       isPositionalAdvantageIndicatorShown: false,
-      analysisShowEvaluationGauge: false,
     );
     final _RecordingAnalysisSession session = _RecordingAnalysisSession();
     _bindExistingNativeGame(GameMode.analysis, session);
@@ -3979,7 +3982,7 @@ void main() {
 
     expect(
       find.byKey(const Key('play_area_analysis_evaluation_gauge')),
-      findsNothing,
+      findsOneWidget,
     );
     expect(
       find.byKey(const Key('play_area_advantage_indicator_positioned')),
@@ -4474,7 +4477,7 @@ void main() {
     await tester.pump();
   });
 
-  testWidgets('analysis settings sheet toggles evaluation displays', (
+  testWidgets('analysis settings sheet toggles advantage graph display', (
     WidgetTester tester,
   ) async {
     db.displaySettings = const DisplaySettings(
@@ -4493,10 +4496,15 @@ void main() {
 
     await _pumpSessionPlayArea(tester, session);
 
+    expect(
+      find.byKey(const Key('play_area_analysis_evaluation_gauge')),
+      findsOneWidget,
+    );
+
     await _openAnalysisSettingsFromEnginePopup(tester);
 
     expect(
-      find.byKey(const Key('play_area_analysis_settings_evaluation_gauge')),
+      find.byKey(const Key('play_area_analysis_settings_sheet')),
       findsOneWidget,
     );
     expect(
@@ -4504,25 +4512,7 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.byKey(const Key('play_area_analysis_evaluation_gauge')),
-      findsNothing,
-    );
-
-    final Finder evaluationGaugeTile = find.byKey(
-      const Key('play_area_analysis_settings_evaluation_gauge'),
-    );
-    await tester.ensureVisible(evaluationGaugeTile);
-    await tester.tap(evaluationGaugeTile);
-    await tester.pumpAndSettle();
-
-    expect(db.displaySettings.analysisShowEvaluationGauge, isTrue);
-    expect(db.displaySettings.isPositionalAdvantageIndicatorShown, isFalse);
-    expect(
-      find.byKey(const Key('play_area_analysis_evaluation_gauge')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const Key('play_area_advantage_indicator_positioned')),
+      find.byKey(const Key('play_area_analysis_settings_evaluation_gauge')),
       findsNothing,
     );
 
@@ -4534,6 +4524,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(db.displaySettings.isAdvantageGraphShown, isTrue);
+    expect(
+      find.byKey(const Key('play_area_advantage_indicator_positioned')),
+      findsNothing,
+    );
   });
 
   testWidgets('analysis settings sheet toggles small board', (
