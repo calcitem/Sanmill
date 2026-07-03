@@ -5177,10 +5177,7 @@ void main() {
       find.byKey(const Key('play_area_analysis_moves_header_title')),
     );
     expect(movesHeaderTitle.data, 'Move list');
-    expect(
-      movesHeaderTitle.style?.color,
-      db.colorSettings.messageColor,
-    );
+    expect(movesHeaderTitle.style?.color, db.colorSettings.messageColor);
     final Text movesHeaderSubtitle = tester.widget<Text>(
       find.byKey(const Key('play_area_analysis_moves_header_subtitle')),
     );

@@ -1282,9 +1282,9 @@
     "@gameSavedTo": {
         "description": "The game is saved to"
     },
-    "empty": "空点",
+    "empty": "空",
     "@empty": {
-        "description": "Empty point, used in setup position toolbar."
+        "description": "Generic empty state label."
     },
     "noMove": "暂无着法",
     "@noMove": {
@@ -4763,5 +4763,13 @@
                 "example": "5"
             }
         }
-    }
+    },
+    "games": "游戏",
+    "@games": {},
+    "searchTime": "搜索时间",
+    "@searchTime": {},
+    "isEmpty": "为空",
+    "@isEmpty": {},
+    "openingBookStudioId": "ID",
+    "@openingBookStudioId": {}
 }

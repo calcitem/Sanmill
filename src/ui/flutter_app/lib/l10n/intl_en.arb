@@ -1316,7 +1316,7 @@
     },
     "empty": "Empty",
     "@empty": {
-        "description": "Empty point, used in setup position toolbar."
+        "description": "Generic empty state label."
     },
     "noMove": "No move.",
     "@noMove": {
@@ -4911,5 +4911,13 @@
                 "example": "5"
             }
         }
-    }
+    },
+    "games": "Games",
+    "@games": {},
+    "searchTime": "Search time",
+    "@searchTime": {},
+    "isEmpty": "Empty",
+    "@isEmpty": {},
+    "openingBookStudioId": "ID",
+    "@openingBookStudioId": {}
 }

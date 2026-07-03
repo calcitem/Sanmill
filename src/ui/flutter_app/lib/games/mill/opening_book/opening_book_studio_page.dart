@@ -502,7 +502,7 @@ class _OpeningEditorPanel extends StatelessWidget {
                 width: 280,
                 child: _TextField(
                   keyValue: 'opening_book_studio_id_field_${opening.id}',
-                  label: 'ID',
+                  label: l10n.openingBookStudioId,
                   value: opening.id,
                   onChanged: (String value) =>
                       onChanged(opening.copyWith(id: value.trim())),

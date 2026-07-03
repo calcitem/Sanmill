@@ -252,7 +252,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       case PieceColor.none:
       case PieceColor.nobody:
       case PieceColor.draw:
-        return S.of(context).empty;
+        return S.of(context).emptyPoint;
     }
   }
 

@@ -330,7 +330,7 @@ Future<void> showAnalysisSettingsSheet(
                             'play_area_analysis_settings_engine_search_time',
                           ),
                           leading: const Icon(Icons.timer_outlined),
-                          title: Text(_analysisSearchTimeLabel(strings)),
+                          title: Text(strings.searchTime),
                           subtitle: Text(
                             _analysisSearchTimeValueLabel(
                               AnalysisMode.engineSearchTimeMs,
@@ -548,13 +548,6 @@ void _setAnalysisEngineThreads(int threads) {
   }
   DB().generalSettings = current.copyWith(engineThreads: threads);
   AnalysisMode.refresh();
-}
-
-String _analysisSearchTimeLabel(S strings) {
-  return switch (strings.localeName.split('_').first) {
-    'zh' => '搜索时间',
-    _ => 'Search time',
-  };
 }
 
 String _analysisSearchTimeValueLabel(int valueMs) {
@@ -3265,7 +3258,7 @@ class PlayAreaState extends State<PlayArea> {
               final double engineLinesReserve = hasEngineLinesSlot
                   ? _kAnalysisEngineLinesReserveHeight
                   : 0;
-              final double evaluationGaugeReserve =
+              const double evaluationGaugeReserve =
                   _kAdvantageIndicatorWidth + _kAdvantageIndicatorGap;
               const double tabPanelMinHeight = 174;
               final double pieceRowsHeight = showPieceCountRows
@@ -3327,9 +3320,7 @@ class PlayAreaState extends State<PlayArea> {
     return _getCurrentAdvantageValue();
   }
 
-  Widget _buildAnalysisBoardWithEvaluationGauge({
-    required double boardSize,
-  }) {
+  Widget _buildAnalysisBoardWithEvaluationGauge({required double boardSize}) {
     return Center(
       child: SizedBox(
         key: const Key('play_area_analysis_board_with_gauge'),

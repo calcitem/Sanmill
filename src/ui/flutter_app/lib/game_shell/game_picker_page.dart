@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../game_platform/game_module.dart';
 import '../game_platform/game_registry.dart';
+import '../generated/intl/l10n.dart';
 
 class GamePickerPage extends StatelessWidget {
   const GamePickerPage({super.key});
@@ -17,7 +18,7 @@ class GamePickerPage extends StatelessWidget {
         .toList(growable: false);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Games')),
+      appBar: AppBar(title: Text(S.of(context).games)),
       body: ListView.builder(
         itemCount: modules.length,
         itemBuilder: (BuildContext context, int index) {
