@@ -494,3 +494,9 @@ nul
 
 # OpenAI Codex Config & Cache
 .codex/
+
+# Perfect DB error-patch mining working data (see mining/README.md):
+# large, fully regenerable-from-the-database entries.jsonl/checkpoint.json
+# files kept on disk so `tgf mill mine[-endgame] --resume` can pick up
+# where a prior run left off, but never tracked in git.
+/mining/*/
