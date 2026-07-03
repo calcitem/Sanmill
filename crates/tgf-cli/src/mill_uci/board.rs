@@ -136,6 +136,8 @@ pub(super) fn print_uci_options() {
     println!("option name UsePerfectDatabase type check default false");
     println!("option name PerfectDatabasePath type string default <empty>");
     println!("option name PerfectDatabaseCacheSectors type spin default 0 min 0 max 1048576");
+    println!("option name PatchPath type string default <empty>");
+    println!("option name PatchAvoidTraps type check default false");
     println!("option name ConsiderMobility type check default true");
     println!("option name FocusOnBlockingPaths type check default true");
     println!("option name DeveloperMode type check default true");

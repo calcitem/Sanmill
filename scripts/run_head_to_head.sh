@@ -114,11 +114,20 @@ Options:
       --mingw-bin DIR   dir holding MinGW runtime DLLs to copy next to master
   -h, --help           show this help and exit
 
+Patch options (Sanmill `tgf` only; sent as UCI setoption):
+  H2H_CURRENT_PATCH_PATH / H2H_MASTER_PATCH_PATH
+                     path to a `*.mill_patch` file
+  H2H_CURRENT_PATCH_AVOID_TRAPS / H2H_MASTER_PATCH_AVOID_TRAPS
+                     true/false (default false).  When true and no path is
+                     set, the bundled `std.mill_patch` asset is used.
+
 Each option also has an environment-variable form (command-line flags win):
   GAMES, SKILL, ENGINE_THREADS, MOVETIME (seconds), MOVETIME_MS (ms,
   priority), MAX_PLIES, JOBS, SELF, MASTER_ENGINE,
   CURRENT_ENGINE, CURRENT_ARGS, MASTER_ARGS, CURRENT_ENV, MASTER_ENV,
   H2H_CURRENT_ENV, H2H_MASTER_ENV, CURRENT_GO, MASTER_GO,
+  H2H_CURRENT_PATCH_PATH, H2H_CURRENT_PATCH_AVOID_TRAPS,
+  H2H_MASTER_PATCH_PATH, H2H_MASTER_PATCH_AVOID_TRAPS,
   N_MOVE_RULE, ENDGAME_N_MOVE_RULE, OPENING_PLIES, OPENING_SEED,
   OPENING_DB_PATH, MINGW_BIN.
 
@@ -141,6 +150,8 @@ Examples:
   run_head_to_head.sh --engine-threads 4    # send UCI Threads=4 to engines
   run_head_to_head.sh --self master -g 50    # master self-play (colour bias)
   run_head_to_head.sh --self current -g 50   # current self-play (colour bias)
+  H2H_CURRENT_PATCH_AVOID_TRAPS=true GAMES=5000 JOBS=20 \\
+    bash scripts/run_head_to_head.sh           # patched current vs unpatched master
 EOF
 }
 
@@ -359,6 +370,29 @@ if [ -n "$MOVETIME_MS" ] && [ "$MOVETIME_MS" -gt 0 ] 2>/dev/null; then
     echo "     (thinking_time>0: time-limited; Sanmill MoveTimeMs=${MOVETIME_MS}ms)"
 elif [ "$MOVETIME" -gt 0 ] 2>/dev/null; then
     echo "     (thinking_time>0: time-limited; favours the faster engine, master)"
+fi
+
+# MoveTimeMs is a Sanmill-only UCI option: any non-tgf opponent (the master
+# C++ engine, or a custom --master/--current-args binary) silently ignores
+# it and falls back to MoveTime (whole seconds, rounded down from
+# MOVETIME_MS/1000).  At sub-second MOVETIME_MS this rounds to MoveTime=0,
+# i.e. "unlimited" -- the opponent then runs an UNBOUNDED fixed-depth search
+# at Skill=$SKILL, which can take minutes per move and looks like a hang
+# (0 games completing, opponent process pinned at 100% CPU).  Only current
+# vs current (both engines = tgf, e.g. --self, or -c/-m pointed at the same
+# tgf binary) can safely use sub-second MOVETIME_MS.
+if [ "$NEED_MASTER" -eq 1 ] && [ -n "${MOVETIME_MS:-}" ] && [ "$MOVETIME_MS" -gt 0 ] 2>/dev/null; then
+    case "$(basename "$MASTER_ENGINE")" in
+        tgf|tgf.exe) ;;
+        *)
+            echo "     WARNING: MASTER_ENGINE ($MASTER_ENGINE) does not look like tgf;" >&2
+            echo "              it will ignore MoveTimeMs=${MOVETIME_MS}ms and fall back to" >&2
+            echo "              MoveTime=$((MOVETIME_MS / 1000))s (0 = unlimited fixed-depth" >&2
+            echo "              search at Skill=$SKILL), which can hang for minutes per move." >&2
+            echo "              Use MOVETIME (whole seconds) for current-vs-master matches, or" >&2
+            echo "              point -m/--master at the same tgf binary for a fast A/B test." >&2
+            ;;
+    esac
 fi
 
 cd "$REPO_ROOT"

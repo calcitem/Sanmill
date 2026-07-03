@@ -32,6 +32,7 @@ use tgf_search::{
 
 mod bench;
 mod board;
+mod patch;
 mod setoption;
 
 pub(crate) use bench::print_benchmark_toml;
@@ -192,6 +193,12 @@ struct EngineConfig {
     /// `None` preserves the historical unbounded native behavior.
     perfect_db_cache_sectors: Option<usize>,
     active_perfect_db: Option<PerfectDatabaseRuntimeConfig>,
+    /// Filesystem path to a `*.mill_patch` asset.  Loaded when
+    /// `patch_avoid_traps` is enabled or whenever the path changes.
+    patch_path: Option<String>,
+    /// When true, correct the chosen move using the loaded error patch
+    /// (Flutter "Avoid known traps").
+    patch_avoid_traps: bool,
 }
 
 impl Default for EngineConfig {
@@ -217,6 +224,8 @@ impl Default for EngineConfig {
             perfect_db_path: None,
             perfect_db_cache_sectors: None,
             active_perfect_db: None,
+            patch_path: None,
+            patch_avoid_traps: false,
         }
     }
 }
@@ -305,6 +314,20 @@ fn mill_rules_with_eval_weights(options: MillVariantOptions) -> MillRules {
     rules
 }
 
+fn apply_patch_env_defaults(cfg: &mut EngineConfig) {
+    if let Ok(path) = std::env::var("TGF_PATCH_PATH") {
+        let path = path.trim().to_owned();
+        cfg.patch_path = (!path.is_empty()).then_some(path);
+    }
+    if let Ok(value) = std::env::var("TGF_PATCH_AVOID_TRAPS") {
+        cfg.patch_avoid_traps = matches!(
+            value.trim().to_ascii_lowercase().as_str(),
+            "1" | "true" | "on" | "yes"
+        );
+    }
+    patch::sync_runtime(&cfg.patch_path, cfg.patch_avoid_traps);
+}
+
 pub(crate) fn run_uci_loop() {
     let mut options = MillVariantOptions::default();
     let mut rules = mill_rules_with_eval_weights(options.clone());
@@ -313,6 +336,7 @@ pub(crate) fn run_uci_loop() {
     let mut threads: usize = 1;
     let mut qsearch_max_depth: i32 = 0;
     let mut engine_cfg = EngineConfig::default();
+    apply_patch_env_defaults(&mut engine_cfg);
     let mut shared_tt = allocate_shared_tt(engine_cfg.hash_mb);
     let mut active_search: Option<ActiveSearch> = None;
     let stdin = io::stdin();
@@ -360,6 +384,7 @@ pub(crate) fn run_uci_loop() {
                     state_history.clear();
                     shared_tt.bump_age();
                     sync_perfect_db(&mut engine_cfg, &options);
+                    patch::sync_runtime(&engine_cfg.patch_path, engine_cfg.patch_avoid_traps);
                 }
                 SetoptionResult::ClearHash => {
                     // Mirror master src/ucioption.cpp:357 Clear Hash button.
@@ -376,6 +401,7 @@ pub(crate) fn run_uci_loop() {
                     // A search/engine parameter changed; the perfect-database
                     // toggle and path live here, so reconcile the global handle.
                     sync_perfect_db(&mut engine_cfg, &options);
+                    patch::sync_runtime(&engine_cfg.patch_path, engine_cfg.patch_avoid_traps);
                 }
                 SetoptionResult::Threads | SetoptionResult::Acknowledged => {}
                 SetoptionResult::Unknown => {
@@ -723,6 +749,7 @@ fn run_configured_lazy_smp_search(input: LazySmpSearchInput) -> LazySmpWorkerOut
     let mut best = select_lazy_smp_outcome(&outcomes);
     best.result.nodes = total_nodes;
     apply_perfect_database_result(&mut best.result, &options, &state, &cfg);
+    patch::apply_patch_avoid_traps_result(&mut best.result, &options, &state);
     best
 }
 
@@ -918,6 +945,7 @@ fn run_configured_search(
     };
 
     apply_perfect_database_result(&mut result, &options, &state, cfg);
+    patch::apply_patch_avoid_traps_result(&mut result, &options, &state);
 
     // Fallback chain mirroring master SearchEngine::executeSearch
     // (src/search_engine.cpp:643-680).  When the main search returns

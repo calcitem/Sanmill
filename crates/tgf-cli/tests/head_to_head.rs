@@ -29,6 +29,10 @@
 //   H2H_MASTER_USE_PERFECT_DB   true/false, enable DB override for opponent
 //   H2H_CURRENT_PERFECT_DB_PATH DB path for current when enabled
 //   H2H_MASTER_PERFECT_DB_PATH  DB path for opponent when enabled
+//   H2H_CURRENT_PATCH_PATH     error-patch file for current (Sanmill only)
+//   H2H_MASTER_PATCH_PATH      error-patch file for opponent (Sanmill only)
+//   H2H_CURRENT_PATCH_AVOID_TRAPS  true/false for current PatchAvoidTraps
+//   H2H_MASTER_PATCH_AVOID_TRAPS   true/false for opponent PatchAvoidTraps
 //   H2H_GAMES      games per color (default 20)
 //   H2H_SKILL      skill level (default 14)
 //   H2H_ENGINE_THREADS UCI Threads option for both engines (default 1)
@@ -105,16 +109,36 @@ struct EnginePerfectDbOptions {
     cache_sectors: Option<usize>,
 }
 
+#[derive(Clone, Debug, Default)]
+struct EnginePatchOptions {
+    path: Option<PathBuf>,
+    avoid_traps: bool,
+}
+
+#[derive(Clone)]
+struct EngineSpawnConfig<'a> {
+    program: &'a str,
+    args: &'a [String],
+    env_vars: &'a [(String, String)],
+    go: &'a str,
+    name: &'a str,
+    options: &'a EngineOptions,
+    perfect_db: &'a EnginePerfectDbOptions,
+    patch: &'a EnginePatchOptions,
+}
+
 impl Engine {
-    fn spawn(
-        program: &str,
-        args: &[String],
-        env_vars: &[(String, String)],
-        go: &str,
-        name: &str,
-        options: &EngineOptions,
-        perfect_db: &EnginePerfectDbOptions,
-    ) -> Engine {
+    fn spawn(config: EngineSpawnConfig<'_>) -> Engine {
+        let EngineSpawnConfig {
+            program,
+            args,
+            env_vars,
+            go,
+            name,
+            options,
+            perfect_db,
+            patch,
+        } = config;
         let mut command = Command::new(program);
         command
             .args(args)
@@ -169,6 +193,16 @@ impl Engine {
         e.cmd(&format!(
             "setoption name UsePerfectDatabase value {}",
             if perfect_db.enabled { "true" } else { "false" }
+        ));
+        if let Some(path) = patch.path.as_ref() {
+            e.cmd(&format!(
+                "setoption name PatchPath value {}",
+                path.display()
+            ));
+        }
+        e.cmd(&format!(
+            "setoption name PatchAvoidTraps value {}",
+            if patch.avoid_traps { "true" } else { "false" }
         ));
         e.cmd("isready");
         assert!(e.wait("readyok").is_some(), "{name}: no readyok");
@@ -314,8 +348,72 @@ fn paired_opening_seed(base_seed: u64, game_index: usize) -> u64 {
     splitmix64(base_seed ^ (pair_index as u64).wrapping_mul(0xD1B5_4A32_D192_ED03))
 }
 
+fn workspace_root() -> PathBuf {
+    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("../..")
+        .canonicalize()
+        .unwrap_or_else(|_| PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../.."))
+}
+
+fn workspace_asset_path(relative: &str) -> PathBuf {
+    canonicalize_path(workspace_root().join(relative))
+}
+
+fn canonicalize_path(path: PathBuf) -> PathBuf {
+    path.canonicalize().unwrap_or(path)
+}
+
+/// Resolve a possibly-relative engine executable path.  `cargo test` runs
+/// integration tests with the crate directory as cwd, so `target/release/tgf`
+/// only exists relative to the workspace root, not `crates/tgf-cli`.
+fn resolve_engine_program(path: &str) -> String {
+    let path = path.trim();
+    let candidate = PathBuf::from(path);
+    if candidate.is_absolute() {
+        return path.to_string();
+    }
+    for base in [std::env::current_dir().ok(), Some(workspace_root())]
+        .into_iter()
+        .flatten()
+    {
+        let joined = base.join(&candidate);
+        if joined.is_file() {
+            return joined.to_string_lossy().into_owned();
+        }
+    }
+    workspace_root()
+        .join(&candidate)
+        .to_string_lossy()
+        .into_owned()
+}
+
+fn is_tgf_program(path: &str) -> bool {
+    PathBuf::from(path)
+        .file_stem()
+        .and_then(|stem| stem.to_str())
+        .is_some_and(|stem| stem.eq_ignore_ascii_case("tgf"))
+}
+
 fn default_perfect_db_path() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../src/ui/flutter_app/assets/databases")
+    workspace_asset_path("src/ui/flutter_app/assets/databases")
+}
+
+fn default_patch_path() -> PathBuf {
+    workspace_asset_path("src/ui/flutter_app/assets/patches/std.mill_patch")
+}
+
+fn patch_options_from_env(path_var: &str, avoid_var: &str) -> EnginePatchOptions {
+    let path = env_path(path_var).or_else(|| {
+        if env_bool(avoid_var, false) {
+            Some(default_patch_path())
+        } else {
+            None
+        }
+    });
+    EnginePatchOptions {
+        path,
+        avoid_traps: env_bool(avoid_var, false),
+    }
 }
 
 type OpeningDatabase = Database<FileDatabaseProvider>;
@@ -726,6 +824,23 @@ fn h2h_superiority_probability_uses_total_score() {
     assert!(formatted.contains("n=10000"));
 }
 
+#[test]
+fn resolve_engine_program_finds_workspace_target_from_relative_path() {
+    let root = workspace_root();
+    let relative = "target/release/tgf.exe";
+    let resolved = resolve_engine_program(relative);
+    let resolved_path = PathBuf::from(&resolved);
+    assert!(
+        resolved_path.is_file(),
+        "expected `{resolved}` to exist (workspace root = {})",
+        root.display()
+    );
+    assert!(
+        resolved_path.starts_with(&root),
+        "resolved engine should live under the workspace root"
+    );
+}
+
 fn engine_args_from_env(name: &str, default: &str) -> Vec<String> {
     env::var(name)
         .unwrap_or_else(|_| default.to_string())
@@ -807,7 +922,14 @@ fn env_path(name: &str) -> Option<PathBuf> {
         .ok()
         .map(|s| s.trim().to_string())
         .filter(|s| !s.is_empty())
-        .map(PathBuf::from)
+        .map(|s| {
+            let path = PathBuf::from(&s);
+            if path.is_absolute() {
+                canonicalize_path(path)
+            } else {
+                canonicalize_path(workspace_root().join(path))
+            }
+        })
 }
 
 fn opening_desc(opening_moves: &[String]) -> String {
@@ -831,6 +953,8 @@ struct MatchConfig {
     engine_options: EngineOptions,
     current_perfect_db: EnginePerfectDbOptions,
     master_perfect_db: EnginePerfectDbOptions,
+    current_patch: EnginePatchOptions,
+    master_patch: EnginePatchOptions,
     variant_options: MillVariantOptions,
     total_games: usize,
     jobs: usize,
@@ -928,45 +1052,49 @@ fn run_self_play_parallel(config: MatchConfig, is_master: bool, label: &str) {
             let mut referee = build_referee(&config);
             let (mut ew, mut eb) = if is_master {
                 (
-                    Engine::spawn(
-                        &config.master,
-                        &config.master_args,
-                        &config.master_env,
-                        &config.go_master,
-                        &format!("worker-{worker_id}-white"),
-                        &config.engine_options,
-                        &config.master_perfect_db,
-                    ),
-                    Engine::spawn(
-                        &config.master,
-                        &config.master_args,
-                        &config.master_env,
-                        &config.go_master,
-                        &format!("worker-{worker_id}-black"),
-                        &config.engine_options,
-                        &config.master_perfect_db,
-                    ),
+                    Engine::spawn(EngineSpawnConfig {
+                        program: &config.master,
+                        args: &config.master_args,
+                        env_vars: &config.master_env,
+                        go: &config.go_master,
+                        name: &format!("worker-{worker_id}-white"),
+                        options: &config.engine_options,
+                        perfect_db: &config.master_perfect_db,
+                        patch: &config.master_patch,
+                    }),
+                    Engine::spawn(EngineSpawnConfig {
+                        program: &config.master,
+                        args: &config.master_args,
+                        env_vars: &config.master_env,
+                        go: &config.go_master,
+                        name: &format!("worker-{worker_id}-black"),
+                        options: &config.engine_options,
+                        perfect_db: &config.master_perfect_db,
+                        patch: &config.master_patch,
+                    }),
                 )
             } else {
                 (
-                    Engine::spawn(
-                        &config.current,
-                        &config.current_args,
-                        &config.current_env,
-                        &config.go_current,
-                        &format!("worker-{worker_id}-white"),
-                        &config.engine_options,
-                        &config.current_perfect_db,
-                    ),
-                    Engine::spawn(
-                        &config.current,
-                        &config.current_args,
-                        &config.current_env,
-                        &config.go_current,
-                        &format!("worker-{worker_id}-black"),
-                        &config.engine_options,
-                        &config.current_perfect_db,
-                    ),
+                    Engine::spawn(EngineSpawnConfig {
+                        program: &config.current,
+                        args: &config.current_args,
+                        env_vars: &config.current_env,
+                        go: &config.go_current,
+                        name: &format!("worker-{worker_id}-white"),
+                        options: &config.engine_options,
+                        perfect_db: &config.current_perfect_db,
+                        patch: &config.current_patch,
+                    }),
+                    Engine::spawn(EngineSpawnConfig {
+                        program: &config.current,
+                        args: &config.current_args,
+                        env_vars: &config.current_env,
+                        go: &config.go_current,
+                        name: &format!("worker-{worker_id}-black"),
+                        options: &config.engine_options,
+                        perfect_db: &config.current_perfect_db,
+                        patch: &config.current_patch,
+                    }),
                 )
             };
 
@@ -1064,24 +1192,26 @@ fn run_vs_parallel(config: MatchConfig) {
         let config = config.clone();
         handles.push(thread::spawn(move || {
             let mut referee = build_referee(&config);
-            let mut cur = Engine::spawn(
-                &config.current,
-                &config.current_args,
-                &config.current_env,
-                &config.go_current,
-                &format!("worker-{worker_id}-current"),
-                &config.engine_options,
-                &config.current_perfect_db,
-            );
-            let mut mas = Engine::spawn(
-                &config.master,
-                &config.master_args,
-                &config.master_env,
-                &config.go_master,
-                &format!("worker-{worker_id}-master"),
-                &config.engine_options,
-                &config.master_perfect_db,
-            );
+            let mut cur = Engine::spawn(EngineSpawnConfig {
+                program: &config.current,
+                args: &config.current_args,
+                env_vars: &config.current_env,
+                go: &config.go_current,
+                name: &format!("worker-{worker_id}-current"),
+                options: &config.engine_options,
+                perfect_db: &config.current_perfect_db,
+                patch: &config.current_patch,
+            });
+            let mut mas = Engine::spawn(EngineSpawnConfig {
+                program: &config.master,
+                args: &config.master_args,
+                env_vars: &config.master_env,
+                go: &config.go_master,
+                name: &format!("worker-{worker_id}-master"),
+                options: &config.engine_options,
+                perfect_db: &config.master_perfect_db,
+                patch: &config.master_patch,
+            });
 
             for game_index in worker_game_indices(worker_id, config.total_games, config.jobs) {
                 let current_white = game_index % 2 == 0;
@@ -1186,13 +1316,26 @@ fn run_vs_parallel(config: MatchConfig) {
 #[test]
 #[ignore = "head-to-head match vs master C++; set H2H_* and run with --ignored --nocapture"]
 fn head_to_head_vs_master() {
-    let current = env::var("H2H_CURRENT")
-        .unwrap_or_else(|_| "D:/Repo/Sanmill/target/release/tgf.exe".to_string());
+    let current = resolve_engine_program(&env::var("H2H_CURRENT").unwrap_or_else(|_| {
+        workspace_root()
+            .join("target/release/tgf.exe")
+            .to_string_lossy()
+            .into_owned()
+    }));
     let current_args = engine_args_from_env("H2H_CURRENT_ARGS", "uci");
     let current_env = engine_env_from_env("H2H_CURRENT_ENV");
-    let master = env::var("H2H_MASTER")
-        .unwrap_or_else(|_| "D:/Repo/Sanmill-master/Sanmill/master_engine.exe".to_string());
-    let master_args = engine_args_from_env("H2H_MASTER_ARGS", "");
+    let master = resolve_engine_program(
+        &env::var("H2H_MASTER")
+            .unwrap_or_else(|_| "D:/Repo/Sanmill-master/Sanmill/master_engine.exe".to_string()),
+    );
+    let master_args = {
+        let args = engine_args_from_env("H2H_MASTER_ARGS", "");
+        if args.is_empty() && is_tgf_program(&master) {
+            vec!["uci".to_string()]
+        } else {
+            args
+        }
+    };
     let master_env = engine_env_from_env("H2H_MASTER_ENV");
     let games: usize = env::var("H2H_GAMES")
         .ok()
@@ -1250,6 +1393,10 @@ fn head_to_head_vs_master() {
             .ok()
             .and_then(|s| s.parse::<usize>().ok()),
     };
+    let current_patch =
+        patch_options_from_env("H2H_CURRENT_PATCH_PATH", "H2H_CURRENT_PATCH_AVOID_TRAPS");
+    let master_patch =
+        patch_options_from_env("H2H_MASTER_PATCH_PATH", "H2H_MASTER_PATCH_AVOID_TRAPS");
 
     let options = MillVariantOptions {
         n_move_rule,
@@ -1274,6 +1421,8 @@ fn head_to_head_vs_master() {
         engine_options,
         current_perfect_db: current_perfect_db.clone(),
         master_perfect_db: master_perfect_db.clone(),
+        current_patch: current_patch.clone(),
+        master_patch: master_patch.clone(),
         variant_options: options,
         total_games: total,
         jobs,
@@ -1289,14 +1438,14 @@ fn head_to_head_vs_master() {
         let is_master = mode == "self-master";
         let label = if is_master { "master" } else { "current" };
         eprintln!(
-            "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_ms={move_time_ms} shuffling=on algo=MTD(f) games={total} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_env={current_env:?} master_env={master_env:?}\n  current_db={current_perfect_db:?} master_db={master_perfect_db:?}"
+            "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_ms={move_time_ms} shuffling=on algo=MTD(f) games={total} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_env={current_env:?} master_env={master_env:?}\n  current_db={current_perfect_db:?} master_db={master_perfect_db:?}\n  current_patch={current_patch:?} master_patch={master_patch:?}"
         );
         run_self_play_parallel(config, is_master, label);
     } else {
         // vs mode: current vs master, alternating colours each game so the live
         // rates are not skewed by Black's structural edge until colours balance.
         eprintln!(
-            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_ms={move_time_ms} shuffling=on algo=MTD(f) games/color={games} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_args={current_args:?} master_args={master_args:?}\n  current_env={current_env:?} master_env={master_env:?}\n  current_db={current_perfect_db:?} master_db={master_perfect_db:?}\n  go_current=`{go_current}` go_master=`{go_master}`"
+            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_ms={move_time_ms} shuffling=on algo=MTD(f) games/color={games} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_args={current_args:?} master_args={master_args:?}\n  current_env={current_env:?} master_env={master_env:?}\n  current_db={current_perfect_db:?} master_db={master_perfect_db:?}\n  current_patch={current_patch:?} master_patch={master_patch:?}\n  go_current=`{go_current}` go_master=`{go_master}`"
         );
         run_vs_parallel(config);
     }
