@@ -4749,5 +4749,19 @@
     "patchMakeTraps_Detail": "在多个同样好的着法之间,优先选择内置补丁库判断最容易让对手出错的那一个。",
     "@patchMakeTraps_Detail": {},
     "errorPatchSettings": "错误补丁库",
-    "@errorPatchSettings": {}
+    "@errorPatchSettings": {},
+    "puzzleSolvedAgain": "再次解决！",
+    "@puzzleSolvedAgain": {
+        "description": "Brief feedback when re-solving an already completed puzzle"
+    },
+    "puzzleNewBestMoves": "新最佳：{moveCount} 步",
+    "@puzzleNewBestMoves": {
+        "description": "Shown when a repeat solve beats the previous move count",
+        "placeholders": {
+            "moveCount": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    }
 }

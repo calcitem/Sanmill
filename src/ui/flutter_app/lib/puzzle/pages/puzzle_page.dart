@@ -892,16 +892,34 @@ class _PuzzlePageState extends State<PuzzlePage> {
     }
   }
 
+  /// Re-check puzzle completion after opponent auto-play finishes.
+  ///
+  /// Some solution lines end with forced opponent moves. The completion check
+  /// that ran on the human move may have been too early, before those moves
+  /// were recorded.
+  void _checkPuzzleCompletionAfterProgress() {
+    if (!mounted || _isSolved || _isPlayingSolution) {
+      return;
+    }
+    _checkSolution(autoCheck: true);
+  }
+
   ValidationFeedback _checkSolution({bool autoCheck = false}) {
     final S s = S.of(context);
     final GameController controller = GameController();
     {
       final PuzzleSolution? matchedSolution =
           _findMatchingPuzzleSolutionFromRecorder();
-      if (matchedSolution != null) {
+      // Some solution lines reach the puzzle goal (e.g. a winning terminal
+      // state) even when the recorder notation does not line up exactly with
+      // the stored solution, or the line finishes with opponent auto-moves.
+      // Treat the goal being achieved as an equivalent success signal so the
+      // completion flow (and repeat-solve feedback) always fires.
+      final bool goalAchieved = _isPuzzleGoalAchievedByTerminalState();
+      if (matchedSolution != null || goalAchieved) {
         final ValidationFeedback feedback = ValidationFeedback(
           result: ValidationResult.correct,
-          isOptimal: matchedSolution.isOptimal,
+          isOptimal: matchedSolution?.isOptimal ?? false,
           moveCount: _activePuzzleMoves(controller).length,
         );
         _onPuzzleSolved(feedback);
@@ -919,6 +937,40 @@ class _PuzzlePageState extends State<PuzzlePage> {
         result: ValidationResult.inProgress,
         moveCount: _activePuzzleMoves(controller).length,
       );
+    }
+  }
+
+  /// Returns true when the active native session has reached a terminal state
+  /// that satisfies this puzzle's objective for the human side.
+  ///
+  /// Used as a fallback to [_findMatchingPuzzleSolutionFromRecorder] so that
+  /// reaching the goal (e.g. winning the game) is recognized even if the move
+  /// notation in the recorder does not match a stored solution byte-for-byte.
+  bool _isPuzzleGoalAchievedByTerminalState() {
+    final GameController controller = GameController();
+    final NativeMillGameSession? nativeSession =
+        controller.activeNativeMillSession;
+    if (nativeSession == null || !nativeSession.outcome.isTerminal) {
+      return false;
+    }
+    final PieceColor? humanColor =
+        _puzzleHumanColor ?? controller.puzzleHumanColor;
+    if (humanColor == null) {
+      return false;
+    }
+    final PieceColor? winner = controller.activeSessionWinner;
+    switch (widget.puzzle.category) {
+      case PuzzleCategory.winGame:
+      case PuzzleCategory.endgame:
+        return winner == humanColor;
+      case PuzzleCategory.defend:
+        return winner != humanColor.opponent;
+      case PuzzleCategory.formMill:
+      case PuzzleCategory.capturePieces:
+      case PuzzleCategory.findBestMove:
+      case PuzzleCategory.opening:
+      case PuzzleCategory.mixed:
+        return false;
     }
   }
 
@@ -1161,6 +1213,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
         _isAutoPlayingOpponent = false;
         controller.headerIconsNotifier.showIcons();
         controller.boardSemanticsNotifier.updateSemantics();
+        _checkPuzzleCompletionAfterProgress();
       }
     });
   }
@@ -1197,6 +1250,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
   }
 
   void _onPuzzleSolved(ValidationFeedback feedback) {
+    if (_isSolved) {
+      return;
+    }
     _isSolved = true;
     final DateTime now = DateTime.now();
     final Duration timeSpent = now.difference(_attemptStartedAt);
@@ -1210,8 +1266,12 @@ class _PuzzlePageState extends State<PuzzlePage> {
     final PuzzleProgress? priorProgress = _puzzleManager.getProgress(
       widget.puzzle.id,
     );
+    final bool wasAlreadyCompleted = priorProgress?.completed ?? false;
     final bool effectiveSolutionViewed =
         _solutionViewed || (priorProgress?.solutionViewed ?? false);
+    final int? previousBestMoveCount = priorProgress?.bestMoveCount;
+    final bool isNewBestMoveCount =
+        previousBestMoveCount == null || movesPlayed < previousBestMoveCount;
 
     // Record completion with solution viewed status.
     // Use _hintsUsed (current session only) instead of merging with
@@ -1251,6 +1311,14 @@ class _PuzzlePageState extends State<PuzzlePage> {
       return;
     }
 
+    if (wasAlreadyCompleted) {
+      _showRepeatSolveFeedback(
+        isNewBestMoveCount: isNewBestMoveCount && previousBestMoveCount != null,
+        moveCount: movesPlayed,
+      );
+      return;
+    }
+
     // Show completion dialog (standalone puzzle mode only)
     showDialog<void>(
       context: context,
@@ -1267,6 +1335,23 @@ class _PuzzlePageState extends State<PuzzlePage> {
           ),
         );
       },
+    );
+  }
+
+  void _showRepeatSolveFeedback({
+    required bool isNewBestMoveCount,
+    required int moveCount,
+  }) {
+    final S s = S.of(context);
+    final String message = isNewBestMoveCount
+        ? '${s.puzzleSolvedAgain}\n${s.puzzleNewBestMoves(moveCount)}'
+        : s.puzzleSolvedAgain;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 3),
+      ),
     );
   }
 

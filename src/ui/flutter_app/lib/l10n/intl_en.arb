@@ -4897,5 +4897,19 @@
     "patchMakeTraps_Detail": "Among moves that are already equally good, prefer whichever one the bundled error patch scores as most likely to make the opponent blunder.",
     "@patchMakeTraps_Detail": {},
     "errorPatchSettings": "Error patch",
-    "@errorPatchSettings": {}
+    "@errorPatchSettings": {},
+    "puzzleSolvedAgain": "Puzzle solved again!",
+    "@puzzleSolvedAgain": {
+        "description": "Brief feedback when re-solving an already completed puzzle"
+    },
+    "puzzleNewBestMoves": "New best: {moveCount} moves",
+    "@puzzleNewBestMoves": {
+        "description": "Shown when a repeat solve beats the previous move count",
+        "placeholders": {
+            "moveCount": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    }
 }
