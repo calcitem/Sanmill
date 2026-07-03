@@ -118,7 +118,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     // this puzzle session will be undone against this snapshot.
     _originalRuleSettings = DB().ruleSettings;
 
-    _initializePuzzle();
+    _scheduleInitializePuzzle();
   }
 
   @override
@@ -135,7 +135,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
       );
       _validator = PuzzleValidator(puzzle: _transformedPuzzle);
       _hintService = PuzzleHintService(puzzle: _transformedPuzzle);
-      _initializePuzzle();
+      _scheduleInitializePuzzle();
     }
   }
 
@@ -253,6 +253,22 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _showRuleMismatchWarning(currentVariant);
+    });
+  }
+
+  /// Defers puzzle session setup until after the current build frame.
+  ///
+  /// [initState] and [didUpdateWidget] run while the framework is still
+  /// building widgets. Calling [GameController.reset] there synchronously
+  /// updates [NativeMillGameSession.state], which notifies
+  /// [AnimatedBuilder]s (e.g. on [GameBoard]) and triggers
+  /// `setState() during build`.
+  void _scheduleInitializePuzzle() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      _initializePuzzle();
     });
   }
 
