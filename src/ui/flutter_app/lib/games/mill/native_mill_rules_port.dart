@@ -228,21 +228,23 @@ class NativeMillRulesPort implements RulesPort {
       usePerfectDatabase: usePerfectDatabase,
       aiIsLazy: settings.aiIsLazy,
       shuffling: settings.shufflingEnabled,
-      makeTraps: settings.patchMakeTraps,
+      makeTraps: settings.patchMakeTraps && isRuleSupportingErrorPatch(),
     );
     return action == null ? null : MillActionCodec.fromTgfAction(action);
   }
 
   /// "Avoid traps" support: if the bundled error patch says [chosen] throws
   /// away value at the current position, return the corrected action.
-  /// Returns `null` when the setting is off, [chosen] cannot be converted to
-  /// an FRB action, or the patch has nothing to say here.
+  /// Returns `null` when the setting is off, the active rule set is not the
+  /// exact "std" variant the bundled patch was mined against (see
+  /// [isRuleSupportingErrorPatch]), [chosen] cannot be converted to an FRB
+  /// action, or the patch has nothing to say here.
   GameAction? patchCorrectAction(
     GameAction chosen, {
     GeneralSettings? engineSettings,
   }) {
     final GeneralSettings settings = engineSettings ?? _generalSettings;
-    if (!settings.patchAvoidTraps) {
+    if (!settings.patchAvoidTraps || !isRuleSupportingErrorPatch()) {
       return null;
     }
     final tgf.TgfAction? chosenTgf = MillActionCodec.toTgfAction(chosen);
@@ -254,14 +256,16 @@ class NativeMillRulesPort implements RulesPort {
   }
 
   /// "Make traps" support: trap score (0..=255) of the position reached by
-  /// [action], or `null` when the setting is off or the patch has no entry
-  /// for the resulting position.
+  /// [action], or `null` when the setting is off, the active rule set is not
+  /// the exact "std" variant the bundled patch was mined against (see
+  /// [isRuleSupportingErrorPatch]), or the patch has no entry for the
+  /// resulting position.
   int? patchTrapScoreAfter(
     GameAction action, {
     GeneralSettings? engineSettings,
   }) {
     final GeneralSettings settings = engineSettings ?? _generalSettings;
-    if (!settings.patchMakeTraps) {
+    if (!settings.patchMakeTraps || !isRuleSupportingErrorPatch()) {
       return null;
     }
     final tgf.TgfAction? actionTgf = MillActionCodec.toTgfAction(action);

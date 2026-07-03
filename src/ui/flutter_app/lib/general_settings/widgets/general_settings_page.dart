@@ -24,6 +24,7 @@ import '../../shared/database/settings_repository.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/human_database_service.dart';
 import '../../shared/services/logger.dart';
+import '../../shared/services/mill_patch_service.dart';
 import '../../shared/services/perfect_database_service.dart';
 import '../../shared/services/snackbar_service.dart';
 import '../../shared/services/url.dart';
@@ -229,19 +230,42 @@ class GeneralSettingsPage extends StatelessWidget {
   }
 
   void _setPatchAvoidTraps(GeneralSettings generalSettings, bool value) {
-    _settingsRepository.generalSettings = generalSettings.copyWith(
+    final GeneralSettings updated = generalSettings.copyWith(
       patchAvoidTraps: value,
     );
+    _settingsRepository.generalSettings = updated;
 
     logger.t("$_logTag patchAvoidTraps: $value");
+    _syncMillPatchLoadState(updated);
   }
 
   void _setPatchMakeTraps(GeneralSettings generalSettings, bool value) {
-    _settingsRepository.generalSettings = generalSettings.copyWith(
+    final GeneralSettings updated = generalSettings.copyWith(
       patchMakeTraps: value,
     );
+    _settingsRepository.generalSettings = updated;
 
     logger.t("$_logTag patchMakeTraps: $value");
+    _syncMillPatchLoadState(updated);
+  }
+
+  /// Loads or unloads the bundled error-patch asset to match the two
+  /// switches that consume it, so a toggle flipped mid-session takes effect
+  /// on the current game immediately instead of only after the next
+  /// `startController` call (see that method's matching startup-time check
+  /// of the same two settings).
+  void _syncMillPatchLoadState(GeneralSettings generalSettings) {
+    if (generalSettings.patchAvoidTraps || generalSettings.patchMakeTraps) {
+      unawaited(
+        ensureMillPatchReady().then((bool success) {
+          if (!success) {
+            logger.w('$_logTag Failed to initialize the error patch');
+          }
+        }),
+      );
+    } else {
+      disableMillPatch();
+    }
   }
 
   void _setUseOpeningBook(GeneralSettings generalSettings, bool value) {

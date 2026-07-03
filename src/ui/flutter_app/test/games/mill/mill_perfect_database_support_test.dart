@@ -25,6 +25,11 @@ void main() {
     return isRuleSupportingPerfectDatabase();
   }
 
+  bool supportsErrorPatch(RuleSettings ruleSettings) {
+    mockDB.ruleSettings = ruleSettings;
+    return isRuleSupportingErrorPatch();
+  }
+
   group('isRuleSupportingPerfectDatabase', () {
     test('accepts all legacy Perfect DB rule variants behind one switch', () {
       expect(supports(const RuleSettings()), isTrue);
@@ -60,6 +65,30 @@ void main() {
         isFalse,
       );
       expect(supports(const MorabarabaRuleSettings()), isFalse);
+    });
+  });
+
+  group('isRuleSupportingErrorPatch', () {
+    test('accepts only the exact std shape', () {
+      expect(supportsErrorPatch(const RuleSettings()), isTrue);
+    });
+
+    test(
+      'rejects Lasker and Morabaraba even though the Perfect DB supports them',
+      () {
+        expect(supportsErrorPatch(const LaskerMorrisSettings()), isFalse);
+        expect(
+          supportsErrorPatch(const TwelveMensMorrisRuleSettings()),
+          isFalse,
+        );
+      },
+    );
+
+    test('rejects std-shaped piece counts when common rules differ', () {
+      expect(
+        supportsErrorPatch(const RuleSettings(mayRemoveMultiple: true)),
+        isFalse,
+      );
     });
   });
 }

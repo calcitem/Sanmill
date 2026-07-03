@@ -517,11 +517,26 @@ impl PatchLookup {
         self.file.entry_count()
     }
 
+    /// `None` when `options` (the live ruleset) is not the exact rule
+    /// "shape" the loaded patch was mined under (see
+    /// [`PatchFile::variant_byte`] / [`PatchFile::database_variant`]).
+    ///
+    /// A patch's canonical keys are plain `(sector, slot)` (or mid-removal
+    /// hash) indices with no variant tag of their own: a Lasker or
+    /// Morabaraba position can otherwise decode to a key that happens to
+    /// collide with an unrelated entry mined under a different variant
+    /// (say, std). This is the single choke point both [`Self::correct_action`]
+    /// and [`Self::trap_score_for_state`] go through, so it is the one
+    /// place that needs to guard against that -- callers do not each need
+    /// their own variant check.
     fn canonical_key_for_state(
         &mut self,
         state: &tgf_mill::rules::MillState,
         options: &MillVariantOptions,
     ) -> Option<u64> {
+        if DatabaseVariant::from_mill_options(options) != self.file.database_variant() {
+            return None;
+        }
         crate::mill::canonical_key(&mut self.keys, state, options)
     }
 
@@ -744,6 +759,49 @@ mod tests {
             lookup.correct_action(&rules, &options, &snap, bad_action),
             Some(good_action),
             "unsafe action must be corrected to the patched reply"
+        );
+    }
+
+    /// A patch's canonical keys carry no variant tag of their own (they are
+    /// plain `(sector, slot)` indices), so nothing stops a Lasker or
+    /// Morabaraba position from decoding to a key that happens to match an
+    /// entry mined under a different variant. `sample_patch()` is
+    /// `variant_byte: 0` (std, 9 pieces); a live Lasker (10-piece,
+    /// move-in-placing) game must never be corrected or trap-scored against
+    /// it, regardless of what its canonical key happens to be.
+    #[test]
+    fn correct_action_and_trap_score_return_none_when_options_do_not_match_the_patch_variant() {
+        let lasker_options = MillVariantOptions {
+            piece_count: 10,
+            may_move_in_placing_phase: true,
+            ..MillVariantOptions::default()
+        };
+        assert_eq!(
+            DatabaseVariant::from_mill_options(&lasker_options),
+            Some(DatabaseVariant::LASKER),
+            "test setup must actually exercise a non-std variant"
+        );
+
+        let rules = MillRules::new(lasker_options.clone());
+        let snap = rules.encode_state(MillRules::decode_snapshot(rules.initial_state(&[])));
+        let mut actions = tgf_core::ActionList::<256>::new();
+        rules.legal_actions(&snap, &mut actions);
+        let action = actions.as_slice()[0];
+
+        let mut buf = Vec::new();
+        sample_patch().write_to(&mut buf, 3).unwrap();
+        let mut lookup = PatchLookup::open(&buf).unwrap();
+
+        assert_eq!(
+            lookup.correct_action(&rules, &lasker_options, &snap, action),
+            None,
+            "a std-only patch must never attempt to correct a Lasker position"
+        );
+        let child_state = MillRules::decode_snapshot(rules.apply(&snap, action));
+        assert_eq!(
+            lookup.trap_score_for_state(&child_state, &lasker_options),
+            None,
+            "a std-only patch must never trap-score a Lasker position"
         );
     }
 

@@ -15,14 +15,29 @@
 // Budget / selection:
 //   --budget-bytes N   Truncate the mass-sorted entry list (dropping the
 //                      lowest-mass entries first) until the compressed
-//                      patch fits N bytes (0 = unbounded, default 0).
+//                      patch fits N bytes (0 = unbounded, default 0). Best
+//                      effort, not a hard cap: mid-removal records (see
+//                      `build_patch_file`) are never truncated, so if
+//                      those alone exceed N the written file still will.
 //   --zstd-level N     zstd compression level (default 19; this is an
 //                      offline, one-shot build so favor ratio over speed).
 //
 // Engine fingerprint (must match what `mill mine` used; defaults mirror
 // `mill mine`'s own defaults):
-//   --skill-level, --depth, --near-optimal-margin, --top-k, --epsilon,
-//   --variant std|lask|mora
+//   --skill-level, --depth, --near-optimal-margin, --top-k, --epsilon
+//
+// Variant (currently informational only -- see below):
+//   --variant std      Must be "std" (the default) if passed at all.
+//                      patch-pack only ever builds "std" (Standard / Nine
+//                      Men's Morris) patches today: `--in` entries carry
+//                      no variant tag of their own, `PatchFile.variant_byte`
+//                      is hardcoded to std, and only `std.secval` is read
+//                      from `--db`. Passing `lask`/`mora` is rejected
+//                      outright rather than silently mislabeling
+//                      Lasker/Morabaraba entries as std (see
+//                      `assert_entries_fit_std_budget`); wiring up real
+//                      multi-variant support needs `mill mine`'s JSONL
+//                      format to carry the variant it was mined under.
 //
 // Audit:
 //   --audit-sample N   After packing, independently re-verify N sampled
@@ -81,15 +96,59 @@ fn variant_byte_for(name: &str) -> u8 {
     }
 }
 
+/// `patch-pack` only supports building "std" (Standard / Nine Men's
+/// Morris, 9 pieces per side) patches today -- see this module's doc
+/// comment. Feeding it JSONL mined under a different `--variant` (e.g.
+/// `mill mine --variant lask`) would otherwise be silently packed with
+/// `variant_byte_for("std")` and `std.secval` regardless, producing a
+/// patch that *claims* to be std but decodes keys from a different
+/// variant's sector space.
+///
+/// Catches the common case cheaply: every settled (non-mid-removal)
+/// entry's key decodes to a sector whose piece counts must fit the
+/// variant it was mined under, so a sector that needs more than std's
+/// 9-piece budget can only have come from Lasker (10) or Morabaraba (12).
+/// Mid-removal entries are skipped: their key space is hash-addressed,
+/// not sector-addressed, so it carries no piece-count signal to check.
+fn assert_entries_fit_std_budget(entries: &[MineEntry]) {
+    const MID_REMOVAL_TAG: u64 = 1 << 63;
+    const STD_PIECE_COUNT: u8 = 9;
+    for entry in entries {
+        if entry.key & MID_REMOVAL_TAG != 0 {
+            continue;
+        }
+        let (sector, _slot) = unpack_canonical_key(entry.key);
+        let key = entry.key;
+        let fen = &entry.fen;
+        assert!(
+            sector.white_on_board + sector.white_in_hand <= STD_PIECE_COUNT
+                && sector.black_on_board + sector.black_in_hand <= STD_PIECE_COUNT,
+            "[patch-pack] entry key {key:#x} (fen {fen}) needs more than the \
+             std variant's {STD_PIECE_COUNT}-piece budget (sector {sector:?}) \
+             -- was --in populated from a `mill mine --variant lask|mora` \
+             run by mistake? patch-pack only supports std today."
+        );
+    }
+}
+
 /// Build a [`PatchFile`] from mined entries: dedup by canonical key (keeping
 /// the higher-mass copy when the same position was mined more than once),
 /// sort by mass descending, optionally truncate to `budget_bytes`, then
 /// group into sector-sorted, slot-sorted records.
+///
+/// `budget_bytes` is best-effort, not a hard cap: mid-removal records are
+/// always kept in full regardless of budget (see the comment below), so if
+/// those alone compress past `budget_bytes` the returned `PatchFile` still
+/// will, even with zero settled entries. In practice this is a non-issue --
+/// mid-removal entries are a small slice of any real mining run -- but a
+/// caller relying on the output literally fitting under `budget_bytes`
+/// should be aware truncation cannot go any lower than that floor.
 pub(crate) fn build_patch_file(
     entries: &[MineEntry],
     budget_bytes: usize,
     fingerprint: EngineFingerprint,
     db_path: &std::path::Path,
+    variant_name: &str,
 ) -> PatchFile {
     let mut by_key: HashMap<u64, &MineEntry> = HashMap::new();
     for entry in entries {
@@ -111,7 +170,9 @@ pub(crate) fn build_patch_file(
     // unlike a settled position (reachable again after a different earlier
     // move), a missed removal-choice correction has no substitute --
     // dropping the *lowest-mass* settled entries first is a much smaller
-    // loss than dropping any of these.
+    // loss than dropping any of these. Consequence: `budget_bytes` is a
+    // best-effort target, not a hard cap -- see the binary search below and
+    // this function's doc comment.
     const MID_REMOVAL_TAG: u64 = 1 << 63;
     let (mid_removal, settled): (Vec<&MineEntry>, Vec<&MineEntry>) = by_key
         .into_values()
@@ -133,9 +194,11 @@ pub(crate) fn build_patch_file(
     let mut ranked: Vec<&MineEntry> = settled;
     ranked.sort_by(|a, b| b.mass.partial_cmp(&a.mass).expect("mass must be finite"));
 
-    let variant_byte = variant_byte_for("std");
-    let secval_bytes = std::fs::read(db_path.join("std.secval"))
-        .unwrap_or_else(|e| panic!("[patch-pack] cannot read std.secval from {db_path:?}: {e}"));
+    let variant_byte = variant_byte_for(variant_name);
+    let secval_bytes = std::fs::read(db_path.join(format!("{variant_name}.secval")))
+        .unwrap_or_else(|e| {
+            panic!("[patch-pack] cannot read {variant_name}.secval from {db_path:?}: {e}")
+        });
 
     let assemble = |entries: &[&MineEntry]| -> PatchFile {
         let mut sectors: HashMap<(u8, u8, u8, u8), Vec<PackedRecord>> = HashMap::new();
@@ -194,7 +257,12 @@ pub(crate) fn build_patch_file(
     // fits the budget. Monotonic in prefix length (more entries never
     // shrinks the payload), so binary search is valid; compressing a
     // truncated candidate on every probe is cheap relative to the mining
-    // cost that produced these entries.
+    // cost that produced these entries. Note this only ever truncates
+    // `ranked` (settled entries): if `compressed_len(0)` -- the
+    // mid-removal records plus zero settled entries -- already exceeds
+    // `budget_bytes`, the loop still converges (to `low == 0`), it just
+    // cannot shrink the output any further; see this function's doc
+    // comment.
     let compressed_len = |count: usize| -> usize {
         let patch = assemble(&ranked[..count]);
         let mut buf = Vec::new();
@@ -229,6 +297,15 @@ pub(crate) fn run_patch_pack(args: &[String]) {
         eprintln!("[patch-pack] ERROR: --in, --db, and --out are all required");
         eprintln!(
             "  Example: tgf mill patch-pack --in mine_entries.jsonl --db D:/user/Documents/strong --out std.mill_patch"
+        );
+        std::process::exit(1);
+    }
+    let variant_name: String = parse_flag(args, "--variant", "std".to_string());
+    if !matches!(variant_name.as_str(), "std" | "standard") {
+        eprintln!(
+            "[patch-pack] ERROR: --variant {variant_name} is not supported yet -- \
+             patch-pack only builds \"std\" (Standard / Nine Men's Morris) \
+             patches today; see this module's doc comment"
         );
         std::process::exit(1);
     }
@@ -280,6 +357,7 @@ pub(crate) fn run_patch_pack(args: &[String]) {
         eprintln!("[patch-pack] ERROR: no entries loaded from --in {in_paths}");
         std::process::exit(1);
     }
+    assert_entries_fit_std_budget(&entries);
 
     if recompute_from_fen {
         let options = MillVariantOptions::default();
@@ -291,6 +369,7 @@ pub(crate) fn run_patch_pack(args: &[String]) {
         budget_bytes,
         fingerprint,
         std::path::Path::new(&db_path),
+        &variant_name,
     );
     let entry_count = patch.entry_count();
     let sector_count = patch.sectors.len();
@@ -360,11 +439,35 @@ mod tests {
     }
 
     #[test]
+    #[should_panic(expected = "needs more than the std variant's 9-piece budget")]
+    fn assert_entries_fit_std_budget_rejects_a_lasker_shaped_key() {
+        // 0 on board + 10 in hand per side is a valid Lasker (10-piece)
+        // sector but already exceeds std's 9-piece cap.
+        let key = perfect_db::wdl_plane::pack_canonical_key(
+            perfect_db::file_format::SectorId::new(0, 0, 10, 10),
+            0,
+        );
+        assert_entries_fit_std_budget(&[entry(key, 0, 1.0)]);
+    }
+
+    #[test]
+    fn assert_entries_fit_std_budget_accepts_std_shaped_and_mid_removal_entries() {
+        let std_key = perfect_db::wdl_plane::pack_canonical_key(
+            perfect_db::file_format::SectorId::new(3, 3, 3, 3),
+            0,
+        );
+        const MID_REMOVAL_TAG: u64 = 1 << 63;
+        let mid_removal_key = MID_REMOVAL_TAG | 99;
+        // Must not panic.
+        assert_entries_fit_std_budget(&[entry(std_key, 0, 1.0), entry(mid_removal_key, 0, 1.0)]);
+    }
+
+    #[test]
     fn dedup_keeps_the_higher_mass_copy() {
         let entries = vec![entry(1, 100, 5.0), entry(1, 200, 50.0), entry(2, 300, 1.0)];
         let db_root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .join("../../src/ui/flutter_app/assets/databases");
-        let patch = build_patch_file(&entries, 0, default_fingerprint(), &db_root);
+        let patch = build_patch_file(&entries, 0, default_fingerprint(), &db_root, "std");
         assert_eq!(patch.entry_count(), 2);
         let (sector, slot) = unpack_canonical_key(1);
         let record = patch
@@ -390,7 +493,7 @@ mod tests {
         ];
         let db_root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .join("../../src/ui/flutter_app/assets/databases");
-        let patch = build_patch_file(&entries, 0, default_fingerprint(), &db_root);
+        let patch = build_patch_file(&entries, 0, default_fingerprint(), &db_root, "std");
 
         assert_eq!(patch.mid_removal_records.len(), 1);
         assert_eq!(patch.entry_count(), 2, "one settled + one mid-removal");
@@ -413,12 +516,12 @@ mod tests {
         }
         let db_root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .join("../../src/ui/flutter_app/assets/databases");
-        let full = build_patch_file(&entries, 0, default_fingerprint(), &db_root);
+        let full = build_patch_file(&entries, 0, default_fingerprint(), &db_root, "std");
         let mut full_buf = Vec::new();
         full.write_to(&mut full_buf, 3).unwrap();
 
         let budget = full_buf.len() / 2;
-        let truncated = build_patch_file(&entries, budget, default_fingerprint(), &db_root);
+        let truncated = build_patch_file(&entries, budget, default_fingerprint(), &db_root, "std");
         let mut truncated_buf = Vec::new();
         truncated.write_to(&mut truncated_buf, 3).unwrap();
 
@@ -453,7 +556,7 @@ mod tests {
 
         let db_root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .join("../../src/ui/flutter_app/assets/databases");
-        let full = build_patch_file(&entries, 0, default_fingerprint(), &db_root);
+        let full = build_patch_file(&entries, 0, default_fingerprint(), &db_root, "std");
         let mut full_buf = Vec::new();
         full.write_to(&mut full_buf, 3).unwrap();
 
@@ -462,6 +565,7 @@ mod tests {
             full_buf.len() / 2,
             default_fingerprint(),
             &db_root,
+            "std",
         );
         assert!(
             truncated.entry_count() < full.entry_count(),
