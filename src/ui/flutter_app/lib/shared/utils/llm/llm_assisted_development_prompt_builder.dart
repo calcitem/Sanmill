@@ -45,7 +45,7 @@ String _promptFooter({required String languageName}) {
 
   return '''
 If the task involves adding new UI strings, only update the `en` and `zh` ARB files unless explicitly requested. Other language ARB files do not need to be modified.
-Your answer must be in $lang, but code comments must be in English. Git commit messages must also be in English, and trailers must not include `Co-authored-by`.
+Your answer must be in $lang, but code comments must be in English. Git commit messages must also be in English.
 Only modify code; do not generate a documentation summary. If existing documentation must be updated, you may update it.
 ''';
 }

@@ -112,7 +112,7 @@ void main() {
 
       expect(prompt, contains('ARB files'));
       expect(prompt, contains('code comments must be in English'));
-      expect(prompt, contains('Co-authored-by'));
+      expect(prompt, contains('Git commit messages must also be in English'));
     });
 
     test('should include log section when log is provided', () {
