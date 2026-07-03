@@ -646,6 +646,7 @@ class _GameBoardState extends State<GameBoard>
 
     if (message != null &&
         hasResult &&
+        gameMode != GameMode.puzzle &&
         (force == true || winner != PieceColor.nobody)) {
       if (view.action == Act.remove) {
         // Fix sometimes tip show "Please place" when action is remove
@@ -684,7 +685,8 @@ class _GameBoardState extends State<GameBoard>
         GameController().isAutoRestart() == false &&
         winner != PieceColor.nobody &&
         gameMode != GameMode.setupPosition &&
-        gameMode != GameMode.analysis;
+        gameMode != GameMode.analysis &&
+        gameMode != GameMode.puzzle;
 
     // For AI vs AI mode, additional conditions must be met
     final bool aiVsAiConditions =
@@ -707,7 +709,8 @@ class _GameBoardState extends State<GameBoard>
             GameController().activeBoardView.winner;
         if (currentWinner == PieceColor.nobody ||
             currentGameMode == GameMode.setupPosition ||
-            currentGameMode == GameMode.analysis) {
+            currentGameMode == GameMode.analysis ||
+            currentGameMode == GameMode.puzzle) {
           _isDialogShowing = false;
           return;
         }

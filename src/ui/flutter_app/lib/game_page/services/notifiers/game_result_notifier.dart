@@ -104,7 +104,8 @@ class GameResultNotifier extends ChangeNotifier {
   /// draws to "nobody" and would otherwise drop them from the tally. Setup
   /// Position is skipped because it does not represent a played-out game.
   void _tallyScore() {
-    if (GameController().gameInstance.gameMode == GameMode.setupPosition) {
+    final GameMode gameMode = GameController().gameInstance.gameMode;
+    if (gameMode == GameMode.setupPosition || gameMode == GameMode.puzzle) {
       return;
     }
 
