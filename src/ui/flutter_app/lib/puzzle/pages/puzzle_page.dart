@@ -332,6 +332,12 @@ class _PuzzlePageState extends State<PuzzlePage> {
     _validator.reset();
     _hintService.reset();
     _attemptStartedAt = DateTime.now();
+
+    // controller.reset() above replaces gameRecorder; rebuild so PuzzleGameBoard
+    // rebinds moveCountNotifier and _onPlayerMove fires after human moves.
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   /// Applies a new board symmetry transformation to the puzzle.
