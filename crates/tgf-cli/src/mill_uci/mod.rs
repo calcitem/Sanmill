@@ -192,6 +192,12 @@ struct EngineConfig {
     /// Maximum number of sector files kept loaded by the Rust Perfect DB.
     /// `None` preserves the historical unbounded native behavior.
     perfect_db_cache_sectors: Option<usize>,
+    /// Explicit tie-break policy for perfect-database moves.  `None` keeps
+    /// the legacy auto rule (strict only for Algorithm=Random): `strict`
+    /// prefers faster wins / slower losses (the ultra-strong "hardest
+    /// test" behavior `mill arena` defaults to), `legacy` mirrors the
+    /// plain WDL branch where step counts never break ties.
+    perfect_db_ordering: Option<perfect_db::PerfectMoveOrdering>,
     active_perfect_db: Option<PerfectDatabaseRuntimeConfig>,
     /// Filesystem path to a `*.mill_patch` asset.  Loaded when
     /// `patch_avoid_traps` is enabled or whenever the path changes.
@@ -227,6 +233,7 @@ impl Default for EngineConfig {
             use_perfect_database: false,
             perfect_db_path: None,
             perfect_db_cache_sectors: None,
+            perfect_db_ordering: None,
             active_perfect_db: None,
             patch_path: None,
             patch_avoid_traps: false,
@@ -257,6 +264,9 @@ impl EngineConfig {
 }
 
 fn perfect_move_ordering(cfg: &EngineConfig) -> perfect_db::PerfectMoveOrdering {
+    if let Some(ordering) = cfg.perfect_db_ordering {
+        return ordering;
+    }
     if cfg.algorithm == 4 && !cfg.ai_is_lazy {
         perfect_db::PerfectMoveOrdering::StrictSteps
     } else {
@@ -338,7 +348,7 @@ fn apply_patch_env_defaults(cfg: &mut EngineConfig) {
     if let Some(value) = env_bool("TGF_PATCH_MAKE_TRAPS") {
         cfg.patch_make_traps = value;
     }
-    patch::sync_runtime(&cfg.patch_path, cfg.patch_avoid_traps);
+    patch::sync_runtime(&cfg.patch_path, cfg.patch_avoid_traps, cfg.patch_make_traps);
 }
 
 pub(crate) fn run_uci_loop() {
@@ -397,7 +407,11 @@ pub(crate) fn run_uci_loop() {
                     state_history.clear();
                     shared_tt.bump_age();
                     sync_perfect_db(&mut engine_cfg, &options);
-                    patch::sync_runtime(&engine_cfg.patch_path, engine_cfg.patch_avoid_traps);
+                    patch::sync_runtime(
+                        &engine_cfg.patch_path,
+                        engine_cfg.patch_avoid_traps,
+                        engine_cfg.patch_make_traps,
+                    );
                 }
                 SetoptionResult::ClearHash => {
                     // Mirror master src/ucioption.cpp:357 Clear Hash button.
@@ -414,7 +428,11 @@ pub(crate) fn run_uci_loop() {
                     // A search/engine parameter changed; the perfect-database
                     // toggle and path live here, so reconcile the global handle.
                     sync_perfect_db(&mut engine_cfg, &options);
-                    patch::sync_runtime(&engine_cfg.patch_path, engine_cfg.patch_avoid_traps);
+                    patch::sync_runtime(
+                        &engine_cfg.patch_path,
+                        engine_cfg.patch_avoid_traps,
+                        engine_cfg.patch_make_traps,
+                    );
                 }
                 SetoptionResult::Threads | SetoptionResult::Acknowledged => {}
                 SetoptionResult::Unknown => {
@@ -763,6 +781,9 @@ fn run_configured_lazy_smp_search(input: LazySmpSearchInput) -> LazySmpWorkerOut
     best.result.nodes = total_nodes;
     apply_perfect_database_result(&mut best.result, &options, &state, &cfg);
     patch::apply_patch_avoid_traps_result(&mut best.result, &options, &state);
+    if !cfg.use_perfect_database {
+        patch::apply_patch_make_traps_result(&mut best.result, &options, &state);
+    }
     best
 }
 
@@ -959,6 +980,12 @@ fn run_configured_search(
 
     apply_perfect_database_result(&mut result, &options, &state, cfg);
     patch::apply_patch_avoid_traps_result(&mut result, &options, &state);
+    if !cfg.use_perfect_database {
+        // Database-free "make traps": with the DB on, the tie-break already
+        // happened inside `apply_perfect_database_result` over the DB's own
+        // (broader-coverage) tied-best set.
+        patch::apply_patch_make_traps_result(&mut result, &options, &state);
+    }
 
     // Fallback chain mirroring master SearchEngine::executeSearch
     // (src/search_engine.cpp:643-680).  When the main search returns

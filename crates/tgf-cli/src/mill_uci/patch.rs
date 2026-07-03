@@ -21,16 +21,18 @@ static PATCH: LazyLock<Mutex<PatchState>> = LazyLock::new(|| Mutex::new(PatchSta
 struct PatchState {
     path: Option<String>,
     avoid_traps: bool,
+    make_traps: bool,
     loaded_path: Option<String>,
     lookup: Option<PatchLookup>,
 }
 
 /// Copy the engine configuration into the process-wide patch runtime and
 /// reload the patch file when the path changes.
-pub(super) fn sync_runtime(path: &Option<String>, avoid_traps: bool) {
+pub(super) fn sync_runtime(path: &Option<String>, avoid_traps: bool, make_traps: bool) {
     let mut state = PATCH.lock().expect("UCI patch mutex must not be poisoned");
     state.path = path.clone().filter(|path| !path.is_empty());
     state.avoid_traps = avoid_traps;
+    state.make_traps = make_traps;
     reload_if_needed(&mut state);
 }
 
@@ -72,6 +74,30 @@ pub(super) fn trap_score_after_action(
     let child_snap = rules.apply(state, action);
     let child_state = MillRules::decode_snapshot(child_snap);
     lookup.trap_score_for_state(&child_state, options)
+}
+
+/// Database-free "make traps" (see `PatchLookup::trap_aware_action`): when
+/// enabled and the current position has a patch entry, replace a proven
+/// value-preserving best move with the proven sibling whose resulting
+/// position carries a strictly higher trap score. The perfect-database
+/// tie-break variant supersedes this at the call site when the DB is on.
+pub(super) fn apply_patch_make_traps_result(
+    result: &mut SearchResult,
+    options: &MillVariantOptions,
+    state: &GameStateSnapshot,
+) {
+    let mut patch = PATCH.lock().expect("UCI patch mutex must not be poisoned");
+    if !patch.make_traps || result.best_action.is_none() {
+        return;
+    }
+    let Some(lookup) = patch.lookup.as_mut() else {
+        return;
+    };
+    let rules = MillRules::new(options.clone());
+    if let Some(better) = lookup.trap_aware_action(&rules, options, state, result.best_action) {
+        result.best_action = better;
+        println!("info string aimovetype=patchtrap");
+    }
 }
 
 fn reload_if_needed(state: &mut PatchState) {
@@ -154,17 +180,19 @@ mod tests {
             *state = PatchState::default();
         }
 
-        sync_runtime(&Some(path.to_string_lossy().into_owned()), false);
+        sync_runtime(&Some(path.to_string_lossy().into_owned()), false, false);
         {
             let state = PATCH.lock().expect("patch mutex");
             assert!(state.lookup.is_some());
             assert!(!state.avoid_traps);
+            assert!(!state.make_traps);
         }
 
-        sync_runtime(&Some(path.to_string_lossy().into_owned()), true);
+        sync_runtime(&Some(path.to_string_lossy().into_owned()), true, true);
         {
             let state = PATCH.lock().expect("patch mutex");
             assert!(state.avoid_traps);
+            assert!(state.make_traps);
         }
     }
 }

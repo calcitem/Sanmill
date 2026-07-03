@@ -320,6 +320,12 @@ class _SnapshotOnlyNativeMillRulesPort implements NativeMillRulesPort {
   }) => null;
 
   @override
+  platform.GameAction? patchMakeTrapsAction(
+    platform.GameAction chosen, {
+    GeneralSettings? engineSettings,
+  }) => null;
+
+  @override
   tgf.MillAnalysisReport analyzePerfectDb() => const tgf.MillAnalysisReport(
     moves: <tgf.MillMoveAnalysis>[],
     traps: <String>[],

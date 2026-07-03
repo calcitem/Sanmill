@@ -667,6 +667,22 @@ class NativeMillGameSession implements GameSessionHandle {
     );
   }
 
+  /// Database-free "make traps": re-order [chosen] onto the proven sibling
+  /// with the highest trap score, when the patch proves one exists. See
+  /// [NativeMillRulesPort.patchMakeTrapsAction].
+  GameAction? patchMakeTrapsAction(
+    GameAction chosen, {
+    GeneralSettings? engineSettings,
+  }) {
+    if (_disposed || outcome.isTerminal) {
+      return null;
+    }
+    return rulesPort.patchMakeTrapsAction(
+      chosen,
+      engineSettings: engineSettings,
+    );
+  }
+
   /// Run Rust search from the current session, apply the best action if
   /// available, and return it to the caller for recording / UI feedback.
   ///

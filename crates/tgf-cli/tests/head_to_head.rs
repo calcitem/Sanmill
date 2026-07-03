@@ -29,15 +29,17 @@
 //   H2H_MASTER_USE_PERFECT_DB   true/false, enable DB override for opponent
 //   H2H_CURRENT_PERFECT_DB_PATH DB path for current when enabled
 //   H2H_MASTER_PERFECT_DB_PATH  DB path for opponent when enabled
+//   H2H_CURRENT_PERFECT_DB_ORDERING auto|legacy|strict tie-break policy
+//   H2H_MASTER_PERFECT_DB_ORDERING  (strict = convert wins by steps)
 //   H2H_CURRENT_PATCH_PATH     error-patch file for current (Sanmill only)
 //   H2H_MASTER_PATCH_PATH      error-patch file for opponent (Sanmill only)
 //   H2H_CURRENT_PATCH_AVOID_TRAPS  true/false for current PatchAvoidTraps
 //   H2H_MASTER_PATCH_AVOID_TRAPS   true/false for opponent PatchAvoidTraps
 //   H2H_CURRENT_PATCH_MAKE_TRAPS   true/false for current PatchMakeTraps
 //   H2H_MASTER_PATCH_MAKE_TRAPS    true/false for opponent PatchMakeTraps
-//                  (make-traps re-orders the perfect database's tied-best
-//                  moves, so it only has an effect on an engine that also
-//                  has H2H_*_USE_PERFECT_DB enabled)
+//                  (with H2H_*_USE_PERFECT_DB the tie-break runs over the
+//                  database's tied-best moves; without it, over the patch
+//                  entry's own mask-proven value-preserving moves)
 //   H2H_GAMES      games per color (default 20)
 //   H2H_SKILL      skill level (default 14)
 //   H2H_ENGINE_THREADS UCI Threads option for both engines (default 1)
@@ -112,6 +114,12 @@ struct EnginePerfectDbOptions {
     enabled: bool,
     path: Option<PathBuf>,
     cache_sectors: Option<usize>,
+    /// `auto` / `legacy` / `strict`; sent as the Sanmill-only
+    /// `PerfectDatabaseOrdering` setoption when set.  `strict` makes the
+    /// DB opponent actually convert won positions (prefer faster wins)
+    /// instead of shuffling among equally-"winning" moves until the
+    /// n-move rule adjudicates a draw.
+    ordering: Option<String>,
 }
 
 #[derive(Clone, Debug, Default)]
@@ -194,6 +202,11 @@ impl Engine {
         if let Some(cache) = perfect_db.cache_sectors {
             e.cmd(&format!(
                 "setoption name PerfectDatabaseCacheSectors value {cache}"
+            ));
+        }
+        if let Some(ordering) = perfect_db.ordering.as_ref() {
+            e.cmd(&format!(
+                "setoption name PerfectDatabaseOrdering value {ordering}"
             ));
         }
         e.cmd(&format!(
@@ -1398,6 +1411,9 @@ fn head_to_head_vs_master() {
         cache_sectors: env::var("H2H_CURRENT_PERFECT_DB_CACHE")
             .ok()
             .and_then(|s| s.parse::<usize>().ok()),
+        ordering: env::var("H2H_CURRENT_PERFECT_DB_ORDERING")
+            .ok()
+            .filter(|s| !s.trim().is_empty()),
     };
     let master_perfect_db = EnginePerfectDbOptions {
         enabled: env_bool("H2H_MASTER_USE_PERFECT_DB", false),
@@ -1405,6 +1421,9 @@ fn head_to_head_vs_master() {
         cache_sectors: env::var("H2H_MASTER_PERFECT_DB_CACHE")
             .ok()
             .and_then(|s| s.parse::<usize>().ok()),
+        ordering: env::var("H2H_MASTER_PERFECT_DB_ORDERING")
+            .ok()
+            .filter(|s| !s.trim().is_empty()),
     };
     let current_patch = patch_options_from_env(
         "H2H_CURRENT_PATCH_PATH",

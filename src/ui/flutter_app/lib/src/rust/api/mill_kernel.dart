@@ -150,6 +150,24 @@ TgfAction? tgfKernelMillPatchCorrectAction({
   chosen: chosen,
 );
 
+/// Database-free "make traps" support: if the lightweight error patch has
+/// an entry for the kernel's **current** Mill position and `chosen` is one
+/// of its mask-proven value-preserving moves, return the proven sibling
+/// whose resulting position carries a strictly higher trap score (the
+/// best-known blunder opportunity to hand the opponent). Returns
+/// `Ok(None)` when no patch is loaded, the position has no entry, `chosen`
+/// is not proven safe, or no sibling beats it -- callers should keep
+/// `chosen` unchanged in that case. Unlike
+/// [`tgf_kernel_mill_patch_trap_aware_best_action`] this needs no Perfect
+/// Database: the proof of which moves are safe is the patch entry itself.
+TgfAction? tgfKernelMillPatchMakeTrapsAction({
+  required int handle,
+  required TgfAction chosen,
+}) => RustLib.instance.api.crateApiMillKernelTgfKernelMillPatchMakeTrapsAction(
+  handle: handle,
+  chosen: chosen,
+);
+
 /// "Make traps" support: trap score (0..=255) of the position reached by
 /// playing `action` from the kernel's **current** Mill position, or `None`
 /// when no patch is loaded or the resulting position has no entry.

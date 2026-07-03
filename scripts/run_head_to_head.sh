@@ -100,7 +100,12 @@ Options:
       --opening-seed N  seed for paired Perfect DB random openings
       --opening-db PATH Perfect DB asset directory
       --self ENGINE     self-play ENGINE (current|master) instead of vs match
-      --vs-perfect    make the opponent engine use the Perfect DB
+      --vs-perfect    make the opponent engine use the Perfect DB (defaults its
+                     PerfectDatabaseOrdering to `strict` so won positions
+                     are actually converted before the n-move rule can
+                     adjudicate them as draws; override with
+                     H2H_MASTER_PERFECT_DB_ORDERING=legacy|auto).  Pair with
+                     --n-move-rule 100 and -p 300 so conversions fit.
       --perfect-db PATH
                      Perfect DB directory for --vs-perfect
   -m, --master PATH    path to master_engine
@@ -121,12 +126,13 @@ Patch options (Sanmill `tgf` only; sent as UCI setoption):
                      true/false (default false).  When true and no path is
                      set, the bundled `std.mill_patch` asset is used.
   H2H_CURRENT_PATCH_MAKE_TRAPS / H2H_MASTER_PATCH_MAKE_TRAPS
-                     true/false (default false).  Prefer, among the perfect
-                     database's tied-best moves, the one that hands the
-                     opponent the highest patch trap score.  Only effective
-                     on an engine that also has the Perfect DB enabled
-                     (--vs-perfect for master, or H2H_CURRENT_USE_PERFECT_DB
-                     for current).  Defaults the patch path like above.
+                     true/false (default false).  Prefer, among moves proven
+                     equally good, the one that hands the opponent the
+                     highest patch trap score.  With the Perfect DB enabled
+                     (--vs-perfect / H2H_CURRENT_USE_PERFECT_DB) the proof
+                     is the DB's tied-best set; without it, the patch
+                     entry's own optimal-set mask.  Defaults the patch path
+                     like above.
 
 Each option also has an environment-variable form (command-line flags win):
   GAMES, SKILL, ENGINE_THREADS, MOVETIME (seconds), MOVETIME_MS (ms,
@@ -427,5 +433,6 @@ H2H_GO_MASTER="$MASTER_GO" \
 H2H_MASTER_USE_PERFECT_DB="${VS_PERFECT:+true}" \
 H2H_MASTER_PERFECT_DB_PATH="$(winpath "$PERFECT_DB_PATH")" \
 H2H_MASTER_PERFECT_DB_CACHE="$PERFECT_DB_CACHE" \
+H2H_MASTER_PERFECT_DB_ORDERING="${H2H_MASTER_PERFECT_DB_ORDERING:-${VS_PERFECT:+strict}}" \
     cargo test -p tgf-cli --release --test head_to_head \
         head_to_head_vs_master -- --ignored --nocapture

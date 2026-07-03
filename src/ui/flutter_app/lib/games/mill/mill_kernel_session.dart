@@ -149,6 +149,21 @@ class MillKernelSession {
     );
   }
 
+  /// Database-free "make traps" support: if the patch has an entry for the
+  /// kernel's current position and [chosen] is one of its proven
+  /// value-preserving moves, return the proven sibling whose resulting
+  /// position carries a strictly higher trap score, or `null` when [chosen]
+  /// should stand (see `tgfKernelMillPatchMakeTrapsAction`'s docs).
+  tgf.TgfAction? rawPatchMakeTrapsAction(tgf.TgfAction chosen) {
+    if (kernel.isDisposed) {
+      throw KernelException('handle already disposed');
+    }
+    return tgf_mill.tgfKernelMillPatchMakeTrapsAction(
+      handle: kernel.rawHandle,
+      chosen: chosen,
+    );
+  }
+
   // ---------------------------------------------------------- setup-position
 
   /// Clear the board and reset all pieces for setup-position editing.

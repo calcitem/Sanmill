@@ -820,6 +820,12 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   }) => null;
 
   @override
+  GameAction? patchMakeTrapsAction(
+    GameAction chosen, {
+    GeneralSettings? engineSettings,
+  }) => null;
+
+  @override
   GameStateSnapshot setupClear() => _snapshot;
 
   @override

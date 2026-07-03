@@ -370,6 +370,35 @@ pub fn tgf_kernel_mill_patch_correct_action(
     )
 }
 
+/// Database-free "make traps" support: if the lightweight error patch has
+/// an entry for the kernel's **current** Mill position and `chosen` is one
+/// of its mask-proven value-preserving moves, return the proven sibling
+/// whose resulting position carries a strictly higher trap score (the
+/// best-known blunder opportunity to hand the opponent). Returns
+/// `Ok(None)` when no patch is loaded, the position has no entry, `chosen`
+/// is not proven safe, or no sibling beats it -- callers should keep
+/// `chosen` unchanged in that case. Unlike
+/// [`tgf_kernel_mill_patch_trap_aware_best_action`] this needs no Perfect
+/// Database: the proof of which moves are safe is the patch entry itself.
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_mill_patch_make_traps_action(
+    handle: u32,
+    chosen: TgfAction,
+) -> Result<Option<TgfAction>, String> {
+    let game_id = with_kernel(handle, |k| k.game_id().to_owned())?;
+    if game_id != "mill" {
+        return Err(format!("kernel game_id is {game_id}, expected mill"));
+    }
+    let snapshot = with_kernel(handle, |k| k.snapshot())?;
+    let options = variant_extras::options_for(handle);
+    Ok(crate::games::mill::patch::try_patch_trap_aware_action(
+        &snapshot,
+        &options,
+        chosen.into_action(),
+    )
+    .map(TgfAction::from_action))
+}
+
 /// "Make traps" support: trap score (0..=255) of the position reached by
 /// playing `action` from the kernel's **current** Mill position, or `None`
 /// when no patch is loaded or the resulting position has no entry.

@@ -275,6 +275,34 @@ class NativeMillRulesPort implements RulesPort {
     return _session.rawPatchTrapScoreAfter(actionTgf);
   }
 
+  /// Database-free "make traps": if the patch entry for the current position
+  /// proves [chosen] value-preserving and a proven sibling hands the
+  /// opponent a strictly higher trap score, return that sibling. Returns
+  /// `null` when the setting is off, the Perfect Database drives move choice
+  /// anyway (its tied-best tie-break already handles make-traps with broader
+  /// coverage), the active rule set is not the exact "std" variant the
+  /// bundled patch was mined against (see [isRuleSupportingErrorPatch]),
+  /// [chosen] cannot be converted to an FRB action, or [chosen] should
+  /// simply stand.
+  GameAction? patchMakeTrapsAction(
+    GameAction chosen, {
+    GeneralSettings? engineSettings,
+  }) {
+    final GeneralSettings settings = engineSettings ?? _generalSettings;
+    if (!settings.patchMakeTraps || !isRuleSupportingErrorPatch()) {
+      return null;
+    }
+    if (settings.usePerfectDatabase && isRuleSupportingPerfectDatabase()) {
+      return null;
+    }
+    final tgf.TgfAction? chosenTgf = MillActionCodec.toTgfAction(chosen);
+    if (chosenTgf == null) {
+      return null;
+    }
+    final tgf.TgfAction? better = _session.rawPatchMakeTrapsAction(chosenTgf);
+    return better == null ? null : MillActionCodec.fromTgfAction(better);
+  }
+
   /// Map the persisted Dart [SearchAlgorithm] enum onto the FRB
   /// [tgf_simple.MillSearchAlgorithm] consumed by the Rust dispatcher.
   /// Falls back to MTD(f) when the setting is null (matches the engine

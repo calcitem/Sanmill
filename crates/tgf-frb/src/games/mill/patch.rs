@@ -118,6 +118,34 @@ pub(crate) fn try_patch_correction(
     None
 }
 
+/// Database-free "make traps" (see
+/// `perfect_db::patch::PatchLookup::trap_aware_action`): if the patch has
+/// an entry for `snapshot` and `chosen` is one of its mask-proven
+/// value-preserving moves, return the proven sibling whose resulting
+/// position carries a strictly higher trap score. `None` when no patch is
+/// loaded, the position has no entry, `chosen` is not proven safe, or no
+/// sibling beats it -- callers keep `chosen` unchanged in that case.
+#[cfg(not(target_arch = "wasm32"))]
+pub(crate) fn try_patch_trap_aware_action(
+    snapshot: &GameStateSnapshot,
+    options: &MillVariantOptions,
+    chosen: Action,
+) -> Option<Action> {
+    let mut guard = PATCH.lock().expect("FRB patch mutex must not be poisoned");
+    let lookup = guard.as_mut()?;
+    let rules = MillRules::new(options.clone());
+    lookup.trap_aware_action(&rules, options, snapshot, chosen)
+}
+
+#[cfg(target_arch = "wasm32")]
+pub(crate) fn try_patch_trap_aware_action(
+    _snapshot: &GameStateSnapshot,
+    _options: &MillVariantOptions,
+    _chosen: Action,
+) -> Option<Action> {
+    None
+}
+
 /// Trap score (0..=255) of the position reached by playing `action` from
 /// `snapshot`, or `None` when no patch is loaded or the resulting position
 /// has no entry. Used by "make traps" mode to rank candidate replies.

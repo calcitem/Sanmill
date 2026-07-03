@@ -332,29 +332,49 @@ class NativeMillAiTurnController {
     return lastApplied;
   }
 
-  /// "Avoid traps": if [generalSettings.patchAvoidTraps] is on and the
-  /// bundled error patch says [action] throws away value at the session's
-  /// current position, return the corrected action instead. Returns
-  /// [action] unchanged otherwise (setting off, no patch entry, or already
-  /// safe) -- always safe to call unconditionally on every AI move source.
+  /// Apply the bundled error patch to [action] -- always safe to call
+  /// unconditionally on every AI move source:
+  ///
+  /// 1. "Avoid traps": if [generalSettings.patchAvoidTraps] is on and the
+  ///    patch says [action] throws away value at the session's current
+  ///    position, replace it with the recorded safe reply.
+  /// 2. "Make traps": if [generalSettings.patchMakeTraps] is on and the
+  ///    patch proves a value-preserving sibling with a strictly higher trap
+  ///    score, steer onto it (database-free; when the Perfect Database
+  ///    drives move choice its own tied-best tie-break handles this
+  ///    instead, see [NativeMillRulesPort.patchMakeTrapsAction]).
   GameAction _applyErrorPatch(
     NativeMillGameSession session,
     GameAction action,
   ) {
+    GameAction current = action;
     final GameAction? corrected = session.patchCorrectAction(
-      action,
+      current,
       engineSettings: generalSettings,
     );
-    if (corrected == null) {
-      return action;
+    if (corrected != null) {
+      if (EnvironmentConfig.devMode) {
+        logger.i(
+          '[NativeMillAiTurnController] error patch corrected '
+          '${current.payload['move']} -> ${corrected.payload['move']}',
+        );
+      }
+      current = corrected;
     }
-    if (EnvironmentConfig.devMode) {
-      logger.i(
-        '[NativeMillAiTurnController] error patch corrected '
-        '${action.payload['move']} -> ${corrected.payload['move']}',
-      );
+    final GameAction? trapPick = session.patchMakeTrapsAction(
+      current,
+      engineSettings: generalSettings,
+    );
+    if (trapPick != null) {
+      if (EnvironmentConfig.devMode) {
+        logger.i(
+          '[NativeMillAiTurnController] error patch set trap '
+          '${current.payload['move']} -> ${trapPick.payload['move']}',
+        );
+      }
+      current = trapPick;
     }
-    return corrected;
+    return current;
   }
 
   bool _isSameAction(GameAction left, GameAction right) {

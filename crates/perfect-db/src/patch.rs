@@ -732,6 +732,91 @@ impl PatchLookup {
         self.lookup_by_key(key).map(|record| record.trap_score)
     }
 
+    /// Database-free "make traps": if `snap`'s position has a patch entry
+    /// and `chosen_action` is one of the entry's mask-proven
+    /// value-preserving moves, return the sibling optimal action whose
+    /// resulting position carries a *strictly higher* patch trap score
+    /// (i.e. hands the opponent the best-known blunder opportunity).
+    ///
+    /// Returns `None` when the position has no entry (without the full
+    /// database there is then no proof of which moves are safe), when
+    /// `chosen_action` is not proven value-preserving (that is
+    /// [`Self::correct_action`]'s job, not a tie-break's), or when no
+    /// proven sibling beats the chosen move's own trap score -- so this
+    /// only ever re-orders among moves the patch proves equally good, and
+    /// never picks a worse move than the underlying decision.
+    pub fn trap_aware_action(
+        &mut self,
+        rules: &MillRules,
+        options: &MillVariantOptions,
+        snap: &GameStateSnapshot,
+        chosen_action: Action,
+    ) -> Option<Action> {
+        let state = MillRules::decode_snapshot(*snap);
+        let key = self.canonical_key_for_state(&state, options)?;
+        let record = self.lookup_by_key(key)?;
+
+        let sanitized_snap = {
+            let fen = rules.export_fen(&state);
+            let mut replica = rules
+                .set_from_fen(&fen)
+                .expect("a FEN exported from a live state must re-parse");
+            replica.reset_ply_since_capture();
+            rules.encode_state(replica)
+        };
+
+        let child_keys =
+            sorted_distinct_child_keys(&mut self.keys, rules, options, &sanitized_snap);
+        if child_keys.len() != usize::from(record.child_count) || child_keys.len() > 64 {
+            debug_assert_eq!(
+                child_keys.len(),
+                usize::from(record.child_count),
+                "patch record child count must match the runtime child enumeration"
+            );
+            return None;
+        }
+
+        let chosen_key = {
+            let child_snap = rules.apply(&sanitized_snap, chosen_action);
+            let child_state = MillRules::decode_snapshot(child_snap);
+            self.canonical_key_for_state(&child_state, options)
+        }?;
+        let chosen_index = child_keys.binary_search(&chosen_key).ok()?;
+        if record.optimal_mask & (1_u64 << chosen_index) == 0 {
+            return None;
+        }
+
+        let trap_score_of = |lookup: &Self, child_key: u64| -> u8 {
+            lookup
+                .lookup_by_key(child_key)
+                .map(|correction| correction.trap_score)
+                .unwrap_or(0)
+        };
+        let chosen_score = trap_score_of(self, chosen_key);
+        let mut best: Option<(u8, u64)> = None;
+        for (index, &child_key) in child_keys.iter().enumerate() {
+            if record.optimal_mask & (1_u64 << index) == 0 || child_key == chosen_key {
+                continue;
+            }
+            let score = trap_score_of(self, child_key);
+            if score > chosen_score && best.is_none_or(|(best_score, _)| score > best_score) {
+                best = Some((score, child_key));
+            }
+        }
+        let (_, best_key) = best?;
+
+        let mut actions = tgf_core::ActionList::<256>::new();
+        rules.legal_actions(snap, &mut actions);
+        for &action in actions.as_slice() {
+            let child_snap = rules.apply(&sanitized_snap, action);
+            let child_state = MillRules::decode_snapshot(child_snap);
+            if self.canonical_key_for_state(&child_state, options) == Some(best_key) {
+                return Some(action);
+            }
+        }
+        None
+    }
+
     #[allow(dead_code)]
     fn debug_encode(&self, action: Action) -> String {
         MillUciCodec::encode_action(action)
@@ -1010,6 +1095,139 @@ mod tests {
                 None
             );
         }
+    }
+
+    /// Database-free "make traps": among the root entry's mask-proven
+    /// optimal children, the pick must move to the sibling whose resulting
+    /// position carries the highest trap score, stay put when the chosen
+    /// move already is that sibling, and refuse to touch a move that is
+    /// not proven value-preserving.
+    #[test]
+    fn trap_aware_action_reorders_only_among_proven_optimal_children() {
+        let options = MillVariantOptions::default();
+        let rules = MillRules::new(options.clone());
+        let snap = rules.encode_state(MillRules::decode_snapshot(rules.initial_state(&[])));
+
+        let provider = MemoryDatabaseProvider::from_files([(
+            "std.secval".to_string(),
+            sample_patch().secval_bytes,
+        )]);
+        let mut keys = WdlPlaneCache::new(provider, DatabaseVariant::STANDARD).unwrap();
+
+        let mut actions = tgf_core::ActionList::<256>::new();
+        rules.legal_actions(&snap, &mut actions);
+        let child_key_of =
+            |keys: &mut WdlPlaneCache<MemoryDatabaseProvider>, action: Action| -> u64 {
+                let child_state = MillRules::decode_snapshot(rules.apply(&snap, action));
+                crate::mill::canonical_key(keys, &child_state, &options)
+                    .expect("startpos children must have canonical keys")
+            };
+        let good_action = actions.as_slice()[0];
+        let good_key = child_key_of(&mut keys, good_action);
+        let sibling_action = actions
+            .as_slice()
+            .iter()
+            .copied()
+            .find(|&a| child_key_of(&mut keys, a) != good_key)
+            .expect("startpos must have at least two distinct child keys");
+        let sibling_key = child_key_of(&mut keys, sibling_action);
+        let bad_action = actions
+            .as_slice()
+            .iter()
+            .copied()
+            .find(|&a| {
+                let k = child_key_of(&mut keys, a);
+                k != good_key && k != sibling_key
+            })
+            .expect("startpos must have at least three distinct child keys");
+
+        let root_state = MillRules::decode_snapshot(snap);
+        let root_key = crate::mill::canonical_key(&mut keys, &root_state, &options).unwrap();
+        let (root_sector, root_slot) = crate::wdl_plane::unpack_canonical_key(root_key);
+        let (child_count, optimal_mask) =
+            proof_for_children(&mut keys, &rules, &options, &snap, &[good_key, sibling_key]);
+
+        // Give the *sibling's resulting position* its own entry with a high
+        // trap score, so the trap-aware pick has a reason to prefer it.
+        let sibling_snap = rules.apply(&snap, sibling_action);
+        let (sibling_sector, sibling_slot) = crate::wdl_plane::unpack_canonical_key(sibling_key);
+        let sibling_children =
+            sorted_distinct_child_keys(&mut keys, &rules, &options, &sibling_snap);
+        let (sibling_child_count, sibling_mask) = proof_for_children(
+            &mut keys,
+            &rules,
+            &options,
+            &sibling_snap,
+            &[sibling_children[0]],
+        );
+
+        let mut sectors = vec![
+            SectorGroup {
+                white_on_board: root_sector.white_on_board,
+                black_on_board: root_sector.black_on_board,
+                white_in_hand: root_sector.white_in_hand,
+                black_in_hand: root_sector.black_in_hand,
+                records: vec![PackedRecord {
+                    slot: root_slot as u32,
+                    best_child: good_key,
+                    severity: 1,
+                    trap_score: 100,
+                    child_count,
+                    optimal_mask,
+                }],
+            },
+            SectorGroup {
+                white_on_board: sibling_sector.white_on_board,
+                black_on_board: sibling_sector.black_on_board,
+                white_in_hand: sibling_sector.white_in_hand,
+                black_in_hand: sibling_sector.black_in_hand,
+                records: vec![PackedRecord {
+                    slot: sibling_slot as u32,
+                    best_child: sibling_children[0],
+                    severity: 1,
+                    trap_score: 200,
+                    child_count: sibling_child_count,
+                    optimal_mask: sibling_mask,
+                }],
+            },
+        ];
+        sectors.sort_by_key(|s| {
+            (
+                s.white_on_board,
+                s.black_on_board,
+                s.white_in_hand,
+                s.black_in_hand,
+            )
+        });
+        let patch = PatchFile {
+            variant_byte: 0,
+            fingerprint: sample_patch().fingerprint,
+            secval_bytes: sample_patch().secval_bytes,
+            sectors,
+            mid_removal_records: vec![],
+        };
+        let mut buf = Vec::new();
+        patch.write_to(&mut buf, 3).unwrap();
+        let mut lookup = PatchLookup::open(&buf).unwrap();
+
+        let replacement = lookup
+            .trap_aware_action(&rules, &options, &snap, good_action)
+            .expect("a higher-trap-score optimal sibling must be preferred");
+        let replacement_key = child_key_of(&mut keys, replacement);
+        assert_eq!(
+            replacement_key, sibling_key,
+            "the pick must land on the trap-scored sibling"
+        );
+        assert_eq!(
+            lookup.trap_aware_action(&rules, &options, &snap, sibling_action),
+            None,
+            "the trap-max move itself must stay put"
+        );
+        assert_eq!(
+            lookup.trap_aware_action(&rules, &options, &snap, bad_action),
+            None,
+            "a move that is not proven value-preserving must not be touched here"
+        );
     }
 
     /// A patch's canonical keys carry no variant tag of their own (they are

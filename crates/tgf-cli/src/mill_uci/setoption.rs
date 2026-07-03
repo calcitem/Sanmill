@@ -171,6 +171,25 @@ pub(super) fn apply_setoption(
                 SetoptionResult::SearchConfig
             })
             .unwrap_or(SetoptionResult::Unknown),
+        "perfectdatabaseordering" | "perfect database ordering" => {
+            match value.to_ascii_lowercase().as_str() {
+                "auto" => {
+                    engine_cfg.perfect_db_ordering = None;
+                    SetoptionResult::SearchConfig
+                }
+                "legacy" | "legacywdl" => {
+                    engine_cfg.perfect_db_ordering =
+                        Some(perfect_db::PerfectMoveOrdering::LegacyWdl);
+                    SetoptionResult::SearchConfig
+                }
+                "strict" | "strictsteps" => {
+                    engine_cfg.perfect_db_ordering =
+                        Some(perfect_db::PerfectMoveOrdering::StrictSteps);
+                    SetoptionResult::SearchConfig
+                }
+                _ => SetoptionResult::Unknown,
+            }
+        }
         "patchpath" | "patch path" => {
             let path = value_pos
                 .map(|idx| tokens[idx + 1..].join(" "))
