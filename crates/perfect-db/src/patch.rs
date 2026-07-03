@@ -26,15 +26,19 @@ use std::io::{self, Read, Write};
 use tgf_core::{Action, GameRules, GameStateSnapshot};
 use tgf_mill::{MillRules, MillUciCodec, MillVariantOptions};
 
-use crate::database::{DatabaseVariant, MemoryDatabaseProvider};
+use crate::database::{DatabaseProvider, DatabaseVariant, MemoryDatabaseProvider};
 use crate::wdl_plane::WdlPlaneCache;
 
 const MAGIC: [u8; 4] = *b"SMLP";
+/// Version 3 added the per-record optimal-set proof (`child_count` +
+/// `optimal_mask`) that gates corrections on the chosen move being
+/// *provably* value-dropping; version 2 records lack it and would
+/// otherwise decode as garbage, so older files are rejected outright.
 /// Version 2 added the mid-removal record group (a flat, key-sorted list
 /// appended after the sector groups); version 1 files have no such group
 /// and are rejected outright rather than silently misparsed, since the
 /// payload layout differs from the first byte after the sector groups.
-const FORMAT_VERSION: u8 = 2;
+const FORMAT_VERSION: u8 = 3;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum PackAlgorithm {
@@ -80,9 +84,23 @@ pub struct PackedRecord {
     pub best_child: u64,
     pub severity: u8,
     pub trap_score: u8,
+    /// Number of distinct child canonical keys the mined position has (the
+    /// length of the sorted, deduped child-key list [`optimal_mask`] is
+    /// indexed against). A runtime whose own child enumeration disagrees
+    /// must treat the record as not applying -- see
+    /// [`PatchLookup::correct_action`].
+    ///
+    /// [`optimal_mask`]: Self::optimal_mask
+    pub child_count: u8,
+    /// Bit `i` set means the `i`-th smallest distinct child canonical key
+    /// leads to a position that preserves the parent's game-theoretic
+    /// value. Corrections only fire for children whose bit is clear (a
+    /// *proven* value drop), never merely because the engine picked a
+    /// different-but-equally-good move than [`Self::best_child`].
+    pub optimal_mask: u64,
 }
 
-const RECORD_SIZE: usize = 4 + 8 + 1 + 1;
+pub const RECORD_SIZE: usize = 4 + 8 + 1 + 1 + 1 + 8;
 
 /// A correction for a mid-removal position (see the module docs): `key` is
 /// the full, tagged [`crate::mill::mid_removal_key`] output, not a
@@ -94,9 +112,13 @@ pub struct MidRemovalRecord {
     pub best_child: u64,
     pub severity: u8,
     pub trap_score: u8,
+    /// See [`PackedRecord::child_count`].
+    pub child_count: u8,
+    /// See [`PackedRecord::optimal_mask`].
+    pub optimal_mask: u64,
 }
 
-const MID_REMOVAL_RECORD_SIZE: usize = 8 + 8 + 1 + 1;
+pub const MID_REMOVAL_RECORD_SIZE: usize = 8 + 8 + 1 + 1 + 1 + 8;
 
 /// The two record shapes' common fields, as seen by [`PatchLookup`]'s
 /// runtime queries -- neither `PackedRecord::slot` nor `MidRemovalRecord::key`
@@ -106,6 +128,8 @@ const MID_REMOVAL_RECORD_SIZE: usize = 8 + 8 + 1 + 1;
 struct Correction {
     best_child: u64,
     trap_score: u8,
+    child_count: u8,
+    optimal_mask: u64,
 }
 
 impl From<PackedRecord> for Correction {
@@ -113,6 +137,8 @@ impl From<PackedRecord> for Correction {
         Self {
             best_child: record.best_child,
             trap_score: record.trap_score,
+            child_count: record.child_count,
+            optimal_mask: record.optimal_mask,
         }
     }
 }
@@ -122,6 +148,8 @@ impl From<MidRemovalRecord> for Correction {
         Self {
             best_child: record.best_child,
             trap_score: record.trap_score,
+            child_count: record.child_count,
+            optimal_mask: record.optimal_mask,
         }
     }
 }
@@ -229,6 +257,8 @@ impl PatchFile {
                 write_u64(&mut payload, record.best_child);
                 write_u8(&mut payload, record.severity);
                 write_u8(&mut payload, record.trap_score);
+                write_u8(&mut payload, record.child_count);
+                write_u64(&mut payload, record.optimal_mask);
             }
         }
         write_u32(&mut payload, self.mid_removal_records.len() as u32);
@@ -237,6 +267,8 @@ impl PatchFile {
             write_u64(&mut payload, record.best_child);
             write_u8(&mut payload, record.severity);
             write_u8(&mut payload, record.trap_score);
+            write_u8(&mut payload, record.child_count);
+            write_u64(&mut payload, record.optimal_mask);
         }
         payload
     }
@@ -355,11 +387,15 @@ impl PatchFile {
                 let best_child = read_u64(&payload, &mut payload_offset)?;
                 let severity = read_u8(&payload, &mut payload_offset)?;
                 let trap_score = read_u8(&payload, &mut payload_offset)?;
+                let child_count = read_u8(&payload, &mut payload_offset)?;
+                let optimal_mask = read_u64(&payload, &mut payload_offset)?;
                 records.push(PackedRecord {
                     slot,
                     best_child,
                     severity,
                     trap_score,
+                    child_count,
+                    optimal_mask,
                 });
             }
             total_records += count;
@@ -389,11 +425,15 @@ impl PatchFile {
             let best_child = read_u64(&payload, &mut payload_offset)?;
             let severity = read_u8(&payload, &mut payload_offset)?;
             let trap_score = read_u8(&payload, &mut payload_offset)?;
+            let child_count = read_u8(&payload, &mut payload_offset)?;
+            let optimal_mask = read_u64(&payload, &mut payload_offset)?;
             mid_removal_records.push(MidRemovalRecord {
                 key,
                 best_child,
                 severity,
                 trap_score,
+                child_count,
+                optimal_mask,
             });
         }
 
@@ -479,10 +519,44 @@ fn variant_piece_count(variant_byte: u8) -> u8 {
     }
 }
 
+/// Sorted, deduplicated canonical keys of every legal child of `snap`.
+///
+/// This list is the index space [`PackedRecord::optimal_mask`] is defined
+/// against: bit `i` of the mask refers to the `i`-th entry of this exact
+/// list. The packer (with the live database's plane cache) and the runtime
+/// (with the patch's embedded plane cache) must therefore both go through
+/// this one function, and both must pass the *history-free* replica of the
+/// position (fresh repetition history, `ply_since_capture == 0`): a child
+/// that is terminal has no canonical key and silently drops out of the
+/// list, and history-dependent termination (threefold repetition, the
+/// `n_move_rule` counter) would otherwise make the two ends disagree about
+/// which children exist.
+pub fn sorted_distinct_child_keys<P: DatabaseProvider>(
+    keys: &mut WdlPlaneCache<P>,
+    rules: &MillRules,
+    options: &MillVariantOptions,
+    snap: &GameStateSnapshot,
+) -> Vec<u64> {
+    let mut actions = tgf_core::ActionList::<256>::new();
+    rules.legal_actions(snap, &mut actions);
+    let mut child_keys: Vec<u64> = actions
+        .as_slice()
+        .iter()
+        .filter_map(|&action| {
+            let child_snap = rules.apply(snap, action);
+            let child_state = MillRules::decode_snapshot(child_snap);
+            crate::mill::canonical_key(keys, &child_state, options)
+        })
+        .collect();
+    child_keys.sort_unstable();
+    child_keys.dedup();
+    child_keys
+}
+
 #[allow(dead_code)]
-const _: () = assert!(RECORD_SIZE == 14);
+const _: () = assert!(RECORD_SIZE == 23);
 #[allow(dead_code)]
-const _: () = assert!(MID_REMOVAL_RECORD_SIZE == 18);
+const _: () = assert!(MID_REMOVAL_RECORD_SIZE == 27);
 
 /// Runtime-facing wrapper: a parsed [`PatchFile`] plus the (disk-free)
 /// canonical-key machinery needed to check and correct a chosen action
@@ -561,11 +635,16 @@ impl PatchLookup {
             .map(Correction::from)
     }
 
-    /// If `snap`'s position has a patch entry and `chosen_action` is not the
-    /// recorded safe reply, return the legal action whose resulting child
-    /// matches `best_child` instead. Returns `None` when there is no patch
-    /// entry for this position, or `chosen_action` already matches (no
-    /// correction needed).
+    /// If `snap`'s position has a patch entry and `chosen_action` is
+    /// *proven* by the entry's optimal-set mask to drop the position's
+    /// game-theoretic value, return the legal action whose resulting child
+    /// matches the recorded `best_child` instead. Returns `None` when there
+    /// is no patch entry for this position, or -- crucially -- when the
+    /// chosen move is itself value-preserving: the engine's own pick among
+    /// equally-good moves always stands, even when it differs from
+    /// `best_child`. (Earlier format versions hard-overrode any
+    /// non-recorded move; measured head-to-head that overrides far more
+    /// good moves than blunders and costs real playing strength.)
     ///
     /// Child keys are computed against a *history-free* replica of the
     /// position, not the live snapshot. Patch entries were mined from bare
@@ -602,17 +681,36 @@ impl PatchLookup {
             rules.encode_state(replica)
         };
 
-        let mut actions = tgf_core::ActionList::<256>::new();
-        rules.legal_actions(snap, &mut actions);
+        // The optimal-set proof is indexed against the packer's sorted
+        // distinct child-key list; if the runtime enumeration no longer
+        // produces the same list (rules or canonicalization drift since the
+        // patch was packed), the proof does not apply to what we are seeing
+        // -- fail safe by leaving the move alone.
+        let child_keys =
+            sorted_distinct_child_keys(&mut self.keys, rules, options, &sanitized_snap);
+        if child_keys.len() != usize::from(record.child_count) || child_keys.len() > 64 {
+            debug_assert_eq!(
+                child_keys.len(),
+                usize::from(record.child_count),
+                "patch record child count must match the runtime child enumeration"
+            );
+            return None;
+        }
+
         let chosen_key = {
             let child_snap = rules.apply(&sanitized_snap, chosen_action);
             let child_state = MillRules::decode_snapshot(child_snap);
             self.canonical_key_for_state(&child_state, options)
-        };
-        if chosen_key == Some(record.best_child) {
+        }?;
+        let chosen_index = child_keys.binary_search(&chosen_key).ok()?;
+        if record.optimal_mask & (1_u64 << chosen_index) != 0 {
+            // Proven value-preserving (this covers `best_child` itself and
+            // every other optimal sibling): nothing to correct.
             return None;
         }
 
+        let mut actions = tgf_core::ActionList::<256>::new();
+        rules.legal_actions(snap, &mut actions);
         for &action in actions.as_slice() {
             let child_snap = rules.apply(&sanitized_snap, action);
             let child_state = MillRules::decode_snapshot(child_snap);
@@ -671,14 +769,62 @@ mod tests {
         }
     }
 
+    /// Build the `(child_count, optimal_mask)` proof for `snap`, marking
+    /// exactly `optimal_child_keys` as value-preserving. Mirrors what the
+    /// packer derives from the live database.
+    fn proof_for_children(
+        keys: &mut WdlPlaneCache<MemoryDatabaseProvider>,
+        rules: &MillRules,
+        options: &MillVariantOptions,
+        snap: &GameStateSnapshot,
+        optimal_child_keys: &[u64],
+    ) -> (u8, u64) {
+        let list = sorted_distinct_child_keys(keys, rules, options, snap);
+        let mut mask = 0_u64;
+        for key in optimal_child_keys {
+            let index = list
+                .binary_search(key)
+                .expect("optimal child key must be among the position's children");
+            mask |= 1_u64 << index;
+        }
+        (
+            u8::try_from(list.len()).expect("Mill positions have at most 64 distinct children"),
+            mask,
+        )
+    }
+
     #[test]
     fn round_trips_through_bytes() {
-        let patch = sample_patch();
+        let mut patch = sample_patch();
+        patch.sectors = vec![SectorGroup {
+            white_on_board: 3,
+            black_on_board: 3,
+            white_in_hand: 0,
+            black_in_hand: 0,
+            records: vec![PackedRecord {
+                slot: 7,
+                best_child: 42,
+                severity: 2,
+                trap_score: 9,
+                child_count: 5,
+                optimal_mask: 0b1_0110,
+            }],
+        }];
+        patch.mid_removal_records = vec![MidRemovalRecord {
+            key: crate::wdl_plane::MID_REMOVAL_KEY_TAG | 3,
+            best_child: 41,
+            severity: 1,
+            trap_score: 8,
+            child_count: 3,
+            optimal_mask: 0b011,
+        }];
         let mut buf = Vec::new();
         patch.write_to(&mut buf, 3).unwrap();
         let restored = PatchFile::read_from(&mut buf.as_slice()).unwrap();
         assert_eq!(restored.fingerprint, patch.fingerprint);
         assert_eq!(restored.secval_bytes, patch.secval_bytes);
+        assert_eq!(restored.sectors[0].records, patch.sectors[0].records);
+        assert_eq!(restored.mid_removal_records, patch.mid_removal_records);
     }
 
     #[test]
@@ -693,19 +839,10 @@ mod tests {
     }
 
     #[test]
-    fn correct_action_leaves_a_safe_choice_untouched_and_fixes_an_unsafe_one() {
+    fn correct_action_only_fires_on_a_proven_value_drop() {
         let options = MillVariantOptions::default();
         let rules = MillRules::new(options.clone());
         let snap = rules.encode_state(MillRules::decode_snapshot(rules.initial_state(&[])));
-
-        // Discover two real legal actions and their canonical child keys so
-        // the synthetic patch entry below references genuinely reachable
-        // positions.
-        let mut actions = tgf_core::ActionList::<256>::new();
-        rules.legal_actions(&snap, &mut actions);
-        assert!(actions.as_slice().len() >= 2);
-        let good_action = actions.as_slice()[0];
-        let bad_action = actions.as_slice()[1];
 
         let provider = MemoryDatabaseProvider::from_files([(
             "std.secval".to_string(),
@@ -716,17 +853,43 @@ mod tests {
             .unwrap(),
         )]);
         let mut keys = WdlPlaneCache::new(provider, DatabaseVariant::STANDARD).unwrap();
-        let good_state = MillRules::decode_snapshot(rules.apply(&snap, good_action));
-        let good_query =
-            crate::mill::query_from_state(&good_state, &options, good_state.side_to_move())
-                .unwrap();
-        let good_key = keys.canonical_key_for_query(good_query);
+
+        // Pick three legal actions with pairwise distinct child keys: the
+        // recorded reply, a different-but-also-optimal sibling, and a
+        // "proven bad" one.
+        let mut actions = tgf_core::ActionList::<256>::new();
+        rules.legal_actions(&snap, &mut actions);
+        let child_key_of =
+            |keys: &mut WdlPlaneCache<MemoryDatabaseProvider>, action: Action| -> u64 {
+                let child_state = MillRules::decode_snapshot(rules.apply(&snap, action));
+                crate::mill::canonical_key(keys, &child_state, &options)
+                    .expect("startpos children must have canonical keys")
+            };
+        let good_action = actions.as_slice()[0];
+        let good_key = child_key_of(&mut keys, good_action);
+        let sibling_action = actions
+            .as_slice()
+            .iter()
+            .copied()
+            .find(|&a| child_key_of(&mut keys, a) != good_key)
+            .expect("startpos must have at least two distinct child keys");
+        let sibling_key = child_key_of(&mut keys, sibling_action);
+        let bad_action = actions
+            .as_slice()
+            .iter()
+            .copied()
+            .find(|&a| {
+                let k = child_key_of(&mut keys, a);
+                k != good_key && k != sibling_key
+            })
+            .expect("startpos must have at least three distinct child keys");
 
         let root_state = MillRules::decode_snapshot(snap);
-        let root_query = crate::mill::query_from_state(&root_state, &options, 0).unwrap();
-        let root_key = keys.canonical_key_for_query(root_query);
+        let root_key = crate::mill::canonical_key(&mut keys, &root_state, &options).unwrap();
         let (root_sector, root_slot) = crate::wdl_plane::unpack_canonical_key(root_key);
-        let root_slot = root_slot as u32;
+
+        let (child_count, optimal_mask) =
+            proof_for_children(&mut keys, &rules, &options, &snap, &[good_key, sibling_key]);
 
         let patch = PatchFile {
             variant_byte: 0,
@@ -738,10 +901,12 @@ mod tests {
                 white_in_hand: root_sector.white_in_hand,
                 black_in_hand: root_sector.black_in_hand,
                 records: vec![PackedRecord {
-                    slot: root_slot,
+                    slot: root_slot as u32,
                     best_child: good_key,
                     severity: 1,
                     trap_score: 100,
+                    child_count,
+                    optimal_mask,
                 }],
             }],
             mid_removal_records: vec![],
@@ -753,13 +918,98 @@ mod tests {
         assert_eq!(
             lookup.correct_action(&rules, &options, &snap, good_action),
             None,
-            "already-safe action must not be corrected"
+            "the recorded reply itself must not be corrected"
+        );
+        assert_eq!(
+            lookup.correct_action(&rules, &options, &snap, sibling_action),
+            None,
+            "a different-but-proven-optimal sibling must be left alone -- \
+             corrections only fire on a proven value drop"
         );
         assert_eq!(
             lookup.correct_action(&rules, &options, &snap, bad_action),
             Some(good_action),
-            "unsafe action must be corrected to the patched reply"
+            "a proven value-dropping action must be corrected to the recorded reply"
         );
+    }
+
+    /// A record whose `child_count` no longer matches the runtime child
+    /// enumeration (canonicalization / rules drift since packing) must be
+    /// ignored rather than trusted, since its mask indexes a different
+    /// child list than the one the runtime sees.
+    #[test]
+    fn correct_action_ignores_a_record_with_a_stale_child_count() {
+        let options = MillVariantOptions::default();
+        let rules = MillRules::new(options.clone());
+        let snap = rules.encode_state(MillRules::decode_snapshot(rules.initial_state(&[])));
+
+        let provider = MemoryDatabaseProvider::from_files([(
+            "std.secval".to_string(),
+            sample_patch().secval_bytes,
+        )]);
+        let mut keys = WdlPlaneCache::new(provider, DatabaseVariant::STANDARD).unwrap();
+
+        let mut actions = tgf_core::ActionList::<256>::new();
+        rules.legal_actions(&snap, &mut actions);
+        let good_action = actions.as_slice()[0];
+        let good_state = MillRules::decode_snapshot(rules.apply(&snap, good_action));
+        let good_key = crate::mill::canonical_key(&mut keys, &good_state, &options).unwrap();
+        let bad_action = actions
+            .as_slice()
+            .iter()
+            .copied()
+            .find(|&a| {
+                let s = MillRules::decode_snapshot(rules.apply(&snap, a));
+                crate::mill::canonical_key(&mut keys, &s, &options) != Some(good_key)
+            })
+            .expect("startpos must have at least two distinct child keys");
+
+        let root_state = MillRules::decode_snapshot(snap);
+        let root_key = crate::mill::canonical_key(&mut keys, &root_state, &options).unwrap();
+        let (root_sector, root_slot) = crate::wdl_plane::unpack_canonical_key(root_key);
+        let (true_count, _) = proof_for_children(&mut keys, &rules, &options, &snap, &[good_key]);
+
+        let patch = PatchFile {
+            variant_byte: 0,
+            fingerprint: sample_patch().fingerprint,
+            secval_bytes: sample_patch().secval_bytes,
+            sectors: vec![SectorGroup {
+                white_on_board: root_sector.white_on_board,
+                black_on_board: root_sector.black_on_board,
+                white_in_hand: root_sector.white_in_hand,
+                black_in_hand: root_sector.black_in_hand,
+                records: vec![PackedRecord {
+                    slot: root_slot as u32,
+                    best_child: good_key,
+                    severity: 1,
+                    trap_score: 100,
+                    child_count: true_count + 1,
+                    optimal_mask: 0,
+                }],
+            }],
+            mid_removal_records: vec![],
+        };
+        let mut buf = Vec::new();
+        patch.write_to(&mut buf, 3).unwrap();
+        let mut lookup = PatchLookup::open(&buf).unwrap();
+
+        // Would be "corrected" under a trusting reader; the count guard must
+        // reject the stale proof instead. Debug builds assert on the drift,
+        // so exercise the graceful path in release builds only.
+        if cfg!(debug_assertions) {
+            let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+                lookup.correct_action(&rules, &options, &snap, bad_action)
+            }));
+            assert!(
+                result.is_err(),
+                "debug builds must surface child-count drift loudly"
+            );
+        } else {
+            assert_eq!(
+                lookup.correct_action(&rules, &options, &snap, bad_action),
+                None
+            );
+        }
     }
 
     /// A patch's canonical keys carry no variant tag of their own (they are
@@ -925,6 +1175,16 @@ mod tests {
             MillRules::decode_snapshot(rules.apply(&sanitized_parent, target_action));
         let best_child_key =
             crate::mill::canonical_key(&mut keys, &best_child_state, &options).unwrap();
+        // The proof frame is the history-free replica: from the live
+        // snapshot the repetition child is terminal and has no canonical
+        // key, which is the very asymmetry this regression test guards.
+        let (child_count, optimal_mask) = proof_for_children(
+            &mut keys,
+            &rules,
+            &options,
+            &sanitized_parent,
+            &[best_child_key],
+        );
 
         let patch = PatchFile {
             variant_byte: 0,
@@ -940,6 +1200,8 @@ mod tests {
                     best_child: best_child_key,
                     severity: 1,
                     trap_score: 100,
+                    child_count,
+                    optimal_mask,
                 }],
             }],
             mid_removal_records: vec![],
@@ -1041,6 +1303,13 @@ mod tests {
             MillRules::decode_snapshot(rules.apply(&fresh_snap, target_action));
         let target_child_key =
             crate::mill::canonical_key(&mut keys, &target_child_state, &options).unwrap();
+        let (child_count, optimal_mask) = proof_for_children(
+            &mut keys,
+            &rules,
+            &options,
+            &fresh_snap,
+            &[target_child_key],
+        );
 
         let patch = PatchFile {
             variant_byte: 0,
@@ -1056,6 +1325,8 @@ mod tests {
                     best_child: target_child_key,
                     severity: 1,
                     trap_score: 100,
+                    child_count,
+                    optimal_mask,
                 }],
             }],
             mid_removal_records: vec![],
@@ -1188,6 +1459,13 @@ mod tests {
             MillRules::decode_snapshot(rules.apply(&mid_removal_snap, safe_removal));
         let safe_child_key =
             crate::mill::canonical_key(&mut keys, &safe_child_state, &options).unwrap();
+        let (child_count, optimal_mask) = proof_for_children(
+            &mut keys,
+            &rules,
+            &options,
+            &mid_removal_snap,
+            &[safe_child_key],
+        );
 
         let patch = PatchFile {
             variant_byte: 0,
@@ -1199,6 +1477,8 @@ mod tests {
                 best_child: safe_child_key,
                 severity: 1,
                 trap_score: 100,
+                child_count,
+                optimal_mask,
             }],
         };
         let mut buf = Vec::new();

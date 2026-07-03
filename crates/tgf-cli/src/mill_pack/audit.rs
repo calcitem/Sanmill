@@ -103,9 +103,13 @@ fn audit_one<P: DatabaseProvider>(
     planes: &mut perfect_db::wdl_plane::WdlPlaneCache<P>,
     entry: &MineEntry,
 ) -> Result<(), String> {
-    let state = rules
+    let mut state = rules
         .set_from_fen(&entry.fen)
         .map_err(|e| format!("entry fen {:?} failed to parse: {e}", entry.fen))?;
+    // Same history-free frame as `recompute_entries` and the runtime
+    // correction: a live inactivity counter must not make quiet children
+    // spuriously terminal while their values are audited.
+    state.reset_ply_since_capture();
     let snap = rules.encode_state(state.clone());
 
     let key = perfect_db::canonical_key(planes, &state, options)

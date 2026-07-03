@@ -46,14 +46,17 @@
 //   --audit-seed HEX   Deterministic sample seed (default fixed constant).
 //
 // Maintenance:
-//   --recompute-from-fen  Re-derive every entry's canonical `key` and
-//                      `best_child` from its stored FEN against the live
-//                      DB, instead of trusting the values the (possibly
-//                      older) `mill mine` run stored. Cheap relative to
-//                      mining (no tier-3 engine search): use this to pick
-//                      up a canonicalization fix or a tuned recommendation
-//                      policy across already-mined JSONL without
-//                      re-running the whole pipeline.
+//   --recompute-from-fen  Accepted for compatibility but now always on:
+//                      the v3 patch format's per-record optimal-set proof
+//                      (see `perfect_db::patch::PackedRecord::optimal_mask`)
+//                      can only be derived against the live DB, and the
+//                      same pass re-derives every entry's canonical `key`
+//                      and `best_child` from its stored FEN while it is
+//                      at it. Cheap relative to mining (no tier-3 engine
+//                      search). Entries whose FEN no longer re-derives
+//                      (parse failure, DB coverage gap) are dropped with a
+//                      count, since a proof-less record could never
+//                      legitimately fire at runtime.
 //                      (`--recompute-best-child` is accepted as a legacy
 //                      alias.)
 
@@ -65,13 +68,15 @@ use std::io::Write;
 
 use perfect_db::database::FileDatabaseProvider;
 use perfect_db::patch::{
-    EngineFingerprint, MidRemovalRecord, PackAlgorithm, PackedRecord, PatchFile, SectorGroup,
+    EngineFingerprint, MID_REMOVAL_RECORD_SIZE, MidRemovalRecord, PackAlgorithm, PackedRecord,
+    PatchFile, RECORD_SIZE, SectorGroup,
 };
 use perfect_db::wdl_plane::unpack_canonical_key;
 use tgf_mill::MillVariantOptions;
 
 use crate::cli_args::{flag_present, parse_flag};
 use crate::mill_mine::entry::MineEntry;
+use recompute::ChildProof;
 
 pub(crate) fn default_fingerprint() -> EngineFingerprint {
     EngineFingerprint {
@@ -145,6 +150,7 @@ fn assert_entries_fit_std_budget(entries: &[MineEntry]) {
 /// should be aware truncation cannot go any lower than that floor.
 pub(crate) fn build_patch_file(
     entries: &[MineEntry],
+    proofs: &HashMap<u64, ChildProof>,
     budget_bytes: usize,
     fingerprint: EngineFingerprint,
     db_path: &std::path::Path,
@@ -177,14 +183,28 @@ pub(crate) fn build_patch_file(
     let (mid_removal, settled): (Vec<&MineEntry>, Vec<&MineEntry>) = by_key
         .into_values()
         .partition(|e| e.key & MID_REMOVAL_TAG != 0);
+    let proof_for = |entry: &MineEntry| -> ChildProof {
+        *proofs.get(&entry.key).unwrap_or_else(|| {
+            panic!(
+                "[patch-pack] entry key {:#x} has no optimal-set proof -- \
+                 proof-less entries must be dropped before packing",
+                entry.key
+            )
+        })
+    };
     let mid_removal_records = {
         let mut records: Vec<MidRemovalRecord> = mid_removal
             .into_iter()
-            .map(|entry| MidRemovalRecord {
-                key: entry.key,
-                best_child: entry.best_child,
-                severity: entry.severity as u8,
-                trap_score: entry.trap_score,
+            .map(|entry| {
+                let proof = proof_for(entry);
+                MidRemovalRecord {
+                    key: entry.key,
+                    best_child: entry.best_child,
+                    severity: entry.severity as u8,
+                    trap_score: entry.trap_score,
+                    child_count: proof.child_count,
+                    optimal_mask: proof.optimal_mask,
+                }
             })
             .collect();
         records.sort_by_key(|r| r.key);
@@ -204,6 +224,7 @@ pub(crate) fn build_patch_file(
         let mut sectors: HashMap<(u8, u8, u8, u8), Vec<PackedRecord>> = HashMap::new();
         for entry in entries {
             let (sector_id, slot) = unpack_canonical_key(entry.key);
+            let proof = proof_for(entry);
             sectors
                 .entry((
                     sector_id.white_on_board,
@@ -217,6 +238,8 @@ pub(crate) fn build_patch_file(
                     best_child: entry.best_child,
                     severity: entry.severity as u8,
                     trap_score: entry.trap_score,
+                    child_count: proof.child_count,
+                    optimal_mask: proof.optimal_mask,
                 });
         }
         let mut groups: Vec<SectorGroup> = sectors
@@ -330,7 +353,9 @@ pub(crate) fn run_patch_pack(args: &[String]) {
         ..default_fingerprint()
     };
 
-    let recompute_from_fen =
+    // Always-on since patch format v3 (the optimal-set proof requires the
+    // same live-DB pass); accepted so existing invocations keep working.
+    let _legacy_recompute_flag =
         flag_present(args, "--recompute-from-fen") || flag_present(args, "--recompute-best-child");
 
     let mut entries: Vec<MineEntry> = Vec::new();
@@ -359,13 +384,26 @@ pub(crate) fn run_patch_pack(args: &[String]) {
     }
     assert_entries_fit_std_budget(&entries);
 
-    if recompute_from_fen {
+    let proofs = {
         let options = MillVariantOptions::default();
-        recompute::recompute_entries(&mut entries, std::path::Path::new(&db_path), &options);
+        recompute::recompute_entries(&mut entries, std::path::Path::new(&db_path), &options)
+    };
+    let before_proof_filter = entries.len();
+    entries.retain(|entry| proofs.contains_key(&entry.key));
+    if entries.len() != before_proof_filter {
+        eprintln!(
+            "[patch-pack] dropped {} entries without a computable optimal-set proof",
+            before_proof_filter - entries.len()
+        );
+    }
+    if entries.is_empty() {
+        eprintln!("[patch-pack] ERROR: no entries survived proof derivation");
+        std::process::exit(1);
     }
 
     let patch = build_patch_file(
         &entries,
+        &proofs,
         budget_bytes,
         fingerprint,
         std::path::Path::new(&db_path),
@@ -383,8 +421,10 @@ pub(crate) fn run_patch_pack(args: &[String]) {
         .and_then(|mut f| f.write_all(&buf))
         .unwrap_or_else(|e| panic!("[patch-pack] cannot write {out_path}: {e}"));
 
-    let uncompressed_estimate: usize =
-        4 + sector_count * 8 + (entry_count - mid_removal_count) * 14 + mid_removal_count * 18;
+    let uncompressed_estimate: usize = 4
+        + sector_count * 8
+        + (entry_count - mid_removal_count) * RECORD_SIZE
+        + mid_removal_count * MID_REMOVAL_RECORD_SIZE;
     eprintln!(
         "[patch-pack] wrote {out_path}: {entry_count} entries ({mid_removal_count} \
          mid-removal) across {sector_count} sectors, {} bytes on disk ({:.1}x smaller than \
@@ -438,6 +478,23 @@ mod tests {
         }
     }
 
+    /// Synthetic optimal-set proofs for offline tests that bypass the live
+    /// DB pass (`recompute_entries`) and call `build_patch_file` directly.
+    fn proofs_for(entries: &[MineEntry]) -> HashMap<u64, ChildProof> {
+        entries
+            .iter()
+            .map(|entry| {
+                (
+                    entry.key,
+                    ChildProof {
+                        child_count: 2,
+                        optimal_mask: 0b01,
+                    },
+                )
+            })
+            .collect()
+    }
+
     #[test]
     #[should_panic(expected = "needs more than the std variant's 9-piece budget")]
     fn assert_entries_fit_std_budget_rejects_a_lasker_shaped_key() {
@@ -467,7 +524,14 @@ mod tests {
         let entries = vec![entry(1, 100, 5.0), entry(1, 200, 50.0), entry(2, 300, 1.0)];
         let db_root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .join("../../src/ui/flutter_app/assets/databases");
-        let patch = build_patch_file(&entries, 0, default_fingerprint(), &db_root, "std");
+        let patch = build_patch_file(
+            &entries,
+            &proofs_for(&entries),
+            0,
+            default_fingerprint(),
+            &db_root,
+            "std",
+        );
         assert_eq!(patch.entry_count(), 2);
         let (sector, slot) = unpack_canonical_key(1);
         let record = patch
@@ -493,7 +557,14 @@ mod tests {
         ];
         let db_root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .join("../../src/ui/flutter_app/assets/databases");
-        let patch = build_patch_file(&entries, 0, default_fingerprint(), &db_root, "std");
+        let patch = build_patch_file(
+            &entries,
+            &proofs_for(&entries),
+            0,
+            default_fingerprint(),
+            &db_root,
+            "std",
+        );
 
         assert_eq!(patch.mid_removal_records.len(), 1);
         assert_eq!(patch.entry_count(), 2, "one settled + one mid-removal");
@@ -516,12 +587,20 @@ mod tests {
         }
         let db_root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .join("../../src/ui/flutter_app/assets/databases");
-        let full = build_patch_file(&entries, 0, default_fingerprint(), &db_root, "std");
+        let proofs = proofs_for(&entries);
+        let full = build_patch_file(&entries, &proofs, 0, default_fingerprint(), &db_root, "std");
         let mut full_buf = Vec::new();
         full.write_to(&mut full_buf, 3).unwrap();
 
         let budget = full_buf.len() / 2;
-        let truncated = build_patch_file(&entries, budget, default_fingerprint(), &db_root, "std");
+        let truncated = build_patch_file(
+            &entries,
+            &proofs,
+            budget,
+            default_fingerprint(),
+            &db_root,
+            "std",
+        );
         let mut truncated_buf = Vec::new();
         truncated.write_to(&mut truncated_buf, 3).unwrap();
 
@@ -556,12 +635,14 @@ mod tests {
 
         let db_root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .join("../../src/ui/flutter_app/assets/databases");
-        let full = build_patch_file(&entries, 0, default_fingerprint(), &db_root, "std");
+        let proofs = proofs_for(&entries);
+        let full = build_patch_file(&entries, &proofs, 0, default_fingerprint(), &db_root, "std");
         let mut full_buf = Vec::new();
         full.write_to(&mut full_buf, 3).unwrap();
 
         let truncated = build_patch_file(
             &entries,
+            &proofs,
             full_buf.len() / 2,
             default_fingerprint(),
             &db_root,
