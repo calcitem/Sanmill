@@ -10,34 +10,53 @@ part of '../../../game_page/services/painters/painters.dart';
 /// Painter to draw the Board. The pieces are drawn by [PiecePainter].
 /// It asserts the Canvas to be a square.
 class BoardPainter extends CustomPainter {
-  BoardPainter(this.context, this.backgroundImage);
+  BoardPainter(
+    this.context,
+    this.backgroundImage, {
+    this.shouldDrawBackground = true,
+    this.shouldDrawOptionalElements = true,
+    this.shouldDrawMillLines = true,
+    this.shouldDrawAnalysisOverlay = true,
+  });
 
   final BuildContext context;
   final ui.Image? backgroundImage;
+  final bool shouldDrawBackground;
+  final bool shouldDrawOptionalElements;
+  final bool shouldDrawMillLines;
+  final bool shouldDrawAnalysisOverlay;
 
   @override
   void paint(Canvas canvas, Size size) {
     assert(size.width == size.height);
 
-    final MillBoardView position = GameController().activeBoardView;
     final ColorSettings colorSettings = DB().colorSettings;
     final double boardBorderLineWidth =
         DB().displaySettings.boardBorderLineWidth;
     final Paint paint = _createPaint(colorSettings, boardBorderLineWidth, size);
 
-    _drawBackground(canvas, size, colorSettings);
-    _drawOptionalElements(canvas, size, position);
+    if (shouldDrawBackground) {
+      _drawBackground(canvas, size, colorSettings);
+    }
+
+    if (shouldDrawOptionalElements) {
+      final MillBoardView position = GameController().activeBoardView;
+      _drawOptionalElements(canvas, size, position);
+    }
 
     final List<Offset> offset = points
         .map((Offset e) => offsetFromPointWithInnerSize(e, size))
         .toList();
     _drawLines(offset, canvas, paint, size);
     _drawPoints(offset, canvas, paint);
-    _drawMillLines(offset, canvas, paint, size);
+
+    if (shouldDrawMillLines) {
+      _drawMillLines(offset, canvas, paint, size);
+    }
 
     // Draw the perfect-database analysis overlay on top of the board when
     // the user has run an analysis pass.  No-op while the overlay is off.
-    if (AnalysisMode.isEnabled) {
+    if (shouldDrawAnalysisOverlay && AnalysisMode.isEnabled) {
       final double squareSize = (size.width - boardMargin * 2) / 6;
       AnalysisRenderer.render(canvas, size, squareSize);
     }

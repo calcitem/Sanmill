@@ -23,6 +23,7 @@ import '../../../shared/widgets/lichess_list_section.dart';
 import '../../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../services/gif_share/gif_share.dart';
 import '../../services/mill.dart';
+import '../../services/painters/painters.dart';
 import '../game_page.dart';
 import '../saved_games_page.dart';
 
@@ -685,7 +686,17 @@ class _HumanAiNewGamePreview extends StatelessWidget {
                     color: colors.boardBackgroundColor,
                     child: CustomPaint(
                       key: const Key('human_ai_new_game_sheet_preview'),
-                      painter: _HumanAiNewGamePreviewPainter(colors),
+                      painter: BoardPainter(
+                        context,
+                        null,
+                        shouldDrawBackground: false,
+                        shouldDrawOptionalElements: false,
+                        shouldDrawMillLines: false,
+                        shouldDrawAnalysisOverlay: false,
+                      ),
+                      foregroundPainter: _HumanAiNewGamePreviewPiecesPainter(
+                        colors,
+                      ),
                     ),
                   ),
                 ),
@@ -698,8 +709,8 @@ class _HumanAiNewGamePreview extends StatelessWidget {
   }
 }
 
-class _HumanAiNewGamePreviewPainter extends CustomPainter {
-  const _HumanAiNewGamePreviewPainter(this.colors);
+class _HumanAiNewGamePreviewPiecesPainter extends CustomPainter {
+  const _HumanAiNewGamePreviewPiecesPainter(this.colors);
 
   final ColorSettings colors;
 
@@ -710,36 +721,14 @@ class _HumanAiNewGamePreviewPainter extends CustomPainter {
       (size.width - side) / 2,
       (size.height - side) / 2,
     );
-    final Rect board = origin & Size.square(side);
-    final double outerMargin = side * 0.12;
-    final double ringGap = side * 0.19;
     final double pieceRadius = side * 0.045;
-
-    final Paint linePaint = Paint()
-      ..color = colors.boardLineColor
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = math.max(1.8, side * 0.012)
-      ..strokeCap = StrokeCap.round;
-
-    Rect squareAt(int ring) {
-      final double inset = outerMargin + ring * ringGap;
-      return Rect.fromLTRB(
-        board.left + inset,
-        board.top + inset,
-        board.right - inset,
-        board.bottom - inset,
-      );
-    }
-
-    final List<Rect> rings = <Rect>[squareAt(0), squareAt(1), squareAt(2)];
-    for (final Rect ring in rings) {
-      canvas.drawRect(ring, linePaint);
-    }
-
-    canvas.drawLine(rings[0].topCenter, rings[2].topCenter, linePaint);
-    canvas.drawLine(rings[0].centerLeft, rings[2].centerLeft, linePaint);
-    canvas.drawLine(rings[0].centerRight, rings[2].centerRight, linePaint);
-    canvas.drawLine(rings[0].bottomCenter, rings[2].bottomCenter, linePaint);
+    final Size boardSize = Size.square(side);
+    final List<Offset> previewPoints = points
+        .map(
+          (Offset point) =>
+              origin + offsetFromPointWithInnerSize(point, boardSize),
+        )
+        .toList();
 
     void drawPiece(Offset center, Color color, {bool highlighted = false}) {
       canvas.drawCircle(
@@ -768,15 +757,17 @@ class _HumanAiNewGamePreviewPainter extends CustomPainter {
       }
     }
 
-    drawPiece(rings[0].topLeft, colors.whitePieceColor);
-    drawPiece(rings[0].bottomRight, colors.blackPieceColor);
-    drawPiece(rings[1].topCenter, colors.whitePieceColor, highlighted: true);
-    drawPiece(rings[1].centerLeft, colors.blackPieceColor);
-    drawPiece(rings[2].bottomCenter, colors.whitePieceColor);
+    drawPiece(previewPoints[0], colors.whitePieceColor);
+    drawPiece(previewPoints[23], colors.blackPieceColor);
+    drawPiece(previewPoints[10], colors.whitePieceColor, highlighted: true);
+    drawPiece(previewPoints[4], colors.blackPieceColor);
+    drawPiece(previewPoints[12], colors.whitePieceColor);
   }
 
   @override
-  bool shouldRepaint(covariant _HumanAiNewGamePreviewPainter oldDelegate) {
+  bool shouldRepaint(
+    covariant _HumanAiNewGamePreviewPiecesPainter oldDelegate,
+  ) {
     return oldDelegate.colors != colors;
   }
 }
