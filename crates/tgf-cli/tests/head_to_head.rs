@@ -33,6 +33,11 @@
 //   H2H_MASTER_PATCH_PATH      error-patch file for opponent (Sanmill only)
 //   H2H_CURRENT_PATCH_AVOID_TRAPS  true/false for current PatchAvoidTraps
 //   H2H_MASTER_PATCH_AVOID_TRAPS   true/false for opponent PatchAvoidTraps
+//   H2H_CURRENT_PATCH_MAKE_TRAPS   true/false for current PatchMakeTraps
+//   H2H_MASTER_PATCH_MAKE_TRAPS    true/false for opponent PatchMakeTraps
+//                  (make-traps re-orders the perfect database's tied-best
+//                  moves, so it only has an effect on an engine that also
+//                  has H2H_*_USE_PERFECT_DB enabled)
 //   H2H_GAMES      games per color (default 20)
 //   H2H_SKILL      skill level (default 14)
 //   H2H_ENGINE_THREADS UCI Threads option for both engines (default 1)
@@ -113,6 +118,7 @@ struct EnginePerfectDbOptions {
 struct EnginePatchOptions {
     path: Option<PathBuf>,
     avoid_traps: bool,
+    make_traps: bool,
 }
 
 #[derive(Clone)]
@@ -203,6 +209,10 @@ impl Engine {
         e.cmd(&format!(
             "setoption name PatchAvoidTraps value {}",
             if patch.avoid_traps { "true" } else { "false" }
+        ));
+        e.cmd(&format!(
+            "setoption name PatchMakeTraps value {}",
+            if patch.make_traps { "true" } else { "false" }
         ));
         e.cmd("isready");
         assert!(e.wait("readyok").is_some(), "{name}: no readyok");
@@ -402,9 +412,11 @@ fn default_patch_path() -> PathBuf {
     workspace_asset_path("src/ui/flutter_app/assets/patches/std.mill_patch")
 }
 
-fn patch_options_from_env(path_var: &str, avoid_var: &str) -> EnginePatchOptions {
+fn patch_options_from_env(path_var: &str, avoid_var: &str, make_var: &str) -> EnginePatchOptions {
+    let avoid_traps = env_bool(avoid_var, false);
+    let make_traps = env_bool(make_var, false);
     let path = env_path(path_var).or_else(|| {
-        if env_bool(avoid_var, false) {
+        if avoid_traps || make_traps {
             Some(default_patch_path())
         } else {
             None
@@ -412,7 +424,8 @@ fn patch_options_from_env(path_var: &str, avoid_var: &str) -> EnginePatchOptions
     });
     EnginePatchOptions {
         path,
-        avoid_traps: env_bool(avoid_var, false),
+        avoid_traps,
+        make_traps,
     }
 }
 
@@ -1393,10 +1406,16 @@ fn head_to_head_vs_master() {
             .ok()
             .and_then(|s| s.parse::<usize>().ok()),
     };
-    let current_patch =
-        patch_options_from_env("H2H_CURRENT_PATCH_PATH", "H2H_CURRENT_PATCH_AVOID_TRAPS");
-    let master_patch =
-        patch_options_from_env("H2H_MASTER_PATCH_PATH", "H2H_MASTER_PATCH_AVOID_TRAPS");
+    let current_patch = patch_options_from_env(
+        "H2H_CURRENT_PATCH_PATH",
+        "H2H_CURRENT_PATCH_AVOID_TRAPS",
+        "H2H_CURRENT_PATCH_MAKE_TRAPS",
+    );
+    let master_patch = patch_options_from_env(
+        "H2H_MASTER_PATCH_PATH",
+        "H2H_MASTER_PATCH_AVOID_TRAPS",
+        "H2H_MASTER_PATCH_MAKE_TRAPS",
+    );
 
     let options = MillVariantOptions {
         n_move_rule,

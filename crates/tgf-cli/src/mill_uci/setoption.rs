@@ -184,6 +184,12 @@ pub(super) fn apply_setoption(
                 SetoptionResult::SearchConfig
             })
             .unwrap_or(SetoptionResult::Unknown),
+        "patchmaketraps" | "patch make traps" => parse_bool(value)
+            .map(|v| {
+                engine_cfg.patch_make_traps = v;
+                SetoptionResult::SearchConfig
+            })
+            .unwrap_or(SetoptionResult::Unknown),
         "developermode" | "developer mode" => parse_bool(value)
             .map(|v| {
                 engine_cfg.developer_mode = v;

@@ -199,6 +199,10 @@ struct EngineConfig {
     /// When true, correct the chosen move using the loaded error patch
     /// (Flutter "Avoid known traps").
     patch_avoid_traps: bool,
+    /// When true and the perfect database is consulted, prefer -- among the
+    /// database's tied-best moves -- the one whose resulting position has
+    /// the highest patch trap score (Flutter "Set traps for the opponent").
+    patch_make_traps: bool,
 }
 
 impl Default for EngineConfig {
@@ -226,6 +230,7 @@ impl Default for EngineConfig {
             active_perfect_db: None,
             patch_path: None,
             patch_avoid_traps: false,
+            patch_make_traps: false,
         }
     }
 }
@@ -315,15 +320,23 @@ fn mill_rules_with_eval_weights(options: MillVariantOptions) -> MillRules {
 }
 
 fn apply_patch_env_defaults(cfg: &mut EngineConfig) {
+    let env_bool = |name: &str| {
+        std::env::var(name).ok().map(|value| {
+            matches!(
+                value.trim().to_ascii_lowercase().as_str(),
+                "1" | "true" | "on" | "yes"
+            )
+        })
+    };
     if let Ok(path) = std::env::var("TGF_PATCH_PATH") {
         let path = path.trim().to_owned();
         cfg.patch_path = (!path.is_empty()).then_some(path);
     }
-    if let Ok(value) = std::env::var("TGF_PATCH_AVOID_TRAPS") {
-        cfg.patch_avoid_traps = matches!(
-            value.trim().to_ascii_lowercase().as_str(),
-            "1" | "true" | "on" | "yes"
-        );
+    if let Some(value) = env_bool("TGF_PATCH_AVOID_TRAPS") {
+        cfg.patch_avoid_traps = value;
+    }
+    if let Some(value) = env_bool("TGF_PATCH_MAKE_TRAPS") {
+        cfg.patch_make_traps = value;
     }
     patch::sync_runtime(&cfg.patch_path, cfg.patch_avoid_traps);
 }
@@ -992,9 +1005,15 @@ fn apply_perfect_database_result(
     // search result.  Emits an `aimovetype` info line mirroring the Flutter
     // shell: `consensus` when search and DB agree, `perfect` when the DB
     // overrides.
-    if cfg.use_perfect_database
-        && let Some(pd_action) = try_perfect_best_action(options, state, perfect_move_ordering(cfg))
-    {
+    if !cfg.use_perfect_database {
+        return;
+    }
+    let pd_action = if cfg.patch_make_traps {
+        try_perfect_best_action_trap_aware(options, state, perfect_move_ordering(cfg))
+    } else {
+        try_perfect_best_action(options, state, perfect_move_ordering(cfg))
+    };
+    if let Some(pd_action) = pd_action {
         let same =
             action_to_uci(result.best_action).as_deref() == action_to_uci(pd_action).as_deref();
         if !same {
@@ -1339,6 +1358,47 @@ fn try_perfect_best_action(
         .iter()
         .copied()
         .find(|action| action_to_uci(*action).as_deref() == Some(token.as_str()))
+}
+
+/// "Make traps" variant of [`try_perfect_best_action`]: query the perfect
+/// database for *all* tied-best moves and prefer -- among them -- whichever
+/// one hands the opponent the highest patch trap score (see
+/// `patch::trap_score_after_action`). Mirrors the FRB
+/// `try_perfect_best_action_trap_aware` used by the Flutter shell: every
+/// candidate is already database-verified equally optimal, so this only
+/// re-orders among them and never returns a worse move than the plain pick.
+fn try_perfect_best_action_trap_aware(
+    options: &MillVariantOptions,
+    state: &GameStateSnapshot,
+    ordering: perfect_db::PerfectMoveOrdering,
+) -> Option<Action> {
+    let mill_state = MillRules::decode_snapshot(*state);
+    let tokens = perfect_db::best_move_tokens_for_state_with_ordering(
+        &mill_state,
+        options,
+        state.side_to_move,
+        ordering,
+    )?;
+    let rules = MillRules::new(options.clone());
+    let mut legal = ActionList::<256>::default();
+    rules.legal_actions(state, &mut legal);
+    let tied: Vec<Action> = tokens
+        .iter()
+        .filter_map(|token| {
+            legal
+                .as_slice()
+                .iter()
+                .copied()
+                .find(|&action| action_to_uci(action).as_deref() == Some(token.as_str()))
+        })
+        .collect();
+    if tied.is_empty() {
+        return None;
+    }
+    tied.iter()
+        .copied()
+        .max_by_key(|&action| patch::trap_score_after_action(options, state, action).unwrap_or(0))
+        .or(Some(tied[0]))
 }
 
 fn run_mcts_search(wb: &mut tgf_mill::MillWorkbench, cfg: &EngineConfig) -> SearchResult {

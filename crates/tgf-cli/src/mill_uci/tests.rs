@@ -164,6 +164,18 @@ fn setoption_parses_perfect_database_options() {
 
     assert!(matches!(
         apply_setoption(
+            "setoption name PatchMakeTraps value true",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut ecfg,
+        ),
+        SetoptionResult::SearchConfig
+    ));
+    assert!(ecfg.patch_make_traps);
+
+    assert!(matches!(
+        apply_setoption(
             "setoption name UsePerfectDatabase value off",
             &mut options,
             &mut threads,

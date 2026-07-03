@@ -120,6 +120,13 @@ Patch options (Sanmill `tgf` only; sent as UCI setoption):
   H2H_CURRENT_PATCH_AVOID_TRAPS / H2H_MASTER_PATCH_AVOID_TRAPS
                      true/false (default false).  When true and no path is
                      set, the bundled `std.mill_patch` asset is used.
+  H2H_CURRENT_PATCH_MAKE_TRAPS / H2H_MASTER_PATCH_MAKE_TRAPS
+                     true/false (default false).  Prefer, among the perfect
+                     database's tied-best moves, the one that hands the
+                     opponent the highest patch trap score.  Only effective
+                     on an engine that also has the Perfect DB enabled
+                     (--vs-perfect for master, or H2H_CURRENT_USE_PERFECT_DB
+                     for current).  Defaults the patch path like above.
 
 Each option also has an environment-variable form (command-line flags win):
   GAMES, SKILL, ENGINE_THREADS, MOVETIME (seconds), MOVETIME_MS (ms,
