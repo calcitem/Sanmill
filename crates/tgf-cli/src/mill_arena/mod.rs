@@ -125,6 +125,13 @@ pub(crate) fn run_mill_arena(args: &[String]) {
     // proven-optimal moves. Runtime trigger counters are reported at the
     // end (see PatchRuntimeStats).
     let make_traps = crate::cli_args::flag_present(args, "--make-traps");
+    // Diagnostic switch (probe-only, not a gameplay option): write one
+    // JSONL row per make-traps switch -- position FEN, ply, side,
+    // baseline/steering moves, and the live database's verdict on both --
+    // so a color-split investigation can join switches against game
+    // results. Any switch whose steering move is not tied-best is a
+    // blocking bug and is counted (and loudly reported) separately.
+    let trace_path: String = parse_flag(args, "--trace-patchtrap", String::new());
     let games_per_opening: u32 = parse_flag(args, "--games", 1u32);
     let depth_override: i32 = parse_flag(args, "--depth", 0i32);
     let skill_level: u8 = parse_flag(args, "--skill-level", 30u8);
@@ -183,6 +190,7 @@ pub(crate) fn run_mill_arena(args: &[String]) {
     rules.legal_actions(&initial, &mut openings);
     let opening_list: Vec<Action> = openings.as_slice().to_vec();
 
+    let mut trace = (!trace_path.is_empty()).then(|| PatchTrapTrace::create(&trace_path));
     let mut batch = BatchResult::default();
     for &opening in &opening_list {
         for engine_is_white in [true, false] {
@@ -197,6 +205,7 @@ pub(crate) fn run_mill_arena(args: &[String]) {
                     db_ordering,
                     patch.as_mut(),
                     make_traps,
+                    trace.as_mut(),
                     &options,
                     depth_override,
                     skill_level,
@@ -243,6 +252,9 @@ pub(crate) fn run_mill_arena(args: &[String]) {
     } else {
         "unpatched"
     });
+    if let Some(trace) = trace {
+        trace.finish();
+    }
     if let Some(patch) = patch.as_ref() {
         // Fire-rate probe: per-game trigger rates over the whole batch.
         let stats = patch.runtime_stats();
@@ -272,6 +284,123 @@ enum GameResult {
     Draw,
     EngineLoss,
     Unfinished,
+}
+
+/// One `--trace-patchtrap` JSONL row: a make-traps switch plus the live
+/// database's verdict on both moves (probe-only diagnostics).
+#[derive(Serialize)]
+struct PatchTrapTraceRow<'a> {
+    fen: &'a str,
+    ply: u32,
+    side_to_move: i8,
+    baseline: String,
+    steering: String,
+    baseline_wdl: Option<i32>,
+    steering_wdl: Option<i32>,
+    best_wdl: Option<i32>,
+    steering_is_tied_best: Option<bool>,
+}
+
+/// Sink + verdict counters for `--trace-patchtrap`.
+struct PatchTrapTrace {
+    writer: std::io::BufWriter<std::fs::File>,
+    switches: u64,
+    verified_tied_best: u64,
+    value_dropping_bugs: u64,
+    db_unresolved: u64,
+}
+
+impl PatchTrapTrace {
+    fn create(path: &str) -> Self {
+        Self {
+            writer: std::io::BufWriter::new(std::fs::File::create(path).unwrap_or_else(|e| {
+                panic!("[mill-arena] cannot create --trace-patchtrap {path}: {e}")
+            })),
+            switches: 0,
+            verified_tied_best: 0,
+            value_dropping_bugs: 0,
+            db_unresolved: 0,
+        }
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    fn record<P: perfect_db::database::DatabaseProvider>(
+        &mut self,
+        rules: &MillRules,
+        db: &mut Database<P>,
+        options: &MillVariantOptions,
+        snap: &GameStateSnapshot,
+        ply: u32,
+        baseline: Action,
+        steering: Action,
+    ) {
+        self.switches += 1;
+        let state = MillRules::decode_snapshot(*snap);
+        let fen = rules.export_fen(&state);
+        let all = perfect_db::all_move_outcomes_with_ordering(
+            db,
+            rules,
+            snap,
+            options,
+            PerfectMoveOrdering::StrictSteps,
+        )
+        .ok()
+        .flatten();
+        let wdl_of = |token: &str| -> Option<i32> {
+            all.as_ref()?
+                .iter()
+                .find(|choice| choice.token == token)
+                .map(|choice| choice.outcome.wdl())
+        };
+        let baseline_token = MillUciCodec::encode_action(baseline);
+        let steering_token = MillUciCodec::encode_action(steering);
+        let baseline_wdl = wdl_of(&baseline_token);
+        let steering_wdl = wdl_of(&steering_token);
+        let best_wdl = all
+            .as_ref()
+            .and_then(|all| all.iter().map(|c| c.outcome.wdl()).max());
+        let steering_is_tied_best = match (steering_wdl, best_wdl) {
+            (Some(steering), Some(best)) => Some(steering == best),
+            _ => None,
+        };
+        match steering_is_tied_best {
+            Some(true) => self.verified_tied_best += 1,
+            Some(false) => {
+                self.value_dropping_bugs += 1;
+                eprintln!(
+                    "[mill-arena] BLOCKER: make-traps switched to a value-dropping move at \
+                     ply {ply}: {baseline_token} -> {steering_token} (fen {fen})"
+                );
+            }
+            None => self.db_unresolved += 1,
+        }
+        let row = PatchTrapTraceRow {
+            fen: &fen,
+            ply,
+            side_to_move: snap.side_to_move,
+            baseline: baseline_token,
+            steering: steering_token,
+            baseline_wdl,
+            steering_wdl,
+            best_wdl,
+            steering_is_tied_best,
+        };
+        serde_json::to_writer(&mut self.writer, &row).expect("trace row must serialize");
+        writeln!(self.writer).expect("trace write failed");
+    }
+
+    fn finish(mut self) {
+        self.writer.flush().ok();
+        eprintln!(
+            "[mill-arena] patchtrap trace: switches={} verified_tied_best={} \
+             value_dropping_bugs={} db_unresolved={}",
+            self.switches, self.verified_tied_best, self.value_dropping_bugs, self.db_unresolved
+        );
+        assert_eq!(
+            self.value_dropping_bugs, 0,
+            "make-traps must never switch to a value-dropping move; see BLOCKER lines above"
+        );
+    }
 }
 
 /// The first engine-to-move ply in a game where the ground-truth database
@@ -304,6 +433,7 @@ fn play_one_game<P: perfect_db::database::DatabaseProvider>(
     db_ordering: PerfectMoveOrdering,
     mut patch: Option<&mut PatchLookup>,
     make_traps: bool,
+    mut trace: Option<&mut PatchTrapTrace>,
     options: &MillVariantOptions,
     depth_override: i32,
     skill_level: u8,
@@ -441,6 +571,9 @@ fn play_one_game<P: perfect_db::database::DatabaseProvider>(
                 && let Some(patch) = patch.as_deref_mut()
                 && let Some(better) = patch.trap_aware_action(rules, options, &snapshot, action)
             {
+                if let Some(trace) = trace.as_deref_mut() {
+                    trace.record(rules, db, options, &snapshot, plies, action, better);
+                }
                 action = better;
             }
 

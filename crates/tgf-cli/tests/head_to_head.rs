@@ -593,7 +593,7 @@ impl Referee {
         black: &mut Engine,
         max_plies: usize,
         game_index: usize,
-    ) -> (GameResult, usize, Vec<String>) {
+    ) -> (GameResult, usize, Vec<String>, Vec<String>) {
         let mut snap = self.rules.initial_state(&[]);
         let mut moves: Vec<String> = Vec::new();
         let mut repetition = RepetitionReferee::default();
@@ -605,34 +605,34 @@ impl Referee {
         for ply in moves.len()..max_plies {
             match self.rules.outcome(&snap).kind {
                 OutcomeKind::Ongoing => {}
-                OutcomeKind::Win(0) => return (GameResult::WhiteWin, ply, opening_moves),
-                OutcomeKind::Win(1) => return (GameResult::BlackWin, ply, opening_moves),
-                OutcomeKind::Draw => return (GameResult::Draw, ply, opening_moves),
-                _ => return (GameResult::Unfinished, ply, opening_moves),
+                OutcomeKind::Win(0) => return (GameResult::WhiteWin, ply, opening_moves, moves),
+                OutcomeKind::Win(1) => return (GameResult::BlackWin, ply, opening_moves, moves),
+                OutcomeKind::Draw => return (GameResult::Draw, ply, opening_moves, moves),
+                _ => return (GameResult::Unfinished, ply, opening_moves, moves),
             }
             if repetition.is_root_threefold_draw(&snap) {
-                return (GameResult::Draw, ply, opening_moves);
+                return (GameResult::Draw, ply, opening_moves, moves);
             }
 
             let stm = self.game.build_workbench(&snap).side_to_move();
             let engine = if stm == 0 { &mut *white } else { &mut *black };
             let Some(mv) = engine.best_move(&moves) else {
                 eprintln!("  ! {} returned no move at ply {ply}", engine.name);
-                return (GameResult::Unfinished, ply, opening_moves);
+                return (GameResult::Unfinished, ply, opening_moves, moves);
             };
             let Some(action) = MillUciCodec::decode_action(&snap, &mv) else {
                 eprintln!(
                     "  ! undecodable move `{mv}` from {} at ply {ply}",
                     engine.name
                 );
-                return (GameResult::Unfinished, ply, opening_moves);
+                return (GameResult::Unfinished, ply, opening_moves, moves);
             };
             snap = self.rules.apply(&snap, action);
             repetition.record_after_apply(action, &snap);
             moves.push(mv);
         }
         // Ply cap reached: both sides maneuvering -> score as a draw.
-        (GameResult::Draw, max_plies, opening_moves)
+        (GameResult::Draw, max_plies, opening_moves, moves)
     }
 }
 
@@ -999,6 +999,9 @@ struct GameReport {
     result: GameResult,
     plies: usize,
     opening_moves: Vec<String>,
+    /// Full move list (opening prefix included), for joining engine-side
+    /// patchtrap traces (H2H_GAME_LOG consumers).
+    moves: Vec<String>,
     current_white: Option<bool>,
 }
 
@@ -1125,7 +1128,7 @@ fn run_self_play_parallel(config: MatchConfig, is_master: bool, label: &str) {
             };
 
             for game_index in worker_game_indices(worker_id, config.total_games, config.jobs) {
-                let (result, plies, opening_moves) =
+                let (result, plies, opening_moves, moves) =
                     referee.play_game(&mut ew, &mut eb, config.max_plies, game_index);
                 tx.send(GameReport {
                     worker_id,
@@ -1133,6 +1136,7 @@ fn run_self_play_parallel(config: MatchConfig, is_master: bool, label: &str) {
                     result,
                     plies,
                     opening_moves,
+                    moves,
                     current_white: None,
                 })
                 .expect("main H2H collector should stay alive");
@@ -1241,7 +1245,7 @@ fn run_vs_parallel(config: MatchConfig) {
 
             for game_index in worker_game_indices(worker_id, config.total_games, config.jobs) {
                 let current_white = game_index % 2 == 0;
-                let (result, plies, opening_moves) = if current_white {
+                let (result, plies, opening_moves, moves) = if current_white {
                     referee.play_game(&mut cur, &mut mas, config.max_plies, game_index)
                 } else {
                     referee.play_game(&mut mas, &mut cur, config.max_plies, game_index)
@@ -1252,6 +1256,7 @@ fn run_vs_parallel(config: MatchConfig) {
                     result,
                     plies,
                     opening_moves,
+                    moves,
                     current_white: Some(current_white),
                 })
                 .expect("main H2H collector should stay alive");
@@ -1263,6 +1268,20 @@ fn run_vs_parallel(config: MatchConfig) {
     let mut white = [0usize; 4];
     let mut black = [0usize; 4];
     let mut done = 0usize;
+    // H2H_GAME_LOG: per-game JSONL for pair-level (paired-opening) score
+    // analysis and for joining engine-side patchtrap traces against final
+    // results. One row per game: game_index (pairs are (2k, 2k+1) sharing
+    // one opening prefix with colours swapped), current colour, result
+    // from current's perspective, plies, and the opening prefix itself.
+    let mut game_log = std::env::var("H2H_GAME_LOG")
+        .ok()
+        .filter(|path| !path.trim().is_empty())
+        .map(|path| {
+            std::io::BufWriter::new(
+                std::fs::File::create(&path)
+                    .unwrap_or_else(|e| panic!("cannot create H2H_GAME_LOG {path}: {e}")),
+            )
+        });
     let interval = progress_interval();
     while done < total {
         match rx.recv_timeout(interval) {
@@ -1272,6 +1291,23 @@ fn run_vs_parallel(config: MatchConfig) {
                 let current_white = report
                     .current_white
                     .expect("vs report must identify current engine colour");
+                if let Some(log) = game_log.as_mut() {
+                    let row = serde_json::json!({
+                        "game_index": report.game_index,
+                        "current_white": current_white,
+                        "result": match idx {
+                            0 => "win",
+                            1 => "loss",
+                            2 => "draw",
+                            _ => "unfinished",
+                        },
+                        "plies": report.plies,
+                        "opening_moves": report.opening_moves,
+                        "moves": report.moves,
+                    });
+                    writeln!(log, "{row}").expect("H2H_GAME_LOG write failed");
+                    log.flush().ok();
+                }
                 eprintln!();
                 eprintln!(
                     "Game {}/{total}: current={} -> {} ({} plies){}  [worker {} game-index {}]",

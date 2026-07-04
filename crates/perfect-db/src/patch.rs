@@ -781,10 +781,22 @@ pub struct PatchRuntimeStats {
     pub score_unscored: u64,
 }
 
+/// Detail of the most recent [`PatchLookup::trap_aware_action`] switch,
+/// for trace instrumentation (probe/diagnostic consumers only).
+#[derive(Clone, Copy, Debug)]
+pub struct TrapSwitchDetail {
+    pub parent_key: u64,
+    /// The baseline (chosen) move's stored nibble (0 when unscored).
+    pub baseline_nibble: u8,
+    /// The switched-to move's stored nibble (strictly higher by rule).
+    pub steering_nibble: u8,
+}
+
 pub struct PatchLookup {
     file: PatchFile,
     keys: WdlPlaneCache<MemoryDatabaseProvider>,
     stats: PatchRuntimeStats,
+    last_switch: Option<TrapSwitchDetail>,
 }
 
 impl PatchLookup {
@@ -804,7 +816,15 @@ impl PatchLookup {
             file,
             keys,
             stats: PatchRuntimeStats::default(),
+            last_switch: None,
         })
+    }
+
+    /// Detail of the most recent `trap_aware_action` call that actually
+    /// switched (cleared at the start of every call): trace consumers read
+    /// this immediately after a `Some` return.
+    pub fn last_switch_detail(&self) -> Option<TrapSwitchDetail> {
+        self.last_switch
     }
 
     pub fn fingerprint(&self) -> EngineFingerprint {
@@ -983,6 +1003,7 @@ impl PatchLookup {
         snap: &GameStateSnapshot,
         chosen_action: Action,
     ) -> Option<Action> {
+        self.last_switch = None;
         let state = MillRules::decode_snapshot(*snap);
         let Some(key) = self.canonical_key_for_state(&state, options) else {
             self.stats.make_traps_proof_unusable += 1;
@@ -1046,7 +1067,7 @@ impl PatchLookup {
                 best = Some((score, child_key));
             }
         }
-        let Some((_, best_key)) = best else {
+        let Some((best_score, best_key)) = best else {
             self.stats.make_traps_no_higher_kept += 1;
             return None;
         };
@@ -1058,6 +1079,11 @@ impl PatchLookup {
             let child_state = MillRules::decode_snapshot(child_snap);
             if self.canonical_key_for_state(&child_state, options) == Some(best_key) {
                 self.stats.make_traps_switches += 1;
+                self.last_switch = Some(TrapSwitchDetail {
+                    parent_key: key,
+                    baseline_nibble: chosen_score,
+                    steering_nibble: best_score,
+                });
                 return Some(action);
             }
         }

@@ -17,6 +17,19 @@ use super::board::action_to_uci;
 
 static PATCH: LazyLock<Mutex<PatchState>> = LazyLock::new(|| Mutex::new(PatchState::default()));
 
+/// The most recent `position` command line, kept verbatim so trace rows
+/// can be joined offline against a harness's per-game move list (the
+/// moves token sequence is the join key; no rules replay needed).
+static POSITION_CONTEXT: LazyLock<Mutex<String>> = LazyLock::new(|| Mutex::new(String::new()));
+
+/// Record the raw `position ...` command for trace attribution.
+pub(super) fn set_position_context(line: &str) {
+    let mut context = POSITION_CONTEXT
+        .lock()
+        .expect("position context mutex must not be poisoned");
+    line.clone_into(&mut context);
+}
+
 #[derive(Default)]
 struct PatchState {
     path: Option<String>,
@@ -80,6 +93,11 @@ pub(super) fn trap_score_after_action(
 /// value-preserving best move with the proven sibling whose resulting
 /// position carries a strictly higher trap score. The perfect-database
 /// tie-break variant supersedes this at the call site when the DB is on.
+///
+/// The baseline in the emitted trace is exactly `result.best_action` as it
+/// stands here -- the move this engine WOULD have played with make-traps
+/// off (search result plus any avoid-traps correction), not a re-search
+/// approximation.
 pub(super) fn apply_patch_make_traps_result(
     result: &mut SearchResult,
     options: &MillVariantOptions,
@@ -93,9 +111,68 @@ pub(super) fn apply_patch_make_traps_result(
         return;
     };
     let rules = MillRules::new(options.clone());
-    if let Some(better) = lookup.trap_aware_action(&rules, options, state, result.best_action) {
+    let baseline = result.best_action;
+    if let Some(better) = lookup.trap_aware_action(&rules, options, state, baseline) {
+        let detail = lookup.last_switch_detail();
         result.best_action = better;
         println!("info string aimovetype=patchtrap");
+        trace_switch(&rules, state, baseline, better, detail);
+    }
+}
+
+/// `TGF_PATCH_TRACE_DIR`: when set, every database-free make-traps switch
+/// appends one JSONL row to `<dir>/patchtrap_<pid>.jsonl` (one file per
+/// engine process, so parallel H2H workers never interleave writes). The
+/// row carries the structural fields; DB value verification is done
+/// offline against the strong database by the trace verifier, which keeps
+/// the engine free of any external-database dependency.
+fn trace_switch(
+    rules: &MillRules,
+    state: &GameStateSnapshot,
+    baseline: tgf_core::Action,
+    steering: tgf_core::Action,
+    detail: Option<perfect_db::patch::TrapSwitchDetail>,
+) {
+    static TRACE_DIR: LazyLock<Option<String>> = LazyLock::new(|| {
+        std::env::var("TGF_PATCH_TRACE_DIR")
+            .ok()
+            .filter(|dir| !dir.trim().is_empty())
+    });
+    let Some(dir) = TRACE_DIR.as_ref() else {
+        return;
+    };
+    let detail = detail.expect("a switch must have recorded its detail");
+    let mill_state = MillRules::decode_snapshot(*state);
+    let fen = rules.export_fen(&mill_state);
+    let position_context = POSITION_CONTEXT
+        .lock()
+        .expect("position context mutex must not be poisoned")
+        .clone();
+    // Ply from the position command's move list (the harness drives every
+    // search with `position startpos moves ...`).
+    let ply = position_context
+        .split_once(" moves ")
+        .map(|(_, moves)| moves.split_whitespace().count())
+        .unwrap_or(0);
+    let row = serde_json::json!({
+        "parent_fen": fen,
+        "side_to_move": state.side_to_move,
+        "ply": ply,
+        "parent_key": detail.parent_key,
+        "baseline_action": action_to_uci(baseline),
+        "steering_action": action_to_uci(steering),
+        "baseline_nibble": detail.baseline_nibble,
+        "steering_nibble": detail.steering_nibble,
+        "position_moves": position_context.split_once(" moves ").map(|(_, m)| m).unwrap_or(""),
+    });
+    let path = std::path::Path::new(dir).join(format!("patchtrap_{}.jsonl", std::process::id()));
+    if let Ok(mut file) = std::fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open(&path)
+    {
+        use std::io::Write;
+        let _ = writeln!(file, "{row}");
     }
 }
 

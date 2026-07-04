@@ -612,6 +612,108 @@ fn sha256_file_hex_matches_known_vectors() {
     let _ = std::fs::remove_file(&abc);
 }
 
+/// Blocker-bug sweep for the H2H color-split investigation: replay
+/// `trap_aware_action` on thousands of real mined positions (their FENs)
+/// against the packed steering asset, and verify with the full external
+/// database that EVERY switched-to move is still DB-optimal -- i.e. the
+/// runtime child indexing, canonicalization, and mask orientation agree
+/// with the packer on live data, not just on constructed fixtures. A
+/// single value-dropping switch is a blocking bug.
+///
+/// Ignored by default (needs the external strong DB and a packed steering
+/// patch); run with:
+///   cargo test -p tgf-cli --release mill_mine::tests::steering_switches_never_drop_value -- --ignored --nocapture
+#[test]
+#[ignore = "requires D:/user/Documents/strong and target/steering_run artifacts"]
+fn steering_switches_never_drop_value() {
+    use perfect_db::patch::PatchLookup;
+    use tgf_core::ActionList;
+    use tgf_mill::MillUciCodec;
+
+    let db_root = "D:/user/Documents/strong";
+    let patch_path = "target/steering_run/std_v4_steering.mill_patch";
+    let jsonl_path = "target/steering_run/steering_entries_clean.jsonl";
+    let sample_cap = 4000_usize;
+
+    let options = MillVariantOptions::default();
+    let rules = MillRules::new(options.clone());
+    let bytes = std::fs::read(patch_path).expect("packed steering patch present");
+    let mut lookup = PatchLookup::open(&bytes).expect("patch must open");
+
+    let provider =
+        perfect_db::database::FileDatabaseProvider::new(std::path::PathBuf::from(db_root));
+    let mut planes = perfect_db::wdl_plane::WdlPlaneCache::new(provider, DatabaseVariant::STANDARD)
+        .expect("strong DB plane cache");
+
+    let text = std::fs::read_to_string(jsonl_path).expect("steering JSONL present");
+    let mut checked = 0_usize;
+    let mut switched = 0_usize;
+    let mut failures: Vec<String> = Vec::new();
+
+    for line in text.lines().filter(|l| !l.trim().is_empty()) {
+        if checked >= sample_cap {
+            break;
+        }
+        let entry: MineEntry = serde_json::from_str(line).expect("valid JSONL");
+        let Ok(mut state) = rules.set_from_fen(&entry.fen) else {
+            continue;
+        };
+        state.reset_ply_since_capture();
+        let snap = rules.encode_state(state);
+        let Ok(Some(move_wdl)) = all_move_wdl_fast(&mut planes, &rules, &snap, &options) else {
+            continue;
+        };
+        if move_wdl.is_empty() {
+            continue;
+        }
+        let best_value = move_wdl.iter().map(|&(_, v)| v).max().expect("non-empty");
+        checked += 1;
+
+        let mut legal = ActionList::<256>::new();
+        rules.legal_actions(&snap, &mut legal);
+        // Drive the exact runtime path from every optimal baseline the
+        // engine could have chosen.
+        for &(action, value) in &move_wdl {
+            if value != best_value {
+                continue;
+            }
+            let Some(better) = lookup.trap_aware_action(&rules, &options, &snap, action) else {
+                continue;
+            };
+            switched += 1;
+            let switched_value = move_wdl
+                .iter()
+                .find(|(a, _)| *a == better)
+                .map(|&(_, v)| v)
+                .unwrap_or_else(|| panic!("switched-to action must be legal (fen {})", entry.fen));
+            if switched_value != best_value {
+                failures.push(format!(
+                    "fen {:?}: switch {:?} -> {:?} dropped value {} -> {}",
+                    entry.fen,
+                    MillUciCodec::encode_action(action),
+                    MillUciCodec::encode_action(better),
+                    best_value,
+                    switched_value
+                ));
+            }
+        }
+    }
+
+    eprintln!(
+        "[probe] positions_checked={checked} switches_verified={switched} failures={}",
+        failures.len()
+    );
+    assert!(
+        failures.is_empty(),
+        "make-traps switched to value-dropping moves:\n{}",
+        failures.join("\n")
+    );
+    assert!(
+        switched > 0,
+        "the sweep must actually exercise switches to prove anything"
+    );
+}
+
 #[test]
 fn output_file_lines_are_all_parseable_jsonl() {
     let dir = std::env::temp_dir().join(format!("sanmill_mill_mine_jsonl_{}", std::process::id()));

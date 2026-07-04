@@ -446,6 +446,7 @@ pub(crate) fn run_uci_loop() {
             let parsed = parse_position_command(&rules, line);
             state = parsed.state;
             state_history = parsed.history;
+            patch::set_position_context(line);
         } else if line == "d" {
             print_board_ascii(&state, &options);
         } else if line == "fen" {
