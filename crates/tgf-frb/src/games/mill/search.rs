@@ -114,6 +114,13 @@ pub(crate) struct MillEngineConfigPlan {
     pub last_best_value: i32,
     pub skill_level: u8,
     pub use_perfect_database: bool,
+    /// When true and the perfect database drives the move choice, prefer --
+    /// among the database's tied-best moves -- the one whose resulting
+    /// position carries the highest patch trap score (Flutter "Set traps
+    /// for the opponent" with the Perfect Database on). The baseline stays
+    /// the plain chooseRandom pick; see
+    /// `perfect::try_perfect_best_action_trap_aware`.
+    pub patch_make_traps: bool,
     /// Randomise the order of equally-ranked root moves so the AI does not
     /// always pick the same line.  Maps to master's `Shuffling` UCI option;
     /// disable for deterministic play.
@@ -138,6 +145,7 @@ impl Default for MillEngineConfigPlan {
             last_best_value: 0,
             skill_level: 1,
             use_perfect_database: false,
+            patch_make_traps: false,
             shuffling: true,
             use_lazy_smp: false,
             engine_threads: 4,
@@ -976,15 +984,33 @@ fn run_mill_engine_config_event_stream(
         // tied-best DB moves when Shuffling is on.  This preserves the Random
         // algorithm's randomness instead of always overriding it with the
         // first deterministic DB move.
-        if let Some(pd_action) = perfect::try_perfect_best_action_with_ref(
-            &snapshot,
-            rules.options(),
-            legal_slice,
-            perfect_move_ordering(&config),
-            search_action,
-            config.shuffling,
-            search_shuffle_seed(),
-        ) {
+        //
+        // With "make traps" on, the trap-aware variant starts from exactly
+        // that chooseRandom baseline (same search_action reference,
+        // shuffling flag, and seed) and only deviates to a tied sibling
+        // with a strictly higher patch trap score.
+        let pd_action = if config.patch_make_traps {
+            perfect::try_perfect_best_action_trap_aware(
+                &snapshot,
+                rules.options(),
+                legal_slice,
+                perfect_move_ordering(&config),
+                search_action,
+                config.shuffling,
+                search_shuffle_seed(),
+            )
+        } else {
+            perfect::try_perfect_best_action_with_ref(
+                &snapshot,
+                rules.options(),
+                legal_slice,
+                perfect_move_ordering(&config),
+                search_action,
+                config.shuffling,
+                search_shuffle_seed(),
+            )
+        };
+        if let Some(pd_action) = pd_action {
             if pd_action == search_action {
                 aimovetype = "consensus";
             } else {
@@ -1034,6 +1060,26 @@ mod tests {
         let empty = SearchResult::default_none();
         let recovered = apply_move_none_fallback(empty, snapshot, &options);
         assert!(!recovered.best_action.is_none());
+    }
+
+    /// The FRB DTO -> plan conversion must forward the make-traps switch;
+    /// dropping it here silently reverts the Perfect-DB main path to the
+    /// plain tied-best pick (exactly the review finding this guards).
+    #[test]
+    fn config_plan_conversion_preserves_patch_make_traps() {
+        let cfg = crate::api::simple::MillEngineConfig {
+            use_perfect_database: true,
+            patch_make_traps: true,
+            ..crate::api::simple::MillEngineConfig::default()
+        };
+        let plan = MillEngineConfigPlan::from(cfg);
+        assert!(plan.use_perfect_database);
+        assert!(plan.patch_make_traps);
+        assert!(
+            !MillEngineConfigPlan::from(crate::api::simple::MillEngineConfig::default())
+                .patch_make_traps,
+            "the switch must default off"
+        );
     }
 
     #[test]

@@ -204,6 +204,10 @@ class NativeMillRulesPort implements RulesPort {
       depth: depth,
       moveLimitMs: moveLimitMs,
       usePerfectDatabase: usePerfectDatabase,
+      // Rust-side tied-best make-traps (only consulted when the Perfect DB
+      // drives the move); the DB-free path stays with
+      // [patchMakeTrapsAction] after the search.
+      patchMakeTraps: settings.patchMakeTraps && isRuleSupportingErrorPatch(),
       algorithm: millSearchAlgorithmFor(settings.searchAlgorithm),
       aiIsLazy: settings.aiIsLazy,
       skillLevel: settings.skillLevel,

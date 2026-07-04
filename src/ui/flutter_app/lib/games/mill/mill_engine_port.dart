@@ -333,6 +333,10 @@ class MillEnginePortAdapter implements EnginePort {
       skillLevel: settings.skillLevel,
       usePerfectDatabase:
           settings.usePerfectDatabase && isRuleSupportingPerfectDatabase(),
+      // With the Perfect DB on, make-traps runs as the Rust-side tied-best
+      // tie-break; with it off, NativeMillRulesPort.patchMakeTrapsAction
+      // applies the database-free path after the search instead.
+      patchMakeTraps: settings.patchMakeTraps && isRuleSupportingErrorPatch(),
       shuffling: settings.shufflingEnabled,
       useLazySmp: settings.useLazySmp,
       engineThreads: settings.engineThreads,

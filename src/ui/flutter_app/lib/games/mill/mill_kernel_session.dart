@@ -40,6 +40,7 @@ class MillKernelSession {
     required int depth,
     int moveLimitMs = 0,
     bool usePerfectDatabase = false,
+    bool patchMakeTraps = false,
     tgf_simple.MillSearchAlgorithm algorithm =
         tgf_simple.MillSearchAlgorithm.pvs,
     bool aiIsLazy = false,
@@ -63,6 +64,7 @@ class MillKernelSession {
             lastBestValue: _lastRawBestValue,
             skillLevel: skillLevel,
             usePerfectDatabase: usePerfectDatabase,
+            patchMakeTraps: patchMakeTraps,
             shuffling: shuffling,
             useLazySmp: useLazySmp,
             engineThreads: engineThreads,
@@ -103,6 +105,7 @@ class MillKernelSession {
       lastBestValue: _lastRawBestValue,
       skillLevel: 1,
       usePerfectDatabase: usePerfectDatabase,
+      patchMakeTraps: makeTraps,
       shuffling: shuffling,
       useLazySmp: false,
       engineThreads: 4,

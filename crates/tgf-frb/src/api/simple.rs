@@ -440,6 +440,7 @@ impl From<MillEngineConfig> for MillEngineConfigPlan {
             last_best_value: cfg.last_best_value,
             skill_level: cfg.skill_level,
             use_perfect_database: cfg.use_perfect_database,
+            patch_make_traps: cfg.patch_make_traps,
             shuffling: cfg.shuffling,
             use_lazy_smp: cfg.use_lazy_smp,
             engine_threads: cfg.engine_threads,
@@ -474,6 +475,15 @@ pub struct MillEngineConfig {
     /// When true, query the perfect database after search and prefer its move
     /// when the active rule variant has matching database assets.
     pub use_perfect_database: bool,
+    /// When true and the perfect database drives the move choice, prefer --
+    /// among the database's tied-best moves -- the one whose resulting
+    /// position carries the highest error-patch trap score ("Set traps for
+    /// the opponent"). Flutter forwards `GeneralSettings.patchMakeTraps`;
+    /// the baseline remains the plain tied-best pick, so with no patch
+    /// loaded behavior is unchanged. Ignored when `use_perfect_database` is
+    /// false (the Dart side then applies the database-free make-traps path
+    /// instead).
+    pub patch_make_traps: bool,
     /// When true, randomise the order of equally-ranked root moves so the AI
     /// does not always play the same line (master `Shuffling` UCI option).
     /// Flutter forwards `GeneralSettings.shufflingEnabled`; disable for
@@ -505,6 +515,7 @@ impl Default for MillEngineConfig {
             last_best_value: 0,
             skill_level: 1,
             use_perfect_database: false,
+            patch_make_traps: false,
             shuffling: true,
             use_lazy_smp: false,
             engine_threads: 4,
