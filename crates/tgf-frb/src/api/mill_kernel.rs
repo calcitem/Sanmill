@@ -452,11 +452,17 @@ pub fn tgf_kernel_mill_patch_trap_aware_best_action(
     let ordering = search::perfect_move_ordering(&plan);
 
     if make_traps {
+        // Same NONE reference / shuffling / seed as the plain branch below,
+        // so the trap-aware pick starts from exactly that baseline and only
+        // deviates on a strictly higher trap score.
         return Ok(perfect::try_perfect_best_action_trap_aware(
             &snapshot,
             rules.options(),
             legal.as_slice(),
             ordering,
+            Action::NONE,
+            plan.shuffling,
+            search::search_shuffle_seed(),
         )
         .map(TgfAction::from_action));
     }

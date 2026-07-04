@@ -163,7 +163,10 @@ fn assert_entries_fit_std_budget(entries: &[MineEntry]) {
 /// file so trimming real corrections is never a silent event.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub(crate) struct BuildTrimStats {
-    pub kept_settled: usize,
+    /// Kept prefix of the budget-ranked pool (settled entries plus
+    /// mid-removal steering entries; mid-removal blunders sit outside the
+    /// pool and are always kept).
+    pub kept_ranked: usize,
     pub trimmed_steering: usize,
     pub trimmed_blunders: usize,
     pub trimmed_blunder_mass: f64,
@@ -175,16 +178,18 @@ pub(crate) struct BuildTrimStats {
 /// entries, optionally truncate to `budget_bytes`, then group into
 /// sector-sorted, slot-sorted records.
 ///
-/// Truncation drops steering entries first; reaching into the blunder pool
-/// is an `Err` unless `allow_trim_blunders` (an explicit CLI opt-in,
-/// default off) is set, and even then the trim is reported through
+/// Truncation drops steering entries first (settled and mid-removal
+/// steering share one budget pool, so Phase 2's steering mining cannot
+/// bloat the asset through the mid-removal side door); reaching into the
+/// blunder pool is an `Err` unless `allow_trim_blunders` (an explicit CLI
+/// opt-in, default off) is set, and even then the trim is reported through
 /// [`BuildTrimStats`] and the caller's log.
 ///
-/// `budget_bytes` is best-effort, not a hard cap: mid-removal records are
-/// always kept in full regardless of budget (see the comment below), so if
-/// those alone compress past `budget_bytes` the returned `PatchFile` still
-/// will, even with zero settled entries (that state also requires
-/// `allow_trim_blunders`, since it means settled blunders were dropped or
+/// `budget_bytes` is best-effort, not a hard cap: mid-removal *blunder*
+/// records are always kept in full regardless of budget (see the comment
+/// below), so if those alone compress past `budget_bytes` the returned
+/// `PatchFile` still will, even with zero pooled entries (that state also
+/// requires `allow_trim_blunders`, since it means blunders were dropped or
 /// the floor itself overflows the budget).
 pub(crate) fn build_patch_file(
     entries: &[MineEntry],
@@ -214,17 +219,26 @@ pub(crate) fn build_patch_file(
     // key space the sector groups cannot represent (there is no meaningful
     // database sector for a pending-removal position); `PatchFile`'s
     // separate `mid_removal_records` list carries them instead (see that
-    // module's docs). Always included in full below regardless of
-    // `budget_bytes`: they are typically a small slice of the total, and
-    // unlike a settled position (reachable again after a different earlier
-    // move), a missed removal-choice correction has no substitute --
-    // dropping the *lowest-mass* settled entries first is a much smaller
-    // loss than dropping any of these. Consequence: `budget_bytes` is a
-    // best-effort target, not a hard cap -- see the binary search below and
-    // this function's doc comment.
+    // module's docs).
+    //
+    // Mid-removal *blunders* (severity > 0) are always included in full
+    // regardless of `budget_bytes`: they are typically a small slice of the
+    // total, and unlike a settled position (reachable again after a
+    // different earlier move), a missed removal-choice correction has no
+    // substitute. Mid-removal *steering* entries (severity 0) get no such
+    // privilege -- they join the ranked pool below and are trimmed together
+    // with settled steering, so `budget_bytes` genuinely bounds the
+    // steering share of the asset.
     const MID_REMOVAL_TAG: u64 = 1 << 63;
-    let (mid_removal, settled): (Vec<&MineEntry>, Vec<&MineEntry>) =
-        entries.iter().partition(|e| e.key & MID_REMOVAL_TAG != 0);
+    let is_mid_removal = |e: &MineEntry| e.key & MID_REMOVAL_TAG != 0;
+    let mid_blunders: Vec<&MineEntry> = entries
+        .iter()
+        .filter(|e| is_mid_removal(e) && e.severity > 0)
+        .collect();
+    let pooled: Vec<&MineEntry> = entries
+        .iter()
+        .filter(|e| !is_mid_removal(e) || e.severity == 0)
+        .collect();
     let proof_for = |entry: &MineEntry| -> ChildProof {
         *proofs.get(&entry.key).unwrap_or_else(|| {
             panic!(
@@ -234,38 +248,33 @@ pub(crate) fn build_patch_file(
             )
         })
     };
-    let mid_removal_records = {
-        let mut records: Vec<MidRemovalRecord> = mid_removal
-            .into_iter()
-            .map(|entry| {
-                let proof = proof_for(entry);
-                MidRemovalRecord {
-                    key: entry.key,
-                    best_child: entry.best_child,
-                    severity: entry.severity as u8,
-                    trap_score: entry.trap_score,
-                    child_count: proof.child_count,
-                    optimal_mask: proof.optimal_mask,
-                    trap_score_mask: proof.trap_score_mask,
-                    optimal_trap_nibbles: proof.optimal_trap_nibbles,
-                }
-            })
-            .collect();
-        records.sort_by_key(|r| r.key);
-        records
+    let mid_record_for = |entry: &MineEntry| -> MidRemovalRecord {
+        let proof = proof_for(entry);
+        MidRemovalRecord {
+            key: entry.key,
+            best_child: entry.best_child,
+            severity: entry.severity as u8,
+            trap_score: entry.trap_score,
+            child_count: proof.child_count,
+            optimal_mask: proof.optimal_mask,
+            trap_score_mask: proof.trap_score_mask,
+            optimal_trap_nibbles: proof.optimal_trap_nibbles,
+        }
     };
+    let mid_blunder_records: Vec<MidRemovalRecord> =
+        mid_blunders.iter().map(|e| mid_record_for(e)).collect();
 
     // Pool-aware ranking: blunder corrections (severity > 0) sort ahead of
     // severity-0 steering entries, so budget truncation always drops
     // steering first and only ever reaches into the blunder pool with the
     // caller's explicit consent.
-    let mut ranked: Vec<&MineEntry> = settled;
+    let mut ranked: Vec<&MineEntry> = pooled;
     ranked.sort_by(|a, b| {
         ((b.severity > 0) as u8, b.severity, b.mass)
             .partial_cmp(&((a.severity > 0) as u8, a.severity, a.mass))
             .expect("mass must be finite")
     });
-    let settled_blunders = ranked.iter().filter(|e| e.severity > 0).count();
+    let pooled_blunders = ranked.iter().filter(|e| e.severity > 0).count();
 
     let variant_byte = variant_byte_for(variant_name);
     let secval_bytes = std::fs::read(db_path.join(format!("{variant_name}.secval")))
@@ -273,9 +282,14 @@ pub(crate) fn build_patch_file(
             panic!("[patch-pack] cannot read {variant_name}.secval from {db_path:?}: {e}")
         });
 
-    let assemble = |entries: &[&MineEntry]| -> PatchFile {
+    let assemble = |kept: &[&MineEntry]| -> PatchFile {
         let mut sectors: HashMap<(u8, u8, u8, u8), Vec<PackedRecord>> = HashMap::new();
-        for entry in entries {
+        let mut mid_records = mid_blunder_records.clone();
+        for entry in kept {
+            if is_mid_removal(entry) {
+                mid_records.push(mid_record_for(entry));
+                continue;
+            }
             let (sector_id, slot) = unpack_canonical_key(entry.key);
             let proof = proof_for(entry);
             sectors
@@ -297,6 +311,7 @@ pub(crate) fn build_patch_file(
                     optimal_trap_nibbles: proof.optimal_trap_nibbles,
                 });
         }
+        mid_records.sort_by_key(|r| r.key);
         let mut groups: Vec<SectorGroup> = sectors
             .into_iter()
             .map(|((w, b, wf, bf), mut records)| {
@@ -323,13 +338,13 @@ pub(crate) fn build_patch_file(
             fingerprint,
             secval_bytes: secval_bytes.clone(),
             sectors: groups,
-            mid_removal_records: mid_removal_records.clone(),
+            mid_removal_records: mid_records,
         }
     };
 
     if budget_bytes == 0 {
         let stats = BuildTrimStats {
-            kept_settled: ranked.len(),
+            kept_ranked: ranked.len(),
             ..BuildTrimStats::default()
         };
         return Ok((assemble(&ranked), stats));
@@ -359,36 +374,37 @@ pub(crate) fn build_patch_file(
             high = mid - 1;
         }
     }
-    // Trimming into the blunder pool (severity > 0 settled entries, or the
+    // Trimming into the blunder pool (severity > 0 pooled entries, or the
     // always-kept mid-removal blunders not fitting at all) is a
     // configuration error by default: the budget was sized too small for
     // the data. Fail fast unless the caller explicitly allowed it.
-    if low < settled_blunders && !allow_trim_blunders {
+    if low < pooled_blunders && !allow_trim_blunders {
         return Err(format!(
-            "budget {budget_bytes} bytes only fits {low} of {settled_blunders} blunder \
-             corrections (plus {} always-kept mid-removal records); refusing to trim real \
-             corrections -- raise --budget-bytes or pass --allow-trim-blunders",
-            mid_removal_records.len()
+            "budget {budget_bytes} bytes only fits {low} of {pooled_blunders} blunder \
+             corrections (plus {} always-kept mid-removal blunder records); refusing to trim \
+             real corrections -- raise --budget-bytes or pass --allow-trim-blunders",
+            mid_blunder_records.len()
         ));
     }
     if low == 0 && compressed_len(0) > budget_bytes && !allow_trim_blunders {
         return Err(format!(
-            "budget {budget_bytes} bytes cannot even hold the {} mid-removal records; raise \
-             --budget-bytes or pass --allow-trim-blunders",
-            mid_removal_records.len()
+            "budget {budget_bytes} bytes cannot even hold the {} mid-removal blunder records; \
+             raise --budget-bytes or pass --allow-trim-blunders",
+            mid_blunder_records.len()
         ));
     }
-    let trimmed_blunder_slice = &ranked[low..settled_blunders.max(low).min(ranked.len())];
+    let trimmed_blunder_slice = &ranked[low..pooled_blunders.max(low).min(ranked.len())];
     let stats = BuildTrimStats {
-        kept_settled: low,
-        trimmed_steering: ranked.len().saturating_sub(low.max(settled_blunders)),
+        kept_ranked: low,
+        trimmed_steering: ranked.len().saturating_sub(low.max(pooled_blunders)),
         trimmed_blunders: trimmed_blunder_slice.len(),
         trimmed_blunder_mass: trimmed_blunder_slice.iter().map(|e| e.mass).sum(),
     };
     eprintln!(
         "[patch-pack] budget {budget_bytes} bytes kept {low}/{} pool-ranked entries \
-         ({settled_blunders} settled blunders ranked first)",
-        ranked.len()
+         ({pooled_blunders} blunders ranked first; {} mid-removal blunders always kept)",
+        ranked.len(),
+        mid_blunder_records.len()
     );
     if stats.trimmed_blunders > 0 {
         eprintln!(
@@ -603,9 +619,9 @@ pub(crate) fn run_patch_pack(args: &[String]) {
         }
     };
     eprintln!(
-        "[patch-pack] retention: kept {} settled entries, trimmed {} steering / {} blunders \
+        "[patch-pack] retention: kept {} pool-ranked entries, trimmed {} steering / {} blunders \
          (trimmed blunder mass {:.3})",
-        trim_stats.kept_settled,
+        trim_stats.kept_ranked,
         trim_stats.trimmed_steering,
         trim_stats.trimmed_blunders,
         trim_stats.trimmed_blunder_mass
@@ -901,7 +917,7 @@ mod tests {
         .expect("--allow-trim-blunders permits trimming");
         assert_eq!(
             trim_stats.trimmed_blunders,
-            entries.len() - trim_stats.kept_settled,
+            entries.len() - trim_stats.kept_ranked,
             "every dropped entry here is a blunder"
         );
         assert!(
@@ -1039,6 +1055,86 @@ mod tests {
         assert!(
             truncated.entry_count() < full.entry_count(),
             "some steering entries must actually have been dropped"
+        );
+    }
+
+    #[test]
+    fn budget_trims_mid_removal_steering_but_never_mid_removal_blunders() {
+        const MID_REMOVAL_TAG: u64 = 1 << 63;
+        let mut entries = Vec::new();
+        // A settled blunder population to give the file real bulk...
+        for i in 0..4_000_u64 {
+            entries.push(entry_with_severity(i, i + 1_000_000, (4_000 - i) as f64, 1));
+        }
+        // ...a large mid-removal STEERING population that must be poolable
+        // (higher mass than the blunders, so a naive always-keep or a
+        // mass-only ranking would both get this wrong)...
+        for i in 0..4_000_u64 {
+            entries.push(entry_with_severity(
+                MID_REMOVAL_TAG | i,
+                i + 2_000_000,
+                5_000.0 + i as f64,
+                0,
+            ));
+        }
+        // ...and one low-mass mid-removal BLUNDER that must survive any
+        // budget regardless.
+        entries.push(entry_with_severity(MID_REMOVAL_TAG | 9_999, 999, 0.001, 1));
+
+        let db_root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("../../src/ui/flutter_app/assets/databases");
+        let proofs = proofs_for(&entries);
+        let (full, _) = build_patch_file(
+            &entries,
+            &proofs,
+            0,
+            false,
+            default_fingerprint(),
+            &db_root,
+            "std",
+        )
+        .expect("no budget, must build");
+        let mut full_buf = Vec::new();
+        full.write_to(&mut full_buf, 3).unwrap();
+        assert_eq!(full.mid_removal_records.len(), 4_001);
+
+        // A budget below the full size must shed mid-removal steering
+        // records (they are the lowest pool tier together with settled
+        // steering) without touching any blunder and without the override.
+        let (truncated, trim_stats) = build_patch_file(
+            &entries,
+            &proofs,
+            full_buf.len() * 3 / 4,
+            false,
+            default_fingerprint(),
+            &db_root,
+            "std",
+        )
+        .expect("steering-only trimming needs no override");
+        assert_eq!(trim_stats.trimmed_blunders, 0);
+        assert!(trim_stats.trimmed_steering > 0);
+        assert!(
+            truncated.mid_removal_records.len() < full.mid_removal_records.len(),
+            "mid-removal steering must participate in budget truncation"
+        );
+        let kept_mid_blunders = truncated
+            .mid_removal_records
+            .iter()
+            .filter(|r| r.severity > 0)
+            .count();
+        assert_eq!(
+            kept_mid_blunders, 1,
+            "the mid-removal blunder must survive every budget"
+        );
+        let kept_settled_blunders: usize = truncated
+            .sectors
+            .iter()
+            .flat_map(|s| s.records.iter())
+            .filter(|r| r.severity > 0)
+            .count();
+        assert_eq!(
+            kept_settled_blunders, 4_000,
+            "settled blunders must all survive a steering-level trim"
         );
     }
 

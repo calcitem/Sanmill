@@ -1387,18 +1387,21 @@ fn try_perfect_best_action(
         .find(|action| action_to_uci(*action).as_deref() == Some(token.as_str()))
 }
 
-/// "Make traps" variant of [`try_perfect_best_action`]: query the perfect
-/// database for *all* tied-best moves and prefer -- among them -- whichever
-/// one hands the opponent the highest patch trap score (see
-/// `patch::trap_score_after_action`). Mirrors the FRB
-/// `try_perfect_best_action_trap_aware` used by the Flutter shell: every
-/// candidate is already database-verified equally optimal, so this only
-/// re-orders among them and never returns a worse move than the plain pick.
+/// "Make traps" variant of [`try_perfect_best_action`]: reuse the plain
+/// picker's move as the baseline, then -- among *all* database tied-best
+/// moves -- switch only to a sibling whose patch trap score is strictly
+/// higher (see `perfect_db::patch::pick_strictly_better_trap_action`).
+/// Every candidate is database-verified equally optimal and an all-zero /
+/// all-tied score set returns the baseline unchanged, so this degrades to
+/// exactly [`try_perfect_best_action`] when the patch has nothing to say.
 fn try_perfect_best_action_trap_aware(
     options: &MillVariantOptions,
     state: &GameStateSnapshot,
     ordering: perfect_db::PerfectMoveOrdering,
 ) -> Option<Action> {
+    // The baseline must come from the exact same path the feature-off
+    // configuration would take.
+    let baseline = try_perfect_best_action(options, state, ordering)?;
     let mill_state = MillRules::decode_snapshot(*state);
     let tokens = perfect_db::best_move_tokens_for_state_with_ordering(
         &mill_state,
@@ -1420,12 +1423,13 @@ fn try_perfect_best_action_trap_aware(
         })
         .collect();
     if tied.is_empty() {
-        return None;
+        return Some(baseline);
     }
-    tied.iter()
-        .copied()
-        .max_by_key(|&action| patch::trap_score_after_action(options, state, action).unwrap_or(0))
-        .or(Some(tied[0]))
+    Some(perfect_db::patch::pick_strictly_better_trap_action(
+        &tied,
+        baseline,
+        |action| patch::trap_score_after_action(options, state, action),
+    ))
 }
 
 fn run_mcts_search(wb: &mut tgf_mill::MillWorkbench, cfg: &EngineConfig) -> SearchResult {

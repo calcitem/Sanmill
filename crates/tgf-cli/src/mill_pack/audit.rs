@@ -230,9 +230,14 @@ fn audit_one<P: DatabaseProvider>(
             entry.fen, entry.best_child
         ));
     }
-    if !(1..=2).contains(&entry.severity) {
+    // Severity 0 is a legitimate steering entry (Phase 2's --emit-steering
+    // output): it carries no correction urgency, only trap-steering data,
+    // and the best_child / optimal-mask consistency checks above plus the
+    // caller's proof re-derivation are exactly its audit. Anything outside
+    // 0..=2 is corrupt.
+    if !(0..=2).contains(&entry.severity) {
         return Err(format!(
-            "entry fen {:?}: severity {} outside the expected 1..=2 range",
+            "entry fen {:?}: severity {} outside the expected 0..=2 range",
             entry.fen, entry.severity
         ));
     }

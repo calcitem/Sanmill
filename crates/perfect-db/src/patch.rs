@@ -1069,6 +1069,34 @@ impl PatchLookup {
     }
 }
 
+/// Tie-break selector shared by every perfect-database "make traps" call
+/// site (CLI UCI and FRB alike): starting from `baseline` -- which MUST be
+/// the move the plain (non-trap-aware) picker would have returned, so the
+/// feature degrades to exactly the normal behavior -- switch to a tied
+/// sibling only when its trap score is *strictly higher* than the current
+/// best. Ties keep the earlier candidate (the baseline first, then tied
+/// order), so an all-zero or all-equal score set returns `baseline`
+/// unchanged instead of drifting to an arbitrary list position.
+pub fn pick_strictly_better_trap_action(
+    tied: &[Action],
+    baseline: Action,
+    mut trap_score_of: impl FnMut(Action) -> Option<u8>,
+) -> Action {
+    let mut best = baseline;
+    let mut best_score = trap_score_of(baseline).unwrap_or(0);
+    for &candidate in tied {
+        if candidate == best {
+            continue;
+        }
+        let score = trap_score_of(candidate).unwrap_or(0);
+        if score > best_score {
+            best = candidate;
+            best_score = score;
+        }
+    }
+    best
+}
+
 /// History-free replica of `state` (fresh repetition history, zeroed
 /// `ply_since_capture`) -- the reference frame patch entries are mined in
 /// and every proof/score computation must run in. See
@@ -1768,6 +1796,58 @@ mod tests {
             lookup.trap_score_after_action(&rules, &options, &snap, mill_action),
             Some(0),
             "a same-side (pending removal) child is a self-trap signal and must read 0"
+        );
+    }
+
+    /// The shared tied-best selector: the baseline (the plain picker's
+    /// move) survives all-`None`, all-zero, and all-tied score sets, and
+    /// only a strictly higher score moves the pick -- never `max_by_key`'s
+    /// drift to the last maximal candidate.
+    #[test]
+    fn pick_strictly_better_trap_action_keeps_the_baseline_unless_strictly_beaten() {
+        let place = |node: i16| Action {
+            kind_tag: 0,
+            from_node: -1,
+            to_node: node,
+            aux: 0,
+            payload_bits: 0,
+        };
+        let a = place(1);
+        let b = place(2);
+        let c = place(3);
+        let tied = [a, b, c];
+
+        // No patch data at all: baseline stays put.
+        assert_eq!(
+            pick_strictly_better_trap_action(&tied, b, |_| None),
+            b,
+            "all-None scores must keep the baseline"
+        );
+        // All zero: baseline stays put.
+        assert_eq!(
+            pick_strictly_better_trap_action(&tied, b, |_| Some(0)),
+            b,
+            "all-zero scores must keep the baseline"
+        );
+        // Everything tied at a positive score: baseline stays put (no
+        // strictly-greater candidate exists).
+        assert_eq!(
+            pick_strictly_better_trap_action(&tied, a, |_| Some(7)),
+            a,
+            "an all-tied score set must keep the baseline"
+        );
+        // A single strictly higher candidate wins...
+        let score = |action: Action| -> Option<u8> { if action == c { Some(9) } else { Some(3) } };
+        assert_eq!(pick_strictly_better_trap_action(&tied, a, score), c);
+        // ...and when two candidates share the higher score, the earlier
+        // tied-list candidate is kept (deterministic, no drift to the
+        // last).
+        let score_pair =
+            |action: Action| -> Option<u8> { if action == a { Some(1) } else { Some(9) } };
+        assert_eq!(
+            pick_strictly_better_trap_action(&tied, a, score_pair),
+            b,
+            "equal improvements must resolve to the earliest tied candidate"
         );
     }
 

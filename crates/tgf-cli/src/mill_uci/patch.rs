@@ -9,7 +9,7 @@
 use std::sync::{LazyLock, Mutex};
 
 use perfect_db::patch::PatchLookup;
-use tgf_core::{Action, GameRules, GameStateSnapshot};
+use tgf_core::{Action, GameStateSnapshot};
 use tgf_mill::{MillRules, MillVariantOptions};
 use tgf_search::SearchResult;
 
@@ -60,9 +60,10 @@ pub(super) fn apply_patch_avoid_traps_result(
 }
 
 /// Trap score (0..=255) of the position reached by playing `action` from
-/// `state`, or `None` when no patch is loaded or the resulting position has
-/// no entry. Used by the "make traps" perfect-database tie-break to rank
-/// candidate replies by how liable the opponent is to blunder afterwards.
+/// `state`, or `None` when no patch is loaded. Thin lock wrapper around
+/// [`PatchLookup::trap_score_after_action`] -- the v4 unified entry point
+/// (same-side filter, parent nibbles, child-entry fallback) -- used by the
+/// "make traps" perfect-database tie-break to rank candidate replies.
 pub(super) fn trap_score_after_action(
     options: &MillVariantOptions,
     state: &GameStateSnapshot,
@@ -71,9 +72,7 @@ pub(super) fn trap_score_after_action(
     let mut patch = PATCH.lock().expect("UCI patch mutex must not be poisoned");
     let lookup = patch.lookup.as_mut()?;
     let rules = MillRules::new(options.clone());
-    let child_snap = rules.apply(state, action);
-    let child_state = MillRules::decode_snapshot(child_snap);
-    lookup.trap_score_for_state(&child_state, options)
+    lookup.trap_score_after_action(&rules, options, state, action)
 }
 
 /// Database-free "make traps" (see `PatchLookup::trap_aware_action`): when

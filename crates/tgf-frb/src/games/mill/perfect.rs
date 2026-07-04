@@ -215,24 +215,35 @@ pub(crate) fn try_perfect_best_action_with_ref(
     }
 }
 
-/// Query the perfect database for the best action, preferring -- among the
-/// tied-best moves -- whichever one hands the opponent the highest
-/// lightweight-patch trap score ("make traps" mode; see
-/// `crate::games::mill::patch`). Falls back to the deterministic first
-/// tied-best move when no patch is loaded or no candidate has trap data, so
-/// this is always at least as safe as the plain tied-best pick: every
-/// candidate considered here is already database-verified equally optimal,
-/// this only re-orders *among* them.
+/// Query the perfect database for the best action in "make traps" mode:
+/// the baseline is exactly [`try_perfect_best_action_with_ref`]'s pick
+/// (same `search_action` consensus / `shuffling` / `seed` semantics as the
+/// feature-off path), and -- among the database's tied-best moves -- the
+/// baseline is replaced only by a sibling whose lightweight-patch trap
+/// score is *strictly higher* (see
+/// `perfect_db::patch::pick_strictly_better_trap_action`). With no patch
+/// loaded or an all-zero / all-tied score set this returns the baseline
+/// unchanged, so the feature degrades to exactly the plain tied-best pick.
 #[cfg(not(target_arch = "wasm32"))]
+#[allow(clippy::too_many_arguments)]
 pub(crate) fn try_perfect_best_action_trap_aware(
     snapshot: &tgf_core::GameStateSnapshot,
     options: &MillVariantOptions,
     legal: &[Action],
     ordering: perfect_db::PerfectMoveOrdering,
+    search_action: Action,
+    shuffling: bool,
+    seed: u64,
 ) -> Option<Action> {
-    if !ensure_database_for_options(options) {
-        return None;
-    }
+    let baseline = try_perfect_best_action_with_ref(
+        snapshot,
+        options,
+        legal,
+        ordering,
+        search_action,
+        shuffling,
+        seed,
+    )?;
     let state = MillRules::decode_snapshot(*snapshot);
     let tokens = perfect_db::best_move_tokens_for_state_with_ordering(
         &state,
@@ -252,21 +263,26 @@ pub(crate) fn try_perfect_best_action_trap_aware(
         }
     }
     if tied.is_empty() {
-        return None;
+        return Some(baseline);
     }
 
-    let best = tied.iter().copied().max_by_key(|&action| {
-        crate::games::mill::patch::trap_score_after_action(snapshot, options, action).unwrap_or(0)
-    });
-    best.or(Some(tied[0]))
+    Some(perfect_db::patch::pick_strictly_better_trap_action(
+        &tied,
+        baseline,
+        |action| crate::games::mill::patch::trap_score_after_action(snapshot, options, action),
+    ))
 }
 
 #[cfg(target_arch = "wasm32")]
+#[allow(clippy::too_many_arguments)]
 pub(crate) fn try_perfect_best_action_trap_aware(
     _snapshot: &GameStateSnapshot,
     _options: &MillVariantOptions,
     _legal: &[Action],
     _ordering: perfect_db::PerfectMoveOrdering,
+    _search_action: Action,
+    _shuffling: bool,
+    _seed: u64,
 ) -> Option<Action> {
     None
 }
@@ -794,18 +810,26 @@ mod tests {
             0,
         )
         .expect("start position must have a DB best move");
-        let _ = tied_first;
 
-        // Without a loaded patch, trap-aware selection must still return a
-        // legal, database-optimal move (falls back to the first tied-best).
+        // Without a loaded patch, trap-aware selection must return exactly
+        // the plain picker's baseline (same reference/shuffling/seed), not
+        // merely some legal move: an all-None trap score set must never
+        // move the pick.
+        crate::games::mill::patch::deinit_patch();
         let picked = try_perfect_best_action_trap_aware(
             &snapshot,
             &options,
             &legal_slice,
             perfect_db::PerfectMoveOrdering::LegacyWdl,
+            tgf_core::Action::NONE,
+            false,
+            0,
         )
         .expect("trap-aware pick must return a move when the DB is loaded");
-        assert!(legal_slice.contains(&picked));
+        assert_eq!(
+            picked, tied_first,
+            "with no patch data the trap-aware pick must equal the plain baseline"
+        );
 
         deinit_database();
     }

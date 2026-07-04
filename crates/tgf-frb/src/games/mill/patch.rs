@@ -17,12 +17,10 @@ use std::sync::Mutex;
 
 #[cfg(not(target_arch = "wasm32"))]
 use once_cell::sync::Lazy;
-#[cfg(not(target_arch = "wasm32"))]
-use tgf_core::GameRules;
 use tgf_core::{Action, GameStateSnapshot};
-use tgf_mill::MillVariantOptions;
 #[cfg(not(target_arch = "wasm32"))]
-use tgf_mill::{MillRules, rules::MillState};
+use tgf_mill::MillRules;
+use tgf_mill::MillVariantOptions;
 
 #[cfg(not(target_arch = "wasm32"))]
 static PATCH: Lazy<Mutex<Option<perfect_db::patch::PatchLookup>>> = Lazy::new(|| Mutex::new(None));
@@ -147,8 +145,10 @@ pub(crate) fn try_patch_trap_aware_action(
 }
 
 /// Trap score (0..=255) of the position reached by playing `action` from
-/// `snapshot`, or `None` when no patch is loaded or the resulting position
-/// has no entry. Used by "make traps" mode to rank candidate replies.
+/// `snapshot`, or `None` when no patch is loaded. Thin lock wrapper around
+/// `PatchLookup::trap_score_after_action` -- the v4 unified entry point
+/// (same-side filter, parent nibbles, child-entry fallback) -- used by
+/// "make traps" mode to rank candidate replies.
 #[cfg(not(target_arch = "wasm32"))]
 pub(crate) fn trap_score_after_action(
     snapshot: &GameStateSnapshot,
@@ -158,9 +158,7 @@ pub(crate) fn trap_score_after_action(
     let mut guard = PATCH.lock().expect("FRB patch mutex must not be poisoned");
     let lookup = guard.as_mut()?;
     let rules = MillRules::new(options.clone());
-    let child = rules.apply(snapshot, action);
-    let state: MillState = MillRules::decode_snapshot(child);
-    lookup.trap_score_for_state(&state, options)
+    lookup.trap_score_after_action(&rules, options, snapshot, action)
 }
 
 #[cfg(target_arch = "wasm32")]
