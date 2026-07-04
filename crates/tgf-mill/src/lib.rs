@@ -2,6 +2,7 @@
 // Mill game crate.
 
 pub mod engine_config;
+pub mod human_db_codec;
 pub mod notation;
 pub mod presets;
 pub mod rules;

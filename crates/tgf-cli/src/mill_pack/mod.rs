@@ -13,14 +13,36 @@
 //   --out PATH       Output patch file path.
 //
 // Budget / selection:
-//   --budget-bytes N   Truncate the mass-sorted entry list (dropping the
-//                      lowest-mass entries first) until the compressed
-//                      patch fits N bytes (0 = unbounded, default 0). Best
-//                      effort, not a hard cap: mid-removal records (see
+//   --budget-bytes N   Truncate the pool-ranked entry list (severity-0
+//                      steering entries are dropped first, then the
+//                      lowest-mass blunders) until the compressed patch
+//                      fits N bytes (0 = unbounded, default 0). Reaching
+//                      into the blunder pool is an error unless
+//                      --allow-trim-blunders is passed. Best effort, not
+//                      a hard cap: mid-removal records (see
 //                      `build_patch_file`) are never truncated, so if
 //                      those alone exceed N the written file still will.
+//   --allow-trim-blunders  Explicitly allow the budget to drop severity>0
+//                      corrections (default off; the trim count and mass
+//                      are reported when it happens).
 //   --zstd-level N     zstd compression level (default 19; this is an
 //                      offline, one-shot build so favor ratio over speed).
+//
+// HumanDB behavior weighting (v4 trap nibbles):
+//   --human-db PATH    NMM_LLM human_db.sqlite to weight trap scores by
+//                      observed human replies (or SANMILL_HUMAN_DB env).
+//                      A configured but unusable database is a hard error,
+//                      never a silent fallback to uniform density.
+//   --disable-human-weighting  Kill switch: fully bypasses opening the
+//                      database (uniform geometric density only).
+//   --human-min-samples N    Minimum scored reply weight per position
+//                      before behavior data replaces uniform density
+//                      (default 10).
+//   --human-min-coverage F   Minimum scored/raw weight share (default 0.8).
+//   --human-shrinkage-k F    Shrinkage pseudo-samples toward uniform
+//                      density (default 30).
+//   --allow-human-db-lossy   Proceed past the parser-invalid hard limit
+//                      (default: hard error above 5% invalid weight).
 //
 // Engine fingerprint (must match what `mill mine` used; defaults mirror
 // `mill mine`'s own defaults):
@@ -61,6 +83,7 @@
 //                      alias.)
 
 mod audit;
+mod human_weight;
 mod recompute;
 
 use std::collections::HashMap;
@@ -136,36 +159,56 @@ fn assert_entries_fit_std_budget(entries: &[MineEntry]) {
     }
 }
 
-/// Build a [`PatchFile`] from mined entries: dedup by canonical key (keeping
-/// the higher-mass copy when the same position was mined more than once),
-/// sort by mass descending, optionally truncate to `budget_bytes`, then
-/// group into sector-sorted, slot-sorted records.
+/// What the budget truncation actually dropped -- returned alongside the
+/// file so trimming real corrections is never a silent event.
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub(crate) struct BuildTrimStats {
+    pub kept_settled: usize,
+    pub trimmed_steering: usize,
+    pub trimmed_blunders: usize,
+    pub trimmed_blunder_mass: f64,
+}
+
+/// Build a [`PatchFile`] from **already deduplicated** mined entries (see
+/// `recompute::dedup_entries`, the single authoritative same-key rule):
+/// rank blunders (severity desc, mass desc) ahead of severity-0 steering
+/// entries, optionally truncate to `budget_bytes`, then group into
+/// sector-sorted, slot-sorted records.
+///
+/// Truncation drops steering entries first; reaching into the blunder pool
+/// is an `Err` unless `allow_trim_blunders` (an explicit CLI opt-in,
+/// default off) is set, and even then the trim is reported through
+/// [`BuildTrimStats`] and the caller's log.
 ///
 /// `budget_bytes` is best-effort, not a hard cap: mid-removal records are
 /// always kept in full regardless of budget (see the comment below), so if
 /// those alone compress past `budget_bytes` the returned `PatchFile` still
-/// will, even with zero settled entries. In practice this is a non-issue --
-/// mid-removal entries are a small slice of any real mining run -- but a
-/// caller relying on the output literally fitting under `budget_bytes`
-/// should be aware truncation cannot go any lower than that floor.
+/// will, even with zero settled entries (that state also requires
+/// `allow_trim_blunders`, since it means settled blunders were dropped or
+/// the floor itself overflows the budget).
 pub(crate) fn build_patch_file(
     entries: &[MineEntry],
     proofs: &HashMap<u64, ChildProof>,
     budget_bytes: usize,
+    allow_trim_blunders: bool,
     fingerprint: EngineFingerprint,
     db_path: &std::path::Path,
     variant_name: &str,
-) -> PatchFile {
-    let mut by_key: HashMap<u64, &MineEntry> = HashMap::new();
-    for entry in entries {
-        by_key
-            .entry(entry.key)
-            .and_modify(|incumbent| {
-                if entry.mass > incumbent.mass {
-                    *incumbent = entry;
-                }
-            })
-            .or_insert(entry);
+) -> Result<(PatchFile, BuildTrimStats), String> {
+    // Deduplication policy lives in exactly one place
+    // (`recompute::dedup_entries`); this builder only asserts the caller
+    // honored it rather than silently applying a second, different rule.
+    // A duplicate here is a pipeline bug, not a data condition.
+    {
+        let mut seen = std::collections::HashSet::with_capacity(entries.len());
+        for entry in entries {
+            assert!(
+                seen.insert(entry.key),
+                "[patch-pack] duplicate key {:#x} reached build_patch_file -- entries must go \
+                 through recompute::dedup_entries first",
+                entry.key
+            );
+        }
     }
     // Mid-removal-parented entries (see `perfect_db::mid_removal_key`) use a
     // key space the sector groups cannot represent (there is no meaningful
@@ -180,9 +223,8 @@ pub(crate) fn build_patch_file(
     // best-effort target, not a hard cap -- see the binary search below and
     // this function's doc comment.
     const MID_REMOVAL_TAG: u64 = 1 << 63;
-    let (mid_removal, settled): (Vec<&MineEntry>, Vec<&MineEntry>) = by_key
-        .into_values()
-        .partition(|e| e.key & MID_REMOVAL_TAG != 0);
+    let (mid_removal, settled): (Vec<&MineEntry>, Vec<&MineEntry>) =
+        entries.iter().partition(|e| e.key & MID_REMOVAL_TAG != 0);
     let proof_for = |entry: &MineEntry| -> ChildProof {
         *proofs.get(&entry.key).unwrap_or_else(|| {
             panic!(
@@ -204,6 +246,8 @@ pub(crate) fn build_patch_file(
                     trap_score: entry.trap_score,
                     child_count: proof.child_count,
                     optimal_mask: proof.optimal_mask,
+                    trap_score_mask: proof.trap_score_mask,
+                    optimal_trap_nibbles: proof.optimal_trap_nibbles,
                 }
             })
             .collect();
@@ -211,8 +255,17 @@ pub(crate) fn build_patch_file(
         records
     };
 
+    // Pool-aware ranking: blunder corrections (severity > 0) sort ahead of
+    // severity-0 steering entries, so budget truncation always drops
+    // steering first and only ever reaches into the blunder pool with the
+    // caller's explicit consent.
     let mut ranked: Vec<&MineEntry> = settled;
-    ranked.sort_by(|a, b| b.mass.partial_cmp(&a.mass).expect("mass must be finite"));
+    ranked.sort_by(|a, b| {
+        ((b.severity > 0) as u8, b.severity, b.mass)
+            .partial_cmp(&((a.severity > 0) as u8, a.severity, a.mass))
+            .expect("mass must be finite")
+    });
+    let settled_blunders = ranked.iter().filter(|e| e.severity > 0).count();
 
     let variant_byte = variant_byte_for(variant_name);
     let secval_bytes = std::fs::read(db_path.join(format!("{variant_name}.secval")))
@@ -240,6 +293,8 @@ pub(crate) fn build_patch_file(
                     trap_score: entry.trap_score,
                     child_count: proof.child_count,
                     optimal_mask: proof.optimal_mask,
+                    trap_score_mask: proof.trap_score_mask,
+                    optimal_trap_nibbles: proof.optimal_trap_nibbles,
                 });
         }
         let mut groups: Vec<SectorGroup> = sectors
@@ -273,19 +328,18 @@ pub(crate) fn build_patch_file(
     };
 
     if budget_bytes == 0 {
-        return assemble(&ranked);
+        let stats = BuildTrimStats {
+            kept_settled: ranked.len(),
+            ..BuildTrimStats::default()
+        };
+        return Ok((assemble(&ranked), stats));
     }
 
-    // Binary search the largest mass-sorted prefix whose compressed size
+    // Binary search the largest pool-ranked prefix whose compressed size
     // fits the budget. Monotonic in prefix length (more entries never
     // shrinks the payload), so binary search is valid; compressing a
     // truncated candidate on every probe is cheap relative to the mining
-    // cost that produced these entries. Note this only ever truncates
-    // `ranked` (settled entries): if `compressed_len(0)` -- the
-    // mid-removal records plus zero settled entries -- already exceeds
-    // `budget_bytes`, the loop still converges (to `low == 0`), it just
-    // cannot shrink the output any further; see this function's doc
-    // comment.
+    // cost that produced these entries.
     let compressed_len = |count: usize| -> usize {
         let patch = assemble(&ranked[..count]);
         let mut buf = Vec::new();
@@ -305,11 +359,99 @@ pub(crate) fn build_patch_file(
             high = mid - 1;
         }
     }
+    // Trimming into the blunder pool (severity > 0 settled entries, or the
+    // always-kept mid-removal blunders not fitting at all) is a
+    // configuration error by default: the budget was sized too small for
+    // the data. Fail fast unless the caller explicitly allowed it.
+    if low < settled_blunders && !allow_trim_blunders {
+        return Err(format!(
+            "budget {budget_bytes} bytes only fits {low} of {settled_blunders} blunder \
+             corrections (plus {} always-kept mid-removal records); refusing to trim real \
+             corrections -- raise --budget-bytes or pass --allow-trim-blunders",
+            mid_removal_records.len()
+        ));
+    }
+    if low == 0 && compressed_len(0) > budget_bytes && !allow_trim_blunders {
+        return Err(format!(
+            "budget {budget_bytes} bytes cannot even hold the {} mid-removal records; raise \
+             --budget-bytes or pass --allow-trim-blunders",
+            mid_removal_records.len()
+        ));
+    }
+    let trimmed_blunder_slice = &ranked[low..settled_blunders.max(low).min(ranked.len())];
+    let stats = BuildTrimStats {
+        kept_settled: low,
+        trimmed_steering: ranked.len().saturating_sub(low.max(settled_blunders)),
+        trimmed_blunders: trimmed_blunder_slice.len(),
+        trimmed_blunder_mass: trimmed_blunder_slice.iter().map(|e| e.mass).sum(),
+    };
     eprintln!(
-        "[patch-pack] budget {budget_bytes} bytes kept {low}/{} mass-ranked entries",
+        "[patch-pack] budget {budget_bytes} bytes kept {low}/{} pool-ranked entries \
+         ({settled_blunders} settled blunders ranked first)",
         ranked.len()
     );
-    assemble(&ranked[..low])
+    if stats.trimmed_blunders > 0 {
+        eprintln!(
+            "[patch-pack] WARNING: --allow-trim-blunders dropped {} blunder corrections \
+             (total mass {:.3}) to meet the budget",
+            stats.trimmed_blunders, stats.trimmed_blunder_mass
+        );
+    }
+    Ok((assemble(&ranked[..low]), stats))
+}
+
+/// Full-scan invariant: every packed record's proof fields must equal the
+/// recompute pipeline's derivation, key by key. This is not a sampled
+/// diagnostic -- a single divergence means two nibble implementations
+/// drifted apart and the file must not ship.
+fn verify_packed_fields_match_proofs(
+    patch: &PatchFile,
+    proofs: &HashMap<u64, recompute::ChildProof>,
+) {
+    let check = |key: u64,
+                 child_count: u8,
+                 optimal_mask: u64,
+                 trap_score_mask: u64,
+                 optimal_trap_nibbles: u64| {
+        let proof = proofs
+            .get(&key)
+            .unwrap_or_else(|| panic!("packed record {key:#x} has no proof"));
+        assert!(
+            proof.child_count == child_count
+                && proof.optimal_mask == optimal_mask
+                && proof.trap_score_mask == trap_score_mask
+                && proof.optimal_trap_nibbles == optimal_trap_nibbles,
+            "packed record {key:#x} diverged from its derived proof"
+        );
+    };
+    for sector in &patch.sectors {
+        let id = perfect_db::file_format::SectorId::new(
+            sector.white_on_board,
+            sector.black_on_board,
+            sector.white_in_hand,
+            sector.black_in_hand,
+        );
+        for record in &sector.records {
+            let key = perfect_db::wdl_plane::pack_canonical_key(id, record.slot as usize);
+            check(
+                key,
+                record.child_count,
+                record.optimal_mask,
+                record.trap_score_mask,
+                record.optimal_trap_nibbles,
+            );
+        }
+    }
+    for record in &patch.mid_removal_records {
+        check(
+            record.key,
+            record.child_count,
+            record.optimal_mask,
+            record.trap_score_mask,
+            record.optimal_trap_nibbles,
+        );
+    }
+    eprintln!("[patch-pack] packed-field verification: all records match their derived proofs");
 }
 
 pub(crate) fn run_patch_pack(args: &[String]) {
@@ -358,6 +500,29 @@ pub(crate) fn run_patch_pack(args: &[String]) {
     let _legacy_recompute_flag =
         flag_present(args, "--recompute-from-fen") || flag_present(args, "--recompute-best-child");
 
+    // HumanDB behavior weighting: `--human-db PATH` (or SANMILL_HUMAN_DB)
+    // enables it; `--disable-human-weighting` is the kill switch and fully
+    // bypasses even opening the file (so a broken database can be routed
+    // around and A/B packs stay honest).
+    let human_db_flag: String = parse_flag(args, "--human-db", String::new());
+    let human_db_env = std::env::var("SANMILL_HUMAN_DB").unwrap_or_default();
+    let disable_human = flag_present(args, "--disable-human-weighting");
+    let human_db_path = if disable_human {
+        None
+    } else if !human_db_flag.trim().is_empty() {
+        Some(std::path::PathBuf::from(human_db_flag.trim()))
+    } else if !human_db_env.trim().is_empty() {
+        Some(std::path::PathBuf::from(human_db_env.trim()))
+    } else {
+        None
+    };
+    let human_config = human_weight::HumanWeightConfig {
+        min_samples: parse_flag(args, "--human-min-samples", 10_u64),
+        min_coverage: parse_flag(args, "--human-min-coverage", 0.8_f64),
+        shrinkage_k: parse_flag(args, "--human-shrinkage-k", 30.0_f64),
+        allow_lossy: flag_present(args, "--allow-human-db-lossy"),
+    };
+
     let mut entries: Vec<MineEntry> = Vec::new();
     for path in in_paths.split(',') {
         let path = path.trim();
@@ -384,31 +549,68 @@ pub(crate) fn run_patch_pack(args: &[String]) {
     }
     assert_entries_fit_std_budget(&entries);
 
-    let proofs = {
-        let options = MillVariantOptions::default();
-        recompute::recompute_entries(&mut entries, std::path::Path::new(&db_path), &options)
+    let options = MillVariantOptions::default();
+    let outcome = match recompute::recompute_entries(
+        entries,
+        std::path::Path::new(&db_path),
+        &options,
+        human_db_path.as_deref(),
+        human_config,
+    ) {
+        Ok(outcome) => outcome,
+        Err(message) => {
+            eprintln!("[patch-pack] ERROR: {message}");
+            std::process::exit(1);
+        }
     };
-    let before_proof_filter = entries.len();
-    entries.retain(|entry| proofs.contains_key(&entry.key));
-    if entries.len() != before_proof_filter {
-        eprintln!(
-            "[patch-pack] dropped {} entries without a computable optimal-set proof",
-            before_proof_filter - entries.len()
-        );
-    }
+    let entries = outcome.entries;
+    let proofs = outcome.proofs;
+    let outcome_trap_scores = outcome.trap_score_by_key;
+    let outcome_human = outcome.human;
     if entries.is_empty() {
         eprintln!("[patch-pack] ERROR: no entries survived proof derivation");
         std::process::exit(1);
     }
+    {
+        // Pack-level steering coverage: how many records actually carry a
+        // positive trap signal (the make-traps feature's reach).
+        let with_signal = proofs
+            .values()
+            .filter(|proof| proof.trap_score_mask != 0)
+            .count();
+        eprintln!(
+            "[patch-pack] steering coverage: {with_signal}/{} records carry trap scores \
+             (empty-mask records: {})",
+            proofs.len(),
+            outcome.stats.empty_trap_mask_records
+        );
+    }
 
-    let patch = build_patch_file(
+    let allow_trim_blunders = flag_present(args, "--allow-trim-blunders");
+    let (patch, trim_stats) = match build_patch_file(
         &entries,
         &proofs,
         budget_bytes,
+        allow_trim_blunders,
         fingerprint,
         std::path::Path::new(&db_path),
         &variant_name,
+    ) {
+        Ok(built) => built,
+        Err(message) => {
+            eprintln!("[patch-pack] ERROR: {message}");
+            std::process::exit(1);
+        }
+    };
+    eprintln!(
+        "[patch-pack] retention: kept {} settled entries, trimmed {} steering / {} blunders \
+         (trimmed blunder mass {:.3})",
+        trim_stats.kept_settled,
+        trim_stats.trimmed_steering,
+        trim_stats.trimmed_blunders,
+        trim_stats.trimmed_blunder_mass
     );
+    verify_packed_fields_match_proofs(&patch, &proofs);
     let entry_count = patch.entry_count();
     let sector_count = patch.sectors.len();
     let mid_removal_count = patch.mid_removal_records.len();
@@ -433,15 +635,70 @@ pub(crate) fn run_patch_pack(args: &[String]) {
         uncompressed_estimate as f64 / buf.len().max(1) as f64
     );
 
+    // Reopen the shipped bytes through the runtime loader: this exercises
+    // the full read path (decompression, v4 record validation, secval
+    // bootstrap) on the exact artifact and pins its entry count to the
+    // pack log above.
+    {
+        let shipped = std::fs::read(&out_path)
+            .unwrap_or_else(|e| panic!("[patch-pack] cannot re-read {out_path}: {e}"));
+        let reopened = perfect_db::patch::PatchLookup::open(&shipped)
+            .unwrap_or_else(|e| panic!("[patch-pack] runtime reopen of {out_path} failed: {e}"));
+        assert_eq!(
+            reopened.entry_count(),
+            entry_count,
+            "[patch-pack] runtime loader sees a different entry count than the pack wrote"
+        );
+        eprintln!(
+            "[patch-pack] runtime reopen OK: PatchLookup::open({out_path}) -> {} entries",
+            reopened.entry_count()
+        );
+    }
+
     if audit_sample > 0 {
-        let options = MillVariantOptions::default();
-        let refs: Vec<&MineEntry> = entries.iter().collect();
+        // Audit the final retained set only: entries the budget dropped
+        // never reached the file, so sampling them would validate nothing.
+        // The audit also re-derives each sampled entry's proof in the same
+        // HumanDB context (see `audit_entries`); combined with the
+        // full-scan packed-field verification above, a passing sample
+        // validates the shipped bytes end to end.
+        let refs: Vec<&MineEntry> = entries
+            .iter()
+            .filter(|entry| {
+                const MID_REMOVAL_TAG: u64 = 1 << 63;
+                if entry.key & MID_REMOVAL_TAG != 0 {
+                    // Tagged hash keys carry no sector fields; unpacking
+                    // one would tear random bits into an (asserting)
+                    // SectorId.
+                    patch.lookup_mid_removal(entry.key).is_some()
+                } else {
+                    let (sector_id, slot) = unpack_canonical_key(entry.key);
+                    patch
+                        .lookup(
+                            sector_id.white_on_board,
+                            sector_id.black_on_board,
+                            sector_id.white_in_hand,
+                            sector_id.black_in_hand,
+                            slot as u32,
+                        )
+                        .is_some()
+                }
+            })
+            .collect();
+        eprintln!(
+            "[patch-pack] auditing over the {} retained entries (of {} deduplicated)",
+            refs.len(),
+            entries.len()
+        );
         let outcome = audit::audit_entries(
             &refs,
             FileDatabaseProvider::new(&db_path),
             &options,
             audit_sample,
             audit_seed,
+            &proofs,
+            &outcome_trap_scores,
+            outcome_human.as_ref(),
         );
         if outcome.failures.is_empty() {
             eprintln!(
@@ -465,12 +722,17 @@ pub(crate) fn run_patch_pack(args: &[String]) {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use recompute::dedup_entries;
 
     fn entry(key: u64, best_child: u64, mass: f64) -> MineEntry {
+        entry_with_severity(key, best_child, mass, 1)
+    }
+
+    fn entry_with_severity(key: u64, best_child: u64, mass: f64, severity: i8) -> MineEntry {
         MineEntry {
             key,
             best_child,
-            severity: 1,
+            severity,
             trap_score: 100,
             mass,
             fen: String::new(),
@@ -489,6 +751,8 @@ mod tests {
                     ChildProof {
                         child_count: 2,
                         optimal_mask: 0b01,
+                        trap_score_mask: 0,
+                        optimal_trap_nibbles: 0,
                     },
                 )
             })
@@ -520,51 +784,72 @@ mod tests {
     }
 
     #[test]
-    fn dedup_keeps_the_higher_mass_copy() {
-        let entries = vec![entry(1, 100, 5.0), entry(1, 200, 50.0), entry(2, 300, 1.0)];
-        let db_root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("../../src/ui/flutter_app/assets/databases");
-        let patch = build_patch_file(
-            &entries,
-            &proofs_for(&entries),
-            0,
-            default_fingerprint(),
-            &db_root,
-            "std",
+    fn dedup_prefers_blunders_then_severity_then_mass() {
+        // Same key: a high-mass severity-0 steering entry must NOT displace
+        // a low-mass real blunder; within blunders, severity beats mass;
+        // equal severity falls back to mass.
+        let deduped = dedup_entries(vec![
+            entry_with_severity(1, 100, 999.0, 0),
+            entry_with_severity(1, 200, 1.0, 1),
+            entry_with_severity(2, 300, 1.0, 1),
+            entry_with_severity(2, 400, 999.0, 2),
+            entry_with_severity(3, 500, 5.0, 1),
+            entry_with_severity(3, 600, 50.0, 1),
+        ]);
+        let by_key: HashMap<u64, &MineEntry> = deduped.iter().map(|e| (e.key, e)).collect();
+        assert_eq!(deduped.len(), 3);
+        assert_eq!(
+            by_key[&1].best_child, 200,
+            "severity>0 must beat a higher-mass steering entry"
         );
-        assert_eq!(patch.entry_count(), 2);
-        let (sector, slot) = unpack_canonical_key(1);
-        let record = patch
-            .lookup(
-                sector.white_on_board,
-                sector.black_on_board,
-                sector.white_in_hand,
-                sector.black_in_hand,
-                slot as u32,
-            )
-            .unwrap();
-        assert_eq!(record.best_child, 200, "the higher-mass duplicate must win");
+        assert_eq!(
+            by_key[&2].best_child, 400,
+            "higher severity wins regardless of mass ordering"
+        );
+        assert_eq!(
+            by_key[&3].best_child, 600,
+            "equal severity falls back to the higher-mass copy"
+        );
     }
 
     #[test]
-    fn mid_removal_entries_land_in_their_own_group_deduped_by_mass() {
-        const MID_REMOVAL_TAG: u64 = 1 << 63;
-        let mid_removal_key = MID_REMOVAL_TAG | 42;
-        let entries = vec![
-            entry(mid_removal_key, 100, 5.0),
-            entry(mid_removal_key, 200, 50.0),
-            entry(1, 300, 1.0), // an ordinary settled entry, for contrast
-        ];
+    #[should_panic(expected = "duplicate key")]
+    fn build_patch_file_asserts_on_duplicate_keys() {
+        let entries = vec![entry(1, 100, 5.0), entry(1, 200, 50.0)];
         let db_root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .join("../../src/ui/flutter_app/assets/databases");
-        let patch = build_patch_file(
+        let _ = build_patch_file(
             &entries,
             &proofs_for(&entries),
             0,
+            false,
             default_fingerprint(),
             &db_root,
             "std",
         );
+    }
+
+    #[test]
+    fn mid_removal_entries_land_in_their_own_group() {
+        const MID_REMOVAL_TAG: u64 = 1 << 63;
+        let mid_removal_key = MID_REMOVAL_TAG | 42;
+        let entries = dedup_entries(vec![
+            entry(mid_removal_key, 100, 5.0),
+            entry(mid_removal_key, 200, 50.0),
+            entry(1, 300, 1.0), // an ordinary settled entry, for contrast
+        ]);
+        let db_root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("../../src/ui/flutter_app/assets/databases");
+        let (patch, _) = build_patch_file(
+            &entries,
+            &proofs_for(&entries),
+            0,
+            false,
+            default_fingerprint(),
+            &db_root,
+            "std",
+        )
+        .expect("no budget, must build");
 
         assert_eq!(patch.mid_removal_records.len(), 1);
         assert_eq!(patch.entry_count(), 2, "one settled + one mid-removal");
@@ -576,7 +861,7 @@ mod tests {
     }
 
     #[test]
-    fn budget_truncates_to_the_highest_mass_entries() {
+    fn budget_truncates_to_the_highest_mass_entries_when_trimming_is_allowed() {
         // Enough entries that the (fixed-size, ~7KB for the bundled std
         // asset) header + zstd frame overhead is a small fraction of the
         // total, so the budget genuinely exercises entry truncation instead
@@ -588,25 +873,47 @@ mod tests {
         let db_root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .join("../../src/ui/flutter_app/assets/databases");
         let proofs = proofs_for(&entries);
-        let full = build_patch_file(&entries, &proofs, 0, default_fingerprint(), &db_root, "std");
+        let (full, _) = build_patch_file(
+            &entries,
+            &proofs,
+            0,
+            false,
+            default_fingerprint(),
+            &db_root,
+            "std",
+        )
+        .expect("no budget, must build");
         let mut full_buf = Vec::new();
         full.write_to(&mut full_buf, 3).unwrap();
 
         let budget = full_buf.len() / 2;
-        let truncated = build_patch_file(
+        // Every entry is a severity-1 blunder, so trimming into the pool
+        // needs the explicit override...
+        let (truncated, trim_stats) = build_patch_file(
             &entries,
             &proofs,
             budget,
+            true,
             default_fingerprint(),
             &db_root,
             "std",
+        )
+        .expect("--allow-trim-blunders permits trimming");
+        assert_eq!(
+            trim_stats.trimmed_blunders,
+            entries.len() - trim_stats.kept_settled,
+            "every dropped entry here is a blunder"
+        );
+        assert!(
+            trim_stats.trimmed_blunder_mass > 0.0,
+            "the trim must report the sacrificed mass"
         );
         let mut truncated_buf = Vec::new();
         truncated.write_to(&mut truncated_buf, 3).unwrap();
 
         assert!(truncated_buf.len() <= budget);
         assert!(truncated.entry_count() < full.entry_count());
-        // The highest-mass entry (key 0, mass 200) must survive truncation.
+        // The highest-mass entry (key 0) must survive truncation.
         let (sector, slot) = unpack_canonical_key(0);
         assert!(
             truncated
@@ -622,40 +929,157 @@ mod tests {
     }
 
     #[test]
-    fn budget_truncation_never_drops_mid_removal_entries() {
-        const MID_REMOVAL_TAG: u64 = 1 << 63;
+    fn budget_that_cuts_into_blunders_fails_fast_by_default() {
         let mut entries = Vec::new();
-        // A large settled population (so there is genuinely something to
-        // truncate) plus one low-mass mid-removal entry that a naive
-        // mass-only truncation would drop first.
         for i in 0..20_000_u64 {
             entries.push(entry(i, i + 1_000_000, (20_000 - i) as f64));
         }
-        entries.push(entry(MID_REMOVAL_TAG | 7, 999_999, 0.001));
-
         let db_root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .join("../../src/ui/flutter_app/assets/databases");
         let proofs = proofs_for(&entries);
-        let full = build_patch_file(&entries, &proofs, 0, default_fingerprint(), &db_root, "std");
-        let mut full_buf = Vec::new();
-        full.write_to(&mut full_buf, 3).unwrap();
-
-        let truncated = build_patch_file(
+        let (full, _) = build_patch_file(
             &entries,
             &proofs,
-            full_buf.len() / 2,
+            0,
+            false,
             default_fingerprint(),
             &db_root,
             "std",
+        )
+        .expect("no budget, must build");
+        let mut full_buf = Vec::new();
+        full.write_to(&mut full_buf, 3).unwrap();
+
+        let err = match build_patch_file(
+            &entries,
+            &proofs,
+            full_buf.len() / 2,
+            false,
+            default_fingerprint(),
+            &db_root,
+            "std",
+        ) {
+            Err(message) => message,
+            Ok(_) => panic!("a budget that trims real corrections must be rejected by default"),
+        };
+        assert!(
+            err.contains("refusing to trim real corrections"),
+            "unexpected error: {err}"
+        );
+    }
+
+    #[test]
+    fn budget_trims_steering_entries_before_touching_blunders() {
+        // Half the settled entries are severity-0 steering with HIGHER mass
+        // than the blunders; the pool ranking must still sacrifice them
+        // first and keep every blunder without needing the override.
+        let mut entries = Vec::new();
+        for i in 0..4_000_u64 {
+            entries.push(entry_with_severity(i, i + 1_000_000, 1000.0 + i as f64, 0));
+        }
+        for i in 4_000..8_000_u64 {
+            entries.push(entry_with_severity(i, i + 1_000_000, (8_000 - i) as f64, 1));
+        }
+        let db_root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("../../src/ui/flutter_app/assets/databases");
+        let proofs = proofs_for(&entries);
+        let (full, _) = build_patch_file(
+            &entries,
+            &proofs,
+            0,
+            false,
+            default_fingerprint(),
+            &db_root,
+            "std",
+        )
+        .expect("no budget, must build");
+        let mut full_buf = Vec::new();
+        full.write_to(&mut full_buf, 3).unwrap();
+
+        // A budget that fits the blunders plus a bit must keep ALL blunders
+        // and drop only steering entries -- no override needed.
+        let blunders_only: Vec<MineEntry> =
+            entries.iter().filter(|e| e.severity > 0).cloned().collect();
+        let (blunders_patch, _) = build_patch_file(
+            &blunders_only,
+            &proofs,
+            0,
+            false,
+            default_fingerprint(),
+            &db_root,
+            "std",
+        )
+        .expect("no budget, must build");
+        let mut blunders_buf = Vec::new();
+        blunders_patch.write_to(&mut blunders_buf, 3).unwrap();
+        let budget = blunders_buf.len() + (full_buf.len() - blunders_buf.len()) / 4;
+
+        let (truncated, trim_stats) = build_patch_file(
+            &entries,
+            &proofs,
+            budget,
+            false,
+            default_fingerprint(),
+            &db_root,
+            "std",
+        )
+        .expect("steering-only trimming needs no override");
+        assert_eq!(trim_stats.trimmed_blunders, 0);
+        assert!(trim_stats.trimmed_steering > 0);
+        let kept_blunders = truncated
+            .sectors
+            .iter()
+            .flat_map(|s| s.records.iter())
+            .filter(|r| r.severity > 0)
+            .count();
+        assert_eq!(
+            kept_blunders, 4_000,
+            "every blunder must survive while steering absorbs the budget"
         );
         assert!(
             truncated.entry_count() < full.entry_count(),
-            "budget must still truncate settled entries"
+            "some steering entries must actually have been dropped"
         );
-        assert_eq!(
-            truncated.mid_removal_records.len(),
-            1,
-            "the sole mid-removal entry must survive despite its negligible mass"
-        );
+    }
+
+    #[test]
+    fn verify_packed_fields_match_proofs_accepts_a_faithful_pack() {
+        let entries = dedup_entries(vec![entry(1, 100, 5.0), entry(2, 300, 1.0)]);
+        let db_root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("../../src/ui/flutter_app/assets/databases");
+        let proofs = proofs_for(&entries);
+        let (patch, _) = build_patch_file(
+            &entries,
+            &proofs,
+            0,
+            false,
+            default_fingerprint(),
+            &db_root,
+            "std",
+        )
+        .expect("no budget, must build");
+        verify_packed_fields_match_proofs(&patch, &proofs);
+    }
+
+    #[test]
+    #[should_panic(expected = "diverged from its derived proof")]
+    fn verify_packed_fields_match_proofs_rejects_a_diverging_record() {
+        let entries = dedup_entries(vec![entry(1, 100, 5.0)]);
+        let db_root = std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("../../src/ui/flutter_app/assets/databases");
+        let proofs = proofs_for(&entries);
+        let (patch, _) = build_patch_file(
+            &entries,
+            &proofs,
+            0,
+            false,
+            default_fingerprint(),
+            &db_root,
+            "std",
+        )
+        .expect("no budget, must build");
+        let mut tampered = proofs.clone();
+        tampered.get_mut(&1).unwrap().optimal_mask = 0b11;
+        verify_packed_fields_match_proofs(&patch, &tampered);
     }
 }

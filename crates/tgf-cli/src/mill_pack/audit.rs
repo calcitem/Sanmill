@@ -48,13 +48,21 @@ fn sample_indices(total: usize, sample_size: usize, seed: u64) -> Vec<usize> {
     chosen.into_iter().collect()
 }
 
-/// Audit `sample_size` of `entries` against the live database at `db`.
+/// Audit `sample_size` of `entries` against the live database at `db`,
+/// additionally re-deriving each sampled entry's proof + steering fields
+/// through the same [`super::recompute::derive_child_proof`] (with the
+/// same HumanDB context and fusion signal the pack ran with) and requiring
+/// an exact match -- a divergence is a blocking failure, not a diagnostic.
+#[allow(clippy::too_many_arguments)]
 pub(crate) fn audit_entries<P: DatabaseProvider + Clone>(
     entries: &[&MineEntry],
     provider: P,
     options: &MillVariantOptions,
     sample_size: usize,
     seed: u64,
+    proofs: &std::collections::HashMap<u64, super::recompute::ChildProof>,
+    trap_score_by_key: &std::collections::HashMap<u64, u8>,
+    human: Option<&super::human_weight::HumanWeights>,
 ) -> AuditOutcome {
     let rules = MillRules::new(options.clone());
     let variant = perfect_db::database::DatabaseVariant::from_mill_options(options)
@@ -85,9 +93,43 @@ pub(crate) fn audit_entries<P: DatabaseProvider + Clone>(
     // instead of thrashing across the whole mined range in random order.
     indices.sort_by_key(|&index| entries[index].key);
     let mut failures = Vec::new();
+    let mut memo = super::recompute::DensityMemo::new();
+    let mut rederive_stats = super::recompute::RecomputeStats::default();
     for index in &indices {
-        if let Err(message) = audit_one(&rules, options, &mut db, &mut planes, entries[*index]) {
+        let entry = entries[*index];
+        if let Err(message) = audit_one(&rules, options, &mut db, &mut planes, entry) {
             failures.push(message);
+            continue;
+        }
+        // Re-derive the proof in the same context the pack used; the
+        // packed fields were already full-scanned against `proofs`, so a
+        // proof match here transitively validates the file.
+        let rederived = {
+            let mut oracle = super::recompute::PlaneOracle {
+                planes: &mut planes,
+            };
+            super::recompute::derive_child_proof(
+                entry,
+                &rules,
+                options,
+                &mut oracle,
+                trap_score_by_key,
+                human,
+                &mut memo,
+                &mut rederive_stats,
+            )
+        };
+        match proofs.get(&entry.key) {
+            None => failures.push(format!(
+                "entry fen {:?}: no proof recorded for key {:#x}",
+                entry.fen, entry.key
+            )),
+            Some(recorded) if *recorded != rederived => failures.push(format!(
+                "entry fen {:?}: proof re-derivation diverged (recorded {recorded:?}, \
+                 rederived {rederived:?})",
+                entry.fen
+            )),
+            Some(_) => {}
         }
     }
     AuditOutcome {
@@ -243,22 +285,36 @@ mod tests {
             .lines()
             .map(|line| serde_json::from_str(line).unwrap())
             .collect();
-        let refs: Vec<&MineEntry> = entries.iter().collect();
 
+        // Mirror production: derive proofs through the recompute pipeline
+        // (uniform density only -- no HumanDB in this smoke test), then
+        // audit the deduplicated survivors against those proofs.
         let options = MillVariantOptions::default();
-        let outcome = audit_entries(
+        let outcome = super::super::recompute::recompute_entries(
+            entries,
+            &asset_root(),
+            &options,
+            None,
+            super::super::human_weight::HumanWeightConfig::default(),
+        )
+        .expect("no human db configured, recompute cannot fail on external data");
+        let refs: Vec<&MineEntry> = outcome.entries.iter().collect();
+        let audited = audit_entries(
             &refs,
             FileDatabaseProvider::new(asset_root()),
             &options,
             refs.len(),
             42,
+            &outcome.proofs,
+            &outcome.trap_score_by_key,
+            outcome.human.as_ref(),
         );
         assert!(
-            outcome.failures.is_empty(),
+            audited.failures.is_empty(),
             "expected no audit failures, got: {:?}",
-            outcome.failures
+            audited.failures
         );
-        assert_eq!(outcome.checked, refs.len());
+        assert_eq!(audited.checked, refs.len());
 
         let _ = std::fs::remove_dir_all(&dir);
     }

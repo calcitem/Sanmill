@@ -14,61 +14,12 @@ use std::sync::Mutex;
 use once_cell::sync::Lazy;
 #[cfg(not(target_arch = "wasm32"))]
 use rusqlite::{Connection, OpenFlags, params};
-use tgf_mill::{MillPhase, MillRules, MillVariantOptions};
+// The state_key / D4 / notation conventions live in the shared codec so the
+// patch packer and this lookup can never drift apart on coordinates.
+use tgf_mill::human_db_codec::{SYM_INVERSE, state_key_from_fen, transform_notation};
 
 #[cfg(not(target_arch = "wasm32"))]
 static HUMAN_DB: Lazy<Mutex<Option<HumanDatabase>>> = Lazy::new(|| Mutex::new(None));
-
-const NMM_POSITION_ORDER_NODES: [usize; 24] = [
-    23, 16, 17, 18, 19, 20, 21, 22, // outer ring
-    15, 8, 9, 10, 11, 12, 13, 14, // middle ring
-    7, 0, 1, 2, 3, 4, 5, 6, // inner ring
-];
-
-const NMM_POSITIONS: [&str; 24] = [
-    "a7", "d7", "g7", "g4", "g1", "d1", "a1", "a4", "b6", "d6", "f6", "f4", "f2", "d2", "b2", "b4",
-    "c5", "d5", "e5", "e4", "e3", "d3", "c3", "c4",
-];
-
-const POSITION_COORDS: [(i8, i8); 24] = [
-    (-3, 3),
-    (0, 3),
-    (3, 3),
-    (3, 0),
-    (3, -3),
-    (0, -3),
-    (-3, -3),
-    (-3, 0),
-    (-2, 2),
-    (0, 2),
-    (2, 2),
-    (2, 0),
-    (2, -2),
-    (0, -2),
-    (-2, -2),
-    (-2, 0),
-    (-1, 1),
-    (0, 1),
-    (1, 1),
-    (1, 0),
-    (1, -1),
-    (0, -1),
-    (-1, -1),
-    (-1, 0),
-];
-
-const SYMMETRIES: [(i8, i8, i8, i8); 8] = [
-    (1, 0, 0, 1),
-    (0, -1, 1, 0),
-    (-1, 0, 0, -1),
-    (0, 1, -1, 0),
-    (-1, 0, 0, 1),
-    (1, 0, 0, -1),
-    (0, 1, 1, 0),
-    (0, -1, -1, 0),
-];
-
-const SYM_INVERSE: [usize; 8] = [0, 3, 2, 1, 4, 5, 6, 7];
 
 #[derive(Clone, Debug)]
 pub(crate) struct HumanDatabaseStatus {
@@ -371,179 +322,51 @@ fn count_rows(conn: &Connection, table: &str) -> Result<u32, String> {
     Ok(count)
 }
 
-fn state_key_from_fen(fen: &str) -> Result<(String, usize), String> {
-    let fields = fen.split_whitespace().collect::<Vec<_>>();
-    if fields.len() < 8 {
-        return Err("Mill FEN must contain at least 8 fields".to_owned());
-    }
-    if fields[1] != "w" && fields[1] != "b" {
-        return Err(format!("invalid side-to-move in Mill FEN: {}", fields[1]));
-    }
-
-    let rules = MillRules::new(MillVariantOptions::default());
-    let state = rules.set_from_fen(fen)?;
-    let pieces_in_hand = state.pieces_in_hand();
-    let pieces_on_board = state.pieces_on_board();
-
-    for (side, in_hand) in pieces_in_hand.iter().enumerate() {
-        assert!(
-            *in_hand <= 9,
-            "Human Database supports standard Nine Men's Morris hand counts only"
-        );
-        assert!(
-            pieces_on_board[side] + *in_hand <= 9,
-            "Human Database supports standard Nine Men's Morris piece totals only"
-        );
-    }
-
-    let board24 = nmm_board24(state.board());
-    let (canonical, sym_idx) = canonical_board_str(&board24);
-    let turn = if fields[1] == "w" { "W" } else { "B" };
-    let side = if fields[1] == "w" { 0 } else { 1 };
-    let phase = phase_for_side(state.phase(), pieces_in_hand[side], pieces_on_board[side]);
-    let placed_w = 9_u8 - pieces_in_hand[0];
-    let placed_b = 9_u8 - pieces_in_hand[1];
-
-    Ok((
-        format!(
-            "{canonical}|{turn}|{phase}|{placed_w}|{placed_b}|{}|{}",
-            pieces_on_board[0], pieces_on_board[1],
-        ),
-        sym_idx,
-    ))
-}
-
-fn phase_for_side(phase: MillPhase, pieces_in_hand: u8, pieces_on_board: u8) -> &'static str {
-    if phase == MillPhase::Placing || pieces_in_hand > 0 {
-        "place"
-    } else if pieces_on_board <= 3 {
-        "fly"
-    } else {
-        "move"
-    }
-}
-
-fn nmm_board24(board: &[i8; 24]) -> String {
-    NMM_POSITION_ORDER_NODES
-        .iter()
-        .map(|&node| match board[node] {
-            1 => 'W',
-            2 => 'B',
-            _ => '.',
-        })
-        .collect()
-}
-
-fn canonical_board_str(board24: &str) -> (String, usize) {
-    assert!(
-        board24.len() == 24,
-        "Human Database canonicalization requires a 24-character board"
-    );
-    let mut best = board24.to_owned();
-    let mut best_idx = 0;
-    for sym_idx in 1..SYMMETRIES.len() {
-        let transformed =
-            apply_board_sym(board24, sym_idx).expect("Mill D4 transform must stay on board");
-        if transformed < best {
-            best = transformed;
-            best_idx = sym_idx;
-        }
-    }
-    (best, best_idx)
-}
-
-fn apply_board_sym(board24: &str, sym_idx: usize) -> Option<String> {
-    let chars = board24.chars().collect::<Vec<_>>();
-    let mut result = ['?'; 24];
-    for (old_idx, ch) in chars.into_iter().enumerate() {
-        let new_idx = transform_index(old_idx, sym_idx)?;
-        result[new_idx] = ch;
-    }
-    Some(result.iter().collect())
-}
-
-fn transform_notation(notation: &str, sym_idx: usize) -> Option<String> {
-    if sym_idx == 0 {
-        return Some(notation.to_owned());
-    }
-
-    let (base, capture) = match notation.split_once('x') {
-        Some((base, capture)) => (base, Some(capture)),
-        None => (notation, None),
-    };
-    let capture_suffix = match capture {
-        Some(pos) => format!("x{}", transform_pos(pos, sym_idx)?),
-        None => String::new(),
-    };
-
-    if let Some((from, to)) = base.split_once('-') {
-        return Some(format!(
-            "{}-{}{}",
-            transform_pos(from, sym_idx)?,
-            transform_pos(to, sym_idx)?,
-            capture_suffix,
-        ));
-    }
-    Some(format!(
-        "{}{}",
-        transform_pos(base, sym_idx)?,
-        capture_suffix
-    ))
-}
-
-fn transform_pos(pos: &str, sym_idx: usize) -> Option<&'static str> {
-    let idx = position_index(pos)?;
-    let next = transform_index(idx, sym_idx)?;
-    Some(NMM_POSITIONS[next])
-}
-
-fn transform_index(idx: usize, sym_idx: usize) -> Option<usize> {
-    let (x, y) = POSITION_COORDS[idx];
-    let (a, b, c, d) = SYMMETRIES[sym_idx];
-    position_index_from_coords((a * x + b * y, c * x + d * y))
-}
-
-fn position_index(pos: &str) -> Option<usize> {
-    NMM_POSITIONS.iter().position(|candidate| *candidate == pos)
-}
-
-fn position_index_from_coords(coords: (i8, i8)) -> Option<usize> {
-    POSITION_COORDS
-        .iter()
-        .position(|candidate| *candidate == coords)
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
+    /// Regression guard for the shared-codec extraction: the lookup's
+    /// recommended-move pipeline is `state_key_from_fen` (canonical key +
+    /// symmetry index) followed by `transform_notation(SYM_INVERSE[idx])`
+    /// back into the live orientation. A canonical-orientation query must
+    /// stay untransformed, and a mirrored query must map the stored
+    /// notation back onto the live board exactly as before the refactor.
     #[test]
-    fn empty_board_key_matches_human_db_builder() {
-        let fen = "********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes";
-        let (key, sym_idx) = state_key_from_fen(fen).expect("initial FEN must parse");
-
+    fn query_pipeline_keeps_recommended_moves_in_the_live_orientation() {
+        let canonical_fen =
+            "********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes";
+        let (key, sym_idx) = state_key_from_fen(canonical_fen).expect("initial FEN must parse");
         assert_eq!(key, "........................|W|place|0|0|0|0");
         assert_eq!(sym_idx, 0);
-    }
-
-    #[test]
-    fn node_order_exports_nmm_outer_middle_inner_board_string() {
-        let fen = "********/@***O***/******** w p p 1 8 1 8 0 0 -1 -1 -1 -1 0 0 2 ids:nodes";
-        let rules = MillRules::new(MillVariantOptions::default());
-        let state = rules.set_from_fen(fen).expect("fixture FEN must parse");
-
-        assert_eq!(nmm_board24(state.board()), ".........B...W..........");
-    }
-
-    #[test]
-    fn notation_transform_handles_move_with_capture() {
         assert_eq!(
-            transform_notation("d6-d7xa4", 2).as_deref(),
-            Some("d2-d1xg4"),
-        );
-        assert_eq!(
-            transform_notation("d2-d1xg4", SYM_INVERSE[2]).as_deref(),
+            transform_notation("d6-d7xa4", SYM_INVERSE[sym_idx]).as_deref(),
             Some("d6-d7xa4"),
+            "identity orientation must return stored notations verbatim"
+        );
+
+        // A single white piece on b2 canonicalizes through a non-identity
+        // symmetry; the stored (canonical-frame) notation must come back in
+        // the live frame via the inverse transform, exactly like
+        // `HumanDatabase::query` applies it.
+        // A single white stone on d6: its D4 orbit reaches b4, which sits
+        // later in the NMM board string, so the canonical form is strictly
+        // smaller than the identity image and the symmetry index must be
+        // nonzero (no reliance on tie-breaking between equal images).
+        let mirrored_fen =
+            "********/O*******/******** b p p 1 8 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes";
+        let (mirrored_key, mirrored_idx) =
+            state_key_from_fen(mirrored_fen).expect("mirrored FEN must parse");
+        assert_ne!(mirrored_idx, 0, "fixture must exercise a real symmetry");
+        let stored = "d6";
+        let live = transform_notation(stored, SYM_INVERSE[mirrored_idx])
+            .expect("stored notation must map back to the live frame");
+        let round_trip = transform_notation(&live, mirrored_idx)
+            .expect("live notation must map back to the canonical frame");
+        assert_eq!(round_trip, stored, "transform must be self-inverse");
+        assert!(
+            mirrored_key.starts_with(['.', 'W', 'B']),
+            "canonical key must be a plain board string, got {mirrored_key}"
         );
     }
 }

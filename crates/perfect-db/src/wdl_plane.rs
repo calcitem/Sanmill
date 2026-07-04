@@ -375,6 +375,36 @@ impl<P: DatabaseProvider> WdlPlaneCache<P> {
         let index = self.hasher_for(id).hash_probe(board).index;
         pack_canonical_key(id, index)
     }
+
+    /// WDL stored in the plane for a bare settled canonical `(sector, slot)`
+    /// key, in the plane's own folded perspective (the mover-is-sector-white
+    /// convention baked into [`pack_canonical_key`]). Callers pairing this
+    /// with a live snapshot must calibrate the sign against
+    /// [`crate::mill::resolve_wdl_with_plane`] -- see the patch packer's
+    /// HumanDB aggregation.
+    ///
+    /// Only settled keys are meaningful here: a mid-removal-tagged key is a
+    /// hash with no plane slot behind it, so passing one is a caller bug and
+    /// asserts. A missing sector asset resolves to `Ok(None)` (the caller's
+    /// `target_unresolved` bucket); every other error propagates.
+    pub fn wdl_by_canonical_key(&mut self, key: u64) -> Result<Option<i8>, DatabaseError> {
+        assert!(
+            key & MID_REMOVAL_KEY_TAG == 0,
+            "wdl_by_canonical_key only serves settled keys, got a mid-removal hash"
+        );
+        let (id, slot) = unpack_canonical_key(key);
+        match self.plane_for(id) {
+            Ok(plane) => {
+                assert!(
+                    slot < plane.hash_count(),
+                    "canonical key slot {slot} out of range for sector {id:?}"
+                );
+                Ok(Some(plane.wdl_at(slot)))
+            }
+            Err(err) if err.is_missing_asset() => Ok(None),
+            Err(err) => Err(err),
+        }
+    }
 }
 
 #[cfg(test)]
