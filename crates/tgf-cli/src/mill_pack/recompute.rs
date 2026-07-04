@@ -429,8 +429,7 @@ fn compute_own_turn_risk(
         }
     }
 
-    let mut resolved = 0_u32;
-    let mut sum = 0.0_f64;
+    let mut resolved_densities: Vec<f64> = Vec::with_capacity(our_turn_nodes.len());
     for node in &our_turn_nodes {
         let node_state = MillRules::decode_snapshot(*node);
         let Some(node_key) = oracle.keys().canonical_key(&node_state, options) else {
@@ -438,13 +437,28 @@ fn compute_own_turn_risk(
             continue;
         };
         match density_memo.density_and_best(node_key, node, rules, options, oracle) {
-            Some((density, _)) => {
-                resolved += 1;
-                sum += density;
-            }
+            Some((density, _)) => resolved_densities.push(density),
             None => unresolved += 1,
         }
     }
+    // Bitwise-deterministic mean, required by the memo AND the audit: the
+    // memo serves whichever concrete board orientation FIRST reached this
+    // canonical key, while the audit recomputes the same candidate with a
+    // cold memo from its own sampled entry's orientation. Symmetric
+    // orientations enumerate the same density MULTISET in different
+    // orders, and f64 addition is not associative -- an unsorted sum can
+    // differ by an ulp between orientations, which is enough to flip a
+    // sibling-delta decision on the (common) exact-equality boundary and
+    // fail the audit's proof re-derivation. Summing in sorted order makes
+    // the mean a pure function of the multiset. (Each density is itself
+    // orientation-invariant: an integer severity sum and one correctly
+    // -rounded division -- see `DensityMemo`.)
+    resolved_densities.sort_by(|a, b| {
+        a.partial_cmp(b)
+            .expect("densities are finite by construction")
+    });
+    let resolved = resolved_densities.len() as u32;
+    let sum: f64 = resolved_densities.iter().sum();
     OwnRisk {
         mean: (resolved > 0).then(|| sum / f64::from(resolved)),
         resolved_samples: resolved,

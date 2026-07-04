@@ -940,6 +940,58 @@ fn own_turn_risk_means_over_our_turn_nodes_and_memoizes() {
 }
 
 #[test]
+fn own_turn_risk_is_bitwise_invariant_across_symmetric_orientations() {
+    // d6 and b4 are 90-degree rotations of each other: the same canonical
+    // child reached through two concrete orientations that enumerate
+    // replies (and thus sum densities) in different orders. The pack's
+    // memo serves whichever orientation got there first while the audit
+    // recomputes cold from its own entry's orientation, so the mean must
+    // be a pure function of the canonical position -- bit for bit.
+    let rules = rules();
+    let opts = options();
+    let mut oracle = TableOracle::new();
+    oracle.default_value = Some(0);
+
+    let snap_a = play(&rules, &["d6"]);
+    let snap_b = play(&rules, &["b4"]);
+    let key_a = oracle.key_of(&MillRules::decode_snapshot(snap_a), &opts);
+    let key_b = oracle.key_of(&MillRules::decode_snapshot(snap_b), &opts);
+    assert_eq!(key_a, key_b, "rotations must fold to one canonical child");
+
+    // Distinct fractional densities under several reply classes of the
+    // d6 orientation (canonical grandchild keys are shared with b4's).
+    let mut planted = 0_usize;
+    let mut actions = tgf_core::ActionList::<256>::new();
+    rules.legal_actions(&snap_a, &mut actions);
+    for (nth, &action) in actions.as_slice().iter().enumerate() {
+        if nth % 5 != 0 || planted >= 4 {
+            continue;
+        }
+        planted += 1;
+        let node = rules.apply(&snap_a, action);
+        plant_replies(&rules, &node, &mut oracle, 1 + planted, 1);
+    }
+    assert_eq!(planted, 4);
+
+    let risk_of = |snap: &tgf_core::GameStateSnapshot, oracle: &mut TableOracle| {
+        RiskMemo::new().own_turn_risk(
+            key_a,
+            snap,
+            0,
+            &rules,
+            &opts,
+            oracle,
+            &mut DensityMemo::new(),
+            &mut RecomputeStats::default(),
+        )
+    };
+    let risk_a = risk_of(&snap_a, &mut oracle);
+    let risk_b = risk_of(&snap_b, &mut oracle);
+    assert!(risk_a.mean.expect("covered") > 0.0);
+    assert_eq!(risk_a, risk_b, "orientation must not leak into the mean");
+}
+
+#[test]
 fn own_turn_risk_walks_the_opponent_removal_layer_back_to_our_turn() {
     let rules = rules();
     let opts = options();
