@@ -284,7 +284,9 @@ fn derive_child_proof_scores_optimal_children_from_planted_values() {
         &mut oracle,
         &trap_score_by_key,
         None,
+        RiskGateConfig::default(),
         &mut memo,
+        &mut RiskMemo::new(),
         &mut stats,
     );
 
@@ -376,7 +378,9 @@ fn derive_child_proof_zeroes_same_side_children_on_every_signal() {
         &mut oracle,
         &trap_score_by_key,
         None,
+        RiskGateConfig::default(),
         &mut memo,
+        &mut RiskMemo::new(),
         &mut stats,
     );
 
@@ -462,7 +466,9 @@ fn derive_child_proof_blends_behavior_density_when_gates_pass() {
         &mut oracle,
         &HashMap::new(),
         Some(&human),
+        RiskGateConfig::default(),
         &mut memo,
+        &mut RiskMemo::new(),
         &mut stats,
     );
 
@@ -515,7 +521,9 @@ fn behavior_weighting_changes_nibbles_against_the_uniform_pack() {
         &mut oracle,
         &HashMap::new(),
         None,
+        RiskGateConfig::default(),
         &mut memo_a,
+        &mut RiskMemo::new(),
         &mut stats_a,
     );
     let child_keys = child_keys_in_mask_order(&rules, &parent_snap, &mut oracle);
@@ -557,7 +565,9 @@ fn behavior_weighting_changes_nibbles_against_the_uniform_pack() {
         &mut oracle,
         &HashMap::new(),
         Some(&human),
+        RiskGateConfig::default(),
         &mut memo_b,
+        &mut RiskMemo::new(),
         &mut stats_b,
     );
     assert_eq!(
@@ -632,7 +642,9 @@ fn derive_child_proof_reports_full_vector_gap_diagnostics() {
         &mut oracle,
         &HashMap::new(),
         None,
+        RiskGateConfig::default(),
         &mut memo,
+        &mut RiskMemo::new(),
         &mut stats,
     );
     assert_eq!(
@@ -676,7 +688,9 @@ fn derive_child_proof_counts_unresolved_children_without_scoring_them() {
         &mut oracle,
         &HashMap::new(),
         None,
+        RiskGateConfig::default(),
         &mut memo,
+        &mut RiskMemo::new(),
         &mut stats,
     );
     assert_eq!(proof.trap_score_mask, 0);
@@ -684,6 +698,655 @@ fn derive_child_proof_counts_unresolved_children_without_scoring_them() {
         stats.best_value_unresolved_parent_count,
         child_keys.len() as u64,
         "every optimal child's density was unresolvable"
+    );
+}
+
+#[test]
+fn risk_gate_decision_covers_both_modes_and_every_bucket() {
+    let gate = |mode, lambda, min_ply| RiskGateConfig {
+        mode,
+        lambda,
+        min_placing_ply_proxy: min_ply,
+    };
+    let none = gate(RiskGateMode::None, 1.0, 0);
+    let absolute = gate(RiskGateMode::Absolute, 2.0, 0);
+    let sibling = gate(RiskGateMode::SiblingDelta, 1.0, 0);
+
+    // Inert mode passes anything once past the ply floor.
+    assert_eq!(
+        risk_gate_decision(none, 0, None, None, None, None),
+        GateDecision::Pass
+    );
+    // The ply-proxy floor fires first, regardless of mode or risk data.
+    assert_eq!(
+        risk_gate_decision(gate(RiskGateMode::None, 1.0, 6), 5, None, None, None, None),
+        GateDecision::FilteredByPlyProxy
+    );
+    assert_eq!(
+        risk_gate_decision(
+            gate(RiskGateMode::Absolute, 1.0, 6),
+            5,
+            None,
+            Some(1.0),
+            None,
+            None
+        ),
+        GateDecision::FilteredByPlyProxy
+    );
+
+    // Absolute: boundary equality passes, excess risk fails, a candidate
+    // with zero resolved own-risk samples is filtered as unresolved.
+    assert_eq!(
+        risk_gate_decision(absolute, 9, Some(0.2), Some(0.1), None, None),
+        GateDecision::Pass
+    );
+    assert_eq!(
+        risk_gate_decision(absolute, 9, Some(0.2001), Some(0.1), None, None),
+        GateDecision::FilteredByRisk
+    );
+    assert_eq!(
+        risk_gate_decision(absolute, 9, None, Some(0.5), None, None),
+        GateDecision::FilteredUnresolved
+    );
+    // Unresolved trap density scores the trap term as 0: only zero risk
+    // passes.
+    assert_eq!(
+        risk_gate_decision(absolute, 9, Some(0.01), None, None, None),
+        GateDecision::FilteredByRisk
+    );
+    assert_eq!(
+        risk_gate_decision(absolute, 9, Some(0.0), None, None, None),
+        GateDecision::Pass
+    );
+
+    // Sibling-delta: excess risk over the safest sibling must be covered
+    // by lambda times the excess trap over the least-trappy sibling.
+    assert_eq!(
+        risk_gate_decision(sibling, 9, Some(0.3), Some(0.5), Some(0.1), Some(0.2)),
+        GateDecision::Pass,
+        "0.2 excess risk <= 1.0 * 0.3 excess trap"
+    );
+    assert_eq!(
+        risk_gate_decision(sibling, 9, Some(0.5), Some(0.25), Some(0.1), Some(0.2)),
+        GateDecision::FilteredByRisk,
+        "0.4 excess risk > 1.0 * 0.05 excess trap"
+    );
+    assert_eq!(
+        risk_gate_decision(sibling, 9, Some(0.3), Some(0.4), Some(0.1), Some(0.2)),
+        GateDecision::Pass,
+        "boundary equality passes"
+    );
+    // The safest sibling itself always passes (zero excess risk), even
+    // with nothing measurable on the trap side.
+    assert_eq!(
+        risk_gate_decision(sibling, 9, Some(0.1), None, Some(0.1), None),
+        GateDecision::Pass
+    );
+    // No resolved sibling trap minimum: trap_delta is 0, so positive
+    // excess risk fails -- an unresolved sibling never anchors a 0 min.
+    assert_eq!(
+        risk_gate_decision(sibling, 9, Some(0.2), Some(0.9), Some(0.1), None),
+        GateDecision::FilteredByRisk
+    );
+    // A trap density below the sibling minimum clamps to zero excess.
+    assert_eq!(
+        risk_gate_decision(sibling, 9, Some(0.2), Some(0.1), Some(0.1), Some(0.2)),
+        GateDecision::FilteredByRisk
+    );
+    assert_eq!(
+        risk_gate_decision(sibling, 9, None, Some(0.5), Some(0.0), Some(0.0)),
+        GateDecision::FilteredUnresolved
+    );
+}
+
+#[test]
+#[should_panic(expected = "resolved candidate implies a resolved sibling risk minimum")]
+fn sibling_delta_asserts_when_a_resolved_candidate_has_no_risk_minimum() {
+    let gate = RiskGateConfig {
+        mode: RiskGateMode::SiblingDelta,
+        lambda: 1.0,
+        min_placing_ply_proxy: 0,
+    };
+    let _ = risk_gate_decision(gate, 9, Some(0.1), Some(0.1), None, None);
+}
+
+#[test]
+fn empty_mask_drop_applies_to_active_gate_severity_zero_only() {
+    assert!(drop_steering_for_empty_mask(true, 0, 0));
+    assert!(
+        !drop_steering_for_empty_mask(true, 0, 0b100),
+        "a surviving mask keeps the record"
+    );
+    assert!(
+        !drop_steering_for_empty_mask(true, 1, 0),
+        "severity > 0 corrections are never dropped for an empty mask"
+    );
+    assert!(
+        !drop_steering_for_empty_mask(false, 0, 0),
+        "an inactive gate must not change the existing empty-mask behavior"
+    );
+}
+
+#[test]
+fn placing_ply_proxy_counts_placements_and_saturates_in_moving_phase() {
+    let rules = rules();
+    let opts = options();
+    let initial = MillRules::decode_snapshot(rules.initial_state(&[]));
+    assert_eq!(placing_ply_proxy(&initial, &opts), 0);
+    let after_three = MillRules::decode_snapshot(play(&rules, &["d6", "b4", "d5"]));
+    assert_eq!(placing_ply_proxy(&after_three, &opts), 3);
+    // Import-adapter override to a moving-phase hand count: the proxy
+    // saturates at 2 * piece_count, so any threshold up to 18 passes.
+    let mut moving = MillRules::decode_snapshot(play(&rules, &["d6", "b4", "d5"]));
+    moving.set_pieces_in_hand([0, 0], &opts);
+    assert_eq!(placing_ply_proxy(&moving, &opts), 18);
+}
+
+/// Legal-action count of a snapshot (own-risk samples are per action, not
+/// per canonical class).
+fn legal_count(rules: &MillRules, snap: &tgf_core::GameStateSnapshot) -> usize {
+    let mut actions = tgf_core::ActionList::<256>::new();
+    rules.legal_actions(snap, &mut actions);
+    actions.as_slice().len()
+}
+
+#[test]
+fn own_turn_risk_means_over_our_turn_nodes_and_memoizes() {
+    let rules = rules();
+    let opts = options();
+    let mut oracle = TableOracle::new();
+    oracle.default_value = Some(0);
+
+    // Child: black to move after white d6 (parent side = white/0). Every
+    // black reply preserves the draw and hands the turn back to white.
+    let child_snap = play(&rules, &["d6"]);
+    let child_key = oracle.key_of(&MillRules::decode_snapshot(child_snap), &opts);
+
+    // Plant a positive density under the d5-reply node. Symmetric black
+    // replies fold to the same canonical node key and (through the
+    // canonical grandchild keys) see the same density, so the expected
+    // mean weighs the planted density by its reply-class size.
+    let d5_node = {
+        let turn = parse_human_turn_notation(&rules, &child_snap, "d5").expect("legal reply");
+        let HumanTurn::BaseOnly(action) = turn else {
+            panic!("a plain placement");
+        };
+        rules.apply(&child_snap, action)
+    };
+    let d5_node_key = oracle.key_of(&MillRules::decode_snapshot(d5_node), &opts);
+    plant_replies(&rules, &d5_node, &mut oracle, 4, 1);
+
+    let reply_count = legal_count(&rules, &child_snap);
+    let mut class_size = 0_usize;
+    {
+        let mut actions = tgf_core::ActionList::<256>::new();
+        rules.legal_actions(&child_snap, &mut actions);
+        for &action in actions.as_slice() {
+            let node = MillRules::decode_snapshot(rules.apply(&child_snap, action));
+            if oracle.key_of(&node, &opts) == d5_node_key {
+                class_size += 1;
+            }
+        }
+    }
+    assert!(class_size >= 1);
+    let d5_density = {
+        let mut probe = DensityMemo::new();
+        probe
+            .density_and_best(d5_node_key, &d5_node, &rules, &opts, &mut oracle)
+            .expect("fully covered")
+            .0
+    };
+    assert!(
+        d5_density > 0.0,
+        "the planted node must be measurably risky"
+    );
+    let expected_mean = class_size as f64 * d5_density / reply_count as f64;
+
+    let mut memo = DensityMemo::new();
+    let mut risk_memo = RiskMemo::new();
+    let mut stats = RecomputeStats::default();
+    let risk = risk_memo.own_turn_risk(
+        child_key,
+        &child_snap,
+        0,
+        &rules,
+        &opts,
+        &mut oracle,
+        &mut memo,
+        &mut stats,
+    );
+    assert_eq!(risk.resolved_samples as usize, reply_count);
+    assert_eq!(risk.unresolved_samples, 0);
+    assert_eq!(risk.terminal_samples, 0);
+    let mean = risk.mean.expect("resolved samples exist");
+    assert!((mean - expected_mean).abs() < 1e-12);
+    assert_eq!(stats.own_risk_resolved_samples as usize, reply_count);
+
+    // Second use is a memo hit and must NOT re-report samples (the
+    // counters are unique cache-miss samples, not per-candidate-use).
+    let again = risk_memo.own_turn_risk(
+        child_key,
+        &child_snap,
+        0,
+        &rules,
+        &opts,
+        &mut oracle,
+        &mut memo,
+        &mut stats,
+    );
+    assert_eq!(again, risk);
+    assert_eq!(risk_memo.hits, 1);
+    assert_eq!(stats.own_risk_resolved_samples as usize, reply_count);
+}
+
+#[test]
+fn own_turn_risk_walks_the_opponent_removal_layer_back_to_our_turn() {
+    let rules = rules();
+    let opts = options();
+    let mut oracle = TableOracle::new();
+    oracle.default_value = Some(0);
+
+    // Child: black to move with b4+b6 placed and b2 open (parent side =
+    // white). The b2 reply forms the b2-b4-b6 mill and keeps black on
+    // turn for exactly one removal layer over white's d6/d5/a1.
+    let child_snap = play(&rules, &["d6", "b4", "d5", "b6", "a1"]);
+    let child_key = oracle.key_of(&MillRules::decode_snapshot(child_snap), &opts);
+    let reply_count = legal_count(&rules, &child_snap);
+
+    let mut memo = DensityMemo::new();
+    let mut risk_memo = RiskMemo::new();
+    let mut stats = RecomputeStats::default();
+    let risk = risk_memo.own_turn_risk(
+        child_key,
+        &child_snap,
+        0,
+        &rules,
+        &opts,
+        &mut oracle,
+        &mut memo,
+        &mut stats,
+    );
+    // Every reply preserves the draw: the mill reply contributes one
+    // sample per preserving removal (3 white targets), every other reply
+    // contributes its own-turn node directly.
+    assert_eq!(risk.terminal_samples, 0);
+    assert_eq!(risk.unresolved_samples, 0);
+    assert_eq!(risk.resolved_samples as usize, (reply_count - 1) + 3);
+    assert_eq!(risk.mean, Some(0.0), "no planted losers anywhere");
+}
+
+#[test]
+fn own_turn_risk_counts_terminal_removals_without_scoring_them() {
+    let rules = rules();
+    let opts = options();
+    let mut oracle = TableOracle::new();
+    oracle.default_value = Some(0);
+
+    // Same shape as the removal-layer test, but white has nothing left in
+    // hand (import-adapter override): any removal drops white below three
+    // total pieces and ends the game inside the walk.
+    let mut child_state = MillRules::decode_snapshot(play(&rules, &["d6", "b4", "d5", "b6", "a1"]));
+    child_state.set_pieces_in_hand([0, 7], &opts);
+    let child_snap = rules.encode_state(child_state.clone());
+    let child_key = oracle.key_of(&child_state, &opts);
+    let reply_count = legal_count(&rules, &child_snap);
+
+    let mut memo = DensityMemo::new();
+    let mut risk_memo = RiskMemo::new();
+    let mut stats = RecomputeStats::default();
+    let risk = risk_memo.own_turn_risk(
+        child_key,
+        &child_snap,
+        0,
+        &rules,
+        &opts,
+        &mut oracle,
+        &mut memo,
+        &mut stats,
+    );
+    assert_eq!(
+        risk.terminal_samples, 3,
+        "each of the three removals ends the game and is counted, never scored"
+    );
+    assert_eq!(risk.resolved_samples as usize, reply_count - 1);
+    assert_eq!(risk.unresolved_samples, 0);
+    assert_eq!(stats.own_risk_terminal_samples, 3);
+}
+
+#[test]
+fn own_turn_risk_with_zero_resolved_samples_reports_none() {
+    let rules = rules();
+    let opts = options();
+    // No default value: cover the opponent's reply layer explicitly (the
+    // preserving set must be knowable) but leave every our-turn node's
+    // continuation a coverage gap.
+    let mut oracle = TableOracle::new();
+    let child_snap = play(&rules, &["d6"]);
+    let child_key = oracle.key_of(&MillRules::decode_snapshot(child_snap), &opts);
+    let reply_count = legal_count(&rules, &child_snap);
+    {
+        let mut actions = tgf_core::ActionList::<256>::new();
+        rules.legal_actions(&child_snap, &mut actions);
+        for &action in actions.as_slice() {
+            let node = MillRules::decode_snapshot(rules.apply(&child_snap, action));
+            let key = oracle.key_of(&node, &opts);
+            oracle.own_value_by_key.insert(key, 0);
+        }
+    }
+
+    let mut memo = DensityMemo::new();
+    let mut risk_memo = RiskMemo::new();
+    let mut stats = RecomputeStats::default();
+    let risk = risk_memo.own_turn_risk(
+        child_key,
+        &child_snap,
+        0,
+        &rules,
+        &opts,
+        &mut oracle,
+        &mut memo,
+        &mut stats,
+    );
+    assert_eq!(risk.mean, None, "zero resolved samples");
+    assert_eq!(risk.resolved_samples, 0);
+    assert_eq!(risk.unresolved_samples as usize, reply_count);
+    assert_eq!(stats.own_risk_unresolved_samples as usize, reply_count);
+}
+
+#[test]
+#[should_panic(expected = "perspective-filter leak")]
+fn own_turn_risk_rejects_same_side_candidates() {
+    let rules = rules();
+    let opts = options();
+    let mut oracle = TableOracle::new();
+    oracle.default_value = Some(0);
+
+    // White d7 closes d5-d6-d7: the child keeps white (the parent side)
+    // on turn.
+    let parent_snap = play(&rules, &["d6", "b4", "d5", "b2"]);
+    let mill_turn = parse_human_turn_notation(&rules, &parent_snap, "d7xb4").expect("mill move");
+    let HumanTurn::BaseThenCapture { base, .. } = mill_turn else {
+        panic!("d7 must form a mill");
+    };
+    let mill_child_snap = rules.apply(&parent_snap, base);
+    let mill_child_key = oracle.key_of(&MillRules::decode_snapshot(mill_child_snap), &opts);
+
+    let mut memo = DensityMemo::new();
+    let mut risk_memo = RiskMemo::new();
+    let mut stats = RecomputeStats::default();
+    let _ = risk_memo.own_turn_risk(
+        mill_child_key,
+        &mill_child_snap,
+        0,
+        &rules,
+        &opts,
+        &mut oracle,
+        &mut memo,
+        &mut stats,
+    );
+}
+
+/// Shared fixture for the derive-level gate wiring tests: the initial
+/// position with two trappy children -- A (d6 class) with zero own-turn
+/// risk, C (b6 class) with strictly positive own-turn risk (losers
+/// planted one level deeper under one of its preserving reply nodes).
+/// Returns (entry, child_a, child_c) with their canonical keys.
+fn risky_and_safe_trappy_children(
+    rules: &MillRules,
+    opts: &MillVariantOptions,
+    oracle: &mut TableOracle,
+) -> (MineEntry, u64, u64) {
+    let parent_snap = rules.initial_state(&[]);
+    let parent_state = MillRules::decode_snapshot(parent_snap);
+    let parent_key = oracle.key_of(&parent_state, opts);
+
+    let child_a_snap = play(rules, &["d6"]);
+    let child_a = oracle.key_of(&MillRules::decode_snapshot(child_a_snap), opts);
+    let child_c_snap = play(rules, &["b6"]);
+    let child_c = oracle.key_of(&MillRules::decode_snapshot(child_c_snap), opts);
+    assert_ne!(child_a, child_c);
+
+    plant_replies(rules, &child_a_snap, oracle, 3, 1);
+    plant_replies(rules, &child_c_snap, oracle, 3, 1);
+
+    // Make C risky: pick one of its PRESERVING replies (grandchild value
+    // still 0) and plant losers under that node -- our side's blunders
+    // once the turn comes back.
+    let risky_node = {
+        let mut actions = tgf_core::ActionList::<256>::new();
+        rules.legal_actions(&child_c_snap, &mut actions);
+        let action = actions
+            .as_slice()
+            .iter()
+            .copied()
+            .find(|&action| {
+                let grandchild = MillRules::decode_snapshot(rules.apply(&child_c_snap, action));
+                oracle
+                    .own_value_by_key
+                    .get(&oracle.keys.canonical_key(&grandchild, opts).unwrap())
+                    != Some(&1)
+            })
+            .expect("a preserving reply exists");
+        rules.apply(&child_c_snap, action)
+    };
+    plant_replies(rules, &risky_node, oracle, 4, 1);
+
+    let entry = steering_entry(&rules.export_fen(&parent_state), parent_key, child_a);
+    (entry, child_a, child_c)
+}
+
+/// Measured own-turn risk mean of one child, through fresh memos.
+fn measured_risk(
+    rules: &MillRules,
+    opts: &MillVariantOptions,
+    oracle: &mut TableOracle,
+    child_snap: &tgf_core::GameStateSnapshot,
+) -> Option<f64> {
+    let child_key = oracle.key_of(&MillRules::decode_snapshot(*child_snap), opts);
+    RiskMemo::new()
+        .own_turn_risk(
+            child_key,
+            child_snap,
+            0,
+            rules,
+            opts,
+            oracle,
+            &mut DensityMemo::new(),
+            &mut RecomputeStats::default(),
+        )
+        .mean
+}
+
+#[test]
+fn absolute_risk_gate_filters_risky_candidates_from_the_mask_only() {
+    let rules = rules();
+    let opts = options();
+    let mut oracle = TableOracle::new();
+    oracle.default_value = Some(0);
+    let (entry, child_a, child_c) = risky_and_safe_trappy_children(&rules, &opts, &mut oracle);
+
+    // Fixture preconditions (deterministic; no key collisions between the
+    // planted layers may leak risk onto A).
+    let risk_a = measured_risk(&rules, &opts, &mut oracle, &play(&rules, &["d6"]))
+        .expect("A's continuations are covered");
+    let risk_c = measured_risk(&rules, &opts, &mut oracle, &play(&rules, &["b6"]))
+        .expect("C's continuations are covered");
+    assert_eq!(risk_a, 0.0, "A must be risk-free by construction");
+    assert!(risk_c > 0.0, "C must carry planted own-turn risk");
+
+    // Gate off: both trappy children are in the mask.
+    let parent_snap = rules.initial_state(&[]);
+    let child_keys = child_keys_in_mask_order(&rules, &parent_snap, &mut oracle);
+    let index_of = |key: u64| child_keys.iter().position(|&k| k == key).unwrap();
+    let mut stats_off = RecomputeStats::default();
+    let (proof_off, _) = derive_child_proof(
+        &entry,
+        &rules,
+        &opts,
+        &mut oracle,
+        &HashMap::new(),
+        None,
+        RiskGateConfig::default(),
+        &mut DensityMemo::new(),
+        &mut RiskMemo::new(),
+        &mut stats_off,
+    );
+    assert_eq!(
+        proof_off.trap_score_mask.count_ones(),
+        2,
+        "exactly A and C are trappy in this fixture"
+    );
+    assert_eq!(
+        stats_off.gate_seen_positive, 0,
+        "inactive gate counts nothing"
+    );
+    let nibble_of = |proof: &ChildProof, key: u64| -> u8 {
+        let rank = trap_rank(proof.trap_score_mask, index_of(key)).expect("masked");
+        nibble_at(proof.optimal_trap_nibbles, rank)
+    };
+    let nibble_a_off = nibble_of(&proof_off, child_a);
+
+    // Gate on (absolute, lambda 0): only zero-risk candidates survive; C
+    // falls out of the mask, A's nibble VALUE is untouched.
+    let gate = RiskGateConfig {
+        mode: RiskGateMode::Absolute,
+        lambda: 0.0,
+        min_placing_ply_proxy: 0,
+    };
+    let mut stats_on = RecomputeStats::default();
+    let (proof_on, _) = derive_child_proof(
+        &entry,
+        &rules,
+        &opts,
+        &mut oracle,
+        &HashMap::new(),
+        None,
+        gate,
+        &mut DensityMemo::new(),
+        &mut RiskMemo::new(),
+        &mut stats_on,
+    );
+    assert_ne!(proof_on.trap_score_mask & (1 << index_of(child_a)), 0);
+    assert_eq!(proof_on.trap_score_mask & (1 << index_of(child_c)), 0);
+    assert_eq!(nibble_of(&proof_on, child_a), nibble_a_off);
+    assert_eq!(proof_on.optimal_mask, proof_off.optimal_mask);
+    assert_eq!(stats_on.gate_seen_positive, 2);
+    assert_eq!(stats_on.gate_passed_positive, 1);
+    assert_eq!(stats_on.gate_filtered_positive, 1);
+    assert_eq!(stats_on.gate_filtered_by_risk, 1);
+    assert_eq!(stats_on.gate_filtered_by_ply_proxy, 0);
+    assert_eq!(stats_on.gate_filtered_unresolved, 0);
+}
+
+#[test]
+fn sibling_delta_gate_filters_uncovered_excess_risk() {
+    let rules = rules();
+    let opts = options();
+    let mut oracle = TableOracle::new();
+    oracle.default_value = Some(0);
+    let (entry, child_a, child_c) = risky_and_safe_trappy_children(&rules, &opts, &mut oracle);
+
+    let risk_c = measured_risk(&rules, &opts, &mut oracle, &play(&rules, &["b6"]))
+        .expect("C's continuations are covered");
+    let trap_c = {
+        let child_c_snap = play(&rules, &["b6"]);
+        let key = oracle.key_of(&MillRules::decode_snapshot(child_c_snap), &opts);
+        DensityMemo::new()
+            .density_and_best(key, &child_c_snap, &rules, &opts, &mut oracle)
+            .expect("covered")
+            .0
+    };
+    // Sibling minima are 0 here (zero-risk / zero-trap siblings exist),
+    // so C's deltas are its absolute values. Pick lambda between the two
+    // verdicts: strict lambda filters C, generous lambda keeps it.
+    let strict = 0.5 * risk_c / trap_c;
+    let generous = 2.0 * risk_c / trap_c;
+    assert!(risk_c > strict * trap_c && risk_c <= generous * trap_c);
+
+    let parent_snap = rules.initial_state(&[]);
+    let child_keys = child_keys_in_mask_order(&rules, &parent_snap, &mut oracle);
+    let index_of = |key: u64| child_keys.iter().position(|&k| k == key).unwrap();
+    let mut run = |lambda: f64| -> (ChildProof, RecomputeStats) {
+        let gate = RiskGateConfig {
+            mode: RiskGateMode::SiblingDelta,
+            lambda,
+            min_placing_ply_proxy: 0,
+        };
+        let mut stats = RecomputeStats::default();
+        let (proof, _) = derive_child_proof(
+            &entry,
+            &rules,
+            &opts,
+            &mut oracle,
+            &HashMap::new(),
+            None,
+            gate,
+            &mut DensityMemo::new(),
+            &mut RiskMemo::new(),
+            &mut stats,
+        );
+        (proof, stats)
+    };
+
+    let (proof_strict, stats_strict) = run(strict);
+    assert_ne!(
+        proof_strict.trap_score_mask & (1 << index_of(child_a)),
+        0,
+        "the risk-free sibling has zero excess risk and always passes"
+    );
+    assert_eq!(
+        proof_strict.trap_score_mask & (1 << index_of(child_c)),
+        0,
+        "C's excess risk is not covered by lambda * its trap edge"
+    );
+    assert_eq!(stats_strict.gate_filtered_by_risk, 1);
+
+    let (proof_generous, stats_generous) = run(generous);
+    assert_ne!(proof_generous.trap_score_mask & (1 << index_of(child_c)), 0);
+    assert_eq!(stats_generous.gate_filtered_positive, 0);
+    assert_eq!(stats_generous.gate_passed_positive, 2);
+}
+
+#[test]
+fn ply_proxy_floor_empties_the_mask_without_touching_diagnostics() {
+    let rules = rules();
+    let opts = options();
+    let mut oracle = TableOracle::new();
+    oracle.default_value = Some(0);
+    let (entry, _, _) = risky_and_safe_trappy_children(&rules, &opts, &mut oracle);
+
+    // The initial position has placing_ply_proxy 0: a floor of 5 filters
+    // every positive candidate even with mode none (the floor alone
+    // activates the gate).
+    let gate = RiskGateConfig {
+        mode: RiskGateMode::None,
+        lambda: 1.0,
+        min_placing_ply_proxy: 5,
+    };
+    assert!(gate.active());
+    let mut stats = RecomputeStats::default();
+    let (proof, diag) = derive_child_proof(
+        &entry,
+        &rules,
+        &opts,
+        &mut oracle,
+        &HashMap::new(),
+        None,
+        gate,
+        &mut DensityMemo::new(),
+        &mut RiskMemo::new(),
+        &mut stats,
+    );
+    assert_eq!(proof.trap_score_mask, 0);
+    assert_eq!(stats.gate_seen_positive, 2);
+    assert_eq!(stats.gate_filtered_by_ply_proxy, 2);
+    assert!(
+        diag.nibble_gap > 0,
+        "steering diagnostics still see the full un-gated score vector"
+    );
+    assert!(
+        drop_steering_for_empty_mask(gate.active(), entry.severity, proof.trap_score_mask),
+        "a severity-0 record emptied by the active gate is then dropped"
     );
 }
 
@@ -713,7 +1376,9 @@ fn derive_child_proof_rejects_a_foreign_best_child() {
         &mut oracle,
         &HashMap::new(),
         None,
+        RiskGateConfig::default(),
         &mut memo,
+        &mut RiskMemo::new(),
         &mut stats,
     );
 }

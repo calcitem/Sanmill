@@ -848,10 +848,16 @@ fn patchtrap_trace_rows_stay_tied_best() {
 /// * Trap payoff uses the packer's uniform density formula
 ///   `sum(max(0, best_reply - reply)) / (2 * reply_count)` on
 ///   side-flipped children only.
-/// * Own-risk walks the opponent's value-preserving replies, applies
-///   each, and measures the same density formula one level deeper (our
-///   own follow-up moves); zero preserving replies yields `null` fields
-///   plus a separate counter -- never a fake-safe 0.
+/// * `naive_grandchild_density` (formerly misnamed `own_risk`) walks the
+///   opponent's value-preserving replies, applies each, and measures the
+///   same density formula at whatever node that lands on -- WITHOUT
+///   checking whose turn it is there (a mill-forming preserving reply
+///   leaves the OPPONENT on turn, so the measured density is theirs, not
+///   ours). It stays here as a diagnostic only; the packer's risk gate
+///   uses the corrected own-TURN risk
+///   (`mill_pack::recompute::RiskMemo::own_turn_risk`), which resolves
+///   the pending-removal layer before measuring. Zero preserving replies
+///   yields `null` fields plus a separate counter -- never a fake-safe 0.
 ///
 ///   SANMILL_STRONG_DB=... SANMILL_TRACE_DIR=... SANMILL_GAME_LOG=...
 ///   SANMILL_SELF_RISK_OUT=...
@@ -928,14 +934,15 @@ fn self_risk_probe_over_trace() {
         severity_sum / (2.0 * replies.len() as f64)
     }
 
-    /// Side-flipped child probe: trap payoff + own continuation risk
-    /// (mean, max, p90, samples; `None` when the opponent has no
-    /// value-preserving reply).
+    /// Side-flipped child probe: trap payoff + the naive one-reply-deep
+    /// density (mean, max, p90, samples; `None` when the opponent has no
+    /// value-preserving reply). See the test doc: this is a diagnostic,
+    /// NOT the packer gate's own-turn risk.
     struct FlippedChildMetrics {
         legal_reply_count: usize,
         preserving_reply_count: usize,
         trap_density: f64,
-        own_risk: Option<(f64, f64, f64, usize)>,
+        naive_grandchild_density: Option<(f64, f64, f64, usize)>,
     }
 
     fn flipped_child_metrics(
@@ -952,7 +959,7 @@ fn self_risk_probe_over_trace() {
                 legal_reply_count: 0,
                 preserving_reply_count: 0,
                 trap_density: 0.0,
-                own_risk: None,
+                naive_grandchild_density: None,
             };
         }
         let best_reply = replies.iter().map(|&(_, v)| v).max().expect("non-empty");
@@ -974,7 +981,7 @@ fn self_risk_probe_over_trace() {
             risks.push(density(&ours));
         }
         risks.sort_by(|a, b| a.partial_cmp(b).expect("finite"));
-        let own_risk = (!risks.is_empty()).then(|| {
+        let naive_grandchild_density = (!risks.is_empty()).then(|| {
             let mean = risks.iter().sum::<f64>() / risks.len() as f64;
             let max = *risks.last().expect("non-empty");
             (mean, max, percentile_90(&risks), risks.len())
@@ -983,7 +990,7 @@ fn self_risk_probe_over_trace() {
             legal_reply_count: replies.len(),
             preserving_reply_count: preserving.len(),
             trap_density,
-            own_risk,
+            naive_grandchild_density,
         }
     }
 
@@ -991,7 +998,7 @@ fn self_risk_probe_over_trace() {
         match metrics {
             None => serde_json::Value::Null,
             Some(m) => {
-                let (mean, max, p90, samples) = match m.own_risk {
+                let (mean, max, p90, samples) = match m.naive_grandchild_density {
                     Some((mean, max, p90, samples)) => (
                         serde_json::json!(mean),
                         serde_json::json!(max),
@@ -1014,10 +1021,10 @@ fn self_risk_probe_over_trace() {
                         m.preserving_reply_count as f64 / m.legal_reply_count as f64
                     },
                     "trap_density": m.trap_density,
-                    "own_risk_mean": mean,
-                    "own_risk_max": max,
-                    "own_risk_p90": p90,
-                    "own_risk_samples": samples,
+                    "naive_grandchild_density_mean": mean,
+                    "naive_grandchild_density_max": max,
+                    "naive_grandchild_density_p90": p90,
+                    "naive_grandchild_density_samples": samples,
                 })
             }
         }
@@ -1145,11 +1152,13 @@ fn self_risk_probe_over_trace() {
                 (Some(b), Some(s)) => serde_json::json!(s.trap_density - b.trap_density),
                 _ => serde_json::Value::Null,
             };
-            let risk_delta = match (&baseline_metrics, &steering_metrics) {
-                (Some(b), Some(s)) => match (b.own_risk, s.own_risk) {
-                    (Some((bm, ..)), Some((sm, ..))) => serde_json::json!(sm - bm),
-                    _ => serde_json::Value::Null,
-                },
+            let naive_grandchild_density_delta = match (&baseline_metrics, &steering_metrics) {
+                (Some(b), Some(s)) => {
+                    match (b.naive_grandchild_density, s.naive_grandchild_density) {
+                        (Some((bm, ..)), Some((sm, ..))) => serde_json::json!(sm - bm),
+                        _ => serde_json::Value::Null,
+                    }
+                }
                 _ => serde_json::Value::Null,
             };
 
@@ -1179,7 +1188,7 @@ fn self_risk_probe_over_trace() {
                 "baseline_metrics": side_metrics_json(&baseline_metrics),
                 "steering_metrics": side_metrics_json(&steering_metrics),
                 "trap_density_delta": trap_density_delta,
-                "risk_delta": risk_delta,
+                "naive_grandchild_density_delta": naive_grandchild_density_delta,
             });
             use std::io::Write;
             writeln!(out, "{enriched}").expect("self-risk row write");

@@ -51,8 +51,9 @@ fn sample_indices(total: usize, sample_size: usize, seed: u64) -> Vec<usize> {
 /// Audit `sample_size` of `entries` against the live database at `db`,
 /// additionally re-deriving each sampled entry's proof + steering fields
 /// through the same [`super::recompute::derive_child_proof`] (with the
-/// same HumanDB context and fusion signal the pack ran with) and requiring
-/// an exact match -- a divergence is a blocking failure, not a diagnostic.
+/// same HumanDB context, fusion signal, and risk-gate configuration the
+/// pack ran with) and requiring an exact match -- a divergence is a
+/// blocking failure, not a diagnostic.
 #[allow(clippy::too_many_arguments)]
 pub(crate) fn audit_entries<P: DatabaseProvider + Clone>(
     entries: &[&MineEntry],
@@ -63,6 +64,7 @@ pub(crate) fn audit_entries<P: DatabaseProvider + Clone>(
     proofs: &std::collections::HashMap<u64, super::recompute::ChildProof>,
     trap_score_by_key: &std::collections::HashMap<u64, u8>,
     human: Option<&super::human_weight::HumanWeights>,
+    gate: super::recompute::RiskGateConfig,
 ) -> AuditOutcome {
     let rules = MillRules::new(options.clone());
     let variant = perfect_db::database::DatabaseVariant::from_mill_options(options)
@@ -94,6 +96,7 @@ pub(crate) fn audit_entries<P: DatabaseProvider + Clone>(
     indices.sort_by_key(|&index| entries[index].key);
     let mut failures = Vec::new();
     let mut memo = super::recompute::DensityMemo::new();
+    let mut risk_memo = super::recompute::RiskMemo::new();
     let mut rederive_stats = super::recompute::RecomputeStats::default();
     for index in &indices {
         let entry = entries[*index];
@@ -117,7 +120,9 @@ pub(crate) fn audit_entries<P: DatabaseProvider + Clone>(
                 &mut oracle,
                 trap_score_by_key,
                 human,
+                gate,
                 &mut memo,
+                &mut risk_memo,
                 &mut rederive_stats,
             )
         };
@@ -319,6 +324,7 @@ mod tests {
             None,
             super::super::human_weight::HumanWeightConfig::default(),
             0,
+            super::super::recompute::RiskGateConfig::default(),
         )
         .expect("no human db configured, recompute cannot fail on external data");
         let refs: Vec<&MineEntry> = outcome.entries.iter().collect();
@@ -339,6 +345,7 @@ mod tests {
             &outcome.proofs,
             &outcome.trap_score_by_key,
             outcome.human.as_ref(),
+            super::super::recompute::RiskGateConfig::default(),
         );
         assert!(
             audited.failures.is_empty(),
