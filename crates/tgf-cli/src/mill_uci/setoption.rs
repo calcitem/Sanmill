@@ -216,6 +216,27 @@ pub(super) fn apply_setoption(
             super::patch::set_trace_tag(value);
             SetoptionResult::Acknowledged
         }
+        // Diagnostic-only: pins every shuffled tie-break stream (root-move
+        // shuffling, MCTS, the `Random` algorithm) to a fixed value
+        // instead of wall-clock time, so a paired harness (H2H) can derive
+        // per-(game, side) seeds and make otherwise-identical runs across
+        // engine configurations bit-reproducible up to their first real
+        // divergence. Accepts decimal or `0x`-prefixed hex; 0 is a valid
+        // seed. `value auto` reverts to the wall-clock default. An
+        // unparsable value is Unknown and leaves the current seed alone.
+        "searchshuffleseed" | "search shuffle seed" => {
+            if value.eq_ignore_ascii_case("auto") {
+                engine_cfg.search_shuffle_seed = None;
+                SetoptionResult::Acknowledged
+            } else {
+                parse_u64_flexible(value)
+                    .map(|seed| {
+                        engine_cfg.search_shuffle_seed = Some(seed);
+                        SetoptionResult::Acknowledged
+                    })
+                    .unwrap_or(SetoptionResult::Unknown)
+            }
+        }
         "developermode" | "developer mode" => parse_bool(value)
             .map(|v| {
                 engine_cfg.developer_mode = v;
@@ -594,5 +615,19 @@ pub(super) fn parse_bool(value: &str) -> Option<bool> {
         "true" | "1" | "yes" | "on" => Some(true),
         "false" | "0" | "no" | "off" => Some(false),
         _ => None,
+    }
+}
+
+/// Parse a decimal or `0x`/`0X`-prefixed hex `u64` (mirrors the H2H
+/// harness's own seed-parsing convention, e.g. `H2H_OPENING_SEED`), so a
+/// seed value can be copy-pasted between the two without reformatting.
+fn parse_u64_flexible(value: &str) -> Option<u64> {
+    let trimmed = value.trim();
+    match trimmed
+        .strip_prefix("0x")
+        .or_else(|| trimmed.strip_prefix("0X"))
+    {
+        Some(hex) => u64::from_str_radix(hex, 16).ok(),
+        None => trimmed.parse::<u64>().ok(),
     }
 }

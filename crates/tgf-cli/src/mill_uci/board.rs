@@ -142,6 +142,8 @@ pub(super) fn print_uci_options() {
     println!("option name PatchPath type string default <empty>");
     println!("option name PatchAvoidTraps type check default false");
     println!("option name PatchMakeTraps type check default false");
+    println!("option name PatchTraceTag type string default <empty>");
+    println!("option name SearchShuffleSeed type string default auto");
     println!("option name ConsiderMobility type check default true");
     println!("option name FocusOnBlockingPaths type check default true");
     println!("option name DeveloperMode type check default true");

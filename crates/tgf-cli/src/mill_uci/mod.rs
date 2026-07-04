@@ -209,6 +209,15 @@ struct EngineConfig {
     /// database's tied-best moves -- the one whose resulting position has
     /// the highest patch trap score (Flutter "Set traps for the opponent").
     patch_make_traps: bool,
+    /// Diagnostic-only override for the [`search_shuffle_seed`] free
+    /// function's wall-clock default, set via `setoption
+    /// SearchShuffleSeed`. Exists so a paired test harness (H2H) can pin
+    /// every random tie-break stream to a value derived from its own
+    /// (game, side) pair instead of process start time, making
+    /// otherwise-identical runs across engine configurations actually
+    /// comparable move-for-move up to the first point they diverge. `None`
+    /// preserves the historical wall-clock behavior for normal play.
+    search_shuffle_seed: Option<u64>,
 }
 
 impl Default for EngineConfig {
@@ -238,6 +247,7 @@ impl Default for EngineConfig {
             patch_path: None,
             patch_avoid_traps: false,
             patch_make_traps: false,
+            search_shuffle_seed: None,
         }
     }
 }
@@ -1014,7 +1024,7 @@ fn run_configured_search(
             result = quick_result;
         } else {
             let mut rand_searcher = mill_searcher();
-            rand_searcher.set_random_seed(search_shuffle_seed());
+            rand_searcher.set_random_seed(search_shuffle_seed(cfg));
             let mut rand_wb = MillGame::new(options).build_workbench(&state);
             result = rand_searcher.random_search(&mut rand_wb);
         }
@@ -1081,7 +1091,7 @@ fn run_algorithm_at_depth(
         2 => searcher.search_mtdf_with_guess(wb, depth, first_guess),
         3 => run_mcts_search(wb, cfg),
         4 => {
-            searcher.set_random_seed(search_shuffle_seed());
+            searcher.set_random_seed(search_shuffle_seed(cfg));
             searcher.random_search(wb)
         }
         _ => searcher.search(wb, depth),
@@ -1442,7 +1452,7 @@ fn run_mcts_search(wb: &mut tgf_mill::MillWorkbench, cfg: &EngineConfig) -> Sear
         u32::from(cfg.skill_level).saturating_mul(2048).max(1)
     };
     let mut mcts = MctsSearcher::<MillGame>::new();
-    mcts.set_random_seed(search_shuffle_seed());
+    mcts.set_random_seed(search_shuffle_seed(cfg));
     mcts.set_policy(SearchPolicy {
         quiescence_kind_tag: Some(MillActionKind::Remove as i16),
         ..Default::default()
@@ -1532,7 +1542,7 @@ fn move_order_context_with_algorithm(
         skill_level: cfg.skill_level,
         shuffling: cfg.shuffling,
         hash_move: None,
-        shuffle_seed: search_shuffle_seed(),
+        shuffle_seed: search_shuffle_seed(cfg),
     }
 }
 
@@ -1544,11 +1554,17 @@ fn mtdf_initial_guess(cfg: &EngineConfig, root_side_to_move: i8) -> i32 {
     }
 }
 
-fn search_shuffle_seed() -> u64 {
-    std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .map(|d| d.as_nanos() as u64)
-        .unwrap_or(0)
+/// Seed for every shuffled tie-break (root-move shuffling, MCTS, the
+/// `Random` algorithm). Wall-clock by default; `setoption
+/// SearchShuffleSeed` overrides it for deterministic diagnostic runs (see
+/// [`EngineConfig::search_shuffle_seed`]).
+fn search_shuffle_seed(cfg: &EngineConfig) -> u64 {
+    cfg.search_shuffle_seed.unwrap_or_else(|| {
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|d| d.as_nanos() as u64)
+            .unwrap_or(0)
+    })
 }
 
 fn finish_active_search(slot: &mut Option<ActiveSearch>, cfg: &mut EngineConfig) {

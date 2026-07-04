@@ -187,6 +187,105 @@ fn setoption_parses_perfect_database_options() {
     assert!(!ecfg.use_perfect_database);
 }
 
+/// `SearchShuffleSeed` is diagnostic-only (Acknowledged, not SearchConfig:
+/// it must not trigger a TT reallocation or a perfect-DB/patch resync).
+/// Accepts decimal and `0x`-prefixed hex, 0 is a legal seed, an unparsable
+/// value is `Unknown` and leaves the previous seed untouched, and `auto`
+/// reverts to the wall-clock default.
+#[test]
+fn setoption_search_shuffle_seed_parses_decimal_hex_and_rejects_garbage() {
+    let mut options = MillVariantOptions::default();
+    let mut threads = 1usize;
+    let mut qsearch = 0i32;
+    let mut ecfg = EngineConfig::default();
+    assert_eq!(ecfg.search_shuffle_seed, None);
+
+    assert!(matches!(
+        apply_setoption(
+            "setoption name SearchShuffleSeed value 12345",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut ecfg,
+        ),
+        SetoptionResult::Acknowledged
+    ));
+    assert_eq!(ecfg.search_shuffle_seed, Some(12345));
+
+    // 0 is a legal seed, not "unset".
+    assert!(matches!(
+        apply_setoption(
+            "setoption name SearchShuffleSeed value 0",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut ecfg,
+        ),
+        SetoptionResult::Acknowledged
+    ));
+    assert_eq!(ecfg.search_shuffle_seed, Some(0));
+
+    assert!(matches!(
+        apply_setoption(
+            "setoption name Search Shuffle Seed value 0x9E3779B97F4A7C15",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut ecfg,
+        ),
+        SetoptionResult::Acknowledged
+    ));
+    assert_eq!(ecfg.search_shuffle_seed, Some(0x9E37_79B9_7F4A_7C15));
+
+    // An invalid value is Unknown and must not disturb the current seed.
+    assert!(matches!(
+        apply_setoption(
+            "setoption name SearchShuffleSeed value not-a-number",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut ecfg,
+        ),
+        SetoptionResult::Unknown
+    ));
+    assert_eq!(ecfg.search_shuffle_seed, Some(0x9E37_79B9_7F4A_7C15));
+
+    assert!(matches!(
+        apply_setoption(
+            "setoption name SearchShuffleSeed value auto",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut ecfg,
+        ),
+        SetoptionResult::Acknowledged
+    ));
+    assert_eq!(ecfg.search_shuffle_seed, None);
+}
+
+/// The free function that every shuffled search path calls must return
+/// exactly the configured override -- deterministically, not merely "some
+/// value derived from it" -- and must fall back to a non-fixed (wall
+/// -clock) value when unset.
+#[test]
+fn search_shuffle_seed_returns_the_override_when_set() {
+    let overridden = EngineConfig {
+        search_shuffle_seed: Some(0x1234_5678_9abc_def0),
+        ..EngineConfig::default()
+    };
+    assert_eq!(search_shuffle_seed(&overridden), 0x1234_5678_9abc_def0);
+    assert_eq!(search_shuffle_seed(&overridden), 0x1234_5678_9abc_def0);
+
+    // Unset falls back to the historical wall-clock path: two calls a
+    // moment apart are overwhelmingly likely to differ (nanosecond
+    // resolution), unlike the fixed-seed path above.
+    let default_cfg = EngineConfig::default();
+    let a = search_shuffle_seed(&default_cfg);
+    std::thread::sleep(Duration::from_millis(1));
+    let b = search_shuffle_seed(&default_cfg);
+    assert_ne!(a, b, "an unset seed must keep varying with wall-clock time");
+}
+
 #[test]
 fn perfect_database_runtime_config_tracks_supported_rule_variants() {
     let cfg = EngineConfig {

@@ -49,6 +49,18 @@
 //   H2H_OPENING_PLIES paired Perfect DB random opening plies (default 0)
 //   H2H_OPENING_DB_PATH Perfect DB asset dir (default Flutter DB assets)
 //   H2H_OPENING_SEED deterministic seed for paired Perfect DB openings
+//   H2H_SEARCH_SHUFFLE_SEED  decimal or 0x-hex base seed; when set, every
+//                  game gets a deterministic `SearchShuffleSeed` sent to
+//                  BOTH engines, derived from (base seed, game_index,
+//                  board side) -- so the exact same (game_index, side) in
+//                  every comparison run (e.g. avoid-only vs avoid+make)
+//                  shares one tie-break stream regardless of which engine
+//                  plays which colour, making paired diffs comparable.
+//                  Unset (default): no SearchShuffleSeed is sent and
+//                  engines keep their historical wall-clock stream --
+//                  paired diffs are then subject to unpaired tie-break
+//                  noise on top of the paired opening. White/black seeds
+//                  are recorded in H2H_GAME_LOG for offline verification.
 //   H2H_GO_CURRENT go command for the current engine (default "go depth 0")
 //   H2H_GO_MASTER  go command for the master engine     (default "go")
 //   H2H_MOVETIME   per-move thinking time in SECONDS via MoveTime setoption
@@ -371,6 +383,24 @@ fn paired_opening_seed(base_seed: u64, game_index: usize) -> u64 {
     splitmix64(base_seed ^ (pair_index as u64).wrapping_mul(0xD1B5_4A32_D192_ED03))
 }
 
+/// Deterministic per-(game, board-side) `SearchShuffleSeed` value, derived
+/// independently of [`paired_opening_seed`] (disjoint salts, so the two
+/// streams can never alias). `board_side` is the physical board side (0 =
+/// White, 1 = Black) -- NEVER which engine (current/master) occupies it --
+/// so the exact same `(game_index, board_side)` pair gets the exact same
+/// tie-break stream in every comparison group (A/B/C/gated-C) regardless
+/// of which engine plays which colour in that group's run. Keyed by the
+/// literal `game_index` (not the opening's `pair_index`): the two games of
+/// one paired-opening pair are still two distinct physical games and get
+/// distinct seeds, exactly like every other game.
+fn derive_shuffle_seed(base_seed: u64, game_index: usize, board_side: u8) -> u64 {
+    splitmix64(
+        base_seed
+            ^ (game_index as u64).wrapping_mul(0x9E37_79B9_7F4A_7C15)
+            ^ (board_side as u64).wrapping_mul(0xBF58_476D_1CE4_E5B9),
+    )
+}
+
 fn workspace_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .join("../..")
@@ -497,15 +527,24 @@ struct Referee {
     game: MillGame,
     options: MillVariantOptions,
     opening: PerfectOpening,
+    /// Base seed for `derive_shuffle_seed`, from `H2H_SEARCH_SHUFFLE_SEED`.
+    /// `None` (the default) sends no `SearchShuffleSeed` at all, leaving
+    /// engines on their historical wall-clock tie-break stream.
+    shuffle_seed: Option<u64>,
 }
 
 impl Referee {
-    fn new(options: MillVariantOptions, opening: PerfectOpening) -> Self {
+    fn new(
+        options: MillVariantOptions,
+        opening: PerfectOpening,
+        shuffle_seed: Option<u64>,
+    ) -> Self {
         Self {
             rules: MillRules::new(options.clone()),
             game: MillGame::new(options.clone()),
             options,
             opening,
+            shuffle_seed,
         }
     }
 
@@ -585,54 +624,147 @@ impl Referee {
         opening_moves
     }
 
-    /// Play one full game between the `white` and `black` engines; returns the
-    /// outcome by board colour (`tgf-mill` is the referee).
+    /// Play one full game between the `white` and `black` engines; returns
+    /// the outcome by board colour (`tgf-mill` is the referee), plus the
+    /// `SearchShuffleSeed` values sent this game (`None` when
+    /// `H2H_SEARCH_SHUFFLE_SEED` is unset), for the game log.
     fn play_game(
         &mut self,
         white: &mut Engine,
         black: &mut Engine,
         max_plies: usize,
         game_index: usize,
-    ) -> (GameResult, usize, Vec<String>, Vec<String>) {
+    ) -> (
+        GameResult,
+        usize,
+        Vec<String>,
+        Vec<String>,
+        Option<u64>,
+        Option<u64>,
+    ) {
         let mut snap = self.rules.initial_state(&[]);
         let mut moves: Vec<String> = Vec::new();
         let mut repetition = RepetitionReferee::default();
         white.new_game();
         black.new_game();
+        // Deterministic per-(game, board-side) tie-break stream for BOTH
+        // engines (whichever role -- current or master/opponent -- occupies
+        // that colour this game): without pinning the opponent too, its
+        // own shuffle noise would still pollute a paired diff. Sent after
+        // `ucinewgame` (which does not reset engine options) and before
+        // any `position`/`go`, so it is in effect for the whole game.
+        let (white_seed, black_seed) = match self.shuffle_seed {
+            Some(base) => {
+                let w = derive_shuffle_seed(base, game_index, 0);
+                let b = derive_shuffle_seed(base, game_index, 1);
+                white.cmd(&format!(
+                    "setoption name SearchShuffleSeed value 0x{w:016x}"
+                ));
+                black.cmd(&format!(
+                    "setoption name SearchShuffleSeed value 0x{b:016x}"
+                ));
+                (Some(w), Some(b))
+            }
+            None => (None, None),
+        };
         let opening_moves =
             self.append_perfect_opening_prefix(&mut snap, &mut moves, &mut repetition, game_index);
 
         for ply in moves.len()..max_plies {
             match self.rules.outcome(&snap).kind {
                 OutcomeKind::Ongoing => {}
-                OutcomeKind::Win(0) => return (GameResult::WhiteWin, ply, opening_moves, moves),
-                OutcomeKind::Win(1) => return (GameResult::BlackWin, ply, opening_moves, moves),
-                OutcomeKind::Draw => return (GameResult::Draw, ply, opening_moves, moves),
-                _ => return (GameResult::Unfinished, ply, opening_moves, moves),
+                OutcomeKind::Win(0) => {
+                    return (
+                        GameResult::WhiteWin,
+                        ply,
+                        opening_moves,
+                        moves,
+                        white_seed,
+                        black_seed,
+                    );
+                }
+                OutcomeKind::Win(1) => {
+                    return (
+                        GameResult::BlackWin,
+                        ply,
+                        opening_moves,
+                        moves,
+                        white_seed,
+                        black_seed,
+                    );
+                }
+                OutcomeKind::Draw => {
+                    return (
+                        GameResult::Draw,
+                        ply,
+                        opening_moves,
+                        moves,
+                        white_seed,
+                        black_seed,
+                    );
+                }
+                _ => {
+                    return (
+                        GameResult::Unfinished,
+                        ply,
+                        opening_moves,
+                        moves,
+                        white_seed,
+                        black_seed,
+                    );
+                }
             }
             if repetition.is_root_threefold_draw(&snap) {
-                return (GameResult::Draw, ply, opening_moves, moves);
+                return (
+                    GameResult::Draw,
+                    ply,
+                    opening_moves,
+                    moves,
+                    white_seed,
+                    black_seed,
+                );
             }
 
             let stm = self.game.build_workbench(&snap).side_to_move();
             let engine = if stm == 0 { &mut *white } else { &mut *black };
             let Some(mv) = engine.best_move(&moves) else {
                 eprintln!("  ! {} returned no move at ply {ply}", engine.name);
-                return (GameResult::Unfinished, ply, opening_moves, moves);
+                return (
+                    GameResult::Unfinished,
+                    ply,
+                    opening_moves,
+                    moves,
+                    white_seed,
+                    black_seed,
+                );
             };
             let Some(action) = MillUciCodec::decode_action(&snap, &mv) else {
                 eprintln!(
                     "  ! undecodable move `{mv}` from {} at ply {ply}",
                     engine.name
                 );
-                return (GameResult::Unfinished, ply, opening_moves, moves);
+                return (
+                    GameResult::Unfinished,
+                    ply,
+                    opening_moves,
+                    moves,
+                    white_seed,
+                    black_seed,
+                );
             };
             snap = self.rules.apply(&snap, action);
             repetition.record_after_apply(action, &snap);
             moves.push(mv);
         }
         // Ply cap reached: both sides maneuvering -> score as a draw.
-        (GameResult::Draw, max_plies, opening_moves, moves)
+        (
+            GameResult::Draw,
+            max_plies,
+            opening_moves,
+            moves,
+            white_seed,
+            black_seed,
+        )
     }
 }
 
@@ -656,6 +788,59 @@ fn repetition_referee_preserves_long_reversible_history() {
 
     referee.record_after_apply(action(MillActionKind::Remove), &repeated);
     assert!(!referee.is_root_threefold_draw(&repeated));
+}
+
+/// `derive_shuffle_seed` must be a pure, stable function of its inputs
+/// (same base/game/side always reproduces the same seed -- the entire
+/// point of pinning it), while varying either `game_index` or
+/// `board_side` alone must change the result (otherwise two different
+/// games, or the two colours of the same game, would silently share one
+/// tie-break stream). It must also never collide with
+/// `paired_opening_seed`'s stream for the same base seed.
+#[test]
+fn derive_shuffle_seed_is_stable_and_varies_with_game_and_side() {
+    let base = 0x5EED_0001_u64;
+
+    assert_eq!(
+        derive_shuffle_seed(base, 7, 0),
+        derive_shuffle_seed(base, 7, 0),
+        "identical inputs must reproduce identically"
+    );
+
+    assert_ne!(
+        derive_shuffle_seed(base, 7, 0),
+        derive_shuffle_seed(base, 7, 1),
+        "the two board sides of the same game must not share a seed"
+    );
+    assert_ne!(
+        derive_shuffle_seed(base, 7, 0),
+        derive_shuffle_seed(base, 8, 0),
+        "two different games on the same side must not share a seed"
+    );
+    assert_ne!(
+        derive_shuffle_seed(base, 7, 0),
+        derive_shuffle_seed(base.wrapping_add(1), 7, 0),
+        "a different base seed must change the derived seed"
+    );
+
+    // Every (game_index, side) pair across a realistic run must be unique
+    // (no accidental collisions from the salt choice).
+    let mut seen = std::collections::HashSet::new();
+    for game_index in 0..64 {
+        for side in [0u8, 1u8] {
+            assert!(
+                seen.insert(derive_shuffle_seed(base, game_index, side)),
+                "collision at game_index={game_index} side={side}"
+            );
+        }
+    }
+
+    // Disjoint from the opening-prefix seed stream for the same base and
+    // game_index (different salts by construction).
+    assert_ne!(
+        derive_shuffle_seed(base, 7, 0),
+        paired_opening_seed(base, 7)
+    );
 }
 
 /// Percentage of `num` out of `den` (0 when `den == 0`).
@@ -943,6 +1128,14 @@ fn env_u64(name: &str, default: u64) -> u64 {
         .unwrap_or(default)
 }
 
+/// `Option<u64>` variant of [`env_u64`] for switches that must default to
+/// "disabled" rather than to some numeric fallback (e.g.
+/// `H2H_SEARCH_SHUFFLE_SEED`: unset must mean "send nothing", not "send a
+/// baked-in seed").
+fn env_u64_option(name: &str) -> Option<u64> {
+    env::var(name).ok().map(|s| parse_u64_env_value(name, &s))
+}
+
 fn env_path(name: &str) -> Option<PathBuf> {
     env::var(name)
         .ok()
@@ -990,6 +1183,9 @@ struct MatchConfig {
     opening_plies: usize,
     opening_seed: u64,
     opening_db_path: Option<PathBuf>,
+    /// Base seed for `derive_shuffle_seed`; `None` (default) sends no
+    /// `SearchShuffleSeed`, preserving the historical wall-clock stream.
+    shuffle_seed: Option<u64>,
 }
 
 #[derive(Debug)]
@@ -1003,6 +1199,11 @@ struct GameReport {
     /// patchtrap traces (H2H_GAME_LOG consumers).
     moves: Vec<String>,
     current_white: Option<bool>,
+    /// `SearchShuffleSeed` values sent this game (`None` when
+    /// `H2H_SEARCH_SHUFFLE_SEED` is unset); written to the game log for
+    /// offline reproduction / cross-group verification.
+    white_seed: Option<u64>,
+    black_seed: Option<u64>,
 }
 
 fn build_referee(config: &MatchConfig) -> Referee {
@@ -1013,6 +1214,7 @@ fn build_referee(config: &MatchConfig) -> Referee {
             config.opening_seed,
             config.opening_db_path.clone(),
         ),
+        config.shuffle_seed,
     )
 }
 
@@ -1128,7 +1330,7 @@ fn run_self_play_parallel(config: MatchConfig, is_master: bool, label: &str) {
             };
 
             for game_index in worker_game_indices(worker_id, config.total_games, config.jobs) {
-                let (result, plies, opening_moves, moves) =
+                let (result, plies, opening_moves, moves, white_seed, black_seed) =
                     referee.play_game(&mut ew, &mut eb, config.max_plies, game_index);
                 tx.send(GameReport {
                     worker_id,
@@ -1138,6 +1340,8 @@ fn run_self_play_parallel(config: MatchConfig, is_master: bool, label: &str) {
                     opening_moves,
                     moves,
                     current_white: None,
+                    white_seed,
+                    black_seed,
                 })
                 .expect("main H2H collector should stay alive");
             }
@@ -1254,7 +1458,8 @@ fn run_vs_parallel(config: MatchConfig) {
                     game_index,
                     u8::from(current_white)
                 ));
-                let (result, plies, opening_moves, moves) = if current_white {
+                let (result, plies, opening_moves, moves, white_seed, black_seed) = if current_white
+                {
                     referee.play_game(&mut cur, &mut mas, config.max_plies, game_index)
                 } else {
                     referee.play_game(&mut mas, &mut cur, config.max_plies, game_index)
@@ -1267,6 +1472,8 @@ fn run_vs_parallel(config: MatchConfig) {
                     opening_moves,
                     moves,
                     current_white: Some(current_white),
+                    white_seed,
+                    black_seed,
                 })
                 .expect("main H2H collector should stay alive");
             }
@@ -1313,6 +1520,8 @@ fn run_vs_parallel(config: MatchConfig) {
                         "plies": report.plies,
                         "opening_moves": report.opening_moves,
                         "moves": report.moves,
+                        "white_seed": report.white_seed.map(|s| format!("0x{s:016x}")),
+                        "black_seed": report.black_seed.map(|s| format!("0x{s:016x}")),
                     });
                     writeln!(log, "{row}").expect("H2H_GAME_LOG write failed");
                     log.flush().ok();
@@ -1440,6 +1649,7 @@ fn head_to_head_vs_master() {
     let opening_plies = env_usize("H2H_OPENING_PLIES", 0);
     let opening_seed = env_u64("H2H_OPENING_SEED", 0x9E37_79B9_7F4A_7C15);
     let opening_db_path = env_path("H2H_OPENING_DB_PATH");
+    let shuffle_seed = env_u64_option("H2H_SEARCH_SHUFFLE_SEED");
     let total = games * 2;
     assert!(total > 0, "H2H_GAMES must schedule at least one game");
     let jobs = jobs_for_total(total);
@@ -1515,20 +1725,29 @@ fn head_to_head_vs_master() {
         opening_plies,
         opening_seed,
         opening_db_path: env_path("H2H_OPENING_DB_PATH"),
+        shuffle_seed,
     };
 
     if mode == "self-current" || mode == "self-master" {
         let is_master = mode == "self-master";
         let label = if is_master { "master" } else { "current" };
         eprintln!(
-            "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_ms={move_time_ms} shuffling=on algo=MTD(f) games={total} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_env={current_env:?} master_env={master_env:?}\n  current_db={current_perfect_db:?} master_db={master_perfect_db:?}\n  current_patch={current_patch:?} master_patch={master_patch:?}"
+            "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_ms={move_time_ms} shuffling=on algo=MTD(f) games={total} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  shuffle_seed={}\n  current_env={current_env:?} master_env={master_env:?}\n  current_db={current_perfect_db:?} master_db={master_perfect_db:?}\n  current_patch={current_patch:?} master_patch={master_patch:?}",
+            match shuffle_seed {
+                Some(seed) => format!("0x{seed:016x} (deterministic per game/side)"),
+                None => "unset (wall-clock, unpaired)".to_string(),
+            }
         );
         run_self_play_parallel(config, is_master, label);
     } else {
         // vs mode: current vs master, alternating colours each game so the live
         // rates are not skewed by Black's structural edge until colours balance.
         eprintln!(
-            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_ms={move_time_ms} shuffling=on algo=MTD(f) games/color={games} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  current_args={current_args:?} master_args={master_args:?}\n  current_env={current_env:?} master_env={master_env:?}\n  current_db={current_perfect_db:?} master_db={master_perfect_db:?}\n  current_patch={current_patch:?} master_patch={master_patch:?}\n  go_current=`{go_current}` go_master=`{go_master}`"
+            "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_ms={move_time_ms} shuffling=on algo=MTD(f) games/color={games} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  shuffle_seed={}\n  current_args={current_args:?} master_args={master_args:?}\n  current_env={current_env:?} master_env={master_env:?}\n  current_db={current_perfect_db:?} master_db={master_perfect_db:?}\n  current_patch={current_patch:?} master_patch={master_patch:?}\n  go_current=`{go_current}` go_master=`{go_master}`",
+            match shuffle_seed {
+                Some(seed) => format!("0x{seed:016x} (deterministic per game/side)"),
+                None => "unset (wall-clock, unpaired)".to_string(),
+            }
         );
         run_vs_parallel(config);
     }
