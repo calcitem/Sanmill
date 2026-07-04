@@ -288,14 +288,19 @@ fn emit_steering_produces_severity_zero_candidates() {
     }
 
     // The checkpoint written by a steering run carries a fingerprint that
-    // records the steering configuration.
-    let (fingerprint, _, _) = load_checkpoint(checkpoint.to_str().unwrap());
+    // records the steering configuration, plus the running emission total.
+    let (fingerprint, emitted, _, _) = load_checkpoint(checkpoint.to_str().unwrap());
     let fingerprint = fingerprint.expect("new checkpoints must carry a fingerprint");
     assert!(fingerprint.emit_steering);
     assert_eq!(fingerprint.steering_min_mass, 1.0);
     assert_eq!(
         fingerprint.checkpoint_schema_version,
         CHECKPOINT_SCHEMA_VERSION
+    );
+    assert_eq!(
+        emitted as usize,
+        steering.len(),
+        "the checkpoint must persist the emission total"
     );
 
     let _ = std::fs::remove_dir_all(&dir);
@@ -374,6 +379,73 @@ fn steering_max_entries_caps_candidates_but_not_blunders() {
         uncapped_blunders, capped_blunders,
         "blunder emission must be unaffected by the steering cap"
     );
+
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
+/// `--steering-max-entries` is a *global* cap: a resumed run restores the
+/// persisted emission total from the checkpoint, so the combined output of
+/// the original run plus every resume never exceeds the cap (regression:
+/// the counter used to reset per process, letting each resume emit a full
+/// cap's worth again).
+#[test]
+fn steering_cap_holds_across_resume() {
+    let dir = std::env::temp_dir().join(format!(
+        "sanmill_mill_mine_steering_resume_{}",
+        std::process::id()
+    ));
+    let _ = std::fs::remove_dir_all(&dir);
+    std::fs::create_dir_all(&dir).unwrap();
+    let db = bundled_asset_root();
+    let out = dir.join("entries.jsonl");
+    let checkpoint = dir.join("checkpoint.json");
+
+    // Identical configuration (fingerprint-relevant flags) across both
+    // runs; only the engine-call budget grows, which is a legitimate
+    // resume. The cap is 1 and the first run already exhausts it.
+    let base_argv = |budget: &str| {
+        args(
+            &[
+                ("--db", db.as_str()),
+                ("--out", out.to_str().unwrap()),
+                ("--checkpoint", checkpoint.to_str().unwrap()),
+                ("--max-depth-plies", "3"),
+                ("--budget-engine-calls", budget),
+                ("--workers", "1"),
+                ("--depth", "3"),
+                ("--steering-min-mass", "1"),
+                ("--steering-max-entries", "1"),
+            ],
+            &["--emit-steering"],
+        )
+    };
+
+    run_mill_mine(&base_argv("5"));
+    let count_steering = || -> usize {
+        std::fs::read_to_string(&out)
+            .unwrap_or_default()
+            .lines()
+            .map(|line| serde_json::from_str::<MineEntry>(line).expect("valid JSONL"))
+            .filter(|entry| entry.severity == 0)
+            .count()
+    };
+    assert_eq!(
+        count_steering(),
+        1,
+        "the first run must already exhaust the cap"
+    );
+
+    let mut resumed = base_argv("15");
+    resumed.push("--resume".to_string());
+    run_mill_mine(&resumed);
+    assert_eq!(
+        count_steering(),
+        1,
+        "a resumed run must not emit past the global cap"
+    );
+
+    let (_, emitted, _, _) = load_checkpoint(checkpoint.to_str().unwrap());
+    assert_eq!(emitted, 1, "the persisted total must survive the resume");
 
     let _ = std::fs::remove_dir_all(&dir);
 }
@@ -484,8 +556,9 @@ fn pre_fingerprint_checkpoint_parses_but_cannot_resume() {
     ));
     std::fs::write(&path, r#"{"visited":[[42,"Safe"]],"frontier":[]}"#).unwrap();
 
-    let (fingerprint, visited, frontier) = load_checkpoint(path.to_str().unwrap());
+    let (fingerprint, emitted, visited, frontier) = load_checkpoint(path.to_str().unwrap());
     assert!(fingerprint.is_none());
+    assert_eq!(emitted, 0, "pre-schema checkpoints default the counter");
     assert_eq!(visited.len(), 1);
     assert!(frontier.is_empty());
 

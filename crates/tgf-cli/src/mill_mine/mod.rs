@@ -350,8 +350,10 @@ struct Stats {
 
 /// Version stamp for [`Checkpoint`]'s on-disk shape. Bump whenever the
 /// checkpoint or emission semantics change in a way that makes resuming an
-/// older file unsound.
-const CHECKPOINT_SCHEMA_VERSION: u32 = 2;
+/// older file unsound (v3: added the persisted steering emission counter,
+/// without which `--steering-max-entries` would silently reset per
+/// process).
+const CHECKPOINT_SCHEMA_VERSION: u32 = 3;
 
 /// Everything that must be identical between the run that wrote a
 /// checkpoint and the run resuming it: mixed-fingerprint output would
@@ -566,9 +568,10 @@ pub(crate) fn run_mill_mine(args: &[String]) {
 
     let mut visited: HashMap<u64, Verdict> = HashMap::new();
     let mut frontier = Frontier::new();
+    let mut resumed_steering_emitted = 0_u64;
 
     if resume && std::path::Path::new(&checkpoint_path).exists() {
-        let (loaded_fingerprint, loaded_visited, loaded_frontier) =
+        let (loaded_fingerprint, loaded_steering_emitted, loaded_visited, loaded_frontier) =
             load_checkpoint(&checkpoint_path);
         if let Err(message) =
             validate_checkpoint_fingerprint(loaded_fingerprint.as_ref(), &fingerprint)
@@ -577,12 +580,15 @@ pub(crate) fn run_mill_mine(args: &[String]) {
             std::process::exit(1);
         }
         eprintln!(
-            "[mill-mine] resumed checkpoint: {} visited, {} frontier items (fingerprint OK)",
+            "[mill-mine] resumed checkpoint: {} visited, {} frontier items, \
+             {} steering candidates already emitted (fingerprint OK)",
             loaded_visited.len(),
-            loaded_frontier.len()
+            loaded_frontier.len(),
+            loaded_steering_emitted
         );
         visited = loaded_visited;
         frontier.extend(loaded_frontier);
+        resumed_steering_emitted = loaded_steering_emitted;
     } else {
         let root_fen = rules.export_fen(&MillRules::decode_snapshot(rules.initial_state(&[])));
         frontier.push(FrontierItem {
@@ -619,7 +625,12 @@ pub(crate) fn run_mill_mine(args: &[String]) {
         .unwrap_or_else(|e| panic!("[mill-mine] cannot open output {out_path}: {e}"));
     let mut out_writer = std::io::BufWriter::new(out_file);
 
-    let mut stats = Stats::default();
+    let mut stats = Stats {
+        // Restore the persisted emission total so --steering-max-entries
+        // remains a global cap across resumed runs.
+        steering_candidates_emitted: resumed_steering_emitted,
+        ..Stats::default()
+    };
     let started_at = Instant::now();
     let mut last_checkpoint_at_visited = 0_u64;
     let mut budget_exhausted = false;
@@ -767,7 +778,7 @@ pub(crate) fn run_mill_mine(args: &[String]) {
                 break;
             }
 
-            if stats.visited % 1000 == 0 {
+            if stats.visited.is_multiple_of(1000) {
                 use std::io::Write;
                 out_writer.flush().ok();
                 eprintln!(
@@ -783,7 +794,13 @@ pub(crate) fn run_mill_mine(args: &[String]) {
                 );
             }
             if stats.visited.saturating_sub(last_checkpoint_at_visited) >= checkpoint_every {
-                save_checkpoint(&checkpoint_path, &fingerprint, &visited, &frontier);
+                save_checkpoint(
+                    &checkpoint_path,
+                    &fingerprint,
+                    stats.steering_candidates_emitted,
+                    &visited,
+                    &frontier,
+                );
                 last_checkpoint_at_visited = stats.visited;
             }
         }
@@ -795,7 +812,13 @@ pub(crate) fn run_mill_mine(args: &[String]) {
         use std::io::Write;
         out_writer.flush().expect("final flush failed");
     }
-    save_checkpoint(&checkpoint_path, &fingerprint, &visited, &frontier);
+    save_checkpoint(
+        &checkpoint_path,
+        &fingerprint,
+        stats.steering_candidates_emitted,
+        &visited,
+        &frontier,
+    );
 
     let elapsed = started_at.elapsed().as_secs_f64();
     let density_pct = if stats.visited > 0 {
@@ -823,6 +846,12 @@ struct Checkpoint {
     /// [`validate_checkpoint_fingerprint`] rejects those on resume.
     #[serde(default)]
     fingerprint: Option<CheckpointFingerprint>,
+    /// Running total of emitted steering candidates, persisted so
+    /// `--steering-max-entries` stays a *global* cap across resumed runs
+    /// instead of silently resetting per process. (The skipped-after-cap
+    /// counter is per-run diagnostics only and deliberately not carried.)
+    #[serde(default)]
+    steering_candidates_emitted: u64,
     visited: Vec<(u64, Verdict)>,
     frontier: Vec<FrontierItem>,
 }
@@ -830,11 +859,13 @@ struct Checkpoint {
 fn save_checkpoint(
     path: &str,
     fingerprint: &CheckpointFingerprint,
+    steering_candidates_emitted: u64,
     visited: &HashMap<u64, Verdict>,
     frontier: &Frontier,
 ) {
     let checkpoint = Checkpoint {
         fingerprint: Some(fingerprint.clone()),
+        steering_candidates_emitted,
         visited: visited.iter().map(|(&k, &v)| (k, v)).collect(),
         frontier: frontier.snapshot(),
     };
@@ -877,6 +908,7 @@ fn load_checkpoint(
     path: &str,
 ) -> (
     Option<CheckpointFingerprint>,
+    u64,
     HashMap<u64, Verdict>,
     Vec<FrontierItem>,
 ) {
@@ -886,6 +918,7 @@ fn load_checkpoint(
         .unwrap_or_else(|e| panic!("[mill-mine] cannot parse checkpoint {path}: {e}"));
     (
         checkpoint.fingerprint,
+        checkpoint.steering_candidates_emitted,
         checkpoint.visited.into_iter().collect(),
         checkpoint.frontier,
     )
