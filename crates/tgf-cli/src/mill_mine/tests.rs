@@ -735,6 +735,103 @@ fn steering_switches_never_drop_value() {
     );
 }
 
+/// Verify a captured H2H patchtrap trace (TGF_PATCH_TRACE_DIR output)
+/// against the full external database: for every traced switch, BOTH the
+/// baseline and the steering move must be tied-best in the parent
+/// position. A steering move below best is the blocking-bug signature; a
+/// baseline below best would mean the packed optimal_mask carries a false
+/// positive. Fail-fast with the offending rows.
+///
+///   SANMILL_STRONG_DB=... SANMILL_TRACE_DIR=... \
+///   cargo test -p tgf-cli --release mill_mine::tests::patchtrap_trace_rows_stay_tied_best -- --ignored --nocapture
+#[test]
+#[ignore = "requires the external strong DB and a captured trace directory"]
+fn patchtrap_trace_rows_stay_tied_best() {
+    use tgf_mill::MillUciCodec;
+
+    let env_or = |name: &str, default: &str| std::env::var(name).unwrap_or_else(|_| default.into());
+    let db_root = env_or("SANMILL_STRONG_DB", "D:/user/Documents/strong");
+    // Tests run with the crate directory as cwd; resolve workspace
+    // -relative defaults against the workspace root.
+    let workspace = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+    let trace_dir = {
+        let raw = env_or("SANMILL_TRACE_DIR", "target/steering_run/trace");
+        let candidate = std::path::PathBuf::from(&raw);
+        if candidate.is_dir() {
+            candidate
+        } else {
+            workspace.join(&raw)
+        }
+    };
+
+    let options = MillVariantOptions::default();
+    let rules = MillRules::new(options.clone());
+    let provider =
+        perfect_db::database::FileDatabaseProvider::new(std::path::PathBuf::from(&db_root));
+    let mut planes = perfect_db::wdl_plane::WdlPlaneCache::new(provider, DatabaseVariant::STANDARD)
+        .expect("strong DB plane cache");
+
+    let mut rows = 0_usize;
+    let mut failures: Vec<String> = Vec::new();
+    let mut unresolved = 0_usize;
+    for entry in std::fs::read_dir(&trace_dir).expect("trace dir must exist") {
+        let path = entry.expect("dir entry").path();
+        if path.extension().and_then(|e| e.to_str()) != Some("jsonl") {
+            continue;
+        }
+        for line in std::fs::read_to_string(&path)
+            .expect("trace file readable")
+            .lines()
+            .filter(|l| !l.trim().is_empty())
+        {
+            let row: serde_json::Value = serde_json::from_str(line).expect("valid trace JSONL");
+            rows += 1;
+            let fen = row["parent_fen"].as_str().expect("parent_fen");
+            let state = rules.set_from_fen(fen).expect("trace FEN must parse");
+            let snap = rules.encode_state(state);
+            let Ok(Some(move_wdl)) = all_move_wdl_fast(&mut planes, &rules, &snap, &options) else {
+                unresolved += 1;
+                continue;
+            };
+            let best = move_wdl.iter().map(|&(_, v)| v).max().expect("non-empty");
+            let value_of = |token: &str| -> Option<i8> {
+                move_wdl
+                    .iter()
+                    .find(|(a, _)| MillUciCodec::encode_action(*a) == token)
+                    .map(|&(_, v)| v)
+            };
+            for field in ["baseline_action", "steering_action"] {
+                let token = row[field].as_str().expect("action token");
+                match value_of(token) {
+                    Some(value) if value == best => {}
+                    Some(value) => failures.push(format!(
+                        "{field} {token} has value {value} < best {best} (tag {}, fen {fen})",
+                        row["trace_tag"]
+                    )),
+                    None => failures.push(format!(
+                        "{field} {token} is not legal in the traced parent (tag {}, fen {fen})",
+                        row["trace_tag"]
+                    )),
+                }
+            }
+        }
+    }
+    eprintln!(
+        "[trace-verify] rows={rows} unresolved={unresolved} failures={}",
+        failures.len()
+    );
+    assert!(rows > 0, "the trace directory must contain rows to verify");
+    assert_eq!(
+        unresolved, 0,
+        "every traced position must be DB-resolvable for the verdict to count"
+    );
+    assert!(
+        failures.is_empty(),
+        "traced switches broke value preservation:\n{}",
+        failures.join("\n")
+    );
+}
+
 #[test]
 fn output_file_lines_are_all_parseable_jsonl() {
     let dir = std::env::temp_dir().join(format!("sanmill_mill_mine_jsonl_{}", std::process::id()));
