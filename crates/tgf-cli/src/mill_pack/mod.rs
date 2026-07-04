@@ -117,7 +117,7 @@ use perfect_db::patch::{
 use perfect_db::wdl_plane::unpack_canonical_key;
 use tgf_mill::MillVariantOptions;
 
-use crate::cli_args::{flag_present, parse_flag};
+use crate::cli_args::{flag_present, parse_flag, parse_flag_strict};
 use crate::mill_mine::entry::MineEntry;
 use recompute::ChildProof;
 
@@ -177,6 +177,40 @@ fn assert_entries_fit_std_budget(entries: &[MineEntry]) {
              run by mistake? patch-pack only supports std today."
         );
     }
+}
+
+/// Parse the experimental risk-gate flags into a [`recompute::RiskGateConfig`].
+///
+/// Strict by design: missing flags fall back to the inert defaults
+/// (`none` / `1.0` / `0`), but a flag that is PRESENT with a missing,
+/// malformed, or out-of-range value is an `Err` (the caller exits
+/// nonzero). The gate configures long paired-H2H experiment matrices --
+/// a silently defaulted parameter would run a configuration that was
+/// never asked for and poison the comparison.
+fn parse_risk_gate(args: &[String]) -> Result<recompute::RiskGateConfig, String> {
+    let mode_name: String = parse_flag_strict(args, "--steering-risk-gate", "none".to_string())?;
+    let mode = match mode_name.as_str() {
+        "none" => recompute::RiskGateMode::None,
+        "absolute" => recompute::RiskGateMode::Absolute,
+        "sibling-delta" => recompute::RiskGateMode::SiblingDelta,
+        other => {
+            return Err(format!(
+                "--steering-risk-gate {other} is not a known mode \
+                 (expected none | absolute | sibling-delta)"
+            ));
+        }
+    };
+    let lambda: f64 = parse_flag_strict(args, "--steering-risk-lambda", 1.0_f64)?;
+    if !lambda.is_finite() || lambda < 0.0 {
+        return Err(format!(
+            "--steering-risk-lambda must be finite and >= 0, got {lambda}"
+        ));
+    }
+    Ok(recompute::RiskGateConfig {
+        mode,
+        lambda,
+        min_placing_ply_proxy: parse_flag_strict(args, "--steering-min-placing-ply-proxy", 0_u32)?,
+    })
 }
 
 /// What the budget truncation actually dropped -- returned alongside the
@@ -587,31 +621,10 @@ pub(crate) fn run_patch_pack(args: &[String]) {
 
     let options = MillVariantOptions::default();
     let steering_min_gap: u8 = parse_flag(args, "--steering-min-gap", 3_u8);
-    let risk_gate = {
-        let mode_name: String = parse_flag(args, "--steering-risk-gate", "none".to_string());
-        let mode = match mode_name.as_str() {
-            "none" => recompute::RiskGateMode::None,
-            "absolute" => recompute::RiskGateMode::Absolute,
-            "sibling-delta" => recompute::RiskGateMode::SiblingDelta,
-            other => {
-                eprintln!(
-                    "[patch-pack] ERROR: --steering-risk-gate {other} is not a known mode \
-                     (expected none | absolute | sibling-delta)"
-                );
-                std::process::exit(1);
-            }
-        };
-        let lambda: f64 = parse_flag(args, "--steering-risk-lambda", 1.0_f64);
-        if !lambda.is_finite() || lambda < 0.0 {
-            eprintln!("[patch-pack] ERROR: --steering-risk-lambda must be finite and >= 0");
-            std::process::exit(1);
-        }
-        recompute::RiskGateConfig {
-            mode,
-            lambda,
-            min_placing_ply_proxy: parse_flag(args, "--steering-min-placing-ply-proxy", 0_u32),
-        }
-    };
+    let risk_gate = parse_risk_gate(args).unwrap_or_else(|message| {
+        eprintln!("[patch-pack] ERROR: {message}");
+        std::process::exit(1);
+    });
     let outcome = match recompute::recompute_entries(
         entries,
         std::path::Path::new(&db_path),
@@ -839,6 +852,63 @@ mod tests {
                 )
             })
             .collect()
+    }
+
+    fn argv(tokens: &[&str]) -> Vec<String> {
+        tokens.iter().map(|token| token.to_string()).collect()
+    }
+
+    #[test]
+    fn parse_risk_gate_defaults_are_inert_when_flags_are_absent() {
+        let gate = parse_risk_gate(&argv(&[])).expect("absent flags fall back to defaults");
+        assert_eq!(gate, recompute::RiskGateConfig::default());
+        assert!(!gate.active());
+    }
+
+    #[test]
+    fn parse_risk_gate_accepts_valid_configurations_in_both_flag_forms() {
+        let gate = parse_risk_gate(&argv(&[
+            "--steering-risk-gate",
+            "sibling-delta",
+            "--steering-risk-lambda",
+            "0.75",
+            "--steering-min-placing-ply-proxy",
+            "6",
+        ]))
+        .expect("a valid configuration");
+        assert_eq!(gate.mode, recompute::RiskGateMode::SiblingDelta);
+        assert_eq!(gate.lambda, 0.75);
+        assert_eq!(gate.min_placing_ply_proxy, 6);
+
+        let gate = parse_risk_gate(&argv(&["--steering-risk-gate=absolute"]))
+            .expect("the equals form parses too");
+        assert_eq!(gate.mode, recompute::RiskGateMode::Absolute);
+        assert_eq!(gate.lambda, 1.0, "unset lambda keeps its default");
+    }
+
+    #[test]
+    fn parse_risk_gate_rejects_present_but_broken_values() {
+        // A present flag must never silently fall back to its default:
+        // that would run a gate configuration nobody asked for and
+        // poison a paired-H2H matrix.
+        let broken: &[&[&str]] = &[
+            &["--steering-risk-gate", "bogus"],
+            &["--steering-risk-gate"], // present without a value
+            &["--steering-risk-lambda", "abc"],
+            &["--steering-risk-lambda"], // present without a value
+            &["--steering-risk-lambda", "-0.5"],
+            &["--steering-risk-lambda", "NaN"],
+            &["--steering-risk-lambda", "inf"],
+            &["--steering-min-placing-ply-proxy", "-1"],
+            &["--steering-min-placing-ply-proxy", "4.5"],
+            &["--steering-min-placing-ply-proxy="], // empty equals form
+        ];
+        for tokens in broken {
+            assert!(
+                parse_risk_gate(&argv(tokens)).is_err(),
+                "{tokens:?} must be rejected, not defaulted"
+            );
+        }
     }
 
     #[test]

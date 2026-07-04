@@ -536,6 +536,11 @@ pub(crate) struct RecomputeStats {
     pub skipped: usize,
     pub deduped_away: usize,
     pub same_side_children_zeroed: u64,
+    /// Records whose FINAL `trap_score_mask` is empty despite having
+    /// optimal children. Under an ACTIVE risk gate this includes records
+    /// the gate itself emptied, so the figure is NOT comparable against
+    /// an ungated pack's -- always read it together with
+    /// `risk_gated_empty_steering_records`.
     pub empty_trap_mask_records: u64,
     pub top16_evictions: u64,
     pub nibble_from_behavior: u64,
@@ -1243,6 +1248,12 @@ pub(crate) fn recompute_entries(
         // An ACTIVE gate that empties a severity-0 record's mask leaves a
         // record that can never steer: dead weight, dropped before the
         // gap gate even looks at it (severity > 0 stays regardless).
+        // Deliberate attribution consequence of this ordering: a record
+        // that would ALSO have failed the low-gap / few-flipped gate is
+        // counted here, so under an active gate the drop counters skew
+        // toward risk_gated_empty_steering_records relative to an
+        // ungated pack -- an accepted experimental accounting, not a
+        // like-for-like comparison across gate configurations.
         if drop_steering_for_empty_mask(gate.active(), entry.severity, proof.trap_score_mask) {
             stats.risk_gated_empty_steering_records += 1;
             continue;
