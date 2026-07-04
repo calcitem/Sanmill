@@ -197,6 +197,13 @@ lib/generated/**    linguist-generated=true
 lib/**/*.g.dart     linguist-generated=true
 lib/**/*.freezed.dart linguist-generated=true
 
+# Committed flutter_rust_bridge output (both bridge halves; see .gitignore):
+# collapse in diffs and exclude from language statistics.
+src/ui/flutter_app/lib/src/rust/frb_generated.dart      linguist-generated=true
+src/ui/flutter_app/lib/src/rust/frb_generated.io.dart   linguist-generated=true
+src/ui/flutter_app/lib/src/rust/frb_generated.web.dart  linguist-generated=true
+crates/tgf-frb/src/frb_generated.rs                     linguist-generated=true
+
 # Test files should be excluded from language statistics
 test/**             linguist-vendored=true
 integration_test/** linguist-vendored=true
