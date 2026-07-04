@@ -800,6 +800,241 @@ fn risk_gate_decision_covers_both_modes_and_every_bucket() {
 }
 
 #[test]
+fn net_nibble_charges_risk_on_the_quantized_scale() {
+    // No risk: the gain passes through untouched.
+    assert_eq!(net_nibble(8, 0.0, 1.0), 8);
+    // 0.2 * 15 = 3 quanta of risk cost.
+    assert_eq!(net_nibble(8, 0.2, 1.0), 5);
+    // Lambda scales the cost: 0.2 * 15 * 2 = 6.
+    assert_eq!(net_nibble(8, 0.2, 2.0), 2);
+    // Half-down rounding: exactly half a quantum (0.5) is not charged...
+    assert_eq!(net_nibble(8, 0.5 / 15.0, 1.0), 8);
+    // ...but anything strictly above half a quantum is.
+    assert_eq!(net_nibble(8, 0.51 / 15.0, 1.0), 7);
+    // The cost saturates at zero instead of going negative.
+    assert_eq!(net_nibble(3, 1.0, 1.0), 0);
+    // Zero-gain candidates stay zero regardless of risk.
+    assert_eq!(net_nibble(0, 0.7, 1.0), 0);
+}
+
+#[test]
+fn net_gate_decision_buckets_and_stored_values() {
+    let gate = |lambda: f64, min_ply: u32| RiskGateConfig {
+        mode: RiskGateMode::Net,
+        lambda,
+        min_placing_ply_proxy: min_ply,
+    };
+    // Ply floor fires first and stores nothing.
+    assert_eq!(
+        net_gate_decision(gate(1.0, 6), 5, 8, Some(0.0)),
+        (GateDecision::FilteredByPlyProxy, 0)
+    );
+    // Unresolved own-risk (zero resolved samples) filters.
+    assert_eq!(
+        net_gate_decision(gate(1.0, 0), 9, 8, None),
+        (GateDecision::FilteredUnresolved, 0)
+    );
+    // A surviving net is stored as the (possibly rewritten) value.
+    assert_eq!(
+        net_gate_decision(gate(1.0, 0), 9, 8, Some(0.2)),
+        (GateDecision::Pass, 5)
+    );
+    assert_eq!(
+        net_gate_decision(gate(1.0, 0), 9, 8, Some(0.0)),
+        (GateDecision::Pass, 8)
+    );
+    // A net consumed entirely by the risk cost is a risk filter.
+    assert_eq!(
+        net_gate_decision(gate(1.0, 0), 9, 2, Some(0.5)),
+        (GateDecision::FilteredByRisk, 0)
+    );
+}
+
+#[test]
+fn net_mode_rewrites_stored_values_and_keeps_the_runtime_rule_baseline_relative() {
+    let rules = rules();
+    let opts = options();
+    let mut oracle = TableOracle::new();
+    oracle.default_value = Some(0);
+    let (entry, child_a, child_c) = risky_and_safe_trappy_children(&rules, &opts, &mut oracle);
+
+    let risk_c = measured_risk(&rules, &opts, &mut oracle, &play(&rules, &["b6"]))
+        .expect("C's continuations are covered");
+    assert!(risk_c > 0.0);
+
+    // Deterministic high gain for C through the fusion channel (255 maps
+    // to nibble 15), leaving its replies -- and thus its own-turn risk --
+    // untouched.
+    let mut trap_map = HashMap::new();
+    trap_map.insert(child_c, 255_u8);
+
+    let parent_snap = rules.initial_state(&[]);
+    let child_keys = child_keys_in_mask_order(&rules, &parent_snap, &mut oracle);
+    let index_of = |key: u64| child_keys.iter().position(|&k| k == key).unwrap();
+    let nibble_of = |proof: &ChildProof, key: u64| -> Option<u8> {
+        trap_rank(proof.trap_score_mask, index_of(key))
+            .map(|rank| nibble_at(proof.optimal_trap_nibbles, rank))
+    };
+
+    // Reference gains from the inert pipeline.
+    let mut stats_off = RecomputeStats::default();
+    let (proof_off, _) = derive_child_proof(
+        &entry,
+        &rules,
+        &opts,
+        &mut oracle,
+        &trap_map,
+        None,
+        RiskGateConfig::default(),
+        &mut DensityMemo::new(),
+        &mut RiskMemo::new(),
+        &mut stats_off,
+    );
+    let gain_a = nibble_of(&proof_off, child_a).expect("A is trappy");
+    let gain_c = nibble_of(&proof_off, child_c).expect("C is trappy");
+    assert_eq!(gain_c, 15, "fusion 255 pins C's gain to the nibble max");
+
+    // Pick lambda so C's risk cost rewrites its value without zeroing it:
+    // cost of exactly 1 quantum needs lambda * risk_c * 15 in (0.5, 1.5].
+    let lambda = 1.0 / (risk_c * 15.0);
+    let expected_c = net_nibble(gain_c, risk_c, lambda);
+    assert!(
+        expected_c >= 1 && expected_c < gain_c,
+        "one-quantum rewrite"
+    );
+
+    let gate = RiskGateConfig {
+        mode: RiskGateMode::Net,
+        lambda,
+        min_placing_ply_proxy: 0,
+    };
+    let mut stats_net = RecomputeStats::default();
+    let (proof_net, _) = derive_child_proof(
+        &entry,
+        &rules,
+        &opts,
+        &mut oracle,
+        &trap_map,
+        None,
+        gate,
+        &mut DensityMemo::new(),
+        &mut RiskMemo::new(),
+        &mut stats_net,
+    );
+    assert_eq!(
+        nibble_of(&proof_net, child_a),
+        Some(gain_a),
+        "a risk-free candidate's stored value is its unchanged gain"
+    );
+    assert_eq!(
+        nibble_of(&proof_net, child_c),
+        Some(expected_c),
+        "a risky candidate's stored value is its net"
+    );
+    assert_eq!(stats_net.gate_net_value_rewrites, 1);
+    assert_eq!(stats_net.gate_passed_positive, 2);
+    assert_eq!(proof_net.optimal_mask, proof_off.optimal_mask);
+
+    // A large lambda zeroes C's net out of the mask entirely.
+    let gate_hard = RiskGateConfig {
+        mode: RiskGateMode::Net,
+        lambda: f64::from(gain_c) / (risk_c * 15.0) + 1.0,
+        min_placing_ply_proxy: 0,
+    };
+    let mut stats_hard = RecomputeStats::default();
+    let (proof_hard, _) = derive_child_proof(
+        &entry,
+        &rules,
+        &opts,
+        &mut oracle,
+        &trap_map,
+        None,
+        gate_hard,
+        &mut DensityMemo::new(),
+        &mut RiskMemo::new(),
+        &mut stats_hard,
+    );
+    assert_eq!(
+        nibble_of(&proof_hard, child_c),
+        None,
+        "net 0 leaves the mask"
+    );
+    assert_eq!(stats_hard.gate_filtered_by_risk, 1);
+}
+
+#[test]
+fn active_gate_reports_the_post_gate_gap_not_the_pre_gate_one() {
+    let rules = rules();
+    let opts = options();
+    let mut oracle = TableOracle::new();
+    oracle.default_value = Some(0);
+    let (entry, _, child_c) = risky_and_safe_trappy_children(&rules, &opts, &mut oracle);
+
+    // Boost C's gain through the FUSION channel (external signal, does
+    // not touch C's replies or own-turn risk): the pre-gate gap is then
+    // dominated by C, so filtering C must shrink the gap.
+    let mut trap_map = HashMap::new();
+    trap_map.insert(child_c, 255_u8);
+
+    let parent_snap = rules.initial_state(&[]);
+    let child_keys = child_keys_in_mask_order(&rules, &parent_snap, &mut oracle);
+    let index_of = |key: u64| child_keys.iter().position(|&k| k == key).unwrap();
+
+    let mut stats_off = RecomputeStats::default();
+    let (proof_off, diag_off) = derive_child_proof(
+        &entry,
+        &rules,
+        &opts,
+        &mut oracle,
+        &trap_map,
+        None,
+        RiskGateConfig::default(),
+        &mut DensityMemo::new(),
+        &mut RiskMemo::new(),
+        &mut stats_off,
+    );
+    let rank_c = trap_rank(proof_off.trap_score_mask, index_of(child_c)).expect("C masked");
+    let gain_c = nibble_at(proof_off.optimal_trap_nibbles, rank_c);
+
+    // Absolute gate with lambda 0 filters every positive-risk candidate
+    // (C) while zero-risk A survives: the post-gate vector loses C.
+    let gate = RiskGateConfig {
+        mode: RiskGateMode::Absolute,
+        lambda: 0.0,
+        min_placing_ply_proxy: 0,
+    };
+    let mut stats_on = RecomputeStats::default();
+    let (proof_on, diag_on) = derive_child_proof(
+        &entry,
+        &rules,
+        &opts,
+        &mut oracle,
+        &trap_map,
+        None,
+        gate,
+        &mut DensityMemo::new(),
+        &mut RiskMemo::new(),
+        &mut stats_on,
+    );
+    assert_eq!(proof_on.trap_score_mask & (1 << index_of(child_c)), 0);
+    assert_eq!(
+        diag_off.nibble_gap, gain_c,
+        "pre-gate gap is C's gain over the flat-zero siblings"
+    );
+    assert!(
+        diag_on.nibble_gap < diag_off.nibble_gap,
+        "post-gate gap must reflect the filtered vector \
+         (pre {}, post {})",
+        diag_off.nibble_gap,
+        diag_on.nibble_gap
+    );
+    assert_eq!(
+        diag_on.flipped_optimal, diag_off.flipped_optimal,
+        "the structural candidate count is not gap-dependent"
+    );
+}
+
+#[test]
 #[should_panic(expected = "resolved candidate implies a resolved sibling risk minimum")]
 fn sibling_delta_asserts_when_a_resolved_candidate_has_no_risk_minimum() {
     let gate = RiskGateConfig {
@@ -1360,7 +1595,7 @@ fn sibling_delta_gate_filters_uncovered_excess_risk() {
 }
 
 #[test]
-fn ply_proxy_floor_empties_the_mask_without_touching_diagnostics() {
+fn ply_proxy_floor_empties_the_mask_and_the_post_gate_gap_reports_it() {
     let rules = rules();
     let opts = options();
     let mut oracle = TableOracle::new();
@@ -1392,14 +1627,365 @@ fn ply_proxy_floor_empties_the_mask_without_touching_diagnostics() {
     assert_eq!(proof.trap_score_mask, 0);
     assert_eq!(stats.gate_seen_positive, 2);
     assert_eq!(stats.gate_filtered_by_ply_proxy, 2);
-    assert!(
-        diag.nibble_gap > 0,
-        "steering diagnostics still see the full un-gated score vector"
+    assert_eq!(
+        diag.nibble_gap, 0,
+        "with an ACTIVE gate the gap is measured post-gate: an emptied \
+         mask has nothing left to steer with, and the diagnostics must \
+         say so instead of overstating the pre-gate gain shape"
     );
+    assert!(diag.flipped_optimal >= 2, "structural count remains");
     assert!(
         drop_steering_for_empty_mask(gate.active(), entry.severity, proof.trap_score_mask),
         "a severity-0 record emptied by the active gate is then dropped"
     );
+}
+
+/// Offline net-gate replay over the frozen gate-matrix baseline: walk the
+/// C-group (ungated make-traps) patchtrap trace, rebuild every traced
+/// parent's candidate table from the ungated pack's stored gain nibbles
+/// plus freshly computed own-turn risks, and simulate the runtime's
+/// strictly-greater tie-break under net scores for a lambda sweep --
+/// WITHOUT building a single pack or playing a single game.
+///
+/// Per traced switch and lambda this reports whether the switch would
+/// have been suppressed (baseline kept), redirected (a different target
+/// wins on net), or kept as-is, plus the own-risk of the v4-chosen child
+/// against the net-chosen one. The recomputed gain nibbles are asserted
+/// against the nibbles the engine logged at play time, so a drifted pack
+/// or misaligned index space fails loudly instead of skewing estimates.
+///
+///   SANMILL_STRONG_DB=... SANMILL_TRACE_DIR=... SANMILL_UNGATED_PACK=...
+///   SANMILL_NET_REPLAY_OUT=...
+///   cargo test -p tgf-cli --release mill_pack::recompute::tests::net_gate_replay_over_trace -- --ignored --nocapture
+#[test]
+#[ignore = "requires the external strong DB, the archived baseline pack, and its captured trace"]
+fn net_gate_replay_over_trace() {
+    use perfect_db::database::{DatabaseVariant, FileDatabaseProvider};
+    use perfect_db::wdl_plane::{MID_REMOVAL_KEY_TAG, WdlPlaneCache, unpack_canonical_key};
+
+    let env_or = |name: &str, default: &str| std::env::var(name).unwrap_or_else(|_| default.into());
+    let workspace = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+    let resolve = |raw: String| -> std::path::PathBuf {
+        let candidate = std::path::PathBuf::from(&raw);
+        if candidate.is_absolute() {
+            candidate
+        } else {
+            workspace.join(&raw)
+        }
+    };
+    const BASELINE: &str = "experiments/gate_matrix_20260705_v4_riskgate_baseline";
+    let db_root = env_or("SANMILL_STRONG_DB", "D:/user/Documents/strong");
+    let trace_dir = resolve(env_or(
+        "SANMILL_TRACE_DIR",
+        &format!("{BASELINE}/c_make/trace"),
+    ));
+    let pack_path = resolve(env_or(
+        "SANMILL_UNGATED_PACK",
+        &format!("{BASELINE}/packs/ungated.mill_patch"),
+    ));
+    let out_path = resolve(env_or(
+        "SANMILL_NET_REPLAY_OUT",
+        "target/net_replay/replay.jsonl",
+    ));
+    std::fs::create_dir_all(out_path.parent().expect("output path has a parent"))
+        .expect("output directory must be creatable");
+
+    let options = MillVariantOptions::default();
+    let rules = MillRules::new(options.clone());
+    let provider = FileDatabaseProvider::new(std::path::PathBuf::from(&db_root));
+    let mut planes =
+        WdlPlaneCache::new(provider, DatabaseVariant::STANDARD).expect("strong DB plane cache");
+    let pack_bytes = std::fs::read(&pack_path).expect("baseline ungated pack readable");
+    let pack = perfect_db::patch::PatchFile::read_from(&mut &pack_bytes[..])
+        .expect("baseline pack parses");
+
+    const LAMBDAS: [f64; 5] = [0.5, 0.75, 1.0, 1.5, 2.0];
+    #[derive(Default)]
+    struct Agg {
+        suppressed: usize,
+        kept_same: usize,
+        redirected: usize,
+        risk_pairs: usize,
+        risk_v4_sum: f64,
+        risk_net_sum: f64,
+    }
+    let mut aggregates: Vec<Agg> = (0..LAMBDAS.len()).map(|_| Agg::default()).collect();
+
+    let mut memo = DensityMemo::new();
+    let mut risk_memo = RiskMemo::new();
+    let mut probe_stats = RecomputeStats::default();
+    let mut out = std::io::BufWriter::new(
+        std::fs::File::create(&out_path).expect("replay output must be creatable"),
+    );
+    let mut rows = 0_usize;
+    let mut risk_unresolved_candidates = 0_usize;
+
+    for entry in std::fs::read_dir(&trace_dir).expect("trace dir must exist") {
+        let path = entry.expect("dir entry").path();
+        if path.extension().and_then(|e| e.to_str()) != Some("jsonl") {
+            continue;
+        }
+        for line in std::fs::read_to_string(&path)
+            .expect("trace file readable")
+            .lines()
+            .filter(|l| !l.trim().is_empty())
+        {
+            let row: serde_json::Value = serde_json::from_str(line).expect("valid trace JSONL");
+            let fen = row["parent_fen"].as_str().expect("parent_fen");
+            let mut state = rules.set_from_fen(fen).expect("trace FEN parses");
+            state.reset_ply_since_capture();
+            let parent_side = state.side_to_move();
+            let snap = rules.encode_state(state.clone());
+            let parent_key = perfect_db::canonical_key(&mut planes, &state, &options)
+                .expect("traced parents are keyable");
+            assert_eq!(
+                parent_key,
+                row["parent_key"].as_u64().expect("parent_key"),
+                "replay must rebuild the exact traced parent (fen {fen})"
+            );
+            let record = if parent_key & MID_REMOVAL_KEY_TAG != 0 {
+                let r = pack
+                    .lookup_mid_removal(parent_key)
+                    .expect("traced parent must be in the pack");
+                (
+                    r.child_count,
+                    r.optimal_mask,
+                    r.trap_score_mask,
+                    r.optimal_trap_nibbles,
+                )
+            } else {
+                let (sector, slot) = unpack_canonical_key(parent_key);
+                let r = pack
+                    .lookup(
+                        sector.white_on_board,
+                        sector.black_on_board,
+                        sector.white_in_hand,
+                        sector.black_in_hand,
+                        slot as u32,
+                    )
+                    .expect("traced parent must be in the pack");
+                (
+                    r.child_count,
+                    r.optimal_mask,
+                    r.trap_score_mask,
+                    r.optimal_trap_nibbles,
+                )
+            };
+            let (child_count, optimal_mask, trap_score_mask, optimal_trap_nibbles) = record;
+            let child_keys =
+                perfect_db::patch::sorted_distinct_child_keys(&mut planes, &rules, &options, &snap);
+            assert_eq!(
+                child_keys.len(),
+                usize::from(child_count),
+                "runtime child enumeration must match the pack record (fen {fen})"
+            );
+
+            // First concrete (snapshot, side-flipped) reaching each child key.
+            let mut child_snap_by_key: HashMap<u64, (tgf_core::GameStateSnapshot, bool)> =
+                HashMap::new();
+            let mut legal = tgf_core::ActionList::<256>::new();
+            rules.legal_actions(&snap, &mut legal);
+            let mut key_of_action = |action: tgf_core::Action| -> Option<u64> {
+                let child_snap = rules.apply(&snap, action);
+                let child_state = MillRules::decode_snapshot(child_snap);
+                let key = perfect_db::canonical_key(&mut planes, &child_state, &options)?;
+                child_snap_by_key
+                    .entry(key)
+                    .or_insert((child_snap, child_state.side_to_move() != parent_side));
+                Some(key)
+            };
+            let mut baseline_key = None;
+            let mut steering_key = None;
+            for &action in legal.as_slice() {
+                let token = tgf_mill::MillUciCodec::encode_action(action);
+                let key = key_of_action(action);
+                if Some(token.as_str()) == row["baseline_action"].as_str() {
+                    baseline_key = key;
+                }
+                if Some(token.as_str()) == row["steering_action"].as_str() {
+                    steering_key = key;
+                }
+            }
+            let baseline_key = baseline_key.expect("traced baseline action is legal and keyable");
+            let steering_key = steering_key.expect("traced steering action is legal and keyable");
+
+            let gain_of = |key: u64| -> u8 {
+                let index = child_keys.binary_search(&key).expect("keyed child");
+                perfect_db::patch::trap_rank(trap_score_mask, index)
+                    .map(|rank| perfect_db::patch::nibble_at(optimal_trap_nibbles, rank))
+                    .unwrap_or(0)
+            };
+            // Cross-check the rebuilt gains against what the engine
+            // logged when the switch actually happened.
+            assert_eq!(
+                u64::from(gain_of(baseline_key)),
+                row["baseline_nibble"].as_u64().expect("baseline_nibble"),
+                "rebuilt baseline gain diverged from the live trace (fen {fen})"
+            );
+            assert_eq!(
+                u64::from(gain_of(steering_key)),
+                row["steering_nibble"].as_u64().expect("steering_nibble"),
+                "rebuilt steering gain diverged from the live trace (fen {fen})"
+            );
+
+            // Candidate table: flipped optimal children with positive
+            // gain, each with its resolved own-turn risk (unresolved ->
+            // excluded from every net mask, counted).
+            struct Candidate {
+                key: u64,
+                gain: u8,
+                risk: Option<f64>,
+            }
+            let mut candidates: Vec<Candidate> = Vec::new();
+            for (index, &child_key) in child_keys.iter().enumerate() {
+                if optimal_mask & (1_u64 << index) == 0 {
+                    continue;
+                }
+                let (child_snap, flipped) = child_snap_by_key
+                    .get(&child_key)
+                    .copied()
+                    .expect("every keyed child has a snapshot");
+                if !flipped {
+                    continue;
+                }
+                let gain = gain_of(child_key);
+                if gain == 0 && child_key != baseline_key {
+                    continue;
+                }
+                let mut oracle = PlaneOracle {
+                    planes: &mut planes,
+                };
+                let risk = risk_memo
+                    .own_turn_risk(
+                        child_key,
+                        &child_snap,
+                        parent_side,
+                        &rules,
+                        &options,
+                        &mut oracle,
+                        &mut memo,
+                        &mut probe_stats,
+                    )
+                    .mean;
+                if risk.is_none() {
+                    risk_unresolved_candidates += 1;
+                }
+                candidates.push(Candidate {
+                    key: child_key,
+                    gain,
+                    risk,
+                });
+            }
+            let risk_of = |key: u64| -> Option<f64> {
+                candidates
+                    .iter()
+                    .find(|c| c.key == key)
+                    .and_then(|c| c.risk)
+            };
+
+            let mut per_lambda = Vec::with_capacity(LAMBDAS.len());
+            for (slot, &lambda) in LAMBDAS.iter().enumerate() {
+                let net_of = |c: &Candidate| -> u8 {
+                    match c.risk {
+                        Some(risk) => net_nibble(c.gain, risk, lambda),
+                        None => 0, // packer filters unresolved candidates
+                    }
+                };
+                let net_baseline = candidates
+                    .iter()
+                    .find(|c| c.key == baseline_key)
+                    .map(net_of)
+                    .unwrap_or(0);
+                // Runtime rule: ascending-key scan, strictly greater than
+                // the baseline's stored score, first max kept.
+                let mut best: Option<(u8, u64)> = None;
+                for candidate in &candidates {
+                    if candidate.key == baseline_key {
+                        continue;
+                    }
+                    let net = net_of(candidate);
+                    if net > net_baseline && best.is_none_or(|(score, _)| net > score) {
+                        best = Some((net, candidate.key));
+                    }
+                }
+                let agg = &mut aggregates[slot];
+                let verdict = match best {
+                    None => {
+                        agg.suppressed += 1;
+                        "suppressed"
+                    }
+                    Some((_, target)) if target == steering_key => {
+                        agg.kept_same += 1;
+                        "kept_same"
+                    }
+                    Some(_) => {
+                        agg.redirected += 1;
+                        "redirected"
+                    }
+                };
+                // Risk of what v4 actually played vs what net would play
+                // (baseline when suppressed).
+                let net_target = best.map(|(_, target)| target).unwrap_or(baseline_key);
+                if let (Some(risk_v4), Some(risk_net)) =
+                    (risk_of(steering_key), risk_of(net_target))
+                {
+                    agg.risk_pairs += 1;
+                    agg.risk_v4_sum += risk_v4;
+                    agg.risk_net_sum += risk_net;
+                }
+                per_lambda.push(serde_json::json!({
+                    "lambda": lambda,
+                    "verdict": verdict,
+                    "net_baseline": net_baseline,
+                    "net_target": best.map(|(net, _)| net),
+                }));
+            }
+
+            use std::io::Write;
+            writeln!(
+                out,
+                "{}",
+                serde_json::json!({
+                    "trace_tag": row["trace_tag"],
+                    "ply": row["ply"],
+                    "parent_key": parent_key,
+                    "baseline_gain": gain_of(baseline_key),
+                    "steering_gain": gain_of(steering_key),
+                    "baseline_risk": risk_of(baseline_key),
+                    "steering_risk": risk_of(steering_key),
+                    "candidates": candidates.len(),
+                    "per_lambda": per_lambda,
+                })
+            )
+            .expect("replay row write");
+            rows += 1;
+        }
+    }
+    use std::io::Write;
+    out.flush().expect("flush replay output");
+
+    assert!(rows > 0, "the replay needs trace rows to analyze");
+    eprintln!(
+        "[net-replay] rows={rows} risk_unresolved_candidates={risk_unresolved_candidates} \
+         (risk memo: {} unique, {} hits) -> {}",
+        risk_memo.misses,
+        risk_memo.hits,
+        out_path.display()
+    );
+    for (slot, &lambda) in LAMBDAS.iter().enumerate() {
+        let agg = &aggregates[slot];
+        eprintln!(
+            "[net-replay] lambda={lambda}: suppressed={} ({:.1}%) kept_same={} redirected={} | \
+             mean own-risk of played child: v4={:.4} net={:.4} (over {} rows)",
+            agg.suppressed,
+            100.0 * agg.suppressed as f64 / rows as f64,
+            agg.kept_same,
+            agg.redirected,
+            agg.risk_v4_sum / agg.risk_pairs.max(1) as f64,
+            agg.risk_net_sum / agg.risk_pairs.max(1) as f64,
+            agg.risk_pairs,
+        );
+    }
 }
 
 #[test]

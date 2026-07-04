@@ -29,7 +29,8 @@ use std::path::Path;
 
 use perfect_db::database::{Database, DatabaseOptions, DatabaseVariant, FileDatabaseProvider};
 use perfect_db::patch::{
-    MAX_TRAP_SCORED_CHILDREN, nibble_to_u8, trap_rank, u8_trap_score_to_nibble_for_fusion,
+    MAX_TRAP_SCORED_CHILDREN, nibble_at, nibble_to_u8, trap_rank,
+    u8_trap_score_to_nibble_for_fusion,
 };
 use perfect_db::wdl_plane::WdlPlaneCache;
 use tgf_core::{Action, GameRules, GameStateSnapshot};
@@ -94,9 +95,18 @@ pub(crate) fn steering_gate(
     Ok(())
 }
 
-/// Experimental steering risk-gate mode (`--steering-risk-gate`). The gate
-/// filters candidates OUT of `trap_score_mask` only -- the nibble formula
-/// itself is never touched, so an A/B pack diff is purely a mask diff.
+/// Experimental steering risk-gate mode (`--steering-risk-gate`).
+///
+/// `Absolute` and `SiblingDelta` filter candidates OUT of
+/// `trap_score_mask` only (the stored nibble values stay the raw trap
+/// gain). `Net` goes further and REWRITES the stored value to the net
+/// score `gain - lambda * own_risk`: because the runtime's make-traps
+/// tie-break switches only on a *strictly higher stored score than the
+/// baseline child's*, storing nets turns that existing rule into a
+/// baseline-relative net comparison -- pairwise "is the extra trap gain
+/// worth the extra self-risk" -- with zero engine changes. Masks remain
+/// subsets of the optimal mask in every mode; no gate can ever steer
+/// toward a value-dropping move.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub(crate) enum RiskGateMode {
     /// No risk filtering (production default; byte-identical packs).
@@ -110,6 +120,10 @@ pub(crate) enum RiskGateMode {
     /// over the parent's side-flipping optimal children with *resolved*
     /// values only.
     SiblingDelta,
+    /// Store `net_nibble(gain, own_risk, lambda)` instead of the gain:
+    /// candidates whose net rounds below 1 leave the mask, the rest carry
+    /// their net as the stored nibble (see [`net_nibble`]).
+    Net,
 }
 
 impl RiskGateMode {
@@ -118,8 +132,33 @@ impl RiskGateMode {
             RiskGateMode::None => "none",
             RiskGateMode::Absolute => "absolute",
             RiskGateMode::SiblingDelta => "sibling-delta",
+            RiskGateMode::Net => "net",
         }
     }
+}
+
+/// The net-mode stored score: the gain nibble minus the own-risk cost on
+/// the same 0..=15 quantization scale, floored at 0. `gain_nibble` is the
+/// exact nibble the v4 pipeline would have stored (behavior/uniform blend
+/// fused with child-entry scores), so a risk-free candidate packs
+/// byte-identically to the ungated pipeline.
+///
+/// The subtraction happens on the quantized scale (rather than in raw
+/// density space) deliberately: fusion-sourced gains only exist as
+/// nibbles, and the runtime comparison is nibble-granular anyway. Risk
+/// rounds HALF-DOWN (`ceil(x - 0.5)` on a non-negative operand) so a
+/// candidate is never charged a full quantum for exactly half a quantum
+/// of measured risk -- ties on the runtime's strictly-greater rule
+/// already break toward the baseline, so rounding the cost up as well
+/// would double-penalize boundary candidates.
+pub(crate) fn net_nibble(gain_nibble: u8, own_risk: f64, lambda: f64) -> u8 {
+    assert!(gain_nibble <= 15, "gain is a 4-bit nibble");
+    assert!(
+        own_risk.is_finite() && own_risk >= 0.0,
+        "own-risk means are finite and non-negative by construction"
+    );
+    let cost_quanta = (lambda * own_risk * 15.0 - 0.5).ceil().max(0.0) as u8;
+    gain_nibble.saturating_sub(cost_quanta)
 }
 
 /// Experimental risk-gate configuration. `Default` is the inert
@@ -182,14 +221,16 @@ pub(crate) enum GateDecision {
     FilteredUnresolved,
 }
 
-/// The pure per-candidate gate decision, shared by the packer, the
-/// audit's re-derivation, and the unit tests. `own_risk` is the resolved
-/// own-turn risk mean (`None` = zero resolved samples); `trap_density` is
-/// the candidate's uniform density (`None` = unresolved, treated as 0 --
-/// a positive nibble over an unresolved density can only come from
-/// fusion, which the caller counts separately). The sibling minima are
-/// only consulted in sibling-delta mode and must come from *resolved*
-/// siblings only -- an unresolved sibling must never anchor a 0 minimum.
+/// The pure per-candidate KEEP/DROP gate decision for the mask-only
+/// modes, shared by the packer, the audit's re-derivation, and the unit
+/// tests. `own_risk` is the resolved own-turn risk mean (`None` = zero
+/// resolved samples); `trap_density` is the candidate's uniform density
+/// (`None` = unresolved, treated as 0 -- a positive nibble over an
+/// unresolved density can only come from fusion, which the caller counts
+/// separately). The sibling minima are only consulted in sibling-delta
+/// mode and must come from *resolved* siblings only -- an unresolved
+/// sibling must never anchor a 0 minimum. `Net` mode is value-rewriting,
+/// not keep/drop, and is decided by [`net_gate_decision`] instead.
 pub(crate) fn risk_gate_decision(
     gate: RiskGateConfig,
     placing_ply_proxy: u32,
@@ -203,6 +244,9 @@ pub(crate) fn risk_gate_decision(
     }
     match gate.mode {
         RiskGateMode::None => GateDecision::Pass,
+        RiskGateMode::Net => {
+            unreachable!("net mode rewrites stored values and is decided by net_gate_decision")
+        }
         RiskGateMode::Absolute => {
             let Some(risk) = own_risk else {
                 return GateDecision::FilteredUnresolved;
@@ -234,6 +278,33 @@ pub(crate) fn risk_gate_decision(
                 GateDecision::FilteredByRisk
             }
         }
+    }
+}
+
+/// Net-mode per-candidate decision: returns the decision bucket plus the
+/// nibble to store (the net on `Pass`, 0 -- out of the mask -- on every
+/// filter bucket). The ply floor fires first, a candidate with zero
+/// resolved own-risk samples filters as unresolved (same candidate-level
+/// rule as the mask-only modes), and a net that rounds to 0 is
+/// `FilteredByRisk`: the risk cost consumed the entire gain.
+pub(crate) fn net_gate_decision(
+    gate: RiskGateConfig,
+    placing_ply_proxy: u32,
+    gain_nibble: u8,
+    own_risk: Option<f64>,
+) -> (GateDecision, u8) {
+    debug_assert_eq!(gate.mode, RiskGateMode::Net);
+    if placing_ply_proxy < gate.min_placing_ply_proxy {
+        return (GateDecision::FilteredByPlyProxy, 0);
+    }
+    let Some(risk) = own_risk else {
+        return (GateDecision::FilteredUnresolved, 0);
+    };
+    let net = net_nibble(gain_nibble, risk, gate.lambda);
+    if net == 0 {
+        (GateDecision::FilteredByRisk, 0)
+    } else {
+        (GateDecision::Pass, net)
     }
 }
 
@@ -591,6 +662,10 @@ pub(crate) struct RecomputeStats {
     /// unresolved (the nibble came from fusion); the gate scores their
     /// trap term as 0.
     pub gate_trap_unresolved_fusion_zeroed: u64,
+    /// Net-mode only: kept candidates whose STORED nibble was lowered
+    /// below their gain nibble by the risk cost (the count of actual
+    /// value rewrites, as opposed to pass-through keeps).
+    pub gate_net_value_rewrites: u64,
     /// Own-risk SAMPLE counters, accumulated on RiskMemo cache misses
     /// only (unique positions, not per-candidate-use; see
     /// [`RiskMemo::own_turn_risk`]).
@@ -852,14 +927,13 @@ pub(crate) fn derive_child_proof(
         entry.fen
     );
 
-    // Score every proven-optimal, side-flipping child. `flipped_nibbles`
-    // is the FULL score vector for the steering gate: every side-flipping
-    // optimal candidate contributes its fused nibble, including zeros,
-    // candidates later evicted from the top-16 mask, and candidates the
-    // risk gate filters (same-side children are excluded -- their 0 is a
-    // perspective rule, not a measurement).
+    // Score every proven-optimal, side-flipping child. `candidates` is
+    // the FULL vector for the steering-gate diagnostics: every side
+    // -flipping optimal candidate contributes its fused gain nibble,
+    // including zeros and candidates later evicted from the top-16 mask
+    // or filtered/rewritten by the risk gate (same-side children are
+    // excluded -- their 0 is a perspective rule, not a measurement).
     let mut candidates: Vec<FlippedCandidate> = Vec::new();
-    let mut flipped_nibbles: Vec<u8> = Vec::new();
     let mut optimal_children = 0_u64;
     for (index, (&child_key, _)) in value_by_child_key.iter().enumerate() {
         if optimal_mask & (1_u64 << index) == 0 {
@@ -915,7 +989,6 @@ pub(crate) fn derive_child_proof(
         } else {
             nibble_behavior
         };
-        flipped_nibbles.push(nibble);
         candidates.push(FlippedCandidate {
             index,
             child_key,
@@ -927,8 +1000,11 @@ pub(crate) fn derive_child_proof(
 
     // Mask selection: without an active gate this is exactly the old
     // "every positive nibble enters" rule (byte-identical packs); with
-    // one, positive candidates must additionally pass the risk gate.
-    // Either way the nibble VALUES are final -- the gate is mask-only.
+    // one, positive candidates must additionally pass the risk gate. The
+    // mask-only modes (absolute / sibling-delta) keep the gain nibble as
+    // the stored value; NET mode stores `gain - lambda * risk` instead,
+    // so the runtime's strictly-greater tie-break compares baseline
+    // -relative nets.
     let mut scored: Vec<(u8, u64, usize)> = Vec::new();
     if !gate.active() {
         for candidate in &candidates {
@@ -989,7 +1065,7 @@ pub(crate) fn derive_child_proof(
             let own_risk = match gate.mode {
                 RiskGateMode::None => None,
                 RiskGateMode::SiblingDelta => own_risk_mean[slot],
-                RiskGateMode::Absolute => {
+                RiskGateMode::Absolute | RiskGateMode::Net => {
                     risk_memo
                         .own_turn_risk(
                             candidate.child_key,
@@ -1004,17 +1080,29 @@ pub(crate) fn derive_child_proof(
                         .mean
                 }
             };
-            match risk_gate_decision(
-                gate,
-                parent_ply_proxy,
-                own_risk,
-                candidate.trap_density,
-                min_sibling_risk,
-                min_sibling_trap,
-            ) {
+            let (decision, stored_nibble) = match gate.mode {
+                RiskGateMode::Net => {
+                    net_gate_decision(gate, parent_ply_proxy, candidate.nibble, own_risk)
+                }
+                _ => (
+                    risk_gate_decision(
+                        gate,
+                        parent_ply_proxy,
+                        own_risk,
+                        candidate.trap_density,
+                        min_sibling_risk,
+                        min_sibling_trap,
+                    ),
+                    candidate.nibble,
+                ),
+            };
+            match decision {
                 GateDecision::Pass => {
                     stats.gate_passed_positive += 1;
-                    scored.push((candidate.nibble, candidate.child_key, candidate.index));
+                    if stored_nibble < candidate.nibble {
+                        stats.gate_net_value_rewrites += 1;
+                    }
+                    scored.push((stored_nibble, candidate.child_key, candidate.index));
                 }
                 GateDecision::FilteredByPlyProxy => {
                     stats.gate_filtered_positive += 1;
@@ -1037,12 +1125,38 @@ pub(crate) fn derive_child_proof(
         stats.empty_trap_mask_records += 1;
     }
 
-    let nibble_gap = match (flipped_nibbles.iter().max(), flipped_nibbles.iter().min()) {
-        (Some(&max), Some(&min)) if flipped_nibbles.len() >= 2 => max - min,
-        _ => 0,
+    // Steering-gate diagnostics. Inactive gate: the historical PRE-gate
+    // gain vector (including candidates later evicted from the top-16
+    // mask), so default packs stay byte-identical. Active gate: the
+    // POST-gate EFFECTIVE vector -- each candidate's actually-packed
+    // nibble, 0 when filtered/rewritten-out/evicted -- so the min-gap
+    // gate judges the steering quality the shipped record can deliver,
+    // not the pre-gate gain shape that used to overstate it.
+    let nibble_gap = if gate.active() {
+        let effective: Vec<u8> = candidates
+            .iter()
+            .map(|candidate| {
+                trap_rank(trap_score_mask, candidate.index)
+                    .map(|rank| nibble_at(optimal_trap_nibbles, rank))
+                    .unwrap_or(0)
+            })
+            .collect();
+        match (effective.iter().max(), effective.iter().min()) {
+            (Some(&max), Some(&min)) if effective.len() >= 2 => max - min,
+            _ => 0,
+        }
+    } else {
+        let gains: Vec<u8> = candidates
+            .iter()
+            .map(|candidate| candidate.nibble)
+            .collect();
+        match (gains.iter().max(), gains.iter().min()) {
+            (Some(&max), Some(&min)) if gains.len() >= 2 => max - min,
+            _ => 0,
+        }
     };
     let diag = SteeringDiag {
-        flipped_optimal: flipped_nibbles.len() as u32,
+        flipped_optimal: candidates.len() as u32,
         nibble_gap,
     };
 
@@ -1350,7 +1464,8 @@ pub(crate) fn recompute_entries(
         eprintln!(
             "[patch-pack] risk gate (mode={} lambda={} min_placing_ply_proxy={}): \
              gate_seen_positive={} gate_passed_positive={} gate_filtered_positive={} \
-             (by_ply_proxy={} by_risk={} unresolved={}) trap_unresolved_fusion_zeroed={}",
+             (by_ply_proxy={} by_risk={} unresolved={}) trap_unresolved_fusion_zeroed={} \
+             net_value_rewrites={}",
             gate.mode.name(),
             gate.lambda,
             gate.min_placing_ply_proxy,
@@ -1361,6 +1476,7 @@ pub(crate) fn recompute_entries(
             stats.gate_filtered_by_risk,
             stats.gate_filtered_unresolved,
             stats.gate_trap_unresolved_fusion_zeroed,
+            stats.gate_net_value_rewrites,
         );
         eprintln!(
             "[patch-pack] risk gate retention: gate_candidate_retention={} \

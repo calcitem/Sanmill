@@ -504,3 +504,4 @@ nul
 # files kept on disk so `tgf mill mine[-endgame] --resume` can pick up
 # where a prior run left off, but never tracked in git.
 /mining/*/
+/experiments/

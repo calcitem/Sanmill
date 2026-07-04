@@ -28,19 +28,30 @@
 //   --zstd-level N     zstd compression level (default 19; this is an
 //                      offline, one-shot build so favor ratio over speed).
 //
-// Experimental steering risk gate (mask-only; nibble values are never
-// rewritten; default fully inert):
-//   --steering-risk-gate MODE  none (default) | absolute | sibling-delta.
-//                      absolute keeps a positive candidate iff
-//                      own_risk <= lambda * trap_density; sibling-delta
-//                      keeps it iff its own-risk excess over the safest
-//                      resolved sibling is covered by lambda times its
-//                      trap-density excess over the least-trappy resolved
-//                      sibling. own_risk is the corrected own-TURN risk
-//                      (see recompute::RiskMemo): the blunder density our
-//                      side faces after the opponent's value-preserving
-//                      reply -- walking through their single pending
-//                      -removal layer when the reply forms a mill.
+// Experimental steering risk gate (default fully inert):
+//   --steering-risk-gate MODE  none (default) | absolute | sibling-delta
+//                      | net.
+//                      absolute / sibling-delta are MASK-ONLY (stored
+//                      nibbles stay the raw trap gain): absolute keeps a
+//                      positive candidate iff own_risk <= lambda *
+//                      trap_density; sibling-delta keeps it iff its
+//                      own-risk excess over the safest resolved sibling
+//                      is covered by lambda times its trap-density excess
+//                      over the least-trappy resolved sibling.
+//                      net REWRITES the stored value to the net score
+//                      (gain_nibble - lambda * own_risk on the nibble
+//                      scale, dropped from the mask when it reaches 0):
+//                      the runtime's strictly-greater tie-break then
+//                      compares baseline-relative nets pairwise, with no
+//                      engine change. own_risk is the corrected own-TURN
+//                      risk (see recompute::RiskMemo): the blunder
+//                      density our side faces after the opponent's value
+//                      -preserving reply -- walking through their single
+//                      pending-removal layer when the reply forms a mill.
+//                      With ANY active gate the severity-0 min-gap check
+//                      runs on the POST-gate effective vector (see
+//                      derive_child_proof), so uninformative records are
+//                      judged by what they can actually steer.
 //   --steering-risk-lambda F   Risk budget multiplier (default 1.0).
 //   --steering-min-placing-ply-proxy N  Parents with fewer than N pieces
 //                      already placed carry no steering mask (proxy, not
@@ -193,10 +204,11 @@ fn parse_risk_gate(args: &[String]) -> Result<recompute::RiskGateConfig, String>
         "none" => recompute::RiskGateMode::None,
         "absolute" => recompute::RiskGateMode::Absolute,
         "sibling-delta" => recompute::RiskGateMode::SiblingDelta,
+        "net" => recompute::RiskGateMode::Net,
         other => {
             return Err(format!(
                 "--steering-risk-gate {other} is not a known mode \
-                 (expected none | absolute | sibling-delta)"
+                 (expected none | absolute | sibling-delta | net)"
             ));
         }
     };
