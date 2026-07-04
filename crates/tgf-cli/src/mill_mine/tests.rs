@@ -832,6 +832,369 @@ fn patchtrap_trace_rows_stay_tied_best() {
     );
 }
 
+/// Self-risk probe over a captured patchtrap trace, joined against the
+/// H2H game log: emits `enhanced_switch_metrics.jsonl`, one row per
+/// traced make-traps switch.
+///
+/// Layering rules (fixed by review):
+/// * baseline/steering WDL and steps come from the PARENT's
+///   `all_move_outcomes_with_ordering` row (never a direct precise-DB
+///   probe of the child, which has no entry for mid-removal children);
+///   a traced move missing from the parent's outcome list is fail-fast.
+/// * A child that keeps the mover on turn is flagged `same_side_child`
+///   and excluded from trap/self-risk aggregation (reported separately;
+///   a same-side STEERING child would mean the packer's perspective
+///   filter leaked and fails the probe).
+/// * Trap payoff uses the packer's uniform density formula
+///   `sum(max(0, best_reply - reply)) / (2 * reply_count)` on
+///   side-flipped children only.
+/// * Own-risk walks the opponent's value-preserving replies, applies
+///   each, and measures the same density formula one level deeper (our
+///   own follow-up moves); zero preserving replies yields `null` fields
+///   plus a separate counter -- never a fake-safe 0.
+///
+///   SANMILL_STRONG_DB=... SANMILL_TRACE_DIR=... SANMILL_GAME_LOG=...
+///   SANMILL_SELF_RISK_OUT=...
+///   cargo test -p tgf-cli --release mill_mine::tests::self_risk_probe_over_trace -- --ignored --nocapture
+#[test]
+#[ignore = "requires the external strong DB, a captured trace, and the H2H game log"]
+fn self_risk_probe_over_trace() {
+    use tgf_mill::MillUciCodec;
+
+    let env_or = |name: &str, default: &str| std::env::var(name).unwrap_or_else(|_| default.into());
+    let db_root = env_or("SANMILL_STRONG_DB", "D:/user/Documents/strong");
+    let workspace = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+    let resolve = |raw: String| -> std::path::PathBuf {
+        let candidate = std::path::PathBuf::from(&raw);
+        if candidate.is_absolute() {
+            candidate
+        } else {
+            workspace.join(&raw)
+        }
+    };
+    let trace_dir = resolve(env_or("SANMILL_TRACE_DIR", "target/steering_run/trace"));
+    let game_log_path = resolve(env_or(
+        "SANMILL_GAME_LOG",
+        "target/steering_run/paired_c_avoidmake_games.jsonl",
+    ));
+    let out_path = resolve(env_or(
+        "SANMILL_SELF_RISK_OUT",
+        "target/steering_run/enhanced_switch_metrics.jsonl",
+    ));
+
+    // game_index -> full game-log row (current_white/result/opening/moves).
+    let mut games: std::collections::HashMap<u64, serde_json::Value> =
+        std::collections::HashMap::new();
+    for line in std::fs::read_to_string(&game_log_path)
+        .expect("game log readable")
+        .lines()
+        .filter(|l| !l.trim().is_empty())
+    {
+        let g: serde_json::Value = serde_json::from_str(line).expect("valid game log JSONL");
+        games.insert(g["game_index"].as_u64().expect("game_index"), g);
+    }
+
+    let options = MillVariantOptions::default();
+    let rules = MillRules::new(options.clone());
+    let provider =
+        perfect_db::database::FileDatabaseProvider::new(std::path::PathBuf::from(&db_root));
+    let mut db = Database::open_variant_with_options(
+        provider.clone(),
+        DatabaseVariant::STANDARD,
+        DatabaseOptions::with_sector_cache_capacity(128),
+    )
+    .expect("strong DB");
+    let mut planes = perfect_db::wdl_plane::WdlPlaneCache::new(provider, DatabaseVariant::STANDARD)
+        .expect("strong DB plane cache");
+
+    fn percentile_90(sorted: &[f64]) -> f64 {
+        if sorted.is_empty() {
+            return 0.0;
+        }
+        let rank = ((sorted.len() as f64) * 0.9).ceil() as usize;
+        sorted[rank.saturating_sub(1).min(sorted.len() - 1)]
+    }
+
+    /// The packer's uniform density formula over one reply list.
+    fn density(replies: &[(tgf_core::Action, i8)]) -> f64 {
+        if replies.is_empty() {
+            return 0.0;
+        }
+        let best = replies.iter().map(|&(_, v)| v).max().expect("non-empty");
+        let severity_sum: f64 = replies
+            .iter()
+            .map(|&(_, v)| f64::from((i32::from(best) - i32::from(v)).max(0) as u8))
+            .sum();
+        severity_sum / (2.0 * replies.len() as f64)
+    }
+
+    /// Side-flipped child probe: trap payoff + own continuation risk
+    /// (mean, max, p90, samples; `None` when the opponent has no
+    /// value-preserving reply).
+    struct FlippedChildMetrics {
+        legal_reply_count: usize,
+        preserving_reply_count: usize,
+        trap_density: f64,
+        own_risk: Option<(f64, f64, f64, usize)>,
+    }
+
+    fn flipped_child_metrics(
+        rules: &MillRules,
+        options: &MillVariantOptions,
+        planes: &mut perfect_db::wdl_plane::WdlPlaneCache<FileDatabaseProvider>,
+        child_snap: &tgf_core::GameStateSnapshot,
+    ) -> FlippedChildMetrics {
+        let replies = all_move_wdl_fast(planes, rules, child_snap, options)
+            .expect("plane read")
+            .unwrap_or_default();
+        if replies.is_empty() {
+            return FlippedChildMetrics {
+                legal_reply_count: 0,
+                preserving_reply_count: 0,
+                trap_density: 0.0,
+                own_risk: None,
+            };
+        }
+        let best_reply = replies.iter().map(|&(_, v)| v).max().expect("non-empty");
+        let preserving: Vec<tgf_core::Action> = replies
+            .iter()
+            .filter(|&&(_, v)| v == best_reply)
+            .map(|&(a, _)| a)
+            .collect();
+        let trap_density = density(&replies);
+        let mut risks: Vec<f64> = Vec::with_capacity(preserving.len());
+        for &reply in &preserving {
+            let grand_snap = rules.apply(child_snap, reply);
+            let Ok(Some(ours)) = all_move_wdl_fast(planes, rules, &grand_snap, options) else {
+                continue;
+            };
+            if ours.is_empty() {
+                continue;
+            }
+            risks.push(density(&ours));
+        }
+        risks.sort_by(|a, b| a.partial_cmp(b).expect("finite"));
+        let own_risk = (!risks.is_empty()).then(|| {
+            let mean = risks.iter().sum::<f64>() / risks.len() as f64;
+            let max = *risks.last().expect("non-empty");
+            (mean, max, percentile_90(&risks), risks.len())
+        });
+        FlippedChildMetrics {
+            legal_reply_count: replies.len(),
+            preserving_reply_count: preserving.len(),
+            trap_density,
+            own_risk,
+        }
+    }
+
+    fn side_metrics_json(metrics: &Option<FlippedChildMetrics>) -> serde_json::Value {
+        match metrics {
+            None => serde_json::Value::Null,
+            Some(m) => {
+                let (mean, max, p90, samples) = match m.own_risk {
+                    Some((mean, max, p90, samples)) => (
+                        serde_json::json!(mean),
+                        serde_json::json!(max),
+                        serde_json::json!(p90),
+                        serde_json::json!(samples),
+                    ),
+                    None => (
+                        serde_json::Value::Null,
+                        serde_json::Value::Null,
+                        serde_json::Value::Null,
+                        serde_json::json!(0),
+                    ),
+                };
+                serde_json::json!({
+                    "legal_reply_count": m.legal_reply_count,
+                    "preserving_reply_count": m.preserving_reply_count,
+                    "preserving_reply_ratio": if m.legal_reply_count == 0 {
+                        0.0
+                    } else {
+                        m.preserving_reply_count as f64 / m.legal_reply_count as f64
+                    },
+                    "trap_density": m.trap_density,
+                    "own_risk_mean": mean,
+                    "own_risk_max": max,
+                    "own_risk_p90": p90,
+                    "own_risk_samples": samples,
+                })
+            }
+        }
+    }
+
+    let mut out = std::io::BufWriter::new(
+        std::fs::File::create(&out_path).expect("self-risk output must be creatable"),
+    );
+    let mut rows = 0_usize;
+    let mut baseline_same_side = 0_usize;
+    let mut no_preserving_replies = 0_usize;
+    for entry in std::fs::read_dir(&trace_dir).expect("trace dir must exist") {
+        let path = entry.expect("dir entry").path();
+        if path.extension().and_then(|e| e.to_str()) != Some("jsonl") {
+            continue;
+        }
+        for line in std::fs::read_to_string(&path)
+            .expect("trace file readable")
+            .lines()
+            .filter(|l| !l.trim().is_empty())
+        {
+            let row: serde_json::Value = serde_json::from_str(line).expect("valid trace JSONL");
+            let fen = row["parent_fen"].as_str().expect("parent_fen");
+            let tag = row["trace_tag"].as_str().expect("trace_tag");
+            let (game_index, current_white_tag) = {
+                let caps = tag
+                    .strip_prefix("gi")
+                    .and_then(|rest| rest.split_once("cw"))
+                    .expect("tag must be gi<index>cw<0|1>");
+                (caps.0.parse::<u64>().expect("game index"), caps.1 == "1")
+            };
+            let game = games
+                .get(&game_index)
+                .unwrap_or_else(|| panic!("trace tag {tag} has no game log row"));
+            assert_eq!(
+                game["current_white"].as_bool().expect("current_white"),
+                current_white_tag,
+                "tag colour must agree with the game log (tag {tag})"
+            );
+
+            let state = rules.set_from_fen(fen).expect("trace FEN must parse");
+            let parent_side = state.side_to_move();
+            let snap = rules.encode_state(state);
+            let mut legal = tgf_core::ActionList::<256>::new();
+            rules.legal_actions(&snap, &mut legal);
+            let action_by_token = |token: &str| -> tgf_core::Action {
+                legal
+                    .as_slice()
+                    .iter()
+                    .copied()
+                    .find(|&a| MillUciCodec::encode_action(a) == token)
+                    .unwrap_or_else(|| panic!("traced action {token} must be legal (fen {fen})"))
+            };
+            let baseline_token = row["baseline_action"].as_str().expect("baseline");
+            let steering_token = row["steering_action"].as_str().expect("steering");
+            let baseline_action = action_by_token(baseline_token);
+            let steering_action = action_by_token(steering_token);
+
+            // WDL/steps strictly from the parent's per-move outcome list.
+            let per_move = perfect_db::all_move_outcomes_with_ordering(
+                &mut db,
+                &rules,
+                &snap,
+                &options,
+                perfect_db::PerfectMoveOrdering::StrictSteps,
+            )
+            .expect("DB read")
+            .expect("traced parents must be covered");
+            let parent_best_wdl = per_move
+                .iter()
+                .map(|choice| choice.outcome.wdl())
+                .max()
+                .expect("non-empty");
+            let outcome_of = |token: &str| -> (i32, i32) {
+                let choice = per_move
+                    .iter()
+                    .find(|choice| choice.token == token)
+                    .unwrap_or_else(|| {
+                        panic!("traced action {token} missing from parent DB outcomes (fen {fen})")
+                    });
+                (choice.outcome.wdl(), choice.outcome.steps())
+            };
+            let (baseline_wdl, baseline_steps) = outcome_of(baseline_token);
+            let (steering_wdl, steering_steps) = outcome_of(steering_token);
+            let baseline_is_tied_best = baseline_wdl == parent_best_wdl;
+            let steering_is_tied_best = steering_wdl == parent_best_wdl;
+            assert!(
+                baseline_is_tied_best && steering_is_tied_best,
+                "non-tied-best traced move (tag {tag}, fen {fen}): baseline {baseline_wdl} steering {steering_wdl} best {parent_best_wdl}"
+            );
+
+            // Child layering: same-side children are excluded from
+            // trap/self-risk metrics (reported separately).
+            let child_of = |action: tgf_core::Action| -> (tgf_core::GameStateSnapshot, bool) {
+                let child_snap = rules.apply(&snap, action);
+                let child_state = MillRules::decode_snapshot(child_snap);
+                let same_side = child_state.side_to_move() == parent_side;
+                (child_snap, same_side)
+            };
+            let (baseline_child, baseline_same) = child_of(baseline_action);
+            let (steering_child, steering_same) = child_of(steering_action);
+            if baseline_same {
+                baseline_same_side += 1;
+            }
+            // A same-side steering child can only come from a leaked
+            // perspective filter: fail fast with the offending row.
+            assert!(
+                !steering_same,
+                "same-side STEERING child (perspective filter leak): trace_tag={tag} \
+                 fen={fen} baseline={baseline_token} steering={steering_token}"
+            );
+            let baseline_metrics = (!baseline_same)
+                .then(|| flipped_child_metrics(&rules, &options, &mut planes, &baseline_child));
+            let steering_metrics = (!steering_same)
+                .then(|| flipped_child_metrics(&rules, &options, &mut planes, &steering_child));
+            if let Some(m) = steering_metrics.as_ref()
+                && m.preserving_reply_count == 0
+            {
+                no_preserving_replies += 1;
+            }
+
+            let baseline_nibble = row["baseline_nibble"].as_u64().expect("nibble");
+            let steering_nibble = row["steering_nibble"].as_u64().expect("nibble");
+            let trap_density_delta = match (&baseline_metrics, &steering_metrics) {
+                (Some(b), Some(s)) => serde_json::json!(s.trap_density - b.trap_density),
+                _ => serde_json::Value::Null,
+            };
+            let risk_delta = match (&baseline_metrics, &steering_metrics) {
+                (Some(b), Some(s)) => match (b.own_risk, s.own_risk) {
+                    (Some((bm, ..)), Some((sm, ..))) => serde_json::json!(sm - bm),
+                    _ => serde_json::Value::Null,
+                },
+                _ => serde_json::Value::Null,
+            };
+
+            let enriched = serde_json::json!({
+                "trace_tag": tag,
+                "game_index": game_index,
+                "current_white": current_white_tag,
+                "result": game["result"],
+                "opening_moves": game["opening_moves"],
+                "ply": row["ply"],
+                "parent_fen": fen,
+                "parent_key": row["parent_key"],
+                "baseline_action": baseline_token,
+                "steering_action": steering_token,
+                "baseline_nibble": baseline_nibble,
+                "steering_nibble": steering_nibble,
+                "trap_gain": steering_nibble as i64 - baseline_nibble as i64,
+                "parent_best_wdl": parent_best_wdl,
+                "baseline_wdl": baseline_wdl,
+                "baseline_steps": baseline_steps,
+                "steering_wdl": steering_wdl,
+                "steering_steps": steering_steps,
+                "baseline_is_tied_best": baseline_is_tied_best,
+                "steering_is_tied_best": steering_is_tied_best,
+                "baseline_same_side_child": baseline_same,
+                "steering_same_side_child": steering_same,
+                "baseline_metrics": side_metrics_json(&baseline_metrics),
+                "steering_metrics": side_metrics_json(&steering_metrics),
+                "trap_density_delta": trap_density_delta,
+                "risk_delta": risk_delta,
+            });
+            use std::io::Write;
+            writeln!(out, "{enriched}").expect("self-risk row write");
+            rows += 1;
+        }
+    }
+    use std::io::Write;
+    out.flush().expect("flush self-risk output");
+    eprintln!(
+        "[self-risk] rows={rows} baseline_same_side_bucket={baseline_same_side} steering_no_preserving={no_preserving_replies} -> {}",
+        out_path.display()
+    );
+    assert!(rows > 0, "the probe needs trace rows to analyze");
+}
+
 #[test]
 fn output_file_lines_are_all_parseable_jsonl() {
     let dir = std::env::temp_dir().join(format!("sanmill_mill_mine_jsonl_{}", std::process::id()));
