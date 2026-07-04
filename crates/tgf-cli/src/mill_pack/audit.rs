@@ -286,10 +286,20 @@ mod tests {
             !text.trim().is_empty(),
             "expected at least one mined entry to audit"
         );
-        let entries: Vec<MineEntry> = text
+        let mut entries: Vec<MineEntry> = text
             .lines()
             .map(|line| serde_json::from_str(line).unwrap())
             .collect();
+
+        // Recast the first mined blunder as a severity-0 steering entry
+        // (severity 0, placeholder trap_score 0 -- exactly what `mill mine
+        // --emit-steering` writes; its best_child comes from the same
+        // rank_children pick). The audit must admit it: steering entries
+        // have no "a losing move must exist" requirement, only the
+        // best_child-preserves-value and proof re-derivation checks.
+        entries[0].severity = 0;
+        entries[0].trap_score = 0;
+        let steering_key = entries[0].key;
 
         // Mirror production: derive proofs through the recompute pipeline
         // (uniform density only -- no HumanDB in this smoke test), then
@@ -304,6 +314,11 @@ mod tests {
         )
         .expect("no human db configured, recompute cannot fail on external data");
         let refs: Vec<&MineEntry> = outcome.entries.iter().collect();
+        assert!(
+            refs.iter()
+                .any(|e| e.key == steering_key && e.severity == 0),
+            "the severity-0 steering entry must survive recompute/dedup"
+        );
         let audited = audit_entries(
             &refs,
             FileDatabaseProvider::new(asset_root()),
@@ -316,7 +331,7 @@ mod tests {
         );
         assert!(
             audited.failures.is_empty(),
-            "expected no audit failures, got: {:?}",
+            "expected no audit failures (severity-0 must be admitted), got: {:?}",
             audited.failures
         );
         assert_eq!(audited.checked, refs.len());

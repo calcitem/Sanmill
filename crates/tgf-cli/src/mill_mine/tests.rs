@@ -235,6 +235,310 @@ fn audit_one_entry() {
     }
 }
 
+/// `--emit-steering` smoke: against the bundled subset the (Safe, drawn)
+/// opening positions have many distinct value-preserving children, so a
+/// tiny budgeted run must emit severity-0 steering candidates with the
+/// placeholder trap_score of 0 -- and must NOT have routed them through
+/// `scoring::trap_score`, whose severity assert would have panicked the
+/// run outright on severity 0.
+#[test]
+fn emit_steering_produces_severity_zero_candidates() {
+    let dir =
+        std::env::temp_dir().join(format!("sanmill_mill_mine_steering_{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&dir);
+    std::fs::create_dir_all(&dir).unwrap();
+    let db = bundled_asset_root();
+    let out = dir.join("entries.jsonl");
+    let checkpoint = dir.join("checkpoint.json");
+    let argv = args(
+        &[
+            ("--db", db.as_str()),
+            ("--out", out.to_str().unwrap()),
+            ("--checkpoint", checkpoint.to_str().unwrap()),
+            ("--max-depth-plies", "2"),
+            ("--budget-engine-calls", "20"),
+            ("--workers", "1"),
+            ("--depth", "3"),
+            ("--steering-min-mass", "1"),
+        ],
+        &["--emit-steering"],
+    );
+    run_mill_mine(&argv);
+
+    let text = std::fs::read_to_string(&out).unwrap();
+    let entries: Vec<MineEntry> = text
+        .lines()
+        .map(|line| serde_json::from_str(line).expect("valid JSONL"))
+        .collect();
+    let steering: Vec<&MineEntry> = entries.iter().filter(|e| e.severity == 0).collect();
+    assert!(
+        !steering.is_empty(),
+        "the drawn opening must yield at least one steering candidate"
+    );
+    for entry in &steering {
+        assert_eq!(
+            entry.trap_score, 0,
+            "steering trap_score is a 0 placeholder"
+        );
+        assert_ne!(entry.key, entry.best_child);
+        assert!(entry.mass >= 1.0, "the --steering-min-mass gate applies");
+    }
+    for entry in &entries {
+        assert!((0..=2).contains(&entry.severity));
+    }
+
+    // The checkpoint written by a steering run carries a fingerprint that
+    // records the steering configuration.
+    let (fingerprint, _, _) = load_checkpoint(checkpoint.to_str().unwrap());
+    let fingerprint = fingerprint.expect("new checkpoints must carry a fingerprint");
+    assert!(fingerprint.emit_steering);
+    assert_eq!(fingerprint.steering_min_mass, 1.0);
+    assert_eq!(
+        fingerprint.checkpoint_schema_version,
+        CHECKPOINT_SCHEMA_VERSION
+    );
+
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
+/// `--steering-max-entries` caps settled and mid-removal steering globally
+/// while leaving blunder emission untouched: an identically-budgeted,
+/// single-worker (deterministic) run with the cap must produce exactly the
+/// same severity>0 lines and at most the capped number of severity-0
+/// lines.
+#[test]
+fn steering_max_entries_caps_candidates_but_not_blunders() {
+    let dir = std::env::temp_dir().join(format!(
+        "sanmill_mill_mine_steering_cap_{}",
+        std::process::id()
+    ));
+    let _ = std::fs::remove_dir_all(&dir);
+    std::fs::create_dir_all(&dir).unwrap();
+    let db = bundled_asset_root();
+
+    let run = |suffix: &str, cap: Option<&str>| {
+        let out = dir.join(format!("entries_{suffix}.jsonl"));
+        let checkpoint = dir.join(format!("checkpoint_{suffix}.json"));
+        let mut pairs = vec![
+            ("--db", db.to_string()),
+            ("--out", out.to_str().unwrap().to_string()),
+            ("--checkpoint", checkpoint.to_str().unwrap().to_string()),
+            ("--max-depth-plies", "3".to_string()),
+            ("--budget-engine-calls", "20".to_string()),
+            ("--workers", "1".to_string()),
+            ("--depth", "3".to_string()),
+            ("--steering-min-mass", "1".to_string()),
+        ];
+        if let Some(cap) = cap {
+            pairs.push(("--steering-max-entries", cap.to_string()));
+        }
+        let mut argv: Vec<String> = Vec::new();
+        for (flag, value) in &pairs {
+            argv.push((*flag).to_string());
+            argv.push(value.clone());
+        }
+        argv.push("--emit-steering".to_string());
+        run_mill_mine(&argv);
+        std::fs::read_to_string(&out).unwrap_or_default()
+    };
+
+    let uncapped = run("uncapped", None);
+    let capped = run("capped", Some("1"));
+
+    let parse = |text: &str| -> (Vec<String>, usize) {
+        let mut blunder_lines = Vec::new();
+        let mut steering_count = 0_usize;
+        for line in text.lines() {
+            let entry: MineEntry = serde_json::from_str(line).expect("valid JSONL");
+            if entry.severity == 0 {
+                steering_count += 1;
+            } else {
+                blunder_lines.push(line.to_string());
+            }
+        }
+        (blunder_lines, steering_count)
+    };
+    let (uncapped_blunders, uncapped_steering) = parse(&uncapped);
+    let (capped_blunders, capped_steering) = parse(&capped);
+
+    assert!(
+        uncapped_steering > 1,
+        "the uncapped run must emit multiple steering candidates for the cap to bite \
+         (got {uncapped_steering})"
+    );
+    assert_eq!(
+        capped_steering, 1,
+        "the cap must stop steering emission at 1"
+    );
+    assert_eq!(
+        uncapped_blunders, capped_blunders,
+        "blunder emission must be unaffected by the steering cap"
+    );
+
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
+/// The resume gate: a missing fingerprint (pre-fingerprint checkpoint) and
+/// every mismatched field must be rejected. Field-by-field coverage is
+/// spot-checked here; the exhaustive guarantee comes from
+/// `#[derive(PartialEq)]` on the struct, which compares every field.
+#[test]
+fn checkpoint_fingerprint_gate_rejects_absence_and_mismatch() {
+    let current = CheckpointFingerprint {
+        checkpoint_schema_version: CHECKPOINT_SCHEMA_VERSION,
+        emit_steering: true,
+        variant: "std".to_string(),
+        engine_algorithm: "mtdf".to_string(),
+        skill_level: 30,
+        depth_override: 3,
+        near_optimal_margin: 0,
+        top_k: 3,
+        epsilon: 0.15,
+        seed_phase: "All".to_string(),
+        placing_only: false,
+        max_depth_plies: 2,
+        root_mass: 1.0e6,
+        human_db_path: String::new(),
+        human_db_sha256: String::new(),
+        seed_fen_file_path: String::new(),
+        seed_fen_file_sha256: String::new(),
+        seed_fen_mass: 1.0e5,
+        steering_min_mass: 1.0,
+        steering_max_entries: 0,
+    };
+
+    assert!(
+        validate_checkpoint_fingerprint(None, &current)
+            .expect_err("missing fingerprint must be rejected")
+            .contains("no fingerprint"),
+    );
+    validate_checkpoint_fingerprint(Some(&current.clone()), &current)
+        .expect("an identical fingerprint must resume");
+
+    let mutations: Vec<CheckpointFingerprint> = vec![
+        CheckpointFingerprint {
+            checkpoint_schema_version: CHECKPOINT_SCHEMA_VERSION + 1,
+            ..current.clone()
+        },
+        CheckpointFingerprint {
+            emit_steering: false,
+            ..current.clone()
+        },
+        CheckpointFingerprint {
+            variant: "lask".to_string(),
+            ..current.clone()
+        },
+        CheckpointFingerprint {
+            skill_level: 15,
+            ..current.clone()
+        },
+        CheckpointFingerprint {
+            depth_override: 5,
+            ..current.clone()
+        },
+        CheckpointFingerprint {
+            epsilon: 0.2,
+            ..current.clone()
+        },
+        CheckpointFingerprint {
+            seed_phase: "Placing".to_string(),
+            ..current.clone()
+        },
+        CheckpointFingerprint {
+            root_mass: 2.0e6,
+            ..current.clone()
+        },
+        CheckpointFingerprint {
+            human_db_sha256: "deadbeef".to_string(),
+            ..current.clone()
+        },
+        CheckpointFingerprint {
+            seed_fen_file_path: "seeds.txt".to_string(),
+            ..current.clone()
+        },
+        CheckpointFingerprint {
+            steering_min_mass: 5.0,
+            ..current.clone()
+        },
+        CheckpointFingerprint {
+            steering_max_entries: 100,
+            ..current.clone()
+        },
+    ];
+    for stale in mutations {
+        assert!(
+            validate_checkpoint_fingerprint(Some(&stale), &current)
+                .expect_err("any field mismatch must be rejected")
+                .contains("does not match"),
+        );
+    }
+}
+
+/// A checkpoint from before the fingerprint schema (bare visited/frontier
+/// JSON) must still parse -- and must then be rejected by the resume gate.
+#[test]
+fn pre_fingerprint_checkpoint_parses_but_cannot_resume() {
+    let path = std::env::temp_dir().join(format!(
+        "sanmill_mill_mine_old_checkpoint_{}.json",
+        std::process::id()
+    ));
+    std::fs::write(&path, r#"{"visited":[[42,"Safe"]],"frontier":[]}"#).unwrap();
+
+    let (fingerprint, visited, frontier) = load_checkpoint(path.to_str().unwrap());
+    assert!(fingerprint.is_none());
+    assert_eq!(visited.len(), 1);
+    assert!(frontier.is_empty());
+
+    let current = CheckpointFingerprint {
+        checkpoint_schema_version: CHECKPOINT_SCHEMA_VERSION,
+        emit_steering: false,
+        variant: "std".to_string(),
+        engine_algorithm: "mtdf".to_string(),
+        skill_level: 30,
+        depth_override: 0,
+        near_optimal_margin: 0,
+        top_k: 3,
+        epsilon: 0.15,
+        seed_phase: "All".to_string(),
+        placing_only: false,
+        max_depth_plies: 0,
+        root_mass: 1.0e6,
+        human_db_path: String::new(),
+        human_db_sha256: String::new(),
+        seed_fen_file_path: String::new(),
+        seed_fen_file_sha256: String::new(),
+        seed_fen_mass: 1.0e5,
+        steering_min_mass: 0.0,
+        steering_max_entries: 0,
+    };
+    assert!(validate_checkpoint_fingerprint(fingerprint.as_ref(), &current).is_err());
+
+    let _ = std::fs::remove_file(&path);
+}
+
+/// The content hash must be a real SHA-256 over the full file bytes (the
+/// known test vectors), never an mtime/size stand-in.
+#[test]
+fn sha256_file_hex_matches_known_vectors() {
+    let dir = std::env::temp_dir();
+    let empty = dir.join(format!("sanmill_sha_empty_{}.bin", std::process::id()));
+    let abc = dir.join(format!("sanmill_sha_abc_{}.bin", std::process::id()));
+    std::fs::write(&empty, b"").unwrap();
+    std::fs::write(&abc, b"abc").unwrap();
+
+    assert_eq!(
+        sha256_file_hex(empty.to_str().unwrap()),
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    );
+    assert_eq!(
+        sha256_file_hex(abc.to_str().unwrap()),
+        "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+    );
+
+    let _ = std::fs::remove_file(&empty);
+    let _ = std::fs::remove_file(&abc);
+}
+
 #[test]
 fn output_file_lines_are_all_parseable_jsonl() {
     let dir = std::env::temp_dir().join(format!("sanmill_mill_mine_jsonl_{}", std::process::id()));

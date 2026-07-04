@@ -66,12 +66,38 @@
 //   --epsilon F            Mass fraction routed to the single most
 //                          plausible non-optimal reply (default 0.15)
 //
+// Steering candidates (severity-0 entries for the packer's make-traps
+// nibbles; the packer computes every trap score itself -- mining only
+// nominates structurally useful positions and never scans grandchildren):
+//   --emit-steering        Also emit a severity-0 steering candidate for
+//                          every *Safe* visited position that has at least
+//                          2 distinct value-preserving children and mass
+//                          >= --steering-min-mass. `trap_score` is written
+//                          as a 0 placeholder (the packer overwrites it
+//                          from its own density pass).
+//   --steering-min-mass F  Minimum reach-mass for a steering candidate
+//                          (default 0: every Safe position qualifies).
+//   --steering-max-entries N  Global cap on emitted steering candidates,
+//                          settled and mid-removal combined (0 = no cap,
+//                          default 0). Once reached, steering emission
+//                          stops (with a counter) but blunder entries are
+//                          unaffected.
+//
 // Concurrency / output:
 //   --workers N            Worker thread count (default
 //                          min(20, available_parallelism)).
 //   --out PATH             JSONL output path (default mine_entries.jsonl).
 //   --checkpoint PATH      Checkpoint path (default mine_checkpoint.json).
-//   --resume               Load --checkpoint if it exists.
+//   --resume               Load --checkpoint if it exists. The checkpoint
+//                          carries a run fingerprint (schema version,
+//                          steering config, variant, engine fingerprint,
+//                          seeding config including SHA-256 hashes of the
+//                          referenced --human-db / --seed-fen-file
+//                          contents); resuming with a checkpoint whose
+//                          fingerprint is missing (pre-fingerprint schema)
+//                          or does not match the current configuration is
+//                          a hard error -- mixed-config output would be
+//                          silently inconsistent.
 //   --checkpoint-every N   Save a checkpoint every N processed nodes
 //                          (default 5000).
 //   --variant std|lask|mora  Rule variant (default std).
@@ -138,6 +164,15 @@ struct MineLimits {
     budget_engine_calls: u64,
 }
 
+/// Worker-side steering nomination policy (see the module docs). The
+/// global `--steering-max-entries` cap lives in the single-threaded
+/// emission loop, not here.
+#[derive(Clone, Copy, Debug, Default)]
+struct SteeringConfig {
+    emit: bool,
+    min_mass: f64,
+}
+
 struct WorkItem {
     item: FrontierItem,
     key: u64,
@@ -151,11 +186,17 @@ struct WorkResult {
     engine_calls: u64,
     depth_used: i32,
     expansions: Vec<FrontierItem>,
+    /// `Some(best_child)` when this Safe position qualifies as a steering
+    /// candidate (>= 2 distinct value-preserving children, mass gate
+    /// passed). Mutually exclusive with a `Blunder` verdict by
+    /// construction.
+    steering_candidate: Option<u64>,
 }
 
 /// Process one popped, not-yet-visited frontier item: tier-2 pre-filter,
-/// tier-3 engine judgment when critical, and the (criticality-independent)
-/// expansion edges.
+/// tier-3 engine judgment when critical, the (criticality-independent)
+/// expansion edges, and -- when `--emit-steering` is on -- the structural
+/// steering nomination for Safe positions.
 #[allow(clippy::too_many_arguments)]
 fn process_item(
     work: WorkItem,
@@ -165,6 +206,7 @@ fn process_item(
     mining_engine: &mut MiningEngine,
     policy: AdversaryPolicy,
     limits: MineLimits,
+    steering: SteeringConfig,
 ) -> WorkResult {
     let WorkItem { item, key } = work;
     let state = rules
@@ -180,6 +222,7 @@ fn process_item(
         engine_calls,
         depth_used: 0,
         expansions: Vec::new(),
+        steering_candidate: None,
     };
 
     if rules.outcome(&snap).kind != OutcomeKind::Ongoing {
@@ -244,6 +287,34 @@ fn process_item(
         }
     }
 
+    // Steering nomination: Safe verdict only (a Blunder entry for the same
+    // key would win dedup anyway), mass gate, and at least 2 *distinct*
+    // value-preserving children -- with fewer, the runtime's trap-aware
+    // reordering has no choice to make and the record would be dead
+    // weight. Purely structural: no grandchild scan, no trap scoring
+    // (the packer owns every trap-score computation; the emitted
+    // `trap_score` field is a 0 placeholder it overwrites).
+    let steering_candidate =
+        if steering.emit && matches!(verdict, Verdict::Safe) && item.mass >= steering.min_mass {
+            let ranked = ranked_cache.get_or_insert_with(|| {
+                let mut guard = shared.lock().expect("SharedDb mutex must not be poisoned");
+                let SharedDb { db, planes } = &mut *guard;
+                rank_children(rules, options, db, planes, &snap, &move_wdl)
+            });
+            let mut distinct_optimal: Vec<u64> = ranked.optimal.iter().map(|c| c.key).collect();
+            distinct_optimal.sort_unstable();
+            distinct_optimal.dedup();
+            (distinct_optimal.len() >= 2).then(|| {
+                ranked
+                    .optimal
+                    .first()
+                    .expect("distinct_optimal is non-empty, so optimal is too")
+                    .key
+            })
+        } else {
+            None
+        };
+
     let expansions = if will_expand {
         let ranked = ranked_cache.get_or_insert_with(|| {
             let mut guard = shared.lock().expect("SharedDb mutex must not be poisoned");
@@ -263,6 +334,7 @@ fn process_item(
         engine_calls,
         depth_used,
         expansions,
+        steering_candidate,
     }
 }
 
@@ -272,6 +344,105 @@ struct Stats {
     entries: u64,
     engine_calls: u64,
     dedup_hits: u64,
+    steering_candidates_emitted: u64,
+    steering_skipped_after_cap: u64,
+}
+
+/// Version stamp for [`Checkpoint`]'s on-disk shape. Bump whenever the
+/// checkpoint or emission semantics change in a way that makes resuming an
+/// older file unsound.
+const CHECKPOINT_SCHEMA_VERSION: u32 = 2;
+
+/// Everything that must be identical between the run that wrote a
+/// checkpoint and the run resuming it: mixed-fingerprint output would
+/// silently blend entries mined under different engine/seeding/steering
+/// semantics. Referenced input files are pinned by full-content SHA-256
+/// (never mtime/size). `--steering-min-gap`-style *packer* knobs are
+/// deliberately absent: they do not change what mining emits.
+#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+struct CheckpointFingerprint {
+    checkpoint_schema_version: u32,
+    emit_steering: bool,
+    variant: String,
+    /// The mining engine is architecturally MTD(f)-only (see `engine.rs`);
+    /// recorded so a future algorithm change cannot silently resume onto
+    /// old data.
+    engine_algorithm: String,
+    skill_level: u8,
+    depth_override: i32,
+    near_optimal_margin: i32,
+    top_k: usize,
+    epsilon: f64,
+    seed_phase: String,
+    placing_only: bool,
+    max_depth_plies: u32,
+    root_mass: f64,
+    /// Path and full-content SHA-256 of `--human-db` (both empty when the
+    /// flag is unset).
+    human_db_path: String,
+    human_db_sha256: String,
+    /// Path and full-content SHA-256 of `--seed-fen-file` (both empty when
+    /// the flag is unset).
+    seed_fen_file_path: String,
+    seed_fen_file_sha256: String,
+    seed_fen_mass: f64,
+    steering_min_mass: f64,
+    steering_max_entries: u64,
+}
+
+/// Full-content SHA-256 (streamed; never a mtime/size shortcut) of a file
+/// referenced by the run configuration. A missing file is a startup
+/// error: silently fingerprinting an absent input would defeat the
+/// fingerprint's purpose.
+fn sha256_file_hex(path: &str) -> String {
+    use sha2::{Digest, Sha256};
+    use std::io::Read;
+    let mut file = std::fs::File::open(path)
+        .unwrap_or_else(|e| panic!("[mill-mine] cannot open {path} for fingerprint hashing: {e}"));
+    let mut hasher = Sha256::new();
+    let mut buf = vec![0_u8; 8 * 1024 * 1024];
+    loop {
+        let read = file
+            .read(&mut buf)
+            .unwrap_or_else(|e| panic!("[mill-mine] cannot hash {path}: {e}"));
+        if read == 0 {
+            break;
+        }
+        hasher.update(&buf[..read]);
+    }
+    hasher
+        .finalize()
+        .iter()
+        .fold(String::with_capacity(64), |mut hex, byte| {
+            use std::fmt::Write;
+            write!(hex, "{byte:02x}").expect("writing to a String cannot fail");
+            hex
+        })
+}
+
+/// Gate for `--resume`: a checkpoint written before fingerprints existed
+/// (or by a differently-configured run) must be rejected, not silently
+/// blended into this run's output.
+fn validate_checkpoint_fingerprint(
+    loaded: Option<&CheckpointFingerprint>,
+    current: &CheckpointFingerprint,
+) -> Result<(), String> {
+    let Some(loaded) = loaded else {
+        return Err(
+            "checkpoint carries no fingerprint (pre-fingerprint schema); it cannot be \
+             safely resumed -- rerun without --resume (or delete the checkpoint) to start \
+             fresh under the current configuration"
+                .to_string(),
+        );
+    };
+    if loaded != current {
+        return Err(format!(
+            "checkpoint fingerprint does not match the current configuration; resuming \
+             would mix incompatible mining semantics in one output.\n  checkpoint: \
+             {loaded:?}\n  current:    {current:?}"
+        ));
+    }
+    Ok(())
 }
 
 pub(crate) fn run_mill_mine(args: &[String]) {
@@ -308,6 +479,9 @@ pub(crate) fn run_mill_mine(args: &[String]) {
     let checkpoint_every: u64 = parse_flag(args, "--checkpoint-every", 5000u64);
     let variant_name: String = parse_flag(args, "--variant", "std".to_string());
     let cache_dir: String = parse_flag(args, "--wdl-cache-dir", String::new());
+    let emit_steering = flag_present(args, "--emit-steering");
+    let steering_min_mass: f64 = parse_flag(args, "--steering-min-mass", 0.0_f64);
+    let steering_max_entries: u64 = parse_flag(args, "--steering-max-entries", 0u64);
 
     let (options, _rule_variant_id) = crate::mill_puzzle::variant_options_for(&variant_name);
     let variant = DatabaseVariant::match_mill_options(&options).unwrap_or_else(|err| {
@@ -320,8 +494,44 @@ pub(crate) fn run_mill_mine(args: &[String]) {
          seed_phase={seed_phase:?} top_k={top_k} epsilon={epsilon} \
          depth_override={depth_override} skill_level={skill_level} \
          near_optimal_margin={near_optimal_margin} out={out_path} \
-         checkpoint={checkpoint_path} resume={resume}"
+         checkpoint={checkpoint_path} resume={resume} emit_steering={emit_steering} \
+         steering_min_mass={steering_min_mass} steering_max_entries={steering_max_entries}"
     );
+
+    // The run fingerprint is computed up front, resume or not: hashing the
+    // referenced inputs is also the startup existence check (a configured
+    // but missing --human-db / --seed-fen-file must abort here, not after
+    // hours of mining).
+    let fingerprint = CheckpointFingerprint {
+        checkpoint_schema_version: CHECKPOINT_SCHEMA_VERSION,
+        emit_steering,
+        variant: variant_name.clone(),
+        engine_algorithm: "mtdf".to_string(),
+        skill_level,
+        depth_override,
+        near_optimal_margin,
+        top_k,
+        epsilon,
+        seed_phase: format!("{seed_phase:?}"),
+        placing_only,
+        max_depth_plies,
+        root_mass,
+        human_db_path: human_db_path.clone(),
+        human_db_sha256: if human_db_path.is_empty() {
+            String::new()
+        } else {
+            sha256_file_hex(&human_db_path)
+        },
+        seed_fen_file_path: seed_fen_file.clone(),
+        seed_fen_file_sha256: if seed_fen_file.is_empty() {
+            String::new()
+        } else {
+            sha256_file_hex(&seed_fen_file)
+        },
+        seed_fen_mass,
+        steering_min_mass,
+        steering_max_entries,
+    };
 
     let rules = MillRules::new(options.clone());
     let limits = MineLimits {
@@ -358,9 +568,16 @@ pub(crate) fn run_mill_mine(args: &[String]) {
     let mut frontier = Frontier::new();
 
     if resume && std::path::Path::new(&checkpoint_path).exists() {
-        let (loaded_visited, loaded_frontier) = load_checkpoint(&checkpoint_path);
+        let (loaded_fingerprint, loaded_visited, loaded_frontier) =
+            load_checkpoint(&checkpoint_path);
+        if let Err(message) =
+            validate_checkpoint_fingerprint(loaded_fingerprint.as_ref(), &fingerprint)
+        {
+            eprintln!("[mill-mine] ERROR: cannot resume {checkpoint_path}: {message}");
+            std::process::exit(1);
+        }
         eprintln!(
-            "[mill-mine] resumed checkpoint: {} visited, {} frontier items",
+            "[mill-mine] resumed checkpoint: {} visited, {} frontier items (fingerprint OK)",
             loaded_visited.len(),
             loaded_frontier.len()
         );
@@ -411,6 +628,11 @@ pub(crate) fn run_mill_mine(args: &[String]) {
     let task_rx = Arc::new(Mutex::new(task_rx));
     let (result_tx, result_rx) = mpsc::channel::<WorkResult>();
 
+    let steering_cfg = SteeringConfig {
+        emit: emit_steering,
+        min_mass: steering_min_mass,
+    };
+
     thread::scope(|scope| {
         for _ in 0..workers {
             let task_rx = Arc::clone(&task_rx);
@@ -434,6 +656,7 @@ pub(crate) fn run_mill_mine(args: &[String]) {
                         &mut mining_engine,
                         policy,
                         limits,
+                        steering_cfg,
                     );
                     if result_tx.send(result).is_err() {
                         break;
@@ -474,24 +697,60 @@ pub(crate) fn run_mill_mine(args: &[String]) {
             stats.visited += 1;
             stats.engine_calls += result.engine_calls;
 
-            if let Verdict::Blunder {
-                best_child,
-                severity,
-            } = result.verdict
-            {
-                let entry = MineEntry {
-                    key: result.key,
+            match result.verdict {
+                Verdict::Blunder {
                     best_child,
                     severity,
-                    trap_score: trap_score(severity, result.mass),
-                    mass: result.mass,
-                    fen: result.fen,
-                    depth_used: result.depth_used,
-                };
-                use std::io::Write;
-                serde_json::to_writer(&mut out_writer, &entry).expect("entry must serialize");
-                out_writer.write_all(b"\n").expect("write failed");
-                stats.entries += 1;
+                } => {
+                    // Blunder entries are never subject to the steering cap.
+                    assert!(
+                        result.steering_candidate.is_none(),
+                        "a Blunder verdict must not also nominate a steering candidate"
+                    );
+                    let entry = MineEntry {
+                        key: result.key,
+                        best_child,
+                        severity,
+                        trap_score: trap_score(severity, result.mass),
+                        mass: result.mass,
+                        fen: result.fen,
+                        depth_used: result.depth_used,
+                    };
+                    use std::io::Write;
+                    serde_json::to_writer(&mut out_writer, &entry).expect("entry must serialize");
+                    out_writer.write_all(b"\n").expect("write failed");
+                    stats.entries += 1;
+                }
+                Verdict::Safe => {
+                    if let Some(best_child) = result.steering_candidate {
+                        if steering_max_entries > 0
+                            && stats.steering_candidates_emitted >= steering_max_entries
+                        {
+                            stats.steering_skipped_after_cap += 1;
+                        } else {
+                            // severity 0 marks a steering candidate; the
+                            // trap_score is a placeholder the packer
+                            // overwrites from its own density pass --
+                            // deliberately NOT scoring::trap_score, which
+                            // is blunder-only by contract.
+                            let entry = MineEntry {
+                                key: result.key,
+                                best_child,
+                                severity: 0,
+                                trap_score: 0,
+                                mass: result.mass,
+                                fen: result.fen,
+                                depth_used: result.depth_used,
+                            };
+                            use std::io::Write;
+                            serde_json::to_writer(&mut out_writer, &entry)
+                                .expect("entry must serialize");
+                            out_writer.write_all(b"\n").expect("write failed");
+                            stats.entries += 1;
+                            stats.steering_candidates_emitted += 1;
+                        }
+                    }
+                }
             }
             visited.insert(result.key, result.verdict);
             frontier.extend(result.expansions);
@@ -512,10 +771,11 @@ pub(crate) fn run_mill_mine(args: &[String]) {
                 use std::io::Write;
                 out_writer.flush().ok();
                 eprintln!(
-                    "[mill-mine] visited={} entries={} engine_calls={} dedup_hits={} \
-                     frontier={} elapsed={:.1}s",
+                    "[mill-mine] visited={} entries={} steering_candidates_emitted={} \
+                     engine_calls={} dedup_hits={} frontier={} elapsed={:.1}s",
                     stats.visited,
                     stats.entries,
+                    stats.steering_candidates_emitted,
                     stats.engine_calls,
                     stats.dedup_hits,
                     frontier.len(),
@@ -523,7 +783,7 @@ pub(crate) fn run_mill_mine(args: &[String]) {
                 );
             }
             if stats.visited.saturating_sub(last_checkpoint_at_visited) >= checkpoint_every {
-                save_checkpoint(&checkpoint_path, &visited, &frontier);
+                save_checkpoint(&checkpoint_path, &fingerprint, &visited, &frontier);
                 last_checkpoint_at_visited = stats.visited;
             }
         }
@@ -535,7 +795,7 @@ pub(crate) fn run_mill_mine(args: &[String]) {
         use std::io::Write;
         out_writer.flush().expect("final flush failed");
     }
-    save_checkpoint(&checkpoint_path, &visited, &frontier);
+    save_checkpoint(&checkpoint_path, &fingerprint, &visited, &frontier);
 
     let elapsed = started_at.elapsed().as_secs_f64();
     let density_pct = if stats.visited > 0 {
@@ -545,9 +805,12 @@ pub(crate) fn run_mill_mine(args: &[String]) {
     };
     eprintln!(
         "[mill-mine] done in {elapsed:.1}s: visited={} entries={} ({density_pct:.3}% density) \
-         engine_calls={} dedup_hits={} remaining_frontier={}",
+         steering_candidates_emitted={} steering_skipped_after_cap={} engine_calls={} \
+         dedup_hits={} remaining_frontier={}",
         stats.visited,
         stats.entries,
+        stats.steering_candidates_emitted,
+        stats.steering_skipped_after_cap,
         stats.engine_calls,
         stats.dedup_hits,
         frontier.len(),
@@ -556,12 +819,22 @@ pub(crate) fn run_mill_mine(args: &[String]) {
 
 #[derive(serde::Serialize, serde::Deserialize, Default)]
 struct Checkpoint {
+    /// `None` only for checkpoints written before fingerprints existed;
+    /// [`validate_checkpoint_fingerprint`] rejects those on resume.
+    #[serde(default)]
+    fingerprint: Option<CheckpointFingerprint>,
     visited: Vec<(u64, Verdict)>,
     frontier: Vec<FrontierItem>,
 }
 
-fn save_checkpoint(path: &str, visited: &HashMap<u64, Verdict>, frontier: &Frontier) {
+fn save_checkpoint(
+    path: &str,
+    fingerprint: &CheckpointFingerprint,
+    visited: &HashMap<u64, Verdict>,
+    frontier: &Frontier,
+) {
     let checkpoint = Checkpoint {
+        fingerprint: Some(fingerprint.clone()),
         visited: visited.iter().map(|(&k, &v)| (k, v)).collect(),
         frontier: frontier.snapshot(),
     };
@@ -600,12 +873,19 @@ fn load_seed_fen_file(path: &str, rules: &MillRules) -> Vec<String> {
     fens
 }
 
-fn load_checkpoint(path: &str) -> (HashMap<u64, Verdict>, Vec<FrontierItem>) {
+fn load_checkpoint(
+    path: &str,
+) -> (
+    Option<CheckpointFingerprint>,
+    HashMap<u64, Verdict>,
+    Vec<FrontierItem>,
+) {
     let bytes = std::fs::read(path)
         .unwrap_or_else(|e| panic!("[mill-mine] cannot read checkpoint {path}: {e}"));
     let checkpoint: Checkpoint = serde_json::from_slice(&bytes)
         .unwrap_or_else(|e| panic!("[mill-mine] cannot parse checkpoint {path}: {e}"));
     (
+        checkpoint.fingerprint,
         checkpoint.visited.into_iter().collect(),
         checkpoint.frontier,
     )
