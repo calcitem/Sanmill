@@ -754,9 +754,37 @@ const _: () = assert!(MID_REMOVAL_RECORD_SIZE == 43);
 /// canonical-key machinery needed to check and correct a chosen action
 /// against it, with no dependency on the multi-gigabyte database the patch
 /// was mined from.
+/// Running trigger counters for the fire-rate probe (see the plan's
+/// runtime-diagnostics section): every consult path increments its
+/// bucket, so a harness can report per-game rates and distinguish
+/// "coverage too thin" from "scores all zero" when the fire rate
+/// disappoints.
+#[derive(Clone, Copy, Debug, Default)]
+pub struct PatchRuntimeStats {
+    /// `correct_action` returned a replacement (avoid-traps fired).
+    pub avoid_corrections: u64,
+    /// `trap_aware_action` returned a replacement (make-traps fired).
+    pub make_traps_switches: u64,
+    /// `trap_aware_action` had a usable proof but no strictly higher
+    /// -scored sibling (baseline kept -- includes all-zero and all-tied).
+    pub make_traps_no_higher_kept: u64,
+    /// `trap_aware_action` bailed before comparing: no entry, empty mask,
+    /// proof drift, or the chosen move was not proven optimal.
+    pub make_traps_proof_unusable: u64,
+    /// `trap_score_after_action` answered from the parent's nibbles.
+    pub score_parent_nibble_hits: u64,
+    /// `trap_score_after_action` fell back to the child entry's score.
+    pub score_child_fallback_hits: u64,
+    /// `trap_score_after_action` short-circuited to 0 on a same-side child.
+    pub score_same_side_zeroed: u64,
+    /// `trap_score_after_action` had no data on either path (`None`).
+    pub score_unscored: u64,
+}
+
 pub struct PatchLookup {
     file: PatchFile,
     keys: WdlPlaneCache<MemoryDatabaseProvider>,
+    stats: PatchRuntimeStats,
 }
 
 impl PatchLookup {
@@ -772,7 +800,11 @@ impl PatchLookup {
             MemoryDatabaseProvider::from_files([(secval_name, file.secval_bytes.clone())]);
         let keys = WdlPlaneCache::new(provider, variant)
             .map_err(|e| invalid_data(format!("failed to bootstrap patch key cache: {e}")))?;
-        Ok(Self { file, keys })
+        Ok(Self {
+            file,
+            keys,
+            stats: PatchRuntimeStats::default(),
+        })
     }
 
     pub fn fingerprint(&self) -> EngineFingerprint {
@@ -781,6 +813,16 @@ impl PatchLookup {
 
     pub fn entry_count(&self) -> usize {
         self.file.entry_count()
+    }
+
+    /// Running totals since `open` (or the last [`Self::take_runtime_stats`]).
+    pub fn runtime_stats(&self) -> PatchRuntimeStats {
+        self.stats
+    }
+
+    /// Read and reset the counters (probe harnesses report per-batch).
+    pub fn take_runtime_stats(&mut self) -> PatchRuntimeStats {
+        std::mem::take(&mut self.stats)
     }
 
     /// `None` when `options` (the live ruleset) is not the exact rule
@@ -900,6 +942,7 @@ impl PatchLookup {
             let child_snap = rules.apply(&sanitized_snap, action);
             let child_state = MillRules::decode_snapshot(child_snap);
             if self.canonical_key_for_state(&child_state, options) == Some(record.best_child) {
+                self.stats.avoid_corrections += 1;
                 return Some(action);
             }
         }
@@ -941,9 +984,16 @@ impl PatchLookup {
         chosen_action: Action,
     ) -> Option<Action> {
         let state = MillRules::decode_snapshot(*snap);
-        let key = self.canonical_key_for_state(&state, options)?;
-        let record = self.lookup_by_key(key)?;
+        let Some(key) = self.canonical_key_for_state(&state, options) else {
+            self.stats.make_traps_proof_unusable += 1;
+            return None;
+        };
+        let Some(record) = self.lookup_by_key(key) else {
+            self.stats.make_traps_proof_unusable += 1;
+            return None;
+        };
         if record.trap_score_mask == 0 {
+            self.stats.make_traps_proof_unusable += 1;
             return None;
         }
 
@@ -956,6 +1006,7 @@ impl PatchLookup {
                 usize::from(record.child_count),
                 "patch record child count must match the runtime child enumeration"
             );
+            self.stats.make_traps_proof_unusable += 1;
             return None;
         }
 
@@ -963,9 +1014,17 @@ impl PatchLookup {
             let child_snap = rules.apply(&sanitized_snap, chosen_action);
             let child_state = MillRules::decode_snapshot(child_snap);
             self.canonical_key_for_state(&child_state, options)
-        }?;
-        let chosen_index = child_keys.binary_search(&chosen_key).ok()?;
+        };
+        let Some(chosen_key) = chosen_key else {
+            self.stats.make_traps_proof_unusable += 1;
+            return None;
+        };
+        let Ok(chosen_index) = child_keys.binary_search(&chosen_key) else {
+            self.stats.make_traps_proof_unusable += 1;
+            return None;
+        };
         if record.optimal_mask & (1_u64 << chosen_index) == 0 {
+            self.stats.make_traps_proof_unusable += 1;
             return None;
         }
         let chosen_score = trap_rank(record.trap_score_mask, chosen_index)
@@ -987,7 +1046,10 @@ impl PatchLookup {
                 best = Some((score, child_key));
             }
         }
-        let (_, best_key) = best?;
+        let Some((_, best_key)) = best else {
+            self.stats.make_traps_no_higher_kept += 1;
+            return None;
+        };
 
         let mut actions = tgf_core::ActionList::<256>::new();
         rules.legal_actions(snap, &mut actions);
@@ -995,6 +1057,7 @@ impl PatchLookup {
             let child_snap = rules.apply(&sanitized_snap, action);
             let child_state = MillRules::decode_snapshot(child_snap);
             if self.canonical_key_for_state(&child_state, options) == Some(best_key) {
+                self.stats.make_traps_switches += 1;
                 return Some(action);
             }
         }
@@ -1036,6 +1099,7 @@ impl PatchLookup {
         let child_snap = rules.apply(&sanitized_snap, action);
         let child_state = MillRules::decode_snapshot(child_snap);
         if child_state.side_to_move() == state.side_to_move() {
+            self.stats.score_same_side_zeroed += 1;
             return Some(0);
         }
 
@@ -1052,15 +1116,22 @@ impl PatchLookup {
                 let nibble = trap_rank(record.trap_score_mask, chosen_index)
                     .map(|rank| nibble_at(record.optimal_trap_nibbles, rank))
                     .unwrap_or(0);
+                self.stats.score_parent_nibble_hits += 1;
                 return Some(nibble_to_u8(nibble));
             }
             // Proof drift: fall through to the child-entry fallback below
             // rather than reporting a fabricated 0.
         }
 
-        self.canonical_key_for_state(&child_state, options)
+        let fallback = self
+            .canonical_key_for_state(&child_state, options)
             .and_then(|child_key| self.lookup_by_key(child_key))
-            .map(|correction| correction.trap_score)
+            .map(|correction| correction.trap_score);
+        match fallback {
+            Some(_) => self.stats.score_child_fallback_hits += 1,
+            None => self.stats.score_unscored += 1,
+        }
+        fallback
     }
 
     #[allow(dead_code)]
@@ -1718,6 +1789,31 @@ mod tests {
             empty.trap_score_after_action(&rules, &options, &snap, scored_action),
             None,
         );
+
+        // Fire-rate probe counters mirror the branches this test just
+        // exercised: the valid-proof lookup answered twice from parent
+        // nibbles, the broken-proof lookup fell back once and drew blank
+        // once, and the empty patch recorded one unscored consult.
+        let valid_stats = build(child_count).runtime_stats();
+        assert_eq!(valid_stats.score_parent_nibble_hits, 0, "fresh lookup");
+        let mut probe = build(child_count);
+        let _ = probe.trap_score_after_action(&rules, &options, &snap, scored_action);
+        let _ = probe.trap_score_after_action(&rules, &options, &snap, unscored_action);
+        let stats = probe.take_runtime_stats();
+        assert_eq!(stats.score_parent_nibble_hits, 2);
+        assert_eq!(stats.score_child_fallback_hits, 0);
+        assert_eq!(
+            probe.runtime_stats().score_parent_nibble_hits,
+            0,
+            "take_runtime_stats must reset the counters"
+        );
+        let mut drifted = build(child_count + 1);
+        let _ = drifted.trap_score_after_action(&rules, &options, &snap, unscored_action);
+        let _ = drifted.trap_score_after_action(&rules, &options, &snap, scored_action);
+        let stats = drifted.runtime_stats();
+        assert_eq!(stats.score_parent_nibble_hits, 0);
+        assert_eq!(stats.score_child_fallback_hits, 1);
+        assert_eq!(stats.score_unscored, 1);
     }
 
     /// A mill-forming move leaves the mover on turn (pending removal): its

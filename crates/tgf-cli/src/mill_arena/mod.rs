@@ -120,6 +120,11 @@ pub(crate) fn run_mill_arena(args: &[String]) {
         std::process::exit(1);
     }
     let patch_path: String = parse_flag(args, "--patch", String::new());
+    // Fire-rate probe for the deployed (database-free) make-traps path:
+    // after the avoid-traps correction, let the patch re-order among
+    // proven-optimal moves. Runtime trigger counters are reported at the
+    // end (see PatchRuntimeStats).
+    let make_traps = crate::cli_args::flag_present(args, "--make-traps");
     let games_per_opening: u32 = parse_flag(args, "--games", 1u32);
     let depth_override: i32 = parse_flag(args, "--depth", 0i32);
     let skill_level: u8 = parse_flag(args, "--skill-level", 30u8);
@@ -191,6 +196,7 @@ pub(crate) fn run_mill_arena(args: &[String]) {
                     &mut db,
                     db_ordering,
                     patch.as_mut(),
+                    make_traps,
                     &options,
                     depth_override,
                     skill_level,
@@ -237,6 +243,27 @@ pub(crate) fn run_mill_arena(args: &[String]) {
     } else {
         "unpatched"
     });
+    if let Some(patch) = patch.as_ref() {
+        // Fire-rate probe: per-game trigger rates over the whole batch.
+        let stats = patch.runtime_stats();
+        let per_game = |n: u64| n as f64 / f64::from(batch.games.max(1));
+        eprintln!(
+            "[mill-arena] patch runtime: avoid_corrections={} ({:.2}/game) \
+             make_traps_switches={} ({:.2}/game) make_traps_no_higher_kept={} \
+             make_traps_proof_unusable={} score_parent_nibble_hits={} \
+             score_child_fallback_hits={} score_same_side_zeroed={} score_unscored={}",
+            stats.avoid_corrections,
+            per_game(stats.avoid_corrections),
+            stats.make_traps_switches,
+            per_game(stats.make_traps_switches),
+            stats.make_traps_no_higher_kept,
+            stats.make_traps_proof_unusable,
+            stats.score_parent_nibble_hits,
+            stats.score_child_fallback_hits,
+            stats.score_same_side_zeroed,
+            stats.score_unscored,
+        );
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -276,6 +303,7 @@ fn play_one_game<P: perfect_db::database::DatabaseProvider>(
     db: &mut Database<P>,
     db_ordering: PerfectMoveOrdering,
     mut patch: Option<&mut PatchLookup>,
+    make_traps: bool,
     options: &MillVariantOptions,
     depth_override: i32,
     skill_level: u8,
@@ -405,6 +433,15 @@ fn play_one_game<P: perfect_db::database::DatabaseProvider>(
                 action = corrected;
                 corrections_applied += 1;
                 patch_fixed_it = true;
+            }
+            // Deployed database-free make-traps: re-order among
+            // proven-optimal moves after the avoid correction, exactly
+            // like the app's AI turn path (correct first, then steer).
+            if make_traps
+                && let Some(patch) = patch.as_deref_mut()
+                && let Some(better) = patch.trap_aware_action(rules, options, &snapshot, action)
+            {
+                action = better;
             }
 
             // Root cause of the game's eventual result, for closed-loop

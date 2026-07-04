@@ -103,8 +103,10 @@ pub(crate) fn audit_entries<P: DatabaseProvider + Clone>(
         }
         // Re-derive the proof in the same context the pack used; the
         // packed fields were already full-scanned against `proofs`, so a
-        // proof match here transitively validates the file.
-        let rederived = {
+        // proof match here transitively validates the file. (The steering
+        // diagnostics are gate inputs, not packed data -- entries in the
+        // retained set already passed the gate.)
+        let (rederived, _steering_diag) = {
             let mut oracle = super::recompute::PlaneOracle {
                 planes: &mut planes,
             };
@@ -291,15 +293,20 @@ mod tests {
             .map(|line| serde_json::from_str(line).unwrap())
             .collect();
 
-        // Recast the first mined blunder as a severity-0 steering entry
-        // (severity 0, placeholder trap_score 0 -- exactly what `mill mine
-        // --emit-steering` writes; its best_child comes from the same
-        // rank_children pick). The audit must admit it: steering entries
-        // have no "a losing move must exist" requirement, only the
-        // best_child-preserves-value and proof re-derivation checks.
-        entries[0].severity = 0;
-        entries[0].trap_score = 0;
-        let steering_key = entries[0].key;
+        // Recast the first few mined blunders as severity-0 steering
+        // entries (severity 0, placeholder trap_score 0 -- exactly what
+        // `mill mine --emit-steering` writes; best_child comes from the
+        // same rank_children pick). The audit must admit whichever survive
+        // the steering gate: steering entries have no "a losing move must
+        // exist" requirement, only the best_child-preserves-value and
+        // proof re-derivation checks. min_gap 0 keeps the gate to its
+        // structural half (>= 2 side-flipping optimal candidates), which
+        // not every recast blunder position satisfies -- hence several.
+        let recast = entries.len().min(5);
+        for entry in entries.iter_mut().take(recast) {
+            entry.severity = 0;
+            entry.trap_score = 0;
+        }
 
         // Mirror production: derive proofs through the recompute pipeline
         // (uniform density only -- no HumanDB in this smoke test), then
@@ -311,13 +318,17 @@ mod tests {
             &options,
             None,
             super::super::human_weight::HumanWeightConfig::default(),
+            0,
         )
         .expect("no human db configured, recompute cannot fail on external data");
         let refs: Vec<&MineEntry> = outcome.entries.iter().collect();
         assert!(
-            refs.iter()
-                .any(|e| e.key == steering_key && e.severity == 0),
-            "the severity-0 steering entry must survive recompute/dedup"
+            refs.iter().any(|e| e.severity == 0),
+            "at least one severity-0 steering entry must survive the gate to be audited \
+             (kept={} dropped_few={} dropped_gap={})",
+            outcome.stats.steering_kept,
+            outcome.stats.steering_dropped_few_candidates,
+            outcome.stats.steering_dropped_low_gap,
         );
         let audited = audit_entries(
             &refs,

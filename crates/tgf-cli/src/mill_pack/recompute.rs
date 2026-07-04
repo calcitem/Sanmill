@@ -49,6 +49,51 @@ pub(crate) struct ChildProof {
     pub optimal_trap_nibbles: u64,
 }
 
+/// Steering-gate diagnostics computed alongside a proof: the *full* score
+/// vector's shape over side-flipping optimal candidates (including
+/// candidates whose nibble is 0 or who fell outside the top-16 mask;
+/// same-side children are excluded because their score is a hard 0 by
+/// perspective rule, not by measurement).
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub(crate) struct SteeringDiag {
+    /// Number of side-flipping, proven-optimal children.
+    pub flipped_optimal: u32,
+    /// `max - min` over those children's fused nibbles (0 when fewer than
+    /// two candidates exist).
+    pub nibble_gap: u8,
+}
+
+/// Why a severity-0 steering entry was dropped by the packer's gate.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum SteeringDrop {
+    /// Fewer than two side-flipping optimal candidates: the runtime's
+    /// trap-aware reordering would have no choice to make.
+    FewFlippedCandidates,
+    /// The full score vector is too flat (`gap < --steering-min-gap`):
+    /// with the strictly-greater switch rule such a record can never
+    /// steer, so it would be dead weight in the asset.
+    LowGap,
+}
+
+/// The steering gate itself (severity > 0 entries always pass -- they are
+/// corrections first, steering second).
+pub(crate) fn steering_gate(
+    severity: i8,
+    diag: SteeringDiag,
+    min_gap: u8,
+) -> Result<(), SteeringDrop> {
+    if severity > 0 {
+        return Ok(());
+    }
+    if diag.flipped_optimal < 2 {
+        return Err(SteeringDrop::FewFlippedCandidates);
+    }
+    if diag.nibble_gap < min_gap {
+        return Err(SteeringDrop::LowGap);
+    }
+    Ok(())
+}
+
 /// Canonical-key derivation. This trait is deliberately implemented
 /// exactly once -- the blanket impl over a real [`WdlPlaneCache`] below,
 /// which delegates to [`perfect_db::canonical_key`] (and, transitively,
@@ -141,6 +186,16 @@ pub(crate) struct RecomputeStats {
     /// Histogram of `nibble_behavior - nibble_uniform` in [-15, 15],
     /// indexed by `diff + 15`.
     pub divergence: [u64; 31],
+    /// severity-0 entries dropped for having fewer than two side-flipping
+    /// optimal candidates.
+    pub steering_dropped_few_candidates: u64,
+    /// severity-0 entries dropped by the `--steering-min-gap` filter.
+    pub steering_dropped_low_gap: u64,
+    /// severity-0 entries that survived the steering gate.
+    pub steering_kept: u64,
+    /// Full-vector nibble gap histogram over surviving severity-0 entries
+    /// (index = gap 0..=15).
+    pub steering_gap_histogram: [u64; 16],
 }
 
 pub(crate) struct RecomputeOutcome {
@@ -291,10 +346,11 @@ pub(crate) fn quantize(density: f64) -> u8 {
     }
 }
 
-/// Derive one entry's packed proof + steering fields. This is the single
-/// derivation shared by the packing pipeline, the packed-field full-scan
-/// validation, and the audit's sampled re-derivation -- there must never
-/// be a second nibble implementation to drift against.
+/// Derive one entry's packed proof + steering fields, plus the
+/// steering-gate diagnostics over the *full* candidate vector. This is the
+/// single derivation shared by the packing pipeline, the packed-field
+/// full-scan validation, and the audit's sampled re-derivation -- there
+/// must never be a second nibble implementation to drift against.
 #[allow(clippy::too_many_arguments)]
 pub(crate) fn derive_child_proof(
     entry: &MineEntry,
@@ -305,7 +361,7 @@ pub(crate) fn derive_child_proof(
     human: Option<&HumanWeights>,
     memo: &mut DensityMemo,
     stats: &mut RecomputeStats,
-) -> ChildProof {
+) -> (ChildProof, SteeringDiag) {
     let mut state = rules
         .set_from_fen(&entry.fen)
         .expect("proof derivation runs on stage-1 survivors");
@@ -370,8 +426,13 @@ pub(crate) fn derive_child_proof(
         entry.fen
     );
 
-    // Score every proven-optimal, side-flipping child.
+    // Score every proven-optimal, side-flipping child. `flipped_nibbles`
+    // is the FULL score vector for the steering gate: every side-flipping
+    // optimal candidate contributes its fused nibble, including zeros and
+    // candidates later evicted from the top-16 mask (same-side children
+    // are excluded -- their 0 is a perspective rule, not a measurement).
     let mut scored: Vec<(u8, u64, usize)> = Vec::new();
+    let mut flipped_nibbles: Vec<u8> = Vec::new();
     let mut optimal_children = 0_u64;
     for (index, (&child_key, _)) in value_by_child_key.iter().enumerate() {
         if optimal_mask & (1_u64 << index) == 0 {
@@ -427,6 +488,7 @@ pub(crate) fn derive_child_proof(
         } else {
             nibble_behavior
         };
+        flipped_nibbles.push(nibble);
         if nibble >= 1 {
             scored.push((nibble, child_key, index));
         }
@@ -437,12 +499,24 @@ pub(crate) fn derive_child_proof(
         stats.empty_trap_mask_records += 1;
     }
 
-    ChildProof {
-        child_count: value_by_child_key.len() as u8,
-        optimal_mask,
-        trap_score_mask,
-        optimal_trap_nibbles,
-    }
+    let nibble_gap = match (flipped_nibbles.iter().max(), flipped_nibbles.iter().min()) {
+        (Some(&max), Some(&min)) if flipped_nibbles.len() >= 2 => max - min,
+        _ => 0,
+    };
+    let diag = SteeringDiag {
+        flipped_optimal: flipped_nibbles.len() as u32,
+        nibble_gap,
+    };
+
+    (
+        ChildProof {
+            child_count: value_by_child_key.len() as u8,
+            optimal_mask,
+            trap_score_mask,
+            optimal_trap_nibbles,
+        },
+        diag,
+    )
 }
 
 /// Keep the positive top-16 scored children by (score desc, child_key asc)
@@ -471,15 +545,24 @@ pub(crate) fn encode_trap_scores(
     (trap_score_mask, optimal_trap_nibbles)
 }
 
-/// Run stages 0-4. `Err` means broken *external inputs* (today: a
-/// configured-but-unusable HumanDB); the CLI caller reports it and exits
-/// nonzero. Internal invariant violations still panic.
+/// Run stages 0-5 (HumanDB load, re-derive, dedup, fusion-map freeze,
+/// proof derivation, steering gate). `Err` means broken *external inputs*
+/// (today: a configured-but-unusable HumanDB); the CLI caller reports it
+/// and exits nonzero. Internal invariant violations still panic.
+///
+/// `steering_min_gap` is the packer-side gate for severity-0 entries: the
+/// full score vector's `max - min` must reach it, else the record could
+/// never steer under the strictly-greater switch rule and is dropped
+/// (severity > 0 corrections always pass). It is deliberately NOT part of
+/// the mining checkpoint fingerprint -- it changes nothing about what
+/// mining emits.
 pub(crate) fn recompute_entries(
     entries: Vec<MineEntry>,
     db_path: &Path,
     options: &MillVariantOptions,
     human_db: Option<&Path>,
     human_config: HumanWeightConfig,
+    steering_min_gap: u8,
 ) -> Result<RecomputeOutcome, String> {
     let variant = DatabaseVariant::match_mill_options(options)
         .expect("default MillVariantOptions must match the standard Perfect DB variant");
@@ -599,13 +682,19 @@ pub(crate) fn recompute_entries(
 
     // Stage 4: proofs + steering nibbles per unique entry, through the
     // exact derivation the audit re-runs on its samples.
+    // Stage 5 (interleaved): the steering gate -- severity-0 entries whose
+    // full candidate vector cannot steer (too few side-flipping optimal
+    // candidates, or a gap below `steering_min_gap`) are dropped here,
+    // AFTER the fusion map froze (their self-density stays a valid parent
+    // signal) and BEFORE the budget sees them.
     let mut proofs: HashMap<u64, ChildProof> = HashMap::with_capacity(deduped.len());
-    for entry in &deduped {
+    let mut kept: Vec<MineEntry> = Vec::with_capacity(deduped.len());
+    for entry in deduped {
         let mut oracle = PlaneOracle {
             planes: &mut planes,
         };
-        let proof = derive_child_proof(
-            entry,
+        let (proof, diag) = derive_child_proof(
+            &entry,
             &rules,
             options,
             &mut oracle,
@@ -614,7 +703,22 @@ pub(crate) fn recompute_entries(
             &mut memo,
             &mut stats,
         );
-        proofs.insert(entry.key, proof);
+        match steering_gate(entry.severity, diag, steering_min_gap) {
+            Ok(()) => {
+                if entry.severity == 0 {
+                    stats.steering_kept += 1;
+                    stats.steering_gap_histogram[usize::from(diag.nibble_gap.min(15))] += 1;
+                }
+                proofs.insert(entry.key, proof);
+                kept.push(entry);
+            }
+            Err(SteeringDrop::FewFlippedCandidates) => {
+                stats.steering_dropped_few_candidates += 1;
+            }
+            Err(SteeringDrop::LowGap) => {
+                stats.steering_dropped_low_gap += 1;
+            }
+        }
     }
 
     eprintln!(
@@ -640,6 +744,24 @@ pub(crate) fn recompute_entries(
         stats.fusion_won,
         stats.best_value_unresolved_parent_count,
     );
+    eprintln!(
+        "[patch-pack] steering gate (min_gap={steering_min_gap}): kept={} \
+         dropped_few_flipped_candidates={} dropped_low_gap={}",
+        stats.steering_kept, stats.steering_dropped_few_candidates, stats.steering_dropped_low_gap,
+    );
+    if stats.steering_gap_histogram.iter().any(|&n| n > 0) {
+        let rendered: Vec<String> = stats
+            .steering_gap_histogram
+            .iter()
+            .enumerate()
+            .filter(|(_, n)| **n > 0)
+            .map(|(gap, n)| format!("{gap}:{n}"))
+            .collect();
+        eprintln!(
+            "[patch-pack] steering gap histogram (kept entries): {}",
+            rendered.join(" ")
+        );
+    }
     if stats.divergence.iter().any(|&n| n > 0) {
         let rendered: Vec<String> = stats
             .divergence
@@ -655,7 +777,7 @@ pub(crate) fn recompute_entries(
     }
 
     Ok(RecomputeOutcome {
-        entries: deduped,
+        entries: kept,
         proofs,
         stats,
         human,

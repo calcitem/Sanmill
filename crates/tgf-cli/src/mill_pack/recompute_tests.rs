@@ -277,7 +277,7 @@ fn derive_child_proof_scores_optimal_children_from_planted_values() {
     let entry = steering_entry(&rules.export_fen(&parent_state), parent_key, child_a.1);
     let mut memo = DensityMemo::new();
     let mut stats = RecomputeStats::default();
-    let proof = derive_child_proof(
+    let (proof, _) = derive_child_proof(
         &entry,
         &rules,
         &opts,
@@ -369,7 +369,7 @@ fn derive_child_proof_zeroes_same_side_children_on_every_signal() {
     let entry = steering_entry(&rules.export_fen(&parent_state), parent_key, mill_child_key);
     let mut memo = DensityMemo::new();
     let mut stats = RecomputeStats::default();
-    let proof = derive_child_proof(
+    let (proof, _) = derive_child_proof(
         &entry,
         &rules,
         &opts,
@@ -455,7 +455,7 @@ fn derive_child_proof_blends_behavior_density_when_gates_pass() {
     let entry = steering_entry(&rules.export_fen(&parent_state), parent_key, child_key);
     let mut memo = DensityMemo::new();
     let mut stats = RecomputeStats::default();
-    let proof = derive_child_proof(
+    let (proof, _) = derive_child_proof(
         &entry,
         &rules,
         &opts,
@@ -508,7 +508,7 @@ fn behavior_weighting_changes_nibbles_against_the_uniform_pack() {
     // A: uniform-only pack.
     let mut memo_a = DensityMemo::new();
     let mut stats_a = RecomputeStats::default();
-    let proof_a = derive_child_proof(
+    let (proof_a, _) = derive_child_proof(
         &entry,
         &rules,
         &opts,
@@ -550,7 +550,7 @@ fn behavior_weighting_changes_nibbles_against_the_uniform_pack() {
     };
     let mut memo_b = DensityMemo::new();
     let mut stats_b = RecomputeStats::default();
-    let proof_b = derive_child_proof(
+    let (proof_b, _) = derive_child_proof(
         &entry,
         &rules,
         &opts,
@@ -575,6 +575,80 @@ fn behavior_weighting_changes_nibbles_against_the_uniform_pack() {
     assert_eq!(negative_shift, 1, "shift must land in a negative bucket");
 }
 
+/// The packer-side steering gate: severity>0 corrections always pass;
+/// severity-0 entries need >= 2 side-flipping optimal candidates AND a
+/// full-vector nibble gap of at least `min_gap`.
+#[test]
+fn steering_gate_drops_uninformative_severity_zero_entries() {
+    let diag = |flipped: u32, gap: u8| SteeringDiag {
+        flipped_optimal: flipped,
+        nibble_gap: gap,
+    };
+    // Blunders pass regardless of shape.
+    assert_eq!(steering_gate(1, diag(0, 0), 3), Ok(()));
+    assert_eq!(steering_gate(2, diag(1, 0), 15), Ok(()));
+    // Structural half: fewer than two side-flipping candidates.
+    assert_eq!(
+        steering_gate(0, diag(0, 0), 0),
+        Err(SteeringDrop::FewFlippedCandidates)
+    );
+    assert_eq!(
+        steering_gate(0, diag(1, 5), 0),
+        Err(SteeringDrop::FewFlippedCandidates)
+    );
+    // Gap half: flat vectors cannot steer under strictly-greater.
+    assert_eq!(steering_gate(0, diag(2, 2), 3), Err(SteeringDrop::LowGap));
+    assert_eq!(steering_gate(0, diag(2, 3), 3), Ok(()));
+    assert_eq!(steering_gate(0, diag(4, 0), 0), Ok(()));
+}
+
+/// The gap diagnostics come from the FULL side-flipping candidate vector,
+/// including zero-nibble candidates that never enter the packed mask.
+#[test]
+fn derive_child_proof_reports_full_vector_gap_diagnostics() {
+    let rules = rules();
+    let opts = options();
+    let mut oracle = TableOracle::new();
+    oracle.default_value = Some(0);
+
+    let parent_snap = rules.initial_state(&[]);
+    let parent_state = MillRules::decode_snapshot(parent_snap);
+    let parent_key = oracle.key_of(&parent_state, &opts);
+    let child_keys = child_keys_in_mask_order(&rules, &parent_snap, &mut oracle);
+
+    // One trappy child, everything else flat zero: the gap must span the
+    // whole vector (max nibble - 0), not just the masked survivors.
+    let trappy = play(&rules, &["d6"]);
+    plant_replies(&rules, &trappy, &mut oracle, 8, 1);
+    let trappy_key = oracle.key_of(&MillRules::decode_snapshot(trappy), &opts);
+
+    let entry = steering_entry(&rules.export_fen(&parent_state), parent_key, trappy_key);
+    let mut memo = DensityMemo::new();
+    let mut stats = RecomputeStats::default();
+    let (proof, diag) = derive_child_proof(
+        &entry,
+        &rules,
+        &opts,
+        &mut oracle,
+        &HashMap::new(),
+        None,
+        &mut memo,
+        &mut stats,
+    );
+    assert_eq!(
+        diag.flipped_optimal as usize,
+        child_keys.len(),
+        "every placing child flips the side and is optimal here"
+    );
+    let index = child_keys.iter().position(|&k| k == trappy_key).unwrap();
+    let rank = trap_rank(proof.trap_score_mask, index).expect("trappy child is masked");
+    let trappy_nibble = nibble_at(proof.optimal_trap_nibbles, rank);
+    assert_eq!(
+        diag.nibble_gap, trappy_nibble,
+        "gap = trappy nibble - flat zero, measured over the full vector"
+    );
+}
+
 #[test]
 fn derive_child_proof_counts_unresolved_children_without_scoring_them() {
     let rules = rules();
@@ -595,7 +669,7 @@ fn derive_child_proof_counts_unresolved_children_without_scoring_them() {
     let entry = steering_entry(&rules.export_fen(&parent_state), parent_key, child_keys[0]);
     let mut memo = DensityMemo::new();
     let mut stats = RecomputeStats::default();
-    let proof = derive_child_proof(
+    let (proof, _) = derive_child_proof(
         &entry,
         &rules,
         &opts,

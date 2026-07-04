@@ -566,12 +566,14 @@ pub(crate) fn run_patch_pack(args: &[String]) {
     assert_entries_fit_std_budget(&entries);
 
     let options = MillVariantOptions::default();
+    let steering_min_gap: u8 = parse_flag(args, "--steering-min-gap", 3_u8);
     let outcome = match recompute::recompute_entries(
         entries,
         std::path::Path::new(&db_path),
         &options,
         human_db_path.as_deref(),
         human_config,
+        steering_min_gap,
     ) {
         Ok(outcome) => outcome,
         Err(message) => {
@@ -626,6 +628,23 @@ pub(crate) fn run_patch_pack(args: &[String]) {
         trim_stats.trimmed_blunders,
         trim_stats.trimmed_blunder_mass
     );
+    {
+        // Pool composition of the shipped file (steering pool must be
+        // non-empty whenever steering entries were fed and survived).
+        let packed_steering = patch
+            .sectors
+            .iter()
+            .flat_map(|s| s.records.iter().map(|r| r.severity))
+            .chain(patch.mid_removal_records.iter().map(|r| r.severity))
+            .filter(|&severity| severity == 0)
+            .count();
+        let packed_blunders = patch.entry_count() - packed_steering;
+        eprintln!(
+            "[patch-pack] pools in file: blunders={packed_blunders} steering={packed_steering} \
+             (steering trimmed by budget: {})",
+            trim_stats.trimmed_steering
+        );
+    }
     verify_packed_fields_match_proofs(&patch, &proofs);
     let entry_count = patch.entry_count();
     let sector_count = patch.sectors.len();
