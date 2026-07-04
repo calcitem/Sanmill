@@ -1245,6 +1245,15 @@ fn run_vs_parallel(config: MatchConfig) {
 
             for game_index in worker_game_indices(worker_id, config.total_games, config.jobs) {
                 let current_white = game_index % 2 == 0;
+                // Deterministic per-game tag for the engine-side patchtrap
+                // trace (see TGF_PATCH_TRACE_DIR): joins each traced
+                // switch to exactly one game log row via game_index,
+                // instead of guessing by move prefix.
+                cur.cmd(&format!(
+                    "setoption name PatchTraceTag value gi{}cw{}",
+                    game_index,
+                    u8::from(current_white)
+                ));
                 let (result, plies, opening_moves, moves) = if current_white {
                     referee.play_game(&mut cur, &mut mas, config.max_plies, game_index)
                 } else {

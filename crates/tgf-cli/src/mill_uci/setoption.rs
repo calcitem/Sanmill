@@ -209,6 +209,13 @@ pub(super) fn apply_setoption(
                 SetoptionResult::SearchConfig
             })
             .unwrap_or(SetoptionResult::Unknown),
+        // Diagnostic-only: a harness-assigned tag written verbatim into
+        // every TGF_PATCH_TRACE_DIR row, so offline analysis can join a
+        // make-traps switch to exactly one game (no gameplay effect).
+        "patchtracetag" | "patch trace tag" => {
+            super::patch::set_trace_tag(value);
+            SetoptionResult::Acknowledged
+        }
         "developermode" | "developer mode" => parse_bool(value)
             .map(|v| {
                 engine_cfg.developer_mode = v;

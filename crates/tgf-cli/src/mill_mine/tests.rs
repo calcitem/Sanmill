@@ -624,36 +624,57 @@ fn sha256_file_hex_matches_known_vectors() {
 /// patch); run with:
 ///   cargo test -p tgf-cli --release mill_mine::tests::steering_switches_never_drop_value -- --ignored --nocapture
 #[test]
-#[ignore = "requires D:/user/Documents/strong and target/steering_run artifacts"]
+#[ignore = "requires the external strong DB and packed steering artifacts (see env vars)"]
 fn steering_switches_never_drop_value() {
     use perfect_db::patch::PatchLookup;
     use tgf_core::ActionList;
     use tgf_mill::MillUciCodec;
 
-    let db_root = "D:/user/Documents/strong";
-    let patch_path = "target/steering_run/std_v4_steering.mill_patch";
-    let jsonl_path = "target/steering_run/steering_entries_clean.jsonl";
+    // Paths are env-overridable so the probe runs on any machine hosting
+    // the artifacts (defaults match this repo's Windows dev box).
+    let env_or = |name: &str, default: &str| std::env::var(name).unwrap_or_else(|_| default.into());
+    let db_root = env_or("SANMILL_STRONG_DB", "D:/user/Documents/strong");
+    let patch_path = env_or(
+        "SANMILL_STEERING_PATCH",
+        "target/steering_run/std_v4_steering.mill_patch",
+    );
+    let jsonl_path = env_or(
+        "SANMILL_STEERING_JSONL",
+        "target/steering_run/steering_entries_clean.jsonl",
+    );
     let sample_cap = 4000_usize;
 
     let options = MillVariantOptions::default();
     let rules = MillRules::new(options.clone());
-    let bytes = std::fs::read(patch_path).expect("packed steering patch present");
+    let bytes = std::fs::read(&patch_path).expect("packed steering patch present");
     let mut lookup = PatchLookup::open(&bytes).expect("patch must open");
 
     let provider =
-        perfect_db::database::FileDatabaseProvider::new(std::path::PathBuf::from(db_root));
+        perfect_db::database::FileDatabaseProvider::new(std::path::PathBuf::from(&db_root));
     let mut planes = perfect_db::wdl_plane::WdlPlaneCache::new(provider, DatabaseVariant::STANDARD)
         .expect("strong DB plane cache");
 
-    let text = std::fs::read_to_string(jsonl_path).expect("steering JSONL present");
+    let text = std::fs::read_to_string(&jsonl_path).expect("steering JSONL present");
+    // Seeded random sample over the WHOLE file (not a first-N prefix,
+    // which would only ever exercise the earliest-mined region). This is
+    // still a smoke-strength argument, not an exhaustive proof.
+    let lines: Vec<&str> = text.lines().filter(|l| !l.trim().is_empty()).collect();
+    let picked: Vec<&str> = {
+        let mut state = 0x5EED_CAFE_u64 | 1;
+        let mut indices = std::collections::BTreeSet::new();
+        while indices.len() < sample_cap.min(lines.len()) {
+            state ^= state << 13;
+            state ^= state >> 7;
+            state ^= state << 17;
+            indices.insert((state % lines.len() as u64) as usize);
+        }
+        indices.into_iter().map(|i| lines[i]).collect()
+    };
     let mut checked = 0_usize;
     let mut switched = 0_usize;
     let mut failures: Vec<String> = Vec::new();
 
-    for line in text.lines().filter(|l| !l.trim().is_empty()) {
-        if checked >= sample_cap {
-            break;
-        }
+    for line in picked {
         let entry: MineEntry = serde_json::from_str(line).expect("valid JSONL");
         let Ok(mut state) = rules.set_from_fen(&entry.fen) else {
             continue;

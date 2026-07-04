@@ -132,6 +132,7 @@ pub(crate) fn run_mill_arena(args: &[String]) {
     // results. Any switch whose steering move is not tied-best is a
     // blocking bug and is counted (and loudly reported) separately.
     let trace_path: String = parse_flag(args, "--trace-patchtrap", String::new());
+    let allow_trace_unresolved = crate::cli_args::flag_present(args, "--allow-trace-unresolved");
     let games_per_opening: u32 = parse_flag(args, "--games", 1u32);
     let depth_override: i32 = parse_flag(args, "--depth", 0i32);
     let skill_level: u8 = parse_flag(args, "--skill-level", 30u8);
@@ -253,7 +254,7 @@ pub(crate) fn run_mill_arena(args: &[String]) {
         "unpatched"
     });
     if let Some(trace) = trace {
-        trace.finish();
+        trace.finish(allow_trace_unresolved);
     }
     if let Some(patch) = patch.as_ref() {
         // Fire-rate probe: per-game trigger rates over the whole batch.
@@ -389,7 +390,7 @@ impl PatchTrapTrace {
         writeln!(self.writer).expect("trace write failed");
     }
 
-    fn finish(mut self) {
+    fn finish(mut self, allow_unresolved: bool) {
         self.writer.flush().ok();
         eprintln!(
             "[mill-arena] patchtrap trace: switches={} verified_tied_best={} \
@@ -399,6 +400,17 @@ impl PatchTrapTrace {
         assert_eq!(
             self.value_dropping_bugs, 0,
             "make-traps must never switch to a value-dropping move; see BLOCKER lines above"
+        );
+        // An unresolved DB verdict is NOT a pass for a value-preservation
+        // probe: it usually means a wrong --db root or missing sectors,
+        // and silently counting those rows as fine would let a broken
+        // probe report success. Opt out only for deliberately partial
+        // databases.
+        assert!(
+            allow_unresolved || self.db_unresolved == 0,
+            "{} switches could not be verified against the database; fix --db coverage or \
+             pass --allow-trace-unresolved for a deliberately partial database",
+            self.db_unresolved
         );
     }
 }

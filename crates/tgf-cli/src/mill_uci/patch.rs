@@ -18,9 +18,15 @@ use super::board::action_to_uci;
 static PATCH: LazyLock<Mutex<PatchState>> = LazyLock::new(|| Mutex::new(PatchState::default()));
 
 /// The most recent `position` command line, kept verbatim so trace rows
-/// can be joined offline against a harness's per-game move list (the
-/// moves token sequence is the join key; no rules replay needed).
+/// carry the move prefix for human inspection (the authoritative game
+/// join key is [`TRACE_TAG`], set by the harness per game).
 static POSITION_CONTEXT: LazyLock<Mutex<String>> = LazyLock::new(|| Mutex::new(String::new()));
+
+/// Harness-assigned game tag (`setoption name PatchTraceTag value <tag>`):
+/// written verbatim into every trace row so offline analysis joins a
+/// switch to exactly one game, instead of guessing via move prefixes
+/// (which collide across paired openings and common lines).
+static TRACE_TAG: LazyLock<Mutex<String>> = LazyLock::new(|| Mutex::new(String::new()));
 
 /// Record the raw `position ...` command for trace attribution.
 pub(super) fn set_position_context(line: &str) {
@@ -28,6 +34,14 @@ pub(super) fn set_position_context(line: &str) {
         .lock()
         .expect("position context mutex must not be poisoned");
     line.clone_into(&mut context);
+}
+
+/// Record the harness-assigned per-game trace tag.
+pub(super) fn set_trace_tag(tag: &str) {
+    let mut slot = TRACE_TAG
+        .lock()
+        .expect("trace tag mutex must not be poisoned");
+    tag.clone_into(&mut slot);
 }
 
 #[derive(Default)]
@@ -123,9 +137,15 @@ pub(super) fn apply_patch_make_traps_result(
 /// `TGF_PATCH_TRACE_DIR`: when set, every database-free make-traps switch
 /// appends one JSONL row to `<dir>/patchtrap_<pid>.jsonl` (one file per
 /// engine process, so parallel H2H workers never interleave writes). The
-/// row carries the structural fields; DB value verification is done
-/// offline against the strong database by the trace verifier, which keeps
-/// the engine free of any external-database dependency.
+/// row carries the structural fields plus the harness-assigned game tag;
+/// DB value verification is done offline against the strong database by
+/// the trace verifier, which keeps the engine free of any
+/// external-database dependency.
+///
+/// This is a diagnostic the operator explicitly requested via the
+/// environment: any failure to deliver it (missing/uncreatable directory,
+/// failed write) panics rather than silently producing an empty or
+/// partial trace.
 fn trace_switch(
     rules: &MillRules,
     state: &GameStateSnapshot,
@@ -134,9 +154,12 @@ fn trace_switch(
     detail: Option<perfect_db::patch::TrapSwitchDetail>,
 ) {
     static TRACE_DIR: LazyLock<Option<String>> = LazyLock::new(|| {
-        std::env::var("TGF_PATCH_TRACE_DIR")
+        let dir = std::env::var("TGF_PATCH_TRACE_DIR")
             .ok()
-            .filter(|dir| !dir.trim().is_empty())
+            .filter(|dir| !dir.trim().is_empty())?;
+        std::fs::create_dir_all(&dir)
+            .unwrap_or_else(|e| panic!("TGF_PATCH_TRACE_DIR {dir} cannot be created: {e}"));
+        Some(dir)
     });
     let Some(dir) = TRACE_DIR.as_ref() else {
         return;
@@ -148,6 +171,10 @@ fn trace_switch(
         .lock()
         .expect("position context mutex must not be poisoned")
         .clone();
+    let trace_tag = TRACE_TAG
+        .lock()
+        .expect("trace tag mutex must not be poisoned")
+        .clone();
     // Ply from the position command's move list (the harness drives every
     // search with `position startpos moves ...`).
     let ply = position_context
@@ -155,6 +182,7 @@ fn trace_switch(
         .map(|(_, moves)| moves.split_whitespace().count())
         .unwrap_or(0);
     let row = serde_json::json!({
+        "trace_tag": trace_tag,
         "parent_fen": fen,
         "side_to_move": state.side_to_move,
         "ply": ply,
@@ -166,14 +194,13 @@ fn trace_switch(
         "position_moves": position_context.split_once(" moves ").map(|(_, m)| m).unwrap_or(""),
     });
     let path = std::path::Path::new(dir).join(format!("patchtrap_{}.jsonl", std::process::id()));
-    if let Ok(mut file) = std::fs::OpenOptions::new()
+    let mut file = std::fs::OpenOptions::new()
         .create(true)
         .append(true)
         .open(&path)
-    {
-        use std::io::Write;
-        let _ = writeln!(file, "{row}");
-    }
+        .unwrap_or_else(|e| panic!("TGF_PATCH_TRACE_DIR trace open failed ({path:?}): {e}"));
+    use std::io::Write;
+    writeln!(file, "{row}").expect("TGF_PATCH_TRACE_DIR trace write failed");
 }
 
 fn reload_if_needed(state: &mut PatchState) {
