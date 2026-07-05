@@ -443,6 +443,21 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     );
   }
 
+  /// Starts a brand-new game on [routeId], discarding any unfinished game
+  /// still held by [GameController] first.
+  ///
+  /// The Play sheet / FAB / quick-start tiles represent "start playing mode
+  /// X", a materially different intent from the explicit "Continue game"
+  /// affordance (see [_continueCurrentGame]), which must keep the in-memory
+  /// game untouched. Without this reset, picking a mode while an unfinished
+  /// game was still active silently redisplayed that stale game instead of a
+  /// fresh board -- i.e. New Game appeared to "load" the previous game.
+  Future<void> _startNewGameOnRoute(String routeId) async {
+    GameController().loadedGameFilenamePrefix = null;
+    GameController().reset(force: true);
+    await _selectPlayRoute(routeId);
+  }
+
   Future<void> _continueCurrentGame() async {
     await _selectPlayRoute(_currentGamePlayRouteId());
   }
@@ -685,7 +700,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
           currentPlayRouteId: _playRouteId,
           hasOpenedCurrentPlaySession: _hasOpenedCurrentPlaySession,
           onContinueGame: _continueCurrentGame,
-          onPlayRouteSelected: _selectPlayRoute,
+          onPlayRouteSelected: _startNewGameOnRoute,
           onAppRouteSelected: _pushAppRoute,
           onSavedGameSelected: _openSavedGame,
         );

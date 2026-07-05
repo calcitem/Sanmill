@@ -2696,6 +2696,59 @@ void main() {
     skip: nativeLibrarySkipReason() != null,
   );
 
+  testWidgets(
+    'Selecting a play mode from home starts a new game over a stale one',
+    (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(390, 844)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      final GameController controller = GameController();
+      addTearDown(() {
+        controller.activeSessionSnapshot = null;
+        controller.gameRecorder.reset();
+      });
+
+      await tester.pumpWidget(const SanmillApp());
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      // Simulate an unfinished Human vs AI game still held by the
+      // controller, as if the user had played a few moves earlier and
+      // then navigated back to the home tab without finishing it.
+      controller.gameInstance.gameMode = GameMode.humanVsAi;
+      controller.gameRecorder.appendMove(ExtMove('d2', side: PieceColor.white));
+      controller.activeSessionSnapshot = const platform.GameStateSnapshot(
+        gameId: GameId.mill,
+        activeSeat: platform.PlayerSeat.second,
+        outcome: platform.GameOutcome.ongoing(),
+        phase: 'placing',
+      );
+      await tester.pump();
+      expect(controller.gameRecorder.mainlineMoves, isNotEmpty);
+
+      // Re-selecting "Human vs AI" from the Play sheet must start a fresh
+      // game rather than silently redisplaying the unfinished one.
+      await tester.tap(find.byKey(const Key('sanmill_home_play_fab')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(
+        find.byKey(const Key('sanmill_home_play_sheet_mill.play.humanVsAi')),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      expect(controller.gameRecorder.mainlineMoves, isEmpty);
+      expect(find.byKey(const Key('human_ai_new_game_sheet')), findsOneWidget);
+
+      // Drain any settings-save debounce timer (see the smoke test above).
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
   test('Home saved game continuation selects the current game mode route', () {
     const String fallbackRoute = 'mill.play.previous';
 
