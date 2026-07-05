@@ -36,6 +36,7 @@ import '../../shared/database/database.dart';
 import '../../shared/services/screenshot_service.dart';
 import '../../shared/themes/app_styles.dart';
 import '../../shared/themes/app_theme.dart';
+import '../../shared/utils/screen_insets.dart';
 import '../../shared/widgets/lichess_action_sheet.dart';
 import '../../shared/widgets/lichess_bottom_bar.dart';
 import '../../shared/widgets/lichess_list_section.dart';
@@ -919,6 +920,26 @@ class PlayAreaState extends State<PlayArea> {
   double _humanAiPlayerPanelHeightForLayout(BuildContext context) {
     final double scaledTextHeight = MediaQuery.textScalerOf(context).scale(38);
     return math.max(_kPlayerPanelHeight, scaledTextHeight + 18);
+  }
+
+  /// Shrinks the board to fit the height left over after [nonBoardHeight] is
+  /// reserved for the move list, player panels, and similar fixed-height
+  /// chrome. Without this, a full-width board can overflow the available
+  /// height (e.g. when a system navigation bar eats into it), forcing the
+  /// user to scroll before the board -- and the controls below it -- become
+  /// fully visible and playable.
+  double _boardSizeForConstraints(
+    BoxConstraints constraints,
+    double nonBoardHeight,
+  ) {
+    if (!constraints.hasBoundedHeight) {
+      return constraints.maxWidth;
+    }
+    final double heightBudget = math.max(
+      0,
+      constraints.maxHeight - nonBoardHeight,
+    );
+    return math.min(constraints.maxWidth, heightBudget);
   }
 
   /// Updates the UI by calling setState.
@@ -3022,13 +3043,39 @@ class PlayAreaState extends State<PlayArea> {
               key: Key('play_area_human_ai_robot_panel'),
               isRobot: true,
             );
+
+            final double moveListHeight = showMoveList
+                ? _wrappedMoveListReservedHeightForRoute(context)
+                : 0;
+            final double boardRowsHeight = showPieceCountRows
+                ? _pieceRowsHeightForLayout(context)
+                : 0;
+            final double topPanelHeight = _humanAiPlayerPanelHeightForLayout(
+              context,
+            );
+            final double bottomPanelHeight =
+                _humanAiPlayerPanelHeightForLayout(context) +
+                (showAdvantageGraph ? 112 : 0);
+            final double nonBoardHeight =
+                moveListHeight +
+                boardRowsHeight +
+                topPanelHeight +
+                bottomPanelHeight;
+
+            // Shrink the board when the available height can't fit a
+            // full-width board so it stays fully visible without scrolling.
+            final double boardSize = _boardSizeForConstraints(
+              constraints,
+              nonBoardHeight,
+            );
+
             final List<Widget> boardChildren = <Widget>[
               if (showPieceCountRows)
                 _isBoardFlipped
                     ? _buildRemovedPieceCountRow()
                     : _buildPieceCountRow(),
               SizedBox.square(
-                dimension: constraints.maxWidth,
+                dimension: boardSize,
                 child: _buildBoardScreenshot(),
               ),
               if (showPieceCountRows)
@@ -3053,20 +3100,8 @@ class PlayAreaState extends State<PlayArea> {
                 ),
             ];
 
-            final double moveListHeight = showMoveList
-                ? _wrappedMoveListReservedHeightForRoute(context)
-                : 0;
-            final double boardRowsHeight = showPieceCountRows
-                ? _pieceRowsHeightForLayout(context)
-                : 0;
             final double boardBlockHeight =
                 constraints.maxWidth + boardRowsHeight;
-            final double topPanelHeight = _humanAiPlayerPanelHeightForLayout(
-              context,
-            );
-            final double bottomPanelHeight =
-                _humanAiPlayerPanelHeightForLayout(context) +
-                (showAdvantageGraph ? 112 : 0);
             final double estimatedRequiredHeight =
                 moveListHeight +
                 boardBlockHeight +
@@ -3123,18 +3158,25 @@ class PlayAreaState extends State<PlayArea> {
               );
             }
 
-            return SingleChildScrollView(
-              key: const Key('play_area_human_ai_scroll_view'),
-              child: Column(
-                key: const Key('play_area_human_ai_column'),
-                children: <Widget>[
-                  moveList,
-                  topTable,
-                  ...boardChildren,
-                  ...bottomChildren,
-                ],
-              ),
+            final Widget tightColumn = Column(
+              key: const Key('play_area_human_ai_column'),
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                moveList,
+                topTable,
+                ...boardChildren,
+                ...bottomChildren,
+              ],
             );
+
+            if (!constraints.hasBoundedHeight) {
+              return SingleChildScrollView(
+                key: const Key('play_area_human_ai_scroll_view'),
+                child: tightColumn,
+              );
+            }
+
+            return SizedBox(height: constraints.maxHeight, child: tightColumn);
           },
         ),
       ),
@@ -3512,6 +3554,27 @@ class PlayAreaState extends State<PlayArea> {
               kToolbarHeight +
               DB().displaySettings.boardTop +
               AppTheme.boardMargin;
+          final double moveListReserve = isPlayableGame
+              ? _wrappedMoveListReservedHeightForRoute(context)
+              : 0;
+          final double pieceRowsHeight = showPieceCountRows
+              ? _pieceRowsHeightForLayout(context)
+              : AppTheme.boardMargin * 2;
+          final double advantageGraphHeight = showAdvantageGraph ? 150 : 0;
+          final double nonBoardHeight =
+              moveListReserve +
+              topPanelHeight +
+              pieceRowsHeight +
+              advantageGraphHeight +
+              AppTheme.boardMargin;
+
+          // Shrink the board when the available height can't fit a
+          // full-width board so it stays fully visible without scrolling.
+          final double boardSize = _boardSizeForConstraints(
+            constraints,
+            nonBoardHeight,
+          );
+
           final List<Widget> boardChildren = <Widget>[
             if (showPieceCountRows)
               _isBoardFlipped
@@ -3520,7 +3583,7 @@ class PlayAreaState extends State<PlayArea> {
             else
               const SizedBox(height: AppTheme.boardMargin),
             SizedBox.square(
-              dimension: constraints.maxWidth,
+              dimension: boardSize,
               child: _buildBoardScreenshot(),
             ),
             if (showPieceCountRows)
@@ -3545,16 +3608,7 @@ class PlayAreaState extends State<PlayArea> {
           ];
 
           final double estimatedRequiredHeight =
-              constraints.maxWidth +
-              (isPlayableGame
-                  ? _wrappedMoveListReservedHeightForRoute(context)
-                  : 0) +
-              topPanelHeight +
-              (showPieceCountRows
-                  ? _pieceRowsHeightForLayout(context)
-                  : AppTheme.boardMargin * 2) +
-              (showAdvantageGraph ? 150 : 0) +
-              AppTheme.boardMargin;
+              constraints.maxWidth + nonBoardHeight;
           final bool canBalance =
               isPlayableGame &&
               constraints.maxWidth >= _kBalancedLayoutMinWidth &&
@@ -3599,18 +3653,25 @@ class PlayAreaState extends State<PlayArea> {
             );
           }
 
-          return SingleChildScrollView(
-            key: const Key('play_area_single_child_scroll_view'),
-            child: Column(
-              key: const Key('play_area_column'),
-              children: <Widget>[
-                if (isPlayableGame) moveList,
-                topTable,
-                ...boardChildren,
-                ...bottomChildren,
-              ],
-            ),
+          final Widget tightColumn = Column(
+            key: const Key('play_area_column'),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              if (isPlayableGame) moveList,
+              topTable,
+              ...boardChildren,
+              ...bottomChildren,
+            ],
           );
+
+          if (!constraints.hasBoundedHeight) {
+            return SingleChildScrollView(
+              key: const Key('play_area_single_child_scroll_view'),
+              child: tightColumn,
+            );
+          }
+
+          return SizedBox(height: constraints.maxHeight, child: tightColumn);
         },
       ),
     );
@@ -4142,6 +4203,9 @@ class PlayAreaState extends State<PlayArea> {
             top: false,
             right: false,
             left: false,
+            minimum: EdgeInsets.only(
+              bottom: ScreenInsets.navigationBarInset(context),
+            ),
             child: Column(
               key: const Key('play_area_column_toolbar_bottom'),
               children: <Widget>[

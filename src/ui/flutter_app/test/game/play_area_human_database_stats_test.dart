@@ -1336,6 +1336,54 @@ void main() {
     );
   });
 
+  testWidgets('regular dense portrait layout handles insets', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isAdvantageGraphShown: true,
+      isHistoryNavigationToolbarShown: false,
+    );
+    GameController().gameInstance.gameMode = GameMode.humanVsHuman;
+
+    await tester.binding.setSurfaceSize(const Size(390, 720));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const MediaQuery(
+          data: MediaQueryData(
+            size: Size(390, 720),
+            padding: EdgeInsets.only(top: 36, bottom: 24),
+            textScaler: TextScaler.linear(1.3),
+          ),
+          child: Scaffold(
+            body: PlayArea(
+              boardImage: null,
+              child: SizedBox.square(
+                key: Key('test_board_square'),
+                dimension: 390,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    // The board should shrink to fit instead of requiring the user to
+    // scroll before the board and bottom bar become visible/playable.
+    expect(
+      find.byKey(const Key('play_area_single_child_scroll_view')),
+      findsNothing,
+    );
+    final Size boardSize = tester.getSize(
+      find.byKey(const Key('play_area_game_board_container')),
+    );
+    expect(boardSize.width, lessThan(390));
+    expect(boardSize.height, boardSize.width);
+  });
+
   testWidgets('human vs ai dense portrait layout handles insets', (
     WidgetTester tester,
   ) async {
@@ -1373,7 +1421,21 @@ void main() {
 
     expect(tester.takeException(), isNull);
     expect(find.byKey(const Key('play_area_lichess_bottom_bar')), findsOne);
-    expect(find.byKey(const Key('play_area_human_ai_scroll_view')), findsOne);
+    // The board should shrink to fit instead of requiring the user to
+    // scroll before the board and bottom bar become visible/playable.
+    expect(
+      find.byKey(const Key('play_area_human_ai_scroll_view')),
+      findsNothing,
+    );
+    final Size boardSize = tester.getSize(
+      find.byKey(const Key('play_area_game_board_container')),
+    );
+    expect(boardSize.width, lessThan(390));
+    expect(boardSize.height, boardSize.width);
+    final Offset bottomBarBottomRight = tester.getBottomRight(
+      find.byKey(const Key('play_area_lichess_bottom_bar')),
+    );
+    expect(bottomBarBottomRight.dy, lessThanOrEqualTo(720));
   });
 
   testWidgets('analysis dense portrait layout handles engine lines', (

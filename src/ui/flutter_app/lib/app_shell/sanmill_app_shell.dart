@@ -48,6 +48,7 @@ import '../shared/services/catcher_service.dart' show generateOptionsContent;
 import '../shared/services/environment_config.dart';
 import '../shared/services/logger.dart';
 import '../shared/themes/app_styles.dart';
+import '../shared/utils/screen_insets.dart';
 import '../shared/widgets/double_back_to_close_app.dart';
 import '../shared/widgets/lichess_list_section.dart';
 import '../shared/widgets/snackbars/scaffold_messenger.dart';
@@ -1323,7 +1324,6 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
     showModalBottomSheet<void>(
       context: context,
       useRootNavigator: true,
-      useSafeArea: true,
       isScrollControlled: true,
       showDragHandle: true,
       builder: (BuildContext sheetContext) {
@@ -2312,7 +2312,7 @@ class _PlayBottomSheet extends StatelessWidget {
         0,
         16,
         0,
-        MediaQuery.viewInsetsOf(context).bottom + 16,
+        ScreenInsets.modalBottomSheetPadding(context, extra: 16),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,

@@ -18,6 +18,7 @@ import '../../../shared/database/database.dart';
 import '../../../shared/services/logger.dart';
 import '../../../shared/themes/app_styles.dart';
 import '../../../shared/themes/app_theme.dart';
+import '../../../shared/utils/screen_insets.dart';
 import '../../../shared/widgets/custom_spacer.dart';
 import '../../../shared/widgets/lichess_list_section.dart';
 import '../../../shared/widgets/snackbars/scaffold_messenger.dart';
@@ -128,7 +129,6 @@ class GameOptionsModal extends StatelessWidget {
     );
     await showModalBottomSheet<void>(
       context: context,
-      useSafeArea: true,
       isScrollControlled: true,
       showDragHandle: true,
       builder: (BuildContext context) => const _HumanAiNewGameSheet(),
@@ -477,42 +477,40 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
   }
 
   Future<void> _showSidePicker(BuildContext context) async {
-    final _HumanAiSideChoice? selected =
-        await showModalBottomSheet<_HumanAiSideChoice>(
-          context: context,
-          useSafeArea: true,
-          showDragHandle: true,
-          builder: (BuildContext context) {
-            final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final _HumanAiSideChoice?
+    selected = await showModalBottomSheet<_HumanAiSideChoice>(
+      context: context,
+      showDragHandle: true,
+      builder: (BuildContext context) {
+        final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
-            return SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: AppStyles.bodyPadding),
-                child: LichessListSection(
-                  header: Text(S.of(context).side),
-                  children: <Widget>[
-                    for (final _HumanAiSideChoice choice
-                        in _HumanAiSideChoice.values)
-                      ListTile(
-                        key: Key('human_ai_new_game_sheet_side_${choice.name}'),
-                        leading: Icon(_sideChoiceIcon(choice)),
-                        title: Text(_sideChoiceLabel(context, choice)),
-                        trailing: choice == _sideChoice
-                            ? Icon(
-                                Icons.check_rounded,
-                                color: colorScheme.primary,
-                              )
-                            : null,
-                        selected: choice == _sideChoice,
-                        selectedColor: colorScheme.primary,
-                        onTap: () => Navigator.of(context).pop(choice),
-                      ),
-                  ],
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: ScreenInsets.modalBottomSheetPadding(
+              context,
+              extra: AppStyles.bodyPadding,
+            ),
+          ),
+          child: LichessListSection(
+            header: Text(S.of(context).side),
+            children: <Widget>[
+              for (final _HumanAiSideChoice choice in _HumanAiSideChoice.values)
+                ListTile(
+                  key: Key('human_ai_new_game_sheet_side_${choice.name}'),
+                  leading: Icon(_sideChoiceIcon(choice)),
+                  title: Text(_sideChoiceLabel(context, choice)),
+                  trailing: choice == _sideChoice
+                      ? Icon(Icons.check_rounded, color: colorScheme.primary)
+                      : null,
+                  selected: choice == _sideChoice,
+                  selectedColor: colorScheme.primary,
+                  onTap: () => Navigator.of(context).pop(choice),
                 ),
-              ),
-            );
-          },
+            ],
+          ),
         );
+      },
+    );
 
     if (!mounted || selected == null) {
       return;
@@ -544,7 +542,10 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
           0,
           0,
           0,
-          MediaQuery.viewInsetsOf(context).bottom + AppStyles.bodyPadding,
+          ScreenInsets.modalBottomSheetPadding(
+            context,
+            extra: AppStyles.bodyPadding,
+          ),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,

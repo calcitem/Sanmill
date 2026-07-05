@@ -3,7 +3,10 @@
 
 package com.calcitem.sanmill;
 
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+import androidx.core.view.WindowCompat;
 
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
@@ -22,6 +25,12 @@ import java.nio.charset.StandardCharsets;
 public class MainActivity extends FlutterActivity {
 
     private static final String NATIVE_CHANNEL = "com.calcitem.sanmill/native";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
