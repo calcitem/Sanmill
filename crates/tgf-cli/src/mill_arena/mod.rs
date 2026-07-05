@@ -1,15 +1,16 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // tgf mill arena: full-rules engine-vs-Perfect-DB match harness, used to
-// measure the mined error patch's actual effect on the engine's loss rate
-// (the KPI the whole mining pipeline exists to move).
+// measure the mined correction patch's actual effect on the engine's loss
+// rate (the KPI the correction mining pipeline exists to move).
 //
 // Unlike `mill mine` (which crawls the position graph) this plays complete,
 // rule-accurate games (N-move rule, threefold repetition, the lot) via the
-// same `tgf_mill::MillRules::outcome` used by real play, because the patch's
-// value proposition is about *actual games*, not abstract positions.
+// same `tgf_mill::MillRules::outcome` used by real play, because the
+// correction patch's value proposition is about *actual games*, not abstract
+// positions.
 //
 // Usage:
-//   tgf mill arena --db PATH [--patch PATH] [options]
+//   tgf mill arena --db PATH [--patch PATH] [--traps PATH] [options]
 //
 // Required:
 //   --db PATH           Perfect DB root (the opponent plays optimally from
@@ -17,10 +18,13 @@
 //                       theoretical draw").
 //
 // Optional:
-//   --patch PATH        Apply this patch file's corrections to the
+//   --patch PATH        Apply this correction patch file to the
 //                       engine's moves. Omit to measure the *unpatched*
 //                       engine (compare two `arena` runs, with and without
 //                       --patch, for the before/after KPI).
+//   --traps PATH        Trap-library file used only by --make-traps. The
+//                       correction patch is never used as an implicit trap
+//                       source.
 //   --games N            Games per opening slot (default 1; total games =
 //                       N * min(24, available openings) * 2 colors).
 //   --depth N            Fixed engine search depth (0 = derive
@@ -54,7 +58,7 @@ use crate::cli_args::parse_flag;
 /// games where `UncoveredBlunder` fired, see `play_one_game`) is the seed
 /// list for closed-loop mining: run `mill mine --seed-fen-file` against
 /// exactly the positions where this benchmark's own games actually went
-/// wrong and the patch did not catch it.
+/// wrong and the correction patch did not catch it.
 #[derive(Serialize)]
 struct GameLogEntry<'a> {
     opening: String,
@@ -120,8 +124,9 @@ pub(crate) fn run_mill_arena(args: &[String]) {
         std::process::exit(1);
     }
     let patch_path: String = parse_flag(args, "--patch", String::new());
+    let traps_path: String = parse_flag(args, "--traps", String::new());
     // Fire-rate probe for the deployed (database-free) make-traps path:
-    // after the avoid-traps correction, let the patch re-order among
+    // after the avoid-traps correction, let the trap library re-order among
     // proven-optimal moves. Runtime trigger counters are reported at the
     // end (see PatchRuntimeStats).
     let make_traps = crate::cli_args::flag_present(args, "--make-traps");
@@ -157,25 +162,27 @@ pub(crate) fn run_mill_arena(args: &[String]) {
     )
     .unwrap_or_else(|e| panic!("[mill-arena] failed to open DB at {db_path}: {e}"));
 
-    let mut patch = if patch_path.is_empty() {
-        None
-    } else {
-        let bytes = std::fs::read(&patch_path)
-            .unwrap_or_else(|e| panic!("[mill-arena] cannot read patch {patch_path}: {e}"));
-        Some(
-            PatchLookup::open(&bytes)
-                .unwrap_or_else(|e| panic!("[mill-arena] cannot parse patch {patch_path}: {e}")),
-        )
-    };
+    let mut correction_patch = load_patch_lookup("patch", &patch_path);
+    let mut trap_library = load_patch_lookup("trap library", &traps_path);
+    if make_traps && trap_library.is_none() {
+        eprintln!(
+            "[mill-arena] WARNING: --make-traps was set without --traps; make-traps is a no-op"
+        );
+    }
 
     eprintln!(
-        "[mill-arena] db={db_path} patch={} games_per_opening={games_per_opening} \
+        "[mill-arena] db={db_path} patch={} traps={} games_per_opening={games_per_opening} \
          depth_override={depth_override} skill_level={skill_level} db_ordering={db_ordering_name} \
          max_plies={max_plies}",
         if patch_path.is_empty() {
             "<none>"
         } else {
             &patch_path
+        },
+        if traps_path.is_empty() {
+            "<none>"
+        } else {
+            &traps_path
         }
     );
 
@@ -204,7 +211,8 @@ pub(crate) fn run_mill_arena(args: &[String]) {
                     engine_is_white,
                     &mut db,
                     db_ordering,
-                    patch.as_mut(),
+                    correction_patch.as_mut(),
+                    trap_library.as_mut(),
                     make_traps,
                     trace.as_mut(),
                     &options,
@@ -248,7 +256,7 @@ pub(crate) fn run_mill_arena(args: &[String]) {
         writer.flush().ok();
     }
 
-    batch.print(if patch.is_some() {
+    batch.print(if correction_patch.is_some() {
         "patched"
     } else {
         "unpatched"
@@ -256,17 +264,25 @@ pub(crate) fn run_mill_arena(args: &[String]) {
     if let Some(trace) = trace {
         trace.finish(allow_trace_unresolved);
     }
-    if let Some(patch) = patch.as_ref() {
-        // Fire-rate probe: per-game trigger rates over the whole batch.
+    if let Some(patch) = correction_patch.as_ref() {
+        // Correction probe: per-game avoid rates over the whole batch.
         let stats = patch.runtime_stats();
         let per_game = |n: u64| n as f64 / f64::from(batch.games.max(1));
         eprintln!(
-            "[mill-arena] patch runtime: avoid_corrections={} ({:.2}/game) \
-             make_traps_switches={} ({:.2}/game) make_traps_no_higher_kept={} \
-             make_traps_proof_unusable={} score_parent_nibble_hits={} \
-             score_child_fallback_hits={} score_same_side_zeroed={} score_unscored={}",
+            "[mill-arena] patch runtime: avoid_corrections={} ({:.2}/game)",
             stats.avoid_corrections,
-            per_game(stats.avoid_corrections),
+            per_game(stats.avoid_corrections)
+        );
+    }
+    if let Some(traps) = trap_library.as_ref() {
+        // Fire-rate probe: per-game trigger rates over the whole batch.
+        let stats = traps.runtime_stats();
+        let per_game = |n: u64| n as f64 / f64::from(batch.games.max(1));
+        eprintln!(
+            "[mill-arena] trap runtime: make_traps_switches={} ({:.2}/game) \
+             make_traps_no_higher_kept={} make_traps_proof_unusable={} \
+             score_parent_nibble_hits={} score_child_fallback_hits={} \
+             score_same_side_zeroed={} score_unscored={}",
             stats.make_traps_switches,
             per_game(stats.make_traps_switches),
             stats.make_traps_no_higher_kept,
@@ -277,6 +293,18 @@ pub(crate) fn run_mill_arena(args: &[String]) {
             stats.score_unscored,
         );
     }
+}
+
+fn load_patch_lookup(label: &str, path: &str) -> Option<PatchLookup> {
+    if path.is_empty() {
+        return None;
+    }
+    let bytes = std::fs::read(path)
+        .unwrap_or_else(|e| panic!("[mill-arena] cannot read {label} {path}: {e}"));
+    Some(
+        PatchLookup::open(&bytes)
+            .unwrap_or_else(|e| panic!("[mill-arena] cannot parse {label} {path}: {e}")),
+    )
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -416,9 +444,9 @@ impl PatchTrapTrace {
 }
 
 /// The first engine-to-move ply in a game where the ground-truth database
-/// says the chosen action drops value *and* the patch (if any) did not
-/// override it -- i.e. the root cause of whatever the game's final result
-/// turns out to be, for feeding a closed-loop mining pass (see
+/// says the chosen action drops value *and* the correction patch (if any)
+/// did not override it -- i.e. the root cause of whatever the game's final
+/// result turns out to be, for feeding a closed-loop mining pass (see
 /// `--out`'s `first_uncovered_blunder_fen`).
 struct UncoveredBlunder {
     ply: u32,
@@ -443,7 +471,8 @@ fn play_one_game<P: perfect_db::database::DatabaseProvider>(
     engine_is_white: bool,
     db: &mut Database<P>,
     db_ordering: PerfectMoveOrdering,
-    mut patch: Option<&mut PatchLookup>,
+    mut correction_patch: Option<&mut PatchLookup>,
+    mut trap_library: Option<&mut PatchLookup>,
     make_traps: bool,
     mut trace: Option<&mut PatchTrapTrace>,
     options: &MillVariantOptions,
@@ -569,7 +598,7 @@ fn play_one_game<P: perfect_db::database::DatabaseProvider>(
             }
 
             let mut patch_fixed_it = false;
-            if let Some(patch) = patch.as_deref_mut()
+            if let Some(patch) = correction_patch.as_deref_mut()
                 && let Some(corrected) = patch.correct_action(rules, options, &snapshot, action)
             {
                 action = corrected;
@@ -580,8 +609,8 @@ fn play_one_game<P: perfect_db::database::DatabaseProvider>(
             // proven-optimal moves after the avoid correction, exactly
             // like the app's AI turn path (correct first, then steer).
             if make_traps
-                && let Some(patch) = patch.as_deref_mut()
-                && let Some(better) = patch.trap_aware_action(rules, options, &snapshot, action)
+                && let Some(traps) = trap_library.as_deref_mut()
+                && let Some(better) = traps.trap_aware_action(rules, options, &snapshot, action)
             {
                 if let Some(trace) = trace.as_deref_mut() {
                     trace.record(rules, db, options, &snapshot, plies, action, better);
@@ -597,7 +626,7 @@ fn play_one_game<P: perfect_db::database::DatabaseProvider>(
             // in further, not independent gaps to mine.
             if is_blunder && !patch_fixed_it && first_uncovered_blunder.is_none() {
                 if std::env::var("MILL_ARENA_DEBUG").is_ok() {
-                    let has_entry = patch
+                    let has_entry = correction_patch
                         .as_deref_mut()
                         .and_then(|p| p.trap_score_for_state(&state, options))
                         .is_some();
