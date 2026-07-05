@@ -2217,6 +2217,7 @@ struct HumanDenseChild {
     action: String,
     ev: f64,
     n_scored: u64,
+    n_raw: u64,
     coverage: f64,
 }
 
@@ -2256,6 +2257,74 @@ fn select_human_dense_candidate(
     })
 }
 
+#[derive(Clone, Debug)]
+struct HeldoutReplayRow {
+    baseline_train: HumanDenseChild,
+    steering_train: HumanDenseChild,
+    baseline_test: HumanDenseChild,
+    steering_test: HumanDenseChild,
+    train_delta_ev: f64,
+    test_delta_ev: f64,
+    train_positive: bool,
+    baseline_sign_opposite: bool,
+    steering_sign_opposite: bool,
+}
+
+fn sign_is_strictly_opposite(ev: f64, db_value: i8) -> bool {
+    db_value != 0 && ev != 0.0 && ev.signum() != f64::from(db_value).signum()
+}
+
+fn pearson_correlation(pairs: &[(f64, f64)]) -> Option<f64> {
+    if pairs.len() < 2 {
+        return None;
+    }
+    let mean_x = pairs.iter().map(|&(x, _)| x).sum::<f64>() / pairs.len() as f64;
+    let mean_y = pairs.iter().map(|&(_, y)| y).sum::<f64>() / pairs.len() as f64;
+    let mut cov = 0.0;
+    let mut var_x = 0.0;
+    let mut var_y = 0.0;
+    for &(x, y) in pairs {
+        let dx = x - mean_x;
+        let dy = y - mean_y;
+        cov += dx * dy;
+        var_x += dx * dx;
+        var_y += dy * dy;
+    }
+    if var_x == 0.0 || var_y == 0.0 {
+        None
+    } else {
+        Some(cov / (var_x.sqrt() * var_y.sqrt()))
+    }
+}
+
+fn build_heldout_replay_row(
+    train_selection: &HumanDenseSelection,
+    test_children: &[HumanDenseChild],
+    baseline_db_value: i8,
+    steering_db_value: i8,
+) -> Option<HeldoutReplayRow> {
+    let baseline_test = test_children
+        .iter()
+        .find(|child| child.key == train_selection.baseline.key)?
+        .clone();
+    let steering_test = test_children
+        .iter()
+        .find(|child| child.key == train_selection.steering.key)?
+        .clone();
+    let test_delta_ev = steering_test.ev - baseline_test.ev;
+    Some(HeldoutReplayRow {
+        baseline_train: train_selection.baseline.clone(),
+        steering_train: train_selection.steering.clone(),
+        baseline_test: baseline_test.clone(),
+        steering_test: steering_test.clone(),
+        train_delta_ev: train_selection.delta_ev,
+        test_delta_ev,
+        train_positive: train_selection.delta_ev > 0.0,
+        baseline_sign_opposite: sign_is_strictly_opposite(baseline_test.ev, baseline_db_value),
+        steering_sign_opposite: sign_is_strictly_opposite(steering_test.ev, steering_db_value),
+    })
+}
+
 #[test]
 fn human_dense_selection_uses_ranked_baseline_and_best_alternative() {
     let children = vec![
@@ -2264,6 +2333,7 @@ fn human_dense_selection_uses_ranked_baseline_and_best_alternative() {
             action: "a".into(),
             ev: -0.4,
             n_scored: 20,
+            n_raw: 20,
             coverage: 1.0,
         },
         HumanDenseChild {
@@ -2271,6 +2341,7 @@ fn human_dense_selection_uses_ranked_baseline_and_best_alternative() {
             action: "b".into(),
             ev: 0.2,
             n_scored: 20,
+            n_raw: 20,
             coverage: 1.0,
         },
         HumanDenseChild {
@@ -2278,6 +2349,7 @@ fn human_dense_selection_uses_ranked_baseline_and_best_alternative() {
             action: "c".into(),
             ev: 0.1,
             n_scored: 20,
+            n_raw: 20,
             coverage: 1.0,
         },
     ];
@@ -2290,6 +2362,124 @@ fn human_dense_selection_uses_ranked_baseline_and_best_alternative() {
     assert_eq!(selected.baseline.key, 20);
     assert_eq!(selected.steering.key, 30);
     assert!((selected.delta_ev + 0.1).abs() < 1e-12);
+}
+
+#[test]
+fn heldout_replay_selection_uses_only_train_ev() {
+    let train_children = vec![
+        HumanDenseChild {
+            key: 1,
+            action: "base".into(),
+            ev: 0.0,
+            n_scored: 20,
+            n_raw: 20,
+            coverage: 1.0,
+        },
+        HumanDenseChild {
+            key: 2,
+            action: "train-best".into(),
+            ev: 0.4,
+            n_scored: 20,
+            n_raw: 20,
+            coverage: 1.0,
+        },
+        HumanDenseChild {
+            key: 3,
+            action: "test-only-best".into(),
+            ev: 0.1,
+            n_scored: 20,
+            n_raw: 20,
+            coverage: 1.0,
+        },
+    ];
+    let test_children = vec![
+        HumanDenseChild {
+            key: 1,
+            action: "base".into(),
+            ev: 0.0,
+            n_scored: 20,
+            n_raw: 20,
+            coverage: 1.0,
+        },
+        HumanDenseChild {
+            key: 2,
+            action: "train-best".into(),
+            ev: -0.2,
+            n_scored: 20,
+            n_raw: 20,
+            coverage: 1.0,
+        },
+        HumanDenseChild {
+            key: 3,
+            action: "test-only-best".into(),
+            ev: 0.9,
+            n_scored: 20,
+            n_raw: 20,
+            coverage: 1.0,
+        },
+    ];
+    let train_selection =
+        select_human_dense_candidate(1, &train_children).expect("train chooses a child");
+    assert_eq!(train_selection.steering.key, 2);
+
+    let row = build_heldout_replay_row(&train_selection, &test_children, 0, 0)
+        .expect("train-selected children are covered in test");
+    assert_eq!(row.steering_test.key, 2);
+    assert!((row.train_delta_ev - 0.4).abs() < 1e-12);
+    assert!((row.test_delta_ev + 0.2).abs() < 1e-12);
+    assert!(row.train_positive);
+}
+
+#[test]
+fn heldout_replay_requires_test_coverage_for_selected_children() {
+    let train_children = vec![
+        HumanDenseChild {
+            key: 1,
+            action: "base".into(),
+            ev: 0.0,
+            n_scored: 20,
+            n_raw: 20,
+            coverage: 1.0,
+        },
+        HumanDenseChild {
+            key: 2,
+            action: "steer".into(),
+            ev: 0.3,
+            n_scored: 20,
+            n_raw: 20,
+            coverage: 1.0,
+        },
+    ];
+    let test_children = vec![HumanDenseChild {
+        key: 1,
+        action: "base".into(),
+        ev: 0.0,
+        n_scored: 20,
+        n_raw: 20,
+        coverage: 1.0,
+    }];
+    let train_selection =
+        select_human_dense_candidate(1, &train_children).expect("train chooses a child");
+    assert!(build_heldout_replay_row(&train_selection, &test_children, 0, 0).is_none());
+}
+
+#[test]
+fn heldout_replay_sign_diagnostic_flags_strict_opposites_only() {
+    assert!(sign_is_strictly_opposite(-0.25, 1));
+    assert!(sign_is_strictly_opposite(0.25, -1));
+    assert!(!sign_is_strictly_opposite(0.25, 1));
+    assert!(!sign_is_strictly_opposite(-0.25, -1));
+    assert!(!sign_is_strictly_opposite(0.0, 1));
+    assert!(!sign_is_strictly_opposite(0.25, 0));
+}
+
+#[test]
+fn heldout_replay_correlation_is_defined_only_for_varying_pairs() {
+    let corr = pearson_correlation(&[(0.0, 0.0), (1.0, 2.0), (2.0, 4.0)])
+        .expect("varying pairs have a correlation");
+    assert!((corr - 1.0).abs() < 1e-12);
+    assert!(pearson_correlation(&[(1.0, 0.0)]).is_none());
+    assert!(pearson_correlation(&[(1.0, 0.0), (1.0, 2.0)]).is_none());
 }
 
 /// In-sample HumanDB replay over the frozen C-group make-traps trace. This
@@ -2926,6 +3116,7 @@ fn trap_human_dense_v2_census() {
                 // parent mover's perspective.
                 ev: -ev.value,
                 n_scored: ev.n_scored,
+                n_raw: ev.n_raw,
                 coverage: ev.coverage,
             });
         }
@@ -2969,11 +3160,13 @@ fn trap_human_dense_v2_census() {
                 "baseline_action": selection.baseline.action,
                 "baseline_ev": selection.baseline.ev,
                 "baseline_n_scored": selection.baseline.n_scored,
+                "baseline_n_raw": selection.baseline.n_raw,
                 "baseline_coverage": selection.baseline.coverage,
                 "steering_key": selection.steering.key,
                 "steering_action": selection.steering.action,
                 "steering_ev": selection.steering.ev,
                 "steering_n_scored": selection.steering.n_scored,
+                "steering_n_raw": selection.steering.n_raw,
                 "steering_coverage": selection.steering.coverage,
                 "delta_ev": selection.delta_ev,
                 "positive": is_positive,
@@ -3009,6 +3202,365 @@ fn trap_human_dense_v2_census() {
          clusters={}",
         mean_or_nan(positive_delta_sum, positive),
         positive_by_parent.len()
+    );
+}
+
+/// Held-out HumanDB replay for human-dense trap candidates. Train and test
+/// must be separately rebuilt sqlite files from the same source corpus split
+/// before this evaluator runs. Candidate selection only reads train; test is
+/// used only for EV replay and gate statistics.
+///
+///   SANMILL_STRONG_DB=... SANMILL_HUMAN_DB_TRAIN=...
+///   SANMILL_HUMAN_DB_TEST=... SANMILL_HELDOUT_OUT=...
+///   cargo test -p tgf-cli --release mill_pack::recompute::tests::trap_heldout_replay -- --ignored --nocapture
+#[test]
+#[ignore = "requires the external strong DB plus train/test HumanDB sqlite files"]
+fn trap_heldout_replay() {
+    use perfect_db::database::{Database, DatabaseOptions, DatabaseVariant, FileDatabaseProvider};
+    use perfect_db::wdl_plane::WdlPlaneCache;
+
+    let env_or = |name: &str, default: &str| std::env::var(name).unwrap_or_else(|_| default.into());
+    let parse_env_usize = |name: &str, default: usize| -> usize {
+        match std::env::var(name) {
+            Ok(value) => value
+                .parse::<usize>()
+                .unwrap_or_else(|err| panic!("{name} must be a non-negative integer: {err}")),
+            Err(_) => default,
+        }
+    };
+    let workspace = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+    let resolve = |raw: String| -> std::path::PathBuf {
+        let candidate = std::path::PathBuf::from(&raw);
+        if candidate.is_absolute() {
+            candidate
+        } else {
+            workspace.join(&raw)
+        }
+    };
+
+    let db_root = env_or("SANMILL_STRONG_DB", "D:/user/Documents/strong");
+    let human_db_train = resolve(env_or(
+        "SANMILL_HUMAN_DB_TRAIN",
+        "D:/Repo/NMM_LLM/human_database/human_db_train.sqlite",
+    ));
+    let human_db_test = resolve(env_or(
+        "SANMILL_HUMAN_DB_TEST",
+        "D:/Repo/NMM_LLM/human_database/human_db_test.sqlite",
+    ));
+    let out_path = resolve(env_or(
+        "SANMILL_HELDOUT_OUT",
+        "target/trap_heldout_replay/heldout.jsonl",
+    ));
+    let min_parent_raw = parse_env_usize("SANMILL_HELDOUT_MIN_PARENT_RAW", 20) as u64;
+    let max_parents = parse_env_usize("SANMILL_HELDOUT_MAX_PARENTS", 0);
+    std::fs::create_dir_all(out_path.parent().expect("output path has a parent"))
+        .expect("output directory must be creatable");
+
+    let options = MillVariantOptions::default();
+    let rules = MillRules::new(options.clone());
+    let variant = DatabaseVariant::STANDARD;
+    let provider = FileDatabaseProvider::new(std::path::PathBuf::from(&db_root));
+    let mut db = Database::open_variant_with_options(
+        provider.clone(),
+        variant,
+        DatabaseOptions::with_sector_cache_capacity(64),
+    )
+    .unwrap_or_else(|e| panic!("[trap-heldout] failed to open DB at {db_root:?}: {e}"));
+    let mut planes = WdlPlaneCache::new(provider, variant)
+        .unwrap_or_else(|e| panic!("[trap-heldout] failed to open plane cache: {e}"));
+    let train = {
+        let mut oracle = PlaneOracle {
+            planes: &mut planes,
+        };
+        load_human_weights(
+            &human_db_train,
+            &rules,
+            &options,
+            &mut oracle,
+            HumanWeightConfig::default(),
+        )
+        .expect("train HumanDB weights load")
+    };
+    let test = {
+        let mut oracle = PlaneOracle {
+            planes: &mut planes,
+        };
+        load_human_weights(
+            &human_db_test,
+            &rules,
+            &options,
+            &mut oracle,
+            HumanWeightConfig::default(),
+        )
+        .expect("test HumanDB weights load")
+    };
+
+    let mut parents: Vec<(u64, tgf_core::GameStateSnapshot)> = train
+        .parent_snap_by_key
+        .iter()
+        .filter_map(|(&key, &snap)| {
+            let stats = train.sample_stats(key)?;
+            (stats.n_raw >= min_parent_raw).then_some((key, snap))
+        })
+        .collect();
+    parents.sort_by_key(|&(key, _)| key);
+    if max_parents > 0 && parents.len() > max_parents {
+        parents.truncate(max_parents);
+    }
+
+    let mut out = std::io::BufWriter::new(
+        std::fs::File::create(&out_path).expect("held-out replay output must be creatable"),
+    );
+    let mut scanned = 0_usize;
+    let mut unresolved_parent_wdl = 0_usize;
+    let mut no_ranked_baseline = 0_usize;
+    let mut train_baseline_uncovered = 0_usize;
+    let mut fewer_than_two_train_covered = 0_usize;
+    let mut train_selected = 0_usize;
+    let mut train_positive = 0_usize;
+    let mut test_uncovered = 0_usize;
+    let mut main_pool = 0_usize;
+    let mut secondary_pool = 0_usize;
+    let mut main_test_delta_sum = 0.0_f64;
+    let mut main_train_delta_sum = 0.0_f64;
+    let mut secondary_test_delta_sum = 0.0_f64;
+    let mut sign_opposite_rows = 0_usize;
+    let mut sign_opposite_children = 0_usize;
+    let mut main_delta_by_parent: HashMap<String, Vec<f64>> = HashMap::new();
+    let mut train_test_pairs = Vec::new();
+
+    for (parent_key, snap) in parents {
+        scanned += 1;
+        let parent_state = MillRules::decode_snapshot(snap);
+        let parent_side = parent_state.side_to_move();
+        let move_wdl = {
+            let mut oracle = PlaneOracle {
+                planes: &mut planes,
+            };
+            move_wdl_via_oracle(&rules, &snap, &options, &mut oracle)
+        };
+        let Some(move_wdl) = move_wdl else {
+            unresolved_parent_wdl += 1;
+            continue;
+        };
+        if move_wdl.is_empty() {
+            unresolved_parent_wdl += 1;
+            continue;
+        }
+        let ranked = rank_children(&rules, &options, &mut db, &mut planes, &snap, &move_wdl);
+
+        let mut action_by_child_key: HashMap<u64, String> = HashMap::new();
+        let mut value_by_child_key: HashMap<u64, i8> = HashMap::new();
+        for &(action, value) in &move_wdl {
+            let child_snap = rules.apply(&snap, action);
+            let child_state = MillRules::decode_snapshot(child_snap);
+            if child_state.side_to_move() == parent_side {
+                continue;
+            }
+            let Some(child_key) = perfect_db::canonical_key(&mut planes, &child_state, &options)
+            else {
+                continue;
+            };
+            action_by_child_key
+                .entry(child_key)
+                .or_insert_with(|| tgf_mill::MillUciCodec::encode_action(action));
+            if let Some(previous) = value_by_child_key.insert(child_key, value) {
+                assert_eq!(
+                    previous, value,
+                    "canonical duplicate children must have the same WDL value"
+                );
+            }
+        }
+
+        let Some(baseline_key) = ranked
+            .optimal
+            .iter()
+            .find(|child| action_by_child_key.contains_key(&child.key))
+            .map(|child| child.key)
+        else {
+            no_ranked_baseline += 1;
+            continue;
+        };
+
+        let mut train_children = Vec::new();
+        for child in &ranked.optimal {
+            let key = child.key;
+            let Some(action) = action_by_child_key.get(&key) else {
+                continue;
+            };
+            if train_children
+                .iter()
+                .any(|existing: &HumanDenseChild| existing.key == key)
+            {
+                continue;
+            }
+            let mut oracle = PlaneOracle {
+                planes: &mut planes,
+            };
+            let Some(ev) = train.raw_ev(key, &mut oracle) else {
+                continue;
+            };
+            train_children.push(HumanDenseChild {
+                key,
+                action: action.clone(),
+                ev: -ev.value,
+                n_scored: ev.n_scored,
+                n_raw: ev.n_raw,
+                coverage: ev.coverage,
+            });
+        }
+        if !train_children.iter().any(|child| child.key == baseline_key) {
+            train_baseline_uncovered += 1;
+            continue;
+        }
+        let Some(selection) = select_human_dense_candidate(baseline_key, &train_children) else {
+            fewer_than_two_train_covered += 1;
+            continue;
+        };
+        train_selected += 1;
+        if selection.delta_ev > 0.0 {
+            train_positive += 1;
+        }
+
+        let mut test_children = Vec::new();
+        for train_child in [&selection.baseline, &selection.steering] {
+            let mut oracle = PlaneOracle {
+                planes: &mut planes,
+            };
+            if let Some(ev) = test.raw_ev(train_child.key, &mut oracle) {
+                test_children.push(HumanDenseChild {
+                    key: train_child.key,
+                    action: train_child.action.clone(),
+                    ev: -ev.value,
+                    n_scored: ev.n_scored,
+                    n_raw: ev.n_raw,
+                    coverage: ev.coverage,
+                });
+            }
+        }
+        let baseline_db_value = *value_by_child_key
+            .get(&selection.baseline.key)
+            .expect("baseline child has a DB value");
+        let steering_db_value = *value_by_child_key
+            .get(&selection.steering.key)
+            .expect("steering child has a DB value");
+        let Some(row) = build_heldout_replay_row(
+            &selection,
+            &test_children,
+            baseline_db_value,
+            steering_db_value,
+        ) else {
+            test_uncovered += 1;
+            continue;
+        };
+
+        let in_main_pool = row.train_positive;
+        if in_main_pool {
+            main_pool += 1;
+            main_test_delta_sum += row.test_delta_ev;
+            main_train_delta_sum += row.train_delta_ev;
+            main_delta_by_parent
+                .entry(parent_key.to_string())
+                .or_default()
+                .push(row.test_delta_ev);
+            train_test_pairs.push((row.train_delta_ev, row.test_delta_ev));
+            if row.baseline_sign_opposite || row.steering_sign_opposite {
+                sign_opposite_rows += 1;
+            }
+            sign_opposite_children +=
+                usize::from(row.baseline_sign_opposite) + usize::from(row.steering_sign_opposite);
+        } else {
+            secondary_pool += 1;
+            secondary_test_delta_sum += row.test_delta_ev;
+        }
+
+        let train_parent_stats = train
+            .sample_stats(parent_key)
+            .expect("train parent was filtered by stats");
+        let test_parent_stats = test.sample_stats(parent_key);
+        use std::io::Write;
+        writeln!(
+            out,
+            "{}",
+            serde_json::json!({
+                "pool": if in_main_pool { "main" } else { "secondary" },
+                "parent_key": parent_key,
+                "parent_n_raw_train": train_parent_stats.n_raw,
+                "parent_n_scored_train": train_parent_stats.n_scored,
+                "parent_coverage_train": train_parent_stats.coverage,
+                "parent_n_raw_test": test_parent_stats.map(|stats| stats.n_raw),
+                "parent_n_scored_test": test_parent_stats.map(|stats| stats.n_scored),
+                "parent_coverage_test": test_parent_stats.map(|stats| stats.coverage),
+                "baseline_key": row.baseline_train.key,
+                "baseline_action": row.baseline_train.action,
+                "baseline_db_value": baseline_db_value,
+                "baseline_train_ev": row.baseline_train.ev,
+                "baseline_train_n_scored": row.baseline_train.n_scored,
+                "baseline_train_n_raw": row.baseline_train.n_raw,
+                "baseline_train_coverage": row.baseline_train.coverage,
+                "baseline_test_ev": row.baseline_test.ev,
+                "baseline_test_n_scored": row.baseline_test.n_scored,
+                "baseline_test_n_raw": row.baseline_test.n_raw,
+                "baseline_test_coverage": row.baseline_test.coverage,
+                "baseline_sign_opposite": row.baseline_sign_opposite,
+                "steering_key": row.steering_train.key,
+                "steering_action": row.steering_train.action,
+                "steering_db_value": steering_db_value,
+                "steering_train_ev": row.steering_train.ev,
+                "steering_train_n_scored": row.steering_train.n_scored,
+                "steering_train_n_raw": row.steering_train.n_raw,
+                "steering_train_coverage": row.steering_train.coverage,
+                "steering_test_ev": row.steering_test.ev,
+                "steering_test_n_scored": row.steering_test.n_scored,
+                "steering_test_n_raw": row.steering_test.n_raw,
+                "steering_test_coverage": row.steering_test.coverage,
+                "steering_sign_opposite": row.steering_sign_opposite,
+                "train_delta_ev": row.train_delta_ev,
+                "test_delta_ev": row.test_delta_ev,
+                "train_positive": row.train_positive,
+            })
+        )
+        .expect("held-out replay row write");
+    }
+
+    use std::io::Write;
+    out.flush().expect("flush held-out replay output");
+    let main_ci = cluster_bootstrap_ci(&main_delta_by_parent, 1000, 0x5eed_2026);
+    let (main_low, main_high) = main_ci.unwrap_or((f64::NAN, f64::NAN));
+    let main_mean = mean_or_nan(main_test_delta_sum, main_pool);
+    let train_mean = mean_or_nan(main_train_delta_sum, main_pool);
+    let shrink_ratio = if main_train_delta_sum.abs() > f64::EPSILON {
+        main_test_delta_sum / main_train_delta_sum
+    } else {
+        f64::NAN
+    };
+    let sign_row_ratio = mean_or_nan(sign_opposite_rows as f64, main_pool);
+    let sign_child_ratio = mean_or_nan(sign_opposite_children as f64, main_pool.saturating_mul(2));
+    let correlation = pearson_correlation(&train_test_pairs).unwrap_or(f64::NAN);
+    eprintln!(
+        "[trap-heldout] scanned={scanned} train_selected={train_selected} \
+         train_positive={train_positive} main_pool={main_pool} secondary_pool={secondary_pool} \
+         test_uncovered={test_uncovered} train_baseline_uncovered={train_baseline_uncovered} \
+         fewer_than_two_train_covered={fewer_than_two_train_covered} unresolved_parent_wdl={} \
+         no_ranked_baseline={} min_parent_raw={} max_parents={} -> {}",
+        unresolved_parent_wdl,
+        no_ranked_baseline,
+        min_parent_raw,
+        max_parents,
+        out_path.display()
+    );
+    eprintln!(
+        "[trap-heldout] main_mean_delta_ev={main_mean:.6} bootstrap95=[{main_low:.6},{main_high:.6}] \
+         clusters={} train_mean_delta_ev={train_mean:.6} shrink_ratio={shrink_ratio:.6} \
+         train_test_corr={correlation:.6}",
+        main_delta_by_parent.len()
+    );
+    eprintln!(
+        "[trap-heldout] sign_opposite_rows={} row_ratio={sign_row_ratio:.6} \
+         sign_opposite_children={} child_ratio={sign_child_ratio:.6} secondary_mean_delta_ev={:.6}",
+        sign_opposite_rows,
+        sign_opposite_children,
+        mean_or_nan(secondary_test_delta_sum, secondary_pool)
     );
 }
 
