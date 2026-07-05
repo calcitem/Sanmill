@@ -448,6 +448,7 @@ fn derive_child_proof_blends_behavior_density_when_gates_pass() {
     let human = HumanWeights {
         turn,
         step: HashMap::new(),
+        parent_snap_by_key: HashMap::new(),
         config: HumanWeightConfig {
             min_samples: 10,
             min_coverage: 0.8,
@@ -549,6 +550,7 @@ fn behavior_weighting_changes_nibbles_against_the_uniform_pack() {
     let human = HumanWeights {
         turn,
         step: HashMap::new(),
+        parent_snap_by_key: HashMap::new(),
         config: HumanWeightConfig {
             min_samples: 10,
             min_coverage: 0.8,
@@ -2209,6 +2211,87 @@ impl HumanReplayPolicyAgg {
     }
 }
 
+#[derive(Clone, Debug)]
+struct HumanDenseChild {
+    key: u64,
+    action: String,
+    ev: f64,
+    n_scored: u64,
+    coverage: f64,
+}
+
+#[derive(Clone, Debug)]
+struct HumanDenseSelection {
+    baseline: HumanDenseChild,
+    steering: HumanDenseChild,
+    delta_ev: f64,
+}
+
+fn select_human_dense_candidate(
+    baseline_key: u64,
+    children: &[HumanDenseChild],
+) -> Option<HumanDenseSelection> {
+    if children.len() < 2 {
+        return None;
+    }
+    let baseline = children
+        .iter()
+        .find(|child| child.key == baseline_key)
+        .cloned()
+        .unwrap_or_else(|| children[0].clone());
+    let steering = children
+        .iter()
+        .filter(|child| child.key != baseline.key)
+        .max_by(|left, right| {
+            left.ev
+                .total_cmp(&right.ev)
+                .then_with(|| right.key.cmp(&left.key))
+        })?
+        .clone();
+    let delta_ev = steering.ev - baseline.ev;
+    Some(HumanDenseSelection {
+        baseline,
+        steering,
+        delta_ev,
+    })
+}
+
+#[test]
+fn human_dense_selection_uses_ranked_baseline_and_best_alternative() {
+    let children = vec![
+        HumanDenseChild {
+            key: 10,
+            action: "a".into(),
+            ev: -0.4,
+            n_scored: 20,
+            coverage: 1.0,
+        },
+        HumanDenseChild {
+            key: 20,
+            action: "b".into(),
+            ev: 0.2,
+            n_scored: 20,
+            coverage: 1.0,
+        },
+        HumanDenseChild {
+            key: 30,
+            action: "c".into(),
+            ev: 0.1,
+            n_scored: 20,
+            coverage: 1.0,
+        },
+    ];
+    let selected = select_human_dense_candidate(10, &children).expect("two covered children");
+    assert_eq!(selected.baseline.key, 10);
+    assert_eq!(selected.steering.key, 20);
+    assert!((selected.delta_ev - 0.6).abs() < 1e-12);
+
+    let selected = select_human_dense_candidate(20, &children).expect("two covered children");
+    assert_eq!(selected.baseline.key, 20);
+    assert_eq!(selected.steering.key, 30);
+    assert!((selected.delta_ev + 0.1).abs() < 1e-12);
+}
+
 /// In-sample HumanDB replay over the frozen C-group make-traps trace. This
 /// is intentionally offline and ignored: it does not build a pack or play
 /// games. It measures whether the v4 steering decisions that actually
@@ -2677,6 +2760,256 @@ fn human_replay_v1_over_trace() {
             "policy {slot} must use the shared unified row set"
         );
     }
+}
+
+/// Human-dense trap census v2: invert the earlier trace-driven question.
+/// Instead of asking whether engine-selected trap fires have HumanDB
+/// support, scan HumanDB-covered parent positions and ask whether any
+/// optimal side-flipping child is better than the ranked baseline under
+/// raw one-turn HumanDB EV. This is an existence test only: it does not
+/// build a trap library, play games, or change runtime behavior.
+///
+///   SANMILL_STRONG_DB=... SANMILL_HUMAN_DB=...
+///   SANMILL_HUMAN_DENSE_OUT=...
+///   cargo test -p tgf-cli --release mill_pack::recompute::tests::trap_human_dense_v2_census -- --ignored --nocapture
+#[test]
+#[ignore = "requires the external strong DB and HumanDB"]
+fn trap_human_dense_v2_census() {
+    use perfect_db::database::{Database, DatabaseOptions, DatabaseVariant, FileDatabaseProvider};
+    use perfect_db::wdl_plane::WdlPlaneCache;
+
+    let env_or = |name: &str, default: &str| std::env::var(name).unwrap_or_else(|_| default.into());
+    let parse_env_usize = |name: &str, default: usize| -> usize {
+        match std::env::var(name) {
+            Ok(value) => value
+                .parse::<usize>()
+                .unwrap_or_else(|err| panic!("{name} must be a non-negative integer: {err}")),
+            Err(_) => default,
+        }
+    };
+    let workspace = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+    let resolve = |raw: String| -> std::path::PathBuf {
+        let candidate = std::path::PathBuf::from(&raw);
+        if candidate.is_absolute() {
+            candidate
+        } else {
+            workspace.join(&raw)
+        }
+    };
+
+    let db_root = env_or("SANMILL_STRONG_DB", "D:/user/Documents/strong");
+    let human_db = resolve(env_or(
+        "SANMILL_HUMAN_DB",
+        "D:/Repo/NMM_LLM/human_database/human_db.sqlite",
+    ));
+    let out_path = resolve(env_or(
+        "SANMILL_HUMAN_DENSE_OUT",
+        "target/trap_human_dense_v2/census.jsonl",
+    ));
+    let min_parent_raw = parse_env_usize("SANMILL_HUMAN_DENSE_MIN_PARENT_RAW", 20) as u64;
+    let max_parents = parse_env_usize("SANMILL_HUMAN_DENSE_MAX_PARENTS", 0);
+    std::fs::create_dir_all(out_path.parent().expect("output path has a parent"))
+        .expect("output directory must be creatable");
+
+    let options = MillVariantOptions::default();
+    let rules = MillRules::new(options.clone());
+    let variant = DatabaseVariant::STANDARD;
+    let provider = FileDatabaseProvider::new(std::path::PathBuf::from(&db_root));
+    let mut db = Database::open_variant_with_options(
+        provider.clone(),
+        variant,
+        DatabaseOptions::with_sector_cache_capacity(64),
+    )
+    .unwrap_or_else(|e| panic!("[human-dense-v2] failed to open DB at {db_root:?}: {e}"));
+    let mut planes = WdlPlaneCache::new(provider, variant)
+        .unwrap_or_else(|e| panic!("[human-dense-v2] failed to open plane cache: {e}"));
+    let human = {
+        let mut oracle = PlaneOracle {
+            planes: &mut planes,
+        };
+        load_human_weights(
+            &human_db,
+            &rules,
+            &options,
+            &mut oracle,
+            HumanWeightConfig::default(),
+        )
+        .expect("HumanDB weights load")
+    };
+
+    let mut parents: Vec<(u64, tgf_core::GameStateSnapshot)> = human
+        .parent_snap_by_key
+        .iter()
+        .filter_map(|(&key, &snap)| {
+            let stats = human.sample_stats(key)?;
+            (stats.n_raw >= min_parent_raw).then_some((key, snap))
+        })
+        .collect();
+    parents.sort_by_key(|&(key, _)| key);
+    if max_parents > 0 && parents.len() > max_parents {
+        parents.truncate(max_parents);
+    }
+
+    let mut out = std::io::BufWriter::new(
+        std::fs::File::create(&out_path).expect("human-dense output must be creatable"),
+    );
+    let mut scanned = 0_usize;
+    let mut unresolved_parent_wdl = 0_usize;
+    let mut no_ranked_baseline = 0_usize;
+    let mut fewer_than_two_covered = 0_usize;
+    let mut eligible = 0_usize;
+    let mut positive = 0_usize;
+    let mut eligible_delta_sum = 0.0_f64;
+    let mut positive_delta_sum = 0.0_f64;
+    let mut eligible_by_parent: HashMap<String, Vec<f64>> = HashMap::new();
+    let mut positive_by_parent: HashMap<String, Vec<f64>> = HashMap::new();
+
+    for (parent_key, snap) in parents {
+        scanned += 1;
+        let parent_state = MillRules::decode_snapshot(snap);
+        let parent_side = parent_state.side_to_move();
+        let move_wdl = {
+            let mut oracle = PlaneOracle {
+                planes: &mut planes,
+            };
+            move_wdl_via_oracle(&rules, &snap, &options, &mut oracle)
+        };
+        let Some(move_wdl) = move_wdl else {
+            unresolved_parent_wdl += 1;
+            continue;
+        };
+        if move_wdl.is_empty() {
+            unresolved_parent_wdl += 1;
+            continue;
+        }
+        let ranked = rank_children(&rules, &options, &mut db, &mut planes, &snap, &move_wdl);
+        let ranked_keys: Vec<u64> = ranked.optimal.iter().map(|child| child.key).collect();
+        if ranked_keys.is_empty() {
+            no_ranked_baseline += 1;
+            continue;
+        }
+
+        let mut legal = tgf_core::ActionList::<256>::new();
+        rules.legal_actions(&snap, &mut legal);
+        let mut action_by_child_key: HashMap<u64, String> = HashMap::new();
+        for &action in legal.as_slice() {
+            let child_snap = rules.apply(&snap, action);
+            let child_state = MillRules::decode_snapshot(child_snap);
+            let Some(child_key) = perfect_db::canonical_key(&mut planes, &child_state, &options)
+            else {
+                continue;
+            };
+            if child_state.side_to_move() == parent_side {
+                continue;
+            }
+            action_by_child_key
+                .entry(child_key)
+                .or_insert_with(|| tgf_mill::MillUciCodec::encode_action(action));
+        }
+
+        let mut covered_children = Vec::new();
+        for key in ranked_keys {
+            let Some(action) = action_by_child_key.get(&key) else {
+                continue;
+            };
+            let mut oracle = PlaneOracle {
+                planes: &mut planes,
+            };
+            let Some(ev) = human.raw_ev(key, &mut oracle) else {
+                continue;
+            };
+            covered_children.push(HumanDenseChild {
+                key,
+                action: action.clone(),
+                // Child side-to-move is the opponent after a side-flipping
+                // parent choice, so negate once to express EV from the
+                // parent mover's perspective.
+                ev: -ev.value,
+                n_scored: ev.n_scored,
+                coverage: ev.coverage,
+            });
+        }
+
+        let baseline_key = ranked
+            .optimal
+            .iter()
+            .find(|child| action_by_child_key.contains_key(&child.key))
+            .map(|child| child.key)
+            .unwrap_or_else(|| covered_children.first().map(|child| child.key).unwrap_or(0));
+        let Some(selection) = select_human_dense_candidate(baseline_key, &covered_children) else {
+            fewer_than_two_covered += 1;
+            continue;
+        };
+
+        eligible += 1;
+        eligible_delta_sum += selection.delta_ev;
+        eligible_by_parent
+            .entry(parent_key.to_string())
+            .or_default()
+            .push(selection.delta_ev);
+        let is_positive = selection.delta_ev > 0.0;
+        if is_positive {
+            positive += 1;
+            positive_delta_sum += selection.delta_ev;
+            positive_by_parent
+                .entry(parent_key.to_string())
+                .or_default()
+                .push(selection.delta_ev);
+        }
+
+        use std::io::Write;
+        writeln!(
+            out,
+            "{}",
+            serde_json::json!({
+                "parent_key": parent_key,
+                "parent_n_raw": human.sample_stats(parent_key).expect("filtered above").n_raw,
+                "covered_children": covered_children.len(),
+                "baseline_key": selection.baseline.key,
+                "baseline_action": selection.baseline.action,
+                "baseline_ev": selection.baseline.ev,
+                "baseline_n_scored": selection.baseline.n_scored,
+                "baseline_coverage": selection.baseline.coverage,
+                "steering_key": selection.steering.key,
+                "steering_action": selection.steering.action,
+                "steering_ev": selection.steering.ev,
+                "steering_n_scored": selection.steering.n_scored,
+                "steering_coverage": selection.steering.coverage,
+                "delta_ev": selection.delta_ev,
+                "positive": is_positive,
+            })
+        )
+        .expect("human-dense row write");
+    }
+
+    use std::io::Write;
+    out.flush().expect("flush human-dense census output");
+    let eligible_ci = cluster_bootstrap_ci(&eligible_by_parent, 1000, 0x5eed_2026);
+    let positive_ci = cluster_bootstrap_ci(&positive_by_parent, 1000, 0x5eed_2026);
+    let (eligible_low, eligible_high) = eligible_ci.unwrap_or((f64::NAN, f64::NAN));
+    let (positive_low, positive_high) = positive_ci.unwrap_or((f64::NAN, f64::NAN));
+    eprintln!(
+        "[human-dense-v2] scanned={scanned} eligible={eligible} positive={positive} \
+         fewer_than_two_covered={fewer_than_two_covered} unresolved_parent_wdl={} \
+         no_ranked_baseline={} min_parent_raw={} max_parents={} -> {}",
+        unresolved_parent_wdl,
+        no_ranked_baseline,
+        min_parent_raw,
+        max_parents,
+        out_path.display()
+    );
+    eprintln!(
+        "[human-dense-v2] eligible_mean_delta_ev={:.6} bootstrap95=[{eligible_low:.6},{eligible_high:.6}] \
+         clusters={}",
+        mean_or_nan(eligible_delta_sum, eligible),
+        eligible_by_parent.len()
+    );
+    eprintln!(
+        "[human-dense-v2] positive_mean_delta_ev={:.6} bootstrap95=[{positive_low:.6},{positive_high:.6}] \
+         clusters={}",
+        mean_or_nan(positive_delta_sum, positive),
+        positive_by_parent.len()
+    );
 }
 
 #[test]

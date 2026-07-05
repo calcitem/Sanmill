@@ -485,6 +485,7 @@ fn behavior_density_gates_on_min_samples_and_coverage() {
     let mut weights = HumanWeights {
         turn: HashMap::new(),
         step: HashMap::new(),
+        parent_snap_by_key: HashMap::new(),
         config,
         stats: HumanWeightStats::default(),
     };
@@ -562,6 +563,7 @@ fn raw_ev_resolves_terminal_and_key_targets_without_shrinkage() {
     let mut weights = HumanWeights {
         turn: HashMap::new(),
         step: HashMap::new(),
+        parent_snap_by_key: HashMap::new(),
         config,
         stats: HumanWeightStats::default(),
     };
@@ -660,6 +662,7 @@ fn behavior_density_resolves_key_targets_through_the_stored_sign() {
     let mut weights = HumanWeights {
         turn: HashMap::new(),
         step: HashMap::new(),
+        parent_snap_by_key: HashMap::new(),
         config,
         stats: HumanWeightStats::default(),
     };

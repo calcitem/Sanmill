@@ -213,6 +213,12 @@ pub(crate) struct HumanWeights {
     pub turn: HashMap<u64, HumanResponses>,
     /// Capture-segment endpoints per synthesized mid-removal parent key.
     pub step: HashMap<u64, HumanResponses>,
+    /// A concrete HumanDB-frame representative for each settled parent.
+    /// This is test-only: offline validators need to enumerate a parent
+    /// position's legal optimal children, while production pack scoring
+    /// only needs the response maps above.
+    #[cfg(test)]
+    pub parent_snap_by_key: HashMap<u64, GameStateSnapshot>,
     pub config: HumanWeightConfig,
     pub stats: HumanWeightStats,
 }
@@ -283,6 +289,8 @@ pub(crate) fn load_human_weights(
     let mut weights = HumanWeights {
         turn: HashMap::new(),
         step: HashMap::new(),
+        #[cfg(test)]
+        parent_snap_by_key: HashMap::new(),
         config,
         stats: HumanWeightStats::default(),
     };
@@ -321,6 +329,11 @@ pub(crate) fn load_human_weights(
             continue;
         };
         weights.stats.decodable_weight = checked_add(weights.stats.decodable_weight, total);
+        #[cfg(test)]
+        weights
+            .parent_snap_by_key
+            .entry(parent_key)
+            .or_insert(parent_snap);
         let parent_state = MillRules::decode_snapshot(parent_snap);
 
         // Routing table (see the plan): HumanDB parents are never
