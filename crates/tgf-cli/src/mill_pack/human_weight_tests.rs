@@ -528,6 +528,122 @@ fn behavior_density_gates_on_min_samples_and_coverage() {
 }
 
 #[test]
+fn raw_ev_from_replies_gates_and_reports_coverage() {
+    let replies = [(1, 6_u64), (-1, 4_u64)];
+
+    assert!(
+        raw_ev_from_replies(&replies, 0, 11, 0.0).is_none(),
+        "10 scored samples should fail a min-samples gate of 11"
+    );
+    assert!(
+        raw_ev_from_replies(&replies, 5, 1, 0.8).is_none(),
+        "coverage 10/15 should fail an 80% coverage gate"
+    );
+
+    let ev = raw_ev_from_replies(&replies, 2, 1, 0.8).expect("sample gates pass");
+    assert_eq!(ev.n_scored, 10);
+    assert_eq!(ev.n_raw, 12);
+    assert!((ev.coverage - (10.0 / 12.0)).abs() < 1e-12);
+    assert!((ev.value - 0.2).abs() < 1e-12);
+}
+
+#[test]
+fn raw_ev_resolves_terminal_and_key_targets_without_shrinkage() {
+    let mut oracle = TableOracle::new();
+    oracle.raw_override_by_key.insert(0x42, 1);
+    oracle.raw_override_by_key.insert(0x43, -1);
+
+    let config = HumanWeightConfig {
+        min_samples: 1,
+        min_coverage: 0.0,
+        shrinkage_k: 1_000.0,
+        allow_lossy: false,
+    };
+    let mut weights = HumanWeights {
+        turn: HashMap::new(),
+        step: HashMap::new(),
+        config,
+        stats: HumanWeightStats::default(),
+    };
+    weights.turn.insert(
+        11,
+        HumanResponses {
+            targets: HashMap::from([
+                (ResponseTarget::Terminal(1), 2_u64),
+                (
+                    ResponseTarget::Key {
+                        key: 0x42,
+                        sign_to_parent: -1,
+                    },
+                    3_u64,
+                ),
+                (
+                    ResponseTarget::Key {
+                        key: 0x43,
+                        sign_to_parent: -1,
+                    },
+                    5_u64,
+                ),
+            ]),
+            unresolved_total: 4,
+        },
+    );
+
+    assert_eq!(
+        reply_value_from_target(
+            ResponseTarget::Key {
+                key: 0x42,
+                sign_to_parent: -1,
+            },
+            &mut oracle,
+        ),
+        -1
+    );
+    assert_eq!(
+        reply_value_from_target(
+            ResponseTarget::Key {
+                key: 0x43,
+                sign_to_parent: -1,
+            },
+            &mut oracle,
+        ),
+        1
+    );
+
+    let ev = weights.raw_ev(11, &mut oracle).expect("sample gates pass");
+    assert_eq!(ev.n_scored, 10);
+    assert_eq!(ev.n_raw, 14);
+    assert!((ev.coverage - (10.0 / 14.0)).abs() < 1e-12);
+    // Raw EV is (2*1 + 3*(-1) + 5*1) / 10 = 0.4. The huge
+    // shrinkage_k above must not affect replay EV.
+    assert!((ev.value - 0.4).abs() < 1e-12);
+
+    let stats = weights.sample_stats(11).expect("stats exist");
+    assert_eq!(stats.n_scored, ev.n_scored);
+    assert_eq!(stats.n_raw, ev.n_raw);
+    assert_eq!(stats.coverage, ev.coverage);
+}
+
+#[test]
+fn raw_ev_matches_the_weighted_density_identity() {
+    // When all human replies are no better than `best_value`, the raw
+    // parent-perspective EV and the weighted blunder density are linked by
+    // EV = best - 2*density. This pins the replay metric to the same
+    // severity convention used by the packer while keeping it unshrunken.
+    let best_value = 1;
+    let replies = [(1, 4_u64), (0, 2_u64), (-1, 4_u64)];
+
+    let ev = raw_ev_from_replies(&replies, 0, 1, 0.0)
+        .expect("identity fixture has full coverage")
+        .value;
+    let density = weighted_blunder_density(best_value, &replies);
+
+    assert!((ev - 0.0).abs() < 1e-12);
+    assert!((density - 0.5).abs() < 1e-12);
+    assert!((ev - (f64::from(best_value) - 2.0 * density)).abs() < 1e-12);
+}
+
+#[test]
 fn behavior_density_resolves_key_targets_through_the_stored_sign() {
     let mut oracle = TableOracle::new();
     oracle.raw_override_by_key.insert(0x42, 1);

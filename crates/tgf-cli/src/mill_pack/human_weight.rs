@@ -70,6 +70,27 @@ impl HumanResponses {
     }
 }
 
+/// Raw one-turn human expected value for a parent, in that parent's
+/// side-to-move perspective. This is intentionally not shrinkage-blended
+/// or quantized; the replay validator uses it to measure the behavior
+/// signal as observed in HumanDB.
+#[cfg(test)]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub(crate) struct HumanExpectedValue {
+    pub value: f64,
+    pub n_scored: u64,
+    pub n_raw: u64,
+    pub coverage: f64,
+}
+
+#[cfg(test)]
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub(crate) struct HumanSampleStats {
+    pub n_scored: u64,
+    pub n_raw: u64,
+    pub coverage: f64,
+}
+
 /// Tuning knobs for the behavior weighting (see the packer CLI flags).
 #[derive(Clone, Copy, Debug)]
 pub(crate) struct HumanWeightConfig {
@@ -604,6 +625,31 @@ fn checked_add(a: u64, b: u64) -> u64 {
 }
 
 impl HumanWeights {
+    /// Raw one-turn expected value for `parent_key`, in the side-to-move
+    /// perspective of that parent. Returns `None` when the parent has no
+    /// HumanDB rows or fails the same sample/coverage gates used by
+    /// behavior weighting.
+    #[cfg(test)]
+    pub(crate) fn raw_ev(
+        &self,
+        parent_key: u64,
+        oracle: &mut dyn WdlOracle,
+    ) -> Option<HumanExpectedValue> {
+        let responses = self.responses_for(parent_key)?;
+        let replies = self.scored_replies(responses, oracle);
+        raw_ev_from_replies(
+            &replies,
+            responses.unresolved_total,
+            self.config.min_samples,
+            self.config.min_coverage,
+        )
+    }
+
+    #[cfg(test)]
+    pub(crate) fn sample_stats(&self, parent_key: u64) -> Option<HumanSampleStats> {
+        sample_stats_from_responses(self.responses_for(parent_key)?)
+    }
+
     /// Print the load-time diagnostics block.
     pub fn print_stats(&self) {
         let s = &self.stats;
@@ -665,12 +711,7 @@ impl HumanWeights {
         density_uniform: f64,
         oracle: &mut dyn WdlOracle,
     ) -> Option<f64> {
-        let map = if parent_key & perfect_db::wdl_plane::MID_REMOVAL_KEY_TAG != 0 {
-            &self.step
-        } else {
-            &self.turn
-        };
-        let responses = map.get(&parent_key)?;
+        let responses = self.responses_for(parent_key)?;
         let n_scored = responses.scored_total();
         let n_raw = responses.raw_total();
         if n_scored < self.config.min_samples {
@@ -682,25 +723,7 @@ impl HumanWeights {
 
         // The only oracle touch-point: resolve Key targets to values in
         // the parent's perspective; the math below is pure.
-        let replies: Vec<(i8, u64)> = responses
-            .targets
-            .iter()
-            .map(|(target, weight)| {
-                let reply_value = match *target {
-                    ResponseTarget::Terminal(value) => value,
-                    ResponseTarget::Key {
-                        key,
-                        sign_to_parent,
-                    } => {
-                        let raw = oracle
-                            .raw_wdl_by_key(key)
-                            .expect("scored targets resolved at aggregation time");
-                        sign_to_parent * raw
-                    }
-                };
-                (reply_value, *weight)
-            })
-            .collect();
+        let replies = self.scored_replies(responses, oracle);
         let density_human = weighted_blunder_density(best_value, &replies);
         Some(shrunk_density(
             density_human,
@@ -709,6 +732,87 @@ impl HumanWeights {
             self.config.shrinkage_k,
         ))
     }
+
+    fn responses_for(&self, parent_key: u64) -> Option<&HumanResponses> {
+        let map = if parent_key & perfect_db::wdl_plane::MID_REMOVAL_KEY_TAG != 0 {
+            &self.step
+        } else {
+            &self.turn
+        };
+        map.get(&parent_key)
+    }
+
+    fn scored_replies(
+        &self,
+        responses: &HumanResponses,
+        oracle: &mut dyn WdlOracle,
+    ) -> Vec<(i8, u64)> {
+        responses
+            .targets
+            .iter()
+            .map(|(target, weight)| (reply_value_from_target(*target, oracle), *weight))
+            .collect()
+    }
+}
+
+#[cfg(test)]
+fn sample_stats_from_responses(responses: &HumanResponses) -> Option<HumanSampleStats> {
+    let n_scored = responses.scored_total();
+    let n_raw = responses.raw_total();
+    if n_raw == 0 {
+        return None;
+    }
+    Some(HumanSampleStats {
+        n_scored,
+        n_raw,
+        coverage: n_scored as f64 / n_raw as f64,
+    })
+}
+
+pub(crate) fn reply_value_from_target(target: ResponseTarget, oracle: &mut dyn WdlOracle) -> i8 {
+    match target {
+        ResponseTarget::Terminal(value) => value,
+        ResponseTarget::Key {
+            key,
+            sign_to_parent,
+        } => {
+            let raw = oracle
+                .raw_wdl_by_key(key)
+                .expect("scored targets resolved at aggregation time");
+            sign_to_parent * raw
+        }
+    }
+}
+
+#[cfg(test)]
+pub(crate) fn raw_ev_from_replies(
+    replies: &[(i8, u64)],
+    unresolved_total: u64,
+    min_samples: u64,
+    min_coverage: f64,
+) -> Option<HumanExpectedValue> {
+    let n_scored: u64 = replies.iter().map(|&(_, weight)| weight).sum();
+    let n_raw = n_scored
+        .checked_add(unresolved_total)
+        .expect("human EV sample totals overflowed u64");
+    if n_scored < min_samples {
+        return None;
+    }
+    assert!(n_raw > 0, "scored samples imply non-zero raw samples");
+    let coverage = n_scored as f64 / n_raw as f64;
+    if coverage < min_coverage {
+        return None;
+    }
+    let weighted_sum: f64 = replies
+        .iter()
+        .map(|&(value, weight)| f64::from(value) * weight as f64)
+        .sum();
+    Some(HumanExpectedValue {
+        value: weighted_sum / n_scored as f64,
+        n_scored,
+        n_raw,
+        coverage,
+    })
 }
 
 #[cfg(test)]

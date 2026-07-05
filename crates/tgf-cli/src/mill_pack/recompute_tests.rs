@@ -13,6 +13,7 @@ use tgf_mill::human_db_codec::{HumanTurn, parse_human_turn_notation};
 
 use super::*;
 use crate::mill_mine::entry::MineEntry;
+use crate::mill_pack::human_weight::HumanSampleStats;
 
 fn rules() -> MillRules {
     MillRules::new(MillVariantOptions::default())
@@ -1984,6 +1985,696 @@ fn net_gate_replay_over_trace() {
             agg.risk_v4_sum / agg.risk_pairs.max(1) as f64,
             agg.risk_net_sum / agg.risk_pairs.max(1) as f64,
             agg.risk_pairs,
+        );
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum HumanReplayCoverageBucket {
+    Both,
+    BaselineOnly,
+    SteeringOnly,
+    Neither,
+    BaselineSameSide,
+}
+
+impl HumanReplayCoverageBucket {
+    fn as_str(self) -> &'static str {
+        match self {
+            HumanReplayCoverageBucket::Both => "both",
+            HumanReplayCoverageBucket::BaselineOnly => "baseline_only",
+            HumanReplayCoverageBucket::SteeringOnly => "steering_only",
+            HumanReplayCoverageBucket::Neither => "neither",
+            HumanReplayCoverageBucket::BaselineSameSide => "baseline_same_side",
+        }
+    }
+}
+
+fn human_replay_bucket(
+    baseline_same_side: bool,
+    baseline_covered: bool,
+    steering_covered: bool,
+) -> HumanReplayCoverageBucket {
+    if baseline_same_side {
+        return HumanReplayCoverageBucket::BaselineSameSide;
+    }
+    match (baseline_covered, steering_covered) {
+        (true, true) => HumanReplayCoverageBucket::Both,
+        (true, false) => HumanReplayCoverageBucket::BaselineOnly,
+        (false, true) => HumanReplayCoverageBucket::SteeringOnly,
+        (false, false) => HumanReplayCoverageBucket::Neither,
+    }
+}
+
+#[test]
+fn human_replay_bucket_partitions_rows() {
+    assert_eq!(
+        human_replay_bucket(false, true, true),
+        HumanReplayCoverageBucket::Both
+    );
+    assert_eq!(
+        human_replay_bucket(false, true, false),
+        HumanReplayCoverageBucket::BaselineOnly
+    );
+    assert_eq!(
+        human_replay_bucket(false, false, true),
+        HumanReplayCoverageBucket::SteeringOnly
+    );
+    assert_eq!(
+        human_replay_bucket(false, false, false),
+        HumanReplayCoverageBucket::Neither
+    );
+    assert_eq!(
+        human_replay_bucket(true, true, true),
+        HumanReplayCoverageBucket::BaselineSameSide
+    );
+}
+
+#[derive(Default)]
+struct HumanReplayBucketCounts {
+    both: usize,
+    baseline_only: usize,
+    steering_only: usize,
+    neither: usize,
+    baseline_same_side: usize,
+}
+
+impl HumanReplayBucketCounts {
+    fn add(&mut self, bucket: HumanReplayCoverageBucket) {
+        match bucket {
+            HumanReplayCoverageBucket::Both => self.both += 1,
+            HumanReplayCoverageBucket::BaselineOnly => self.baseline_only += 1,
+            HumanReplayCoverageBucket::SteeringOnly => self.steering_only += 1,
+            HumanReplayCoverageBucket::Neither => self.neither += 1,
+            HumanReplayCoverageBucket::BaselineSameSide => self.baseline_same_side += 1,
+        }
+    }
+
+    fn total(&self) -> usize {
+        self.both + self.baseline_only + self.steering_only + self.neither + self.baseline_same_side
+    }
+}
+
+fn mean(values: &[f64]) -> f64 {
+    assert!(!values.is_empty(), "mean requires at least one value");
+    values.iter().sum::<f64>() / values.len() as f64
+}
+
+fn mean_or_nan(sum: f64, count: usize) -> f64 {
+    if count == 0 {
+        f64::NAN
+    } else {
+        sum / count as f64
+    }
+}
+
+fn percentile(sorted_values: &[f64], percentile: f64) -> f64 {
+    assert!(!sorted_values.is_empty(), "percentile requires values");
+    assert!(
+        (0.0..=1.0).contains(&percentile),
+        "percentile must be in [0, 1]"
+    );
+    let index = ((sorted_values.len() - 1) as f64 * percentile).round() as usize;
+    sorted_values[index]
+}
+
+struct HumanReplayRng {
+    state: u64,
+}
+
+impl HumanReplayRng {
+    fn new(seed: u64) -> Self {
+        assert!(seed != 0, "xorshift state must be non-zero");
+        Self { state: seed }
+    }
+
+    fn next_u64(&mut self) -> u64 {
+        let mut x = self.state;
+        x ^= x << 13;
+        x ^= x >> 7;
+        x ^= x << 17;
+        self.state = x;
+        x
+    }
+
+    fn index(&mut self, len: usize) -> usize {
+        assert!(len > 0, "sample population must be non-empty");
+        (self.next_u64() as usize) % len
+    }
+}
+
+fn cluster_bootstrap_ci(
+    cluster_values: &HashMap<String, Vec<f64>>,
+    iterations: usize,
+    seed: u64,
+) -> Option<(f64, f64)> {
+    if cluster_values.is_empty() {
+        return None;
+    }
+    assert!(iterations > 0, "bootstrap iterations must be positive");
+    let mut clusters: Vec<(&String, &Vec<f64>)> = cluster_values.iter().collect();
+    clusters.sort_by_key(|(tag, _)| *tag);
+    assert!(
+        clusters.iter().all(|(_, values)| !values.is_empty()),
+        "covered clusters must carry at least one row"
+    );
+
+    let mut rng = HumanReplayRng::new(seed);
+    let mut sampled_means = Vec::with_capacity(iterations);
+    for _ in 0..iterations {
+        let mut sum = 0.0;
+        let mut count = 0_usize;
+        for _ in 0..clusters.len() {
+            let (_, values) = clusters[rng.index(clusters.len())];
+            sum += values.iter().sum::<f64>();
+            count += values.len();
+        }
+        sampled_means.push(sum / count as f64);
+    }
+    sampled_means.sort_by(|a, b| a.total_cmp(b));
+    Some((
+        percentile(&sampled_means, 0.025),
+        percentile(&sampled_means, 0.975),
+    ))
+}
+
+#[test]
+fn human_replay_cluster_bootstrap_is_deterministic() {
+    let clusters = HashMap::from([
+        ("b".to_string(), vec![0.2, 0.4]),
+        ("a".to_string(), vec![0.0]),
+        ("c".to_string(), vec![1.0]),
+    ]);
+    let first = cluster_bootstrap_ci(&clusters, 200, 0x5eed_2026).expect("CI exists");
+    let second = cluster_bootstrap_ci(&clusters, 200, 0x5eed_2026).expect("CI exists");
+    assert_eq!(first, second);
+    assert!(first.0 <= mean(&[0.0, 0.2, 0.4, 1.0]));
+    assert!(first.1 >= mean(&[0.0, 0.2, 0.4, 1.0]));
+    assert!(cluster_bootstrap_ci(&HashMap::new(), 10, 1).is_none());
+}
+
+const HUMAN_REPLAY_LAMBDAS: [f64; 5] = [0.5, 0.75, 1.0, 1.5, 2.0];
+
+#[derive(Default)]
+struct HumanReplayPolicyAgg {
+    suppressed: usize,
+    kept_same: usize,
+    redirected: usize,
+    covered_rows: usize,
+    ev_sum: f64,
+    unified_rows: usize,
+    unified_ev_sum: f64,
+}
+
+impl HumanReplayPolicyAgg {
+    fn add_verdict(&mut self, verdict: &str) {
+        match verdict {
+            "suppressed" => self.suppressed += 1,
+            "kept_same" => self.kept_same += 1,
+            "redirected" => self.redirected += 1,
+            other => panic!("unexpected replay verdict {other}"),
+        }
+    }
+
+    fn add_policy_ev(&mut self, ev: Option<f64>) {
+        if let Some(value) = ev {
+            self.covered_rows += 1;
+            self.ev_sum += value;
+        }
+    }
+
+    fn add_unified_ev(&mut self, ev: f64) {
+        self.unified_rows += 1;
+        self.unified_ev_sum += ev;
+    }
+}
+
+/// In-sample HumanDB replay over the frozen C-group make-traps trace. This
+/// is intentionally offline and ignored: it does not build a pack or play
+/// games. It measures whether the v4 steering decisions that actually
+/// fired in H2H move into child positions where HumanDB's one-turn reply
+/// distribution is better for the mover than the baseline child.
+///
+/// This is an investment/diagnostic signal only. It reuses the same
+/// HumanDB that trained behavior nibbles, so it cannot be treated as
+/// held-out product evidence.
+///
+///   SANMILL_STRONG_DB=... SANMILL_HUMAN_DB=... SANMILL_TRACE_DIR=...
+///   SANMILL_UNGATED_PACK=... SANMILL_HUMAN_REPLAY_OUT=...
+///   cargo test -p tgf-cli --release mill_pack::recompute::tests::human_replay_v1_over_trace -- --ignored --nocapture
+#[test]
+#[ignore = "requires the external strong DB, HumanDB, archived baseline pack, and trace"]
+fn human_replay_v1_over_trace() {
+    use perfect_db::database::{DatabaseVariant, FileDatabaseProvider};
+    use perfect_db::wdl_plane::{MID_REMOVAL_KEY_TAG, WdlPlaneCache, unpack_canonical_key};
+
+    let env_or = |name: &str, default: &str| std::env::var(name).unwrap_or_else(|_| default.into());
+    let workspace = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+    let resolve = |raw: String| -> std::path::PathBuf {
+        let candidate = std::path::PathBuf::from(&raw);
+        if candidate.is_absolute() {
+            candidate
+        } else {
+            workspace.join(&raw)
+        }
+    };
+
+    const BASELINE: &str = "experiments/gate_matrix_20260705_v4_riskgate_baseline";
+    let db_root = env_or("SANMILL_STRONG_DB", "D:/user/Documents/strong");
+    let human_db = resolve(env_or(
+        "SANMILL_HUMAN_DB",
+        "D:/Repo/NMM_LLM/human_database/human_db.sqlite",
+    ));
+    let trace_dir = resolve(env_or(
+        "SANMILL_TRACE_DIR",
+        &format!("{BASELINE}/c_make/trace"),
+    ));
+    let pack_path = resolve(env_or(
+        "SANMILL_UNGATED_PACK",
+        &format!("{BASELINE}/packs/ungated.mill_patch"),
+    ));
+    let out_path = resolve(env_or(
+        "SANMILL_HUMAN_REPLAY_OUT",
+        "target/human_replay_v1/replay.jsonl",
+    ));
+    std::fs::create_dir_all(out_path.parent().expect("output path has a parent"))
+        .expect("output directory must be creatable");
+
+    let options = MillVariantOptions::default();
+    let rules = MillRules::new(options.clone());
+    let provider = FileDatabaseProvider::new(std::path::PathBuf::from(&db_root));
+    let mut planes =
+        WdlPlaneCache::new(provider, DatabaseVariant::STANDARD).expect("strong DB plane cache");
+    let human = {
+        let mut oracle = PlaneOracle {
+            planes: &mut planes,
+        };
+        load_human_weights(
+            &human_db,
+            &rules,
+            &options,
+            &mut oracle,
+            HumanWeightConfig::default(),
+        )
+        .expect("HumanDB weights load")
+    };
+    let pack_bytes = std::fs::read(&pack_path).expect("baseline ungated pack readable");
+    let pack = perfect_db::patch::PatchFile::read_from(&mut &pack_bytes[..])
+        .expect("baseline pack parses");
+
+    let mut trace_files: Vec<_> = std::fs::read_dir(&trace_dir)
+        .expect("trace dir must exist")
+        .map(|entry| entry.expect("dir entry").path())
+        .filter(|path| path.extension().and_then(|e| e.to_str()) == Some("jsonl"))
+        .collect();
+    trace_files.sort();
+
+    let mut out = std::io::BufWriter::new(
+        std::fs::File::create(&out_path).expect("human replay output must be creatable"),
+    );
+    let mut rows = 0_usize;
+    let mut buckets = HumanReplayBucketCounts::default();
+    let mut covered_delta_values: Vec<f64> = Vec::new();
+    let mut covered_delta_by_trace_tag: HashMap<String, Vec<f64>> = HashMap::new();
+    let mut nibble_delta_bins: BTreeMap<i64, (usize, f64)> = BTreeMap::new();
+    let mut policy_aggs: Vec<HumanReplayPolicyAgg> = HUMAN_REPLAY_LAMBDAS
+        .iter()
+        .map(|_| HumanReplayPolicyAgg::default())
+        .collect();
+    let mut unified_policy_rows = 0_usize;
+    let mut unified_baseline_ev_sum = 0.0_f64;
+    let mut unified_v4_ev_sum = 0.0_f64;
+    let mut memo = DensityMemo::new();
+    let mut risk_memo = RiskMemo::new();
+    let mut replay_stats = RecomputeStats::default();
+    let mut risk_unresolved_candidates = 0_usize;
+
+    for path in trace_files {
+        for line in std::fs::read_to_string(&path)
+            .expect("trace file readable")
+            .lines()
+            .filter(|l| !l.trim().is_empty())
+        {
+            let row: serde_json::Value = serde_json::from_str(line).expect("valid trace JSONL");
+            let fen = row["parent_fen"].as_str().expect("parent_fen");
+            let mut state = rules.set_from_fen(fen).expect("trace FEN parses");
+            state.reset_ply_since_capture();
+            let parent_side = state.side_to_move();
+            if let Some(side) = row.get("side_to_move").and_then(|v| v.as_i64()) {
+                assert_eq!(
+                    i64::from(parent_side),
+                    side,
+                    "trace side_to_move must match replay state (fen {fen})"
+                );
+            }
+            let snap = rules.encode_state(state.clone());
+            let parent_key = perfect_db::canonical_key(&mut planes, &state, &options)
+                .expect("traced parents are keyable");
+            assert_eq!(
+                parent_key,
+                row["parent_key"].as_u64().expect("parent_key"),
+                "replay must rebuild the exact traced parent (fen {fen})"
+            );
+
+            let record = if parent_key & MID_REMOVAL_KEY_TAG != 0 {
+                let r = pack
+                    .lookup_mid_removal(parent_key)
+                    .expect("traced parent must be in the pack");
+                (
+                    r.child_count,
+                    r.optimal_mask,
+                    r.trap_score_mask,
+                    r.optimal_trap_nibbles,
+                )
+            } else {
+                let (sector, slot) = unpack_canonical_key(parent_key);
+                let r = pack
+                    .lookup(
+                        sector.white_on_board,
+                        sector.black_on_board,
+                        sector.white_in_hand,
+                        sector.black_in_hand,
+                        slot as u32,
+                    )
+                    .expect("traced parent must be in the pack");
+                (
+                    r.child_count,
+                    r.optimal_mask,
+                    r.trap_score_mask,
+                    r.optimal_trap_nibbles,
+                )
+            };
+            let (child_count, optimal_mask, trap_score_mask, optimal_trap_nibbles) = record;
+            let child_keys =
+                perfect_db::patch::sorted_distinct_child_keys(&mut planes, &rules, &options, &snap);
+            assert_eq!(
+                child_keys.len(),
+                usize::from(child_count),
+                "runtime child enumeration must match the pack record (fen {fen})"
+            );
+
+            let mut legal = tgf_core::ActionList::<256>::new();
+            rules.legal_actions(&snap, &mut legal);
+            let mut baseline_key = None;
+            let mut steering_key = None;
+            let mut baseline_flipped = None;
+            let mut steering_flipped = None;
+            let mut child_snap_by_key: HashMap<u64, (tgf_core::GameStateSnapshot, bool)> =
+                HashMap::new();
+            for &action in legal.as_slice() {
+                let token = tgf_mill::MillUciCodec::encode_action(action);
+                let child_snap = rules.apply(&snap, action);
+                let child_state = MillRules::decode_snapshot(child_snap);
+                let key = perfect_db::canonical_key(&mut planes, &child_state, &options)
+                    .expect("traced child actions are keyable");
+                let flipped = child_state.side_to_move() != parent_side;
+                child_snap_by_key
+                    .entry(key)
+                    .or_insert((child_snap, flipped));
+                if Some(token.as_str()) == row["baseline_action"].as_str() {
+                    baseline_key = Some(key);
+                    baseline_flipped = Some(flipped);
+                }
+                if Some(token.as_str()) == row["steering_action"].as_str() {
+                    steering_key = Some(key);
+                    steering_flipped = Some(flipped);
+                }
+            }
+            let baseline_key = baseline_key.expect("traced baseline action is legal");
+            let steering_key = steering_key.expect("traced steering action is legal");
+            let baseline_same_side = !baseline_flipped.expect("baseline child side known");
+            assert!(
+                steering_flipped.expect("steering child side known"),
+                "same-side steering child indicates a perspective-filter leak (fen {fen})"
+            );
+
+            let gain_of = |key: u64| -> u8 {
+                let index = child_keys.binary_search(&key).expect("keyed child");
+                perfect_db::patch::trap_rank(trap_score_mask, index)
+                    .map(|rank| perfect_db::patch::nibble_at(optimal_trap_nibbles, rank))
+                    .unwrap_or(0)
+            };
+            assert_eq!(
+                u64::from(gain_of(baseline_key)),
+                row["baseline_nibble"].as_u64().expect("baseline_nibble"),
+                "rebuilt baseline gain diverged from the live trace (fen {fen})"
+            );
+            assert_eq!(
+                u64::from(gain_of(steering_key)),
+                row["steering_nibble"].as_u64().expect("steering_nibble"),
+                "rebuilt steering gain diverged from the live trace (fen {fen})"
+            );
+
+            struct Candidate {
+                key: u64,
+                gain: u8,
+                risk: Option<f64>,
+            }
+            let mut candidates: Vec<Candidate> = Vec::new();
+            for (index, &child_key) in child_keys.iter().enumerate() {
+                if optimal_mask & (1_u64 << index) == 0 {
+                    continue;
+                }
+                let (child_snap, flipped) = child_snap_by_key
+                    .get(&child_key)
+                    .copied()
+                    .expect("every keyed child has a snapshot");
+                if !flipped {
+                    continue;
+                }
+                let gain = gain_of(child_key);
+                if gain == 0 && child_key != baseline_key {
+                    continue;
+                }
+                let mut oracle = PlaneOracle {
+                    planes: &mut planes,
+                };
+                let risk = risk_memo
+                    .own_turn_risk(
+                        child_key,
+                        &child_snap,
+                        parent_side,
+                        &rules,
+                        &options,
+                        &mut oracle,
+                        &mut memo,
+                        &mut replay_stats,
+                    )
+                    .mean;
+                if risk.is_none() {
+                    risk_unresolved_candidates += 1;
+                }
+                candidates.push(Candidate {
+                    key: child_key,
+                    gain,
+                    risk,
+                });
+            }
+
+            let baseline_stats = human.sample_stats(baseline_key);
+            let steering_stats = human.sample_stats(steering_key);
+            let baseline_raw_ev = if baseline_same_side {
+                None
+            } else {
+                let mut oracle = PlaneOracle {
+                    planes: &mut planes,
+                };
+                human.raw_ev(baseline_key, &mut oracle)
+            };
+            let steering_raw_ev = {
+                let mut oracle = PlaneOracle {
+                    planes: &mut planes,
+                };
+                human.raw_ev(steering_key, &mut oracle)
+            };
+            // Raw EV is returned in child side-to-move perspective. Since
+            // side-flipped children give the move to the opponent, negate it
+            // once to report the traced mover's perspective.
+            let baseline_ev = baseline_raw_ev.map(|ev| -ev.value);
+            let steering_ev = steering_raw_ev.map(|ev| -ev.value);
+            let bucket = human_replay_bucket(
+                baseline_same_side,
+                baseline_ev.is_some(),
+                steering_ev.is_some(),
+            );
+            buckets.add(bucket);
+
+            let delta_ev = match (baseline_ev, steering_ev) {
+                (Some(b), Some(s)) => {
+                    let delta = s - b;
+                    covered_delta_values.push(delta);
+                    let trace_tag = row["trace_tag"].as_str().unwrap_or("untagged").to_owned();
+                    covered_delta_by_trace_tag
+                        .entry(trace_tag)
+                        .or_default()
+                        .push(delta);
+                    let nibble_delta =
+                        i64::from(gain_of(steering_key)) - i64::from(gain_of(baseline_key));
+                    let bin = nibble_delta_bins.entry(nibble_delta).or_default();
+                    bin.0 += 1;
+                    bin.1 += delta;
+                    Some(delta)
+                }
+                _ => None,
+            };
+
+            let mut per_lambda = Vec::with_capacity(HUMAN_REPLAY_LAMBDAS.len());
+            let mut row_policy_evs = Vec::with_capacity(HUMAN_REPLAY_LAMBDAS.len());
+            for (slot, &lambda) in HUMAN_REPLAY_LAMBDAS.iter().enumerate() {
+                let net_of = |candidate: &Candidate| -> u8 {
+                    match candidate.risk {
+                        Some(risk) => net_nibble(candidate.gain, risk, lambda),
+                        None => 0,
+                    }
+                };
+                let net_baseline = candidates
+                    .iter()
+                    .find(|candidate| candidate.key == baseline_key)
+                    .map(net_of)
+                    .unwrap_or(0);
+                let mut best: Option<(u8, u64)> = None;
+                for candidate in &candidates {
+                    if candidate.key == baseline_key {
+                        continue;
+                    }
+                    let net = net_of(candidate);
+                    if net > net_baseline && best.is_none_or(|(score, _)| net > score) {
+                        best = Some((net, candidate.key));
+                    }
+                }
+                let policy_child_key = best.map(|(_, key)| key).unwrap_or(baseline_key);
+                let verdict = match best {
+                    None => "suppressed",
+                    Some((_, key)) if key == steering_key => "kept_same",
+                    Some(_) => "redirected",
+                };
+                policy_aggs[slot].add_verdict(verdict);
+                let policy_ev = if policy_child_key == baseline_key {
+                    baseline_ev
+                } else if policy_child_key == steering_key {
+                    steering_ev
+                } else {
+                    let mut oracle = PlaneOracle {
+                        planes: &mut planes,
+                    };
+                    human
+                        .raw_ev(policy_child_key, &mut oracle)
+                        .map(|ev| -ev.value)
+                };
+                if baseline_ev.is_some() && steering_ev.is_some() {
+                    policy_aggs[slot].add_policy_ev(policy_ev);
+                }
+                row_policy_evs.push(policy_ev);
+                per_lambda.push(serde_json::json!({
+                    "lambda": lambda,
+                    "verdict": verdict,
+                    "policy_child_key": policy_child_key,
+                    "policy_ev": policy_ev,
+                }));
+            }
+            if let (Some(baseline), Some(steering)) = (baseline_ev, steering_ev)
+                && row_policy_evs.iter().all(Option::is_some)
+            {
+                unified_policy_rows += 1;
+                unified_baseline_ev_sum += baseline;
+                unified_v4_ev_sum += steering;
+                for (slot, ev) in row_policy_evs.iter().enumerate() {
+                    policy_aggs[slot].add_unified_ev(ev.expect("checked all policy EVs"));
+                }
+            }
+
+            let stats_tuple = |stats: Option<HumanSampleStats>| {
+                stats.map(|s| (s.n_scored, s.coverage)).unwrap_or((0, 0.0))
+            };
+            let (baseline_n_scored, baseline_coverage) = stats_tuple(baseline_stats);
+            let (steering_n_scored, steering_coverage) = stats_tuple(steering_stats);
+
+            use std::io::Write;
+            writeln!(
+                out,
+                "{}",
+                serde_json::json!({
+                    "trace_tag": row["trace_tag"],
+                    "ply": row["ply"],
+                    "parent_key": parent_key,
+                    "baseline_action": row["baseline_action"],
+                    "steering_action": row["steering_action"],
+                    "baseline_nibble": gain_of(baseline_key),
+                    "steering_nibble": gain_of(steering_key),
+                    "baseline_ev": baseline_ev,
+                    "steering_ev": steering_ev,
+                    "baseline_n_scored": baseline_n_scored,
+                    "steering_n_scored": steering_n_scored,
+                    "baseline_coverage": baseline_coverage,
+                    "steering_coverage": steering_coverage,
+                    "delta_ev": delta_ev,
+                    "coverage_bucket": bucket.as_str(),
+                    "per_lambda": per_lambda,
+                })
+            )
+            .expect("human replay row write");
+            rows += 1;
+        }
+    }
+    use std::io::Write;
+    out.flush().expect("flush human replay output");
+    assert!(rows > 0, "the replay needs trace rows to analyze");
+    assert_eq!(
+        buckets.total(),
+        rows,
+        "coverage buckets must partition rows"
+    );
+    let covered_mean = if covered_delta_values.is_empty() {
+        f64::NAN
+    } else {
+        mean(&covered_delta_values)
+    };
+    let covered_ci = cluster_bootstrap_ci(&covered_delta_by_trace_tag, 1000, 0x5eed_2026);
+    let (ci_low, ci_high) = covered_ci.unwrap_or((f64::NAN, f64::NAN));
+    let covered_cluster_count = covered_delta_by_trace_tag.len();
+    eprintln!(
+        "[human-replay] rows={rows} both={} baseline_only={} steering_only={} neither={} \
+         baseline_same_side={} covered_mean_delta_ev={covered_mean:.6} \
+         bootstrap95=[{ci_low:.6},{ci_high:.6}] covered_clusters={} risk_unresolved={} \
+         risk_cache_hits={} risk_cache_misses={} -> {}",
+        buckets.both,
+        buckets.baseline_only,
+        buckets.steering_only,
+        buckets.neither,
+        buckets.baseline_same_side,
+        covered_cluster_count,
+        risk_unresolved_candidates,
+        risk_memo.hits,
+        risk_memo.misses,
+        out_path.display()
+    );
+    for (&nibble_delta, &(count, sum)) in &nibble_delta_bins {
+        eprintln!(
+            "[human-replay] nibble_delta={nibble_delta} rows={count} mean_delta_ev={:.6}",
+            mean_or_nan(sum, count)
+        );
+    }
+    eprintln!(
+        "[human-replay] policy unified_rows={} avoid_only_ev={:.6} v4_make_ev={:.6}",
+        unified_policy_rows,
+        mean_or_nan(unified_baseline_ev_sum, unified_policy_rows),
+        mean_or_nan(unified_v4_ev_sum, unified_policy_rows)
+    );
+    for ((slot, &lambda), agg) in HUMAN_REPLAY_LAMBDAS.iter().enumerate().zip(&policy_aggs) {
+        eprintln!(
+            "[human-replay] policy lambda={lambda:.2} suppressed={} kept_same={} \
+             redirected={} covered_rows={} mean_ev={:.6} unified_rows={} unified_ev={:.6}",
+            agg.suppressed,
+            agg.kept_same,
+            agg.redirected,
+            agg.covered_rows,
+            mean_or_nan(agg.ev_sum, agg.covered_rows),
+            agg.unified_rows,
+            mean_or_nan(agg.unified_ev_sum, agg.unified_rows)
+        );
+        assert_eq!(
+            agg.unified_rows, unified_policy_rows,
+            "policy {slot} must use the shared unified row set"
         );
     }
 }
