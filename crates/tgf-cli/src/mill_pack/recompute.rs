@@ -100,11 +100,12 @@ pub(crate) fn steering_gate(
 /// `Absolute` and `SiblingDelta` filter candidates OUT of
 /// `trap_score_mask` only (the stored nibble values stay the raw trap
 /// gain). `Net` goes further and REWRITES the stored value to the net
-/// score `gain - lambda * own_risk`: because the runtime's make-traps
-/// tie-break switches only on a *strictly higher stored score than the
-/// baseline child's*, storing nets turns that existing rule into a
-/// baseline-relative net comparison -- pairwise "is the extra trap gain
-/// worth the extra self-risk" -- with zero engine changes. Masks remain
+/// score `gain - lambda * own_risk`: the runtime keeps its existing
+/// "strictly higher stored nibble than the baseline child's" tie-break
+/// unchanged, so what it ends up comparing are the 4-bit QUANTIZED
+/// stored nets -- an approximation of a baseline-relative net
+/// comparison ("is the extra trap gain worth the extra self-risk") at
+/// nibble granularity, not an exact continuous-value one. Masks remain
 /// subsets of the optimal mask in every mode; no gate can ever steer
 /// toward a value-dropping move.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

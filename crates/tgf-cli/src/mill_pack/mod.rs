@@ -41,9 +41,11 @@
 //                      net REWRITES the stored value to the net score
 //                      (gain_nibble - lambda * own_risk on the nibble
 //                      scale, dropped from the mask when it reaches 0):
-//                      the runtime's strictly-greater tie-break then
-//                      compares baseline-relative nets pairwise, with no
-//                      engine change. own_risk is the corrected own-TURN
+//                      the runtime keeps its strictly-greater stored
+//                      -nibble tie-break unchanged, so it compares the
+//                      QUANTIZED stored nets -- approximating a baseline
+//                      -relative net comparison at 4-bit granularity,
+//                      with no engine change. own_risk is the corrected own-TURN
 //                      risk (see recompute::RiskMemo): the blunder
 //                      density our side faces after the opponent's value
 //                      -preserving reply -- walking through their single
@@ -896,6 +898,21 @@ mod tests {
             .expect("the equals form parses too");
         assert_eq!(gate.mode, recompute::RiskGateMode::Absolute);
         assert_eq!(gate.lambda, 1.0, "unset lambda keeps its default");
+
+        // net is the core experimental mode: pin BOTH spellings.
+        let gate = parse_risk_gate(&argv(&[
+            "--steering-risk-gate",
+            "net",
+            "--steering-risk-lambda",
+            "1.5",
+        ]))
+        .expect("net mode parses in the space form");
+        assert_eq!(gate.mode, recompute::RiskGateMode::Net);
+        assert_eq!(gate.lambda, 1.5);
+        let gate = parse_risk_gate(&argv(&["--steering-risk-gate=net"]))
+            .expect("net mode parses in the equals form");
+        assert_eq!(gate.mode, recompute::RiskGateMode::Net);
+        assert!(gate.active());
     }
 
     #[test]
