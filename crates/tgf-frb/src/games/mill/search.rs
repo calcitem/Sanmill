@@ -116,7 +116,7 @@ pub(crate) struct MillEngineConfigPlan {
     pub use_perfect_database: bool,
     /// When true and the perfect database drives the move choice, prefer --
     /// among the database's tied-best moves -- the one whose resulting
-    /// position carries the highest patch trap score (Flutter "Set traps
+    /// position carries the highest trap-library score (Flutter "Set traps
     /// for the opponent" with the Perfect Database on). The baseline stays
     /// the plain chooseRandom pick; see
     /// `perfect::try_perfect_best_action_trap_aware`.
@@ -988,7 +988,7 @@ fn run_mill_engine_config_event_stream(
         // With "make traps" on, the trap-aware variant starts from exactly
         // that chooseRandom baseline (same search_action reference,
         // shuffling flag, and seed) and only deviates to a tied sibling
-        // with a strictly higher patch trap score.
+        // with a strictly higher trap-library score.
         let pd_action = if config.patch_make_traps {
             perfect::try_perfect_best_action_trap_aware(
                 &snapshot,

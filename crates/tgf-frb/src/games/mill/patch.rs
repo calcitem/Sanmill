@@ -1,16 +1,14 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-// Lightweight "error patch" lookup for Mill positions.
+// Lightweight correction/trap lookups for Mill positions.
 //
 // Unlike the Perfect Database (`perfect.rs`), the patch file is small
 // enough to bundle as a Flutter asset and is fully self-contained (see
 // `perfect_db::patch`'s module docs): it never touches the multi-gigabyte
-// `.sec2` sector files it was mined from. Two independent runtime
-// behaviors consume it:
-//   - "Avoid traps": correct the engine/book/human-DB's chosen action when
-//     the patch says it throws away value.
-//   - "Make traps": among several already-safe candidate replies, prefer
-//     the one whose resulting position has the highest trap score.
-// Both are opt-in switches (default off) -- see `docs/` for the design.
+// `.sec2` sector files it was mined from. The two runtime behaviors use
+// separate assets:
+//   - `PATCH`: correction-only `std.mill_patch`, used by "Avoid traps".
+//   - `TRAPS`: experimental trap library, used by "Make traps".
+// Loading the correction patch must not implicitly enable trap steering.
 
 #[cfg(not(target_arch = "wasm32"))]
 use std::sync::Mutex;
@@ -24,6 +22,8 @@ use tgf_mill::MillVariantOptions;
 
 #[cfg(not(target_arch = "wasm32"))]
 static PATCH: Lazy<Mutex<Option<perfect_db::patch::PatchLookup>>> = Lazy::new(|| Mutex::new(None));
+#[cfg(not(target_arch = "wasm32"))]
+static TRAPS: Lazy<Mutex<Option<perfect_db::patch::PatchLookup>>> = Lazy::new(|| Mutex::new(None));
 
 pub(crate) struct PatchStatus {
     pub loaded: bool,
@@ -33,20 +33,12 @@ pub(crate) struct PatchStatus {
 
 #[cfg(not(target_arch = "wasm32"))]
 pub(crate) fn init_patch_path(path: String) -> bool {
-    let bytes = match std::fs::read(&path) {
-        Ok(bytes) => bytes,
-        Err(e) => {
-            *PATCH.lock().expect("FRB patch mutex must not be poisoned") = None;
-            let _ = e;
-            return false;
-        }
-    };
-    match perfect_db::patch::PatchLookup::open(&bytes) {
-        Ok(lookup) => {
+    match load_lookup(&path) {
+        Some(lookup) => {
             *PATCH.lock().expect("FRB patch mutex must not be poisoned") = Some(lookup);
             true
         }
-        Err(_) => {
+        None => {
             *PATCH.lock().expect("FRB patch mutex must not be poisoned") = None;
             false
         }
@@ -56,6 +48,26 @@ pub(crate) fn init_patch_path(path: String) -> bool {
 #[cfg(target_arch = "wasm32")]
 pub(crate) fn init_patch_path(_path: String) -> bool {
     false
+}
+
+#[cfg(all(test, not(target_arch = "wasm32")))]
+pub(crate) fn init_trap_path(path: String) -> bool {
+    match load_lookup(&path) {
+        Some(lookup) => {
+            *TRAPS.lock().expect("FRB trap mutex must not be poisoned") = Some(lookup);
+            true
+        }
+        None => {
+            *TRAPS.lock().expect("FRB trap mutex must not be poisoned") = None;
+            false
+        }
+    }
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn load_lookup(path: &str) -> Option<perfect_db::patch::PatchLookup> {
+    let bytes = std::fs::read(path).ok()?;
+    perfect_db::patch::PatchLookup::open(&bytes).ok()
 }
 
 #[cfg(not(target_arch = "wasm32"))]
@@ -92,6 +104,11 @@ pub(crate) fn deinit_patch() {
 #[cfg(target_arch = "wasm32")]
 pub(crate) fn deinit_patch() {}
 
+#[cfg(all(test, not(target_arch = "wasm32")))]
+pub(crate) fn deinit_traps() {
+    *TRAPS.lock().expect("FRB trap mutex must not be poisoned") = None;
+}
+
 /// If the patch has an entry for `snapshot` and `chosen` is not the
 /// recorded safe reply, return the legal action that is. `None` when no
 /// patch is loaded, the position has no entry, or `chosen` is already safe.
@@ -117,19 +134,20 @@ pub(crate) fn try_patch_correction(
 }
 
 /// Database-free "make traps" (see
-/// `perfect_db::patch::PatchLookup::trap_aware_action`): if the patch has
-/// an entry for `snapshot` and `chosen` is one of its mask-proven
+/// `perfect_db::patch::PatchLookup::trap_aware_action`): if the trap
+/// library has an entry for `snapshot` and `chosen` is one of its mask-proven
 /// value-preserving moves, return the proven sibling whose resulting
-/// position carries a strictly higher trap score. `None` when no patch is
-/// loaded, the position has no entry, `chosen` is not proven safe, or no
-/// sibling beats it -- callers keep `chosen` unchanged in that case.
+/// position carries a strictly higher trap score. `None` when no trap
+/// library is loaded, the position has no entry, `chosen` is not proven
+/// safe, or no sibling beats it -- callers keep `chosen` unchanged in that
+/// case.
 #[cfg(not(target_arch = "wasm32"))]
 pub(crate) fn try_patch_trap_aware_action(
     snapshot: &GameStateSnapshot,
     options: &MillVariantOptions,
     chosen: Action,
 ) -> Option<Action> {
-    let mut guard = PATCH.lock().expect("FRB patch mutex must not be poisoned");
+    let mut guard = TRAPS.lock().expect("FRB trap mutex must not be poisoned");
     let lookup = guard.as_mut()?;
     let rules = MillRules::new(options.clone());
     lookup.trap_aware_action(&rules, options, snapshot, chosen)
@@ -145,8 +163,8 @@ pub(crate) fn try_patch_trap_aware_action(
 }
 
 /// Trap score (0..=255) of the position reached by playing `action` from
-/// `snapshot`, or `None` when no patch is loaded. Thin lock wrapper around
-/// `PatchLookup::trap_score_after_action` -- the v4 unified entry point
+/// `snapshot`, or `None` when no trap library is loaded. Thin lock wrapper
+/// around `PatchLookup::trap_score_after_action` -- the v4 unified entry point
 /// (same-side filter, parent nibbles, child-entry fallback) -- used by
 /// "make traps" mode to rank candidate replies.
 #[cfg(not(target_arch = "wasm32"))]
@@ -155,7 +173,7 @@ pub(crate) fn trap_score_after_action(
     options: &MillVariantOptions,
     action: Action,
 ) -> Option<u8> {
-    let mut guard = PATCH.lock().expect("FRB patch mutex must not be poisoned");
+    let mut guard = TRAPS.lock().expect("FRB trap mutex must not be poisoned");
     let lookup = guard.as_mut()?;
     let rules = MillRules::new(options.clone());
     lookup.trap_score_after_action(&rules, options, snapshot, action)
@@ -214,6 +232,7 @@ mod tests {
     #[test]
     fn init_status_deinit_round_trip() {
         deinit_patch();
+        deinit_traps();
         assert!(!patch_status().loaded);
 
         let dir = std::env::temp_dir();
@@ -236,6 +255,7 @@ mod tests {
     #[test]
     fn correction_and_trap_score_are_none_without_a_loaded_patch() {
         deinit_patch();
+        deinit_traps();
         let options = MillVariantOptions::default();
         let rules = MillRules::new(options.clone());
         let snap = rules.initial_state(&[]);
@@ -245,5 +265,67 @@ mod tests {
 
         assert_eq!(try_patch_correction(&snap, &options, action), None);
         assert_eq!(trap_score_after_action(&snap, &options, action), None);
+    }
+
+    #[test]
+    fn correction_patch_does_not_load_the_trap_lookup() {
+        deinit_patch();
+        deinit_traps();
+
+        let dir = std::env::temp_dir();
+        let path = dir.join(format!(
+            "sanmill_frb_correction_split_test_{}.mill_patch",
+            std::process::id()
+        ));
+        std::fs::write(&path, empty_patch_bytes()).unwrap();
+
+        assert!(init_patch_path(path.to_string_lossy().into_owned()));
+
+        assert!(
+            PATCH
+                .lock()
+                .expect("FRB patch mutex must not be poisoned")
+                .is_some()
+        );
+        assert!(
+            TRAPS
+                .lock()
+                .expect("FRB trap mutex must not be poisoned")
+                .is_none()
+        );
+
+        deinit_patch();
+        let _ = std::fs::remove_file(&path);
+    }
+
+    #[test]
+    fn trap_library_does_not_load_the_correction_lookup() {
+        deinit_patch();
+        deinit_traps();
+
+        let dir = std::env::temp_dir();
+        let path = dir.join(format!(
+            "sanmill_frb_trap_split_test_{}.mill_traps",
+            std::process::id()
+        ));
+        std::fs::write(&path, empty_patch_bytes()).unwrap();
+
+        assert!(init_trap_path(path.to_string_lossy().into_owned()));
+
+        assert!(
+            PATCH
+                .lock()
+                .expect("FRB patch mutex must not be poisoned")
+                .is_none()
+        );
+        assert!(
+            TRAPS
+                .lock()
+                .expect("FRB trap mutex must not be poisoned")
+                .is_some()
+        );
+
+        deinit_traps();
+        let _ = std::fs::remove_file(&path);
     }
 }

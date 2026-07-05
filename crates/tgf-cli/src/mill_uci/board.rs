@@ -140,6 +140,7 @@ pub(super) fn print_uci_options() {
         "option name PerfectDatabaseOrdering type combo default auto var auto var legacy var strict"
     );
     println!("option name PatchPath type string default <empty>");
+    println!("option name TrapPath type string default <empty>");
     println!("option name PatchAvoidTraps type check default false");
     println!("option name PatchMakeTraps type check default false");
     println!("option name PatchTraceTag type string default <empty>");

@@ -197,6 +197,13 @@ pub(super) fn apply_setoption(
             engine_cfg.patch_path = path;
             SetoptionResult::SearchConfig
         }
+        "trappath" | "trap path" | "traplibrarypath" | "trap library path" => {
+            let path = value_pos
+                .map(|idx| tokens[idx + 1..].join(" "))
+                .filter(|s| !s.is_empty());
+            engine_cfg.trap_path = path;
+            SetoptionResult::SearchConfig
+        }
         "patchavoidtraps" | "patch avoid traps" => parse_bool(value)
             .map(|v| {
                 engine_cfg.patch_avoid_traps = v;

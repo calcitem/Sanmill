@@ -199,15 +199,20 @@ struct EngineConfig {
     /// plain WDL branch where step counts never break ties.
     perfect_db_ordering: Option<perfect_db::PerfectMoveOrdering>,
     active_perfect_db: Option<PerfectDatabaseRuntimeConfig>,
-    /// Filesystem path to a `*.mill_patch` asset.  Loaded when
-    /// `patch_avoid_traps` is enabled or whenever the path changes.
+    /// Filesystem path to a correction `*.mill_patch` asset. Avoid-traps
+    /// reads only this lookup; make-traps intentionally does not, so a
+    /// correction-only bundled asset cannot implicitly provide trap signals.
     patch_path: Option<String>,
+    /// Filesystem path to a trap-library asset. Make-traps reads only this
+    /// lookup; if absent, make-traps is an explicit no-op even when the
+    /// `PatchMakeTraps` switch is true.
+    trap_path: Option<String>,
     /// When true, correct the chosen move using the loaded error patch
     /// (Flutter "Avoid known traps").
     patch_avoid_traps: bool,
     /// When true and the perfect database is consulted, prefer -- among the
     /// database's tied-best moves -- the one whose resulting position has
-    /// the highest patch trap score (Flutter "Set traps for the opponent").
+    /// the highest trap-library score (Flutter "Set traps for the opponent").
     patch_make_traps: bool,
     /// Diagnostic-only override for the [`search_shuffle_seed`] free
     /// function's wall-clock default, set via `setoption
@@ -245,6 +250,7 @@ impl Default for EngineConfig {
             perfect_db_ordering: None,
             active_perfect_db: None,
             patch_path: None,
+            trap_path: None,
             patch_avoid_traps: false,
             patch_make_traps: false,
             search_shuffle_seed: None,
@@ -352,13 +358,22 @@ fn apply_patch_env_defaults(cfg: &mut EngineConfig) {
         let path = path.trim().to_owned();
         cfg.patch_path = (!path.is_empty()).then_some(path);
     }
+    if let Ok(path) = std::env::var("TGF_TRAP_PATH") {
+        let path = path.trim().to_owned();
+        cfg.trap_path = (!path.is_empty()).then_some(path);
+    }
     if let Some(value) = env_bool("TGF_PATCH_AVOID_TRAPS") {
         cfg.patch_avoid_traps = value;
     }
     if let Some(value) = env_bool("TGF_PATCH_MAKE_TRAPS") {
         cfg.patch_make_traps = value;
     }
-    patch::sync_runtime(&cfg.patch_path, cfg.patch_avoid_traps, cfg.patch_make_traps);
+    patch::sync_runtime(
+        &cfg.patch_path,
+        &cfg.trap_path,
+        cfg.patch_avoid_traps,
+        cfg.patch_make_traps,
+    );
 }
 
 pub(crate) fn run_uci_loop() {
@@ -419,6 +434,7 @@ pub(crate) fn run_uci_loop() {
                     sync_perfect_db(&mut engine_cfg, &options);
                     patch::sync_runtime(
                         &engine_cfg.patch_path,
+                        &engine_cfg.trap_path,
                         engine_cfg.patch_avoid_traps,
                         engine_cfg.patch_make_traps,
                     );
@@ -440,6 +456,7 @@ pub(crate) fn run_uci_loop() {
                     sync_perfect_db(&mut engine_cfg, &options);
                     patch::sync_runtime(
                         &engine_cfg.patch_path,
+                        &engine_cfg.trap_path,
                         engine_cfg.patch_avoid_traps,
                         engine_cfg.patch_make_traps,
                     );
@@ -1400,11 +1417,11 @@ fn try_perfect_best_action(
 
 /// "Make traps" variant of [`try_perfect_best_action`]: reuse the plain
 /// picker's move as the baseline, then -- among *all* database tied-best
-/// moves -- switch only to a sibling whose patch trap score is strictly
+/// moves -- switch only to a sibling whose trap-library score is strictly
 /// higher (see `perfect_db::patch::pick_strictly_better_trap_action`).
 /// Every candidate is database-verified equally optimal and an all-zero /
 /// all-tied score set returns the baseline unchanged, so this degrades to
-/// exactly [`try_perfect_best_action`] when the patch has nothing to say.
+/// exactly [`try_perfect_best_action`] when the trap library has nothing to say.
 fn try_perfect_best_action_trap_aware(
     options: &MillVariantOptions,
     state: &GameStateSnapshot,

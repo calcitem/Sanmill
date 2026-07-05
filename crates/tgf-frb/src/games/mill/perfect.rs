@@ -792,6 +792,7 @@ mod tests {
         deinit_database();
         assert!(perfect_db::init(db_path()));
         crate::games::mill::patch::deinit_patch();
+        crate::games::mill::patch::deinit_traps();
 
         let rules = MillRules::default();
         let options = MillVariantOptions::default();
@@ -816,6 +817,7 @@ mod tests {
         // merely some legal move: an all-None trap score set must never
         // move the pick.
         crate::games::mill::patch::deinit_patch();
+        crate::games::mill::patch::deinit_traps();
         let picked = try_perfect_best_action_trap_aware(
             &snapshot,
             &options,

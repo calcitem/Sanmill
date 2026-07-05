@@ -121,18 +121,22 @@ Options:
 
 Patch options (Sanmill `tgf` only; sent as UCI setoption):
   H2H_CURRENT_PATCH_PATH / H2H_MASTER_PATCH_PATH
-                     path to a `*.mill_patch` file
+                     path to a correction `*.mill_patch` file
+  H2H_CURRENT_TRAPS_PATH / H2H_MASTER_TRAPS_PATH
+                     path to a trap-library file (`*.mill_traps` by
+                     convention; currently the same v4 binary container)
   H2H_CURRENT_PATCH_AVOID_TRAPS / H2H_MASTER_PATCH_AVOID_TRAPS
                      true/false (default false).  When true and no path is
                      set, the bundled `std.mill_patch` asset is used.
   H2H_CURRENT_PATCH_MAKE_TRAPS / H2H_MASTER_PATCH_MAKE_TRAPS
                      true/false (default false).  Prefer, among moves proven
                      equally good, the one that hands the opponent the
-                     highest patch trap score.  With the Perfect DB enabled
+                     highest trap-library score.  With the Perfect DB enabled
                      (--vs-perfect / H2H_CURRENT_USE_PERFECT_DB) the proof
-                     is the DB's tied-best set; without it, the patch
-                     entry's own optimal-set mask.  Defaults the patch path
-                     like above.
+                     is the DB's tied-best set; without it, the trap
+                     library's own optimal-set mask.  Requires
+                     H2H_*_TRAPS_PATH; the correction patch is not used as
+                     a trap library.
 
 Each option also has an environment-variable form (command-line flags win):
   GAMES, SKILL, ENGINE_THREADS, MOVETIME (seconds), MOVETIME_MS (ms,
@@ -140,7 +144,9 @@ Each option also has an environment-variable form (command-line flags win):
   CURRENT_ENGINE, CURRENT_ARGS, MASTER_ARGS, CURRENT_ENV, MASTER_ENV,
   H2H_CURRENT_ENV, H2H_MASTER_ENV, CURRENT_GO, MASTER_GO,
   H2H_CURRENT_PATCH_PATH, H2H_CURRENT_PATCH_AVOID_TRAPS,
+  H2H_CURRENT_TRAPS_PATH, H2H_CURRENT_PATCH_MAKE_TRAPS,
   H2H_MASTER_PATCH_PATH, H2H_MASTER_PATCH_AVOID_TRAPS,
+  H2H_MASTER_TRAPS_PATH, H2H_MASTER_PATCH_MAKE_TRAPS,
   N_MOVE_RULE, ENDGAME_N_MOVE_RULE, OPENING_PLIES, OPENING_SEED,
   OPENING_DB_PATH, MINGW_BIN.
 

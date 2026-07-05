@@ -46,18 +46,29 @@ pub(super) fn set_trace_tag(tag: &str) {
 
 #[derive(Default)]
 struct PatchState {
-    path: Option<String>,
+    patch_path: Option<String>,
+    trap_path: Option<String>,
     avoid_traps: bool,
     make_traps: bool,
-    loaded_path: Option<String>,
-    lookup: Option<PatchLookup>,
+    loaded_patch_path: Option<String>,
+    patch_lookup: Option<PatchLookup>,
+    loaded_trap_path: Option<String>,
+    trap_lookup: Option<PatchLookup>,
 }
 
 /// Copy the engine configuration into the process-wide patch runtime and
-/// reload the patch file when the path changes.
-pub(super) fn sync_runtime(path: &Option<String>, avoid_traps: bool, make_traps: bool) {
+/// reload lookup files when their paths change. Avoid-traps and make-traps
+/// intentionally use separate files: the correction patch cannot
+/// implicitly act as a trap library.
+pub(super) fn sync_runtime(
+    patch_path: &Option<String>,
+    trap_path: &Option<String>,
+    avoid_traps: bool,
+    make_traps: bool,
+) {
     let mut state = PATCH.lock().expect("UCI patch mutex must not be poisoned");
-    state.path = path.clone().filter(|path| !path.is_empty());
+    state.patch_path = patch_path.clone().filter(|path| !path.is_empty());
+    state.trap_path = trap_path.clone().filter(|path| !path.is_empty());
     state.avoid_traps = avoid_traps;
     state.make_traps = make_traps;
     reload_if_needed(&mut state);
@@ -72,7 +83,7 @@ pub(super) fn apply_patch_avoid_traps_result(
     if !patch.avoid_traps || result.best_action.is_none() {
         return;
     }
-    let Some(lookup) = patch.lookup.as_mut() else {
+    let Some(lookup) = patch.patch_lookup.as_mut() else {
         return;
     };
     let rules = MillRules::new(options.clone());
@@ -87,23 +98,23 @@ pub(super) fn apply_patch_avoid_traps_result(
 }
 
 /// Trap score (0..=255) of the position reached by playing `action` from
-/// `state`, or `None` when no patch is loaded. Thin lock wrapper around
-/// [`PatchLookup::trap_score_after_action`] -- the v4 unified entry point
-/// (same-side filter, parent nibbles, child-entry fallback) -- used by the
-/// "make traps" perfect-database tie-break to rank candidate replies.
+/// `state`, or `None` when no trap library is loaded. Thin lock wrapper
+/// around [`PatchLookup::trap_score_after_action`] -- the v4 unified entry
+/// point (same-side filter, parent nibbles, child-entry fallback) -- used by
+/// the "make traps" perfect-database tie-break to rank candidate replies.
 pub(super) fn trap_score_after_action(
     options: &MillVariantOptions,
     state: &GameStateSnapshot,
     action: Action,
 ) -> Option<u8> {
     let mut patch = PATCH.lock().expect("UCI patch mutex must not be poisoned");
-    let lookup = patch.lookup.as_mut()?;
+    let lookup = patch.trap_lookup.as_mut()?;
     let rules = MillRules::new(options.clone());
     lookup.trap_score_after_action(&rules, options, state, action)
 }
 
 /// Database-free "make traps" (see `PatchLookup::trap_aware_action`): when
-/// enabled and the current position has a patch entry, replace a proven
+/// enabled and the current position has a trap-library entry, replace a proven
 /// value-preserving best move with the proven sibling whose resulting
 /// position carries a strictly higher trap score. The perfect-database
 /// tie-break variant supersedes this at the call site when the DB is on.
@@ -121,7 +132,7 @@ pub(super) fn apply_patch_make_traps_result(
     if !patch.make_traps || result.best_action.is_none() {
         return;
     }
-    let Some(lookup) = patch.lookup.as_mut() else {
+    let Some(lookup) = patch.trap_lookup.as_mut() else {
         return;
     };
     let rules = MillRules::new(options.clone());
@@ -204,34 +215,54 @@ fn trace_switch(
 }
 
 fn reload_if_needed(state: &mut PatchState) {
-    let Some(path) = state.path.as_ref() else {
-        state.loaded_path = None;
-        state.lookup = None;
+    reload_lookup(
+        &state.patch_path,
+        &mut state.loaded_patch_path,
+        &mut state.patch_lookup,
+        "patch",
+    );
+    reload_lookup(
+        &state.trap_path,
+        &mut state.loaded_trap_path,
+        &mut state.trap_lookup,
+        "trap library",
+    );
+}
+
+fn reload_lookup(
+    path: &Option<String>,
+    loaded_path: &mut Option<String>,
+    lookup: &mut Option<PatchLookup>,
+    label: &str,
+) {
+    let Some(path) = path.as_ref() else {
+        *loaded_path = None;
+        *lookup = None;
         return;
     };
-    if state.loaded_path.as_deref() == Some(path.as_str()) && state.lookup.is_some() {
+    if loaded_path.as_deref() == Some(path.as_str()) && lookup.is_some() {
         return;
     }
     let bytes = match std::fs::read(path) {
         Ok(bytes) => bytes,
         Err(error) => {
-            state.loaded_path = None;
-            state.lookup = None;
-            println!("info string patch load failed: {error}");
+            *loaded_path = None;
+            *lookup = None;
+            println!("info string {label} load failed: {error}");
             return;
         }
     };
     match PatchLookup::open(&bytes) {
-        Ok(lookup) => {
-            let entry_count = lookup.entry_count();
-            state.loaded_path = Some(path.clone());
-            state.lookup = Some(lookup);
-            println!("info string patch loaded entries={entry_count}");
+        Ok(new_lookup) => {
+            let entry_count = new_lookup.entry_count();
+            *loaded_path = Some(path.clone());
+            *lookup = Some(new_lookup);
+            println!("info string {label} loaded entries={entry_count}");
         }
         Err(error) => {
-            state.loaded_path = None;
-            state.lookup = None;
-            println!("info string patch parse failed: {error}");
+            *loaded_path = None;
+            *lookup = None;
+            println!("info string {label} parse failed: {error}");
         }
     }
 }
@@ -271,7 +302,7 @@ mod tests {
     }
 
     #[test]
-    fn patch_path_loads_and_avoid_traps_stays_off_by_default() {
+    fn patch_path_loads_only_the_correction_lookup() {
         let dir =
             std::env::temp_dir().join(format!("sanmill_uci_patch_test_{}", std::process::id()));
         std::fs::create_dir_all(&dir).unwrap();
@@ -283,18 +314,62 @@ mod tests {
             *state = PatchState::default();
         }
 
-        sync_runtime(&Some(path.to_string_lossy().into_owned()), false, false);
+        sync_runtime(
+            &Some(path.to_string_lossy().into_owned()),
+            &None,
+            false,
+            false,
+        );
         {
             let state = PATCH.lock().expect("patch mutex");
-            assert!(state.lookup.is_some());
+            assert!(state.patch_lookup.is_some());
+            assert!(state.trap_lookup.is_none());
             assert!(!state.avoid_traps);
             assert!(!state.make_traps);
         }
 
-        sync_runtime(&Some(path.to_string_lossy().into_owned()), true, true);
+        sync_runtime(
+            &Some(path.to_string_lossy().into_owned()),
+            &None,
+            true,
+            true,
+        );
         {
             let state = PATCH.lock().expect("patch mutex");
+            assert!(state.patch_lookup.is_some());
+            assert!(
+                state.trap_lookup.is_none(),
+                "PatchPath must not implicitly provide make-traps signals"
+            );
             assert!(state.avoid_traps);
+            assert!(state.make_traps);
+        }
+    }
+
+    #[test]
+    fn trap_path_loads_only_the_trap_lookup() {
+        let dir =
+            std::env::temp_dir().join(format!("sanmill_uci_trap_path_test_{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("empty.mill_traps");
+        std::fs::write(&path, empty_patch_bytes()).unwrap();
+
+        {
+            let mut state = PATCH.lock().expect("patch mutex");
+            *state = PatchState::default();
+        }
+
+        sync_runtime(
+            &None,
+            &Some(path.to_string_lossy().into_owned()),
+            false,
+            true,
+        );
+        {
+            let state = PATCH.lock().expect("patch mutex");
+            assert!(state.patch_lookup.is_none());
+            assert!(state.trap_lookup.is_some());
+            assert!(!state.avoid_traps);
             assert!(state.make_traps);
         }
     }

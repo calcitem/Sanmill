@@ -152,6 +152,18 @@ fn setoption_parses_perfect_database_options() {
 
     assert!(matches!(
         apply_setoption(
+            "setoption name TrapPath value /tmp/std.mill_traps",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut ecfg,
+        ),
+        SetoptionResult::SearchConfig
+    ));
+    assert_eq!(ecfg.trap_path.as_deref(), Some("/tmp/std.mill_traps"));
+
+    assert!(matches!(
+        apply_setoption(
             "setoption name PatchAvoidTraps value true",
             &mut options,
             &mut threads,

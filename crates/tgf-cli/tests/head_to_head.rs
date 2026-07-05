@@ -31,8 +31,10 @@
 //   H2H_MASTER_PERFECT_DB_PATH  DB path for opponent when enabled
 //   H2H_CURRENT_PERFECT_DB_ORDERING auto|legacy|strict tie-break policy
 //   H2H_MASTER_PERFECT_DB_ORDERING  (strict = convert wins by steps)
-//   H2H_CURRENT_PATCH_PATH     error-patch file for current (Sanmill only)
-//   H2H_MASTER_PATCH_PATH      error-patch file for opponent (Sanmill only)
+//   H2H_CURRENT_PATCH_PATH     correction patch file for current (Sanmill only)
+//   H2H_MASTER_PATCH_PATH      correction patch file for opponent (Sanmill only)
+//   H2H_CURRENT_TRAPS_PATH     trap-library file for current (Sanmill only)
+//   H2H_MASTER_TRAPS_PATH      trap-library file for opponent (Sanmill only)
 //   H2H_CURRENT_PATCH_AVOID_TRAPS  true/false for current PatchAvoidTraps
 //   H2H_MASTER_PATCH_AVOID_TRAPS   true/false for opponent PatchAvoidTraps
 //   H2H_CURRENT_PATCH_MAKE_TRAPS   true/false for current PatchMakeTraps
@@ -137,6 +139,7 @@ struct EnginePerfectDbOptions {
 #[derive(Clone, Debug, Default)]
 struct EnginePatchOptions {
     path: Option<PathBuf>,
+    traps_path: Option<PathBuf>,
     avoid_traps: bool,
     make_traps: bool,
 }
@@ -230,6 +233,9 @@ impl Engine {
                 "setoption name PatchPath value {}",
                 path.display()
             ));
+        }
+        if let Some(path) = patch.traps_path.as_ref() {
+            e.cmd(&format!("setoption name TrapPath value {}", path.display()));
         }
         e.cmd(&format!(
             "setoption name PatchAvoidTraps value {}",
@@ -455,18 +461,25 @@ fn default_patch_path() -> PathBuf {
     workspace_asset_path("src/ui/flutter_app/assets/patches/std.mill_patch")
 }
 
-fn patch_options_from_env(path_var: &str, avoid_var: &str, make_var: &str) -> EnginePatchOptions {
+fn patch_options_from_env(
+    path_var: &str,
+    traps_path_var: &str,
+    avoid_var: &str,
+    make_var: &str,
+) -> EnginePatchOptions {
     let avoid_traps = env_bool(avoid_var, false);
     let make_traps = env_bool(make_var, false);
     let path = env_path(path_var).or_else(|| {
-        if avoid_traps || make_traps {
+        if avoid_traps {
             Some(default_patch_path())
         } else {
             None
         }
     });
+    let traps_path = env_path(traps_path_var);
     EnginePatchOptions {
         path,
+        traps_path,
         avoid_traps,
         make_traps,
     }
@@ -1682,11 +1695,13 @@ fn head_to_head_vs_master() {
     };
     let current_patch = patch_options_from_env(
         "H2H_CURRENT_PATCH_PATH",
+        "H2H_CURRENT_TRAPS_PATH",
         "H2H_CURRENT_PATCH_AVOID_TRAPS",
         "H2H_CURRENT_PATCH_MAKE_TRAPS",
     );
     let master_patch = patch_options_from_env(
         "H2H_MASTER_PATCH_PATH",
+        "H2H_MASTER_TRAPS_PATH",
         "H2H_MASTER_PATCH_AVOID_TRAPS",
         "H2H_MASTER_PATCH_MAKE_TRAPS",
     );

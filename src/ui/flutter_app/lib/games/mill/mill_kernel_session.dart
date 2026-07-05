@@ -83,8 +83,8 @@ class MillKernelSession {
   /// running search or mutating the session.
   ///
   /// When [makeTraps] is set and several moves are tied for best, prefers
-  /// whichever one hands the opponent the highest bundled-error-patch trap
-  /// score instead of shuffling uniformly (see
+  /// whichever one hands the opponent the highest trap-library score instead
+  /// of shuffling uniformly (see
   /// `tgfKernelMillPatchTrapAwareBestAction`'s docs); every candidate
   /// considered is already database-verified equally optimal, so this can
   /// never pick a worse move than the plain tied-best pick.
@@ -141,7 +141,7 @@ class MillKernelSession {
 
   /// "Make traps" support: trap score (0..=255) of the position reached by
   /// playing [action] from the kernel's current position, or `null` when no
-  /// patch is loaded or the resulting position has no entry.
+  /// trap library is loaded or the resulting position has no entry.
   int? rawPatchTrapScoreAfter(tgf.TgfAction action) {
     if (kernel.isDisposed) {
       throw KernelException('handle already disposed');
@@ -152,8 +152,8 @@ class MillKernelSession {
     );
   }
 
-  /// Database-free "make traps" support: if the patch has an entry for the
-  /// kernel's current position and [chosen] is one of its proven
+  /// Database-free "make traps" support: if the trap library has an entry
+  /// for the kernel's current position and [chosen] is one of its proven
   /// value-preserving moves, return the proven sibling whose resulting
   /// position carries a strictly higher trap score, or `null` when [chosen]
   /// should stand (see `tgfKernelMillPatchMakeTrapsAction`'s docs).

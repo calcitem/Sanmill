@@ -205,8 +205,7 @@ class NativeMillRulesPort implements RulesPort {
       moveLimitMs: moveLimitMs,
       usePerfectDatabase: usePerfectDatabase,
       // Rust-side tied-best make-traps (only consulted when the Perfect DB
-      // drives the move); the DB-free path stays with
-      // [patchMakeTrapsAction] after the search.
+      // drives the move); both trap paths require a separate trap library.
       patchMakeTraps: settings.patchMakeTraps && isRuleSupportingErrorPatch(),
       algorithm: millSearchAlgorithmFor(settings.searchAlgorithm),
       aiIsLazy: settings.aiIsLazy,
@@ -261,8 +260,8 @@ class NativeMillRulesPort implements RulesPort {
 
   /// "Make traps" support: trap score (0..=255) of the position reached by
   /// [action], or `null` when the setting is off, the active rule set is not
-  /// the exact "std" variant the bundled patch was mined against (see
-  /// [isRuleSupportingErrorPatch]), or the patch has no entry for the
+  /// the exact "std" variant the trap library was mined against (see
+  /// [isRuleSupportingErrorPatch]), or the trap library has no entry for the
   /// resulting position.
   int? patchTrapScoreAfter(
     GameAction action, {
@@ -279,13 +278,13 @@ class NativeMillRulesPort implements RulesPort {
     return _session.rawPatchTrapScoreAfter(actionTgf);
   }
 
-  /// Database-free "make traps": if the patch entry for the current position
-  /// proves [chosen] value-preserving and a proven sibling hands the
+  /// Database-free "make traps": if the trap-library entry for the current
+  /// position proves [chosen] value-preserving and a proven sibling hands the
   /// opponent a strictly higher trap score, return that sibling. Returns
   /// `null` when the setting is off, the Perfect Database drives move choice
   /// anyway (its tied-best tie-break already handles make-traps with broader
-  /// coverage), the active rule set is not the exact "std" variant the
-  /// bundled patch was mined against (see [isRuleSupportingErrorPatch]),
+  /// coverage), the active rule set is not the exact "std" variant the trap
+  /// library was mined against (see [isRuleSupportingErrorPatch]),
   /// [chosen] cannot be converted to an FRB action, or [chosen] should
   /// simply stand.
   GameAction? patchMakeTrapsAction(
