@@ -150,14 +150,14 @@ TgfAction? tgfKernelMillPatchCorrectAction({
   chosen: chosen,
 );
 
-/// Database-free "make traps" support: if the lightweight error patch has
-/// an entry for the kernel's **current** Mill position and `chosen` is one
-/// of its mask-proven value-preserving moves, return the proven sibling
-/// whose resulting position carries a strictly higher trap score (the
-/// best-known blunder opportunity to hand the opponent). Returns
-/// `Ok(None)` when no patch is loaded, the position has no entry, `chosen`
-/// is not proven safe, or no sibling beats it -- callers should keep
-/// `chosen` unchanged in that case. Unlike
+/// Database-free "make traps" support: if the trap library has an entry for
+/// the kernel's **current** Mill position and `chosen` is one of its
+/// mask-proven value-preserving moves, return the proven sibling whose
+/// resulting position carries a strictly higher trap score (the best-known
+/// blunder opportunity to hand the opponent). Returns `Ok(None)` when no
+/// trap library is loaded, the position has no entry, `chosen` is not
+/// proven safe, or no sibling beats it -- callers should keep `chosen`
+/// unchanged in that case. Unlike
 /// [`tgf_kernel_mill_patch_trap_aware_best_action`] this needs no Perfect
 /// Database: the proof of which moves are safe is the patch entry itself.
 TgfAction? tgfKernelMillPatchMakeTrapsAction({
@@ -170,7 +170,7 @@ TgfAction? tgfKernelMillPatchMakeTrapsAction({
 
 /// "Make traps" support: trap score (0..=255) of the position reached by
 /// playing `action` from the kernel's **current** Mill position, or `None`
-/// when no patch is loaded or the resulting position has no entry.
+/// when no trap library is loaded or the resulting position has no entry.
 int? tgfKernelMillPatchTrapScoreAfter({
   required int handle,
   required TgfAction action,
@@ -182,7 +182,7 @@ int? tgfKernelMillPatchTrapScoreAfter({
 /// Query the perfect database for the best legal action, like
 /// [`tgf_kernel_mill_perfect_db_best_action`], but when `make_traps` is set
 /// and several moves are tied for best, prefer whichever one hands the
-/// opponent the highest lightweight-patch trap score instead of shuffling
+/// opponent the highest trap-library score instead of shuffling
 /// uniformly (see `crate::games::mill::patch`). Every candidate considered
 /// is already database-verified equally optimal, so this can never pick a
 /// worse move than the plain tied-best pick -- it only reorders among ties.

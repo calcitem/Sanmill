@@ -345,12 +345,12 @@ class MillEngineConfig {
 
   /// When true and the perfect database drives the move choice, prefer --
   /// among the database's tied-best moves -- the one whose resulting
-  /// position carries the highest error-patch trap score ("Set traps for
-  /// the opponent"). Flutter forwards `GeneralSettings.patchMakeTraps`;
-  /// the baseline remains the plain tied-best pick, so with no patch
+  /// position carries the highest trap-library score ("Set traps for the
+  /// opponent"). Flutter forwards `GeneralSettings.patchMakeTraps`; the
+  /// baseline remains the plain tied-best pick, so with no trap library
   /// loaded behavior is unchanged. Ignored when `use_perfect_database` is
-  /// false (the Dart side then applies the database-free make-traps path
-  /// instead).
+  /// false (the Dart side then applies the database-free make-traps path,
+  /// which also requires a trap library).
   final bool patchMakeTraps;
 
   /// When true, randomise the order of equally-ranked root moves so the AI
