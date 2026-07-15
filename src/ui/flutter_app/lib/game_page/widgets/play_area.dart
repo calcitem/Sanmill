@@ -4618,10 +4618,9 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       return null;
     }
 
-    final ThemeData theme = Theme.of(context);
-    final TextStyle? style = theme.textTheme.bodySmall?.copyWith(
-      color: DB().colorSettings.messageColor.withValues(alpha: 0.8),
-    );
+    final TextStyle style = _inlineMoveListTextStyle(
+      context,
+    ).copyWith(color: DB().colorSettings.messageColor.withValues(alpha: 0.8));
     return LayoutBuilder(
       key: const Key('play_area_analysis_root_comments'),
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -4788,7 +4787,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       selected: selected,
       selectedColor: colorScheme.primaryContainer,
       selectedTextColor: colorScheme.onPrimaryContainer,
-      textStyle: theme.textTheme.bodySmall,
+      textStyle: _inlineMoveListTextStyle(context),
       style: _GameMoveChipStyle.inlineText,
       maxLines: allowMultiline ? null : 1,
       onTap: widget.onMoveTap == null
@@ -4830,7 +4829,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       selected: selected,
       selectedColor: colorScheme.primaryContainer,
       selectedTextColor: colorScheme.onPrimaryContainer,
-      textStyle: theme.textTheme.bodySmall,
+      textStyle: _inlineMoveListTextStyle(context),
       style: widget.layout == _InlineMoveListLayout.horizontal
           ? _GameMoveChipStyle.inlineText
           : _GameMoveChipStyle.filled,
@@ -5365,14 +5364,18 @@ class _InlineMoveCount extends StatelessWidget {
       padding: const EdgeInsets.only(right: 3),
       child: Text(
         '$count.',
-        style: TextStyle(
-          color: color,
-          fontWeight: FontWeight.w500,
-          letterSpacing: 0,
-        ),
+        style: _inlineMoveListTextStyle(
+          context,
+        ).copyWith(color: color, fontWeight: FontWeight.w500),
       ),
     );
   }
+}
+
+TextStyle _inlineMoveListTextStyle(BuildContext context) {
+  final TextStyle baseStyle =
+      Theme.of(context).textTheme.bodySmall ?? const TextStyle(fontSize: 12);
+  return baseStyle.copyWith(fontFamily: 'monospace', letterSpacing: 0);
 }
 
 class _GameMoveChip extends StatelessWidget {

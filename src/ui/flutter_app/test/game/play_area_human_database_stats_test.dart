@@ -289,6 +289,14 @@ void main() {
     expect(find.text('d6'), findsOneWidget);
     expect(find.text('f4'), findsOneWidget);
     expect(find.text('2. f4'), findsNothing);
+    final Text roundText = tester.widget<Text>(find.text('1.'));
+    final Text whiteMoveText = tester.widget<Text>(find.text('d6'));
+    final Text blackMoveText = tester.widget<Text>(find.text('f4'));
+    expect(roundText.style?.fontFamily, 'monospace');
+    expect(whiteMoveText.style?.fontFamily, 'monospace');
+    expect(blackMoveText.style?.fontFamily, 'monospace');
+    expect(roundText.style?.fontSize, whiteMoveText.style?.fontSize);
+    expect(whiteMoveText.style?.fontSize, blackMoveText.style?.fontSize);
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_regular_move_2')),
