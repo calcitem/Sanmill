@@ -25,6 +25,7 @@ import '../../src/rust/api/simple.dart' as tgf;
 import 'lan_session_meta.dart';
 import 'mill_action_codec.dart';
 import 'mill_marked_pieces_codec.dart';
+import 'mill_remote_session_meta.dart';
 import 'mill_types.dart';
 import 'native_mill_rules_port.dart';
 import 'native_mill_snapshot_board_view.dart';
@@ -70,11 +71,24 @@ class NativeMillGameSession implements GameSessionHandle {
 
   // Named constructor for subclasses; callers outside this class should use
   // the factory constructor or this named form when subclassing.
-  NativeMillGameSession.fromPort(this.rulesPort, {this.lanMeta})
-    : _state = ValueNotifier<GameStateSnapshot>(rulesPort.snapshot);
+  NativeMillGameSession.fromPort(this.rulesPort, {LanSessionMeta? lanMeta})
+    : remoteMeta = lanMeta,
+      activeRuleSettings = rulesPort.ruleSettings,
+      _state = ValueNotifier<GameStateSnapshot>(rulesPort.snapshot);
 
   NativeMillRulesPort rulesPort;
-  LanSessionMeta? lanMeta;
+  MillRemoteSessionMeta? remoteMeta;
+  RuleSettings activeRuleSettings;
+
+  LanSessionMeta? get lanMeta {
+    final MillRemoteSessionMeta? meta = remoteMeta;
+    return meta is LanSessionMeta ? meta : null;
+  }
+
+  set lanMeta(LanSessionMeta? value) {
+    remoteMeta = value;
+  }
+
   final ValueNotifier<GameStateSnapshot> _state;
   final StreamController<GameSessionEvent> _events =
       StreamController<GameSessionEvent>.broadcast(sync: true);
@@ -161,6 +175,7 @@ class NativeMillGameSession implements GameSessionHandle {
       );
       rulesPort.dispose();
       rulesPort = nextPort;
+      activeRuleSettings = rules;
       _setState(rulesPort.snapshot);
       return;
     }

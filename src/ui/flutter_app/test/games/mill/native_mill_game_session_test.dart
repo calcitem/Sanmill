@@ -14,6 +14,7 @@ import 'package:sanmill/games/mill/mill_types.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
+import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/src/rust/api/simple.dart' as tgf;
 
 void main() {
@@ -827,6 +828,9 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
 
   @override
   int get redoDepth => undoCount - redoCount;
+
+  @override
+  RuleSettings get ruleSettings => const RuleSettings();
 
   @override
   GameStateSnapshot get snapshot => _snapshot;

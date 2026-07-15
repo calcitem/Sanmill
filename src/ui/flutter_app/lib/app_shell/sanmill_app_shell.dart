@@ -119,6 +119,7 @@ String sanmillPlayRouteIdForGameMode({
     GameMode.humanVsHuman => MillRouteIds.humanVsHuman.value,
     GameMode.aiVsAi => MillRouteIds.aiVsAi.value,
     GameMode.humanVsLAN => MillRouteIds.humanVsLan.value,
+    GameMode.humanVsBluetooth => MillRouteIds.humanVsBluetooth.value,
     GameMode.testViaLAN => MillRouteIds.humanVsLan.value,
     GameMode.humanVsCloud => fallbackRouteId,
     GameMode.analysis ||

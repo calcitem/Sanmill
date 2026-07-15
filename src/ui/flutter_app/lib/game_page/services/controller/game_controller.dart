@@ -56,8 +56,11 @@ class GameController {
   /// engine searches (AI moves are applied by the replay engine instead).
   bool isExperienceReplayActive = false;
 
-  NetworkService? networkService;
-  bool isLanOpponentTurn = false; // Tracks whose turn it is in LAN mode
+  RemoteMatchCoordinator? remoteCoordinator;
+  Map<String, Object?>? _lastRemoteDiagnostics;
+  // Canceled by disposeRemoteMatch before every coordinator replacement.
+  // ignore: cancel_subscriptions
+  StreamSubscription<RemoteMatchEvent>? _remoteMatchSubscription;
 
   bool isDisposed = false;
   bool isControllerReady = false;
@@ -489,7 +492,7 @@ class GameController {
     final bool showSide =
         gameInstance.gameMode == GameMode.humanVsHuman ||
         gameInstance.gameMode == GameMode.analysis ||
-        gameInstance.gameMode == GameMode.humanVsLAN;
+        isRemoteGameMode;
 
     if (action == Act.remove) {
       return showSide
@@ -504,7 +507,7 @@ class GameController {
     }
 
     if (phase == Phase.placing) {
-      if (showSide || DB().ruleSettings.mayMoveInPlacingPhase) {
+      if (showSide || ruleSettingsForActiveBoard.mayMoveInPlacingPhase) {
         return S.of(context).tipToMove(sideName);
       }
       return S.of(context).tipPlace;
@@ -512,12 +515,6 @@ class GameController {
 
     return null;
   }
-
-  /// Remembers whether the host chose White; used for header icon arrangement.
-  bool? lanHostPlaysWhite;
-
-  // Use this Completer to wait for the final "accepted" or "rejected" from remote.
-  Completer<bool>? pendingTakeBackCompleter;
 
   // Game timing tracking
   DateTime? _gameStartTime;
@@ -661,7 +658,7 @@ class GameController {
       'Setup Position must transform through MillSetupPositionController.',
     );
     if (gameInstance.gameMode == GameMode.setupPosition ||
-        gameInstance.gameMode == GameMode.humanVsLAN ||
+        isRemoteGameMode ||
         isEngineRunning ||
         isEngineInDelay) {
       return false;
@@ -738,32 +735,366 @@ class GameController {
     logger.i("$_logTag initialized");
   }
 
-  /// Determines the local player's color based on whether they are Host or Client
-  PieceColor getLocalColor() {
-    final LanSessionMeta? meta = activeNativeLanMeta;
-    if (meta != null) {
-      return switch (meta.localSeat) {
-        PlayerSeat.first => PieceColor.white,
-        PlayerSeat.second => PieceColor.black,
-        PlayerSeat.none => PieceColor.nobody,
-      };
+  bool get isRemoteGameMode =>
+      gameInstance.gameMode == GameMode.humanVsLAN ||
+      gameInstance.gameMode == GameMode.humanVsBluetooth;
+
+  MillRemoteSessionMeta? get activeRemoteMeta =>
+      isRemoteGameMode ? activeNativeMillSession?.remoteMeta : null;
+
+  bool get isRemoteConnected => remoteCoordinator?.isConnected ?? false;
+
+  bool get isRemoteBoardLocked => isRemoteGameMode && !isRemoteConnected;
+
+  RuleSettings get ruleSettingsForActiveBoard {
+    if (isRemoteGameMode) {
+      final NativeMillGameSession? session = activeNativeMillSession;
+      if (session != null) {
+        return session.activeRuleSettings;
+      }
     }
-    final bool amIHost = networkService?.isHost ?? false;
-    final bool hostPlaysWhite = lanHostPlaysWhite ?? true;
-    if (amIHost) {
-      // Host: If hostPlaysWhite is true, local is White; otherwise Black
-      return hostPlaysWhite ? PieceColor.white : PieceColor.black;
-    } else {
-      // Client: Opposite of host's choice
-      return hostPlaysWhite ? PieceColor.black : PieceColor.white;
+    return DB().ruleSettings;
+  }
+
+  bool get isRemoteOpponentTurn {
+    final NativeMillGameSession? session = activeNativeMillSession;
+    final MillRemoteSessionMeta? meta = activeRemoteMeta;
+    if (session == null || meta == null) {
+      return true;
+    }
+    return meta.isOpponentTurn(session.state.value.activeSeat);
+  }
+
+  /// Compatibility getter for widgets while LAN-only naming is removed.
+  bool get isLanOpponentTurn => isRemoteOpponentTurn;
+
+  PieceColor getLocalColor() {
+    return switch (activeRemoteMeta?.localSeat) {
+      PlayerSeat.first => PieceColor.white,
+      PlayerSeat.second => PieceColor.black,
+      PlayerSeat.none || null => PieceColor.nobody,
+    };
+  }
+
+  Map<String, Object?>? get remoteDiagnostics =>
+      remoteCoordinator?.diagnosticSnapshot ?? _lastRemoteDiagnostics;
+
+  Future<String?> exportRemoteDiagnosticsToTempFile() async {
+    final Map<String, Object?>? snapshot = remoteDiagnostics;
+    if (snapshot == null) {
+      return null;
+    }
+    final Directory directory = await getTemporaryDirectory();
+    final File file = File('${directory.path}/sanmill_remote_diagnostics.json');
+    await file.writeAsString(
+      const JsonEncoder.withIndent('  ').convert(snapshot),
+    );
+    return file.path;
+  }
+
+  Future<RemoteMatchCoordinator> createRemoteCoordinator({
+    required RemoteTransportKind kind,
+    required RemoteRole role,
+  }) async {
+    final NativeMillGameSession? session = activeNativeMillSession;
+    if (session == null) {
+      throw StateError('A native Mill session is required for remote play.');
+    }
+    await disposeRemoteMatch();
+    _lastRemoteDiagnostics = null;
+    final RemoteTransport transport = switch (kind) {
+      RemoteTransportKind.lan => LanTransport(role: role),
+      RemoteTransportKind.bluetooth => BluetoothTransport(role: role),
+    };
+    final NativeMillRemoteGameAdapter adapter = NativeMillRemoteGameAdapter(
+      session: session,
+      transportKind: kind,
+      role: role,
+      generalSettings: DB().generalSettings,
+      onBeforeReset: () => _prepareRemoteSessionReset(session),
+      onStateChanged: () => _onRemoteSessionStateChanged(session),
+    );
+    final RemoteMatchCoordinator coordinator = RemoteMatchCoordinator(
+      transport: transport,
+      game: adapter,
+      localPeer: await RemotePeerIdentity.create(),
+    );
+    remoteCoordinator = coordinator;
+    _remoteMatchSubscription = coordinator.events.listen(_onRemoteMatchEvent);
+    gameInstance.gameMode = kind == RemoteTransportKind.lan
+        ? GameMode.humanVsLAN
+        : GameMode.humanVsBluetooth;
+    disableStats = false;
+    headerIconsNotifier.showIcons();
+    boardSemanticsNotifier.updateSemantics();
+    logger.i(
+      '$_logTag [Remote] coordinator created '
+      'transport=${kind.name} role=${role.name}',
+    );
+    return coordinator;
+  }
+
+  Future<void> startRemoteHost({
+    required RemoteMatchCoordinator coordinator,
+    required bool hostPlaysWhite,
+    String? bindAddress,
+    int port = 33333,
+    String advertisedLabel = 'Sanmill',
+  }) async {
+    assert(identical(remoteCoordinator, coordinator));
+    final RuleSettings rules = DB().ruleSettings;
+    final NativeMillRulesPort initialRules = NativeMillRulesPort(
+      ruleSettings: rules,
+      generalSettings: DB().generalSettings,
+    );
+    final String initialFen = initialRules.exportFen();
+    initialRules.dispose();
+    await coordinator.startHost(
+      options: RemoteHostOptions(
+        bindAddress: bindAddress,
+        port: port,
+        advertisedLabel: advertisedLabel,
+      ),
+      ruleSettings: Map<String, Object?>.from(rules.toJson()),
+      initialFen: initialFen,
+      hostPlaysFirst: hostPlaysWhite,
+    );
+  }
+
+  void _prepareRemoteSessionReset(NativeMillGameSession session) {
+    gameResultNotifier.clearResult();
+    gameRecorder = GameRecorder(lastPositionWithRemove: session.getFen());
+    lastMoveFromAI = false;
+    PlayerTimer().reset();
+    OfflineBoardClock().reset();
+    _resetGameTiming();
+  }
+
+  void _onRemoteSessionStateChanged(NativeMillGameSession session) {
+    activeSessionSnapshot = session.state.value;
+    refreshRemoteTurn(showTip: remoteCoordinator?.isConnected ?? false);
+    if (session.outcome.isTerminal) {
+      gameResultNotifier.showResult(force: true);
     }
   }
 
-  LanSessionMeta? get activeNativeLanMeta {
-    if (!true || gameInstance.gameMode != GameMode.humanVsLAN) {
-      return null;
+  void _onRemoteMatchEvent(RemoteMatchEvent event) {
+    switch (event) {
+      case RemoteMatchStateChanged():
+        if (event.state == RemoteConnectionState.reconnecting) {
+          final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+          if (context != null) {
+            headerTipNotifier.showTip(
+              S.of(context).remoteReconnectingBoardLocked,
+              snackBar: false,
+            );
+          }
+        }
+        boardSemanticsNotifier.updateSemantics();
+      case RemotePeerApprovalRequested():
+        unawaited(_approveRemotePeer(event));
+      case RemoteMatchReady():
+        disableStats = false;
+        refreshRemoteTurn();
+      case RemoteMatchUpgradeRequired():
+        unawaited(_showRemoteUpgradeRequired());
+      case RemoteMatchActionRejected():
+        _showRemoteRejection(event.reason);
+      case RemoteTakeBackApprovalRequested():
+        unawaited(_approveRemoteTakeBack(event));
+      case RemoteRestartApprovalRequested():
+        unawaited(_approveRemoteRestart(event));
+      case RemoteOpponentResigned():
+        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+        if (context != null) {
+          headerTipNotifier.showTip(S.of(context).opponentResignedYouWin);
+        }
+        gameResultNotifier.showResult(force: true);
+      case RemoteMatchAborted():
+        disableStats = true;
+        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+        if (context != null) {
+          headerTipNotifier.showTip(
+            event.reason.startsWith('Reconnect timed out')
+                ? S.of(context).remoteReconnectTimedOut
+                : S.of(context).remoteConnectionFailed(event.reason),
+            snackBar: true,
+          );
+        }
+      case RemoteMatchFailure():
+        logger.e(
+          '$_logTag [Remote] coordinator failure: ${event.error}',
+          stackTrace: event.stackTrace,
+        );
+        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+        if (context != null) {
+          headerTipNotifier.showTip(
+            S.of(context).remoteConnectionFailed(event.error.toString()),
+            snackBar: true,
+          );
+        }
     }
-    return activeNativeMillSession?.lanMeta;
+  }
+
+  Future<void> _approveRemotePeer(RemotePeerApprovalRequested event) async {
+    final RemoteMatchCoordinator? coordinator = remoteCoordinator;
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    if (coordinator == null) {
+      return;
+    }
+    if (context == null) {
+      await coordinator.approvePeer(accepted: false);
+      return;
+    }
+    final bool accepted =
+        await showDialog<bool>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext dialogContext) => AlertDialog(
+            title: Text(S.of(dialogContext).remoteApprovalTitle),
+            content: Text(
+              S
+                  .of(dialogContext)
+                  .remoteApprovalBody(
+                    event.peer.label,
+                    event.peer.platform,
+                    event.peer.shortId,
+                  ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(false),
+                child: Text(S.of(dialogContext).no),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(dialogContext).pop(true),
+                child: Text(S.of(dialogContext).yes),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+    if (identical(remoteCoordinator, coordinator)) {
+      await coordinator.approvePeer(accepted: accepted);
+    }
+  }
+
+  Future<void> _approveRemoteTakeBack(
+    RemoteTakeBackApprovalRequested event,
+  ) async {
+    final RemoteMatchCoordinator? coordinator = remoteCoordinator;
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    if (coordinator == null) {
+      return;
+    }
+    final bool accepted =
+        context != null &&
+        (await showDialog<bool>(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext dialogContext) => AlertDialog(
+                title: Text(S.of(dialogContext).takeBackRequest),
+                content: Text(
+                  S
+                      .of(dialogContext)
+                      .opponentRequestsTakeBackAccept(event.steps.toString()),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(dialogContext).pop(false),
+                    child: Text(S.of(dialogContext).no),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(dialogContext).pop(true),
+                    child: Text(S.of(dialogContext).yes),
+                  ),
+                ],
+              ),
+            ) ??
+            false);
+    if (identical(remoteCoordinator, coordinator)) {
+      await coordinator.respondToTakeBack(
+        requestId: event.requestId,
+        steps: event.steps,
+        accepted: accepted,
+      );
+    }
+  }
+
+  Future<void> _approveRemoteRestart(
+    RemoteRestartApprovalRequested event,
+  ) async {
+    final RemoteMatchCoordinator? coordinator = remoteCoordinator;
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    if (coordinator == null) {
+      return;
+    }
+    final bool accepted =
+        context != null &&
+        (await showDialog<bool>(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext dialogContext) => AlertDialog(
+                title: Text(S.of(dialogContext).restartRequest),
+                content: Text(
+                  S
+                      .of(dialogContext)
+                      .opponentRequestedToRestartTheGameDoYouAccept,
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () => Navigator.of(dialogContext).pop(false),
+                    child: Text(S.of(dialogContext).no),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(dialogContext).pop(true),
+                    child: Text(S.of(dialogContext).yes),
+                  ),
+                ],
+              ),
+            ) ??
+            false);
+    if (identical(remoteCoordinator, coordinator)) {
+      await coordinator.respondToRestart(
+        requestId: event.requestId,
+        accepted: accepted,
+      );
+    }
+  }
+
+  Future<void> _showRemoteUpgradeRequired() async {
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    if (context == null) {
+      return;
+    }
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) => AlertDialog(
+        title: Text(S.of(dialogContext).appName),
+        content: Text(S.of(dialogContext).remoteProtocolUpgradeRequired),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(S.of(dialogContext).ok),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showRemoteRejection(String reason) {
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    if (context == null) {
+      return;
+    }
+    final String message = switch (reason) {
+      'hostBusy' ||
+      'activeSession' ||
+      'approvalPending' => S.of(context).remoteHostBusy,
+      'hostRejected' => S.of(context).remotePeerRejected,
+      _ => S.of(context).remoteActionRejected,
+    };
+    headerTipNotifier.showTip(message, snackBar: true);
   }
 
   /// Undo the last move through the active [NativeMillGameSession].
@@ -778,77 +1109,14 @@ class GameController {
     return true;
   }
 
-  bool isNativeLanOpponentTurn(NativeMillGameSession session) {
-    final LanSessionMeta? meta = session.lanMeta ?? activeNativeLanMeta;
-    final PlayerSeat localSeat = meta?.localSeat ?? _fallbackLocalSeat();
-    final bool opponentTurn = session.state.value.activeSeat != localSeat;
-    isLanOpponentTurn = opponentTurn;
-    return opponentTurn;
+  bool isNativeRemoteOpponentTurn(NativeMillGameSession session) {
+    final MillRemoteSessionMeta? meta = session.remoteMeta ?? activeRemoteMeta;
+    return meta == null || meta.isOpponentTurn(session.state.value.activeSeat);
   }
 
-  Future<bool> handleNativeLanMove(
-    NativeMillGameSession session,
-    String moveNotation,
-  ) async {
-    if (gameInstance.gameMode != GameMode.humanVsLAN) {
-      logger.w("$_logTag Ignoring native LAN move: wrong mode");
-      return false;
-    }
-
-    final GameAction? action = _nativeSessionActionForMove(
-      session,
-      moveNotation,
-    );
-    if (action == null) {
-      logger.e("$_logTag Invalid native LAN move received: $moveNotation");
-      headerTipNotifier.showTip("Opponent sent an invalid move");
-      return false;
-    }
-
-    await session.apply(action);
-    refreshLanTurn();
-    if (session.outcome.isTerminal) {
-      gameResultNotifier.showResult(force: true);
-    }
-    logger.i("$_logTag Successfully processed native LAN move: $moveNotation");
-    return true;
-  }
-
-  GameAction? _nativeSessionActionForMove(
-    NativeMillGameSession session,
-    String moveNotation,
-  ) {
-    for (final GameAction action in session.legalActions) {
-      if (action.payload['move'] == moveNotation) {
-        return action;
-      }
-    }
-    return null;
-  }
-
-  static PlayerSeat _seatFromPieceColor(PieceColor color) {
-    return switch (color) {
-      PieceColor.white => PlayerSeat.first,
-      PieceColor.black => PlayerSeat.second,
-      _ => PlayerSeat.none,
-    };
-  }
-
-  PlayerSeat _fallbackLocalSeat() {
-    final bool amIHost = networkService?.isHost ?? false;
-    final bool hostPlaysWhite = lanHostPlaysWhite ?? true;
-    final PieceColor localColor = amIHost
-        ? (hostPlaysWhite ? PieceColor.white : PieceColor.black)
-        : (hostPlaysWhite ? PieceColor.black : PieceColor.white);
-    return _seatFromPieceColor(localColor);
-  }
-
-  /// Sends a restart request to the LAN opponent.
-  /// This method is called when the local user requests a game restart.
   void requestRestart() {
-    if (gameInstance.gameMode == GameMode.humanVsLAN &&
-        (networkService?.isConnected ?? false)) {
-      networkService!.sendMove("restart:request");
+    if (isRemoteGameMode && isRemoteConnected) {
+      unawaited(_requestRemoteRestart());
       final BuildContext? context = rootScaffoldMessengerKey.currentContext;
       if (context != null) {
         headerTipNotifier.showTip(
@@ -860,31 +1128,16 @@ class GameController {
     }
   }
 
-  /// Handles a restart request received from the opponent.
-  /// Shows a confirmation dialog; if accepted, sends "restart:accepted" and resets game;
-  /// otherwise, sends "restart:rejected".
-  void handleRestartRequest() {
-    showLanRestartRequestDialog(
-      onAccept: (BuildContext dialogContext) {
-        networkService?.sendMove("restart:accepted");
-        reset(lanRestart: true);
-      },
-      onReject: (BuildContext dialogContext) {
-        final String rejectedMessage = S
-            .of(dialogContext)
-            .restartRequestRejected;
-        networkService?.sendMove("restart:rejected");
-        headerTipNotifier.showTip(rejectedMessage);
-      },
-    );
+  Future<void> _requestRemoteRestart() async {
+    final bool accepted = await remoteCoordinator!.requestRestart();
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    if (!accepted && context != null && context.mounted) {
+      headerTipNotifier.showTip(S.of(context).restartRequestRejected);
+    }
   }
 
-  /// Sends a resignation request to the LAN opponent.
-  /// This method is called when the local player wants to resign.
   void requestResignation() {
-    if (gameInstance.gameMode != GameMode.humanVsLAN ||
-        !(networkService?.isConnected ?? false)) {
-      // For non-LAN modes or when not connected, just handle locally
+    if (!isRemoteGameMode || !isRemoteConnected) {
       logger.i("$_logTag Local resignation in non-LAN mode");
       _handleLocalResignation();
       return;
@@ -900,78 +1153,35 @@ class GameController {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
+        final S strings = S.of(dialogContext);
         return AlertDialog(
-          title: Text(S.of(context).confirmResignation),
-          content: Text(S.of(dialogContext).areYouSureYouWantToResignThisGame),
+          title: Text(strings.confirmResignation),
+          content: Text(strings.areYouSureYouWantToResignThisGame),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop(false);
               },
-              child: Text(S.of(context).cancel),
+              child: Text(strings.cancel),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.of(dialogContext).pop(true);
-
-                // Send resignation to opponent
                 try {
-                  networkService!.sendMove("resign:request");
-                  logger.i("$_logTag Sent resignation request");
-
-                  // The local player resigned, so the opponent wins.
-                  // Drive the native session to a terminal `loseResign`
-                  // state; the result dialog plays the end-of-game tone.
-                  final PieceColor winnerColor = getLocalColor().opponent;
-                  forceGameOver(winnerColor, GameOverReason.loseResign);
-
-                  headerTipNotifier.showTip(S.of(context).youResignedGameOver);
+                  await remoteCoordinator!.resign();
+                  headerTipNotifier.showTip(strings.youResignedGameOver);
                   gameResultNotifier.showResult();
                 } catch (e) {
                   logger.e("$_logTag Failed to send resignation: $e");
-                  headerTipNotifier.showTip(
-                    S.of(context).failedToSendResignation,
-                  );
+                  headerTipNotifier.showTip(strings.failedToSendResignation);
                 }
               },
-              child: Text(S.of(dialogContext).resign),
+              child: Text(strings.resign),
             ),
           ],
         );
       },
     );
-  }
-
-  /// Handles a resignation request received from the LAN opponent.
-  /// This sets the local player as the winner and updates the game state.
-  void handleResignation() {
-    if (gameInstance.gameMode != GameMode.humanVsLAN) {
-      logger.w("$_logTag Ignoring resignation request: not in LAN mode");
-      return;
-    }
-
-    try {
-      // The LAN opponent resigned, so the local player wins.  Drive the
-      // native session to a terminal `loseResign` state; the result
-      // dialog plays the end-of-game tone.
-      final PieceColor winner = getLocalColor();
-      forceGameOver(winner, GameOverReason.loseResign);
-
-      // Update UI
-      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-      if (context != null) {
-        headerTipNotifier.showTip(S.of(context).opponentResignedYouWin);
-      } else {
-        headerTipNotifier.showTip("Opponent resigned, you win");
-      }
-      gameResultNotifier.showResult();
-      isLanOpponentTurn = false;
-
-      logger.i("$_logTag Handled opponent resignation");
-    } catch (e) {
-      logger.e("$_logTag Error handling resignation: $e");
-      headerTipNotifier.showTip("Error handling opponent resignation");
-    }
   }
 
   /// Handles resignation in non-LAN modes (e.g., vs AI)
@@ -1052,7 +1262,6 @@ class GameController {
     final GameMode gameModeBak = gameInstance.gameMode;
     String? fen = "";
     final bool isPosSetup = isPositionSetup;
-    final bool? savedHostPlaysWhite = lanHostPlaysWhite;
 
     // Puzzle mode: reset any transient auto-move lock.
     isPuzzleAutoMoveInProgress = false;
@@ -1095,26 +1304,11 @@ class GameController {
     // Reset game timing tracking
     _resetGameTiming();
 
-    if (gameModeBak == GameMode.humanVsLAN) {
-      // In LAN mode, if this is a normal reset (or connection lost), dispose networkService.
-      // But if this is a LAN restart (both agreed), do NOT dispose socket.
-      if (force || !(networkService?.isConnected ?? false)) {
-        networkService?.dispose();
-        networkService = null;
-        isLanOpponentTurn = false;
-      } else if (!lanRestart) {
-        // For normal LAN reset, dispose the connection.
-        networkService?.dispose();
-        networkService = null;
-        isLanOpponentTurn = false;
-      }
-      // Otherwise (lanRestart == true) keep the socket open.
-    } else {
-      networkService?.dispose();
-      networkService = null;
-      if (!force) {
-        isLanOpponentTurn = false;
-      }
+    final bool remoteMode =
+        gameModeBak == GameMode.humanVsLAN ||
+        gameModeBak == GameMode.humanVsBluetooth;
+    if (!remoteMode || force || !lanRestart) {
+      unawaited(disposeRemoteMatch());
     }
 
     if (isPosSetup && !force) {
@@ -1123,16 +1317,6 @@ class GameController {
 
     // Reinitialize game objects
     _init(gameModeBak);
-
-    lanHostPlaysWhite = savedHostPlaysWhite;
-
-    // For LAN games, always start with White and set turn based on local color.
-    if (gameModeBak == GameMode.humanVsLAN) {
-      // The native session resets to white-to-move below; just
-      // recompute who owes the next LAN move.
-      final PieceColor localColor = getLocalColor();
-      isLanOpponentTurn = localColor != PieceColor.white;
-    }
 
     if (isPosSetup && !force && fen != null) {
       gameRecorder.setupPosition = fen;
@@ -1239,344 +1423,90 @@ class GameController {
     OfflineBoardClock().reset();
   }
 
-  /// S.of(context).starts a LAN game, either as a host or a client.
-  ///
-  /// [isHost]: If true, the player hosts the game; if false, the player joins as a client.
-  /// [hostAddress]: The IP address of the host to connect to (required if not hosting).
-  /// [port]: The port number to use for the LAN connection (default is 33333).
-  /// [hostPlaysWhite]: If hosting, determines if the host plays White (true) or Black (false).
-  /// [onClientConnected]: Callback triggered when a client connects to the host, passing client IP and port.
-  void startLanGame({
-    bool isHost = true,
-    String? hostAddress,
-    int port = 33333,
-    bool hostPlaysWhite = true, // Explicitly enforce Host as White
-    void Function(String, int)? onClientConnected,
-  }) {
-    gameInstance.gameMode = GameMode.humanVsLAN;
-    lanHostPlaysWhite = hostPlaysWhite;
-
-    headerIconsNotifier.showIcons();
-
-    if (networkService == null || !networkService!.isConnected) {
-      networkService?.dispose();
-      networkService = NetworkService();
+  Future<void> disposeRemoteMatch() async {
+    final RemoteMatchCoordinator? coordinator = remoteCoordinator;
+    final StreamSubscription<RemoteMatchEvent>? subscription =
+        _remoteMatchSubscription;
+    final NativeMillGameSession? session = activeNativeMillSession;
+    remoteCoordinator = null;
+    _remoteMatchSubscription = null;
+    await subscription?.cancel();
+    await coordinator?.dispose();
+    if (coordinator != null) {
+      _lastRemoteDiagnostics = coordinator.diagnosticSnapshot;
     }
-
-    final BuildContext? currentContext =
-        rootScaffoldMessengerKey.currentContext;
-
-    final String connectedWaitingForOpponentSMove = currentContext != null
-        ? S.of(currentContext).connectedWaitingForOpponentSMove
-        : "Connected, waiting for opponent's move";
-
-    try {
-      if (isHost) {
-        // Native session always starts with white-to-move.  The
-        // legacy `Position.sideToMove = white` mirror is gone.
-        DB().generalSettings = DB().generalSettings.copyWith(
-          aiMovesFirst: false,
-        );
-        final PieceColor localColor = getLocalColor();
-        isLanOpponentTurn =
-            localColor != PieceColor.white; // Host moves first if white
-
-        networkService!.startHost(
-          port,
-          onClientConnected: (String clientIp, int clientPort) {
-            logger.i(
-              "$_logTag onClientConnected => IP:$clientIp, port:$clientPort",
-            );
-            headerTipNotifier.showTip(
-              "Client connected at $clientIp:$clientPort",
-              snackBar: false,
-            );
-            // Ensure turn state is correct after connection
-            isLanOpponentTurn = false; // Host moves first
-            headerIconsNotifier.showIcons(); // Update icons immediately
-            onClientConnected?.call(clientIp, clientPort);
-          },
-        );
-      } else if (hostAddress != null) {
-        // Native session starts with white-to-move; client (Black)
-        // waits for Host's first move.
-        DB().generalSettings = DB().generalSettings.copyWith(
-          aiMovesFirst: true,
-        );
-        networkService!.connectToHost(hostAddress, port).then((_) {
-          final PieceColor localColor = getLocalColor();
-          isLanOpponentTurn = localColor != PieceColor.white;
-
-          headerTipNotifier.showTip(
-            connectedWaitingForOpponentSMove,
-            snackBar: false,
-          );
-          onClientConnected?.call(hostAddress, port);
-        });
-      } else {
-        logger.e("$_logTag Host address required when not hosting");
-        headerTipNotifier.showTip("Error: Host address required");
-        return;
-      }
-
-      boardSemanticsNotifier.updateSemantics();
-    } catch (e) {
-      logger.e("$_logTag LAN game setup failed: $e");
-      headerTipNotifier.showTip("Failed to start LAN game: $e");
-      resetLanState(); // Reset on failure
-    }
+    session?.remoteMeta = null;
+    boardSemanticsNotifier.updateSemantics();
   }
 
-  // Reset LAN state cleanly
-  void resetLanState() {
-    if (gameInstance.gameMode == GameMode.humanVsLAN) {
-      if (networkService?.isConnected != true) {
-        networkService?.dispose();
-        networkService = null;
-      }
-      isLanOpponentTurn = false; // Reset to Host's turn if Host
-      // Native session reset elsewhere ensures white-to-move.
-      headerIconsNotifier.showIcons(); // Force icon update
-      boardSemanticsNotifier.updateSemantics();
-    }
-  }
-
-  /// This method must be called right after any state change that may alter
-  /// the side to move (local move, remote move, take-back, restart, etc).
-  /// It keeps `isLanOpponentTurn` and the header tip consistent on both peers.
-  void refreshLanTurn({bool showTip = true, bool snackBar = false}) {
-    if (gameInstance.gameMode != GameMode.humanVsLAN) {
+  void refreshRemoteTurn({bool showTip = true, bool snackBar = false}) {
+    if (!isRemoteGameMode) {
       return;
     }
-    final BuildContext? scopedContext = rootScaffoldMessengerKey.currentContext;
-    final GameSession? scopedSession = scopedContext == null
-        ? null
-        : GameSessionScope.sessionOf(scopedContext);
-    if (scopedSession is NativeMillGameSession && true) {
-      isNativeLanOpponentTurn(scopedSession);
-      _showLanTurnTip(showTip: showTip, snackBar: snackBar);
-      headerIconsNotifier.showIcons();
-      boardSemanticsNotifier.updateSemantics();
-      return;
-    }
-    final GameStateSnapshot? nativeSnapshot = activeSessionSnapshot;
-    final PieceColor localColor = getLocalColor();
-    final PieceColor sideToMove = activeBoardView.sideToMove;
-    final bool wasOpponentTurn = isLanOpponentTurn;
-    isLanOpponentTurn = (sideToMove != localColor);
+    final bool opponentTurn = isRemoteOpponentTurn;
     logger.i(
-      "$_logTag [LAN] refreshLanTurn: local=$localColor, sideToMove=$sideToMove, "
-      "native=${nativeSnapshot != null}, "
-      "isOpponentTurn: $wasOpponentTurn -> $isLanOpponentTurn",
+      '$_logTag [Remote] turn refreshed local=${getLocalColor()} '
+      'side=${activeBoardView.sideToMove} opponentTurn=$opponentTurn '
+      'ready=$isRemoteConnected',
     );
     if (showTip) {
       final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-      final String ot = context != null
-          ? S.of(context).opponentSTurn
-          : "Opponent's turn";
-      final String yt = context != null ? S.of(context).yourTurn : "Your turn";
-      headerTipNotifier.showTip(
-        isLanOpponentTurn ? ot : yt,
-        snackBar: snackBar,
-      );
+      if (context != null) {
+        headerTipNotifier.showTip(
+          opponentTurn ? S.of(context).opponentSTurn : S.of(context).yourTurn,
+          snackBar: snackBar,
+        );
+      }
     }
     headerIconsNotifier.showIcons();
     boardSemanticsNotifier.updateSemantics();
   }
 
-  void _showLanTurnTip({required bool showTip, required bool snackBar}) {
-    if (!showTip) {
-      return;
-    }
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-    final String ot = context != null
-        ? S.of(context).opponentSTurn
-        : "Opponent's turn";
-    final String yt = context != null ? S.of(context).yourTurn : "Your turn";
-    headerTipNotifier.showTip(isLanOpponentTurn ? ot : yt, snackBar: snackBar);
-  }
-
-  /// Handles a move received from the LAN opponent
-  void handleLanMove(String moveNotation) {
-    if (gameInstance.gameMode != GameMode.humanVsLAN) {
-      logger.w("$_logTag Ignoring LAN move: wrong mode");
-      return;
-    }
-
-    try {
-      if (moveNotation.startsWith("request:aiMovesFirst")) {
-        // Host receives a request from Client and returns the aiMovesFirst value
-        final bool aiMovesFirst = DB().generalSettings.aiMovesFirst;
-        networkService?.sendMove("response:aiMovesFirst:$aiMovesFirst");
-        logger.i("$_logTag Sent aiMovesFirst: $aiMovesFirst to Client");
-        return;
-      }
-
-      final GameSession? scopedSession =
-          rootScaffoldMessengerKey.currentContext == null
-          ? null
-          : GameSessionScope.sessionOf(
-              rootScaffoldMessengerKey.currentContext!,
-            );
-      if (scopedSession is NativeMillGameSession) {
-        handleNativeLanMove(scopedSession, moveNotation);
-        return;
-      }
-      // The native session is the only supported board source on
-      // this branch; the legacy LAN fallback that mutated
-      // `Position` directly is gone with the rule-machine cleanup.
-      logger.w(
-        "$_logTag LAN move arrived without an active "
-        "NativeMillGameSession; ignoring '$moveNotation'.",
-      );
-    } catch (e) {
-      logger.e("$_logTag Error processing LAN move: $e");
-      headerTipNotifier.showTip("Error with opponent's move: $e");
-    }
-  }
-
-  /// Sends a move to the LAN opponent
-  void sendLanMove(String moveNotation) {
-    if (gameInstance.gameMode != GameMode.humanVsLAN || isLanOpponentTurn) {
-      logger.w("$_logTag Cannot send move: not your turn or wrong mode");
-      return;
-    }
-
-    try {
-      final String outbound = moveNotation;
-      networkService?.sendMove(outbound);
-      // After sending, toggle turn based on local color.
-      // Prefer the native session's active seat when available to avoid
-      // relying on the legacy position side-to-move.
-      if (true) {
-        final BuildContext? ctx = rootScaffoldMessengerKey.currentContext;
-        final GameSession? session = ctx != null
-            ? GameSessionScope.sessionOf(ctx)
-            : null;
-        if (session is NativeMillGameSession) {
-          final LanSessionMeta? meta = session.lanMeta ?? activeNativeLanMeta;
-          if (meta != null) {
-            isLanOpponentTurn = meta.isOpponentTurn(
-              session.state.value.activeSeat,
-            );
-          }
-        }
-      }
-      logger.i("$_logTag Sent move to LAN opponent: $outbound");
-      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-      final String ot = context != null
-          ? S.of(context).opponentSTurn
-          : "Opponent's turn";
-      final String yt = context != null ? S.of(context).yourTurn : "Your turn";
-      headerTipNotifier.showTip(isLanOpponentTurn ? ot : yt, snackBar: false);
-    } catch (e) {
-      logger.e("$_logTag Failed to send move: $e");
-      headerTipNotifier.showTip("Failed to send move: $e");
-    }
-  }
-
-  /// Sends a LAN take-back request (e.g. "take back:2:request").
-  Future<bool> requestLanTakeBack(int steps) async {
-    assert(steps > 0, 'LAN takeback requires a positive step count.');
-    if (gameInstance.gameMode != GameMode.humanVsLAN) {
-      return false; // Not in LAN mode => ignore
-    }
-    if (steps <= 0) {
+  Future<bool> submitRemoteMove(String notation) async {
+    final RemoteMatchCoordinator? coordinator = remoteCoordinator;
+    if (!isRemoteGameMode || coordinator == null || !coordinator.isConnected) {
       return false;
     }
-
-    // If not connected or it's the opponent's turn, you might block:
-    if (networkService == null || !networkService!.isConnected) {
-      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-      final String notConnectedToLanOpponent = context != null
-          ? S.of(context).notConnectedToLanOpponent
-          : "You resigned, game over";
-      headerTipNotifier.showTip(notConnectedToLanOpponent);
-      return false;
+    final bool accepted = await coordinator.submitLocalAction(notation);
+    if (accepted) {
+      refreshRemoteTurn();
     }
-    if (isLanOpponentTurn) {
-      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-      final String cannotRequestATakeBackWhenItSNotYourTurn = context != null
-          ? S.of(context).cannotRequestATakeBackWhenItSNotYourTurn
-          : "Cannot request a take back when it's not your turn";
-      headerTipNotifier.showTip(cannotRequestATakeBackWhenItSNotYourTurn);
-      return false;
-    }
-
-    // Register a short-lived callback to handle acceptance or rejection
-    // Or do it more elegantly in `_handleNetworkMessage` with a separate global.
-    // For a minimal approach, store a reference to the completer in a field:
-    pendingTakeBackCompleter = Completer<bool>();
-
-    networkService!.sendMove("take back:$steps:request");
-
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-    final String takeBackRequestSentToTheOpponent = context != null
-        ? S.of(context).takeBackRequestSentToTheOpponent
-        : "Take back request sent to the opponent";
-    headerTipNotifier.showTip(
-      takeBackRequestSentToTheOpponent,
-      snackBar: false,
-    );
-
-    // We'll wait up to X seconds for the user to respond.
-    // If the user never responds, we can consider it "rejected."
-    Future<void>.delayed(const Duration(seconds: 30), () {
-      if (pendingTakeBackCompleter != null &&
-          !pendingTakeBackCompleter!.isCompleted) {
-        pendingTakeBackCompleter!.complete(false);
-      }
-    });
-
-    // Wait for the opponent's response
-    return pendingTakeBackCompleter!.future;
+    return accepted;
   }
 
-  /// Called when we receive `take back:<steps>:request` from the opponent.
-  void handleTakeBackRequest(int steps) {
-    assert(steps > 0, 'LAN takeback request requires a positive step count.');
-    if (steps <= 0) {
-      networkService?.sendMove("take back:$steps:rejected");
-      return;
+  Future<bool> requestRemoteTakeBack(int steps) async {
+    assert(steps > 0, 'Remote takeback requires a positive step count.');
+    final RemoteMatchCoordinator? coordinator = remoteCoordinator;
+    if (!isRemoteGameMode ||
+        coordinator == null ||
+        !coordinator.isConnected ||
+        steps <= 0) {
+      return false;
     }
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-    if (context == null) {
-      // If no context, auto-reject
-      networkService?.sendMove("take back:$steps:rejected");
-      return;
-    }
-    showDialog<bool>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: Text(S.of(dialogContext).takeBackRequest),
-          content: Text(
-            S
-                .of(dialogContext)
-                .opponentRequestsTakeBackAccept(steps.toString()),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop(true);
-                networkService?.sendMove("take back:$steps:accepted");
-                HistoryNavigator.doEachMove(HistoryNavMode.takeBack, steps);
-                refreshLanTurn();
-              },
-              child: Text(S.of(dialogContext).yes),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop(false);
-                networkService?.sendMove("take back:$steps:rejected");
-              },
-              child: Text(S.of(dialogContext).no),
-            ),
-          ],
+    if (isRemoteOpponentTurn) {
+      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+      if (context != null) {
+        headerTipNotifier.showTip(
+          S.of(context).cannotRequestATakeBackWhenItSNotYourTurn,
         );
-      },
-    );
+      }
+      return false;
+    }
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    final String? rejectedMessage = context != null
+        ? S.of(context).takeBackRejected
+        : null;
+    if (context != null) {
+      headerTipNotifier.showTip(
+        S.of(context).takeBackRequestSentToTheOpponent,
+        snackBar: false,
+      );
+    }
+    final bool accepted = await coordinator.requestTakeBack(steps);
+    if (!accepted && rejectedMessage != null) {
+      headerTipNotifier.showTip(rejectedMessage);
+    }
+    return accepted;
   }
 
   bool isAutoRestart() {
@@ -1604,6 +1534,7 @@ class GameController {
     final GameMode gameMode = gameInstance.gameMode;
     if (gameMode == GameMode.setupPosition ||
         gameMode == GameMode.humanVsLAN ||
+        gameMode == GameMode.humanVsBluetooth ||
         gameMode == GameMode.analysis ||
         gameMode == GameMode.puzzle) {
       return false;
@@ -1660,8 +1591,8 @@ class GameController {
       );
     }
 
-    if (gameInstance.gameMode == GameMode.humanVsLAN) {
-      // In LAN mode, we don't use the engine; moves come from the network
+    if (isRemoteGameMode) {
+      // Remote matches are driven by the authoritative coordinator.
       return const EngineResponseHumanOK();
     }
 
@@ -2074,9 +2005,7 @@ class GameController {
     // modes (analysis, humanVsHuman, setupPosition, puzzle, ...) have no AI
     // side, and engineToGo would hit its unreachable-game-mode tripwire.
     final GameMode moveNowMode = gameInstance.gameMode;
-    if (moveNowMode != GameMode.humanVsAi &&
-        moveNowMode != GameMode.aiVsAi &&
-        moveNowMode != GameMode.humanVsLAN) {
+    if (moveNowMode != GameMode.humanVsAi && moveNowMode != GameMode.aiVsAi) {
       return rootScaffoldMessengerKey.currentState!.showSnackBarClear(
         effectiveMessages.notAIsTurn,
       );

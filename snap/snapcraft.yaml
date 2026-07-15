@@ -31,7 +31,7 @@ apps:
   mill:
     command: usr/local/bin/mill
     extensions: [gnome]
-    plugs: [home, alsa, pulseaudio, desktop, desktop-legacy, audio-playback]
+    plugs: [home, alsa, pulseaudio, desktop, desktop-legacy, audio-playback, bluez]
 
 layout:
   /usr/lib/$SNAPCRAFT_ARCH_TRIPLET/alsa-lib:

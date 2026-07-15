@@ -462,11 +462,6 @@ class HeaderStateIcons extends State<HeaderIcons> {
     GameController().activeSideToMoveIcon,
   );
 
-  // Add ValueNotifier for lanHostPlaysWhite
-  final ValueNotifier<bool?> _lanHostPlaysWhiteNotifier = ValueNotifier<bool?>(
-    GameController().lanHostPlaysWhite,
-  );
-
   // Add ValueNotifier for remaining time
   final ValueNotifier<int> _player1TimeNotifier = ValueNotifier<int>(0);
   final ValueNotifier<int> _player2TimeNotifier = ValueNotifier<int>(0);
@@ -483,9 +478,6 @@ class HeaderStateIcons extends State<HeaderIcons> {
   void initState() {
     super.initState();
     GameController().headerIconsNotifier.addListener(_updateIcons);
-    // Listen to changes in lanHostPlaysWhite via a custom method or direct property observation
-    _refreshLanHostPlaysWhite();
-
     // Listen for timer updates
     final PlayerTimer playerTimer = PlayerTimer();
     playerTimer.remainingTimeNotifier.addListener(_updateTimers);
@@ -538,7 +530,6 @@ class HeaderStateIcons extends State<HeaderIcons> {
   void _updateIcons() {
     final GameController controller = GameController();
     _iconDataNotifier.value = controller.activeSideToMoveIcon;
-    _refreshLanHostPlaysWhite();
 
     // Update first move flag when moves are made
     _isFirstMove = GameController().gameRecorder.mainlineMoves.isEmpty;
@@ -555,25 +546,17 @@ class HeaderStateIcons extends State<HeaderIcons> {
     }
   }
 
-  void _refreshLanHostPlaysWhite() {
-    _lanHostPlaysWhiteNotifier.value = GameController().lanHostPlaysWhite;
-  }
-
-  // In game_header.dart, HeaderStateIcons class
-  (IconData, IconData) _getLanModeIcons() {
+  (IconData, IconData) _getModeIcons() {
     final GameController controller = GameController();
-    if (controller.gameInstance.gameMode == GameMode.humanVsLAN) {
+    if (controller.isRemoteGameMode) {
       const IconData humanIcon = FluentIcons.person_24_filled;
-      const IconData wifiIcon = FluentIcons.wifi_1_24_filled;
-      final bool amIHost = controller.networkService?.isHost ?? false;
-
-      if (amIHost) {
-        // Host: White, Left=Person, Right=Wi-Fi
-        return (humanIcon, wifiIcon);
-      } else {
-        // Client: Black, Left=Wi-Fi, Right=Person
-        return (wifiIcon, humanIcon);
-      }
+      final IconData remoteIcon =
+          controller.gameInstance.gameMode == GameMode.humanVsBluetooth
+          ? FluentIcons.bluetooth_24_filled
+          : FluentIcons.wifi_1_24_filled;
+      return controller.getLocalColor() == PieceColor.white
+          ? (humanIcon, remoteIcon)
+          : (remoteIcon, humanIcon);
     }
 
     // Non-LAN mode fallback
@@ -607,9 +590,9 @@ class HeaderStateIcons extends State<HeaderIcons> {
   bool _shouldShowTimers() {
     final GameMode currentMode = GameController().gameInstance.gameMode;
 
-    // Never show timers in AI vs AI mode or LAN mode
+    // Never show timers in AI-vs-AI or remote modes.
     if (currentMode == GameMode.aiVsAi ||
-        currentMode == GameMode.humanVsLAN ||
+        GameController().isRemoteGameMode ||
         currentMode == GameMode.analysis) {
       return false;
     }
@@ -623,8 +606,7 @@ class HeaderStateIcons extends State<HeaderIcons> {
       key: const Key('header_icons_value_listenable_builder'),
       valueListenable: _iconDataNotifier,
       builder: (BuildContext context, IconData turnIcon, Widget? child) {
-        // Remove lanHostPlaysWhite dependency since it's always true
-        final (IconData leftIcon, IconData rightIcon) = _getLanModeIcons();
+        final (IconData leftIcon, IconData rightIcon) = _getModeIcons();
 
         // Determine if we should show timers
         final bool showTimers = _shouldShowTimers();
@@ -634,12 +616,12 @@ class HeaderStateIcons extends State<HeaderIcons> {
         final bool isAILeft =
             controller.gameInstance.gameMode != GameMode.humanVsHuman &&
             controller.gameInstance.gameMode != GameMode.analysis &&
-            controller.gameInstance.gameMode != GameMode.humanVsLAN &&
+            !controller.isRemoteGameMode &&
             controller.gameInstance.getPlayerByColor(PieceColor.white).isAi;
         final bool isAIRight =
             controller.gameInstance.gameMode != GameMode.humanVsHuman &&
             controller.gameInstance.gameMode != GameMode.analysis &&
-            controller.gameInstance.gameMode != GameMode.humanVsLAN &&
+            !controller.isRemoteGameMode &&
             controller.gameInstance.getPlayerByColor(PieceColor.black).isAi;
 
         // Get text direction for RTL support

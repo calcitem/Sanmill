@@ -4,6 +4,8 @@
 import 'package:meta/meta.dart';
 
 import '../../game_platform/game_session.dart';
+import '../../remote_play/remote_models.dart';
+import 'mill_remote_session_meta.dart';
 
 /// LAN-specific ownership metadata for a native Mill session.
 ///
@@ -11,11 +13,21 @@ import '../../game_platform/game_session.dart';
 /// know which seat belongs to this device so it can block opponent taps and
 /// compute the local/remote turn state without consulting legacy `Position`.
 @immutable
-class LanSessionMeta {
-  const LanSessionMeta({required this.localSeat, required this.hostPlaysWhite});
-
-  final PlayerSeat localSeat;
-  final bool hostPlaysWhite;
+class LanSessionMeta extends MillRemoteSessionMeta {
+  const LanSessionMeta({
+    required super.localSeat,
+    required super.hostPlaysWhite,
+  }) : super(
+         transportKind: RemoteTransportKind.lan,
+         role: hostPlaysWhite
+             ? localSeat == PlayerSeat.first
+                   ? RemoteRole.host
+                   : RemoteRole.join
+             : localSeat == PlayerSeat.second
+             ? RemoteRole.host
+             : RemoteRole.join,
+         sessionId: '',
+       );
 
   @override
   bool operator ==(Object other) =>
@@ -27,27 +39,11 @@ class LanSessionMeta {
   @override
   int get hashCode => Object.hash(localSeat, hostPlaysWhite);
 
-  bool get localIsHost => hostPlaysWhite
-      ? localSeat == PlayerSeat.first
-      : localSeat == PlayerSeat.second;
-
-  bool isOpponentTurn(PlayerSeat activeSeat) {
-    return activeSeat != PlayerSeat.none && activeSeat != localSeat;
-  }
-
   /// Legacy `GameController.getLocalColor()` bridge while LAN still shares
   /// header and painter helpers with the pre-session code path.
   ///
   /// Returns the existing `PieceColor` enum without importing the legacy
   /// service library here; callers can compare the stable string token.
-  String get localPieceColorName {
-    return switch (localSeat) {
-      PlayerSeat.first => 'white',
-      PlayerSeat.second => 'black',
-      PlayerSeat.none => 'none',
-    };
-  }
-
   static LanSessionMeta fromHost({
     required bool isHost,
     required bool hostPlaysWhite,

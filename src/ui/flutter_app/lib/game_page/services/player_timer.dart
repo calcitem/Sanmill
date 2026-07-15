@@ -55,8 +55,8 @@ class PlayerTimer {
       return;
     }
 
-    // Skip timer for LAN mode
-    if (gameController.gameInstance.gameMode == GameMode.humanVsLAN) {
+    // Remote matches do not use the local single-player timer.
+    if (gameController.isRemoteGameMode) {
       stop();
       return;
     }
@@ -175,8 +175,7 @@ class PlayerTimer {
       stop();
 
       // Only declare timeout loss for human players, not AI or LAN opponents
-      final bool isLanMode =
-          gameController.gameInstance.gameMode == GameMode.humanVsLAN;
+      final bool isRemoteMode = gameController.isRemoteGameMode;
       final bool isHumanPlayer = !gameController.gameInstance.isAiSideToMove;
       final bool isAIWithUnlimitedTime =
           gameController.gameInstance.isAiSideToMove &&
@@ -189,7 +188,7 @@ class PlayerTimer {
       // For AI with unlimited time (moveTime=0), LAN mode, or when AI is playing,
       // or for human with unlimited time (humanMoveTime=0),
       // just update the display but don't set game over
-      if (isLanMode ||
+      if (isRemoteMode ||
           !isHumanPlayer ||
           isAIWithUnlimitedTime ||
           isHumanWithUnlimitedTime) {
@@ -198,7 +197,7 @@ class PlayerTimer {
 
         // Restart timer for AI player if not in unlimited time mode
         // This ensures continuous timing for consecutive AI moves
-        if (!isHumanPlayer && !isAIWithUnlimitedTime && !isLanMode) {
+        if (!isHumanPlayer && !isAIWithUnlimitedTime && !isRemoteMode) {
           // Restart the timer for the next move with proper time
           final int timeLimit = DB().generalSettings.moveTime;
           if (timeLimit > 0) {

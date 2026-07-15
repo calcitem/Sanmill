@@ -298,6 +298,10 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
 
   @override
   final List<GameAction> legalActions;
+
+  @override
+  RuleSettings get ruleSettings => const RuleSettings();
+
   final GameAction? perfectDatabaseBestActionResult;
   final tgf.MillAnalysisReport analysisReportResult;
   GameStateSnapshot _snapshot;

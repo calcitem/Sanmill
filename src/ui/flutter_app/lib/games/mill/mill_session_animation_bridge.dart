@@ -11,6 +11,7 @@ import '../../shared/database/database.dart';
 import 'mill_board_coordinate_maps.dart';
 import 'mill_constants.dart';
 import 'mill_types.dart';
+import 'native_mill_game_session.dart';
 
 /// Drives board piece animations and their sound effects from native Mill
 /// session events.
@@ -228,7 +229,11 @@ class MillSessionAnimationBridge {
       occupancy: occupancy,
       toNode: to,
       moverByte: moverByte,
-      hasDiagonalLines: DB().ruleSettings.hasDiagonalLines,
+      hasDiagonalLines: switch (_session) {
+        final NativeMillGameSession session =>
+          session.activeRuleSettings.hasDiagonalLines,
+        _ => DB().ruleSettings.hasDiagonalLines,
+      },
     );
   }
 

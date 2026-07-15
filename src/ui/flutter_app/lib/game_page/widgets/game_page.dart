@@ -5,8 +5,8 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui' as ui;
 import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
@@ -27,6 +27,7 @@ import '../../game_shell/game_session_scope.dart';
 import '../../games/mill/native_mill_snapshot_board_view.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../generated/intl/l10n.dart';
+import '../../remote_play/remote_models.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../rule_settings/widgets/rule_settings_page.dart';
 import '../../shared/config/constants.dart';
@@ -245,6 +246,12 @@ class _GamePageInnerState extends State<_GamePageInner>
               _buildBackground(),
               // Game board widget.
               _buildGameBoard(context, widget.controller),
+              if (widget.controller.isRemoteGameMode &&
+                  widget.controller.remoteCoordinator != null)
+                RemoteConnectionOverlay(
+                  stateListenable:
+                      widget.controller.remoteCoordinator!.stateNotifier,
+                ),
               // Back button in the top-left corner when this route can pop.
               // PuzzlePage hosts its own AppBar back affordance.
               if (!_isAnalysisPage && !_isPuzzleGame && !_isOfflineBoardGame)
@@ -399,6 +406,7 @@ class _GamePageInnerState extends State<_GamePageInner>
       GameMode.aiVsAi ||
       GameMode.humanVsCloud ||
       GameMode.humanVsLAN ||
+      GameMode.humanVsBluetooth ||
       GameMode.testViaLAN => true,
       GameMode.analysis || GameMode.setupPosition || GameMode.puzzle => false,
     };
@@ -848,5 +856,54 @@ class _GamePageInnerState extends State<_GamePageInner>
     }
 
     return toolbarHeight;
+  }
+}
+
+@visibleForTesting
+class RemoteConnectionOverlay extends StatelessWidget {
+  const RemoteConnectionOverlay({super.key, required this.stateListenable});
+
+  final ValueListenable<RemoteConnectionState> stateListenable;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<RemoteConnectionState>(
+      valueListenable: stateListenable,
+      builder:
+          (BuildContext context, RemoteConnectionState state, Widget? child) {
+            if (state != RemoteConnectionState.reconnecting) {
+              return const SizedBox.shrink();
+            }
+            return Positioned.fill(
+              key: const Key('remote_reconnecting_overlay'),
+              child: AbsorbPointer(
+                child: ColoredBox(
+                  color: Colors.black54,
+                  child: Center(
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 18,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            const CircularProgressIndicator(),
+                            const SizedBox(height: 16),
+                            Text(
+                              S.of(context).remoteReconnectingBoardLocked,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+    );
   }
 }

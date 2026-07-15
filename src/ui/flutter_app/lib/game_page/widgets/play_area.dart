@@ -1480,12 +1480,12 @@ class PlayAreaState extends State<PlayArea> {
     return _takeBackStepCountForRequesterOrNull(_humanAiTakeBackRequesterSide);
   }
 
-  int? get _lanTakeBackStepCountOrNull {
-    assert(GameController().gameInstance.gameMode == GameMode.humanVsLAN);
+  int? get _remoteTakeBackStepCountOrNull {
+    assert(GameController().isRemoteGameMode);
     final PieceColor requesterSide = GameController().getLocalColor();
     assert(
       requesterSide == PieceColor.white || requesterSide == PieceColor.black,
-      'LAN takeback requires a playable local requester side.',
+      'Remote takeback requires a playable local requester side.',
     );
     return _takeBackStepCountForRequesterOrNull(requesterSide);
   }
@@ -1538,7 +1538,9 @@ class PlayAreaState extends State<PlayArea> {
 
   NativeMillRulesPort? _takeBackPreviewPortOrNull(List<ExtMove> path) {
     final NativeMillRulesPort port = NativeMillRulesPort(
-      ruleSettings: DB().ruleSettings,
+      ruleSettings:
+          GameController().activeNativeMillSession?.activeRuleSettings ??
+          DB().ruleSettings,
       generalSettings: DB().generalSettings,
     );
 
@@ -1581,7 +1583,7 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   Future<void> _takeBackFromRegularBottomBar(BuildContext context) async {
-    if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+    if (GameController().isRemoteGameMode) {
       await _takeBackForRequesterFromRegularBottomBar(
         context,
         requesterSide: GameController().getLocalColor(),
@@ -1624,7 +1626,7 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   Future<void> _stepBackFromRegularBottomBar(BuildContext context) async {
-    if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+    if (GameController().isRemoteGameMode) {
       return;
     }
     await HistoryNavigator.takeBack(context, pop: false, toolbar: true);
@@ -1632,7 +1634,7 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   Future<void> _stepForwardFromRegularBottomBar(BuildContext context) async {
-    if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+    if (GameController().isRemoteGameMode) {
       return;
     }
     await HistoryNavigator.stepForward(context, pop: false, toolbar: true);
@@ -1703,7 +1705,7 @@ class PlayAreaState extends State<PlayArea> {
 
   bool get _canStepBackFromRegularBottomBar {
     return !_usesLichessHumanAiToolbar &&
-        GameController().gameInstance.gameMode != GameMode.humanVsLAN &&
+        !GameController().isRemoteGameMode &&
         GameController().gameRecorder.activeNode?.parent != null &&
         !GameController().isEngineRunning &&
         !GameController().isEngineInDelay;
@@ -1718,15 +1720,15 @@ class PlayAreaState extends State<PlayArea> {
         GameController().isEngineInDelay) {
       return false;
     }
-    if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
-      return _lanTakeBackStepCountOrNull != null;
+    if (GameController().isRemoteGameMode) {
+      return _remoteTakeBackStepCountOrNull != null;
     }
     return true;
   }
 
   bool get _canStepForwardFromRegularBottomBar {
     return !_usesLichessHumanAiToolbar &&
-        GameController().gameInstance.gameMode != GameMode.humanVsLAN &&
+        !GameController().isRemoteGameMode &&
         (GameController().gameRecorder.activeNode ??
                 GameController().gameRecorder.pgnRoot)
             .children
@@ -2867,18 +2869,17 @@ class PlayAreaState extends State<PlayArea> {
           semanticLabel: S.of(context).takeBack,
         ),
         onPressed: () async {
-          // If the game is humanVsLAN, request a LAN take-back instead.
-          if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+          if (GameController().isRemoteGameMode) {
             final ScaffoldMessengerState messenger = ScaffoldMessenger.of(
               context,
             );
-            final int? lanSteps = _lanTakeBackStepCountOrNull;
-            if (lanSteps == null) {
+            final int? remoteSteps = _remoteTakeBackStepCountOrNull;
+            if (remoteSteps == null) {
               GameController().headerTipNotifier.showTip(S.of(context).noMove);
               return;
             }
-            final bool accepted = await GameController().requestLanTakeBack(
-              lanSteps,
+            final bool accepted = await GameController().requestRemoteTakeBack(
+              remoteSteps,
             );
             if (!mounted) {
               return;
@@ -2990,7 +2991,9 @@ class PlayAreaState extends State<PlayArea> {
           label: S.of(context).welcome,
           child: Text(
             _getPiecesText(
-              DB().ruleSettings.piecesCount - aiInHand - aiOnBoard,
+              GameController().ruleSettingsForActiveBoard.piecesCount -
+                  aiInHand -
+                  aiOnBoard,
             ),
             key: const Key('play_area_piece_count_text_remaining'),
             style: TextStyle(
@@ -3029,7 +3032,9 @@ class PlayAreaState extends State<PlayArea> {
           label: S.of(context).welcome,
           child: Text(
             _getPiecesText(
-              DB().ruleSettings.piecesCount - humanInHand - humanOnBoard,
+              GameController().ruleSettingsForActiveBoard.piecesCount -
+                  humanInHand -
+                  humanOnBoard,
             ),
             key: const Key('play_area_removed_piece_count_text_remaining'),
             style: TextStyle(

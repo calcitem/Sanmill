@@ -41,7 +41,7 @@ class TapHandler {
   Future<EngineResponse?> _tryNativeSessionTap(int sq) async {
     // The Rust-native session path is now supported for:
     //   - humanVsHuman, humanVsAi (placing / moving / removing)
-    //   - humanVsLAN
+    //   - remote LAN and Bluetooth matches
     //   - puzzle (human plays one side; opponent moves are auto-played
     //     by PuzzlePage from the solution line, not the engine)
     // Replay still depends on legacy side effects.
@@ -50,6 +50,7 @@ class TapHandler {
         mode != GameMode.humanVsAi &&
         mode != GameMode.analysis &&
         mode != GameMode.humanVsLAN &&
+        mode != GameMode.humanVsBluetooth &&
         mode != GameMode.puzzle) {
       _nativeSessionTapController.clearSelection();
       return null;
@@ -86,17 +87,18 @@ class TapHandler {
       return const EngineResponseSkip();
     }
 
-    if (mode == GameMode.humanVsLAN) {
-      if (controller.isNativeLanOpponentTurn(session)) {
+    final bool isRemoteMode =
+        mode == GameMode.humanVsLAN || mode == GameMode.humanVsBluetooth;
+    if (isRemoteMode) {
+      if (controller.isNativeRemoteOpponentTurn(session)) {
         rootScaffoldMessengerKey.currentState!.showSnackBarClear(
           S.of(context).notYourTurn,
         );
         return const EngineResponseSkip();
       }
-      if (GameController().networkService == null ||
-          !GameController().networkService!.isConnected) {
-        logger.w("$_logTag No active LAN connection");
-        showTip(S.of(context).noLanConnection, snackBar: true);
+      if (!controller.isRemoteConnected) {
+        logger.w("$_logTag No ready remote connection");
+        showTip(S.of(context).remoteNotConnected, snackBar: true);
         return const EngineResponseSkip();
       }
     }
@@ -122,12 +124,12 @@ class TapHandler {
           onBeforeRemoveApply:
               controller.gameInstance.awaitPendingMillSoundBeforeRemove,
           openingBook: MillOpeningBookProvider(
-            ruleSettings: DB().ruleSettings,
+            ruleSettings: session.activeRuleSettings,
             generalSettings: DB().generalSettings,
             placementHistory: openingBookPlacementHistory,
           ),
           humanDatabase: MillHumanDatabaseProvider(
-            ruleSettings: DB().ruleSettings,
+            ruleSettings: session.activeRuleSettings,
             generalSettings: DB().generalSettings,
           ),
         );
@@ -175,6 +177,7 @@ class TapHandler {
     final MillSessionTapResult result = await _nativeSessionTapController.tap(
       session: session,
       tappedLabel: tappedLabel,
+      applyAction: !isRemoteMode,
     );
     if (!context.mounted) {
       return const EngineResponseSkip();
@@ -189,9 +192,21 @@ class TapHandler {
         showTip(tipMove, snackBar: false);
         return const EngineResponseSkip();
       case MillSessionTapStatus.applied:
-        logger.i(
-          "$_logTag Native Mill applied ${result.action?.payload['move'] ?? tappedLabel}",
-        );
+        final String appliedMove =
+            result.action?.payload['move'] as String? ?? tappedLabel;
+        if (isRemoteMode) {
+          final bool accepted = await controller.submitRemoteMove(appliedMove);
+          if (!accepted) {
+            if (context.mounted) {
+              showTip(S.of(context).remoteActionRejected, snackBar: true);
+            }
+            return const EngineResponseSkip();
+          }
+          if (!context.mounted) {
+            return const EngineResponseSkip();
+          }
+        }
+        logger.i("$_logTag Native Mill applied $appliedMove");
         if (mode == GameMode.humanVsHuman) {
           final PieceColor sideAfterTap = controller.activeBoardView.sideToMove;
           final Phase phaseAfterTap = controller.activeBoardView.phase;
@@ -205,14 +220,10 @@ class TapHandler {
               nextSide: sideAfterTap,
             );
           }
-        } else {
+        } else if (!isRemoteMode) {
           PlayerTimer().stop();
         }
         GameController().boardSemanticsNotifier.updateSemantics();
-        if (mode == GameMode.humanVsLAN) {
-          final String? appliedMove = result.action?.payload['move'] as String?;
-          GameController().sendLanMove(appliedMove ?? tappedLabel);
-        }
         final bool shouldPlayAi =
             mode == GameMode.humanVsAi && aiTurnController.isAiTurn(session);
         controller.refreshNativeSessionHeader(
@@ -255,8 +266,11 @@ class TapHandler {
             controller.isEngineRunning = false;
           }
         }
-        if (mode != GameMode.humanVsHuman) {
+        if (mode != GameMode.humanVsHuman && !isRemoteMode) {
           PlayerTimer().start();
+        }
+        if (!context.mounted) {
+          return const EngineResponseSkip();
         }
         controller.refreshNativeSessionHeader(context, session);
         return const EngineResponseHumanOK();
@@ -331,17 +345,16 @@ class TapHandler {
       return const EngineResponseSkip();
     }
 
-    if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
-      if (GameController().isLanOpponentTurn) {
+    if (GameController().isRemoteGameMode) {
+      if (GameController().isRemoteOpponentTurn) {
         rootScaffoldMessengerKey.currentState!.showSnackBarClear(
           S.of(context).notYourTurn,
         );
         return const EngineResponseSkip();
       }
-      if (GameController().networkService == null ||
-          !GameController().networkService!.isConnected) {
-        logger.w("$_logTag No active LAN connection");
-        showTip(S.of(context).noLanConnection, snackBar: true);
+      if (!GameController().isRemoteConnected) {
+        logger.w("$_logTag No ready remote connection");
+        showTip(S.of(context).remoteNotConnected, snackBar: true);
         return const EngineResponseSkip();
       }
     }

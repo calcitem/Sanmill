@@ -215,7 +215,7 @@ class BoardPainter extends CustomPainter {
   }
 
   static void _addDiagonalLinesIfNeeded(Path path, List<Offset> offset) {
-    if (DB().ruleSettings.hasDiagonalLines) {
+    if (GameController().ruleSettingsForActiveBoard.hasDiagonalLines) {
       path.addLine(offset[0], offset[6]);
       path.addLine(offset[17], offset[23]);
       path.addLine(offset[21], offset[15]);
@@ -233,7 +233,7 @@ class BoardPainter extends CustomPainter {
     paint.strokeWidth =
         boardInnerLineWidth * (isTablet(context) ? size.width ~/ 256 : 1) + 1;
 
-    if (!DB().ruleSettings.oneTimeUseMill) {
+    if (!GameController().ruleSettingsForActiveBoard.oneTimeUseMill) {
       return;
     }
 
@@ -317,7 +317,8 @@ class BoardPainter extends CustomPainter {
     }
     final Map<PlayerSeat, List<List<int>>> nativeMills = native
         .usedMillLinesAsLegacySquares(
-          hasDiagonalLines: DB().ruleSettings.hasDiagonalLines,
+          hasDiagonalLines:
+              GameController().ruleSettingsForActiveBoard.hasDiagonalLines,
         );
     return <PieceColor, List<List<int>>>{
       PieceColor.white: nativeMills[PlayerSeat.first] ?? <List<int>>[],
@@ -401,7 +402,7 @@ class BoardPainter extends CustomPainter {
   static int _calculatePieceInHandCount(MillBoardView position) {
     if (position.pieceOnBoardCountFor(PieceColor.white) == 0 &&
         position.pieceOnBoardCountFor(PieceColor.black) == 0) {
-      return DB().ruleSettings.piecesCount;
+      return GameController().ruleSettingsForActiveBoard.piecesCount;
     } else {
       return position.pieceInHandCountFor(position.sideToMove);
     }

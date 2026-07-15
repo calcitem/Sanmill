@@ -38,6 +38,8 @@
 	<string>This app requires access to the photo library to allow users to select images for background, board, and piece customization in Appearance Settings.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>We need permission to save photos and videos to your library for your convenience.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>This app enables LAN multiplayer gameplay by connecting to players on the same network.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -57,5 +59,14 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Sanmill uses Bluetooth to find, join, and host nearby multiplayer games.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Sanmill uses Bluetooth to advertise multiplayer games to nearby players.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-central</string>
+		<string>bluetooth-peripheral</string>
+	</array>
 </dict>
 </plist>

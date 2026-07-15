@@ -114,9 +114,8 @@ class GameResultAlertDialog extends StatelessWidget {
 
             logger.t("[config] skillLevel: ${DB().generalSettings.skillLevel}");
 
-            // If game mode is LAN, call reset with lanRestart:true to preserve LAN settings
-            if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
-              GameController().reset(lanRestart: true);
+            if (GameController().isRemoteGameMode) {
+              GameController().requestRestart();
             } else {
               GameController().reset(force: true);
             }
@@ -137,9 +136,8 @@ class GameResultAlertDialog extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            // If game mode is LAN, call reset with lanRestart:true to preserve LAN settings
-            if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
-              GameController().reset(lanRestart: true);
+            if (GameController().isRemoteGameMode) {
+              GameController().requestRestart();
             } else {
               GameController().reset(force: true);
             }
@@ -172,9 +170,8 @@ class GameResultAlertDialog extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            // If game mode is LAN, call reset with lanRestart:true to preserve LAN settings
-            if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
-              GameController().reset(lanRestart: true);
+            if (GameController().isRemoteGameMode) {
+              GameController().requestRestart();
             } else {
               GameController().reset(force: true);
             }

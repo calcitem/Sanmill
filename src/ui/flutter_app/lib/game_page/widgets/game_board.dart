@@ -532,9 +532,9 @@ class _GameBoardState extends State<GameBoard>
                 child: customPaint,
                 onTapUp: (TapUpDetails d) async {
                   final String strNotYourTurn = S.of(context).notYourTurn;
-                  final String strNoLanConnection = S
+                  final String strRemoteNotConnected = S
                       .of(context)
-                      .noLanConnection;
+                      .remoteNotConnected;
                   final String strTimeout = S.of(context).timeout;
 
                   final int? square = squareFromPoint(
@@ -549,18 +549,16 @@ class _GameBoardState extends State<GameBoard>
 
                   logger.t("${GameBoard._logTag} Tap on square <$square>");
 
-                  if (GameController().gameInstance.gameMode ==
-                      GameMode.humanVsLAN) {
-                    if (GameController().isLanOpponentTurn) {
+                  if (GameController().isRemoteGameMode) {
+                    if (GameController().isRemoteOpponentTurn) {
                       rootScaffoldMessengerKey.currentState!.showSnackBarClear(
                         strNotYourTurn,
                       );
                       return;
                     }
-                    if (GameController().networkService == null ||
-                        !GameController().networkService!.isConnected) {
+                    if (!GameController().isRemoteConnected) {
                       GameController().headerTipNotifier.showTip(
-                        strNoLanConnection,
+                        strRemoteNotConnected,
                       );
                       return;
                     }

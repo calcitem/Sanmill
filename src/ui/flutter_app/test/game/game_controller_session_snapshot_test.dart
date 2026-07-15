@@ -12,6 +12,7 @@ import 'package:sanmill/game_platform/game_session.dart' as platform;
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
+import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
 import 'package:sanmill/src/rust/api/simple.dart' as tgf;
@@ -198,46 +199,13 @@ void main() {
     controller.gameInstance.gameMode = GameMode.humanVsLAN;
     expect(controller.shouldAutoRestartAfterGameOver(), isFalse);
 
+    controller.gameInstance.gameMode = GameMode.humanVsBluetooth;
+    expect(controller.shouldAutoRestartAfterGameOver(), isFalse);
+
     controller.gameInstance.gameMode = GameMode.aiVsAi;
     db.displaySettings = const DisplaySettings();
     expect(controller.shouldAutoRestartAfterGameOver(), isFalse);
   });
-
-  test('GameController sends multi-step LAN takeback requests', () async {
-    DB.instance = MockDB();
-    final GameController controller = GameController.instance;
-    final _RecordingNetworkService networkService = _RecordingNetworkService();
-    addTearDown(() {
-      controller.pendingTakeBackCompleter = null;
-      controller.networkService = null;
-      controller.isLanOpponentTurn = false;
-      controller.gameInstance.gameMode = GameMode.humanVsAi;
-      networkService.dispose();
-      DB.instance = null;
-    });
-
-    controller.gameInstance.gameMode = GameMode.humanVsLAN;
-    controller.networkService = networkService;
-    controller.isLanOpponentTurn = false;
-
-    final Future<bool> result = controller.requestLanTakeBack(3);
-
-    expect(networkService.sentMessages, <String>['take back:3:request']);
-    controller.pendingTakeBackCompleter?.complete(true);
-    expect(await result, isTrue);
-  });
-}
-
-class _RecordingNetworkService extends NetworkService {
-  final List<String> sentMessages = <String>[];
-
-  @override
-  bool get isConnected => true;
-
-  @override
-  void sendMove(String move) {
-    sentMessages.add(move);
-  }
 }
 
 class _SnapshotOnlyNativeMillRulesPort implements NativeMillRulesPort {
@@ -254,6 +222,9 @@ class _SnapshotOnlyNativeMillRulesPort implements NativeMillRulesPort {
 
   @override
   List<platform.GameAction> get legalActions => const <platform.GameAction>[];
+
+  @override
+  RuleSettings get ruleSettings => const RuleSettings();
 
   @override
   int get redoDepth => 0;

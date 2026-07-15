@@ -59,6 +59,9 @@ class _SessionListPageState extends State<SessionListPage> {
     if (v.contains('humanvslan')) {
       return GameMode.humanVsLAN;
     }
+    if (v.contains('humanvsbluetooth')) {
+      return GameMode.humanVsBluetooth;
+    }
     if (v.contains('setupposition')) {
       return GameMode.setupPosition;
     }

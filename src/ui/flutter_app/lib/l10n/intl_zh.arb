@@ -4801,5 +4801,57 @@
     "offlineBoardBlack": "黑方",
     "@offlineBoardBlack": {},
     "offlineBoardFlipBoard": "翻转棋盘",
-    "@offlineBoardFlipBoard": {}
+    "@offlineBoardFlipBoard": {},
+    "humanVsBluetooth": "蓝牙对战",
+    "@humanVsBluetooth": {},
+    "bluetoothSettings": "蓝牙对战设置",
+    "@bluetoothSettings": {},
+    "bluetoothScan": "扫描对局",
+    "@bluetoothScan": {},
+    "bluetoothScanning": "正在扫描蓝牙对局…",
+    "@bluetoothScanning": {},
+    "bluetoothNoDevices": "未发现 Sanmill 蓝牙对局。",
+    "@bluetoothNoDevices": {},
+    "bluetoothHostNotSupported": "此平台不支持创建蓝牙对局，但仍可加入对局。",
+    "@bluetoothHostNotSupported": {},
+    "bluetoothPoweredOff": "蓝牙已关闭或不可用。",
+    "@bluetoothPoweredOff": {},
+    "bluetoothPermissionDenied": "需要蓝牙权限才能发现并连接附近的对局。",
+    "@bluetoothPermissionDenied": {},
+    "remoteWaitingApproval": "已连接，正在等待主机批准此设备…",
+    "@remoteWaitingApproval": {},
+    "remoteApprovalTitle": "批准远程玩家？",
+    "@remoteApprovalTitle": {},
+    "remoteApprovalBody": "允许 {device}（{platform}，ID {shortId}）加入本局吗？",
+    "@remoteApprovalBody": {
+        "placeholders": {
+            "device": {},
+            "platform": {},
+            "shortId": {}
+        }
+    },
+    "remotePeerRejected": "主机拒绝了连接。",
+    "@remotePeerRejected": {},
+    "remoteProtocolUpgradeRequired": "对方版本不兼容。双方都需要将 Sanmill 升级到最新版本。",
+    "@remoteProtocolUpgradeRequired": {},
+    "remoteHostBusy": "此主机已有对手。",
+    "@remoteHostBusy": {},
+    "remoteNegotiating": "正在协商规则并同步棋盘…",
+    "@remoteNegotiating": {},
+    "remoteMatchReady": "远程对局已就绪。",
+    "@remoteMatchReady": {},
+    "remoteReconnectingBoardLocked": "连接已中断，正在重连；棋盘暂时锁定…",
+    "@remoteReconnectingBoardLocked": {},
+    "remoteReconnectTimedOut": "60 秒内未能重连。对局已中止且不会计入统计。",
+    "@remoteReconnectTimedOut": {},
+    "remoteActionRejected": "远程着法被拒绝，棋盘将重新同步。",
+    "@remoteActionRejected": {},
+    "remoteConnectionFailed": "远程连接失败：{error}",
+    "@remoteConnectionFailed": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "remoteNotConnected": "尚未连接远程对手。",
+    "@remoteNotConnected": {}
 }

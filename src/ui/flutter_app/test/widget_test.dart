@@ -2449,7 +2449,9 @@ void main() {
       );
 
       openingBookCompleter.complete('{}');
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pump();
     },
     skip: nativeLibrarySkipReason() != null,
   );

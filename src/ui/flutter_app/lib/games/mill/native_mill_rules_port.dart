@@ -29,7 +29,8 @@ class NativeMillRulesPort implements RulesPort {
     MillKernelSession? session,
     RuleSettings ruleSettings = const RuleSettings(),
     GeneralSettings? generalSettings,
-  }) : _generalSettings = generalSettings ?? const GeneralSettings(),
+  }) : ruleSettings = ruleSettings,
+       _generalSettings = generalSettings ?? const GeneralSettings(),
        _session =
            session ??
            MillKernelSession.fromVariant(
@@ -41,6 +42,7 @@ class NativeMillRulesPort implements RulesPort {
   }
 
   final GeneralSettings _generalSettings;
+  final RuleSettings ruleSettings;
   final MillKernelSession _session;
   late GameStateSnapshot _snapshot;
 

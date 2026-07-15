@@ -4949,5 +4949,57 @@
     "offlineBoardBlack": "Black",
     "@offlineBoardBlack": {},
     "offlineBoardFlipBoard": "Flip board",
-    "@offlineBoardFlipBoard": {}
+    "@offlineBoardFlipBoard": {},
+    "humanVsBluetooth": "Bluetooth match",
+    "@humanVsBluetooth": {},
+    "bluetoothSettings": "Bluetooth match settings",
+    "@bluetoothSettings": {},
+    "bluetoothScan": "Scan for games",
+    "@bluetoothScan": {},
+    "bluetoothScanning": "Scanning for Bluetooth games…",
+    "@bluetoothScanning": {},
+    "bluetoothNoDevices": "No Sanmill Bluetooth game was found.",
+    "@bluetoothNoDevices": {},
+    "bluetoothHostNotSupported": "Bluetooth hosting is not supported on this platform. You can still join a game.",
+    "@bluetoothHostNotSupported": {},
+    "bluetoothPoweredOff": "Bluetooth is turned off or unavailable.",
+    "@bluetoothPoweredOff": {},
+    "bluetoothPermissionDenied": "Bluetooth permission is required to find and connect to nearby games.",
+    "@bluetoothPermissionDenied": {},
+    "remoteWaitingApproval": "Connected. Waiting for the host to approve this device…",
+    "@remoteWaitingApproval": {},
+    "remoteApprovalTitle": "Approve remote player?",
+    "@remoteApprovalTitle": {},
+    "remoteApprovalBody": "Allow {device} ({platform}, ID {shortId}) to join this game?",
+    "@remoteApprovalBody": {
+        "placeholders": {
+            "device": {},
+            "platform": {},
+            "shortId": {}
+        }
+    },
+    "remotePeerRejected": "The host declined the connection.",
+    "@remotePeerRejected": {},
+    "remoteProtocolUpgradeRequired": "This opponent uses an incompatible version. Both players must upgrade Sanmill to the latest version.",
+    "@remoteProtocolUpgradeRequired": {},
+    "remoteHostBusy": "This host already has an opponent.",
+    "@remoteHostBusy": {},
+    "remoteNegotiating": "Negotiating rules and synchronizing the board…",
+    "@remoteNegotiating": {},
+    "remoteMatchReady": "Remote match ready.",
+    "@remoteMatchReady": {},
+    "remoteReconnectingBoardLocked": "Connection lost. Reconnecting; the board is locked…",
+    "@remoteReconnectingBoardLocked": {},
+    "remoteReconnectTimedOut": "Could not reconnect within 60 seconds. The match was aborted and will not affect statistics.",
+    "@remoteReconnectTimedOut": {},
+    "remoteActionRejected": "The remote move was rejected. The board will be resynchronized.",
+    "@remoteActionRejected": {},
+    "remoteConnectionFailed": "Remote connection failed: {error}",
+    "@remoteConnectionFailed": {
+        "placeholders": {
+            "error": {}
+        }
+    },
+    "remoteNotConnected": "The remote opponent is not connected yet.",
+    "@remoteNotConnected": {}
 }

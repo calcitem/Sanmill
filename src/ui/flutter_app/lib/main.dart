@@ -20,7 +20,8 @@ import 'app_shell/sanmill_app_shell.dart';
 import 'appearance_settings/models/display_settings.dart';
 import 'experience_recording/services/recording_navigator_observer.dart';
 import 'game_page/services/analysis_mode.dart';
-import 'game_page/services/mill.dart' show ExportService, LoadService;
+import 'game_page/services/mill.dart'
+    show ExportService, GameController, LoadService;
 import 'game_platform/game_registry.dart';
 import 'games/built_in_game_modules.dart';
 import 'games/mill/opening_book/opening_book_repository.dart';
@@ -86,6 +87,9 @@ Future<void> main() async {
   // Attach the current move list to crash / error reports so engine-failure
   // diagnostics ship with a replayable PGN file.
   ReportAttachmentRegistry.register(ExportService.exportMoveListToTempFile);
+  ReportAttachmentRegistry.register(
+    GameController().exportRemoteDiagnosticsToTempFile,
+  );
 
   // Wire engine callbacks through the active module so settings changes do not
   // depend on a specific game implementation.

@@ -18,6 +18,7 @@ enum GameMode {
   puzzle,
   humanVsCloud, // Not Implemented
   humanVsLAN,
+  humanVsBluetooth,
   testViaLAN, // Not Implemented
   analysis,
 }
@@ -62,6 +63,8 @@ extension GameModeExtension on GameMode {
         return FluentIcons.person_24_filled;
       case GameMode.humanVsLAN:
         return FluentIcons.person_24_filled;
+      case GameMode.humanVsBluetooth:
+        return FluentIcons.person_24_filled;
       case GameMode.testViaLAN:
         return FluentIcons.wifi_1_24_filled;
     }
@@ -95,6 +98,8 @@ extension GameModeExtension on GameMode {
         return FluentIcons.cloud_24_filled;
       case GameMode.humanVsLAN:
         return FluentIcons.wifi_1_24_filled;
+      case GameMode.humanVsBluetooth:
+        return FluentIcons.bluetooth_24_filled;
       case GameMode.testViaLAN:
         return FluentIcons.wifi_1_24_filled;
     }
@@ -137,6 +142,7 @@ extension GameModeExtension on GameMode {
       case GameMode.analysis:
       case GameMode.humanVsHuman:
       case GameMode.humanVsLAN:
+      case GameMode.humanVsBluetooth:
       case GameMode.humanVsCloud:
         return <PieceColor, bool>{
           PieceColor.white: false,

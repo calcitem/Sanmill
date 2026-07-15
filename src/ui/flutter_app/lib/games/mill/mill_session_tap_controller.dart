@@ -41,6 +41,7 @@ class MillSessionTapController {
   Future<MillSessionTapResult> tap({
     required GameSession session,
     required String tappedLabel,
+    bool applyAction = true,
   }) async {
     if (session.outcome.isTerminal) {
       clearSelection();
@@ -56,7 +57,9 @@ class MillSessionTapController {
     final GameAction? action = selection.action;
     if (action != null) {
       clearSelection();
-      await session.apply(action);
+      if (applyAction) {
+        await session.apply(action);
+      }
       return MillSessionTapResult.applied(action);
     }
 

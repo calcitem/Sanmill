@@ -37,8 +37,8 @@ void main() {
   // GameMode enum
   // ---------------------------------------------------------------------------
   group('GameMode enum', () {
-    test('should have nine modes', () {
-      expect(GameMode.values.length, 9);
+    test('should have ten modes', () {
+      expect(GameMode.values.length, 10);
     });
 
     test('should include all expected modes', () {
@@ -53,6 +53,7 @@ void main() {
           GameMode.puzzle,
           GameMode.humanVsCloud,
           GameMode.humanVsLAN,
+          GameMode.humanVsBluetooth,
           GameMode.testViaLAN,
         ]),
       );

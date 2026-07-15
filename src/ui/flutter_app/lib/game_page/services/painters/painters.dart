@@ -19,6 +19,7 @@ import '../../../appearance_settings/models/display_settings.dart';
 import '../../../game_platform/game_session.dart';
 import '../../../games/mill/mill_board_coordinate_maps.dart';
 import '../../../games/mill/native_mill_snapshot_board_view.dart';
+import '../../../rule_settings/models/rule_settings.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/environment_config.dart';
 import '../../../shared/services/logger.dart';

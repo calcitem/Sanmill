@@ -279,7 +279,8 @@ class PiecePainter extends CustomPainter {
             if (humanColor != null && capturerColor != humanColor) {
               isCapturerOpponent = true;
             }
-          } else if (mode == GameMode.humanVsLAN) {
+          } else if (mode == GameMode.humanVsLAN ||
+              mode == GameMode.humanVsBluetooth) {
             final PieceColor localColor = GameController().getLocalColor();
             if (capturerColor != localColor) {
               isCapturerOpponent = true;
@@ -336,7 +337,8 @@ class PiecePainter extends CustomPainter {
             if (humanColor != null && pieceColor != humanColor) {
               isOpponent = true;
             }
-          } else if (mode == GameMode.humanVsLAN) {
+          } else if (mode == GameMode.humanVsLAN ||
+              mode == GameMode.humanVsBluetooth) {
             final PieceColor localColor = GameController().getLocalColor();
             if (pieceColor != localColor) {
               isOpponent = true;

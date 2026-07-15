@@ -204,6 +204,9 @@ class EloRatingService {
           // LAN games don't update stats
           logger.i("$_logTag Human vs LAN game, not updating stats");
           break;
+        case GameMode.humanVsBluetooth:
+          logger.i("$_logTag Bluetooth match, not updating stats");
+          break;
         case GameMode.humanVsCloud:
           // Currently treated same as Human vs AI (could be updated later)
           _updateHumanVsAiStats(winnerColor, settings);

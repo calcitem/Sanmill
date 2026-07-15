@@ -4,7 +4,7 @@ publish_to: none
 version: 8.0.0+6707
 
 environment:
-  sdk: ">=3.8.0 <4.0.0"
+  sdk: ">=3.12.0 <4.0.0"
 
 dependencies:
   animated_text_kit: ^4.3.0
@@ -60,6 +60,7 @@ dependencies:
   share_plus: ^13.2.0
   vibration: ^3.2.0
   url_launcher: ^6.3.2
+  universal_ble: ^2.1.0
   uuid: ^4.5.3
   # Vendored: pub 0.1.0 CMake target is screenshot_plugin; Flutter expects
   # just_screenshot_plugin. See third_party/just_screenshot/PATCHES.md.
@@ -192,7 +193,7 @@ msix_config:
   identity_name: 25314CalcitemStudio.Sanmill
   publisher: CN=3413C020-B420-4E0A-8687-A2C35E878F3A
   logo_path: ..\..\..\fastlane\metadata\android\en-US\images\icon.png
-  capabilities: ""
+  capabilities: bluetooth,radios
   languages: en-us, de-de, hu-hu, pt-br, tr-tr, zh-cn, ko-kr
   execution_alias: mill
   store: true

@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
+import 'dart:async';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_page/services/mill.dart' show GameController, GameMode;
 import '../../game_page/services/painters/painters.dart' show deviceWidth;
+import '../../game_page/widgets/dialogs/bluetooth_config_dialog.dart';
 import '../../game_page/widgets/dialogs/lan_config_dialog.dart';
 import '../../game_page/widgets/game_page.dart' show GamePage;
 import '../../game_page/widgets/import_game_page.dart';
@@ -255,15 +258,13 @@ class MillGameModule extends GameModule {
     BuildContext context, {
     required String lastShellRouteId,
   }) {
-    if (lastShellRouteId == MillRouteIds.humanVsLan.value) {
+    if (lastShellRouteId == MillRouteIds.humanVsLan.value ||
+        lastShellRouteId == MillRouteIds.humanVsBluetooth.value) {
       logger.i(
         'Game switch: leaving LAN mode, disposing network and resetting board.',
       );
 
-      GameController().networkService?.dispose();
-
-      GameController().networkService = null;
-
+      unawaited(GameController().disposeRemoteMatch());
       GameController().reset(force: true);
     }
   }
@@ -278,15 +279,18 @@ class MillGameModule extends GameModule {
     if (source != ShellRouteNavigationSource.drawer) {
       return true;
     }
-    if (nextRouteId != MillRouteIds.humanVsLan.value ||
-        previousRouteId == MillRouteIds.humanVsLan.value) {
+    final bool nextIsLan = nextRouteId == MillRouteIds.humanVsLan.value;
+    final bool nextIsBluetooth =
+        nextRouteId == MillRouteIds.humanVsBluetooth.value;
+    if ((!nextIsLan && !nextIsBluetooth) || previousRouteId == nextRouteId) {
       return true;
     }
     final S s = S.of(context);
     SnackBarService.showRootSnackBar(s.experimental);
     final bool? confirmed = await showDialog<bool>(
       context: context,
-      builder: (BuildContext _) => const LanConfigDialog(),
+      builder: (BuildContext _) =>
+          nextIsLan ? const LanConfigDialog() : const BluetoothConfigDialog(),
     );
     return confirmed ?? false;
   }
@@ -297,14 +301,15 @@ class MillGameModule extends GameModule {
     required String? previousRouteId,
     required String nextRouteId,
   }) {
-    if (previousRouteId == MillRouteIds.humanVsLan.value &&
-        nextRouteId != MillRouteIds.humanVsLan.value) {
-      logger.i('Leaving LAN mode: disposing network and resetting the board.');
-
-      GameController().networkService?.dispose();
-
-      GameController().networkService = null;
-
+    final bool previousWasRemote =
+        previousRouteId == MillRouteIds.humanVsLan.value ||
+        previousRouteId == MillRouteIds.humanVsBluetooth.value;
+    final bool nextIsRemote =
+        nextRouteId == MillRouteIds.humanVsLan.value ||
+        nextRouteId == MillRouteIds.humanVsBluetooth.value;
+    if (previousWasRemote && !nextIsRemote) {
+      logger.i('Leaving remote mode: disposing transport and resetting board.');
+      unawaited(GameController().disposeRemoteMatch());
       GameController().reset(force: true);
     }
     if (isPlayModeRoute(nextRouteId, context)) {
@@ -363,6 +368,15 @@ class MillGameModule extends GameModule {
         isAvailable: (_) => features.supports(GameCapability.lan),
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
             GamePage(GameMode.humanVsLAN, key: key),
+      ),
+      GameModeEntry(
+        id: MillRouteIds.humanVsBluetooth,
+        label: s.humanVsBluetooth,
+        icon: FluentIcons.bluetooth_24_regular,
+        menuKey: const Key('drawer_item_human_vs_bluetooth'),
+        contentKey: const Key('human_bluetooth'),
+        builder: (BuildContext context, {Key? key, GameSession? session}) =>
+            GamePage(GameMode.humanVsBluetooth, key: key),
       ),
       GameModeEntry(
         id: MillRouteIds.setupPosition,

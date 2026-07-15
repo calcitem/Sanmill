@@ -25,6 +25,7 @@ import 'package:sanmill/games/mill/opening_book/opening_book_repository.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/general_settings/widgets/general_settings_page.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 import 'package:sanmill/src/rust/api/simple.dart' as tgf;
@@ -356,6 +357,9 @@ class _HeaderTestRulesPort implements NativeMillRulesPort {
 
   @override
   int get redoDepth => 0;
+
+  @override
+  RuleSettings get ruleSettings => const RuleSettings();
 
   @override
   GameStateSnapshot get snapshot => _snapshot;

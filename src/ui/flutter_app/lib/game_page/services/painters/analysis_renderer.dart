@@ -857,11 +857,12 @@ class AnalysisRenderer {
   /// Whether only the best moves should be shown (flying mode).
   static bool _shouldFilterToOnlyBestMoves() {
     final MillBoardView view = GameController().activeBoardView;
-    if (!DB().ruleSettings.mayFly || view.phase != Phase.moving) {
+    final RuleSettings rules = GameController().ruleSettingsForActiveBoard;
+    if (!rules.mayFly || view.phase != Phase.moving) {
       return false;
     }
     final int onBoard = view.pieceOnBoardCountFor(view.sideToMove);
-    return onBoard <= DB().ruleSettings.flyPieceCount;
+    return onBoard <= rules.flyPieceCount;
   }
 
   /// Display text for an analysis result, including step information.

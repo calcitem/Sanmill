@@ -48,13 +48,14 @@ class HistoryNavigator {
     GameController().disableStats = true;
 
     // -----------------------------------------------------------
-    //  LAN mode special rules:
+    //  Remote-match special rules:
     //   - Take-back requires remote approval and may cover multiple actions
     //     when the requester's last turn included a capture.
     //   - All other history nav is disallowed in LAN mode.
     // -----------------------------------------------------------
     final GameMode currentMode = GameController().gameInstance.gameMode;
-    if (currentMode == GameMode.humanVsLAN) {
+    if (currentMode == GameMode.humanVsLAN ||
+        currentMode == GameMode.humanVsBluetooth) {
       if (navMode == HistoryNavMode.takeBack ||
           navMode == HistoryNavMode.takeBackN) {
         assert(
@@ -63,7 +64,7 @@ class HistoryNavigator {
         );
         final int steps = number ?? 1;
         assert(steps > 0, 'LAN takeback requires a positive step count.');
-        final bool success = await _requestLanTakeBack(context, steps);
+        final bool success = await _requestRemoteTakeBack(context, steps);
         // If user & remote accepted, success=true => done
         // If rejected or an error, success=false => do nothing
         if (pop && context.mounted) {
@@ -292,8 +293,8 @@ class HistoryNavigator {
     return const HistoryOK();
   }
 
-  /// Requests a 1-step LAN take back, returns true if accepted, false if rejected or error.
-  static Future<bool> _requestLanTakeBack(
+  /// Requests a remote take back and waits for peer approval.
+  static Future<bool> _requestRemoteTakeBack(
     BuildContext context,
     int steps,
   ) async {
@@ -304,7 +305,7 @@ class HistoryNavigator {
     // This calls a new method in GameController that sends
     // "take back:<steps>:request"
     // and awaits an async result from the peer.
-    final bool ok = await GameController().requestLanTakeBack(steps);
+    final bool ok = await GameController().requestRemoteTakeBack(steps);
     if (!ok && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

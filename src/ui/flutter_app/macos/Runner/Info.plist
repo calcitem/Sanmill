@@ -30,6 +30,10 @@
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>$(PRODUCT_COPYRIGHT)</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Sanmill uses Bluetooth to find, join, and host nearby multiplayer games.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Sanmill uses Bluetooth to advertise multiplayer games to nearby players.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>

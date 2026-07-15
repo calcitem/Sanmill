@@ -57,6 +57,15 @@
 	</array>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>This app enables LAN multiplayer gameplay by connecting to players on the same network.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Sanmill uses Bluetooth to find, join, and host nearby multiplayer games.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Sanmill uses Bluetooth to advertise multiplayer games to nearby players.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-central</string>
+		<string>bluetooth-peripheral</string>
+	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>
