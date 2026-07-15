@@ -6,7 +6,6 @@
 import Cocoa
 import FlutterMacOS
 import device_info_plus
-import path_provider_foundation
 import share_plus
 import url_launcher_macos
 

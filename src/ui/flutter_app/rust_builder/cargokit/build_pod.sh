@@ -49,6 +49,14 @@ do
   fi
 done
 
+# Xcode launched from Finder does not inherit the user's shell environment.
+# flutter-init.sh records the explicitly configured pub/storage endpoints here
+# so this build phase uses the same dependency sources as Flutter CLI commands.
+CARGOKIT_PUB_ENVIRONMENT="$FLUTTER_APPLICATION_PATH/.dart_tool/cargokit_pub_environment.sh"
+if [[ -f "$CARGOKIT_PUB_ENVIRONMENT" ]]; then
+  source "$CARGOKIT_PUB_ENVIRONMENT"
+fi
+
 sh "$BASEDIR/run_build_tool.sh" build-pod "$@"
 
 # Make a symlink from built framework to phony file, which will be used as input to
