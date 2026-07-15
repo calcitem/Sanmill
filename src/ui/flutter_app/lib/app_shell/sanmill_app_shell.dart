@@ -476,6 +476,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
       path,
       isRunning: true,
       shouldPop: false,
+      showSuccessMessage: false,
     );
     if (!mounted) {
       return;

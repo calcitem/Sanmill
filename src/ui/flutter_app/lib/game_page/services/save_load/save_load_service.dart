@@ -310,6 +310,7 @@ class LoadService {
     String? filePath, {
     required bool isRunning,
     bool shouldPop = true,
+    bool showSuccessMessage = true,
   }) async {
     filePath ??= await pickFileIfNeeded(context);
 
@@ -365,6 +366,7 @@ class LoadService {
           await handleHistoryNavigation(
             context,
             includedVariations: importResult.includedVariations,
+            showSuccessMessage: showSuccessMessage,
           );
         }
         if (!context.mounted) {
@@ -570,6 +572,7 @@ class LoadService {
   static Future<void> handleHistoryNavigation(
     BuildContext context, {
     bool includedVariations = false,
+    bool showSuccessMessage = true,
   }) async {
     await HistoryNavigator.takeBackAll(context, pop: false);
 
@@ -583,12 +586,14 @@ class LoadService {
         return;
       }
 
-      // Show success message with experimental warning if variations included
-      final String message = includedVariations
-          ? '${S.of(context).done} ${S.of(context).experimental}'
-          : S.of(context).done;
-      rootScaffoldMessengerKey.currentState?.showSnackBarClear(message);
-      GameController().headerTipNotifier.showTip(message);
+      if (showSuccessMessage) {
+        // Show success message with experimental warning if variations included
+        final String message = includedVariations
+            ? '${S.of(context).done} ${S.of(context).experimental}'
+            : S.of(context).done;
+        rootScaffoldMessengerKey.currentState?.showSnackBarClear(message);
+        GameController().headerTipNotifier.showTip(message);
+      }
     } else {
       if (!context.mounted) {
         return;

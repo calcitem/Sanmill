@@ -232,6 +232,53 @@ void main() {
     },
     skip: nativeLibrarySkipReason() != null,
   );
+
+  testWidgets(
+    'history replay can suppress the success snackbar for home launches',
+    (WidgetTester tester) async {
+      final NativeMillGameSession session = NativeMillGameSession();
+      addTearDown(session.dispose);
+
+      GameController().bindActiveSession(session);
+      addTearDown(() => GameController().unbindActiveSession(session));
+
+      late BuildContext launchContext;
+      await tester.pumpWidget(
+        MaterialApp(
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: const Locale('en'),
+          home: Builder(
+            builder: (BuildContext context) {
+              launchContext = context;
+              return GameSessionScope(
+                session: session,
+                child: const Scaffold(body: SizedBox.shrink()),
+              );
+            },
+          ),
+        ),
+      );
+
+      ImportService.import('1. d6 f4');
+      await LoadService.handleHistoryNavigation(
+        launchContext,
+        showSuccessMessage: false,
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(SnackBar), findsNothing);
+      expect(find.text('Done'), findsNothing);
+      expect(
+        GameController().gameRecorder.mainlineMoves.map(
+          (ExtMove move) => move.move,
+        ),
+        <String>['d6', 'f4'],
+      );
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
 }
 
 GameAction _findAction(List<GameAction> actions, String move) {
