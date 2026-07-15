@@ -509,7 +509,14 @@ void main() {
       final Text homeAppBarTitle = tester.widget<Text>(
         find.byKey(const Key('sanmill_home_appbar_title')),
       );
+      final AppBar homeAppBar = tester.widget<AppBar>(
+        find.ancestor(
+          of: find.byKey(const Key('sanmill_home_appbar_title')),
+          matching: find.byType(AppBar),
+        ),
+      );
       expect(homeAppBarTitle.data, 'Mill');
+      expect(homeAppBar.centerTitle, isFalse);
       expect(find.byKey(const Key('sanmill_home_play_fab')), findsOneWidget);
       expect(
         find.descendant(

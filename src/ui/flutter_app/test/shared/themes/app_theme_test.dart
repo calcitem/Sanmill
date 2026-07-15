@@ -98,6 +98,11 @@ void main() {
     test('darkThemeData should use Material 3', () {
       expect(AppTheme.darkThemeData.useMaterial3, isTrue);
     });
+
+    test('app bar titles should be left aligned', () {
+      expect(AppTheme.lightThemeData.appBarTheme.centerTitle, isFalse);
+      expect(AppTheme.darkThemeData.appBarTheme.centerTitle, isFalse);
+    });
   });
 
   // ---------------------------------------------------------------------------

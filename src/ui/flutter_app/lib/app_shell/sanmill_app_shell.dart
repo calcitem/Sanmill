@@ -1282,6 +1282,7 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         title: Text(
           strings.appName,
           key: const Key('sanmill_home_appbar_title'),

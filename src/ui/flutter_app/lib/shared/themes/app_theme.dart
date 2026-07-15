@@ -128,6 +128,7 @@ class AppTheme {
       );
 
   static final AppBarTheme appBarTheme = AppBarTheme(
+    centerTitle: false,
     backgroundColor: _colorScheme.surface,
     foregroundColor: _colorScheme.onSurface,
     surfaceTintColor: Colors.transparent,
