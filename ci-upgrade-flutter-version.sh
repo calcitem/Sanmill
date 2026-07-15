@@ -50,10 +50,11 @@ if [ "$OS" = "Darwin" ]; then
     SED_CMD='sed -i ""'
 fi
 
-# Update GitHub Actions workflow files.
-echo "Updating Flutter version in .github/workflows..."
+# Update GitHub Actions workflow and composite action files.
+echo "Updating Flutter version in .github..."
 # The subshell is used to ensure the sed command gets the exported FLUTTER_VERSION.
-find .github/workflows -name '*.yml' -exec sh -c "${SED_CMD} \"s/flutter-version: .*/flutter-version: '${FLUTTER_VERSION}'/\" \"\$1\"" sh {} \;
+find .github -type f \( -name '*.yml' -o -name '*.yaml' \) \
+  -exec sh -c "${SED_CMD} \"s/flutter-version: .*/flutter-version: '${FLUTTER_VERSION}'/\" \"\$1\"" sh {} \;
 
 # Update snap package configuration.
 echo "Updating Flutter version in snap/snapcraft.yaml..."
@@ -101,14 +102,17 @@ for file in "${KEY_FILES[@]}"; do
   fi
 done
 
-# Check GitHub Actions workflow files.
-WORKFLOW_FILES_WITH_OLD_VERSION=$(grep -l "${OLD_FLUTTER_VERSION}" .github/workflows/*.yml 2>/dev/null || true)
-if [ -n "$WORKFLOW_FILES_WITH_OLD_VERSION" ]; then
-  echo " - Warning: Some workflow files still contain old version:"
-  echo "$WORKFLOW_FILES_WITH_OLD_VERSION" | sed 's/^/   /'
+# Check GitHub Actions workflow and composite action files.
+GITHUB_FILES_WITH_OLD_VERSION=$(grep -rl \
+  --include='*.yml' \
+  --include='*.yaml' \
+  "${OLD_FLUTTER_VERSION}" .github 2>/dev/null || true)
+if [ -n "$GITHUB_FILES_WITH_OLD_VERSION" ]; then
+  echo " - Warning: Some GitHub Actions files still contain old version:"
+  echo "$GITHUB_FILES_WITH_OLD_VERSION" | sed 's/^/   /'
   VERIFICATION_FAILED=1
 else
-  echo " - ✓ All workflow files updated successfully"
+  echo " - ✓ All GitHub Actions files updated successfully"
 fi
 
 if [ $VERIFICATION_FAILED -eq 1 ]; then
@@ -120,11 +124,18 @@ fi
 
 # --- Git Operations ---
 
-# Stage all changes and commit them.
+# Format, stage, and commit all changes.
+echo ""
+echo "Formatting changes..."
+./format.sh s
+
 echo ""
 echo "Staging and committing changes..."
 git add .
-git commit -m "ci: Upgrade Flutter to v${FLUTTER_VERSION}"
+git commit \
+  -m "Upgrade Flutter to v${FLUTTER_VERSION}" \
+  -m "Update the pinned Flutter SDK version across bootstrap scripts, CI
+workflows, package configuration, and setup documentation."
 
 echo ""
 echo "Successfully upgraded Flutter version from ${OLD_FLUTTER_VERSION} to ${FLUTTER_VERSION}."

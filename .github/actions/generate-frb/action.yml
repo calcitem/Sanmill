@@ -19,7 +19,7 @@ runs:
       with:
         # Keep in sync with the flutter-version pinned by the build
         # workflows (aab.yml, flutter.yml, msix.yml, ...).
-        flutter-version: '3.44.4'
+        flutter-version: '3.44.6'
         cache: true
 
     - name: Generate FRB bindings

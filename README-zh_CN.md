@@ -137,7 +137,7 @@ target/release/tgf compiler
 ### Flutter App
 
 运行`./flutter-init.sh`，然后使用 Android Studio 或 Visual Studio Code 打开 `src/ui/flutter_app` 来构建 Flutter App。
-该脚本会在系统未安装所需版本时，自动在 `.tools/flutter` 中下载并配置 Flutter 3.44.4，确保仓库始终使用预期的 SDK。
+该脚本会在系统未安装所需版本时，自动在 `.tools/flutter` 中下载并配置 Flutter 3.44.6，确保仓库始终使用预期的 SDK。
 
 我们使用编译期环境配置来启用代码的特定部分：
 
