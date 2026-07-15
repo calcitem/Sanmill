@@ -5883,7 +5883,7 @@ void main() {
     );
   });
 
-  testWidgets('human vs ai move list groups capture with the mill move', (
+  testWidgets('human vs ai move list joins capture to the mill move', (
     WidgetTester tester,
   ) async {
     db.generalSettings = const GeneralSettings();
@@ -5897,6 +5897,7 @@ void main() {
       ExtMove('d2', side: PieceColor.black, roundIndex: 2),
       ExtMove('a7', side: PieceColor.white, roundIndex: 3),
       ExtMove('xd1', side: PieceColor.white, roundIndex: 3),
+      ExtMove('xf4', side: PieceColor.white, roundIndex: 3),
       ExtMove('g7', side: PieceColor.black, roundIndex: 3),
     ].forEach(controller.gameRecorder.appendMove);
 
@@ -5920,9 +5921,11 @@ void main() {
 
     expect(find.byKey(const Key('play_area_human_ai_round_3')), findsOneWidget);
     expect(find.byKey(const Key('play_area_human_ai_move_5')), findsNothing);
-    expect(find.byKey(const Key('play_area_human_ai_move_6')), findsOneWidget);
-    expect(find.text('a7 xd1'), findsOneWidget);
+    expect(find.byKey(const Key('play_area_human_ai_move_6')), findsNothing);
     expect(find.byKey(const Key('play_area_human_ai_move_7')), findsOneWidget);
+    expect(find.text('a7xd1xf4'), findsOneWidget);
+    expect(find.text('a7 xd1 xf4'), findsNothing);
+    expect(find.byKey(const Key('play_area_human_ai_move_8')), findsOneWidget);
     expect(find.text('g7'), findsOneWidget);
   });
 

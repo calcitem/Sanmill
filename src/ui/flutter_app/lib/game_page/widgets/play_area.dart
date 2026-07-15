@@ -4802,12 +4802,18 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       (_IndexedMoveNode indexed) => indexed.node == activeNode,
     );
     final _IndexedMoveNode lastNode = segment.nodes.last;
-    final String label = segment.nodes
-        .map(
-          (_IndexedMoveNode indexed) =>
-              _moveLabel(indexed.node.data!, includeComments: false),
-        )
-        .join(' ');
+    final StringBuffer labelBuffer = StringBuffer();
+    for (final _IndexedMoveNode indexed in segment.nodes) {
+      final String moveLabel = _moveLabel(
+        indexed.node.data!,
+        includeComments: false,
+      );
+      if (labelBuffer.isNotEmpty && !moveLabel.startsWith('x')) {
+        labelBuffer.write(' ');
+      }
+      labelBuffer.write(moveLabel);
+    }
+    final String label = labelBuffer.toString();
     final String displayLabel = _withMoveComments(label, lastNode.node.data!);
     final PgnNode<ExtMove> targetNode = lastNode.node;
     final Widget chip = _GameMoveChip(
