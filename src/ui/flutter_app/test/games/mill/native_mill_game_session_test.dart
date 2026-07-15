@@ -388,6 +388,106 @@ void main() {
     );
 
     test(
+      'searchPrincipalVariations accepts a changed final move at equal depth',
+      () async {
+        final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+          searchEvents: Stream<tgf.EngineEvent>.fromIterable(<tgf.EngineEvent>[
+            tgf.EngineEvent(
+              kind: 'pv',
+              depth: 4,
+              score: 30,
+              nodes: BigInt.from(256),
+              toNode: 3,
+              reason: 'd6 rank=1 rawScore=-30 cutoff=false pv=d6,f4,a1',
+            ),
+            tgf.EngineEvent(
+              kind: 'info',
+              depth: 4,
+              score: 18,
+              nodes: BigInt.from(512),
+              toNode: -1,
+              reason: '',
+            ),
+            tgf.EngineEvent(
+              kind: 'bestMove',
+              depth: -1,
+              score: 18,
+              nodes: BigInt.from(1024),
+              toNode: 5,
+              reason: 'f4 aimovetype=perfect rawScore=18',
+            ),
+          ]),
+        );
+        final NativeMillGameSession session = NativeMillGameSession(
+          rulesPort: rulesPort,
+        );
+        addTearDown(session.dispose);
+
+        final List<NativeMillPrincipalVariation> variations = await session
+            .searchPrincipalVariations(depth: 4, multiPv: 1);
+
+        expect(variations, hasLength(1));
+        expect(variations.single.move, 'f4');
+        expect(variations.single.depth, 4);
+        expect(variations.single.line, <String>['f4']);
+      },
+    );
+
+    test(
+      'searchPrincipalVariations reports progressive single-PV batches',
+      () async {
+        final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+          searchEvents: Stream<tgf.EngineEvent>.fromIterable(<tgf.EngineEvent>[
+            tgf.EngineEvent(
+              kind: 'pv',
+              depth: 2,
+              score: 10,
+              nodes: BigInt.from(64),
+              toNode: 3,
+              reason: 'd6 rank=1 rawScore=-10 cutoff=false pv=d6,f4',
+            ),
+            tgf.EngineEvent(
+              kind: 'pv',
+              depth: 4,
+              score: 28,
+              nodes: BigInt.from(512),
+              toNode: 5,
+              reason: 'f4 rank=1 rawScore=-28 cutoff=false pv=f4,a1,d6',
+            ),
+            tgf.EngineEvent(
+              kind: 'bestMove',
+              depth: -1,
+              score: 28,
+              nodes: BigInt.from(512),
+              toNode: 5,
+              reason: 'f4 aimovetype=traditional rawScore=-28',
+            ),
+          ]),
+        );
+        final NativeMillGameSession session = NativeMillGameSession(
+          rulesPort: rulesPort,
+        );
+        addTearDown(session.dispose);
+
+        final List<List<NativeMillPrincipalVariation>> updates =
+            <List<NativeMillPrincipalVariation>>[];
+        final List<NativeMillPrincipalVariation> variations = await session
+            .searchPrincipalVariations(
+              depth: 4,
+              multiPv: 1,
+              onUpdate: updates.add,
+            );
+
+        expect(updates, hasLength(2));
+        expect(updates.first.single.depth, 2);
+        expect(updates.first.single.move, 'd6');
+        expect(updates.last.single.depth, 4);
+        expect(updates.last.single.move, 'f4');
+        expect(variations.single.line, <String>['f4', 'a1', 'd6']);
+      },
+    );
+
+    test(
       'searchPrincipalVariations reports progressive MultiPV batches',
       () async {
         final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(

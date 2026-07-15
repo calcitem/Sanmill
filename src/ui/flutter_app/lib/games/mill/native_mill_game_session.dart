@@ -781,6 +781,9 @@ class NativeMillGameSession implements GameSessionHandle {
     if (fallback.depth < existing.depth) {
       return false;
     }
+    if (fallback.move != existing.move) {
+      return true;
+    }
     return existing.line.length <= 1 && fallback.nodes > existing.nodes;
   }
 

@@ -47,6 +47,7 @@ import '../../src/rust/api/simple.dart' as tgf;
 import '../../statistics/model/stats_settings.dart';
 // Voice assistant functionality disabled
 // import '../../voice_assistant/widgets/voice_button.dart';
+import '../services/analysis/analysis_service.dart';
 import '../services/analysis_mode.dart';
 import '../services/animation/animation_manager.dart';
 import '../services/animation/headless_animation_manager.dart';

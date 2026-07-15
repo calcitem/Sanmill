@@ -677,7 +677,6 @@ class PlayAreaState extends State<PlayArea> {
   List<int> advantageData = <int>[];
 
   bool _isBoardFlipped = false;
-  bool _isHintSearching = false;
   Timer? _analysisRefreshDebounceTimer;
   GameRecorder? _analysisMoveRecorder;
   PgnNode<ExtMove>? _lastAnalysisRefreshNode;
@@ -713,6 +712,8 @@ class PlayAreaState extends State<PlayArea> {
 
   @override
   void dispose() {
+    AnalysisService.stopActiveEngineAnalysis();
+    AnalysisService.invalidateBestMoveHintCache();
     GameController().headerIconsNotifier.removeListener(_updateUI);
     _analysisMoveRecorder?.moveCountNotifier.removeListener(
       _handleAnalysisPositionChanged,
@@ -743,6 +744,11 @@ class PlayAreaState extends State<PlayArea> {
       return;
     }
     _lastAnalysisRefreshNode = currentNode;
+    AnalysisService.invalidateBestMoveHintCache();
+    if (AnalysisService.isBestMoveHintSearching || AnalysisMode.isHint) {
+      AnalysisService.stopBestMoveHint();
+      return;
+    }
     if (!AnalysisMode.isFullAnalysis) {
       return;
     }
@@ -1646,15 +1652,18 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   bool get _canShowHintFromBottomBar {
+    if (!_usesLichessHumanAiToolbar || _activePhase == Phase.gameOver) {
+      return false;
+    }
+    if (AnalysisService.isBestMoveHintSearching || AnalysisMode.isHint) {
+      return true;
+    }
     final PieceColor sideToMove = GameController().activeBoardView.sideToMove;
-    return _usesLichessHumanAiToolbar &&
-        _activePhase != Phase.gameOver &&
-        (sideToMove == PieceColor.white || sideToMove == PieceColor.black) &&
+    return (sideToMove == PieceColor.white || sideToMove == PieceColor.black) &&
         GameController().gameInstance.isHumanToMove &&
         !GameController().isEngineRunning &&
         !GameController().isEngineInDelay &&
-        !AnalysisMode.isAnalyzing &&
-        !_isHintSearching;
+        !AnalysisMode.isAnalyzing;
   }
 
   bool get _canResignFromRegularBottomBar {
@@ -1830,6 +1839,10 @@ class PlayAreaState extends State<PlayArea> {
       RecordingEventType.toolbarAction,
       <String, dynamic>{'toolbar': toolbar, 'action': 'moveNow'},
     );
+    await AnalysisService.stopBestMoveHintAndWait();
+    if (!context.mounted) {
+      return;
+    }
     await GameController().moveNow(
       context,
       messages: messages,
@@ -1899,6 +1912,10 @@ class PlayAreaState extends State<PlayArea> {
       <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'forceAiRedo'},
     );
 
+    await AnalysisService.stopBestMoveHintAndWait();
+    if (!context.mounted) {
+      return;
+    }
     await HistoryNavigator.takeBackN(context, steps, pop: false, toolbar: true);
     if (!context.mounted) {
       return;
@@ -2005,6 +2022,10 @@ class PlayAreaState extends State<PlayArea> {
       RecordingEventType.toolbarAction,
       <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'resign'},
     );
+    await AnalysisService.stopBestMoveHintAndWait();
+    if (!mounted) {
+      return;
+    }
     GameController().requestResignation();
   }
 
@@ -2046,6 +2067,10 @@ class PlayAreaState extends State<PlayArea> {
       RecordingEventType.toolbarAction,
       <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'offerDraw'},
     );
+    await AnalysisService.stopBestMoveHintAndWait();
+    if (!context.mounted) {
+      return;
+    }
     await _resolveDrawOfferVsAi(context);
   }
 
@@ -2141,29 +2166,28 @@ class PlayAreaState extends State<PlayArea> {
         'steps': steps,
       },
     );
+    await AnalysisService.stopBestMoveHintAndWait();
+    if (!context.mounted) {
+      return;
+    }
     await HistoryNavigator.takeBackN(context, steps, pop: false, toolbar: true);
   }
 
   Future<void> _showHintFromBottomBar(BuildContext context) async {
     assert(_usesLichessHumanAiToolbar);
-    assert(!_isHintSearching, 'Hint search is already in progress.');
-
-    setState(() {
-      _isHintSearching = true;
-    });
-    try {
+    if (AnalysisService.isBestMoveHintSearching || AnalysisMode.isHint) {
       RecordingService().recordEvent(
         RecordingEventType.toolbarAction,
-        <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'hint'},
+        <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'hintStop'},
       );
-      await AnalysisService.showBestMoveHint(context);
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isHintSearching = false;
-        });
-      }
+      AnalysisService.stopBestMoveHint();
+      return;
     }
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'hint'},
+    );
+    await AnalysisService.showBestMoveHint(context);
   }
 
   Future<void> _requestNewGameFromBottomBar(NavigatorState navigator) async {
@@ -2172,6 +2196,10 @@ class PlayAreaState extends State<PlayArea> {
       RecordingEventType.toolbarAction,
       <String, dynamic>{'toolbar': 'lichessBottom', 'action': 'newGame'},
     );
+    await AnalysisService.stopBestMoveHintAndWait();
+    if (!navigator.mounted) {
+      return;
+    }
     await GameOptionsModal.showHumanAiNewGameSheet(navigator.context);
   }
 
@@ -3202,7 +3230,8 @@ class PlayAreaState extends State<PlayArea> {
               ? () => _showHintFromBottomBar(context)
               : null,
           isShowingResult: _isHumanAiGameOver,
-          isHintHighlighted: AnalysisMode.isHint,
+          isHintHighlighted:
+              AnalysisMode.isHint || AnalysisService.isBestMoveHintSearching,
         );
       },
     );

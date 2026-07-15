@@ -442,6 +442,34 @@ fn multi_pv_events(ctx: &MultiPvEventContext<'_>, depth: i32) -> Vec<EngineEvent
     events
 }
 
+fn single_pv_event(
+    ctx: &MultiPvEventContext<'_>,
+    depth: i32,
+    result: &SearchResult,
+) -> Option<EngineEvent> {
+    if ctx.config.multi_pv != 1 || result.best_action.is_none() {
+        return None;
+    }
+
+    let action = result.best_action;
+    let notation = action_to_uci_str(action);
+    let pv_notation = multi_pv_notation(ctx, action, depth);
+    Some(crate::engine_event::principal_variation(
+        crate::engine_event::PrincipalVariationEvent {
+            rank: 1,
+            action,
+            score: result.score,
+            root_side_to_move: ctx.root_side_to_move,
+            notation: &notation,
+            pv_notation: &pv_notation,
+            nodes: result.nodes,
+            nodes_per_second: ctx.nodes_per_second,
+            depth,
+            cutoff: false,
+        },
+    ))
+}
+
 fn multi_pv_notation(ctx: &MultiPvEventContext<'_>, root_action: Action, depth: i32) -> String {
     let mut line = Vec::<String>::new();
     line.push(action_to_uci_str(root_action));
@@ -548,6 +576,9 @@ impl SearchProgressEmitter<'_> {
             nodes_per_second: current_nodes_per_second,
             complete_tail: false,
         };
+        if let Some(event) = single_pv_event(&ctx, depth, result) {
+            let _ = self.sink.add(event);
+        }
         for event in multi_pv_events(&ctx, depth) {
             let _ = self.sink.add(event);
         }
@@ -562,15 +593,23 @@ fn mix_lazy_smp_worker_seed(seed: u64, worker_index: u64) -> u64 {
 }
 
 #[cfg(not(target_arch = "wasm32"))]
+struct LazySmpSearchResult {
+    depth: i32,
+    result: SearchResult,
+    pv_event: Option<EngineEvent>,
+}
+
+#[cfg(not(target_arch = "wasm32"))]
 fn run_lazy_smp_ab_like_search(
     game: &MillGame,
     snapshot: GameStateSnapshot,
     config: &MillEngineConfigPlan,
     base_depth: i32,
-    base_context: MoveOrderContext,
     shared_tt: SharedTt,
     abort: Arc<AtomicBool>,
-) -> SearchResult {
+    sink: &StreamSink<EngineEvent>,
+) -> LazySmpSearchResult {
+    let base_context = search_context_for_config(config);
     let worker_count = search_threads_for_config(config) as usize;
     let mut handles = Vec::with_capacity(worker_count);
     for worker_index in 0..worker_count {
@@ -589,39 +628,77 @@ fn run_lazy_smp_ab_like_search(
             base_depth
         }
         .max(1);
+        let worker_sink = (worker_index == 0).then(|| sink.clone());
         handles.push(thread::spawn(move || {
             let mut searcher = mill_searcher_with_shared_tt(worker_shared_tt);
             searcher.set_abort_flag(worker_abort);
             searcher.set_options(configured_search_options(&worker_config, worker_context));
             let mut wb = worker_game.build_workbench(&snapshot);
+            let worker_started_at = Instant::now();
+            let mut completed_depth = 0;
             let result = run_ab_like_search(
                 &mut searcher,
                 &mut wb,
                 &worker_config,
                 worker_context,
                 worker_depth,
-                |_, _, _| {},
+                |progress_searcher, depth, current| {
+                    completed_depth = depth;
+                    if let Some(progress_sink) = worker_sink.as_ref() {
+                        SearchProgressEmitter {
+                            game: &worker_game,
+                            snapshot: &snapshot,
+                            sink: progress_sink,
+                            root_side_to_move: snapshot.side_to_move,
+                            config: &worker_config,
+                            started_at: worker_started_at,
+                        }
+                        .emit(progress_searcher, depth, current);
+                    }
+                },
             );
-            (worker_depth, result)
+            let completed_depth = completed_depth.max(1);
+            let final_ctx = MultiPvEventContext {
+                game: &worker_game,
+                snapshot: &snapshot,
+                searcher: &searcher,
+                root_side_to_move: snapshot.side_to_move,
+                config: &worker_config,
+                search_context: worker_context,
+                nodes_per_second: nodes_per_second(result.nodes, worker_started_at.elapsed()),
+                complete_tail: false,
+            };
+            let pv_event = single_pv_event(&final_ctx, completed_depth, &result);
+            LazySmpSearchResult {
+                depth: completed_depth,
+                result,
+                pv_event,
+            }
         }));
     }
 
-    let mut best: Option<(i32, SearchResult)> = None;
+    let mut best: Option<LazySmpSearchResult> = None;
     let mut total_nodes = 0_u64;
     for handle in handles {
-        let (depth, result) = handle
+        let candidate = handle
             .join()
             .expect("lazy-SMP Mill worker should return a SearchResult");
-        total_nodes = total_nodes.saturating_add(result.nodes);
+        total_nodes = total_nodes.saturating_add(candidate.result.nodes);
         if best.as_ref().is_none_or(|current| {
-            lazy_smp_result_is_better((depth, &result), (current.0, &current.1))
+            lazy_smp_result_is_better(
+                (candidate.depth, &candidate.result),
+                (current.depth, &current.result),
+            )
         }) {
-            best = Some((depth, result));
+            best = Some(candidate);
         }
     }
-    let (_, mut result) = best.expect("at least one lazy-SMP worker must run");
-    result.nodes = total_nodes;
-    result
+    let mut best = best.expect("at least one lazy-SMP worker must run");
+    best.result.nodes = total_nodes;
+    if let Some(event) = best.pv_event.as_mut() {
+        event.nodes = total_nodes;
+    }
+    best
 }
 
 #[cfg(not(target_arch = "wasm32"))]
@@ -703,8 +780,9 @@ pub(crate) fn spawn_mill_pvs_event_stream(
     );
 }
 
-/// Launch a search thread using the full `MillEngineConfig`.  Emits one
-/// `info` event per IDS depth, then a final `bestMove` + `stopped`.
+/// Launch a search thread using the full `MillEngineConfig`. Emits one
+/// `info` and principal-variation event per IDS depth, then a final
+/// `bestMove` + `stopped`.
 pub(crate) fn spawn_mill_engine_config_event_stream(
     snapshot: GameStateSnapshot,
     root_repetition_history: Vec<u64>,
@@ -825,21 +903,24 @@ fn run_mill_engine_config_event_stream(
             if multi_thread_search_is_allowed(&config) {
                 #[cfg(not(target_arch = "wasm32"))]
                 {
-                    let result = run_lazy_smp_ab_like_search(
+                    let lazy_result = run_lazy_smp_ab_like_search(
                         &game,
                         snapshot,
                         &config,
                         max_depth,
-                        search_context,
                         searcher.shared_tt(),
                         Arc::clone(&abort),
+                        &sink,
                     );
                     let _ = sink.add(crate::engine_event::info(
-                        max_depth,
-                        result.score,
-                        result.nodes,
+                        lazy_result.depth,
+                        lazy_result.result.score,
+                        lazy_result.result.nodes,
                     ));
-                    result
+                    if let Some(event) = lazy_result.pv_event {
+                        let _ = sink.add(event);
+                    }
+                    lazy_result.result
                 }
                 #[cfg(target_arch = "wasm32")]
                 {
@@ -1168,6 +1249,64 @@ mod tests {
         assert_eq!(remaining_time_limit_ms(6000, 2500), Some(3500));
         assert_eq!(remaining_time_limit_ms(6000, 6000), Some(0));
         assert_eq!(remaining_time_limit_ms(6000, 7000), Some(0));
+    }
+
+    #[test]
+    fn timed_single_pv_search_reports_iterative_best_moves() {
+        let game = MillGame::default();
+        let snapshot = MillRules::default().initial_state(&[]);
+        let mut wb = game.build_workbench(&snapshot);
+        let config = MillEngineConfigPlan {
+            algorithm: MillSearchAlgorithmKind::Pvs,
+            depth: 4,
+            move_time_ms: 500,
+            skill_level: 30,
+            shuffling: false,
+            multi_pv: 1,
+            ..MillEngineConfigPlan::default()
+        };
+        let mut searcher = mill_searcher_for_config(&config);
+        let search_context = search_context_for_config(&config);
+        searcher.set_options(configured_search_options(&config, search_context));
+
+        let mut reported_depths = Vec::<i32>::new();
+        let mut pv_events = Vec::<EngineEvent>::new();
+        let result = run_ab_like_search(
+            &mut searcher,
+            &mut wb,
+            &config,
+            search_context,
+            config.depth,
+            |progress_searcher, depth, current| {
+                reported_depths.push(depth);
+                let ctx = MultiPvEventContext {
+                    game: &game,
+                    snapshot: &snapshot,
+                    searcher: progress_searcher,
+                    root_side_to_move: snapshot.side_to_move,
+                    config: &config,
+                    search_context,
+                    nodes_per_second: nodes_per_second(current.nodes, Duration::from_millis(1)),
+                    complete_tail: false,
+                };
+                if let Some(event) = single_pv_event(&ctx, depth, current) {
+                    pv_events.push(event);
+                }
+            },
+        );
+
+        assert!(!result.best_action.is_none());
+        assert_eq!(pv_events.len(), reported_depths.len());
+        assert!(pv_events.iter().all(|event| event.kind == "pv"));
+        assert!(
+            pv_events
+                .iter()
+                .all(|event| event.reason.contains("rank=1"))
+        );
+        assert!(
+            pv_events.iter().any(|event| event.depth > 1),
+            "single-PV events should report iterative depths: {pv_events:?}"
+        );
     }
 
     #[test]

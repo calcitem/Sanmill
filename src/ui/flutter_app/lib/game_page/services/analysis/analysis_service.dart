@@ -4,14 +4,13 @@
 // analysis_service.dart
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../../game_platform/game_session.dart';
 import '../../../game_shell/game_session_scope.dart';
 import '../../../games/mill/mill_perfect_database_support.dart';
-import '../../../games/mill/native_mill_ai_turn_controller.dart';
 import '../../../games/mill/native_mill_game_session.dart';
 import '../../../general_settings/models/general_settings.dart';
 import '../../../generated/intl/l10n.dart';
@@ -35,9 +34,14 @@ class AnalysisService {
   static const String _logTag = "[AnalysisService]";
   static const int _analysisSearchDepth = 64;
   static const int _analysisSkillLevel = 30;
+  static const int _hintSearchDepth = 32;
+  static const int _hintSearchTimeMs = 10 * 60 * 1000;
 
   static int _analysisSearchGeneration = 0;
   static Future<void>? _activeEngineAnalysis;
+  static AnalysisOverlayMode? _activeEngineAnalysisMode;
+  static bool _isBestMoveHintSearching = false;
+  static _BestMoveHintCacheEntry? _bestMoveHintCache;
 
   @visibleForTesting
   static NativeMillGameSession Function(GeneralSettings engineSettings)?
@@ -296,17 +300,42 @@ class AnalysisService {
     }
   }
 
-  static Future<void> _enableEngineMultiPvAnalysis(
+  static Future<bool> _enableEngineMultiPvAnalysis(
     BuildContext context,
     NativeMillGameSession session, {
     bool isDeepSearch = false,
     String? fenOverride,
     bool isThreatMode = false,
+    AnalysisOverlayMode mode = AnalysisOverlayMode.analysis,
+    int? requestedLineCountOverride,
+    int? searchDepthOverride,
+    int? moveLimitMsOverride,
     List<MoveAnalysisResult>? baseResults,
     List<String> baseTrapMoves = const <String>[],
     List<MoveAnalysisResult> previousEngineLines = const <MoveAnalysisResult>[],
+    _BestMoveHintCacheKey? hintCacheKey,
+    MoveAnalysisResult? cachedHintResult,
   }) async {
+    assert(
+      mode == AnalysisOverlayMode.hint ||
+          (hintCacheKey == null && cachedHintResult == null),
+      'Only hint searches may use the best-move hint cache.',
+    );
+    assert(
+      cachedHintResult == null || hintCacheKey != null,
+      'A cached hint result needs a cache key.',
+    );
     final int searchGeneration = ++_analysisSearchGeneration;
+    if (mode == AnalysisOverlayMode.hint) {
+      AnalysisMode.enable(
+        cachedHintResult == null
+            ? const <MoveAnalysisResult>[]
+            : <MoveAnalysisResult>[cachedHintResult],
+        mode: AnalysisOverlayMode.hint,
+        source: AnalysisSource.engine,
+        isAnalyzing: true,
+      );
+    }
     // Exactly one engine search may run at a time (see the
     // NativeMillGameSession `_searchInFlight` tripwire).  A previous pass
     // keeps draining after `nativeMillSearchStop()` because the Rust-side
@@ -316,18 +345,19 @@ class AnalysisService {
     // pile up here, the newest generation wins and older ones return.
     while (_activeEngineAnalysis != null) {
       if (searchGeneration != _analysisSearchGeneration) {
-        return;
+        return false;
       }
       final Future<void> drainingPass = _activeEngineAnalysis!;
       tgf.nativeMillSearchStop();
       await drainingPass;
     }
     if (searchGeneration != _analysisSearchGeneration) {
-      return;
+      return false;
     }
-    final Completer<void> activeEngineAnalysis = Completer<void>();
-    _activeEngineAnalysis = activeEngineAnalysis.future;
-    final int requestedLineCount = math.max(1, AnalysisMode.engineLineCount);
+    final int requestedLineCount = math.max(
+      1,
+      requestedLineCountOverride ?? AnalysisMode.engineLineCount,
+    );
     final GeneralSettings currentSettings = DB().generalSettings;
     assert(
       AnalysisMode.engineThreadOptions.contains(currentSettings.engineThreads),
@@ -340,11 +370,14 @@ class AnalysisService {
       currentSettings,
       useAnalysisThreads: useAnalysisThreads,
     );
-    const int searchDepth = _analysisSearchDepth;
-    final int moveLimitMs = isDeepSearch
-        ? AnalysisMode.maxEngineSearchTimeMs
-        : AnalysisMode.engineSearchTimeMs;
+    final int searchDepth = searchDepthOverride ?? _analysisSearchDepth;
+    final int moveLimitMs =
+        moveLimitMsOverride ??
+        (isDeepSearch
+            ? AnalysisMode.maxEngineSearchTimeMs
+            : AnalysisMode.engineSearchTimeMs);
     final bool isDeepEngineAnalysis =
+        mode == AnalysisOverlayMode.analysis &&
         moveLimitMs == AnalysisMode.maxEngineSearchTimeMs;
     NativeMillGameSession? temporarySession;
     final NativeMillGameSession searchSession;
@@ -361,13 +394,65 @@ class AnalysisService {
       assert(loaded, 'Threat-mode FEN must load into the temporary session.');
       if (!loaded) {
         temporarySession.dispose();
-        return;
+        return false;
       }
       searchSession = temporarySession;
     }
 
-    AnalysisMode.setAnalyzing(true);
+    final Completer<void> activeEngineAnalysis = Completer<void>();
+    _activeEngineAnalysis = activeEngineAnalysis.future;
+    _activeEngineAnalysisMode = mode;
+    if (mode != AnalysisOverlayMode.hint) {
+      AnalysisMode.setAnalyzing(true);
+    }
     bool published = false;
+    MoveAnalysisResult? protectedCachedHintResult = cachedHintResult;
+
+    bool publishVariations(
+      List<NativeMillPrincipalVariation> variations, {
+      bool isAnalyzing = false,
+    }) {
+      if (variations.isEmpty) {
+        return false;
+      }
+      if (mode == AnalysisOverlayMode.hint) {
+        assert(hintCacheKey != null, 'Hint search needs a cache key.');
+        final NativeMillPrincipalVariation bestVariation = variations
+            .firstWhere(
+              (NativeMillPrincipalVariation variation) => variation.rank == 1,
+              orElse: () => variations.first,
+            );
+        final MoveAnalysisResult currentHint = _resultFromVariation(
+          bestVariation,
+        );
+        final MoveAnalysisResult? protectedHint = protectedCachedHintResult;
+        if (protectedHint != null &&
+            currentHint.move == protectedHint.move &&
+            _isDeeperEngineResult(protectedHint, currentHint)) {
+          return false;
+        }
+        // A changed best move is useful immediately, even at a shallower
+        // depth. If the move is unchanged, reaching the cached depth releases
+        // the protection and normal progressive updates resume.
+        protectedCachedHintResult = null;
+        _bestMoveHintCache = _BestMoveHintCacheEntry(
+          hintCacheKey!,
+          currentHint,
+        );
+      }
+      _publishEngineVariations(
+        variations,
+        isThreatMode: isThreatMode,
+        mode: mode,
+        isAnalyzing: isAnalyzing,
+        baseResults: baseResults,
+        baseTrapMoves: baseTrapMoves,
+        previousEngineLines: previousEngineLines,
+        isDeepEngineAnalysis: isDeepEngineAnalysis,
+      );
+      return true;
+    }
+
     try {
       final List<NativeMillPrincipalVariation> variations = await searchSession
           .searchPrincipalVariations(
@@ -379,43 +464,40 @@ class AnalysisService {
               if (searchGeneration != _analysisSearchGeneration) {
                 return;
               }
-              published = true;
-              _publishEngineVariations(
-                current,
-                isThreatMode: isThreatMode,
-                isAnalyzing: true,
-                baseResults: baseResults,
-                baseTrapMoves: baseTrapMoves,
-                previousEngineLines: previousEngineLines,
-                isDeepEngineAnalysis: isDeepEngineAnalysis,
-              );
+              published =
+                  publishVariations(current, isAnalyzing: true) || published;
             },
           );
       if (searchGeneration != _analysisSearchGeneration) {
-        return;
+        return false;
       }
       if (variations.isEmpty) {
-        if (!published && context.mounted) {
+        if (!published && cachedHintResult == null && context.mounted) {
           _showSnackBar(context, S.of(context).noMoreHintsAvailable);
         }
-        return;
+        if (mode == AnalysisOverlayMode.hint && cachedHintResult == null) {
+          AnalysisMode.disable();
+        }
+        return cachedHintResult != null;
       }
-      _publishEngineVariations(
-        variations,
-        isThreatMode: isThreatMode,
-        baseResults: baseResults,
-        baseTrapMoves: baseTrapMoves,
-        previousEngineLines: previousEngineLines,
-        isDeepEngineAnalysis: isDeepEngineAnalysis,
-      );
+      publishVariations(variations);
+      return true;
     } catch (e, st) {
       if (searchGeneration == _analysisSearchGeneration) {
         logger.e("$_logTag Engine MultiPV analysis failed: $e", stackTrace: st);
+        if (mode == AnalysisOverlayMode.hint &&
+            !published &&
+            cachedHintResult == null) {
+          AnalysisMode.disable();
+        }
       }
+      return mode == AnalysisOverlayMode.hint &&
+          (published || cachedHintResult != null);
     } finally {
       temporarySession?.dispose();
       if (identical(_activeEngineAnalysis, activeEngineAnalysis.future)) {
         _activeEngineAnalysis = null;
+        _activeEngineAnalysisMode = null;
       }
       if (!activeEngineAnalysis.isCompleted) {
         activeEngineAnalysis.complete();
@@ -447,6 +529,7 @@ class AnalysisService {
   static void _publishEngineVariations(
     List<NativeMillPrincipalVariation> variations, {
     required bool isThreatMode,
+    AnalysisOverlayMode mode = AnalysisOverlayMode.analysis,
     bool isAnalyzing = false,
     List<MoveAnalysisResult>? baseResults,
     List<String> baseTrapMoves = const <String>[],
@@ -454,17 +537,7 @@ class AnalysisService {
     required bool isDeepEngineAnalysis,
   }) {
     final List<MoveAnalysisResult> currentEngineResults = variations
-        .map(
-          (NativeMillPrincipalVariation variation) => MoveAnalysisResult(
-            move: variation.move,
-            outcome: _engineOutcome(variation.score),
-            rank: variation.rank,
-            depth: variation.depth,
-            nodes: variation.nodes,
-            nodesPerSecond: variation.nodesPerSecond,
-            line: variation.line,
-          ),
-        )
+        .map(_resultFromVariation)
         .toList(growable: false);
     final List<MoveAnalysisResult> engineResults = _preferDeeperEngineResults(
       currentEngineResults,
@@ -478,6 +551,7 @@ class AnalysisService {
       source: hasBaseResults
           ? AnalysisSource.perfectDatabaseAndEngine
           : AnalysisSource.engine,
+      mode: mode,
       isThreatMode: isThreatMode,
       isEngineAnalysisDeep: isDeepEngineAnalysis,
       isAnalyzing: isAnalyzing,
@@ -560,17 +634,128 @@ class AnalysisService {
     return previousNodes > currentNodes;
   }
 
+  static MoveAnalysisResult _resultFromVariation(
+    NativeMillPrincipalVariation variation,
+  ) {
+    return MoveAnalysisResult(
+      move: variation.move,
+      outcome: _engineOutcome(variation.score),
+      rank: variation.rank,
+      depth: variation.depth,
+      nodes: variation.nodes,
+      nodesPerSecond: variation.nodesPerSecond,
+      line: variation.line,
+    );
+  }
+
   static void _stopCurrentEngineAnalysis() {
     _analysisSearchGeneration++;
     tgf.nativeMillSearchStop();
   }
 
-  /// Show a Lichess-style single best-move hint without applying the move.
+  /// Whether a continuously deepening best-move hint is still searching.
+  static bool get isBestMoveHintSearching => _isBestMoveHintSearching;
+
+  /// Stop any engine pass owned by the current analysis view.
+  ///
+  /// Full-analysis results stay visible, but their in-progress state is
+  /// cleared. Hint results are removed because a hint belongs to the board
+  /// position and view that requested it.
+  static void stopActiveEngineAnalysis() {
+    final bool isHintSearch =
+        _isBestMoveHintSearching ||
+        AnalysisMode.isHint ||
+        _activeEngineAnalysisMode == AnalysisOverlayMode.hint;
+    if (isHintSearch) {
+      stopBestMoveHint();
+      return;
+    }
+    if (_activeEngineAnalysis != null || AnalysisMode.isAnalyzing) {
+      _stopCurrentEngineAnalysis();
+    }
+    AnalysisMode.setAnalyzing(false);
+  }
+
+  /// Stop any current engine pass and wait for the native session to drain.
+  static Future<void> stopActiveEngineAnalysisAndWait() async {
+    final Future<void>? activeSearch = _activeEngineAnalysis;
+    stopActiveEngineAnalysis();
+    if (activeSearch != null) {
+      await activeSearch;
+    }
+  }
+
+  /// Stop a running hint search and remove its board overlay.
+  static void stopBestMoveHint() {
+    final bool hasPendingHintRequest = _isBestMoveHintSearching;
+    final bool hasActiveHintSearch =
+        _activeEngineAnalysisMode == AnalysisOverlayMode.hint;
+    if (!hasPendingHintRequest &&
+        !AnalysisMode.isHint &&
+        !hasActiveHintSearch) {
+      return;
+    }
+    if (hasPendingHintRequest) {
+      _isBestMoveHintSearching = false;
+      AnalysisMode.stateNotifier.removeListener(
+        _stopHintSearchWhenOverlayIsCleared,
+      );
+    }
+    if (hasPendingHintRequest || hasActiveHintSearch) {
+      _stopCurrentEngineAnalysis();
+    }
+    AnalysisMode.disable();
+  }
+
+  /// Forget the reusable hint for the previous position.
+  ///
+  /// Turning the lamp off deliberately does not call this method: pressing it
+  /// again on the unchanged position should display the last deepest result
+  /// immediately. Position/session owners must invalidate after a move, reset,
+  /// or disposal so returning to an old FEN does not resurrect stale advice.
+  static void invalidateBestMoveHintCache() {
+    _bestMoveHintCache = null;
+  }
+
+  /// Stop the hint and wait until its native search releases the session.
+  ///
+  /// Call this before another action starts an engine search or mutates the
+  /// current position. The Rust abort signal is asynchronous, so clearing the
+  /// overlay alone is not enough to make a second search safe.
+  static Future<void> stopBestMoveHintAndWait() async {
+    final bool hasHintRequest =
+        _isBestMoveHintSearching ||
+        AnalysisMode.isHint ||
+        _activeEngineAnalysisMode == AnalysisOverlayMode.hint;
+    final Future<void>? activeSearch = hasHintRequest
+        ? _activeEngineAnalysis
+        : null;
+    stopBestMoveHint();
+    if (activeSearch != null) {
+      await activeSearch;
+    }
+  }
+
+  static void _stopHintSearchWhenOverlayIsCleared() {
+    if (!_isBestMoveHintSearching || AnalysisMode.isHint) {
+      return;
+    }
+    _isBestMoveHintSearching = false;
+    AnalysisMode.stateNotifier.removeListener(
+      _stopHintSearchWhenOverlayIsCleared,
+    );
+    _stopCurrentEngineAnalysis();
+  }
+
+  /// Continuously deepen a single best-move hint without applying the move.
   static Future<bool> showBestMoveHint(BuildContext context) async {
     assert(
       !AnalysisMode.isAnalyzing,
       'Cannot request a hint while another analysis pass is running.',
     );
+    if (AnalysisMode.isAnalyzing || _isBestMoveHintSearching) {
+      return false;
+    }
 
     final NativeMillGameSession? session = _activeNativeSession(context);
     if (session == null) {
@@ -578,49 +763,36 @@ class AnalysisService {
       return false;
     }
 
-    final GeneralSettings engineSettings = DB().generalSettings.copyWith(
-      resignIfMostLose: false,
-    );
-    final NativeMillAiTurnController hintSearch = NativeMillAiTurnController(
-      generalSettings: engineSettings,
-    );
+    final _BestMoveHintCacheKey hintCacheKey = _bestMoveHintCacheKey(session);
+    final _BestMoveHintCacheEntry? cacheEntry = _bestMoveHintCache;
+    final MoveAnalysisResult? cachedHintResult =
+        cacheEntry != null && cacheEntry.key == hintCacheKey
+        ? cacheEntry.result
+        : null;
+    if (cacheEntry != null && cachedHintResult == null) {
+      invalidateBestMoveHintCache();
+    }
 
-    AnalysisMode.disable();
-    AnalysisMode.setAnalyzing(true);
+    _isBestMoveHintSearching = true;
+    AnalysisMode.stateNotifier.addListener(_stopHintSearchWhenOverlayIsCleared);
     try {
-      final GameAction? action = await session.searchBestAction(
-        depth: hintSearch.searchDepthForSession(session),
-        moveLimitMs: hintSearch.moveLimitMs,
-        engineSettings: engineSettings,
-      );
-      if (action == null) {
-        if (context.mounted) {
-          _showSnackBar(context, S.of(context).noMoreHintsAvailable);
-        }
-        return false;
-      }
-
-      final Object? movePayload = action.payload['move'];
-      assert(
-        movePayload is String && movePayload.isNotEmpty,
-        'Hint action must carry a non-empty move notation.',
-      );
-      final String move = movePayload! as String;
-
-      final int? score = session.lastAiBestValue;
-      AnalysisMode.enable(
-        <MoveAnalysisResult>[
-          MoveAnalysisResult(move: move, outcome: _hintOutcome(score)),
-        ],
+      return await _enableEngineMultiPvAnalysis(
+        context,
+        session,
         mode: AnalysisOverlayMode.hint,
-        source: AnalysisSource.engine,
+        requestedLineCountOverride: 1,
+        searchDepthOverride: _hintSearchDepth,
+        moveLimitMsOverride: _hintSearchTimeMs,
+        hintCacheKey: hintCacheKey,
+        cachedHintResult: cachedHintResult,
       );
-      return true;
-    } catch (e, st) {
-      logger.e("$_logTag Hint failed: $e", stackTrace: st);
-      return false;
     } finally {
-      AnalysisMode.setAnalyzing(false);
+      if (_isBestMoveHintSearching) {
+        _isBestMoveHintSearching = false;
+        AnalysisMode.stateNotifier.removeListener(
+          _stopHintSearchWhenOverlayIsCleared,
+        );
+      }
     }
   }
 
@@ -630,6 +802,22 @@ class AnalysisService {
       return session;
     }
     return GameController().activeNativeMillSession;
+  }
+
+  static _BestMoveHintCacheKey _bestMoveHintCacheKey(
+    NativeMillGameSession session,
+  ) {
+    final GeneralSettings settings = DB().generalSettings;
+    return _BestMoveHintCacheKey(
+      fen: session.getFen().trim(),
+      positionSnapshot: session.state.value,
+      ruleSettingsJson: jsonEncode(DB().ruleSettings.toJson()),
+      usePerfectDatabase: settings.usePerfectDatabase,
+      patchMakeTraps: settings.patchMakeTraps,
+      considerMobility: settings.considerMobility,
+      focusOnBlockingPaths: settings.focusOnBlockingPaths,
+      engineThreads: settings.engineThreads,
+    );
   }
 
   static String _fenWithOppositeSideToMove(String fen) {
@@ -646,13 +834,6 @@ class AnalysisService {
       ),
     };
     return fields.join(' ');
-  }
-
-  static AnalysisOutcome _hintOutcome(int? score) {
-    if (score == null) {
-      return AnalysisOutcome.unknown;
-    }
-    return _engineOutcome(score);
   }
 
   static AnalysisOutcome _engineOutcome(int score) {
@@ -768,4 +949,61 @@ class _PerfectDatabaseAnalysis {
   final List<MoveAnalysisResult> results;
   final List<MoveAnalysisResult> lineResults;
   final List<String> trapMoves;
+}
+
+@immutable
+class _BestMoveHintCacheKey {
+  const _BestMoveHintCacheKey({
+    required this.fen,
+    required this.positionSnapshot,
+    required this.ruleSettingsJson,
+    required this.usePerfectDatabase,
+    required this.patchMakeTraps,
+    required this.considerMobility,
+    required this.focusOnBlockingPaths,
+    required this.engineThreads,
+  });
+
+  final String fen;
+  final Object positionSnapshot;
+  final String ruleSettingsJson;
+  final bool usePerfectDatabase;
+  final bool patchMakeTraps;
+  final bool considerMobility;
+  final bool focusOnBlockingPaths;
+  final int engineThreads;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is _BestMoveHintCacheKey &&
+            other.fen == fen &&
+            identical(other.positionSnapshot, positionSnapshot) &&
+            other.ruleSettingsJson == ruleSettingsJson &&
+            other.usePerfectDatabase == usePerfectDatabase &&
+            other.patchMakeTraps == patchMakeTraps &&
+            other.considerMobility == considerMobility &&
+            other.focusOnBlockingPaths == focusOnBlockingPaths &&
+            other.engineThreads == engineThreads;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    fen,
+    positionSnapshot,
+    ruleSettingsJson,
+    usePerfectDatabase,
+    patchMakeTraps,
+    considerMobility,
+    focusOnBlockingPaths,
+    engineThreads,
+  );
+}
+
+@immutable
+class _BestMoveHintCacheEntry {
+  const _BestMoveHintCacheEntry(this.key, this.result);
+
+  final _BestMoveHintCacheKey key;
+  final MoveAnalysisResult result;
 }

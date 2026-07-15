@@ -34,6 +34,7 @@ void main() {
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
     AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
     AnalysisService.debugCreateTemporarySession = null;
+    AnalysisService.invalidateBestMoveHintCache();
   });
 
   tearDown(() {
@@ -42,6 +43,7 @@ void main() {
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
     AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
     AnalysisService.debugCreateTemporarySession = null;
+    AnalysisService.invalidateBestMoveHintCache();
     DB.instance = null;
   });
 
@@ -196,6 +198,270 @@ void main() {
     expect(session.requestedShufflingValues, <bool>[false]);
     expect(session.requestedUseLazySmpValues, <bool>[false]);
   });
+
+  testWidgets('best move hint deepens at full strength until stopped', (
+    WidgetTester tester,
+  ) async {
+    const List<NativeMillPrincipalVariation> shallow =
+        <NativeMillPrincipalVariation>[
+          NativeMillPrincipalVariation(
+            rank: 1,
+            move: 'a7',
+            score: 0,
+            nodes: 8,
+            depth: 1,
+            line: <String>['a7'],
+          ),
+        ];
+    const List<NativeMillPrincipalVariation> deeper =
+        <NativeMillPrincipalVariation>[
+          NativeMillPrincipalVariation(
+            rank: 1,
+            move: 'd6',
+            score: 12,
+            nodes: 4096,
+            depth: 4,
+            line: <String>['d6', 'f4'],
+          ),
+        ];
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession(
+      completeSearchManually: true,
+      variations: deeper,
+      progressUpdates: const <List<NativeMillPrincipalVariation>>[
+        shallow,
+        deeper,
+      ],
+    );
+    addTearDown(session.dispose);
+
+    DB().generalSettings = const GeneralSettings(
+      engineThreads: 8,
+      searchAlgorithm: SearchAlgorithm.random,
+      aiIsLazy: true,
+      skillLevel: 3,
+      shufflingEnabled: false,
+    );
+
+    await _pumpAnalysisButton(tester, session);
+    final Future<bool> hintSearch = AnalysisService.showBestMoveHint(
+      tester.element(find.byKey(const Key('analysis_service_toggle'))),
+    );
+    await tester.pump();
+
+    expect(session.requestedMultiPvValues, <int>[1]);
+    expect(session.requestedDepthValues, <int>[32]);
+    expect(session.requestedMoveLimitValues, <int>[10 * 60 * 1000]);
+    expect(session.requestedSearchAlgorithmValues, <SearchAlgorithm?>[
+      SearchAlgorithm.pvs,
+    ]);
+    expect(session.requestedAiIsLazyValues, <bool>[false]);
+    expect(session.requestedSkillLevelValues, <int>[30]);
+    expect(session.requestedUseLazySmpValues, <bool>[true]);
+    expect(session.requestedShufflingValues, <bool>[true]);
+    expect(AnalysisService.isBestMoveHintSearching, isTrue);
+    expect(AnalysisMode.isHint, isTrue);
+    expect(AnalysisMode.isAnalyzing, isTrue);
+    expect(AnalysisMode.analysisResults.single.move, 'd6');
+    expect(AnalysisMode.analysisResults.single.depth, 4);
+    expect(AnalysisMode.analysisResults.single.line, <String>['d6', 'f4']);
+
+    bool stopCompleted = false;
+    final Future<void> stop = AnalysisService.stopBestMoveHintAndWait().then((
+      _,
+    ) {
+      stopCompleted = true;
+    });
+    await tester.pump();
+    expect(AnalysisService.isBestMoveHintSearching, isFalse);
+    expect(AnalysisMode.isHint, isFalse);
+    expect(AnalysisMode.isAnalyzing, isFalse);
+    expect(stopCompleted, isFalse);
+
+    session.completePendingSearch();
+    await stop;
+    expect(stopCompleted, isTrue);
+    expect(await hintSearch, isFalse);
+  });
+
+  testWidgets('clearing a hint overlay cancels stale search updates', (
+    WidgetTester tester,
+  ) async {
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession(
+      completeSearchManually: true,
+    );
+    addTearDown(session.dispose);
+
+    await _pumpAnalysisButton(tester, session);
+    final Future<bool> hintSearch = AnalysisService.showBestMoveHint(
+      tester.element(find.byKey(const Key('analysis_service_toggle'))),
+    );
+    await tester.pump();
+
+    expect(AnalysisService.isBestMoveHintSearching, isTrue);
+    expect(AnalysisMode.analysisResults.single.move, 'a7');
+
+    AnalysisMode.disable();
+    expect(AnalysisService.isBestMoveHintSearching, isFalse);
+    expect(AnalysisMode.isHint, isFalse);
+
+    session.completePendingSearch();
+    expect(await hintSearch, isFalse);
+    expect(AnalysisMode.isEnabled, isFalse);
+    expect(AnalysisMode.analysisResults, isEmpty);
+  });
+
+  testWidgets('restarted hint keeps cached depth until the move changes', (
+    WidgetTester tester,
+  ) async {
+    final _ControlledAnalysisSession session = _ControlledAnalysisSession();
+    addTearDown(session.dispose);
+
+    await _pumpAnalysisButton(tester, session);
+    final BuildContext context = tester.element(
+      find.byKey(const Key('analysis_service_toggle')),
+    );
+
+    final Future<bool> firstHint = AnalysisService.showBestMoveHint(context);
+    await tester.pump();
+    session.emit(0, const <NativeMillPrincipalVariation>[
+      NativeMillPrincipalVariation(
+        rank: 1,
+        move: 'd6',
+        score: 12,
+        nodes: 4096,
+        depth: 8,
+        line: <String>['d6', 'f4', 'a1'],
+      ),
+    ]);
+    expect(AnalysisMode.analysisResults.single.move, 'd6');
+    expect(AnalysisMode.analysisResults.single.depth, 8);
+
+    final Future<void> firstStop = AnalysisService.stopBestMoveHintAndWait();
+    session.complete(0);
+    await firstStop;
+    expect(await firstHint, isFalse);
+
+    final Future<bool> restartedHint = AnalysisService.showBestMoveHint(
+      context,
+    );
+    await tester.pump();
+
+    expect(AnalysisMode.isHint, isTrue);
+    expect(AnalysisMode.isAnalyzing, isTrue);
+    expect(AnalysisMode.analysisResults.single.move, 'd6');
+    expect(AnalysisMode.analysisResults.single.depth, 8);
+    expect(AnalysisMode.analysisResults.single.line, <String>[
+      'd6',
+      'f4',
+      'a1',
+    ]);
+
+    session.emit(1, const <NativeMillPrincipalVariation>[
+      NativeMillPrincipalVariation(
+        rank: 1,
+        move: 'd6',
+        score: 3,
+        nodes: 16,
+        depth: 2,
+        line: <String>['d6'],
+      ),
+    ]);
+    expect(AnalysisMode.analysisResults.single.move, 'd6');
+    expect(AnalysisMode.analysisResults.single.depth, 8);
+
+    session.emit(1, const <NativeMillPrincipalVariation>[
+      NativeMillPrincipalVariation(
+        rank: 1,
+        move: 'a7',
+        score: 5,
+        nodes: 32,
+        depth: 3,
+        line: <String>['a7', 'd6'],
+      ),
+    ]);
+    expect(AnalysisMode.analysisResults.single.move, 'a7');
+    expect(AnalysisMode.analysisResults.single.depth, 3);
+    expect(AnalysisMode.analysisResults.single.line, <String>['a7', 'd6']);
+
+    final Future<void> secondStop = AnalysisService.stopBestMoveHintAndWait();
+    session.complete(1);
+    await secondStop;
+    expect(await restartedHint, isFalse);
+  });
+
+  testWidgets('hint cache is not reused for a changed position', (
+    WidgetTester tester,
+  ) async {
+    final _ControlledAnalysisSession session = _ControlledAnalysisSession();
+    addTearDown(session.dispose);
+
+    await _pumpAnalysisButton(tester, session);
+    final BuildContext context = tester.element(
+      find.byKey(const Key('analysis_service_toggle')),
+    );
+
+    final Future<bool> firstHint = AnalysisService.showBestMoveHint(context);
+    await tester.pump();
+    session.emit(0, const <NativeMillPrincipalVariation>[
+      NativeMillPrincipalVariation(
+        rank: 1,
+        move: 'd6',
+        score: 12,
+        nodes: 4096,
+        depth: 8,
+        line: <String>['d6', 'f4'],
+      ),
+    ]);
+    final Future<void> firstStop = AnalysisService.stopBestMoveHintAndWait();
+    session.complete(0);
+    await firstStop;
+    expect(await firstHint, isFalse);
+
+    session.fen = '8/8/8 w p p 0 0 0 0 1';
+    final Future<bool> changedPositionHint = AnalysisService.showBestMoveHint(
+      context,
+    );
+    await tester.pump();
+
+    expect(AnalysisMode.isHint, isTrue);
+    expect(AnalysisMode.analysisResults, isEmpty);
+
+    final Future<void> secondStop = AnalysisService.stopBestMoveHintAndWait();
+    session.complete(1);
+    await secondStop;
+    expect(await changedPositionHint, isFalse);
+  });
+
+  testWidgets(
+    'a stopped hint can still be awaited while native search drains',
+    (WidgetTester tester) async {
+      final _RecordingAnalysisSession session = _RecordingAnalysisSession(
+        completeSearchManually: true,
+      );
+      addTearDown(session.dispose);
+
+      await _pumpAnalysisButton(tester, session);
+      final Future<bool> hintSearch = AnalysisService.showBestMoveHint(
+        tester.element(find.byKey(const Key('analysis_service_toggle'))),
+      );
+      await tester.pump();
+
+      AnalysisService.stopBestMoveHint();
+      expect(AnalysisService.isBestMoveHintSearching, isFalse);
+      expect(AnalysisMode.isHint, isFalse);
+
+      bool drained = false;
+      final Future<void> waitForDrain =
+          AnalysisService.stopBestMoveHintAndWait().then((_) => drained = true);
+      await tester.pump();
+      expect(drained, isFalse);
+
+      session.completePendingSearch();
+      await waitForDrain;
+      expect(drained, isTrue);
+      expect(await hintSearch, isFalse);
+    },
+  );
 
   testWidgets('go deeper requests long analysis time', (
     WidgetTester tester,
@@ -499,6 +765,7 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
     this.completeSearchManually = false,
     this.emitProgressUpdate = true,
     this.variations = _defaultVariations,
+    this.progressUpdates,
   }) : super.fromPort(NativeMillRulesPort());
 
   static const List<NativeMillPrincipalVariation> _defaultVariations =
@@ -517,6 +784,7 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
   final bool completeSearchManually;
   final bool emitProgressUpdate;
   final List<NativeMillPrincipalVariation> variations;
+  final List<List<NativeMillPrincipalVariation>>? progressUpdates;
   final List<int> requestedMultiPvValues = <int>[];
   final List<int> requestedDepthValues = <int>[];
   final List<int> requestedMoveLimitValues = <int>[];
@@ -554,7 +822,11 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
     requestedAiIsLazyValues.add(engineSettings?.aiIsLazy ?? false);
     requestedSkillLevelValues.add(engineSettings?.skillLevel ?? -1);
     if (emitProgressUpdate) {
-      onUpdate?.call(variations);
+      final List<List<NativeMillPrincipalVariation>> updates =
+          progressUpdates ?? <List<NativeMillPrincipalVariation>>[variations];
+      for (final List<NativeMillPrincipalVariation> update in updates) {
+        onUpdate?.call(update);
+      }
     }
     if (completeSearchManually) {
       final Completer<List<NativeMillPrincipalVariation>> completer =
@@ -564,4 +836,53 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
     }
     return variations;
   }
+}
+
+class _ControlledAnalysisSession extends NativeMillGameSession {
+  _ControlledAnalysisSession() : super.fromPort(NativeMillRulesPort());
+
+  String fen = '********/********/******** w p p 0 9 9 0 0 0';
+  final List<_ControlledAnalysisSearch> searches =
+      <_ControlledAnalysisSearch>[];
+
+  void emit(int searchIndex, List<NativeMillPrincipalVariation> variations) {
+    searches[searchIndex].onUpdate?.call(variations);
+  }
+
+  void complete(
+    int searchIndex, {
+    List<NativeMillPrincipalVariation> variations =
+        const <NativeMillPrincipalVariation>[],
+  }) {
+    final Completer<List<NativeMillPrincipalVariation>> completer =
+        searches[searchIndex].completer;
+    assert(!completer.isCompleted, 'Controlled search already completed.');
+    completer.complete(variations);
+  }
+
+  @override
+  String getFen() => fen;
+
+  @override
+  Future<List<NativeMillPrincipalVariation>> searchPrincipalVariations({
+    int depth = 1,
+    int moveLimitMs = 0,
+    required int multiPv,
+    GeneralSettings? engineSettings,
+    void Function(List<NativeMillPrincipalVariation> variations)? onUpdate,
+  }) {
+    final _ControlledAnalysisSearch search = _ControlledAnalysisSearch(
+      onUpdate,
+    );
+    searches.add(search);
+    return search.completer.future;
+  }
+}
+
+class _ControlledAnalysisSearch {
+  _ControlledAnalysisSearch(this.onUpdate);
+
+  final void Function(List<NativeMillPrincipalVariation> variations)? onUpdate;
+  final Completer<List<NativeMillPrincipalVariation>> completer =
+      Completer<List<NativeMillPrincipalVariation>>();
 }

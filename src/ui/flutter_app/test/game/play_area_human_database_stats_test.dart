@@ -3,6 +3,8 @@
 
 // play_area_human_database_stats_test.dart
 
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ import 'package:sanmill/game_page/services/analysis/analysis_service.dart';
 import 'package:sanmill/game_page/services/analysis_mode.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/painters/advantage_graph_painter.dart';
+import 'package:sanmill/game_page/services/painters/painters.dart';
 import 'package:sanmill/game_page/services/player_timer.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
 import 'package:sanmill/game_page/widgets/mini_board.dart';
@@ -1233,6 +1236,120 @@ void main() {
     expect(session.searchCalls, 1);
     expect(_currentPathMoves(), hasLength(1));
     expect(GameController().gameInstance.isHumanToMove, isFalse);
+  });
+
+  testWidgets('move now waits for an active hint search to stop', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final _MoveNowFakeSearchSession session = _MoveNowFakeSearchSession(
+      holdHintSearch: true,
+    );
+    _bindExistingNativeGame(GameMode.humanVsAi, session);
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_hint')));
+    await tester.pump();
+
+    expect(AnalysisService.isBestMoveHintSearching, isTrue);
+    expect(session.hintSearchInFlight, isTrue);
+
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('play_area_game_menu_move_now')));
+    await tester.pump();
+
+    expect(AnalysisService.isBestMoveHintSearching, isFalse);
+    expect(AnalysisMode.isHint, isFalse);
+    expect(session.hintSearchInFlight, isTrue);
+    expect(session.searchCalls, 0);
+
+    session.completeHintSearch();
+    await tester.pumpAndSettle();
+
+    expect(session.hintSearchInFlight, isFalse);
+    expect(session.searchCalls, 1);
+    expect(_currentPathMoves(), hasLength(1));
+  });
+
+  testWidgets('board move waits for an active hint search to stop', (
+    WidgetTester tester,
+  ) async {
+    db = _GamePageDb(
+      generalSettings: const GeneralSettings(),
+      displaySettings: const DisplaySettings(
+        animationDuration: 0,
+        isUnplacedAndRemovedPiecesShown: false,
+        isHistoryNavigationToolbarShown: false,
+      ),
+    );
+    DB.instance = db;
+    final _MoveNowFakeSearchSession session = _MoveNowFakeSearchSession(
+      holdHintSearch: true,
+    );
+    _bindExistingNativeGame(GameMode.humanVsAi, session);
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(
+      _localizedApp(
+        GameSessionScope(
+          session: session,
+          child: const Scaffold(
+            body: SizedBox.square(
+              dimension: 390,
+              child: GameBoard(boardImage: null),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.runAsync(() async {
+      await Future<void>.delayed(const Duration(milliseconds: 300));
+    });
+    await tester.pump();
+
+    unawaited(
+      AnalysisService.showBestMoveHint(tester.element(find.byType(GameBoard))),
+    );
+    await tester.pump();
+    expect(session.hintSearchInFlight, isTrue);
+
+    final Finder boardGesture = find.byKey(
+      const Key('gesture_detector_game_board'),
+    );
+    final Size boardSize = tester.getSize(boardGesture);
+    await tester.tapAt(
+      tester.getTopLeft(boardGesture) + pointFromIndex(0, boardSize),
+    );
+    await tester.pump();
+
+    expect(AnalysisService.isBestMoveHintSearching, isFalse);
+    expect(AnalysisMode.isHint, isFalse);
+    expect(session.hintSearchInFlight, isTrue);
+    expect(session.searchCalls, 0);
+    expect(_currentPathMoves(), isEmpty);
+
+    session.completeHintSearch();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
+
+    expect(session.hintSearchInFlight, isFalse);
+    expect(session.searchCalls, 1);
+    expect(_currentPathMoves(), hasLength(2));
   });
 
   testWidgets('move now skips the AI vs AI animation delay', (
@@ -2650,9 +2767,8 @@ void main() {
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
     );
-    final NativeMillGameSession session = await _bindNativeGame(
-      GameMode.analysis,
-    );
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    _bindExistingNativeGame(GameMode.analysis, session);
     final MillSessionRecorderBridge recorderBridge =
         MillSessionRecorderBridge.forGameController(session: session);
     addTearDown(recorderBridge.dispose);
@@ -2811,9 +2927,8 @@ void main() {
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
     );
-    final NativeMillGameSession session = await _bindNativeGame(
-      GameMode.analysis,
-    );
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    _bindExistingNativeGame(GameMode.analysis, session);
     final MillSessionRecorderBridge recorderBridge =
         MillSessionRecorderBridge.forGameController(session: session);
     addTearDown(recorderBridge.dispose);
@@ -6057,6 +6172,116 @@ void main() {
     );
   });
 
+  testWidgets('human vs ai hint button starts and stops deepening search', (
+    WidgetTester tester,
+  ) async {
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession(
+      completeSearchManually: true,
+    );
+    _bindExistingNativeGame(GameMode.humanVsAi, session);
+
+    await _pumpSessionPlayArea(tester, session);
+    final Finder hintButton = find.byKey(
+      const Key('play_area_bottom_bar_hint'),
+    );
+
+    await tester.tap(hintButton);
+    await tester.pump();
+
+    expect(session.requestedMultiPvValues, <int>[1]);
+    expect(session.requestedDepthValues, <int>[32]);
+    expect(session.requestedMoveLimitValues, <int>[10 * 60 * 1000]);
+    expect(AnalysisService.isBestMoveHintSearching, isTrue);
+    expect(AnalysisMode.isHint, isTrue);
+    expect(AnalysisMode.isAnalyzing, isTrue);
+    expect(
+      _bottomBarButtonOpacity(tester, const Key('play_area_bottom_bar_hint')),
+      1.0,
+    );
+    expect(
+      tester.widget<LichessBottomBarButton>(hintButton).highlighted,
+      isTrue,
+    );
+    expect(tester.widget<LichessBottomBarButton>(hintButton).onTap, isNotNull);
+
+    await tester.tap(hintButton);
+    await tester.pump();
+
+    expect(AnalysisService.isBestMoveHintSearching, isFalse);
+    expect(AnalysisMode.isHint, isFalse);
+    expect(AnalysisMode.isAnalyzing, isFalse);
+    expect(
+      tester.widget<LichessBottomBarButton>(hintButton).highlighted,
+      isFalse,
+    );
+
+    session.completePendingSearch();
+    await tester.pumpAndSettle();
+  });
+
+  testWidgets('human vs ai takeback waits for hint search shutdown', (
+    WidgetTester tester,
+  ) async {
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession(
+      completeSearchManually: true,
+    );
+    _bindExistingNativeGame(GameMode.humanVsAi, session);
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    expect(
+      await session.replayMainline(<ExtMove>[
+        ExtMove('d6', side: PieceColor.white),
+        ExtMove('f4', side: PieceColor.black),
+      ]),
+      isTrue,
+    );
+    await tester.pump();
+    expect(_currentPathMoves(), <String>['d6', 'f4']);
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_hint')));
+    await tester.pump();
+    expect(AnalysisService.isBestMoveHintSearching, isTrue);
+
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_take_back')));
+    await tester.pump();
+
+    expect(AnalysisService.isBestMoveHintSearching, isFalse);
+    expect(_currentPathMoves(), <String>['d6', 'f4']);
+
+    session.completePendingSearch();
+    await tester.pumpAndSettle();
+
+    expect(_currentPathMoves(), isEmpty);
+    expect(AnalysisMode.isEnabled, isFalse);
+  });
+
+  testWidgets('disposing play area cancels an active hint search', (
+    WidgetTester tester,
+  ) async {
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession(
+      completeSearchManually: true,
+    );
+    _bindExistingNativeGame(GameMode.humanVsAi, session);
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_hint')));
+    await tester.pump();
+    expect(AnalysisService.isBestMoveHintSearching, isTrue);
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump();
+
+    expect(AnalysisService.isBestMoveHintSearching, isFalse);
+    expect(AnalysisMode.isEnabled, isFalse);
+
+    session.completePendingSearch();
+    await tester.pump();
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('human vs ai resign is disabled while game is abortable', (
     WidgetTester tester,
   ) async {
@@ -6540,12 +6765,64 @@ Future<NativeMillGameSession> _bindNativeHumanAiGame() {
 }
 
 class _MoveNowFakeSearchSession extends NativeMillGameSession {
-  _MoveNowFakeSearchSession({this.actionLimit})
+  _MoveNowFakeSearchSession({this.actionLimit, this.holdHintSearch = false})
     : super.fromPort(NativeMillRulesPort());
 
   final int? actionLimit;
+  final bool holdHintSearch;
 
   int searchCalls = 0;
+  bool hintSearchInFlight = false;
+  late final Completer<List<NativeMillPrincipalVariation>> _hintSearch;
+
+  void completeHintSearch() {
+    assert(hintSearchInFlight, 'No hint search is waiting to complete.');
+    assert(!_hintSearch.isCompleted, 'Hint search already completed.');
+    _hintSearch.complete(const <NativeMillPrincipalVariation>[
+      NativeMillPrincipalVariation(
+        rank: 1,
+        move: 'd6',
+        score: 0,
+        nodes: 1,
+        depth: 1,
+        line: <String>['d6'],
+      ),
+    ]);
+  }
+
+  @override
+  Future<List<NativeMillPrincipalVariation>> searchPrincipalVariations({
+    int depth = 1,
+    int moveLimitMs = 0,
+    required int multiPv,
+    GeneralSettings? engineSettings,
+    void Function(List<NativeMillPrincipalVariation> variations)? onUpdate,
+  }) async {
+    const List<NativeMillPrincipalVariation> variations =
+        <NativeMillPrincipalVariation>[
+          NativeMillPrincipalVariation(
+            rank: 1,
+            move: 'd6',
+            score: 0,
+            nodes: 1,
+            depth: 1,
+            line: <String>['d6'],
+          ),
+        ];
+    hintSearchInFlight = true;
+    onUpdate?.call(variations);
+    try {
+      if (!holdHintSearch) {
+        return variations;
+      }
+      final Completer<List<NativeMillPrincipalVariation>> completer =
+          Completer<List<NativeMillPrincipalVariation>>();
+      _hintSearch = completer;
+      return await completer.future;
+    } finally {
+      hintSearchInFlight = false;
+    }
+  }
 
   @override
   Future<platform.GameAction?> searchBestAction({
@@ -6553,6 +6830,10 @@ class _MoveNowFakeSearchSession extends NativeMillGameSession {
     int moveLimitMs = 0,
     GeneralSettings? engineSettings,
   }) async {
+    assert(
+      !hintSearchInFlight,
+      'Move now must wait for the active hint search to release the session.',
+    );
     searchCalls++;
     if (actionLimit != null && searchCalls > actionLimit!) {
       return null;
@@ -6680,10 +6961,30 @@ class _GamePageDb extends MockDB {
 }
 
 class _RecordingAnalysisSession extends NativeMillGameSession {
-  _RecordingAnalysisSession() : super.fromPort(NativeMillRulesPort());
+  _RecordingAnalysisSession({this.completeSearchManually = false})
+    : super.fromPort(NativeMillRulesPort());
 
+  final bool completeSearchManually;
   final List<int> requestedMultiPvValues = <int>[];
+  final List<int> requestedDepthValues = <int>[];
   final List<int> requestedMoveLimitValues = <int>[];
+  late final Completer<List<NativeMillPrincipalVariation>> _pendingSearch;
+
+  void completePendingSearch() {
+    final Completer<List<NativeMillPrincipalVariation>> pending =
+        _pendingSearch;
+    assert(!pending.isCompleted, 'Pending analysis search already completed.');
+    pending.complete(const <NativeMillPrincipalVariation>[
+      NativeMillPrincipalVariation(
+        rank: 1,
+        move: 'd6',
+        score: 0,
+        nodes: 1,
+        depth: 1,
+        line: <String>['d6'],
+      ),
+    ]);
+  }
 
   @override
   Future<List<NativeMillPrincipalVariation>> searchPrincipalVariations({
@@ -6694,6 +6995,7 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
     void Function(List<NativeMillPrincipalVariation> variations)? onUpdate,
   }) async {
     requestedMultiPvValues.add(multiPv);
+    requestedDepthValues.add(depth);
     requestedMoveLimitValues.add(moveLimitMs);
     const List<NativeMillPrincipalVariation> variations =
         <NativeMillPrincipalVariation>[
@@ -6707,6 +7009,12 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
           ),
         ];
     onUpdate?.call(variations);
+    if (completeSearchManually) {
+      final Completer<List<NativeMillPrincipalVariation>> completer =
+          Completer<List<NativeMillPrincipalVariation>>();
+      _pendingSearch = completer;
+      return completer.future;
+    }
     return variations;
   }
 }

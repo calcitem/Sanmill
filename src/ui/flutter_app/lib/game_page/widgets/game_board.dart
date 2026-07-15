@@ -566,6 +566,14 @@ class _GameBoardState extends State<GameBoard>
                     }
                   }
 
+                  if (AnalysisService.isBestMoveHintSearching ||
+                      AnalysisMode.isHint) {
+                    await AnalysisService.stopBestMoveHintAndWait();
+                    if (!mounted) {
+                      return;
+                    }
+                  }
+
                   final EngineResponse response = await tapHandler.onBoardTap(
                     square,
                   );
