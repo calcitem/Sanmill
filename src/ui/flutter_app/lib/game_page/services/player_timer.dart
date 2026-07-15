@@ -47,6 +47,14 @@ class PlayerTimer {
   void start() {
     final GameController gameController = GameController();
 
+    // Local same-device games use [OfflineBoardClock], which tracks a
+    // separate total for each side and optional Fischer increment.
+    if (gameController.gameInstance.gameMode == GameMode.humanVsHuman) {
+      stop();
+      remainingTimeNotifier.value = 0;
+      return;
+    }
+
     // Skip timer for LAN mode
     if (gameController.gameInstance.gameMode == GameMode.humanVsLAN) {
       stop();

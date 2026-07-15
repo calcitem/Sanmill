@@ -15,9 +15,11 @@ import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/analysis/analysis_service.dart';
 import 'package:sanmill/game_page/services/analysis_mode.dart';
 import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/game_page/services/offline_board_clock.dart';
 import 'package:sanmill/game_page/services/painters/advantage_graph_painter.dart';
 import 'package:sanmill/game_page/services/painters/painters.dart';
 import 'package:sanmill/game_page/services/player_timer.dart';
+import 'package:sanmill/game_page/services/transform/transform.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
 import 'package:sanmill/game_page/widgets/mini_board.dart';
 import 'package:sanmill/game_page/widgets/moves_list_page.dart';
@@ -25,6 +27,7 @@ import 'package:sanmill/game_page/widgets/play_area.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart' as platform;
 import 'package:sanmill/game_shell/game_session_scope.dart';
+import 'package:sanmill/games/mill/mill_board_transform_actions.dart';
 import 'package:sanmill/games/mill/mill_session_recorder_bridge.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
@@ -87,6 +90,7 @@ void main() {
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
     AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
     PlayerTimer().reset();
+    OfflineBoardClock().reset();
   });
 
   tearDown(() {
@@ -101,6 +105,7 @@ void main() {
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
     AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
     PlayerTimer().reset();
+    OfflineBoardClock().reset();
     DB.instance = null;
   });
 
@@ -123,7 +128,7 @@ void main() {
         ),
       ),
     );
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     final Finder strip = find.byKey(
       const Key('play_area_human_database_stats_strip'),
@@ -245,7 +250,7 @@ void main() {
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
     );
-    GameController().gameInstance.gameMode = GameMode.humanVsHuman;
+    GameController().gameInstance.gameMode = GameMode.aiVsAi;
     GameController().gameRecorder.reset();
     GameController().gameRecorder.appendMove(
       ExtMove('d6', side: PieceColor.white),
@@ -270,7 +275,7 @@ void main() {
         ),
       ),
     );
-    await tester.pumpAndSettle();
+    await tester.pump();
 
     expect(
       find.byKey(const Key('play_area_regular_move_list_wrap')),
@@ -417,7 +422,7 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_move_now')),
-      findsNothing,
+      findsOneWidget,
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_previous')),
@@ -665,10 +670,7 @@ void main() {
     expect(find.byKey(const Key('play_area_regular_move_1')), findsNothing);
     expect(find.byKey(const Key('play_area_regular_move_2')), findsNothing);
     expect(groupedMove, findsOneWidget);
-    expect(
-      find.text('d6 xa1 xd1 xg1 xb2 xd2 xf2 xc3 xd3 xe3 a4 b4'),
-      findsOneWidget,
-    );
+    expect(find.text('d6xa1xd1xg1xb2xd2xf2xc3xd3xe3 a4 b4'), findsOneWidget);
     expect(
       tester.getSize(groupedMove).height,
       greaterThan(tester.getSize(find.text('1.')).height),
@@ -682,7 +684,10 @@ void main() {
   testWidgets('regular finite clock shows Lichess-style pause control', (
     WidgetTester tester,
   ) async {
-    db.generalSettings = const GeneralSettings(humanMoveTime: 30);
+    db.generalSettings = const GeneralSettings(
+      offlineBoardTimeSeconds: 30,
+      offlineBoardIncrementSeconds: 3,
+    );
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
@@ -691,7 +696,12 @@ void main() {
     controller.gameInstance.gameMode = GameMode.humanVsHuman;
     controller.gameRecorder.reset();
     controller.gameRecorder.appendMove(ExtMove('d6', side: PieceColor.white));
-    PlayerTimer().start();
+    OfflineBoardClock()
+      ..setup(
+        initialTime: const Duration(seconds: 30),
+        increment: const Duration(seconds: 3),
+      )
+      ..resume();
 
     await tester.binding.setSurfaceSize(const Size(390, 844));
     addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -709,24 +719,24 @@ void main() {
         ),
       ),
     );
-    await tester.pumpAndSettle();
+    await tester.pump();
 
     final Finder clockButton = find.byKey(
-      const Key('play_area_regular_bottom_bar_clock'),
+      const Key('play_area_offline_board_bottom_clock'),
     );
     expect(clockButton, findsOneWidget);
     expect(tester.widget<LichessBottomBarButton>(clockButton).label, 'Pause');
 
     await tester.tap(clockButton);
-    await tester.pumpAndSettle();
-    expect(PlayerTimer().status, PlayerTimerStatus.paused);
+    await tester.pump();
+    expect(OfflineBoardClock().state.status, OfflineBoardClockStatus.paused);
     expect(tester.widget<LichessBottomBarButton>(clockButton).label, 'Resume');
 
     await tester.tap(clockButton);
-    await tester.pumpAndSettle();
-    expect(PlayerTimer().status, PlayerTimerStatus.running);
+    await tester.pump();
+    expect(OfflineBoardClock().state.status, OfflineBoardClockStatus.running);
     expect(tester.widget<LichessBottomBarButton>(clockButton).label, 'Pause');
-    PlayerTimer().reset();
+    OfflineBoardClock().reset();
   });
 
   testWidgets('regular move chip long press opens mini board preview', (
@@ -736,7 +746,7 @@ void main() {
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
     );
-    GameController().gameInstance.gameMode = GameMode.humanVsHuman;
+    GameController().gameInstance.gameMode = GameMode.aiVsAi;
     GameController().gameRecorder.reset();
     GameController().gameRecorder.appendMove(
       ExtMove(
@@ -1433,7 +1443,7 @@ void main() {
     WidgetTester tester,
   ) async {
     db.displaySettings = const DisplaySettings(isAdvantageGraphShown: true);
-    GameController().gameInstance.gameMode = GameMode.humanVsHuman;
+    GameController().gameInstance.gameMode = GameMode.aiVsAi;
 
     await tester.binding.setSurfaceSize(const Size(390, 788));
     addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -1461,7 +1471,7 @@ void main() {
     );
   });
 
-  testWidgets('regular dense portrait layout handles insets', (
+  testWidgets('offline board dense portrait layout handles insets', (
     WidgetTester tester,
   ) async {
     db.displaySettings = const DisplaySettings(
@@ -1501,6 +1511,10 @@ void main() {
     expect(
       find.byKey(const Key('play_area_single_child_scroll_view')),
       findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_offline_board_column')),
+      findsOneWidget,
     );
     final Size boardSize = tester.getSize(
       find.byKey(const Key('play_area_game_board_container')),
@@ -5057,10 +5071,7 @@ void main() {
     expect(find.byKey(const Key('play_area_human_ai_move_1')), findsNothing);
     expect(find.byKey(const Key('play_area_human_ai_move_2')), findsNothing);
     expect(groupedMove, findsOneWidget);
-    expect(
-      find.text('d6 xa1 xd1 xg1 xb2 xd2 xf2 xc3 xd3 xe3 a4 b4'),
-      findsOneWidget,
-    );
+    expect(find.text('d6xa1xd1xg1xb2xd2xf2xc3xd3xe3 a4 b4'), findsOneWidget);
     expect(
       tester.getSize(groupedMove).height,
       greaterThan(tester.getSize(find.text('1.')).height),
@@ -5807,7 +5818,7 @@ void main() {
     );
   });
 
-  testWidgets('regular games use landscape side panel layout', (
+  testWidgets('offline board uses landscape side panel layout', (
     WidgetTester tester,
   ) async {
     db.displaySettings = const DisplaySettings(
@@ -5841,13 +5852,13 @@ void main() {
     await tester.pumpAndSettle();
 
     final Finder landscapeContent = find.byKey(
-      const Key('play_area_regular_landscape_content'),
+      const Key('play_area_offline_board_landscape_content'),
     );
     final Finder boardPane = find.byKey(
-      const Key('play_area_regular_landscape_board_pane'),
+      const Key('play_area_offline_board_landscape_board'),
     );
     final Finder sidePanel = find.byKey(
-      const Key('play_area_regular_landscape_side_panel'),
+      const Key('play_area_offline_board_landscape_side_panel'),
     );
 
     expect(landscapeContent, findsOneWidget);
@@ -5858,11 +5869,11 @@ void main() {
     );
     expect(bottomBar, findsOne);
     expect(
-      find.byKey(const Key('play_area_regular_landscape_move_list')),
+      find.byKey(const Key('play_area_offline_board_landscape_move_list')),
       findsOneWidget,
     );
     expect(
-      find.byKey(const Key('play_area_regular_landscape_move_3')),
+      find.byKey(const Key('play_area_offline_board_landscape_move_3')),
       findsOneWidget,
     );
     expect(
@@ -6097,10 +6108,21 @@ void main() {
     );
     DB.instance = db;
 
-    final NativeMillGameSession session = await _bindNativeHumanAiGame();
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.humanVsHuman,
+    );
     final MillSessionRecorderBridge recorderBridge =
         MillSessionRecorderBridge.forGameController(session: session);
     addTearDown(recorderBridge.dispose);
+
+    expect(
+      await session.replayMainline(<ExtMove>[
+        ExtMove('d6', side: PieceColor.white),
+        ExtMove('f4', side: PieceColor.black),
+      ]),
+      isTrue,
+    );
+    expect(_currentPathMoves(), <String>['d6', 'f4']);
 
     await tester.binding.setSurfaceSize(const Size(390, 844));
     addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -6119,15 +6141,7 @@ void main() {
     expect(find.byKey(const Key('game_page_scaffold')), findsOneWidget);
     expect(find.byKey(const Key('game_page_back_button')), findsOneWidget);
     expect(find.byKey(const Key('human_ai_new_game_sheet')), findsNothing);
-
-    expect(
-      await session.replayMainline(<ExtMove>[
-        ExtMove('d6', side: PieceColor.white),
-        ExtMove('f4', side: PieceColor.black),
-      ]),
-      isTrue,
-    );
-    await tester.pump();
+    expect(find.byKey(const Key('offline_board_new_game_sheet')), findsNothing);
     expect(_currentPathMoves(), <String>['d6', 'f4']);
 
     await tester.tap(find.byKey(const Key('game_page_back_button')));
@@ -6611,7 +6625,108 @@ void main() {
     expect(_currentPathMoves(), <String>['d6']);
   });
 
-  testWidgets('human vs human black requester removes only black reply', (
+  testWidgets('offline board move restarts a paused clock without increment', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.humanVsHuman,
+    );
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+    GameController().isControllerReady = true;
+    OfflineBoardClock()
+      ..setup(
+        initialTime: const Duration(seconds: 5),
+        increment: const Duration(seconds: 3),
+      )
+      ..resume()
+      ..pause();
+    final Duration pausedWhiteTime = OfflineBoardClock().state.whiteTime;
+
+    await _pumpSessionPlayArea(tester, session);
+    final BuildContext context = tester.element(find.byType(PlayArea));
+    final EngineResponse response = await TapHandler(
+      context: context,
+    ).onBoardTap(notationToSquare('d6'));
+    await tester.pump();
+
+    expect(response, const EngineResponseHumanOK());
+    expect(_currentPathMoves(), <String>['d6']);
+    expect(OfflineBoardClock().state.status, OfflineBoardClockStatus.running);
+    expect(OfflineBoardClock().state.activeSide, PieceColor.black);
+    expect(OfflineBoardClock().state.whiteTime, pausedWhiteTime);
+    OfflineBoardClock().pause();
+    await tester.pump(const Duration(milliseconds: 1));
+  });
+
+  testWidgets('offline board offers and applies all 16 board transforms', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.humanVsHuman,
+    );
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    expect(await session.replayMainline(_takeBackCaptureFixture()), isTrue);
+    await tester.pump();
+
+    final String fenBeforeTransform = session.getFen();
+    final List<String> movesBeforeTransform = _currentPathMoves();
+    final String expectedFen = transformFEN(
+      fenBeforeTransform,
+      TransformationType.rotate90,
+    );
+    final List<String> expectedMoves = movesBeforeTransform
+        .map(
+          (String move) =>
+              transformMoveNotation(move, TransformationType.rotate90),
+        )
+        .toList(growable: false);
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(
+      find.byKey(const Key('play_area_offline_board_bottom_menu')),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(const Key('play_area_offline_board_menu_flip_board')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_offline_board_transform_sheet')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_offline_board_transform_grid')),
+      findsOne,
+    );
+    for (final MillBoardTransformAction action
+        in allMillBoardTransformActions) {
+      expect(
+        find.byKey(Key('play_area_offline_board_transform_${action.id}')),
+        findsOne,
+        reason: 'Missing offline board transformation ${action.id}',
+      );
+    }
+
+    await tester.tap(
+      find.byKey(const Key('play_area_offline_board_transform_rotate')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_offline_board_transform_sheet')),
+      findsNothing,
+    );
+    expect(session.getFen(), expectedFen);
+    expect(_currentPathMoves(), expectedMoves);
+  });
+
+  testWidgets('offline board undo removes the latest complete turn', (
     WidgetTester tester,
   ) async {
     final NativeMillGameSession session = await _bindNativeGame(
@@ -6626,26 +6741,18 @@ void main() {
 
     await _pumpSessionPlayArea(tester, session);
     await tester.tap(
-      find.byKey(const Key('play_area_regular_bottom_bar_take_back')),
+      find.byKey(const Key('play_area_offline_board_bottom_take_back')),
     );
     await tester.pumpAndSettle();
     expect(
       find.byKey(const Key('play_area_take_back_requester_sheet')),
-      findsOneWidget,
+      findsNothing,
     );
-    expect(find.text('Who is taking back?'), findsOneWidget);
-    expect(find.text('White takes back'), findsOneWidget);
-    expect(find.text('Black takes back'), findsOneWidget);
-
-    await tester.tap(
-      find.byKey(const Key('play_area_take_back_requester_black')),
-    );
-    await tester.pumpAndSettle();
 
     expect(_currentPathMoves(), <String>['a1', 'd1', 'a4', 'd2', 'a7', 'xd1']);
   });
 
-  testWidgets('human vs human white requester removes reply and own capture', (
+  testWidgets('offline board undo keeps a capture with its forming move', (
     WidgetTester tester,
   ) async {
     final NativeMillGameSession session = await _bindNativeGame(
@@ -6660,27 +6767,17 @@ void main() {
 
     await _pumpSessionPlayArea(tester, session);
     await tester.tap(
-      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+      find.byKey(const Key('play_area_offline_board_bottom_take_back')),
     );
     await tester.pumpAndSettle();
-    await tester.tap(
-      find.byKey(const Key('play_area_regular_game_menu_take_back')),
-    );
-    await tester.pumpAndSettle();
-    expect(
-      find.byKey(const Key('play_area_take_back_requester_sheet')),
-      findsOneWidget,
-    );
-    expect(find.text('Who is taking back?'), findsOneWidget);
-    expect(find.text('White takes back'), findsOneWidget);
-    expect(find.text('Black takes back'), findsOneWidget);
+    expect(_currentPathMoves(), <String>['a1', 'd1', 'a4', 'd2', 'a7', 'xd1']);
 
     await tester.tap(
-      find.byKey(const Key('play_area_take_back_requester_white')),
+      find.byKey(const Key('play_area_offline_board_bottom_take_back')),
     );
     await tester.pumpAndSettle();
 
-    expect(_currentPathMoves(), <String>['a1', 'd1', 'a4', 'd2', 'a7']);
+    expect(_currentPathMoves(), <String>['a1', 'd1', 'a4', 'd2']);
   });
 }
 

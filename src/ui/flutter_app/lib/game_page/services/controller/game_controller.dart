@@ -1028,6 +1028,9 @@ class GameController {
       _sessionOutcomeForWinner(winner),
       reason: reason.tgfReason,
     );
+    if (gameInstance.gameMode == GameMode.humanVsHuman) {
+      OfflineBoardClock().pause();
+    }
     return true;
   }
 
@@ -1087,6 +1090,7 @@ class GameController {
 
     // Reset player timer
     PlayerTimer().reset();
+    OfflineBoardClock().reset();
 
     // Reset game timing tracking
     _resetGameTiming();
@@ -1232,6 +1236,7 @@ class GameController {
 
     // Reset player timer
     PlayerTimer().reset();
+    OfflineBoardClock().reset();
   }
 
   /// S.of(context).starts a LAN game, either as a host or a client.

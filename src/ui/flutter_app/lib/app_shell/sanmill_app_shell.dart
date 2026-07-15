@@ -1544,7 +1544,7 @@ class _HomeEmptyContent extends StatelessWidget {
     final GameModeEntry? playComputerMode = _modeById(
       MillRouteIds.humanVsAi.value,
     );
-    final GameModeEntry? overTheBoardMode = _modeById(
+    final GameModeEntry? offlineBoardMode = _modeById(
       MillRouteIds.humanVsHuman.value,
     );
 
@@ -1593,12 +1593,12 @@ class _HomeEmptyContent extends StatelessWidget {
                 title: playComputerMode.label,
                 onTap: () => onPlayRouteSelected(playComputerMode.id.value),
               ),
-            if (overTheBoardMode != null)
+            if (offlineBoardMode != null)
               _MoreTile(
                 key: const Key('sanmill_home_quick_start_over_the_board'),
-                icon: overTheBoardMode.icon ?? Icons.table_bar_rounded,
-                title: overTheBoardMode.label,
-                onTap: () => onPlayRouteSelected(overTheBoardMode.id.value),
+                icon: offlineBoardMode.icon ?? Icons.table_bar_rounded,
+                title: offlineBoardMode.label,
+                onTap: () => onPlayRouteSelected(offlineBoardMode.id.value),
               ),
             _MoreTile(
               key: const Key('sanmill_home_quick_start_variants'),

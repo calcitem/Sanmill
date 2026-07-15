@@ -337,7 +337,7 @@ class MillGameModule extends GameModule {
       ),
       GameModeEntry(
         id: MillRouteIds.humanVsHuman,
-        label: s.overTheBoard,
+        label: s.offlineBoard,
         icon: Icons.table_restaurant_outlined,
         menuKey: const Key('drawer_item_human_vs_human'),
         contentKey: const Key('human_human'),

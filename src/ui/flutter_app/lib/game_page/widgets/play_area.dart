@@ -34,6 +34,7 @@ import '../../generated/intl/l10n.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/screenshot_service.dart';
+import '../../shared/services/system_ui_service.dart';
 import '../../shared/themes/app_styles.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/utils/screen_insets.dart';
@@ -46,6 +47,8 @@ import '../services/analysis/analysis_service.dart';
 import '../services/analysis_mode.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
+import '../services/offline_board_clock.dart';
+import '../services/offline_board_history.dart';
 import '../services/painters/advantage_graph_painter.dart';
 import '../services/player_timer.dart';
 import '../services/transform/transform.dart';
@@ -53,6 +56,7 @@ import 'ai_chat_dialog.dart';
 import 'game_page.dart';
 import 'mini_board.dart';
 import 'modals/game_options_modal.dart';
+import 'modals/offline_board_options_sheet.dart';
 import 'moves_list_page.dart';
 import 'toolbars/game_toolbar.dart';
 
@@ -687,6 +691,8 @@ class PlayAreaState extends State<PlayArea> {
   static const double _kInlineMoveListHeight = 40;
   static const double _kWrappedMoveListMaxHeight = 104;
   static const double _kPlayerPanelHeight = 56;
+  static const double _kOfflineBoardPlayerPanelHeight = 72;
+  static const double _kOfflineBoardLayoutSafetyMargin = 4;
   static const double _kAnalysisEngineLinesReserveHeight = 90;
   static const double _kAnalysisSmallBoardScale = 0.8;
   static const Duration _kAnalysisRefreshDebounceDelay = Duration(
@@ -1020,6 +1026,11 @@ class PlayAreaState extends State<PlayArea> {
       return;
     }
 
+    if (_isOfflineBoardMode) {
+      unawaited(showOfflineBoardNewGameSheet(navigator.context));
+      return;
+    }
+
     _openGameOptions(navigator.context);
   }
 
@@ -1212,7 +1223,7 @@ class PlayAreaState extends State<PlayArea> {
           key: const Key('play_area_analysis_continue_over_the_board'),
           leading: const Icon(Icons.groups_2_outlined),
           makeLabel: (BuildContext context) =>
-              Text(effectiveStrings.overTheBoard),
+              Text(effectiveStrings.offlineBoard),
           onPressed: () => _continueFromHere(
             session: session,
             navigator: navigator,
@@ -1416,6 +1427,9 @@ class PlayAreaState extends State<PlayArea> {
   bool get _usesLichessHumanAiToolbar =>
       GameController().gameInstance.gameMode == GameMode.humanVsAi;
 
+  bool get _isOfflineBoardMode =>
+      GameController().gameInstance.gameMode == GameMode.humanVsHuman;
+
   bool get _isAnalysisMode =>
       GameController().gameInstance.gameMode == GameMode.analysis;
 
@@ -1576,11 +1590,37 @@ class PlayAreaState extends State<PlayArea> {
     }
 
     if (GameController().gameInstance.gameMode == GameMode.humanVsHuman) {
-      _showHumanVsHumanTakeBackRequesterSheet(context);
+      final int? steps = _offlineBoardTakeBackStepCountOrNull;
+      if (steps == null) {
+        GameController().headerTipNotifier.showTip(S.of(context).noMove);
+        return;
+      }
+      await HistoryNavigator.takeBackN(
+        context,
+        steps,
+        pop: false,
+        toolbar: true,
+      );
+      _syncOfflineBoardClockToPosition();
       return;
     }
 
     await HistoryNavigator.takeBack(context, pop: false, toolbar: true);
+  }
+
+  /// Returns the number of recorder actions that form the latest Mill turn.
+  ///
+  /// A chess move is atomic, but a Mill turn can be represented by a placing
+  /// or moving action followed by one or more captures by the same side.  The
+  /// Offline Board undo button therefore removes the complete trailing
+  /// same-side group so it never leaves the game halfway through a capture
+  /// sequence.
+  int? get _offlineBoardTakeBackStepCountOrNull {
+    assert(_isOfflineBoardMode);
+    final List<ExtMove> path = GameController().gameRecorder.currentPath;
+    return OfflineBoardHistory.takeBackStepCount(
+      path.map((ExtMove move) => move.side).toList(growable: false),
+    );
   }
 
   Future<void> _stepBackFromRegularBottomBar(BuildContext context) async {
@@ -1588,6 +1628,25 @@ class PlayAreaState extends State<PlayArea> {
       return;
     }
     await HistoryNavigator.takeBack(context, pop: false, toolbar: true);
+    _syncOfflineBoardClockToPosition();
+  }
+
+  Future<void> _stepForwardFromRegularBottomBar(BuildContext context) async {
+    if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+      return;
+    }
+    await HistoryNavigator.stepForward(context, pop: false, toolbar: true);
+    _syncOfflineBoardClockToPosition();
+  }
+
+  void _syncOfflineBoardClockToPosition() {
+    if (!_isOfflineBoardMode) {
+      return;
+    }
+    final PieceColor side = GameController().activeBoardView.sideToMove;
+    if (side == PieceColor.white || side == PieceColor.black) {
+      OfflineBoardClock().syncActiveSide(side);
+    }
   }
 
   Future<void> _takeBackForRequesterFromRegularBottomBar(
@@ -1607,48 +1666,6 @@ class PlayAreaState extends State<PlayArea> {
           'steps': steps,
         });
     await HistoryNavigator.takeBackN(context, steps, pop: false, toolbar: true);
-  }
-
-  void _showHumanVsHumanTakeBackRequesterSheet(BuildContext context) {
-    assert(GameController().gameInstance.gameMode == GameMode.humanVsHuman);
-    final S strings = S.of(context);
-    showLichessActionSheet<void>(
-      context: context,
-      sheetKey: const Key('play_area_take_back_requester_sheet'),
-      title: Text(strings.humanVsHumanTakeBackRequesterTitle),
-      backgroundColor: _actionSheetBackground(context),
-      foregroundColor: _actionSheetForeground(context),
-      actions: <LichessActionSheetAction>[
-        LichessActionSheetAction(
-          key: const Key('play_area_take_back_requester_white'),
-          leading: _TakeBackRequesterSwatch(
-            color: DB().colorSettings.whitePieceColor,
-          ),
-          makeLabel: (BuildContext context) =>
-              Text(strings.humanVsHumanTakeBackRequesterWhite),
-          onPressed: () => unawaited(
-            _takeBackForRequesterFromRegularBottomBar(
-              context,
-              requesterSide: PieceColor.white,
-            ),
-          ),
-        ),
-        LichessActionSheetAction(
-          key: const Key('play_area_take_back_requester_black'),
-          leading: _TakeBackRequesterSwatch(
-            color: DB().colorSettings.blackPieceColor,
-          ),
-          makeLabel: (BuildContext context) =>
-              Text(strings.humanVsHumanTakeBackRequesterBlack),
-          onPressed: () => unawaited(
-            _takeBackForRequesterFromRegularBottomBar(
-              context,
-              requesterSide: PieceColor.black,
-            ),
-          ),
-        ),
-      ],
-    );
   }
 
   bool get _canShowHintFromBottomBar {
@@ -1778,6 +1795,7 @@ class PlayAreaState extends State<PlayArea> {
     required Key sheetKey,
     required String keyPrefix,
     required S strings,
+    required String title,
     required String currentBoardLayout,
     GameSession? session,
   }) {
@@ -1791,7 +1809,7 @@ class PlayAreaState extends State<PlayArea> {
         builder: (BuildContext dialogContext) => _BoardTransformPickerDialog(
           sheetKey: sheetKey,
           keyPrefix: keyPrefix,
-          strings: strings,
+          title: title,
           currentBoardLayout: currentBoardLayout,
           backgroundColor: _actionSheetBackground(dialogContext),
           foregroundColor: _actionSheetForeground(dialogContext),
@@ -2388,8 +2406,83 @@ class PlayAreaState extends State<PlayArea> {
     return _analysisEngineDepth();
   }
 
+  void _showOfflineBoardGameMenu() {
+    assert(_isOfflineBoardMode);
+    final BuildContext hostContext = context;
+    final BuildContext actionContext = _stableActionContext(hostContext);
+    final S strings = S.of(hostContext);
+    final NavigatorState navigator = Navigator.of(hostContext);
+    final GameSession? hostSession =
+        GameSessionScope.sessionOf(hostContext) ??
+        GameController().activeNativeMillSession;
+    final String boardTransformLayout = _activeBoardLayoutForTransformPreview();
+    showLichessActionSheet<void>(
+      context: hostContext,
+      sheetKey: const Key('play_area_offline_board_menu_sheet'),
+      backgroundColor: _actionSheetBackground(hostContext),
+      foregroundColor: _actionSheetForeground(hostContext),
+      actions: <LichessActionSheetAction>[
+        LichessActionSheetAction(
+          key: const Key('play_area_offline_board_menu_new_game'),
+          leading: const Icon(Icons.add_circle_outline),
+          makeLabel: (BuildContext context) =>
+              Text(strings.offlineBoardNewGame),
+          onPressed: () => _requestRegularNewGame(navigator),
+        ),
+        LichessActionSheetAction(
+          key: const Key('play_area_offline_board_menu_flip_board'),
+          leading: const Icon(Icons.flip_camera_android_outlined),
+          trailing: const Icon(Icons.chevron_right),
+          dismissOnPress: false,
+          makeLabel: (BuildContext context) =>
+              Text(strings.offlineBoardFlipBoard),
+          onPressed: () {},
+          onPressedWithContext: (BuildContext menuActionContext) =>
+              _replaceMenuWithBoardTransformPicker(
+                Navigator.of(menuActionContext),
+                sheetKey: const Key('play_area_offline_board_transform_sheet'),
+                keyPrefix: 'play_area_offline_board_transform',
+                strings: strings,
+                title: strings.offlineBoardFlipBoard,
+                currentBoardLayout: boardTransformLayout,
+                session: hostSession,
+              ),
+        ),
+        if (_isRegularGameOver)
+          LichessActionSheetAction(
+            key: const Key('play_area_offline_board_menu_result'),
+            leading: const Icon(Icons.info_outline),
+            makeLabel: (BuildContext context) => Text(strings.results),
+            onPressed: _showRegularGameResult,
+          )
+        else ...<LichessActionSheetAction>[
+          if (_canOfferDrawFromRegularBottomBar)
+            LichessActionSheetAction(
+              key: const Key('play_area_offline_board_menu_offer_draw'),
+              leading: const Icon(Icons.handshake_outlined),
+              makeLabel: (BuildContext context) => Text(strings.offerDraw),
+              onPressed: () =>
+                  unawaited(_showOfferDrawConfirmationRegular(actionContext)),
+            ),
+          if (_canResignFromRegularBottomBar)
+            LichessActionSheetAction(
+              key: const Key('play_area_offline_board_menu_resign'),
+              leading: const Icon(CupertinoIcons.flag),
+              makeLabel: (BuildContext context) => Text(strings.resign),
+              onPressed: () =>
+                  unawaited(_showRegularResignConfirmation(actionContext)),
+            ),
+        ],
+      ],
+    );
+  }
+
   void _showRegularGameMenu() {
     assert(!_usesLichessHumanAiToolbar);
+    if (_isOfflineBoardMode) {
+      _showOfflineBoardGameMenu();
+      return;
+    }
     final BuildContext hostContext = context;
     final BuildContext actionContext = _stableActionContext(hostContext);
     final S strings = S.of(hostContext);
@@ -2493,6 +2586,7 @@ class PlayAreaState extends State<PlayArea> {
                 sheetKey: const Key('play_area_regular_board_transform_sheet'),
                 keyPrefix: 'play_area_regular_board_transform',
                 strings: strings,
+                title: strings.flipBoard,
                 currentBoardLayout: boardTransformLayout,
                 session: hostSession,
               ),
@@ -2651,6 +2745,7 @@ class PlayAreaState extends State<PlayArea> {
                 sheetKey: const Key('play_area_board_transform_sheet'),
                 keyPrefix: 'play_area_board_transform',
                 strings: strings,
+                title: strings.flipBoard,
                 currentBoardLayout: boardTransformLayout,
                 session: hostSession,
               ),
@@ -3026,22 +3121,23 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   Widget _buildMoveListForRegularGame(BuildContext context) {
-    return _withMoveListTopInset(
-      context,
-      _InlineMoveList(
-        key: const Key('play_area_regular_move_list'),
-        wrapKey: const Key('play_area_regular_move_list_wrap'),
-        roundKeyPrefix: 'play_area_regular_round_',
-        moveKeyPrefix: 'play_area_regular_move_',
-        onMoveTap: (BuildContext context, PgnNode<ExtMove> node) {
-          return HistoryNavigator.gotoNode(context, node, pop: false);
-        },
-        showMovePreview: true,
-        layout: _InlineMoveListLayout.stacked,
-        groupByRound: true,
-        fixedHeight: _kWrappedMoveListMaxHeight,
-      ),
+    final Widget moveList = _InlineMoveList(
+      key: const Key('play_area_regular_move_list'),
+      wrapKey: const Key('play_area_regular_move_list_wrap'),
+      roundKeyPrefix: 'play_area_regular_round_',
+      moveKeyPrefix: 'play_area_regular_move_',
+      onMoveTap: (BuildContext context, PgnNode<ExtMove> node) async {
+        await HistoryNavigator.gotoNode(context, node, pop: false);
+        _syncOfflineBoardClockToPosition();
+      },
+      showMovePreview: true,
+      layout: _InlineMoveListLayout.stacked,
+      groupByRound: true,
+      fixedHeight: _kWrappedMoveListMaxHeight,
     );
+    return _isOfflineBoardMode
+        ? moveList
+        : _withMoveListTopInset(context, moveList);
   }
 
   Widget _buildHumanAiMainContent({
@@ -3245,6 +3341,46 @@ class PlayAreaState extends State<PlayArea> {
         return ValueListenableBuilder<bool>(
           valueListenable: AnalysisMode.stateNotifier,
           builder: (BuildContext context, _, _) {
+            if (_isOfflineBoardMode) {
+              return ValueListenableBuilder<OfflineBoardClockState>(
+                valueListenable: OfflineBoardClock().stateNotifier,
+                builder:
+                    (
+                      BuildContext context,
+                      OfflineBoardClockState clock,
+                      Widget? child,
+                    ) {
+                      return _OfflineBoardBottomBar(
+                        onMenuPressed: _showRegularGameMenu,
+                        showClockControl: clock.isEnabled,
+                        isClockPaused: clock.isPaused,
+                        onClockPressed:
+                            clock.status == OfflineBoardClockStatus.flagged
+                            ? null
+                            : clock.isRunning
+                            ? OfflineBoardClock().pause
+                            : clock.isPaused
+                            ? OfflineBoardClock().resume
+                            : null,
+                        onTakeBackPressed: _canTakeBackFromRegularBottomBar
+                            ? () => unawaited(
+                                _takeBackFromRegularBottomBar(context),
+                              )
+                            : null,
+                        onPreviousPressed: _canStepBackFromRegularBottomBar
+                            ? () => unawaited(
+                                _stepBackFromRegularBottomBar(context),
+                              )
+                            : null,
+                        onNextPressed: _canStepForwardFromRegularBottomBar
+                            ? () => unawaited(
+                                _stepForwardFromRegularBottomBar(context),
+                              )
+                            : null,
+                      );
+                    },
+              );
+            }
             if (_isAnalysisMode) {
               return _AnalysisBottomBar(
                 onMenuPressed: _showRegularGameMenu,
@@ -3257,13 +3393,7 @@ class PlayAreaState extends State<PlayArea> {
                     ? () => unawaited(_stepBackFromRegularBottomBar(context))
                     : null,
                 onNextPressed: _canStepForwardFromRegularBottomBar
-                    ? () => unawaited(
-                        HistoryNavigator.stepForward(
-                          context,
-                          pop: false,
-                          toolbar: true,
-                        ),
-                      )
+                    ? () => unawaited(_stepForwardFromRegularBottomBar(context))
                     : null,
               );
             }
@@ -3289,13 +3419,8 @@ class PlayAreaState extends State<PlayArea> {
                       ? () => unawaited(_stepBackFromRegularBottomBar(context))
                       : null,
                   onNextPressed: _canStepForwardFromRegularBottomBar
-                      ? () => unawaited(
-                          HistoryNavigator.stepForward(
-                            context,
-                            pop: false,
-                            toolbar: true,
-                          ),
-                        )
+                      ? () =>
+                            unawaited(_stepForwardFromRegularBottomBar(context))
                       : null,
                 );
               },
@@ -3554,6 +3679,85 @@ class PlayAreaState extends State<PlayArea> {
           },
         );
       },
+    );
+  }
+
+  Widget _buildOfflineBoardMainContent({
+    required BuildContext context,
+    required bool showPieceCountRows,
+  }) {
+    final PieceColor bottomSide = _isBoardFlipped
+        ? PieceColor.black
+        : PieceColor.white;
+    final PieceColor topSide = bottomSide.opponent;
+    final ({bool bottomUpsideDown, bool topUpsideDown}) playerOrientation =
+        _offlineBoardPlayerOrientation(bottomSide);
+
+    return SafeArea(
+      top: false,
+      bottom: false,
+      right: false,
+      left: false,
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          final double pieceRowsHeight = showPieceCountRows
+              ? _pieceRowsHeightForLayout(context)
+              : AppTheme.boardMargin * 2;
+          final double nonBoardHeight =
+              _kWrappedMoveListMaxHeight +
+              _kOfflineBoardPlayerPanelHeight * 2 +
+              pieceRowsHeight +
+              _kOfflineBoardLayoutSafetyMargin;
+          final double boardSize = _boardSizeForConstraints(
+            constraints,
+            nonBoardHeight,
+          );
+          final Widget column = Column(
+            key: const Key('play_area_offline_board_column'),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _buildMoveListForRegularGame(context),
+              SizedBox(
+                height: _kOfflineBoardPlayerPanelHeight,
+                child: _OfflineBoardPlayerPanel(
+                  key: const Key('play_area_offline_board_top_player'),
+                  side: topSide,
+                  upsideDown: playerOrientation.topUpsideDown,
+                ),
+              ),
+              if (showPieceCountRows)
+                _isBoardFlipped
+                    ? _buildRemovedPieceCountRow()
+                    : _buildPieceCountRow()
+              else
+                const SizedBox(height: AppTheme.boardMargin),
+              SizedBox.square(
+                key: const Key('play_area_offline_board_board'),
+                dimension: boardSize,
+                child: _buildBoardScreenshot(),
+              ),
+              if (showPieceCountRows)
+                _isBoardFlipped
+                    ? _buildPieceCountRow()
+                    : _buildRemovedPieceCountRow()
+              else
+                const SizedBox(height: AppTheme.boardMargin),
+              SizedBox(
+                height: _kOfflineBoardPlayerPanelHeight,
+                child: _OfflineBoardPlayerPanel(
+                  key: const Key('play_area_offline_board_bottom_player'),
+                  side: bottomSide,
+                  upsideDown: playerOrientation.bottomUpsideDown,
+                ),
+              ),
+            ],
+          );
+          if (!constraints.hasBoundedHeight) {
+            return SingleChildScrollView(child: column);
+          }
+          return SizedBox(height: constraints.maxHeight, child: column);
+        },
+      ),
     );
   }
 
@@ -4121,6 +4325,176 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
+  Widget _buildOfflineBoardLandscapeContent({
+    required BuildContext context,
+    required BoxConstraints constraints,
+    required bool showPieceCountRows,
+  }) {
+    assert(
+      constraints.hasBoundedHeight,
+      'Offline Board landscape layout requires bounded height.',
+    );
+    final Size viewport = constraints.biggest;
+    const double horizontalPadding = AppStyles.bodyPadding;
+    const double verticalPadding = 8;
+    const double gap = AppStyles.bodyPadding;
+    const double pieceRowHeight = 24;
+    const double targetSidePanelWidth = 320;
+    final double availableWidth = math.max(
+      0,
+      viewport.width - horizontalPadding * 2,
+    );
+    final double availableHeight = math.max(
+      0,
+      viewport.height - kLichessBottomBarHeight - verticalPadding * 2,
+    );
+    final double boardHeightAllowance = math.max(
+      0,
+      availableHeight - (showPieceCountRows ? pieceRowHeight * 2 : 0),
+    );
+    final double boardSize = math.min(
+      boardHeightAllowance,
+      math.max(0, availableWidth - targetSidePanelWidth - gap),
+    );
+    final PieceColor bottomSide = _isBoardFlipped
+        ? PieceColor.black
+        : PieceColor.white;
+    final PieceColor topSide = bottomSide.opponent;
+    final ({bool bottomUpsideDown, bool topUpsideDown}) playerOrientation =
+        _offlineBoardPlayerOrientation(bottomSide);
+
+    return SizedBox(
+      key: const Key('play_area_offline_board_landscape_content'),
+      width: viewport.width,
+      height: viewport.height,
+      child: SafeArea(
+        top: false,
+        bottom: false,
+        right: false,
+        left: false,
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: horizontalPadding,
+                  vertical: verticalPadding,
+                ),
+                child: Row(
+                  children: <Widget>[
+                    SizedBox(
+                      width: boardSize,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          if (showPieceCountRows)
+                            SizedBox(
+                              height: pieceRowHeight,
+                              child: _isBoardFlipped
+                                  ? _buildRemovedPieceCountRow()
+                                  : _buildPieceCountRow(),
+                            ),
+                          SizedBox.square(
+                            key: const Key(
+                              'play_area_offline_board_landscape_board',
+                            ),
+                            dimension: boardSize,
+                            child: _buildBoardScreenshot(),
+                          ),
+                          if (showPieceCountRows)
+                            SizedBox(
+                              height: pieceRowHeight,
+                              child: _isBoardFlipped
+                                  ? _buildPieceCountRow()
+                                  : _buildRemovedPieceCountRow(),
+                            ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: gap),
+                    Expanded(
+                      child: Column(
+                        key: const Key(
+                          'play_area_offline_board_landscape_side_panel',
+                        ),
+                        children: <Widget>[
+                          SizedBox(
+                            height: _kOfflineBoardPlayerPanelHeight,
+                            child: _OfflineBoardPlayerPanel(
+                              side: topSide,
+                              upsideDown: playerOrientation.topUpsideDown,
+                            ),
+                          ),
+                          Expanded(
+                            child: _InlineMoveList(
+                              key: const Key(
+                                'play_area_offline_board_landscape_move_list',
+                              ),
+                              wrapKey: const Key(
+                                'play_area_offline_board_landscape_move_wrap',
+                              ),
+                              roundKeyPrefix:
+                                  'play_area_offline_board_landscape_round_',
+                              moveKeyPrefix:
+                                  'play_area_offline_board_landscape_move_',
+                              onMoveTap:
+                                  (
+                                    BuildContext context,
+                                    PgnNode<ExtMove> node,
+                                  ) async {
+                                    await HistoryNavigator.gotoNode(
+                                      context,
+                                      node,
+                                      pop: false,
+                                    );
+                                    _syncOfflineBoardClockToPosition();
+                                  },
+                              showMovePreview: true,
+                              layout: _InlineMoveListLayout.stacked,
+                              groupByRound: true,
+                            ),
+                          ),
+                          SizedBox(
+                            height: _kOfflineBoardPlayerPanelHeight,
+                            child: _OfflineBoardPlayerPanel(
+                              side: bottomSide,
+                              upsideDown: playerOrientation.bottomUpsideDown,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            _buildRegularBottomBar(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  ({bool bottomUpsideDown, bool topUpsideDown}) _offlineBoardPlayerOrientation(
+    PieceColor bottomSide,
+  ) {
+    assert(bottomSide == PieceColor.white || bottomSide == PieceColor.black);
+    if (!DB().generalSettings.offlineBoardFlipAfterMove) {
+      return (bottomUpsideDown: false, topUpsideDown: true);
+    }
+
+    final PieceColor sideToMove =
+        GameController().activeSessionSideToMove ??
+        GameController().activeBoardView.sideToMove;
+    final bool activePlayerFacesFromTop =
+        (sideToMove == PieceColor.white || sideToMove == PieceColor.black) &&
+        sideToMove != bottomSide;
+    return (
+      bottomUpsideDown: activePlayerFacesFromTop,
+      topUpsideDown: activePlayerFacesFromTop,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     _syncAnalysisMoveListener();
@@ -4143,6 +4517,7 @@ class PlayAreaState extends State<PlayArea> {
         final bool isPuzzle =
             GameController().gameInstance.gameMode == GameMode.puzzle;
         final bool isAnalysisMode = _isAnalysisMode;
+        final bool isOfflineBoardMode = _isOfflineBoardMode;
         final bool usesLichessHumanAiToolbar =
             _usesLichessHumanAiToolbar && !isSetupPosition && !isPuzzle;
         final bool usesHumanAiBoardLayout =
@@ -4194,6 +4569,13 @@ class PlayAreaState extends State<PlayArea> {
             constraints.maxWidth > constraints.maxHeight;
 
         if (useRegularLandscapeLayout) {
+          if (isOfflineBoardMode) {
+            return _buildOfflineBoardLandscapeContent(
+              context: context,
+              constraints: constraints,
+              showPieceCountRows: showPieceCountRows,
+            );
+          }
           return _buildRegularLandscapeContent(
             context: context,
             constraints: constraints,
@@ -4206,7 +4588,12 @@ class PlayAreaState extends State<PlayArea> {
         final Widget mainContent = SizedBox(
           key: const Key('play_area_main_content'),
           width: dimension,
-          child: usesHumanAiBoardLayout
+          child: isOfflineBoardMode
+              ? _buildOfflineBoardMainContent(
+                  context: context,
+                  showPieceCountRows: showPieceCountRows,
+                )
+              : usesHumanAiBoardLayout
               ? _buildHumanAiMainContent(
                   context: context,
                   showPieceCountRows: showPieceCountRows,
@@ -4246,6 +4633,7 @@ class PlayAreaState extends State<PlayArea> {
                 if (DB().displaySettings.isHistoryNavigationToolbarShown &&
                     !isSetupPosition &&
                     !isPuzzle &&
+                    !isOfflineBoardMode &&
                     !usesLichessHumanAiToolbar)
                   GamePageToolbar(
                     key: const Key('play_area_history_nav_toolbar_bottom'),
@@ -8275,6 +8663,196 @@ class _RegularGameBottomBar extends StatelessWidget {
   }
 }
 
+class _OfflineBoardBottomBar extends StatelessWidget {
+  const _OfflineBoardBottomBar({
+    required this.onMenuPressed,
+    required this.showClockControl,
+    required this.isClockPaused,
+    required this.onClockPressed,
+    required this.onTakeBackPressed,
+    required this.onPreviousPressed,
+    required this.onNextPressed,
+  });
+
+  final VoidCallback onMenuPressed;
+  final bool showClockControl;
+  final bool isClockPaused;
+  final VoidCallback? onClockPressed;
+  final VoidCallback? onTakeBackPressed;
+  final VoidCallback? onPreviousPressed;
+  final VoidCallback? onNextPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color messageColor = DB().colorSettings.messageColor;
+    return KeyedSubtree(
+      key: const Key('play_area_offline_board_bottom_bar'),
+      child: LichessBottomBar(
+        key: const Key('play_area_main_toolbar_bottom'),
+        backgroundColor: Colors.transparent,
+        foregroundColor: messageColor,
+        children: <Widget>[
+          LichessBottomBarButton(
+            key: const Key('play_area_offline_board_bottom_menu'),
+            icon: Icons.menu,
+            label: S.of(context).menu,
+            onTap: onMenuPressed,
+            withShadow: true,
+          ),
+          if (showClockControl)
+            LichessBottomBarButton(
+              key: const Key('play_area_offline_board_bottom_clock'),
+              icon: isClockPaused ? CupertinoIcons.play : CupertinoIcons.pause,
+              label: isClockPaused ? S.of(context).resume : S.of(context).pause,
+              onTap: onClockPressed,
+              withShadow: true,
+            ),
+          _RepeatButton(
+            onLongPress: onPreviousPressed,
+            child: LichessBottomBarButton(
+              key: const Key('play_area_offline_board_bottom_previous'),
+              icon: CupertinoIcons.chevron_back,
+              label: S.of(context).offlineBoardPrevious,
+              onTap: onPreviousPressed,
+              showTooltip: false,
+              withShadow: true,
+            ),
+          ),
+          _RepeatButton(
+            onLongPress: onNextPressed,
+            child: LichessBottomBarButton(
+              key: const Key('play_area_offline_board_bottom_next'),
+              icon: CupertinoIcons.chevron_forward,
+              label: S.of(context).offlineBoardNext,
+              onTap: onNextPressed,
+              showTooltip: false,
+              withShadow: true,
+            ),
+          ),
+          LichessBottomBarButton(
+            key: const Key('play_area_offline_board_bottom_take_back'),
+            icon: CupertinoIcons.arrow_uturn_left,
+            label: S.of(context).offlineBoardTakeback,
+            onTap: onTakeBackPressed,
+            withShadow: true,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _OfflineBoardPlayerPanel extends StatelessWidget {
+  const _OfflineBoardPlayerPanel({
+    super.key,
+    required this.side,
+    required this.upsideDown,
+  });
+
+  final PieceColor side;
+  final bool upsideDown;
+
+  @override
+  Widget build(BuildContext context) {
+    assert(side == PieceColor.white || side == PieceColor.black);
+    return ValueListenableBuilder<OfflineBoardClockState>(
+      valueListenable: OfflineBoardClock().stateNotifier,
+      builder:
+          (BuildContext context, OfflineBoardClockState clock, Widget? child) {
+            final Color baseColor = DB().colorSettings.messageColor;
+            final bool isActive = clock.isRunning && clock.activeSide == side;
+            final Color contentColor = baseColor.withValues(
+              alpha: isActive ? 1 : 0.68,
+            );
+            final String sideName = side == PieceColor.white
+                ? S.of(context).offlineBoardWhite
+                : S.of(context).offlineBoardBlack;
+            final String time = clock.isEnabled
+                ? _offlineBoardClockLabel(clock.timeFor(side))
+                : '∞';
+            final Widget content = LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                final bool compact = constraints.maxWidth < 280;
+                return Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: compact ? 12 : 28,
+                    vertical: 8,
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      if (!compact) ...<Widget>[
+                        Icon(
+                          Icons.person_outline,
+                          color: contentColor,
+                          size: 22,
+                        ),
+                        const SizedBox(width: 8),
+                      ],
+                      Expanded(
+                        child: Text(
+                          sideName,
+                          key: Key('offline_board_${side.name}_name'),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                color: contentColor,
+                                fontWeight: isActive
+                                    ? FontWeight.w600
+                                    : FontWeight.w400,
+                              ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        time,
+                        key: Key('offline_board_${side.name}_clock'),
+                        style: getMonospaceTitleTextStyle(context).copyWith(
+                          color: contentColor,
+                          fontSize: compact ? 26 : 34,
+                          fontWeight: isActive
+                              ? FontWeight.w600
+                              : FontWeight.w400,
+                          letterSpacing: 0,
+                          shadows: const <Shadow>[],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+            return Semantics(
+              container: true,
+              label: '$sideName $time',
+              child: upsideDown
+                  ? RotatedBox(quarterTurns: 2, child: content)
+                  : content,
+            );
+          },
+    );
+  }
+}
+
+String _offlineBoardClockLabel(Duration duration) {
+  final int milliseconds = math.max(0, duration.inMilliseconds);
+  if (milliseconds < 10000) {
+    final int tenths = (milliseconds / 100).ceil();
+    final int wholeSeconds = tenths ~/ 10;
+    return '0:${wholeSeconds.toString().padLeft(2, '0')}.${tenths % 10}';
+  }
+  final int totalSeconds = (milliseconds / 1000).ceil();
+  final int seconds = totalSeconds % 60;
+  final int totalMinutes = totalSeconds ~/ 60;
+  if (totalMinutes >= 60) {
+    final int hours = totalMinutes ~/ 60;
+    final int minutes = totalMinutes % 60;
+    return '$hours:${minutes.toString().padLeft(2, '0')}:'
+        '${seconds.toString().padLeft(2, '0')}';
+  }
+  return '$totalMinutes:${seconds.toString().padLeft(2, '0')}';
+}
+
 class _AnalysisEngineBottomBarButton extends StatelessWidget {
   const _AnalysisEngineBottomBarButton({
     super.key,
@@ -8500,29 +9078,11 @@ class _AnalysisEngineChipPainter extends CustomPainter {
   }
 }
 
-class _TakeBackRequesterSwatch extends StatelessWidget {
-  const _TakeBackRequesterSwatch({required this.color});
-
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
-        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
-      ),
-      child: const SizedBox.square(dimension: 24),
-    );
-  }
-}
-
 class _BoardTransformPickerDialog extends StatelessWidget {
   const _BoardTransformPickerDialog({
     required this.sheetKey,
     required this.keyPrefix,
-    required this.strings,
+    required this.title,
     required this.currentBoardLayout,
     required this.backgroundColor,
     required this.foregroundColor,
@@ -8531,7 +9091,7 @@ class _BoardTransformPickerDialog extends StatelessWidget {
 
   final Key sheetKey;
   final String keyPrefix;
-  final S strings;
+  final String title;
   final String currentBoardLayout;
   final Color backgroundColor;
   final Color foregroundColor;
@@ -8565,7 +9125,7 @@ class _BoardTransformPickerDialog extends StatelessWidget {
                 children: <Widget>[
                   Center(
                     child: Text(
-                      strings.flipBoard,
+                      title,
                       style: Theme.of(
                         context,
                       ).textTheme.titleMedium?.copyWith(color: foregroundColor),
@@ -8586,7 +9146,7 @@ class _BoardTransformPickerDialog extends StatelessWidget {
                       final _BoardTransformPreview preview = previews[index];
                       return _BoardTransformPreviewTile(
                         key: Key('${keyPrefix}_${preview.action.id}'),
-                        semanticsLabel: '${strings.flipBoard} ${index + 1}',
+                        semanticsLabel: '$title ${index + 1}',
                         boardLayout: preview.boardLayout,
                         borderColor: colorScheme.outlineVariant,
                         onTap: () {

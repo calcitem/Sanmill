@@ -54,6 +54,7 @@ import '../services/animation/headless_animation_manager.dart';
 import '../services/annotation/annotation_manager.dart';
 import '../services/board_recognition_import.dart';
 import '../services/import_export/pgn.dart';
+import '../services/offline_board_clock.dart';
 import '../services/painters/animations/piece_effect_animation.dart';
 import '../services/painters/painters.dart';
 import '../services/player_timer.dart';
@@ -61,6 +62,7 @@ import 'challenge_confetti.dart';
 import 'dialogs/engine_failure_dialog.dart';
 import 'dialogs/performance_warning_dialog.dart';
 import 'modals/game_options_modal.dart';
+import 'modals/offline_board_options_sheet.dart';
 import 'moves_list_page.dart';
 import 'play_area.dart';
 import 'toolbars/game_toolbar.dart';
@@ -105,17 +107,20 @@ class _GamePageInner extends StatefulWidget {
   State<_GamePageInner> createState() => _GamePageInnerState();
 }
 
-class _GamePageInnerState extends State<_GamePageInner> {
+class _GamePageInnerState extends State<_GamePageInner>
+    with WidgetsBindingObserver {
   // GlobalKey to reference the real board's RenderBox
   final GlobalKey _gameBoardKey = GlobalKey();
 
   bool _isAnnotationMode = false;
   bool _didShowInitialHumanAiNewGameSheet = false;
+  bool _didShowInitialOfflineBoardNewGameSheet = false;
   late final AnnotationManager _annotationManager;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     // Reset the cumulative win/draw/loss tally when entering the game page,
     // mirroring the legacy `Position.resetScore()` call that lived in the
     // old GamePage constructor. The score then accumulates across in-page
@@ -143,6 +148,19 @@ class _GamePageInnerState extends State<_GamePageInner> {
         (_) => _showInitialHumanAiNewGameSheet(),
       );
     }
+    if (widget.controller.gameInstance.gameMode == GameMode.humanVsHuman) {
+      OfflineBoardClock().onFlag = _handleOfflineBoardFlag;
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _showInitialOfflineBoardNewGameSheet(),
+      );
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (_isOfflineBoardGame && state != AppLifecycleState.resumed) {
+      OfflineBoardClock().pause();
+    }
   }
 
   /// Starts experience recording automatically when the feature is enabled.
@@ -160,6 +178,12 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    if (_isOfflineBoardGame) {
+      OfflineBoardClock()
+        ..pause()
+        ..onFlag = null;
+    }
     // Discard an unfinished setup edit when navigating away from the page
     // after the current frame.  The cancel path reloads the native session and
     // notifies listeners, which is unsafe while Flutter is finalizing the tree.
@@ -192,7 +216,11 @@ class _GamePageInnerState extends State<_GamePageInner> {
     final Widget baseContent = Scaffold(
       key: const Key('game_page_scaffold'),
       resizeToAvoidBottomInset: false,
-      appBar: _isAnalysisPage ? _buildAnalysisAppBar(context) : null,
+      appBar: _isAnalysisPage
+          ? _buildAnalysisAppBar(context)
+          : _isOfflineBoardGame
+          ? _buildOfflineBoardAppBar(context)
+          : null,
       // Voice assistant functionality disabled
       // floatingActionButton: const VoiceAssistantButton(),
       body: LayoutBuilder(
@@ -219,7 +247,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
               _buildGameBoard(context, widget.controller),
               // Back button in the top-left corner when this route can pop.
               // PuzzlePage hosts its own AppBar back affordance.
-              if (!_isAnalysisPage && !_isPuzzleGame)
+              if (!_isAnalysisPage && !_isPuzzleGame && !_isOfflineBoardGame)
                 Align(
                   key: const Key('game_page_top_left_button_align'),
                   alignment: AlignmentDirectional.topStart,
@@ -355,6 +383,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
   bool get _isHumanAiGame =>
       widget.controller.gameInstance.gameMode == GameMode.humanVsAi;
 
+  bool get _isOfflineBoardGame =>
+      widget.controller.gameInstance.gameMode == GameMode.humanVsHuman;
+
   bool get _isAnalysisPage =>
       widget.controller.gameInstance.gameMode == GameMode.analysis;
 
@@ -387,6 +418,45 @@ class _GamePageInnerState extends State<_GamePageInner> {
     await GameOptionsModal.showHumanAiNewGameSheet(context);
   }
 
+  Future<void> _showInitialOfflineBoardNewGameSheet() async {
+    if (!mounted ||
+        _didShowInitialOfflineBoardNewGameSheet ||
+        !_isOfflineBoardGame) {
+      return;
+    }
+    _didShowInitialOfflineBoardNewGameSheet = true;
+    if (widget.controller.gameRecorder.currentPath.isNotEmpty ||
+        widget.controller.isPositionSetup) {
+      if (!OfflineBoardClock().state.isEnabled) {
+        _setupOfflineBoardClockFromPreferences();
+      }
+      return;
+    }
+    await showOfflineBoardNewGameSheet(context, isDismissible: false);
+  }
+
+  void _setupOfflineBoardClockFromPreferences() {
+    final GeneralSettings settings = DB().generalSettings;
+    OfflineBoardClock().setup(
+      initialTime: Duration(seconds: settings.offlineBoardTimeSeconds),
+      increment: Duration(seconds: settings.offlineBoardIncrementSeconds),
+      activeSide: widget.controller.activeBoardView.sideToMove,
+    );
+  }
+
+  void _handleOfflineBoardFlag(PieceColor flagSide) {
+    if (!mounted || !_isOfflineBoardGame) {
+      return;
+    }
+    final bool ended = widget.controller.forceGameOver(
+      flagSide.opponent,
+      GameOverReason.loseTimeout,
+    );
+    if (ended) {
+      widget.controller.gameResultNotifier.showResult();
+    }
+  }
+
   bool get _shouldConfirmLeavingCurrentGame {
     if (widget.controller.activeSessionSnapshot?.outcome.isTerminal ?? false) {
       return false;
@@ -410,6 +480,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
     if (!mounted) {
       return;
+    }
+    if (_isOfflineBoardGame) {
+      OfflineBoardClock().pause();
     }
     final Route<Object?>? route = ModalRoute.of(context);
     assert(route != null, 'A play game page must be hosted by a route.');
@@ -538,6 +611,34 @@ class _GamePageInnerState extends State<_GamePageInner> {
               },
             );
           },
+        ),
+      ],
+    );
+  }
+
+  PreferredSizeWidget _buildOfflineBoardAppBar(BuildContext context) {
+    final S strings = S.of(context);
+    return AppBar(
+      key: const Key('game_page_offline_board_appbar'),
+      centerTitle: false,
+      leading: Navigator.canPop(context)
+          ? IconButton(
+              key: const Key('game_page_back_button'),
+              icon: const Icon(Icons.arrow_back),
+              tooltip: strings.back,
+              onPressed: () => unawaited(Navigator.of(context).maybePop()),
+            )
+          : null,
+      title: Text(
+        strings.offlineBoard,
+        key: const Key('game_page_offline_board_appbar_title'),
+      ),
+      actions: <Widget>[
+        IconButton(
+          key: const Key('game_page_offline_board_settings_button'),
+          icon: const Icon(Icons.settings),
+          tooltip: strings.settings,
+          onPressed: () => unawaited(showOfflineBoardDisplaySettings(context)),
         ),
       ],
     );

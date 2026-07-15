@@ -144,6 +144,12 @@ class Database {
     }
   }
 
+  /// Runs schema migrations against the currently initialized settings boxes.
+  @visibleForTesting
+  static Future<bool> runMigrationsForTesting() {
+    return _DatabaseMigration.migrate();
+  }
+
   /// Resets the database
   static Future<void> reset() async {
     await _generalSettingsBox.delete(generalSettingsKey);

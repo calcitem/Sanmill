@@ -108,7 +108,7 @@ void main() {
     test('pause and resume preserve the remaining move time', () {
       DB().generalSettings = const GeneralSettings(humanMoveTime: 30);
       final GameController controller = GameController();
-      controller.gameInstance.gameMode = GameMode.humanVsHuman;
+      controller.gameInstance.gameMode = GameMode.humanVsAi;
       controller.gameRecorder.reset();
       controller.gameRecorder.appendMove(ExtMove('d6', side: PieceColor.white));
 
@@ -127,6 +127,19 @@ void main() {
       expect(PlayerTimer.instance.status, PlayerTimerStatus.running);
       expect(PlayerTimer.instance.isActive, isTrue);
       expect(PlayerTimer.instance.remainingTime, 30);
+    });
+
+    test('same-device games delegate timing to OfflineBoardClock', () {
+      DB().generalSettings = const GeneralSettings(humanMoveTime: 30);
+      final GameController controller = GameController();
+      controller.gameInstance.gameMode = GameMode.humanVsHuman;
+      controller.gameRecorder.reset();
+      controller.gameRecorder.appendMove(ExtMove('d6', side: PieceColor.white));
+
+      PlayerTimer.instance.start();
+
+      expect(PlayerTimer.instance.status, PlayerTimerStatus.stopped);
+      expect(PlayerTimer.instance.remainingTime, 0);
     });
   });
 

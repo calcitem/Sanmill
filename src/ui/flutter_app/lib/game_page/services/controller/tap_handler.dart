@@ -171,6 +171,7 @@ class TapHandler {
 
     final String tappedLabel = ExtMove.sqToNotation(sq);
     final String tipMove = S.of(context).tipMove;
+    final PieceColor sideBeforeTap = controller.activeBoardView.sideToMove;
     final MillSessionTapResult result = await _nativeSessionTapController.tap(
       session: session,
       tappedLabel: tappedLabel,
@@ -191,7 +192,22 @@ class TapHandler {
         logger.i(
           "$_logTag Native Mill applied ${result.action?.payload['move'] ?? tappedLabel}",
         );
-        PlayerTimer().stop();
+        if (mode == GameMode.humanVsHuman) {
+          final PieceColor sideAfterTap = controller.activeBoardView.sideToMove;
+          final Phase phaseAfterTap = controller.activeBoardView.phase;
+          if (phaseAfterTap == Phase.gameOver) {
+            OfflineBoardClock().pause();
+          } else if (sideAfterTap != sideBeforeTap &&
+              (sideAfterTap == PieceColor.white ||
+                  sideAfterTap == PieceColor.black)) {
+            OfflineBoardClock().completeTurn(
+              sideMoved: sideBeforeTap,
+              nextSide: sideAfterTap,
+            );
+          }
+        } else {
+          PlayerTimer().stop();
+        }
         GameController().boardSemanticsNotifier.updateSemantics();
         if (mode == GameMode.humanVsLAN) {
           final String? appliedMove = result.action?.payload['move'] as String?;
@@ -239,7 +255,9 @@ class TapHandler {
             controller.isEngineRunning = false;
           }
         }
-        PlayerTimer().start();
+        if (mode != GameMode.humanVsHuman) {
+          PlayerTimer().start();
+        }
         controller.refreshNativeSessionHeader(context, session);
         return const EngineResponseHumanOK();
       case MillSessionTapStatus.ignored:

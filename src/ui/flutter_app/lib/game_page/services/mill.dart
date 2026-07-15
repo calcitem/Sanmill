@@ -78,6 +78,7 @@ import 'annotation/annotation_manager.dart';
 import "gif_share/gif_share.dart";
 import 'import_export/import_helpers.dart';
 import 'import_export/pgn.dart';
+import 'offline_board_clock.dart';
 import 'player_timer.dart';
 import 'transform/transform.dart';
 

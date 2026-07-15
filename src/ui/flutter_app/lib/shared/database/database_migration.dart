@@ -14,7 +14,7 @@ class _DatabaseMigration {
   static const String _logTag = "[Database Migration]";
 
   /// The newest DB version.
-  static const int _newVersion = 2;
+  static const int _newVersion = 3;
 
   /// The current DB version.
   /// It will get initialized by [migrate] with the saved value.
@@ -22,7 +22,11 @@ class _DatabaseMigration {
 
   /// The list of migrations
   static const List<Future<void> Function()> _migrations =
-      <Future<void> Function()>[_migrateToHive, _migrateFromV1];
+      <Future<void> Function()>[
+        _migrateToHive,
+        _migrateFromV1,
+        _migrateOfflineBoardClock,
+      ];
 
   /// Database Box reference
   static late Box<dynamic> _databaseBox;
@@ -57,15 +61,19 @@ class _DatabaseMigration {
       } else if (DB().generalSettings.usesHiveDB) {
         _currentVersion = 1;
       }
-      logger.t("$_logTag: Current version is $_currentVersion");
+    }
+    logger.t("$_logTag: Current version is $_currentVersion");
+    assert(
+      _currentVersion == null || _currentVersion! <= _newVersion,
+      'The saved database version cannot be newer than this build.',
+    );
 
-      if (_currentVersion != null) {
-        for (int i = _currentVersion!; i < _newVersion; i++) {
-          await _migrations[i].call();
-        }
-
-        migrated = true;
+    if (_currentVersion != null && _currentVersion! < _newVersion) {
+      for (int i = _currentVersion!; i < _newVersion; i++) {
+        await _migrations[i].call();
       }
+
+      migrated = true;
     }
 
     await _databaseBox.put(_versionKey, _newVersion);
@@ -129,6 +137,22 @@ class _DatabaseMigration {
     );
 
     logger.t("$_logTag Migrated from v1");
+  }
+
+  /// Migration 2 - preserve the legacy human clock for Offline Board.
+  ///
+  /// Existing releases exposed only a per-move human limit and had no
+  /// increment. Reusing that value as each side's initial Offline Board time
+  /// with a zero increment keeps upgraded installations on a familiar `+0`
+  /// control. Fresh installations use the model default of 5+3.
+  static Future<void> _migrateOfflineBoardClock() async {
+    assert(_currentVersion! <= 2);
+    final GeneralSettings settings = DB().generalSettings;
+    DB().generalSettings = settings.copyWith(
+      offlineBoardTimeSeconds: settings.humanMoveTime,
+      offlineBoardIncrementSeconds: 0,
+    );
+    logger.t("$_logTag Migrated the Offline Board clock from humanMoveTime");
   }
 
   /// Migration  - Sanmill version 3.3.2+

@@ -1427,7 +1427,7 @@ class _OpeningExplorerPracticeSheetState
                           widget.onContinueVsAi(GameMode.humanVsHuman),
                       icon: const Icon(Icons.groups_2_outlined),
                       label: Text(
-                        strings.overTheBoard,
+                        strings.offlineBoard,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),

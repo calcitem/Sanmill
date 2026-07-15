@@ -49,6 +49,19 @@ void main() {
       expect(s.trapAwareness, isFalse);
       expect(s.useLazySmp, isFalse);
       expect(s.engineThreads, 4);
+      expect(s.offlineBoardTimeSeconds, 300);
+      expect(s.offlineBoardIncrementSeconds, 3);
+      expect(s.offlineBoardFlipAfterMove, isFalse);
+    });
+
+    test('supports a legacy no-increment Offline Board control', () {
+      const GeneralSettings legacy = GeneralSettings(
+        offlineBoardTimeSeconds: 30,
+        offlineBoardIncrementSeconds: 0,
+      );
+
+      expect(legacy.offlineBoardTimeSeconds, 30);
+      expect(legacy.offlineBoardIncrementSeconds, 0);
     });
   });
 

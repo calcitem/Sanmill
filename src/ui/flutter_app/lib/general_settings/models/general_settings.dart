@@ -178,6 +178,9 @@ class GeneralSettings {
     this.engineThreads = 4,
     this.patchAvoidTraps = false,
     this.patchMakeTraps = false,
+    this.offlineBoardTimeSeconds = 300,
+    this.offlineBoardIncrementSeconds = 3,
+    this.offlineBoardFlipAfterMove = false,
 
     /// Deprecated: always true. Retained to preserve the Hive `@HiveField(46)`
     /// slot for existing saved data. The field will be removed in a future
@@ -412,6 +415,19 @@ class GeneralSettings {
   // reorders among moves already known to be equally good. Off by default.
   @HiveField(56, defaultValue: false)
   final bool patchMakeTraps;
+
+  // Total time available to each side in Offline Board games. Zero means an
+  // unlimited game without a clock.
+  @HiveField(57, defaultValue: 300)
+  final int offlineBoardTimeSeconds;
+
+  // Fischer increment granted after each completed, timed turn.
+  @HiveField(58, defaultValue: 3)
+  final int offlineBoardIncrementSeconds;
+
+  // Face pieces and both player panels toward the side to move.
+  @HiveField(59, defaultValue: false)
+  final bool offlineBoardFlipAfterMove;
 
   /// Deprecated field retained for Hive backward compatibility.
   ///
