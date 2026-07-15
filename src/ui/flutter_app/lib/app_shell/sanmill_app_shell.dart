@@ -2294,7 +2294,7 @@ class _FloatingPlayButton extends StatelessWidget {
       key: const Key('sanmill_home_play_fab'),
       onPressed: onPressed,
       tooltip: S.of(context).play,
-      icon: const Icon(Icons.sports_esports_rounded),
+      icon: const Icon(Icons.grid_view_rounded),
       label: Text(S.of(context).play),
     );
   }

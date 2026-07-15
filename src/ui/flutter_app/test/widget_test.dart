@@ -511,6 +511,13 @@ void main() {
       );
       expect(homeAppBarTitle.data, 'Mill');
       expect(find.byKey(const Key('sanmill_home_play_fab')), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('sanmill_home_play_fab')),
+          matching: find.byIcon(Icons.grid_view_rounded),
+        ),
+        findsOneWidget,
+      );
       expect(find.text('Quick pairing'), findsNothing);
       expect(find.byKey(const Key('drawer_item_human_vs_ai')), findsNothing);
       expect(find.byKey(const Key('drawer_item_setup_position')), findsNothing);
