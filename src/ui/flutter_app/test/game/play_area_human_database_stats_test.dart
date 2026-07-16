@@ -1007,6 +1007,18 @@ void main() {
           ?.color,
       messageTextColor.withValues(alpha: 0.72),
     );
+    expect(
+      tester
+          .widget<Text>(find.byKey(const Key('play_area_human_ai_robot_elo')))
+          .data,
+      endsWith(' Elo'),
+    );
+    expect(
+      tester
+          .widget<Text>(find.byKey(const Key('play_area_human_ai_player_elo')))
+          .data,
+      endsWith(' Elo'),
+    );
     final Finder pieceCountRow = find.byKey(
       const Key('play_area_piece_count_row'),
     );

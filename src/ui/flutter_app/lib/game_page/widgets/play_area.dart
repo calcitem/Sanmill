@@ -6028,7 +6028,7 @@ class _HumanAiPlayerPanel extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  '$rating ELO',
+                  S.of(context).eloRating(rating),
                   key: Key(
                     isRobot
                         ? 'play_area_human_ai_robot_elo'

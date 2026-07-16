@@ -5328,5 +5328,15 @@
                 "example": "7"
             }
         }
+    },
+    "eloRating": "{rating} Elo",
+    "@eloRating": {
+        "description": "A player's Elo rating shown beside their name",
+        "placeholders": {
+            "rating": {
+                "type": "int",
+                "example": "1400"
+            }
+        }
     }
 }
