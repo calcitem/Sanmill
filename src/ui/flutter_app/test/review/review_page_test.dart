@@ -159,13 +159,13 @@ void main() {
       await tester.tap(goodChoice);
       await tester.pump();
       expect(find.text('Accepted: best or good move.'), findsOneWidget);
-      expect(find.text('Done.'), findsOneWidget);
+      expect(find.text('Done'), findsOneWidget);
       expect(find.text('Skip'), findsOneWidget);
       expect(find.text('Show answer'), findsOneWidget);
 
-      await tester.ensureVisible(find.text('Done.'));
+      await tester.ensureVisible(find.text('Done'));
       await tester.pump();
-      await tester.tap(find.text('Done.'));
+      await tester.tap(find.text('Done'));
       await tester.pump();
       expect(
         find.byKey(const Key('review_correction_complete')),

@@ -781,7 +781,7 @@
     "@moveNow": {
         "description": "Move now"
     },
-    "done": "Done.",
+    "done": "Done",
     "@done": {
         "description": "Done."
     },
