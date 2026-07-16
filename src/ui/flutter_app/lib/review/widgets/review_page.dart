@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../game_page/services/import_export/pgn.dart';
 import '../../game_page/widgets/mini_board.dart';
@@ -23,6 +24,8 @@ class ReviewPage extends StatefulWidget {
     this.autoAnalyze = true,
     this.analysisService,
     this.storage = ReviewStorage.instance,
+    this.onCopyPgn,
+    this.onSharePgn,
   });
 
   final PrivateGameRecord record;
@@ -30,6 +33,8 @@ class ReviewPage extends StatefulWidget {
   final bool autoAnalyze;
   final ReviewAnalysisService? analysisService;
   final ReviewStorage storage;
+  final Future<void> Function(String pgn)? onCopyPgn;
+  final Future<void> Function(String pgn)? onSharePgn;
 
   @override
   State<ReviewPage> createState() => _ReviewPageState();
@@ -805,15 +810,85 @@ class _ReviewPageState extends State<ReviewPage> {
     if (report == null) {
       return;
     }
+    final S strings = S.of(context);
     final String pgn = ReviewNagMerge.forExport(
       widget.record.sourcePgn,
       report,
     );
-    await Clipboard.setData(ClipboardData(text: pgn));
-    if (mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(S.of(context).moveHistoryCopied)));
+    await showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      builder: (BuildContext sheetContext) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  strings.shareAndExport,
+                  style: Theme.of(sheetContext).textTheme.titleLarge,
+                ),
+              ),
+              const SizedBox(height: 8),
+              ListTile(
+                key: const Key('review_export_copy'),
+                leading: const Icon(Icons.copy_all_rounded),
+                title: Text(strings.copyPgn),
+                onTap: () {
+                  Navigator.pop(sheetContext);
+                  unawaited(_copyReviewPgn(pgn));
+                },
+              ),
+              ListTile(
+                key: const Key('review_export_share'),
+                leading: const Icon(Icons.ios_share_rounded),
+                title: Text(strings.shareQrCode),
+                onTap: () {
+                  Navigator.pop(sheetContext);
+                  unawaited(_shareReviewPgn(pgn));
+                },
+              ),
+              Align(
+                alignment: AlignmentDirectional.centerEnd,
+                child: TextButton(
+                  key: const Key('review_export_cancel'),
+                  onPressed: () => Navigator.pop(sheetContext),
+                  child: Text(strings.cancel),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _copyReviewPgn(String pgn) async {
+    final Future<void> Function(String pgn)? copyPgn = widget.onCopyPgn;
+    if (copyPgn == null) {
+      await Clipboard.setData(ClipboardData(text: pgn));
+    } else {
+      await copyPgn(pgn);
+    }
+    if (!mounted) {
+      return;
+    }
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(S.of(context).moveHistoryCopied)));
+  }
+
+  Future<void> _shareReviewPgn(String pgn) async {
+    final Future<void> Function(String pgn)? sharePgn = widget.onSharePgn;
+    if (sharePgn == null) {
+      await SharePlus.instance.share(
+        ShareParams(text: pgn, subject: S.of(context).reviewGame),
+      );
+    } else {
+      await sharePgn(pgn);
     }
   }
 

@@ -198,6 +198,31 @@ void main() {
     expect(find.text('a7!! · Mistake'), findsOneWidget);
   });
 
+  testWidgets('review export presents explicit copy and share actions', (
+    WidgetTester tester,
+  ) async {
+    String? copiedPgn;
+    await tester.pumpWidget(
+      _reviewApp(onCopyPgn: (String pgn) async => copiedPgn = pgn),
+    );
+    await tester.pump();
+
+    await tester.tap(find.byKey(const Key('review_export')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+
+    expect(find.text('Share and export'), findsOneWidget);
+    expect(find.byKey(const Key('review_export_copy')), findsOneWidget);
+    expect(find.byKey(const Key('review_export_share')), findsOneWidget);
+    expect(find.byKey(const Key('review_export_cancel')), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('review_export_copy')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(copiedPgn, '1. a7 b6 *');
+    expect(find.text('Move history copied to clipboard.'), findsOneWidget);
+  });
+
   testWidgets('cancelling deep analysis keeps the completed report visible', (
     WidgetTester tester,
   ) async {
@@ -265,7 +290,10 @@ void main() {
   });
 }
 
-Widget _reviewApp({ReviewStorage storage = ReviewStorage.instance}) {
+Widget _reviewApp({
+  ReviewStorage storage = ReviewStorage.instance,
+  Future<void> Function(String pgn)? onCopyPgn,
+}) {
   final PrivateGameRecord record = _record();
   return makeTestableWidget(
     ReviewPage(
@@ -273,6 +301,7 @@ Widget _reviewApp({ReviewStorage storage = ReviewStorage.instance}) {
       initialReport: _report(record),
       autoAnalyze: false,
       storage: storage,
+      onCopyPgn: onCopyPgn,
     ),
   );
 }
