@@ -2285,11 +2285,11 @@
     "@clearFilter": {
         "description": "Clear all filters"
     },
-    "puzzleStatistics": "Puzzle Statistics",
+    "puzzleStatistics": "Puzzle statistics",
     "@puzzleStatistics": {
         "description": "Puzzle statistics"
     },
-    "totalPuzzles": "Total Puzzles",
+    "totalPuzzles": "Total puzzles",
     "@totalPuzzles": {
         "description": "Total puzzles"
     },
@@ -2297,7 +2297,7 @@
     "@completed": {
         "description": "Completed"
     },
-    "totalStars": "Total Stars",
+    "totalStars": "Total stars",
     "@totalStars": {
         "description": "Total stars earned"
     },
@@ -2852,7 +2852,7 @@
     "@optional": {
         "description": "Optional field indicator"
     },
-    "yourProgress": "Your Progress",
+    "yourProgress": "Your progress",
     "@yourProgress": {
         "description": "Your progress header"
     },
@@ -2868,7 +2868,7 @@
     "@comingSoon": {
         "description": "Coming soon message"
     },
-    "dailyPuzzle": "Daily Puzzle",
+    "dailyPuzzle": "Daily puzzle",
     "@dailyPuzzle": {
         "description": "Daily puzzle feature name"
     },
@@ -2930,7 +2930,7 @@
     "@dailyPuzzleStreakInfo": {
         "description": "Streak info message"
     },
-    "allPuzzles": "All Puzzles",
+    "allPuzzles": "All puzzles",
     "@allPuzzles": {
         "description": "All puzzles mode name"
     },
@@ -3038,7 +3038,7 @@
     "@puzzleBattleFeature4": {
         "description": "Puzzle battle feature 4"
     },
-    "customPuzzles": "Custom Puzzles",
+    "customPuzzles": "Custom puzzles",
     "@customPuzzles": {
         "description": "Custom puzzles mode name"
     },
@@ -3054,7 +3054,7 @@
     "@puzzleCreate": {
         "description": "Create puzzle button"
     },
-    "puzzleStreak": "Puzzle Streak",
+    "puzzleStreak": "Puzzle streak",
     "@puzzleStreak": {
         "description": "Puzzle streak mode name"
     },
