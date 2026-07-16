@@ -2876,7 +2876,7 @@
     "@dailyPuzzleDesc": {
         "description": "Daily puzzle description"
     },
-    "dailyPuzzleNumber": "Day #{dayNumber}",
+    "dailyPuzzleNumber": "Day {dayNumber}",
     "@dailyPuzzleNumber": {
         "description": "Daily puzzle day number",
         "placeholders": {
