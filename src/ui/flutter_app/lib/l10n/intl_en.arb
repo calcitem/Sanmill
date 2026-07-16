@@ -20,19 +20,19 @@
     "@game": {
         "description": "Game"
     },
-    "humanVsAi": "Human Vs. AI",
+    "humanVsAi": "Human vs AI",
     "@humanVsAi": {
         "description": "Human Vs AI"
     },
-    "humanVsHuman": "Human Vs. Human",
+    "humanVsHuman": "Human vs human",
     "@humanVsHuman": {
         "description": "Human Vs Human"
     },
-    "aiVsAi": "AI Vs. AI",
+    "aiVsAi": "AI vs AI",
     "@aiVsAi": {
         "description": "AI Vs AI"
     },
-    "humanVsCloud": "Human Vs. Cloud",
+    "humanVsCloud": "Human vs cloud",
     "@humanVsCloud": {
         "description": "Human Vs Cloud"
     },
