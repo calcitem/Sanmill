@@ -4040,7 +4040,7 @@
     "@nextBranchPoint": {
         "description": "Navigate to next branch point"
     },
-    "layoutSelection": "Layout",
+    "layoutSelection": "Choose layout",
     "@layoutSelection": {
         "description": "Select move list layout"
     },
@@ -5368,5 +5368,25 @@
                 "example": "2"
             }
         }
+    },
+    "moveListLayoutLargeBoards": "Large boards",
+    "@moveListLayoutLargeBoards": {
+        "description": "Move-list layout with one large board preview per move"
+    },
+    "moveListLayoutMediumBoards": "Medium boards",
+    "@moveListLayoutMediumBoards": {
+        "description": "Move-list layout with a medium board preview beside each move"
+    },
+    "moveListLayoutSmallBoards": "Small boards",
+    "@moveListLayoutSmallBoards": {
+        "description": "Move-list grid with a small board preview for each move"
+    },
+    "moveListLayoutTable": "Move table",
+    "@moveListLayoutTable": {
+        "description": "Move-list layout with round, white, and black columns"
+    },
+    "moveListLayoutDetails": "Move details",
+    "@moveListLayoutDetails": {
+        "description": "Move-list layout with notation and comments but no board previews"
     }
 }

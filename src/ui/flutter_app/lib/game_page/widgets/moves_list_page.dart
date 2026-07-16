@@ -2604,6 +2604,17 @@ class MovesListPageState extends State<MovesListPage> {
     }
   }
 
+  String _labelForLayout(BuildContext context, MovesViewLayout layout) {
+    final S strings = S.of(context);
+    return switch (layout) {
+      MovesViewLayout.large => strings.moveListLayoutLargeBoards,
+      MovesViewLayout.medium => strings.moveListLayoutMediumBoards,
+      MovesViewLayout.small => strings.moveListLayoutSmallBoards,
+      MovesViewLayout.list => strings.moveListLayoutTable,
+      MovesViewLayout.details => strings.moveListLayoutDetails,
+    };
+  }
+
   /// Updates the current layout and saves it to settings
   void _updateLayout(MovesViewLayout newLayout) {
     if (newLayout == _currentLayout) {
@@ -2692,37 +2703,37 @@ class MovesListPageState extends State<MovesListPage> {
             },
           ),
           // Layout selection: one active icon in the AppBar.
-          // Tapping it opens a popup with a horizontal row of icons.
-          PopupMenuButton<void>(
+          // Tapping it opens a popup with named layout choices.
+          PopupMenuButton<MovesViewLayout>(
+            key: const Key('moves_list_layout_menu_button'),
             icon: Icon(_iconForLayout(_currentLayout)),
             tooltip: S.of(context).layoutSelection,
-            onSelected: (_) {},
+            onSelected: _updateLayout,
             itemBuilder: (BuildContext context) {
-              return <PopupMenuEntry<void>>[
-                PopupMenuItem<void>(
-                  enabled: false,
+              return MovesViewLayout.values.map((MovesViewLayout layout) {
+                final bool isSelected = layout == _currentLayout;
+                return PopupMenuItem<MovesViewLayout>(
+                  key: ValueKey<String>('moves_list_layout_${layout.name}'),
+                  value: layout,
                   child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: MovesViewLayout.values.map((
-                      MovesViewLayout layout,
-                    ) {
-                      final bool isSelected = layout == _currentLayout;
-                      return IconButton(
-                        icon: Icon(
-                          _iconForLayout(layout),
-                          color: isSelected
-                              ? colorScheme.primary
-                              : colorScheme.onSurfaceVariant,
+                    children: <Widget>[
+                      Icon(
+                        _iconForLayout(layout),
+                        color: isSelected
+                            ? colorScheme.primary
+                            : colorScheme.onSurfaceVariant,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(child: Text(_labelForLayout(context, layout))),
+                      if (isSelected)
+                        Icon(
+                          FluentIcons.checkmark_24_regular,
+                          color: colorScheme.primary,
                         ),
-                        onPressed: () {
-                          _updateLayout(layout);
-                          Navigator.pop(context);
-                        },
-                      );
-                    }).toList(),
+                    ],
                   ),
-                ),
-              ];
+                );
+              }).toList();
             },
           ),
           // The "three vertical dots" menu with multiple PopupMenuItem.

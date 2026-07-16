@@ -6062,6 +6062,51 @@ void main() {
     expect(find.text('7... f6'), findsOneWidget);
   });
 
+  testWidgets('move list layout choices are named and selectable', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+      movesViewLayout: MovesViewLayout.medium,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    GameController().gameRecorder.reset();
+    GameController().gameRecorder.appendMove(
+      ExtMove(
+        'd6',
+        side: PieceColor.white,
+        boardLayout: '********/********/O*******',
+      ),
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_open_full_move_list')),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pump();
+
+    await tester.tap(find.byKey(const Key('moves_list_layout_menu_button')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.text('Large boards'), findsOneWidget);
+    expect(find.text('Medium boards'), findsOneWidget);
+    expect(find.text('Small boards'), findsOneWidget);
+    expect(find.text('Move table'), findsOneWidget);
+    expect(find.text('Move details'), findsOneWidget);
+
+    await tester.tap(find.text('Move table'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(db.displaySettings.movesViewLayout, MovesViewLayout.list);
+  });
+
   testWidgets('analysis moves tab shows a variations bar', (
     WidgetTester tester,
   ) async {
