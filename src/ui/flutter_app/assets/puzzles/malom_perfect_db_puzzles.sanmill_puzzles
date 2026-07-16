@@ -52,7 +52,7 @@
         }
       ],
       "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
-      "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board. 1 of the 2 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board. 1 of the 2 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -330,7 +330,7 @@
         }
       ],
       "hint": "The opponent will start flying anywhere on the board. Your net has to close faster than they can escape.",
-      "completionMessage": "Even the flying defense could not escape: the mating net closed first. 1 of the 4 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "Even the flying defense could not escape: the mating net closed first. 1 of the 4 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -937,7 +937,7 @@
         }
       ],
       "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
-      "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board. 1 of the 2 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board. 1 of the 2 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -987,7 +987,7 @@
         }
       ],
       "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
-      "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board. 1 of the 2 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board. 1 of the 2 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -1037,7 +1037,7 @@
         }
       ],
       "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
-      "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board. 1 of the 2 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board. 1 of the 2 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -1087,7 +1087,7 @@
         }
       ],
       "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
-      "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board. 1 of the 2 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board. 1 of the 2 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -1867,7 +1867,7 @@
         }
       ],
       "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
-      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 5 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 5 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -2135,7 +2135,7 @@
         }
       ],
       "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
-      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 2 of the 5 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 2 of the 5 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -2289,7 +2289,7 @@
         }
       ],
       "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
-      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 2 of the 5 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 2 of the 5 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -2363,7 +2363,7 @@
         }
       ],
       "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
-      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 2 of the 5 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 2 of the 5 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -2441,7 +2441,7 @@
         }
       ],
       "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
-      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 6 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 6 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -2519,7 +2519,7 @@
         }
       ],
       "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
-      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 6 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 6 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -2664,7 +2664,7 @@
         }
       ],
       "hint": "More than one capture is on the board, but only one keeps the win. Compare what each removal leaves behind.",
-      "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back. 2 of the 6 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back. 2 of the 6 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -2850,7 +2850,7 @@
         }
       ],
       "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
-      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 4 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 4 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -2928,7 +2928,7 @@
         }
       ],
       "hint": "You do not need to capture everything. Herd the opponent's pieces until none of them can move.",
-      "completionMessage": "The win came by immobilization: the opponent still had material but no legal move left. 1 of the 5 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The win came by immobilization: the opponent still had material but no legal move left. 1 of the 5 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -3133,7 +3133,7 @@
         }
       ],
       "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
-      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 3 of the 5 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 3 of the 5 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -3212,7 +3212,7 @@
         }
       ],
       "hint": "More than one capture is on the board, but only one keeps the win. Compare what each removal leaves behind.",
-      "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back. 1 of the 6 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back. 1 of the 6 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -3286,7 +3286,7 @@
         }
       ],
       "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
-      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 5 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 5 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -3360,7 +3360,7 @@
         }
       ],
       "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
-      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 5 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 5 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -3804,7 +3804,7 @@
         }
       ],
       "hint": "More than one capture is on the board, but only one keeps the win. Compare what each removal leaves behind.",
-      "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back. 4 of the 6 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back. 4 of the 6 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -3891,7 +3891,7 @@
         }
       ],
       "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
-      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 6 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 6 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -3970,7 +3970,7 @@
         }
       ],
       "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
-      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 6 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 6 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -4098,7 +4098,7 @@
         }
       ],
       "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
-      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 5 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 5 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -4266,7 +4266,7 @@
         }
       ],
       "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
-      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 3 of the 6 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 3 of the 6 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -4341,7 +4341,7 @@
         }
       ],
       "hint": "More than one capture is on the board, but only one keeps the win. Compare what each removal leaves behind.",
-      "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back. 1 of the 6 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back. 1 of the 6 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
@@ -4424,7 +4424,7 @@
         }
       ],
       "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
-      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 5 follow-up decision(s) allowed exactly one winning move.",
+      "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. 1 of the 5 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",

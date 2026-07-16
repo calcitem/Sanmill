@@ -390,11 +390,17 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
 
     let mut completion = String::from(theme.completion);
     if line.only_move_count > 0 && line.decision_point_count > 0 {
-        completion.push_str(&format!(
-            " {only} of the {total} follow-up decision(s) allowed exactly one winning move.",
-            only = line.only_move_count,
-            total = line.decision_point_count,
-        ));
+        if line.decision_point_count == 1 {
+            completion.push_str(
+                " The follow-up decision allowed exactly one winning move.",
+            );
+        } else {
+            completion.push_str(&format!(
+                " {only} of the {total} follow-up decisions allowed exactly one winning move.",
+                only = line.only_move_count,
+                total = line.decision_point_count,
+            ));
+        }
     }
 
     let mut tags = vec![
@@ -684,6 +690,38 @@ mod tests {
 
         assert!(build_description(1).contains("win in 1 move against"));
         assert!(build_description(2).contains("win in 2 moves against"));
+    }
+
+    #[test]
+    fn completion_pluralizes_follow_up_decisions() {
+        let build_completion = |decision_point_count: i32| {
+            let mut solution = built(3, false);
+            solution.only_move_count = 1;
+            solution.decision_point_count = decision_point_count;
+            let solutions = vec![solution];
+            let input = PuzzleBuildInput {
+                fen: "test-fen",
+                solver_side: 0,
+                is_moving_phase: true,
+                solutions: &solutions,
+                traits: plain_traits(),
+                author: "Test Author",
+                rule_variant_id: "standard_9mm",
+                generated_at: "2026-01-01T00:00:00.000Z",
+            };
+            build_puzzle_info(&input)
+                .completion_message
+                .expect("generated puzzles include completion prose")
+        };
+
+        assert!(
+            build_completion(1)
+                .contains("The follow-up decision allowed exactly one winning move.")
+        );
+        assert!(
+            build_completion(2)
+                .contains("1 of the 2 follow-up decisions allowed exactly one winning move.")
+        );
     }
 
     #[test]
