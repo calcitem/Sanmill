@@ -1,24 +1,17 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
-import 'dart:async';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
-import 'package:uuid/uuid.dart';
+import 'package:flutter/services.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../generated/intl/l10n.dart';
-import '../../shared/models/chat_message.dart';
+import '../../shared/models/llm_analysis.dart';
 import '../../shared/services/ai_chat_service.dart';
+import '../../shared/services/ai_report_service.dart';
 
-/// AI Chat Assistant Dialog
-///
-/// A bottom sheet dialog for chatting with an AI assistant about the current game.
-/// Features:
-/// - Context-aware advice based on current board state
-/// - Markdown rendering for formatted responses
-/// - Streaming responses with typewriter effect
-/// - Professional chat UI
+/// A game-only AI analysis surface with no arbitrary user prompt input.
 class AiChatDialog extends StatefulWidget {
   const AiChatDialog({super.key});
 
@@ -27,718 +20,505 @@ class AiChatDialog extends StatefulWidget {
 }
 
 class _AiChatDialogState extends State<AiChatDialog> {
-  final AiChatService _chatService = AiChatService();
-  final TextEditingController _messageController = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
-  final Uuid _uuid = const Uuid();
+  final AiChatService _analysisService = AiChatService();
+  LlmAnalysisResult? _result;
+  LlmTask? _task;
+  String? _error;
+  bool _loading = false;
 
-  bool _isSending = false;
-  StreamSubscription<String>? _streamSubscription;
-  int _retryCount = 0;
-  static const int _maxRetries = 3;
+  Future<void> _run(LlmTask task) async {
+    if (_loading) {
+      return;
+    }
+    setState(() {
+      _task = task;
+      _result = null;
+      _error = null;
+      _loading = true;
+    });
+    try {
+      final LlmAnalysisResult result = await _analysisService.analyze(
+        task: task,
+        locale: Localizations.localeOf(context).toLanguageTag(),
+      );
+      if (mounted) {
+        setState(() => _result = result);
+      }
+    } on LlmException catch (error) {
+      if (mounted) {
+        setState(() => _error = _localizedError(error.code));
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() => _error = S.of(context).aiAnalysisErrorNetwork);
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _loading = false);
+      }
+    }
+  }
 
-  bool _isInitialized = false;
+  String _localizedError(LlmErrorCode code) {
+    final S strings = S.of(context);
+    return switch (code) {
+      LlmErrorCode.notConfigured => strings.aiAnalysisErrorNotConfigured,
+      LlmErrorCode.consentRequired => strings.aiAnalysisErrorConsent,
+      LlmErrorCode.unsupportedPlatform => strings.aiAnalysisErrorPlatform,
+      LlmErrorCode.invalidEndpoint => strings.aiAnalysisErrorEndpoint,
+      LlmErrorCode.network => strings.aiAnalysisErrorNetwork,
+      LlmErrorCode.timeout => strings.aiAnalysisErrorTimeout,
+      LlmErrorCode.invalidResponse => strings.aiAnalysisErrorResponse,
+      LlmErrorCode.safetyBlocked => strings.aiAnalysisErrorBlocked,
+    };
+  }
+
+  Future<void> _copyResult() async {
+    final LlmAnalysisResult? result = _result;
+    if (result == null) {
+      return;
+    }
+    final S strings = S.of(context);
+    await Clipboard.setData(
+      ClipboardData(
+        text: strings.aiAnalysisCopyPrefix(
+          result.provider,
+          result.model,
+          result.answer,
+        ),
+      ),
+    );
+    if (mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(strings.aiAnalysisCopied)));
+    }
+  }
+
+  Future<void> _showReportDialog() async {
+    final LlmAnalysisResult? result = _result;
+    final LlmTask? task = _task;
+    if (result == null || task == null) {
+      return;
+    }
+    final AiReportService reportService = AiReportService();
+    if (!reportService.isAvailable) {
+      await showDialog<void>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(S.of(context).aiReportTitle),
+          content: Text(S.of(context).aiReportUnavailable),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(S.of(context).ok),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    final AiReportReceipt? receipt = await showDialog<AiReportReceipt>(
+      context: context,
+      builder: (BuildContext context) =>
+          _AiReportDialog(service: reportService, task: task, result: result),
+    );
+    if (receipt == null || !mounted) {
+      return;
+    }
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) => AlertDialog(
+        title: Text(S.of(dialogContext).aiReportTitle),
+        content: Text(
+          S
+              .of(dialogContext)
+              .aiReportSuccess(
+                receipt.reportId,
+                MaterialLocalizations.of(
+                  dialogContext,
+                ).formatMediumDate(receipt.expiresAt.toLocal()),
+              ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () async {
+              try {
+                await reportService.delete(receipt.reportId);
+                if (!mounted || !dialogContext.mounted) {
+                  return;
+                }
+                Navigator.of(dialogContext).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(S.of(context).aiReportDeleted)),
+                );
+              } catch (_) {
+                if (!mounted || !dialogContext.mounted) {
+                  return;
+                }
+                ScaffoldMessenger.of(dialogContext).showSnackBar(
+                  SnackBar(content: Text(S.of(context).aiReportFailed)),
+                );
+              }
+            },
+            child: Text(S.of(dialogContext).aiReportDelete),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(S.of(dialogContext).ok),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+    final ColorScheme colors = Theme.of(context).colorScheme;
+    return FractionallySizedBox(
+      heightFactor: 0.86,
+      child: Material(
+        color: colors.surface,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        clipBehavior: Clip.antiAlias,
+        child: SafeArea(
+          top: false,
+          child: Column(
+            children: <Widget>[
+              const SizedBox(height: 8),
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: colors.onSurfaceVariant.withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.auto_graph),
+                title: Text(strings.aiAnalysisTitle),
+                subtitle: Text(strings.aiAnalysisDisclosure),
+                trailing: IconButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  tooltip: strings.close,
+                  icon: const Icon(Icons.close),
+                ),
+              ),
+              const Divider(height: 1),
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.all(16),
+                  children: <Widget>[
+                    Text(
+                      strings.aiAnalysisSelectTask,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 12),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: <Widget>[
+                        _TaskButton(
+                          icon: Icons.analytics_outlined,
+                          label: strings.aiAnalysisTaskPosition,
+                          selected: _task == LlmTask.positionAnalysis,
+                          onPressed: _loading
+                              ? null
+                              : () => _run(LlmTask.positionAnalysis),
+                        ),
+                        _TaskButton(
+                          icon: Icons.undo,
+                          label: strings.aiAnalysisTaskLastMove,
+                          selected: _task == LlmTask.explainLastMove,
+                          onPressed: _loading
+                              ? null
+                              : () => _run(LlmTask.explainLastMove),
+                        ),
+                        _TaskButton(
+                          icon: Icons.fact_check_outlined,
+                          label: strings.aiAnalysisTaskReview,
+                          selected: _task == LlmTask.gameReview,
+                          onPressed: _loading
+                              ? null
+                              : () => _run(LlmTask.gameReview),
+                        ),
+                        _TaskButton(
+                          icon: Icons.menu_book_outlined,
+                          label: strings.aiAnalysisTaskRules,
+                          selected: _task == LlmTask.explainRules,
+                          onPressed: _loading
+                              ? null
+                              : () => _run(LlmTask.explainRules),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    if (_loading)
+                      Semantics(
+                        liveRegion: true,
+                        label: strings.aiAnalysisLoading,
+                        child: Column(
+                          children: <Widget>[
+                            const CircularProgressIndicator(),
+                            const SizedBox(height: 12),
+                            Text(strings.aiAnalysisLoading),
+                          ],
+                        ),
+                      ),
+                    if (_error != null)
+                      Semantics(
+                        liveRegion: true,
+                        child: Card(
+                          color: colors.errorContainer,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Text(
+                              _error!,
+                              style: TextStyle(color: colors.onErrorContainer),
+                            ),
+                          ),
+                        ),
+                      ),
+                    if (_result case final LlmAnalysisResult result)
+                      Semantics(
+                        liveRegion: true,
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Chip(
+                                  avatar: const Icon(
+                                    Icons.smart_toy_outlined,
+                                    size: 18,
+                                  ),
+                                  label: Text(
+                                    strings.aiAnalysisProvenance(
+                                      result.provider,
+                                      result.model,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                SelectableText(result.answer),
+                                const SizedBox(height: 12),
+                                Text(
+                                  strings.aiAnalysisDisclosure,
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                const SizedBox(height: 8),
+                                Wrap(
+                                  spacing: 8,
+                                  children: <Widget>[
+                                    TextButton.icon(
+                                      onPressed: _copyResult,
+                                      icon: const Icon(Icons.copy),
+                                      label: Text(strings.copy),
+                                    ),
+                                    TextButton.icon(
+                                      onPressed: _showReportDialog,
+                                      icon: const Icon(Icons.flag_outlined),
+                                      label: Text(strings.aiReportTitle),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TaskButton extends StatelessWidget {
+  const _TaskButton({
+    required this.icon,
+    required this.label,
+    required this.selected,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final String label;
+  final bool selected;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return selected
+        ? FilledButton.tonalIcon(
+            onPressed: onPressed,
+            icon: Icon(icon),
+            label: Text(label),
+          )
+        : OutlinedButton.icon(
+            onPressed: onPressed,
+            icon: Icon(icon),
+            label: Text(label),
+          );
+  }
+}
+
+class _AiReportDialog extends StatefulWidget {
+  const _AiReportDialog({
+    required this.service,
+    required this.task,
+    required this.result,
+  });
+
+  final AiReportService service;
+  final LlmTask task;
+  final LlmAnalysisResult result;
+
+  @override
+  State<_AiReportDialog> createState() => _AiReportDialogState();
+}
+
+class _AiReportDialogState extends State<_AiReportDialog> {
+  AiReportCategory _category = AiReportCategory.incorrect;
+  late final TextEditingController _answerController;
+  bool _includeAnswer = false;
+  bool _submitting = false;
 
   @override
   void initState() {
     super.initState();
+    _answerController = TextEditingController(text: widget.result.answer);
   }
 
-  void _initializeWelcomeMessage(BuildContext context) {
-    if (!_isInitialized && _chatService.sessionManager.isEmpty) {
-      _isInitialized = true;
-      _chatService.sessionManager.addMessage(
-        ChatMessage(
-          id: _uuid.v4(),
-          content: S.of(context).aiChatWelcomeMessage,
-          isUser: false,
-          timestamp: DateTime.now(),
-        ),
+  String _categoryLabel(S strings, AiReportCategory category) {
+    return switch (category) {
+      AiReportCategory.harmful => strings.aiReportHarmful,
+      AiReportCategory.hate => strings.aiReportHate,
+      AiReportCategory.sexual => strings.aiReportSexual,
+      AiReportCategory.selfHarm => strings.aiReportSelfHarm,
+      AiReportCategory.privacy => strings.aiReportPrivacy,
+      AiReportCategory.offTopic => strings.aiReportOffTopic,
+      AiReportCategory.incorrect => strings.aiReportIncorrect,
+      AiReportCategory.other => strings.aiReportOther,
+    };
+  }
+
+  Future<void> _submit() async {
+    setState(() => _submitting = true);
+    try {
+      final String locale = Localizations.localeOf(context).toLanguageTag();
+      final String reviewedAnswer = _answerController.text.trim();
+      final PackageInfo package = await PackageInfo.fromPlatform();
+      final AiReportReceipt receipt = await widget.service.submit(
+        category: _category,
+        task: widget.task,
+        provider: widget.result.provider,
+        model: widget.result.model,
+        appVersion: '${package.version}+${package.buildNumber}',
+        platform: kIsWeb ? 'web' : defaultTargetPlatform.name,
+        locale: locale,
+        includedAnswer: _includeAnswer && reviewedAnswer.isNotEmpty
+            ? reviewedAnswer
+            : null,
       );
+      if (mounted) {
+        Navigator.of(context).pop(receipt);
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() => _submitting = false);
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(S.of(context).aiReportFailed)));
+      }
     }
   }
 
   @override
   void dispose() {
-    _messageController.dispose();
-    _scrollController.dispose();
-    _streamSubscription?.cancel();
+    _answerController.dispose();
     super.dispose();
   }
 
-  Future<void> _sendMessage() async {
-    final String message = _messageController.text.trim();
-    if (message.isEmpty || _isSending) {
-      return;
-    }
-
-    // Add user message to session
-    final ChatMessage userMessage = ChatMessage(
-      id: _uuid.v4(),
-      content: message,
-      isUser: true,
-      timestamp: DateTime.now(),
-    );
-
-    setState(() {
-      _chatService.sessionManager.addMessage(userMessage);
-    });
-
-    _messageController.clear();
-    _scrollToBottom();
-
-    // Check if LLM is configured
-    if (!_chatService.isConfigured()) {
-      _showConfigurationError();
-      return;
-    }
-
-    // Cancel any existing stream subscription to prevent overlapping requests
-    await _streamSubscription?.cancel();
-
-    setState(() {
-      _isSending = true;
-      _retryCount = 0; // Reset retry counter
-    });
-
-    // Create AI message that will be updated with streaming content
-    final String aiMessageId = _uuid.v4();
-    final ChatMessage aiMessage = ChatMessage(
-      id: aiMessageId,
-      content: '',
-      isUser: false,
-      timestamp: DateTime.now(),
-      isStreaming: true,
-    );
-
-    setState(() {
-      _chatService.sessionManager.addMessage(aiMessage);
-    });
-
-    _scrollToBottom();
-
-    // Stream the response with retry logic
-    await _streamResponseWithRetry(message, aiMessageId);
-  }
-
-  /// Stream response with automatic retry on network errors
-  Future<void> _streamResponseWithRetry(
-    String message,
-    String aiMessageId,
-  ) async {
-    try {
-      final StringBuffer fullResponse = StringBuffer();
-      bool hasReceivedData = false;
-
-      _streamSubscription = _chatService
-          .sendMessage(message)
-          .listen(
-            (String chunk) {
-              if (!mounted) {
-                return;
-              }
-
-              hasReceivedData = true;
-              fullResponse.write(chunk);
-
-              setState(() {
-                // Update the AI message in session
-                final ChatMessage? currentMessage = _chatService
-                    .sessionManager
-                    .messages
-                    .cast<ChatMessage?>()
-                    .firstWhere(
-                      (ChatMessage? m) => m?.id == aiMessageId,
-                      orElse: () => null,
-                    );
-
-                if (currentMessage != null) {
-                  _chatService.sessionManager.updateMessage(
-                    aiMessageId,
-                    currentMessage.copyWith(content: fullResponse.toString()),
-                  );
-                }
-              });
-
-              _scrollToBottom();
-            },
-            onDone: () {
-              if (!mounted) {
-                return;
-              }
-
-              setState(() {
-                // Mark streaming as complete in session
-                final ChatMessage? currentMessage = _chatService
-                    .sessionManager
-                    .messages
-                    .cast<ChatMessage?>()
-                    .firstWhere(
-                      (ChatMessage? m) => m?.id == aiMessageId,
-                      orElse: () => null,
-                    );
-
-                if (currentMessage != null) {
-                  _chatService.sessionManager.updateMessage(
-                    aiMessageId,
-                    currentMessage.copyWith(isStreaming: false),
-                  );
-                }
-                _isSending = false;
-                _retryCount = 0; // Reset on success
-              });
-            },
-            onError: (Object error) async {
-              if (!mounted) {
-                return;
-              }
-
-              // Retry logic for network errors
-              if (_retryCount < _maxRetries && !hasReceivedData) {
-                _retryCount++;
-
-                // Exponential backoff: 1s, 2s, 4s
-                final int delaySeconds = 1 << (_retryCount - 1);
-                await Future<void>.delayed(Duration(seconds: delaySeconds));
-
-                if (mounted) {
-                  setState(() {
-                    // Update message to show retry attempt
-                    final ChatMessage? currentMessage = _chatService
-                        .sessionManager
-                        .messages
-                        .cast<ChatMessage?>()
-                        .firstWhere(
-                          (ChatMessage? m) => m?.id == aiMessageId,
-                          orElse: () => null,
-                        );
-
-                    if (currentMessage != null) {
-                      _chatService.sessionManager.updateMessage(
-                        aiMessageId,
-                        currentMessage.copyWith(
-                          content:
-                              'Retrying... (attempt $_retryCount/$_maxRetries)',
-                        ),
-                      );
-                    }
-                  });
-
-                  // Retry the request
-                  await _streamResponseWithRetry(message, aiMessageId);
-                }
-              } else {
-                // Max retries reached or partial data received
-                setState(() {
-                  final ChatMessage? currentMessage = _chatService
-                      .sessionManager
-                      .messages
-                      .cast<ChatMessage?>()
-                      .firstWhere(
-                        (ChatMessage? m) => m?.id == aiMessageId,
-                        orElse: () => null,
-                      );
-
-                  if (currentMessage != null) {
-                    if (mounted) {
-                      final String errorMessage = _retryCount >= _maxRetries
-                          ? '${S.of(context).aiChatErrorMessage}\n(Failed after $_maxRetries retries)'
-                          : S.of(context).aiChatErrorMessage;
-
-                      _chatService.sessionManager.updateMessage(
-                        aiMessageId,
-                        currentMessage.copyWith(
-                          content: errorMessage,
-                          isStreaming: false,
-                        ),
-                      );
-                    }
-                  }
-                  _isSending = false;
-                  _retryCount = 0;
-                });
-              }
-            },
-          );
-    } catch (e) {
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        final ChatMessage? currentMessage = _chatService.sessionManager.messages
-            .cast<ChatMessage?>()
-            .firstWhere(
-              (ChatMessage? m) => m?.id == aiMessageId,
-              orElse: () => null,
-            );
-
-        if (currentMessage != null) {
-          _chatService.sessionManager.updateMessage(
-            aiMessageId,
-            currentMessage.copyWith(
-              content: S.of(context).aiChatErrorMessage,
-              isStreaming: false,
-            ),
-          );
-        }
-        _isSending = false;
-      });
-    }
-  }
-
-  void _scrollToBottom() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOut,
-        );
-      }
-    });
-  }
-
-  void _showConfigurationError() {
-    // Add AI response message to chat
-    final ChatMessage errorMessage = ChatMessage(
-      id: _uuid.v4(),
-      content: S.of(context).aiChatNotConfigured,
-      isUser: false,
-      timestamp: DateTime.now(),
-    );
-
-    setState(() {
-      _chatService.sessionManager.addMessage(errorMessage);
-    });
-
-    _scrollToBottom();
-  }
-
-  Future<void> _showClearHistoryDialog() async {
-    final bool? confirmed = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(S.of(context).aiChatClearHistoryConfirm),
-          content: Text(S.of(context).aiChatClearHistoryMessage),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(S.of(context).cancel),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text(S.of(context).ok),
-            ),
-          ],
-        );
-      },
-    );
-
-    if ((confirmed ?? false) && mounted) {
-      _clearHistory();
-    }
-  }
-
-  void _clearHistory() {
-    if (!mounted) {
-      return;
-    }
-
-    setState(() {
-      _chatService.sessionManager.clearSession();
-      _isInitialized =
-          false; // Reset to allow welcome message to be shown again
-    });
-
-    if (!mounted) {
-      return;
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(S.of(context).aiChatCleared),
-        duration: const Duration(seconds: 2),
-      ),
-    );
-
-    // Re-initialize welcome message
-    _initializeWelcomeMessage(context);
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Initialize welcome message on first build
-    _initializeWelcomeMessage(context);
-
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final TextTheme textTheme = Theme.of(context).textTheme;
-    final MediaQueryData mediaQuery = MediaQuery.of(context);
-    final double keyboardHeight = mediaQuery.viewInsets.bottom;
-    final Orientation orientation = mediaQuery.orientation;
-    final Size screenSize = mediaQuery.size;
-
-    // Detect landscape mode
-    final bool isLandscape = orientation == Orientation.landscape;
-
-    // Adaptive layout based on orientation
-    if (isLandscape) {
-      // Landscape: Side panel layout (right side)
-      return Align(
-        alignment: Alignment.centerRight,
-        child: Padding(
-          padding: EdgeInsets.only(bottom: keyboardHeight),
-          child: Container(
-            width: screenSize.width * 0.4, // 40% of screen width in landscape
-            height: screenSize.height,
-            decoration: BoxDecoration(
-              color: colorScheme.surface.withValues(alpha: 0.95),
-              borderRadius: const BorderRadius.horizontal(
-                left: Radius.circular(20),
-              ),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.2),
-                  blurRadius: 15,
-                  spreadRadius: 2,
-                  offset: const Offset(-3, 0),
-                ),
-              ],
-            ),
-            child: _buildChatContent(colorScheme, textTheme, isLandscape: true),
-          ),
-        ),
-      );
-    }
-
-    // Portrait: Bottom sheet layout (default)
-    return Padding(
-      // Add padding for keyboard avoidance
-      padding: EdgeInsets.only(bottom: keyboardHeight),
-      child: DraggableScrollableSheet(
-        initialChildSize: 0.7,
-        minChildSize: 0.5,
-        maxChildSize: 0.95,
-        expand: false,
-        builder: (BuildContext context, ScrollController scrollController) {
-          return Container(
-            decoration: BoxDecoration(
-              // Semi-transparent background with blur effect
-              color: colorScheme.surface.withValues(alpha: 0.95),
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(20),
-              ),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.2),
-                  blurRadius: 15,
-                  spreadRadius: 2,
-                  offset: const Offset(0, -3),
-                ),
-              ],
-            ),
-            child: _buildChatContent(
-              colorScheme,
-              textTheme,
-              isLandscape: false,
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  /// Build the chat content UI (reusable for both portrait and landscape)
-  Widget _buildChatContent(
-    ColorScheme colorScheme,
-    TextTheme textTheme, {
-    required bool isLandscape,
-  }) {
-    return Column(
-      children: <Widget>[
-        // Handle bar (only in portrait mode)
-        if (!isLandscape)
-          Container(
-            margin: const EdgeInsets.only(top: 8, bottom: 4),
-            width: 40,
-            height: 4,
-            decoration: BoxDecoration(
-              color: colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-
-        // Header (compact in landscape)
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: isLandscape ? 12 : 16,
-            vertical: isLandscape ? 8 : 12,
-          ),
-          child: Row(
+    final S strings = S.of(context);
+    return AlertDialog(
+      title: Text(strings.aiReportTitle),
+      content: SizedBox(
+        width: 520,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Icon(
-                Icons.smart_toy,
-                color: colorScheme.primary,
-                size: isLandscape ? 24 : 28,
-              ),
-              SizedBox(width: isLandscape ? 8 : 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text(
-                      S.of(context).aiChatTitle,
-                      style:
-                          (isLandscape
-                                  ? textTheme.titleMedium
-                                  : textTheme.titleLarge)
-                              ?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: colorScheme.onSurface,
-                              ),
-                    ),
-                    // Token usage indicator (when near limit)
-                    if (_chatService.sessionManager.isNearTokenLimit)
-                      Text(
-                        '⚠️ ${_chatService.sessionManager.tokenBudgetRemaining} tokens left',
-                        style: textTheme.bodySmall?.copyWith(
-                          color: colorScheme.error,
-                          fontSize: 10,
-                        ),
-                      ),
-                  ],
+              Text(strings.aiReportPrivacyNotice),
+              const SizedBox(height: 16),
+              DropdownButtonFormField<AiReportCategory>(
+                initialValue: _category,
+                decoration: InputDecoration(
+                  labelText: strings.aiReportCategory,
+                  border: const OutlineInputBorder(),
                 ),
+                items: <DropdownMenuItem<AiReportCategory>>[
+                  for (final AiReportCategory category
+                      in AiReportCategory.values)
+                    DropdownMenuItem<AiReportCategory>(
+                      value: category,
+                      child: Text(_categoryLabel(strings, category)),
+                    ),
+                ],
+                onChanged: _submitting
+                    ? null
+                    : (AiReportCategory? value) {
+                        if (value != null) {
+                          setState(() => _category = value);
+                        }
+                      },
               ),
-              IconButton(
-                icon: const Icon(Icons.delete_sweep),
-                iconSize: isLandscape ? 20 : 24,
-                onPressed: _isSending ? null : _showClearHistoryDialog,
-                tooltip: S.of(context).aiChatClearHistory,
+              const SizedBox(height: 8),
+              CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                controlAffinity: ListTileControlAffinity.leading,
+                value: _includeAnswer,
+                onChanged: _submitting
+                    ? null
+                    : (bool? value) =>
+                          setState(() => _includeAnswer = value ?? false),
+                title: Text(strings.aiReportIncludeAnswer),
               ),
-              IconButton(
-                icon: const Icon(Icons.close),
-                iconSize: isLandscape ? 20 : 24,
-                onPressed: () => Navigator.of(context).pop(),
-                tooltip: S.of(context).close,
-              ),
+              if (_includeAnswer)
+                TextField(
+                  controller: _answerController,
+                  minLines: 4,
+                  maxLines: 10,
+                  maxLength: 16384,
+                  decoration: InputDecoration(
+                    labelText: strings.aiReportAnswerPreview,
+                    border: const OutlineInputBorder(),
+                  ),
+                ),
             ],
           ),
         ),
-
-        const Divider(height: 1),
-
-        // Messages list (compact padding in landscape)
-        Expanded(
-          child: ListView.builder(
-            controller: _scrollController,
-            padding: EdgeInsets.all(isLandscape ? 12 : 16),
-            itemCount: _chatService.sessionManager.messages.length,
-            itemBuilder: (BuildContext context, int index) {
-              final ChatMessage message =
-                  _chatService.sessionManager.messages[index];
-              return _MessageBubble(
-                message: message,
-                colorScheme: colorScheme,
-                textTheme: textTheme,
-                isCompact: isLandscape,
-              );
-            },
-          ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: _submitting ? null : () => Navigator.of(context).pop(),
+          child: Text(strings.cancel),
         ),
-
-        const Divider(height: 1),
-
-        // Input area (compact in landscape)
-        Container(
-          padding: EdgeInsets.all(isLandscape ? 12 : 16),
-          child: SafeArea(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Expanded(
-                  child: TextField(
-                    controller: _messageController,
-                    decoration: InputDecoration(
-                      hintText: S.of(context).aiChatInputHint,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 12,
-                      ),
-                      filled: true,
-                      fillColor: colorScheme.surfaceContainerHighest,
-                    ),
-                    maxLines: null,
-                    textCapitalization: TextCapitalization.sentences,
-                    enabled: !_isSending,
-                    onSubmitted: (_) => _sendMessage(),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Material(
-                  color: _isSending
-                      ? colorScheme.primary.withValues(alpha: 0.5)
-                      : colorScheme.primary,
-                  borderRadius: BorderRadius.circular(24),
-                  child: InkWell(
-                    onTap: _isSending ? null : _sendMessage,
-                    borderRadius: BorderRadius.circular(24),
-                    child: Container(
-                      width: 48,
-                      height: 48,
-                      alignment: Alignment.center,
-                      child: _isSending
-                          ? SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  colorScheme.onPrimary,
-                                ),
-                              ),
-                            )
-                          : Icon(Icons.send, color: colorScheme.onPrimary),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+        FilledButton(
+          onPressed: _submitting ? null : _submit,
+          child: Text(strings.aiReportSubmit),
         ),
       ],
-    );
-  }
-}
-
-/// Message bubble widget for displaying chat messages
-class _MessageBubble extends StatelessWidget {
-  const _MessageBubble({
-    required this.message,
-    required this.colorScheme,
-    required this.textTheme,
-    this.isCompact = false,
-  });
-
-  final ChatMessage message;
-  final ColorScheme colorScheme;
-  final TextTheme textTheme;
-  final bool isCompact;
-
-  @override
-  Widget build(BuildContext context) {
-    final bool isUser = message.isUser;
-    final Color backgroundColor = isUser
-        ? colorScheme.primaryContainer
-        : colorScheme.surfaceContainerHighest;
-    final Color textColor = isUser
-        ? colorScheme.onPrimaryContainer
-        : colorScheme.onSurface;
-
-    return Padding(
-      padding: EdgeInsets.only(bottom: isCompact ? 12 : 16),
-      child: Row(
-        mainAxisAlignment: isUser
-            ? MainAxisAlignment.end
-            : MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          if (!isUser) ...<Widget>[
-            CircleAvatar(
-              backgroundColor: colorScheme.primary,
-              radius: isCompact ? 14 : 16,
-              child: Icon(
-                Icons.smart_toy,
-                size: 18,
-                color: colorScheme.onPrimary,
-              ),
-            ),
-            const SizedBox(width: 8),
-          ],
-          Flexible(
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: isCompact ? 12 : 16,
-                vertical: isCompact ? 10 : 12,
-              ),
-              decoration: BoxDecoration(
-                color: backgroundColor,
-                borderRadius: BorderRadius.circular(isCompact ? 12 : 16)
-                    .copyWith(
-                      topLeft: isUser
-                          ? Radius.circular(isCompact ? 12 : 16)
-                          : Radius.zero,
-                      topRight: isUser
-                          ? Radius.zero
-                          : Radius.circular(isCompact ? 12 : 16),
-                    ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  if (!isUser && message.content.isNotEmpty)
-                    MarkdownBody(
-                      data: message.content,
-                      styleSheet: MarkdownStyleSheet(
-                        p:
-                            (isCompact
-                                    ? textTheme.bodySmall
-                                    : textTheme.bodyMedium)
-                                ?.copyWith(color: textColor),
-                        code: textTheme.bodySmall?.copyWith(
-                          fontFamily: 'monospace',
-                          backgroundColor: colorScheme.surface,
-                          color: colorScheme.onSurface,
-                          fontSize: isCompact ? 11 : null,
-                        ),
-                        codeblockDecoration: BoxDecoration(
-                          color: colorScheme.surface,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    )
-                  else
-                    Text(
-                      message.content,
-                      style:
-                          (isCompact
-                                  ? textTheme.bodySmall
-                                  : textTheme.bodyMedium)
-                              ?.copyWith(color: textColor),
-                    ),
-                  if (message.isStreaming) ...<Widget>[
-                    const SizedBox(height: 4),
-                    SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(textColor),
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ),
-          if (isUser) ...<Widget>[
-            const SizedBox(width: 8),
-            CircleAvatar(
-              backgroundColor: colorScheme.secondary,
-              radius: 16,
-              child: Icon(
-                Icons.person,
-                size: 18,
-                color: colorScheme.onSecondary,
-              ),
-            ),
-          ],
-        ],
-      ),
     );
   }
 }

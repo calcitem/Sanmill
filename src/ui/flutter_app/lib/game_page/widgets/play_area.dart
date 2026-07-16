@@ -32,6 +32,7 @@ import '../../games/mill/opening_explorer/opening_explorer_page.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../general_settings/widgets/general_settings_page.dart';
 import '../../generated/intl/l10n.dart';
+import '../../shared/config/ai_compliance_config.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/screenshot_service.dart';
@@ -1435,7 +1436,7 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   bool get _shouldShowAiChatMenuAction {
-    if (!DB().generalSettings.aiChatEnabled) {
+    if (!AiComplianceConfig.releaseGateSatisfied || !DB().llmSettings.enabled) {
       return false;
     }
 
@@ -2707,9 +2708,9 @@ class PlayAreaState extends State<PlayArea> {
         if (_shouldShowAiChatMenuAction)
           LichessActionSheetAction(
             key: const Key('play_area_regular_game_menu_ai_chat'),
-            leading: const Icon(FluentIcons.chat_24_regular),
+            leading: const Icon(Icons.auto_graph),
             makeLabel: (BuildContext context) =>
-                Text(S.of(context).aiChatButtonTooltip),
+                Text(S.of(context).aiAnalysisTitle),
             onPressed: () => _showAiChatDialog(actionContext),
           ),
         if (_canTakeBackFromRegularBottomBar)
@@ -2828,9 +2829,9 @@ class PlayAreaState extends State<PlayArea> {
         if (_shouldShowAiChatMenuAction)
           LichessActionSheetAction(
             key: const Key('play_area_game_menu_ai_chat'),
-            leading: const Icon(FluentIcons.chat_24_regular),
+            leading: const Icon(Icons.auto_graph),
             makeLabel: (BuildContext context) =>
-                Text(S.of(context).aiChatButtonTooltip),
+                Text(S.of(context).aiAnalysisTitle),
             onPressed: () => _showAiChatDialog(actionContext),
           ),
         if (_isHumanAiGameOver)

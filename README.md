@@ -164,3 +164,44 @@ This data is used solely for improving the quality and stability of Sanmill and 
 ## Free Software Philosophy
 
 Sanmill is free software, and we emphasize the importance of free software as a matter of freedom. We encourage the use of AGPL v3 or later as a license for contributions and discourage the use of non-free licenses.
+
+## Optional AI Game Analysis
+
+AI Game Analysis is an optional, 18+ feature that is disabled by default and
+restricted to fixed game-analysis tasks. It is not a person, may be inaccurate,
+and is not professional advice. Sanmill does not provide a hosted inference
+service. Desktop users may use a loopback-only Ollama installation with the
+mandatory `gpt-oss-safeguard:20b` classifier, or users may choose an HTTPS proxy
+whose operator and privacy policy are shown before consent.
+
+Each analysis request contains only the selected task, app language, game
+variant and rules, FEN position, side and phase, piece counts, and bounded move
+notations. It excludes player names, comments, device identifiers, clipboard
+contents, and arbitrary chat text. Proxy credentials use platform secure
+storage; browser credentials are session-only. Changing the endpoint, model,
+operator, privacy URL, protocol, or consent notice requires fresh consent.
+
+AI-answer reports are submitted in-app. Reports contain metadata only unless
+the user checks an unchecked option and reviews or redacts the answer. The EU
+D1 relay stores raw reports for 30 days, keeps de-identified category totals
+for 12 months, never stores raw IP addresses, and issues a deletion token.
+
+Official releases must keep `SANMILL_ENABLE_AI_ANALYSIS=false` unless all of
+the following are complete: deploy both reference Workers; create the report
+D1 database with `wrangler d1 create sanmill-ai-reports-eu --jurisdiction=eu`;
+configure Worker secrets and disable body logs; complete provider DPA/transfer
+safeguards; obtain counsel review of the EU AI Act/GDPR notice and Article 27
+representative assessment; update Apple and Google privacy/data-safety and AI
+content declarations; and verify in-app reporting and deletion. After approval,
+build with both `--dart-define=SANMILL_ENABLE_AI_ANALYSIS=true` and an HTTPS
+`--dart-define=SANMILL_AI_REPORT_RELAY_URL=...` value. The compile-time gate
+fails closed when either value is missing.
+
+For the inference proxy, set `OPENAI_API_KEY` as a Worker secret and optionally
+set `ACCESS_TOKEN`; do not place either in `wrangler.jsonc`. For the report
+relay, replace the D1 database ID, apply `migrations/0001_reports.sql`, and set
+`RATE_LIMIT_SECRET` as a Worker secret. Run `pnpm run typecheck` and
+`pnpm test` in each service directory before deployment. Cloudflare's
+`--jurisdiction=eu` constraint, rather than a Western Europe location hint, is
+required because only the jurisdiction setting guarantees that D1 runs and
+stores data within the EU.

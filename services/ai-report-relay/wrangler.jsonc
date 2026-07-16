@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sanmill-ai-report-relay",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-06-01",
+  "workers_dev": false,
+  "observability": { "enabled": false },
+  "triggers": { "crons": ["17 2 * * *"] },
+  "vars": { "ALLOWED_ORIGIN": "https://play.sanmill.org" },
+  "d1_databases": [
+    {
+      "binding": "REPORTS_DB",
+      "database_name": "sanmill-ai-reports-eu",
+      "database_id": "REPLACE_WITH_EU_D1_DATABASE_ID",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

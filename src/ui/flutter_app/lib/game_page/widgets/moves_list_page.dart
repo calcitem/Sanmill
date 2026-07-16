@@ -3,7 +3,6 @@
 
 // moves_list_page.dart
 
-import 'dart:async';
 import 'dart:convert' show utf8;
 import 'dart:io';
 import 'dart:ui' as ui;
@@ -21,8 +20,6 @@ import '../../shared/config/prompt_defaults.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/language_locale_mapping.dart';
-import '../../shared/services/llm_service.dart';
-import '../../shared/services/logger.dart';
 import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../services/import_export/pgn.dart';
@@ -40,8 +37,6 @@ import 'saved_games_page.dart';
 // Key for the LLM prompt dialog screen
 const String _kLlmPromptDialogKey = 'llm_prompt_dialog';
 // Text for the S.of(context).askLlm button
-// Text for when LLM is loading
-const String _kLlmLoading = 'Loading response...';
 
 /// ViewModel for a single row in the Active Path table
 ///
@@ -93,6 +88,8 @@ class MovesListPageState extends State<MovesListPage> {
   static const double _estimatedLargeItemExtent = 360.0;
   static const double _estimatedSmallGridRowExtent = 132.0;
 
+  bool get _showDeveloperLlmPrompt => EnvironmentConfig.devMode;
+
   /// A flat list of all PGN nodes (collected recursively).
   final List<PgnNode<ExtMove>> _allNodes = <PgnNode<ExtMove>>[];
 
@@ -107,11 +104,6 @@ class MovesListPageState extends State<MovesListPage> {
 
   /// Current branch-tree mode, loaded from DB settings unless overridden.
   late bool _showBranchTree;
-
-  // Timer to track elapsed seconds while waiting for LLM response
-  Timer? loadingTimer;
-  DateTime? requestStartTime;
-  int elapsedSeconds = 0;
 
   @override
   void initState() {
@@ -142,7 +134,6 @@ class MovesListPageState extends State<MovesListPage> {
       _onMoveCountChanged,
     );
     _scrollController.dispose();
-    loadingTimer?.cancel();
     super.dispose();
   }
 
@@ -773,155 +764,9 @@ class MovesListPageState extends State<MovesListPage> {
         // Local state for checkbox
         bool localUseCurrentLanguage = useCurrentLanguage;
 
-        // LLM state variables
-        bool isLoading = false;
-        String llmResponse = '';
-        bool showLlmResponse = false;
-        final bool isLlmConfigured = LlmService()
-            .isLlmConfigured(); // Check if LLM is configured
-
-        // Add a flag to track if the dialog is still active
-        bool isDialogActive = true;
-
         return StatefulBuilder(
           key: const Key(_kLlmPromptDialogKey),
           builder: (BuildContext context, StateSetter setState) {
-            // Function to generate LLM response
-            Future<void> generateLlmResponse() async {
-              if (!isLlmConfigured) {
-                setState(() {
-                  showLlmResponse = true;
-                  llmResponse = S
-                      .of(context)
-                      .llmNotConfiguredPleaseCheckYourSettings;
-                  isLoading = false;
-                });
-                return;
-              }
-
-              setState(() {
-                isLoading = true;
-                showLlmResponse = true;
-                llmResponse = _kLlmLoading;
-
-                // Initialize timer for fun loading messages
-                requestStartTime = DateTime.now();
-                elapsedSeconds = 0;
-
-                loadingTimer?.cancel();
-                loadingTimer = Timer.periodic(const Duration(seconds: 1), (
-                  Timer t,
-                ) {
-                  // Update elapsed time every second while loading
-                  if (!isDialogActive) {
-                    // Cancel timer if dialog is closed
-                    t.cancel();
-                    return;
-                  }
-                  setState(() {
-                    elapsedSeconds = DateTime.now()
-                        .difference(requestStartTime!)
-                        .inSeconds;
-                  });
-                });
-              });
-
-              final String promptToUse = _getPromptWithLanguage(
-                controller.text,
-                localUseCurrentLanguage,
-              );
-
-              // Call LLM service for real response
-              final LlmService llmService = LlmService();
-              String fullResponse = '';
-              try {
-                await for (final String chunk in llmService.generateResponse(
-                  promptToUse,
-                  context,
-                )) {
-                  // Check if the dialog is still active
-                  if (!isDialogActive) {
-                    // Dialog closed, interrupt processing
-                    break;
-                  }
-                  setState(() {
-                    fullResponse += chunk;
-                    llmResponse = fullResponse;
-                  });
-                }
-              } catch (e) {
-                // Check if the dialog is still active
-                if (isDialogActive) {
-                  setState(() {
-                    llmResponse = 'Error: $e';
-                  });
-                }
-              } finally {
-                // Check if the dialog is still active
-                if (isDialogActive) {
-                  setState(() {
-                    isLoading = false;
-                    loadingTimer?.cancel();
-                  });
-                } else {
-                  // Ensure timer is cancelled
-                  loadingTimer?.cancel();
-                }
-              }
-            }
-
-            // Function to import moves from LLM response
-            void importMovesFromResponse() {
-              final String extractedMoves = LlmService().extractMoves(
-                llmResponse,
-              );
-
-              try {
-                // Import the moves directly without using the clipboard
-                ImportService.import(extractedMoves);
-
-                // Ensure the widget is still in the widget tree before using the context
-                if (!context.mounted) {
-                  return;
-                }
-
-                // Close the dialog first
-                Navigator.of(context).pop();
-
-                // Perform history navigation to refresh the board state
-                HistoryNavigator.takeBackAll(context, pop: false).then((_) {
-                  if (context.mounted) {
-                    // Show success message
-                    rootScaffoldMessengerKey.currentState?.showSnackBarClear(
-                      S.of(context).gameImported,
-                    );
-                    GameController().headerTipNotifier.showTip(
-                      S.of(context).gameImported,
-                    );
-
-                    // Wait briefly, then refresh the move list in the parent page
-                    Future<void>.delayed(
-                      const Duration(milliseconds: 500),
-                    ).then((_) {
-                      if (mounted) {
-                        // Call the parent setState to refresh nodes
-                        this.setState(_refreshAllNodes);
-                      }
-                    });
-                  }
-                });
-              } catch (e) {
-                logger.e('Error importing moves: $e');
-
-                if (context.mounted) {
-                  rootScaffoldMessengerKey.currentState!.showSnackBar(
-                    SnackBar(content: Text(S.of(context).cannotImport(e))),
-                  );
-                  Navigator.of(context).pop();
-                }
-              }
-            }
-
             // Function to show LLM config dialog
             void showLlmConfigDialog() {
               // Store reference to the current outer context
@@ -964,301 +809,220 @@ class MovesListPageState extends State<MovesListPage> {
               });
             }
 
-            return PopScope<dynamic>(
-              onPopInvokedWithResult: (bool didPop, dynamic result) {
-                // Set flag and cancel timer when dialog is closed
-                isDialogActive = false;
-                loadingTimer?.cancel();
-              },
-              child: Dialog(
-                insetPadding: const EdgeInsets.all(16.0),
-                backgroundColor: bgColor,
-                child: SizedBox(
-                  width: dialogWidth,
-                  height: dialogHeight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        // Dialog title
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              S.of(context).llmPrompt,
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: textColor,
-                              ),
+            return Dialog(
+              insetPadding: const EdgeInsets.all(16.0),
+              backgroundColor: bgColor,
+              child: SizedBox(
+                width: dialogWidth,
+                height: dialogHeight,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // Dialog title
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            S.of(context).llmPrompt,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: textColor,
                             ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                // LLM Prompt Template button
-                                IconButton(
-                                  onPressed: showLlmPromptTemplateDialog,
-                                  icon: const Icon(
-                                    FluentIcons.document_edit_24_regular,
-                                  ),
-                                  tooltip: S.of(context).llmPromptTemplate,
-                                  color: DB().colorSettings.pieceHighlightColor,
-                                ),
-                                // LLM Config button
-                                IconButton(
-                                  onPressed: showLlmConfigDialog,
-                                  icon: const Icon(
-                                    FluentIcons.settings_24_regular,
-                                  ),
-                                  tooltip: S.of(context).llmConfig,
-                                  color: DB().colorSettings.pieceHighlightColor,
-                                ),
-                                // Close button - with enhanced visibility
-                                Container(
-                                  margin: const EdgeInsets.only(left: 8.0),
-                                  child: IconButton(
-                                    iconSize: 26,
-                                    icon: Icon(
-                                      FluentIcons.dismiss_24_filled,
-                                      color: DB()
-                                          .colorSettings
-                                          .pieceHighlightColor,
-                                    ),
-                                    tooltip: S.of(context).close,
-                                    onPressed: () {
-                                      // Set flag and cancel timer when user closes dialog
-                                      isDialogActive = false;
-                                      loadingTimer?.cancel();
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-
-                        // Content area - either prompt input or LLM response
-                        Expanded(
-                          child: AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 300),
-                            child: showLlmResponse
-                                ? _buildLlmResponseWidget(
-                                    llmResponse,
-                                    isLoading,
-                                    elapsedSeconds,
-                                    textColor,
-                                    borderColor,
-                                  )
-                                : _buildPromptInputWidget(
-                                    controller,
-                                    textColor,
-                                    borderColor,
-                                  ),
                           ),
-                        ),
-
-                        const SizedBox(height: 16),
-
-                        // Only show language checkbox when prompt is visible
-                        if (!showLlmResponse)
                           Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              Checkbox(
-                                value: localUseCurrentLanguage,
-                                activeColor:
-                                    DB().colorSettings.pieceHighlightColor,
-                                checkColor: Colors.white,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    localUseCurrentLanguage = value ?? true;
-                                  });
-                                },
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  // Using app language for output text
-                                  S.of(context).outputInCurrentLanguage,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.green,
-                                  ),
+                              // LLM Prompt Template button
+                              IconButton(
+                                onPressed: showLlmPromptTemplateDialog,
+                                icon: const Icon(
+                                  FluentIcons.document_edit_24_regular,
                                 ),
+                                tooltip: S.of(context).llmPromptTemplate,
+                                color: DB().colorSettings.pieceHighlightColor,
                               ),
-                              // Fish button for debugging the cat fishing mini-game
-                              // Only shown in dev mode to help with testing
-                              if (EnvironmentConfig.devMode)
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.catching_pokemon, // Fish-like icon
-                                    color: Colors.lightBlue,
+                              // LLM Config button
+                              IconButton(
+                                onPressed: showLlmConfigDialog,
+                                icon: const Icon(
+                                  FluentIcons.settings_24_regular,
+                                ),
+                                tooltip: S.of(context).llmConfig,
+                                color: DB().colorSettings.pieceHighlightColor,
+                              ),
+                              // Close button - with enhanced visibility
+                              Container(
+                                margin: const EdgeInsets.only(left: 8.0),
+                                child: IconButton(
+                                  iconSize: 26,
+                                  icon: Icon(
+                                    FluentIcons.dismiss_24_filled,
+                                    color:
+                                        DB().colorSettings.pieceHighlightColor,
                                   ),
-                                  tooltip: 'Fish Game (Dev)',
+                                  tooltip: S.of(context).close,
                                   onPressed: () {
-                                    // Show dialog with cat fishing game for testing
-                                    showDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      builder: (BuildContext context) {
-                                        return Dialog(
-                                          backgroundColor: Colors.transparent,
-                                          child: Container(
-                                            width: 500,
-                                            height: 500,
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  Theme.of(context)
-                                                      .dialogTheme
-                                                      .backgroundColor ??
-                                                  Theme.of(
-                                                    context,
-                                                  ).colorScheme.surface,
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                            ),
-                                            child: Column(
-                                              children: <Widget>[
-                                                Padding(
-                                                  padding: const EdgeInsets.all(
-                                                    8.0,
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: <Widget>[
-                                                      Text(
-                                                        'Cat Fishing Game (Dev)',
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: DB()
-                                                              .colorSettings
-                                                              .messageColor,
-                                                        ),
-                                                      ),
-                                                      IconButton(
-                                                        icon: const Icon(
-                                                          Icons.close,
-                                                        ),
-                                                        onPressed: () =>
-                                                            Navigator.of(
-                                                              context,
-                                                            ).pop(),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                          8.0,
-                                                        ),
-                                                    child: CatFishingGame(
-                                                      onScoreUpdate: (int score) {
-                                                        // Optional: do something with score
-                                                      },
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
+                                    Navigator.of(context).pop();
                                   },
                                 ),
-                            ],
-                          ),
-
-                        const SizedBox(height: 16),
-
-                        // Bottom action buttons
-                        if (!showLlmResponse)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              // Ask LLM button - left side
-                              ElevatedButton(
-                                onPressed: isLlmConfigured
-                                    ? () => generateLlmResponse()
-                                    : null,
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      DB().colorSettings.pieceHighlightColor,
-                                  foregroundColor: Colors.white,
-                                  disabledBackgroundColor: Colors.grey,
-                                ),
-                                child: Text(S.of(context).askLlm),
-                              ),
-                              // Copy button - right side
-                              ElevatedButton(
-                                onPressed: () {
-                                  final String promptWithLanguage =
-                                      _getPromptWithLanguage(
-                                        controller.text,
-                                        localUseCurrentLanguage,
-                                      );
-                                  _copyLLMPrompt(promptWithLanguage);
-                                  // Set flag and cancel timer
-                                  isDialogActive = false;
-                                  loadingTimer?.cancel();
-                                  Navigator.of(context).pop();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      DB().colorSettings.pieceHighlightColor,
-                                  foregroundColor: Colors.white,
-                                ),
-                                child: Text(S.of(context).copy),
-                              ),
-                            ],
-                          )
-                        else
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              // Import button - left side (disabled during loading)
-                              ElevatedButton(
-                                onPressed: isLoading
-                                    ? null
-                                    : () => importMovesFromResponse(),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: isLoading
-                                      ? Colors.grey
-                                      : DB().colorSettings.pieceHighlightColor,
-                                  foregroundColor: Colors.white,
-                                ),
-                                child: Text(S.of(context).import),
-                              ),
-                              // Copy button - right side
-                              ElevatedButton(
-                                onPressed: isLoading
-                                    ? null
-                                    : () {
-                                        _copyLLMPrompt(llmResponse);
-                                        // Set flag and cancel timer
-                                        isDialogActive = false;
-                                        loadingTimer?.cancel();
-                                        Navigator.of(context).pop();
-                                      },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: isLoading
-                                      ? Colors.grey
-                                      : DB().colorSettings.pieceHighlightColor,
-                                  foregroundColor: Colors.white,
-                                ),
-                                child: Text(S.of(context).copy),
                               ),
                             ],
                           ),
-                      ],
-                    ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Local-only prompt export content.
+                      Expanded(
+                        child: _buildPromptInputWidget(
+                          controller,
+                          textColor,
+                          borderColor,
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      Row(
+                        children: <Widget>[
+                          Checkbox(
+                            value: localUseCurrentLanguage,
+                            activeColor: DB().colorSettings.pieceHighlightColor,
+                            checkColor: Colors.white,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                localUseCurrentLanguage = value ?? true;
+                              });
+                            },
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              // Using app language for output text
+                              S.of(context).outputInCurrentLanguage,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.green,
+                              ),
+                            ),
+                          ),
+                          // Fish button for debugging the cat fishing mini-game
+                          // Only shown in dev mode to help with testing
+                          if (EnvironmentConfig.devMode)
+                            IconButton(
+                              icon: const Icon(
+                                Icons.catching_pokemon, // Fish-like icon
+                                color: Colors.lightBlue,
+                              ),
+                              tooltip: 'Fish Game (Dev)',
+                              onPressed: () {
+                                // Show dialog with cat fishing game for testing
+                                showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  builder: (BuildContext context) {
+                                    return Dialog(
+                                      backgroundColor: Colors.transparent,
+                                      child: Container(
+                                        width: 500,
+                                        height: 500,
+                                        decoration: BoxDecoration(
+                                          color:
+                                              Theme.of(
+                                                context,
+                                              ).dialogTheme.backgroundColor ??
+                                              Theme.of(
+                                                context,
+                                              ).colorScheme.surface,
+                                          borderRadius: BorderRadius.circular(
+                                            16,
+                                          ),
+                                        ),
+                                        child: Column(
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.all(
+                                                8.0,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Text(
+                                                    'Cat Fishing Game (Dev)',
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: DB()
+                                                          .colorSettings
+                                                          .messageColor,
+                                                    ),
+                                                  ),
+                                                  IconButton(
+                                                    icon: const Icon(
+                                                      Icons.close,
+                                                    ),
+                                                    onPressed: () =>
+                                                        Navigator.of(
+                                                          context,
+                                                        ).pop(),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(
+                                                  8.0,
+                                                ),
+                                                child: CatFishingGame(
+                                                  onScoreUpdate: (int score) {
+                                                    // Optional: do something with score
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Bottom action buttons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          ElevatedButton(
+                            onPressed: () {
+                              final String promptWithLanguage =
+                                  _getPromptWithLanguage(
+                                    controller.text,
+                                    localUseCurrentLanguage,
+                                  );
+                              _copyLLMPrompt(promptWithLanguage);
+                              Navigator.of(context).pop();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  DB().colorSettings.pieceHighlightColor,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: Text(S.of(context).copy),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -1266,10 +1030,7 @@ class MovesListPageState extends State<MovesListPage> {
           },
         );
       },
-    ).then((_) {
-      // Ensure timer is cancelled when dialog is closed
-      loadingTimer?.cancel();
-    });
+    );
 
     // Delay the release of the controller to prevent it from being accessed by the framework during the dialog's exit animation,
     // which would trigger a "used after being disposed" assertion.
@@ -1314,6 +1075,7 @@ class MovesListPageState extends State<MovesListPage> {
   }
 
   /// Widget for displaying the LLM response with progress indicator if loading
+  // ignore: unused_element
   Widget _buildLlmResponseWidget(
     String responseText,
     bool isLoading,
@@ -3136,25 +2898,27 @@ class MovesListPageState extends State<MovesListPage> {
                   ],
                 ),
               ),
-              const PopupMenuDivider(),
-              PopupMenuItem<String>(
-                value: 'copy_llm_prompt',
-                child: Row(
-                  children: <Widget>[
-                    Icon(
-                      FluentIcons.text_grammar_wand_24_regular,
-                      color: colorScheme.onSurfaceVariant,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        S.of(context).llm,
-                        overflow: TextOverflow.ellipsis,
+              if (_showDeveloperLlmPrompt) ...<PopupMenuEntry<String>>[
+                const PopupMenuDivider(),
+                PopupMenuItem<String>(
+                  value: 'copy_llm_prompt',
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        FluentIcons.text_grammar_wand_24_regular,
+                        color: colorScheme.onSurfaceVariant,
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          S.of(context).llm,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ],
             icon: const Icon(FluentIcons.more_vertical_24_regular),
           ),

@@ -21,6 +21,8 @@ import '../../statistics/model/stats_settings.dart';
 // Voice assistant functionality disabled
 // import '../../voice_assistant/models/voice_assistant_settings.dart';
 import '../config/constants.dart';
+import '../models/llm_settings.dart';
+import '../services/llm_secure_store.dart';
 import '../services/logger.dart';
 import 'adapters/adapters.dart';
 import 'settings_change_dispatcher.dart';
@@ -49,6 +51,11 @@ class Database {
 
   /// [GeneralSettings] Box reference
   static late final Box<GeneralSettings> _generalSettingsBox;
+
+  /// Local-only AI analysis configuration and consent record.
+  static late final Box<dynamic> _llmSettingsBox;
+  static const String llmSettingsKey = 'settings';
+  static const String _llmSettingsBoxName = 'llmSettings';
 
   /// Key at which the [GeneralSettings] will be saved in the [_generalSettingsBox]
   static const String generalSettingsKey = "settings";
@@ -129,6 +136,7 @@ class Database {
     await Hive.initFlutter("Sanmill");
 
     await _initGeneralSettings();
+    await _initLlmSettings();
     await _initRuleSettings();
     await _initDisplaySettings();
     await _initColorSettings();
@@ -138,6 +146,8 @@ class Database {
     await _initPuzzleAnalytics();
     // Voice assistant functionality disabled
     // await _initVoiceAssistantSettings();
+
+    await _migrateLegacyLlmSettings();
 
     if (await _DatabaseMigration.migrate() == true) {
       DB().generalSettings = DB().generalSettings.copyWith(firstRun: false);
@@ -153,6 +163,8 @@ class Database {
   /// Resets the database
   static Future<void> reset() async {
     await _generalSettingsBox.delete(generalSettingsKey);
+    await _llmSettingsBox.delete(llmSettingsKey);
+    await LlmSecureStore().clearProxyToken();
     await _ruleSettingsBox.delete(ruleSettingsKey);
     await _colorSettingsBox.delete(colorSettingsKey);
     await _displaySettingsBox.delete(displaySettingsKey);
@@ -200,6 +212,58 @@ class Database {
   /// Gets the given [GeneralSettings] from the settings Box
   GeneralSettings get generalSettings =>
       _generalSettingsBox.get(generalSettingsKey) ?? const GeneralSettings();
+
+  /// AI analysis settings
+
+  static Future<void> _initLlmSettings() async {
+    _llmSettingsBox = await Hive.openBox<dynamic>(_llmSettingsBoxName);
+  }
+
+  ValueListenable<Box<dynamic>> get listenLlmSettings =>
+      _llmSettingsBox.listenable(keys: <String>[llmSettingsKey]);
+
+  set llmSettings(LlmSettings settings) {
+    _llmSettingsBox.put(llmSettingsKey, settings.toJson());
+  }
+
+  LlmSettings get llmSettings {
+    final dynamic value = _llmSettingsBox.get(llmSettingsKey);
+    if (value is Map<dynamic, dynamic>) {
+      return LlmSettings.fromJson(value);
+    }
+    return const LlmSettings();
+  }
+
+  /// Clears legacy plaintext provider settings on every platform, including
+  /// web, and deliberately requires users to configure and consent again.
+  static Future<void> _migrateLegacyLlmSettings() async {
+    final LlmSettings current = DB().llmSettings;
+    if (current.migrationVersion >= LlmSettings.currentMigrationVersion) {
+      return;
+    }
+
+    final GeneralSettings legacy = DB().generalSettings;
+    final bool hadLegacyConfiguration =
+        legacy.aiChatEnabled ||
+        legacy.llmApiKey.isNotEmpty ||
+        legacy.llmModel.isNotEmpty ||
+        legacy.llmBaseUrl.isNotEmpty;
+
+    DB().llmSettings = current.copyWith(
+      enabled: false,
+      migrationVersion: LlmSettings.currentMigrationVersion,
+      migrationNoticePending: hadLegacyConfiguration,
+    );
+    DB().generalSettings = legacy.copyWith(
+      aiChatEnabled: false,
+      llmProvider: LlmProvider.openai,
+      llmModel: '',
+      llmApiKey: '',
+      llmBaseUrl: '',
+      llmTemperature: 0.7,
+    );
+    await _generalSettingsBox.compact();
+  }
 
   /// RuleSettings
 

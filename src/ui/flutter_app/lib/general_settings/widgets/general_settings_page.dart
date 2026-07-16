@@ -17,12 +17,14 @@ import 'package:path_provider/path_provider.dart';
 import '../../game_page/services/gif_share/gif_share.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
+import '../../shared/config/ai_compliance_config.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/database/settings_repositories.dart';
 import '../../shared/database/settings_repository.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/human_database_service.dart';
+import '../../shared/services/llm_secure_store.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/services/mill_patch_service.dart';
 import '../../shared/services/perfect_database_service.dart';
@@ -34,7 +36,6 @@ import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../models/general_settings.dart';
 import 'developer_options_page.dart';
 import 'dialogs/llm_config_dialog.dart';
-import 'dialogs/llm_prompt_dialog.dart';
 
 part 'dialogs/use_perfect_database_dialog.dart';
 part 'pages/settings_sub_page.dart';
@@ -83,30 +84,29 @@ class GeneralSettingsPage extends StatelessWidget {
     builder: (_) => const _HumanMoveTimeSlider(),
   );
 
-  // Show LLM prompt configuration dialog
-  void _configureLlmPrompt(BuildContext context) =>
-      showDialog(context: context, builder: (_) => const LlmPromptDialog());
-
   // Show LLM provider configuration dialog
   void _configureLlmProvider(BuildContext context) =>
       showDialog(context: context, builder: (_) => const LlmConfigDialog());
 
-  // Enable or disable AI chat assistant
-  void _setAiChatEnabled(
+  // Enable or disable consent-gated AI game analysis.
+  Future<void> _setAiChatEnabled(
     BuildContext context,
     GeneralSettings generalSettings,
     bool value,
-  ) {
-    _settingsRepository.generalSettings = generalSettings.copyWith(
-      aiChatEnabled: value,
-    );
-
-    // Show experimental feature warning when enabling
+  ) async {
     if (value) {
-      SnackBarService.showRootSnackBar(S.of(context).experimental);
+      await showDialog<void>(
+        context: context,
+        builder: (_) => const LlmConfigDialog(),
+      );
+      return;
     }
-
-    logger.t("$_logTag aiChatEnabled: $value");
+    DB().llmSettings = DB().llmSettings.revokeConsent();
+    await LlmSecureStore().clearProxyToken();
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      aiChatEnabled: false,
+    );
+    logger.t("$_logTag AI game analysis disabled and consent revoked");
   }
 
   void _setWhoMovesFirst(GeneralSettings generalSettings, bool value) {
@@ -1127,11 +1127,12 @@ class GeneralSettingsPage extends StatelessWidget {
               ),
             ],
           ),
-        if (DB().ruleSettings.isLikelyNineMensMorris())
+        if (AiComplianceConfig.releaseGateSatisfied &&
+            DB().ruleSettings.isLikelyNineMensMorris())
           SettingsCard(
             key: const Key('general_settings_page_settings_card_llm_prompts'),
             title: Text(
-              S.of(context).llm,
+              S.of(context).aiAnalysisTitle,
               key: const Key(
                 'general_settings_page_settings_card_llm_prompts_title',
               ),
@@ -1141,28 +1142,22 @@ class GeneralSettingsPage extends StatelessWidget {
                 key: const Key(
                   'general_settings_page_settings_card_ai_chat_enabled',
                 ),
-                value: generalSettings.aiChatEnabled,
+                value: DB().llmSettings.enabled,
                 onChanged: (bool val) =>
-                    _setAiChatEnabled(context, generalSettings, val),
-                titleString: S.of(context).enableAiChat,
-                subtitleString: S.of(context).allowChatWithAiAssistant,
-              ),
-              SettingsListTile(
-                key: const Key(
-                  'general_settings_page_settings_card_llm_prompts_configure',
-                ),
-                titleString: S.of(context).configurePromptTemplate,
-                subtitleString: S.of(context).editPromptTemplateForLlmAnalysis,
-                onTap: () => _configureLlmPrompt(context),
+                    unawaited(_setAiChatEnabled(context, generalSettings, val)),
+                titleString: S.of(context).aiAnalysisEnable,
+                subtitleString: S.of(context).aiAnalysisDisclosure,
               ),
               SettingsListTile(
                 key: const Key(
                   'general_settings_page_settings_card_llm_provider_configure',
                 ),
-                titleString: S.of(context).configureLlmProvider,
-                subtitleString: S.of(context).setProviderModelApiKeyAndBaseUrl,
+                titleString: S.of(context).aiAnalysisSettingsTitle,
+                subtitleString: S.of(context).aiAnalysisConfigure,
                 onTap: () => _configureLlmProvider(context),
-                trailingString: DB().generalSettings.llmProvider.name,
+                trailingString: DB().llmSettings.enabled
+                    ? S.of(context).aiAnalysisEnabled
+                    : S.of(context).aiAnalysisDisabled,
               ),
             ],
           ),

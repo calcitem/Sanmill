@@ -71,7 +71,7 @@ class ConfigImportExportService {
 
       // Strip sensitive / device-local fields.
       // JSON keys use PascalCase due to field_rename: pascal in build.yaml.
-      generalJson.remove('LlmApiKey');
+      _removeLlmFields(generalJson);
       generalJson.remove('LastPgnSaveDirectory');
 
       // Pack user-uploaded media into the archive and replace absolute
@@ -190,7 +190,7 @@ class ConfigImportExportService {
       final Map<String, dynamic> colorJson = DB().colorSettings.toJson();
 
       // Strip sensitive / device-local fields.
-      generalJson.remove('LlmApiKey');
+      _removeLlmFields(generalJson);
       generalJson.remove('LastPgnSaveDirectory');
 
       // Remove custom media paths (always device-local).
@@ -559,7 +559,14 @@ class ConfigImportExportService {
       final GeneralSettings current = DB().generalSettings;
       json['IsPrivacyPolicyAccepted'] = current.isPrivacyPolicyAccepted;
       json['FirstRun'] = current.firstRun;
-      json['LlmApiKey'] ??= current.llmApiKey;
+      json['LlmPromptHeader'] = '';
+      json['LlmPromptFooter'] = '';
+      json['LlmProvider'] = 'openai';
+      json['LlmModel'] = '';
+      json['LlmApiKey'] = '';
+      json['LlmBaseUrl'] = '';
+      json['LlmTemperature'] = 0.7;
+      json['AiChatEnabled'] = false;
       json['LastPgnSaveDirectory'] ??= current.lastPgnSaveDirectory;
 
       DB().generalSettings = GeneralSettings.fromJson(json);
@@ -581,6 +588,21 @@ class ConfigImportExportService {
       DB().colorSettings = ColorSettings.fromJson(
         data['colorSettings'] as Map<String, dynamic>,
       );
+    }
+  }
+
+  static void _removeLlmFields(Map<String, dynamic> json) {
+    for (final String key in <String>[
+      'LlmPromptHeader',
+      'LlmPromptFooter',
+      'LlmProvider',
+      'LlmModel',
+      'LlmApiKey',
+      'LlmBaseUrl',
+      'LlmTemperature',
+      'AiChatEnabled',
+    ]) {
+      json.remove(key);
     }
   }
 }

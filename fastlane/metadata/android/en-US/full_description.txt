@@ -49,3 +49,8 @@ STRATEGY TIPS FOR NEW PLAYERS
 Whether you are revisiting a familiar game, looking for a strategic challenge, or discovering Morris games for the first time, this app offers an enjoyable experience with flexible rules, a capable AI, and a customizable interface.
 
 Download now to start your journey with the game of Mill.
+
+OPTIONAL AI GAME ANALYSIS (18+)
+When enabled in an approved build, fixed game-only analysis tasks can use a local desktop Ollama service or a user-chosen HTTPS proxy. AI answers are clearly labeled, may be inaccurate, and are not professional advice. Before use, the app shows the exact game data sent, the proxy operator and privacy policy, and asks for explicit consent. There is no general chat or AI-generated move import.
+
+AI answers can be reported without leaving the app. Reports contain metadata only by default; answer text is included only after you opt in and review or redact it. Raw reports are retained for 30 days and de-identified category totals for 12 months. AI analysis is disabled by default and is unavailable unless the release compliance gate and report relay are configured.

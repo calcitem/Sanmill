@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sanmill-llm-proxy-reference",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-06-01",
+  "workers_dev": false,
+  "observability": { "enabled": false },
+  "vars": {
+    "OPENAI_BASE_URL": "https://api.openai.com/v1",
+    "OPENAI_MODEL": "gpt-5-mini",
+    "MODERATION_MODEL": "omni-moderation-latest",
+    "ALLOWED_ORIGIN": "https://play.sanmill.org"
+  }
+}
