@@ -466,12 +466,14 @@ class _PuzzlePageState extends State<PuzzlePage> {
     showDialog<void>(
       context: context,
       builder: (BuildContext dialogContext) {
+        final ThemeData dialogTheme =
+            _settingsThemeForDialogs ?? Theme.of(dialogContext);
         return Theme(
-          data: _settingsThemeForDialogs ?? Theme.of(dialogContext),
+          data: dialogTheme,
           child: AlertDialog(
             title: Row(
               children: <Widget>[
-                const Icon(Icons.warning, color: Colors.orange),
+                Icon(Icons.warning, color: dialogTheme.colorScheme.tertiary),
                 const SizedBox(width: 8),
                 Text(s.puzzleRuleMismatch),
               ],
@@ -486,7 +488,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
               ),
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(),
-                style: TextButton.styleFrom(foregroundColor: Colors.orange),
+                style: TextButton.styleFrom(
+                  foregroundColor: dialogTheme.colorScheme.tertiary,
+                ),
                 child: Text(s.puzzleRuleMismatchContinue),
               ),
             ],
@@ -1057,10 +1061,14 @@ class _PuzzlePageState extends State<PuzzlePage> {
     if (solution == null || solution.moves.isEmpty) {
       logger.w('[PuzzlePage] No solution available to show');
       if (mounted) {
+        final ColorScheme colorScheme = Theme.of(context).colorScheme;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(S.of(context).puzzleNoSolutionAvailable),
-            backgroundColor: Colors.orange,
+            content: Text(
+              S.of(context).puzzleNoSolutionAvailable,
+              style: TextStyle(color: colorScheme.onTertiaryContainer),
+            ),
+            backgroundColor: colorScheme.tertiaryContainer,
           ),
         );
       }
