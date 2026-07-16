@@ -28,6 +28,14 @@ class BoardPainter extends CustomPainter {
   final bool shouldDrawAnalysisOverlay;
   final double? boardMarginOverride;
 
+  @visibleForTesting
+  static Color boardTextColor(ColorSettings colorSettings) {
+    return readableForegroundColor(
+      preferred: colorSettings.boardLineColor,
+      background: colorSettings.boardBackgroundColor,
+    );
+  }
+
   @override
   void paint(Canvas canvas, Size size) {
     assert(size.width == size.height);
@@ -377,12 +385,10 @@ class BoardPainter extends CustomPainter {
     Size size,
   ) {
     final int pieceInHandCount = _calculatePieceInHandCount(position);
+    final ColorSettings colorSettings = DB().colorSettings;
 
     final TextSpan textSpan = TextSpan(
-      style: TextStyle(
-        fontSize: 48,
-        color: DB().colorSettings.boardLineColor.withValues(alpha: 1.0),
-      ),
+      style: TextStyle(fontSize: 48, color: boardTextColor(colorSettings)),
       text: pieceInHandCount.toString(),
     );
 
@@ -416,8 +422,9 @@ class BoardPainter extends CustomPainter {
   }
 
   static void _drawVerticalNotation(Canvas canvas, Size size, int index) {
+    final ColorSettings colorSettings = DB().colorSettings;
     final TextStyle notationTextStyle = TextStyle(
-      color: DB().colorSettings.boardLineColor.withValues(alpha: 1.0),
+      color: boardTextColor(colorSettings),
       fontSize: AppTheme.textScaler.scale(20),
     );
 
@@ -441,8 +448,9 @@ class BoardPainter extends CustomPainter {
   }
 
   static void _drawHorizontalNotation(Canvas canvas, Size size, int index) {
+    final ColorSettings colorSettings = DB().colorSettings;
     final TextStyle notationTextStyle = TextStyle(
-      color: DB().colorSettings.boardLineColor.withValues(alpha: 1.0),
+      color: boardTextColor(colorSettings),
       fontSize: AppTheme.textScaler.scale(20),
     );
 

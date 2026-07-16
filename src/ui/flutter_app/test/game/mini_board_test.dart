@@ -5,8 +5,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/appearance_settings/models/color_settings.dart';
 import 'package:sanmill/game_page/services/import_export/pgn.dart';
 import 'package:sanmill/game_page/services/mill.dart' show ExtMove, PieceColor;
+import 'package:sanmill/game_page/services/painters/painters.dart';
 import 'package:sanmill/game_page/widgets/mini_board.dart';
 import 'package:sanmill/games/mill/mill_board_coordinate_maps.dart';
 import 'package:sanmill/shared/database/database.dart';
@@ -113,6 +115,24 @@ void main() {
     }
     expect(MiniBoardPainter.qualityBadgeForegroundColor(2), Colors.black);
     expect(MiniBoardPainter.qualityBadgeForegroundColor(6), Colors.black);
+  });
+
+  test('board coordinate text remains readable on the default board', () {
+    const ColorSettings colors = ColorSettings();
+    final Color fullBoardText = BoardPainter.boardTextColor(colors);
+    final Color miniBoardText = MiniBoardPainter.coordinateForegroundColor(
+      preferred: colors.boardLineColor.withValues(alpha: 0.78),
+      background: colors.boardBackgroundColor,
+    );
+
+    for (final Color foreground in <Color>[fullBoardText, miniBoardText]) {
+      expect(
+        colorContrastRatio(foreground, colors.boardBackgroundColor),
+        greaterThanOrEqualTo(normalTextMinimumContrastRatio),
+      );
+    }
+    expect(fullBoardText, Colors.black);
+    expect(miniBoardText, Colors.black);
   });
 
   testWidgets('replay reads an imported NAG and anchors a capture chain', (

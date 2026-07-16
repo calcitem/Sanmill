@@ -326,6 +326,17 @@ class MiniBoardPainter extends CustomPainter {
   /// Holds the parsed board layout (24 squares).
   late final List<PieceColor> boardState;
 
+  @visibleForTesting
+  static Color coordinateForegroundColor({
+    required Color preferred,
+    required Color background,
+  }) {
+    return readableForegroundColor(
+      preferred: preferred,
+      background: background,
+    );
+  }
+
   /// Parse the board layout string into 24 PieceColors.
   /// Format: "inner/middle/outer", each 8 chars.
   static List<PieceColor> _parseBoardLayout(String layout) {
@@ -623,8 +634,13 @@ class MiniBoardPainter extends CustomPainter {
     double minSide,
     double outerMargin,
   ) {
+    final Color boardLineColor = DB().colorSettings.boardLineColor;
+    final Color boardBackgroundColor = DB().colorSettings.boardBackgroundColor;
     final TextStyle style = TextStyle(
-      color: DB().colorSettings.boardLineColor.withValues(alpha: 0.78),
+      color: coordinateForegroundColor(
+        preferred: boardLineColor.withValues(alpha: 0.78),
+        background: boardBackgroundColor,
+      ),
       fontSize: math.max(9, minSide * 0.028),
       fontWeight: FontWeight.w600,
       height: 1,
