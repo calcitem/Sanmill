@@ -1713,7 +1713,7 @@
     "@llmPromptCopiedToClipboard": {},
     "connectionRefusedTheServerMayBeDown": "Connection refused, the server may be down.",
     "@connectionRefusedTheServerMayBeDown": {},
-    "discoverySuccessfulAwaitingConnection": "Discovery successful, awaiting connection...",
+    "discoverySuccessfulAwaitingConnection": "Discovery successful, awaiting connection…",
     "@discoverySuccessfulAwaitingConnection": {},
     "noLanConnection": "No LAN connection",
     "@noLanConnection": {},
@@ -1749,7 +1749,7 @@
     "@opponentResignedYouWin": {},
     "clearAllAnnotations": "Clear all annotations",
     "@clearAllAnnotations": {},
-    "connectedWaitingForOpponentSMove": "Connected, waiting for opponent's move...",
+    "connectedWaitingForOpponentSMove": "Connected, waiting for opponent's move…",
     "@connectedWaitingForOpponentSMove": {},
     "networkStatusDisconnected": "Network status: Disconnected",
     "@networkStatusDisconnected": {},
@@ -1765,7 +1765,7 @@
     "@noHostDiscovered": {},
     "confirmResignation": "Confirm resignation",
     "@confirmResignation": {},
-    "startedHostingGameWaitingForPlayersToJoin": "Started hosting game, waiting for players to join...",
+    "startedHostingGameWaitingForPlayersToJoin": "Started hosting game, waiting for players to join…",
     "@startedHostingGameWaitingForPlayersToJoin": {},
     "connectionTimedOutNetworkConnectionUnstable": "Connection timed out, network connection unstable.",
     "@connectionTimedOutNetworkConnectionUnstable": {},
@@ -1779,7 +1779,7 @@
     "@confirmClear": {},
     "opponentSTurn": "Opponent's turn.",
     "@opponentSTurn": {},
-    "waitingAClientConnection": "Waiting a client connection...",
+    "waitingAClientConnection": "Waiting a client connection…",
     "@waitingAClientConnection": {},
     "takeBackRequestWasRejectedOrFailed": "Take back request was rejected or failed.",
     "@takeBackRequestWasRejectedOrFailed": {},
@@ -1789,9 +1789,9 @@
     "@exitAnnotationMode": {},
     "typeYourAnnotation": "Type your annotation",
     "@typeYourAnnotation": {},
-    "attemptingToReconnect": "Attempting to reconnect...",
+    "attemptingToReconnect": "Attempting to reconnect…",
     "@attemptingToReconnect": {},
-    "restartRequestSentWaitingForOpponentSResponse": "Restart request sent. Waiting for opponent's response...",
+    "restartRequestSentWaitingForOpponentSResponse": "Restart request sent. Waiting for opponent's response…",
     "@restartRequestSentWaitingForOpponentSResponse": {},
     "serverIsStopped": "Server is stopped.",
     "@serverIsStopped": {},
@@ -1923,7 +1923,7 @@
     "@noTimeLimitForHumanMoves": {},
     "timeoutLoseWillBeApplied": "Timeout lose will be applied for human player",
     "@timeoutLoseWillBeApplied": {},
-    "identifyingBoard": "Identifying board...",
+    "identifyingBoard": "Identifying board…",
     "@identifyingBoard": {},
     "youCanEnterAnyModelName": "You can enter any model name.",
     "@youCanEnterAnyModelName": {},
@@ -1935,7 +1935,7 @@
     "@llmPromptTemplate": {},
     "noValidBoardDetected": "No valid board detected.",
     "@noValidBoardDetected": {},
-    "selectingImageFromAlbum": "Selecting image from album...",
+    "selectingImageFromAlbum": "Selecting image from album…",
     "@selectingImageFromAlbum": {},
     "configurePromptTemplate": "Configure prompt template",
     "@configurePromptTemplate": {},
@@ -1985,7 +1985,7 @@
     "@viewCommonUrls": {},
     "colorAnalysisFailed": "Color analysis failed!",
     "@colorAnalysisFailed": {},
-    "analyzingGameBoardImage": "Analyzing game board image...",
+    "analyzingGameBoardImage": "Analyzing game board image…",
     "@analyzingGameBoardImage": {},
     "selectFromAlbum": "Select from album",
     "@selectFromAlbum": {},
@@ -1999,11 +1999,11 @@
     "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
     "llmPromptTemplateFooter": "LLM prompt template footer",
     "@llmPromptTemplateFooter": {},
-    "loadingResponse": "Loading response...",
+    "loadingResponse": "Loading response…",
     "@loadingResponse": {},
     "applyThisResultToBoard": "Apply this result to board",
     "@applyThisResultToBoard": {},
-    "takingPicture": "Taking picture...",
+    "takingPicture": "Taking picture…",
     "@takingPicture": {},
     "pleaseSelectAGameBoardImageToIdentify": "Please select a game board image to identify",
     "@pleaseSelectAGameBoardImageToIdentify": {},
@@ -2043,11 +2043,11 @@
     "@model": {},
     "temperature": "Temperature",
     "@temperature": {},
-    "llmCommandReceivedProcessing": "Command received! AI is processing...",
+    "llmCommandReceivedProcessing": "Command received! AI is processing…",
     "@llmCommandReceivedProcessing": {},
-    "llmDeepThinkingWait": "Deep thinking in progress, please wait...",
+    "llmDeepThinkingWait": "Deep thinking in progress, please wait…",
     "@llmDeepThinkingWait": {},
-    "llmPresentingSoon": "Presenting soon...",
+    "llmPresentingSoon": "Presenting soon…",
     "@llmPresentingSoon": {},
     "recognitionParameters": "Recognition parameters",
     "@recognitionParameters": {},
@@ -2237,7 +2237,7 @@
     "@llmAssistedDevelopment": {
         "description": "Developer tool: build a developer prompt for an external LLM and copy it to clipboard"
     },
-    "llmAssistedDevelopmentInputHint": "Describe the task you want the LLM to help with...",
+    "llmAssistedDevelopmentInputHint": "Describe the task you want the LLM to help with…",
     "@llmAssistedDevelopmentInputHint": {
         "description": "Hint text for the LLM-assisted development input field"
     },
@@ -2696,7 +2696,7 @@
     "@puzzleStopRecording": {
         "description": "Stop recording solution moves"
     },
-    "puzzleRecording": "Recording...",
+    "puzzleRecording": "Recording…",
     "@puzzleRecording": {
         "description": "Currently recording moves"
     },
@@ -3577,7 +3577,7 @@
     "@aiChatWelcomeMessage": {
         "description": "Welcome message in AI chat"
     },
-    "aiChatInputHint": "Ask about the game...",
+    "aiChatInputHint": "Ask about the game…",
     "@aiChatInputHint": {
         "description": "Hint text for AI chat input field"
     },
@@ -4356,7 +4356,7 @@
     "@qrImageOptionBoard": {
         "description": "Option to embed the current board position in the QR code"
     },
-    "qrImageOptionCustom": "Choose image...",
+    "qrImageOptionCustom": "Choose image…",
     "@qrImageOptionCustom": {
         "description": "Option to pick a custom image from gallery to embed in the QR code"
     },
@@ -4860,7 +4860,7 @@
     "@openingExplorerEngineSource": {},
     "openingExplorerEngineBadge": "Engine suggestion",
     "@openingExplorerEngineBadge": {},
-    "openingExplorerEngineSearching": "Searching for an engine suggestion...",
+    "openingExplorerEngineSearching": "Searching for an engine suggestion…",
     "@openingExplorerEngineSearching": {},
     "search": "Search",
     "@search": {},
