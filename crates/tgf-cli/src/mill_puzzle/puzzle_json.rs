@@ -367,8 +367,9 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
     );
 
     let total_first_moves = winning_first_move_count + input.traits.mistake_count;
+    let move_noun = if target_moves == 1 { "move" } else { "moves" };
     let mut description = format!(
-        "{side} to move and win in {target_moves} move(s) against the opponent's best \
+        "{side} to move and win in {target_moves} {move_noun} against the opponent's best \
          practical defense.",
         side = capitalize(side_word),
     );
@@ -656,6 +657,27 @@ mod tests {
                 .contains("Only 1 of the 9 legal first moves")
         );
         assert_eq!(info.category, "opening");
+    }
+
+    #[test]
+    fn description_pluralizes_the_move_count() {
+        let build_description = |solver_move_count: i32| {
+            let solutions = vec![built(solver_move_count, false)];
+            let input = PuzzleBuildInput {
+                fen: "test-fen",
+                solver_side: 0,
+                is_moving_phase: true,
+                solutions: &solutions,
+                traits: plain_traits(),
+                author: "Test Author",
+                rule_variant_id: "standard_9mm",
+                generated_at: "2026-01-01T00:00:00.000Z",
+            };
+            build_puzzle_info(&input).description
+        };
+
+        assert!(build_description(1).contains("win in 1 move against"));
+        assert!(build_description(2).contains("win in 2 moves against"));
     }
 
     #[test]

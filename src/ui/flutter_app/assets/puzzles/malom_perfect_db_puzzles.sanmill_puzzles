@@ -23,7 +23,7 @@
     {
       "id": "malom_movement_black_3_f3e59caf",
       "title": "Win in 3: a quiet move wins",
-      "description": "Black to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 9 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 3 moves against the opponent's best practical defense. Only 1 of the 9 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "@O****O*/*****O*@/*@****@@ b m p 3 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -73,7 +73,7 @@
     {
       "id": "malom_movement_black_3_28832663",
       "title": "Win in 3: a quiet move wins",
-      "description": "Black to move and win in 3 move(s) against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
+      "description": "Black to move and win in 3 moves against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "*******@/*****@**/*OOO**@* b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -145,7 +145,7 @@
     {
       "id": "malom_movement_white_3_ab82e6ee",
       "title": "Win in 3: a quiet move wins",
-      "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
+      "description": "White to move and win in 3 moves against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "***O**@*/****O*@*/*****O@* w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -217,7 +217,7 @@
     {
       "id": "malom_movement_white_3_d501d086",
       "title": "Win in 3: a quiet move wins",
-      "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
+      "description": "White to move and win in 3 moves against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "****@***/****@*O*/*O**@O** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -289,7 +289,7 @@
     {
       "id": "malom_movement_white_5_1fa1787f",
       "title": "Win in 5: ground the flying defense",
-      "description": "White to move and win in 5 move(s) against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
+      "description": "White to move and win in 5 moves against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "*OOO****/@O**O@*@/****O*@* w m p 6 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -350,7 +350,7 @@
     {
       "id": "malom_movement_white_4_a572a624",
       "title": "Win in 4: resist the tempting mill",
-      "description": "White to move and win in 4 move(s) against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
+      "description": "White to move and win in 4 moves against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "O@**O@@@/O******@/O****OO* w m p 6 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -408,7 +408,7 @@
     {
       "id": "malom_movement_black_3_5213c691",
       "title": "Win in 3: a quiet move wins",
-      "description": "Black to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 3 moves against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "**@****@/*OOO****/*******@ b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -458,7 +458,7 @@
     {
       "id": "malom_movement_black_3_8592a30d",
       "title": "Win in 3: a quiet move wins",
-      "description": "Black to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 3 moves against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "**O*@***/*@O@****/**O***** b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -508,7 +508,7 @@
     {
       "id": "malom_movement_black_3_a6f241fb",
       "title": "Win in 3: a quiet move wins",
-      "description": "Black to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 3 moves against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "*OOO****/**@*****/*@****@* b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -558,7 +558,7 @@
     {
       "id": "malom_movement_white_3_2aa2278e",
       "title": "Win in 3: a quiet move wins",
-      "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
+      "description": "White to move and win in 3 moves against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "****O***/**O**O**/***@@@** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -608,7 +608,7 @@
     {
       "id": "malom_movement_white_3_9cfc61ba",
       "title": "Win in 3: a quiet move wins",
-      "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
+      "description": "White to move and win in 3 moves against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "******O*/*******O/@@*O***@ w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -658,7 +658,7 @@
     {
       "id": "malom_movement_white_3_b54a3368",
       "title": "Win in 3: a quiet move wins",
-      "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
+      "description": "White to move and win in 3 moves against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "******O*/**O*O***/***@@@** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -708,7 +708,7 @@
     {
       "id": "malom_movement_white_3_b9143030",
       "title": "Win in 3: a quiet move wins",
-      "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
+      "description": "White to move and win in 3 moves against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "**O***O*/*******O/***@@@** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -758,7 +758,7 @@
     {
       "id": "malom_movement_white_3_c801c588",
       "title": "Win in 3: a quiet move wins",
-      "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
+      "description": "White to move and win in 3 moves against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "**@*O***/**@*****/*O@O**** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -808,7 +808,7 @@
     {
       "id": "malom_movement_white_3_f66d0588",
       "title": "Win in 3: a quiet move wins",
-      "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
+      "description": "White to move and win in 3 moves against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "@@*O***@/**O*****/****O*** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -858,7 +858,7 @@
     {
       "id": "malom_movement_white_3_fcd85690",
       "title": "Win in 3: a quiet move wins",
-      "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
+      "description": "White to move and win in 3 moves against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "O*******/***O****/****O@@@ w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -908,7 +908,7 @@
     {
       "id": "malom_movement_black_3_598401ab",
       "title": "Win in 3: a quiet move wins",
-      "description": "Black to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 3 moves against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "****@@*O/O@@*****/****@O** b m p 3 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -958,7 +958,7 @@
     {
       "id": "malom_movement_black_3_e855454d",
       "title": "Win in 3: a quiet move wins",
-      "description": "Black to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 3 moves against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "**O*@***/O****@@@/*O*@**** b m p 3 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1008,7 +1008,7 @@
     {
       "id": "malom_movement_white_3_5802f5f2",
       "title": "Win in 3: a quiet move wins",
-      "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 9 legal first moves keeps the win alive.",
+      "description": "White to move and win in 3 moves against the opponent's best practical defense. Only 1 of the 9 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "**@O****/***O**OO/@***O@** w m p 5 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1058,7 +1058,7 @@
     {
       "id": "malom_movement_white_3_99030546",
       "title": "Win in 3: a quiet move wins",
-      "description": "White to move and win in 3 move(s) against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
+      "description": "White to move and win in 3 moves against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "****O**@/@****OOO/***O***@ w m p 5 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1108,7 +1108,7 @@
     {
       "id": "malom_movement_white_6_656830ee",
       "title": "Win in 6: a quiet move wins",
-      "description": "White to move and win in 6 move(s) against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
+      "description": "White to move and win in 6 moves against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "**O***@*/***O****/@**O***@ w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1228,7 +1228,7 @@
     {
       "id": "malom_placement_black_4_5c3138c2",
       "title": "Win in 4: resist the tempting mill",
-      "description": "Black to move and win in 4 move(s) against the opponent's best practical defense. Only 1 of the 16 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 4 moves against the opponent's best practical defense. Only 1 of the 16 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "********/**@**@@*/*O*O@OO* b p p 4 0 4 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1290,7 +1290,7 @@
     {
       "id": "malom_movement_black_5_213e23e7",
       "title": "Win in 5: pick the right capture",
-      "description": "Black to move and win in 5 move(s) against the opponent's best practical defense. Only 1 of the 14 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 5 moves against the opponent's best practical defense. Only 1 of the 14 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "medium",
       "initialPosition": "@*O*OOOO/****@@*@/@O@***@* b m p 6 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1352,7 +1352,7 @@
     {
       "id": "malom_movement_white_5_eb653ee3",
       "title": "Win in 5: leave them no move",
-      "description": "White to move and win in 5 move(s) against the opponent's best practical defense. Only 1 of the 10 legal first moves keeps the win alive.",
+      "description": "White to move and win in 5 moves against the opponent's best practical defense. Only 1 of the 10 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "medium",
       "initialPosition": "****OO**/O*****O@/@@O****@ w m p 5 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1421,7 +1421,7 @@
     {
       "id": "malom_placement_black_5_30e4c3ff",
       "title": "Win in 5: resist the tempting mill",
-      "description": "Black to move and win in 5 move(s) against the opponent's best practical defense. Only 1 of the 14 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 5 moves against the opponent's best practical defense. Only 1 of the 14 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "*O@**OOO/***@@O@*/**@***** b p p 5 1 5 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1487,7 +1487,7 @@
     {
       "id": "malom_placement_black_5_7b3f7add",
       "title": "Win in 5: resist the tempting mill",
-      "description": "Black to move and win in 5 move(s) against the opponent's best practical defense. Only 1 of the 10 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 5 moves against the opponent's best practical defense. Only 1 of the 10 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "***@O*O@/**@OOO@*/*@@O*O*@ b p p 7 0 7 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1553,7 +1553,7 @@
     {
       "id": "malom_movement_white_6_bb854233",
       "title": "Win in 6: resist the tempting mill",
-      "description": "White to move and win in 6 move(s) against the opponent's best practical defense. Only 2 of the 12 legal first moves keep the win alive.",
+      "description": "White to move and win in 6 moves against the opponent's best practical defense. Only 2 of the 12 legal first moves keep the win alive.",
       "category": "winGame",
       "difficulty": "medium",
       "initialPosition": "O@O@@@O*/O*@O*O**/****@*O* w m p 7 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1666,7 +1666,7 @@
     {
       "id": "malom_placement_black_6_ca36fbb5",
       "title": "Win in 6: resist the tempting mill",
-      "description": "Black to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 12 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 6 moves against the opponent's best practical defense. Only 1 of the 12 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "O@**@OOO/@O***@*O/****@*O* b p p 7 0 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1736,7 +1736,7 @@
     {
       "id": "malom_placement_black_6_e908d262",
       "title": "Win in 6: resist the tempting mill",
-      "description": "Black to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 6 moves against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "*@@@*O*@/@*@*@*O*/OOO@OO*O b p p 8 0 8 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1810,7 +1810,7 @@
     {
       "id": "malom_placement_black_6_511c14ed",
       "title": "Win in 6: resist the tempting mill",
-      "description": "Black to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 10 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 6 moves against the opponent's best practical defense. Only 1 of the 10 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "*@@*O***/*O@@O*@*/O@OOO**@ b p p 7 1 7 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1888,7 +1888,7 @@
     {
       "id": "malom_placement_black_7_ea1eb9d0",
       "title": "Win in 7: resist the tempting mill",
-      "description": "Black to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 12 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 12 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "*@****@*/@O@**@*O/OO@**OO* b p p 6 0 6 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1966,7 +1966,7 @@
     {
       "id": "malom_placement_white_7_ab8b7268",
       "title": "Win in 7: resist the tempting mill",
-      "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
+      "description": "White to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "@O**O@@@/O*****@@/*OOO@O@O w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -2044,7 +2044,7 @@
     {
       "id": "malom_placement_white_5_b01fb265",
       "title": "Win in 5: resist the tempting mill",
-      "description": "White to move and win in 5 move(s) against the opponent's best practical defense. Only 2 of the 10 legal first moves keep the win alive. Requires accepting a material sacrifice along the way.",
+      "description": "White to move and win in 5 moves against the opponent's best practical defense. Only 2 of the 10 legal first moves keep the win alive. Requires accepting a material sacrifice along the way.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "***O**O*/***@@@OO/O@O@@@*O w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -2158,7 +2158,7 @@
     {
       "id": "malom_movement_white_7_a8e26d5a",
       "title": "Win in 7: resist the tempting mill",
-      "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive.",
+      "description": "White to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "medium",
       "initialPosition": "@*O@@@O*/O*O@*@@*/OO**O*** w m p 7 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -2236,7 +2236,7 @@
     {
       "id": "malom_placement_black_6_da5c21f3",
       "title": "Win in 6: resist the tempting mill",
-      "description": "Black to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 14 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 6 moves against the opponent's best practical defense. Only 1 of the 14 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "*@*@****/*@O@**O*/@OOO**** b p p 5 0 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -2310,7 +2310,7 @@
     {
       "id": "malom_placement_white_6_ca06ba6d",
       "title": "Win in 6: resist the tempting mill",
-      "description": "White to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 13 legal first moves keeps the win alive.",
+      "description": "White to move and win in 6 moves against the opponent's best practical defense. Only 1 of the 13 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "***O*O*O/O*******/@@*OO@@@ w p p 6 1 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -2384,7 +2384,7 @@
     {
       "id": "malom_placement_white_7_3434b36c",
       "title": "Win in 7: resist the tempting mill",
-      "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 9 legal first moves keeps the win alive.",
+      "description": "White to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 9 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "@@*@@O*@/O**@O*O@/@O****OO w p p 7 1 8 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -2462,7 +2462,7 @@
     {
       "id": "malom_placement_white_7_d6c23ef6",
       "title": "Win in 7: resist the tempting mill",
-      "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive.",
+      "description": "White to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "@@@@OOO@/*O***O**/O*@****O w p p 7 1 6 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -2541,7 +2541,7 @@
     {
       "id": "malom_placement_black_5_45a544af",
       "title": "Win in 5: resist the tempting mill",
-      "description": "Black to move and win in 5 move(s) against the opponent's best practical defense. Only 1 of the 14 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 5 moves against the opponent's best practical defense. Only 1 of the 14 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "*@******/@@O*****/*OO*@O@O b p p 5 0 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -2607,7 +2607,7 @@
     {
       "id": "malom_movement_white_7_a4d5d883",
       "title": "Win in 7: pick the right capture",
-      "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive.",
+      "description": "White to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "medium",
       "initialPosition": "***@O***/*O@@*O*O/O@@@O**O w m p 7 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -2685,7 +2685,7 @@
     {
       "id": "malom_movement_white_5_06a045ec",
       "title": "Win in 5: a quiet move wins",
-      "description": "White to move and win in 5 move(s) against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
+      "description": "White to move and win in 5 moves against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
       "category": "winGame",
       "difficulty": "medium",
       "initialPosition": "*@**@***/********/*OOO@*** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -2805,7 +2805,7 @@
     {
       "id": "malom_placement_black_5_ab7f88bf",
       "title": "Win in 5: resist the tempting mill",
-      "description": "Black to move and win in 5 move(s) against the opponent's best practical defense. Only 1 of the 13 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 5 moves against the opponent's best practical defense. Only 1 of the 13 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "***O@OOO/@*****OO/*@**@*@* b p p 6 0 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -2871,7 +2871,7 @@
     {
       "id": "malom_placement_white_6_dc5d4d04",
       "title": "Win in 6: leave them no move",
-      "description": "White to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 15 legal first moves keeps the win alive.",
+      "description": "White to move and win in 6 moves against the opponent's best practical defense. Only 1 of the 15 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "***@@@@O/O****O**/**O****O w p p 5 1 4 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -2948,7 +2948,7 @@
     {
       "id": "malom_placement_white_6_9252120f",
       "title": "Win in 6: resist the tempting mill",
-      "description": "White to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive.",
+      "description": "White to move and win in 6 moves against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "hard",
       "initialPosition": "****O***/*@OO*O*@/@@@O*O@@ w p p 6 1 7 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3022,7 +3022,7 @@
     {
       "id": "malom_placement_white_6_56993bad",
       "title": "Win in 6: resist the tempting mill",
-      "description": "White to move and win in 6 move(s) against the opponent's best practical defense. Only 2 of the 10 legal first moves keep the win alive. Requires accepting a material sacrifice along the way.",
+      "description": "White to move and win in 6 moves against the opponent's best practical defense. Only 2 of the 10 legal first moves keep the win alive. Requires accepting a material sacrifice along the way.",
       "category": "opening",
       "difficulty": "hard",
       "initialPosition": "****O@@@/@@O***O@/@**O*OOO w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3155,7 +3155,7 @@
     {
       "id": "malom_movement_white_7_b4d3fb85",
       "title": "Win in 7: pick the right capture",
-      "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 51 legal first moves keeps the win alive.",
+      "description": "White to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 51 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "hard",
       "initialPosition": "@*******/*O**@*OO/****@**@ w m p 3 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3233,7 +3233,7 @@
     {
       "id": "malom_placement_black_6_fc2e19d4",
       "title": "Win in 6: resist the tempting mill",
-      "description": "Black to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 6 moves against the opponent's best practical defense. Only 1 of the 8 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "hard",
       "initialPosition": "@@@@OOOO/O**@*OO*/@***@@O* b p p 8 0 8 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3307,7 +3307,7 @@
     {
       "id": "malom_placement_white_6_c38a663d",
       "title": "Win in 6: resist the tempting mill",
-      "description": "White to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 13 legal first moves keeps the win alive.",
+      "description": "White to move and win in 6 moves against the opponent's best practical defense. Only 1 of the 13 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "hard",
       "initialPosition": "*@*@O**O/*@@@O**O/**O**O** w p p 6 1 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3381,7 +3381,7 @@
     {
       "id": "malom_placement_black_7_4a364d05",
       "title": "Win in 7: resist the tempting mill",
-      "description": "Black to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 10 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 10 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "hard",
       "initialPosition": "*@@O*@*O/@**O*O@*/@**@OOO* b p p 7 0 7 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3467,7 +3467,7 @@
     {
       "id": "malom_placement_white_7_1c365c12",
       "title": "Win in 7: resist the tempting mill",
-      "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive.",
+      "description": "White to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "hard",
       "initialPosition": "O***@*OO/**O@*@**/*O*@@@OO w p p 7 1 6 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3549,7 +3549,7 @@
     {
       "id": "malom_movement_black_7_35eda02b",
       "title": "Win in 7: a quiet move wins",
-      "description": "Black to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 54 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "hard",
       "initialPosition": "O**@***O/O**@****/@******* b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3631,7 +3631,7 @@
     {
       "id": "malom_movement_white_6_e6b07226",
       "title": "Win in 6: a quiet move wins",
-      "description": "White to move and win in 6 move(s) against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
+      "description": "White to move and win in 6 moves against the opponent's best practical defense. Only 2 of the 54 legal first moves keep the win alive.",
       "category": "winGame",
       "difficulty": "hard",
       "initialPosition": "***O**@@/@****O**/O******* w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3751,7 +3751,7 @@
     {
       "id": "malom_movement_white_7_7d907ee0",
       "title": "Win in 7: pick the right capture",
-      "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 12 legal first moves keeps the win alive.",
+      "description": "White to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 12 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "hard",
       "initialPosition": "*@**@***/O*@O*OO*/***@@O*O w m p 6 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3826,7 +3826,7 @@
     {
       "id": "malom_placement_black_7_f9e521d8",
       "title": "Win in 7: resist the tempting mill",
-      "description": "Black to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive. Requires accepting a material sacrifice along the way.",
+      "description": "Black to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive. Requires accepting a material sacrifice along the way.",
       "category": "opening",
       "difficulty": "hard",
       "initialPosition": "**@OO*@*/@*O*@@**/OOO@**O* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3913,7 +3913,7 @@
     {
       "id": "malom_placement_black_7_2429e2aa",
       "title": "Win in 7: resist the tempting mill",
-      "description": "Black to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 12 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 12 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "hard",
       "initialPosition": "*@@OOOO*/@O**@@O@/******** b p p 6 0 6 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3991,7 +3991,7 @@
     {
       "id": "malom_placement_black_6_578fc568",
       "title": "Win in 6: resist the tempting mill",
-      "description": "Black to move and win in 6 move(s) against the opponent's best practical defense. Only 2 of the 11 legal first moves keep the win alive.",
+      "description": "Black to move and win in 6 moves against the opponent's best practical defense. Only 2 of the 11 legal first moves keep the win alive.",
       "category": "opening",
       "difficulty": "expert",
       "initialPosition": "*@O*O@**/***OOO**/@**@O@O@ b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -4119,7 +4119,7 @@
     {
       "id": "malom_movement_black_7_8a12282f",
       "title": "Win in 7: pick the right capture",
-      "description": "Black to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 51 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 51 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "expert",
       "initialPosition": "*@@**O*@/****O***/**O***O* b m p 4 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -4197,7 +4197,7 @@
     {
       "id": "malom_placement_white_7_0f03cc2c",
       "title": "Win in 7: resist the tempting mill",
-      "description": "White to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive. Requires accepting a material sacrifice along the way.",
+      "description": "White to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive. Requires accepting a material sacrifice along the way.",
       "category": "opening",
       "difficulty": "expert",
       "initialPosition": "**O**O@O/@*O**O@@/*O*O**@@ w p p 7 2 6 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -4288,7 +4288,7 @@
     {
       "id": "malom_movement_black_7_40eadef4",
       "title": "Win in 7: pick the right capture",
-      "description": "Black to move and win in 7 move(s) against the opponent's best practical defense. Only 1 of the 12 legal first moves keeps the win alive.",
+      "description": "Black to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 12 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "expert",
       "initialPosition": "@O*@*@*@/****@*@O/**O*O**O b m p 5 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -4363,7 +4363,7 @@
     {
       "id": "malom_placement_black_6_3f3e1b4e",
       "title": "Win in 6: resist the tempting mill",
-      "description": "Black to move and win in 6 move(s) against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive. Requires accepting a material sacrifice along the way.",
+      "description": "Black to move and win in 6 moves against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive. Requires accepting a material sacrifice along the way.",
       "category": "opening",
       "difficulty": "expert",
       "initialPosition": "**@@@***/@OO*@***/*@OOOOO* b p p 7 1 6 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
