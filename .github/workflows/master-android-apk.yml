@@ -1,12 +1,11 @@
-name: Android Release Build on Master Merge
+name: Android Release Build
 
 on:
-  push:
-    branches: [master]
+  workflow_dispatch:
 
 jobs:
   build-android:
-    # Build release Android APK when PR is merged to master branch
+    # Build a release Android APK only when explicitly requested.
     runs-on: ubuntu-latest
 
     steps:

@@ -10,7 +10,7 @@ on:
       - 'scripts/build-online-wasm.sh'
       - '.github/workflows/online-worker.yml'
   push:
-    branches: [master, next]
+    branches: [release]
     paths:
       - 'crates/tgf-cloud-wasm/**'
       - 'crates/tgf-core/**'
