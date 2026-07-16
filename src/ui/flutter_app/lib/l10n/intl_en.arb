@@ -4272,7 +4272,7 @@
     "@clipboardEmpty": {
         "description": "Snackbar message when clipboard has no text for import"
     },
-    "scanQrCode": "Scan QR Code",
+    "scanQrCode": "Scan QR code",
     "@scanQrCode": {
         "description": "Menu item to scan a QR code containing a move list"
     },
