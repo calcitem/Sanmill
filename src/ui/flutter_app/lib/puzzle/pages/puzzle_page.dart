@@ -1708,6 +1708,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
           data: theme,
           child: Builder(
             builder: (BuildContext context) {
+              final ColorScheme colorScheme = Theme.of(context).colorScheme;
               return AlertDialog(
                 title: Row(
                   children: <Widget>[
@@ -1770,8 +1771,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: solution.isOptimal
-                                              ? Colors.amber[300]
-                                              : Colors.grey[400],
+                                              ? colorScheme.tertiary
+                                              : colorScheme.onSurfaceVariant,
                                         ),
                                       ),
                                       const SizedBox(width: 8),
@@ -1779,7 +1780,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
                                         '(${solution.moves.length} moves)',
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: Colors.grey[400],
+                                          color: colorScheme.onSurfaceVariant,
                                         ),
                                       ),
                                     ],

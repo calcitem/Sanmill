@@ -25,6 +25,7 @@ import 'package:sanmill/puzzle/services/puzzle_rule_engine.dart';
 import 'package:sanmill/puzzle/services/puzzle_transform_service.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
+import 'package:sanmill/shared/themes/app_theme.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 import 'package:sanmill/shared/widgets/snackbars/scaffold_messenger.dart';
 
@@ -135,6 +136,7 @@ void main() {
   PuzzleInfo buildPuzzle({
     required List<List<String>> solutions,
     String? initialPosition,
+    bool markFirstSolutionOptimal = false,
   }) {
     final String fen = initialPosition ?? initialFen;
     final PuzzleRuleEngine? engine = PuzzleRuleEngine.tryLoad(fen);
@@ -142,11 +144,11 @@ void main() {
     final PieceColor startingSide = engine!.view.sideToMove;
     engine.dispose();
 
-    final List<PuzzleSolution> puzzleSolutions = solutions.map((
-      List<String> moves,
+    final List<PuzzleSolution> puzzleSolutions = solutions.asMap().entries.map((
+      MapEntry<int, List<String>> entry,
     ) {
       PieceColor currentSide = startingSide;
-      final List<PuzzleMove> puzzleMoves = moves.map((String notation) {
+      final List<PuzzleMove> puzzleMoves = entry.value.map((String notation) {
         final PuzzleMove move = PuzzleMove(
           notation: notation,
           side: currentSide,
@@ -155,7 +157,10 @@ void main() {
         return move;
       }).toList();
 
-      return PuzzleSolution(moves: puzzleMoves);
+      return PuzzleSolution(
+        moves: puzzleMoves,
+        isOptimal: markFirstSolutionOptimal && entry.key == 0,
+      );
     }).toList();
 
     return PuzzleInfo(
@@ -215,7 +220,11 @@ void main() {
     return PuzzleTransformService.transformPuzzle(base, type);
   }
 
-  Future<void> pumpPuzzlePage(WidgetTester tester, PuzzleInfo puzzle) async {
+  Future<void> pumpPuzzlePage(
+    WidgetTester tester,
+    PuzzleInfo puzzle, {
+    ThemeData? theme,
+  }) async {
     tester.view.physicalSize = const Size(1024, 768);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -223,6 +232,7 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        theme: theme,
         locale: const Locale('en'),
         scaffoldMessengerKey: rootScaffoldMessengerKey,
         localizationsDelegates: sanmillLocalizationsDelegates,
@@ -358,6 +368,44 @@ void main() {
         await tester.tap(find.byKey(const Key('puzzle_page_action_reset')));
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 250));
+        await teardownPuzzlePage(tester);
+      },
+      skip: nativeLibrarySkipReason() != null,
+    );
+
+    testWidgets(
+      'solution metadata uses readable light-theme colors',
+      (WidgetTester tester) async {
+        final PuzzleInfo puzzle = buildPuzzle(
+          solutions: const <List<String>>[
+            <String>['a1', 'd7'],
+            <String>['a4', 'g7'],
+          ],
+          markFirstSolutionOptimal: true,
+        );
+        await pumpPuzzlePage(tester, puzzle, theme: AppTheme.lightThemeData);
+
+        await tester.tap(
+          find.byKey(const Key('puzzle_page_bottom_bar_give_up')),
+        );
+        await tester.pump();
+
+        final ColorScheme colors = AppTheme.lightThemeData.colorScheme;
+        final Text optimal = tester.widget<Text>(find.text('⭐ Optimal'));
+        final Text alternative = tester.widget<Text>(find.text('Alternative'));
+        final Iterable<Text> moveCounts = tester.widgetList<Text>(
+          find.text('(2 moves)'),
+        );
+        expect(optimal.style?.color, colors.tertiary);
+        expect(alternative.style?.color, colors.onSurfaceVariant);
+        expect(moveCounts, hasLength(2));
+        expect(
+          moveCounts.every(
+            (Text text) => text.style?.color == colors.onSurfaceVariant,
+          ),
+          isTrue,
+        );
+
         await teardownPuzzlePage(tester);
       },
       skip: nativeLibrarySkipReason() != null,
