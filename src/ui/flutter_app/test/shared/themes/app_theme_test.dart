@@ -229,6 +229,28 @@ void main() {
         );
       }
     });
+
+    test('filled control foregrounds remain readable in both themes', () {
+      for (final ThemeData theme in <ThemeData>[
+        AppTheme.lightThemeData,
+        AppTheme.darkThemeData,
+      ]) {
+        final ColorScheme colors = theme.colorScheme;
+        for (final (Color foreground, Color background) pair
+            in <(Color, Color)>[
+              (colors.onPrimary, colors.primary),
+              (colors.onError, colors.error),
+            ]) {
+          expect(
+            colorContrastRatio(pair.$1, pair.$2),
+            greaterThanOrEqualTo(normalTextMinimumContrastRatio),
+            reason:
+                '${theme.brightness} filled-control foreground ${pair.$1} '
+                'must remain readable on ${pair.$2}.',
+          );
+        }
+      }
+    });
   });
 
   // ---------------------------------------------------------------------------

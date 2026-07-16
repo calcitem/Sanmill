@@ -2282,6 +2282,7 @@ class MovesListPageState extends State<MovesListPage> {
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
+        final ColorScheme colorScheme = Theme.of(context).colorScheme;
         return AlertDialog(
           title: Text(S.of(context).deleteCurrentBranch),
           content: Column(
@@ -2293,21 +2294,24 @@ class MovesListPageState extends State<MovesListPage> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.orange.shade100,
+                  color: colorScheme.tertiaryContainer,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.orange.shade700),
+                  border: Border.all(color: colorScheme.tertiary),
                 ),
                 child: Row(
                   children: <Widget>[
                     Icon(
                       FluentIcons.warning_24_regular,
-                      color: Colors.orange.shade700,
+                      color: colorScheme.onTertiaryContainer,
                     ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         S.of(context).deleteCurrentBranchWarning,
-                        style: const TextStyle(fontSize: 12),
+                        style: TextStyle(
+                          color: colorScheme.onTertiaryContainer,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                   ],
@@ -2326,8 +2330,8 @@ class MovesListPageState extends State<MovesListPage> {
                 _deleteCurrentBranch(variationStartNode!);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red.shade700,
-                foregroundColor: Colors.white,
+                backgroundColor: colorScheme.error,
+                foregroundColor: colorScheme.onError,
               ),
               child: Text(S.of(context).delete),
             ),
