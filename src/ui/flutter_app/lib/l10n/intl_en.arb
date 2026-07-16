@@ -5392,5 +5392,13 @@
     "noGameToSave": "No game to save",
     "@noGameToSave": {
         "description": "Feedback shown when saving a game with no moves or setup position"
+    },
+    "rename": "Rename",
+    "@rename": {
+        "description": "Action that changes the name of a saved file"
+    },
+    "renameGame": "Rename game",
+    "@renameGame": {
+        "description": "Title of the dialog for renaming a saved game file"
     }
 }

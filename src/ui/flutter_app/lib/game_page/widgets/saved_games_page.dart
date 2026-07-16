@@ -372,7 +372,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(S.of(context).filename),
+          title: Text(S.of(context).renameGame),
           content: TextField(
             controller: controller,
             decoration: InputDecoration(
@@ -389,7 +389,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
             TextButton(
               onPressed: () =>
                   Navigator.of(context).pop(controller.text.trim()),
-              child: Text(S.of(context).ok),
+              child: Text(S.of(context).rename),
             ),
           ],
         );
@@ -798,7 +798,7 @@ class _SavedGameListTile extends StatelessWidget {
                         value: _SavedGameAction.rename,
                         child: ListTile(
                           leading: const Icon(Icons.edit_rounded),
-                          title: Text(strings.edit),
+                          title: Text(strings.rename),
                         ),
                       ),
                       PopupMenuItem<_SavedGameAction>(
