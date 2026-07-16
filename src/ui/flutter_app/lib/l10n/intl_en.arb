@@ -4440,7 +4440,7 @@
     "@sendReport": {
         "description": "Button label for sending a diagnostic report"
     },
-    "qrCodeScannerDesktopHint": "The live camera preview is not used on this computer. Choose an image file that contains a QR code.",
+    "qrCodeScannerDesktopHint": "To scan on this computer, choose an image file containing a QR code.",
     "@qrCodeScannerDesktopHint": {
         "description": "Explains QR scan UI on desktop without the camera plugin (all desktop OS)"
     },
