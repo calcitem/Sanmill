@@ -130,33 +130,29 @@ class _LlmAssistedDevelopmentDialogState
                       ? null
                       : () => Navigator.of(context).pop(),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   ),
-                  child: Text(
-                    S.of(context).close,
-                    style: const TextStyle(color: Colors.white),
-                  ),
+                  child: Text(S.of(context).close),
                 ),
                 ElevatedButton(
                   onPressed: canCopy ? _copyToClipboard : null,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   ),
                   child: _isCopying
-                      ? const SizedBox(
+                      ? SizedBox(
                           width: 16,
                           height: 16,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.white,
+                              Theme.of(context).colorScheme.onPrimary,
                             ),
                           ),
                         )
-                      : Text(
-                          S.of(context).copy,
-                          style: const TextStyle(color: Colors.white),
-                        ),
+                      : Text(S.of(context).copy),
                 ),
               ],
             ),

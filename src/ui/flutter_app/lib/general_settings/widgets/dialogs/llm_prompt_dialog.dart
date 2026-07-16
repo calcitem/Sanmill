@@ -225,23 +225,19 @@ class _LlmPromptDialogState extends State<LlmPromptDialog> {
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   ),
-                  child: Text(
-                    S.of(context).cancel, // "Cancel"
-                    style: const TextStyle(color: Colors.white),
-                  ),
+                  child: Text(S.of(context).cancel), // "Cancel"
                 ),
                 // OK button on the right
                 ElevatedButton(
                   onPressed: _savePrompts,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   ),
-                  child: Text(
-                    S.of(context).ok, // "Save"
-                    style: const TextStyle(color: Colors.white),
-                  ),
+                  child: Text(S.of(context).ok), // "Save"
                 ),
               ],
             ),
