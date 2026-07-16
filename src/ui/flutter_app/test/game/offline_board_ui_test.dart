@@ -59,7 +59,7 @@ void main() {
     DB.instance = null;
   });
 
-  testWidgets('new game sheet matches Lichess clock terminology and defaults', (
+  testWidgets('new game sheet starts an untimed over-the-board game', (
     WidgetTester tester,
   ) async {
     await tester.binding.setSurfaceSize(const Size(390, 844));
@@ -80,32 +80,26 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('offline_board_new_game_sheet')), findsOne);
-    expect(find.text('Time control'), findsOne);
-    expect(find.text('Clock'), findsOne);
-    expect(find.text('Minutes per side: 5'), findsOne);
-    expect(find.text('Increment in seconds: 3'), findsOne);
+    expect(find.text('Time control'), findsNothing);
+    expect(
+      find.byKey(const Key('offline_board_time_control_picker')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('offline_board_minutes_per_side_slider')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('offline_board_increment_slider')),
+      findsNothing,
+    );
     expect(find.text("Nine Men's Morris"), findsOne);
     expect(find.text('Play'), findsOne);
-
-    await tester.tap(
-      find.byKey(const Key('offline_board_time_control_picker')),
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(
-      find.byKey(const Key('offline_board_time_control_unlimited')),
-    );
-    await tester.pumpAndSettle();
-
-    expect(find.text('Unlimited'), findsOne);
-    expect(find.textContaining('Minutes per side:'), findsNothing);
-    expect(find.textContaining('Increment in seconds:'), findsNothing);
 
     await tester.tap(find.byKey(const Key('offline_board_start_button')));
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('offline_board_new_game_sheet')), findsNothing);
-    expect(db.generalSettings.offlineBoardTimeSeconds, 0);
-    expect(db.generalSettings.offlineBoardIncrementSeconds, 0);
     expect(OfflineBoardClock().state.isEnabled, isFalse);
   });
 
@@ -143,8 +137,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(db.ruleSettings.piecesCount, 12);
-    expect(OfflineBoardClock().state.whiteTime, const Duration(minutes: 5));
-    expect(OfflineBoardClock().state.increment, const Duration(seconds: 3));
+    expect(OfflineBoardClock().state.isEnabled, isFalse);
   });
 
   testWidgets('Chinese Offline Board terms match Lichess', (
@@ -167,10 +160,8 @@ void main() {
     await tester.tap(find.byKey(const Key('open_offline_board_setup')));
     await tester.pumpAndSettle();
 
-    expect(find.text('时间限制'), findsOne);
-    expect(find.text('棋钟'), findsOne);
-    expect(find.text('各方限时（分钟）: 5'), findsOne);
-    expect(find.text('每步加时（秒）: 3'), findsOne);
+    expect(find.text('时间限制'), findsNothing);
+    expect(find.text('棋钟'), findsNothing);
     expect(find.text('对弈'), findsOne);
     await tester.tap(find.byKey(const Key('offline_board_start_button')));
     await tester.pumpAndSettle();
@@ -239,8 +230,7 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
 
     expect(find.byKey(const Key('offline_board_new_game_sheet')), findsNothing);
-    expect(OfflineBoardClock().state.status, OfflineBoardClockStatus.paused);
-    expect(OfflineBoardClock().state.whiteTime, const Duration(minutes: 5));
+    expect(OfflineBoardClock().state.isEnabled, isFalse);
 
     await tester.tap(
       find.byKey(const Key('game_page_offline_board_settings_button')),
@@ -281,7 +271,7 @@ void main() {
     expect(db.generalSettings.offlineBoardFlipAfterMove, isTrue);
   });
 
-  testWidgets('game surface has two clocks and Lichess control order', (
+  testWidgets('game surface shows players without visible clocks', (
     WidgetTester tester,
   ) async {
     OfflineBoardClock().setup(
@@ -313,18 +303,18 @@ void main() {
       find.byKey(const Key('play_area_offline_board_bottom_player')),
       findsOne,
     );
-    expect(find.byKey(const Key('offline_board_white_clock')), findsOne);
-    expect(find.byKey(const Key('offline_board_black_clock')), findsOne);
+    expect(find.byKey(const Key('offline_board_white_clock')), findsNothing);
+    expect(find.byKey(const Key('offline_board_black_clock')), findsNothing);
     expect(find.text('White'), findsOne);
     expect(find.text('Black'), findsOne);
-    expect(find.text('5:00'), findsNWidgets(2));
+    expect(find.text('5:00'), findsNothing);
     expect(
       find.byKey(const Key('play_area_offline_board_bottom_menu')),
       findsOne,
     );
     expect(
       find.byKey(const Key('play_area_offline_board_bottom_clock')),
-      findsOne,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_offline_board_bottom_previous')),
@@ -341,34 +331,11 @@ void main() {
     expect(
       tester
           .widget<LichessBottomBarButton>(
-            find.byKey(const Key('play_area_offline_board_bottom_clock')),
-          )
-          .label,
-      'Resume',
-    );
-    expect(
-      tester
-          .widget<LichessBottomBarButton>(
             find.byKey(const Key('play_area_offline_board_bottom_take_back')),
           )
           .label,
       'Takeback',
     );
-
-    await tester.tap(
-      find.byKey(const Key('play_area_offline_board_bottom_clock')),
-    );
-    await tester.pump();
-    expect(OfflineBoardClock().state.isRunning, isTrue);
-    expect(
-      tester
-          .widget<LichessBottomBarButton>(
-            find.byKey(const Key('play_area_offline_board_bottom_clock')),
-          )
-          .label,
-      'Pause',
-    );
-    OfflineBoardClock().pause();
   });
 
   testWidgets('automatic display rotation follows the player to move', (
@@ -497,7 +464,7 @@ void main() {
     );
   });
 
-  testWidgets('unlimited games hide pause control and show infinity', (
+  testWidgets('untimed games omit clock values and controls', (
     WidgetTester tester,
   ) async {
     OfflineBoardClock().setup(
@@ -516,7 +483,9 @@ void main() {
     );
     await tester.pump();
 
-    expect(find.text('∞'), findsNWidgets(2));
+    expect(find.text('∞'), findsNothing);
+    expect(find.byKey(const Key('offline_board_white_clock')), findsNothing);
+    expect(find.byKey(const Key('offline_board_black_clock')), findsNothing);
     expect(
       find.byKey(const Key('play_area_offline_board_bottom_clock')),
       findsNothing,

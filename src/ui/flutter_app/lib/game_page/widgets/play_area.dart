@@ -52,7 +52,6 @@ import '../services/mill.dart';
 import '../services/offline_board_clock.dart';
 import '../services/offline_board_history.dart';
 import '../services/painters/advantage_graph_painter.dart';
-import '../services/player_timer.dart';
 import '../services/transform/transform.dart';
 import 'ai_chat_dialog.dart';
 import 'game_page.dart';
@@ -1768,27 +1767,6 @@ class PlayAreaState extends State<PlayArea> {
         !GameController().isEngineInDelay;
   }
 
-  bool get _shouldShowRegularClockControl {
-    return !_usesLichessHumanAiToolbar &&
-        !_isAnalysisMode &&
-        GameController().gameInstance.gameMode == GameMode.humanVsHuman &&
-        DB().generalSettings.humanMoveTime > 0;
-  }
-
-  VoidCallback? _regularClockControlAction(PlayerTimerStatus status) {
-    if (!_shouldShowRegularClockControl ||
-        _activePhase == Phase.gameOver ||
-        status == PlayerTimerStatus.stopped) {
-      return null;
-    }
-
-    return switch (status) {
-      PlayerTimerStatus.running => PlayerTimer().pause,
-      PlayerTimerStatus.paused => PlayerTimer().resume,
-      PlayerTimerStatus.stopped => null,
-    };
-  }
-
   Future<void> _transformActiveBoard(
     MillBoardTransformAction action, {
     required S strings,
@@ -3393,43 +3371,17 @@ class PlayAreaState extends State<PlayArea> {
           valueListenable: AnalysisMode.stateNotifier,
           builder: (BuildContext context, _, _) {
             if (_isOfflineBoardMode) {
-              return ValueListenableBuilder<OfflineBoardClockState>(
-                valueListenable: OfflineBoardClock().stateNotifier,
-                builder:
-                    (
-                      BuildContext context,
-                      OfflineBoardClockState clock,
-                      Widget? child,
-                    ) {
-                      return _OfflineBoardBottomBar(
-                        onMenuPressed: _showRegularGameMenu,
-                        showClockControl: clock.isEnabled,
-                        isClockPaused: clock.isPaused,
-                        onClockPressed:
-                            clock.status == OfflineBoardClockStatus.flagged
-                            ? null
-                            : clock.isRunning
-                            ? OfflineBoardClock().pause
-                            : clock.isPaused
-                            ? OfflineBoardClock().resume
-                            : null,
-                        onTakeBackPressed: _canTakeBackFromRegularBottomBar
-                            ? () => unawaited(
-                                _takeBackFromRegularBottomBar(context),
-                              )
-                            : null,
-                        onPreviousPressed: _canStepBackFromRegularBottomBar
-                            ? () => unawaited(
-                                _stepBackFromRegularBottomBar(context),
-                              )
-                            : null,
-                        onNextPressed: _canStepForwardFromRegularBottomBar
-                            ? () => unawaited(
-                                _stepForwardFromRegularBottomBar(context),
-                              )
-                            : null,
-                      );
-                    },
+              return _OfflineBoardBottomBar(
+                onMenuPressed: _showRegularGameMenu,
+                onTakeBackPressed: _canTakeBackFromRegularBottomBar
+                    ? () => unawaited(_takeBackFromRegularBottomBar(context))
+                    : null,
+                onPreviousPressed: _canStepBackFromRegularBottomBar
+                    ? () => unawaited(_stepBackFromRegularBottomBar(context))
+                    : null,
+                onNextPressed: _canStepForwardFromRegularBottomBar
+                    ? () => unawaited(_stepForwardFromRegularBottomBar(context))
+                    : null,
               );
             }
             if (_isAnalysisMode) {
@@ -3449,32 +3401,23 @@ class PlayAreaState extends State<PlayArea> {
               );
             }
 
-            return ValueListenableBuilder<PlayerTimerStatus>(
-              valueListenable: PlayerTimer().statusNotifier,
-              builder: (BuildContext context, PlayerTimerStatus status, _) {
-                return _RegularGameBottomBar(
-                  onMenuPressed: _showRegularGameMenu,
-                  onResignOrResultPressed: _isRegularGameOver
-                      ? _showRegularGameResult
-                      : _canResignFromRegularBottomBar
-                      ? () => _showRegularResignConfirmation(context)
-                      : null,
-                  showClockControl: _shouldShowRegularClockControl,
-                  isClockPaused: status == PlayerTimerStatus.paused,
-                  isShowingResult: _isRegularGameOver,
-                  onClockPressed: _regularClockControlAction(status),
-                  onTakeBackPressed: _canTakeBackFromRegularBottomBar
-                      ? () => _takeBackFromRegularBottomBar(context)
-                      : null,
-                  onPreviousPressed: _canStepBackFromRegularBottomBar
-                      ? () => unawaited(_stepBackFromRegularBottomBar(context))
-                      : null,
-                  onNextPressed: _canStepForwardFromRegularBottomBar
-                      ? () =>
-                            unawaited(_stepForwardFromRegularBottomBar(context))
-                      : null,
-                );
-              },
+            return _RegularGameBottomBar(
+              onMenuPressed: _showRegularGameMenu,
+              onResignOrResultPressed: _isRegularGameOver
+                  ? _showRegularGameResult
+                  : _canResignFromRegularBottomBar
+                  ? () => _showRegularResignConfirmation(context)
+                  : null,
+              isShowingResult: _isRegularGameOver,
+              onTakeBackPressed: _canTakeBackFromRegularBottomBar
+                  ? () => _takeBackFromRegularBottomBar(context)
+                  : null,
+              onPreviousPressed: _canStepBackFromRegularBottomBar
+                  ? () => unawaited(_stepBackFromRegularBottomBar(context))
+                  : null,
+              onNextPressed: _canStepForwardFromRegularBottomBar
+                  ? () => unawaited(_stepForwardFromRegularBottomBar(context))
+                  : null,
             );
           },
         );
@@ -8654,10 +8597,7 @@ class _RegularGameBottomBar extends StatelessWidget {
   const _RegularGameBottomBar({
     required this.onMenuPressed,
     required this.onResignOrResultPressed,
-    required this.showClockControl,
-    required this.isClockPaused,
     required this.isShowingResult,
-    required this.onClockPressed,
     required this.onTakeBackPressed,
     required this.onPreviousPressed,
     required this.onNextPressed,
@@ -8665,10 +8605,7 @@ class _RegularGameBottomBar extends StatelessWidget {
 
   final VoidCallback onMenuPressed;
   final VoidCallback? onResignOrResultPressed;
-  final bool showClockControl;
-  final bool isClockPaused;
   final bool isShowingResult;
-  final VoidCallback? onClockPressed;
   final VoidCallback? onTakeBackPressed;
   final VoidCallback? onPreviousPressed;
   final VoidCallback? onNextPressed;
@@ -8697,14 +8634,6 @@ class _RegularGameBottomBar extends StatelessWidget {
           highlighted: isShowingResult,
           withShadow: true,
         ),
-        if (showClockControl)
-          LichessBottomBarButton(
-            key: const Key('play_area_regular_bottom_bar_clock'),
-            icon: isClockPaused ? CupertinoIcons.play : CupertinoIcons.pause,
-            label: isClockPaused ? S.of(context).resume : S.of(context).pause,
-            onTap: onClockPressed,
-            withShadow: true,
-          ),
         LichessBottomBarButton(
           key: const Key('play_area_regular_bottom_bar_take_back'),
           icon: CupertinoIcons.arrow_uturn_left,
@@ -8742,18 +8671,12 @@ class _RegularGameBottomBar extends StatelessWidget {
 class _OfflineBoardBottomBar extends StatelessWidget {
   const _OfflineBoardBottomBar({
     required this.onMenuPressed,
-    required this.showClockControl,
-    required this.isClockPaused,
-    required this.onClockPressed,
     required this.onTakeBackPressed,
     required this.onPreviousPressed,
     required this.onNextPressed,
   });
 
   final VoidCallback onMenuPressed;
-  final bool showClockControl;
-  final bool isClockPaused;
-  final VoidCallback? onClockPressed;
   final VoidCallback? onTakeBackPressed;
   final VoidCallback? onPreviousPressed;
   final VoidCallback? onNextPressed;
@@ -8775,14 +8698,6 @@ class _OfflineBoardBottomBar extends StatelessWidget {
             onTap: onMenuPressed,
             withShadow: true,
           ),
-          if (showClockControl)
-            LichessBottomBarButton(
-              key: const Key('play_area_offline_board_bottom_clock'),
-              icon: isClockPaused ? CupertinoIcons.play : CupertinoIcons.pause,
-              label: isClockPaused ? S.of(context).resume : S.of(context).pause,
-              onTap: onClockPressed,
-              withShadow: true,
-            ),
           _RepeatButton(
             onLongPress: onPreviousPressed,
             child: LichessBottomBarButton(
@@ -8831,102 +8746,39 @@ class _OfflineBoardPlayerPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     assert(side == PieceColor.white || side == PieceColor.black);
-    return ValueListenableBuilder<OfflineBoardClockState>(
-      valueListenable: OfflineBoardClock().stateNotifier,
-      builder:
-          (BuildContext context, OfflineBoardClockState clock, Widget? child) {
-            final Color baseColor = DB().colorSettings.messageColor;
-            final bool isActive = clock.isRunning && clock.activeSide == side;
-            final Color contentColor = baseColor.withValues(
-              alpha: isActive ? 1 : 0.68,
-            );
-            final String sideName = side == PieceColor.white
-                ? S.of(context).offlineBoardWhite
-                : S.of(context).offlineBoardBlack;
-            final String time = clock.isEnabled
-                ? _offlineBoardClockLabel(clock.timeFor(side))
-                : '∞';
-            final Widget content = LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                final bool compact = constraints.maxWidth < 280;
-                return Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: compact ? 12 : 28,
-                    vertical: 8,
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      if (!compact) ...<Widget>[
-                        Icon(
-                          Icons.person_outline,
-                          color: contentColor,
-                          size: 22,
-                        ),
-                        const SizedBox(width: 8),
-                      ],
-                      Expanded(
-                        child: Text(
-                          sideName,
-                          key: Key('offline_board_${side.name}_name'),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(
-                                color: contentColor,
-                                fontWeight: isActive
-                                    ? FontWeight.w600
-                                    : FontWeight.w400,
-                              ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        time,
-                        key: Key('offline_board_${side.name}_clock'),
-                        style: getMonospaceTitleTextStyle(context).copyWith(
-                          color: contentColor,
-                          fontSize: compact ? 26 : 34,
-                          fontWeight: isActive
-                              ? FontWeight.w600
-                              : FontWeight.w400,
-                          letterSpacing: 0,
-                          shadows: const <Shadow>[],
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            );
-            return Semantics(
-              container: true,
-              label: '$sideName $time',
-              child: upsideDown
-                  ? RotatedBox(quarterTurns: 2, child: content)
-                  : content,
-            );
-          },
+    final Color contentColor = DB().colorSettings.messageColor.withValues(
+      alpha: 0.78,
+    );
+    final String sideName = side == PieceColor.white
+        ? S.of(context).offlineBoardWhite
+        : S.of(context).offlineBoardBlack;
+    final Widget content = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 8),
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.person_outline, color: contentColor, size: 22),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              sideName,
+              key: Key('offline_board_${side.name}_name'),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: contentColor,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    return Semantics(
+      container: true,
+      label: sideName,
+      child: upsideDown ? RotatedBox(quarterTurns: 2, child: content) : content,
     );
   }
-}
-
-String _offlineBoardClockLabel(Duration duration) {
-  final int milliseconds = math.max(0, duration.inMilliseconds);
-  if (milliseconds < 10000) {
-    final int tenths = (milliseconds / 100).ceil();
-    final int wholeSeconds = tenths ~/ 10;
-    return '0:${wholeSeconds.toString().padLeft(2, '0')}.${tenths % 10}';
-  }
-  final int totalSeconds = (milliseconds / 1000).ceil();
-  final int seconds = totalSeconds % 60;
-  final int totalMinutes = totalSeconds ~/ 60;
-  if (totalMinutes >= 60) {
-    final int hours = totalMinutes ~/ 60;
-    final int minutes = totalMinutes % 60;
-    return '$hours:${minutes.toString().padLeft(2, '0')}:'
-        '${seconds.toString().padLeft(2, '0')}';
-  }
-  return '$totalMinutes:${seconds.toString().padLeft(2, '0')}';
 }
 
 class _AnalysisEngineBottomBarButton extends StatelessWidget {

@@ -165,10 +165,10 @@ void main() {
   });
 
   // ---------------------------------------------------------------------------
-  // Adjustments: human move time
+  // Retired human move time
   // ---------------------------------------------------------------------------
-  group('getFixedAiEloRating human move time', () {
-    test('short human time limit should increase AI rating', () {
+  group('getFixedAiEloRating legacy human move time', () {
+    test('stored legacy time limit should not affect AI rating', () {
       mockDB.generalSettings = const GeneralSettings();
       final int noLimit = EloRatingService.getFixedAiEloRating(15);
 
@@ -177,8 +177,8 @@ void main() {
 
       expect(
         shortLimit,
-        greaterThan(noLimit),
-        reason: 'Short time pressure increases effective AI strength',
+        noLimit,
+        reason: 'Ordinary games no longer apply time pressure',
       );
     });
   });

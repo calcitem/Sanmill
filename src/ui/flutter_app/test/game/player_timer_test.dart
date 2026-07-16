@@ -102,10 +102,10 @@ void main() {
   });
 
   // ---------------------------------------------------------------------------
-  // Pause / resume
+  // Retired clock compatibility
   // ---------------------------------------------------------------------------
-  group('PlayerTimer pause/resume', () {
-    test('pause and resume preserve the remaining move time', () {
+  group('PlayerTimer compatibility', () {
+    test('legacy human time settings cannot start a countdown', () {
       DB().generalSettings = const GeneralSettings(humanMoveTime: 30);
       final GameController controller = GameController();
       controller.gameInstance.gameMode = GameMode.humanVsAi;
@@ -113,20 +113,11 @@ void main() {
       controller.gameRecorder.appendMove(ExtMove('d6', side: PieceColor.white));
 
       PlayerTimer.instance.start();
-      expect(PlayerTimer.instance.status, PlayerTimerStatus.running);
-      expect(PlayerTimer.instance.isActive, isTrue);
-      expect(PlayerTimer.instance.remainingTime, 30);
 
-      PlayerTimer.instance.pause();
-      expect(PlayerTimer.instance.status, PlayerTimerStatus.paused);
+      expect(PlayerTimer.instance.status, PlayerTimerStatus.stopped);
       expect(PlayerTimer.instance.isActive, isFalse);
-      expect(PlayerTimer.instance.isPaused, isTrue);
-      expect(PlayerTimer.instance.remainingTime, 30);
-
-      PlayerTimer.instance.resume();
-      expect(PlayerTimer.instance.status, PlayerTimerStatus.running);
-      expect(PlayerTimer.instance.isActive, isTrue);
-      expect(PlayerTimer.instance.remainingTime, 30);
+      expect(PlayerTimer.instance.remainingTime, 0);
+      expect(PlayerTimer.instance.remainingTimeNotifier.value, 0);
     });
 
     test('same-device games delegate timing to OfflineBoardClock', () {

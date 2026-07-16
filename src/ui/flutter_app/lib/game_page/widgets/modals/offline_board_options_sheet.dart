@@ -18,82 +18,6 @@ import '../../services/mill.dart';
 import '../../services/offline_board_clock.dart';
 import 'game_options_modal.dart';
 
-const List<int> _offlineBoardTimesInSeconds = <int>[
-  0,
-  15,
-  30,
-  45,
-  60,
-  90,
-  120,
-  180,
-  240,
-  300,
-  360,
-  420,
-  480,
-  540,
-  600,
-  660,
-  720,
-  780,
-  840,
-  900,
-  960,
-  1020,
-  1080,
-  1140,
-  1200,
-  1500,
-  1800,
-  2100,
-  2400,
-  2700,
-  3600,
-  4500,
-  5400,
-  6300,
-  7200,
-  8100,
-  9000,
-  9900,
-  10800,
-];
-
-const List<int> _offlineBoardIncrementsInSeconds = <int>[
-  0,
-  1,
-  2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8,
-  9,
-  10,
-  11,
-  12,
-  13,
-  14,
-  15,
-  16,
-  17,
-  18,
-  19,
-  20,
-  25,
-  30,
-  35,
-  40,
-  45,
-  60,
-  90,
-  120,
-  150,
-  180,
-];
-
 Future<void> showOfflineBoardNewGameSheet(
   BuildContext context, {
   bool isDismissible = true,
@@ -169,93 +93,15 @@ class _OfflineBoardNewGameSheet extends StatefulWidget {
 }
 
 class _OfflineBoardNewGameSheetState extends State<_OfflineBoardNewGameSheet> {
-  late bool _hasClock;
-  late int _timeIndex;
-  late int _incrementIndex;
   late String _variantId;
-
-  int get _timeSeconds => _offlineBoardTimesInSeconds[_timeIndex];
-  int get _incrementSeconds =>
-      _offlineBoardIncrementsInSeconds[_incrementIndex];
 
   @override
   void initState() {
     super.initState();
-    final GeneralSettings general = DB().generalSettings;
-    _hasClock =
-        general.offlineBoardTimeSeconds > 0 ||
-        general.offlineBoardIncrementSeconds > 0;
-    _timeIndex = _nearestIndex(
-      _offlineBoardTimesInSeconds,
-      general.offlineBoardTimeSeconds,
-    );
-    _incrementIndex = _nearestIndex(
-      _offlineBoardIncrementsInSeconds,
-      general.offlineBoardIncrementSeconds,
-    );
     final String currentId = RuleVariant.fromRuleSettings(DB().ruleSettings).id;
     _variantId = RuleVariant.canonicalSettings.containsKey(currentId)
         ? currentId
         : 'standard_9mm';
-  }
-
-  int _nearestIndex(List<int> values, int target) {
-    int nearest = 0;
-    int distance = (values.first - target).abs();
-    for (int i = 1; i < values.length; i++) {
-      final int candidateDistance = (values[i] - target).abs();
-      if (candidateDistance < distance) {
-        nearest = i;
-        distance = candidateDistance;
-      }
-    }
-    return nearest;
-  }
-
-  void _setHasClock(bool value) {
-    setState(() {
-      _hasClock = value;
-      if (value && _timeSeconds == 0 && _incrementSeconds == 0) {
-        _timeIndex = _offlineBoardTimesInSeconds.indexOf(300);
-        _incrementIndex = _offlineBoardIncrementsInSeconds.indexOf(3);
-      }
-    });
-  }
-
-  Future<void> _showTimeControlPicker() async {
-    final bool? hasClock = await showModalBottomSheet<bool>(
-      context: context,
-      showDragHandle: true,
-      builder: (BuildContext context) {
-        return SafeArea(
-          top: false,
-          child: LichessListSection(
-            header: Text(S.of(context).timeControl),
-            children: <Widget>[
-              RadioListTile<bool>(
-                key: const Key('offline_board_time_control_clock'),
-                secondary: const Icon(Icons.timer_outlined),
-                title: Text(S.of(context).clock),
-                value: true,
-                groupValue: _hasClock,
-                onChanged: (bool? value) => Navigator.of(context).pop(value),
-              ),
-              RadioListTile<bool>(
-                key: const Key('offline_board_time_control_unlimited'),
-                secondary: const Icon(Icons.all_inclusive),
-                title: Text(S.of(context).unlimited),
-                value: false,
-                groupValue: _hasClock,
-                onChanged: (bool? value) => Navigator.of(context).pop(value),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-    if (mounted && hasClock != null) {
-      _setHasClock(hasClock);
-    }
   }
 
   Future<void> _showVariantPicker() async {
@@ -289,21 +135,11 @@ class _OfflineBoardNewGameSheetState extends State<_OfflineBoardNewGameSheet> {
   }
 
   void _startGame() {
-    final int timeSeconds = _hasClock ? _timeSeconds : 0;
-    final int incrementSeconds = _hasClock ? _incrementSeconds : 0;
     final RuleSettings rules = RuleVariant.canonicalSettings[_variantId]!;
 
-    DB().generalSettings = DB().generalSettings.copyWith(
-      offlineBoardTimeSeconds: timeSeconds,
-      offlineBoardIncrementSeconds: incrementSeconds,
-    );
     DB().ruleSettings = rules;
     GameOptionsModal.startNewGame(context);
-    OfflineBoardClock().setup(
-      initialTime: Duration(seconds: timeSeconds),
-      increment: Duration(seconds: incrementSeconds),
-      activeSide: GameController().activeBoardView.sideToMove,
-    );
+    OfflineBoardClock().reset();
     Navigator.of(context).pop();
   }
 
@@ -328,77 +164,6 @@ class _OfflineBoardNewGameSheetState extends State<_OfflineBoardNewGameSheet> {
         children: <Widget>[
           LichessListSection(
             children: <Widget>[
-              ListTile(
-                key: const Key('offline_board_time_control_picker'),
-                title: Text(S.of(context).timeControl),
-                trailing: Text(
-                  _hasClock ? S.of(context).clock : S.of(context).unlimited,
-                  style: valueStyle,
-                ),
-                onTap: _showTimeControlPicker,
-              ),
-              AnimatedSize(
-                duration: const Duration(milliseconds: 150),
-                alignment: Alignment.topCenter,
-                child: !_hasClock
-                    ? const SizedBox.shrink()
-                    : Column(
-                        children: <Widget>[
-                          ListTile(
-                            title: Text.rich(
-                              TextSpan(
-                                text: '${S.of(context).minutesPerSide}: ',
-                                children: <InlineSpan>[
-                                  TextSpan(
-                                    text: _clockLabelInMinutes(_timeSeconds),
-                                    style: valueStyle,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            subtitle: Slider(
-                              key: const Key(
-                                'offline_board_minutes_per_side_slider',
-                              ),
-                              min: 0,
-                              max: (_offlineBoardTimesInSeconds.length - 1)
-                                  .toDouble(),
-                              divisions: _offlineBoardTimesInSeconds.length - 1,
-                              value: _timeIndex.toDouble(),
-                              label: _clockLabelInMinutes(_timeSeconds),
-                              onChanged: (double value) =>
-                                  setState(() => _timeIndex = value.round()),
-                            ),
-                          ),
-                          ListTile(
-                            title: Text.rich(
-                              TextSpan(
-                                text: '${S.of(context).incrementInSeconds}: ',
-                                children: <InlineSpan>[
-                                  TextSpan(
-                                    text: _incrementSeconds.toString(),
-                                    style: valueStyle,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            subtitle: Slider(
-                              key: const Key('offline_board_increment_slider'),
-                              min: 0,
-                              max: (_offlineBoardIncrementsInSeconds.length - 1)
-                                  .toDouble(),
-                              divisions:
-                                  _offlineBoardIncrementsInSeconds.length - 1,
-                              value: _incrementIndex.toDouble(),
-                              label: _incrementSeconds.toString(),
-                              onChanged: (double value) => setState(
-                                () => _incrementIndex = value.round(),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-              ),
               ListTile(
                 key: const Key('offline_board_variant_picker'),
                 title: Text(S.of(context).variant),
@@ -433,14 +198,4 @@ class _OfflineBoardNewGameSheetState extends State<_OfflineBoardNewGameSheet> {
       ),
     );
   }
-}
-
-String _clockLabelInMinutes(int seconds) {
-  return switch (seconds) {
-    0 => '0',
-    15 => '¼',
-    30 => '½',
-    45 => '¾',
-    _ => (seconds / 60).toString().replaceAll('.0', ''),
-  };
 }

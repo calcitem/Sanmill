@@ -124,8 +124,7 @@ class _GamePageInner extends StatefulWidget {
   State<_GamePageInner> createState() => _GamePageInnerState();
 }
 
-class _GamePageInnerState extends State<_GamePageInner>
-    with WidgetsBindingObserver {
+class _GamePageInnerState extends State<_GamePageInner> {
   // GlobalKey to reference the real board's RenderBox
   final GlobalKey _gameBoardKey = GlobalKey();
 
@@ -137,7 +136,6 @@ class _GamePageInnerState extends State<_GamePageInner>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
     // Reset the cumulative win/draw/loss tally when entering the game page,
     // mirroring the legacy `Position.resetScore()` call that lived in the
     // old GamePage constructor. The score then accumulates across in-page
@@ -167,17 +165,10 @@ class _GamePageInnerState extends State<_GamePageInner>
       );
     }
     if (widget.controller.gameInstance.gameMode == GameMode.humanVsHuman) {
-      OfflineBoardClock().onFlag = _handleOfflineBoardFlag;
+      OfflineBoardClock().reset();
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => _showInitialOfflineBoardNewGameSheet(),
       );
-    }
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (_isOfflineBoardGame && state != AppLifecycleState.resumed) {
-      OfflineBoardClock().pause();
     }
   }
 
@@ -196,11 +187,8 @@ class _GamePageInnerState extends State<_GamePageInner>
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     if (_isOfflineBoardGame) {
-      OfflineBoardClock()
-        ..pause()
-        ..onFlag = null;
+      OfflineBoardClock().reset();
     }
     // Discard an unfinished setup edit when navigating away from the page
     // after the current frame.  The cancel path reloads the native session and
@@ -452,34 +440,10 @@ class _GamePageInnerState extends State<_GamePageInner>
     _didShowInitialOfflineBoardNewGameSheet = true;
     if (widget.controller.gameRecorder.currentPath.isNotEmpty ||
         widget.controller.isPositionSetup) {
-      if (!OfflineBoardClock().state.isEnabled) {
-        _setupOfflineBoardClockFromPreferences();
-      }
+      OfflineBoardClock().reset();
       return;
     }
     await showOfflineBoardNewGameSheet(context, isDismissible: false);
-  }
-
-  void _setupOfflineBoardClockFromPreferences() {
-    final GeneralSettings settings = DB().generalSettings;
-    OfflineBoardClock().setup(
-      initialTime: Duration(seconds: settings.offlineBoardTimeSeconds),
-      increment: Duration(seconds: settings.offlineBoardIncrementSeconds),
-      activeSide: widget.controller.activeBoardView.sideToMove,
-    );
-  }
-
-  void _handleOfflineBoardFlag(PieceColor flagSide) {
-    if (!mounted || !_isOfflineBoardGame) {
-      return;
-    }
-    final bool ended = widget.controller.forceGameOver(
-      flagSide.opponent,
-      GameOverReason.loseTimeout,
-    );
-    if (ended) {
-      widget.controller.gameResultNotifier.showResult();
-    }
   }
 
   bool get _shouldConfirmLeavingCurrentGame {
@@ -507,7 +471,7 @@ class _GamePageInnerState extends State<_GamePageInner>
       return;
     }
     if (_isOfflineBoardGame) {
-      OfflineBoardClock().pause();
+      OfflineBoardClock().reset();
     }
     final Route<Object?>? route = ModalRoute.of(context);
     assert(route != null, 'A play game page must be hosted by a route.');

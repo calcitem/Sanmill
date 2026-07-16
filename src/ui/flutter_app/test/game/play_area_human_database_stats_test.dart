@@ -692,7 +692,7 @@ void main() {
     );
   });
 
-  testWidgets('regular finite clock shows Lichess-style pause control', (
+  testWidgets('offline board hides pause control even with legacy clock data', (
     WidgetTester tester,
   ) async {
     db.generalSettings = const GeneralSettings(
@@ -735,18 +735,10 @@ void main() {
     final Finder clockButton = find.byKey(
       const Key('play_area_offline_board_bottom_clock'),
     );
-    expect(clockButton, findsOneWidget);
-    expect(tester.widget<LichessBottomBarButton>(clockButton).label, 'Pause');
-
-    await tester.tap(clockButton);
-    await tester.pump();
-    expect(OfflineBoardClock().state.status, OfflineBoardClockStatus.paused);
-    expect(tester.widget<LichessBottomBarButton>(clockButton).label, 'Resume');
-
-    await tester.tap(clockButton);
-    await tester.pump();
+    expect(clockButton, findsNothing);
+    expect(find.byKey(const Key('offline_board_white_clock')), findsNothing);
+    expect(find.byKey(const Key('offline_board_black_clock')), findsNothing);
     expect(OfflineBoardClock().state.status, OfflineBoardClockStatus.running);
-    expect(tester.widget<LichessBottomBarButton>(clockButton).label, 'Pause');
     OfflineBoardClock().reset();
   });
 

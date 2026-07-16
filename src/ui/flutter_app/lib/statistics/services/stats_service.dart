@@ -109,20 +109,6 @@ class EloRatingService {
       ret -= 100; // Decrease rating as AI focuses on less optimal strategy
     }
 
-    // Human move time adjustments
-    if (DB().generalSettings.humanMoveTime != 0) {
-      final int humanMoveTime = DB().generalSettings.humanMoveTime;
-      if (humanMoveTime >= 1 && humanMoveTime <= 5) {
-        ret += 100; // Human has very limited time
-      } else if (humanMoveTime >= 6 && humanMoveTime <= 10) {
-        ret += 50; // Human has limited time
-      } else if (humanMoveTime >= 11 && humanMoveTime <= 30) {
-        ret += 20; // Human has moderate time
-      } else if (humanMoveTime >= 31 && humanMoveTime <= 60) {
-        ret += 10; // Human has sufficient time
-      }
-    }
-
     // AI is lazy mode
     if (DB().generalSettings.aiIsLazy) {
       ret = ret ~/ 2; // Halve the rating as AI deliberately plays suboptimally

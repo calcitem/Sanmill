@@ -79,11 +79,6 @@ class GeneralSettingsPage extends StatelessWidget {
     builder: (_) => const _MoveTimeSlider(),
   );
 
-  void _setHumanMoveTime(BuildContext context) => showModalBottomSheet(
-    context: context,
-    builder: (_) => const _HumanMoveTimeSlider(),
-  );
-
   // Show LLM provider configuration dialog
   void _configureLlmProvider(BuildContext context) =>
       showDialog(context: context, builder: (_) => const LlmConfigDialog());
@@ -937,14 +932,6 @@ class GeneralSettingsPage extends StatelessWidget {
               titleString: S.of(context).moveTime,
               trailingString: DB().generalSettings.moveTime.toString(),
               onTap: () => _setMoveTime(context),
-            ),
-            SettingsListTile(
-              key: const Key(
-                'general_settings_page_settings_card_difficulty_human_move_time',
-              ),
-              titleString: S.of(context).humanMoveTime,
-              trailingString: DB().generalSettings.humanMoveTime.toString(),
-              onTap: () => _setHumanMoveTime(context),
             ),
           ],
         ),

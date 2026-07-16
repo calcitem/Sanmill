@@ -3,19 +3,15 @@
 
 // player_timer.dart
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-
-import '../../shared/database/database.dart';
-import 'mill.dart';
 
 enum PlayerTimerStatus { stopped, running, paused }
 
-/// PlayerTimer
+/// Compatibility state for the retired per-move clock.
 ///
-/// Handles the time limit for human player moves.
-/// If a player exceeds their time limit, they lose the game.
+/// Ordinary games are untimed. Existing controller call sites may still start
+/// or stop this singleton while older saved preferences retain their clock
+/// values, but those calls never start a countdown or decide a game result.
 class PlayerTimer {
   // Singleton pattern
   factory PlayerTimer() => instance;
@@ -24,10 +20,6 @@ class PlayerTimer {
 
   static final PlayerTimer instance = PlayerTimer._();
 
-  // Timer instance
-  Timer? _timer;
-
-  // Current time remaining for the player (in seconds)
   int _remainingTime = 0;
 
   // Callback to update UI with the remaining time
@@ -43,105 +35,24 @@ class PlayerTimer {
     statusNotifier.value = status;
   }
 
-  /// Start the timer for a player's move
+  /// Keeps legacy start calls inert because ordinary games are untimed.
   void start() {
-    final GameController gameController = GameController();
-
-    // Local same-device games use [OfflineBoardClock], which tracks a
-    // separate total for each side and optional Fischer increment.
-    if (gameController.gameInstance.gameMode == GameMode.humanVsHuman) {
-      stop();
-      remainingTimeNotifier.value = 0;
-      return;
-    }
-
-    // Remote matches do not use the local single-player timer.
-    if (gameController.isRemoteGameMode) {
-      stop();
-      return;
-    }
-
-    // Skip timer entirely for AI vs AI mode
-    if (gameController.gameInstance.gameMode == GameMode.aiVsAi) {
-      stop(); // Ensure timer is marked as inactive
-      remainingTimeNotifier.value = 0; // Reset displayed time
-      return;
-    }
-
-    if (gameController.activeBoardView.phase == Phase.gameOver) {
-      stop();
-      return;
-    }
-
-    // Check if this is the first move of the game - don't start timer in that case
-    if (gameController.gameRecorder.mainlineMoves.isEmpty) {
-      stop();
-      return;
-    }
-
-    // For AI with moveTime=0, we should not start an actual countdown timer
-    // Instead, we'll just update the UI to show "-" indicating unlimited time
-    final bool isAiWithUnlimitedTime =
-        gameController.gameInstance.isAiSideToMove &&
-        DB().generalSettings.moveTime <= 0;
-    if (isAiWithUnlimitedTime) {
-      // Just update the UI to show "-" via the notifier, but don't start a real timer
-      stop();
-      _remainingTime = 0;
-      remainingTimeNotifier.value = 0;
-      return;
-    }
-
-    // Stop any existing timer
-    _timer?.cancel();
-
-    // Get the time limit from settings based on the current player
-    final bool isAiTurn = gameController.gameInstance.isAiSideToMove;
-    final int timeLimit = isAiTurn
-        ? DB().generalSettings.moveTime
-        : DB().generalSettings.humanMoveTime;
-
-    // If no time limit is set (value is 0) for human, don't start the timer
-    if (timeLimit <= 0) {
-      stop();
-      return;
-    }
-
-    // Initialize timer values
-    _remainingTime = timeLimit;
-    remainingTimeNotifier.value = _remainingTime;
-    _setStatus(PlayerTimerStatus.running);
-
-    // Start a periodic timer that ticks every second
-    _timer = Timer.periodic(const Duration(seconds: 1), _tick);
+    reset();
   }
 
   /// Stop the timer (when a move is completed)
   void stop() {
-    _timer?.cancel();
-    _timer = null;
     _setStatus(PlayerTimerStatus.stopped);
   }
 
+  /// Retained for source compatibility with older clock controls.
   void pause() {
-    assert(
-      _status == PlayerTimerStatus.running,
-      'PlayerTimer.pause requires a running clock.',
-    );
-    _timer?.cancel();
-    _timer = null;
-    _setStatus(PlayerTimerStatus.paused);
+    reset();
   }
 
+  /// Retained for source compatibility with older clock controls.
   void resume() {
-    assert(
-      _status == PlayerTimerStatus.paused,
-      'PlayerTimer.resume requires a paused clock.',
-    );
-    assert(_remainingTime > 0, 'Cannot resume an expired clock.');
-    _timer?.cancel();
-    _setStatus(PlayerTimerStatus.running);
-    _timer = Timer.periodic(const Duration(seconds: 1), _tick);
+    reset();
   }
 
   /// Reset the timer (e.g., when starting a new game)
@@ -149,74 +60,6 @@ class PlayerTimer {
     stop();
     _remainingTime = 0;
     remainingTimeNotifier.value = 0;
-  }
-
-  /// Called every second to update the timer
-  void _tick(Timer timer) {
-    // Get the current game controller.
-    final GameController gameController = GameController();
-
-    // Check if AI is currently thinking
-    final bool isAIThinking =
-        gameController.gameInstance.isAiSideToMove &&
-        gameController.isEngineRunning;
-
-    // Count down if time is remaining
-    if (_remainingTime > 0) {
-      _remainingTime--;
-      remainingTimeNotifier.value = _remainingTime;
-
-      // For AI players, we don't want to check for timeout while engine is running
-      if (isAIThinking) {
-        return;
-      }
-    } else if (_remainingTime <= 0) {
-      // Time is over, player loses
-      stop();
-
-      // Only declare timeout loss for human players, not AI or LAN opponents
-      final bool isRemoteMode = gameController.isRemoteGameMode;
-      final bool isHumanPlayer = !gameController.gameInstance.isAiSideToMove;
-      final bool isAIWithUnlimitedTime =
-          gameController.gameInstance.isAiSideToMove &&
-          DB().generalSettings.moveTime <= 0;
-      // Check if human player has unlimited time setting
-      final bool isHumanWithUnlimitedTime =
-          !gameController.gameInstance.isAiSideToMove &&
-          DB().generalSettings.humanMoveTime <= 0;
-
-      // For AI with unlimited time (moveTime=0), LAN mode, or when AI is playing,
-      // or for human with unlimited time (humanMoveTime=0),
-      // just update the display but don't set game over
-      if (isRemoteMode ||
-          !isHumanPlayer ||
-          isAIWithUnlimitedTime ||
-          isHumanWithUnlimitedTime) {
-        _remainingTime = 0;
-        remainingTimeNotifier.value = 0;
-
-        // Restart timer for AI player if not in unlimited time mode
-        // This ensures continuous timing for consecutive AI moves
-        if (!isHumanPlayer && !isAIWithUnlimitedTime && !isRemoteMode) {
-          // Restart the timer for the next move with proper time
-          final int timeLimit = DB().generalSettings.moveTime;
-          if (timeLimit > 0) {
-            _remainingTime = timeLimit;
-            remainingTimeNotifier.value = _remainingTime;
-            _setStatus(PlayerTimerStatus.running);
-            _timer = Timer.periodic(const Duration(seconds: 1), _tick);
-          }
-        }
-
-        return;
-      }
-
-      // Human player in non-LAN mode exceeded the move clock: award the
-      // win to the opponent of the side to move (mirrors the legacy
-      // `loseTimeout` game-over) so the result dialog, score tally, and
-      // ELO update all fire.  The dialog plays the end-of-game tone.
-      gameController.handleHumanTimeout();
-    }
   }
 
   /// Check if the timer is currently active
