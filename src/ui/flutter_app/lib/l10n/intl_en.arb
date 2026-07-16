@@ -220,7 +220,7 @@
     "@restart": {
         "description": "Restart"
     },
-    "gameStarted": "The game started, please place.",
+    "gameStarted": "Game started. Place a piece.",
     "@gameStarted": {
         "description": "Game started, please place"
     },
