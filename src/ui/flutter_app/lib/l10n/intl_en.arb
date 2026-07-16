@@ -1239,11 +1239,11 @@
     "@algorithm": {
         "description": "Algorithm"
     },
-    "endgameNMoveRule": "Endgame N-Move rule",
+    "endgameNMoveRule": "Endgame N-move rule",
     "@endgameNMoveRule": {
         "description": "Endgame N-Move rule"
     },
-    "endgameNMoveRule_Detail": "The game is drawn if either player has only three pieces and neither player removes a piece within specific moves.",
+    "endgameNMoveRule_Detail": "When either player has only three pieces, the game is drawn if no piece is removed within the configured number of moves.",
     "@endgameNMoveRule_Detail": {
         "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
     },
