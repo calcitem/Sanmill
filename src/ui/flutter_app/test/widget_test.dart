@@ -720,12 +720,9 @@ void main() {
 
       expect(
         find.byKey(const Key('mill_coordinate_training_duration_60')),
-        findsOneWidget,
+        findsNothing,
       );
-
-      await tester.tap(
-        find.byKey(const Key('mill_coordinate_training_duration_60')),
-      );
+      await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
 
       await tester.tap(
@@ -753,6 +750,17 @@ void main() {
         find.byKey(const Key('mill_coordinate_training_bottom_bar')),
         findsNothing,
       );
+      expect(
+        find.byKey(const Key('mill_coordinate_training_time_bar')),
+        findsNothing,
+      );
+      expect(find.text('0 correct · 0 attempts'), findsOneWidget);
+
+      await tester.pump(const Duration(minutes: 3));
+      expect(
+        find.byKey(const Key('mill_coordinate_training_current_coordinate')),
+        findsOneWidget,
+      );
 
       await tester.tap(
         find.byKey(const Key('mill_coordinate_training_action_button')),
@@ -760,9 +768,10 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(
-        find.byKey(const Key('mill_coordinate_training_start_button')),
+        find.byKey(const Key('mill_coordinate_training_score')),
         findsOneWidget,
       );
+      expect(find.text('0 correct · 0 attempts'), findsOneWidget);
 
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
@@ -1626,10 +1635,8 @@ void main() {
       findsOneWidget,
     );
     expect(
-      tester
-          .getSize(find.byKey(const Key('mill_coordinate_training_time_bar')))
-          .height,
-      15,
+      find.byKey(const Key('mill_coordinate_training_time_bar')),
+      findsNothing,
     );
 
     await tester.tap(
@@ -1697,12 +1704,34 @@ void main() {
     );
     expect(
       find.byKey(const Key('mill_coordinate_training_duration_30')),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('mill_coordinate_training_show_coordinates')),
       findsNothing,
     );
+
+    Navigator.of(
+      tester.element(find.byKey(const Key('mill_coordinate_training_board'))),
+    ).pop();
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(const Key('mill_coordinate_training_start_button')),
+    );
+    await tester.pump();
+
+    expect(find.text('0 correct · 0 attempts'), findsOneWidget);
+    await tester.pump(const Duration(minutes: 3));
+    expect(
+      find.byKey(const Key('mill_coordinate_training_current_coordinate')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('mill_coordinate_training_action_button')),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('0 correct · 0 attempts'), findsOneWidget);
   });
 
   testWidgets('Variants page opens detail before applying a rule set', (

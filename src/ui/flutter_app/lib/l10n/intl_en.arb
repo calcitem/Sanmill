@@ -4794,7 +4794,7 @@
     "@coordinateTrainingAbort": {},
     "coordinateTrainingShowCoordinates": "Show coordinates",
     "@coordinateTrainingShowCoordinates": {},
-    "coordinateTrainingDescription": "A coordinate appears on the board. Tap the matching Mill point as quickly as possible. You have 30 seconds to find as many coordinates as you can.",
+    "coordinateTrainingDescription": "A coordinate appears on the board. Tap the matching Mill point and continue until you choose to finish the session.",
     "@coordinateTrainingDescription": {},
     "board": "Board",
     "@board": {},
@@ -5304,5 +5304,8 @@
     "reviewGradeInteresting": "Interesting",
     "reviewCurrentAnnotation": "Current: {annotation}",
     "@reviewCurrentAnnotation": {"placeholders": {"annotation": {"type": "String"}}},
-    "reviewNoAnnotation": "No quality annotation"
+    "reviewNoAnnotation": "No quality annotation",
+    "coordinateTrainingFinish": "Finish session",
+    "coordinateTrainingResult": "{correct} correct · {attempts} attempts",
+    "@coordinateTrainingResult": {"placeholders": {"correct": {"type": "int"}, "attempts": {"type": "int"}}}
 }

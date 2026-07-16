@@ -19,32 +19,15 @@ import '../shared/themes/app_styles.dart';
 import '../shared/widgets/lichess_bottom_bar.dart';
 import '../shared/widgets/lichess_list_section.dart';
 
-const Duration _kTrainingDuration = Duration(seconds: 30);
-const Duration _kTickInterval = Duration(milliseconds: 100);
 const Duration _kGuessHighlightDuration = Duration(milliseconds: 220);
 const Duration _kCoordinateTransitionDuration = Duration(milliseconds: 150);
 const Offset _kNextCoordinateTranslation = Offset(0.72, 0.32);
 const double _kNextCoordinateScale = 0.42;
 const double _kCurrentCoordinateOpacity = 0.9;
 const double _kNextCoordinateOpacity = 0.68;
-const double _kTimeBarHeight = 15;
 const double _kTrainingPanelMinHeight = 96;
-const List<Duration> _kTrainingDurationChoices = <Duration>[
-  Duration(seconds: 30),
-  Duration(seconds: 60),
-  Duration(seconds: 120),
-];
 
 enum _CoordinateTrainingOrientationChoice { board, random }
-
-String _formatTrainingDuration(Duration duration) {
-  assert(!duration.isNegative, 'Training duration must not be negative.');
-  assert(duration.inSeconds > 0, 'Training duration must be positive.');
-  if (duration.inSeconds % 60 == 0) {
-    return '${duration.inMinutes}min';
-  }
-  return '${duration.inSeconds}s';
-}
 
 class MillCoordinateTrainingPage extends StatefulWidget {
   const MillCoordinateTrainingPage({super.key});
@@ -57,9 +40,7 @@ class MillCoordinateTrainingPage extends StatefulWidget {
 class _MillCoordinateTrainingPageState
     extends State<MillCoordinateTrainingPage> {
   final math.Random _random = math.Random();
-  final Stopwatch _stopwatch = Stopwatch();
 
-  Timer? _tickTimer;
   Timer? _highlightTimer;
 
   int? _currentNode;
@@ -67,9 +48,10 @@ class _MillCoordinateTrainingPageState
   int? _lastGuessNode;
   bool? _lastGuessCorrect;
   int _score = 0;
+  int _attempts = 0;
   int? _lastScore;
-  Duration? _elapsed;
-  Duration _trainingDuration = _kTrainingDuration;
+  int? _lastAttempts;
+  bool _trainingActive = false;
   _CoordinateTrainingOrientationChoice _orientationChoice =
       _CoordinateTrainingOrientationChoice.random;
   late TransformationType _currentTransform = _newTransformForChoice(
@@ -78,24 +60,9 @@ class _MillCoordinateTrainingPageState
   bool _showCoordinates = false;
   bool _showPieces = true;
 
-  bool get _trainingActive => _elapsed != null;
-
-  double get _timeFractionElapsed {
-    final Duration? elapsed = _elapsed;
-    if (elapsed == null) {
-      return 0;
-    }
-    return (elapsed.inMilliseconds / _trainingDuration.inMilliseconds).clamp(
-      0,
-      1,
-    );
-  }
-
   @override
   void dispose() {
-    _tickTimer?.cancel();
     _highlightTimer?.cancel();
-    _stopwatch.stop();
     super.dispose();
   }
 
@@ -140,15 +107,16 @@ class _MillCoordinateTrainingPageState
                         transform: _currentTransform,
                         trainingActive: _trainingActive,
                         score: _score,
+                        attempts: _attempts,
                         lastScore: _lastScore,
+                        lastAttempts: _lastAttempts,
                         currentNode: _currentNode,
                         nextNode: _nextNode,
                         lastGuessNode: _lastGuessNode,
                         lastGuessCorrect: _lastGuessCorrect,
-                        timeFractionElapsed: _timeFractionElapsed,
                         onGuess: _guessNode,
                         onStart: _startTraining,
-                        onAbort: _abortTraining,
+                        onFinish: _finishTraining,
                       );
                     },
               ),
@@ -188,47 +156,20 @@ class _MillCoordinateTrainingPageState
       _lastGuessNode = null;
       _lastGuessCorrect = null;
       _score = 0;
-      _elapsed = Duration.zero;
-    });
-
-    _tickTimer?.cancel();
-    _stopwatch
-      ..reset()
-      ..start();
-    _tickTimer = Timer.periodic(_kTickInterval, (_) {
-      if (!mounted) {
-        return;
-      }
-      if (_stopwatch.elapsed >= _trainingDuration) {
-        _finishTraining();
-        return;
-      }
-      setState(() {
-        _elapsed = _stopwatch.elapsed;
-      });
+      _attempts = 0;
+      _trainingActive = true;
     });
   }
 
   void _finishTraining() {
-    _tickTimer?.cancel();
-    _stopwatch.stop();
     setState(() {
       _lastScore = _score;
-      _currentNode = null;
-      _nextNode = null;
-      _elapsed = null;
-    });
-  }
-
-  void _abortTraining() {
-    _tickTimer?.cancel();
-    _stopwatch.stop();
-    setState(() {
+      _lastAttempts = _attempts;
       _currentNode = null;
       _nextNode = null;
       _lastGuessNode = null;
       _lastGuessCorrect = null;
-      _elapsed = null;
+      _trainingActive = false;
     });
   }
 
@@ -279,6 +220,7 @@ class _MillCoordinateTrainingPageState
     final bool correct = node == current;
 
     setState(() {
+      _attempts += 1;
       _lastGuessNode = node;
       _lastGuessCorrect = correct;
       if (correct) {
@@ -384,30 +326,6 @@ class _MillCoordinateTrainingPageState
                     ),
                 ],
               ),
-              LichessListSection(
-                header: Text(strings.duration),
-                children: <Widget>[
-                  for (final Duration duration in _kTrainingDurationChoices)
-                    ListTile(
-                      key: Key(
-                        'mill_coordinate_training_duration_${duration.inSeconds}',
-                      ),
-                      title: Text(_formatTrainingDuration(duration)),
-                      trailing: duration == _trainingDuration
-                          ? Icon(
-                              Icons.check_rounded,
-                              color: Theme.of(context).colorScheme.primary,
-                            )
-                          : null,
-                      onTap: () {
-                        setState(() {
-                          _trainingDuration = duration;
-                        });
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                ],
-              ),
             ],
           ),
         );
@@ -422,10 +340,7 @@ class _MillCoordinateTrainingPageState
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(strings.coordinateTraining),
-          content: Text(
-            '${strings.coordinateTrainingDescription}\n\n'
-            '${strings.duration}: ${_formatTrainingDuration(_trainingDuration)}',
-          ),
+          content: Text(strings.coordinateTrainingDescription),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
@@ -447,15 +362,16 @@ class _TrainingLayout extends StatelessWidget {
     required this.transform,
     required this.trainingActive,
     required this.score,
+    required this.attempts,
     required this.lastScore,
+    required this.lastAttempts,
     required this.currentNode,
     required this.nextNode,
     required this.lastGuessNode,
     required this.lastGuessCorrect,
-    required this.timeFractionElapsed,
     required this.onGuess,
     required this.onStart,
-    required this.onAbort,
+    required this.onFinish,
   });
 
   final bool hasDiagonalLines;
@@ -465,15 +381,16 @@ class _TrainingLayout extends StatelessWidget {
   final TransformationType transform;
   final bool trainingActive;
   final int score;
+  final int attempts;
   final int? lastScore;
+  final int? lastAttempts;
   final int? currentNode;
   final int? nextNode;
   final int? lastGuessNode;
   final bool? lastGuessCorrect;
-  final double timeFractionElapsed;
   final ValueChanged<int> onGuess;
   final VoidCallback onStart;
-  final VoidCallback onAbort;
+  final VoidCallback onFinish;
 
   @override
   Widget build(BuildContext context) {
@@ -482,10 +399,8 @@ class _TrainingLayout extends StatelessWidget {
         final bool landscape = constraints.maxWidth > constraints.maxHeight;
         final Axis direction = landscape ? Axis.horizontal : Axis.vertical;
         final double maxBoardHeight = landscape
-            ? constraints.maxHeight - _kTimeBarHeight - 24
-            : constraints.maxHeight -
-                  _kTimeBarHeight -
-                  _kTrainingPanelMinHeight;
+            ? constraints.maxHeight - 24
+            : constraints.maxHeight - _kTrainingPanelMinHeight;
         final double boardSize = math.max(
           0,
           landscape
@@ -493,42 +408,31 @@ class _TrainingLayout extends StatelessWidget {
               : math.min(constraints.maxWidth, maxBoardHeight),
         );
 
-        final Widget board = SizedBox(
-          width: boardSize,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              _TimeBar(
-                width: boardSize,
-                fraction: timeFractionElapsed,
-                correct: lastGuessCorrect,
-              ),
-              SizedBox.square(
-                dimension: boardSize,
-                child: _MillTrainingBoard(
-                  hasDiagonalLines: hasDiagonalLines,
-                  showCoordinates: showCoordinates,
-                  showPieces: showPieces,
-                  colorSettings: colorSettings,
-                  transform: transform,
-                  trainingActive: trainingActive,
-                  currentNode: currentNode,
-                  nextNode: nextNode,
-                  lastGuessNode: lastGuessNode,
-                  lastGuessCorrect: lastGuessCorrect,
-                  onGuess: onGuess,
-                ),
-              ),
-            ],
+        final Widget board = SizedBox.square(
+          dimension: boardSize,
+          child: _MillTrainingBoard(
+            hasDiagonalLines: hasDiagonalLines,
+            showCoordinates: showCoordinates,
+            showPieces: showPieces,
+            colorSettings: colorSettings,
+            transform: transform,
+            trainingActive: trainingActive,
+            currentNode: currentNode,
+            nextNode: nextNode,
+            lastGuessNode: lastGuessNode,
+            lastGuessCorrect: lastGuessCorrect,
+            onGuess: onGuess,
           ),
         );
 
         final Widget panel = _TrainingPanel(
           score: score,
+          attempts: attempts,
           lastScore: lastScore,
+          lastAttempts: lastAttempts,
           trainingActive: trainingActive,
           onStart: onStart,
-          onAbort: onAbort,
+          onFinish: onFinish,
         );
 
         return Padding(
@@ -546,50 +450,24 @@ class _TrainingLayout extends StatelessWidget {
   }
 }
 
-class _TimeBar extends StatelessWidget {
-  const _TimeBar({
-    required this.width,
-    required this.fraction,
-    required this.correct,
-  });
-
-  final double width;
-  final double fraction;
-  final bool? correct;
-
-  @override
-  Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final Color color = correct == false
-        ? colorScheme.error
-        : colorScheme.primary;
-
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: SizedBox(
-        key: const Key('mill_coordinate_training_time_bar'),
-        width: width * fraction,
-        height: _kTimeBarHeight,
-        child: ColoredBox(color: color),
-      ),
-    );
-  }
-}
-
 class _TrainingPanel extends StatelessWidget {
   const _TrainingPanel({
     required this.score,
+    required this.attempts,
     required this.lastScore,
+    required this.lastAttempts,
     required this.trainingActive,
     required this.onStart,
-    required this.onAbort,
+    required this.onFinish,
   });
 
   final int score;
+  final int attempts;
   final int? lastScore;
+  final int? lastAttempts;
   final bool trainingActive;
   final VoidCallback onStart;
-  final VoidCallback onAbort;
+  final VoidCallback onFinish;
 
   @override
   Widget build(BuildContext context) {
@@ -598,8 +476,9 @@ class _TrainingPanel extends StatelessWidget {
     if (trainingActive) {
       return _ScoreAndButton(
         score: score,
-        buttonLabel: strings.coordinateTrainingAbort,
-        onPressed: onAbort,
+        attempts: attempts,
+        buttonLabel: strings.coordinateTrainingFinish,
+        onPressed: onFinish,
       );
     }
 
@@ -607,6 +486,7 @@ class _TrainingPanel extends StatelessWidget {
     if (last != null) {
       return _ScoreAndButton(
         score: last,
+        attempts: lastAttempts ?? 0,
         buttonLabel: strings.coordinateTrainingStart,
         onPressed: onStart,
       );
@@ -628,11 +508,13 @@ class _TrainingPanel extends StatelessWidget {
 class _ScoreAndButton extends StatelessWidget {
   const _ScoreAndButton({
     required this.score,
+    required this.attempts,
     required this.buttonLabel,
     required this.onPressed,
   });
 
   final int score;
+  final int attempts;
   final String buttonLabel;
   final VoidCallback onPressed;
 
@@ -660,6 +542,7 @@ class _ScoreAndButton extends StatelessWidget {
             ),
           ),
         ),
+        Text(S.of(context).coordinateTrainingResult(score, attempts)),
         FilledButton(
           key: const Key('mill_coordinate_training_action_button'),
           onPressed: onPressed,
