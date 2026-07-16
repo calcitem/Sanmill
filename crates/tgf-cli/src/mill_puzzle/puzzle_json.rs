@@ -305,7 +305,7 @@ fn select_theme(traits: &PuzzleTraits, line: &LineTraits) -> ThemeProse {
             headline: "ground the flying defense",
             hint: "The opponent will start flying anywhere on the board. Your net has to \
                    close faster than they can escape.",
-            completion: "Even the flying defense could not escape: the mating net closed \
+            completion: "Even the flying defense could not escape: the winning net closed \
                          first.",
         };
     }
@@ -721,6 +721,23 @@ mod tests {
         assert!(
             build_completion(2)
                 .contains("1 of the 2 follow-up decisions allowed exactly one winning move.")
+        );
+    }
+
+    #[test]
+    fn flying_theme_uses_mill_specific_winning_language() {
+        let theme = select_theme(
+            &plain_traits(),
+            &LineTraits {
+                vs_flying: true,
+                ..LineTraits::default()
+            },
+        );
+
+        assert_eq!(theme.headline, "ground the flying defense");
+        assert_eq!(
+            theme.completion,
+            "Even the flying defense could not escape: the winning net closed first."
         );
     }
 

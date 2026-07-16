@@ -330,7 +330,7 @@
         }
       ],
       "hint": "The opponent will start flying anywhere on the board. Your net has to close faster than they can escape.",
-      "completionMessage": "Even the flying defense could not escape: the mating net closed first. 1 of the 4 follow-up decisions allowed exactly one winning move.",
+      "completionMessage": "Even the flying defense could not escape: the winning net closed first. 1 of the 4 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
         "malom-db",
