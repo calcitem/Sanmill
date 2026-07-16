@@ -5293,7 +5293,7 @@
     "todayProgress": "Today",
     "todayProgressSummary": "{games, plural, =1{1 completed game} other{{games} completed games}} · {reviews, plural, =1{1 review} other{{reviews} reviews}}",
     "@todayProgressSummary": {"placeholders": {"games": {"type": "int"}, "reviews": {"type": "int"}}},
-    "todayProgressDescription": "Local calendar-day progress, with no countdown.",
+    "todayProgressDescription": "Completed games and reviews are counted using your device's local date.",
     "privateHistory": "Private game history",
     "noPrivateGames": "Completed games will appear here.",
     "privateHistoryDescription": "Stored only on this device; up to 100 unique games.",
