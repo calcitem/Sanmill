@@ -3400,7 +3400,7 @@
     "@startContributing": {
         "description": "Button text to start contributing puzzles"
     },
-    "quickStart": "Quick Start:",
+    "quickStart": "Quick start",
     "@quickStart": {
         "description": "Label for quick start section"
     },
