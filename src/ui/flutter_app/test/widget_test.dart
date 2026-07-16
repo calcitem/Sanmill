@@ -3050,6 +3050,42 @@ void main() {
   );
 
   testWidgets(
+    'PuzzleCreationPage snapshot status uses its container foreground',
+    (WidgetTester tester) async {
+      final PuzzleInfo puzzle = PuzzleInfo(
+        id: 'snapshot-colors',
+        title: 'Snapshot colors',
+        description: 'Verify snapshot status contrast.',
+        category: PuzzleCategory.formMill,
+        difficulty: PuzzleDifficulty.easy,
+        initialPosition: '********/********/******** w p p 0 9 0 9 0 0',
+        solutions: const <PuzzleSolution>[],
+      );
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightThemeData,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: PuzzleCreationPage(puzzleToEdit: puzzle),
+        ),
+      );
+      await tester.pump();
+
+      final BuildContext pageContext = tester.element(
+        find.byKey(const Key('puzzle_creation_page_scaffold')),
+      );
+      final Finder snapshotStatus = find.text(
+        S.of(pageContext).puzzlePositionSnapshotted2,
+      );
+      expect(
+        tester.widget<Text>(snapshotStatus).style?.color,
+        Theme.of(pageContext).colorScheme.onPrimaryContainer,
+      );
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Repeated puzzle tab tap scrolls the root list to top',
     (WidgetTester tester) async {
       tester.view

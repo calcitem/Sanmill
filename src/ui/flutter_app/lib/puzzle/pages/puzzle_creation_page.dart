@@ -921,7 +921,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
   }
 
   Widget _buildPositionSnapshotSection(BuildContext context) {
-    final Color hintColor = Theme.of(context).colorScheme.onSurfaceVariant;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final Color hintColor = colorScheme.onSurfaceVariant;
     // Wrap in RepaintBoundary for performance isolation
     return RepaintBoundary(
       child: _buildSectionCard(
@@ -963,12 +964,9 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.green.withValues(alpha: 0.15),
+                  color: colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                    color: Colors.green.withValues(alpha: 0.4),
-                    width: 2,
-                  ),
+                  border: Border.all(color: colorScheme.primary, width: 2),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -977,7 +975,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                       children: <Widget>[
                         Icon(
                           FluentIcons.checkmark_circle_24_filled,
-                          color: Colors.green[300],
+                          color: colorScheme.onPrimaryContainer,
                           size: 20,
                         ),
                         const SizedBox(width: 8),
@@ -985,7 +983,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                           child: Text(
                             S.of(context).puzzlePositionSnapshotted2,
                             style: TextStyle(
-                              color: Colors.green[300],
+                              color: colorScheme.onPrimaryContainer,
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
@@ -1003,7 +1001,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
-                              color: Colors.green.withValues(alpha: 0.3),
+                              color: colorScheme.primary,
                               width: 2,
                             ),
                           ),
