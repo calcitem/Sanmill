@@ -5308,5 +5308,15 @@
     "coordinateTrainingFinish": "Finish session",
     "coordinateTrainingResult": "{correct} correct · {attempts} attempts",
     "@coordinateTrainingResult": {"placeholders": {"correct": {"type": "int"}, "attempts": {"type": "int"}}},
-    "dailyPuzzleNotCompleted": "Not completed yet"
+    "dailyPuzzleNotCompleted": "Not completed yet",
+    "puzzleCompletionProgress": "{percentage}% complete",
+    "@puzzleCompletionProgress": {
+        "description": "Completion percentage shown below the puzzle progress bar",
+        "placeholders": {
+            "percentage": {
+                "type": "String",
+                "example": "42.5"
+            }
+        }
+    }
 }

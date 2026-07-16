@@ -109,7 +109,10 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '${(stats['completionPercentage'] as num? ?? 0.0).toStringAsFixed(1)}% ${s.completed}',
+                    s.puzzleCompletionProgress(
+                      (stats['completionPercentage'] as num? ?? 0.0)
+                          .toStringAsFixed(1),
+                    ),
                     style: Theme.of(context).textTheme.bodySmall,
                     textAlign: TextAlign.center,
                   ),
