@@ -107,10 +107,10 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: <Widget>[
-                      const Icon(
+                      Icon(
                         FluentIcons.flash_24_filled,
                         size: 64,
-                        color: Colors.purple,
+                        color: colorScheme.secondary,
                       ),
                       const SizedBox(height: 16),
                       Text(
@@ -118,7 +118,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                         style: Theme.of(context).textTheme.headlineMedium
                             ?.copyWith(
                               fontWeight: FontWeight.bold,
-                              color: Colors.purple,
+                              color: colorScheme.secondary,
                             ),
                       ),
                       const SizedBox(height: 8),
@@ -149,14 +149,17 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                       _buildRuleItem(
                         s.puzzleStreakRule1,
                         FluentIcons.target_24_regular,
+                        colorScheme.secondary,
                       ),
                       _buildRuleItem(
                         s.puzzleStreakRule2,
                         FluentIcons.dismiss_circle_24_regular,
+                        colorScheme.secondary,
                       ),
                       _buildRuleItem(
                         s.puzzleStreakRule3,
                         FluentIcons.trophy_24_regular,
+                        colorScheme.secondary,
                       ),
                     ],
                   ),
@@ -171,9 +174,9 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        const Icon(
+                        Icon(
                           FluentIcons.trophy_24_filled,
-                          color: Colors.amber,
+                          color: colorScheme.tertiary,
                           size: 32,
                         ),
                         const SizedBox(width: 12),
@@ -186,10 +189,10 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                             ),
                             Text(
                               '$_bestStreak',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 32,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.amber,
+                                color: colorScheme.tertiary,
                               ),
                             ),
                           ],
@@ -222,6 +225,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
 
   /// Build active streak screen
   Widget _buildStreakScreen(BuildContext context, S s) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     if (_streakPuzzles.isEmpty) {
       return _buildSetupScreen(context, s);
     }
@@ -237,7 +241,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
 
     return Scaffold(
       key: const Key('puzzle_streak_active_scaffold'),
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: Text(s.puzzleStreak),
         leading: IconButton(
@@ -251,7 +255,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
           Card(
             margin: EdgeInsets.zero,
             elevation: 0,
-            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            color: colorScheme.surfaceContainerHighest,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
@@ -260,18 +264,18 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                   // Current streak
                   Column(
                     children: <Widget>[
-                      const Icon(
+                      Icon(
                         FluentIcons.flash_24_filled,
-                        color: Colors.purple,
+                        color: colorScheme.secondary,
                         size: 32,
                       ),
                       const SizedBox(height: 4),
                       Text(
                         '$_currentStreak',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
-                          color: Colors.purple,
+                          color: colorScheme.secondary,
                         ),
                       ),
                       Text(
@@ -289,18 +293,18 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                   // Best streak
                   Column(
                     children: <Widget>[
-                      const Icon(
+                      Icon(
                         FluentIcons.trophy_24_regular,
-                        color: Colors.amber,
+                        color: colorScheme.tertiary,
                         size: 32,
                       ),
                       const SizedBox(height: 4),
                       Text(
                         '$_bestStreak',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Colors.amber,
+                          color: colorScheme.tertiary,
                         ),
                       ),
                       Text(
@@ -349,7 +353,9 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                       ? FluentIcons.trophy_24_filled
                       : FluentIcons.emoji_sad_24_regular,
                   size: 80,
-                  color: newRecord ? Colors.amber : Colors.grey[400],
+                  color: newRecord
+                      ? colorScheme.tertiary
+                      : colorScheme.onSurfaceVariant,
                 ),
                 const SizedBox(height: 24),
                 Text(
@@ -368,9 +374,9 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            const Icon(
+                            Icon(
                               FluentIcons.flash_24_filled,
-                              color: Colors.purple,
+                              color: colorScheme.secondary,
                               size: 48,
                             ),
                             const SizedBox(width: 16),
@@ -383,10 +389,10 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                                 ),
                                 Text(
                                   '$_currentStreak',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 48,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.purple,
+                                    color: colorScheme.secondary,
                                   ),
                                 ),
                               ],
@@ -401,21 +407,23 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
                               vertical: 8,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.amber.withValues(alpha: 0.2),
+                              color: colorScheme.tertiary.withValues(
+                                alpha: 0.14,
+                              ),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                const Icon(
+                                Icon(
                                   FluentIcons.trophy_24_filled,
-                                  color: Colors.amber,
+                                  color: colorScheme.tertiary,
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
                                   s.puzzleStreakNewRecord,
-                                  style: const TextStyle(
-                                    color: Colors.amber,
+                                  style: TextStyle(
+                                    color: colorScheme.tertiary,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -459,12 +467,12 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
     );
   }
 
-  Widget _buildRuleItem(String text, IconData icon) {
+  Widget _buildRuleItem(String text, IconData icon, Color color) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         children: <Widget>[
-          Icon(icon, size: 20, color: Colors.purple),
+          Icon(icon, size: 20, color: color),
           const SizedBox(width: 12),
           Expanded(child: Text(text)),
         ],
