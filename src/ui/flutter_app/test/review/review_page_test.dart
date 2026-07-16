@@ -53,6 +53,16 @@ void main() {
       expect(find.byKey(const Key('review_wide_layout')), findsNothing);
       expect(find.byKey(const Key('review_structure_summary')), findsOneWidget);
       expect(find.byKey(const Key('review_board')), findsOneWidget);
+      expect(find.byKey(const Key('review_turn_navigation')), findsOneWidget);
+      expect(find.byKey(const Key('review_turn_progress')), findsOneWidget);
+      expect(
+        tester.widget<Text>(find.byKey(const Key('review_turn_progress'))).data,
+        '1/2',
+      );
+      expect(
+        find.byKey(const Key('review_collapsible_move_list')),
+        findsOneWidget,
+      );
       expect(find.textContaining('%'), findsNothing);
 
       final SemanticsNode board = tester.getSemantics(
@@ -60,6 +70,22 @@ void main() {
       );
       expect(board.label, contains('?'));
       expect(board.label, contains('Mistake'));
+
+      await tester.tap(find.byKey(const Key('review_next_turn')));
+      await tester.pump();
+      expect(
+        tester.widget<Text>(find.byKey(const Key('review_turn_progress'))).data,
+        '2/2',
+      );
+
+      final IconButton firstButton = tester.widget<IconButton>(
+        find.byKey(const Key('review_first_turn')),
+      );
+      final IconButton nextButton = tester.widget<IconButton>(
+        find.byKey(const Key('review_next_turn')),
+      );
+      expect(firstButton.onPressed, isNotNull);
+      expect(nextButton.onPressed, isNull);
     },
   );
 

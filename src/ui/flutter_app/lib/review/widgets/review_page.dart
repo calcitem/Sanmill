@@ -198,7 +198,11 @@ class _ReviewPageState extends State<ReviewPage> {
               constraints.maxWidth >= 720 ||
               constraints.maxWidth > constraints.maxHeight;
           final Widget board = _buildBoard(context);
-          final Widget panel = _buildPanel(context);
+          final Widget navigation = _buildTurnNavigation(context);
+          final Widget panel = _buildPanel(
+            context,
+            useCollapsibleMoveList: !sideBySide,
+          );
           if (sideBySide) {
             return Row(
               key: const Key('review_wide_layout'),
@@ -206,11 +210,18 @@ class _ReviewPageState extends State<ReviewPage> {
               children: <Widget>[
                 Expanded(
                   flex: 5,
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 620),
-                      child: board,
-                    ),
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: Center(
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 620),
+                            child: board,
+                          ),
+                        ),
+                      ),
+                      navigation,
+                    ],
                   ),
                 ),
                 const VerticalDivider(width: 1),
@@ -229,10 +240,82 @@ class _ReviewPageState extends State<ReviewPage> {
                   child: board,
                 ),
               ),
+              navigation,
               panel,
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildTurnNavigation(BuildContext context) {
+    final ReviewReport? report = _report;
+    if (report == null || report.turns.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    final int selectedIndex = report.turns.indexWhere(
+      (ReviewTurnBoundary turn) => turn.groupIndex == _selectedGroup,
+    );
+    final int currentIndex = selectedIndex < 0 ? 0 : selectedIndex;
+    final MaterialLocalizations localizations = MaterialLocalizations.of(
+      context,
+    );
+
+    void selectIndex(int index) {
+      assert(index >= 0 && index < report.turns.length);
+      setState(() => _selectedGroup = report.turns[index].groupIndex);
+    }
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+      child: Card(
+        key: const Key('review_turn_navigation'),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            IconButton(
+              key: const Key('review_first_turn'),
+              tooltip: localizations.firstPageTooltip,
+              onPressed: currentIndex == 0 ? null : () => selectIndex(0),
+              icon: const Icon(Icons.first_page_rounded),
+            ),
+            IconButton(
+              key: const Key('review_previous_turn'),
+              tooltip: localizations.previousPageTooltip,
+              onPressed: currentIndex == 0
+                  ? null
+                  : () => selectIndex(currentIndex - 1),
+              icon: const Icon(Icons.chevron_left_rounded),
+            ),
+            Semantics(
+              label: S
+                  .of(context)
+                  .reviewProgress(currentIndex + 1, report.turns.length),
+              child: Text(
+                '${currentIndex + 1}/${report.turns.length}',
+                key: const Key('review_turn_progress'),
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+            ),
+            IconButton(
+              key: const Key('review_next_turn'),
+              tooltip: localizations.nextPageTooltip,
+              onPressed: currentIndex == report.turns.length - 1
+                  ? null
+                  : () => selectIndex(currentIndex + 1),
+              icon: const Icon(Icons.chevron_right_rounded),
+            ),
+            IconButton(
+              key: const Key('review_last_turn'),
+              tooltip: localizations.lastPageTooltip,
+              onPressed: currentIndex == report.turns.length - 1
+                  ? null
+                  : () => selectIndex(report.turns.length - 1),
+              icon: const Icon(Icons.last_page_rounded),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -272,7 +355,10 @@ class _ReviewPageState extends State<ReviewPage> {
     );
   }
 
-  Widget _buildPanel(BuildContext context) {
+  Widget _buildPanel(
+    BuildContext context, {
+    required bool useCollapsibleMoveList,
+  }) {
     return ListView(
       key: const Key('review_analysis_panel'),
       shrinkWrap: true,
@@ -293,11 +379,17 @@ class _ReviewPageState extends State<ReviewPage> {
           else if (report.turns.isEmpty || report.actions.isEmpty)
             Card(child: ListTile(title: Text(S.of(context).noMove)))
           else ...<Widget>[
-            _buildMoveList(context, report),
-            const SizedBox(height: 12),
+            if (!useCollapsibleMoveList) ...<Widget>[
+              _buildMoveList(context, report),
+              const SizedBox(height: 12),
+            ],
             _buildSelectedTurnDetail(context, report),
             const SizedBox(height: 12),
             _buildCorrection(context, report),
+            if (useCollapsibleMoveList) ...<Widget>[
+              const SizedBox(height: 12),
+              _buildCollapsibleMoveList(context, report),
+            ],
           ],
         ],
       ],
@@ -403,26 +495,52 @@ class _ReviewPageState extends State<ReviewPage> {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12),
-        child: Wrap(
-          key: const Key('review_move_list'),
-          spacing: 6,
-          runSpacing: 6,
-          children: <Widget>[
-            for (final ReviewTurnBoundary turn in report.turns)
-              ChoiceChip(
-                key: Key('review_move_${turn.groupIndex}'),
-                selected: turn.groupIndex == _selectedGroup,
-                label: Text(
-                  '${turn.groupIndex + 1}. ${turn.san}${_nagTextForTurn(report, turn)}',
-                  textDirection: TextDirection.ltr,
-                ),
-                onSelected: (_) {
-                  setState(() => _selectedGroup = turn.groupIndex);
-                },
-              ),
-          ],
-        ),
+        child: _buildMoveChips(report),
       ),
+    );
+  }
+
+  Widget _buildCollapsibleMoveList(BuildContext context, ReviewReport report) {
+    final int selectedIndex = report.turns.indexWhere(
+      (ReviewTurnBoundary turn) => turn.groupIndex == _selectedGroup,
+    );
+    return Card(
+      key: const Key('review_collapsible_move_list'),
+      child: ExpansionTile(
+        title: Text(S.of(context).moves),
+        subtitle: Text(
+          '${selectedIndex + 1}/${report.turns.length}',
+          textDirection: TextDirection.ltr,
+        ),
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+            child: _buildMoveChips(report),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMoveChips(ReviewReport report) {
+    return Wrap(
+      key: const Key('review_move_list'),
+      spacing: 6,
+      runSpacing: 6,
+      children: <Widget>[
+        for (final ReviewTurnBoundary turn in report.turns)
+          ChoiceChip(
+            key: Key('review_move_${turn.groupIndex}'),
+            selected: turn.groupIndex == _selectedGroup,
+            label: Text(
+              '${turn.groupIndex + 1}. ${turn.san}${_nagTextForTurn(report, turn)}',
+              textDirection: TextDirection.ltr,
+            ),
+            onSelected: (_) {
+              setState(() => _selectedGroup = turn.groupIndex);
+            },
+          ),
+      ],
     );
   }
 
