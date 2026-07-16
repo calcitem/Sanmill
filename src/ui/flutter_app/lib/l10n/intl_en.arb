@@ -2377,27 +2377,27 @@
     "@optimal": {
         "description": "Optimal move count"
     },
-    "checkSolution": "Check Solution",
+    "checkSolution": "Check solution",
     "@checkSolution": {
         "description": "Check if solution is correct"
     },
-    "giveUp": "Give Up",
+    "giveUp": "Give up",
     "@giveUp": {
         "description": "Give up on puzzle"
     },
-    "puzzleSolved": "Puzzle Solved!",
+    "puzzleSolved": "Puzzle solved!",
     "@puzzleSolved": {
         "description": "Puzzle completion message"
     },
-    "hintsUsed": "Hints Used",
+    "hintsUsed": "Hints used",
     "@hintsUsed": {
         "description": "Hints were used"
     },
-    "tryAgain": "Try Again",
+    "tryAgain": "Try again",
     "@tryAgain": {
         "description": "Try the puzzle again"
     },
-    "backToList": "Back to List",
+    "backToList": "Back to list",
     "@backToList": {
         "description": "Go back to puzzle list"
     },
@@ -3722,7 +3722,7 @@
     "@logsCleared": {
         "description": "Message shown when logs are cleared successfully"
     },
-    "puzzleInvalidPuzzle": "Invalid Puzzle",
+    "puzzleInvalidPuzzle": "Invalid puzzle",
     "@puzzleInvalidPuzzle": {
         "description": "Title for invalid puzzle error dialog"
     },
@@ -3730,7 +3730,7 @@
     "@puzzleInvalidPuzzleMessage": {
         "description": "Message for invalid puzzle error dialog"
     },
-    "puzzleBackToList": "Back to List",
+    "puzzleBackToList": "Back to list",
     "@puzzleBackToList": {
         "description": "Button to go back to puzzle list"
     },
@@ -3742,11 +3742,11 @@
     "@puzzleWrongMoveMessage": {
         "description": "Detailed message in wrong move dialog"
     },
-    "puzzleShowSolution": "Show Solution",
+    "puzzleShowSolution": "Show solution",
     "@puzzleShowSolution": {
         "description": "Button to show the puzzle solution"
     },
-    "puzzlePlayingSolution": "Playing the solution...",
+    "puzzlePlayingSolution": "Playing the solution…",
     "@puzzlePlayingSolution": {
         "description": "Message shown while solution is being played"
     },

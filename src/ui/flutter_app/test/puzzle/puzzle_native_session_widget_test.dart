@@ -335,6 +335,7 @@ void main() {
           find.byKey(const Key('puzzle_page_bottom_bar_give_up')),
           findsOneWidget,
         );
+        expect(find.byTooltip('Give up'), findsOneWidget);
         expect(
           find.byKey(const Key('puzzle_page_bottom_bar_undo')),
           findsOneWidget,
@@ -360,6 +361,7 @@ void main() {
           find.byKey(const Key('puzzle_page_action_show_solution')),
           findsOneWidget,
         );
+        expect(find.text('Show solution'), findsOneWidget);
         expect(
           find.byKey(const Key('puzzle_page_action_reset')),
           findsOneWidget,
