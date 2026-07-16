@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/appearance_settings/models/color_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
+import 'package:sanmill/shared/themes/app_styles.dart';
 import 'package:sanmill/shared/themes/app_theme.dart';
 import 'package:sanmill/shared/utils/helpers/color_helpers/color_helper.dart';
 
@@ -170,6 +171,24 @@ void main() {
         ),
         greaterThanOrEqualTo(normalTextMinimumContrastRatio),
       );
+    });
+
+    test('active subtitle values remain readable in both themes', () {
+      for (final ThemeData theme in <ThemeData>[
+        AppTheme.lightThemeData,
+        AppTheme.darkThemeData,
+      ]) {
+        final ColorScheme colors = theme.colorScheme;
+        expect(
+          colorContrastRatio(
+            colors.onSurfaceVariant.withValues(
+              alpha: AppStyles.subtitleOpacity,
+            ),
+            colors.surfaceContainerLow,
+          ),
+          greaterThanOrEqualTo(normalTextMinimumContrastRatio),
+        );
+      }
     });
   });
 

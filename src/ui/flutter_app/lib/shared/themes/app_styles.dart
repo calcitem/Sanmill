@@ -9,7 +9,7 @@ abstract final class AppStyles {
   static const double sectionSpacing = 12;
   static const double cardRadius = 12;
   static const double compactRadius = 8;
-  static const double subtitleOpacity = 0.7;
+  static const double subtitleOpacity = 1.0;
 
   static const TextStyle pageTitle = TextStyle(
     fontSize: 20,
