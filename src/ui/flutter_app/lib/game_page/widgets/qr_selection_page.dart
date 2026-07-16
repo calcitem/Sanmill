@@ -84,6 +84,7 @@ class _QrSelectionPageState extends State<QrSelectionPage> {
 
   /// Build a tappable green bounding box for one detected QR code.
   Widget _buildHighlight(Code code, int index) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final Position? pos = code.position;
     if (pos == null || _imageRect == null) {
       return const SizedBox.shrink();
@@ -146,22 +147,22 @@ class _QrSelectionPageState extends State<QrSelectionPage> {
         },
         child: Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.green, width: 3),
+            border: Border.all(color: colorScheme.primary, width: 3),
             borderRadius: BorderRadius.circular(8),
-            color: Colors.green.withValues(alpha: 0.12),
+            color: colorScheme.primary.withValues(alpha: 0.12),
           ),
           alignment: Alignment.topRight,
           padding: const EdgeInsets.all(2),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
-              color: Colors.green,
+              color: colorScheme.primary,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Text(
               '${index + 1}',
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: colorScheme.onPrimary,
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
               ),
