@@ -1305,7 +1305,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                       icon: const Icon(FluentIcons.delete_24_regular, size: 16),
                       label: Text(S.of(context).puzzleRemoveSolution),
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.red[300],
+                        foregroundColor: colorScheme.error,
                       ),
                     ),
                 ],

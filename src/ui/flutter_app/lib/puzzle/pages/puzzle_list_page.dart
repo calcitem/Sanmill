@@ -748,7 +748,9 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
               ),
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(true),
-                style: TextButton.styleFrom(foregroundColor: Colors.red),
+                style: TextButton.styleFrom(
+                  foregroundColor: settingsTheme.colorScheme.error,
+                ),
                 child: Text(S.of(dialogContext).delete),
               ),
             ],

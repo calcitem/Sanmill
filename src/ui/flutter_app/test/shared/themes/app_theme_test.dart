@@ -213,6 +213,22 @@ void main() {
         }
       }
     });
+
+    test('error actions remain readable on surfaces in both themes', () {
+      for (final ThemeData theme in <ThemeData>[
+        AppTheme.lightThemeData,
+        AppTheme.darkThemeData,
+      ]) {
+        final ColorScheme colors = theme.colorScheme;
+        expect(
+          colorContrastRatio(colors.error, colors.surfaceContainerHigh),
+          greaterThanOrEqualTo(normalTextMinimumContrastRatio),
+          reason:
+              '${theme.brightness} error actions must remain readable on '
+              'dialog surfaces.',
+        );
+      }
+    });
   });
 
   // ---------------------------------------------------------------------------

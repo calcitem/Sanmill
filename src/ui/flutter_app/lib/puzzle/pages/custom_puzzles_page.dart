@@ -329,7 +329,9 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
               ),
               TextButton(
                 onPressed: () => Navigator.of(dialogContext).pop(true),
-                style: TextButton.styleFrom(foregroundColor: Colors.red),
+                style: TextButton.styleFrom(
+                  foregroundColor: settingsTheme.colorScheme.error,
+                ),
                 child: Text(s.delete),
               ),
             ],
