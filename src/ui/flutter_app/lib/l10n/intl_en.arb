@@ -633,7 +633,7 @@
     "@display": {
         "description": "Display"
     },
-    "boardBorderLineWidth": "Board borderline width",
+    "boardBorderLineWidth": "Board border width",
     "@boardBorderLineWidth": {
         "description": "Board borderline width"
     },
