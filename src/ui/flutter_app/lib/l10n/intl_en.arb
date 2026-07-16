@@ -2361,11 +2361,11 @@
     "@puzzleCategoryMixed": {
         "description": "Mixed tactics category"
     },
-    "exitPuzzle": "Exit Puzzle?",
+    "exitPuzzle": "Exit puzzle?",
     "@exitPuzzle": {
         "description": "Exit puzzle confirmation"
     },
-    "puzzleProgressWillBeLost": "Progress will be lost. Continue?",
+    "puzzleProgressWillBeLost": "Your progress in this puzzle will be lost.",
     "@puzzleProgressWillBeLost": {
         "description": "Warning about losing puzzle progress"
     },
