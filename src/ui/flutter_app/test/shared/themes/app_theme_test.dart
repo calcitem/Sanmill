@@ -122,6 +122,27 @@ void main() {
         );
       }
     });
+
+    test(
+      'light tertiary remains readable on every light surface container',
+      () {
+        final ColorScheme colors = AppTheme.lightThemeData.colorScheme;
+        for (final Color background in <Color>[
+          colors.surfaceContainerLowest,
+          colors.surface,
+          colors.surfaceContainerLow,
+          colors.surfaceContainer,
+          colors.surfaceContainerHigh,
+          colors.surfaceContainerHighest,
+        ]) {
+          expect(
+            colorContrastRatio(colors.tertiary, background),
+            greaterThanOrEqualTo(normalTextMinimumContrastRatio),
+            reason: 'Tertiary text must remain readable on $background.',
+          );
+        }
+      },
+    );
   });
 
   // ---------------------------------------------------------------------------

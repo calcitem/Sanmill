@@ -87,7 +87,7 @@ class AppTheme {
   static const Color _appPrimaryColor = Color(0xFF629924);
   static const Color _appLightPrimaryColor = Color(0xFF426B16);
   static const Color _appSecondaryColor = Color(0xFF3F6F9F);
-  static const Color _appTertiaryColor = Color(0xFFC78B2D);
+  static const Color _appLightTertiaryColor = Color(0xFF835510);
 
   static final ColorScheme _colorScheme =
       ColorScheme.fromSeed(
@@ -97,7 +97,7 @@ class AppTheme {
       ).copyWith(
         primary: _appLightPrimaryColor,
         secondary: _appSecondaryColor,
-        tertiary: _appTertiaryColor,
+        tertiary: _appLightTertiaryColor,
         surface: const Color(0xFFFAFAF8),
         surfaceContainerLowest: Colors.white,
         surfaceContainerLow: const Color(0xFFF4F4F1),
