@@ -390,6 +390,10 @@ fn multi_pv_limit(config: &MillEngineConfigPlan) -> usize {
     usize::from(config.multi_pv).max(1)
 }
 
+fn should_complete_multi_pv_tail(config: &MillEngineConfigPlan) -> bool {
+    config.move_time_ms == 0
+}
+
 fn validate_root_action_capacity(
     snapshot: &GameStateSnapshot,
     rules: &MillRules,
@@ -1075,7 +1079,10 @@ fn run_mill_engine_config_event_stream(
             config: &config,
             search_context,
             nodes_per_second: nodes_per_second(result.nodes, search_started_at.elapsed()),
-            complete_tail: true,
+            // Reconstructing a missing tail runs additional searches for each
+            // root row. Keep timed analysis inside its single move budget;
+            // the TT-backed partial PV is sufficient for those callers.
+            complete_tail: should_complete_multi_pv_tail(&config),
         };
         for event in multi_pv_events(&ctx, max_depth) {
             let _ = sink.add(event);
@@ -1341,6 +1348,23 @@ mod tests {
         assert_eq!(remaining_time_limit_ms(6000, 2500), Some(3500));
         assert_eq!(remaining_time_limit_ms(6000, 6000), Some(0));
         assert_eq!(remaining_time_limit_ms(6000, 7000), Some(0));
+    }
+
+    #[test]
+    fn timed_multi_pv_does_not_run_unbudgeted_tail_searches() {
+        let timed = MillEngineConfigPlan {
+            move_time_ms: 200,
+            multi_pv: SEARCH_ACTION_CAPACITY as u8,
+            ..MillEngineConfigPlan::default()
+        };
+        assert!(!should_complete_multi_pv_tail(&timed));
+
+        let untimed = MillEngineConfigPlan {
+            move_time_ms: 0,
+            multi_pv: SEARCH_ACTION_CAPACITY as u8,
+            ..MillEngineConfigPlan::default()
+        };
+        assert!(should_complete_multi_pv_tail(&untimed));
     }
 
     #[test]

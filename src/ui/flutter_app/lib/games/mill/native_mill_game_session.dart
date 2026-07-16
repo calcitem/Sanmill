@@ -585,10 +585,16 @@ class NativeMillGameSession implements GameSessionHandle {
       if (currentBatchByRank.isEmpty) {
         return;
       }
+      currentBatchPublished = true;
+      final bool isComplete = currentBatchByRank.length >= multiPv;
+      final bool isMoreComplete =
+          currentBatchByRank.length > variationsByRank.length;
+      if (!isComplete && !isMoreComplete) {
+        return;
+      }
       variationsByRank
         ..clear()
         ..addAll(currentBatchByRank);
-      currentBatchPublished = true;
       onUpdate?.call(_sortedPrincipalVariations(variationsByRank));
     }
 

@@ -109,6 +109,56 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('quality annotation choices expose symbol and spoken label', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(_reviewApp());
+    await tester.pump();
+
+    await tester.tap(find.byKey(const Key('review_choose_nag')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+
+    expect(
+      tester
+          .getSemantics(find.byKey(const Key('review_nag_3')))
+          .getSemanticsData()
+          .label,
+      contains('!! Brilliant'),
+    );
+  });
+
+  testWidgets('cancelling deep analysis keeps the completed report visible', (
+    WidgetTester tester,
+  ) async {
+    final PrivateGameRecord record = _record();
+    final _PendingDeepReviewAnalysisService service =
+        _PendingDeepReviewAnalysisService();
+    await tester.pumpWidget(
+      makeTestableWidget(
+        ReviewPage(
+          record: record,
+          initialReport: _report(record),
+          autoAnalyze: false,
+          analysisService: service,
+        ),
+      ),
+    );
+    await tester.pump();
+
+    await tester.tap(find.byKey(const Key('review_deepen_turn')));
+    await tester.pump();
+    expect(find.byKey(const Key('review_cancel_analysis')), findsOneWidget);
+    expect(find.byKey(const Key('review_move_list')), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('review_cancel_analysis')));
+    await tester.pump();
+
+    expect(service.cancelCount, 1);
+    expect(find.byKey(const Key('review_move_list')), findsOneWidget);
+    expect(find.text('Analysis cancelled'), findsNothing);
+  });
+
   testWidgets('cancels an active analysis and exposes restart state', (
     WidgetTester tester,
   ) async {
@@ -122,6 +172,20 @@ void main() {
     await tester.pump();
 
     expect(find.byKey(const Key('review_analysis_progress')), findsOneWidget);
+    expect(
+      tester
+          .getSemantics(find.byKey(const Key('review_back')))
+          .getSemanticsData()
+          .label,
+      isNotEmpty,
+    );
+    expect(
+      tester
+          .getSemantics(find.byKey(const Key('review_cancel_analysis')))
+          .getSemanticsData()
+          .label,
+      contains('Cancel analysis'),
+    );
     await tester.tap(find.byKey(const Key('review_cancel_analysis')));
     await tester.pump();
 
@@ -244,6 +308,23 @@ class _PendingReviewAnalysisService extends ReviewAnalysisService {
     if (!_completer.isCompleted && record != null) {
       _completer.complete(_report(record, status: ReviewStatus.cancelled));
     }
+  }
+}
+
+class _PendingDeepReviewAnalysisService extends ReviewAnalysisService {
+  final Completer<ReviewReport> _completer = Completer<ReviewReport>();
+  int cancelCount = 0;
+
+  @override
+  Future<ReviewReport> deepenTurn(
+    PrivateGameRecord record,
+    ReviewReport report,
+    int groupIndex,
+  ) => _completer.future;
+
+  @override
+  void cancel() {
+    cancelCount++;
   }
 }
 

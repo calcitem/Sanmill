@@ -28,8 +28,19 @@ class _ReviewHistoryPageState extends State<ReviewHistoryPage> {
   @override
   Widget build(BuildContext context) {
     final S strings = S.of(context);
+    final String backLabel = MaterialLocalizations.of(
+      context,
+    ).backButtonTooltip;
     return Scaffold(
-      appBar: AppBar(title: Text(strings.privateHistory)),
+      appBar: AppBar(
+        leading: IconButton(
+          key: const Key('review_history_back'),
+          tooltip: backLabel,
+          onPressed: () => Navigator.maybePop(context),
+          icon: Icon(Icons.arrow_back_rounded, semanticLabel: backLabel),
+        ),
+        title: Text(strings.privateHistory),
+      ),
       body: _records.isEmpty
           ? Center(child: Text(strings.noPrivateGames))
           : ListView.separated(
@@ -57,9 +68,13 @@ class _ReviewHistoryPageState extends State<ReviewHistoryPage> {
                     '${record.result} · ${MaterialLocalizations.of(context).formatShortDate(record.completedAt.toLocal())}',
                   ),
                   trailing: IconButton(
+                    key: Key('review_history_open_${record.id}'),
                     tooltip: strings.reviewGame,
                     onPressed: () => _openReview(record),
-                    icon: const Icon(Icons.analytics_outlined),
+                    icon: Icon(
+                      Icons.analytics_outlined,
+                      semanticLabel: strings.reviewGame,
+                    ),
                   ),
                   onTap: () => _openReview(record),
                 );

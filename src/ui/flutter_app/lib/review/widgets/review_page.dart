@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import '../../game_page/services/import_export/pgn.dart';
 import '../../game_page/widgets/mini_board.dart';
 import '../../generated/intl/l10n.dart';
+import '../../shared/services/logger.dart';
 import '../models/review_models.dart';
 import '../services/review_analysis_service.dart';
 import '../services/review_nag_merge.dart';
@@ -41,8 +42,11 @@ class _ReviewPageState extends State<ReviewPage> {
   ReviewReport? _report;
   Object? _error;
   int _completedActions = 0;
+  int _analysisRun = 0;
   int _selectedGroup = 0;
   bool _analyzing = true;
+  bool _deepening = false;
+  bool _analysisCancelled = false;
   int _correctionIndex = 0;
   String? _correctionChoice;
   bool _correctionPassed = false;
@@ -72,6 +76,7 @@ class _ReviewPageState extends State<ReviewPage> {
 
   @override
   void dispose() {
+    _analysisRun++;
     _analysisService.cancel();
     super.dispose();
   }
@@ -80,8 +85,11 @@ class _ReviewPageState extends State<ReviewPage> {
     if (ignoreCache) {
       _analysisService.cancel();
     }
+    final int analysisRun = ++_analysisRun;
     setState(() {
       _analyzing = true;
+      _deepening = false;
+      _analysisCancelled = false;
       _error = null;
       _completedActions = 0;
     });
@@ -95,23 +103,30 @@ class _ReviewPageState extends State<ReviewPage> {
           }
         },
       );
-      if (!mounted) {
+      if (!mounted || analysisRun != _analysisRun) {
         return;
       }
       setState(() {
         _report = report;
         _analyzing = false;
+        _analysisCancelled = report.status == ReviewStatus.cancelled;
         if (report.turns.isNotEmpty) {
           _selectedGroup = _firstKeyGroup(report);
         }
       });
-    } on Object catch (error) {
-      if (!mounted) {
+    } on Object catch (error, stackTrace) {
+      if (!mounted || analysisRun != _analysisRun) {
         return;
       }
+      logger.e(
+        '[Review] Analysis failed: $error',
+        error: error,
+        stackTrace: stackTrace,
+      );
       setState(() {
         _error = error;
         _analyzing = false;
+        _analysisCancelled = false;
       });
     }
   }
@@ -119,32 +134,60 @@ class _ReviewPageState extends State<ReviewPage> {
   @override
   Widget build(BuildContext context) {
     final S strings = S.of(context);
+    final String backLabel = MaterialLocalizations.of(
+      context,
+    ).backButtonTooltip;
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          key: const Key('review_back'),
+          tooltip: backLabel,
+          onPressed: () => Navigator.maybePop(context),
+          icon: Icon(Icons.arrow_back_rounded, semanticLabel: backLabel),
+        ),
         title: Text(strings.reviewGame),
         actions: <Widget>[
-          if (_analyzing)
+          if (_analyzing || _deepening)
             IconButton(
               key: const Key('review_cancel_analysis'),
               tooltip: strings.cancelAnalysis,
               onPressed: () {
+                final bool wasQuickAnalysis = _analyzing;
+                _analysisRun++;
                 _analysisService.cancel();
-                setState(() => _analyzing = false);
+                setState(() {
+                  _analyzing = false;
+                  _deepening = false;
+                  _analysisCancelled =
+                      wasQuickAnalysis &&
+                      (_report == null ||
+                          _report!.status == ReviewStatus.cancelled);
+                  _error = null;
+                });
               },
-              icon: const Icon(Icons.stop_circle_outlined),
+              icon: Icon(
+                Icons.stop_circle_outlined,
+                semanticLabel: strings.cancelAnalysis,
+              ),
             )
           else if (_report != null) ...<Widget>[
             IconButton(
               key: const Key('review_export'),
               tooltip: strings.exportGame,
               onPressed: _exportReview,
-              icon: const Icon(Icons.ios_share_rounded),
+              icon: Icon(
+                Icons.ios_share_rounded,
+                semanticLabel: strings.exportGame,
+              ),
             ),
             IconButton(
               key: const Key('review_reanalyze'),
               tooltip: strings.reanalyze,
               onPressed: () => unawaited(_runAnalysis(ignoreCache: true)),
-              icon: const Icon(Icons.refresh_rounded),
+              icon: Icon(
+                Icons.refresh_rounded,
+                semanticLabel: strings.reanalyze,
+              ),
             ),
           ],
         ],
@@ -238,9 +281,13 @@ class _ReviewPageState extends State<ReviewPage> {
       children: <Widget>[
         _buildStructureSummary(context),
         const SizedBox(height: 12),
-        if (_analyzing) _buildProgress(context),
-        if (_error != null) _buildError(context),
-        if (_report case final ReviewReport report) ...<Widget>[
+        if (_analyzing)
+          _buildProgress(context)
+        else if (_analysisCancelled)
+          _buildCancelled(context)
+        else if (_error != null)
+          _buildError(context)
+        else if (_report case final ReviewReport report) ...<Widget>[
           if (report.status == ReviewStatus.cancelled)
             _buildCancelled(context)
           else if (report.turns.isEmpty || report.actions.isEmpty)
@@ -416,7 +463,10 @@ class _ReviewPageState extends State<ReviewPage> {
                   key: const Key('review_choose_nag'),
                   tooltip: strings.qualityAnnotation,
                   onPressed: () => _showNagChooser(report, turn.groupIndex),
-                  icon: const Icon(Icons.rate_review_outlined),
+                  icon: Icon(
+                    Icons.rate_review_outlined,
+                    semanticLabel: strings.qualityAnnotation,
+                  ),
                 ),
               ],
             ),
@@ -432,10 +482,15 @@ class _ReviewPageState extends State<ReviewPage> {
               alignment: AlignmentDirectional.centerStart,
               child: FilledButton.tonalIcon(
                 key: const Key('review_deepen_turn'),
-                onPressed: isDeep
+                onPressed: isDeep || _deepening
                     ? null
                     : () => unawaited(_deepenTurn(report, turn.groupIndex)),
-                icon: const Icon(Icons.search_rounded),
+                icon: _deepening
+                    ? const SizedBox.square(
+                        dimension: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.search_rounded),
                 label: Text(strings.deepAnalysis),
               ),
             ),
@@ -587,24 +642,34 @@ class _ReviewPageState extends State<ReviewPage> {
   }
 
   Future<void> _deepenTurn(ReviewReport report, int groupIndex) async {
-    setState(() => _analyzing = true);
+    final int analysisRun = ++_analysisRun;
+    setState(() {
+      _deepening = true;
+      _analysisCancelled = false;
+      _error = null;
+    });
     try {
       final ReviewReport updated = await _analysisService.deepenTurn(
         widget.record,
         report,
         groupIndex,
       );
-      if (mounted) {
+      if (mounted && analysisRun == _analysisRun) {
         setState(() {
           _report = updated;
-          _analyzing = false;
+          _deepening = false;
         });
       }
-    } on Object catch (error) {
-      if (mounted) {
+    } on Object catch (error, stackTrace) {
+      if (mounted && analysisRun == _analysisRun) {
+        logger.e(
+          '[Review] Deep analysis failed: $error',
+          error: error,
+          stackTrace: stackTrace,
+        );
         setState(() {
           _error = error;
-          _analyzing = false;
+          _deepening = false;
         });
       }
     }
@@ -648,12 +713,18 @@ class _ReviewPageState extends State<ReviewPage> {
                   child: Text(strings.clearAnnotation),
                 ),
                 for (int nag = 1; nag <= 6; nag++)
-                  FilledButton.tonal(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      unawaited(_setNagOverride(report, groupIndex, nag));
-                    },
-                    child: Text(_nagSymbol(nag)),
+                  Semantics(
+                    key: Key('review_nag_$nag'),
+                    label: '${_nagSymbol(nag)} ${_nagLabel(context, nag)}',
+                    button: true,
+                    excludeSemantics: true,
+                    child: FilledButton.tonal(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        unawaited(_setNagOverride(report, groupIndex, nag));
+                      },
+                      child: Text(_nagSymbol(nag)),
+                    ),
                   ),
               ],
             ),

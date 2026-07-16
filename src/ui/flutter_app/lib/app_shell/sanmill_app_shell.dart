@@ -2297,7 +2297,10 @@ class _GamePreviewCarouselCard extends StatelessWidget {
                 child: IconButton.filledTonal(
                   tooltip: S.of(context).reviewGame,
                   onPressed: onReview,
-                  icon: const Icon(Icons.analytics_outlined),
+                  icon: Icon(
+                    Icons.analytics_outlined,
+                    semanticLabel: S.of(context).reviewGame,
+                  ),
                 ),
               ),
           ],
@@ -2394,7 +2397,10 @@ class _GamePreviewTile extends StatelessWidget {
               IconButton(
                 tooltip: S.of(context).reviewGame,
                 onPressed: onReview,
-                icon: const Icon(Icons.analytics_outlined),
+                icon: Icon(
+                  Icons.analytics_outlined,
+                  semanticLabel: S.of(context).reviewGame,
+                ),
               ),
           ],
         ),
@@ -2946,18 +2952,23 @@ class _MoreSectionHeaderLink extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color color = Theme.of(context).colorScheme.onSurfaceVariant;
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(title),
-            const SizedBox(width: 4),
-            Icon(Icons.chevron_right_rounded, size: 18, color: color),
-          ],
+    return Semantics(
+      label: title,
+      button: true,
+      excludeSemantics: true,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(8),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(title),
+              const SizedBox(width: 4),
+              Icon(Icons.chevron_right_rounded, size: 18, color: color),
+            ],
+          ),
         ),
       ),
     );
