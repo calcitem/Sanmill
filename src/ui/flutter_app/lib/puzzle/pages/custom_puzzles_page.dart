@@ -277,14 +277,22 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       return;
     }
 
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           success
               ? S.of(context).puzzleExportSuccess(puzzlesToExport.length)
               : S.of(context).puzzleExportFailed,
+          style: TextStyle(
+            color: success
+                ? colorScheme.onPrimaryContainer
+                : colorScheme.onErrorContainer,
+          ),
         ),
-        backgroundColor: success ? Colors.green : Colors.red,
+        backgroundColor: success
+            ? colorScheme.primaryContainer
+            : colorScheme.errorContainer,
       ),
     );
 
@@ -342,10 +350,14 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       return;
     }
 
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(S.of(context).puzzleDeleted(deletedCount)),
-        backgroundColor: Colors.green,
+        content: Text(
+          S.of(context).puzzleDeleted(deletedCount),
+          style: TextStyle(color: colorScheme.onPrimaryContainer),
+        ),
+        backgroundColor: colorScheme.primaryContainer,
       ),
     );
 
@@ -365,10 +377,14 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
     }
 
     if (deletedCount > 0) {
+      final ColorScheme colorScheme = Theme.of(context).colorScheme;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(S.of(context).puzzleDeleted(deletedCount)),
-          backgroundColor: Colors.green,
+          content: Text(
+            S.of(context).puzzleDeleted(deletedCount),
+            style: TextStyle(color: colorScheme.onPrimaryContainer),
+          ),
+          backgroundColor: colorScheme.primaryContainer,
         ),
       );
     }
@@ -383,13 +399,15 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       return;
     }
 
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     if (result.success) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             S.of(context).puzzleImportSuccess(result.puzzles.length),
+            style: TextStyle(color: colorScheme.onPrimaryContainer),
           ),
-          backgroundColor: Colors.green,
+          backgroundColor: colorScheme.primaryContainer,
         ),
       );
       setState(() {});
@@ -398,8 +416,9 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
         SnackBar(
           content: Text(
             result.errorMessage ?? S.of(context).puzzleImportFailed,
+            style: TextStyle(color: colorScheme.onErrorContainer),
           ),
-          backgroundColor: Colors.red,
+          backgroundColor: colorScheme.errorContainer,
         ),
       );
     }
@@ -432,10 +451,14 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
     }
 
     if (qrString == null) {
+      final ColorScheme colorScheme = Theme.of(context).colorScheme;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(S.of(context).puzzleQrDataTooLong),
-          backgroundColor: Colors.red,
+          content: Text(
+            S.of(context).puzzleQrDataTooLong,
+            style: TextStyle(color: colorScheme.onErrorContainer),
+          ),
+          backgroundColor: colorScheme.errorContainer,
         ),
       );
       return;
@@ -541,13 +564,15 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       return;
     }
 
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     if (result.success) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             S.of(context).puzzleImportSuccess(result.puzzles.length),
+            style: TextStyle(color: colorScheme.onPrimaryContainer),
           ),
-          backgroundColor: Colors.green,
+          backgroundColor: colorScheme.primaryContainer,
         ),
       );
       setState(() {});
@@ -746,18 +771,26 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       return;
     }
 
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           success
               ? 'Exported ${puzzlesToContribute.length} puzzle(s) for contribution!'
               : 'Failed to export puzzles',
+          style: TextStyle(
+            color: success
+                ? colorScheme.onPrimaryContainer
+                : colorScheme.onErrorContainer,
+          ),
         ),
-        backgroundColor: success ? Colors.green : Colors.red,
+        backgroundColor: success
+            ? colorScheme.primaryContainer
+            : colorScheme.errorContainer,
         action: success
             ? SnackBarAction(
                 label: 'View Guide',
-                textColor: Colors.white,
+                textColor: colorScheme.onPrimaryContainer,
                 onPressed: () => _showContributionInfo(context, settingsTheme),
               )
             : null,
