@@ -205,7 +205,7 @@ void main() {
         find.byKey(const Key('lan_stop_host_button')),
       );
 
-      expect(find.text('Stop Hosting'), findsOneWidget);
+      expect(find.text('Stop hosting'), findsOneWidget);
       expect(
         tester
             .widget<TextButton>(find.widgetWithText(TextButton, 'Close'))
@@ -232,8 +232,8 @@ void main() {
       await tester.tap(find.byKey(const Key('lan_stop_host_button')));
       await _pumpUntilFound(tester, find.byKey(const Key('lan_host_button')));
 
-      expect(find.text('Start Hosting'), findsOneWidget);
-      expect(find.text('Server is stopped.'), findsOneWidget);
+      expect(find.text('Start hosting'), findsOneWidget);
+      expect(find.text('Hosting stopped.'), findsOneWidget);
       expect(controller.remoteCoordinator, isNull);
       expect(controller.gameInstance.gameMode, previousMode);
       expect(
