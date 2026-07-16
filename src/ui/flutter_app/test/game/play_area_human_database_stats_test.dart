@@ -1687,7 +1687,7 @@ void main() {
   });
 
   testWidgets(
-    'analysis panel ignores white board message color in both themes',
+    'analysis panel uses surface colors while board PV uses message color',
     (WidgetTester tester) async {
       db.colorSettings = const ColorSettings(messageColor: Colors.white);
       db.displaySettings = const DisplaySettings(
@@ -1733,7 +1733,7 @@ void main() {
         final Text title = tester.widget<Text>(
           find.byKey(const Key('play_area_analysis_moves_header_title')),
         );
-        expect(rank.style?.color, theme.colorScheme.onSurface);
+        expect(rank.style?.color, Colors.white);
         expect(title.style?.color, theme.colorScheme.onSurface);
       }
     },
@@ -5365,6 +5365,93 @@ void main() {
       );
     },
   );
+
+  testWidgets('analysis explorer refreshes after managing knowledge sources', (
+    WidgetTester tester,
+  ) async {
+    db = _GamePageDb(
+      generalSettings: const GeneralSettings(),
+      displaySettings: const DisplaySettings(
+        isUnplacedAndRemovedPiecesShown: false,
+        isHistoryNavigationToolbarShown: false,
+      ),
+    );
+    DB.instance = db;
+    debugOpeningExplorerHumanDatabaseReady = (_) =>
+        const HumanDatabaseReadyResult(
+          ready: true,
+          status: tgf.MillHumanDatabaseStatus(
+            readable: true,
+            initialized: true,
+            error: '',
+            schemaVersion: 'test',
+            buildDate: '2026-07-16',
+            totalGames: 20,
+            positionCount: 1,
+            moveCount: 1,
+          ),
+        );
+    debugOpeningExplorerHumanDatabaseQuery =
+        ({
+          required String fen,
+          required int maxMoves,
+          required int minSamples,
+        }) {
+          return const tgf.MillHumanDatabaseQuery(
+            available: true,
+            stateKey: 'start',
+            error: '',
+            moves: <tgf.MillHumanDatabaseMove>[
+              tgf.MillHumanDatabaseMove(
+                notation: 'd6',
+                wins: 10,
+                losses: 6,
+                draws: 4,
+                total: 20,
+                winPct: 0.5,
+                scoreDelta: 0.08,
+              ),
+            ],
+          );
+        };
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.binding.setSurfaceSize(const Size(540, 992));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.explore_outlined));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('opening_explorer_human_database_unavailable')),
+      findsOneWidget,
+    );
+
+    final Finder manageHumanDatabase = find.byKey(
+      const Key('opening_explorer_manage_human_database'),
+    );
+    await tester.ensureVisible(manageHumanDatabase);
+    await tester.tap(manageHumanDatabase);
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('ai_knowledge_sources_page')), findsOneWidget);
+
+    db.generalSettings = const GeneralSettings(
+      humanDatabaseEnabled: true,
+      humanDatabaseFilePath: '/virtual/human.sqlite',
+    );
+    Navigator.of(
+      tester.element(find.byKey(const Key('ai_knowledge_sources_page'))),
+    ).pop();
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('opening_explorer_human_database_unavailable')),
+      findsNothing,
+    );
+    expect(find.byKey(const Key('opening_explorer_move_d6')), findsOneWidget);
+  });
 
   testWidgets('analysis explorer reports a failed human database query', (
     WidgetTester tester,

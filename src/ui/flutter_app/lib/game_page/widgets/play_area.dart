@@ -227,7 +227,7 @@ Future<void> showAnalysisSettingsSheet(
                       title: Text(strings.openingExplorer),
                       subtitle: Text(strings.aiKnowledgeSources),
                       trailing: const Icon(Icons.chevron_right),
-                      onTap: () {
+                      onTap: () async {
                         RecordingService().recordEvent(
                           RecordingEventType.toolbarAction,
                           <String, dynamic>{
@@ -237,9 +237,10 @@ Future<void> showAnalysisSettingsSheet(
                         );
                         final NavigatorState navigator = Navigator.of(context);
                         Navigator.of(dialogContext).pop();
-                        navigator.push(
+                        await navigator.push<void>(
                           GeneralSettingsPage.aiKnowledgeSourcesRoute(),
                         );
+                        AnalysisMode.refresh();
                       },
                     ),
                     if (isRuleSupportingPerfectDatabase())
@@ -8079,7 +8080,7 @@ class _AnalysisEngineLine extends StatelessWidget {
   Widget build(BuildContext context) {
     assert(lineRank > 0, 'Engine line rank must be one-based.');
     final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
+    final Color lineColor = DB().colorSettings.messageColor;
     final S strings = S.of(context);
     final Color outcomeColor = AnalysisMode.isThreatMode
         ? Colors.red.shade600
@@ -8124,9 +8125,7 @@ class _AnalysisEngineLine extends StatelessWidget {
                       softWrap: false,
                       overflow: TextOverflow.fade,
                       style: theme.textTheme.labelSmall?.copyWith(
-                        color: onTap == null
-                            ? colorScheme.onSurfaceVariant
-                            : colorScheme.onSurface,
+                        color: lineColor,
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 0,
@@ -8164,9 +8163,7 @@ class _AnalysisEngineLine extends StatelessWidget {
                       softWrap: false,
                       overflow: TextOverflow.clip,
                       style: theme.textTheme.labelSmall?.copyWith(
-                        color: onTap == null
-                            ? colorScheme.onSurfaceVariant
-                            : colorScheme.onSurface,
+                        color: lineColor,
                         fontSize: fontSize,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 0,
@@ -8181,9 +8178,7 @@ class _AnalysisEngineLine extends StatelessWidget {
                       softWrap: false,
                       overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: onTap == null
-                            ? colorScheme.onSurfaceVariant
-                            : colorScheme.onSurface,
+                        color: lineColor,
                         fontSize: fontSize,
                         letterSpacing: 0,
                       ),

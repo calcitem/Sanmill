@@ -272,6 +272,20 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
     _initialExplorerFen = explorer.getFen();
   }
 
+  Future<void> _manageKnowledgeSources() async {
+    await Navigator.of(
+      context,
+    ).push<void>(GeneralSettingsPage.aiKnowledgeSourcesRoute());
+    if (!mounted) {
+      return;
+    }
+
+    // Knowledge-source settings live outside this widget's listenable state.
+    // Rebuild on return so a newly imported or enabled database is queried
+    // immediately instead of leaving the previous availability result visible.
+    setState(() {});
+  }
+
   List<String> _currentPlacementMoves() {
     return <String>[
       ..._initialPlacementMoves,
@@ -592,6 +606,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
                             snapshot: snapshot,
                             tapController: _tapController,
                             onMoveSelected: _applyExplorerAction,
+                            onManageKnowledgeSources: _manageKnowledgeSources,
                             onPositionChanged: _recordExplorerPositionChange,
                             showBoard: widget.showBoard,
                             isLoading:
@@ -747,6 +762,7 @@ class _OpeningExplorerContent extends StatelessWidget {
     required this.snapshot,
     required this.tapController,
     required this.onMoveSelected,
+    required this.onManageKnowledgeSources,
     required this.onPositionChanged,
     required this.showBoard,
     required this.isLoading,
@@ -756,6 +772,7 @@ class _OpeningExplorerContent extends StatelessWidget {
   final _OpeningExplorerSnapshot snapshot;
   final MillSessionTapController tapController;
   final ValueChanged<GameAction> onMoveSelected;
+  final VoidCallback onManageKnowledgeSources;
   final _OpeningExplorerPositionChanged onPositionChanged;
   final bool showBoard;
   final bool isLoading;
@@ -866,9 +883,7 @@ class _OpeningExplorerContent extends StatelessWidget {
           ] else
             _HumanDatabaseStatusTile(
               state: snapshot.humanDatabaseState,
-              onManage: () => Navigator.of(
-                context,
-              ).push(GeneralSettingsPage.aiKnowledgeSourcesRoute()),
+              onManage: onManageKnowledgeSources,
             ),
         ],
       ),
