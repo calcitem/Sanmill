@@ -812,8 +812,8 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       SnackBar(
         content: Text(
           success
-              ? 'Exported ${puzzlesToContribute.length} puzzle(s) for contribution!'
-              : 'Failed to export puzzles',
+              ? s.puzzlesExportedForContribution(puzzlesToContribute.length)
+              : s.puzzleExportFailed,
           style: TextStyle(
             color: success
                 ? colorScheme.onPrimaryContainer
@@ -825,7 +825,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
             : colorScheme.errorContainer,
         action: success
             ? SnackBarAction(
-                label: 'View Guide',
+                label: s.viewContributionGuide,
                 textColor: colorScheme.onPrimaryContainer,
                 onPressed: () => _showContributionInfo(context, settingsTheme),
               )

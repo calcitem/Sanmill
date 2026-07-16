@@ -5490,5 +5490,19 @@
     "puzzleStreakQuitTitle": "Quit puzzle streak?",
     "@puzzleStreakQuitTitle": {
         "description": "Title of the confirmation dialog for ending the current puzzle streak"
+    },
+    "puzzlesExportedForContribution": "{count, plural, =1{Exported 1 puzzle for contribution} other{Exported {count} puzzles for contribution}}",
+    "@puzzlesExportedForContribution": {
+        "description": "Success message after exporting one or more puzzles for contribution",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "viewContributionGuide": "View guide",
+    "@viewContributionGuide": {
+        "description": "Snackbar action that opens the puzzle contribution guide"
     }
 }
