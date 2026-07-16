@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/appearance_settings/models/color_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/themes/app_theme.dart';
+import 'package:sanmill/shared/utils/helpers/color_helpers/color_helper.dart';
 
 import '../../helpers/mocks/mock_database.dart';
 
@@ -102,6 +103,24 @@ void main() {
     test('app bar titles should be left aligned', () {
       expect(AppTheme.lightThemeData.appBarTheme.centerTitle, isFalse);
       expect(AppTheme.darkThemeData.appBarTheme.centerTitle, isFalse);
+    });
+
+    test('light primary remains readable on every light surface container', () {
+      final ColorScheme colors = AppTheme.lightThemeData.colorScheme;
+      for (final Color background in <Color>[
+        colors.surfaceContainerLowest,
+        colors.surface,
+        colors.surfaceContainerLow,
+        colors.surfaceContainer,
+        colors.surfaceContainerHigh,
+        colors.surfaceContainerHighest,
+      ]) {
+        expect(
+          colorContrastRatio(colors.primary, background),
+          greaterThanOrEqualTo(normalTextMinimumContrastRatio),
+          reason: 'Primary text must remain readable on $background.',
+        );
+      }
     });
   });
 

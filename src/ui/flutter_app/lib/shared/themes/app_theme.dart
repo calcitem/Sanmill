@@ -85,6 +85,7 @@ class AppTheme {
 
   // Color
   static const Color _appPrimaryColor = Color(0xFF629924);
+  static const Color _appLightPrimaryColor = Color(0xFF426B16);
   static const Color _appSecondaryColor = Color(0xFF3F6F9F);
   static const Color _appTertiaryColor = Color(0xFFC78B2D);
 
@@ -94,7 +95,7 @@ class AppTheme {
         brightness: Brightness.light,
         dynamicSchemeVariant: DynamicSchemeVariant.neutral,
       ).copyWith(
-        primary: _appPrimaryColor,
+        primary: _appLightPrimaryColor,
         secondary: _appSecondaryColor,
         tertiary: _appTertiaryColor,
         surface: const Color(0xFFFAFAF8),
