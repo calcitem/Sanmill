@@ -88,6 +88,14 @@ void main() {
         ),
       );
       expect((boardPaint.painter! as MiniBoardPainter).showCoordinates, isTrue);
+      expect(
+        tester.getSemantics(find.byKey(const Key('review_next_turn'))).label,
+        contains('Next page'),
+      );
+      expect(
+        tester.getSemantics(find.byKey(const Key('review_last_turn'))).label,
+        contains('Last page'),
+      );
 
       await tester.tap(find.byKey(const Key('review_next_turn')));
       await tester.pump();
@@ -104,6 +112,16 @@ void main() {
       );
       expect(firstButton.onPressed, isNotNull);
       expect(nextButton.onPressed, isNull);
+      expect(
+        tester.getSemantics(find.byKey(const Key('review_first_turn'))).label,
+        contains('First page'),
+      );
+      expect(
+        tester
+            .getSemantics(find.byKey(const Key('review_previous_turn')))
+            .label,
+        contains('Previous page'),
+      );
     },
   );
 

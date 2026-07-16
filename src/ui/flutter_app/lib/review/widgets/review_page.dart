@@ -360,7 +360,10 @@ class _ReviewPageState extends State<ReviewPage> {
               key: const Key('review_first_turn'),
               tooltip: localizations.firstPageTooltip,
               onPressed: currentIndex == 0 ? null : () => selectIndex(0),
-              icon: const Icon(Icons.first_page_rounded),
+              icon: Icon(
+                Icons.first_page_rounded,
+                semanticLabel: localizations.firstPageTooltip,
+              ),
             ),
             IconButton(
               key: const Key('review_previous_turn'),
@@ -368,7 +371,10 @@ class _ReviewPageState extends State<ReviewPage> {
               onPressed: currentIndex == 0
                   ? null
                   : () => selectIndex(currentIndex - 1),
-              icon: const Icon(Icons.chevron_left_rounded),
+              icon: Icon(
+                Icons.chevron_left_rounded,
+                semanticLabel: localizations.previousPageTooltip,
+              ),
             ),
             Semantics(
               label: S
@@ -386,7 +392,10 @@ class _ReviewPageState extends State<ReviewPage> {
               onPressed: currentIndex == report.turns.length - 1
                   ? null
                   : () => selectIndex(currentIndex + 1),
-              icon: const Icon(Icons.chevron_right_rounded),
+              icon: Icon(
+                Icons.chevron_right_rounded,
+                semanticLabel: localizations.nextPageTooltip,
+              ),
             ),
             IconButton(
               key: const Key('review_last_turn'),
@@ -394,7 +403,10 @@ class _ReviewPageState extends State<ReviewPage> {
               onPressed: currentIndex == report.turns.length - 1
                   ? null
                   : () => selectIndex(report.turns.length - 1),
-              icon: const Icon(Icons.last_page_rounded),
+              icon: Icon(
+                Icons.last_page_rounded,
+                semanticLabel: localizations.lastPageTooltip,
+              ),
             ),
           ],
         ),
