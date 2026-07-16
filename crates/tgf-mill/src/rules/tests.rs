@@ -4865,6 +4865,42 @@ fn generate_legal_ctx_uses_legacy_destination_order_for_flying() {
     );
 }
 
+#[test]
+fn four_against_three_flying_position_has_sixty_eight_root_actions() {
+    let options = MillVariantOptions {
+        may_fly: true,
+        fly_piece_count: 4,
+        ..MillVariantOptions::default()
+    };
+    let rules = MillRules::new(options.clone());
+    let mut state = MillState {
+        side_to_move: 0,
+        phase: MillPhase::Moving,
+        pieces_in_hand: [0, 0],
+        pieces_on_board: [4, 3],
+        winner: -1,
+        ..MillState::default()
+    };
+    for node in [0_usize, 4, 8, 12] {
+        state.board[node] = 1;
+    }
+    for node in [2_usize, 6, 10] {
+        state.board[node] = 2;
+    }
+    state.recompute_aux(&options);
+    state.pieces_in_hand = [0, 0];
+
+    let snapshot = rules.encode(state);
+    let mut actions = SearchActionList::new();
+    MillGame::generate_legal(
+        &MillGame::new(options).build_workbench(&snapshot),
+        &mut actions,
+    );
+
+    assert_eq!(actions.len(), 4 * (24 - 7));
+    assert!(actions.len() <= tgf_core::SEARCH_ACTION_CAPACITY);
+}
+
 /// FEN trailing-extension parity: the trailing `c:/i:/l:/p:/s:` block
 /// must round-trip through `set_from_fen` -> `export_fen`, marked
 /// pieces ('X') must survive, and the signed pieceToRemoveCount must

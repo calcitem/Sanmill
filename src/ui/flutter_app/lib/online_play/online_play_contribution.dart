@@ -78,6 +78,12 @@ class OnlinePlayContribution implements PlayModeContribution {
     return GameModeEntry(
       id: MillRouteIds.humanVsCloud,
       label: s.onlineFriendGame,
+      launchTarget: GameModeLaunchTarget.online,
+      availability: GameModeAvailability.experimental,
+      capabilities: const <GameModeCapability>{
+        GameModeCapability.remoteMultiplayer,
+        GameModeCapability.reviewable,
+      },
       subtitle: s.onlineFriendGameDescription,
       icon: Icons.cloud_outlined,
       menuKey: const Key('drawer_item_human_vs_cloud'),

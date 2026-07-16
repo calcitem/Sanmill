@@ -29,7 +29,8 @@ class ExportService {
       return null;
     }
 
-    final String content = ImportService.addTagPairs(moveText);
+    final String original = ImportService.addTagPairs(moveText);
+    final String content = reviewedPgnForExport(original) ?? original;
     final Directory tempDir = await getTemporaryDirectory();
     final String timestamp = DateTime.now()
         .toIso8601String()
@@ -74,6 +75,9 @@ class ExportService {
       }
     }
 
+    final String fullPgn = ImportService.addTagPairs(exportText);
+    exportText = reviewedPgnForExport(fullPgn) ?? exportText;
+
     await Clipboard.setData(ClipboardData(text: exportText));
 
     if (!context.mounted) {
@@ -89,6 +93,24 @@ class ExportService {
     if (shouldPop) {
       Navigator.pop(context);
     }
+  }
+
+  /// Returns a reviewed PGN copy only when the user enabled the review's
+  /// future-export preference. The recorder and original imported PGN remain
+  /// untouched.
+  static String? reviewedPgnForExport(String sourcePgn) {
+    final GameRecorder recorder = GameController().gameRecorder;
+    final String currentSource = ImportService.addTagPairs(
+      recorder.moveHistoryText,
+    );
+    final ReviewReport? report = ReviewStorage.instance.latestReportForGame(
+      sourcePgn: currentSource,
+      rules: GameController().ruleSettingsForActiveBoard,
+    );
+    if (report == null || !report.includeAnnotationsOnExport) {
+      return null;
+    }
+    return ReviewNagMerge.forExport(sourcePgn, report);
   }
 
   /// Shows a dialog asking the user what to export.

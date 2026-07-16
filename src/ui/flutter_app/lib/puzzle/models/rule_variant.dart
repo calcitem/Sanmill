@@ -5,6 +5,7 @@
 //
 // Rule variant identification and management for puzzles
 
+import 'package:flutter/foundation.dart' show mapEquals;
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:meta/meta.dart';
 
@@ -120,6 +121,54 @@ class RuleVariant {
         'nerenchi': NerenchiRuleSettings(),
         'el_filja': ELFiljaRuleSettings(),
       };
+
+  /// Returns the stable ID of the canonical preset that matches [settings]
+  /// exactly, or `null` for a custom rule configuration.
+  ///
+  /// PGN import/export must use this full comparison rather than the fuzzy
+  /// puzzle-family detection below. A single changed option makes the record
+  /// custom so replay never silently substitutes a nearby preset.
+  static String? exactCanonicalIdFor(RuleSettings settings) {
+    final Map<String, dynamic> candidate = settings.toJson();
+    for (final MapEntry<String, RuleSettings> entry
+        in canonicalSettings.entries) {
+      if (mapEquals(candidate, entry.value.toJson())) {
+        return entry.key;
+      }
+    }
+    return null;
+  }
+
+  /// Fixed English PGN `[Variant]` value for [settings].
+  static String pgnNameFor(RuleSettings settings) {
+    final String? id = exactCanonicalIdFor(settings);
+    return id == null ? 'Custom' : _variantNames[id]!;
+  }
+
+  /// Resolve a PGN `[Variant]` value to record-scoped canonical settings.
+  ///
+  /// Both the fixed English display name and stable ID are accepted. `Custom`,
+  /// an absent value, and unknown future values deliberately return `null`, so
+  /// callers can use the current rules without changing global preferences.
+  static RuleSettings? canonicalSettingsFromPgn(String? value) {
+    final String normalized = value?.trim().toLowerCase() ?? '';
+    if (normalized.isEmpty || normalized == 'custom') {
+      return null;
+    }
+
+    for (final MapEntry<String, RuleSettings> entry
+        in canonicalSettings.entries) {
+      final String displayName = _variantNames[entry.key]!;
+      if (normalized == entry.key.toLowerCase() ||
+          normalized == displayName.toLowerCase()) {
+        return entry.value;
+      }
+    }
+    return null;
+  }
+
+  /// Fixed English display name for a stable canonical variant [id].
+  static String? pgnNameForId(String id) => _variantNames[id];
 
   // ---------------------------------------------------------------------------
   // Variant detection

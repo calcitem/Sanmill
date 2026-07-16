@@ -23,13 +23,15 @@ use std::time::{Duration, Instant};
 use once_cell::sync::Lazy;
 
 use tgf_core::{
-    Action, Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext,
-    SearchActionList, Workbench,
+    Action, ActionList, Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext,
+    SEARCH_ACTION_CAPACITY, SearchActionList, Workbench,
 };
 use tgf_mill::{
     EngineRuntimeOptions, MillActionKind, MillGame, MillRules, MillSearchAlgorithmKind,
     MillVariantOptions as NativeMillVariantOptions, recommended_search_depth,
 };
+#[cfg(test)]
+use tgf_mill::{MillPhase, MillState};
 #[cfg(target_arch = "wasm32")]
 use tgf_search::MctsSearcher;
 #[cfg(not(target_arch = "wasm32"))]
@@ -382,11 +384,34 @@ fn multi_thread_search_is_allowed(config: &MillEngineConfigPlan) -> bool {
     }
 }
 
-const MAX_MULTI_PV_LINES: usize = 8;
 const MAX_MULTI_PV_PLIES: usize = 16;
 
 fn multi_pv_limit(config: &MillEngineConfigPlan) -> usize {
-    usize::from(config.multi_pv).clamp(1, MAX_MULTI_PV_LINES)
+    usize::from(config.multi_pv).max(1)
+}
+
+fn validate_root_action_capacity(
+    snapshot: &GameStateSnapshot,
+    rules: &MillRules,
+    config: &MillEngineConfigPlan,
+) -> Result<usize, String> {
+    if usize::from(config.multi_pv) > SEARCH_ACTION_CAPACITY {
+        return Err(format!(
+            "requested Multi-PV line count {} exceeds the shared search action capacity {}",
+            config.multi_pv, SEARCH_ACTION_CAPACITY
+        ));
+    }
+
+    let mut legal = ActionList::<256>::default();
+    rules.legal_actions(snapshot, &mut legal);
+    if legal.len() > SEARCH_ACTION_CAPACITY {
+        return Err(format!(
+            "unsupported rule position: {} legal root actions exceed the shared search action capacity {}",
+            legal.len(),
+            SEARCH_ACTION_CAPACITY
+        ));
+    }
+    Ok(legal.len())
 }
 
 struct MultiPvEventContext<'a> {
@@ -827,6 +852,12 @@ fn run_mill_engine_config_event_stream(
     }
 
     let rules_options = options.clone();
+    let rules = MillRules::new(rules_options.clone());
+    if let Err(reason) = validate_root_action_capacity(&snapshot, &rules, &config) {
+        let _ = sink.add(crate::engine_event::error(&reason));
+        let _ = sink.add(crate::engine_event::stopped());
+        return;
+    }
     let mut game = MillGame::new_with_repetition_context(
         options,
         root_repetition_history,
@@ -850,7 +881,6 @@ fn run_mill_engine_config_event_stream(
     let requested_depth = if config.depth > 0 {
         config.depth
     } else {
-        let rules = MillRules::new(rules_options.clone());
         let state = MillRules::decode_snapshot(snapshot);
         let runtime = EngineRuntimeOptions {
             skill_level: config.skill_level,
@@ -1240,6 +1270,68 @@ mod tests {
             events.iter().all(|event| event.reason.contains(',')),
             "every emitted MultiPV line should include a continuation: {events:?}"
         );
+    }
+
+    #[test]
+    fn multi_pv_accepts_shared_search_capacity_without_clamping() {
+        let rules = MillRules::default();
+        let snapshot = rules.initial_state(&[]);
+        let config = MillEngineConfigPlan {
+            multi_pv: SEARCH_ACTION_CAPACITY as u8,
+            ..MillEngineConfigPlan::default()
+        };
+
+        assert_eq!(
+            validate_root_action_capacity(&snapshot, &rules, &config),
+            Ok(24)
+        );
+        assert_eq!(multi_pv_limit(&config), SEARCH_ACTION_CAPACITY);
+    }
+
+    #[test]
+    fn multi_pv_over_shared_search_capacity_is_rejected() {
+        let rules = MillRules::default();
+        let snapshot = rules.initial_state(&[]);
+        let config = MillEngineConfigPlan {
+            multi_pv: (SEARCH_ACTION_CAPACITY + 1) as u8,
+            ..MillEngineConfigPlan::default()
+        };
+
+        let error = validate_root_action_capacity(&snapshot, &rules, &config)
+            .expect_err("over-capacity Multi-PV must fail explicitly");
+        assert!(error.contains("exceeds the shared search action capacity 72"));
+    }
+
+    #[test]
+    fn legal_root_over_shared_search_capacity_is_rejected_without_truncation() {
+        let options = NativeMillVariantOptions {
+            piece_count: 9,
+            fly_piece_count: 5,
+            may_fly: true,
+            ..NativeMillVariantOptions::default()
+        };
+        let rules = MillRules::new(options.clone());
+        let mut state = MillState::empty(&options);
+        for node in 0..5 {
+            state.set_piece(node, 1);
+        }
+        for node in 5..8 {
+            state.set_piece(node, 2);
+        }
+        state.recompute_aux(&options);
+        state.set_pieces_in_hand([0, 0], &options);
+        state.set_phase(MillPhase::Moving);
+        state.set_side_to_move(0);
+        let snapshot = rules.encode_state(state);
+        let config = MillEngineConfigPlan {
+            multi_pv: SEARCH_ACTION_CAPACITY as u8,
+            ..MillEngineConfigPlan::default()
+        };
+
+        let error = validate_root_action_capacity(&snapshot, &rules, &config)
+            .expect_err("an 80-action root must fail instead of truncating to 72");
+        assert!(error.contains("80 legal root actions"));
+        assert!(error.contains("capacity 72"));
     }
 
     #[test]

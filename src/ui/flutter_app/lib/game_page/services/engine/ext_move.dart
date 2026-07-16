@@ -172,9 +172,9 @@ class ExtMove extends PgnNodeData {
     // Add quality-derived NAG if not already present and no conflicting quality NAGs exist
     final int? qualityNag = moveQualityToNag(quality);
     if (qualityNag != null && !allNags.contains(qualityNag)) {
-      // Check if there are any existing quality-related NAGs (1, 2, 3, 4)
+      // Any of the six conventional quality NAGs owns the quality slot.
       final bool hasQualityNags = allNags.any(
-        (int nag) => nag >= 1 && nag <= 4,
+        (int nag) => nag >= 1 && nag <= 6,
       );
       if (!hasQualityNags) {
         allNags.add(qualityNag);
@@ -190,7 +190,8 @@ class ExtMove extends PgnNodeData {
       return;
     }
 
-    // Look for quality-related NAGs (1, 2, 3, 4) and use the first one found
+    // Only four legacy values map to MoveQuality; $5/$6 are still preserved
+    // in [nags] and block generated quality annotations in [getAllNags].
     for (final int nag in nags!) {
       if (nag >= 1 && nag <= 4) {
         final MoveQuality? nagQuality = nagToMoveQuality(nag);

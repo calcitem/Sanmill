@@ -316,7 +316,39 @@ class PgnGame<T extends PgnNodeData> {
               token.write('${frame.node.data!.san} ');
               lastTokenWasSan = true;
               if (frame.node.data!.nags != null) {
-                for (final int nag in frame.node.data!.nags!) {
+                final List<int> nags = frame.node.data!.nags!;
+                final List<int> qualityNags = nags
+                    .where((int nag) => nag >= 1 && nag <= 6)
+                    .toList(growable: false);
+                final List<int> otherNags = nags
+                    .where((int nag) => nag < 1 || nag > 6)
+                    .toList(growable: false);
+                if (qualityNags.isNotEmpty) {
+                  final String text = token.toString();
+                  if (text.endsWith(' ')) {
+                    token.clear();
+                    token.write(text.substring(0, text.length - 1));
+                  }
+                }
+                for (int i = 0; i < qualityNags.length; i++) {
+                  if (i > 0) {
+                    token.write(' ');
+                  }
+                  final int nag = qualityNags[i];
+                  token.write(switch (nag) {
+                    1 => '!',
+                    2 => '?',
+                    3 => '!!',
+                    4 => '??',
+                    5 => '!?',
+                    6 => '?!',
+                    _ => throw StateError('Not a quality NAG: $nag'),
+                  });
+                }
+                if (qualityNags.isNotEmpty) {
+                  token.write(' ');
+                }
+                for (final int nag in otherNags) {
                   token.write('\$$nag ');
                 }
                 forceMoveNumber = true;

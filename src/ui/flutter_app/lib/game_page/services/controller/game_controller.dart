@@ -748,13 +748,11 @@ class GameController {
   bool get isRemoteBoardLocked => isRemoteGameMode && !isRemoteConnected;
 
   RuleSettings get ruleSettingsForActiveBoard {
-    if (isRemoteGameMode) {
-      final NativeMillGameSession? session = activeNativeMillSession;
-      if (session != null) {
-        return session.activeRuleSettings;
-      }
+    final NativeMillGameSession? session = activeNativeMillSession;
+    if (session != null) {
+      return session.activeRuleSettings;
     }
-    return DB().ruleSettings;
+    return gameRecorder.recordedRuleSettings ?? DB().ruleSettings;
   }
 
   bool get isRemoteOpponentTurn {

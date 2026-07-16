@@ -12,6 +12,35 @@ enum GameMenuSection { play, tools, game, settings, help, debug }
 /// Which top-level shell tab should surface a game contribution.
 enum GameMenuTarget { puzzles, learn, watch, more }
 
+/// Semantic destination started by a play-mode entry.
+///
+/// The shell uses this metadata instead of inferring behaviour from route ID
+/// substrings, which keeps contributed and renamed routes predictable.
+enum GameModeLaunchTarget {
+  moduleDefault,
+  localAi,
+  localTable,
+  localSimulation,
+  localAnalysis,
+  localSetup,
+  lan,
+  bluetooth,
+  cloud,
+  online,
+}
+
+enum GameModeAvailability { available, experimental, unavailable }
+
+enum GameModeCapability {
+  quickStart,
+  aiOpponent,
+  localMultiplayer,
+  remoteMultiplayer,
+  automatedPlay,
+  reviewable,
+  resumable,
+}
+
 typedef GameMenuWidgetBuilder =
     Widget Function(BuildContext context, {Key? key, GameSession? session});
 typedef GameMenuAvailability = bool Function(BuildContext context);
@@ -68,9 +97,12 @@ class GameModeEntry {
     required this.id,
     required this.label,
     required this.builder,
+    required this.launchTarget,
     this.subtitle,
     this.section = GameMenuSection.play,
     this.icon,
+    this.availability = GameModeAvailability.available,
+    this.capabilities = const <GameModeCapability>{},
     this.isAvailable,
     this.menuKey,
     @Deprecated('Use menuKey instead.') Key? drawerKey,
@@ -87,6 +119,9 @@ class GameModeEntry {
   final IconData? icon;
   final GameMenuSection section;
   final GameMenuWidgetBuilder builder;
+  final GameModeLaunchTarget launchTarget;
+  final GameModeAvailability availability;
+  final Set<GameModeCapability> capabilities;
 
   /// Stable key for the shell menu item. Keep old values stable across
   /// refactors.
@@ -102,5 +137,10 @@ class GameModeEntry {
   final Key? contentKey;
   final GameMenuAvailability? isAvailable;
 
-  bool availableIn(BuildContext context) => isAvailable?.call(context) ?? true;
+  bool availableIn(BuildContext context) =>
+      availability != GameModeAvailability.unavailable &&
+      (isAvailable?.call(context) ?? true);
+
+  bool supports(GameModeCapability capability) =>
+      capabilities.contains(capability);
 }

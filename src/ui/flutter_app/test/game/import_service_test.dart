@@ -98,6 +98,46 @@ void main() {
 
   group("ImportService rule variants", () {
     test(
+      "Known Variant uses record-scoped canonical rules without changing preferences",
+      () {
+        final Map<String, dynamic> preferenceBefore = DB().ruleSettings
+            .toJson();
+        const String pgnText =
+            '[Variant "Twelve Men\'s Morris"]\n\n'
+            '1. a7 d7 2. b6 d6 3. c5xd7 d5';
+
+        ImportService.import(pgnText);
+
+        final GameRecorder recorder = GameController().newGameRecorder!;
+        expect(
+          recorder.recordedRuleSettings?.toJson(),
+          const TwelveMensMorrisRuleSettings().toJson(),
+        );
+        expect(DB().ruleSettings.toJson(), preferenceBefore);
+      },
+      skip: nativeLibrarySkipReason(),
+    );
+
+    test(
+      "Custom Variant keeps the current rules as record-scoped rules",
+      () {
+        DB().ruleSettings = const TwelveMensMorrisRuleSettings();
+        const String pgnText =
+            '[Variant "Custom"]\n\n'
+            '1. a7 d7 2. b6 d6 3. c5xd7 d5';
+
+        ImportService.import(pgnText);
+
+        final GameRecorder recorder = GameController().newGameRecorder!;
+        expect(
+          recorder.recordedRuleSettings?.toJson(),
+          DB().ruleSettings.toJson(),
+        );
+      },
+      skip: nativeLibrarySkipReason(),
+    );
+
+    test(
       "Twelve Men's Morris PGN validates under the active rules",
       () {
         // a7-b6-c5 is a diagonal mill only when hasDiagonalLines is true,

@@ -35,6 +35,11 @@ import '../games/mill/native_mill_snapshot_board_view.dart';
 import '../general_settings/models/general_settings.dart';
 import '../generated/intl/l10n.dart';
 import '../home/module_route_screens.dart';
+import '../review/models/review_models.dart';
+import '../review/services/review_record_factory.dart';
+import '../review/services/review_storage.dart';
+import '../review/widgets/review_history_page.dart';
+import '../review/widgets/review_page.dart';
 import '../shared/database/database.dart';
 import '../shared/database/settings_repositories.dart';
 import '../shared/database/settings_repository.dart';
@@ -1200,11 +1205,15 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
   static const int _savedGamesQueryLimit = (_recentGamesLimit + 1) * 4;
 
   late Future<List<SavedGameSummary>> _recentGamesFuture;
+  List<PrivateGameRecord> _privateGames = const <PrivateGameRecord>[];
+  int _gamesCompletedToday = 0;
+  int _reviewsCompletedToday = 0;
 
   @override
   void initState() {
     super.initState();
     _recentGamesFuture = _loadRecentGames();
+    _refreshReviewData();
   }
 
   @override
@@ -1226,8 +1235,16 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
     final Future<List<SavedGameSummary>> nextRecentGames = _loadRecentGames();
     setState(() {
       _recentGamesFuture = nextRecentGames;
+      _refreshReviewData();
     });
     await nextRecentGames;
+  }
+
+  void _refreshReviewData() {
+    final DateTime today = DateTime.now();
+    _privateGames = ReviewStorage.instance.listGames();
+    _gamesCompletedToday = ReviewStorage.instance.completedGamesOn(today);
+    _reviewsCompletedToday = ReviewStorage.instance.completedReviewsOn(today);
   }
 
   Future<void> _openSavedGamesPage() async {
@@ -1239,6 +1256,43 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
     if (mounted) {
       await _refreshRecentGames();
     }
+  }
+
+  Future<void> _openPrivateHistoryPage() async {
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => const ReviewHistoryPage(),
+      ),
+    );
+    if (mounted) {
+      setState(_refreshReviewData);
+    }
+  }
+
+  Future<void> _openReview(PrivateGameRecord record) async {
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => ReviewPage(record: record),
+      ),
+    );
+    if (mounted) {
+      setState(_refreshReviewData);
+    }
+  }
+
+  Future<void> _reviewSavedGame(SavedGameSummary summary) async {
+    final String sourcePgn = await File(summary.path).readAsString();
+    final PrivateGameRecord record = ReviewRecordFactory.fromPgn(
+      sourcePgn: sourcePgn,
+      currentRules: DB().ruleSettings,
+      completedAt: summary.modified,
+      finalBoardLayout: summary.preview?.boardLayout,
+    );
+    await ReviewStorage.instance.saveGame(record);
+    if (!mounted) {
+      return;
+    }
+    await _openReview(record);
   }
 
   @override
@@ -1289,6 +1343,14 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
     bool useWideHomeLayout,
   ) {
     return <Widget>[
+      _HomeTodayProgress(
+        gamesCompleted: _gamesCompletedToday,
+        reviewsCompleted: _reviewsCompletedToday,
+      ),
+      _HomeQuickStart(
+        playModes: playModes,
+        onPlayRouteSelected: widget.onPlayRouteSelected,
+      ),
       _HomeGamesOverview(
         currentPlayRouteId: widget.currentPlayRouteId,
         playModes: playModes,
@@ -1298,11 +1360,16 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
         hasOpenedCurrentPlaySession: widget.hasOpenedCurrentPlaySession,
         tabInteraction: widget.tabInteraction,
         onContinueGame: widget.onContinueGame,
-        onPlayRouteSelected: widget.onPlayRouteSelected,
-        onAppRouteSelected: widget.onAppRouteSelected,
         onShowAll: _openSavedGamesPage,
         onSavedGameSelected: widget.onSavedGameSelected,
+        onReviewSavedGame: _reviewSavedGame,
       ),
+      _PrivateHistorySection(
+        records: _privateGames,
+        onShowAll: _openPrivateHistoryPage,
+        onReview: _openReview,
+      ),
+      _HomeTrainingSection(onAppRouteSelected: widget.onAppRouteSelected),
     ];
   }
 
@@ -1326,6 +1393,162 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
   }
 }
 
+class _HomeTodayProgress extends StatelessWidget {
+  const _HomeTodayProgress({
+    required this.gamesCompleted,
+    required this.reviewsCompleted,
+  });
+
+  final int gamesCompleted;
+  final int reviewsCompleted;
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+    return LichessListSection(
+      key: const Key('sanmill_home_today_progress'),
+      header: Text(strings.todayProgress),
+      headerKey: const Key('sanmill_home_today_progress_group'),
+      cardKey: const Key('sanmill_home_today_progress_card'),
+      children: <Widget>[
+        ListTile(
+          leading: const Icon(Icons.today_outlined),
+          title: Text(
+            strings.todayProgressSummary(gamesCompleted, reviewsCompleted),
+          ),
+          subtitle: Text(strings.todayProgressDescription),
+        ),
+      ],
+    );
+  }
+}
+
+class _HomeQuickStart extends StatelessWidget {
+  const _HomeQuickStart({
+    required this.playModes,
+    required this.onPlayRouteSelected,
+  });
+
+  final List<GameModeEntry> playModes;
+  final ValueChanged<String> onPlayRouteSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final List<GameModeEntry> quickModes = playModes
+        .where(
+          (GameModeEntry mode) => mode.supports(GameModeCapability.quickStart),
+        )
+        .take(3)
+        .toList(growable: false);
+    if (quickModes.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    return LichessListSection(
+      key: const Key('sanmill_home_quick_start_section'),
+      header: Text(S.of(context).quickStart),
+      headerKey: const Key('sanmill_home_quick_start_group'),
+      cardKey: const Key('sanmill_home_quick_start_card'),
+      children: <Widget>[
+        for (final GameModeEntry mode in quickModes)
+          _MoreTile(
+            key: Key('sanmill_home_quick_start_${mode.launchTarget.name}'),
+            icon: mode.icon ?? Icons.sports_esports_rounded,
+            title: mode.label,
+            subtitle: mode.subtitle,
+            onTap: () => onPlayRouteSelected(mode.id.value),
+          ),
+      ],
+    );
+  }
+}
+
+class _PrivateHistorySection extends StatelessWidget {
+  const _PrivateHistorySection({
+    required this.records,
+    required this.onShowAll,
+    required this.onReview,
+  });
+
+  final List<PrivateGameRecord> records;
+  final VoidCallback onShowAll;
+  final ValueChanged<PrivateGameRecord> onReview;
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+    if (records.isEmpty) {
+      return LichessListSection(
+        key: const Key('sanmill_home_private_history_empty'),
+        header: Text(strings.privateHistory),
+        headerKey: const Key('sanmill_home_private_history_group'),
+        cardKey: const Key('sanmill_home_private_history_card'),
+        children: <Widget>[
+          ListTile(
+            leading: const Icon(Icons.lock_outline_rounded),
+            title: Text(strings.noPrivateGames),
+            subtitle: Text(strings.privateHistoryDescription),
+          ),
+        ],
+      );
+    }
+    final MaterialLocalizations localizations = MaterialLocalizations.of(
+      context,
+    );
+    return _MoreSection(
+      title: strings.privateHistory,
+      headerKey: const Key('sanmill_home_private_history_group'),
+      onHeaderTap: onShowAll,
+      children: <Widget>[
+        for (final PrivateGameRecord record in records.take(5))
+          _GamePreviewTile(
+            key: Key('sanmill_home_private_game_${record.id}'),
+            boardLayout: record.finalBoardLayout,
+            fallbackIcon: Icons.history_rounded,
+            title: '${record.white} – ${record.black}',
+            subtitle:
+                '${localizations.formatShortDate(record.completedAt.toLocal())} · ${record.result}',
+            detail: strings.reviewGame,
+            onTap: () => onReview(record),
+            onReview: () => onReview(record),
+            hasDiagonalLines: record.rules.hasDiagonalLines,
+          ),
+      ],
+    );
+  }
+}
+
+class _HomeTrainingSection extends StatelessWidget {
+  const _HomeTrainingSection({required this.onAppRouteSelected});
+
+  final ValueChanged<String> onAppRouteSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+    return LichessListSection(
+      key: const Key('sanmill_home_training_section'),
+      header: Text(strings.dailyTraining),
+      headerKey: const Key('sanmill_home_training_group'),
+      cardKey: const Key('sanmill_home_training_card'),
+      children: <Widget>[
+        _MoreTile(
+          key: const Key('sanmill_home_daily_puzzle'),
+          icon: Icons.extension_rounded,
+          title: strings.puzzles,
+          onTap: () => onAppRouteSelected(MillRouteIds.puzzles.value),
+        ),
+        _MoreTile(
+          key: const Key('sanmill_home_coordinate_training'),
+          icon: Icons.location_searching_rounded,
+          title: strings.coordinateTraining,
+          onTap: () =>
+              onAppRouteSelected(ShellRouteIds.appCoordinateTraining.value),
+        ),
+      ],
+    );
+  }
+}
+
 class _HomeGamesOverview extends StatelessWidget {
   const _HomeGamesOverview({
     required this.currentPlayRouteId,
@@ -1336,10 +1559,9 @@ class _HomeGamesOverview extends StatelessWidget {
     required this.hasOpenedCurrentPlaySession,
     required this.tabInteraction,
     required this.onContinueGame,
-    required this.onPlayRouteSelected,
-    required this.onAppRouteSelected,
     required this.onShowAll,
     required this.onSavedGameSelected,
+    required this.onReviewSavedGame,
   });
 
   final String currentPlayRouteId;
@@ -1350,10 +1572,9 @@ class _HomeGamesOverview extends StatelessWidget {
   final bool hasOpenedCurrentPlaySession;
   final Listenable tabInteraction;
   final VoidCallback onContinueGame;
-  final ValueChanged<String> onPlayRouteSelected;
-  final ValueChanged<String> onAppRouteSelected;
   final VoidCallback onShowAll;
   final ValueChanged<String> onSavedGameSelected;
+  final ValueChanged<SavedGameSummary> onReviewSavedGame;
 
   @override
   Widget build(BuildContext context) {
@@ -1393,12 +1614,7 @@ class _HomeGamesOverview extends StatelessWidget {
                 if (activeGame == null &&
                     ongoingGames.isEmpty &&
                     recentGames.isEmpty) {
-                  return _HomeEmptyContent(
-                    playModes: playModes,
-                    onShowAll: onShowAll,
-                    onPlayRouteSelected: onPlayRouteSelected,
-                    onAppRouteSelected: onAppRouteSelected,
-                  );
+                  return _HomeEmptyContent(onShowAll: onShowAll);
                 }
 
                 final bool useCarousel = !useWideLayout;
@@ -1423,6 +1639,7 @@ class _HomeGamesOverview extends StatelessWidget {
                   fallbackIcon: Icons.history_rounded,
                   onShowAll: onShowAll,
                   onSavedGameSelected: onSavedGameSelected,
+                  onReviewSavedGame: onReviewSavedGame,
                   detailForGame: _SavedGamePreviewSection.players,
                 );
 
@@ -1499,28 +1716,13 @@ class _HomeGamesLoadingSection extends StatelessWidget {
 }
 
 class _HomeEmptyContent extends StatelessWidget {
-  const _HomeEmptyContent({
-    required this.playModes,
-    required this.onShowAll,
-    required this.onPlayRouteSelected,
-    required this.onAppRouteSelected,
-  });
+  const _HomeEmptyContent({required this.onShowAll});
 
-  final List<GameModeEntry> playModes;
   final VoidCallback onShowAll;
-  final ValueChanged<String> onPlayRouteSelected;
-  final ValueChanged<String> onAppRouteSelected;
 
   @override
   Widget build(BuildContext context) {
     final S strings = S.of(context);
-    final GameModeEntry? playComputerMode = _modeById(
-      MillRouteIds.humanVsAi.value,
-    );
-    final GameModeEntry? offlineBoardMode = _modeById(
-      MillRouteIds.humanVsHuman.value,
-    );
-
     return Column(
       key: const Key('sanmill_home_empty_start'),
       mainAxisSize: MainAxisSize.min,
@@ -1553,51 +1755,8 @@ class _HomeEmptyContent extends StatelessWidget {
             ),
           ],
         ),
-        LichessListSection(
-          key: const Key('sanmill_home_quick_start_section'),
-          header: Text(strings.quickStart),
-          headerKey: const Key('sanmill_home_quick_start_group'),
-          cardKey: const Key('sanmill_home_quick_start_card'),
-          children: <Widget>[
-            if (playComputerMode != null)
-              _MoreTile(
-                key: const Key('sanmill_home_quick_start_play_computer'),
-                icon: playComputerMode.icon ?? Icons.sports_esports_rounded,
-                title: playComputerMode.label,
-                onTap: () => onPlayRouteSelected(playComputerMode.id.value),
-              ),
-            if (offlineBoardMode != null)
-              _MoreTile(
-                key: const Key('sanmill_home_quick_start_over_the_board'),
-                icon: offlineBoardMode.icon ?? Icons.table_bar_rounded,
-                title: offlineBoardMode.label,
-                onTap: () => onPlayRouteSelected(offlineBoardMode.id.value),
-              ),
-            _MoreTile(
-              key: const Key('sanmill_home_quick_start_variants'),
-              icon: Icons.rule_rounded,
-              title: strings.variants,
-              onTap: () => onAppRouteSelected(ShellRouteIds.appVariants.value),
-            ),
-            _MoreTile(
-              key: const Key('sanmill_home_quick_start_how_to_play'),
-              icon: Icons.help_outline_rounded,
-              title: strings.howToPlay,
-              onTap: () => onAppRouteSelected(ShellRouteIds.appHowToPlay.value),
-            ),
-          ],
-        ),
       ],
     );
-  }
-
-  GameModeEntry? _modeById(String routeId) {
-    for (final GameModeEntry mode in playModes) {
-      if (mode.id.value == routeId) {
-        return mode;
-      }
-    }
-    return null;
   }
 }
 
@@ -1779,6 +1938,7 @@ class _SavedGamePreviewSection extends StatelessWidget {
     required this.onShowAll,
     required this.onSavedGameSelected,
     required this.detailForGame,
+    this.onReviewSavedGame,
   }) : assert(limit > 0, 'Recent games section limit must be positive.');
 
   final String title;
@@ -1791,6 +1951,7 @@ class _SavedGamePreviewSection extends StatelessWidget {
   final IconData fallbackIcon;
   final VoidCallback onShowAll;
   final ValueChanged<String> onSavedGameSelected;
+  final ValueChanged<SavedGameSummary>? onReviewSavedGame;
   final _SavedGameDetailBuilder detailForGame;
 
   @override
@@ -1822,6 +1983,9 @@ class _SavedGamePreviewSection extends StatelessWidget {
               subtitle: subtitleForGame(localizations, strings, game),
               detail: detailForGame(game),
               onTap: () => onSavedGameSelected(game.path),
+              onReview: onReviewSavedGame == null
+                  ? null
+                  : () => onReviewSavedGame!(game),
             ),
         ],
       );
@@ -1841,6 +2005,9 @@ class _SavedGamePreviewSection extends StatelessWidget {
             subtitle: subtitleForGame(localizations, strings, game),
             detail: detailForGame(game),
             onTap: () => onSavedGameSelected(game.path),
+            onReview: onReviewSavedGame == null
+                ? null
+                : () => onReviewSavedGame!(game),
           ),
       ],
     );
@@ -2038,6 +2205,7 @@ class _GamePreviewCarouselCard extends StatelessWidget {
     required this.subtitle,
     required this.onTap,
     this.detail,
+    this.onReview,
   });
 
   final String? boardLayout;
@@ -2046,6 +2214,7 @@ class _GamePreviewCarouselCard extends StatelessWidget {
   final String subtitle;
   final String? detail;
   final VoidCallback onTap;
+  final VoidCallback? onReview;
 
   @override
   Widget build(BuildContext context) {
@@ -2121,6 +2290,16 @@ class _GamePreviewCarouselCard extends StatelessWidget {
                 ],
               ),
             ),
+            if (onReview != null)
+              PositionedDirectional(
+                top: 8,
+                end: 8,
+                child: IconButton.filledTonal(
+                  tooltip: S.of(context).reviewGame,
+                  onPressed: onReview,
+                  icon: const Icon(Icons.analytics_outlined),
+                ),
+              ),
           ],
         ),
       ),
@@ -2137,6 +2316,8 @@ class _GamePreviewTile extends StatelessWidget {
     required this.subtitle,
     required this.onTap,
     this.detail,
+    this.onReview,
+    this.hasDiagonalLines,
   });
 
   final String? boardLayout;
@@ -2145,6 +2326,8 @@ class _GamePreviewTile extends StatelessWidget {
   final String subtitle;
   final String? detail;
   final VoidCallback onTap;
+  final VoidCallback? onReview;
+  final bool? hasDiagonalLines;
 
   @override
   Widget build(BuildContext context) {
@@ -2155,7 +2338,11 @@ class _GamePreviewTile extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         child: Row(
           children: <Widget>[
-            _BoardPreview(layout: boardLayout, fallbackIcon: fallbackIcon),
+            _BoardPreview(
+              layout: boardLayout,
+              fallbackIcon: fallbackIcon,
+              hasDiagonalLines: hasDiagonalLines,
+            ),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -2198,10 +2385,17 @@ class _GamePreviewTile extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 8),
-            Icon(
-              Icons.chevron_right_rounded,
-              color: colorScheme.onSurfaceVariant,
-            ),
+            if (onReview == null)
+              Icon(
+                Icons.chevron_right_rounded,
+                color: colorScheme.onSurfaceVariant,
+              )
+            else
+              IconButton(
+                tooltip: S.of(context).reviewGame,
+                onPressed: onReview,
+                icon: const Icon(Icons.analytics_outlined),
+              ),
           ],
         ),
       ),
@@ -2210,10 +2404,15 @@ class _GamePreviewTile extends StatelessWidget {
 }
 
 class _BoardPreview extends StatelessWidget {
-  const _BoardPreview({required this.layout, required this.fallbackIcon});
+  const _BoardPreview({
+    required this.layout,
+    required this.fallbackIcon,
+    this.hasDiagonalLines,
+  });
 
   final String? layout;
   final IconData fallbackIcon;
+  final bool? hasDiagonalLines;
 
   @override
   Widget build(BuildContext context) {
@@ -2221,7 +2420,11 @@ class _BoardPreview extends StatelessWidget {
       dimension: 92,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(AppStyles.compactRadius),
-        child: _BoardPreviewSurface(layout: layout, fallbackIcon: fallbackIcon),
+        child: _BoardPreviewSurface(
+          layout: layout,
+          fallbackIcon: fallbackIcon,
+          hasDiagonalLines: hasDiagonalLines,
+        ),
       ),
     );
   }
@@ -2231,10 +2434,12 @@ class _BoardPreviewSurface extends StatelessWidget {
   const _BoardPreviewSurface({
     required this.layout,
     required this.fallbackIcon,
+    this.hasDiagonalLines,
   });
 
   final String? layout;
   final IconData fallbackIcon;
+  final bool? hasDiagonalLines;
 
   @override
   Widget build(BuildContext context) {
@@ -2251,7 +2456,10 @@ class _BoardPreviewSurface extends StatelessWidget {
         fit: BoxFit.cover,
         child: SizedBox.square(
           dimension: 320,
-          child: MiniBoard(boardLayout: boardLayout),
+          child: MiniBoard(
+            boardLayout: boardLayout,
+            hasDiagonalLines: hasDiagonalLines,
+          ),
         ),
       ),
     );
@@ -2354,10 +2562,7 @@ class _PlayBottomSheet extends StatelessWidget {
   }
 
   static bool _isQuickStartMode(GameModeEntry mode) {
-    final String id = mode.id.value.toLowerCase();
-    return id.contains('humanvsai') ||
-        id.contains('humanvshuman') ||
-        id.contains('humanvslan');
+    return mode.supports(GameModeCapability.quickStart);
   }
 }
 

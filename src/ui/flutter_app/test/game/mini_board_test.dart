@@ -5,8 +5,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/game_page/services/mill.dart' show PieceColor;
+import 'package:sanmill/game_page/services/import_export/pgn.dart';
+import 'package:sanmill/game_page/services/mill.dart' show ExtMove, PieceColor;
 import 'package:sanmill/game_page/widgets/mini_board.dart';
+import 'package:sanmill/games/mill/mill_board_coordinate_maps.dart';
 import 'package:sanmill/shared/database/database.dart';
 
 import '../helpers/locale_helper.dart';
@@ -52,5 +54,64 @@ void main() {
 
     expect(painter.boardState[0], PieceColor.white);
     expect(painter.boardState[23], PieceColor.black);
+  });
+
+  test('quality badge anchors to the initiating piece or removed point', () {
+    expect(
+      MiniBoardPainter.badgeAnchorSquareForMove('b4'),
+      MillBoardCoordinateMaps.notationToLegacySquare('b4'),
+    );
+    expect(
+      MiniBoardPainter.badgeAnchorSquareForMove('a7-b6'),
+      MillBoardCoordinateMaps.notationToLegacySquare('b6'),
+    );
+    expect(
+      MiniBoardPainter.badgeAnchorSquareForMove('xb2'),
+      MillBoardCoordinateMaps.notationToLegacySquare('b2'),
+    );
+  });
+
+  testWidgets('replay reads an imported NAG and anchors a capture chain', (
+    WidgetTester tester,
+  ) async {
+    final PgnNode<ExtMove> initiating = PgnNode<ExtMove>(
+      ExtMove('a7-b6', side: PieceColor.white),
+    );
+    final PgnNode<ExtMove> removal = PgnNode<ExtMove>(
+      ExtMove('xb2', side: PieceColor.white, nags: <int>[5]),
+    )..parent = initiating;
+    initiating.children.add(removal);
+
+    await tester.pumpWidget(
+      makeTestableWidget(
+        Center(
+          child: SizedBox.square(
+            dimension: 120,
+            child: MiniBoard(
+              boardLayout: 'O*******/********/@*******',
+              extMove: removal.data,
+              node: removal,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    final CustomPaint customPaint = tester.widget<CustomPaint>(
+      find.descendant(
+        of: find.byType(MiniBoard),
+        matching: find.byType(CustomPaint),
+      ),
+    );
+    final MiniBoardPainter painter = customPaint.painter! as MiniBoardPainter;
+    expect(painter.qualityNag, 5);
+    expect(painter.badgeAnchorMove, 'a7-b6');
+
+    final Finder qualitySemantics = find.byWidgetPredicate(
+      (Widget widget) =>
+          widget is Semantics &&
+          (widget.properties.label ?? '').contains('!? Interesting'),
+    );
+    expect(qualitySemantics, findsOneWidget);
   });
 }

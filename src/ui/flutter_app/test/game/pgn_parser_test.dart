@@ -96,6 +96,51 @@ void main() {
       expect(mainline[1].nags, contains(2));
     });
 
+    test('round-trips all symbolic and numeric quality NAGs on full turns', () {
+      const String pgn =
+          '1. a7xa1! b6xb2? 2. d6xd1!! f6xf2?? '
+          '3. a4xa1!? b4xb2?! *';
+      final PgnGame<PgnNodeData> game = PgnGame.parsePgn(pgn);
+      final List<PgnNodeData> moves = game.moves.mainline().toList();
+
+      expect(moves.map((PgnNodeData move) => move.nags!.single), <int>[
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+      ]);
+
+      final String exported = game.makePgn();
+      expect(exported, contains('a7xa1!'));
+      expect(exported, contains('b6xb2?'));
+      expect(exported, contains('d6xd1!!'));
+      expect(exported, contains('f6xf2??'));
+      expect(exported, contains('a4xa1!?'));
+      expect(exported, contains('b4xb2?!'));
+      expect(
+        PgnGame.parsePgn(
+          exported,
+        ).moves.mainline().map((PgnNodeData move) => move.nags!.single),
+        <int>[1, 2, 3, 4, 5, 6],
+      );
+    });
+
+    test('normalizes numeric quality NAGs to conventional symbols', () {
+      final PgnGame<PgnNodeData> game = PgnGame.parsePgn(
+        r'1. a7 $1 b6 $2 2. d6 $3 f6 $4 3. a4 $5 b4 $6 *',
+      );
+      final String exported = game.makePgn();
+
+      expect(exported, contains('a7!'));
+      expect(exported, contains('b6?'));
+      expect(exported, contains('d6!!'));
+      expect(exported, contains('f6??'));
+      expect(exported, contains('a4!?'));
+      expect(exported, contains('b4?!'));
+    });
+
     test('should parse move notation like "a1-a4"', () {
       final PgnGame<PgnNodeData> game = PgnGame.parsePgn('1. d6 f4 2. d6-d5 *');
 

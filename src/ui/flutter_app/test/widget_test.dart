@@ -320,19 +320,23 @@ void main() {
         findsOneWidget,
       );
       expect(
-        find.byKey(const Key('sanmill_home_quick_start_play_computer')),
+        find.byKey(const Key('sanmill_home_quick_start_localAi')),
         findsOneWidget,
       );
       expect(
-        find.byKey(const Key('sanmill_home_quick_start_over_the_board')),
+        find.byKey(const Key('sanmill_home_quick_start_localTable')),
         findsOneWidget,
       );
       expect(
-        find.byKey(const Key('sanmill_home_quick_start_variants')),
+        find.byKey(const Key('sanmill_home_quick_start_lan')),
         findsOneWidget,
       );
       expect(
-        find.byKey(const Key('sanmill_home_quick_start_how_to_play')),
+        find.byKey(const Key('sanmill_home_today_progress_group')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_private_history_group')),
         findsOneWidget,
       );
       expect(
@@ -345,6 +349,15 @@ void main() {
       );
       expect(
         find.byKey(const Key('sanmill_home_empty_recent_games')),
+        findsOneWidget,
+      );
+      await tester.drag(
+        find.byKey(const Key('sanmill_home_list')),
+        const Offset(0, -800),
+      );
+      await tester.pump();
+      expect(
+        find.byKey(const Key('sanmill_home_training_group')),
         findsOneWidget,
       );
 

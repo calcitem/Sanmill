@@ -121,6 +121,12 @@ class Database {
   /// Getter for puzzle analytics box (for DailyPuzzleService, PuzzleStreakPage, etc.)
   Box<dynamic> get puzzleAnalyticsBox => _puzzleAnalyticsBox;
 
+  /// Local-only private game history and review-report cache.
+  static late final Box<dynamic> _reviewDataBox;
+  static const String _reviewDataBoxName = 'reviewData';
+
+  Box<dynamic> get reviewDataBox => _reviewDataBox;
+
   // Voice assistant functionality disabled
   // /// [VoiceAssistantSettings] Box reference
   // static late final Box<VoiceAssistantSettings> _voiceAssistantSettingsBox;
@@ -144,6 +150,7 @@ class Database {
     await _initStatsSettings();
     await _initPuzzleSettings();
     await _initPuzzleAnalytics();
+    await _initReviewData();
     // Voice assistant functionality disabled
     // await _initVoiceAssistantSettings();
 
@@ -172,6 +179,7 @@ class Database {
     await _statsSettingsBox.delete(statsSettingsKey);
     await _puzzleSettingsBox.delete(puzzleSettingsKey);
     await _puzzleAnalyticsBox.delete(puzzleAttemptHistoryKey);
+    await _reviewDataBox.clear();
     // Voice assistant functionality disabled
     // await _voiceAssistantSettingsBox.delete(voiceAssistantSettingsKey);
   }
@@ -512,6 +520,10 @@ class Database {
   /// Initializes the puzzle analytics box.
   static Future<void> _initPuzzleAnalytics() async {
     _puzzleAnalyticsBox = await Hive.openBox<dynamic>(_puzzleAnalyticsBoxName);
+  }
+
+  static Future<void> _initReviewData() async {
+    _reviewDataBox = await Hive.openBox<dynamic>(_reviewDataBoxName);
   }
 
   /// Raw attempt history for puzzles.

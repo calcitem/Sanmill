@@ -52,6 +52,7 @@ class _GameBoardState extends State<GameBoard>
 
   // Flag to prevent duplicate dialog display in AI vs AI mode
   bool _isDialogShowing = false;
+  String? _archivedRecordId;
 
   // Track if app is in background to handle lifecycle changes
   bool _isAppInBackground = false;
@@ -676,6 +677,19 @@ class _GameBoardState extends State<GameBoard>
     }
 
     GameController().headerIconsNotifier.showIcons();
+
+    final bool shouldArchive =
+        winner != PieceColor.nobody &&
+        gameMode != GameMode.setupPosition &&
+        gameMode != GameMode.analysis &&
+        gameMode != GameMode.puzzle;
+    if (shouldArchive) {
+      final PrivateGameRecord record = ReviewRecordFactory.fromCurrentGame();
+      if (_archivedRecordId != record.id) {
+        _archivedRecordId = record.id;
+        unawaited(ReviewStorage.instance.saveGame(record));
+      }
+    }
 
     if (GameController().shouldAutoRestartAfterGameOver()) {
       WidgetsBinding.instance.addPostFrameCallback((_) {

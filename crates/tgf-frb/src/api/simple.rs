@@ -12,7 +12,7 @@
 // so this file no longer carries Mill-specific search/codec details.
 
 use crate::frb_generated::StreamSink;
-use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules};
+use tgf_core::{Action, ActionList, BoardTopology, Game, GameRules, SEARCH_ACTION_CAPACITY};
 use tgf_mill::{
     CaptureRuleConfig as NativeCaptureRuleConfig, MillActionKind,
     MillBoardFullAction as NativeMillBoardFullAction,
@@ -938,6 +938,12 @@ pub fn tgf_kernel_player_info(handle: u32) -> Result<PlayerInfoBlob, String> {
 // ---------------------------------------------------------------------------
 // Native Rust Mill rules smoke APIs.
 // ---------------------------------------------------------------------------
+
+/// Shared legal-root-action capacity used by the monomorphised search path.
+#[flutter_rust_bridge::frb(sync)]
+pub fn native_mill_search_action_capacity() -> u32 {
+    SEARCH_ACTION_CAPACITY as u32
+}
 
 /// Number of legal actions from a fresh Rust-native Mill initial position.
 /// This should match the mature C++ engine at depth 1: 24 placing moves.

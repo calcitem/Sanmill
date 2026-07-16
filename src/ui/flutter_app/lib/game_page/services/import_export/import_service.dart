@@ -249,16 +249,10 @@ class ImportService {
 
     result = GameController().gameRecorder.gameResultPgn;
 
-    String variantTag;
-    if (DB().ruleSettings.isLikelyNineMensMorris()) {
-      variantTag = '[Variant "Nine Men\'s Morris"]\r\n';
-    } else if (DB().ruleSettings.isLikelyTwelveMensMorris()) {
-      variantTag = '[Variant "Twelve Men\'s Morris"]\r\n';
-    } else if (DB().ruleSettings.isLikelyElFilja()) {
-      variantTag = '[Variant "El Filja"]\r\n';
-    } else {
-      variantTag = '';
-    }
+    final RuleSettings activeRules =
+        GameController().ruleSettingsForActiveBoard;
+    final String variantTag =
+        '[Variant "${RuleVariant.pgnNameFor(activeRules)}"]\r\n';
 
     final String plyCountTag =
         '[PlyCount "${GameController().gameRecorder.mainlineMoves.length}"]\r\n';
@@ -412,9 +406,9 @@ class ImportService {
   /// the active session (created from `DB().ruleSettings` by
   /// `MillGameModule.startSession`); a default-constructed port would
   /// reject legal moves from variants such as Twelve Men's Morris.
-  static NativeMillRulesPort _newValidationPort() {
+  static NativeMillRulesPort _newValidationPort({RuleSettings? ruleSettings}) {
     return NativeMillRulesPort(
-      ruleSettings: DB().ruleSettings,
+      ruleSettings: ruleSettings ?? DB().ruleSettings,
       generalSettings: DB().generalSettings,
     );
   }
@@ -508,8 +502,11 @@ class ImportService {
   static void fillAllNodesBoardLayout(
     PgnNode<ExtMove> root, {
     String? setupFen,
+    RuleSettings? ruleSettings,
   }) {
-    final NativeMillRulesPort port = _newValidationPort();
+    final NativeMillRulesPort port = _newValidationPort(
+      ruleSettings: ruleSettings,
+    );
     try {
       if (setupFen != null && setupFen.isNotEmpty) {
         port.setFromFen(setupFen);
@@ -581,7 +578,12 @@ class ImportService {
     // Retrieve FEN from headers if present
     final String? fen = game.headers['FEN'];
 
-    final NativeMillRulesPort localPort = _newValidationPort();
+    final RuleSettings recordRules =
+        RuleVariant.canonicalSettingsFromPgn(game.headers['Variant']) ??
+        DB().ruleSettings;
+    final NativeMillRulesPort localPort = _newValidationPort(
+      ruleSettings: recordRules,
+    );
     try {
       // Set up the board position using FEN if available; an invalid FEN
       // surfaces as an exception and aborts the import before any global
@@ -593,6 +595,7 @@ class ImportService {
       final GameRecorder newHistory = GameRecorder(
         lastPositionWithRemove: fen ?? GameController().activeFen,
         setupPosition: fen,
+        recordedRuleSettings: recordRules,
         rootComments: game.comments,
       );
 
@@ -606,10 +609,14 @@ class ImportService {
         );
       }
 
-      fillAllNodesBoardLayout(newHistory.pgnRoot, setupFen: fen);
+      fillAllNodesBoardLayout(
+        newHistory.pgnRoot,
+        setupFen: fen,
+        ruleSettings: recordRules,
+      );
 
       // The parse succeeded; only now touch controller / session state.
-      _loadActiveNativeSessionFromFenIfNeeded(fen);
+      _loadActiveNativeSessionForRecord(recordRules, fen);
       GameController().newGameRecorder = newHistory;
 
       if (fen != null && fen.isNotEmpty) {
@@ -754,10 +761,10 @@ class ImportService {
     }
   }
 
-  static void _loadActiveNativeSessionFromFenIfNeeded(String? fen) {
-    if (fen == null || fen.isEmpty) {
-      return;
-    }
+  static void _loadActiveNativeSessionForRecord(
+    RuleSettings rules,
+    String? fen,
+  ) {
     // Resolve the session through the controller binding (the single source of
     // truth) rather than a scoped context: imports are frequently triggered
     // from modal routes whose BuildContext sits above the GameSessionScope, so
@@ -765,8 +772,11 @@ class ImportService {
     final NativeMillGameSession? session =
         GameController().activeNativeMillSession;
     if (session != null) {
-      final bool loaded = session.loadFen(fen);
-      assert(loaded, 'Native import FEN must be validated before loading.');
+      session.resetGame(rules: rules, generalSettings: DB().generalSettings);
+      if (fen != null && fen.isNotEmpty) {
+        final bool loaded = session.loadFen(fen);
+        assert(loaded, 'Native import FEN must be validated before loading.');
+      }
     }
   }
 

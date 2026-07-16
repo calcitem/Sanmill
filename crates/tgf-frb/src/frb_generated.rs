@@ -38,7 +38,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -1633182090;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1999531277;
 
 // Section: executor
 
@@ -797,6 +797,36 @@ fn wire__crate__api__simple__native_mill_removal_below_three_winner_impl(
                 let output_ok = Result::<_, ()>::Ok(
                     crate::api::simple::native_mill_removal_below_three_winner(),
                 )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__simple__native_mill_search_action_capacity_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "native_mill_search_action_capacity",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let output_ok =
+                    Result::<_, ()>::Ok(crate::api::simple::native_mill_search_action_capacity())?;
                 Ok(output_ok)
             })())
         },
@@ -2750,19 +2780,19 @@ fn pde_ffi_dispatcher_primary_impl(
             rust_vec_len,
             data_len,
         ),
-        26 => wire__crate__api__simple__native_mill_search_events_impl(
+        27 => wire__crate__api__simple__native_mill_search_events_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        48 => wire__crate__api__mill_kernel__tgf_kernel_mill_search_events_impl(
+        49 => wire__crate__api__mill_kernel__tgf_kernel_mill_search_events_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        49 => wire__crate__api__mill_kernel__tgf_kernel_mill_search_events_with_config_impl(
+        50 => wire__crate__api__mill_kernel__tgf_kernel_mill_search_events_with_config_impl(
             port,
             ptr,
             rust_vec_len,
@@ -2841,102 +2871,107 @@ fn pde_ffi_dispatcher_sync_impl(
             rust_vec_len,
             data_len,
         ),
-        25 => wire__crate__api__simple__native_mill_search_depth_one_best_to_node_impl(
+        25 => wire__crate__api__simple__native_mill_search_action_capacity_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        27 => wire__crate__api__simple__native_mill_search_stop_impl(ptr, rust_vec_len, data_len),
-        28 => wire__crate__api__simple__native_mill_search_zero_time_limit_aborts_impl(
+        26 => wire__crate__api__simple__native_mill_search_depth_one_best_to_node_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        29 => wire__crate__api__simple__native_mill_topology_impl(ptr, rust_vec_len, data_len),
-        30 => wire__crate__api__simple__native_othello_initial_legal_count_impl(
+        28 => wire__crate__api__simple__native_mill_search_stop_impl(ptr, rust_vec_len, data_len),
+        29 => wire__crate__api__simple__native_mill_search_zero_time_limit_aborts_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        31 => wire__crate__api__simple__native_othello_search_depth_one_best_to_node_impl(
+        30 => wire__crate__api__simple__native_mill_topology_impl(ptr, rust_vec_len, data_len),
+        31 => wire__crate__api__simple__native_othello_initial_legal_count_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        32 => wire__crate__api__simple__tgf_hello_world_impl(ptr, rust_vec_len, data_len),
-        33 => wire__crate__api__kernel__tgf_kernel_apply_impl(ptr, rust_vec_len, data_len),
-        34 => {
+        32 => wire__crate__api__simple__native_othello_search_depth_one_best_to_node_impl(
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        33 => wire__crate__api__simple__tgf_hello_world_impl(ptr, rust_vec_len, data_len),
+        34 => wire__crate__api__kernel__tgf_kernel_apply_impl(ptr, rust_vec_len, data_len),
+        35 => {
             wire__crate__api__kernel__tgf_kernel_apply_unchecked_impl(ptr, rust_vec_len, data_len)
         }
-        35 => wire__crate__api__kernel__tgf_kernel_create_impl(ptr, rust_vec_len, data_len),
-        36 => {
+        36 => wire__crate__api__kernel__tgf_kernel_create_impl(ptr, rust_vec_len, data_len),
+        37 => {
             wire__crate__api__mill_kernel__tgf_kernel_create_mill_impl(ptr, rust_vec_len, data_len)
         }
-        37 => wire__crate__api__kernel__tgf_kernel_dispose_impl(ptr, rust_vec_len, data_len),
-        38 => {
+        38 => wire__crate__api__kernel__tgf_kernel_dispose_impl(ptr, rust_vec_len, data_len),
+        39 => {
             wire__crate__api__mill_kernel__tgf_kernel_export_fen_impl(ptr, rust_vec_len, data_len)
         }
-        39 => wire__crate__api__kernel__tgf_kernel_game_id_impl(ptr, rust_vec_len, data_len),
-        40 => wire__crate__api__kernel__tgf_kernel_is_terminal_impl(ptr, rust_vec_len, data_len),
-        41 => wire__crate__api__kernel__tgf_kernel_legal_actions_impl(ptr, rust_vec_len, data_len),
-        42 => wire__crate__api__mill_kernel__tgf_kernel_mill_patch_correct_action_impl(
+        40 => wire__crate__api__kernel__tgf_kernel_game_id_impl(ptr, rust_vec_len, data_len),
+        41 => wire__crate__api__kernel__tgf_kernel_is_terminal_impl(ptr, rust_vec_len, data_len),
+        42 => wire__crate__api__kernel__tgf_kernel_legal_actions_impl(ptr, rust_vec_len, data_len),
+        43 => wire__crate__api__mill_kernel__tgf_kernel_mill_patch_correct_action_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        43 => wire__crate__api__mill_kernel__tgf_kernel_mill_patch_make_traps_action_impl(
+        44 => wire__crate__api__mill_kernel__tgf_kernel_mill_patch_make_traps_action_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        44 => wire__crate__api__mill_kernel__tgf_kernel_mill_patch_trap_aware_best_action_impl(
+        45 => wire__crate__api__mill_kernel__tgf_kernel_mill_patch_trap_aware_best_action_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        45 => wire__crate__api__mill_kernel__tgf_kernel_mill_patch_trap_score_after_impl(
+        46 => wire__crate__api__mill_kernel__tgf_kernel_mill_patch_trap_score_after_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        46 => wire__crate__api__mill_kernel__tgf_kernel_mill_perfect_db_analyze_impl(
+        47 => wire__crate__api__mill_kernel__tgf_kernel_mill_perfect_db_analyze_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        47 => wire__crate__api__mill_kernel__tgf_kernel_mill_perfect_db_best_action_impl(
+        48 => wire__crate__api__mill_kernel__tgf_kernel_mill_perfect_db_best_action_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        50 => wire__crate__api__kernel__tgf_kernel_outcome_impl(ptr, rust_vec_len, data_len),
-        51 => wire__crate__api__simple__tgf_kernel_player_info_impl(ptr, rust_vec_len, data_len),
-        52 => wire__crate__api__kernel__tgf_kernel_redo_impl(ptr, rust_vec_len, data_len),
-        53 => wire__crate__api__kernel__tgf_kernel_redo_depth_impl(ptr, rust_vec_len, data_len),
-        54 => {
+        51 => wire__crate__api__kernel__tgf_kernel_outcome_impl(ptr, rust_vec_len, data_len),
+        52 => wire__crate__api__simple__tgf_kernel_player_info_impl(ptr, rust_vec_len, data_len),
+        53 => wire__crate__api__kernel__tgf_kernel_redo_impl(ptr, rust_vec_len, data_len),
+        54 => wire__crate__api__kernel__tgf_kernel_redo_depth_impl(ptr, rust_vec_len, data_len),
+        55 => {
             wire__crate__api__mill_kernel__tgf_kernel_set_from_fen_impl(ptr, rust_vec_len, data_len)
         }
-        55 => {
+        56 => {
             wire__crate__api__mill_kernel__tgf_kernel_setup_clear_impl(ptr, rust_vec_len, data_len)
         }
-        56 => {
+        57 => {
             wire__crate__api__mill_kernel__tgf_kernel_setup_finish_impl(ptr, rust_vec_len, data_len)
         }
-        57 => wire__crate__api__mill_kernel__tgf_kernel_setup_set_piece_impl(
+        58 => wire__crate__api__mill_kernel__tgf_kernel_setup_set_piece_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        58 => wire__crate__api__mill_kernel__tgf_kernel_setup_set_side_impl(
+        59 => wire__crate__api__mill_kernel__tgf_kernel_setup_set_side_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        59 => wire__crate__api__kernel__tgf_kernel_snapshot_impl(ptr, rust_vec_len, data_len),
-        60 => wire__crate__api__simple__tgf_kernel_topology_impl(ptr, rust_vec_len, data_len),
-        61 => wire__crate__api__kernel__tgf_kernel_undo_impl(ptr, rust_vec_len, data_len),
-        62 => wire__crate__api__kernel__tgf_kernel_undo_depth_impl(ptr, rust_vec_len, data_len),
-        63 => wire__crate__api__simple__tgf_version_impl(ptr, rust_vec_len, data_len),
+        60 => wire__crate__api__kernel__tgf_kernel_snapshot_impl(ptr, rust_vec_len, data_len),
+        61 => wire__crate__api__simple__tgf_kernel_topology_impl(ptr, rust_vec_len, data_len),
+        62 => wire__crate__api__kernel__tgf_kernel_undo_impl(ptr, rust_vec_len, data_len),
+        63 => wire__crate__api__kernel__tgf_kernel_undo_depth_impl(ptr, rust_vec_len, data_len),
+        64 => wire__crate__api__simple__tgf_version_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }

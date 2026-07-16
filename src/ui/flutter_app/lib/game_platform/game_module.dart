@@ -49,6 +49,7 @@ abstract class GameModule {
     GameModeEntry(
       id: GameRouteId(metadata.id.value),
       label: metadata.shortLabel,
+      launchTarget: GameModeLaunchTarget.moduleDefault,
       builder: (BuildContext context, {Key? key, GameSession? session}) =>
           buildGameSurface(context, key: key, session: session),
     ),

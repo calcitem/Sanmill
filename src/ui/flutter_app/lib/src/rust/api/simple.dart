@@ -116,6 +116,10 @@ TopologyBlob tgfKernelTopology({required int handle}) =>
 PlayerInfoBlob tgfKernelPlayerInfo({required int handle}) =>
     RustLib.instance.api.crateApiSimpleTgfKernelPlayerInfo(handle: handle);
 
+/// Shared legal-root-action capacity used by the monomorphised search path.
+int nativeMillSearchActionCapacity() =>
+    RustLib.instance.api.crateApiSimpleNativeMillSearchActionCapacity();
+
 /// Number of legal actions from a fresh Rust-native Mill initial position.
 /// This should match the mature C++ engine at depth 1: 24 placing moves.
 int nativeMillInitialLegalCount() =>

@@ -6,6 +6,7 @@ import 'dart:ui' as ui;
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
+import '../../games/mill/mill_board_coordinate_maps.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../services/import_export/pgn.dart';
@@ -22,6 +23,10 @@ class MiniBoard extends StatefulWidget {
     this.extMove,
     this.node,
     this.onNavigateMove,
+    this.qualityNag,
+    this.qualityLabel,
+    this.badgeAnchorMove,
+    this.hasDiagonalLines,
   });
 
   final String boardLayout;
@@ -32,6 +37,10 @@ class MiniBoard extends StatefulWidget {
 
   /// Optional callback invoked after navigating the move.
   final VoidCallback? onNavigateMove;
+  final int? qualityNag;
+  final String? qualityLabel;
+  final String? badgeAnchorMove;
+  final bool? hasDiagonalLines;
 
   @override
   MiniBoardState createState() => MiniBoardState();
@@ -131,7 +140,10 @@ class MiniBoardState extends State<MiniBoard>
 
   @override
   Widget build(BuildContext context) {
-    final String boardLabel = _boardLabel(context);
+    final int? qualityNag = _effectiveQualityNag;
+    final String? qualityLabel =
+        widget.qualityLabel ?? _qualityLabel(context, qualityNag);
+    final String boardLabel = _boardLabel(context, qualityLabel);
     final ExtMove? move = widget.extMove;
 
     return Tooltip(
@@ -162,6 +174,10 @@ class MiniBoardState extends State<MiniBoard>
                       painter: MiniBoardPainter(
                         boardLayout: widget.boardLayout,
                         extMove: widget.extMove,
+                        qualityNag: qualityNag,
+                        badgeAnchorMove:
+                            widget.badgeAnchorMove ?? _inferredBadgeAnchorMove,
+                        hasDiagonalLines: widget.hasDiagonalLines,
                       ),
                       child: const SizedBox.expand(),
                     ),
@@ -194,18 +210,82 @@ class MiniBoardState extends State<MiniBoard>
     );
   }
 
-  String _boardLabel(BuildContext context) {
+  int? get _effectiveQualityNag {
+    final int? configuredQualityNag = widget.qualityNag;
+    if (configuredQualityNag != null) {
+      return configuredQualityNag;
+    }
+    for (final int nag in widget.extMove?.getAllNags() ?? const <int>[]) {
+      if (nag >= 1 && nag <= 6) {
+        return nag;
+      }
+    }
+    return null;
+  }
+
+  String? get _inferredBadgeAnchorMove {
+    final ExtMove? move = widget.extMove;
+    if (move == null) {
+      return null;
+    }
+    if (move.type == MoveType.remove) {
+      PgnNode<ExtMove>? ancestor = widget.node?.parent;
+      while (ancestor != null) {
+        final ExtMove? previous = ancestor.data;
+        if (previous == null) {
+          break;
+        }
+        if (previous.side != move.side) {
+          break;
+        }
+        if (previous.type == MoveType.place || previous.type == MoveType.move) {
+          return previous.move;
+        }
+        if (previous.type != MoveType.remove) {
+          break;
+        }
+        ancestor = ancestor.parent;
+      }
+    }
+    return move.move;
+  }
+
+  String? _qualityLabel(BuildContext context, int? nag) {
+    if (nag == null) {
+      return null;
+    }
+    final S strings = S.of(context);
+    final String description = switch (nag) {
+      1 => strings.reviewGradeGood,
+      2 => strings.reviewGradeMistake,
+      3 => strings.reviewGradeBrilliant,
+      4 => strings.reviewGradeBlunder,
+      5 => strings.reviewGradeInteresting,
+      6 => strings.reviewGradeDubious,
+      _ => '',
+    };
+    final String symbol = MiniBoardPainter.qualityNagSymbol(nag);
+    return description.isEmpty ? symbol : '$symbol $description';
+  }
+
+  String _boardLabel(BuildContext context, String? qualityLabel) {
     final S strings = S.of(context);
     final ExtMove? move = widget.extMove;
     if (move == null) {
-      return strings.board;
+      return qualityLabel == null || qualityLabel.isEmpty
+          ? strings.board
+          : '${strings.board}, $qualityLabel';
     }
 
     assert(
       move.notation.isNotEmpty,
       'MiniBoard move previews require display notation.',
     );
-    return '${strings.board}: ${strings.move} ${move.notation}';
+    final String moveLabel =
+        '${strings.board}: ${strings.move} ${move.notation}';
+    return qualityLabel == null || qualityLabel.isEmpty
+        ? moveLabel
+        : '$moveLabel, $qualityLabel';
   }
 }
 
@@ -215,7 +295,13 @@ class MiniBoardState extends State<MiniBoard>
 /// - Highlight arrow from origin to destination if moving
 /// - Highlight X on removed piece if removing
 class MiniBoardPainter extends CustomPainter {
-  MiniBoardPainter({required this.boardLayout, this.extMove}) {
+  MiniBoardPainter({
+    required this.boardLayout,
+    this.extMove,
+    this.qualityNag,
+    this.badgeAnchorMove,
+    this.hasDiagonalLines,
+  }) {
     boardState = _parseBoardLayout(boardLayout);
   }
 
@@ -223,6 +309,9 @@ class MiniBoardPainter extends CustomPainter {
 
   /// The optional last move to highlight.
   final ExtMove? extMove;
+  final int? qualityNag;
+  final String? badgeAnchorMove;
+  final bool? hasDiagonalLines;
 
   /// Holds the parsed board layout (24 squares).
   late final List<PieceColor> boardState;
@@ -344,7 +433,7 @@ class MiniBoardPainter extends CustomPainter {
     _drawLine(canvas, middlePoints[7], innerPoints[7], boardPaint);
 
     // Possibly draw diagonals if the rule setting is enabled.
-    if (DB().ruleSettings.hasDiagonalLines) {
+    if (hasDiagonalLines ?? DB().ruleSettings.hasDiagonalLines) {
       canvas.drawLine(outerPoints[0], innerPoints[0], boardPaint);
       canvas.drawLine(outerPoints[2], innerPoints[2], boardPaint);
       canvas.drawLine(outerPoints[4], innerPoints[4], boardPaint);
@@ -456,7 +545,90 @@ class MiniBoardPainter extends CustomPainter {
       outerPoints,
       pieceRadius,
     );
+    _drawQualityBadge(
+      canvas,
+      innerPoints,
+      middlePoints,
+      outerPoints,
+      pieceRadius,
+    );
   }
+
+  void _drawQualityBadge(
+    Canvas canvas,
+    List<Offset> innerPoints,
+    List<Offset> middlePoints,
+    List<Offset> outerPoints,
+    double pieceRadius,
+  ) {
+    final int? nag = qualityNag;
+    final String? move = badgeAnchorMove;
+    if (nag == null || move == null || move.isEmpty) {
+      return;
+    }
+    final Offset? anchor = _convertSquareToOffset(
+      badgeAnchorSquareForMove(move),
+      innerPoints,
+      middlePoints,
+      outerPoints,
+    );
+    if (anchor == null) {
+      return;
+    }
+    final String symbol = qualityNagSymbol(nag);
+    if (symbol.isEmpty) {
+      return;
+    }
+    final Color color = switch (nag) {
+      1 => const Color(0xFF2E7D32),
+      3 => const Color(0xFF00838F),
+      5 => const Color(0xFF1565C0),
+      6 => const Color(0xFFF9A825),
+      2 => const Color(0xFFEF6C00),
+      4 => const Color(0xFFC62828),
+      _ => Colors.grey,
+    };
+    final double radius = math.max(8, pieceRadius * 0.78);
+    final Offset center =
+        anchor + Offset(pieceRadius * 0.72, -pieceRadius * 0.72);
+    canvas.drawCircle(center, radius, Paint()..color = color);
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(
+        text: symbol,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: radius * 1.05,
+          fontWeight: FontWeight.w800,
+          height: 1,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout();
+    textPainter.paint(
+      canvas,
+      center - Offset(textPainter.width / 2, textPainter.height / 2),
+    );
+  }
+
+  static int badgeAnchorSquareForMove(String move) {
+    String notation = move.trim().toLowerCase();
+    if (notation.startsWith('x')) {
+      notation = notation.substring(1);
+    } else if (notation.contains('-')) {
+      notation = notation.split('-').last;
+    }
+    return MillBoardCoordinateMaps.notationToLegacySquare(notation);
+  }
+
+  static String qualityNagSymbol(int nag) => switch (nag) {
+    1 => '!',
+    2 => '?',
+    3 => '!!',
+    4 => '??',
+    5 => '!?',
+    6 => '?!',
+    _ => '',
+  };
 
   /// Draws highlights according to the last move (if any).
   /// - Placing => (now we remove the old large circle for place)
@@ -753,6 +925,9 @@ class MiniBoardPainter extends CustomPainter {
   bool shouldRepaint(covariant MiniBoardPainter oldDelegate) {
     // Repaint if the boardLayout or last move changes
     return oldDelegate.boardLayout != boardLayout ||
-        oldDelegate.extMove?.move != extMove?.move;
+        oldDelegate.extMove?.move != extMove?.move ||
+        oldDelegate.qualityNag != qualityNag ||
+        oldDelegate.badgeAnchorMove != badgeAnchorMove ||
+        oldDelegate.hasDiagonalLines != hasDiagonalLines;
   }
 }

@@ -209,7 +209,9 @@ class LoadService {
       return null;
     }
 
-    final String pgnContents = ImportService.addTagPairs(moveHistoryText);
+    final String originalPgn = ImportService.addTagPairs(moveHistoryText);
+    final String pgnContents =
+        ExportService.reviewedPgnForExport(originalPgn) ?? originalPgn;
     final String? filename = await getFilePath(context, contents: pgnContents);
 
     if (filename == null) {

@@ -344,6 +344,13 @@ class MillGameModule extends GameModule {
       GameModeEntry(
         id: MillRouteIds.humanVsAi,
         label: s.playAgainstComputer,
+        launchTarget: GameModeLaunchTarget.localAi,
+        capabilities: const <GameModeCapability>{
+          GameModeCapability.quickStart,
+          GameModeCapability.aiOpponent,
+          GameModeCapability.reviewable,
+          GameModeCapability.resumable,
+        },
         icon: Icons.memory_rounded,
         menuKey: const Key('drawer_item_human_vs_ai'),
         contentKey: const Key('human_ai'),
@@ -354,6 +361,13 @@ class MillGameModule extends GameModule {
       GameModeEntry(
         id: MillRouteIds.humanVsHuman,
         label: s.offlineBoard,
+        launchTarget: GameModeLaunchTarget.localTable,
+        capabilities: const <GameModeCapability>{
+          GameModeCapability.quickStart,
+          GameModeCapability.localMultiplayer,
+          GameModeCapability.reviewable,
+          GameModeCapability.resumable,
+        },
         icon: Icons.table_restaurant_outlined,
         menuKey: const Key('drawer_item_human_vs_human'),
         contentKey: const Key('human_human'),
@@ -363,6 +377,11 @@ class MillGameModule extends GameModule {
       GameModeEntry(
         id: MillRouteIds.aiVsAi,
         label: s.aiVsAi,
+        launchTarget: GameModeLaunchTarget.localSimulation,
+        capabilities: const <GameModeCapability>{
+          GameModeCapability.automatedPlay,
+          GameModeCapability.reviewable,
+        },
         icon: FluentIcons.bot_24_regular,
         menuKey: const Key('drawer_item_ai_vs_ai'),
         contentKey: const Key('ai_ai'),
@@ -373,6 +392,12 @@ class MillGameModule extends GameModule {
       GameModeEntry(
         id: MillRouteIds.humanVsLan,
         label: s.humanVsLAN,
+        launchTarget: GameModeLaunchTarget.lan,
+        capabilities: const <GameModeCapability>{
+          GameModeCapability.quickStart,
+          GameModeCapability.remoteMultiplayer,
+          GameModeCapability.reviewable,
+        },
         icon: FluentIcons.wifi_1_24_regular,
         menuKey: const Key('drawer_item_human_vs_lan'),
         contentKey: const Key('human_lan'),
@@ -383,6 +408,12 @@ class MillGameModule extends GameModule {
       GameModeEntry(
         id: MillRouteIds.humanVsBluetooth,
         label: s.humanVsBluetooth,
+        launchTarget: GameModeLaunchTarget.bluetooth,
+        availability: GameModeAvailability.experimental,
+        capabilities: const <GameModeCapability>{
+          GameModeCapability.remoteMultiplayer,
+          GameModeCapability.reviewable,
+        },
         icon: FluentIcons.bluetooth_24_regular,
         menuKey: const Key('drawer_item_human_vs_bluetooth'),
         contentKey: const Key('human_bluetooth'),
@@ -394,6 +425,7 @@ class MillGameModule extends GameModule {
       GameModeEntry(
         id: MillRouteIds.setupPosition,
         label: s.boardEditor,
+        launchTarget: GameModeLaunchTarget.localSetup,
         section: GameMenuSection.tools,
         icon: FluentIcons.edit_24_regular,
         menuKey: const Key('drawer_item_setup_position'),

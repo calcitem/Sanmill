@@ -86,6 +86,22 @@ class GameResultAlertDialog extends StatelessWidget {
         gameMode == GameMode.humanVsAi;
 
     final List<Widget> actions;
+    final Widget reviewButton = TextButton.icon(
+      key: const Key('game_result_alert_dialog_review_button'),
+      icon: const Icon(Icons.analytics_outlined),
+      label: Text(S.of(context).reviewGame),
+      onPressed: () async {
+        final NavigatorState navigator = Navigator.of(context);
+        final PrivateGameRecord record = ReviewRecordFactory.fromCurrentGame();
+        await ReviewStorage.instance.saveGame(record);
+        navigator.pop();
+        await navigator.push<void>(
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => ReviewPage(record: record),
+          ),
+        );
+      },
+    );
     if (canChallenge) {
       content.writeln();
       content.writeln();
@@ -94,6 +110,7 @@ class GameResultAlertDialog extends StatelessWidget {
       );
 
       actions = <Widget>[
+        reviewButton,
         TextButton(
           key: const Key('game_result_alert_dialog_yes_button'),
           child: Text(
@@ -161,6 +178,7 @@ class GameResultAlertDialog extends StatelessWidget {
       ];
     } else {
       actions = <Widget>[
+        reviewButton,
         TextButton(
           key: const Key('game_result_alert_dialog_restart_button'),
           child: Text(
@@ -284,6 +302,23 @@ class GameResultAlertDialog extends StatelessWidget {
         ),
       ),
       actions: <Widget>[
+        TextButton.icon(
+          key: const Key('ai_vs_ai_game_result_dialog_review_button'),
+          icon: const Icon(Icons.analytics_outlined),
+          label: Text(S.of(context).reviewGame),
+          onPressed: () async {
+            final NavigatorState navigator = Navigator.of(context);
+            final PrivateGameRecord record =
+                ReviewRecordFactory.fromCurrentGame();
+            await ReviewStorage.instance.saveGame(record);
+            navigator.pop();
+            await navigator.push<void>(
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => ReviewPage(record: record),
+              ),
+            );
+          },
+        ),
         TextButton(
           key: const Key('ai_vs_ai_game_result_dialog_restart_button'),
           child: Text(

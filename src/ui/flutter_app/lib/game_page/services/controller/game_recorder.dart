@@ -22,6 +22,7 @@ class GameRecorder {
   GameRecorder({
     this.lastPositionWithRemove,
     this.setupPosition,
+    this.recordedRuleSettings,
     List<String> rootComments = const <String>[],
   }) : rootComments = List<String>.of(rootComments) {
     activeNode = _pgnRoot;
@@ -32,6 +33,11 @@ class GameRecorder {
 
   /// Custom setup position. If not null, it will be used instead of current FEN.
   String? setupPosition;
+
+  /// Exact rules carried by an imported or private-history record.
+  ///
+  /// This is record-scoped and never writes the user's global rule preference.
+  final RuleSettings? recordedRuleSettings;
 
   /// Comments attached to the PGN root before the first move.
   final List<String> rootComments;

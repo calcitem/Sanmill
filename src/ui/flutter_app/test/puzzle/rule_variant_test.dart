@@ -199,6 +199,39 @@ void main() {
         );
       }
     });
+
+    test(
+      'every canonical preset round-trips through PGN name and stable ID',
+      () {
+        for (final MapEntry<String, RuleSettings> entry
+            in RuleVariant.canonicalSettings.entries) {
+          final String name = RuleVariant.pgnNameFor(entry.value);
+          expect(RuleVariant.exactCanonicalIdFor(entry.value), entry.key);
+          expect(
+            RuleVariant.canonicalSettingsFromPgn(name)?.toJson(),
+            entry.value.toJson(),
+          );
+          expect(
+            RuleVariant.canonicalSettingsFromPgn(entry.key)?.toJson(),
+            entry.value.toJson(),
+          );
+        }
+      },
+    );
+
+    test(
+      'one changed field is Custom even when fuzzy detection is standard',
+      () {
+        const RuleSettings custom = RuleSettings(nMoveRule: 99);
+
+        expect(RuleVariant.fromRuleSettings(custom).id, 'standard_9mm');
+        expect(RuleVariant.exactCanonicalIdFor(custom), isNull);
+        expect(RuleVariant.pgnNameFor(custom), 'Custom');
+        expect(RuleVariant.canonicalSettingsFromPgn('Custom'), isNull);
+        expect(RuleVariant.canonicalSettingsFromPgn('future_variant'), isNull);
+        expect(RuleVariant.canonicalSettingsFromPgn(null), isNull);
+      },
+    );
   });
 
   // ---------------------------------------------------------------------------
