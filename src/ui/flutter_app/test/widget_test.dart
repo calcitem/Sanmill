@@ -3050,6 +3050,37 @@ void main() {
   );
 
   testWidgets(
+    'PuzzleCreationPage help markers use the primary foreground',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.darkThemeData,
+          themeMode: ThemeMode.dark,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: const PuzzleCreationPage(),
+        ),
+      );
+      await tester.pump();
+
+      final BuildContext pageContext = tester.element(
+        find.byKey(const Key('puzzle_creation_page_scaffold')),
+      );
+      await tester.tap(
+        find.byTooltip(S.of(pageContext).puzzleShowSolutionRecordingHelp),
+      );
+      await tester.pumpAndSettle();
+
+      final Text firstMarker = tester.widget<Text>(find.text('1'));
+      expect(
+        firstMarker.style?.color,
+        Theme.of(pageContext).colorScheme.onPrimary,
+      );
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'PuzzleCreationPage snapshot status uses its container foreground',
     (WidgetTester tester) async {
       final PuzzleInfo puzzle = PuzzleInfo(

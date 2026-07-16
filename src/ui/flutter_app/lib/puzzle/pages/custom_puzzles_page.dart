@@ -1007,8 +1007,8 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
           child: Center(
             child: Text(
               number,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
               ),

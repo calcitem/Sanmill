@@ -823,18 +823,22 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
               ),
               const SizedBox(height: 12),
               _buildInstructionStep(
+                dialogContext,
                 '1',
                 S.of(dialogContext).puzzleSolutionStep1,
               ),
               _buildInstructionStep(
+                dialogContext,
                 '2',
                 S.of(dialogContext).puzzleSolutionStep2,
               ),
               _buildInstructionStep(
+                dialogContext,
                 '3',
                 S.of(dialogContext).puzzleRecordingHintUseButton,
               ),
               _buildInstructionStep(
+                dialogContext,
                 '4',
                 S.of(dialogContext).puzzleSolutionStep4,
               ),
@@ -1530,7 +1534,12 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     );
   }
 
-  Widget _buildInstructionStep(String number, String text) {
+  Widget _buildInstructionStep(
+    BuildContext context,
+    String number,
+    String text,
+  ) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(top: 4),
       child: Row(
@@ -1539,15 +1548,15 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
           Container(
             width: 20,
             height: 20,
-            decoration: const BoxDecoration(
-              color: Colors.blue,
+            decoration: BoxDecoration(
+              color: colorScheme.primary,
               shape: BoxShape.circle,
             ),
             child: Center(
               child: Text(
                 number,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: colorScheme.onPrimary,
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
                 ),
