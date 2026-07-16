@@ -238,9 +238,9 @@
             }
         }
     },
-    "winRate": "Win Rate",
+    "winRate": "Win rate",
     "@winRate": {
-        "description": "Win Rate"
+        "description": "Percentage of games won"
     },
     "score": "Score:",
     "@score": {
@@ -254,9 +254,9 @@
     "@black": {
         "description": "Player 2"
     },
-    "loseReasonlessThanThree": "{player} piece count is less than three.",
+    "loseReasonlessThanThree": "{player} has fewer than three pieces.",
     "@loseReasonlessThanThree": {
-        "description": "Indicate that the player lost because they had less than three pieces left.",
+        "description": "Explains that the player lost because they had fewer than three pieces.",
         "placeholders": {
             "player": {
                 "description": "The player who lost",
@@ -274,9 +274,9 @@
             }
         }
     },
-    "loseReasonNoWay": "{player} has no way to go.",
+    "loseReasonNoWay": "{player} has no legal moves.",
     "@loseReasonNoWay": {
-        "description": "Indicate that the player has no way to go.",
+        "description": "Explains that the player lost because they had no legal moves.",
         "placeholders": {
             "player": {
                 "description": "The player who lost",
@@ -284,9 +284,9 @@
             }
         }
     },
-    "loseReasonBoardIsFull": "The board is full, and {player} has no way to go.",
+    "loseReasonBoardIsFull": "The board is full, leaving {player} with no legal moves.",
     "@loseReasonBoardIsFull": {
-        "description": "Indicate that the player has no way to go because the board is full.",
+        "description": "Explains that the player lost because a full board left them with no legal moves.",
         "placeholders": {
             "player": {
                 "description": "The player who lost",
@@ -294,9 +294,9 @@
             }
         }
     },
-    "loseReasonTimeOver": "Time is over, {player} lost.",
+    "loseReasonTimeOver": "{player} ran out of time.",
     "@loseReasonTimeOver": {
-        "description": "Time Over",
+        "description": "Explains that the player lost by running out of time.",
         "placeholders": {
             "player": {
                 "description": "The player who lost",
@@ -304,33 +304,33 @@
             }
         }
     },
-    "drawReasonRule50": "In the moving phase, no piece has been removed in the last specific number of moves.",
+    "drawReasonRule50": "No piece was removed within the configured move limit.",
     "@drawReasonRule50": {
-        "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+        "description": "Explains a draw caused by reaching the configured no-removal move limit."
     },
-    "drawReasonBoardIsFull": "It is a Draw because the board is full.",
+    "drawReasonBoardIsFull": "The game is a draw because the board is full.",
     "@drawReasonBoardIsFull": {
-        "description": "It is a Draw because the board is full"
+        "description": "Explains a draw caused by a full board."
     },
-    "drawReasonThreefoldRepetition": "It is a Draw because of threefold repetition.",
+    "drawReasonThreefoldRepetition": "The game is a draw by threefold repetition.",
     "@drawReasonThreefoldRepetition": {
-        "description": "It is a Draw because of threefold repetition."
+        "description": "Explains a draw caused by threefold repetition."
     },
-    "gameOverUnknownReason": "Game Over! Unknown reason.",
+    "gameOverUnknownReason": "Game over for an unknown reason.",
     "@gameOverUnknownReason": {
-        "description": "Game Over! Unknown reason."
+        "description": "Fallback explanation when the reason the game ended is unavailable."
     },
-    "gameOver": "Game Over",
+    "gameOver": "Game over",
     "@gameOver": {
-        "description": "Game Over"
+        "description": "Generic game result title"
     },
     "youWin": "You win! Congratulations!",
     "@youWin": {
         "description": "You win! Congratulations!"
     },
-    "challengeHarderLevel": "Challenge harder level? The new level will be level {level}!",
+    "challengeHarderLevel": "Try level {level} next?",
     "@challengeHarderLevel": {
-        "description": "Challenge harder level?",
+        "description": "Asks whether to play the next AI difficulty level.",
         "placeholders": {
             "level": {
                 "description": "The new level",
@@ -339,9 +339,9 @@
             }
         }
     },
-    "youLose": "You Lose!",
+    "youLose": "You lose!",
     "@youLose": {
-        "description": "You Lose!"
+        "description": "Message shown when the user loses"
     },
     "analyze": "Analyze",
     "@analyze": {
@@ -1219,9 +1219,9 @@
     "@screenReaderSupport": {
         "description": "Screen reader support"
     },
-    "isDraw": "It is a Draw!",
+    "isDraw": "Draw",
     "@isDraw": {
-        "description": "It is a Draw!"
+        "description": "Game result title for a draw"
     },
     "draw": "Draw",
     "@draw": {
@@ -1247,9 +1247,9 @@
     "@endgameNMoveRule_Detail": {
         "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
     },
-    "drawReasonEndgameRule50": "Either player has only three pieces, and neither player removes a piece within specific moves.",
+    "drawReasonEndgameRule50": "A player has only three pieces, and no piece was removed within the configured move limit.",
     "@drawReasonEndgameRule50": {
-        "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+        "description": "Explains a draw caused by the endgame no-removal move limit."
     },
     "threefoldRepetitionRule": "Threefold repetition rule",
     "@threefoldRepetitionRule": {
@@ -4886,8 +4886,10 @@
     "@decline": {},
     "opponentAcceptDrawPrompt": "Does the other player accept the draw?",
     "@opponentAcceptDrawPrompt": {},
-    "drawReasonAgreement": "It is a Draw by agreement.",
-    "@drawReasonAgreement": {},
+    "drawReasonAgreement": "The game is a draw by agreement.",
+    "@drawReasonAgreement": {
+        "description": "Explains a draw agreed by both players."
+    },
     "patchAvoidTraps": "Avoid known traps",
     "@patchAvoidTraps": {},
     "patchAvoidTraps_Detail": "Use the bundled trap library to correct an AI move (from search, the opening book, or the Human Database) when a known trap entry proves it would throw away a win or draw. This is coverage-based and cannot guarantee every trap is avoided.",
