@@ -54,6 +54,31 @@ void main() {
 
     expect(painter.boardState[0], PieceColor.white);
     expect(painter.boardState[23], PieceColor.black);
+    expect(painter.showCoordinates, isFalse);
+  });
+
+  testWidgets('coordinates are opt-in for analysis-sized boards', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      makeTestableWidget(
+        const SizedBox.square(
+          dimension: 240,
+          child: MiniBoard(
+            boardLayout: 'O*******/********/@*******',
+            showCoordinates: true,
+          ),
+        ),
+      ),
+    );
+
+    final CustomPaint customPaint = tester.widget<CustomPaint>(
+      find.descendant(
+        of: find.byType(MiniBoard),
+        matching: find.byType(CustomPaint),
+      ),
+    );
+    expect((customPaint.painter! as MiniBoardPainter).showCoordinates, isTrue);
   });
 
   test('quality badge anchors to the initiating piece or removed point', () {

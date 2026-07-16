@@ -27,6 +27,7 @@ class MiniBoard extends StatefulWidget {
     this.qualityLabel,
     this.badgeAnchorMove,
     this.hasDiagonalLines,
+    this.showCoordinates = false,
   });
 
   final String boardLayout;
@@ -41,6 +42,7 @@ class MiniBoard extends StatefulWidget {
   final String? qualityLabel;
   final String? badgeAnchorMove;
   final bool? hasDiagonalLines;
+  final bool showCoordinates;
 
   @override
   MiniBoardState createState() => MiniBoardState();
@@ -178,6 +180,7 @@ class MiniBoardState extends State<MiniBoard>
                         badgeAnchorMove:
                             widget.badgeAnchorMove ?? _inferredBadgeAnchorMove,
                         hasDiagonalLines: widget.hasDiagonalLines,
+                        showCoordinates: widget.showCoordinates,
                       ),
                       child: const SizedBox.expand(),
                     ),
@@ -272,9 +275,13 @@ class MiniBoardState extends State<MiniBoard>
     final S strings = S.of(context);
     final ExtMove? move = widget.extMove;
     if (move == null) {
-      return qualityLabel == null || qualityLabel.isEmpty
+      final String? anchorMove = widget.badgeAnchorMove;
+      final String positionLabel = anchorMove == null || anchorMove.isEmpty
           ? strings.board
-          : '${strings.board}, $qualityLabel';
+          : '${strings.board}: ${strings.move} $anchorMove';
+      return qualityLabel == null || qualityLabel.isEmpty
+          ? positionLabel
+          : '$positionLabel, $qualityLabel';
     }
 
     assert(
@@ -301,6 +308,7 @@ class MiniBoardPainter extends CustomPainter {
     this.qualityNag,
     this.badgeAnchorMove,
     this.hasDiagonalLines,
+    this.showCoordinates = false,
   }) {
     boardState = _parseBoardLayout(boardLayout);
   }
@@ -312,6 +320,7 @@ class MiniBoardPainter extends CustomPainter {
   final int? qualityNag;
   final String? badgeAnchorMove;
   final bool? hasDiagonalLines;
+  final bool showCoordinates;
 
   /// Holds the parsed board layout (24 squares).
   late final List<PieceColor> boardState;
@@ -373,7 +382,7 @@ class MiniBoardPainter extends CustomPainter {
     final double offsetY = (h - minSide) / 2;
 
     // Adjusted parameters for balanced spacing:
-    const double outerMarginFactor = 0.06;
+    final double outerMarginFactor = showCoordinates ? 0.10 : 0.06;
     const double ringSpacingFactor = 0.13;
 
     // Piece radius factor:
@@ -438,6 +447,10 @@ class MiniBoardPainter extends CustomPainter {
       canvas.drawLine(outerPoints[2], innerPoints[2], boardPaint);
       canvas.drawLine(outerPoints[4], innerPoints[4], boardPaint);
       canvas.drawLine(outerPoints[6], innerPoints[6], boardPaint);
+    }
+
+    if (showCoordinates) {
+      _drawCoordinates(canvas, offsetX, offsetY, minSide, outerMargin);
     }
 
     // Draw pieces:
@@ -607,6 +620,59 @@ class MiniBoardPainter extends CustomPainter {
     textPainter.paint(
       canvas,
       center - Offset(textPainter.width / 2, textPainter.height / 2),
+    );
+  }
+
+  void _drawCoordinates(
+    Canvas canvas,
+    double offsetX,
+    double offsetY,
+    double minSide,
+    double outerMargin,
+  ) {
+    final TextStyle style = TextStyle(
+      color: DB().colorSettings.boardLineColor.withValues(alpha: 0.78),
+      fontSize: math.max(9, minSide * 0.028),
+      fontWeight: FontWeight.w600,
+      height: 1,
+    );
+    final double boardSpan = minSide - outerMargin * 2;
+    for (int index = 0; index < 7; index++) {
+      final double fraction = index / 6;
+      _paintCenteredText(
+        canvas,
+        String.fromCharCode('a'.codeUnitAt(0) + index),
+        Offset(
+          offsetX + outerMargin + boardSpan * fraction,
+          offsetY + minSide - outerMargin * 0.32,
+        ),
+        style,
+      );
+      _paintCenteredText(
+        canvas,
+        '${7 - index}',
+        Offset(
+          offsetX + outerMargin * 0.32,
+          offsetY + outerMargin + boardSpan * fraction,
+        ),
+        style,
+      );
+    }
+  }
+
+  void _paintCenteredText(
+    Canvas canvas,
+    String text,
+    Offset center,
+    TextStyle style,
+  ) {
+    final TextPainter painter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      textDirection: TextDirection.ltr,
+    )..layout();
+    painter.paint(
+      canvas,
+      center - Offset(painter.width / 2, painter.height / 2),
     );
   }
 
@@ -928,6 +994,7 @@ class MiniBoardPainter extends CustomPainter {
         oldDelegate.extMove?.move != extMove?.move ||
         oldDelegate.qualityNag != qualityNag ||
         oldDelegate.badgeAnchorMove != badgeAnchorMove ||
-        oldDelegate.hasDiagonalLines != hasDiagonalLines;
+        oldDelegate.hasDiagonalLines != hasDiagonalLines ||
+        oldDelegate.showCoordinates != showCoordinates;
   }
 }

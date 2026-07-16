@@ -350,6 +350,7 @@ class _ReviewPageState extends State<ReviewPage> {
           qualityLabel: qualityLabel,
           badgeAnchorMove: selectedTurn?.anchorMove,
           hasDiagonalLines: widget.record.rules.hasDiagonalLines,
+          showCoordinates: true,
         ),
       ),
     );

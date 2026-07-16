@@ -8,6 +8,7 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
+import 'package:sanmill/game_page/widgets/mini_board.dart';
 import 'package:sanmill/review/models/review_models.dart';
 import 'package:sanmill/review/services/review_analysis_service.dart';
 import 'package:sanmill/review/widgets/review_page.dart';
@@ -73,8 +74,17 @@ void main() {
       final SemanticsNode board = tester.getSemantics(
         find.byKey(const Key('review_board')),
       );
+      expect(board.label, contains('a7'));
       expect(board.label, contains('?'));
       expect(board.label, contains('Mistake'));
+
+      final CustomPaint boardPaint = tester.widget<CustomPaint>(
+        find.descendant(
+          of: find.byKey(const Key('review_board')),
+          matching: find.byType(CustomPaint),
+        ),
+      );
+      expect((boardPaint.painter! as MiniBoardPainter).showCoordinates, isTrue);
 
       await tester.tap(find.byKey(const Key('review_next_turn')));
       await tester.pump();
