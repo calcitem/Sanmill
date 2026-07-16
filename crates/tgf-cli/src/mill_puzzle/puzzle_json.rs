@@ -246,7 +246,7 @@ fn select_theme(traits: &PuzzleTraits, line: &LineTraits) -> ThemeProse {
             headline: "resist the tempting mill",
             hint: "The capture that jumps out at you does not win. Look for the move that \
                    sets up an unstoppable threat instead.",
-            completion: "The tempting mill would have thrown the win away -- the quiet move \
+            completion: "The tempting mill would have thrown the win away — the quiet move \
                          was the only path.",
         };
     }
@@ -285,7 +285,7 @@ fn select_theme(traits: &PuzzleTraits, line: &LineTraits) -> ThemeProse {
             headline: "give up a piece to win",
             hint: "Letting the opponent capture is part of the plan. Count the resulting \
                    threats, not the material.",
-            completion: "The sacrifice bought a decisive attack -- material handed over, game \
+            completion: "The sacrifice bought a decisive attack — material handed over, game \
                          taken back.",
         };
     }
@@ -295,7 +295,7 @@ fn select_theme(traits: &PuzzleTraits, line: &LineTraits) -> ThemeProse {
             headline: "a quiet move wins",
             hint: "No capture starts this win. Improve a piece and the threats appear by \
                    themselves.",
-            completion: "The winning idea started with a quiet move -- the kind that is \
+            completion: "The winning idea started with a quiet move — the kind that is \
                          easiest to overlook over the board.",
         };
     }
@@ -655,6 +655,12 @@ mod tests {
         assert!(
             info.description
                 .contains("Only 1 of the 9 legal first moves")
+        );
+        assert!(
+            info.completion_message
+                .as_deref()
+                .expect("generated puzzles include completion prose")
+                .contains(" — ")
         );
         assert_eq!(info.category, "opening");
     }
