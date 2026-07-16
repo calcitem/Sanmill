@@ -1240,9 +1240,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                                           vertical: 2,
                                         ),
                                         decoration: BoxDecoration(
-                                          color: Colors.green.withValues(
-                                            alpha: 0.3,
-                                          ),
+                                          color: colorScheme.primaryContainer,
                                           borderRadius: BorderRadius.circular(
                                             4,
                                           ),
@@ -1251,7 +1249,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                                           '${_solutions[i].moves.length}',
                                           style: TextStyle(
                                             fontSize: 11,
-                                            color: Colors.green[200],
+                                            color:
+                                                colorScheme.onPrimaryContainer,
                                           ),
                                         ),
                                       ),

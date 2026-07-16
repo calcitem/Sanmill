@@ -3123,6 +3123,10 @@ void main() {
         tester.widget<Text>(recordedMoves).style?.color,
         Theme.of(pageContext).colorScheme.primary,
       );
+      expect(
+        tester.widget<Text>(find.text('1')).style?.color,
+        Theme.of(pageContext).colorScheme.onPrimaryContainer,
+      );
     },
     skip: nativeLibrarySkipReason() != null,
   );
