@@ -1342,7 +1342,7 @@
     "@noPiecesCanBeRemoved": {
         "description": "No pieces can be removed."
     },
-    "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} need to remove.",
+    "pieceCountNeedToRemove": "{count, plural, =0{No pieces to remove.} =1{Remove 1 piece.} other{Remove {count} pieces.}}",
     "@pieceCountNeedToRemove": {
         "description": "Pieces need to remove.",
         "placeholders": {
