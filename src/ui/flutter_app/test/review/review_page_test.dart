@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:mockito/mockito.dart';
@@ -160,6 +161,34 @@ void main() {
     expect(find.byKey(const Key('review_board')), findsOneWidget);
     expect(find.byKey(const Key('review_analysis_panel')), findsOneWidget);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('keyboard shortcuts navigate previous, next, first, and last', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(_reviewApp());
+    await tester.pump();
+
+    Text progress() =>
+        tester.widget<Text>(find.byKey(const Key('review_turn_progress')));
+
+    expect(progress().data, '1/2');
+
+    await tester.sendKeyEvent(LogicalKeyboardKey.arrowRight);
+    await tester.pump();
+    expect(progress().data, '2/2');
+
+    await tester.sendKeyEvent(LogicalKeyboardKey.arrowLeft);
+    await tester.pump();
+    expect(progress().data, '1/2');
+
+    await tester.sendKeyEvent(LogicalKeyboardKey.end);
+    await tester.pump();
+    expect(progress().data, '2/2');
+
+    await tester.sendKeyEvent(LogicalKeyboardKey.home);
+    await tester.pump();
+    expect(progress().data, '1/2');
   });
 
   testWidgets('quality annotation choices expose symbol and spoken label', (

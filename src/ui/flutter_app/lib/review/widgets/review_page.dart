@@ -199,61 +199,111 @@ class _ReviewPageState extends State<ReviewPage> {
           ],
         ],
       ),
-      body: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          final bool sideBySide =
-              constraints.maxWidth >= 720 ||
-              constraints.maxWidth > constraints.maxHeight;
-          final Widget board = _buildBoard(context);
-          final Widget navigation = _buildTurnNavigation(context);
-          final Widget panel = _buildPanel(
-            context,
-            useCollapsibleMoveList: !sideBySide,
-          );
-          if (sideBySide) {
-            return Row(
-              key: const Key('review_wide_layout'),
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Expanded(
-                  flex: 5,
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 620),
-                            child: board,
-                          ),
-                        ),
-                      ),
-                      navigation,
-                    ],
-                  ),
-                ),
-                const VerticalDivider(width: 1),
-                Expanded(flex: 4, child: panel),
-              ],
-            );
-          }
-          return ListView(
-            key: const Key('review_phone_layout'),
-            padding: const EdgeInsets.only(bottom: 24),
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxHeight: 560),
-                  child: board,
-                ),
-              ),
-              navigation,
-              panel,
-            ],
-          );
+      body: CallbackShortcuts(
+        bindings: <ShortcutActivator, VoidCallback>{
+          const SingleActivator(LogicalKeyboardKey.arrowLeft): () =>
+              _selectAdjacentTurn(-1),
+          const SingleActivator(LogicalKeyboardKey.arrowRight): () =>
+              _selectAdjacentTurn(1),
+          const SingleActivator(LogicalKeyboardKey.home): () =>
+              _selectBoundaryTurn(last: false),
+          const SingleActivator(LogicalKeyboardKey.end): () =>
+              _selectBoundaryTurn(last: true),
         },
+        child: Focus(
+          key: const Key('review_keyboard_shortcuts'),
+          autofocus: true,
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              final bool sideBySide =
+                  constraints.maxWidth >= 720 ||
+                  constraints.maxWidth > constraints.maxHeight;
+              final Widget board = _buildBoard(context);
+              final Widget navigation = _buildTurnNavigation(context);
+              final Widget panel = _buildPanel(
+                context,
+                useCollapsibleMoveList: !sideBySide,
+              );
+              if (sideBySide) {
+                return Row(
+                  key: const Key('review_wide_layout'),
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 5,
+                      child: Column(
+                        children: <Widget>[
+                          Expanded(
+                            child: Center(
+                              child: ConstrainedBox(
+                                constraints: const BoxConstraints(
+                                  maxWidth: 620,
+                                ),
+                                child: board,
+                              ),
+                            ),
+                          ),
+                          navigation,
+                        ],
+                      ),
+                    ),
+                    const VerticalDivider(width: 1),
+                    Expanded(flex: 4, child: panel),
+                  ],
+                );
+              }
+              return ListView(
+                key: const Key('review_phone_layout'),
+                padding: const EdgeInsets.only(bottom: 24),
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxHeight: 560),
+                      child: board,
+                    ),
+                  ),
+                  navigation,
+                  panel,
+                ],
+              );
+            },
+          ),
+        ),
       ),
     );
+  }
+
+  void _selectAdjacentTurn(int offset) {
+    assert(offset == -1 || offset == 1);
+    final ReviewReport? report = _report;
+    if (report == null || report.turns.isEmpty) {
+      return;
+    }
+    final int selectedIndex = report.turns.indexWhere(
+      (ReviewTurnBoundary turn) => turn.groupIndex == _selectedGroup,
+    );
+    final int currentIndex = selectedIndex < 0 ? 0 : selectedIndex;
+    final int targetIndex = (currentIndex + offset).clamp(
+      0,
+      report.turns.length - 1,
+    );
+    if (targetIndex == currentIndex) {
+      return;
+    }
+    setState(() => _selectedGroup = report.turns[targetIndex].groupIndex);
+  }
+
+  void _selectBoundaryTurn({required bool last}) {
+    final ReviewReport? report = _report;
+    if (report == null || report.turns.isEmpty) {
+      return;
+    }
+    final int targetIndex = last ? report.turns.length - 1 : 0;
+    if (_selectedGroup == report.turns[targetIndex].groupIndex) {
+      return;
+    }
+    setState(() => _selectedGroup = report.turns[targetIndex].groupIndex);
   }
 
   Widget _buildTurnNavigation(BuildContext context) {
