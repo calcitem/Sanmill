@@ -250,7 +250,11 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
     try {
       final Directory? recordsDir = await _recordsDirectory();
       if (recordsDir == null || !recordsDir.existsSync()) {
-        // No records directory found, silently return
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(S.of(context).savedGameFolderUnavailable)),
+          );
+        }
         return;
       }
 
@@ -262,7 +266,11 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
           .toList();
 
       if (pgnFiles.isEmpty) {
-        // No PGN files found, silently return
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(S.of(context).noSavedGamesToExport)),
+          );
+        }
         return;
       }
 
@@ -294,10 +302,13 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       await zipFile.writeAsBytes(zipBytes);
 
       // Share the zip file
+      if (!mounted) {
+        return;
+      }
       await SharePlus.instance.share(
         ShareParams(
           files: <XFile>[XFile(zipFile.path)],
-          text: 'Sanmill saved games',
+          text: S.of(context).savedGamesShareText,
         ),
       );
     } catch (e) {
@@ -551,7 +562,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       if (!zipFile.existsSync()) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(S.of(context).error('File not found'))),
+            SnackBar(content: Text(S.of(context).selectedArchiveNotFound)),
           );
         }
         return;
@@ -566,9 +577,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       if (recordsDir == null) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(S.of(context).error('Records directory not found')),
-            ),
+            SnackBar(content: Text(S.of(context).savedGameFolderUnavailable)),
           );
         }
         return;
@@ -594,7 +603,11 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(S.of(context).pgnFilesImported(importedCount)),
+            content: Text(
+              importedCount == 0
+                  ? S.of(context).noPgnFilesInArchive
+                  : S.of(context).pgnFilesImported(importedCount),
+            ),
           ),
         );
 

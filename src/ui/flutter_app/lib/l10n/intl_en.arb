@@ -5444,5 +5444,25 @@
                 "example": "game.pgn"
             }
         }
+    },
+    "savedGameFolderUnavailable": "The saved-game folder is unavailable.",
+    "@savedGameFolderUnavailable": {
+        "description": "Error shown when the app cannot access its saved-game directory"
+    },
+    "noSavedGamesToExport": "No saved games to export.",
+    "@noSavedGamesToExport": {
+        "description": "Feedback shown when exporting an archive with no saved PGN files"
+    },
+    "savedGamesShareText": "Sanmill saved games",
+    "@savedGamesShareText": {
+        "description": "Message attached when sharing an archive of saved games"
+    },
+    "selectedArchiveNotFound": "The selected archive could not be found.",
+    "@selectedArchiveNotFound": {
+        "description": "Error shown when a selected saved-game ZIP archive no longer exists"
+    },
+    "noPgnFilesInArchive": "No PGN files were found in the archive.",
+    "@noPgnFilesInArchive": {
+        "description": "Feedback shown when an imported ZIP archive contains no PGN files"
     }
 }
