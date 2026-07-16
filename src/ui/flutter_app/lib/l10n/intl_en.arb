@@ -1322,15 +1322,15 @@
     "@noMove": {
         "description": "No move."
     },
-    "restoredPosition": "Restored initial position.",
+    "restoredPosition": "Initial position restored.",
     "@restoredPosition": {
         "description": "Restored initial position."
     },
-    "clean": "Clean",
+    "clean": "Clear",
     "@clean": {
         "description": "Clean"
     },
-    "cleanedUp": "Cleaned up.",
+    "cleanedUp": "Position cleared.",
     "@cleanedUp": {
         "description": "Cleaned up."
     },
@@ -1338,7 +1338,7 @@
     "@remove": {
         "description": "Remove"
     },
-    "noPiecesCanBeRemoved": "No pieces can be removed.",
+    "noPiecesCanBeRemoved": "No removal required.",
     "@noPiecesCanBeRemoved": {
         "description": "No pieces can be removed."
     },
@@ -1364,7 +1364,7 @@
             }
         }
     },
-    "placedPieceCount": "Placed piece count in the placing phase.",
+    "placedPieceCount": "Number of pieces placed",
     "@placedPieceCount": {
         "description": "Placed piece count in the placing phase. Used in Semantics."
     },
@@ -1379,7 +1379,7 @@
             }
         }
     },
-    "notPlacingPhase": "Not placing phase, cannot change it.",
+    "notPlacingPhase": "The placed-piece count can be changed only during the placing phase.",
     "@notPlacingPhase": {
         "description": "Not placing phase, cannot change it."
     },
@@ -1387,11 +1387,11 @@
     "@paste": {
         "description": "Paste"
     },
-    "pasteDone": "The paste is done.",
+    "pasteDone": "Position pasted.",
     "@pasteDone": {
         "description": "The paste is done."
     },
-    "cannotPaste": "Cannot paste.",
+    "cannotPaste": "Could not paste the position.",
     "@cannotPaste": {
         "description": "Cannot paste."
     },
