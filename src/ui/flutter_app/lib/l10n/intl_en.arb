@@ -881,9 +881,9 @@
     "@pieceCount": {
         "description": "Piece count"
     },
-    "inHand": "{player} in hand: {count}",
+    "inHand": "{player}: {count, plural, =1{1 piece in hand} other{{count} pieces in hand}}",
     "@inHand": {
-        "description": "The pieces a player has in his hand.",
+        "description": "Number of unplaced pieces a player has in hand.",
         "placeholders": {
             "player": {
                 "description": "The specified player",
@@ -896,9 +896,9 @@
             }
         }
     },
-    "onBoard": "{player} on board: {count}",
+    "onBoard": "{player}: {count, plural, =1{1 piece on board} other{{count} pieces on board}}",
     "@onBoard": {
-        "description": "The pieces a player has on the board",
+        "description": "Number of pieces a player has on the board.",
         "placeholders": {
             "player": {
                 "description": "The specified player",
@@ -5352,6 +5352,20 @@
             "seconds": {
                 "type": "int",
                 "example": "42"
+            }
+        }
+    },
+    "piecesRemoved": "{player}: {count, plural, =1{1 piece removed} other{{count} pieces removed}}",
+    "@piecesRemoved": {
+        "description": "Accessible count of a player's pieces that have been removed",
+        "placeholders": {
+            "player": {
+                "type": "String",
+                "example": "Player 1"
+            },
+            "count": {
+                "type": "int",
+                "example": "2"
             }
         }
     }

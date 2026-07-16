@@ -2987,7 +2987,14 @@ class PlayAreaState extends State<PlayArea> {
     final int humanInHand = view.pieceInHandCountFor(humanColor);
     final int aiOnBoard = view.pieceOnBoardCountFor(aiColor);
     final int aiInHand = view.pieceInHandCountFor(aiColor);
+    final int aiRemoved =
+        GameController().ruleSettingsForActiveBoard.piecesCount -
+        aiInHand -
+        aiOnBoard;
     final String humanLabel = humanColor == PieceColor.white
+        ? S.of(context).player1
+        : S.of(context).player2;
+    final String aiLabel = aiColor == PieceColor.white
         ? S.of(context).player1
         : S.of(context).player2;
     return Row(
@@ -2996,6 +3003,7 @@ class PlayAreaState extends State<PlayArea> {
       children: <Widget>[
         Semantics(
           label: S.of(context).inHand(humanLabel, humanInHand),
+          excludeSemantics: true,
           child: Text(
             _getPiecesText(humanInHand),
             key: const Key('play_area_piece_count_text_hand'),
@@ -3012,13 +3020,10 @@ class PlayAreaState extends State<PlayArea> {
           ),
         ),
         Semantics(
-          label: S.of(context).welcome,
+          label: S.of(context).piecesRemoved(aiLabel, aiRemoved),
+          excludeSemantics: true,
           child: Text(
-            _getPiecesText(
-              GameController().ruleSettingsForActiveBoard.piecesCount -
-                  aiInHand -
-                  aiOnBoard,
-            ),
+            _getPiecesText(aiRemoved),
             key: const Key('play_area_piece_count_text_remaining'),
             style: TextStyle(
               color: _boardPieceColor(aiColor).withValues(alpha: 0.8),
@@ -3045,6 +3050,13 @@ class PlayAreaState extends State<PlayArea> {
     final int humanOnBoard = view.pieceOnBoardCountFor(humanColor);
     final int humanInHand = view.pieceInHandCountFor(humanColor);
     final int aiInHand = view.pieceInHandCountFor(aiColor);
+    final int humanRemoved =
+        GameController().ruleSettingsForActiveBoard.piecesCount -
+        humanInHand -
+        humanOnBoard;
+    final String humanLabel = humanColor == PieceColor.white
+        ? S.of(context).player1
+        : S.of(context).player2;
     final String aiLabel = aiColor == PieceColor.white
         ? S.of(context).player1
         : S.of(context).player2;
@@ -3053,13 +3065,10 @@ class PlayAreaState extends State<PlayArea> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Semantics(
-          label: S.of(context).welcome,
+          label: S.of(context).piecesRemoved(humanLabel, humanRemoved),
+          excludeSemantics: true,
           child: Text(
-            _getPiecesText(
-              GameController().ruleSettingsForActiveBoard.piecesCount -
-                  humanInHand -
-                  humanOnBoard,
-            ),
+            _getPiecesText(humanRemoved),
             key: const Key('play_area_removed_piece_count_text_remaining'),
             style: TextStyle(
               color: _boardPieceColor(humanColor).withValues(alpha: 0.8),
@@ -3075,6 +3084,7 @@ class PlayAreaState extends State<PlayArea> {
         ),
         Semantics(
           label: S.of(context).inHand(aiLabel, aiInHand),
+          excludeSemantics: true,
           child: Text(
             _getPiecesText(aiInHand),
             key: const Key('play_area_removed_piece_count_text_hand'),

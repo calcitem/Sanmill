@@ -1028,6 +1028,38 @@ void main() {
     expect(pieceCountRow, findsOneWidget);
     expect(removedPieceCountRow, findsOneWidget);
     expect(
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Semantics &&
+            widget.properties.label == 'Player 1: 0 pieces in hand',
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Semantics &&
+            widget.properties.label == 'Player 2: 0 pieces in hand',
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Semantics &&
+            widget.properties.label == 'Player 1: 9 pieces removed',
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Semantics &&
+            widget.properties.label == 'Player 2: 9 pieces removed',
+      ),
+      findsOneWidget,
+    );
+    expect(
       find.byKey(const Key('play_area_advantage_indicator')),
       findsOneWidget,
     );
