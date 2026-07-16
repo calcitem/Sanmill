@@ -508,7 +508,23 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     if (!mounted) {
       return;
     }
+    final String expectedSourcePath = File(path).absolute.path;
+    if (GameController().loadedGameSourcePath != expectedSourcePath) {
+      return;
+    }
     await _continueCurrentGame();
+    if (!mounted) {
+      return;
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      final GameController controller = GameController();
+      if (controller.claimLoadedAiTurnResume(expectedSourcePath)) {
+        unawaited(controller.engineToGo(context, isMoveNow: false));
+      }
+    });
   }
 
   Future<void> _openSavedGamesFromWatch() async {

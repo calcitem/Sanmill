@@ -560,6 +560,39 @@ class GameController {
   /// The shell uses this identity to replace the source card with the live
   /// preview instead of presenting the same game twice.
   String? loadedGameSourcePath;
+  String? _claimedLoadedAiTurnResumeKey;
+
+  /// Claims the current loaded AI turn exactly once for automatic resume.
+  ///
+  /// The claim is reset with the game session. Repeated widget rebuilds or
+  /// navigation callbacks for the same loaded position therefore cannot
+  /// launch concurrent searches.
+  bool claimLoadedAiTurnResume(String sourceIdentity) {
+    assert(sourceIdentity.isNotEmpty, 'Loaded-game identity cannot be empty.');
+    final GameStateSnapshot? snapshot = activeSessionSnapshot;
+    if (gameInstance.gameMode != GameMode.humanVsAi ||
+        snapshot == null ||
+        snapshot.outcome.isTerminal ||
+        isEngineRunning) {
+      return false;
+    }
+    final PieceColor? sideToMove = activeSessionSideToMove;
+    if (sideToMove == null || !gameInstance.getPlayerByColor(sideToMove).isAi) {
+      return false;
+    }
+    final String key = <Object?>[
+      sourceIdentity,
+      snapshot.phase,
+      snapshot.activeSeat.name,
+      gameRecorder.moveCountNotifier.value,
+      activeFen,
+    ].join('|');
+    if (_claimedLoadedAiTurnResumeKey == key) {
+      return false;
+    }
+    _claimedLoadedAiTurnResumeKey = key;
+    return true;
+  }
 
   AnimationManager? _animationManager;
 
@@ -1351,6 +1384,7 @@ class GameController {
     bool preserveLan = false,
   }) {
     loadedGameSourcePath = null;
+    _claimedLoadedAiTurnResumeKey = null;
     final GameMode gameModeBak = gameInstance.gameMode;
     String? fen = "";
     final bool isPosSetup = isPositionSetup;

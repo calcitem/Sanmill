@@ -206,6 +206,46 @@ void main() {
     db.displaySettings = const DisplaySettings();
     expect(controller.shouldAutoRestartAfterGameOver(), isFalse);
   });
+
+  test('loaded Human vs AI turns are claimed once for automatic resume', () {
+    final MockDB db = MockDB();
+    db.generalSettings = const GeneralSettings(aiMovesFirst: false);
+    DB.instance = db;
+    final GameController controller = GameController.instance;
+    addTearDown(() {
+      controller.activeSessionSnapshot = null;
+      controller.gameInstance.gameMode = GameMode.humanVsAi;
+      DB.instance = null;
+    });
+
+    controller.gameInstance.gameMode = GameMode.humanVsAi;
+    controller.activeSessionSnapshot = const platform.GameStateSnapshot(
+      gameId: GameId.mill,
+      activeSeat: platform.PlayerSeat.second,
+      outcome: platform.GameOutcome.ongoing(),
+      phase: 'placing',
+    );
+
+    expect(controller.claimLoadedAiTurnResume('/tmp/game.pgn'), isTrue);
+    expect(controller.claimLoadedAiTurnResume('/tmp/game.pgn'), isFalse);
+
+    controller.activeSessionSnapshot = const platform.GameStateSnapshot(
+      gameId: GameId.mill,
+      activeSeat: platform.PlayerSeat.first,
+      outcome: platform.GameOutcome.ongoing(),
+      phase: 'placing',
+    );
+    expect(controller.claimLoadedAiTurnResume('/tmp/game.pgn'), isFalse);
+
+    controller.gameInstance.gameMode = GameMode.humanVsHuman;
+    controller.activeSessionSnapshot = const platform.GameStateSnapshot(
+      gameId: GameId.mill,
+      activeSeat: platform.PlayerSeat.second,
+      outcome: platform.GameOutcome.ongoing(),
+      phase: 'placing',
+    );
+    expect(controller.claimLoadedAiTurnResume('/tmp/other.pgn'), isFalse);
+  });
 }
 
 class _SnapshotOnlyNativeMillRulesPort implements NativeMillRulesPort {
