@@ -221,13 +221,28 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     for (final SanmillShellTab tab in SanmillShellTab.values) {
       final _SanmillTabRouteObserver? observer = _routeObservers[tab];
       assert(observer != null, 'Missing route observer for $tab.');
-      observer!.onRoutePopped =
+      observer!.onRoutePushed = _scheduleNavigationStackRefresh;
+      observer.onRoutePopped =
           (Route<dynamic> route, Route<dynamic>? previousRoute) {
             _syncRouteAfterNavigatorPop(tab, route, previousRoute);
           };
     }
     GameRegistry.instance.addListener(_onRegistryChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) => _showPrivacyDialog());
+  }
+
+  void _scheduleNavigationStackRefresh() {
+    void refresh() {
+      if (mounted) {
+        setState(() {});
+      }
+    }
+
+    if (SchedulerBinding.instance.schedulerPhase == SchedulerPhase.idle) {
+      refresh();
+    } else {
+      SchedulerBinding.instance.addPostFrameCallback((_) => refresh());
+    }
   }
 
   @override
@@ -910,7 +925,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
 
   Widget _buildResponsiveShell(BuildContext context) {
     final S strings = S.of(context);
-    final bool showBottomNavigationBar = !_isImmersivePlayRoute(context);
+    final bool showBottomNavigationBar = _shouldShowBottomNavigation(context);
     final Widget content = DoubleBackToCloseApp(
       snackBar: CustomSnackBar(strings.tapBackAgainToLeave),
       willBack: _handleBack,
@@ -943,6 +958,14 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     );
 
     return content;
+  }
+
+  bool _shouldShowBottomNavigation(BuildContext context) {
+    if (_isImmersivePlayRoute(context)) {
+      return false;
+    }
+    final NavigatorState? navigator = _navigatorKeys[_currentTab]?.currentState;
+    return !(navigator?.canPop() ?? false);
   }
 
   bool _isImmersivePlayRoute(BuildContext context) {
@@ -1069,12 +1092,16 @@ class _SanmillTabRouteObserver extends NavigatorObserver {
 
   void Function(Route<dynamic> route, Route<dynamic>? previousRoute)?
   onRoutePopped;
+  VoidCallback? onRoutePushed;
 
   Route<dynamic>? get topRoute => _stack.isEmpty ? null : _stack.last;
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     _stack.add(route);
+    if (previousRoute != null) {
+      onRoutePushed?.call();
+    }
   }
 
   @override

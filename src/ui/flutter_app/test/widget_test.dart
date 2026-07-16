@@ -439,6 +439,23 @@ void main() {
         ),
       );
 
+      await tester.tap(find.byKey(const Key('drawer_item_clock')));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('clock_tool_page_scaffold')), findsOneWidget);
+      expect(
+        find.byKey(const Key('sanmill_bottom_navigation_bar')),
+        findsNothing,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('sanmill_bottom_navigation_bar')),
+        findsOneWidget,
+      );
+
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));
     },
