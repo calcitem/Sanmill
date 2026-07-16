@@ -760,11 +760,21 @@ class MovesListPageState extends State<MovesListPage> {
         final Color contrastBackground = bgColor.a == 1
             ? bgColor
             : Color.alphaBlend(bgColor, colorScheme.surface);
-        final Color textColor = readableForegroundColor(
-          preferred: DB().colorSettings.messageColor,
+        final Color preferredTextColor = DB().colorSettings.messageColor;
+        final Color dialogTextColor = readableForegroundColor(
+          preferred: preferredTextColor,
           background: contrastBackground,
         );
-        final Color borderColor = textColor.withValues(alpha: 0.3);
+        final Color promptBackgroundColor =
+            DB().colorSettings.darkBackgroundColor;
+        final Color promptContrastBackground = promptBackgroundColor.a == 1
+            ? promptBackgroundColor
+            : Color.alphaBlend(promptBackgroundColor, contrastBackground);
+        final Color promptTextColor = readableForegroundColor(
+          preferred: preferredTextColor,
+          background: promptContrastBackground,
+        );
+        final Color borderColor = promptTextColor.withValues(alpha: 0.3);
 
         // Local state for checkbox
         bool localUseCurrentLanguage = useCurrentLanguage;
@@ -834,7 +844,7 @@ class MovesListPageState extends State<MovesListPage> {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: textColor,
+                              color: dialogTextColor,
                             ),
                           ),
                           Row(
@@ -883,8 +893,9 @@ class MovesListPageState extends State<MovesListPage> {
                       Expanded(
                         child: _buildPromptInputWidget(
                           controller,
-                          textColor,
+                          promptTextColor,
                           borderColor,
+                          promptBackgroundColor,
                         ),
                       ),
 
@@ -907,7 +918,10 @@ class MovesListPageState extends State<MovesListPage> {
                             child: Text(
                               // Using app language for output text
                               S.of(context).outputInCurrentLanguage,
-                              style: TextStyle(fontSize: 14, color: textColor),
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: dialogTextColor,
+                              ),
                             ),
                           ),
                           // Fish button for debugging the cat fishing mini-game
@@ -1044,12 +1058,13 @@ class MovesListPageState extends State<MovesListPage> {
     TextEditingController controller,
     Color textColor,
     Color borderColor,
+    Color backgroundColor,
   ) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: borderColor),
         borderRadius: BorderRadius.circular(4),
-        color: DB().colorSettings.darkBackgroundColor,
+        color: backgroundColor,
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -1063,7 +1078,7 @@ class MovesListPageState extends State<MovesListPage> {
             contentPadding: EdgeInsets.zero,
             border: InputBorder.none,
             hintText: S.of(context).llmPromptContent,
-            hintStyle: TextStyle(color: textColor.withValues(alpha: 0.5)),
+            hintStyle: TextStyle(color: textColor),
           ),
           style: TextStyle(
             fontFamily: 'monospace',
