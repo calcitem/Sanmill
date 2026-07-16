@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import '../../games/mill/mill_board_coordinate_maps.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
+import '../../shared/utils/helpers/color_helpers/color_helper.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
 
@@ -592,15 +593,7 @@ class MiniBoardPainter extends CustomPainter {
     if (symbol.isEmpty) {
       return;
     }
-    final Color color = switch (nag) {
-      1 => const Color(0xFF2E7D32),
-      3 => const Color(0xFF00838F),
-      5 => const Color(0xFF1565C0),
-      6 => const Color(0xFFF9A825),
-      2 => const Color(0xFFEF6C00),
-      4 => const Color(0xFFC62828),
-      _ => Colors.grey,
-    };
+    final Color color = qualityBadgeBackgroundColor(nag);
     final double radius = math.max(8, pieceRadius * 0.78);
     final Offset center =
         anchor + Offset(pieceRadius * 0.72, -pieceRadius * 0.72);
@@ -609,7 +602,7 @@ class MiniBoardPainter extends CustomPainter {
       text: TextSpan(
         text: symbol,
         style: TextStyle(
-          color: Colors.white,
+          color: qualityBadgeForegroundColor(nag),
           fontSize: radius * 1.05,
           fontWeight: FontWeight.w800,
           height: 1,
@@ -684,6 +677,23 @@ class MiniBoardPainter extends CustomPainter {
       notation = notation.split('-').last;
     }
     return MillBoardCoordinateMaps.notationToLegacySquare(notation);
+  }
+
+  static Color qualityBadgeBackgroundColor(int nag) => switch (nag) {
+    1 => const Color(0xFF2E7D32),
+    3 => const Color(0xFF00838F),
+    5 => const Color(0xFF1565C0),
+    6 => const Color(0xFFF9A825),
+    2 => const Color(0xFFEF6C00),
+    4 => const Color(0xFFC62828),
+    _ => Colors.grey,
+  };
+
+  static Color qualityBadgeForegroundColor(int nag) {
+    return readableForegroundColor(
+      preferred: Colors.white,
+      background: qualityBadgeBackgroundColor(nag),
+    );
   }
 
   static String qualityNagSymbol(int nag) => switch (nag) {

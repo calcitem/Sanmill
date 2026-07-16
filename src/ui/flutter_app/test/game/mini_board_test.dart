@@ -10,6 +10,7 @@ import 'package:sanmill/game_page/services/mill.dart' show ExtMove, PieceColor;
 import 'package:sanmill/game_page/widgets/mini_board.dart';
 import 'package:sanmill/games/mill/mill_board_coordinate_maps.dart';
 import 'package:sanmill/shared/database/database.dart';
+import 'package:sanmill/shared/utils/helpers/color_helpers/color_helper.dart';
 
 import '../helpers/locale_helper.dart';
 import '../helpers/mocks/mock_database.dart';
@@ -94,6 +95,24 @@ void main() {
       MiniBoardPainter.badgeAnchorSquareForMove('xb2'),
       MillBoardCoordinateMaps.notationToLegacySquare('b2'),
     );
+  });
+
+  test('quality badge symbols meet normal-text contrast for every NAG', () {
+    for (int nag = 1; nag <= 6; nag++) {
+      final Color background = MiniBoardPainter.qualityBadgeBackgroundColor(
+        nag,
+      );
+      final Color foreground = MiniBoardPainter.qualityBadgeForegroundColor(
+        nag,
+      );
+      expect(
+        colorContrastRatio(foreground, background),
+        greaterThanOrEqualTo(normalTextMinimumContrastRatio),
+        reason: 'NAG \$$nag must remain readable.',
+      );
+    }
+    expect(MiniBoardPainter.qualityBadgeForegroundColor(2), Colors.black);
+    expect(MiniBoardPainter.qualityBadgeForegroundColor(6), Colors.black);
   });
 
   testWidgets('replay reads an imported NAG and anchors a capture chain', (
