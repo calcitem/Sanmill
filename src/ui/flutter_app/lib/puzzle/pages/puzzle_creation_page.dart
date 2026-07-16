@@ -285,11 +285,15 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
 
   /// Start recording solution moves
   void _startRecordingSolution() {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     if (_snapshottedPosition == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(S.of(context).puzzleSnapshotPositionFirst),
-          backgroundColor: Colors.orange,
+          content: Text(
+            S.of(context).puzzleSnapshotPositionFirst,
+            style: TextStyle(color: colorScheme.onTertiaryContainer),
+          ),
+          backgroundColor: colorScheme.tertiaryContainer,
         ),
       );
       return;
@@ -305,8 +309,11 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     if (!loaded) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(S.of(context).puzzleFailedLoadPosition),
-          backgroundColor: Colors.red,
+          content: Text(
+            S.of(context).puzzleFailedLoadPosition,
+            style: TextStyle(color: colorScheme.onErrorContainer),
+          ),
+          backgroundColor: colorScheme.errorContainer,
         ),
       );
       logger.e("$_tag Failed to load snapshotted position for recording");
@@ -334,8 +341,11 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(S.of(context).puzzleRecordingStarted),
-        backgroundColor: Colors.green,
+        content: Text(
+          S.of(context).puzzleRecordingStarted,
+          style: TextStyle(color: colorScheme.onPrimaryContainer),
+        ),
+        backgroundColor: colorScheme.primaryContainer,
       ),
     );
 
@@ -416,10 +426,17 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
 
   /// Save the puzzle
   Future<void> _savePuzzle() async {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final String? error = _validatePuzzle();
     if (error != null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error), backgroundColor: Colors.red),
+        SnackBar(
+          content: Text(
+            error,
+            style: TextStyle(color: colorScheme.onErrorContainer),
+          ),
+          backgroundColor: colorScheme.errorContainer,
+        ),
       );
       return;
     }
@@ -517,8 +534,9 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
             _isEditing
                 ? S.of(context).puzzleUpdated
                 : S.of(context).puzzleCreated,
+            style: TextStyle(color: colorScheme.onPrimaryContainer),
           ),
-          backgroundColor: Colors.green,
+          backgroundColor: colorScheme.primaryContainer,
         ),
       );
 
@@ -530,8 +548,11 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(S.of(context).puzzleSaveFailed),
-          backgroundColor: Colors.red,
+          content: Text(
+            S.of(context).puzzleSaveFailed,
+            style: TextStyle(color: colorScheme.onErrorContainer),
+          ),
+          backgroundColor: colorScheme.errorContainer,
         ),
       );
     }

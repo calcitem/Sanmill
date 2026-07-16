@@ -3128,6 +3128,43 @@ void main() {
   );
 
   testWidgets(
+    'PuzzleCreationPage warning snack bar uses matching theme colors',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightThemeData,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: const PuzzleCreationPage(),
+        ),
+      );
+      await tester.pump();
+
+      final BuildContext pageContext = tester.element(
+        find.byKey(const Key('puzzle_creation_page_scaffold')),
+      );
+      final Finder startRecording = find.text(
+        S.of(pageContext).puzzleStartRecording,
+      );
+      await tester.ensureVisible(startRecording);
+      await tester.tap(startRecording);
+      await tester.pump();
+
+      final SnackBar snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
+      final Text content = snackBar.content as Text;
+      expect(
+        snackBar.backgroundColor,
+        Theme.of(pageContext).colorScheme.tertiaryContainer,
+      );
+      expect(
+        content.style?.color,
+        Theme.of(pageContext).colorScheme.onTertiaryContainer,
+      );
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Repeated puzzle tab tap scrolls the root list to top',
     (WidgetTester tester) async {
       tester.view
