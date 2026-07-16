@@ -695,27 +695,27 @@
     "@howToPlay": {
         "description": "How to play"
     },
-    "toPlacePiece": "Tap on any available point to place the piece.",
+    "toPlacePiece": "Tap an empty point to place a piece.",
     "@toPlacePiece": {
         "description": "Tap on any available point to place the piece."
     },
-    "toSelectPiece": "Tap on a piece to move it.",
+    "toSelectPiece": "Tap one of your pieces to select it.",
     "@toSelectPiece": {
         "description": "Tap on a piece to move it."
     },
-    "toMovePiece": "Tap on a point connected to a piece to move it.",
+    "toMovePiece": "Tap an adjacent empty point to move the selected piece.",
     "@toMovePiece": {
         "description": "Tap on point connected to piece to move it."
     },
-    "toRemovePiece": "Tap on one of the opponent's pieces to remove it.",
+    "toRemovePiece": "Tap one of your opponent's pieces to remove it.",
     "@toRemovePiece": {
         "description": "Tap on one of the opponent's pieces to remove it."
     },
-    "needToCreateMillFirst": "You need to create a mill first before you can remove a piece.",
+    "needToCreateMillFirst": "Form a mill before removing a piece.",
     "@needToCreateMillFirst": {
         "description": "You need to create a mill first before you can remove a piece."
     },
-    "needToPlayWithOwnPieces": "You need to play with your pieces.",
+    "needToPlayWithOwnPieces": "Select one of your own pieces.",
     "@needToPlayWithOwnPieces": {
         "description": "You need to play with your pieces."
     },
