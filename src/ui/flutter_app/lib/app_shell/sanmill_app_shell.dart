@@ -1606,8 +1606,15 @@ class _HomeGamesOverview extends StatelessWidget {
 
                 final List<SavedGameSummary> homeGames =
                     snapshot.data ?? const <SavedGameSummary>[];
+                final String? activeSourcePath = activeGame == null
+                    ? null
+                    : controller.loadedGameSourcePath;
                 final List<SavedGameSummary> ongoingGames = homeGames
-                    .where((SavedGameSummary game) => game.isOngoing)
+                    .where(
+                      (SavedGameSummary game) =>
+                          game.isOngoing &&
+                          !game.representsPath(activeSourcePath),
+                    )
                     .toList(growable: false);
                 final List<SavedGameSummary> recentGames = homeGames
                     .where((SavedGameSummary game) => !game.isOngoing)

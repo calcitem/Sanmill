@@ -54,6 +54,18 @@ void main() {
     expect(unknown.isOngoing, isFalse);
   });
 
+  test('saved game summaries match normalized source paths', () {
+    final SavedGameSummary summary = SavedGameSummary(
+      path: '/tmp/records/current.pgn',
+      filename: 'current.pgn',
+      modified: DateTime.utc(2026),
+    );
+
+    expect(summary.representsPath('/tmp/records/./current.pgn'), isTrue);
+    expect(summary.representsPath('/tmp/records/other.pgn'), isFalse);
+    expect(summary.representsPath(null), isFalse);
+  });
+
   test(
     'saved game previews expose side to move for unfinished PGNs',
     () {

@@ -52,6 +52,11 @@ class SavedGameSummary {
   String get displayName => p.basenameWithoutExtension(filename);
 
   bool get isOngoing => preview?.isOngoing ?? false;
+
+  bool representsPath(String? otherPath) {
+    return otherPath != null &&
+        p.equals(p.normalize(path), p.normalize(otherPath));
+  }
 }
 
 const SavedGameCatalog savedGameCatalog = SavedGameCatalog();

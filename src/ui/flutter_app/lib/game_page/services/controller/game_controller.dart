@@ -555,6 +555,12 @@ class GameController {
 
   String? loadedGameFilenamePrefix;
 
+  /// Absolute path of the saved game backing the current in-memory session.
+  ///
+  /// The shell uses this identity to replace the source card with the live
+  /// preview instead of presenting the same game twice.
+  String? loadedGameSourcePath;
+
   AnimationManager? _animationManager;
 
   /// True once a [GameBoard] has assigned [animationManager] at least once
@@ -1344,6 +1350,7 @@ class GameController {
     bool lanRestart = false,
     bool preserveLan = false,
   }) {
+    loadedGameSourcePath = null;
     final GameMode gameModeBak = gameInstance.gameMode;
     String? fen = "";
     final bool isPosSetup = isPositionSetup;

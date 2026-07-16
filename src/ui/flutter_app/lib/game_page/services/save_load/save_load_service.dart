@@ -354,6 +354,7 @@ class LoadService {
         final ({bool success, bool includedVariations}) importResult =
             await importGameData(context, fileContent);
         if (importResult.success) {
+          GameController().loadedGameSourcePath = File(filePath).absolute.path;
           if (!context.mounted) {
             return;
           }
