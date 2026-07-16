@@ -20,8 +20,9 @@ class ExportService {
   ///
   /// Returns the file path, or `null` when there is no move to export so the
   /// report does not carry an empty attachment.  Registered with
-  /// [ReportAttachmentRegistry] during app start-up.
+  /// Creates a temporary move-list file for explicit user export.
   static Future<String?> exportMoveListToTempFile() async {
+    DiagnosticReplayGuard.requireAllowed('Game file exporting');
     final GameRecorder recorder = GameController().gameRecorder;
     final String moveText = recorder.moveHistoryTextWithoutVariations;
     if (moveText.trim().isEmpty) {
@@ -46,6 +47,7 @@ class ExportService {
     BuildContext context, {
     bool shouldPop = true,
   }) async {
+    DiagnosticReplayGuard.requireAllowed('Game clipboard exporting');
     final GameRecorder recorder = GameController().gameRecorder;
     String exportText = recorder.moveHistoryText;
     bool showExperimentalWarning = false;
@@ -154,6 +156,7 @@ class ExportService {
     BuildContext context, {
     bool shouldPop = true,
   }) async {
+    DiagnosticReplayGuard.requireAllowed('Game clipboard exporting');
     final String exportText = _generatePgnWithQuality();
 
     await Clipboard.setData(ClipboardData(text: exportText));

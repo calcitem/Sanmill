@@ -29,4 +29,51 @@ class EnvironmentConfig {
   /// Defaults to 0 (all) to record all logs for user viewing
   /// Level values: 0=all, 1=trace, 2=debug, 3=info, 4=warning, 5=error, 6=fatal
   static const int logLevel = int.fromEnvironment("log_level");
+
+  /// Public GlitchTip DSN injected by an official or downstream build.
+  ///
+  /// A DSN is intentionally not a secret, but it is kept out of this checkout
+  /// until the jointly administered project endpoint exists. Remote sending is
+  /// disabled unless the DSN, recipient name and privacy URL are all present.
+  static String diagnosticsDsn = const String.fromEnvironment(
+    'SANMILL_DIAGNOSTICS_DSN',
+  );
+
+  static String diagnosticsRecipient = const String.fromEnvironment(
+    'SANMILL_DIAGNOSTICS_RECIPIENT',
+  );
+
+  static String diagnosticsPrivacyUrl = const String.fromEnvironment(
+    'SANMILL_DIAGNOSTICS_PRIVACY_URL',
+  );
+
+  /// F-Droid can force local-only diagnostics without patching source code.
+  static bool diagnosticsRemoteDisabled = const bool.fromEnvironment(
+    'SANMILL_DIAGNOSTICS_REMOTE_DISABLED',
+  );
+
+  static String distributionChannel = const String.fromEnvironment(
+    'SANMILL_DISTRIBUTION_CHANNEL',
+    defaultValue: 'source',
+  );
+
+  static String declaredDistributor = const String.fromEnvironment(
+    'SANMILL_DISTRIBUTOR',
+    defaultValue: 'unconfigured',
+  );
+
+  static const String sourceRevision = String.fromEnvironment(
+    'SANMILL_SOURCE_REVISION',
+    defaultValue: 'unknown',
+  );
+
+  static const String sourceUrl = String.fromEnvironment(
+    'SANMILL_SOURCE_URL',
+    defaultValue: 'https://github.com/calcitem/Sanmill',
+  );
+
+  /// Platform build pipelines may provide a signing certificate/team digest.
+  static const String signerDigest = String.fromEnvironment(
+    'SANMILL_SIGNER_DIGEST',
+  );
 }

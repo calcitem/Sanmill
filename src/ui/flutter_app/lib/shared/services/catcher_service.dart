@@ -14,10 +14,9 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import '../config/constants.dart';
 import '../database/database.dart';
 import 'build_info.dart';
-import 'email_handler.dart';
+import 'diagnostic_catcher_handler.dart';
 import 'environment_config.dart';
 import 'logger.dart' show logger, resolveCrashLogFilePath;
 
@@ -30,35 +29,28 @@ Future<void> initCatcher(Catcher2 c) async {
   final String path = await resolveCrashLogFilePath();
   logger.t("[env] Crash log file: $path");
 
-  final Catcher2Options debugOptions = Catcher2Options(
-    kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS
-        ? SilentReportMode()
-        : PageReportMode(),
-    <ReportHandler>[
-      ConsoleHandler(),
-      FileHandler(File(path), printLogs: true),
-      SanmillEmailHandler(Constants.recipientEmails, printLogs: true),
-    ],
-    customParameters: customParameters,
-  );
+  final Catcher2Options debugOptions =
+      Catcher2Options(SilentReportMode(), <ReportHandler>[
+        ConsoleHandler(),
+        FileHandler(File(path), printLogs: true),
+        DiagnosticCatcherHandler(),
+      ], customParameters: customParameters);
 
   /// Release configuration.
   final Catcher2Options releaseOptions = Catcher2Options(
-    kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS
-        ? SilentReportMode()
-        : PageReportMode(),
+    SilentReportMode(),
     <ReportHandler>[
       FileHandler(File(path), printLogs: true),
-      SanmillEmailHandler(Constants.recipientEmails, printLogs: true),
+      DiagnosticCatcherHandler(),
     ],
     customParameters: customParameters,
   );
 
   final Catcher2Options profileOptions =
-      Catcher2Options(PageReportMode(), <ReportHandler>[
+      Catcher2Options(SilentReportMode(), <ReportHandler>[
         ConsoleHandler(),
         FileHandler(File(path), printLogs: true),
-        SanmillEmailHandler(Constants.recipientEmails, printLogs: true),
+        DiagnosticCatcherHandler(),
       ], customParameters: customParameters);
 
   c.updateConfig(
@@ -164,7 +156,7 @@ Future<Map<String, String>> _buildDeviceParameters() async {
 /// This is safe to call repeatedly. On platforms where Catcher 2 is disabled,
 /// it becomes a no-op.
 void updateCrashReportLocaleContext() {
-  if (!EnvironmentConfig.catcher || kIsWeb || Platform.isIOS) {
+  if (!EnvironmentConfig.catcher || kIsWeb) {
     return;
   }
 

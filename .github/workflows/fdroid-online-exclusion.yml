@@ -5,6 +5,8 @@ on:
     paths:
       - 'src/ui/flutter_app/lib/main_fdroid.dart'
       - 'src/ui/flutter_app/lib/online_play/**'
+      - 'src/ui/flutter_app/lib/shared/services/environment_config.dart'
+      - 'src/ui/flutter_app/lib/shared/services/diagnostic_report_service.dart'
       - 'src/ui/flutter_app/android/app/build.gradle_fdroid'
       - 'src/ui/flutter_app/android/app/src/fdroid/**'
       - 'scripts/verify-fdroid-online-exclusion.sh'

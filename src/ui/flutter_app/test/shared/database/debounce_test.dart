@@ -66,7 +66,7 @@ void main() {
       },
     );
 
-    test('records compatible settings change payloads', () {
+    test('records privacy-reviewed settings change payloads', () {
       coordinator.onGeneralSettingsSaved(const GeneralSettings(aiIsLazy: true));
       coordinator.recordRuleSettingsChange(const RuleSettings(piecesCount: 12));
       coordinator.onDisplaySettingsSaved(const DisplaySettings(fontScale: 1.2));
@@ -86,10 +86,31 @@ void main() {
       expect(
         recordedData.map(
           (Map<String, dynamic> event) =>
-              (event['data'] as Map<String, dynamic>)['settings'],
+              (event['data'] as Map<String, dynamic>)['settingId'],
         ),
-        everyElement(isA<Map<String, dynamic>>()),
+        everyElement('initialSnapshotChanged'),
       );
+      expect(
+        recordedData.map(
+          (Map<String, dynamic> event) => event['data'] as Map<String, dynamic>,
+        ),
+        everyElement(isNot(contains('settings'))),
+      );
+    });
+
+    test('records only changed field id and safe old/new values', () {
+      coordinator.onGeneralSettingsSaved(const GeneralSettings(skillLevel: 1));
+      recordedData.clear();
+
+      coordinator.onGeneralSettingsSaved(const GeneralSettings(skillLevel: 5));
+
+      expect(recordedData, hasLength(1));
+      expect(recordedData.single['data'], <String, dynamic>{
+        'category': 'general',
+        'settingId': 'SkillLevel',
+        'oldValue': 1,
+        'newValue': 5,
+      });
     });
   });
 }

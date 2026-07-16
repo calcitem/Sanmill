@@ -3,7 +3,6 @@
 
 // constants.dart
 
-import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:catcher_2/core/catcher_2.dart';
@@ -34,15 +33,8 @@ class Constants {
   static const String authorAccount = "calcitem";
   static const String projectName = "Sanmill";
   static String projectNameLower = projectName.toLowerCase();
-  static const List<String> recipientEmails = <String>[
-    "$authorAccount@outlook.com",
-  ];
-
   static String settingsFile = "${projectNameLower}_settings.json";
   static const String crashLogsFile = "$projectName-crash-logs.txt";
-
-  static const String feedbackSubjectPrefix = "[$appName] $projectName ";
-  static const String feedbackSubjectSuffix = " Feedback";
 
   static const String fullRepositoryName = "$authorAccount/$projectName";
 
@@ -134,12 +126,8 @@ class Constants {
 final GlobalKey<NavigatorState> navigatorStateKey = GlobalKey();
 
 GlobalKey<NavigatorState> get currentNavigatorKey {
-  if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-    if (Catcher2.navigatorKey == null) {
-      return navigatorStateKey;
-    }
+  if (EnvironmentConfig.catcher && !kIsWeb) {
     return Catcher2.navigatorKey;
-  } else {
-    return navigatorStateKey;
   }
+  return navigatorStateKey;
 }

@@ -3,6 +3,8 @@
 
 // recording_models.dart
 
+import 'user_action_event.dart';
+
 /// Categorizes recorded events for structured replay and analysis.
 ///
 /// Each variant maps to a distinct user or system action. New event types
@@ -139,6 +141,7 @@ class RecordingEvent {
 /// and can be shared for offline bug reproduction (digital twin replay).
 class RecordingSession {
   const RecordingSession({
+    this.schemaVersion = 2,
     required this.id,
     required this.appVersion,
     required this.deviceInfo,
@@ -146,6 +149,8 @@ class RecordingSession {
     required this.durationMs,
     required this.initialSnapshot,
     required this.events,
+    this.actionCheckpoint,
+    this.actionEvents = const <UserActionEventV1>[],
     this.gameMode,
     this.notes,
   });
@@ -154,8 +159,11 @@ class RecordingSession {
   factory RecordingSession.fromJson(Map<String, dynamic> json) {
     final List<dynamic> rawEvents =
         (json['events'] as List<dynamic>?) ?? const <dynamic>[];
+    final List<dynamic> rawActionEvents =
+        (json['actionEvents'] as List<dynamic>?) ?? const <dynamic>[];
 
     return RecordingSession(
+      schemaVersion: json['schemaVersion'] as int? ?? 1,
       id: json['id'] as String? ?? '',
       appVersion: json['appVersion'] as String? ?? '',
       deviceInfo: json['deviceInfo'] as String? ?? '',
@@ -171,10 +179,25 @@ class RecordingSession {
             (dynamic e) => RecordingEvent.fromJson(e as Map<String, dynamic>),
           )
           .toList(),
+      actionCheckpoint: json['actionCheckpoint'] == null
+          ? null
+          : ActionTrailCheckpoint.fromJson(
+              json['actionCheckpoint'] as Map<String, dynamic>,
+            ),
+      actionEvents: rawActionEvents
+          .map(
+            (dynamic event) =>
+                UserActionEventV1.fromJson(event as Map<String, dynamic>),
+          )
+          .toList(growable: false),
       gameMode: json['gameMode'] as String?,
       notes: json['notes'] as String?,
     );
   }
+
+  /// Explicit recording format version. Version 2 stores only reviewed,
+  /// sanitized payloads and a safe initial checkpoint.
+  final int schemaVersion;
 
   /// Unique session identifier (UUID v4).
   final String id;
@@ -200,6 +223,13 @@ class RecordingSession {
   /// Chronologically ordered list of recorded events.
   final List<RecordingEvent> events;
 
+  /// Initial safe baseline from the shared typed action stream.
+  final ActionTrailCheckpoint? actionCheckpoint;
+
+  /// Privacy-reviewed V2 events. [events] remains a compatibility projection
+  /// for the existing replay UI and contains no unreviewed payloads.
+  final List<UserActionEventV1> actionEvents;
+
   /// The primary game mode active when recording started (optional).
   final String? gameMode;
 
@@ -209,8 +239,13 @@ class RecordingSession {
   /// Total duration as a [Duration] object.
   Duration get duration => Duration(milliseconds: durationMs);
 
+  /// A local file whose legacy payload could not be safely migrated.
+  /// Such entries are deletion-only and are never serialized or replayed.
+  bool get isUnsafeLegacy => schemaVersion == 0;
+
   /// Serializes this session to a JSON-compatible map.
   Map<String, dynamic> toJson() => <String, dynamic>{
+    'schemaVersion': schemaVersion,
     'id': id,
     'appVersion': appVersion,
     'deviceInfo': deviceInfo,
@@ -218,12 +253,18 @@ class RecordingSession {
     'durationMs': durationMs,
     'initialSnapshot': initialSnapshot,
     'events': events.map((RecordingEvent e) => e.toJson()).toList(),
+    if (actionCheckpoint != null)
+      'actionCheckpoint': actionCheckpoint!.toJson(),
+    'actionEvents': actionEvents
+        .map((UserActionEventV1 event) => event.toJson())
+        .toList(),
     if (gameMode != null) 'gameMode': gameMode,
     if (notes != null) 'notes': notes,
   };
 
   /// Creates a copy of this session with selected fields replaced.
   RecordingSession copyWith({
+    int? schemaVersion,
     String? id,
     String? appVersion,
     String? deviceInfo,
@@ -231,10 +272,13 @@ class RecordingSession {
     int? durationMs,
     Map<String, dynamic>? initialSnapshot,
     List<RecordingEvent>? events,
+    ActionTrailCheckpoint? actionCheckpoint,
+    List<UserActionEventV1>? actionEvents,
     String? gameMode,
     String? notes,
   }) {
     return RecordingSession(
+      schemaVersion: schemaVersion ?? this.schemaVersion,
       id: id ?? this.id,
       appVersion: appVersion ?? this.appVersion,
       deviceInfo: deviceInfo ?? this.deviceInfo,
@@ -242,6 +286,8 @@ class RecordingSession {
       durationMs: durationMs ?? this.durationMs,
       initialSnapshot: initialSnapshot ?? this.initialSnapshot,
       events: events ?? this.events,
+      actionCheckpoint: actionCheckpoint ?? this.actionCheckpoint,
+      actionEvents: actionEvents ?? this.actionEvents,
       gameMode: gameMode ?? this.gameMode,
       notes: notes ?? this.notes,
     );
@@ -252,6 +298,9 @@ class RecordingSession {
       'RecordingSession($id, ${events.length} events, '
       '${duration.inSeconds}s)';
 }
+
+/// Public name for the schema-v2 typed recording format.
+typedef RecordingSessionV2 = RecordingSession;
 
 // ---------------------------------------------------------------------------
 // Helpers

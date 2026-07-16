@@ -4,18 +4,15 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart'
     show kDebugMode, kIsWeb, visibleForTesting;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../experience_recording/models/recording_models.dart';
+import '../experience_recording/services/recording_navigator_observer.dart';
 import '../experience_recording/services/recording_service.dart';
 import '../game_page/services/mill.dart'
     show GameController, GameMode, LoadService, PieceColor;
@@ -36,15 +33,14 @@ import '../games/mill/mill_session_animation_bridge.dart';
 import '../games/mill/mill_session_recorder_bridge.dart';
 import '../games/mill/native_mill_snapshot_board_view.dart';
 import '../general_settings/models/general_settings.dart';
-import '../general_settings/services/config_import_export_service.dart';
 import '../generated/intl/l10n.dart';
 import '../home/module_route_screens.dart';
-import '../shared/config/constants.dart';
 import '../shared/database/database.dart';
 import '../shared/database/settings_repositories.dart';
 import '../shared/database/settings_repository.dart';
 import '../shared/dialogs/privacy_policy_dialog.dart';
-import '../shared/services/catcher_service.dart' show generateOptionsContent;
+import '../shared/pages/diagnostic_report_page.dart';
+import '../shared/services/diagnostic_report_service.dart';
 import '../shared/services/environment_config.dart';
 import '../shared/services/logger.dart';
 import '../shared/themes/app_styles.dart';
@@ -161,6 +157,11 @@ class SanmillAppShellState extends State<SanmillAppShell> {
         for (final SanmillShellTab tab in SanmillShellTab.values)
           tab: _SanmillTabRouteObserver(),
       };
+  final Map<SanmillShellTab, RecordingNavigatorObserver>
+  _diagnosticRouteObservers = <SanmillShellTab, RecordingNavigatorObserver>{
+    for (final SanmillShellTab tab in SanmillShellTab.values)
+      tab: RecordingNavigatorObserver(navigatorId: 'shell.${tab.name}'),
+  };
   final Map<SanmillShellTab, ScrollController> _scrollControllers =
       <SanmillShellTab, ScrollController>{
         for (final SanmillShellTab tab in SanmillShellTab.values)
@@ -364,9 +365,18 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     if (!await _transitionToRoute(nextRouteId)) {
       return;
     }
+    _diagnosticRouteObservers[tab]?.activate();
     setState(() {
       _currentTab = tab;
     });
+    RecordingService().recordEvent(
+      RecordingEventType.navigationAction,
+      <String, dynamic>{
+        'page': nextRouteId,
+        'action': 'tabChange',
+        'navigatorId': 'shell.${tab.name}',
+      },
+    );
   }
 
   Future<void> _handleRepeatedTabTap(SanmillShellTab tab) async {
@@ -415,8 +425,12 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     );
     _routeId = nextRouteId;
     RecordingService().recordEvent(
-      RecordingEventType.gameModeChange,
-      <String, dynamic>{'mode': nextRouteId},
+      RecordingEventType.navigationAction,
+      <String, dynamic>{
+        'page': nextRouteId,
+        'action': 'shellRoute',
+        'navigatorId': 'shell',
+      },
     );
     return true;
   }
@@ -739,7 +753,10 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   Widget _buildTabNavigator(SanmillShellTab tab) {
     return Navigator(
       key: _navigatorKeys[tab],
-      observers: <NavigatorObserver>[_routeObservers[tab]!],
+      observers: <NavigatorObserver>[
+        _routeObservers[tab]!,
+        _diagnosticRouteObservers[tab]!,
+      ],
       onGenerateRoute: (RouteSettings settings) {
         return MaterialPageRoute<void>(
           settings: settings,
@@ -809,8 +826,12 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     );
     _routeId = nextRouteId;
     RecordingService().recordEvent(
-      RecordingEventType.gameModeChange,
-      <String, dynamic>{'mode': nextRouteId},
+      RecordingEventType.navigationAction,
+      <String, dynamic>{
+        'page': nextRouteId,
+        'action': 'pop',
+        'navigatorId': 'shell.${tab.name}',
+      },
     );
     setState(() {});
   }
@@ -975,76 +996,27 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     }
   }
 
-  void _showFeedback() {
+  Future<void> _showFeedback() async {
     if (EnvironmentConfig.test == true) {
       return;
     }
-    if (!kIsWeb && Platform.isAndroid) {
-      BetterFeedback.of(context).show(_launchFeedback);
-    } else {
-      logger.w('flutter_email_sender does not support this platform.');
+    final DiagnosticReportDraft draft = await DiagnosticReportService()
+        .createFeedback();
+    if (!mounted) {
+      return;
     }
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        settings: const RouteSettings(name: '/diagnosticReport'),
+        builder: (BuildContext context) => DiagnosticReportPage(draft: draft),
+      ),
+    );
   }
 
   void _exitApp() {
     if (EnvironmentConfig.test == false && !kIsWeb) {
       SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
     }
-  }
-
-  static Future<void> _launchFeedback(UserFeedback feedback) async {
-    final String screenshotFilePath = await _saveFeedbackImage(
-      feedback.screenshot,
-    );
-
-    final String optionsContent = generateOptionsContent();
-    final String optionsFilePath = await _saveOptionsContentToFile(
-      optionsContent,
-    );
-
-    final String? configFilePath =
-        await ConfigImportExportService.exportSettingsJsonOnly();
-
-    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    final String version =
-        '${packageInfo.version} (${packageInfo.buildNumber})';
-
-    final Email email = Email(
-      body: feedback.text,
-      subject:
-          Constants.feedbackSubjectPrefix +
-          version +
-          Constants.feedbackSubjectSuffix,
-      recipients: Constants.recipientEmails,
-      attachmentPaths: <String>[
-        screenshotFilePath,
-        optionsFilePath,
-        ?configFilePath,
-      ],
-    );
-
-    await FlutterEmailSender.send(email);
-  }
-
-  static Future<String> _saveOptionsContentToFile(String content) async {
-    final Directory output = await getTemporaryDirectory();
-    final File file = File('${output.path}/sanmill-options.txt');
-    if (file.existsSync()) {
-      file.deleteSync();
-    }
-    await file.writeAsString(content);
-    return file.path;
-  }
-
-  static Future<String> _saveFeedbackImage(Uint8List screenshot) async {
-    final Directory output = await getTemporaryDirectory();
-    final String screenshotFilePath = '${output.path}/sanmill-feedback.png';
-    final File screenshotFile = File(screenshotFilePath);
-    if (screenshotFile.existsSync()) {
-      screenshotFile.deleteSync();
-    }
-    await screenshotFile.writeAsBytes(screenshot);
-    return screenshotFilePath;
   }
 }
 

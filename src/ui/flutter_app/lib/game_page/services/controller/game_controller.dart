@@ -1439,8 +1439,10 @@ class GameController {
 
   bool startGameFromFen({required GameMode mode, required String fen}) {
     assert(
-      mode == GameMode.humanVsAi || mode == GameMode.humanVsHuman,
-      'Continue from here only supports local playable modes.',
+      mode == GameMode.humanVsAi ||
+          mode == GameMode.humanVsHuman ||
+          mode == GameMode.analysis,
+      'Continue from here supports local playable and analysis modes.',
     );
     final String trimmedFen = fen.trim();
     assert(trimmedFen.isNotEmpty, 'Continue from here requires a FEN.');
@@ -2276,6 +2278,7 @@ class GameController {
     BuildContext context, {
     bool shouldPop = true,
   }) async {
+    DiagnosticReplayGuard.requireAllowed('Game clipboard exporting');
     final GameSession? session = GameSessionScope.sessionOf(context);
     if (session != null) {
       final String? exportText = GameExportService.buildCurrentExportText(

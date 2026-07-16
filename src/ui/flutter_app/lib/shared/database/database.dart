@@ -189,8 +189,12 @@ class Database {
 
   /// Saves the given [generalSettings] to the settings Box
   set generalSettings(GeneralSettings generalSettings) {
+    final GeneralSettings previous = this.generalSettings;
     saveGeneralSettingsOnly(generalSettings);
-    SettingsChangeDispatcher.instance.onGeneralSettingsSaved(generalSettings);
+    SettingsChangeDispatcher.instance.onGeneralSettingsSaved(
+      generalSettings,
+      previous: previous,
+    );
   }
 
   /// Gets the given [GeneralSettings] from the settings Box
@@ -227,8 +231,13 @@ class Database {
 
   /// Saves the given [ruleSettings] to the settings Box
   set ruleSettings(RuleSettings ruleSettings) {
+    final RuleSettings previous =
+        _ruleSettings ?? RuleSettings.fromLocale(locale);
     _ruleSettings = ruleSettings;
-    SettingsChangeDispatcher.instance.recordRuleSettingsChange(ruleSettings);
+    SettingsChangeDispatcher.instance.recordRuleSettingsChange(
+      ruleSettings,
+      previous: previous,
+    );
   }
 
   /// Gets the given [RuleSettings] from the settings Box
@@ -260,8 +269,12 @@ class Database {
 
   /// Saves the given [displaySettings] to the settings Box
   set displaySettings(DisplaySettings displaySettings) {
+    final DisplaySettings previous = this.displaySettings;
     _displaySettingsBox.put(displaySettingsKey, displaySettings);
-    SettingsChangeDispatcher.instance.onDisplaySettingsSaved(displaySettings);
+    SettingsChangeDispatcher.instance.onDisplaySettingsSaved(
+      displaySettings,
+      previous: previous,
+    );
   }
 
   /// Gets the given [DisplaySettings] from the settings Box
@@ -331,8 +344,14 @@ class Database {
       _colorSettingsBox.listenable(keys: <String>[colorSettingsKey]);
 
   /// Saves the given [colorSettings] to the settings Box
-  set colorSettings(ColorSettings colorSettings) =>
-      _colorSettingsBox.put(colorSettingsKey, colorSettings);
+  set colorSettings(ColorSettings colorSettings) {
+    final ColorSettings previous = this.colorSettings;
+    _colorSettingsBox.put(colorSettingsKey, colorSettings);
+    SettingsChangeDispatcher.instance.onColorSettingsSaved(
+      colorSettings,
+      previous: previous,
+    );
+  }
 
   /// Gets the given [ColorSettings] from the settings Box
   ColorSettings get colorSettings =>

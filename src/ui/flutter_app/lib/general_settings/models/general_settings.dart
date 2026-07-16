@@ -168,6 +168,7 @@ class GeneralSettings {
     this.backgroundMusicFilePath = '',
     this.lastPgnSaveDirectory = '',
     this.experienceRecordingEnabled = false,
+    this.diagnosticActionTrailEnabled = true,
     this.humanDatabaseEnabled = false,
     this.humanDatabaseFilePath = '',
     this.showHumanDatabaseStats = false,
@@ -428,6 +429,10 @@ class GeneralSettings {
   // Face pieces and both player panels toward the side to move.
   @HiveField(59, defaultValue: false)
   final bool offlineBoardFlipAfterMove;
+
+  // Keep a short, semantic and sanitized diagnostic action trail locally.
+  @HiveField(60, defaultValue: true)
+  final bool diagnosticActionTrailEnabled;
 
   /// Deprecated field retained for Hive backward compatibility.
   ///

@@ -505,14 +505,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "11.2.0"
-  feedback:
-    dependency: "direct main"
-    description:
-      name: feedback
-      sha256: "55edce4f8f0ec01a5ff023e29c5c57df86a7391c831d5647e3b3fdff05e4b01e"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "3.2.0"
   ffi:
     dependency: transitive
     description:
@@ -611,38 +603,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_email_sender:
-    dependency: "direct main"
-    description:
-      name: flutter_email_sender
-      sha256: "0e1bc57128cef5bbc4c92c7d6d2768e61166c9118dcb961b7453c78531b382ed"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "10.0.1"
-  flutter_email_sender_method_channel:
-    dependency: transitive
-    description:
-      name: flutter_email_sender_method_channel
-      sha256: f40d2893b6f3e16d771b65fd9ffaeada44b65e95a02bcf532ed55775a0a96a60
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.0.1"
-  flutter_email_sender_platform_interface:
-    dependency: transitive
-    description:
-      name: flutter_email_sender_platform_interface
-      sha256: "576fb2b08790040693bd02b1911ad51bf52ccabba87dc2964d6805552f27c39a"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.0.0"
-  flutter_email_sender_web:
-    dependency: transitive
-    description:
-      name: flutter_email_sender_web
-      sha256: cf47a07211d2e802f4638a8e17bfc87de0ee5c93f91d16051c0ed5ad01781c65
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.0.0"
   flutter_gen_core:
     dependency: transitive
     description:

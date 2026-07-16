@@ -400,6 +400,8 @@ local.properties
 # Other files
 .depend
 user*
+!src/ui/flutter_app/lib/experience_recording/models/user_action_event.dart
+!src/ui/flutter_app/test/experience_recording/user_action_event_test.dart
 desktop.ini
 *.swp
 *.zip

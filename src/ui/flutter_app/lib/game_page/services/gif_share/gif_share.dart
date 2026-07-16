@@ -10,6 +10,7 @@ import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../experience_recording/services/diagnostic_reproduction_service.dart';
 import '../../../shared/database/database.dart';
 import 'widgets_to_image_controller.dart';
 
@@ -95,6 +96,7 @@ class GifShare {
 
   /// Call when "Share GIF" is tapped.
   Future<bool> shareGif() async {
+    DiagnosticReplayGuard.requireAllowed('GIF capture and sharing');
     if (!supportsGameScreenRecorder ||
         DB().generalSettings.gameScreenRecorderSupport == false) {
       return false;

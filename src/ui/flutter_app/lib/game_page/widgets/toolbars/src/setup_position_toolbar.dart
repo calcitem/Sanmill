@@ -161,6 +161,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   }
 
   Future<void> _copyFen() async {
+    DiagnosticReplayGuard.requireAllowed('Setup clipboard exporting');
     final MillSetupPositionController? controller = _controller;
     if (controller == null) {
       return;
@@ -175,6 +176,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   }
 
   Future<void> _pasteFen() async {
+    DiagnosticReplayGuard.requireAllowed('Setup clipboard importing');
     final MillSetupPositionController? controller = _controller;
     if (controller == null) {
       return;

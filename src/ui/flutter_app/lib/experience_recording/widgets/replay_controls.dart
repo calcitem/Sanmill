@@ -64,6 +64,15 @@ class _ReplayBar extends StatelessWidget {
           _buildPlayPauseButton(service),
           const SizedBox(width: 4),
 
+          if (state == ReplayState.paused) ...<Widget>[
+            _buildIconButton(
+              icon: Icons.skip_next,
+              color: Colors.white,
+              onTap: service.step,
+            ),
+            const SizedBox(width: 4),
+          ],
+
           // Stop button.
           _buildIconButton(
             icon: Icons.stop,
@@ -153,9 +162,25 @@ class _ReplayBar extends StatelessWidget {
           valueListenable: service.totalEventsNotifier,
           builder: (BuildContext context, int total, Widget? child2) {
             final int display = (current + 1).clamp(0, total);
-            return Text(
-              '$display/$total',
-              style: const TextStyle(color: Colors.white70, fontSize: 11),
+            return ValueListenableBuilder<String?>(
+              valueListenable: service.divergenceNotifier,
+              builder:
+                  (BuildContext context, String? divergence, Widget? child) {
+                    return Tooltip(
+                      message: divergence ?? '',
+                      child: Text(
+                        divergence == null
+                            ? '$display/$total'
+                            : '⚠ $display/$total',
+                        style: TextStyle(
+                          color: divergence == null
+                              ? Colors.white70
+                              : Colors.redAccent,
+                          fontSize: 11,
+                        ),
+                      ),
+                    );
+                  },
             );
           },
         );

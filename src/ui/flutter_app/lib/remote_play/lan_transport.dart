@@ -9,6 +9,9 @@ import 'dart:typed_data';
 
 import 'package:network_info_plus/network_info_plus.dart';
 
+import '../experience_recording/models/user_action_event.dart';
+import '../experience_recording/services/diagnostic_action_trail_service.dart';
+import '../experience_recording/services/diagnostic_reproduction_service.dart';
 import 'remote_diagnostics.dart';
 import 'remote_models.dart';
 import 'remote_protocol.dart';
@@ -86,6 +89,7 @@ class LanTransport implements RemoteTransport, RemoteTransportLogContextSink {
 
   @override
   Future<void> startHost(RemoteHostOptions options) async {
+    DiagnosticReplayGuard.requireAllowed('LAN hosting');
     if (role != RemoteRole.host) {
       throw StateError('A join transport cannot host.');
     }
@@ -168,6 +172,7 @@ class LanTransport implements RemoteTransport, RemoteTransportLogContextSink {
     Duration timeout = const Duration(seconds: 5),
     String? localAddress,
   }) async {
+    DiagnosticReplayGuard.requireAllowed('LAN discovery');
     if (role != RemoteRole.join) {
       throw StateError('Only a join transport can discover hosts.');
     }
@@ -300,6 +305,7 @@ class LanTransport implements RemoteTransport, RemoteTransportLogContextSink {
 
   @override
   Future<void> join(RemoteEndpoint endpoint) async {
+    DiagnosticReplayGuard.requireAllowed('LAN connections');
     if (role != RemoteRole.join) {
       throw StateError('A host transport cannot join another host.');
     }
@@ -543,6 +549,7 @@ class LanTransport implements RemoteTransport, RemoteTransportLogContextSink {
 
   @override
   Future<void> send(Uint8List bytes) async {
+    DiagnosticReplayGuard.requireAllowed('LAN sending');
     final Socket? socket = _socket;
     if (!_handshakeComplete || socket == null) {
       throw const SocketException('LAN peer is not connected.');
@@ -671,6 +678,15 @@ class LanTransport implements RemoteTransport, RemoteTransportLogContextSink {
       'REMOTE_TRANSPORT_STATE_CHANGED',
       'from=${previous.name} to=${next.name}',
     );
+    DiagnosticActionTrailService().record(
+      actionId: 'remote.state.changed',
+      phase: UserActionPhase.success,
+      payload: <String, dynamic>{
+        'transport': 'lan',
+        'fromState': previous.name,
+        'toState': next.name,
+      },
+    );
   }
 
   Future<void> _sendBusyAndClose(Socket candidate) async {
@@ -700,6 +716,16 @@ class LanTransport implements RemoteTransport, RemoteTransportLogContextSink {
   void _emitFailure(String eventCode, Object error, StackTrace stackTrace) {
     _log.error(eventCode, error, stackTrace);
     _events.add(RemoteTransportFailure(error, stackTrace));
+    DiagnosticActionTrailService().record(
+      actionId: 'remote.state.changed',
+      phase: UserActionPhase.failure,
+      payload: <String, dynamic>{
+        'transport': 'lan',
+        'fromState': _state.name,
+        'toState': RemoteConnectionState.error.name,
+        'errorCategory': error.runtimeType.toString(),
+      },
+    );
   }
 
   Future<void> _closePeerSocket({required bool expected}) async {

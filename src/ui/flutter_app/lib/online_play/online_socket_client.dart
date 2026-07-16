@@ -6,6 +6,8 @@ import 'dart:convert';
 
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+import '../experience_recording/services/diagnostic_reproduction_service.dart';
+
 sealed class OnlineSocketEvent {
   const OnlineSocketEvent();
 }
@@ -59,6 +61,7 @@ class ChannelOnlineSocketClient implements OnlineSocketClient {
 
   @override
   Future<void> connect(Uri uri) async {
+    DiagnosticReplayGuard.requireAllowed('Online socket connections');
     await _closeChannel();
     final WebSocketChannel channel = WebSocketChannel.connect(uri);
     _channel = channel;
@@ -101,6 +104,7 @@ class ChannelOnlineSocketClient implements OnlineSocketClient {
 
   @override
   void send(Map<String, Object?> message) {
+    DiagnosticReplayGuard.requireAllowed('Online socket sending');
     final WebSocketChannel? channel = _channel;
     if (!_connected || channel == null) {
       throw StateError('Online socket is not connected.');

@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import '../experience_recording/services/diagnostic_reproduction_service.dart';
 import '../remote_play/remote_models.dart';
 import 'online_models.dart';
 
@@ -123,6 +124,7 @@ class HttpOnlineRoomApi implements OnlineRoomApi {
     String? bearerToken,
     int expectedStatus = 200,
   }) async {
+    DiagnosticReplayGuard.requireAllowed('Online room requests');
     try {
       final http.Request request = http.Request(method, uri);
       request.headers['accept'] = 'application/json';

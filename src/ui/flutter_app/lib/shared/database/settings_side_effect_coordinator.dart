@@ -3,11 +3,13 @@
 
 import 'dart:async' show FutureOr, Timer, unawaited;
 
+import '../../appearance_settings/models/color_settings.dart';
 import '../../appearance_settings/models/display_settings.dart';
 import '../../experience_recording/models/recording_models.dart';
 import '../../experience_recording/services/recording_service.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../rule_settings/models/rule_settings.dart';
+import '../services/diagnostic_config_snapshot.dart';
 
 typedef EngineOptionsUpdate = FutureOr<void> Function();
 typedef RecordingEventWriter =
@@ -59,22 +61,56 @@ class SettingsSideEffectCoordinator {
 
   Timer? _engineOptionsDebounceTimer;
   Timer? _engineRuleOptionsDebounceTimer;
+  final Map<String, Map<String, dynamic>> _lastSafeSettings =
+      <String, Map<String, dynamic>>{};
 
-  void onGeneralSettingsSaved(GeneralSettings generalSettings) {
+  void onGeneralSettingsSaved(
+    GeneralSettings generalSettings, {
+    GeneralSettings? previous,
+  }) {
     _scheduleGeneralEngineOptionsUpdate();
-    _recordSettingsChange('general', generalSettings.toJson());
+    _recordSettingsChange(
+      'general',
+      generalSettings.toJson(),
+      previousSettings: previous?.toJson(),
+    );
   }
 
   void onRuleSettingsPersisted() {
     _scheduleRuleEngineOptionsUpdate();
   }
 
-  void recordRuleSettingsChange(RuleSettings ruleSettings) {
-    _recordSettingsChange('rule', ruleSettings.toJson());
+  void recordRuleSettingsChange(
+    RuleSettings ruleSettings, {
+    RuleSettings? previous,
+  }) {
+    _recordSettingsChange(
+      'rule',
+      ruleSettings.toJson(),
+      previousSettings: previous?.toJson(),
+    );
   }
 
-  void onDisplaySettingsSaved(DisplaySettings displaySettings) {
-    _recordSettingsChange('display', displaySettings.toJson());
+  void onDisplaySettingsSaved(
+    DisplaySettings displaySettings, {
+    DisplaySettings? previous,
+  }) {
+    _recordSettingsChange(
+      'display',
+      displaySettings.toJson(),
+      previousSettings: previous?.toJson(),
+    );
+  }
+
+  void onColorSettingsSaved(
+    ColorSettings colorSettings, {
+    ColorSettings? previous,
+  }) {
+    _recordSettingsChange(
+      'color',
+      colorSettings.toJson(),
+      previousSettings: previous?.toJson(),
+    );
   }
 
   void dispose() {
@@ -104,10 +140,46 @@ class SettingsSideEffectCoordinator {
     unawaited(Future<void>.sync(update));
   }
 
-  void _recordSettingsChange(String category, Map<String, dynamic> settings) {
-    _recordEvent(RecordingEventType.settingsChange, <String, dynamic>{
-      'category': category,
-      'settings': settings,
-    });
+  void _recordSettingsChange(
+    String category,
+    Map<String, dynamic> settings, {
+    Map<String, dynamic>? previousSettings,
+  }) {
+    final Set<String> allowed = switch (category) {
+      'general' => DiagnosticConfigSchema.generalReportAndApply,
+      'rule' => DiagnosticConfigSchema.ruleReportAndApply,
+      'display' => DiagnosticConfigSchema.displayReportAndApply,
+      'color' => DiagnosticConfigSchema.colorReportAndApply,
+      _ => const <String>{},
+    };
+    final Map<String, dynamic> safe = <String, dynamic>{
+      for (final String key in allowed)
+        if (settings.containsKey(key)) key: settings[key],
+    };
+    final Map<String, dynamic>? previous = previousSettings == null
+        ? _lastSafeSettings[category]
+        : <String, dynamic>{
+            for (final String key in allowed)
+              if (previousSettings.containsKey(key)) key: previousSettings[key],
+          };
+    _lastSafeSettings[category] = safe;
+    if (previous == null) {
+      _recordEvent(RecordingEventType.settingsChange, <String, dynamic>{
+        'category': category,
+        'settingId': 'initialSnapshotChanged',
+      });
+      return;
+    }
+    for (final String key in safe.keys) {
+      if (previous[key] == safe[key]) {
+        continue;
+      }
+      _recordEvent(RecordingEventType.settingsChange, <String, dynamic>{
+        'category': category,
+        'settingId': key,
+        'oldValue': previous[key],
+        'newValue': safe[key],
+      });
+    }
   }
 }

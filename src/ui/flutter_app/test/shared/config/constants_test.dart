@@ -75,11 +75,6 @@ void main() {
       expect(Constants.authorAccount, 'calcitem');
     });
 
-    test('recipientEmails should not be empty', () {
-      expect(Constants.recipientEmails, isNotEmpty);
-      expect(Constants.recipientEmails.first, contains('@'));
-    });
-
     test('settingsFile should contain project name', () {
       expect(Constants.settingsFile, contains('sanmill'));
     });

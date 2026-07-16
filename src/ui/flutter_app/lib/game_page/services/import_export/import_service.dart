@@ -16,6 +16,7 @@ class ImportService {
     BuildContext context, {
     bool shouldPop = true,
   }) async {
+    DiagnosticReplayGuard.requireAllowed('Game clipboard importing');
     // Clear snack bars before clipboard read
     rootScaffoldMessengerKey.currentState?.clearSnackBars();
 
@@ -282,6 +283,7 @@ class ImportService {
   }
 
   static void import(String moveList, {bool includeVariations = true}) {
+    DiagnosticReplayGuard.requireAllowed('Game importing');
     moveList = moveList.trim();
     String ml = moveList;
 

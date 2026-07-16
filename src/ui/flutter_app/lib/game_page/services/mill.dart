@@ -18,10 +18,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 import 'package:vibration/vibration.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
 import '../../experience_recording/models/recording_models.dart';
+import '../../experience_recording/models/user_action_event.dart';
+import '../../experience_recording/services/diagnostic_action_trail_service.dart';
+import '../../experience_recording/services/diagnostic_reproduction_service.dart';
 import '../../experience_recording/services/recording_service.dart';
 import '../../game_platform/game_export_service.dart';
 import '../../game_platform/game_session.dart' as platform;

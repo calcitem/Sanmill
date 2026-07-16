@@ -3,18 +3,18 @@
 
 // engine_failure_dialog.dart
 
-import 'package:catcher_2/catcher_2.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../generated/intl/l10n.dart';
+import '../../../shared/models/diagnostic_bundle.dart';
+import '../../../shared/services/diagnostic_report_service.dart';
 import '../../../shared/themes/app_theme.dart';
 
 /// Dialog shown when the AI engine fails to produce a move.
 ///
-/// Displays diagnostic context (FEN, phase, side to move) and offers the user
-/// a choice: dismiss, or send a diagnostic report via [Catcher2] which will
-/// trigger the configured email handler with stack trace and game state.
+/// The static entry point freezes a local first-party report draft immediately;
+/// the app then opens the shared preview page. This widget remains available
+/// for callers that only need to render the failure context.
 class EngineFailureDialog extends StatelessWidget {
   const EngineFailureDialog({required this.diagnosticContext, super.key});
 
@@ -58,8 +58,7 @@ class EngineFailureDialog extends StatelessWidget {
     return buf.toString().trimRight();
   }
 
-  /// Shows the dialog and, if the user consents, reports the error via
-  /// [Catcher2] so the configured handlers (file log + email) are invoked.
+  /// Opens the unified report flow without an extra pre-confirmation dialog.
   static Future<void> show(
     BuildContext context, {
     required String diagnosticContext,
@@ -68,25 +67,14 @@ class EngineFailureDialog extends StatelessWidget {
       return;
     }
 
-    final bool? shouldReport = await showDialog<bool>(
-      context: context,
-      builder: (_) => EngineFailureDialog(diagnosticContext: diagnosticContext),
+    await DiagnosticReportService().captureCrash(
+      error: StateError(
+        'EngineNoBestMove: AI engine failed to produce a move.\n'
+        '$diagnosticContext',
+      ),
+      stackTrace: StackTrace.current,
+      kind: DiagnosticReportKind.engineFailure,
     );
-
-    if (shouldReport ?? false) {
-      _reportError(diagnosticContext);
-    }
-  }
-
-  static void _reportError(String diagnosticContext) {
-    final StateError error = StateError(
-      'EngineNoBestMove: AI engine failed to produce a move.\n'
-      '$diagnosticContext',
-    );
-
-    if (!kIsWeb) {
-      Catcher2.reportCheckedError(error, StackTrace.current);
-    }
   }
 
   @override

@@ -24,21 +24,81 @@ class TapHandler {
 
   bool get isAiSideToMove => controller.gameInstance.isAiSideToMove;
 
-  void _recordBoardTap(int sq) {
+  Map<String, dynamic> _boardTapPayload(int sq) {
     final GameStateSnapshot? snapshot = GameController().activeSessionSnapshot;
-    RecordingService()
-        .recordEvent(RecordingEventType.boardTap, <String, dynamic>{
-          'sq': sq,
-          'phase': snapshot?.phase,
-          'action': snapshot?.payload['action']?.toString(),
-          'sideToMove': snapshot?.activeSeat.name,
-          if (snapshot != null)
-            'selectedFrom': _nativeSessionTapController.selectedFrom,
-          'gameMode': GameController().gameInstance.gameMode.toString(),
-        });
+    return <String, dynamic>{
+      'sq': sq,
+      if (snapshot?.phase case final String phase) 'phase': phase,
+      if (snapshot?.payload['action'] case final Object action)
+        'action': action.toString(),
+      if (snapshot?.activeSeat case final PlayerSeat seat)
+        'sideToMove': seat.name,
+      if (_nativeSessionTapController.selectedFrom case final String selected)
+        'selectedFrom': selected,
+      'gameMode': GameController().gameInstance.gameMode.name,
+    };
   }
 
-  Future<EngineResponse?> _tryNativeSessionTap(int sq) async {
+  void _recordBoardTapAttempt(int sq, String correlationId) {
+    RecordingService().recordEvent(
+      RecordingEventType.boardTap,
+      _boardTapPayload(sq),
+      diagnosticPhase: UserActionPhase.attempt,
+      correlationId: correlationId,
+    );
+  }
+
+  void _recordBoardTapResult(
+    int sq,
+    String correlationId,
+    UserActionPhase phase,
+  ) {
+    DiagnosticActionTrailService().record(
+      actionId: 'game.board.tap',
+      phase: phase,
+      correlationId: correlationId,
+      payload: _boardTapPayload(sq),
+    );
+  }
+
+  String _recordAiAttempt(PieceColor side) {
+    final String correlationId = const Uuid().v4();
+    DiagnosticActionTrailService().record(
+      actionId: 'game.ai.move',
+      phase: UserActionPhase.attempt,
+      correlationId: correlationId,
+      payload: <String, dynamic>{'side': side.name},
+    );
+    return correlationId;
+  }
+
+  void _recordAiSuccess(
+    GameAction action,
+    PieceColor side,
+    String correlationId,
+  ) {
+    RecordingService().recordEvent(RecordingEventType.aiMove, <String, dynamic>{
+      'move': action.payload['move']?.toString() ?? '',
+      'side': side.name,
+    }, correlationId: correlationId);
+  }
+
+  void _recordAiFailure(PieceColor side, String correlationId, Object error) {
+    DiagnosticActionTrailService().record(
+      actionId: 'game.ai.move',
+      phase: UserActionPhase.failure,
+      correlationId: correlationId,
+      payload: <String, dynamic>{
+        'side': side.name,
+        'errorCategory': error.runtimeType.toString(),
+      },
+    );
+  }
+
+  Future<EngineResponse?> _tryNativeSessionTap(
+    int sq,
+    void Function(UserActionPhase phase) completeAction,
+  ) async {
     // The Rust-native session path is now supported for:
     //   - humanVsHuman, humanVsAi (placing / moving / removing)
     //   - remote LAN, Bluetooth, and server-authoritative cloud matches
@@ -137,6 +197,9 @@ class TapHandler {
           ),
         );
     if (mode == GameMode.humanVsAi && aiTurnController.isAiTurn(session)) {
+      completeAction(UserActionPhase.cancel);
+      final PieceColor aiSide = controller.activeBoardView.sideToMove;
+      final String aiCorrelationId = _recordAiAttempt(aiSide);
       controller.isEngineRunning = true;
       controller.refreshNativeSessionHeader(
         context,
@@ -147,6 +210,15 @@ class TapHandler {
         final GameAction? aiAction = await aiTurnController.playIfAiTurn(
           session,
         );
+        if (aiAction == null) {
+          _recordAiFailure(
+            aiSide,
+            aiCorrelationId,
+            StateError('AI returned no move.'),
+          );
+        } else {
+          _recordAiSuccess(aiAction, aiSide, aiCorrelationId);
+        }
         if (!context.mounted) {
           return aiAction == null
               ? const EngineNoBestMove()
@@ -161,6 +233,7 @@ class TapHandler {
             ? const EngineNoBestMove()
             : const EngineResponseOK();
       } catch (e, st) {
+        _recordAiFailure(aiSide, aiCorrelationId, e);
         if (context.mounted) {
           controller.refreshNativeSessionHeader(context, session);
         }
@@ -193,6 +266,7 @@ class TapHandler {
         );
         _applySelectionFeedback(result.selectedFrom);
         showTip(tipMove, snackBar: false);
+        completeAction(UserActionPhase.success);
         return const EngineResponseSkip();
       case MillSessionTapStatus.applied:
         final String appliedMove =
@@ -200,6 +274,7 @@ class TapHandler {
         if (isRemoteMode) {
           final bool accepted = await controller.submitRemoteMove(appliedMove);
           if (!accepted) {
+            completeAction(UserActionPhase.failure);
             if (context.mounted) {
               showTip(S.of(context).remoteActionRejected, snackBar: true);
             }
@@ -210,6 +285,7 @@ class TapHandler {
           }
         }
         logger.i("$_logTag Native Mill applied $appliedMove");
+        completeAction(UserActionPhase.success);
         if (mode == GameMode.humanVsHuman) {
           final PieceColor sideAfterTap = controller.activeBoardView.sideToMove;
           final Phase phaseAfterTap = controller.activeBoardView.phase;
@@ -235,11 +311,22 @@ class TapHandler {
           showThinking: shouldPlayAi,
         );
         if (shouldPlayAi) {
+          final PieceColor aiSide = controller.activeBoardView.sideToMove;
+          final String aiCorrelationId = _recordAiAttempt(aiSide);
           controller.isEngineRunning = true;
           try {
             final GameAction? aiAction = await aiTurnController.playIfAiTurn(
               session,
             );
+            if (aiAction != null) {
+              _recordAiSuccess(aiAction, aiSide, aiCorrelationId);
+            } else {
+              _recordAiFailure(
+                aiSide,
+                aiCorrelationId,
+                StateError('AI returned no move.'),
+              );
+            }
             if (!context.mounted) {
               return aiAction == null
                   ? const EngineNoBestMove()
@@ -257,6 +344,7 @@ class TapHandler {
                 ? const EngineNoBestMove()
                 : const EngineResponseOK();
           } catch (e, st) {
+            _recordAiFailure(aiSide, aiCorrelationId, e);
             if (context.mounted) {
               controller.refreshNativeSessionHeader(context, session);
             }
@@ -279,6 +367,7 @@ class TapHandler {
         return const EngineResponseHumanOK();
       case MillSessionTapStatus.ignored:
         logger.t("$_logTag Native Mill ignored tap <$tappedLabel>.");
+        completeAction(UserActionPhase.cancel);
         return const EngineResponseSkip();
     }
   }
@@ -305,9 +394,43 @@ class TapHandler {
   }
 
   Future<EngineResponse> onBoardTap(int sq) async {
-    // Record every tap so replay can reproduce selection + move sequences.
-    _recordBoardTap(sq);
+    final String correlationId = const Uuid().v4();
+    _recordBoardTapAttempt(sq, correlationId);
+    bool completed = false;
+    void completeAction(UserActionPhase phase) {
+      if (completed) {
+        return;
+      }
+      completed = true;
+      _recordBoardTapResult(sq, correlationId, phase);
+    }
 
+    try {
+      final EngineResponse response = await _handleBoardTap(sq, completeAction);
+      if (!completed) {
+        final UserActionPhase phase = switch (response) {
+          EngineResponseOK() ||
+          EngineResponseHumanOK() ||
+          EngineGameIsOver() => UserActionPhase.success,
+          EngineNoBestMove() || EngineTimeOut() => UserActionPhase.failure,
+          EngineResponseSkip() ||
+          EngineCancelled() ||
+          EngineDummy() => UserActionPhase.cancel,
+          _ => UserActionPhase.failure,
+        };
+        completeAction(phase);
+      }
+      return response;
+    } on Object {
+      completeAction(UserActionPhase.failure);
+      rethrow;
+    }
+  }
+
+  Future<EngineResponse> _handleBoardTap(
+    int sq,
+    void Function(UserActionPhase phase) completeAction,
+  ) async {
     // Prevent interaction when analysis is in progress
     if (AnalysisMode.isAnalyzing) {
       logger.i("$_logTag Analysis in progress, ignoring tap.");
@@ -328,6 +451,7 @@ class TapHandler {
           setup.tapNode(node);
           GameController().setupPositionNotifier.updateIcons();
           GameController().boardSemanticsNotifier.updateSemantics();
+          completeAction(UserActionPhase.success);
         }
       }
       return const EngineResponseSkip();
@@ -371,6 +495,7 @@ class TapHandler {
 
     final EngineResponse? nativeSessionResponse = await _tryNativeSessionTap(
       sq,
+      completeAction,
     );
     if (nativeSessionResponse != null) {
       return nativeSessionResponse;

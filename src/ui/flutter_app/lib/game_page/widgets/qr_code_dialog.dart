@@ -15,6 +15,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../experience_recording/services/diagnostic_reproduction_service.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import 'mini_board.dart';
@@ -101,6 +102,7 @@ class _QrCodeDialogState extends State<QrCodeDialog> {
   }
 
   Future<void> _saveToGallery() async {
+    DiagnosticReplayGuard.requireAllowed('QR capture and saving');
     final Uint8List? pngBytes = await _captureQrImage();
     if (pngBytes == null || !mounted) {
       return;
@@ -144,6 +146,7 @@ class _QrCodeDialogState extends State<QrCodeDialog> {
   }
 
   Future<void> _shareQrCode() async {
+    DiagnosticReplayGuard.requireAllowed('QR capture and sharing');
     final Uint8List? pngBytes = await _captureQrImage();
     if (pngBytes == null) {
       return;

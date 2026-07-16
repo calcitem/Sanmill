@@ -478,10 +478,12 @@ class _SessionListPageState extends State<SessionListPage> {
             // Header row: date + game mode badge.
             Row(
               children: <Widget>[
-                const Icon(
-                  Icons.fiber_manual_record,
+                Icon(
+                  session.isUnsafeLegacy
+                      ? Icons.warning_amber_rounded
+                      : Icons.fiber_manual_record,
                   size: 10,
-                  color: Colors.red,
+                  color: session.isUnsafeLegacy ? Colors.orange : Colors.red,
                 ),
                 const SizedBox(width: 6),
                 Expanded(
@@ -519,8 +521,16 @@ class _SessionListPageState extends State<SessionListPage> {
               ],
             ),
 
-            // Notes (if any).
-            if (session.notes != null && session.notes!.isNotEmpty) ...<Widget>[
+            if (session.isUnsafeLegacy) ...<Widget>[
+              const SizedBox(height: 4),
+              Text(
+                S.of(context).unsafeLegacyRecording,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: Colors.orange),
+              ),
+            ] else if (session.notes != null &&
+                session.notes!.isNotEmpty) ...<Widget>[
               const SizedBox(height: 4),
               Text(
                 session.notes!,
@@ -538,21 +548,23 @@ class _SessionListPageState extends State<SessionListPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                TextButton.icon(
-                  onPressed: () => _replaySession(session),
-                  icon: const Icon(Icons.replay, size: 18),
-                  label: Text(S.of(context).replay),
-                ),
-                TextButton.icon(
-                  onPressed: () => _shareSession(session),
-                  icon: const Icon(Icons.share, size: 18),
-                  label: Text(S.of(context).exportSession),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.copy, size: 18),
-                  tooltip: S.of(context).copy,
-                  onPressed: () => _copyToClipboard(session),
-                ),
+                if (!session.isUnsafeLegacy) ...<Widget>[
+                  TextButton.icon(
+                    onPressed: () => _replaySession(session),
+                    icon: const Icon(Icons.replay, size: 18),
+                    label: Text(S.of(context).replay),
+                  ),
+                  TextButton.icon(
+                    onPressed: () => _shareSession(session),
+                    icon: const Icon(Icons.share, size: 18),
+                    label: Text(S.of(context).exportSession),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.copy, size: 18),
+                    tooltip: S.of(context).copy,
+                    onPressed: () => _copyToClipboard(session),
+                  ),
+                ],
                 IconButton(
                   icon: const Icon(
                     Icons.delete_outline,

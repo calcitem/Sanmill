@@ -14,6 +14,7 @@ import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
+import '../../experience_recording/services/diagnostic_reproduction_service.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
 import '../database/database.dart';
@@ -42,6 +43,7 @@ class ScreenshotService {
     String storageLocation, [
     String? filename,
   ]) async {
+    DiagnosticReplayGuard.requireAllowed('Screenshot capture');
     if (!isSupportedPlatform()) {
       logger.i("Taking screenshots is not supported on this platform");
       return;
@@ -99,6 +101,7 @@ class ScreenshotService {
   }
 
   static Future<void> saveImage(Uint8List image, String filename) async {
+    DiagnosticReplayGuard.requireAllowed('Image saving');
     if (EnvironmentConfig.test == true) {
       return;
     }

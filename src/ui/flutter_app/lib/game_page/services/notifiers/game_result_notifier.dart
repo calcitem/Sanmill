@@ -60,8 +60,10 @@ class GameResultNotifier extends ChangeNotifier {
     // If a game result is newly detected, tally the score and update
     // ratings exactly once for this terminal transition.
     if (_hasResult && !prevHasResult) {
-      _tallyScore();
-      _updateRatings();
+      if (!controller.isExperienceReplayActive) {
+        _tallyScore();
+        _updateRatings();
+      }
 
       // Record game over event for experience recording.
       RecordingService().recordEvent(

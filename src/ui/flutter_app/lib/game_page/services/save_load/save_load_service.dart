@@ -16,6 +16,7 @@ class LoadService {
     BuildContext context, {
     String? contents,
   }) async {
+    DiagnosticReplayGuard.requireAllowed('Game file access');
     final bool isMobilePlatform =
         !kIsWeb && (Platform.isAndroid || Platform.isIOS);
 
@@ -167,6 +168,7 @@ class LoadService {
     BuildContext context, {
     bool shouldPop = true,
   }) async {
+    DiagnosticReplayGuard.requireAllowed('Game saving');
     if (EnvironmentConfig.test == true) {
       return null;
     }

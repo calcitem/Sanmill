@@ -3,7 +3,6 @@
 
 // app_theme.dart
 
-import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
@@ -495,10 +494,6 @@ class AppTheme {
       letterSpacing: 0.5, // Add appropriate letter spacing
     ),
     // You can add more text styles as needed, such as bodySmall, labelLarge, etc.
-  );
-
-  static FeedbackThemeData feedbackTheme = FeedbackThemeData(
-    activeFeedbackModeColor: _appPrimaryColor,
   );
 
   static const BoxDecoration dialogDecoration = BoxDecoration(

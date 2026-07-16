@@ -4,6 +4,7 @@
 // environment_config_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/main_fdroid.dart' show configureFdroidEnvironment;
 import 'package:sanmill/shared/services/environment_config.dart';
 
 void main() {
@@ -51,6 +52,37 @@ void main() {
       EnvironmentConfig.devMode = true;
       expect(EnvironmentConfig.devMode, isTrue);
       EnvironmentConfig.devMode = origDev;
+    });
+
+    test('F-Droid explicitly clears every remote diagnostic endpoint', () {
+      final String originalDsn = EnvironmentConfig.diagnosticsDsn;
+      final String originalRecipient = EnvironmentConfig.diagnosticsRecipient;
+      final String originalPrivacy = EnvironmentConfig.diagnosticsPrivacyUrl;
+      final bool originalDisabled = EnvironmentConfig.diagnosticsRemoteDisabled;
+      final String originalChannel = EnvironmentConfig.distributionChannel;
+      final String originalDistributor = EnvironmentConfig.declaredDistributor;
+      addTearDown(() {
+        EnvironmentConfig.diagnosticsDsn = originalDsn;
+        EnvironmentConfig.diagnosticsRecipient = originalRecipient;
+        EnvironmentConfig.diagnosticsPrivacyUrl = originalPrivacy;
+        EnvironmentConfig.diagnosticsRemoteDisabled = originalDisabled;
+        EnvironmentConfig.distributionChannel = originalChannel;
+        EnvironmentConfig.declaredDistributor = originalDistributor;
+      });
+
+      EnvironmentConfig.diagnosticsDsn = 'https://public-key@errors.example/42';
+      EnvironmentConfig.diagnosticsRecipient = 'unexpected receiver';
+      EnvironmentConfig.diagnosticsPrivacyUrl = 'https://example/privacy';
+      EnvironmentConfig.diagnosticsRemoteDisabled = false;
+
+      configureFdroidEnvironment();
+
+      expect(EnvironmentConfig.diagnosticsRemoteDisabled, isTrue);
+      expect(EnvironmentConfig.diagnosticsDsn, isEmpty);
+      expect(EnvironmentConfig.diagnosticsRecipient, isEmpty);
+      expect(EnvironmentConfig.diagnosticsPrivacyUrl, isEmpty);
+      expect(EnvironmentConfig.distributionChannel, 'fdroid');
+      expect(EnvironmentConfig.declaredDistributor, 'F-Droid');
     });
   });
 }

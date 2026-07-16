@@ -7,6 +7,7 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/experience_recording/models/recording_models.dart';
+import 'package:sanmill/experience_recording/models/user_action_event.dart';
 
 void main() {
   group('RecordingEventType', () {
@@ -219,6 +220,61 @@ void main() {
         restored.initialSnapshot['generalSettings'],
         isA<Map<String, dynamic>>(),
       );
+    });
+
+    test('V2 round-trip preserves typed checkpoint and events', () {
+      final RecordingSession original = RecordingSession(
+        id: 'typed-session',
+        appVersion: 'test',
+        deviceInfo: 'Android',
+        startTime: DateTime.utc(2026),
+        durationMs: 100,
+        initialSnapshot: const <String, dynamic>{},
+        events: const <RecordingEvent>[],
+        actionCheckpoint: const ActionTrailCheckpoint(
+          sequence: 0,
+          elapsedMs: 0,
+          safeConfig: <String, dynamic>{},
+          routeStack: <String>['root:/gamePage'],
+          game: <String, dynamic>{},
+        ),
+        actionEvents: <UserActionEventV1>[
+          UserActionEventV1.fromJson(const <String, dynamic>{
+            'sequence': 1,
+            'elapsedMs': 100,
+            'runId': 'run-id',
+            'routeId': '/gamePage',
+            'actionId': 'game.board.tap',
+            'phase': 'success',
+            'correlationId': 'correlation-id',
+            'payload': <String, dynamic>{'sq': 12},
+            'stateDigest': <String, String>{'fen': 'test-fen'},
+          }),
+        ],
+      );
+
+      final RecordingSession restored = RecordingSession.fromJson(
+        jsonDecode(jsonEncode(original.toJson())) as Map<String, dynamic>,
+      );
+
+      expect(restored.schemaVersion, 2);
+      expect(restored.actionCheckpoint?.routeStack, <String>['root:/gamePage']);
+      expect(restored.actionEvents.single.payload['sq'], 12);
+    });
+
+    test('schema zero marks an unmigratable recording as deletion-only', () {
+      final RecordingSession unsafe = RecordingSession(
+        schemaVersion: 0,
+        id: 'legacy-session',
+        appVersion: '',
+        deviceInfo: '',
+        startTime: DateTime.utc(2026),
+        durationMs: 0,
+        initialSnapshot: const <String, dynamic>{},
+        events: const <RecordingEvent>[],
+      );
+
+      expect(unsafe.isUnsafeLegacy, isTrue);
     });
 
     test('fromJson handles missing optional fields', () {

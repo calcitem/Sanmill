@@ -22,8 +22,13 @@ import '../../general_settings/widgets/general_settings_page.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
+import '../../shared/services/diagnostic_config_snapshot.dart';
+import '../../shared/services/diagnostic_game_context.dart';
 import '../../shared/services/logger.dart';
 import '../models/recording_models.dart';
+import 'diagnostic_action_trail_service.dart';
+import 'diagnostic_reproduction_service.dart';
+import 'diagnostic_route_tracker.dart';
 import 'recording_service.dart';
 
 /// Supported playback speed multipliers.
@@ -78,6 +83,11 @@ class ReplayService {
     ReplaySpeed.x1,
   );
 
+  /// First state-digest mismatch found during a diagnostic replay.
+  final ValueNotifier<String?> divergenceNotifier = ValueNotifier<String?>(
+    null,
+  );
+
   ReplayState get state => stateNotifier.value;
   bool get isPlaying => state == ReplayState.playing;
   bool get isPaused => state == ReplayState.paused;
@@ -91,10 +101,15 @@ class ReplayService {
   Completer<void>? _pauseCompleter;
   bool _stopRequested = false;
   bool _useRecordedAiMoves = false;
+  bool _diagnosticReplay = false;
+  bool _stepRequested = false;
+  MillSessionTapController _nativeReplayTapController =
+      MillSessionTapController();
 
   // Settings backup for restoration after replay.
   GeneralSettings? _backupGeneralSettings;
   RuleSettings? _backupRuleSettings;
+  Map<String, dynamic>? _backupDiagnosticConfig;
 
   // -----------------------------------------------------------------------
   // Public API
@@ -124,6 +139,10 @@ class ReplayService {
     _useRecordedAiMoves = session.events.any(
       (RecordingEvent e) => e.type == RecordingEventType.aiMove,
     );
+    _diagnosticReplay = session.id.startsWith('diagnostic-');
+    _stepRequested = false;
+    _nativeReplayTapController = MillSessionTapController();
+    divergenceNotifier.value = null;
 
     totalEventsNotifier.value = session.events.length;
     progressNotifier.value = -1;
@@ -132,43 +151,69 @@ class ReplayService {
     // Back up current settings so they can be restored after replay.
     _backupGeneralSettings = DB().generalSettings;
     _backupRuleSettings = DB().ruleSettings;
+    if (_diagnosticReplay) {
+      _backupDiagnosticConfig = DiagnosticConfigSnapshot.capture();
+    }
 
     // Suppress recording hooks during replay to prevent feedback loops.
-    RecordingService().isSuppressed = true;
+    if (_diagnosticReplay) {
+      DiagnosticReplayGuard.enter();
+    } else {
+      RecordingService().isSuppressed = true;
+    }
     // Suppress automatic engine searches when we have recorded AI moves.
-    GameController().isExperienceReplayActive = _useRecordedAiMoves;
+    GameController().isExperienceReplayActive =
+        _useRecordedAiMoves || _diagnosticReplay;
 
-    // Restore the initial settings snapshot captured at recording time.
-    _restoreSnapshot(session.initialSnapshot);
+    try {
+      // Restore the initial settings snapshot captured at recording time.
+      final Map<String, dynamic> replaySnapshot = <String, dynamic>{
+        ...session.initialSnapshot,
+        if (session.actionCheckpoint != null)
+          'diagnosticGame': session.actionCheckpoint!.game,
+      };
+      final bool restoredDiagnosticGame = _restoreSnapshot(replaySnapshot);
 
-    // Reset the game board to a clean initial state.
-    GameController().reset(force: true);
-
-    await _waitForControllerReady();
-
-    // In legacy recordings without aiMove events, the engine is still needed
-    // to advance AI turns. Kick it once if the session starts with AI to move.
-    _kickLegacyAiIfNeeded();
-
-    logger.i(
-      '$_logTag Replay started: ${session.id} '
-      '(${session.events.length} events)',
-    );
-
-    // Dispatch events sequentially.
-    await _dispatchEvents();
-
-    // Finalise.
-    if (!_stopRequested) {
-      logger.i('$_logTag Replay finished: ${session.id}');
-      stateNotifier.value = ReplayState.finished;
-
-      // Give the UI a moment to show "finished", then clean up automatically.
-      await Future<void>.delayed(const Duration(milliseconds: 800));
-      if (!_stopRequested && stateNotifier.value == ReplayState.finished) {
-        _cleanup();
-        _restartAutoRecordingIfEnabled();
+      if (!restoredDiagnosticGame) {
+        // Reset the game board to a clean initial state.
+        GameController().reset(force: true);
       }
+
+      await _waitForControllerReady();
+
+      // In legacy recordings without aiMove events, the engine is still
+      // needed to advance AI turns. Kick it once when AI starts.
+      _kickLegacyAiIfNeeded();
+
+      logger.i(
+        '$_logTag Replay started: ${session.id} '
+        '(${session.events.length} events)',
+      );
+
+      // Dispatch events sequentially.
+      await _dispatchEvents();
+
+      if (!_stopRequested && stateNotifier.value != ReplayState.paused) {
+        _verifyFinalDiagnosticState();
+      }
+
+      // Finalise.
+      if (!_stopRequested && stateNotifier.value != ReplayState.paused) {
+        logger.i('$_logTag Replay finished: ${session.id}');
+        stateNotifier.value = ReplayState.finished;
+
+        // Give the UI a moment to show "finished", then clean up
+        // automatically.
+        await Future<void>.delayed(const Duration(milliseconds: 800));
+        if (!_stopRequested && stateNotifier.value == ReplayState.finished) {
+          _cleanup();
+          _restartAutoRecordingIfEnabled();
+        }
+      }
+    } on Object {
+      _cleanup();
+      _restartAutoRecordingIfEnabled();
+      rethrow;
     }
   }
 
@@ -191,6 +236,15 @@ class ReplayService {
     _pauseCompleter?.complete();
     _pauseCompleter = null;
     logger.i('$_logTag Replay resumed at event $_currentIndex');
+  }
+
+  /// Executes exactly one event while paused, then pauses again.
+  void step() {
+    if (state != ReplayState.paused) {
+      return;
+    }
+    _stepRequested = true;
+    resume();
   }
 
   /// Stops the replay and restores original settings.
@@ -251,12 +305,23 @@ class ReplayService {
       // board taps require awaiting engine/state transitions.
       await _applyEvent(event); // ignore: use_build_context_synchronously
 
+      if (_diagnosticReplay && !_verifyDiagnosticEvent(event)) {
+        progressNotifier.value = _currentIndex;
+        _currentIndex++;
+        pause();
+        continue;
+      }
+
       if (_stopRequested) {
         break;
       }
 
       progressNotifier.value = _currentIndex;
       _currentIndex++;
+      if (_stepRequested && _currentIndex < events.length) {
+        _stepRequested = false;
+        pause();
+      }
     }
   }
 
@@ -314,8 +379,9 @@ class ReplayService {
         GameController().reset(force: force, lanRestart: lanRestart);
 
       case RecordingEventType.gameModeChange:
-        // Mode changes are informational during replay; the initial snapshot
-        // already contains the correct mode.
+        if (_diagnosticReplay) {
+          _applyDiagnosticGameModeChange(event.data);
+        }
         break;
 
       case RecordingEventType.historyNavigation:
@@ -465,8 +531,7 @@ class ReplayService {
       return false;
     }
     final String label = MillBoardCoordinateMaps.nodeToNotation(node);
-    final MillSessionTapController tapController = MillSessionTapController();
-    final MillSessionTapResult result = await tapController.tap(
+    final MillSessionTapResult result = await _nativeReplayTapController.tap(
       session: session,
       tappedLabel: label,
     );
@@ -512,12 +577,24 @@ class ReplayService {
     final String move = rawMove.trim().toLowerCase();
 
     try {
-      if (true) {
-        final BuildContext? context = currentNavigatorKey.currentContext;
-        final GameSession? session = context == null
-            ? null
-            : GameSessionScope.sessionOf(context);
-        if (session is NativeMillGameSession) {
+      final BuildContext? context = currentNavigatorKey.currentContext;
+      final GameSession? session = context == null
+          ? null
+          : GameSessionScope.sessionOf(context);
+      if (session is NativeMillGameSession) {
+        GameAction? action;
+        for (final GameAction legal in session.legalActions) {
+          if (legal.payload['move'] == move) {
+            action = legal;
+            break;
+          }
+        }
+        if (action != null) {
+          await session.apply(action);
+          logger.i('$_logTag Replay: applied native aiMove $move');
+          return;
+        }
+        if (!_diagnosticReplay) {
           final NativeMillAiTurnController aiTurnController =
               NativeMillAiTurnController(
                 generalSettings: DB().generalSettings,
@@ -525,18 +602,6 @@ class ReplayService {
                     .gameInstance
                     .awaitPendingMillSoundBeforeRemove,
               );
-          GameAction? action;
-          for (final GameAction legal in session.legalActions) {
-            if (legal.payload['move'] == move) {
-              action = legal;
-              break;
-            }
-          }
-          if (action != null) {
-            await session.apply(action);
-            logger.i('$_logTag Replay: applied native aiMove $move');
-            return;
-          }
           final GameAction? searched = await aiTurnController.playIfAiTurn(
             session,
           );
@@ -548,20 +613,42 @@ class ReplayService {
             return;
           }
         }
-        // Steady-state replay always finds a native session.  If it
-        // does not (test fixtures, very-early init), surface loudly
-        // instead of falling through to the deleted
-        // `gameInstance.doMove` legacy path.
-        logger.e(
-          '$_logTag Replay: aiMove had no NativeMillGameSession '
-          'available; skipping move=$move side=$side.',
-        );
-        stop();
       }
+      // Steady-state replay always finds a native session. If it does not, or
+      // if an imported diagnostic move is illegal, leave the state untouched
+      // so the expected digest identifies this exact event as the divergence.
+      logger.e(
+        '$_logTag Replay: recorded aiMove was unavailable; '
+        'move=$move side=$side.',
+      );
     } catch (e) {
       logger.e('$_logTag Replay: aiMove exception: $move (side=$side): $e');
-      stop();
     }
+  }
+
+  void _applyDiagnosticGameModeChange(Map<String, dynamic> data) {
+    final String? modeName = data['mode'] as String?;
+    final String? fen = GameController().activeFen;
+    if (modeName == null || fen == null) {
+      return;
+    }
+    const Set<GameMode> allowed = <GameMode>{
+      GameMode.humanVsAi,
+      GameMode.humanVsHuman,
+      GameMode.analysis,
+    };
+    GameMode? mode;
+    for (final GameMode candidate in allowed) {
+      if (candidate.name == modeName) {
+        mode = candidate;
+        break;
+      }
+    }
+    if (mode == null) {
+      logger.w('$_logTag Replay: rejected unsafe game mode $modeName');
+      return;
+    }
+    GameController().startGameFromFen(mode: mode, fen: fen);
   }
 
   PieceColor? _parsePieceColor(String? value) {
@@ -790,45 +877,111 @@ class ReplayService {
 
   void _applySettingsChange(Map<String, dynamic> data) {
     final String category = data['category'] as String? ?? '';
-    switch (category) {
-      case 'general':
-        final Map<String, dynamic>? settings =
-            data['settings'] as Map<String, dynamic>?;
-        if (settings != null) {
-          DB().generalSettings = GeneralSettings.fromJson(settings);
-        }
-      case 'rule':
-        final Map<String, dynamic>? settings =
-            data['settings'] as Map<String, dynamic>?;
-        if (settings != null) {
-          DB().ruleSettings = RuleSettings.fromJson(settings);
-        }
-      // Display and color settings changes are cosmetic; applying them during
-      // replay could be jarring, so they are intentionally skipped.
-      default:
-        break;
+    final String settingId = data['settingId'] as String? ?? '';
+    if (settingId.isEmpty || !data.containsKey('newValue')) {
+      return;
     }
+    final (String, Set<String>) target = switch (category) {
+      'general' => (
+        'generalSettings',
+        DiagnosticConfigSchema.generalReportAndApply,
+      ),
+      'rule' => ('ruleSettings', DiagnosticConfigSchema.ruleReportAndApply),
+      'display' => (
+        'displaySettings',
+        DiagnosticConfigSchema.displayReportAndApply,
+      ),
+      'color' => ('colorSettings', DiagnosticConfigSchema.colorReportAndApply),
+      _ => ('', const <String>{}),
+    };
+    if (target.$1.isEmpty || !target.$2.contains(settingId)) {
+      logger.w('$_logTag Replay: rejected unsafe setting $category.$settingId');
+      return;
+    }
+    final Map<String, dynamic> snapshot = DiagnosticConfigSnapshot.capture();
+    final Map<String, dynamic> values = Map<String, dynamic>.from(
+      snapshot[target.$1] as Map<String, dynamic>,
+    )..[settingId] = data['newValue'];
+    snapshot[target.$1] = values;
+    DiagnosticConfigSnapshot.apply(snapshot);
   }
 
   // -----------------------------------------------------------------------
   // Snapshot restoration
   // -----------------------------------------------------------------------
 
-  void _restoreSnapshot(Map<String, dynamic> snapshot) {
+  bool _restoreSnapshot(Map<String, dynamic> snapshot) {
     try {
-      final Map<String, dynamic>? general =
-          snapshot['generalSettings'] as Map<String, dynamic>?;
-      if (general != null) {
-        DB().generalSettings = GeneralSettings.fromJson(general);
-      }
-
-      final Map<String, dynamic>? rules =
-          snapshot['ruleSettings'] as Map<String, dynamic>?;
-      if (rules != null) {
-        DB().ruleSettings = RuleSettings.fromJson(rules);
+      final Map<String, dynamic> config = Map<String, dynamic>.from(snapshot)
+        ..remove('diagnosticGame')
+        ..remove('diagnosticFinalGame');
+      DiagnosticConfigSnapshot.apply(config);
+      final Object? game = snapshot['diagnosticGame'];
+      if (game is Map<String, dynamic>) {
+        return DiagnosticGameContext.restore(game);
       }
     } catch (e) {
       logger.w('$_logTag Snapshot restore error: $e');
+    }
+    return false;
+  }
+
+  bool _verifyDiagnosticEvent(RecordingEvent event) {
+    final Map<String, dynamic> actual = DiagnosticGameContext.capture();
+    final String? expectedFen = event.data['expectedFen'] as String?;
+    final String? expectedZobrist = event.data['expectedZobrist'] as String?;
+    final String? expectedConfig = event.data['expectedConfig'] as String?;
+    final String? expectedRoute = event.data['expectedRoute'] as String?;
+    final int? sequence = event.data['diagnosticSequence'] as int?;
+    if (expectedFen != null && actual['fen']?.toString() != expectedFen) {
+      divergenceNotifier.value =
+          'Event $sequence FEN mismatch: expected $expectedFen, '
+          'actual ${actual['fen']}';
+      return false;
+    }
+    if (expectedZobrist != null &&
+        actual['zobrist']?.toString() != expectedZobrist) {
+      divergenceNotifier.value =
+          'Event $sequence Zobrist mismatch: expected $expectedZobrist, '
+          'actual ${actual['zobrist']}';
+      return false;
+    }
+    if (expectedConfig != null) {
+      final String actualConfig = DiagnosticActionTrailService.configDigest(
+        DiagnosticConfigSnapshot.capture(),
+      );
+      if (actualConfig != expectedConfig) {
+        divergenceNotifier.value =
+            'Event $sequence configuration mismatch: '
+            'expected $expectedConfig, actual $actualConfig';
+        return false;
+      }
+    }
+    if (expectedRoute != null &&
+        DiagnosticRouteTracker.currentRouteId != expectedRoute) {
+      divergenceNotifier.value =
+          'Event $sequence route mismatch: expected $expectedRoute, '
+          'actual ${DiagnosticRouteTracker.currentRouteId}';
+      return false;
+    }
+    return true;
+  }
+
+  void _verifyFinalDiagnosticState() {
+    final Object? expected = _session?.initialSnapshot['diagnosticFinalGame'];
+    if (expected is! Map<String, dynamic>) {
+      return;
+    }
+    final Map<String, dynamic> actual = DiagnosticGameContext.capture();
+    for (final String key in const <String>{'fen', 'zobrist'}) {
+      if (expected[key] != null &&
+          actual[key]?.toString() != expected[key].toString()) {
+        divergenceNotifier.value =
+            'Final $key mismatch: expected ${expected[key]}, '
+            'actual ${actual[key]}';
+        pause();
+        return;
+      }
     }
   }
 
@@ -838,7 +991,9 @@ class ReplayService {
 
   void _cleanup() {
     // Re-enable recording hooks.
-    RecordingService().isSuppressed = false;
+    if (!_diagnosticReplay) {
+      RecordingService().isSuppressed = false;
+    }
     GameController().isExperienceReplayActive = false;
 
     // Restore the settings that were active before replay started.
@@ -850,11 +1005,21 @@ class ReplayService {
       DB().ruleSettings = _backupRuleSettings!;
       _backupRuleSettings = null;
     }
+    if (_backupDiagnosticConfig case final Map<String, dynamic> snapshot) {
+      DiagnosticConfigSnapshot.apply(snapshot);
+      _backupDiagnosticConfig = null;
+    }
+    if (_diagnosticReplay) {
+      DiagnosticReplayGuard.exit();
+    }
 
     _session = null;
     _currentIndex = 0;
     _pauseCompleter = null;
     _useRecordedAiMoves = false;
+    _diagnosticReplay = false;
+    _stepRequested = false;
+    _nativeReplayTapController = MillSessionTapController();
     stateNotifier.value = ReplayState.idle;
     progressNotifier.value = -1;
     totalEventsNotifier.value = 0;

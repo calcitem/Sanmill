@@ -4,6 +4,9 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import '../experience_recording/models/user_action_event.dart';
+import '../experience_recording/services/diagnostic_action_trail_service.dart';
+import '../experience_recording/services/diagnostic_reproduction_service.dart';
 import 'bluetooth_adapter.dart';
 import 'remote_diagnostics.dart';
 import 'remote_models.dart';
@@ -79,6 +82,7 @@ class BluetoothTransport
 
   @override
   Future<void> startHost(RemoteHostOptions options) async {
+    DiagnosticReplayGuard.requireAllowed('Bluetooth hosting');
     if (role != RemoteRole.host) {
       throw StateError('A join BLE transport cannot host.');
     }
@@ -110,6 +114,7 @@ class BluetoothTransport
     Duration timeout = const Duration(seconds: 5),
     String? localAddress,
   }) async {
+    DiagnosticReplayGuard.requireAllowed('Bluetooth discovery');
     if (role != RemoteRole.join) {
       throw StateError('Only a join BLE transport can scan.');
     }
@@ -152,6 +157,7 @@ class BluetoothTransport
 
   @override
   Future<void> join(RemoteEndpoint endpoint) async {
+    DiagnosticReplayGuard.requireAllowed('Bluetooth connections');
     if (role != RemoteRole.join) {
       throw StateError('A host BLE transport cannot join.');
     }
@@ -386,6 +392,7 @@ class BluetoothTransport
 
   @override
   Future<void> send(Uint8List bytes) {
+    DiagnosticReplayGuard.requireAllowed('Bluetooth sending');
     final Completer<void> result = Completer<void>();
     _sendSerial = _sendSerial.then<void>((_) async {
       try {
@@ -530,6 +537,15 @@ class BluetoothTransport
       'REMOTE_TRANSPORT_STATE_CHANGED',
       'from=${previous.name} to=${next.name}',
     );
+    DiagnosticActionTrailService().record(
+      actionId: 'remote.state.changed',
+      phase: UserActionPhase.success,
+      payload: <String, dynamic>{
+        'transport': 'bluetooth',
+        'fromState': previous.name,
+        'toState': next.name,
+      },
+    );
   }
 
   void _emitFailure(String code, Object error, StackTrace stackTrace) {
@@ -537,6 +553,16 @@ class BluetoothTransport
     if (!_events.isClosed) {
       _events.add(RemoteTransportFailure(error, stackTrace));
     }
+    DiagnosticActionTrailService().record(
+      actionId: 'remote.state.changed',
+      phase: UserActionPhase.failure,
+      payload: <String, dynamic>{
+        'transport': 'bluetooth',
+        'fromState': _state.name,
+        'toState': RemoteConnectionState.error.name,
+        'errorCategory': error.runtimeType.toString(),
+      },
+    );
   }
 
   void _assertOpen() {

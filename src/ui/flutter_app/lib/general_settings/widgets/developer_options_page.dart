@@ -3,14 +3,20 @@
 
 // developer_options_page.dart
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
+import '../../experience_recording/pages/diagnostic_reproduction_page.dart';
 import '../../experience_recording/pages/session_list_page.dart';
+import '../../experience_recording/services/diagnostic_action_trail_service.dart';
 import '../../experience_recording/services/recording_service.dart';
 import '../../games/mill/opening_book/opening_book_studio_page.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
+import '../../shared/pages/diagnostic_drafts_page.dart';
+import '../../shared/services/diagnostic_report_service.dart';
 import '../../shared/services/snackbar_service.dart';
 import '../../shared/widgets/settings/settings.dart';
 import '../models/general_settings.dart';
@@ -49,6 +55,25 @@ class DeveloperOptionsPage extends StatelessWidget {
         builder: (BuildContext context) => const SessionListPage(),
       ),
     );
+  }
+
+  void _setDiagnosticActionTrailEnabled(
+    GeneralSettings generalSettings,
+    bool value,
+  ) {
+    DB().generalSettings = generalSettings.copyWith(
+      diagnosticActionTrailEnabled: value,
+    );
+    unawaited(DiagnosticActionTrailService().setEnabled(value));
+  }
+
+  Future<void> _clearDiagnosticActionTrail(BuildContext context) async {
+    await DiagnosticActionTrailService().clear();
+    if (context.mounted) {
+      SnackBarService.showRootSnackBar(
+        S.of(context).diagnosticActionTrailCleared,
+      );
+    }
   }
 
   SettingsList _buildDeveloperOptionsList(
@@ -108,6 +133,51 @@ class DeveloperOptionsPage extends StatelessWidget {
                 MaterialPageRoute<void>(
                   builder: (BuildContext context) =>
                       const OpeningBookStudioPage(),
+                ),
+              ),
+            ),
+          ],
+        ),
+        SettingsCard(
+          key: const Key('developer_options_page_diagnostic_action_trail'),
+          title: Text(S.of(context).diagnosticActionTrail),
+          children: <Widget>[
+            SettingsListTile.switchTile(
+              key: const Key('diagnostic_action_trail_enabled'),
+              value: generalSettings.diagnosticActionTrailEnabled,
+              onChanged: (bool value) =>
+                  _setDiagnosticActionTrailEnabled(generalSettings, value),
+              titleString: S.of(context).diagnosticActionTrail,
+              subtitleString: S.of(context).diagnosticActionTrailDescription,
+            ),
+            SettingsListTile(
+              key: const Key('diagnostic_action_trail_clear'),
+              titleString: S.of(context).diagnosticClearActionTrail,
+              trailingString:
+                  '${DiagnosticActionTrailService().eventCount} / '
+                  '${DiagnosticActionTrailService.maxEvents}',
+              onTap: () => _clearDiagnosticActionTrail(context),
+            ),
+            SettingsListTile(
+              key: const Key('diagnostic_paste_and_reproduce'),
+              titleString: S.of(context).diagnosticPasteAndReproduce,
+              subtitleString: S
+                  .of(context)
+                  .diagnosticPasteAndReproduceDescription,
+              onTap: () =>
+                  DiagnosticReproductionPage.importFromClipboard(context),
+            ),
+            SettingsListTile(
+              key: const Key('diagnostic_saved_drafts'),
+              titleString: S.of(context).diagnosticSavedDrafts,
+              subtitleString: S.of(context).diagnosticSavedDraftsDescription,
+              trailingString: DiagnosticReportService().drafts.value.length
+                  .toString(),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  settings: const RouteSettings(name: '/diagnosticDrafts'),
+                  builder: (BuildContext context) =>
+                      const DiagnosticDraftsPage(),
                 ),
               ),
             ),

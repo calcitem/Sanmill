@@ -15,6 +15,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../appearance_settings/models/display_settings.dart';
 import '../../experience_recording/models/recording_models.dart';
+import '../../experience_recording/services/diagnostic_reproduction_service.dart';
 import '../../experience_recording/services/recording_service.dart';
 import '../../game_platform/game_session.dart'
     show GameAction, GameSession, PlayerSeat;
@@ -1375,6 +1376,7 @@ class PlayAreaState extends State<PlayArea> {
   }) async {
     assert(_isAnalysisMode, 'Analysis export is analysis-mode only.');
     assert(text.trim().isNotEmpty, 'Analysis export text must not be empty.');
+    DiagnosticReplayGuard.requireAllowed('Game clipboard exporting');
     RecordingService().recordEvent(
       RecordingEventType.toolbarAction,
       <String, dynamic>{'toolbar': 'analysisMenu', 'action': eventAction},
@@ -1396,6 +1398,7 @@ class PlayAreaState extends State<PlayArea> {
   }) async {
     assert(_isAnalysisMode, 'Analysis sharing is analysis-mode only.');
     assert(text.trim().isNotEmpty, 'Analysis sharing text must not be empty.');
+    DiagnosticReplayGuard.requireAllowed('Game sharing');
     RecordingService().recordEvent(
       RecordingEventType.toolbarAction,
       <String, dynamic>{'toolbar': 'analysisMenu', 'action': eventAction},

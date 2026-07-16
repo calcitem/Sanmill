@@ -8,10 +8,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:uuid/uuid.dart';
 
+import '../../experience_recording/models/user_action_event.dart';
+import '../../experience_recording/services/diagnostic_action_trail_service.dart';
+import '../../experience_recording/services/diagnostic_reproduction_service.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../generated/intl/l10n.dart';
 import '../database/database.dart';
+import 'diagnostic_sanitizer.dart';
 import 'logger.dart';
 
 /// A service to interact with LLM providers like OpenAI API
@@ -32,10 +37,27 @@ class LlmService {
 
   /// Returns a stream of string chunks as they are received
   Stream<String> generateResponse(String prompt, BuildContext context) async* {
+    DiagnosticReplayGuard.requireAllowed('LLM requests');
     final GeneralSettings settings = DB().generalSettings;
+    final String correlationId = const Uuid().v4();
+    _recordDiagnosticRequest(
+      phase: UserActionPhase.attempt,
+      correlationId: correlationId,
+      settings: settings,
+      feature: 'moveAnalysis',
+      textLength: prompt.length,
+    );
 
     // Check if LLM is configured
     if (!isLlmConfigured()) {
+      _recordDiagnosticRequest(
+        phase: UserActionPhase.cancel,
+        correlationId: correlationId,
+        settings: settings,
+        feature: 'moveAnalysis',
+        textLength: prompt.length,
+        errorCategory: 'notConfigured',
+      );
       yield S.of(context).llmNotConfiguredPleaseCheckYourSettings;
       return;
     }
@@ -60,6 +82,13 @@ class LlmService {
             temperature: settings.llmTemperature,
           );
 
+          _recordDiagnosticRequest(
+            phase: UserActionPhase.success,
+            correlationId: correlationId,
+            settings: settings,
+            feature: 'moveAnalysis',
+            textLength: prompt.length,
+          );
           yield response;
           break;
 
@@ -73,6 +102,13 @@ class LlmService {
             temperature: settings.llmTemperature,
           );
 
+          _recordDiagnosticRequest(
+            phase: UserActionPhase.success,
+            correlationId: correlationId,
+            settings: settings,
+            feature: 'moveAnalysis',
+            textLength: prompt.length,
+          );
           yield response;
           break;
 
@@ -86,11 +122,26 @@ class LlmService {
             temperature: settings.llmTemperature,
           );
 
+          _recordDiagnosticRequest(
+            phase: UserActionPhase.success,
+            correlationId: correlationId,
+            settings: settings,
+            feature: 'moveAnalysis',
+            textLength: prompt.length,
+          );
           yield response;
           break;
       }
     } catch (e) {
-      logger.e('Error generating LLM response: $e');
+      _recordDiagnosticRequest(
+        phase: UserActionPhase.failure,
+        correlationId: correlationId,
+        settings: settings,
+        feature: 'moveAnalysis',
+        textLength: prompt.length,
+        errorCategory: e.runtimeType.toString(),
+      );
+      logger.e('Error generating LLM response: ${e.runtimeType}');
       yield 'Error: $e';
     }
   }
@@ -101,10 +152,28 @@ class LlmService {
     required String systemPrompt,
     required String userPrompt,
   }) async* {
+    DiagnosticReplayGuard.requireAllowed('LLM requests');
     final GeneralSettings settings = DB().generalSettings;
+    final String correlationId = const Uuid().v4();
+    final int textLength = systemPrompt.length + userPrompt.length;
+    _recordDiagnosticRequest(
+      phase: UserActionPhase.attempt,
+      correlationId: correlationId,
+      settings: settings,
+      feature: 'customPrompt',
+      textLength: textLength,
+    );
 
     // Check if LLM is configured
     if (!isLlmConfigured()) {
+      _recordDiagnosticRequest(
+        phase: UserActionPhase.cancel,
+        correlationId: correlationId,
+        settings: settings,
+        feature: 'customPrompt',
+        textLength: textLength,
+        errorCategory: 'notConfigured',
+      );
       yield 'LLM is not configured. Please check your settings.';
       return;
     }
@@ -124,6 +193,13 @@ class LlmService {
             temperature: settings.llmTemperature,
           );
 
+          _recordDiagnosticRequest(
+            phase: UserActionPhase.success,
+            correlationId: correlationId,
+            settings: settings,
+            feature: 'customPrompt',
+            textLength: textLength,
+          );
           yield response;
           break;
 
@@ -137,6 +213,13 @@ class LlmService {
             temperature: settings.llmTemperature,
           );
 
+          _recordDiagnosticRequest(
+            phase: UserActionPhase.success,
+            correlationId: correlationId,
+            settings: settings,
+            feature: 'customPrompt',
+            textLength: textLength,
+          );
           yield response;
           break;
 
@@ -150,13 +233,51 @@ class LlmService {
             temperature: settings.llmTemperature,
           );
 
+          _recordDiagnosticRequest(
+            phase: UserActionPhase.success,
+            correlationId: correlationId,
+            settings: settings,
+            feature: 'customPrompt',
+            textLength: textLength,
+          );
           yield response;
           break;
       }
     } catch (e) {
-      logger.e('Error generating LLM response with custom prompt: $e');
+      _recordDiagnosticRequest(
+        phase: UserActionPhase.failure,
+        correlationId: correlationId,
+        settings: settings,
+        feature: 'customPrompt',
+        textLength: textLength,
+        errorCategory: e.runtimeType.toString(),
+      );
+      logger.e(
+        'Error generating LLM response with custom prompt: ${e.runtimeType}',
+      );
       yield 'Error: $e';
     }
+  }
+
+  void _recordDiagnosticRequest({
+    required UserActionPhase phase,
+    required String correlationId,
+    required GeneralSettings settings,
+    required String feature,
+    required int textLength,
+    String? errorCategory,
+  }) {
+    DiagnosticActionTrailService().record(
+      actionId: 'llm.request',
+      phase: phase,
+      correlationId: correlationId,
+      payload: <String, dynamic>{
+        'feature': feature,
+        'providerCategory': settings.llmProvider.name,
+        'textLengthBucket': DiagnosticSanitizer.lengthBucket(textLength),
+        'errorCategory': ?errorCategory,
+      },
+    );
   }
 
   /// Call OpenAI API

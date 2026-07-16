@@ -8,7 +8,6 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:catcher_2/catcher_2.dart';
-import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
@@ -18,10 +17,11 @@ import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
 import 'app_shell/sanmill_app_shell.dart';
 import 'appearance_settings/models/display_settings.dart';
+import 'experience_recording/services/diagnostic_action_trail_service.dart';
 import 'experience_recording/services/recording_navigator_observer.dart';
 import 'game_page/services/analysis_mode.dart';
 import 'game_page/services/mill.dart'
-    show ExportService, GameController, LoadService;
+    show GameController, GameMode, LoadService;
 import 'game_platform/game_registry.dart';
 import 'game_platform/play_mode_contribution.dart';
 import 'games/built_in_game_modules.dart';
@@ -33,15 +33,17 @@ import 'shared/config/constants.dart';
 import 'shared/database/database.dart';
 import 'shared/database/settings_repositories.dart';
 import 'shared/database/settings_side_effect_coordinator.dart';
+import 'shared/pages/diagnostic_report_page.dart';
 import 'shared/services/catcher_service.dart';
+import 'shared/services/diagnostic_game_context.dart';
+import 'shared/services/diagnostic_report_service.dart';
+import 'shared/services/diagnostic_sanitizer.dart';
 import 'shared/services/environment_config.dart';
 import 'shared/services/logger.dart';
-import 'shared/services/report_attachment_registry.dart';
 import 'shared/services/screenshot_service.dart';
 import 'shared/services/snackbar_service.dart';
 import 'shared/services/system_ui_service.dart';
 import 'shared/themes/app_theme.dart';
-import 'shared/utils/localizations/feedback_localization.dart';
 import 'shared/utils/localizations/sanmill_localizations.dart';
 import 'shared/widgets/snackbars/scaffold_messenger.dart';
 import 'src/rust/frb_generated.dart';
@@ -91,12 +93,62 @@ Future<void> runSanmillApp({
   // it beyond the small JSON parse.
   unawaited(OpeningBookRepository.instance.ensureLoaded());
 
-  // Attach the current move list to crash / error reports so engine-failure
-  // diagnostics ship with a replayable PGN file.
-  ReportAttachmentRegistry.register(ExportService.exportMoveListToTempFile);
-  ReportAttachmentRegistry.register(
-    GameController().exportRemoteDiagnosticsToTempFile,
+  DiagnosticGameContext.register(
+    capture: () {
+      final GameController controller = GameController();
+      final String moveText = DiagnosticSanitizer.sanitizeMoveText(
+        controller.gameRecorder.moveHistoryTextWithoutVariations,
+      );
+      final String? lastMove = controller.gameRecorder.mainlineMoves.isEmpty
+          ? null
+          : controller.gameRecorder.mainlineMoves.last.notation;
+      return <String, dynamic>{
+        if (controller.activeFen case final String fen) 'fen': fen,
+        'mode': controller.gameInstance.gameMode.name,
+        'phase': controller.activeBoardView.phase.name,
+        'sideToMove': controller.activeBoardView.sideToMove.name,
+        if (controller.activeSessionSnapshot?.payload['tgfZobrist']
+            case final Object zobrist)
+          'zobrist': zobrist.toString(),
+        if (lastMove != null)
+          'lastMove': lastMove.length <= 160
+              ? lastMove
+              : lastMove.substring(0, 160),
+        if (moveText.isNotEmpty) 'moves': moveText,
+      };
+    },
+    restore: (Map<String, dynamic> game) {
+      final Object? fen = game['fen'];
+      final Object? modeName = game['mode'];
+      if (fen is! String || modeName is! String) {
+        return false;
+      }
+      GameMode? mode;
+      for (final GameMode candidate in GameMode.values) {
+        if (candidate.name == modeName) {
+          mode = candidate;
+          break;
+        }
+      }
+      const Set<GameMode> safeDiagnosticModes = <GameMode>{
+        GameMode.humanVsAi,
+        GameMode.humanVsHuman,
+        GameMode.analysis,
+      };
+      if (mode == null) {
+        return false;
+      }
+      if (!safeDiagnosticModes.contains(mode)) {
+        // Remote and other side-effecting modes are deliberately never
+        // restored from an imported report. Keep the position reproducible
+        // by opening it in the offline analysis mode instead.
+        mode = GameMode.analysis;
+      }
+      return GameController().startGameFromFen(mode: mode, fen: fen);
+    },
   );
+  await DiagnosticActionTrailService().initialize();
+  await DiagnosticReportService().initialize();
 
   // Wire engine callbacks through the active module so settings changes do not
   // depend on a specific game implementation.
@@ -133,32 +185,16 @@ Future<void> runSanmillApp({
 
   await initAppSystemUi(isFullScreen: DB().displaySettings.isFullScreen);
 
-  if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
+  if (EnvironmentConfig.catcher && !kIsWeb) {
     catcher = Catcher2(rootWidget: const SanmillApp(), ensureInitialized: true);
 
     await initCatcher(catcher);
 
-    // Wrap FlutterError.onError to filter known benign rendering assertions
-    // BEFORE they reach Catcher 2. Flutter rendering pipeline errors
-    // (layout/paint assertions) go through FlutterError.onError, not
-    // PlatformDispatcher.instance.onError.
+    // Refresh locale context before Flutter framework errors reach Catcher 2.
     final FlutterExceptionHandler? catcherFlutterErrorHandler =
         FlutterError.onError;
     FlutterError.onError = (FlutterErrorDetails details) {
       updateCrashReportLocaleContext();
-      if (details.exception is AssertionError) {
-        final String msg = details.exception.toString();
-        // BetterFeedback's OverflowBox can trigger layout/paint of
-        // offstage routes whose children have no size yet.
-        if (msg.contains("'hasSize': RenderBox was not laid out") ||
-            msg.contains("'child!.hasSize': is not true")) {
-          logger.w(
-            'Suppressed known rendering assertion: '
-            '${details.exception}',
-          );
-          return;
-        }
-      }
       catcherFlutterErrorHandler?.call(details);
     };
 
@@ -177,24 +213,6 @@ Future<void> runSanmillApp({
         logger.w('Caught known Flutter framework bug in EditableText: $error');
         logger.w('Stack trace: $stackTrace');
         return true; // Suppress this known framework bug
-      }
-
-      // Known issue: the BetterFeedback package wraps the entire MaterialApp
-      // in an OverflowBox (feedback_widget.dart). When this OverflowBox is
-      // marked dirty for relayout (e.g. due to MediaQuery changes), it
-      // triggers layout of the full Navigator subtree, including offstage
-      // routes. Widgets in those offstage routes may not yet have a size,
-      // causing these debug-only assertion failures. The app recovers
-      // automatically on the next frame.
-      if (error is AssertionError) {
-        if (errorStr.contains("'hasSize': RenderBox was not laid out") ||
-            errorStr.contains("'child!.hasSize': is not true")) {
-          logger.w(
-            'Suppressed known BetterFeedback rendering assertion: '
-            '$errorStr',
-          );
-          return true;
-        }
       }
 
       // Known camera / flutter_zxing lifecycle bugs:
@@ -245,10 +263,15 @@ class SanmillApp extends StatefulWidget {
 
 class SanmillAppState extends State<SanmillApp> {
   StreamSubscription<List<SharedFile>>? _intentDataStreamSubscription;
+  String? _presentedDraftId;
+  late final RecordingNavigatorObserver _rootRouteObserver;
 
   @override
   void initState() {
     super.initState();
+    _rootRouteObserver = RecordingNavigatorObserver(navigatorId: 'root');
+    DiagnosticReportService().drafts.addListener(_presentPendingDraft);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _presentPendingDraft());
     _setupSharingIntent();
   }
 
@@ -273,7 +296,7 @@ class SanmillAppState extends State<SanmillApp> {
 
       return MaterialApp(
         navigatorKey: navigatorStateKey,
-        navigatorObservers: <NavigatorObserver>[RecordingNavigatorObserver()],
+        navigatorObservers: <NavigatorObserver>[_rootRouteObserver],
         key: GlobalKey<ScaffoldState>(),
         scaffoldMessengerKey: rootScaffoldMessengerKey,
         localizationsDelegates: sanmillLocalizationsDelegates,
@@ -328,10 +351,10 @@ class SanmillAppState extends State<SanmillApp> {
     final MaterialApp materialApp = MaterialApp(
       /// Add navigator key from Catcher.
       /// It will be used to navigate user to report page or to show dialog.
-      navigatorKey: (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS)
+      navigatorKey: (EnvironmentConfig.catcher && !kIsWeb)
           ? Catcher2.navigatorKey
           : navigatorStateKey,
-      navigatorObservers: <NavigatorObserver>[RecordingNavigatorObserver()],
+      navigatorObservers: <NavigatorObserver>[_rootRouteObserver],
       key: GlobalKey<ScaffoldState>(),
       scaffoldMessengerKey: rootScaffoldMessengerKey,
       localizationsDelegates: sanmillLocalizationsDelegates,
@@ -354,21 +377,40 @@ class SanmillAppState extends State<SanmillApp> {
       home: Builder(builder: _buildHome),
     );
 
-    if (kIsWeb || Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-      return materialApp;
-    } else if (Platform.isAndroid || Platform.isIOS) {
-      return BetterFeedback(
-        localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
-          ...sanmillLocalizationsDelegates,
-          CustomFeedbackLocalizationsDelegate.delegate,
-        ],
-        localeOverride: displaySettings.locale,
-        theme: AppTheme.feedbackTheme,
-        child: materialApp,
-      );
-    }
-
     return materialApp;
+  }
+
+  void _presentPendingDraft() {
+    if (!mounted) {
+      return;
+    }
+    final List<DiagnosticReportDraft> drafts = DiagnosticReportService()
+        .drafts
+        .value
+        .where((DiagnosticReportDraft draft) => draft.isCrash)
+        .toList(growable: false);
+    if (drafts.isEmpty || drafts.first.id == _presentedDraftId) {
+      return;
+    }
+    final NavigatorState? navigator = EnvironmentConfig.catcher && !kIsWeb
+        ? Catcher2.navigatorKey.currentState
+        : navigatorStateKey.currentState;
+    if (navigator == null) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _presentPendingDraft(),
+      );
+      return;
+    }
+    final DiagnosticReportDraft draft = drafts.first;
+    _presentedDraftId = draft.id;
+    unawaited(
+      navigator.push(
+        MaterialPageRoute<void>(
+          settings: const RouteSettings(name: '/diagnosticReport'),
+          builder: (BuildContext context) => DiagnosticReportPage(draft: draft),
+        ),
+      ),
+    );
   }
 
   Widget _buildHome(BuildContext context) {
@@ -451,6 +493,7 @@ class SanmillAppState extends State<SanmillApp> {
 
   @override
   void dispose() {
+    DiagnosticReportService().drafts.removeListener(_presentPendingDraft);
     if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
       _intentDataStreamSubscription?.cancel();
     }
