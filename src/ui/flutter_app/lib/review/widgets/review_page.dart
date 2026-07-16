@@ -231,20 +231,45 @@ class _ReviewPageState extends State<ReviewPage> {
                   children: <Widget>[
                     Expanded(
                       flex: 5,
-                      child: Column(
-                        children: <Widget>[
-                          Expanded(
-                            child: Center(
-                              child: ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                  maxWidth: 620,
+                      child: LayoutBuilder(
+                        builder:
+                            (
+                              BuildContext context,
+                              BoxConstraints boardConstraints,
+                            ) {
+                              const double navigationAllowance = 72;
+                              final double heightLimitedExtent =
+                                  boardConstraints.maxHeight -
+                                  navigationAllowance;
+                              final double availableExtent =
+                                  boardConstraints.maxWidth <
+                                      heightLimitedExtent
+                                  ? boardConstraints.maxWidth
+                                  : heightLimitedExtent;
+                              final double boardExtent = availableExtent > 620
+                                  ? 620
+                                  : availableExtent;
+                              assert(
+                                boardExtent > 0,
+                                'Wide review layout needs room for the board.',
+                              );
+                              return Center(
+                                child: SizedBox(
+                                  key: const Key('review_wide_board_column'),
+                                  width: boardConstraints.maxWidth,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      SizedBox.square(
+                                        dimension: boardExtent,
+                                        child: board,
+                                      ),
+                                      navigation,
+                                    ],
+                                  ),
                                 ),
-                                child: board,
-                              ),
-                            ),
-                          ),
-                          navigation,
-                        ],
+                              );
+                            },
                       ),
                     ),
                     const VerticalDivider(width: 1),

@@ -120,6 +120,13 @@ void main() {
       expect(find.byKey(const Key('review_correction')), findsOneWidget);
       expect(find.text('1/1'), findsOneWidget);
       expect(find.text('d6xf4'), findsOneWidget);
+      final Rect boardRect = tester.getRect(
+        find.byKey(const Key('review_board')),
+      );
+      final Rect navigationRect = tester.getRect(
+        find.byKey(const Key('review_turn_navigation')),
+      );
+      expect(navigationRect.top - boardRect.bottom, inInclusiveRange(0, 24));
 
       final Finder goodChoice = find.byKey(
         const Key('review_correction_choice_b6'),
