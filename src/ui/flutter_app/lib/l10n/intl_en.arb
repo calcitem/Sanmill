@@ -5474,5 +5474,13 @@
                 "example": "game.pgn"
             }
         }
+    },
+    "importGameFromClipboard": "Import from clipboard",
+    "@importGameFromClipboard": {
+        "description": "Action that imports a game directly from clipboard text"
+    },
+    "copyGameToClipboard": "Copy game to clipboard",
+    "@copyGameToClipboard": {
+        "description": "Action that copies the current game notation to the clipboard"
     }
 }

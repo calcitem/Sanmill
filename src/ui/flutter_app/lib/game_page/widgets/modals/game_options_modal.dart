@@ -261,7 +261,7 @@ class GameOptionsModal extends StatelessWidget {
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
-              child: Text(S.of(context).importGame),
+              child: Text(S.of(context).importGameFromClipboard),
             ),
           ),
         if (!kIsWeb &&
@@ -286,7 +286,7 @@ class GameOptionsModal extends StatelessWidget {
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
-              child: Text(S.of(context).exportGame),
+              child: Text(S.of(context).copyGameToClipboard),
             ),
           ),
         if (supportsGameScreenRecorder &&

@@ -1445,7 +1445,7 @@ class MovesListPageState extends State<MovesListPage> {
 
     final Widget importGameIcon = _emptyStateIcon(
       icon: FluentIcons.clipboard_paste_24_regular,
-      label: S.of(context).importGame,
+      label: S.of(context).importGameFromClipboard,
       onTap: _importGame,
     );
 
@@ -2871,7 +2871,7 @@ class MovesListPageState extends State<MovesListPage> {
                       color: colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 8),
-                    Text(S.of(context).importGame),
+                    Text(S.of(context).importGameFromClipboard),
                   ],
                 ),
               ),
@@ -2884,7 +2884,7 @@ class MovesListPageState extends State<MovesListPage> {
                       color: colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 8),
-                    Text(S.of(context).exportGame),
+                    Text(S.of(context).copyGameToClipboard),
                   ],
                 ),
               ),
