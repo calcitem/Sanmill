@@ -4132,7 +4132,7 @@
     "@resign": {},
     "failedToSendResignation": "Failed to send resignation",
     "@failedToSendResignation": {},
-    "opponentRequestsTakeBackAccept": "Opponent requests to take back {steps} move(s). Accept?",
+    "opponentRequestsTakeBackAccept": "{steps, select, 1{Opponent requests to take back 1 move. Accept?} other{Opponent requests to take back {steps} moves. Accept?}}",
     "@opponentRequestsTakeBackAccept": {
         "placeholders": {
             "steps": {
