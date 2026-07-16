@@ -5154,7 +5154,7 @@
     "diagnosticCrashDraft": "Crash",
     "@diagnosticCrashDraft": {"description": "Label for a locally retained crash draft."},
     "diagnosticConfigurationDifferences": "Safe configuration differences",
-    "@diagnosticConfigurationDifferences": {"description": "Expandable comparison between local and imported safe settings."}
+    "@diagnosticConfigurationDifferences": {"description": "Expandable comparison between local and imported safe settings."},
     "analysisSettingsLayout": "Layout",
     "@analysisSettingsLayout": {"description": "Header for analysis layout settings."},
     "analysisSettingsKnowledgeSources": "Knowledge sources",
