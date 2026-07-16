@@ -208,8 +208,8 @@ class EloRatingService {
           logger.i("$_logTag Bluetooth match, not updating stats");
           break;
         case GameMode.humanVsCloud:
-          // Currently treated same as Human vs AI (could be updated later)
-          _updateHumanVsAiStats(winnerColor, settings);
+          // Online friend games are casual and do not update local AI ratings.
+          logger.i("$_logTag Online friend game, not updating stats");
           break;
         case GameMode.aiVsAi:
           // AI vs AI ratings not tracked

@@ -121,7 +121,7 @@ String sanmillPlayRouteIdForGameMode({
     GameMode.humanVsLAN => MillRouteIds.humanVsLan.value,
     GameMode.humanVsBluetooth => MillRouteIds.humanVsBluetooth.value,
     GameMode.testViaLAN => MillRouteIds.humanVsLan.value,
-    GameMode.humanVsCloud => fallbackRouteId,
+    GameMode.humanVsCloud => MillRouteIds.humanVsCloud.value,
     GameMode.analysis ||
     GameMode.setupPosition ||
     GameMode.puzzle => fallbackRouteId,
@@ -2363,6 +2363,7 @@ class _PlayBottomSheet extends StatelessWidget {
       key: Key('sanmill_home_play_sheet_${mode.id.value}'),
       icon: mode.icon ?? Icons.sports_esports_rounded,
       title: mode.label,
+      subtitle: mode.subtitle,
       onTap: () {
         Navigator.of(context).pop();
         onPlayRouteSelected(mode.id.value);
@@ -2792,10 +2793,12 @@ class _MoreTile extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.onTap,
+    this.subtitle,
   });
 
   final IconData icon;
   final String title;
+  final String? subtitle;
   final VoidCallback onTap;
 
   @override
@@ -2803,6 +2806,7 @@ class _MoreTile extends StatelessWidget {
     return ListTile(
       leading: Icon(icon),
       title: Text(title),
+      subtitle: subtitle == null ? null : Text(subtitle!),
       trailing: Theme.of(context).platform == TargetPlatform.iOS
           ? const Icon(Icons.chevron_right_rounded)
           : null,

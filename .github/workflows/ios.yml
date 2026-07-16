@@ -48,9 +48,17 @@ jobs:
         run: |
           cd src/ui/flutter_app
 
+          if [[ ! "$SANMILL_ONLINE_HOST" =~ ^[A-Za-z0-9.-]+$ ]]; then
+            echo "SANMILL_ONLINE_HOST must contain a valid App Link host"
+            exit 1
+          fi
+          /usr/libexec/PlistBuddy \
+            -c "Set :com.apple.developer.associated-domains:0 applinks:$SANMILL_ONLINE_HOST" \
+            ios/Runner/Runner.entitlements
+
           # First try simulator build (safer for CI)
           echo "Attempting iOS Simulator build..."
-          if flutter build ios -v --release --no-codesign --simulator; then
+          if flutter build ios -v --release --no-codesign --simulator --dart-define=SANMILL_ONLINE_BASE_URL="$SANMILL_ONLINE_BASE_URL"; then
             echo "iOS Simulator build successful"
             echo "BUILD_TYPE=simulator" >> $GITHUB_ENV
           else
@@ -60,7 +68,7 @@ jobs:
             echo "Using iOS SDK: $AVAILABLE_SDK"
 
             # Try device build with the available SDK
-            if flutter build ios -v --release --no-codesign; then
+            if flutter build ios -v --release --no-codesign --dart-define=SANMILL_ONLINE_BASE_URL="$SANMILL_ONLINE_BASE_URL"; then
               echo "iOS device build successful with SDK $AVAILABLE_SDK"
               echo "BUILD_TYPE=device" >> $GITHUB_ENV
             else
@@ -68,6 +76,9 @@ jobs:
               exit 1
             fi
           fi
+        env:
+          SANMILL_ONLINE_BASE_URL: ${{ vars.SANMILL_ONLINE_BASE_URL }}
+          SANMILL_ONLINE_HOST: ${{ vars.SANMILL_ONLINE_HOST }}
 
       # Archive iOS app (simulator or device based on build type)
       - name: Archive iOS app

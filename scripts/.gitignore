@@ -25,3 +25,5 @@
 !uci_probe.py
 !compare_engine_perf.py
 !convert_mill_fen_ids.py
+!build-online-wasm.sh
+!verify-fdroid-online-exclusion.sh

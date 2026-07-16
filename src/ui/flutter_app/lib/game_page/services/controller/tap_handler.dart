@@ -41,7 +41,7 @@ class TapHandler {
   Future<EngineResponse?> _tryNativeSessionTap(int sq) async {
     // The Rust-native session path is now supported for:
     //   - humanVsHuman, humanVsAi (placing / moving / removing)
-    //   - remote LAN and Bluetooth matches
+    //   - remote LAN, Bluetooth, and server-authoritative cloud matches
     //   - puzzle (human plays one side; opponent moves are auto-played
     //     by PuzzlePage from the solution line, not the engine)
     // Replay still depends on legacy side effects.
@@ -51,6 +51,7 @@ class TapHandler {
         mode != GameMode.analysis &&
         mode != GameMode.humanVsLAN &&
         mode != GameMode.humanVsBluetooth &&
+        mode != GameMode.humanVsCloud &&
         mode != GameMode.puzzle) {
       _nativeSessionTapController.clearSelection();
       return null;
@@ -88,7 +89,9 @@ class TapHandler {
     }
 
     final bool isRemoteMode =
-        mode == GameMode.humanVsLAN || mode == GameMode.humanVsBluetooth;
+        mode == GameMode.humanVsLAN ||
+        mode == GameMode.humanVsBluetooth ||
+        mode == GameMode.humanVsCloud;
     if (isRemoteMode) {
       if (controller.isNativeRemoteOpponentTurn(session)) {
         rootScaffoldMessengerKey.currentState!.showSnackBarClear(
@@ -375,7 +378,7 @@ class TapHandler {
 
     // Reaching this point means `_tryNativeSessionTap` returned null,
     // which only happens for game modes outside its allow-list
-    // (aiVsAi, humanVsCloud-not-implemented, testViaLAN).  None of
+    // (aiVsAi, testViaLAN). None of
     // these accept human taps in steady state.  Surface loudly if a
     // future game mode is added without an explicit native-tap
     // branch; the previous legacy fall-through that mutated

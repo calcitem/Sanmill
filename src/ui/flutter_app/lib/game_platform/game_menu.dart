@@ -68,6 +68,7 @@ class GameModeEntry {
     required this.id,
     required this.label,
     required this.builder,
+    this.subtitle,
     this.section = GameMenuSection.play,
     this.icon,
     this.isAvailable,
@@ -82,6 +83,7 @@ class GameModeEntry {
 
   final GameRouteId id;
   final String label;
+  final String? subtitle;
   final IconData? icon;
   final GameMenuSection section;
   final GameMenuWidgetBuilder builder;

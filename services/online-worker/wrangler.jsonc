@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "sanmill-online",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-07-10",
+  "workers_dev": true,
+  "observability": {
+    "enabled": false
+  },
+  "vars": {
+    "ONLINE_ENABLED": "false",
+    "SOURCE_URL": "https://github.com/calcitem/Sanmill",
+    "INSTALL_URL": "https://github.com/calcitem/Sanmill/releases",
+    "SOURCE_VERSION": "development"
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "ROOMS",
+        "class_name": "GameRoom"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["GameRoom"]
+    }
+  ]
+}

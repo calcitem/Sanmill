@@ -56,7 +56,7 @@ class GameController {
   /// engine searches (AI moves are applied by the replay engine instead).
   bool isExperienceReplayActive = false;
 
-  RemoteMatchCoordinator? remoteCoordinator;
+  RemoteMatchController? remoteCoordinator;
   Map<String, Object?>? _lastRemoteDiagnostics;
   // Canceled by disposeRemoteMatch before every coordinator replacement.
   // ignore: cancel_subscriptions
@@ -737,7 +737,8 @@ class GameController {
 
   bool get isRemoteGameMode =>
       gameInstance.gameMode == GameMode.humanVsLAN ||
-      gameInstance.gameMode == GameMode.humanVsBluetooth;
+      gameInstance.gameMode == GameMode.humanVsBluetooth ||
+      gameInstance.gameMode == GameMode.humanVsCloud;
 
   MillRemoteSessionMeta? get activeRemoteMeta =>
       isRemoteGameMode ? activeNativeMillSession?.remoteMeta : null;
@@ -805,6 +806,11 @@ class GameController {
     final RemoteTransport transport = switch (kind) {
       RemoteTransportKind.lan => LanTransport(role: role),
       RemoteTransportKind.bluetooth => BluetoothTransport(role: role),
+      RemoteTransportKind.cloud => throw ArgumentError.value(
+        kind,
+        'kind',
+        'Cloud matches must be created by the online-play contribution.',
+      ),
     };
     final NativeMillRemoteGameAdapter adapter = NativeMillRemoteGameAdapter(
       session: session,
@@ -821,9 +827,13 @@ class GameController {
     );
     remoteCoordinator = coordinator;
     _remoteMatchSubscription = coordinator.events.listen(_onRemoteMatchEvent);
-    gameInstance.gameMode = kind == RemoteTransportKind.lan
-        ? GameMode.humanVsLAN
-        : GameMode.humanVsBluetooth;
+    gameInstance.gameMode = switch (kind) {
+      RemoteTransportKind.lan => GameMode.humanVsLAN,
+      RemoteTransportKind.bluetooth => GameMode.humanVsBluetooth,
+      RemoteTransportKind.cloud => throw StateError(
+        'Cloud coordinators use the online-play factory.',
+      ),
+    };
     disableStats = false;
     headerIconsNotifier.showIcons();
     boardSemanticsNotifier.updateSemantics();
@@ -831,6 +841,37 @@ class GameController {
       '$_logTag [Remote] coordinator created '
       'transport=${kind.name} role=${role.name}',
     );
+    return coordinator;
+  }
+
+  /// Builds and installs the server-authoritative controller supplied by the
+  /// optional online-play module without importing that module here.
+  Future<T> createCloudRemoteController<T extends RemoteMatchController>(
+    FutureOr<T> Function(RemoteGameAdapter game) factory, {
+    required RemoteRole role,
+  }) async {
+    final NativeMillGameSession? session = activeNativeMillSession;
+    if (session == null) {
+      throw StateError('A native Mill session is required for online play.');
+    }
+    await disposeRemoteMatch();
+    _lastRemoteDiagnostics = null;
+    final NativeMillRemoteGameAdapter adapter = NativeMillRemoteGameAdapter(
+      session: session,
+      transportKind: RemoteTransportKind.cloud,
+      role: role,
+      generalSettings: DB().generalSettings,
+      onBeforeReset: () => _prepareRemoteSessionReset(session),
+      onStateChanged: () => _onRemoteSessionStateChanged(session),
+    );
+    final T coordinator = await factory(adapter);
+    remoteCoordinator = coordinator;
+    _remoteMatchSubscription = coordinator.events.listen(_onRemoteMatchEvent);
+    gameInstance.gameMode = GameMode.humanVsCloud;
+    disableStats = false;
+    headerIconsNotifier.showIcons();
+    boardSemanticsNotifier.updateSemantics();
+    logger.i('$_logTag [Remote] cloud coordinator created');
     return coordinator;
   }
 
@@ -910,6 +951,38 @@ class GameController {
           headerTipNotifier.showTip(S.of(context).opponentResignedYouWin);
         }
         gameResultNotifier.showResult(force: true);
+      case RemoteOpponentConnectionChanged():
+        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+        if (context != null && !event.connected) {
+          headerTipNotifier.showTip(
+            S.of(context).onlineOpponentDisconnected,
+            snackBar: false,
+          );
+        }
+      case RemoteOpponentLeft():
+        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+        if (context != null) {
+          headerTipNotifier.showTip(
+            S.of(context).onlineOpponentLeft,
+            snackBar: true,
+          );
+        }
+      case RemoteReconnectExhausted():
+        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+        if (context != null) {
+          headerTipNotifier.showTip(
+            S.of(context).onlineReconnectFailed,
+            snackBar: true,
+          );
+        }
+      case RemoteOnlineFailure():
+        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+        if (context != null) {
+          headerTipNotifier.showTip(
+            _onlineFailureMessage(S.of(context), event.failure),
+            snackBar: true,
+          );
+        }
       case RemoteMatchAborted():
         disableStats = true;
         final BuildContext? context = rootScaffoldMessengerKey.currentContext;
@@ -936,10 +1009,24 @@ class GameController {
     }
   }
 
+  String _onlineFailureMessage(S s, OnlineFailure failure) {
+    return switch (failure) {
+      OnlineFailure.invalidInvite => s.onlineInvalidInvite,
+      OnlineFailure.inviteExpired => s.onlineInviteExpired,
+      OnlineFailure.inviteAlreadyUsed => s.onlineInviteAlreadyUsed,
+      OnlineFailure.roomUnavailable => s.onlineRoomUnavailable,
+      OnlineFailure.roomFull => s.onlineRoomFull,
+      OnlineFailure.versionMismatch => s.onlineVersionMismatch,
+      OnlineFailure.serviceUnavailable ||
+      OnlineFailure.unauthorized ||
+      OnlineFailure.protocolError => s.onlineServiceUnavailable,
+    };
+  }
+
   Future<void> _approveRemotePeer(RemotePeerApprovalRequested event) async {
-    final RemoteMatchCoordinator? coordinator = remoteCoordinator;
+    final RemoteMatchController? coordinator = remoteCoordinator;
     final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-    if (coordinator == null) {
+    if (coordinator is! RemoteMatchCoordinator) {
       return;
     }
     if (context == null) {
@@ -982,7 +1069,7 @@ class GameController {
   Future<void> _approveRemoteTakeBack(
     RemoteTakeBackApprovalRequested event,
   ) async {
-    final RemoteMatchCoordinator? coordinator = remoteCoordinator;
+    final RemoteMatchController? coordinator = remoteCoordinator;
     final BuildContext? context = rootScaffoldMessengerKey.currentContext;
     if (coordinator == null) {
       return;
@@ -1024,7 +1111,7 @@ class GameController {
   Future<void> _approveRemoteRestart(
     RemoteRestartApprovalRequested event,
   ) async {
-    final RemoteMatchCoordinator? coordinator = remoteCoordinator;
+    final RemoteMatchController? coordinator = remoteCoordinator;
     final BuildContext? context = rootScaffoldMessengerKey.currentContext;
     if (coordinator == null) {
       return;
@@ -1306,7 +1393,8 @@ class GameController {
 
     final bool remoteMode =
         gameModeBak == GameMode.humanVsLAN ||
-        gameModeBak == GameMode.humanVsBluetooth;
+        gameModeBak == GameMode.humanVsBluetooth ||
+        gameModeBak == GameMode.humanVsCloud;
     if (!remoteMode || force || !lanRestart) {
       unawaited(disposeRemoteMatch());
     }
@@ -1424,7 +1512,7 @@ class GameController {
   }
 
   Future<void> disposeRemoteMatch() async {
-    final RemoteMatchCoordinator? coordinator = remoteCoordinator;
+    final RemoteMatchController? coordinator = remoteCoordinator;
     final StreamSubscription<RemoteMatchEvent>? subscription =
         _remoteMatchSubscription;
     final NativeMillGameSession? session = activeNativeMillSession;
@@ -1463,7 +1551,7 @@ class GameController {
   }
 
   Future<bool> submitRemoteMove(String notation) async {
-    final RemoteMatchCoordinator? coordinator = remoteCoordinator;
+    final RemoteMatchController? coordinator = remoteCoordinator;
     if (!isRemoteGameMode || coordinator == null || !coordinator.isConnected) {
       return false;
     }
@@ -1476,7 +1564,7 @@ class GameController {
 
   Future<bool> requestRemoteTakeBack(int steps) async {
     assert(steps > 0, 'Remote takeback requires a positive step count.');
-    final RemoteMatchCoordinator? coordinator = remoteCoordinator;
+    final RemoteMatchController? coordinator = remoteCoordinator;
     if (!isRemoteGameMode ||
         coordinator == null ||
         !coordinator.isConnected ||

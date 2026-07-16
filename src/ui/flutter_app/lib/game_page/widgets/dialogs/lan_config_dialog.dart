@@ -131,7 +131,11 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
         });
       case RemoteTakeBackApprovalRequested() ||
           RemoteRestartApprovalRequested() ||
-          RemoteOpponentResigned():
+          RemoteOpponentResigned() ||
+          RemoteOpponentConnectionChanged() ||
+          RemoteOpponentLeft() ||
+          RemoteReconnectExhausted() ||
+          RemoteOnlineFailure():
         break;
     }
   }

@@ -1,0 +1,7 @@
+node_modules/
+.wrangler/
+coverage/
+wasm/*
+!wasm/tgf_cloud_wasm.d.ts
+!wasm/wasm_module.d.ts
+worker-configuration.d.ts

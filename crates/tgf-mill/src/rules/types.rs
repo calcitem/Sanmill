@@ -60,6 +60,8 @@ impl MillActionState {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
 #[repr(i16)]
 pub enum MillBoardFullAction {
     FirstPlayerLose = 0,
@@ -70,6 +72,8 @@ pub enum MillBoardFullAction {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
 #[repr(i16)]
 pub enum MillFormationActionInPlacingPhase {
     RemoveOpponentsPieceFromBoard = 0,
@@ -81,6 +85,8 @@ pub enum MillFormationActionInPlacingPhase {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
 #[repr(i16)]
 pub enum StalemateAction {
     EndWithStalemateLoss = 0,
@@ -92,6 +98,8 @@ pub enum StalemateAction {
 }
 
 #[derive(Clone, Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
 pub struct CaptureRuleConfig {
     pub enabled: bool,
     pub on_square_edges: bool,
@@ -298,6 +306,8 @@ fn phase_from_six(values: &[i32]) -> MillPhaseEvalWeights {
 }
 
 #[derive(Clone, Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "camelCase"))]
 pub struct MillVariantOptions {
     pub piece_count: u8,
     pub fly_piece_count: u8,
@@ -337,12 +347,19 @@ pub struct MillVariantOptions {
     /// engine.  When true [`MillEvaluator`] adds a mobility-difference
     /// term in the placing/moving phases.  Default `true` matches
     /// `gameOptions` initialisation in `option.h`.
+    #[cfg_attr(feature = "serde", serde(default = "serde_default_true"))]
     pub consider_mobility: bool,
     /// Mirror of `gameOptions.getFocusOnBlockingPaths()` from the legacy
     /// C++ engine.  When true the static evaluator drops the material
     /// difference from the score so the search prioritises mobility-only
     /// blocking lines (only meaningful in the moving phase / fly endgame).
+    #[cfg_attr(feature = "serde", serde(default))]
     pub focus_on_blocking_paths: bool,
+}
+
+#[cfg(feature = "serde")]
+const fn serde_default_true() -> bool {
+    true
 }
 
 impl Default for MillVariantOptions {

@@ -27,6 +27,10 @@ android {
     compileSdkVersion 36
     namespace "com.calcitem.sanmill"
 
+    sourceSets {
+        main.manifest.srcFile 'src/fdroid/AndroidManifest.xml'
+    }
+
     lintOptions {
         disable 'InvalidPackage'
     }
@@ -77,6 +81,7 @@ android {
 
 flutter {
     source '../..'
+    target 'lib/main_fdroid.dart'
 }
 
 dependencies {

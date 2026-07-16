@@ -21,6 +21,8 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+def sanmillOnlineHost = project.findProperty('SANMILL_ONLINE_HOST') ?: System.getenv('SANMILL_ONLINE_HOST') ?: 'sanmill-online.invalid'
+
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
@@ -74,6 +76,7 @@ android {
         targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        manifestPlaceholders["sanmillOnlineHost"] = sanmillOnlineHost
         ndk{
             ldLibs "log"
             debugSymbolLevel 'FULL'

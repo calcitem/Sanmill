@@ -59,12 +59,18 @@ jobs:
 
       # Build APK and AAB for testing (build branch does NOT upload to Play Store)
       - name: Build APK and AAB
-        run: cd src/ui/flutter_app; rm android/app/build.gradle; mv android/app/build.gradle_github android/app/build.gradle; flutter build apk -v; flutter build appbundle -v
+        run: |
+          cd src/ui/flutter_app
+          cp android/app/build.gradle_github android/app/build.gradle
+          flutter build apk -v --dart-define=SANMILL_ONLINE_BASE_URL="$SANMILL_ONLINE_BASE_URL"
+          flutter build appbundle -v --dart-define=SANMILL_ONLINE_BASE_URL="$SANMILL_ONLINE_BASE_URL"
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           ALIAS: ${{ secrets.ALIAS }}
           KEY_PATH: key.jks
+          SANMILL_ONLINE_BASE_URL: ${{ vars.SANMILL_ONLINE_BASE_URL }}
+          SANMILL_ONLINE_HOST: ${{ vars.SANMILL_ONLINE_HOST }}
 
       # Archive APK for download
       - name: Archive APK

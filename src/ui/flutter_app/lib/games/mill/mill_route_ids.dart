@@ -16,6 +16,7 @@ abstract final class MillRouteIds {
   static const GameRouteId humanVsBluetooth = GameRouteId(
     'mill.play.humanVsBluetooth',
   );
+  static const GameRouteId humanVsCloud = GameRouteId('mill.play.humanVsCloud');
   static const GameRouteId setupPosition = GameRouteId(
     'mill.play.setupPosition',
   );

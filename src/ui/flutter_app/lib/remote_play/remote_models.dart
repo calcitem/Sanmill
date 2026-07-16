@@ -4,7 +4,7 @@
 import 'package:meta/meta.dart';
 
 /// The physical link used by a remote Sanmill match.
-enum RemoteTransportKind { lan, bluetooth }
+enum RemoteTransportKind { lan, bluetooth, cloud }
 
 enum RemoteRole { host, join }
 
@@ -22,6 +22,21 @@ enum RemoteConnectionState {
   reconnecting,
   ended,
   error,
+}
+
+/// Stable online-service failures mapped to localized UI copy.
+///
+/// Raw HTTP bodies and exception strings must never cross into widgets.
+enum OnlineFailure {
+  invalidInvite,
+  inviteExpired,
+  inviteAlreadyUsed,
+  roomUnavailable,
+  roomFull,
+  versionMismatch,
+  serviceUnavailable,
+  unauthorized,
+  protocolError,
 }
 
 @immutable

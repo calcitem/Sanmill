@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
+import '../games/mill/mill_variant_localization.dart';
 import '../generated/intl/l10n.dart';
 import '../puzzle/models/rule_variant.dart';
 import '../rule_settings/models/rule_settings.dart';
@@ -57,86 +58,43 @@ class MillVariantsPage extends StatelessWidget {
 
   static List<_VariantEntry> _variantEntries(BuildContext context) {
     final S strings = S.of(context);
-    const List<_VariantSource> sources = <_VariantSource>[
-      _VariantSource(
-        id: 'standard_9mm',
-        titleKey: _VariantTitleKey.nineMensMorris,
-      ),
-      _VariantSource(
-        id: 'twelve_mens_morris',
-        titleKey: _VariantTitleKey.twelveMensMorris,
-      ),
-      _VariantSource(id: 'morabaraba', titleKey: _VariantTitleKey.morabaraba),
-      _VariantSource(id: 'dooz', titleKey: _VariantTitleKey.dooz),
-      _VariantSource(
-        id: 'lasker_morris',
-        titleKey: _VariantTitleKey.laskerMorris,
-      ),
-      _VariantSource(
-        id: 'russian_mill',
-        titleKey: _VariantTitleKey.oneTimeMill,
-      ),
-      _VariantSource(id: 'cham_gonu', titleKey: _VariantTitleKey.chamGonu),
-      _VariantSource(id: 'zhi_qi', titleKey: _VariantTitleKey.zhiQi),
-      _VariantSource(id: 'cheng_san_qi', titleKey: _VariantTitleKey.chengSanQi),
-      _VariantSource(id: 'da_san_qi', titleKey: _VariantTitleKey.daSanQi),
-      _VariantSource(id: 'mul_mulan', titleKey: _VariantTitleKey.mulMulan),
-      _VariantSource(id: 'nerenchi', titleKey: _VariantTitleKey.nerenchi),
-      _VariantSource(id: 'el_filja', titleKey: _VariantTitleKey.elfilja),
+    const List<String> variantIds = <String>[
+      'standard_9mm',
+      'twelve_mens_morris',
+      'morabaraba',
+      'dooz',
+      'lasker_morris',
+      'russian_mill',
+      'cham_gonu',
+      'zhi_qi',
+      'cheng_san_qi',
+      'da_san_qi',
+      'mul_mulan',
+      'nerenchi',
+      'el_filja',
     ];
 
-    return sources
-        .map((_VariantSource source) {
+    return variantIds
+        .map((String variantId) {
           final RuleSettings? settings =
-              RuleVariant.canonicalSettings[source.id];
+              RuleVariant.canonicalSettings[variantId];
           assert(
             settings != null,
-            'Missing canonical settings for ${source.id}.',
+            'Missing canonical settings for $variantId.',
           );
           final RuleVariant variant = RuleVariant.fromRuleSettings(settings!);
           assert(
-            variant.id == source.id,
-            'Variant id mismatch: expected ${source.id}, got ${variant.id}.',
+            variant.id == variantId,
+            'Variant id mismatch: expected $variantId, got ${variant.id}.',
           );
           return _VariantEntry(
-            id: source.id,
-            title: _localizedVariantTitle(strings, source.titleKey),
+            id: variantId,
+            title: localizedMillVariantNameById(strings, variantId),
             features: _variantFeatures(strings, settings),
             settings: settings,
           );
         })
         .toList(growable: false);
-  }
-
-  static String _localizedVariantTitle(S strings, _VariantTitleKey key) {
-    switch (key) {
-      case _VariantTitleKey.nineMensMorris:
-        return strings.nineMensMorris;
-      case _VariantTitleKey.twelveMensMorris:
-        return strings.twelveMensMorris;
-      case _VariantTitleKey.morabaraba:
-        return strings.morabaraba;
-      case _VariantTitleKey.dooz:
-        return strings.dooz;
-      case _VariantTitleKey.laskerMorris:
-        return strings.laskerMorris;
-      case _VariantTitleKey.oneTimeMill:
-        return strings.oneTimeMill;
-      case _VariantTitleKey.chamGonu:
-        return strings.chamGonu;
-      case _VariantTitleKey.zhiQi:
-        return strings.zhiQi;
-      case _VariantTitleKey.chengSanQi:
-        return strings.chengSanQi;
-      case _VariantTitleKey.daSanQi:
-        return strings.daSanQi;
-      case _VariantTitleKey.mulMulan:
-        return strings.mulMulan;
-      case _VariantTitleKey.nerenchi:
-        return strings.nerenchi;
-      case _VariantTitleKey.elfilja:
-        return strings.elfilja;
-    }
   }
 
   static List<String> _variantFeatures(S strings, RuleSettings settings) {
@@ -364,27 +322,4 @@ class _VariantEntry {
   final RuleSettings settings;
 
   String get description => features.join(' · ');
-}
-
-class _VariantSource {
-  const _VariantSource({required this.id, required this.titleKey});
-
-  final String id;
-  final _VariantTitleKey titleKey;
-}
-
-enum _VariantTitleKey {
-  nineMensMorris,
-  twelveMensMorris,
-  morabaraba,
-  dooz,
-  laskerMorris,
-  oneTimeMill,
-  chamGonu,
-  zhiQi,
-  chengSanQi,
-  daSanQi,
-  mulMulan,
-  nerenchi,
-  elfilja,
 }

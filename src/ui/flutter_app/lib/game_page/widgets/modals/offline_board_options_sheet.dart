@@ -5,6 +5,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import '../../../games/mill/mill_variant_localization.dart';
 import '../../../general_settings/models/general_settings.dart';
 import '../../../generated/intl/l10n.dart';
 import '../../../puzzle/models/rule_variant.dart';
@@ -271,7 +272,7 @@ class _OfflineBoardNewGameSheetState extends State<_OfflineBoardNewGameSheet> {
               for (final String id in RuleVariant.canonicalSettings.keys)
                 RadioListTile<String>(
                   key: Key('offline_board_variant_$id'),
-                  title: Text(_variantLabel(S.of(context), id)),
+                  title: Text(localizedMillVariantNameById(S.of(context), id)),
                   value: id,
                   groupValue: _variantId,
                   onChanged: (String? value) =>
@@ -409,7 +410,7 @@ class _OfflineBoardNewGameSheetState extends State<_OfflineBoardNewGameSheet> {
                     ),
                   ),
                   child: Text(
-                    _variantLabel(S.of(context), _variantId),
+                    localizedMillVariantNameById(S.of(context), _variantId),
                     overflow: TextOverflow.ellipsis,
                     style: valueStyle,
                   ),
@@ -441,24 +442,5 @@ String _clockLabelInMinutes(int seconds) {
     30 => '½',
     45 => '¾',
     _ => (seconds / 60).toString().replaceAll('.0', ''),
-  };
-}
-
-String _variantLabel(S strings, String id) {
-  return switch (id) {
-    'standard_9mm' => strings.nineMensMorris,
-    'twelve_mens_morris' => strings.twelveMensMorris,
-    'morabaraba' => strings.morabaraba,
-    'dooz' => strings.dooz,
-    'lasker_morris' => strings.laskerMorris,
-    'russian_mill' => strings.oneTimeMill,
-    'cham_gonu' => strings.chamGonu,
-    'zhi_qi' => strings.zhiQi,
-    'cheng_san_qi' => strings.chengSanQi,
-    'da_san_qi' => strings.daSanQi,
-    'mul_mulan' => strings.mulMulan,
-    'nerenchi' => strings.nerenchi,
-    'el_filja' => strings.elfilja,
-    _ => throw StateError('Unsupported Offline Board variant: $id'),
   };
 }

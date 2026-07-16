@@ -1,0 +1,11 @@
+allowBuilds:
+  esbuild: true
+  sharp: true
+  wasm-pack: set this to true or false
+  workerd: true
+packages:
+  - .
+minimumReleaseAgeExclude:
+  - '@cloudflare/vitest-pool-workers@0.18.5'
+  - miniflare@4.20260710.0
+  - wrangler@4.111.0

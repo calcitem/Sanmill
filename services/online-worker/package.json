@@ -1,0 +1,20 @@
+{
+  "name": "sanmill-online-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:wasm": "bash ../../scripts/build-online-wasm.sh",
+    "generate:types": "wrangler types",
+    "typecheck": "npm run build:wasm && npm run generate:types && tsc --noEmit && tsc -p test/tsconfig.json --noEmit",
+    "test": "npm run build:wasm && vitest run",
+    "dev": "npm run build:wasm && wrangler dev",
+    "deploy": "npm run build:wasm && wrangler deploy"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.18.5",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10",
+    "wrangler": "^4.111.0"
+  }
+}

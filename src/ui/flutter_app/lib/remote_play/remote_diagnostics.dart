@@ -52,6 +52,7 @@ class RemoteLogContext {
     final String transportLabel = switch (transport) {
       RemoteTransportKind.lan => 'LAN',
       RemoteTransportKind.bluetooth => 'BLE',
+      RemoteTransportKind.cloud => 'CLOUD',
     };
     return '[Remote][$transportLabel][${role.name}]'
         '[${shortId(sessionId)}][${shortId(roundId)}][${state.name}]';

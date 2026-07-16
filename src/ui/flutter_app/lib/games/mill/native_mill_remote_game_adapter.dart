@@ -104,6 +104,9 @@ class NativeMillRemoteGameAdapter implements RemoteGameAdapter {
         throw StateError('Snapshot contains illegal action: $action');
       }
     }
+    if (session.getFen() != snapshot.resultFen) {
+      throw StateError('Snapshot result does not match its action history.');
+    }
     await onStateChanged?.call();
   }
 

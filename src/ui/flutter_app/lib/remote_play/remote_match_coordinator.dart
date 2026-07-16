@@ -11,95 +11,14 @@ import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
 import 'remote_diagnostics.dart';
+import 'remote_match_controller.dart';
 import 'remote_models.dart';
 import 'remote_protocol.dart';
 import 'remote_transport.dart';
 
-abstract interface class RemoteGameAdapter {
-  RemoteSeat get activeSeat;
+export 'remote_match_controller.dart';
 
-  String get fen;
-
-  Future<void> configure(RemoteMatchConfig config);
-
-  Future<bool> applyAction(String notation);
-
-  Future<void> restoreSnapshot(RemoteStateSnapshot snapshot);
-
-  Future<void> undoActions(int steps);
-
-  Future<void> forceWinner(RemoteSeat winner);
-
-  Future<void> abandon();
-}
-
-sealed class RemoteMatchEvent {
-  const RemoteMatchEvent();
-}
-
-class RemoteMatchStateChanged extends RemoteMatchEvent {
-  const RemoteMatchStateChanged(this.state);
-
-  final RemoteConnectionState state;
-}
-
-class RemotePeerApprovalRequested extends RemoteMatchEvent {
-  const RemotePeerApprovalRequested(this.peer);
-
-  final RemotePeerInfo peer;
-}
-
-class RemoteMatchReady extends RemoteMatchEvent {
-  const RemoteMatchReady(this.meta, this.config, {required this.resumed});
-
-  final RemoteSessionMeta meta;
-  final RemoteMatchConfig config;
-  final bool resumed;
-}
-
-class RemoteMatchUpgradeRequired extends RemoteMatchEvent {
-  const RemoteMatchUpgradeRequired(this.peerVersion);
-
-  final String peerVersion;
-}
-
-class RemoteMatchActionRejected extends RemoteMatchEvent {
-  const RemoteMatchActionRejected(this.reason);
-
-  final String reason;
-}
-
-class RemoteTakeBackApprovalRequested extends RemoteMatchEvent {
-  const RemoteTakeBackApprovalRequested(this.requestId, this.steps);
-
-  final String requestId;
-  final int steps;
-}
-
-class RemoteRestartApprovalRequested extends RemoteMatchEvent {
-  const RemoteRestartApprovalRequested(this.requestId);
-
-  final String requestId;
-}
-
-class RemoteOpponentResigned extends RemoteMatchEvent {
-  const RemoteOpponentResigned();
-}
-
-class RemoteMatchAborted extends RemoteMatchEvent {
-  const RemoteMatchAborted(this.reason);
-
-  final String reason;
-}
-
-class RemoteMatchFailure extends RemoteMatchEvent {
-  const RemoteMatchFailure(this.error, this.stackTrace);
-
-  final Object error;
-  final StackTrace stackTrace;
-}
-
-class RemoteMatchCoordinator {
+class RemoteMatchCoordinator implements RemoteMatchController {
   RemoteMatchCoordinator({
     required this.transport,
     required this.game,
@@ -143,6 +62,7 @@ class RemoteMatchCoordinator {
   final RemoteFrameDecoder _decoder = RemoteFrameDecoder();
   final StreamController<RemoteMatchEvent> _events =
       StreamController<RemoteMatchEvent>.broadcast(sync: true);
+  @override
   final ValueNotifier<RemoteConnectionState> stateNotifier =
       ValueNotifier<RemoteConnectionState>(RemoteConnectionState.idle);
   final Set<String> _seenMessageIds = <String>{};
@@ -175,26 +95,36 @@ class RemoteMatchCoordinator {
   String? _incomingControlRequestId;
   int? _incomingControlRevision;
 
+  @override
   Stream<RemoteMatchEvent> get events => _events.stream;
 
+  @override
   RemoteConnectionState get state => stateNotifier.value;
 
+  @override
   RemoteMatchConfig? get config => _config;
 
+  @override
   RemoteSessionMeta? get meta => _meta;
 
   RemotePeerInfo? get remotePeer => _remotePeer;
 
+  @override
   int get revision => _revision;
 
+  @override
   bool get isConnected => state == RemoteConnectionState.ready;
 
+  @override
   bool get isHost => transport.role == RemoteRole.host;
 
+  @override
   bool get isLocalTurn => _meta != null && game.activeSeat == _meta!.localSeat;
 
+  @override
   List<String> get actionLog => List<String>.unmodifiable(_actionLog);
 
+  @override
   Map<String, Object?> get diagnosticSnapshot => <String, Object?>{
     'transport': transport.kind.name,
     'role': transport.role.name,
@@ -290,6 +220,7 @@ class RemoteMatchCoordinator {
     _setState(RemoteConnectionState.negotiating);
   }
 
+  @override
   Future<bool> submitLocalAction(String notation) async {
     _assertUsable();
     if (!isConnected ||
@@ -335,6 +266,7 @@ class RemoteMatchCoordinator {
     );
   }
 
+  @override
   Future<bool> requestTakeBack(int steps) async {
     _assertUsable();
     if (!isConnected || steps <= 0 || steps > _actionLog.length) {
@@ -346,6 +278,7 @@ class RemoteMatchCoordinator {
     );
   }
 
+  @override
   Future<void> respondToTakeBack({
     required String requestId,
     required int steps,
@@ -368,6 +301,7 @@ class RemoteMatchCoordinator {
     }
   }
 
+  @override
   Future<bool> requestRestart() async {
     _assertUsable();
     if (!isConnected) {
@@ -379,6 +313,7 @@ class RemoteMatchCoordinator {
     );
   }
 
+  @override
   Future<void> respondToRestart({
     required String requestId,
     required bool accepted,
@@ -398,6 +333,7 @@ class RemoteMatchCoordinator {
     }
   }
 
+  @override
   Future<void> resign() async {
     _assertUsable();
     if (!isConnected || _meta == null) {
@@ -406,6 +342,24 @@ class RemoteMatchCoordinator {
     await _send(RemoteMessageType.resign, const <String, Object?>{});
     await game.forceWinner(_oppositeSeat(_meta!.localSeat));
     _log.info('REMOTE_LOCAL_RESIGNED', 'revision=$_revision');
+  }
+
+  @override
+  Future<void> leave() async {
+    if (_disposed) {
+      return;
+    }
+    await game.abandon();
+    await dispose();
+  }
+
+  @override
+  Future<void> retryConnection() async {
+    _assertUsable();
+    if (isConnected) {
+      return;
+    }
+    await transport.reconnect();
   }
 
   void _onTransportEvent(RemoteTransportEvent event) {
@@ -1429,6 +1383,7 @@ class RemoteMatchCoordinator {
     return difference == 0;
   }
 
+  @override
   Future<void> dispose() async {
     if (_disposed) {
       return;

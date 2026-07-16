@@ -1,0 +1,95 @@
+name: Online Worker
+
+on:
+  pull_request:
+    paths:
+      - 'crates/tgf-cloud-wasm/**'
+      - 'crates/tgf-core/**'
+      - 'crates/tgf-mill/**'
+      - 'services/online-worker/**'
+      - 'scripts/build-online-wasm.sh'
+      - '.github/workflows/online-worker.yml'
+  push:
+    branches: [master, next]
+    paths:
+      - 'crates/tgf-cloud-wasm/**'
+      - 'crates/tgf-core/**'
+      - 'crates/tgf-mill/**'
+      - 'services/online-worker/**'
+      - 'scripts/build-online-wasm.sh'
+      - '.github/workflows/online-worker.yml'
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: Deploy to Cloudflare after tests
+        required: true
+        default: false
+        type: boolean
+      enable_service:
+        description: Enable room creation in this deployment
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: pnpm
+          cache-dependency-path: services/online-worker/pnpm-lock.yaml
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Install wasm-bindgen CLI
+        run: cargo install wasm-bindgen-cli --version 0.2.118 --locked
+      - name: Enable pnpm
+        run: corepack enable
+      - name: Install Worker dependencies
+        working-directory: services/online-worker
+        run: pnpm install --frozen-lockfile
+      - name: Build and type-check Worker
+        working-directory: services/online-worker
+        run: pnpm run typecheck
+      - name: Test Worker
+        working-directory: services/online-worker
+        run: pnpm run test
+
+  deploy:
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy
+    needs: test
+    runs-on: ubuntu-latest
+    environment: online-production
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: pnpm
+          cache-dependency-path: services/online-worker/pnpm-lock.yaml
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Install wasm-bindgen CLI
+        run: cargo install wasm-bindgen-cli --version 0.2.118 --locked
+      - name: Enable pnpm
+        run: corepack enable
+      - name: Install Worker dependencies
+        working-directory: services/online-worker
+        run: pnpm install --frozen-lockfile
+      - name: Deploy Worker
+        working-directory: services/online-worker
+        run: >-
+          pnpm run deploy --
+          --var ONLINE_ENABLED:${{ inputs.enable_service }}
+          --var SOURCE_VERSION:${{ github.sha }}
+          --var ANDROID_APP_LINK_SHA256_CERT_FINGERPRINTS:${{ vars.ANDROID_APP_LINK_SHA256_CERT_FINGERPRINTS }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}

@@ -108,7 +108,11 @@ class _BluetoothConfigDialogState extends State<BluetoothConfigDialog> {
         setState(() => _status = s.remoteProtocolUpgradeRequired);
       case RemoteTakeBackApprovalRequested() ||
           RemoteRestartApprovalRequested() ||
-          RemoteOpponentResigned():
+          RemoteOpponentResigned() ||
+          RemoteOpponentConnectionChanged() ||
+          RemoteOpponentLeft() ||
+          RemoteReconnectExhausted() ||
+          RemoteOnlineFailure():
         break;
     }
   }

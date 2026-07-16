@@ -16,7 +16,7 @@ enum GameMode {
   aiVsAi,
   setupPosition,
   puzzle,
-  humanVsCloud, // Not Implemented
+  humanVsCloud,
   humanVsLAN,
   humanVsBluetooth,
   testViaLAN, // Not Implemented

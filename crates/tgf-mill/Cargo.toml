@@ -5,8 +5,12 @@ edition     = "2024"
 description = "TGF – Mill (Nine/Ten/Twelve Men's Morris) game implementation"
 license     = "AGPL-3.0-or-later"
 
+[features]
+serde = ["dep:serde"]
+
 [dependencies]
 arrayvec = "0.7"
+serde = { version = "1", features = ["derive"], optional = true }
 tgf-core = { path = "../tgf-core" }
 
 [dev-dependencies]

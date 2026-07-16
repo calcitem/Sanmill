@@ -1,0 +1,459 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+// Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
+
+// app.dart
+
+import 'dart:async';
+import 'dart:io';
+import 'dart:ui';
+
+import 'package:catcher_2/catcher_2.dart';
+import 'package:feedback/feedback.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
+import 'package:flutter_sharing_intent/model/sharing_file.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
+
+import 'app_shell/sanmill_app_shell.dart';
+import 'appearance_settings/models/display_settings.dart';
+import 'experience_recording/services/recording_navigator_observer.dart';
+import 'game_page/services/analysis_mode.dart';
+import 'game_page/services/mill.dart'
+    show ExportService, GameController, LoadService;
+import 'game_platform/game_registry.dart';
+import 'game_platform/play_mode_contribution.dart';
+import 'games/built_in_game_modules.dart';
+import 'games/mill/opening_book/opening_book_repository.dart';
+import 'general_settings/models/general_settings.dart';
+import 'generated/intl/l10n.dart';
+import 'puzzle/services/puzzle_manager.dart';
+import 'shared/config/constants.dart';
+import 'shared/database/database.dart';
+import 'shared/database/settings_repositories.dart';
+import 'shared/database/settings_side_effect_coordinator.dart';
+import 'shared/services/catcher_service.dart';
+import 'shared/services/environment_config.dart';
+import 'shared/services/logger.dart';
+import 'shared/services/report_attachment_registry.dart';
+import 'shared/services/screenshot_service.dart';
+import 'shared/services/snackbar_service.dart';
+import 'shared/services/system_ui_service.dart';
+import 'shared/themes/app_theme.dart';
+import 'shared/utils/localizations/feedback_localization.dart';
+import 'shared/utils/localizations/sanmill_localizations.dart';
+import 'shared/widgets/snackbars/scaffold_messenger.dart';
+import 'src/rust/frb_generated.dart';
+import 'statistics/services/stats_service.dart';
+
+// Voice assistant functionality disabled
+// import 'voice_assistant/services/voice_assistant_service.dart';
+
+Future<void> runSanmillApp({
+  Iterable<PlayModeContribution> playModeContributions =
+      const <PlayModeContribution>[],
+}) async {
+  logger.i('Environment [catcher]: ${EnvironmentConfig.catcher}');
+  logger.i('Environment [dev_mode]: ${EnvironmentConfig.devMode}');
+  logger.i('Environment [test]: ${EnvironmentConfig.test}');
+
+  // IMPORTANT: Remove or comment out for integration_test screenshots
+  // if (EnvironmentConfig.test) {
+  //   enableFlutterDriverExtension();
+  // }
+
+  // Initialise the Rust/FRB bridge before any native app services. Native
+  // targets load the dynamic library; Web loads the wasm-bindgen package.
+  await RustLib.init();
+
+  await DB.init();
+  // Perfect DB / trap awareness are unavailable on Web (the Rust wasm stubs
+  // return None), so clear them there to avoid a dead toggle.  On native
+  // targets the user's choice must persist across restarts — do NOT reset.
+  if (kIsWeb &&
+      (DB().generalSettings.usePerfectDatabase ||
+          DB().generalSettings.trapAwareness)) {
+    DB().generalSettings = DB().generalSettings.copyWith(
+      usePerfectDatabase: false,
+      trapAwareness: false,
+    );
+  }
+
+  registerBuiltInGameModules(
+    GameRegistry.instance,
+    playModeContributions: playModeContributions,
+  );
+  SettingsRepositories.instance.init();
+
+  // Load the unified opening book (move oracle + named-line metadata). The
+  // book is advisory, so a failure here is non-fatal; do not block startup on
+  // it beyond the small JSON parse.
+  unawaited(OpeningBookRepository.instance.ensureLoaded());
+
+  // Attach the current move list to crash / error reports so engine-failure
+  // diagnostics ship with a replayable PGN file.
+  ReportAttachmentRegistry.register(ExportService.exportMoveListToTempFile);
+  ReportAttachmentRegistry.register(
+    GameController().exportRemoteDiagnosticsToTempFile,
+  );
+
+  // Wire engine callbacks through the active module so settings changes do not
+  // depend on a specific game implementation.
+  SettingsSideEffectCoordinator.instance = SettingsSideEffectCoordinator(
+    updateGeneralEngineOptions: () =>
+        GameRegistry.instance.current.enginePort?.updateGeneralOptions(),
+    updateRuleEngineOptions: () =>
+        GameRegistry.instance.current.enginePort?.updateRuleOptions(),
+  );
+
+  // Initialize ELO service
+  EloRatingService();
+
+  // Initialize Puzzle Manager
+  await PuzzleManager().init();
+  // Merge in the bundled built-in puzzle pack (never overwrites custom
+  // puzzles; safe to call on every launch since it degrades to a no-op if
+  // the asset is missing or malformed).
+  await PuzzleManager().loadBuiltInPuzzles();
+
+  // Initialize Screenshot service (if not in test mode)
+  if (!EnvironmentConfig.test) {
+    await ScreenshotService.instance.init();
+  }
+
+  // Voice assistant functionality disabled
+  // Check and clean up incomplete voice model downloads from previous sessions
+  // await VoiceAssistantService().modelDownloader.checkAndCleanIncompleteDownloads();
+
+  // Initialize voice assistant service if enabled
+  // if (DB().voiceAssistantSettings.enabled) {
+  //   await VoiceAssistantService().initialize();
+  // }
+
+  await initAppSystemUi(isFullScreen: DB().displaySettings.isFullScreen);
+
+  if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
+    catcher = Catcher2(rootWidget: const SanmillApp(), ensureInitialized: true);
+
+    await initCatcher(catcher);
+
+    // Wrap FlutterError.onError to filter known benign rendering assertions
+    // BEFORE they reach Catcher 2. Flutter rendering pipeline errors
+    // (layout/paint assertions) go through FlutterError.onError, not
+    // PlatformDispatcher.instance.onError.
+    final FlutterExceptionHandler? catcherFlutterErrorHandler =
+        FlutterError.onError;
+    FlutterError.onError = (FlutterErrorDetails details) {
+      updateCrashReportLocaleContext();
+      if (details.exception is AssertionError) {
+        final String msg = details.exception.toString();
+        // BetterFeedback's OverflowBox can trigger layout/paint of
+        // offstage routes whose children have no size yet.
+        if (msg.contains("'hasSize': RenderBox was not laid out") ||
+            msg.contains("'child!.hasSize': is not true")) {
+          logger.w(
+            'Suppressed known rendering assertion: '
+            '${details.exception}',
+          );
+          return;
+        }
+      }
+      catcherFlutterErrorHandler?.call(details);
+    };
+
+    PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
+      // Filter known Flutter framework bugs that should not crash the app
+      final String errorStr = error.toString();
+      final String stackTrace = stack.toString();
+
+      // Known bug: EditableText toolbar race condition
+      // See: Flutter framework editable_text.dart _handleContextMenuOnScroll
+      // The _dataWhenToolbarShowScheduled field can be null when
+      // addPostFrameCallback executes due to race condition
+      if (error is TypeError &&
+          errorStr.contains('Null check operator used on a null value') &&
+          stackTrace.contains('EditableTextState._handleContextMenuOnScroll')) {
+        logger.w('Caught known Flutter framework bug in EditableText: $error');
+        logger.w('Stack trace: $stackTrace');
+        return true; // Suppress this known framework bug
+      }
+
+      // Known issue: the BetterFeedback package wraps the entire MaterialApp
+      // in an OverflowBox (feedback_widget.dart). When this OverflowBox is
+      // marked dirty for relayout (e.g. due to MediaQuery changes), it
+      // triggers layout of the full Navigator subtree, including offstage
+      // routes. Widgets in those offstage routes may not yet have a size,
+      // causing these debug-only assertion failures. The app recovers
+      // automatically on the next frame.
+      if (error is AssertionError) {
+        if (errorStr.contains("'hasSize': RenderBox was not laid out") ||
+            errorStr.contains("'child!.hasSize': is not true")) {
+          logger.w(
+            'Suppressed known BetterFeedback rendering assertion: '
+            '$errorStr',
+          );
+          return true;
+        }
+      }
+
+      // Known camera / flutter_zxing lifecycle bugs:
+      //
+      // 1) _stopCamera() has an inverted isStreamingImages condition
+      //    (uses `== false` instead of `== true`), causing
+      //    stopImageStream() to be called when the camera is NOT
+      //    streaming or not yet initialised.
+      //
+      // 2) When the QR scanner route is popped, the CameraController
+      //    may be disposed while a pending layout pass still has the
+      //    CameraPreview's LayoutBuilder scheduled for rebuild.  The
+      //    rebuild calls buildPreview() on the disposed controller.
+      //
+      // Both cases produce unhandled errors that are harmless (the
+      // page is already navigating away).  Suppress them to avoid
+      // spurious Catcher 2 reports and email dialogs.
+      if (errorStr.contains(
+            'stopImageStream() was called on an uninitialized CameraController',
+          ) ||
+          errorStr.contains(
+            'stopImageStream was called when no camera is streaming images',
+          ) ||
+          errorStr.contains(
+            'buildPreview() was called on a disposed CameraController',
+          )) {
+        logger.w('Suppressed known camera lifecycle bug: $errorStr');
+        return true;
+      }
+
+      if (EnvironmentConfig.catcher == true) {
+        updateCrashReportLocaleContext();
+        Catcher2.reportCheckedError(error, stack);
+      }
+      return true;
+    };
+  } else {
+    runApp(const SanmillApp());
+  }
+}
+
+class SanmillApp extends StatefulWidget {
+  const SanmillApp({super.key});
+
+  @override
+  SanmillAppState createState() => SanmillAppState();
+}
+
+class SanmillAppState extends State<SanmillApp> {
+  StreamSubscription<List<SharedFile>>? _intentDataStreamSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupSharingIntent();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    DB(
+      View.of(context).platformDispatcher.views.first.platformDispatcher.locale,
+    );
+    _syncAnalysisPreferences(DB().displaySettings);
+
+    if (kIsWeb) {
+      Locale? locale;
+
+      if (PlatformDispatcher.instance.locale == const Locale('und') ||
+          !S.supportedLocales.contains(
+            Locale(PlatformDispatcher.instance.locale.languageCode),
+          )) {
+        locale = const Locale('en');
+      } else {
+        locale = PlatformDispatcher.instance.locale;
+      }
+
+      return MaterialApp(
+        navigatorKey: navigatorStateKey,
+        navigatorObservers: <NavigatorObserver>[RecordingNavigatorObserver()],
+        key: GlobalKey<ScaffoldState>(),
+        scaffoldMessengerKey: rootScaffoldMessengerKey,
+        localizationsDelegates: sanmillLocalizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        locale: locale,
+        theme: AppTheme.lightThemeData,
+        darkTheme: AppTheme.darkThemeData,
+        debugShowCheckedModeBanner: EnvironmentConfig.devMode,
+        builder: (BuildContext context, Widget? child) {
+          initializeScreenOrientation(context);
+          setWindowTitle(S.of(context).appName);
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(),
+            child: child!,
+          );
+        },
+        home: Builder(builder: _buildHome),
+      );
+    }
+
+    return ValueListenableBuilder<Box<DisplaySettings>>(
+      valueListenable: DB().listenDisplaySettings,
+      builder: _buildApp,
+    );
+  }
+
+  Widget _buildApp(BuildContext context, Box<DisplaySettings> box, Widget? _) {
+    final DisplaySettings displaySettings = box.get(
+      DB.displaySettingsKey,
+      defaultValue: const DisplaySettings(),
+    )!;
+    _syncAnalysisPreferences(displaySettings);
+
+    Locale? locale;
+
+    if (displaySettings.locale == null) {
+      if (PlatformDispatcher.instance.locale == const Locale('und') ||
+          !S.supportedLocales.contains(
+            Locale(PlatformDispatcher.instance.locale.languageCode),
+          )) {
+        DB().displaySettings = displaySettings.copyWith(
+          locale: const Locale('en'),
+        );
+        locale = const Locale('en');
+      } else {
+        locale = PlatformDispatcher.instance.locale;
+      }
+    } else {
+      locale = displaySettings.locale;
+    }
+
+    final MaterialApp materialApp = MaterialApp(
+      /// Add navigator key from Catcher.
+      /// It will be used to navigate user to report page or to show dialog.
+      navigatorKey: (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS)
+          ? Catcher2.navigatorKey
+          : navigatorStateKey,
+      navigatorObservers: <NavigatorObserver>[RecordingNavigatorObserver()],
+      key: GlobalKey<ScaffoldState>(),
+      scaffoldMessengerKey: rootScaffoldMessengerKey,
+      localizationsDelegates: sanmillLocalizationsDelegates,
+      supportedLocales: S.supportedLocales,
+      locale: locale,
+      theme: AppTheme.lightThemeData,
+      darkTheme: AppTheme.darkThemeData,
+      themeMode: displaySettings.themeMode.materialThemeMode,
+      debugShowCheckedModeBanner: EnvironmentConfig.devMode,
+      builder: (BuildContext context, Widget? child) {
+        initializeScreenOrientation(context);
+        setWindowTitle(S.of(context).appName);
+        return MediaQuery(
+          data: MediaQuery.of(
+            context,
+          ).copyWith(textScaler: TextScaler.linear(displaySettings.fontScale)),
+          child: child!,
+        );
+      },
+      home: Builder(builder: _buildHome),
+    );
+
+    if (kIsWeb || Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+      return materialApp;
+    } else if (Platform.isAndroid || Platform.isIOS) {
+      return BetterFeedback(
+        localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+          ...sanmillLocalizationsDelegates,
+          CustomFeedbackLocalizationsDelegate.delegate,
+        ],
+        localeOverride: displaySettings.locale,
+        theme: AppTheme.feedbackTheme,
+        child: materialApp,
+      );
+    }
+
+    return materialApp;
+  }
+
+  Widget _buildHome(BuildContext context) {
+    return const Scaffold(
+      key: Key('home_scaffold_key'),
+      resizeToAvoidBottomInset: false,
+      body: SanmillAppShell(),
+    );
+  }
+
+  void _syncAnalysisPreferences(DisplaySettings displaySettings) {
+    AnalysisMode.configurePreferences(
+      smallBoard: displaySettings.analysisSmallBoard,
+      inlineNotation: displaySettings.analysisInlineNotation,
+      showEngineLines: displaySettings.analysisShowEngineLines,
+      showMoveAnnotations: displaySettings.analysisShowMoveAnnotations,
+      showMoveComments: displaySettings.analysisShowMoveComments,
+      showBestMoveArrow: displaySettings.analysisShowBestMoveArrow,
+      showEvaluationGauge: displaySettings.analysisShowEvaluationGauge,
+      engineLineCount: displaySettings.analysisEngineLineCount,
+      engineSearchTimeMs: displaySettings.analysisEngineSearchTimeMs,
+      notify: false,
+    );
+  }
+
+  void _setupSharingIntent() {
+    // Skip setting up sharing intent for web or unsupported platforms
+    if (kIsWeb || !(Platform.isAndroid || Platform.isIOS)) {
+      return;
+    }
+
+    // Listen for shared files when the app is already running
+    _intentDataStreamSubscription = FlutterSharingIntent.instance
+        .getMediaStream()
+        .listen(
+          (List<SharedFile> files) {
+            _handleSharedFiles(files, isRunning: true);
+          },
+          onError: (dynamic error) {
+            logger.e("Error receiving intent data stream: $error");
+            SnackBarService.showRootSnackBar(
+              "Error receiving intent data stream: $error",
+            ); // Consider localization
+          },
+        );
+
+    // Handle initial sharing when the app is launched from a closed state
+    FlutterSharingIntent.instance.getInitialSharing().then(
+      (List<SharedFile> files) {
+        _handleSharedFiles(files, isRunning: false);
+      },
+      onError: (dynamic error) {
+        logger.e("Error getting initial sharing: $error");
+        SnackBarService.showRootSnackBar(
+          "Error getting initial sharing: $error",
+        ); // Consider localization
+      },
+    );
+  }
+
+  // Helper method to process shared files
+  void _handleSharedFiles(List<SharedFile> files, {required bool isRunning}) {
+    if (files.isNotEmpty && files.first.value != null) {
+      final String filePath = files.first.value!;
+      // Show notification to user about the shared file path
+      logger.i("Setup Sharing Intent: $filePath");
+      // Load the game from the shared file
+      LoadService.loadGame(context, filePath, isRunning: isRunning)
+          .then((_) {
+            logger.i("Game loaded successfully from shared file.");
+          })
+          .catchError((dynamic error) {
+            logger.e("Error loading game from shared file: $error");
+            SnackBarService.showRootSnackBar(
+              "Error loading game from shared file: $error",
+            ); // Consider localization
+          });
+    }
+  }
+
+  @override
+  void dispose() {
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+      _intentDataStreamSubscription?.cancel();
+    }
+    super.dispose();
+  }
+}

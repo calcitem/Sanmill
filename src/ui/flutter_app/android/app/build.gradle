@@ -24,6 +24,7 @@ if (flutterVersionName == null) {
 // Keep every Sanmill Android distribution on the lowest API level supported
 // by the Dart 3.12 Flutter toolchain and the current plugin graph.
 def sanmillMinSdkVersion = 24
+def sanmillOnlineHost = project.findProperty('SANMILL_ONLINE_HOST') ?: System.getenv('SANMILL_ONLINE_HOST') ?: 'sanmill-online.invalid'
 
 android {
     ndkVersion "28.2.13676358"
@@ -41,6 +42,7 @@ android {
         targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        manifestPlaceholders["sanmillOnlineHost"] = sanmillOnlineHost
         ndk {
             ldLibs "log"
             debugSymbolLevel 'FULL'

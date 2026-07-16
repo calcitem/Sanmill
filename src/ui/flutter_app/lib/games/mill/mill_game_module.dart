@@ -25,6 +25,7 @@ import '../../game_platform/game_persistence_scope.dart';
 import '../../game_platform/game_session.dart';
 import '../../game_platform/game_session_handle.dart';
 import '../../game_platform/notation_port.dart';
+import '../../game_platform/play_mode_contribution.dart';
 import '../../game_platform/rule_settings_port.dart';
 import '../../game_platform/rules_port.dart';
 import '../../game_platform/shell_route_navigation_source.dart';
@@ -55,18 +56,24 @@ typedef NativeMillSessionFactory =
     });
 
 class MillGameModule extends GameModule {
-  MillGameModule({NativeMillSessionFactory? nativeSessionFactory})
-    : _nativeSessionFactory =
-          nativeSessionFactory ??
-          (({
-            required RuleSettings ruleSettings,
-            GeneralSettings? generalSettings,
-          }) {
-            return NativeMillGameSession(
-              rules: ruleSettings,
-              generalSettings: generalSettings,
-            );
-          }) {
+  MillGameModule({
+    NativeMillSessionFactory? nativeSessionFactory,
+    Iterable<PlayModeContribution> playModeContributions =
+        const <PlayModeContribution>[],
+  }) : _playModeContributions = List<PlayModeContribution>.unmodifiable(
+         playModeContributions,
+       ),
+       _nativeSessionFactory =
+           nativeSessionFactory ??
+           (({
+             required RuleSettings ruleSettings,
+             GeneralSettings? generalSettings,
+           }) {
+             return NativeMillGameSession(
+               rules: ruleSettings,
+               generalSettings: generalSettings,
+             );
+           }) {
     // Hook the Mill payload extras decoder into the framework so generic
     // [TgfKernel] callers see `millMarkedNodes` in their snapshot payload
     // without the framework needing to know about Mill internals.
@@ -74,6 +81,7 @@ class MillGameModule extends GameModule {
   }
 
   final NativeMillSessionFactory _nativeSessionFactory;
+  final List<PlayModeContribution> _playModeContributions;
 
   @override
   GameModuleMetadata get metadata =>
@@ -259,7 +267,8 @@ class MillGameModule extends GameModule {
     required String lastShellRouteId,
   }) {
     if (lastShellRouteId == MillRouteIds.humanVsLan.value ||
-        lastShellRouteId == MillRouteIds.humanVsBluetooth.value) {
+        lastShellRouteId == MillRouteIds.humanVsBluetooth.value ||
+        lastShellRouteId == MillRouteIds.humanVsCloud.value) {
       logger.i(
         'Game switch: leaving LAN mode, disposing network and resetting board.',
       );
@@ -303,10 +312,12 @@ class MillGameModule extends GameModule {
   }) {
     final bool previousWasRemote =
         previousRouteId == MillRouteIds.humanVsLan.value ||
-        previousRouteId == MillRouteIds.humanVsBluetooth.value;
+        previousRouteId == MillRouteIds.humanVsBluetooth.value ||
+        previousRouteId == MillRouteIds.humanVsCloud.value;
     final bool nextIsRemote =
         nextRouteId == MillRouteIds.humanVsLan.value ||
-        nextRouteId == MillRouteIds.humanVsBluetooth.value;
+        nextRouteId == MillRouteIds.humanVsBluetooth.value ||
+        nextRouteId == MillRouteIds.humanVsCloud.value;
     if (previousWasRemote && !nextIsRemote) {
       logger.i('Leaving remote mode: disposing transport and resetting board.');
       unawaited(GameController().disposeRemoteMatch());
@@ -378,6 +389,8 @@ class MillGameModule extends GameModule {
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
             GamePage(GameMode.humanVsBluetooth, key: key),
       ),
+      for (final PlayModeContribution contribution in _playModeContributions)
+        contribution.buildEntry(context),
       GameModeEntry(
         id: MillRouteIds.setupPosition,
         label: s.boardEditor,
