@@ -5400,5 +5400,15 @@
     "renameGame": "Rename game",
     "@renameGame": {
         "description": "Title of the dialog for renaming a saved game file"
+    },
+    "pgnFilesImported": "{count, plural, =1{Imported 1 PGN file} other{Imported {count} PGN files}}",
+    "@pgnFilesImported": {
+        "description": "Result shown after importing PGN files from an archive",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "3"
+            }
+        }
     }
 }

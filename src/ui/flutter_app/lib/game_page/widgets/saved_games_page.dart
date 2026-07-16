@@ -590,9 +590,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              '${S.of(context).done}: $importedCount PGN files imported',
-            ),
+            content: Text(S.of(context).pgnFilesImported(importedCount)),
           ),
         );
 
