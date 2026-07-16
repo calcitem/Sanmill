@@ -3219,7 +3219,7 @@
     "@save": {
         "description": "Save button"
     },
-    "noCustomPuzzles": "No Custom Puzzles",
+    "noCustomPuzzles": "No custom puzzles",
     "@noCustomPuzzles": {
         "description": "Message when there are no custom puzzles"
     },
@@ -4154,7 +4154,7 @@
     "@errorDetectingNetworkInterfaces": {},
     "contributeToSanmill": "Contribute to Sanmill",
     "@contributeToSanmill": {},
-    "howToContribute": "How to Contribute",
+    "howToContribute": "How to contribute",
     "@howToContribute": {},
     "perfectDatabaseNotEnabled": "Perfect database is not enabled",
     "@perfectDatabaseNotEnabled": {},

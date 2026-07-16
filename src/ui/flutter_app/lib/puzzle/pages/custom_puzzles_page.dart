@@ -55,59 +55,90 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
             : Text(s.customPuzzles),
         leading: _isMultiSelectMode
             ? IconButton(
-                icon: const Icon(FluentIcons.dismiss_24_regular),
+                icon: Icon(
+                  FluentIcons.dismiss_24_regular,
+                  semanticLabel: s.cancelPuzzleSelection,
+                ),
                 onPressed: _toggleMultiSelectMode,
+                tooltip: s.cancelPuzzleSelection,
               )
             : null,
         actions: <Widget>[
           if (_isMultiSelectMode) ...<Widget>[
             IconButton(
-              icon: const Icon(FluentIcons.select_all_on_24_regular),
+              icon: Icon(
+                FluentIcons.select_all_on_24_regular,
+                semanticLabel: s.puzzleSelectAll,
+              ),
               onPressed: _selectAllPuzzles,
               tooltip: s.puzzleSelectAll,
             ),
             if (_selectedPuzzleIds.isNotEmpty)
               IconButton(
-                icon: const Icon(FluentIcons.arrow_upload_24_regular),
+                icon: Icon(
+                  FluentIcons.arrow_upload_24_regular,
+                  semanticLabel: s.contributeToSanmill,
+                ),
                 onPressed: () => _contributeSelectedPuzzles(context, theme),
                 tooltip: s.contributeToSanmill,
               ),
             if (_selectedPuzzleIds.isNotEmpty)
               IconButton(
-                icon: const Icon(FluentIcons.qr_code_24_regular),
+                icon: Icon(
+                  FluentIcons.qr_code_24_regular,
+                  semanticLabel: s.exportQrCode,
+                ),
                 onPressed: _exportSelectedPuzzlesAsQr,
                 tooltip: s.exportQrCode,
               ),
             if (_selectedPuzzleIds.isNotEmpty)
               IconButton(
-                icon: const Icon(FluentIcons.share_24_regular),
+                icon: Icon(
+                  FluentIcons.share_24_regular,
+                  semanticLabel: s.puzzleExport,
+                ),
                 onPressed: _exportSelectedPuzzles,
                 tooltip: s.puzzleExport,
               ),
             if (_selectedPuzzleIds.isNotEmpty)
               IconButton(
-                icon: const Icon(FluentIcons.delete_24_regular),
+                icon: Icon(
+                  FluentIcons.delete_24_regular,
+                  semanticLabel: s.delete,
+                ),
                 onPressed: () => _deleteSelectedPuzzles(context, theme),
                 tooltip: s.delete,
               ),
           ] else ...<Widget>[
             IconButton(
-              icon: const Icon(FluentIcons.scan_camera_24_regular),
+              icon: Icon(
+                FluentIcons.scan_camera_24_regular,
+                semanticLabel: s.scanQrCode,
+              ),
               onPressed: _scanPuzzleQrCode,
               tooltip: s.scanQrCode,
             ),
             IconButton(
-              icon: const Icon(FluentIcons.folder_open_24_regular),
+              icon: Icon(
+                FluentIcons.folder_open_24_regular,
+                semanticLabel: s.puzzleImport,
+              ),
               onPressed: _importPuzzles,
               tooltip: s.puzzleImport,
             ),
             IconButton(
-              icon: const Icon(FluentIcons.info_24_regular),
+              icon: Icon(
+                FluentIcons.info_24_regular,
+                semanticLabel: s.howToContribute,
+              ),
               onPressed: () => _showContributionInfo(context, theme),
               tooltip: s.howToContribute,
             ),
             IconButton(
-              icon: const Icon(FluentIcons.checkbox_checked_24_regular),
+              icon: Icon(
+                FluentIcons.checkbox_checked_24_regular,
+                semanticLabel: s.puzzleSelect,
+              ),
               onPressed: _toggleMultiSelectMode,
               tooltip: s.puzzleSelect,
             ),
@@ -119,7 +150,10 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
           : FloatingActionButton(
               onPressed: _createNewPuzzle,
               tooltip: s.puzzleCreateNew,
-              child: const Icon(FluentIcons.add_24_regular),
+              child: Icon(
+                FluentIcons.add_24_regular,
+                semanticLabel: s.puzzleCreateNew,
+              ),
             ),
       body: ValueListenableBuilder<PuzzleSettings>(
         valueListenable: _puzzleManager.settingsNotifier,

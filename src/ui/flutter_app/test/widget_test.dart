@@ -938,6 +938,11 @@ void main() {
                 .isNotEmpty,
         isTrue,
       );
+      expect(find.byTooltip('Scan QR code'), findsOneWidget);
+      expect(find.byTooltip('Import puzzles'), findsOneWidget);
+      expect(find.byTooltip('How to contribute'), findsOneWidget);
+      expect(find.byTooltip('Select puzzles'), findsOneWidget);
+      expect(find.byTooltip('Create new puzzle'), findsOneWidget);
 
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
