@@ -5430,5 +5430,19 @@
     "exportGameArchive": "Export game archive",
     "@exportGameArchive": {
         "description": "Saved-games toolbar action for sharing all PGN files in a ZIP archive"
+    },
+    "deleteSavedGameTitle": "Delete saved game?",
+    "@deleteSavedGameTitle": {
+        "description": "Title of the confirmation dialog for deleting one saved game file"
+    },
+    "deleteSavedGameMessage": "Delete “{filename}”? This cannot be undone.",
+    "@deleteSavedGameMessage": {
+        "description": "Confirmation message for permanently deleting one saved game file",
+        "placeholders": {
+            "filename": {
+                "type": "String",
+                "example": "game.pgn"
+            }
+        }
     }
 }

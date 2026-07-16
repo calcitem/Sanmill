@@ -336,17 +336,21 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
         await showDialog<bool>(
           context: context,
           builder: (BuildContext context) {
+            final S strings = S.of(context);
             return AlertDialog(
-              title: Text(S.of(context).confirm),
-              content: Text('${S.of(context).delete} ${e.filename}'),
+              title: Text(strings.deleteSavedGameTitle),
+              content: Text(strings.deleteSavedGameMessage(e.filename)),
               actions: <Widget>[
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: Text(S.of(context).cancel),
+                  child: Text(strings.cancel),
                 ),
                 TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.error,
+                  ),
                   onPressed: () => Navigator.of(context).pop(true),
-                  child: Text(S.of(context).delete),
+                  child: Text(strings.delete),
                 ),
               ],
             );
