@@ -5340,5 +5340,19 @@
                 "example": "1400"
             }
         }
+    },
+    "gameDurationMinutesSeconds": "Game duration: {minutes}m {seconds}s",
+    "@gameDurationMinutesSeconds": {
+        "description": "Duration of a completed game in minutes and seconds",
+        "placeholders": {
+            "minutes": {
+                "type": "int",
+                "example": "3"
+            },
+            "seconds": {
+                "type": "int",
+                "example": "42"
+            }
+        }
     }
 }

@@ -42,6 +42,8 @@ void main() {
       find.byKey(const Key('ai_vs_ai_game_result_dialog_review_button')),
       findsOneWidget,
     );
+    expect(find.text('Player 1 wins!'), findsOneWidget);
+    expect(find.textContaining('Game duration:'), findsOneWidget);
     expect(find.text('Review game'), findsOneWidget);
   });
 

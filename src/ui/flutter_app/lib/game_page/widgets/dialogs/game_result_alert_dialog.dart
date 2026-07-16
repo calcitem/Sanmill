@@ -44,11 +44,9 @@ class GameResultAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MillBoardView position = GameController().activeBoardView;
-
     // Special handling for AI vs AI mode
     if (gameMode == GameMode.aiVsAi) {
-      return _buildAiVsAiDialog(context, position);
+      return _buildAiVsAiDialog(context);
     }
 
     switch (_gameResult) {
@@ -256,7 +254,7 @@ class GameResultAlertDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildAiVsAiDialog(BuildContext context, MillBoardView position) {
+  Widget _buildAiVsAiDialog(BuildContext context) {
     // Get game duration in seconds
     final int gameDurationSeconds = GameController()
         .calculateGameDurationSeconds();
@@ -264,17 +262,13 @@ class GameResultAlertDialog extends StatelessWidget {
     // Format duration as minutes and seconds
     final int minutes = gameDurationSeconds ~/ 60;
     final int seconds = gameDurationSeconds % 60;
-    final String durationText = "${minutes}m ${seconds}s";
 
     // Determine winner text
-    final String winnerText;
-    if (position.winner == PieceColor.white) {
-      winnerText = "White AI wins";
-    } else if (position.winner == PieceColor.black) {
-      winnerText = "Black AI wins";
-    } else {
-      winnerText = "Draw";
-    }
+    final String winnerText = switch (winner) {
+      PieceColor.white => S.of(context).whiteWin,
+      PieceColor.black => S.of(context).blackWin,
+      _ => S.of(context).draw,
+    };
 
     // Use the granular reason when known; otherwise fall back to the
     // generic explanation.
@@ -285,7 +279,7 @@ class GameResultAlertDialog extends StatelessWidget {
     final StringBuffer content = StringBuffer();
     content.writeln(reasonText);
     content.writeln();
-    content.writeln("Game Duration: $durationText");
+    content.writeln(S.of(context).gameDurationMinutesSeconds(minutes, seconds));
 
     return AlertDialog(
       key: const Key('ai_vs_ai_game_result_dialog'),
