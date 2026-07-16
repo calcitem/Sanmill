@@ -17,7 +17,7 @@
 //     head_to_head_vs_master -- --ignored --nocapture
 //
 // Env vars:
-//   H2H_CURRENT    path to the current-branch UCI engine (default tgf.exe)
+//   H2H_CURRENT    path to the current-branch UCI engine (default platform tgf)
 //   H2H_CURRENT_ARGS extra args for current engine (default "uci")
 //   H2H_CURRENT_ENV  env assignments for current engine, KEY=VALUE separated
 //                    by whitespace (default empty)
@@ -412,6 +412,12 @@ fn workspace_root() -> PathBuf {
         .join("../..")
         .canonicalize()
         .unwrap_or_else(|_| PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../.."))
+}
+
+fn default_tgf_program() -> PathBuf {
+    workspace_root()
+        .join("target/release")
+        .join(format!("tgf{}", std::env::consts::EXE_SUFFIX))
 }
 
 fn workspace_asset_path(relative: &str) -> PathBuf {
@@ -1049,20 +1055,12 @@ fn h2h_superiority_probability_uses_total_score() {
 }
 
 #[test]
-fn resolve_engine_program_finds_workspace_target_from_relative_path() {
+fn resolve_engine_program_uses_workspace_target_for_relative_path() {
     let root = workspace_root();
-    let relative = "target/release/tgf.exe";
-    let resolved = resolve_engine_program(relative);
+    let relative = format!("target/release/tgf{}", std::env::consts::EXE_SUFFIX);
+    let resolved = resolve_engine_program(&relative);
     let resolved_path = PathBuf::from(&resolved);
-    assert!(
-        resolved_path.is_file(),
-        "expected `{resolved}` to exist (workspace root = {})",
-        root.display()
-    );
-    assert!(
-        resolved_path.starts_with(&root),
-        "resolved engine should live under the workspace root"
-    );
+    assert_eq!(resolved_path, root.join(relative));
 }
 
 fn engine_args_from_env(name: &str, default: &str) -> Vec<String> {
@@ -1609,12 +1607,10 @@ fn run_vs_parallel(config: MatchConfig) {
 #[test]
 #[ignore = "head-to-head match vs master C++; set H2H_* and run with --ignored --nocapture"]
 fn head_to_head_vs_master() {
-    let current = resolve_engine_program(&env::var("H2H_CURRENT").unwrap_or_else(|_| {
-        workspace_root()
-            .join("target/release/tgf.exe")
-            .to_string_lossy()
-            .into_owned()
-    }));
+    let current = resolve_engine_program(
+        &env::var("H2H_CURRENT")
+            .unwrap_or_else(|_| default_tgf_program().to_string_lossy().into_owned()),
+    );
     let current_args = engine_args_from_env("H2H_CURRENT_ARGS", "uci");
     let current_env = engine_env_from_env("H2H_CURRENT_ENV");
     let master = resolve_engine_program(
