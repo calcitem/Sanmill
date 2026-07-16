@@ -40,7 +40,7 @@
     "@humanVsLAN": {
         "description": "Human Vs LAN"
     },
-    "testViaLAN": "Test Via LAN",
+    "testViaLAN": "Test via LAN",
     "@testViaLAN": {
         "description": "Test Via LAN"
     },
@@ -377,7 +377,7 @@
     "@options": {
         "description": "Options"
     },
-    "generalSettings": "General Settings",
+    "generalSettings": "General settings",
     "@generalSettings": {
         "description": "General Settings"
     },
@@ -449,7 +449,7 @@
     "@isAutoRestart": {
         "description": "Auto-restart game when game over"
     },
-    "isAutoChangeFirstMove": "Auto Change First Move",
+    "isAutoChangeFirstMove": "Auto-change first move",
     "@isAutoChangeFirstMove": {
         "description": "Auto Change First Move"
     },
@@ -461,7 +461,7 @@
     "@misc": {
         "description": "Miscellaneous"
     },
-    "developerOptions": "Developer Options",
+    "developerOptions": "Developer options",
     "@developerOptions": {
         "description": "Developer Options"
     },
@@ -581,7 +581,7 @@
     "@exit": {
         "description": "Exit"
     },
-    "ruleSettings": "Rule Settings",
+    "ruleSettings": "Rule settings",
     "@ruleSettings": {
         "description": "Rule Settings"
     },
