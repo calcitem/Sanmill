@@ -867,15 +867,12 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
     String description,
     bool isCompleted,
   ) {
-    final Color stepColor = isCompleted
-        ? Colors.green
-        : Theme.of(context).colorScheme.primary;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final Color stepColor = colorScheme.primary;
     final Color titleColor = isCompleted
-        ? Colors.green
-        : Theme.of(context).colorScheme.onSurface;
-    final Color descriptionColor = Theme.of(
-      context,
-    ).colorScheme.onSurfaceVariant;
+        ? colorScheme.primary
+        : colorScheme.onSurface;
+    final Color descriptionColor = colorScheme.onSurfaceVariant;
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
@@ -887,11 +884,11 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
             decoration: BoxDecoration(color: stepColor, shape: BoxShape.circle),
             child: Center(
               child: isCompleted
-                  ? const Icon(Icons.check, size: 16, color: Colors.white)
+                  ? Icon(Icons.check, size: 16, color: colorScheme.onPrimary)
                   : Text(
                       number,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: colorScheme.onPrimary,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),

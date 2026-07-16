@@ -3019,6 +3019,37 @@ void main() {
   );
 
   testWidgets(
+    'PuzzleCreationPage workflow steps use the primary foreground',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.darkThemeData,
+          themeMode: ThemeMode.dark,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: const PuzzleCreationPage(),
+        ),
+      );
+      await tester.pump();
+
+      final BuildContext pageContext = tester.element(
+        find.byKey(const Key('puzzle_creation_page_scaffold')),
+      );
+      await tester.tap(
+        find.byTooltip(S.of(pageContext).puzzleShowDetailedWorkflow),
+      );
+      await tester.pumpAndSettle();
+
+      final Text stepNumber = tester.widget<Text>(find.text('1'));
+      expect(
+        stepNumber.style?.color,
+        Theme.of(pageContext).colorScheme.onPrimary,
+      );
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Repeated puzzle tab tap scrolls the root list to top',
     (WidgetTester tester) async {
       tester.view
