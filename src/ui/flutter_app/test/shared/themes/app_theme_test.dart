@@ -190,6 +190,29 @@ void main() {
         );
       }
     });
+
+    test('semantic container foregrounds remain readable in both themes', () {
+      for (final ThemeData theme in <ThemeData>[
+        AppTheme.lightThemeData,
+        AppTheme.darkThemeData,
+      ]) {
+        final ColorScheme colors = theme.colorScheme;
+        for (final (Color foreground, Color background) pair
+            in <(Color, Color)>[
+              (colors.onPrimaryContainer, colors.primaryContainer),
+              (colors.onTertiaryContainer, colors.tertiaryContainer),
+              (colors.onErrorContainer, colors.errorContainer),
+            ]) {
+          expect(
+            colorContrastRatio(pair.$1, pair.$2),
+            greaterThanOrEqualTo(normalTextMinimumContrastRatio),
+            reason:
+                '${theme.brightness} semantic foreground ${pair.$1} '
+                'must remain readable on ${pair.$2}.',
+          );
+        }
+      }
+    });
   });
 
   // ---------------------------------------------------------------------------
