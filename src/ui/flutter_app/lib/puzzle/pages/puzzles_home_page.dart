@@ -16,7 +16,6 @@ import 'custom_puzzles_page.dart';
 import 'daily_puzzle_page.dart';
 import 'puzzle_history_page.dart';
 import 'puzzle_list_page.dart';
-import 'puzzle_rush_page.dart';
 import 'puzzle_stats_page.dart';
 import 'puzzle_streak_page.dart';
 
@@ -141,13 +140,6 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
           title: s.allPuzzles,
           subtitle: s.allPuzzlesDesc,
           onTap: () => _navigateTo(context, const PuzzleListPage()),
-        ),
-        _PuzzleHomeTile(
-          key: const Key('puzzles_home_rush'),
-          icon: FluentIcons.flash_24_regular,
-          title: s.puzzleRush,
-          subtitle: s.puzzleRushDesc,
-          onTap: () => _navigateTo(context, const PuzzleRushPage()),
         ),
         _PuzzleHomeTile(
           key: const Key('puzzles_home_streak'),
