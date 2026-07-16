@@ -735,7 +735,7 @@
     "@left": {
         "description": "left"
     },
-    "privacyPolicy": "Privacy Policy",
+    "privacyPolicy": "Privacy policy",
     "@privacyPolicy": {
         "description": "Privacy Policy"
     },
@@ -825,7 +825,7 @@
     "@sourceCode": {
         "description": "Source code"
     },
-    "appVersion": "App Version",
+    "appVersion": "App version",
     "@appVersion": {
         "description": "App Version"
     },
@@ -1115,11 +1115,11 @@
     "@threads": {
         "description": "Threads"
     },
-    "getInvolved": "Get Involved",
+    "getInvolved": "Get involved",
     "@getInvolved": {
         "description": "Get Involved"
     },
-    "helpImproveTranslate": "Help improve translate",
+    "helpImproveTranslate": "Help improve translations",
     "@helpImproveTranslate": {
         "description": "Help improve translate"
     },
