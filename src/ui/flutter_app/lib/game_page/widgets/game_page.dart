@@ -62,7 +62,6 @@ import '../services/import_export/pgn.dart';
 import '../services/offline_board_clock.dart';
 import '../services/painters/animations/piece_effect_animation.dart';
 import '../services/painters/painters.dart';
-import '../services/player_timer.dart';
 import 'challenge_confetti.dart';
 import 'dialogs/engine_failure_dialog.dart';
 import 'dialogs/performance_warning_dialog.dart';
