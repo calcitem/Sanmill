@@ -9,7 +9,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Import flutter services
 import 'package:flutter_test/flutter_test.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:sanmill/app_shell/sanmill_app_shell.dart';
 import 'package:sanmill/appearance_settings/models/color_settings.dart';
 import 'package:sanmill/appearance_settings/models/display_settings.dart';
@@ -155,7 +154,7 @@ void main() {
       );
       expect(find.byKey(const Key('sanmill_navigation_rail')), findsNothing);
       expect(find.byKey(const Key('sanmill_tab_home')), findsOneWidget);
-      expect(find.byKey(const Key('sanmill_tab_watch')), findsOneWidget);
+      expect(find.byKey(const Key('sanmill_tab_watch')), findsNothing);
       expect(find.byKey(const Key('sanmill_tab_records')), findsNothing);
 
       // Drain any settings-save debounce timer (see the smoke test above).
@@ -478,7 +477,8 @@ void main() {
       );
       expect(find.byKey(const Key('sanmill_navigation_rail')), findsNothing);
       expect(find.byKey(const Key('sanmill_tab_home')), findsOneWidget);
-      expect(find.byKey(const Key('sanmill_tab_watch')), findsOneWidget);
+      expect(find.byType(NavigationDestination), findsNWidgets(4));
+      expect(find.byKey(const Key('sanmill_tab_watch')), findsNothing);
       expect(find.byKey(const Key('sanmill_tab_records')), findsNothing);
       expect(
         find.byKey(const Key('sanmill_more_list'), skipOffstage: false),
@@ -490,19 +490,6 @@ void main() {
             find.byKey(const Key('sanmill_tab_learn')),
           );
       expect(learnDestination.label, 'Learn');
-
-      final NavigationDestination watchDestination = tester
-          .widget<NavigationDestination>(
-            find.byKey(const Key('sanmill_tab_watch')),
-          );
-      expect((watchDestination.icon as Icon).icon, Symbols.live_tv_rounded);
-      expect((watchDestination.icon as Icon).fill, 0);
-      expect(watchDestination.selectedIcon, isA<Icon>());
-      expect(
-        (watchDestination.selectedIcon! as Icon).icon,
-        Symbols.live_tv_rounded,
-      );
-      expect((watchDestination.selectedIcon! as Icon).fill, 1);
 
       expect(
         find.byKey(const Key('sanmill_navigation_drawer_button')),
@@ -986,39 +973,12 @@ void main() {
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(const Key('sanmill_tab_watch')));
+      await tester.tap(find.byKey(const Key('sanmill_tab_more')));
       await tester.pumpAndSettle();
 
-      expect(shellState.debugCurrentTab, SanmillShellTab.watch);
-      expect(find.byKey(const Key('sanmill_watch_list')), findsOneWidget);
-      expect(
-        find.byKey(const Key('sanmill_watch_replay_group')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const Key('sanmill_watch_statistics_group')),
-        findsOneWidget,
-      );
-      expect(find.byKey(const Key('sanmill_watch_load_game')), findsOneWidget);
+      expect(shellState.debugCurrentTab, SanmillShellTab.more);
+      expect(find.byKey(const Key('sanmill_more_list')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_statistics')), findsOneWidget);
-
-      await tester.tap(find.byKey(const Key('sanmill_watch_load_game')));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 350));
-
-      final BuildContext savedGamesContext = tester.element(
-        find.byKey(const Key('saved_games_page_scaffold')),
-      );
-      final Scaffold savedGamesScaffold = tester.widget<Scaffold>(
-        find.byKey(const Key('saved_games_page_scaffold')),
-      );
-      expect(
-        savedGamesScaffold.backgroundColor,
-        Theme.of(savedGamesContext).colorScheme.surface,
-      );
-
-      await tester.binding.handlePopRoute();
-      await tester.pumpAndSettle();
 
       await tester.tap(find.byKey(const Key('drawer_item_statistics')));
       await tester.pumpAndSettle();
@@ -1074,6 +1034,7 @@ void main() {
       expect(find.text('Clock'), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_variants')), findsOneWidget);
       expect(find.text('Variants'), findsOneWidget);
+      expect(find.byKey(const Key('drawer_item_statistics')), findsOneWidget);
 
       await tester.tap(find.byKey(const Key('drawer_item_import_game')));
       await tester.pumpAndSettle();

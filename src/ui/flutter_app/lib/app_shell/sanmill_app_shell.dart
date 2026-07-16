@@ -99,6 +99,20 @@ enum SanmillShellTab {
   }
 }
 
+/// Watch remains wired internally until it has enough content to return as a
+/// primary destination.
+@visibleForTesting
+const bool sanmillWatchTabEnabled = false;
+
+@visibleForTesting
+const List<SanmillShellTab> sanmillPrimaryShellTabs = <SanmillShellTab>[
+  SanmillShellTab.home,
+  SanmillShellTab.puzzles,
+  SanmillShellTab.learn,
+  if (sanmillWatchTabEnabled) SanmillShellTab.watch,
+  SanmillShellTab.more,
+];
+
 abstract final class SanmillShellRouteIds {
   static const GameRouteId homeRoot = GameRouteId('app.tab.home');
   static const GameRouteId learnRoot = GameRouteId('app.tab.learn');
@@ -911,9 +925,9 @@ class SanmillAppShellState extends State<SanmillAppShell> {
         bottomNavigationBar: showBottomNavigationBar
             ? NavigationBar(
                 key: const Key('sanmill_bottom_navigation_bar'),
-                selectedIndex: _currentTab.index,
+                selectedIndex: sanmillPrimaryShellTabs.indexOf(_currentTab),
                 destinations: <NavigationDestination>[
-                  for (final SanmillShellTab tab in SanmillShellTab.values)
+                  for (final SanmillShellTab tab in sanmillPrimaryShellTabs)
                     NavigationDestination(
                       key: tab.key,
                       icon: Icon(tab.icon, fill: 0),
@@ -922,7 +936,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
                     ),
                 ],
                 onDestinationSelected: (int index) =>
-                    _selectTab(SanmillShellTab.values[index]),
+                    _selectTab(sanmillPrimaryShellTabs[index]),
               )
             : null,
       ),

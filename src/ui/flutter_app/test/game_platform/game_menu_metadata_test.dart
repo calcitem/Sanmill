@@ -110,7 +110,8 @@ void main() {
       expect(analysis.icon, isNotNull);
       expect(statistics.menuKey, const Key('drawer_item_statistics'));
       expect(statistics.contentKey, const Key('statistics'));
-      expect(statistics.section, GameMenuSection.game);
+      expect(statistics.section, GameMenuSection.tools);
+      expect(statistics.targets, const <GameMenuTarget>{GameMenuTarget.more});
       expect(statistics.icon, isNotNull);
     });
   });

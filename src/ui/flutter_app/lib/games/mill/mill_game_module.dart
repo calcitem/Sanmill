@@ -502,8 +502,9 @@ class MillGameModule extends GameModule {
         GameMenuContribution(
           id: MillRouteIds.statistics,
           label: s.statistics,
+          section: GameMenuSection.tools,
           icon: FluentIcons.calculator_24_regular,
-          targets: const <GameMenuTarget>{GameMenuTarget.watch},
+          targets: const <GameMenuTarget>{GameMenuTarget.more},
           menuKey: const Key('drawer_item_statistics'),
           contentKey: const Key('statistics'),
           isAvailable: (_) => features.supports(GameCapability.statistics),
