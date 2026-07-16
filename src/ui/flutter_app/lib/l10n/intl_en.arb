@@ -3791,7 +3791,7 @@
     "@puzzleContributeDialogTitle": {
         "description": "Title for contribute puzzles dialog"
     },
-    "puzzleContributeCount": "You are about to export {count} puzzle(s) for contribution.",
+    "puzzleContributeCount": "{count, plural, =1{You are about to export 1 puzzle for contribution.} other{You are about to export {count} puzzles for contribution.}}",
     "@puzzleContributeCount": {
         "description": "Message showing number of puzzles to contribute",
         "placeholders": {
