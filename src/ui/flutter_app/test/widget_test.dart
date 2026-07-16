@@ -2702,27 +2702,25 @@ void main() {
       await tester.tap(
         find.byKey(const Key('sanmill_home_play_sheet_mill.play.humanVsAi')),
       );
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 500));
-      await tester.binding.handlePopRoute();
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 500));
-
-      controller.gameRecorder.appendMove(ExtMove('d6', side: PieceColor.white));
-      controller.activeSessionSnapshot = const platform.GameStateSnapshot(
-        gameId: GameId.mill,
-        activeSeat: platform.PlayerSeat.second,
-        outcome: platform.GameOutcome.ongoing(),
-        phase: 'placing',
-      );
-      await tester.pump();
-
-      await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
-      expect(find.byKey(const Key('game_page_leave_dialog')), findsOneWidget);
-      await tester.tap(find.byKey(const Key('game_page_leave_confirm_button')));
+      final Finder startButton = find.byKey(
+        const Key('human_ai_new_game_sheet_start'),
+      );
+      await tester.ensureVisible(startButton);
+      await tester.tap(startButton);
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('game_page_scaffold')), findsOneWidget);
+
+      await tester.binding.handlePopRoute();
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
+
+      expect(
+        find.byKey(const Key('sanmill_home_ongoing_game_group')),
+        findsNothing,
+      );
+
       controller.activeSessionSnapshot = const platform.GameStateSnapshot(
         gameId: GameId.mill,
         activeSeat: platform.PlayerSeat.second,

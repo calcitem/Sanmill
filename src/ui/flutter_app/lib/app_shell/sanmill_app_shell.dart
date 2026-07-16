@@ -182,7 +182,6 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   late String _routeId;
   late String _playRouteId;
   bool _initialized = false;
-  bool _hasOpenedCurrentPlaySession = false;
 
   GameSessionHandle? _activeSession;
   GameId? _activeSessionGameId;
@@ -348,7 +347,6 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     final String nextRouteId = module.defaultShellRoute(context);
     _playRouteId = nextRouteId;
     _routeId = SanmillShellRouteIds.homeRoot.value;
-    _hasOpenedCurrentPlaySession = false;
     module.didNavigateShellRoute(
       context,
       previousRouteId: null,
@@ -449,7 +447,6 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     }
     setState(() {
       _playRouteId = routeId;
-      _hasOpenedCurrentPlaySession = true;
       _currentTab = SanmillShellTab.home;
     });
     final NavigatorState? navigator =
@@ -729,7 +726,6 @@ class SanmillAppShellState extends State<SanmillAppShell> {
           tabInteraction: _tabInteractions[SanmillShellTab.home]!,
           isActive: _currentTab == SanmillShellTab.home,
           currentPlayRouteId: _playRouteId,
-          hasOpenedCurrentPlaySession: _hasOpenedCurrentPlaySession,
           onContinueGame: _continueCurrentGame,
           onPlayRouteSelected: _startNewGameOnRoute,
           onAppRouteSelected: _pushAppRoute,
@@ -1189,7 +1185,6 @@ class _HomeTabRoot extends StatefulWidget {
     required this.tabInteraction,
     required this.isActive,
     required this.currentPlayRouteId,
-    required this.hasOpenedCurrentPlaySession,
     required this.onContinueGame,
     required this.onPlayRouteSelected,
     required this.onAppRouteSelected,
@@ -1200,7 +1195,6 @@ class _HomeTabRoot extends StatefulWidget {
   final Listenable tabInteraction;
   final bool isActive;
   final String currentPlayRouteId;
-  final bool hasOpenedCurrentPlaySession;
   final VoidCallback onContinueGame;
   final ValueChanged<String> onPlayRouteSelected;
   final ValueChanged<String> onAppRouteSelected;
@@ -1367,7 +1361,6 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
         future: _recentGamesFuture,
         limit: _recentGamesLimit,
         useWideLayout: useWideHomeLayout,
-        hasOpenedCurrentPlaySession: widget.hasOpenedCurrentPlaySession,
         tabInteraction: widget.tabInteraction,
         onContinueGame: widget.onContinueGame,
         onShowAll: _openSavedGamesPage,
@@ -1566,7 +1559,6 @@ class _HomeGamesOverview extends StatelessWidget {
     required this.future,
     required this.limit,
     required this.useWideLayout,
-    required this.hasOpenedCurrentPlaySession,
     required this.tabInteraction,
     required this.onContinueGame,
     required this.onShowAll,
@@ -1579,7 +1571,6 @@ class _HomeGamesOverview extends StatelessWidget {
   final Future<List<SavedGameSummary>> future;
   final int limit;
   final bool useWideLayout;
-  final bool hasOpenedCurrentPlaySession;
   final Listenable tabInteraction;
   final VoidCallback onContinueGame;
   final VoidCallback onShowAll;
@@ -1678,7 +1669,7 @@ class _HomeGamesOverview extends StatelessWidget {
     final GameStateSnapshot? snapshot = GameController().activeSessionSnapshot;
     if (!_ActiveGamePreview.shouldShow(
       snapshot,
-      hasPlayableHistory: moveCount > 0 || hasOpenedCurrentPlaySession,
+      hasPlayableHistory: moveCount > 0,
     )) {
       return null;
     }
