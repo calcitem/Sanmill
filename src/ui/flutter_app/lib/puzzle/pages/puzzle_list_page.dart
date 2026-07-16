@@ -515,14 +515,22 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
       return;
     }
 
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           success
               ? S.of(context).puzzleExportSuccess(puzzlesToExport.length)
               : S.of(context).puzzleExportFailed,
+          style: TextStyle(
+            color: success
+                ? colorScheme.onPrimaryContainer
+                : colorScheme.onErrorContainer,
+          ),
         ),
-        backgroundColor: success ? Colors.green : Colors.red,
+        backgroundColor: success
+            ? colorScheme.primaryContainer
+            : colorScheme.errorContainer,
       ),
     );
 
@@ -561,10 +569,14 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
     }
 
     if (qrString == null) {
+      final ColorScheme colorScheme = Theme.of(context).colorScheme;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(S.of(context).puzzleQrDataTooLong),
-          backgroundColor: Colors.red,
+          content: Text(
+            S.of(context).puzzleQrDataTooLong,
+            style: TextStyle(color: colorScheme.onErrorContainer),
+          ),
+          backgroundColor: colorScheme.errorContainer,
         ),
       );
       return;
@@ -670,13 +682,15 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
       return;
     }
 
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     if (result.success) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             S.of(context).puzzleImportSuccess(result.puzzles.length),
+            style: TextStyle(color: colorScheme.onPrimaryContainer),
           ),
-          backgroundColor: Colors.green,
+          backgroundColor: colorScheme.primaryContainer,
         ),
       );
       setState(() {});
@@ -703,10 +717,14 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
     }).toList();
 
     if (customPuzzleIds.isEmpty) {
+      final ColorScheme colorScheme = Theme.of(context).colorScheme;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(S.of(context).puzzleCannotDeleteBuiltIn),
-          backgroundColor: Colors.orange,
+          content: Text(
+            S.of(context).puzzleCannotDeleteBuiltIn,
+            style: TextStyle(color: colorScheme.onTertiaryContainer),
+          ),
+          backgroundColor: colorScheme.tertiaryContainer,
         ),
       );
       return;
@@ -749,10 +767,14 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
       return;
     }
 
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(S.of(context).puzzleDeleted(deletedCount)),
-        backgroundColor: Colors.green,
+        content: Text(
+          S.of(context).puzzleDeleted(deletedCount),
+          style: TextStyle(color: colorScheme.onPrimaryContainer),
+        ),
+        backgroundColor: colorScheme.primaryContainer,
       ),
     );
 
@@ -770,13 +792,15 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
       return;
     }
 
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     if (result.success) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             S.of(context).puzzleImportSuccess(result.puzzles.length),
+            style: TextStyle(color: colorScheme.onPrimaryContainer),
           ),
-          backgroundColor: Colors.green,
+          backgroundColor: colorScheme.primaryContainer,
         ),
       );
     } else {
@@ -784,8 +808,9 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
         SnackBar(
           content: Text(
             result.errorMessage ?? S.of(context).puzzleImportFailed,
+            style: TextStyle(color: colorScheme.onErrorContainer),
           ),
-          backgroundColor: Colors.red,
+          backgroundColor: colorScheme.errorContainer,
         ),
       );
     }
