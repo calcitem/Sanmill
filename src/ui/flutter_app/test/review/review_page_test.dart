@@ -6,11 +6,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:mockito/mockito.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
 import 'package:sanmill/game_page/widgets/mini_board.dart';
 import 'package:sanmill/review/models/review_models.dart';
 import 'package:sanmill/review/services/review_analysis_service.dart';
+import 'package:sanmill/review/services/review_storage.dart';
 import 'package:sanmill/review/widgets/review_page.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
@@ -162,13 +165,18 @@ void main() {
   testWidgets('quality annotation choices expose symbol and spoken label', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(_reviewApp());
+    final ReviewStorage storage = ReviewStorage.forTesting(_MemoryBox());
+    await tester.pumpWidget(_reviewApp(storage: storage));
     await tester.pump();
 
     await tester.tap(find.byKey(const Key('review_choose_nag')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
 
+    expect(find.text('Move quality annotation'), findsOneWidget);
+    expect(find.text('Current: ? Mistake'), findsOneWidget);
+    expect(find.byKey(const Key('review_nag_clear')), findsOneWidget);
+    expect(find.byKey(const Key('review_nag_cancel')), findsOneWidget);
     expect(
       tester
           .getSemantics(find.byKey(const Key('review_nag_3')))
@@ -176,6 +184,18 @@ void main() {
           .label,
       contains('!! Brilliant'),
     );
+    expect(
+      tester
+          .getSemantics(find.byKey(const Key('review_nag_2')))
+          .getSemanticsData()
+          .hasFlag(SemanticsFlag.isSelected),
+      isTrue,
+    );
+
+    await tester.tap(find.byKey(const Key('review_nag_3')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(find.text('a7!! · Mistake'), findsOneWidget);
   });
 
   testWidgets('cancelling deep analysis keeps the completed report visible', (
@@ -245,15 +265,29 @@ void main() {
   });
 }
 
-Widget _reviewApp() {
+Widget _reviewApp({ReviewStorage storage = ReviewStorage.instance}) {
   final PrivateGameRecord record = _record();
   return makeTestableWidget(
     ReviewPage(
       record: record,
       initialReport: _report(record),
       autoAnalyze: false,
+      storage: storage,
     ),
   );
+}
+
+class _MemoryBox extends Fake implements Box<dynamic> {
+  final Map<dynamic, dynamic> _values = <dynamic, dynamic>{};
+
+  @override
+  dynamic get(dynamic key, {dynamic defaultValue}) =>
+      _values[key] ?? defaultValue;
+
+  @override
+  Future<void> put(dynamic key, dynamic value) async {
+    _values[key] = value;
+  }
 }
 
 PrivateGameRecord _record() {

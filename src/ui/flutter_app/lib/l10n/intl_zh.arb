@@ -5040,5 +5040,7 @@
     "retry": "重试",
     "showAnswer": "显示答案",
     "reviewGradeBrilliant": "精妙",
-    "reviewGradeInteresting": "有趣"
+    "reviewGradeInteresting": "有趣",
+    "reviewCurrentAnnotation": "当前：{annotation}",
+    "reviewNoAnnotation": "无质量标注"
 }

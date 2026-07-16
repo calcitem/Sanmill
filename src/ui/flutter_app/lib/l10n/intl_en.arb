@@ -5301,5 +5301,8 @@
     "retry": "Retry",
     "showAnswer": "Show answer",
     "reviewGradeBrilliant": "Brilliant",
-    "reviewGradeInteresting": "Interesting"
+    "reviewGradeInteresting": "Interesting",
+    "reviewCurrentAnnotation": "Current: {annotation}",
+    "@reviewCurrentAnnotation": {"placeholders": {"annotation": {"type": "String"}}},
+    "reviewNoAnnotation": "No quality annotation"
 }
