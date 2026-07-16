@@ -1881,6 +1881,7 @@ class MovesListPageState extends State<MovesListPage> {
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
+        final Color errorColor = Theme.of(context).colorScheme.error;
         return AlertDialog(
           title: Text(S.of(context).variationNotation(notation)),
           content: Column(
@@ -1906,13 +1907,10 @@ class MovesListPageState extends State<MovesListPage> {
                 },
               ),
               ListTile(
-                leading: Icon(
-                  FluentIcons.delete_24_regular,
-                  color: Colors.red.shade700,
-                ),
+                leading: Icon(FluentIcons.delete_24_regular, color: errorColor),
                 title: Text(
                   S.of(context).deleteBranch,
-                  style: TextStyle(color: Colors.red.shade700),
+                  style: TextStyle(color: errorColor),
                 ),
                 subtitle: Text(S.of(context).removeVariationPermanently),
                 onTap: () {
