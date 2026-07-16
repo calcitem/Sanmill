@@ -612,6 +612,9 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
     final ColorScheme colorScheme = theme.colorScheme;
     final TextTheme textTheme = theme.textTheme;
     final S strings = S.of(context);
+    final String sortLabel = _isReversedOrder
+        ? strings.sortNewestFirst
+        : strings.sortOldestFirst;
 
     return Scaffold(
       key: const Key('saved_games_page_scaffold'),
@@ -621,14 +624,17 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
         actions: <Widget>[
           // Browse button
           IconButton(
-            icon: const Icon(Icons.folder_open),
-            tooltip: strings.loadGame,
+            icon: Icon(Icons.folder_open, semanticLabel: strings.openGameFile),
+            tooltip: strings.openGameFile,
             onPressed: _pickAndPreview,
           ),
           // Batch import button
           IconButton(
-            icon: const Icon(Icons.file_upload),
-            tooltip: strings.import,
+            icon: Icon(
+              Icons.file_upload,
+              semanticLabel: strings.importGameArchive,
+            ),
+            tooltip: strings.importGameArchive,
             onPressed: _batchImportFromZip,
           ),
           // Sort order button
@@ -638,15 +644,18 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
               transitionBuilder: (Widget child, Animation<double> anim) =>
                   ScaleTransition(scale: anim, child: child),
               child: _isReversedOrder
-                  ? const Icon(
+                  ? Icon(
                       FluentIcons.arrow_sort_up_24_regular,
-                      key: ValueKey<String>('ascending'),
+                      key: const ValueKey<String>('ascending'),
+                      semanticLabel: sortLabel,
                     )
-                  : const Icon(
+                  : Icon(
                       FluentIcons.arrow_sort_down_24_regular,
-                      key: ValueKey<String>('descending'),
+                      key: const ValueKey<String>('descending'),
+                      semanticLabel: sortLabel,
                     ),
             ),
+            tooltip: sortLabel,
             onPressed: () {
               setState(() {
                 _isReversedOrder = !_isReversedOrder;
@@ -657,8 +666,8 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
           ),
           // Share button
           IconButton(
-            icon: const Icon(Icons.share),
-            tooltip: strings.exportGame,
+            icon: Icon(Icons.share, semanticLabel: strings.exportGameArchive),
+            tooltip: strings.exportGameArchive,
             onPressed: _shareRecords,
           ),
         ],

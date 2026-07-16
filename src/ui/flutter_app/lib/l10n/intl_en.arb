@@ -5410,5 +5410,25 @@
                 "example": "3"
             }
         }
+    },
+    "openGameFile": "Open game file",
+    "@openGameFile": {
+        "description": "Saved-games toolbar action for choosing and opening one PGN file"
+    },
+    "importGameArchive": "Import game archive",
+    "@importGameArchive": {
+        "description": "Saved-games toolbar action for importing PGN files from a ZIP archive"
+    },
+    "sortOldestFirst": "Sort oldest first",
+    "@sortOldestFirst": {
+        "description": "Action that changes the saved-game list to oldest-first order"
+    },
+    "sortNewestFirst": "Sort newest first",
+    "@sortNewestFirst": {
+        "description": "Action that changes the saved-game list to newest-first order"
+    },
+    "exportGameArchive": "Export game archive",
+    "@exportGameArchive": {
+        "description": "Saved-games toolbar action for sharing all PGN files in a ZIP archive"
     }
 }
