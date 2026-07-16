@@ -560,7 +560,7 @@ class AppTheme {
   static const Color cardColor = Color(0xFFF4F4F1);
   static const Color settingsHeaderTextColor = Color(0xFF242421);
   static const Color lightBackgroundColor = Color(0xFFFAFAF8);
-  static const Color listTileSubtitleColor = Color(0xB35E5D57);
+  static const Color listTileSubtitleColor = Color(0xFF5E5D57);
 
   /// Help page
   static const Color helpTextColor = UIColors.burlyWood;

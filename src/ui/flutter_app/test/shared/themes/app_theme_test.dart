@@ -161,6 +161,16 @@ void main() {
         );
       }
     });
+
+    test('legacy light rule subtitles remain readable on cards', () {
+      expect(
+        colorContrastRatio(
+          AppTheme.listTileSubtitleStyle.color!,
+          AppTheme.cardColor,
+        ),
+        greaterThanOrEqualTo(normalTextMinimumContrastRatio),
+      );
+    });
   });
 
   // ---------------------------------------------------------------------------
