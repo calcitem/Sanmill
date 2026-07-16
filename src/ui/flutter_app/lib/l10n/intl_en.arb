@@ -2906,7 +2906,7 @@
             }
         }
     },
-    "dailyPuzzleStart": "Start Daily Puzzle",
+    "dailyPuzzleStart": "Start daily puzzle",
     "@dailyPuzzleStart": {
         "description": "Start daily puzzle button"
     },
@@ -2922,7 +2922,7 @@
     "@dailyPuzzleLongestStreak": {
         "description": "Longest streak label"
     },
-    "dailyPuzzleTotalCompleted": "Total Completed",
+    "dailyPuzzleTotalCompleted": "Total completed",
     "@dailyPuzzleTotalCompleted": {
         "description": "Total completed puzzles label"
     },
