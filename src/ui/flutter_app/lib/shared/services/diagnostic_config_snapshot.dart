@@ -195,6 +195,7 @@ class DiagnosticConfigSchema {
     'AnalysisShowMoveComments',
     'AnalysisShowBestMoveArrow',
     'AnalysisShowEvaluationGauge',
+    'AnalysisShowAllBoardResults',
   };
 
   static const Set<String> displaySensitiveLocal = <String>{
