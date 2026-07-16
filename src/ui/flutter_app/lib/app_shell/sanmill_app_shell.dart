@@ -2148,14 +2148,14 @@ class _HomeGameCarouselSection extends StatefulWidget {
 }
 
 class _HomeGameCarouselSectionState extends State<_HomeGameCarouselSection> {
-  static const List<int> _flexWeights = <int>[6, 2];
+  static const List<int> _flexWeights = <int>[7, 3];
   static const EdgeInsets _carouselPadding = EdgeInsets.symmetric(
     horizontal: 8,
   );
   static const EdgeInsets _carouselOuterPadding = EdgeInsets.symmetric(
     horizontal: 8,
   );
-  static const double _carouselAspectRatio = 1.15;
+  static const double _carouselAspectRatio = 1.55;
 
   final CarouselController _controller = CarouselController();
 

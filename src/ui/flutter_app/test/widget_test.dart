@@ -2611,7 +2611,7 @@ void main() {
       );
       expect(
         carouselFrameSize.width / carouselFrameSize.height,
-        moreOrLessEquals(1.15, epsilon: 0.01),
+        moreOrLessEquals(1.55, epsilon: 0.01),
       );
       expect(
         find.byKey(const Key('sanmill_home_saved_ongoing_games_group')),
