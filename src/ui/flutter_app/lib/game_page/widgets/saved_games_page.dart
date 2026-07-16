@@ -282,9 +282,6 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
 
       // Encode zip
       final List<int> encodedBytes = ZipEncoder().encode(archive);
-      if (encodedBytes == null) {
-        throw Exception('Failed to encode archive');
-      }
       final Uint8List zipBytes = Uint8List.fromList(encodedBytes);
 
       // Create temporary zip file
