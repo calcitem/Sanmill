@@ -2329,7 +2329,7 @@
     "@puzzleDifficultyMaster": {
         "description": "Master difficulty"
     },
-    "puzzleCategoryFormMill": "Form Mill",
+    "puzzleCategoryFormMill": "Form a mill",
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
@@ -2337,7 +2337,7 @@
     "@puzzleCategoryCapturePieces": {
         "description": "Capture pieces category"
     },
-    "puzzleCategoryWinGame": "Win Game",
+    "puzzleCategoryWinGame": "Win the game",
     "@puzzleCategoryWinGame": {
         "description": "Win the game category"
     },
@@ -2345,7 +2345,7 @@
     "@puzzleCategoryDefend": {
         "description": "Defense category"
     },
-    "puzzleCategoryFindBestMove": "Best Move",
+    "puzzleCategoryFindBestMove": "Best move",
     "@puzzleCategoryFindBestMove": {
         "description": "Find best move category"
     },
