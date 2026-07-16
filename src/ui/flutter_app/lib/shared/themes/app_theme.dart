@@ -272,7 +272,7 @@ class AppTheme {
   static AppCustomColors _customColors(ColorScheme colorScheme) {
     return AppCustomColors(
       accent: colorScheme.primary,
-      good: const Color(0xFF629924),
+      good: colorScheme.primary,
       error: colorScheme.error,
       rowEven: colorScheme.surfaceContainerLow,
       rowOdd: colorScheme.surfaceContainer,

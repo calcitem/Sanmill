@@ -143,6 +143,24 @@ void main() {
         }
       },
     );
+
+    test('good status color follows the readable theme primary', () {
+      for (final ThemeData theme in <ThemeData>[
+        AppTheme.lightThemeData,
+        AppTheme.darkThemeData,
+      ]) {
+        final AppCustomColors customColors = theme
+            .extension<AppCustomColors>()!;
+        expect(customColors.good, theme.colorScheme.primary);
+        expect(
+          colorContrastRatio(
+            customColors.good,
+            theme.colorScheme.surfaceContainerLow,
+          ),
+          greaterThanOrEqualTo(normalTextMinimumContrastRatio),
+        );
+      }
+    });
   });
 
   // ---------------------------------------------------------------------------
