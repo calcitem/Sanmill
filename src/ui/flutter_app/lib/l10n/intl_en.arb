@@ -5291,7 +5291,7 @@
     "reviewGradeMistake": "Mistake",
     "reviewGradeBlunder": "Blunder",
     "todayProgress": "Today",
-    "todayProgressSummary": "{games} completed games · {reviews} reviews",
+    "todayProgressSummary": "{games, plural, =1{1 completed game} other{{games} completed games}} · {reviews, plural, =1{1 review} other{{reviews} reviews}}",
     "@todayProgressSummary": {"placeholders": {"games": {"type": "int"}, "reviews": {"type": "int"}}},
     "todayProgressDescription": "Local calendar-day progress, with no countdown.",
     "privateHistory": "Private game history",
