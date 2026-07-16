@@ -36,7 +36,6 @@ import '../../shared/config/ai_compliance_config.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/screenshot_service.dart';
-import '../../shared/services/system_ui_service.dart';
 import '../../shared/themes/app_styles.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/utils/screen_insets.dart';
