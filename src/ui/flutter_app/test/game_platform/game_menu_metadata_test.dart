@@ -54,10 +54,12 @@ void main() {
       expect(humanVsAi.contentKey, const Key('human_ai'));
       expect(humanVsAi.section, GameMenuSection.play);
       expect(humanVsAi.icon, isNotNull);
+      expect(humanVsAi.prepareLaunch, isNotNull);
       expect(humanVsHuman.menuKey, const Key('drawer_item_human_vs_human'));
       expect(humanVsHuman.contentKey, const Key('human_human'));
       expect(humanVsHuman.section, GameMenuSection.play);
       expect(humanVsHuman.icon, isNotNull);
+      expect(humanVsHuman.prepareLaunch, isNull);
       expect(setupPosition.menuKey, const Key('drawer_item_setup_position'));
       expect(setupPosition.contentKey, const Key('setup_position'));
       expect(setupPosition.section, GameMenuSection.tools);

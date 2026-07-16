@@ -473,6 +473,16 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   /// game was still active silently redisplayed that stale game instead of a
   /// fresh board -- i.e. New Game appeared to "load" the previous game.
   Future<void> _startNewGameOnRoute(String routeId) async {
+    final GameModeEntry mode = GameRegistry.instance.current
+        .playModes(context)
+        .singleWhere((GameModeEntry entry) => entry.id.value == routeId);
+    final GameModeLaunchPreparation? prepareLaunch = mode.prepareLaunch;
+    if (prepareLaunch != null) {
+      final GameModeLaunchDecision decision = await prepareLaunch(context);
+      if (!mounted || decision == GameModeLaunchDecision.cancelled) {
+        return;
+      }
+    }
     GameController().loadedGameFilenamePrefix = null;
     GameController().reset(force: true);
     await _selectPlayRoute(routeId);

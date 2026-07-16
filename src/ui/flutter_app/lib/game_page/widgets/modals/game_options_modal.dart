@@ -122,17 +122,22 @@ class GameOptionsModal extends StatelessWidget {
     );
   }
 
-  static Future<void> showHumanAiNewGameSheet(BuildContext context) async {
-    assert(
-      GameController().gameInstance.gameMode == GameMode.humanVsAi,
-      'The Lichess-style new game sheet is only used for Human vs AI.',
-    );
-    await showModalBottomSheet<void>(
+  static Future<bool> prepareHumanAiNewGame(BuildContext context) {
+    return showHumanAiNewGameSheet(context, startGameOnConfirm: false);
+  }
+
+  static Future<bool> showHumanAiNewGameSheet(
+    BuildContext context, {
+    bool startGameOnConfirm = true,
+  }) async {
+    final bool? confirmed = await showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
-      builder: (BuildContext context) => const _HumanAiNewGameSheet(),
+      builder: (BuildContext context) =>
+          _HumanAiNewGameSheet(startGameOnConfirm: startGameOnConfirm),
     );
+    return confirmed ?? false;
   }
 
   @override
@@ -412,7 +417,9 @@ class GameOptionsModal extends StatelessWidget {
 }
 
 class _HumanAiNewGameSheet extends StatefulWidget {
-  const _HumanAiNewGameSheet();
+  const _HumanAiNewGameSheet({required this.startGameOnConfirm});
+
+  final bool startGameOnConfirm;
 
   @override
   State<_HumanAiNewGameSheet> createState() => _HumanAiNewGameSheetState();
@@ -437,10 +444,12 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
   }
 
   void _startNewGame(BuildContext context) {
-    assert(
-      GameController().gameInstance.gameMode == GameMode.humanVsAi,
-      'Human vs AI settings cannot start a different game mode.',
-    );
+    if (widget.startGameOnConfirm) {
+      assert(
+        GameController().gameInstance.gameMode == GameMode.humanVsAi,
+        'Human vs AI settings cannot start a different game mode.',
+      );
+    }
     final bool aiMovesFirst = switch (_sideChoice) {
       _HumanAiSideChoice.white => false,
       _HumanAiSideChoice.black => true,
@@ -456,8 +465,10 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
         S.of(context).noteActualDifficultyLevelMayBeLimited,
       );
     }
-    GameOptionsModal.startNewGame(context);
-    Navigator.of(context).pop();
+    if (widget.startGameOnConfirm) {
+      GameOptionsModal.startNewGame(context);
+    }
+    Navigator.of(context).pop(true);
   }
 
   String _sideChoiceLabel(BuildContext context, _HumanAiSideChoice choice) {

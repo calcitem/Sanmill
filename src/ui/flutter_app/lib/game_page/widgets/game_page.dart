@@ -89,24 +89,36 @@ enum _AnalysisAppBarAction { settings, toggleEngineLines }
 /// Main GamePage widget that initializes the game controller and passes it
 /// to a stateful inner widget managing annotation mode.
 class GamePage extends StatelessWidget {
-  const GamePage(this.gameMode, {super.key});
+  const GamePage(
+    this.gameMode, {
+    super.key,
+    this.showInitialHumanAiNewGameSheet = true,
+  });
 
   final GameMode gameMode;
+  final bool showInitialHumanAiNewGameSheet;
 
   @override
   Widget build(BuildContext context) {
     final GameController controller = GameController();
     controller.gameInstance.gameMode = gameMode;
     // Use a stateful inner widget to manage annotation mode state.
-    return _GamePageInner(controller: controller);
+    return _GamePageInner(
+      controller: controller,
+      showInitialHumanAiNewGameSheet: showInitialHumanAiNewGameSheet,
+    );
   }
 }
 
 /// Stateful widget that holds the internal state for annotation mode.
 class _GamePageInner extends StatefulWidget {
-  const _GamePageInner({required this.controller});
+  const _GamePageInner({
+    required this.controller,
+    required this.showInitialHumanAiNewGameSheet,
+  });
 
   final GameController controller;
+  final bool showInitialHumanAiNewGameSheet;
 
   @override
   State<_GamePageInner> createState() => _GamePageInnerState();
@@ -148,7 +160,8 @@ class _GamePageInnerState extends State<_GamePageInner>
         }
       });
     }
-    if (widget.controller.gameInstance.gameMode == GameMode.humanVsAi) {
+    if (widget.controller.gameInstance.gameMode == GameMode.humanVsAi &&
+        widget.showInitialHumanAiNewGameSheet) {
       WidgetsBinding.instance.addPostFrameCallback(
         (_) => _showInitialHumanAiNewGameSheet(),
       );

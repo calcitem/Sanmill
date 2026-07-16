@@ -44,6 +44,11 @@ enum GameModeCapability {
 typedef GameMenuWidgetBuilder =
     Widget Function(BuildContext context, {Key? key, GameSession? session});
 typedef GameMenuAvailability = bool Function(BuildContext context);
+typedef GameModeLaunchPreparation =
+    Future<GameModeLaunchDecision> Function(BuildContext context);
+
+/// Result of preparing a play mode before the shell mutates game state.
+enum GameModeLaunchDecision { confirmed, cancelled }
 
 /// A mode or route contributed by a [GameModule] to the shared shell.
 @immutable
@@ -104,6 +109,7 @@ class GameModeEntry {
     this.availability = GameModeAvailability.available,
     this.capabilities = const <GameModeCapability>{},
     this.isAvailable,
+    this.prepareLaunch,
     this.menuKey,
     @Deprecated('Use menuKey instead.') Key? drawerKey,
     this.contentKey,
@@ -122,6 +128,12 @@ class GameModeEntry {
   final GameModeLaunchTarget launchTarget;
   final GameModeAvailability availability;
   final Set<GameModeCapability> capabilities;
+
+  /// Collects any launch settings before the shell resets the current game.
+  ///
+  /// Returning [GameModeLaunchDecision.cancelled] leaves the current route and
+  /// game state untouched.
+  final GameModeLaunchPreparation? prepareLaunch;
 
   /// Stable key for the shell menu item. Keep old values stable across
   /// refactors.

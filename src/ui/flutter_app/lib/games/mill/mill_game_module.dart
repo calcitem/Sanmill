@@ -12,6 +12,7 @@ import '../../game_page/widgets/dialogs/bluetooth_config_dialog.dart';
 import '../../game_page/widgets/dialogs/lan_config_dialog.dart';
 import '../../game_page/widgets/game_page.dart' show GamePage;
 import '../../game_page/widgets/import_game_page.dart';
+import '../../game_page/widgets/modals/game_options_modal.dart';
 import '../../game_platform/board_geometry.dart';
 import '../../game_platform/engine/engine_port.dart';
 import '../../game_platform/engine/native_topology.dart';
@@ -354,9 +355,21 @@ class MillGameModule extends GameModule {
         icon: Icons.memory_rounded,
         menuKey: const Key('drawer_item_human_vs_ai'),
         contentKey: const Key('human_ai'),
+        prepareLaunch: (BuildContext context) async {
+          final bool confirmed = await GameOptionsModal.prepareHumanAiNewGame(
+            context,
+          );
+          return confirmed
+              ? GameModeLaunchDecision.confirmed
+              : GameModeLaunchDecision.cancelled;
+        },
         isAvailable: (_) => features.supports(GameCapability.ai),
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
-            GamePage(GameMode.humanVsAi, key: key),
+            GamePage(
+              GameMode.humanVsAi,
+              key: key,
+              showInitialHumanAiNewGameSheet: false,
+            ),
       ),
       GameModeEntry(
         id: MillRouteIds.humanVsHuman,

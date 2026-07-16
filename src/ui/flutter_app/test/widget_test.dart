@@ -578,12 +578,15 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(shellState.debugCurrentTab, SanmillShellTab.home);
-      expect(shellState.debugCurrentRouteId, shellState.debugPlayRouteId);
-      expect(find.byKey(const Key('human_ai')), findsOneWidget);
+      expect(
+        shellState.debugCurrentRouteId,
+        SanmillShellRouteIds.homeRoot.value,
+      );
+      expect(find.byKey(const Key('human_ai')), findsNothing);
       expect(find.byKey(const Key('human_ai_new_game_sheet')), findsOneWidget);
       expect(
         find.byKey(const Key('sanmill_bottom_navigation_bar')),
-        findsNothing,
+        findsOneWidget,
       );
 
       await tester.binding.handlePopRoute();
@@ -591,8 +594,28 @@ void main() {
 
       expect(find.byKey(const Key('human_ai_new_game_sheet')), findsNothing);
       expect(shellState.debugCurrentTab, SanmillShellTab.home);
+      expect(
+        shellState.debugCurrentRouteId,
+        SanmillShellRouteIds.homeRoot.value,
+      );
+      expect(find.byKey(const Key('human_ai')), findsNothing);
+      expect(
+        find.byKey(const Key('sanmill_bottom_navigation_bar')),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.byKey(const Key('sanmill_home_play_fab')));
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.byKey(const Key('sanmill_home_play_sheet_mill.play.humanVsAi')),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('human_ai_new_game_sheet_start')));
+      await tester.pumpAndSettle();
+
       expect(shellState.debugCurrentRouteId, shellState.debugPlayRouteId);
       expect(find.byKey(const Key('human_ai')), findsOneWidget);
+      expect(find.byKey(const Key('human_ai_new_game_sheet')), findsNothing);
       expect(
         find.byKey(const Key('sanmill_bottom_navigation_bar')),
         findsNothing,
@@ -2766,8 +2789,8 @@ void main() {
       await tester.pump();
       expect(controller.gameRecorder.mainlineMoves, isNotEmpty);
 
-      // Re-selecting "Human vs AI" from the Play sheet must start a fresh
-      // game rather than silently redisplaying the unfinished one.
+      // Opening the Human vs AI configuration must not mutate the unfinished
+      // game until the user confirms the launch.
       await tester.tap(find.byKey(const Key('sanmill_home_play_fab')));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
@@ -2777,8 +2800,28 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
 
-      expect(controller.gameRecorder.mainlineMoves, isEmpty);
       expect(find.byKey(const Key('human_ai_new_game_sheet')), findsOneWidget);
+      expect(controller.gameRecorder.mainlineMoves, isNotEmpty);
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      expect(controller.gameRecorder.mainlineMoves, isNotEmpty);
+      expect(find.byKey(const Key('human_ai_new_game_sheet')), findsNothing);
+
+      // Confirming the configuration then starts a fresh game.
+      await tester.tap(find.byKey(const Key('sanmill_home_play_fab')));
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.byKey(const Key('sanmill_home_play_sheet_mill.play.humanVsAi')),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('human_ai_new_game_sheet_start')));
+      await tester.pumpAndSettle();
+
+      expect(controller.gameRecorder.mainlineMoves, isEmpty);
+      expect(find.byKey(const Key('human_ai')), findsOneWidget);
+      expect(find.byKey(const Key('human_ai_new_game_sheet')), findsNothing);
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));
