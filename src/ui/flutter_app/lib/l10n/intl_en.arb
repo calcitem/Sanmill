@@ -5464,5 +5464,15 @@
     "noPgnFilesInArchive": "No PGN files were found in the archive.",
     "@noPgnFilesInArchive": {
         "description": "Feedback shown when an imported ZIP archive contains no PGN files"
+    },
+    "savedGameActions": "Actions for {filename}",
+    "@savedGameActions": {
+        "description": "Accessible label and tooltip for a saved game's rename and delete menu",
+        "placeholders": {
+            "filename": {
+                "type": "String",
+                "example": "game.pgn"
+            }
+        }
     }
 }

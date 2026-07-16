@@ -798,10 +798,11 @@ class _SavedGameListTile extends StatelessWidget {
                 ),
               ),
               PopupMenuButton<_SavedGameAction>(
-                tooltip: strings.menu,
+                tooltip: strings.savedGameActions(entry.filename),
                 icon: Icon(
                   Icons.more_vert_rounded,
                   color: colorScheme.onSurfaceVariant,
+                  semanticLabel: strings.savedGameActions(entry.filename),
                 ),
                 onSelected: (_SavedGameAction action) {
                   switch (action) {
