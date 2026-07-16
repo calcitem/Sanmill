@@ -2119,7 +2119,7 @@ class _SavedGamePreviewSection extends StatelessWidget {
     final String? white = game.preview?.white;
     final String? black = game.preview?.black;
     if (white != null && black != null) {
-      return '$white - $black';
+      return '$white – $black';
     }
     return white ?? black;
   }
