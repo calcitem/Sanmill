@@ -4276,11 +4276,11 @@
     "@scanQrCode": {
         "description": "Menu item to scan a QR code containing a move list"
     },
-    "exportQrCode": "Export as QR Code",
+    "exportQrCode": "Export as QR code",
     "@exportQrCode": {
         "description": "Menu item to export the current move list as a QR code image"
     },
-    "qrCodeTitle": "Move List QR Code",
+    "qrCodeTitle": "Move list QR code",
     "@qrCodeTitle": {
         "description": "Title of the QR code display dialog"
     },
@@ -4328,7 +4328,7 @@
     "@qrCodeNotFoundInImage": {
         "description": "Error message when no QR code is detected in the gallery image"
     },
-    "puzzleQrCodeTitle": "Puzzle QR Code",
+    "puzzleQrCodeTitle": "Puzzle QR code",
     "@puzzleQrCodeTitle": {
         "description": "Title of the QR code dialog when exporting a puzzle"
     },
@@ -4344,7 +4344,7 @@
     "@multipleQrCodesDetected": {
         "description": "Instruction shown when multiple QR codes are found in camera or image"
     },
-    "selectQrCode": "Select QR Code",
+    "selectQrCode": "Select QR code",
     "@selectQrCode": {
         "description": "Title for the QR code selection page when multiple codes are detected"
     },
@@ -4368,11 +4368,11 @@
     "@noValidMovesFound": {
         "description": "Error message shown when an imported game notation contains no valid moves"
     },
-    "qrCodeUnknownContent": "Unrecognized QR Code",
+    "qrCodeUnknownContent": "Unrecognized QR code",
     "@qrCodeUnknownContent": {
         "description": "Title of the dialog shown when scanned QR code content is not valid game data"
     },
-    "qrCodeOpenInBrowser": "Open in Browser",
+    "qrCodeOpenInBrowser": "Open in browser",
     "@qrCodeOpenInBrowser": {
         "description": "Button label to open a URL from an unrecognized QR code in the system browser"
     },
