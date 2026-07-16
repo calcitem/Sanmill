@@ -36,7 +36,7 @@
     "@humanVsCloud": {
         "description": "Human Vs Cloud"
     },
-    "humanVsLAN": "Human Vs. LAN",
+    "humanVsLAN": "Play over LAN",
     "@humanVsLAN": {
         "description": "Human Vs LAN"
     },
