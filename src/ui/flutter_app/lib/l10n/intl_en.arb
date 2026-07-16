@@ -505,19 +505,19 @@
     "@isDefenderMoveFirst_Detail": {
         "description": "The player who moves second in the placing phase moves first in the moving phase."
     },
-    "mayRemoveMultiple": "Multi-remove",
+    "mayRemoveMultiple": "Multiple removals",
     "@mayRemoveMultiple": {
         "description": "Multi-remove"
     },
-    "mayRemoveMultiple_Detail": "If a player closes more than one mill at once, she will remove the number of mills she closed.",
+    "mayRemoveMultiple_Detail": "When one move closes multiple mills, remove one opposing piece for each mill closed.",
     "@mayRemoveMultiple_Detail": {
         "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
     },
-    "mayRemoveFromMillsAlways": "Destroy mills",
+    "mayRemoveFromMillsAlways": "Remove pieces from mills",
     "@mayRemoveFromMillsAlways": {
         "description": "Destroy mills"
     },
-    "mayRemoveFromMillsAlways_Detail": "By default, players must remove any other pieces first before removing a piece from a formed mill. Enable this option to disable the limitation.",
+    "mayRemoveFromMillsAlways_Detail": "Allow a piece in a mill to be removed even when the opponent has other removable pieces.",
     "@mayRemoveFromMillsAlways_Detail": {
         "description": "mayRemoveFromMillsAlways_Detail"
     },
