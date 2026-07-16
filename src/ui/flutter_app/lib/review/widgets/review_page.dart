@@ -591,7 +591,7 @@ class _ReviewPageState extends State<ReviewPage> {
             const SizedBox(height: 8),
             Text(
               strings.reviewBestLine(
-                actions.first.candidates.first.line.join(' '),
+                _formatPrincipalVariation(actions.first.candidates.first.line),
               ),
               textDirection: TextDirection.ltr,
             ),
@@ -749,7 +749,11 @@ class _ReviewPageState extends State<ReviewPage> {
                 if (_correctionPassed)
                   FilledButton(
                     onPressed: _nextCorrection,
-                    child: Text(strings.next),
+                    child: Text(
+                      _correctionIndex == corrections.length - 1
+                          ? strings.done
+                          : strings.next,
+                    ),
                   ),
               ],
             ),
@@ -945,6 +949,18 @@ class _ReviewPageState extends State<ReviewPage> {
       notation.write(continuation);
     }
     return notation.toString();
+  }
+
+  static String _formatPrincipalVariation(List<String> actions) {
+    final List<String> turns = <String>[];
+    for (final String action in actions) {
+      if (action.startsWith('x') && turns.isNotEmpty) {
+        turns[turns.length - 1] = '${turns.last}$action';
+      } else {
+        turns.add(action);
+      }
+    }
+    return turns.join(' ');
   }
 
   int _firstKeyGroup(ReviewReport report) {

@@ -52,6 +52,10 @@ void main() {
       expect(find.byKey(const Key('review_phone_layout')), findsOneWidget);
       expect(find.byKey(const Key('review_wide_layout')), findsNothing);
       expect(find.byKey(const Key('review_structure_summary')), findsOneWidget);
+      expect(
+        find.text('2 moves · 2 atomic actions · 0 variations'),
+        findsOneWidget,
+      );
       expect(find.byKey(const Key('review_board')), findsOneWidget);
       expect(find.byKey(const Key('review_turn_navigation')), findsOneWidget);
       expect(find.byKey(const Key('review_turn_progress')), findsOneWidget);
@@ -64,6 +68,7 @@ void main() {
         findsOneWidget,
       );
       expect(find.textContaining('%'), findsNothing);
+      expect(find.text('Best line: d6xf4'), findsOneWidget);
 
       final SemanticsNode board = tester.getSemantics(
         find.byKey(const Key('review_board')),
@@ -114,9 +119,18 @@ void main() {
       await tester.tap(goodChoice);
       await tester.pump();
       expect(find.text('Accepted: best or good move.'), findsOneWidget);
-      expect(find.text('Next'), findsOneWidget);
+      expect(find.text('Done.'), findsOneWidget);
       expect(find.text('Skip'), findsOneWidget);
       expect(find.text('Show answer'), findsOneWidget);
+
+      await tester.ensureVisible(find.text('Done.'));
+      await tester.pump();
+      await tester.tap(find.text('Done.'));
+      await tester.pump();
+      expect(
+        find.byKey(const Key('review_correction_complete')),
+        findsOneWidget,
+      );
     },
   );
 
