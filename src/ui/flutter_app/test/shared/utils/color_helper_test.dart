@@ -9,6 +9,74 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/shared/utils/helpers/color_helpers/color_helper.dart';
 
 void main() {
+  group('colorContrastRatio', () {
+    test('calculates the black and white reference ratio', () {
+      expect(
+        colorContrastRatio(const Color(0xFF000000), const Color(0xFFFFFFFF)),
+        21,
+      );
+    });
+
+    test('composites a translucent foreground over the background', () {
+      final double translucentRatio = colorContrastRatio(
+        const Color(0x80000000),
+        const Color(0xFFFFFFFF),
+      );
+      final double compositedRatio = colorContrastRatio(
+        Color.alphaBlend(const Color(0x80000000), const Color(0xFFFFFFFF)),
+        const Color(0xFFFFFFFF),
+      );
+
+      expect(translucentRatio, compositedRatio);
+    });
+  });
+
+  group('readableForegroundColor', () {
+    test('preserves a preferred colour that meets the threshold', () {
+      const Color preferred = Color(0xFF242421);
+
+      expect(
+        readableForegroundColor(
+          preferred: preferred,
+          background: const Color(0xFFFAFAF8),
+        ),
+        preferred,
+      );
+    });
+
+    test(
+      'uses white when the preferred colour is unreadable on dark green',
+      () {
+        final Color result = readableForegroundColor(
+          preferred: const Color(0xFFA4A293),
+          background: const Color(0xFF006400),
+        );
+
+        expect(result, const Color(0xFFFFFFFF));
+        expect(
+          colorContrastRatio(result, const Color(0xFF006400)),
+          greaterThanOrEqualTo(normalTextMinimumContrastRatio),
+        );
+      },
+    );
+
+    test(
+      'uses black when the preferred colour is unreadable on light amber',
+      () {
+        final Color result = readableForegroundColor(
+          preferred: const Color(0xFFFFFFFF),
+          background: const Color(0xFFFFC107),
+        );
+
+        expect(result, const Color(0xFF000000));
+        expect(
+          colorContrastRatio(result, const Color(0xFFFFC107)),
+          greaterThanOrEqualTo(normalTextMinimumContrastRatio),
+        );
+      },
+    );
+  });
+
   group('pickColorWithMaxDifference', () {
     test('should pick the candidate farther from the reference', () {
       const Color reference = Color(0xFF000000); // Black
