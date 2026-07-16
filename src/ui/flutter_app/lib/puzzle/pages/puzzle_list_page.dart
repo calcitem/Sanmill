@@ -109,58 +109,82 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
             : Text(s.puzzles),
         leading: _isMultiSelectMode
             ? IconButton(
-                icon: const Icon(Icons.close),
+                icon: Icon(Icons.close, semanticLabel: s.cancelPuzzleSelection),
                 onPressed: _toggleMultiSelectMode,
+                tooltip: s.cancelPuzzleSelection,
               )
             : null,
         actions: <Widget>[
           if (_isMultiSelectMode) ...<Widget>[
             IconButton(
-              icon: const Icon(FluentIcons.select_all_on_24_regular),
+              icon: Icon(
+                FluentIcons.select_all_on_24_regular,
+                semanticLabel: s.puzzleSelectAll,
+              ),
               onPressed: _selectAllPuzzles,
               tooltip: s.puzzleSelectAll,
             ),
             if (_selectedPuzzleIds.isNotEmpty)
               IconButton(
-                icon: const Icon(FluentIcons.qr_code_24_regular),
+                icon: Icon(
+                  FluentIcons.qr_code_24_regular,
+                  semanticLabel: s.exportQrCode,
+                ),
                 onPressed: _exportSelectedPuzzlesAsQr,
                 tooltip: s.exportQrCode,
               ),
             if (_selectedPuzzleIds.isNotEmpty)
               IconButton(
-                icon: const Icon(FluentIcons.share_24_regular),
+                icon: Icon(
+                  FluentIcons.share_24_regular,
+                  semanticLabel: s.puzzleExport,
+                ),
                 onPressed: _exportSelectedPuzzles,
                 tooltip: s.puzzleExport,
               ),
             if (_canDeleteSelected)
               IconButton(
-                icon: const Icon(FluentIcons.delete_24_regular),
+                icon: Icon(
+                  FluentIcons.delete_24_regular,
+                  semanticLabel: s.delete,
+                ),
                 onPressed: () => _deleteSelectedPuzzles(context, theme),
                 tooltip: s.delete,
               ),
           ] else ...<Widget>[
             IconButton(
-              icon: const Icon(FluentIcons.scan_camera_24_regular),
+              icon: Icon(
+                FluentIcons.scan_camera_24_regular,
+                semanticLabel: s.scanQrCode,
+              ),
               onPressed: _scanPuzzleQrCode,
               tooltip: s.scanQrCode,
             ),
             IconButton(
-              icon: const Icon(FluentIcons.folder_open_24_regular),
+              icon: Icon(
+                FluentIcons.folder_open_24_regular,
+                semanticLabel: s.puzzleImport,
+              ),
               onPressed: _importPuzzles,
               tooltip: s.puzzleImport,
             ),
             IconButton(
-              icon: const Icon(FluentIcons.checkbox_checked_24_regular),
+              icon: Icon(
+                FluentIcons.checkbox_checked_24_regular,
+                semanticLabel: s.puzzleSelect,
+              ),
               onPressed: _toggleMultiSelectMode,
               tooltip: s.puzzleSelect,
             ),
             IconButton(
-              icon: const Icon(Icons.filter_list),
+              icon: Icon(Icons.filter_list, semanticLabel: s.filter),
               onPressed: () => _showFilterDialog(context, theme),
+              tooltip: s.filter,
             ),
             IconButton(
-              icon: const Icon(Icons.bar_chart),
+              icon: Icon(Icons.bar_chart, semanticLabel: s.puzzleStatistics),
               onPressed: () => _showStatsDialog(context, theme),
+              tooltip: s.puzzleStatistics,
             ),
           ],
         ],
@@ -170,7 +194,10 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
           : FloatingActionButton(
               onPressed: _createNewPuzzle,
               tooltip: s.puzzleCreateNew,
-              child: const Icon(FluentIcons.add_24_regular),
+              child: Icon(
+                FluentIcons.add_24_regular,
+                semanticLabel: s.puzzleCreateNew,
+              ),
             ),
       body: ValueListenableBuilder<PuzzleSettings>(
         valueListenable: _puzzleManager.settingsNotifier,

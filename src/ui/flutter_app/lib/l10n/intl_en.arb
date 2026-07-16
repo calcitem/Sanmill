@@ -2405,11 +2405,11 @@
     "@solution": {
         "description": "Puzzle solution"
     },
-    "puzzleCreateNew": "Create New Puzzle",
+    "puzzleCreateNew": "Create new puzzle",
     "@puzzleCreateNew": {
         "description": "Create a new custom puzzle"
     },
-    "puzzleEdit": "Edit Puzzle",
+    "puzzleEdit": "Edit puzzle",
     "@puzzleEdit": {
         "description": "Edit an existing puzzle"
     },
@@ -2417,7 +2417,7 @@
     "@puzzleCustom": {
         "description": "Custom puzzle badge"
     },
-    "puzzleRuleMismatch": "Rules Mismatch",
+    "puzzleRuleMismatch": "Rules mismatch",
     "@puzzleRuleMismatch": {
         "description": "Badge shown when puzzle rules don't match current settings"
     },
@@ -2439,15 +2439,15 @@
     "@puzzleRuleMismatchContinue": {
         "description": "Button to continue opening a puzzle despite rule mismatch"
     },
-    "puzzleCompatibleOnly": "Compatible Only",
+    "puzzleCompatibleOnly": "Compatible rules only",
     "@puzzleCompatibleOnly": {
         "description": "Filter option to show only puzzles compatible with current rules"
     },
-    "puzzleSelect": "Select Puzzles",
+    "puzzleSelect": "Select puzzles",
     "@puzzleSelect": {
         "description": "Enter multi-select mode"
     },
-    "puzzleSelectedCount": "{count} Selected",
+    "puzzleSelectedCount": "{count, plural, =1{1 puzzle selected} other{{count} puzzles selected}}",
     "@puzzleSelectedCount": {
         "description": "Number of selected puzzles",
         "placeholders": {
@@ -2456,15 +2456,15 @@
             }
         }
     },
-    "puzzleSelectAll": "Select All",
+    "puzzleSelectAll": "Select all",
     "@puzzleSelectAll": {
         "description": "Select all puzzles"
     },
-    "puzzleExport": "Export",
+    "puzzleExport": "Export selected puzzles",
     "@puzzleExport": {
         "description": "Export selected puzzles"
     },
-    "puzzleImport": "Import",
+    "puzzleImport": "Import puzzles",
     "@puzzleImport": {
         "description": "Import puzzles from file"
     },
@@ -5482,5 +5482,9 @@
     "copyGameToClipboard": "Copy game to clipboard",
     "@copyGameToClipboard": {
         "description": "Action that copies the current game notation to the clipboard"
+    },
+    "cancelPuzzleSelection": "Cancel selection",
+    "@cancelPuzzleSelection": {
+        "description": "Action that exits puzzle multi-select mode"
     }
 }
