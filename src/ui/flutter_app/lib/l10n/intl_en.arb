@@ -477,11 +477,11 @@
     "@piecesCount_Detail": {
         "description": "How many pieces does each player have?"
     },
-    "flyPieceCount": "The number of the flying piece",
+    "flyPieceCount": "Flying threshold",
     "@flyPieceCount": {
         "description": "The number of the flying piece"
     },
-    "flyPieceCount_Detail": "If Flying is enabled, when a player's piece count falls below a certain threshold, their pieces are free to move to any unoccupied point instead of being restricted to adjacent points as in the rest of the game.",
+    "flyPieceCount_Detail": "When flying is enabled, a player with this many pieces or fewer may move to any empty point instead of only to adjacent points.",
     "@flyPieceCount_Detail": {
         "description": "If Flying is enabled, when a player's piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
     },
@@ -541,7 +541,7 @@
     "@mayFly": {
         "description": "Flying"
     },
-    "mayFly_Detail": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point.",
+    "mayFly_Detail": "Allow players at or below the configured piece threshold to move to any empty point.",
     "@mayFly_Detail": {
         "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
     },
