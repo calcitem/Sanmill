@@ -39,12 +39,20 @@ class PuzzlePage extends StatefulWidget {
     required this.puzzle,
     this.onSolved,
     this.onFailed,
+    this.showSolvedDialogAfterCallback = false,
     super.key,
   });
 
   final PuzzleInfo puzzle;
   final VoidCallback? onSolved;
   final VoidCallback? onFailed;
+
+  /// Whether a callback-driven puzzle should also show the normal result UI.
+  ///
+  /// Continuous challenge modes advance immediately and keep the default
+  /// false. Daily puzzles record completion through [onSolved] but opt into
+  /// the regular completion dialog.
+  final bool showSolvedDialogAfterCallback;
 
   /// Test-only override for the random board symmetry transformation.
   ///
@@ -1307,7 +1315,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     // In Rush/Streak mode the parent has already advanced to the next puzzle
     // via setState, so showing a completion dialog here would target a stale
     // widget tree and cause timing conflicts.
-    if (widget.onSolved != null) {
+    if (widget.onSolved != null && !widget.showSolvedDialogAfterCallback) {
       return;
     }
 

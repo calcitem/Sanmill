@@ -108,16 +108,14 @@ void main() {
         date: today,
         puzzleId: 'puzzle-42',
         dayNumber: 411,
-        currentStreak: 5,
-        longestStreak: 10,
+        completedToday: true,
         totalCompleted: 30,
       );
 
       expect(info.date, today);
       expect(info.puzzleId, 'puzzle-42');
       expect(info.dayNumber, 411);
-      expect(info.currentStreak, 5);
-      expect(info.longestStreak, 10);
+      expect(info.completedToday, isTrue);
       expect(info.totalCompleted, 30);
     });
   });
@@ -126,7 +124,7 @@ void main() {
   // DailyPuzzleStats
   // ---------------------------------------------------------------------------
   group('DailyPuzzleStats', () {
-    test('should store completed dates and longest streak', () {
+    test('should preserve completed dates and legacy longest streak', () {
       final DailyPuzzleStats stats = DailyPuzzleStats(
         completedDates: <String>['2026-02-12', '2026-02-13', '2026-02-14'],
         longestStreak: 3,

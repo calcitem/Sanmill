@@ -5044,5 +5044,6 @@
     "reviewCurrentAnnotation": "当前：{annotation}",
     "reviewNoAnnotation": "无质量标注",
     "coordinateTrainingFinish": "结束本次训练",
-    "coordinateTrainingResult": "答对 {correct} 个 · 尝试 {attempts} 次"
+    "coordinateTrainingResult": "答对 {correct} 个 · 尝试 {attempts} 次",
+    "dailyPuzzleNotCompleted": "今日尚未完成"
 }

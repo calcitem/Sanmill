@@ -3,7 +3,9 @@
 
 // daily_puzzle_service.dart
 //
-// Service for managing daily puzzle rotation and streak tracking
+// Service for managing daily puzzle rotation and completion tracking
+
+import 'package:flutter/foundation.dart';
 
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
@@ -16,16 +18,14 @@ class DailyPuzzleInfo {
     required this.date,
     required this.puzzleId,
     required this.dayNumber,
-    required this.currentStreak,
-    required this.longestStreak,
+    required this.completedToday,
     required this.totalCompleted,
   });
 
   final DateTime date;
   final String puzzleId;
   final int dayNumber;
-  final int currentStreak;
-  final int longestStreak;
+  final bool completedToday;
   final int totalCompleted;
 }
 
@@ -39,13 +39,20 @@ class DailyPuzzleService {
 
   static const String _tag = "[DailyPuzzleService]";
 
+  @visibleForTesting
+  static DateTime Function()? debugNowOverride;
+
   /// Epoch date for day number calculation (January 1, 2025)
   static final DateTime _epochDate = DateTime(2025);
 
   /// Get today's puzzle information
   DailyPuzzleInfo getTodaysPuzzle() {
-    final DateTime today = _normalizeDate(DateTime.now());
+    final DateTime today = _normalizeDate(_now());
     final int dayNumber = _getDayNumber(today);
+    final DailyPuzzleStats stats = _getStats();
+    final bool completedToday = stats.completedDates.contains(
+      today.toIso8601String(),
+    );
 
     // Get all available puzzles
     final PuzzleManager puzzleManager = PuzzleManager();
@@ -58,44 +65,31 @@ class DailyPuzzleService {
         date: today,
         puzzleId: '',
         dayNumber: dayNumber,
-        currentStreak: 0,
-        longestStreak: 0,
-        totalCompleted: 0,
+        completedToday: completedToday,
+        totalCompleted: stats.completedDates.length,
       );
     }
 
     // Select puzzle based on day number (deterministic rotation)
     final PuzzleInfo todaysPuzzle = allPuzzles[dayNumber % allPuzzles.length];
 
-    // Get streak information
-    final DailyPuzzleStats stats = _getStats();
-    final int currentStreak = _calculateCurrentStreak(stats, today);
-
     return DailyPuzzleInfo(
       date: today,
       puzzleId: todaysPuzzle.id,
       dayNumber: dayNumber,
-      currentStreak: currentStreak,
-      longestStreak: stats.longestStreak,
+      completedToday: completedToday,
       totalCompleted: stats.completedDates.length,
     );
   }
 
   /// Record completion of today's puzzle
-  void recordCompletion() {
-    final DateTime today = _normalizeDate(DateTime.now());
+  Future<void> recordCompletion() async {
+    final DateTime today = _normalizeDate(_now());
     final DailyPuzzleStats stats = _getStats();
 
     if (!stats.completedDates.contains(today.toIso8601String())) {
       stats.completedDates.add(today.toIso8601String());
-
-      // Update longest streak
-      final int currentStreak = _calculateCurrentStreak(stats, today);
-      if (currentStreak > stats.longestStreak) {
-        stats.longestStreak = currentStreak;
-      }
-
-      _saveStats(stats);
+      await _saveStats(stats);
       logger.i("$_tag Recorded daily puzzle completion for $today");
     }
   }
@@ -140,40 +134,6 @@ class DailyPuzzleService {
     }
   }
 
-  /// Calculate current streak.
-  ///
-  /// If today has not been completed yet the streak is still considered
-  /// active as long as yesterday was completed (the user still has a chance
-  /// to extend it today).  In that case we start counting from yesterday.
-  int _calculateCurrentStreak(DailyPuzzleStats stats, DateTime today) {
-    if (stats.completedDates.isEmpty) {
-      return 0;
-    }
-
-    final String todayStr = _normalizeDate(today).toIso8601String();
-    final bool completedToday = stats.completedDates.contains(todayStr);
-
-    // Start from today if completed, otherwise from yesterday so an ongoing
-    // streak is not prematurely reported as 0.
-    DateTime checkDate = completedToday
-        ? today
-        : today.subtract(const Duration(days: 1));
-
-    int streak = 0;
-
-    while (true) {
-      final String dateStr = _normalizeDate(checkDate).toIso8601String();
-      if (stats.completedDates.contains(dateStr)) {
-        streak++;
-        checkDate = checkDate.subtract(const Duration(days: 1));
-      } else {
-        break;
-      }
-    }
-
-    return streak;
-  }
-
   /// Get day number since epoch
   int _getDayNumber(DateTime date) {
     final DateTime normalized = _normalizeDate(date);
@@ -185,6 +145,8 @@ class DailyPuzzleService {
   DateTime _normalizeDate(DateTime date) {
     return DateTime.utc(date.year, date.month, date.day);
   }
+
+  DateTime _now() => debugNowOverride?.call() ?? DateTime.now();
 }
 
 /// Statistics for daily puzzles
@@ -192,5 +154,7 @@ class DailyPuzzleStats {
   DailyPuzzleStats({required this.completedDates, required this.longestStreak});
 
   List<String> completedDates;
+
+  /// Retained only so existing streak history is not destroyed on save.
   int longestStreak;
 }

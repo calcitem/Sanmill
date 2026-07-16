@@ -3,7 +3,9 @@
 
 // daily_puzzle_page.dart
 //
-// Daily puzzle challenge page with rotating puzzles
+// Daily puzzle page with rotating puzzles and lightweight progress
+
+import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -37,17 +39,7 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
     return Scaffold(
       key: const Key('daily_puzzle_page_scaffold'),
       backgroundColor: theme.colorScheme.surface,
-      appBar: AppBar(
-        title: Text(s.dailyPuzzle),
-        actions: <Widget>[
-          IconButton(
-            key: const Key('daily_puzzle_streak_button'),
-            icon: const Icon(FluentIcons.trophy_24_regular),
-            onPressed: () => _showStreakInfo(context, dailyInfo),
-            tooltip: s.dailyPuzzleStreak,
-          ),
-        ],
-      ),
+      appBar: AppBar(title: Text(s.dailyPuzzle)),
       body: puzzle == null
           ? Center(
               key: const Key('daily_puzzle_empty_state'),
@@ -113,112 +105,27 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
     Navigator.of(context)
         .push<void>(
           MaterialPageRoute<void>(
-            builder: (BuildContext context) => PuzzlePage(puzzle: puzzle),
+            builder: (BuildContext context) => PuzzlePage(
+              puzzle: puzzle,
+              onSolved: _recordDailyCompletion,
+              showSolvedDialogAfterCallback: true,
+            ),
           ),
         )
         .then((_) {
-          // Refresh the page when returning
-          setState(() {});
+          if (mounted) {
+            setState(() {});
+          }
         });
   }
 
-  /// Show streak information dialog
-  void _showStreakInfo(BuildContext context, DailyPuzzleInfo dailyInfo) {
-    final S s = S.of(context);
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-
-    showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Row(
-            children: <Widget>[
-              Icon(FluentIcons.trophy_24_regular, color: colorScheme.tertiary),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  s.dailyPuzzleStreak,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              _buildStreakRow(
-                s.dailyPuzzleCurrentStreak,
-                '${dailyInfo.currentStreak} ${s.dailyPuzzleDays}',
-                FluentIcons.fire_24_regular,
-                colorScheme.tertiary,
-              ),
-              const SizedBox(height: 8),
-              _buildStreakRow(
-                s.dailyPuzzleLongestStreak,
-                '${dailyInfo.longestStreak} ${s.dailyPuzzleDays}',
-                FluentIcons.trophy_24_regular,
-                colorScheme.secondary,
-              ),
-              const SizedBox(height: 8),
-              _buildStreakRow(
-                s.dailyPuzzleTotalCompleted,
-                dailyInfo.totalCompleted.toString(),
-                FluentIcons.checkmark_circle_24_regular,
-                colorScheme.primary,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                s.dailyPuzzleStreakInfo,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(s.close),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildStreakRow(
-    String label,
-    String value,
-    IconData icon,
-    Color color,
-  ) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Expanded(
-          child: Row(
-            children: <Widget>[
-              Icon(icon, color: color, size: 20),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  label,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(width: 8),
-        Flexible(
-          child: Text(
-            value,
-            style: TextStyle(fontWeight: FontWeight.bold, color: color),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ],
+  void _recordDailyCompletion() {
+    unawaited(
+      _dailyPuzzleService.recordCompletion().then((_) {
+        if (mounted) {
+          setState(() {});
+        }
+      }),
     );
   }
 }
@@ -243,7 +150,7 @@ class _DailyPuzzleContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
-    final bool isCompleted = progress?.completed ?? false;
+    final bool isCompleted = dailyInfo.completedToday;
     final int stars = progress?.stars ?? 0;
 
     return ListView(
@@ -252,7 +159,6 @@ class _DailyPuzzleContent extends StatelessWidget {
       children: <Widget>[
         _buildPuzzleSection(context, s, isCompleted, stars),
         _buildDailyInfoSection(context, s),
-        if (!isCompleted) _buildHintSection(context, s),
       ],
     );
   }
@@ -309,46 +215,40 @@ class _DailyPuzzleContent extends StatelessWidget {
 
     return LichessListSection(
       header: Text(formatDate(dailyInfo.date)),
-      cardKey: const Key('daily_puzzle_streak_section'),
+      cardKey: const Key('daily_puzzle_progress_section'),
       children: <Widget>[
         ListTile(
-          key: const Key('daily_puzzle_number_tile'),
+          key: const Key('daily_puzzle_today_tile'),
           leading: Icon(
             FluentIcons.calendar_star_24_regular,
             color: colorScheme.primary,
           ),
-          title: Text(s.dailyPuzzleNumber(dailyInfo.dayNumber)),
-          trailing: _DailyPuzzleValue(
-            icon: FluentIcons.fire_24_regular,
-            value: dailyInfo.currentStreak.toString(),
-            color: colorScheme.tertiary,
+          title: Text(s.todayProgress),
+          subtitle: Text(s.dailyPuzzleNumber(dailyInfo.dayNumber)),
+          trailing: Text(
+            dailyInfo.completedToday ? s.completed : s.dailyPuzzleNotCompleted,
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              color: dailyInfo.completedToday
+                  ? colorScheme.primary
+                  : colorScheme.onSurfaceVariant,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
-        if (dailyInfo.longestStreak > dailyInfo.currentStreak)
-          ListTile(
-            key: const Key('daily_puzzle_best_streak_tile'),
-            leading: Icon(
-              FluentIcons.trophy_24_regular,
-              color: colorScheme.secondary,
-            ),
-            title: Text(s.dailyPuzzleBestStreak(dailyInfo.longestStreak)),
-          ),
-      ],
-    );
-  }
-
-  Widget _buildHintSection(BuildContext context, S s) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-
-    return LichessListSection(
-      cardKey: const Key('daily_puzzle_hint_section'),
-      children: <Widget>[
         ListTile(
+          key: const Key('daily_puzzle_total_tile'),
           leading: Icon(
-            FluentIcons.lightbulb_24_regular,
+            FluentIcons.checkmark_circle_24_regular,
             color: colorScheme.primary,
           ),
-          title: Text(s.dailyPuzzleStreakHint),
+          title: Text(s.dailyPuzzleTotalCompleted),
+          trailing: Text(
+            dailyInfo.totalCompleted.toString(),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: colorScheme.primary,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
         ),
       ],
     );
@@ -384,36 +284,6 @@ class _DailyPuzzleCompletionBadge extends StatelessWidget {
               color: colorScheme.tertiary,
               size: 14,
             ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _DailyPuzzleValue extends StatelessWidget {
-  const _DailyPuzzleValue({
-    required this.icon,
-    required this.value,
-    required this.color,
-  });
-
-  final IconData icon;
-  final String value;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Icon(icon, color: color, size: 20),
-        const SizedBox(width: 4),
-        Text(
-          value,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            color: color,
-            fontWeight: FontWeight.w700,
           ),
         ),
       ],

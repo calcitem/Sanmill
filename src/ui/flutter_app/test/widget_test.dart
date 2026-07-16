@@ -834,6 +834,25 @@ void main() {
                 .isNotEmpty,
         isTrue,
       );
+      expect(find.byKey(const Key('daily_puzzle_streak_button')), findsNothing);
+      if (find.byKey(const Key('daily_puzzle_card')).evaluate().isNotEmpty) {
+        expect(
+          find.byKey(const Key('daily_puzzle_progress_section')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('daily_puzzle_today_tile')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('daily_puzzle_total_tile')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('daily_puzzle_best_streak_tile')),
+          findsNothing,
+        );
+      }
 
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
