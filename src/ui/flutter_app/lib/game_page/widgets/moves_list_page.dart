@@ -20,6 +20,7 @@ import '../../shared/config/prompt_defaults.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/language_locale_mapping.dart';
+import '../../shared/utils/helpers/color_helpers/color_helper.dart';
 import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../services/import_export/pgn.dart';
@@ -752,14 +753,18 @@ class MovesListPageState extends State<MovesListPage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         // Use app theme colors
+        final ColorScheme colorScheme = Theme.of(context).colorScheme;
         final DialogThemeData dialogThemeObj = Theme.of(context).dialogTheme;
         final Color bgColor =
-            dialogThemeObj.backgroundColor ??
-            Theme.of(context).colorScheme.surface;
-        final Color textColor = DB().colorSettings.messageColor;
-        final Color borderColor = DB().colorSettings.messageColor.withValues(
-          alpha: 0.3,
+            dialogThemeObj.backgroundColor ?? colorScheme.surface;
+        final Color contrastBackground = bgColor.a == 1
+            ? bgColor
+            : Color.alphaBlend(bgColor, colorScheme.surface);
+        final Color textColor = readableForegroundColor(
+          preferred: DB().colorSettings.messageColor,
+          background: contrastBackground,
         );
+        final Color borderColor = textColor.withValues(alpha: 0.3);
 
         // Local state for checkbox
         bool localUseCurrentLanguage = useCurrentLanguage;
@@ -842,7 +847,7 @@ class MovesListPageState extends State<MovesListPage> {
                                   FluentIcons.document_edit_24_regular,
                                 ),
                                 tooltip: S.of(context).llmPromptTemplate,
-                                color: DB().colorSettings.pieceHighlightColor,
+                                color: colorScheme.primary,
                               ),
                               // LLM Config button
                               IconButton(
@@ -851,7 +856,7 @@ class MovesListPageState extends State<MovesListPage> {
                                   FluentIcons.settings_24_regular,
                                 ),
                                 tooltip: S.of(context).llmConfig,
-                                color: DB().colorSettings.pieceHighlightColor,
+                                color: colorScheme.primary,
                               ),
                               // Close button - with enhanced visibility
                               Container(
@@ -860,8 +865,7 @@ class MovesListPageState extends State<MovesListPage> {
                                   iconSize: 26,
                                   icon: Icon(
                                     FluentIcons.dismiss_24_filled,
-                                    color:
-                                        DB().colorSettings.pieceHighlightColor,
+                                    color: colorScheme.primary,
                                   ),
                                   tooltip: S.of(context).close,
                                   onPressed: () {
@@ -890,8 +894,8 @@ class MovesListPageState extends State<MovesListPage> {
                         children: <Widget>[
                           Checkbox(
                             value: localUseCurrentLanguage,
-                            activeColor: DB().colorSettings.pieceHighlightColor,
-                            checkColor: Colors.white,
+                            activeColor: colorScheme.primary,
+                            checkColor: colorScheme.onPrimary,
                             onChanged: (bool? value) {
                               setState(() {
                                 localUseCurrentLanguage = value ?? true;
@@ -903,10 +907,7 @@ class MovesListPageState extends State<MovesListPage> {
                             child: Text(
                               // Using app language for output text
                               S.of(context).outputInCurrentLanguage,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.green,
-                              ),
+                              style: TextStyle(fontSize: 14, color: textColor),
                             ),
                           ),
                           // Fish button for debugging the cat fishing mini-game
