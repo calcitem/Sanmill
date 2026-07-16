@@ -1409,7 +1409,7 @@
     },
     "forest": "Forest",
     "@forest": {},
-    "desktopImage": "Desktop Image",
+    "desktopImage": "Desktop image",
     "@desktopImage": {},
     "invalidPosition": "Invalid position.",
     "@invalidPosition": {},
@@ -1573,7 +1573,7 @@
     "@youCanEnableScreenReaderSupport": {},
     "showNumbersOnPieces": "Show numbers on pieces",
     "@showNumbersOnPieces": {},
-    "saveImage": "Save Image",
+    "saveImage": "Save image",
     "@saveImage": {},
     "isAnalysisToolbarShown": "Show analysis toolbar",
     "@isAnalysisToolbarShown": {},
@@ -1717,7 +1717,7 @@
     "@discoverySuccessfulAwaitingConnection": {},
     "noLanConnection": "No LAN connection",
     "@noLanConnection": {},
-    "takeScreenshot": "Take Screenshot",
+    "takeScreenshot": "Take screenshot",
     "@takeScreenshot": {},
     "disconnectedFromOpponent": "Disconnected from opponent.",
     "@disconnectedFromOpponent": {},
@@ -1805,7 +1805,7 @@
     "@localNetworkSettings": {},
     "reconnectedSuccessfully": "Reconnected successfully!",
     "@reconnectedSuccessfully": {},
-    "failedToSaveImageToGallery": "Failed to save image to Gallery.",
+    "failedToSaveImageToGallery": "Could not save the image to the gallery.",
     "@failedToSaveImageToGallery": {},
     "opponentRequestedToRestartTheGameDoYouAccept": "Opponent requested to restart the game. Do you accept?",
     "@opponentRequestedToRestartTheGameDoYouAccept": {},
@@ -4312,7 +4312,7 @@
     "@cameraPermissionDenied": {
         "description": "Error message when camera permission is denied"
     },
-    "saveToGallery": "Save to Gallery",
+    "saveToGallery": "Save to gallery",
     "@saveToGallery": {
         "description": "Button label to save QR code image to device gallery"
     },
@@ -4320,7 +4320,7 @@
     "@shareQrCode": {
         "description": "Button label to share QR code image"
     },
-    "qrCodeFromGallery": "Pick from Gallery",
+    "qrCodeFromGallery": "Choose from gallery",
     "@qrCodeFromGallery": {
         "description": "Tooltip for button to pick a QR code image from photo gallery"
     },
