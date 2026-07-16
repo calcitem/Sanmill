@@ -1569,7 +1569,7 @@
     "@menu": {},
     "monochrome": "Monochrome",
     "@monochrome": {},
-    "youCanEnableScreenReaderSupport": "You can enable the Screen reader support switch in the Accessibility configuration in General Settings.",
+    "youCanEnableScreenReaderSupport": "For spoken board details, enable Screen reader support in the Accessibility section of General settings.",
     "@youCanEnableScreenReaderSupport": {},
     "showNumbersOnPieces": "Show numbers on pieces",
     "@showNumbersOnPieces": {},
