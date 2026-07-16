@@ -2511,7 +2511,7 @@ class _HumanStatsBar extends StatelessWidget {
                 total: total,
                 flex: _explorerBarFlex(stats.draws, total),
                 color: Colors.grey,
-                textColor: Colors.white,
+                textColor: Colors.black,
               ),
             if (stats.losses > 0)
               _HumanStatsBarSegment(

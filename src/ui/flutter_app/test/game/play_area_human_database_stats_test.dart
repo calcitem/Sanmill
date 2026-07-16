@@ -5660,6 +5660,11 @@ void main() {
     expect(tester.getTopLeft(popular).dy, lessThan(tester.getTopLeft(rare).dy));
     expect(find.text('100 (91%)'), findsOneWidget);
     expect(find.text('10 (9%)'), findsOneWidget);
+    final Finder drawPercentage = find.descendant(
+      of: popular,
+      matching: find.text('20%'),
+    );
+    expect(tester.widget<Text>(drawPercentage).style?.color, Colors.black);
   });
 
   testWidgets('perfect move without human samples uses a separate callout', (
