@@ -1754,7 +1754,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      '${solution.isOptimal ? s.puzzleOptimalSolution : s.puzzleAlternativeSolution} (${solution.moves.length} moves):',
+                                      '${solution.isOptimal ? s.puzzleOptimalSolution : s.puzzleAlternativeSolution} · ${s.puzzleSolutionActionCount(solution.moves.length)}:',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -1785,7 +1785,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
                                       ),
                                       const SizedBox(width: 8),
                                       Text(
-                                        '(${solution.moves.length} moves)',
+                                        '(${s.puzzleSolutionActionCount(solution.moves.length)})',
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: colorScheme.onSurfaceVariant,

@@ -374,6 +374,29 @@ void main() {
     );
 
     testWidgets(
+      'labels solution entries as atomic actions',
+      (WidgetTester tester) async {
+        final PuzzleInfo puzzle = buildPuzzle(
+          solutions: const <List<String>>[
+            <String>['a1', 'd7'],
+          ],
+          markFirstSolutionOptimal: true,
+        );
+        await pumpPuzzlePage(tester, puzzle);
+
+        await tester.tap(
+          find.byKey(const Key('puzzle_page_bottom_bar_give_up')),
+        );
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 250));
+
+        expect(find.text('⭐ Optimal · 2 actions:'), findsOneWidget);
+        await teardownPuzzlePage(tester);
+      },
+      skip: nativeLibrarySkipReason() != null,
+    );
+
+    testWidgets(
       'solution metadata uses readable light-theme colors',
       (WidgetTester tester) async {
         final PuzzleInfo puzzle = buildPuzzle(
@@ -394,7 +417,7 @@ void main() {
         final Text optimal = tester.widget<Text>(find.text('⭐ Optimal'));
         final Text alternative = tester.widget<Text>(find.text('Alternative'));
         final Iterable<Text> moveCounts = tester.widgetList<Text>(
-          find.text('(2 moves)'),
+          find.text('(2 actions)'),
         );
         expect(optimal.style?.color, colors.tertiary);
         expect(alternative.style?.color, colors.onSurfaceVariant);

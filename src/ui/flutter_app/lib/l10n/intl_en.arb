@@ -5318,5 +5318,15 @@
                 "example": "42.5"
             }
         }
+    },
+    "puzzleSolutionActionCount": "{count, plural, =1{1 action} other{{count} actions}}",
+    "@puzzleSolutionActionCount": {
+        "description": "Number of atomic placement, movement, or removal actions listed in a puzzle solution",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "7"
+            }
+        }
     }
 }
