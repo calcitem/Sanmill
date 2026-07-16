@@ -126,6 +126,7 @@ class DisplaySettings {
     this.analysisShowMoveComments = true,
     this.analysisShowBestMoveArrow = true,
     this.analysisShowEvaluationGauge = true,
+    this.analysisShowAllBoardResults = false,
     this.analysisEngineLineCount = kDefaultAnalysisEngineLineCount,
     this.analysisEngineSearchTimeMs = kDefaultAnalysisEngineSearchTimeMs,
   });
@@ -331,6 +332,10 @@ class DisplaySettings {
   @HiveField(55, defaultValue: true)
   final bool analysisShowEvaluationGauge;
 
+  /// Whether analysis boards show every perfect-database candidate result.
+  @HiveField(56, defaultValue: false)
+  final bool analysisShowAllBoardResults;
+
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);
 
@@ -342,6 +347,7 @@ class DisplaySettings {
     bool? analysisShowMoveComments,
     bool? analysisShowBestMoveArrow,
     bool? analysisShowEvaluationGauge,
+    bool? analysisShowAllBoardResults,
     int? analysisEngineLineCount,
     int? analysisEngineSearchTimeMs,
   }) {
@@ -406,6 +412,8 @@ class DisplaySettings {
           analysisShowBestMoveArrow ?? this.analysisShowBestMoveArrow,
       analysisShowEvaluationGauge:
           analysisShowEvaluationGauge ?? this.analysisShowEvaluationGauge,
+      analysisShowAllBoardResults:
+          analysisShowAllBoardResults ?? this.analysisShowAllBoardResults,
       analysisEngineLineCount:
           analysisEngineLineCount ?? this.analysisEngineLineCount,
       analysisEngineSearchTimeMs:

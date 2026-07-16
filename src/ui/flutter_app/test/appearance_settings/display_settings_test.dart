@@ -64,6 +64,7 @@ void main() {
       expect(d.analysisShowMoveComments, isTrue);
       expect(d.analysisShowBestMoveArrow, isTrue);
       expect(d.analysisShowEvaluationGauge, isTrue);
+      expect(d.analysisShowAllBoardResults, isFalse);
       expect(
         d.analysisEngineLineCount,
         DisplaySettings.defaultAnalysisEngineLineCount,
@@ -73,6 +74,17 @@ void main() {
         DisplaySettings.defaultAnalysisEngineSearchTimeMs,
       );
     });
+  });
+
+  test('analysis all-candidates preference copies and serializes', () {
+    final DisplaySettings changed = const DisplaySettings()
+        .copyWithAnalysisPreferences(analysisShowAllBoardResults: true);
+
+    expect(changed.analysisShowAllBoardResults, isTrue);
+    expect(
+      DisplaySettings.fromJson(changed.toJson()).analysisShowAllBoardResults,
+      isTrue,
+    );
   });
 
   // ---------------------------------------------------------------------------

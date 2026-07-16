@@ -2440,12 +2440,12 @@ void main() {
         findsOneWidget,
       );
       expect(
-        find.byKey(const Key('opening_explorer_loading_row_5')),
+        find.byKey(const Key('opening_explorer_loading_row_2')),
         findsOneWidget,
       );
       expect(
-        find.byKey(const Key('opening_explorer_no_data_row')),
-        findsNothing,
+        find.byKey(const Key('opening_explorer_human_database_unavailable')),
+        findsOneWidget,
       );
 
       openingBookCompleter.complete('{}');
@@ -2537,9 +2537,17 @@ void main() {
       final Finder firstMoveFinder = find.byWidgetPredicate((Widget widget) {
         final Key? key = widget.key;
         return key is ValueKey<String> &&
-            key.value.startsWith('opening_explorer_move_');
+            key.value.startsWith('opening_explorer_knowledge_move_');
       }, description: 'rendered opening explorer move row');
-      expect(firstMoveFinder, findsWidgets);
+      expect(firstMoveFinder, findsNothing);
+      expect(
+        find.byKey(const Key('opening_explorer_human_database_unavailable')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_engine_searching_row')),
+        findsNothing,
+      );
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));

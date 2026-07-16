@@ -74,6 +74,456 @@ Future<void> showAnalysisSettingsSheet(
     builder: (BuildContext dialogContext) {
       final ThemeData theme = Theme.of(dialogContext);
       final ColorScheme colorScheme = theme.colorScheme;
+      final bool useFullScreenPage =
+          MediaQuery.sizeOf(dialogContext).width < 600;
+      final Widget content = ValueListenableBuilder<bool>(
+        valueListenable: AnalysisMode.stateNotifier,
+        builder: (BuildContext context, _, Widget? child) {
+          final int currentEngineThreads = DB().generalSettings.engineThreads;
+          final bool canUseAnalysisThreads = AnalysisMode.engineLineCount == 1;
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          strings.settings,
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        key: const Key('play_area_analysis_settings_close'),
+                        tooltip: strings.close,
+                        onPressed: () => Navigator.of(dialogContext).pop(),
+                        icon: const Icon(Icons.close),
+                      ),
+                    ],
+                  ),
+                ),
+                LichessListSection(
+                  header: Text(strings.analysisSettingsLayout),
+                  cardKey: const Key('play_area_analysis_settings_layout_card'),
+                  children: <Widget>[
+                    SwitchListTile.adaptive(
+                      key: const Key('play_area_analysis_settings_small_board'),
+                      secondary: const Icon(Icons.fit_screen_outlined),
+                      title: Text(strings.smallBoard),
+                      value: AnalysisMode.smallBoard,
+                      onChanged: (bool value) {
+                        RecordingService().recordEvent(
+                          RecordingEventType.toolbarAction,
+                          <String, dynamic>{
+                            'toolbar': 'analysisSettings',
+                            'action': 'setSmallBoard',
+                            'enabled': value,
+                          },
+                        );
+                        AnalysisMode.setSmallBoard(value, persist: true);
+                      },
+                    ),
+                    SwitchListTile.adaptive(
+                      key: const Key(
+                        'play_area_analysis_settings_inline_notation',
+                      ),
+                      secondary: const Icon(Icons.short_text_outlined),
+                      title: Text(_analysisInlineNotationLabel(strings)),
+                      value: AnalysisMode.inlineNotation,
+                      onChanged: (bool value) {
+                        RecordingService().recordEvent(
+                          RecordingEventType.toolbarAction,
+                          <String, dynamic>{
+                            'toolbar': 'analysisSettings',
+                            'action': 'setInlineNotation',
+                            'enabled': value,
+                          },
+                        );
+                        AnalysisMode.setInlineNotation(value, persist: true);
+                      },
+                    ),
+                    SwitchListTile.adaptive(
+                      key: const Key(
+                        'play_area_analysis_settings_evaluation_gauge',
+                      ),
+                      secondary: const Icon(Icons.align_horizontal_left),
+                      title: Text(strings.showEvaluationGauge),
+                      value: AnalysisMode.showEvaluationGauge,
+                      onChanged: (bool value) {
+                        RecordingService().recordEvent(
+                          RecordingEventType.toolbarAction,
+                          <String, dynamic>{
+                            'toolbar': 'analysisSettings',
+                            'action': 'setEvaluationGauge',
+                            'visible': value,
+                          },
+                        );
+                        AnalysisMode.setShowEvaluationGauge(
+                          value,
+                          persist: true,
+                        );
+                      },
+                    ),
+                    SwitchListTile.adaptive(
+                      key: const Key(
+                        'play_area_analysis_settings_move_annotations',
+                      ),
+                      secondary: const Icon(Icons.rate_review_outlined),
+                      title: Text(_analysisMoveAnnotationsLabel(strings)),
+                      value: AnalysisMode.showMoveAnnotations,
+                      onChanged: (bool value) {
+                        RecordingService().recordEvent(
+                          RecordingEventType.toolbarAction,
+                          <String, dynamic>{
+                            'toolbar': 'analysisSettings',
+                            'action': 'setMoveAnnotations',
+                            'visible': value,
+                          },
+                        );
+                        AnalysisMode.setShowMoveAnnotations(
+                          value,
+                          persist: true,
+                        );
+                      },
+                    ),
+                    SwitchListTile.adaptive(
+                      key: const Key(
+                        'play_area_analysis_settings_move_comments',
+                      ),
+                      secondary: const Icon(Icons.notes_outlined),
+                      title: Text(_analysisMoveCommentsLabel(strings)),
+                      value: AnalysisMode.showMoveComments,
+                      onChanged: (bool value) {
+                        RecordingService().recordEvent(
+                          RecordingEventType.toolbarAction,
+                          <String, dynamic>{
+                            'toolbar': 'analysisSettings',
+                            'action': 'setMoveComments',
+                            'visible': value,
+                          },
+                        );
+                        AnalysisMode.setShowMoveComments(value, persist: true);
+                      },
+                    ),
+                  ],
+                ),
+                LichessListSection(
+                  header: Text(strings.analysisSettingsKnowledgeSources),
+                  cardKey: const Key(
+                    'play_area_analysis_settings_knowledge_card',
+                  ),
+                  children: <Widget>[
+                    ListTile(
+                      key: const Key(
+                        'play_area_analysis_settings_opening_explorer_sources',
+                      ),
+                      leading: const Icon(Icons.travel_explore_outlined),
+                      title: Text(strings.openingExplorer),
+                      subtitle: Text(strings.aiKnowledgeSources),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () {
+                        RecordingService().recordEvent(
+                          RecordingEventType.toolbarAction,
+                          <String, dynamic>{
+                            'toolbar': 'analysisSettings',
+                            'action': 'openExplorerSources',
+                          },
+                        );
+                        final NavigatorState navigator = Navigator.of(context);
+                        Navigator.of(dialogContext).pop();
+                        navigator.push(
+                          GeneralSettingsPage.aiKnowledgeSourcesRoute(),
+                        );
+                      },
+                    ),
+                    if (isRuleSupportingPerfectDatabase())
+                      SwitchListTile.adaptive(
+                        key: const Key(
+                          'play_area_analysis_settings_perfect_database',
+                        ),
+                        secondary: const Icon(Icons.storage_outlined),
+                        title: Text(strings.usePerfectDatabase),
+                        value: DB().generalSettings.usePerfectDatabase,
+                        onChanged: (bool value) {
+                          RecordingService().recordEvent(
+                            RecordingEventType.toolbarAction,
+                            <String, dynamic>{
+                              'toolbar': 'analysisSettings',
+                              'action': 'setPerfectDatabase',
+                              'enabled': value,
+                            },
+                          );
+                          _setAnalysisPerfectDatabaseEnabled(context, value);
+                        },
+                      ),
+                    if (isRuleSupportingPerfectDatabase())
+                      SwitchListTile.adaptive(
+                        key: const Key(
+                          'play_area_analysis_settings_all_board_results',
+                        ),
+                        secondary: const Icon(Icons.hub_outlined),
+                        title: Text(strings.showAllBoardResults),
+                        subtitle: Text(strings.showAllBoardResultsDescription),
+                        value: AnalysisMode.showAllBoardResults,
+                        onChanged: (bool value) {
+                          RecordingService().recordEvent(
+                            RecordingEventType.toolbarAction,
+                            <String, dynamic>{
+                              'toolbar': 'analysisSettings',
+                              'action': 'setAllBoardResults',
+                              'visible': value,
+                            },
+                          );
+                          AnalysisMode.setShowAllBoardResults(
+                            value,
+                            persist: true,
+                          );
+                        },
+                      ),
+                  ],
+                ),
+                LichessListSection(
+                  header: Text(strings.analysisSettingsLocalEngine),
+                  cardKey: const Key('play_area_analysis_settings_engine_card'),
+                  children: <Widget>[
+                    SwitchListTile.adaptive(
+                      key: const Key(
+                        'play_area_analysis_settings_advantage_graph',
+                      ),
+                      secondary: const Icon(Icons.show_chart_outlined),
+                      title: Text(strings.showAdvantageGraph),
+                      value: DB().displaySettings.isAdvantageGraphShown,
+                      onChanged: (bool value) {
+                        RecordingService().recordEvent(
+                          RecordingEventType.toolbarAction,
+                          <String, dynamic>{
+                            'toolbar': 'analysisSettings',
+                            'action': 'setEvaluationGraph',
+                            'visible': value,
+                          },
+                        );
+                        DB().displaySettings = DB().displaySettings.copyWith(
+                          isAdvantageGraphShown: value,
+                        );
+                        AnalysisMode.refresh();
+                      },
+                    ),
+                    SwitchListTile.adaptive(
+                      key: const Key(
+                        'play_area_analysis_settings_engine_lines',
+                      ),
+                      secondary: const Icon(Icons.subtitles_outlined),
+                      title: Text(strings.showEngineLines),
+                      subtitle: Text(_analysisEngineLinesSubtitle(strings)),
+                      value: AnalysisMode.showEngineLines,
+                      onChanged: (bool value) {
+                        RecordingService().recordEvent(
+                          RecordingEventType.toolbarAction,
+                          <String, dynamic>{
+                            'toolbar': 'analysisSettings',
+                            'action': 'setEngineLines',
+                            'visible': value,
+                          },
+                        );
+                        AnalysisMode.setShowEngineLines(value, persist: true);
+                      },
+                    ),
+                    SwitchListTile.adaptive(
+                      key: const Key(
+                        'play_area_analysis_settings_best_move_arrow',
+                      ),
+                      secondary: const Icon(Icons.near_me_outlined),
+                      title: Text(_analysisBestMoveArrowLabel(strings)),
+                      subtitle: Text(_analysisBestMoveArrowSubtitle(strings)),
+                      value: AnalysisMode.showBestMoveArrow,
+                      onChanged: (bool value) {
+                        RecordingService().recordEvent(
+                          RecordingEventType.toolbarAction,
+                          <String, dynamic>{
+                            'toolbar': 'analysisSettings',
+                            'action': 'setBestMoveArrow',
+                            'visible': value,
+                          },
+                        );
+                        AnalysisMode.setShowBestMoveArrow(value, persist: true);
+                      },
+                    ),
+                    ListTile(
+                      key: const Key(
+                        'play_area_analysis_settings_engine_search_time',
+                      ),
+                      leading: const Icon(Icons.timer_outlined),
+                      title: Text(strings.searchTime),
+                      subtitle: Text(
+                        _analysisSearchTimeValueLabel(
+                          AnalysisMode.engineSearchTimeMs,
+                        ),
+                      ),
+                      trailing: SizedBox(
+                        width: 180,
+                        child: Slider(
+                          key: const Key(
+                            'play_area_analysis_settings_engine_search_time_control',
+                          ),
+                          value: AnalysisMode.engineSearchTimeOptionIndex
+                              .toDouble(),
+                          max:
+                              (AnalysisMode.engineSearchTimeOptionsMs.length -
+                                      1)
+                                  .toDouble(),
+                          divisions:
+                              AnalysisMode.engineSearchTimeOptionsMs.length - 1,
+                          label: _analysisSearchTimeValueLabel(
+                            AnalysisMode.engineSearchTimeMs,
+                          ),
+                          onChanged: (double value) {
+                            final int searchTimeMs =
+                                AnalysisMode.engineSearchTimeOptionAt(
+                                  value.round(),
+                                );
+                            RecordingService().recordEvent(
+                              RecordingEventType.toolbarAction,
+                              <String, dynamic>{
+                                'toolbar': 'analysisSettings',
+                                'action': 'setEngineSearchTime',
+                                'searchTimeMs': searchTimeMs,
+                              },
+                            );
+                            AnalysisMode.setEngineSearchTimeMs(searchTimeMs);
+                          },
+                          onChangeEnd: (double value) {
+                            final int searchTimeMs =
+                                AnalysisMode.engineSearchTimeOptionAt(
+                                  value.round(),
+                                );
+                            AnalysisMode.setEngineSearchTimeMs(
+                              searchTimeMs,
+                              persist: true,
+                            );
+                            _refreshEngineAnalysisAfterSettingsChange(context);
+                          },
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      key: const Key(
+                        'play_area_analysis_settings_engine_threads',
+                      ),
+                      leading: const Icon(Icons.memory_outlined),
+                      title: Text(strings.engineThreads),
+                      subtitle: Text(
+                        _analysisEngineThreadsSubtitle(
+                          strings,
+                          currentEngineThreads,
+                          canUseAnalysisThreads,
+                        ),
+                      ),
+                      trailing: SizedBox(
+                        width: 180,
+                        child: Slider(
+                          key: const Key(
+                            'play_area_analysis_settings_engine_threads_control',
+                          ),
+                          value: AnalysisMode.engineThreadOptionIndexFor(
+                            currentEngineThreads,
+                          ).toDouble(),
+                          max: (AnalysisMode.engineThreadOptions.length - 1)
+                              .toDouble(),
+                          divisions:
+                              AnalysisMode.engineThreadOptions.length - 1,
+                          label: currentEngineThreads.toString(),
+                          onChanged: canUseAnalysisThreads
+                              ? (double value) {
+                                  final int threads =
+                                      AnalysisMode.engineThreadOptionAt(
+                                        value.round(),
+                                      );
+                                  RecordingService().recordEvent(
+                                    RecordingEventType.toolbarAction,
+                                    <String, dynamic>{
+                                      'toolbar': 'analysisSettings',
+                                      'action': 'setEngineThreads',
+                                      'threads': threads,
+                                    },
+                                  );
+                                  _setAnalysisEngineThreads(threads);
+                                }
+                              : null,
+                          onChangeEnd: canUseAnalysisThreads
+                              ? (double value) {
+                                  final int threads =
+                                      AnalysisMode.engineThreadOptionAt(
+                                        value.round(),
+                                      );
+                                  _setAnalysisEngineThreads(threads);
+                                  _refreshEngineAnalysisAfterSettingsChange(
+                                    context,
+                                  );
+                                }
+                              : null,
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      key: const Key(
+                        'play_area_analysis_settings_engine_line_count',
+                      ),
+                      leading: const Icon(Icons.format_list_numbered),
+                      title: Text(strings.multipleLines),
+                      subtitle: Text(_analysisEngineLineCountSubtitle(strings)),
+                      trailing: SizedBox(
+                        width: 180,
+                        child: Slider(
+                          key: const Key(
+                            'play_area_analysis_settings_engine_line_count_control',
+                          ),
+                          value: AnalysisMode.engineLineCount.toDouble(),
+                          max: AnalysisMode.maxEngineLineCount.toDouble(),
+                          divisions: AnalysisMode.maxEngineLineCount,
+                          label: AnalysisMode.engineLineCount.toString(),
+                          onChanged: (double value) {
+                            final int count = value.round();
+                            RecordingService().recordEvent(
+                              RecordingEventType.toolbarAction,
+                              <String, dynamic>{
+                                'toolbar': 'analysisSettings',
+                                'action': 'setEngineLineCount',
+                                'count': count,
+                              },
+                            );
+                            AnalysisMode.setEngineLineCount(count);
+                          },
+                          onChangeEnd: (double value) {
+                            final int count = value.round();
+                            AnalysisMode.setEngineLineCount(
+                              count,
+                              persist: true,
+                            );
+                            _refreshEngineAnalysisAfterSettingsChange(context);
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      );
+      if (useFullScreenPage) {
+        return Dialog.fullscreen(
+          key: const Key('play_area_analysis_settings_sheet'),
+          backgroundColor: colorScheme.surfaceContainerLow,
+          child: SafeArea(child: content),
+        );
+      }
       return Dialog(
         key: const Key('play_area_analysis_settings_sheet'),
         backgroundColor: colorScheme.surfaceContainerLow,
@@ -82,431 +532,7 @@ Future<void> showAnalysisSettingsSheet(
           constraints: BoxConstraints(
             maxWidth: math.min(MediaQuery.sizeOf(dialogContext).width, 500),
           ),
-          child: ValueListenableBuilder<bool>(
-            valueListenable: AnalysisMode.stateNotifier,
-            builder: (BuildContext context, _, Widget? child) {
-              final int currentEngineThreads =
-                  DB().generalSettings.engineThreads;
-              final bool canUseAnalysisThreads =
-                  AnalysisMode.engineLineCount == 1;
-              return SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Text(
-                              strings.settings,
-                              style: theme.textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0,
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                            key: const Key('play_area_analysis_settings_close'),
-                            tooltip: strings.close,
-                            onPressed: () => Navigator.of(dialogContext).pop(),
-                            icon: const Icon(Icons.close),
-                          ),
-                        ],
-                      ),
-                    ),
-                    LichessListSection(
-                      cardKey: const Key(
-                        'play_area_analysis_settings_layout_card',
-                      ),
-                      children: <Widget>[
-                        SwitchListTile.adaptive(
-                          key: const Key(
-                            'play_area_analysis_settings_small_board',
-                          ),
-                          secondary: const Icon(Icons.fit_screen_outlined),
-                          title: Text(strings.smallBoard),
-                          value: AnalysisMode.smallBoard,
-                          onChanged: (bool value) {
-                            RecordingService().recordEvent(
-                              RecordingEventType.toolbarAction,
-                              <String, dynamic>{
-                                'toolbar': 'analysisSettings',
-                                'action': 'setSmallBoard',
-                                'enabled': value,
-                              },
-                            );
-                            AnalysisMode.setSmallBoard(value, persist: true);
-                          },
-                        ),
-                        SwitchListTile.adaptive(
-                          key: const Key(
-                            'play_area_analysis_settings_inline_notation',
-                          ),
-                          secondary: const Icon(Icons.short_text_outlined),
-                          title: Text(_analysisInlineNotationLabel(strings)),
-                          value: AnalysisMode.inlineNotation,
-                          onChanged: (bool value) {
-                            RecordingService().recordEvent(
-                              RecordingEventType.toolbarAction,
-                              <String, dynamic>{
-                                'toolbar': 'analysisSettings',
-                                'action': 'setInlineNotation',
-                                'enabled': value,
-                              },
-                            );
-                            AnalysisMode.setInlineNotation(
-                              value,
-                              persist: true,
-                            );
-                          },
-                        ),
-                        SwitchListTile.adaptive(
-                          key: const Key(
-                            'play_area_analysis_settings_move_annotations',
-                          ),
-                          secondary: const Icon(Icons.rate_review_outlined),
-                          title: Text(_analysisMoveAnnotationsLabel(strings)),
-                          value: AnalysisMode.showMoveAnnotations,
-                          onChanged: (bool value) {
-                            RecordingService().recordEvent(
-                              RecordingEventType.toolbarAction,
-                              <String, dynamic>{
-                                'toolbar': 'analysisSettings',
-                                'action': 'setMoveAnnotations',
-                                'visible': value,
-                              },
-                            );
-                            AnalysisMode.setShowMoveAnnotations(
-                              value,
-                              persist: true,
-                            );
-                          },
-                        ),
-                        SwitchListTile.adaptive(
-                          key: const Key(
-                            'play_area_analysis_settings_move_comments',
-                          ),
-                          secondary: const Icon(Icons.notes_outlined),
-                          title: Text(_analysisMoveCommentsLabel(strings)),
-                          value: AnalysisMode.showMoveComments,
-                          onChanged: (bool value) {
-                            RecordingService().recordEvent(
-                              RecordingEventType.toolbarAction,
-                              <String, dynamic>{
-                                'toolbar': 'analysisSettings',
-                                'action': 'setMoveComments',
-                                'visible': value,
-                              },
-                            );
-                            AnalysisMode.setShowMoveComments(
-                              value,
-                              persist: true,
-                            );
-                          },
-                        ),
-                        ListTile(
-                          key: const Key(
-                            'play_area_analysis_settings_opening_explorer_sources',
-                          ),
-                          leading: const Icon(Icons.travel_explore_outlined),
-                          title: Text(strings.openingExplorer),
-                          subtitle: Text(strings.aiKnowledgeSources),
-                          trailing: const Icon(Icons.chevron_right),
-                          onTap: () {
-                            RecordingService().recordEvent(
-                              RecordingEventType.toolbarAction,
-                              <String, dynamic>{
-                                'toolbar': 'analysisSettings',
-                                'action': 'openExplorerSources',
-                              },
-                            );
-                            final NavigatorState navigator = Navigator.of(
-                              context,
-                            );
-                            Navigator.of(dialogContext).pop();
-                            navigator.push(
-                              GeneralSettingsPage.aiKnowledgeSourcesRoute(),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    LichessListSection(
-                      header: Text(strings.engine),
-                      cardKey: const Key(
-                        'play_area_analysis_settings_engine_card',
-                      ),
-                      children: <Widget>[
-                        if (isRuleSupportingPerfectDatabase())
-                          SwitchListTile.adaptive(
-                            key: const Key(
-                              'play_area_analysis_settings_perfect_database',
-                            ),
-                            secondary: const Icon(Icons.storage_outlined),
-                            title: Text(strings.usePerfectDatabase),
-                            value: DB().generalSettings.usePerfectDatabase,
-                            onChanged: (bool value) {
-                              RecordingService().recordEvent(
-                                RecordingEventType.toolbarAction,
-                                <String, dynamic>{
-                                  'toolbar': 'analysisSettings',
-                                  'action': 'setPerfectDatabase',
-                                  'enabled': value,
-                                },
-                              );
-                              _setAnalysisPerfectDatabaseEnabled(
-                                context,
-                                value,
-                              );
-                            },
-                          ),
-                        SwitchListTile.adaptive(
-                          key: const Key(
-                            'play_area_analysis_settings_advantage_graph',
-                          ),
-                          secondary: const Icon(Icons.show_chart_outlined),
-                          title: Text(strings.showAdvantageGraph),
-                          value: DB().displaySettings.isAdvantageGraphShown,
-                          onChanged: (bool value) {
-                            RecordingService().recordEvent(
-                              RecordingEventType.toolbarAction,
-                              <String, dynamic>{
-                                'toolbar': 'analysisSettings',
-                                'action': 'setEvaluationGraph',
-                                'visible': value,
-                              },
-                            );
-                            DB().displaySettings = DB().displaySettings
-                                .copyWith(isAdvantageGraphShown: value);
-                            AnalysisMode.refresh();
-                          },
-                        ),
-                        SwitchListTile.adaptive(
-                          key: const Key(
-                            'play_area_analysis_settings_engine_lines',
-                          ),
-                          secondary: const Icon(Icons.subtitles_outlined),
-                          title: Text(strings.showEngineLines),
-                          subtitle: Text(_analysisEngineLinesSubtitle(strings)),
-                          value: AnalysisMode.showEngineLines,
-                          onChanged: (bool value) {
-                            RecordingService().recordEvent(
-                              RecordingEventType.toolbarAction,
-                              <String, dynamic>{
-                                'toolbar': 'analysisSettings',
-                                'action': 'setEngineLines',
-                                'visible': value,
-                              },
-                            );
-                            AnalysisMode.setShowEngineLines(
-                              value,
-                              persist: true,
-                            );
-                          },
-                        ),
-                        SwitchListTile.adaptive(
-                          key: const Key(
-                            'play_area_analysis_settings_best_move_arrow',
-                          ),
-                          secondary: const Icon(Icons.near_me_outlined),
-                          title: Text(_analysisBestMoveArrowLabel(strings)),
-                          subtitle: Text(
-                            _analysisBestMoveArrowSubtitle(strings),
-                          ),
-                          value: AnalysisMode.showBestMoveArrow,
-                          onChanged: (bool value) {
-                            RecordingService().recordEvent(
-                              RecordingEventType.toolbarAction,
-                              <String, dynamic>{
-                                'toolbar': 'analysisSettings',
-                                'action': 'setBestMoveArrow',
-                                'visible': value,
-                              },
-                            );
-                            AnalysisMode.setShowBestMoveArrow(
-                              value,
-                              persist: true,
-                            );
-                          },
-                        ),
-                        ListTile(
-                          key: const Key(
-                            'play_area_analysis_settings_engine_search_time',
-                          ),
-                          leading: const Icon(Icons.timer_outlined),
-                          title: Text(strings.searchTime),
-                          subtitle: Text(
-                            _analysisSearchTimeValueLabel(
-                              AnalysisMode.engineSearchTimeMs,
-                            ),
-                          ),
-                          trailing: SizedBox(
-                            width: 180,
-                            child: Slider(
-                              key: const Key(
-                                'play_area_analysis_settings_engine_search_time_control',
-                              ),
-                              value: AnalysisMode.engineSearchTimeOptionIndex
-                                  .toDouble(),
-                              max:
-                                  (AnalysisMode
-                                              .engineSearchTimeOptionsMs
-                                              .length -
-                                          1)
-                                      .toDouble(),
-                              divisions:
-                                  AnalysisMode
-                                      .engineSearchTimeOptionsMs
-                                      .length -
-                                  1,
-                              label: _analysisSearchTimeValueLabel(
-                                AnalysisMode.engineSearchTimeMs,
-                              ),
-                              onChanged: (double value) {
-                                final int searchTimeMs =
-                                    AnalysisMode.engineSearchTimeOptionAt(
-                                      value.round(),
-                                    );
-                                RecordingService().recordEvent(
-                                  RecordingEventType.toolbarAction,
-                                  <String, dynamic>{
-                                    'toolbar': 'analysisSettings',
-                                    'action': 'setEngineSearchTime',
-                                    'searchTimeMs': searchTimeMs,
-                                  },
-                                );
-                                AnalysisMode.setEngineSearchTimeMs(
-                                  searchTimeMs,
-                                );
-                              },
-                              onChangeEnd: (double value) {
-                                final int searchTimeMs =
-                                    AnalysisMode.engineSearchTimeOptionAt(
-                                      value.round(),
-                                    );
-                                AnalysisMode.setEngineSearchTimeMs(
-                                  searchTimeMs,
-                                  persist: true,
-                                );
-                                _refreshEngineAnalysisAfterSettingsChange(
-                                  context,
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                        ListTile(
-                          key: const Key(
-                            'play_area_analysis_settings_engine_threads',
-                          ),
-                          leading: const Icon(Icons.memory_outlined),
-                          title: Text(strings.engineThreads),
-                          subtitle: Text(
-                            _analysisEngineThreadsSubtitle(
-                              strings,
-                              currentEngineThreads,
-                              canUseAnalysisThreads,
-                            ),
-                          ),
-                          trailing: SizedBox(
-                            width: 180,
-                            child: Slider(
-                              key: const Key(
-                                'play_area_analysis_settings_engine_threads_control',
-                              ),
-                              value: AnalysisMode.engineThreadOptionIndexFor(
-                                currentEngineThreads,
-                              ).toDouble(),
-                              max: (AnalysisMode.engineThreadOptions.length - 1)
-                                  .toDouble(),
-                              divisions:
-                                  AnalysisMode.engineThreadOptions.length - 1,
-                              label: currentEngineThreads.toString(),
-                              onChanged: canUseAnalysisThreads
-                                  ? (double value) {
-                                      final int threads =
-                                          AnalysisMode.engineThreadOptionAt(
-                                            value.round(),
-                                          );
-                                      RecordingService().recordEvent(
-                                        RecordingEventType.toolbarAction,
-                                        <String, dynamic>{
-                                          'toolbar': 'analysisSettings',
-                                          'action': 'setEngineThreads',
-                                          'threads': threads,
-                                        },
-                                      );
-                                      _setAnalysisEngineThreads(threads);
-                                    }
-                                  : null,
-                              onChangeEnd: canUseAnalysisThreads
-                                  ? (double value) {
-                                      final int threads =
-                                          AnalysisMode.engineThreadOptionAt(
-                                            value.round(),
-                                          );
-                                      _setAnalysisEngineThreads(threads);
-                                      _refreshEngineAnalysisAfterSettingsChange(
-                                        context,
-                                      );
-                                    }
-                                  : null,
-                            ),
-                          ),
-                        ),
-                        ListTile(
-                          key: const Key(
-                            'play_area_analysis_settings_engine_line_count',
-                          ),
-                          leading: const Icon(Icons.format_list_numbered),
-                          title: Text(strings.multipleLines),
-                          subtitle: Text(
-                            _analysisEngineLineCountSubtitle(strings),
-                          ),
-                          trailing: SizedBox(
-                            width: 180,
-                            child: Slider(
-                              key: const Key(
-                                'play_area_analysis_settings_engine_line_count_control',
-                              ),
-                              value: AnalysisMode.engineLineCount.toDouble(),
-                              max: AnalysisMode.maxEngineLineCount.toDouble(),
-                              divisions: AnalysisMode.maxEngineLineCount,
-                              label: AnalysisMode.engineLineCount.toString(),
-                              onChanged: (double value) {
-                                final int count = value.round();
-                                RecordingService().recordEvent(
-                                  RecordingEventType.toolbarAction,
-                                  <String, dynamic>{
-                                    'toolbar': 'analysisSettings',
-                                    'action': 'setEngineLineCount',
-                                    'count': count,
-                                  },
-                                );
-                                AnalysisMode.setEngineLineCount(count);
-                              },
-                              onChangeEnd: (double value) {
-                                final int count = value.round();
-                                AnalysisMode.setEngineLineCount(
-                                  count,
-                                  persist: true,
-                                );
-                                _refreshEngineAnalysisAfterSettingsChange(
-                                  context,
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
+          child: content,
         ),
       );
     },
@@ -1761,11 +1787,19 @@ class PlayAreaState extends State<PlayArea> {
     };
   }
 
-  void _transformActiveBoard(
+  Future<void> _transformActiveBoard(
     MillBoardTransformAction action, {
     required S strings,
     GameSession? session,
-  }) {
+  }) async {
+    final bool refreshAnalysis = _isAnalysisMode;
+    if (refreshAnalysis) {
+      await AnalysisService.stopActiveEngineAnalysisAndWait();
+      AnalysisMode.disable();
+      if (!mounted) {
+        return;
+      }
+    }
     final bool transformed = GameController().transformActiveLocalGame(
       action.type,
     );
@@ -1784,6 +1818,12 @@ class PlayAreaState extends State<PlayArea> {
             session: session,
           ),
         );
+      }
+    }
+    if (refreshAnalysis) {
+      await AnalysisService.refresh(context);
+      if (!mounted) {
+        return;
       }
     }
     assert(
@@ -1818,8 +1858,9 @@ class PlayAreaState extends State<PlayArea> {
           currentBoardLayout: currentBoardLayout,
           backgroundColor: _actionSheetBackground(dialogContext),
           foregroundColor: _actionSheetForeground(dialogContext),
-          onSelected: (MillBoardTransformAction action) =>
-              _transformActiveBoard(action, strings: strings, session: session),
+          onSelected: (MillBoardTransformAction action) => unawaited(
+            _transformActiveBoard(action, strings: strings, session: session),
+          ),
         ),
       ),
     );
@@ -3462,8 +3503,10 @@ class PlayAreaState extends State<PlayArea> {
               final double engineLinesReserve = hasEngineLinesSlot
                   ? _kAnalysisEngineLinesReserveHeight
                   : 0;
-              const double evaluationGaugeReserve =
-                  _kAdvantageIndicatorWidth + _kAdvantageIndicatorGap;
+              final double evaluationGaugeReserve =
+                  AnalysisMode.showEvaluationGauge
+                  ? _kAdvantageIndicatorWidth + _kAdvantageIndicatorGap
+                  : 0;
               const double tabPanelMinHeight = 174;
               final double pieceRowsHeight = showPieceCountRows
                   ? _pieceRowsHeightForLayout(context)
@@ -3524,29 +3567,39 @@ class PlayAreaState extends State<PlayArea> {
     return _getCurrentAdvantageValue();
   }
 
-  Widget _buildAnalysisBoardWithEvaluationGauge({required double boardSize}) {
+  Widget _buildAnalysisBoardWithEvaluationGauge({
+    required double boardSize,
+    Key containerKey = const Key('play_area_analysis_board_with_gauge'),
+    Key boardKey = const Key('play_area_analysis_board'),
+    Key gaugeKey = const Key('play_area_analysis_evaluation_gauge'),
+  }) {
+    final Widget board = SizedBox.square(
+      key: boardKey,
+      dimension: boardSize,
+      child: _buildBoardScreenshot(includeAdvantageIndicator: false),
+    );
+    if (!AnalysisMode.showEvaluationGauge) {
+      return Center(child: board);
+    }
     return Center(
       child: SizedBox(
-        key: const Key('play_area_analysis_board_with_gauge'),
+        key: containerKey,
         width: boardSize + _kAdvantageIndicatorGap + _kAdvantageIndicatorWidth,
         height: boardSize,
         child: Row(
+          textDirection: TextDirection.ltr,
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             SizedBox(
-              key: const Key('play_area_analysis_evaluation_gauge'),
+              key: gaugeKey,
               width: _kAdvantageIndicatorWidth,
               child: _PositionalAdvantageIndicator(
                 value: _analysisEvaluationGaugeValue(),
               ),
             ),
             const SizedBox(width: _kAdvantageIndicatorGap),
-            SizedBox.square(
-              key: const Key('play_area_analysis_board'),
-              dimension: boardSize,
-              child: _buildBoardScreenshot(includeAdvantageIndicator: false),
-            ),
+            board,
           ],
         ),
       ),
@@ -3944,10 +3997,14 @@ class PlayAreaState extends State<PlayArea> {
       0,
       availableHeight - (showPieceCountRows ? pieceRowHeight * 2 : 0),
     );
+    final double evaluationGaugeReserve = AnalysisMode.showEvaluationGauge
+        ? _kAdvantageIndicatorWidth + _kAdvantageIndicatorGap
+        : 0;
     final double boardSize = math.min(
       boardHeightAllowance,
-      math.max(0, availableWidth * 0.52),
+      math.max(0, availableWidth * 0.52 - evaluationGaugeReserve),
     );
+    final double boardPaneWidth = boardSize + evaluationGaugeReserve;
 
     return SizedBox(
       key: const Key('play_area_analysis_landscape_content'),
@@ -3969,7 +4026,7 @@ class PlayAreaState extends State<PlayArea> {
                   children: <Widget>[
                     SizedBox(
                       key: const Key('play_area_analysis_landscape_board_pane'),
-                      width: boardSize,
+                      width: boardPaneWidth,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -3980,12 +4037,17 @@ class PlayAreaState extends State<PlayArea> {
                                   ? _buildRemovedPieceCountRow()
                                   : _buildPieceCountRow(),
                             ),
-                          SizedBox.square(
-                            key: const Key(
+                          _buildAnalysisBoardWithEvaluationGauge(
+                            boardSize: boardSize,
+                            containerKey: const Key(
+                              'play_area_analysis_landscape_board_with_gauge',
+                            ),
+                            boardKey: const Key(
                               'play_area_analysis_landscape_board',
                             ),
-                            dimension: boardSize,
-                            child: _buildBoardScreenshot(),
+                            gaugeKey: const Key(
+                              'play_area_analysis_landscape_evaluation_gauge',
+                            ),
                           ),
                           if (showPieceCountRows)
                             SizedBox(
@@ -5045,7 +5107,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
 
     final TextStyle style = _inlineMoveListTextStyle(
       context,
-    ).copyWith(color: DB().colorSettings.messageColor.withValues(alpha: 0.8));
+    ).copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant);
     return LayoutBuilder(
       key: const Key('play_area_analysis_root_comments'),
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -5790,7 +5852,7 @@ class _InlineMoveCount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color color = DB().colorSettings.messageColor.withValues(alpha: 0.8);
+    final Color color = Theme.of(context).colorScheme.onSurfaceVariant;
     return Padding(
       padding: const EdgeInsets.only(right: 3),
       child: Text(
@@ -5836,7 +5898,6 @@ class _GameMoveChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final Color messageColor = DB().colorSettings.messageColor;
     final BorderRadius borderRadius = BorderRadius.circular(
       AppStyles.compactRadius,
     );
@@ -5846,12 +5907,14 @@ class _GameMoveChip extends StatelessWidget {
             _GameMoveChipStyle.filled =>
               selected ? selectedTextColor : colorScheme.onSurfaceVariant,
             _GameMoveChipStyle.inlineText =>
-              selected ? messageColor : messageColor.withValues(alpha: 0.8),
+              selected ? colorScheme.onPrimaryContainer : colorScheme.onSurface,
           },
           fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
         ) ??
         TextStyle(
-          color: selected ? messageColor : messageColor.withValues(alpha: 0.8),
+          color: selected
+              ? colorScheme.onPrimaryContainer
+              : colorScheme.onSurface,
           fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
         );
     final Widget labelText = Text(
@@ -5873,9 +5936,15 @@ class _GameMoveChip extends StatelessWidget {
           child: labelText,
         ),
       ),
-      _GameMoveChipStyle.inlineText => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
-        child: labelText,
+      _GameMoveChipStyle.inlineText => DecoratedBox(
+        decoration: BoxDecoration(
+          color: selected ? colorScheme.primaryContainer : Colors.transparent,
+          borderRadius: borderRadius,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
+          child: labelText,
+        ),
       ),
     };
     return Semantics(
@@ -7537,7 +7606,6 @@ class _AnalysisMovesHeader extends StatelessWidget {
       builder: (BuildContext context, _, _) {
         final ThemeData theme = Theme.of(context);
         final ColorScheme colorScheme = theme.colorScheme;
-        final Color messageColor = DB().colorSettings.messageColor;
         final S strings = S.of(context);
         final GameRecorder recorder = GameController().gameRecorder;
         final _AnalysisMovesHeaderLabels labels = _labels(strings, recorder);
@@ -7570,7 +7638,7 @@ class _AnalysisMovesHeader extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.labelLarge?.copyWith(
-                            color: messageColor,
+                            color: colorScheme.onSurface,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 0,
                           ),
@@ -7583,7 +7651,7 @@ class _AnalysisMovesHeader extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: messageColor.withValues(alpha: 0.8),
+                            color: colorScheme.onSurfaceVariant,
                             letterSpacing: 0,
                           ),
                         ),
@@ -7596,7 +7664,7 @@ class _AnalysisMovesHeader extends StatelessWidget {
                     visualDensity: VisualDensity.compact,
                     icon: Icon(
                       Icons.format_list_numbered,
-                      color: messageColor.withValues(alpha: 0.9),
+                      color: colorScheme.onSurfaceVariant,
                     ),
                     onPressed: onOpenFullMoveList,
                   ),
@@ -8011,8 +8079,8 @@ class _AnalysisEngineLine extends StatelessWidget {
   Widget build(BuildContext context) {
     assert(lineRank > 0, 'Engine line rank must be one-based.');
     final ThemeData theme = Theme.of(context);
+    final ColorScheme colorScheme = theme.colorScheme;
     final S strings = S.of(context);
-    final Color messageColor = DB().colorSettings.messageColor;
     final Color outcomeColor = AnalysisMode.isThreatMode
         ? Colors.red.shade600
         : AnalysisMode.getColorForOutcome(result.outcome);
@@ -8056,9 +8124,9 @@ class _AnalysisEngineLine extends StatelessWidget {
                       softWrap: false,
                       overflow: TextOverflow.fade,
                       style: theme.textTheme.labelSmall?.copyWith(
-                        color: messageColor.withValues(
-                          alpha: onTap == null ? 0.72 : 0.9,
-                        ),
+                        color: onTap == null
+                            ? colorScheme.onSurfaceVariant
+                            : colorScheme.onSurface,
                         fontSize: 10,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 0,
@@ -8096,9 +8164,9 @@ class _AnalysisEngineLine extends StatelessWidget {
                       softWrap: false,
                       overflow: TextOverflow.clip,
                       style: theme.textTheme.labelSmall?.copyWith(
-                        color: messageColor.withValues(
-                          alpha: onTap == null ? 0.72 : 0.9,
-                        ),
+                        color: onTap == null
+                            ? colorScheme.onSurfaceVariant
+                            : colorScheme.onSurface,
                         fontSize: fontSize,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 0,
@@ -8113,9 +8181,9 @@ class _AnalysisEngineLine extends StatelessWidget {
                       softWrap: false,
                       overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.bodySmall?.copyWith(
-                        color: messageColor.withValues(
-                          alpha: onTap == null ? 0.72 : 1,
-                        ),
+                        color: onTap == null
+                            ? colorScheme.onSurfaceVariant
+                            : colorScheme.onSurface,
                         fontSize: fontSize,
                         letterSpacing: 0,
                       ),
@@ -9107,7 +9175,7 @@ class _BoardTransformPickerDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<_BoardTransformPreview> previews = _uniquePreviews();
+    final List<_BoardTransformPreview> previews = _previews();
     assert(previews.isNotEmpty, 'Board transform picker must show options.');
     final int crossAxisCount = math.min(4, math.max(1, previews.length));
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
@@ -9148,13 +9216,14 @@ class _BoardTransformPickerDialog extends StatelessWidget {
                       crossAxisCount: crossAxisCount,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
+                      childAspectRatio: 0.78,
                     ),
                     itemCount: previews.length,
                     itemBuilder: (BuildContext context, int index) {
                       final _BoardTransformPreview preview = previews[index];
                       return _BoardTransformPreviewTile(
                         key: Key('${keyPrefix}_${preview.action.id}'),
-                        semanticsLabel: '$title ${index + 1}',
+                        label: preview.action.label(S.of(context)),
                         boardLayout: preview.boardLayout,
                         borderColor: colorScheme.outlineVariant,
                         onTap: () {
@@ -9178,18 +9247,15 @@ class _BoardTransformPickerDialog extends StatelessWidget {
     );
   }
 
-  List<_BoardTransformPreview> _uniquePreviews() {
-    final Map<String, _BoardTransformPreview> previews =
-        <String, _BoardTransformPreview>{};
-    for (final MillBoardTransformAction action
-        in allMillBoardTransformActions) {
-      final String boardLayout = _boardLayoutAfter(action.type);
-      previews.putIfAbsent(
-        boardLayout,
-        () => _BoardTransformPreview(action: action, boardLayout: boardLayout),
-      );
-    }
-    return previews.values.toList(growable: false);
+  List<_BoardTransformPreview> _previews() {
+    return <_BoardTransformPreview>[
+      for (final MillBoardTransformAction action
+          in allMillBoardTransformActions)
+        _BoardTransformPreview(
+          action: action,
+          boardLayout: _boardLayoutAfter(action.type),
+        ),
+    ];
   }
 
   String _boardLayoutAfter(TransformationType type) {
@@ -9219,13 +9285,13 @@ class _BoardTransformPreview {
 class _BoardTransformPreviewTile extends StatelessWidget {
   const _BoardTransformPreviewTile({
     super.key,
-    required this.semanticsLabel,
+    required this.label,
     required this.boardLayout,
     required this.borderColor,
     required this.onTap,
   });
 
-  final String semanticsLabel;
+  final String label;
   final String boardLayout;
   final Color borderColor;
   final VoidCallback onTap;
@@ -9233,10 +9299,10 @@ class _BoardTransformPreviewTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tooltip(
-      message: semanticsLabel,
+      message: label,
       child: Semantics(
         button: true,
-        label: semanticsLabel,
+        label: label,
         child: Material(
           color: Colors.transparent,
           child: InkWell(
@@ -9249,15 +9315,39 @@ class _BoardTransformPreviewTile extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(6),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(AppStyles.compactRadius),
-                  child: ColoredBox(
-                    color: DB().colorSettings.boardBackgroundColor,
-                    child: CustomPaint(
-                      painter: MiniBoardPainter(boardLayout: boardLayout),
-                      child: const SizedBox.expand(),
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                            AppStyles.compactRadius,
+                          ),
+                          child: ColoredBox(
+                            color: DB().colorSettings.boardBackgroundColor,
+                            child: CustomPaint(
+                              painter: MiniBoardPainter(
+                                boardLayout: boardLayout,
+                              ),
+                              child: const SizedBox.expand(),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 4),
+                    Text(
+                      label,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: _transformTileForegroundColor(context),
+                        letterSpacing: 0,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -9266,6 +9356,11 @@ class _BoardTransformPreviewTile extends StatelessWidget {
       ),
     );
   }
+}
+
+Color _transformTileForegroundColor(BuildContext context) {
+  return DefaultTextStyle.of(context).style.color ??
+      Theme.of(context).colorScheme.onSurface;
 }
 
 class _LichessGameBottomBar extends StatelessWidget {

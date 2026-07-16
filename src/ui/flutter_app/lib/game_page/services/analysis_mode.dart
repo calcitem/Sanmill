@@ -136,9 +136,9 @@ enum AnalysisSource {
 
 /// Holds the analysis-overlay state for the board.
 ///
-/// The overlay is populated by running the perfect database over every legal
-/// move (see `AnalysisService`).  The renderer (`AnalysisRenderer`) reads the
-/// results to draw per-move win/draw/loss marks on the board.
+/// The overlay can combine local-engine lines with perfect-database verdicts
+/// (see `AnalysisService`). The renderer (`AnalysisRenderer`) shows focused
+/// candidates by default and expands all perfect verdicts only on request.
 class AnalysisMode {
   static const int defaultEngineLineCount =
       DisplaySettings.defaultAnalysisEngineLineCount;
@@ -168,6 +168,7 @@ class AnalysisMode {
   static bool _showMoveComments = true;
   static bool _showBestMoveArrow = true;
   static bool _showEvaluationGauge = true;
+  static bool _showAllBoardResults = false;
   static bool _inlineNotation = false;
   static bool _smallBoard = false;
   static bool _isThreatMode = false;
@@ -217,6 +218,9 @@ class AnalysisMode {
 
   /// Whether the analysis board shows the engine evaluation gauge.
   static bool get showEvaluationGauge => _showEvaluationGauge;
+
+  /// Whether every perfect-database candidate is painted on the board.
+  static bool get showAllBoardResults => _showAllBoardResults;
 
   /// Whether the analysis move list uses compact inline notation.
   static bool get inlineNotation => _inlineNotation;
@@ -411,6 +415,21 @@ class AnalysisMode {
     _publishState();
   }
 
+  /// Set whether all perfect-database results are painted on the board.
+  static void setShowAllBoardResults(bool value, {bool persist = false}) {
+    if (_showAllBoardResults == value) {
+      if (persist) {
+        _saveDisplayPreferences(showAllBoardResults: value);
+      }
+      return;
+    }
+    _showAllBoardResults = value;
+    if (persist) {
+      _saveDisplayPreferences(showAllBoardResults: value);
+    }
+    _publishState();
+  }
+
   /// Set whether the analysis move list uses compact inline notation.
   static void setInlineNotation(bool value, {bool persist = false}) {
     if (_inlineNotation == value) {
@@ -514,6 +533,7 @@ class AnalysisMode {
     required bool showMoveComments,
     required bool showBestMoveArrow,
     required bool showEvaluationGauge,
+    required bool showAllBoardResults,
     required int engineLineCount,
     required int engineSearchTimeMs,
     bool notify = true,
@@ -529,6 +549,7 @@ class AnalysisMode {
         _showMoveComments == showMoveComments &&
         _showBestMoveArrow == showBestMoveArrow &&
         _showEvaluationGauge == showEvaluationGauge &&
+        _showAllBoardResults == showAllBoardResults &&
         _engineLineCount == nextLineCount &&
         _engineSearchTimeMs == nextSearchTimeMs) {
       return;
@@ -540,6 +561,7 @@ class AnalysisMode {
     _showMoveComments = showMoveComments;
     _showBestMoveArrow = showBestMoveArrow;
     _showEvaluationGauge = showEvaluationGauge;
+    _showAllBoardResults = showAllBoardResults;
     _engineLineCount = nextLineCount;
     _engineSearchTimeMs = nextSearchTimeMs;
     if (notify) {
@@ -567,6 +589,7 @@ class AnalysisMode {
     bool? showMoveComments,
     bool? showBestMoveArrow,
     bool? showEvaluationGauge,
+    bool? showAllBoardResults,
     int? engineLineCount,
     int? engineSearchTimeMs,
   }) {
@@ -584,6 +607,8 @@ class AnalysisMode {
           showBestMoveArrow ?? settings.analysisShowBestMoveArrow,
       analysisShowEvaluationGauge:
           showEvaluationGauge ?? settings.analysisShowEvaluationGauge,
+      analysisShowAllBoardResults:
+          showAllBoardResults ?? settings.analysisShowAllBoardResults,
       analysisEngineLineCount:
           engineLineCount ?? settings.analysisEngineLineCount,
       analysisEngineSearchTimeMs:

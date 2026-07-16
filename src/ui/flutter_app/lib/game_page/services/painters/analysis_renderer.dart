@@ -19,10 +19,11 @@ enum AnalysisResultType {
 
 /// Renderer for the analysis overlay.
 ///
-/// Draws one mark per analysed legal move: a circle for placements, an arrow
-/// for moves, and a circle around removal candidates, colored by the
-/// win/draw/loss verdict.  Reads its data from [AnalysisMode]; rendering is a
-/// no-op when the overlay is disabled or empty.
+/// Draws the configured number of focused candidates: a circle for
+/// placements, an arrow for moves, and a circle around removal candidates.
+/// Perfect-database users can explicitly expand all legal verdicts. Reads its
+/// data from [AnalysisMode]; rendering is a no-op when the overlay is disabled
+/// or empty.
 class AnalysisRenderer {
   /// Tolerance for treating two evaluation values as equal.
   static const double valueTolerance = 0.001;
@@ -35,48 +36,81 @@ class AnalysisRenderer {
   static final RegExp _standardSquarePattern = RegExp(r'^[a-g][1-7]$');
   static final RegExp _standardMovePattern = RegExp(r'^[a-g][1-7]-[a-g][1-7]$');
 
+  @visibleForTesting
+  static List<String> visibleFocusedMovesForTesting() {
+    if (!AnalysisMode.isFullAnalysis ||
+        !AnalysisMode.showBestMoveArrow ||
+        AnalysisMode.engineLineCount <= 0 ||
+        AnalysisMode.isThreatMode) {
+      return const <String>[];
+    }
+    final List<MoveAnalysisResult> candidateSource =
+        AnalysisMode.hasEngineLinesSource
+        ? AnalysisMode.analysisLineResults
+        : _getSortedResults(AnalysisMode.analysisResults);
+    return _engineLineResultsToRender(
+      candidateSource,
+      AnalysisMode.engineLineCount,
+    ).map(_rootMoveForLine).toList(growable: false);
+  }
+
+  @visibleForTesting
+  static List<String> visibleThreatMovesForTesting() {
+    if (!AnalysisMode.isFullAnalysis ||
+        !AnalysisMode.isThreatMode ||
+        !AnalysisMode.showBestMoveArrow ||
+        AnalysisMode.engineLineCount <= 0) {
+      return const <String>[];
+    }
+    final List<MoveAnalysisResult> normal = _engineLineResultsToRender(
+      AnalysisMode.normalEngineAnalysisResults,
+      1,
+    );
+    final List<MoveAnalysisResult> threat = _engineLineResultsToRender(
+      AnalysisMode.analysisLineResults,
+      AnalysisMode.engineLineCount,
+    );
+    return <String>[
+      ...normal.map(_rootMoveForLine),
+      ...threat.map(_rootMoveForLine),
+    ];
+  }
+
   static void render(Canvas canvas, Size size, double squareSize) {
     if (!AnalysisMode.isEnabled) {
       return;
     }
 
-    final bool hasAnalysisResults = AnalysisMode.analysisResults.isNotEmpty;
-    final bool hasEngineLineResults =
-        AnalysisMode.isFullAnalysis &&
-        AnalysisMode.hasEngineLinesSource &&
-        AnalysisMode.analysisLineResults.isNotEmpty;
-    if (!hasAnalysisResults && !hasEngineLineResults) {
+    if (AnalysisMode.analysisResults.isEmpty &&
+        AnalysisMode.analysisLineResults.isEmpty) {
       return;
     }
 
-    if (hasAnalysisResults) {
-      if (AnalysisMode.isThreatMode) {
-        _renderNormalBestMove(canvas, size, squareSize);
-      }
+    if (AnalysisMode.isHint) {
       _renderResults(
         canvas,
         size,
         squareSize,
         AnalysisMode.analysisResults,
-        useThreatColors: AnalysisMode.isThreatMode,
+        useThreatColors: false,
       );
-    }
-    _renderEngineLineHighlights(canvas, size, squareSize);
-  }
-
-  static void _renderNormalBestMove(
-    Canvas canvas,
-    Size size,
-    double squareSize,
-  ) {
-    final List<MoveAnalysisResult> normalResults =
-        AnalysisMode.normalEngineAnalysisResults;
-    if (normalResults.isEmpty) {
       return;
     }
-    _renderResults(canvas, size, squareSize, <MoveAnalysisResult>[
-      _getSortedResults(normalResults).first,
-    ], useThreatColors: false);
+
+    final bool sourceHasPerfectResults =
+        AnalysisMode.source == AnalysisSource.perfectDatabase ||
+        AnalysisMode.source == AnalysisSource.perfectDatabaseAndEngine;
+    if (sourceHasPerfectResults && AnalysisMode.showAllBoardResults) {
+      _renderResults(
+        canvas,
+        size,
+        squareSize,
+        AnalysisMode.analysisResults,
+        useThreatColors: false,
+      );
+    }
+
+    _renderFocusedCandidates(canvas, size, squareSize);
   }
 
   static void _renderResults(
@@ -167,19 +201,18 @@ class AnalysisRenderer {
     }
   }
 
-  static void _renderEngineLineHighlights(
+  static void _renderFocusedCandidates(
     Canvas canvas,
     Size size,
     double squareSize,
   ) {
     if (!AnalysisMode.isFullAnalysis ||
-        !AnalysisMode.hasEngineLinesSource ||
         !AnalysisMode.showBestMoveArrow ||
-        AnalysisMode.analysisLineResults.isEmpty) {
+        AnalysisMode.engineLineCount <= 0) {
       return;
     }
 
-    final int visibleLineCount = max(1, AnalysisMode.engineLineCount);
+    final int visibleLineCount = AnalysisMode.engineLineCount;
     if (AnalysisMode.isThreatMode) {
       final List<MoveAnalysisResult> normalResults = _engineLineResultsToRender(
         AnalysisMode.normalEngineAnalysisResults,
@@ -213,8 +246,12 @@ class AnalysisRenderer {
       return;
     }
 
+    final List<MoveAnalysisResult> candidateSource =
+        AnalysisMode.hasEngineLinesSource
+        ? AnalysisMode.analysisLineResults
+        : _getSortedResults(AnalysisMode.analysisResults);
     final List<MoveAnalysisResult> resultsToRender = _engineLineResultsToRender(
-      AnalysisMode.analysisLineResults,
+      candidateSource,
       visibleLineCount,
     );
     for (int i = 0; i < resultsToRender.length; i++) {
@@ -237,7 +274,17 @@ class AnalysisRenderer {
     if (results.isEmpty) {
       return const <MoveAnalysisResult>[];
     }
-    return results.take(min(results.length, count)).toList(growable: false);
+    final List<MoveAnalysisResult> uniqueResults = <MoveAnalysisResult>[];
+    final Set<String> rootMoves = <String>{};
+    for (final MoveAnalysisResult result in results) {
+      if (rootMoves.add(_rootMoveForLine(result))) {
+        uniqueResults.add(result);
+        if (uniqueResults.length == count) {
+          break;
+        }
+      }
+    }
+    return uniqueResults;
   }
 
   static void _drawEngineLineHighlight(

@@ -17,6 +17,7 @@ void main() {
     AnalysisMode.setShowMoveComments(true);
     AnalysisMode.setShowBestMoveArrow(true);
     AnalysisMode.setShowEvaluationGauge(true);
+    AnalysisMode.setShowAllBoardResults(false);
   });
 
   test('tracks full analysis and hint overlay modes separately', () {
@@ -207,6 +208,7 @@ void main() {
       showMoveComments: false,
       showBestMoveArrow: false,
       showEvaluationGauge: false,
+      showAllBoardResults: true,
       engineLineCount: AnalysisMode.defaultEngineLineCount,
       engineSearchTimeMs: AnalysisMode.defaultEngineSearchTimeMs,
     );
@@ -216,18 +218,21 @@ void main() {
     expect(AnalysisMode.showMoveComments, isFalse);
     expect(AnalysisMode.showBestMoveArrow, isFalse);
     expect(AnalysisMode.showEvaluationGauge, isFalse);
+    expect(AnalysisMode.showAllBoardResults, isTrue);
 
     AnalysisMode.setInlineNotation(false);
     AnalysisMode.setShowMoveAnnotations(true);
     AnalysisMode.setShowMoveComments(true);
     AnalysisMode.setShowBestMoveArrow(true);
     AnalysisMode.setShowEvaluationGauge(true);
+    AnalysisMode.setShowAllBoardResults(false);
 
     expect(AnalysisMode.inlineNotation, isFalse);
     expect(AnalysisMode.showMoveAnnotations, isTrue);
     expect(AnalysisMode.showMoveComments, isTrue);
     expect(AnalysisMode.showBestMoveArrow, isTrue);
     expect(AnalysisMode.showEvaluationGauge, isTrue);
+    expect(AnalysisMode.showAllBoardResults, isFalse);
   });
 
   test('tracks deep engine analysis state', () {

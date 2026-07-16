@@ -32,14 +32,17 @@ import 'package:sanmill/games/mill/mill_session_recorder_bridge.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/games/mill/opening_book/opening_book_repository.dart';
+import 'package:sanmill/games/mill/opening_explorer/opening_explorer_page.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/shared/config/constants.dart';
 import 'package:sanmill/shared/database/database.dart';
+import 'package:sanmill/shared/services/human_database_service.dart';
 import 'package:sanmill/shared/themes/app_theme.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 import 'package:sanmill/shared/widgets/lichess_bottom_bar.dart';
 import 'package:sanmill/shared/widgets/snackbars/scaffold_messenger.dart';
+import 'package:sanmill/src/rust/api/simple.dart' as tgf;
 
 import '../games/mill/opening_book/opening_book_test_assets.dart';
 import '../helpers/mocks/mock_animation_manager.dart';
@@ -85,10 +88,14 @@ void main() {
     AnalysisMode.setShowMoveComments(true);
     AnalysisMode.setShowBestMoveArrow(true);
     AnalysisMode.setShowEvaluationGauge(true);
+    AnalysisMode.setShowAllBoardResults(false);
     AnalysisMode.setInlineNotation(false);
     AnalysisMode.setSmallBoard(false);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
     AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
+    debugOpeningExplorerHumanDatabaseReady = null;
+    debugOpeningExplorerHumanDatabaseQuery = null;
+    debugOpeningExplorerPerfectDatabaseAction = null;
     PlayerTimer().reset();
     OfflineBoardClock().reset();
   });
@@ -100,10 +107,14 @@ void main() {
     AnalysisMode.setShowMoveComments(true);
     AnalysisMode.setShowBestMoveArrow(true);
     AnalysisMode.setShowEvaluationGauge(true);
+    AnalysisMode.setShowAllBoardResults(false);
     AnalysisMode.setInlineNotation(false);
     AnalysisMode.setSmallBoard(false);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
     AnalysisMode.setEngineSearchTimeMs(AnalysisMode.defaultEngineSearchTimeMs);
+    debugOpeningExplorerHumanDatabaseReady = null;
+    debugOpeningExplorerHumanDatabaseQuery = null;
+    debugOpeningExplorerPerfectDatabaseAction = null;
     PlayerTimer().reset();
     OfflineBoardClock().reset();
     DB.instance = null;
@@ -310,7 +321,7 @@ void main() {
         of: find.byKey(const Key('play_area_regular_move_2')),
         matching: find.byType(DecoratedBox),
       ),
-      findsNothing,
+      findsOneWidget,
     );
     expect(
       find.byKey(const Key('play_area_human_ai_move_list_wrap')),
@@ -467,14 +478,14 @@ void main() {
       find.byKey(const Key('play_area_regular_board_transform_grid')),
       findsOne,
     );
-    expect(
-      find.byKey(const Key('play_area_regular_board_transform_identity')),
-      findsOne,
-    );
-    expect(
-      find.byKey(const Key('play_area_regular_board_transform_rotate')),
-      findsNothing,
-    );
+    for (final MillBoardTransformAction action
+        in allMillBoardTransformActions) {
+      expect(
+        find.byKey(Key('play_area_regular_board_transform_${action.id}')),
+        findsOne,
+        reason: 'Missing regular board transformation ${action.id}',
+      );
+    }
 
     Navigator.of(
       tester.element(
@@ -1078,14 +1089,14 @@ void main() {
     expect(find.byKey(const Key('play_area_board_transform_sheet')), findsOne);
     expect(find.byKey(const Key('play_area_game_menu_sheet')), findsNothing);
     expect(find.byKey(const Key('play_area_board_transform_grid')), findsOne);
-    expect(
-      find.byKey(const Key('play_area_board_transform_identity')),
-      findsOne,
-    );
-    expect(
-      find.byKey(const Key('play_area_board_transform_rotate')),
-      findsNothing,
-    );
+    for (final MillBoardTransformAction action
+        in allMillBoardTransformActions) {
+      expect(
+        find.byKey(Key('play_area_board_transform_${action.id}')),
+        findsOne,
+        reason: 'Missing symmetric board transformation ${action.id}',
+      );
+    }
 
     await tester.tap(
       find.byKey(const Key('play_area_board_transform_identity')),
@@ -1135,14 +1146,14 @@ void main() {
     expect(find.byKey(const Key('play_area_board_transform_sheet')), findsOne);
     expect(find.byKey(const Key('play_area_game_menu_sheet')), findsNothing);
     expect(find.byKey(const Key('play_area_board_transform_grid')), findsOne);
-    expect(
-      find.byKey(const Key('play_area_board_transform_identity')),
-      findsOne,
-    );
-    expect(
-      find.byKey(const Key('play_area_board_transform_rotate')),
-      findsNothing,
-    );
+    for (final MillBoardTransformAction action
+        in allMillBoardTransformActions) {
+      expect(
+        find.byKey(Key('play_area_board_transform_${action.id}')),
+        findsOne,
+        reason: 'Missing empty-board transformation ${action.id}',
+      );
+    }
     expect(find.byKey(const Key('play_area_human_ai_robot_panel')), findsOne);
     expect(find.byKey(const Key('play_area_human_ai_player_panel')), findsOne);
   });
@@ -1625,6 +1636,108 @@ void main() {
     expect(find.byKey(const Key('play_area_analysis_engine_lines')), findsOne);
     expect(find.byKey(const Key('play_area_analysis_panel')), findsOne);
   });
+
+  testWidgets('analysis gauge stays physically left and releases board width', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    AnalysisMode.enable(const <MoveAnalysisResult>[
+      MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.win),
+    ]);
+
+    await tester.binding.setSurfaceSize(const Size(540, 992));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(
+      _localizedApp(
+        GameSessionScope(
+          session: session,
+          child: const Scaffold(
+            body: PlayArea(
+              boardImage: null,
+              child: SizedBox.square(
+                key: Key('test_board_square'),
+                dimension: 540,
+              ),
+            ),
+          ),
+        ),
+        locale: const Locale('ar'),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final Finder board = find.byKey(const Key('play_area_analysis_board'));
+    final Finder gauge = find.byKey(
+      const Key('play_area_analysis_evaluation_gauge'),
+    );
+    final double boardWidthWithGauge = tester.getSize(board).width;
+    expect(tester.getTopRight(gauge).dx, lessThan(tester.getTopLeft(board).dx));
+
+    AnalysisMode.setShowEvaluationGauge(false);
+    await tester.pumpAndSettle();
+
+    expect(gauge, findsNothing);
+    expect(tester.getSize(board).width, greaterThan(boardWidthWithGauge));
+  });
+
+  testWidgets(
+    'analysis panel ignores white board message color in both themes',
+    (WidgetTester tester) async {
+      db.colorSettings = const ColorSettings(messageColor: Colors.white);
+      db.displaySettings = const DisplaySettings(
+        isUnplacedAndRemovedPiecesShown: false,
+        isHistoryNavigationToolbarShown: false,
+      );
+      final NativeMillGameSession session = await _bindNativeGame(
+        GameMode.analysis,
+      );
+      AnalysisMode.enable(const <MoveAnalysisResult>[
+        MoveAnalysisResult(
+          move: 'd6',
+          outcome: AnalysisOutcome.advantage,
+          rank: 1,
+          depth: 8,
+          line: <String>['d6', 'f4'],
+        ),
+      ], source: AnalysisSource.engine);
+
+      for (final ThemeData theme in <ThemeData>[
+        AppTheme.lightThemeData,
+        AppTheme.darkThemeData,
+      ]) {
+        await tester.pumpWidget(
+          _localizedApp(
+            GameSessionScope(
+              session: session,
+              child: const Scaffold(
+                body: PlayArea(
+                  boardImage: null,
+                  child: SizedBox.square(dimension: 390),
+                ),
+              ),
+            ),
+            theme: theme,
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        final Text rank = tester.widget<Text>(
+          find.byKey(const Key('play_area_analysis_engine_line_rank_1')),
+        );
+        final Text title = tester.widget<Text>(
+          find.byKey(const Key('play_area_analysis_moves_header_title')),
+        );
+        expect(rank.style?.color, theme.colorScheme.onSurface);
+        expect(title.style?.color, theme.colorScheme.onSurface);
+      }
+    },
+  );
 
   testWidgets('analysis keeps empty engine line slots visible', (
     WidgetTester tester,
@@ -4181,7 +4294,7 @@ void main() {
 
     expect(
       find.byKey(const Key('play_area_analysis_evaluation_gauge')),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_advantage_indicator_positioned')),
@@ -4289,6 +4402,7 @@ void main() {
     );
     expect(perfectDatabaseSwitch.value, isFalse);
 
+    await tester.ensureVisible(perfectDatabaseSwitchFinder);
     await tester.tap(perfectDatabaseSwitchFinder);
     await tester.pumpAndSettle();
 
@@ -4697,7 +4811,7 @@ void main() {
 
     expect(
       find.byKey(const Key('play_area_analysis_evaluation_gauge')),
-      findsOneWidget,
+      findsNothing,
     );
 
     await _openAnalysisSettingsFromEnginePopup(tester);
@@ -4712,7 +4826,20 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_analysis_settings_evaluation_gauge')),
-      findsNothing,
+      findsOneWidget,
+    );
+
+    final Finder evaluationGaugeTile = find.byKey(
+      const Key('play_area_analysis_settings_evaluation_gauge'),
+    );
+    await tester.ensureVisible(evaluationGaugeTile);
+    await tester.tap(evaluationGaugeTile);
+    await tester.pumpAndSettle();
+
+    expect(db.displaySettings.analysisShowEvaluationGauge, isTrue);
+    expect(
+      find.byKey(const Key('play_area_analysis_evaluation_gauge')),
+      findsOneWidget,
     );
 
     final Finder advantageGraphTile = find.byKey(
@@ -4989,7 +5116,7 @@ void main() {
         of: find.byKey(const Key('play_area_human_ai_move_20')),
         matching: find.byType(DecoratedBox),
       ),
-      findsNothing,
+      findsOneWidget,
     );
     expect(
       find.descendant(
@@ -5176,16 +5303,390 @@ void main() {
     expect(find.byKey(const Key('opening_explorer_embedded')), findsOneWidget);
   });
 
+  testWidgets(
+    'analysis explorer distinguishes unavailable and empty human data',
+    (WidgetTester tester) async {
+      db.generalSettings = const GeneralSettings(
+        humanDatabaseEnabled: true,
+        humanDatabaseFilePath: '/virtual/human.sqlite',
+      );
+      debugOpeningExplorerHumanDatabaseReady = (String path) {
+        expect(path, '/virtual/human.sqlite');
+        return const HumanDatabaseReadyResult(
+          ready: true,
+          status: tgf.MillHumanDatabaseStatus(
+            readable: true,
+            initialized: true,
+            error: '',
+            schemaVersion: 'test',
+            buildDate: '2026-07-16',
+            totalGames: 0,
+            positionCount: 0,
+            moveCount: 0,
+          ),
+        );
+      };
+      debugOpeningExplorerHumanDatabaseQuery =
+          ({
+            required String fen,
+            required int maxMoves,
+            required int minSamples,
+          }) {
+            return const tgf.MillHumanDatabaseQuery(
+              available: true,
+              stateKey: 'empty',
+              error: '',
+              moves: <tgf.MillHumanDatabaseMove>[],
+            );
+          };
+      final NativeMillGameSession session = await _bindNativeGame(
+        GameMode.analysis,
+      );
+
+      await _pumpSessionPlayArea(tester, session);
+      await tester.tap(find.byIcon(Icons.explore_outlined));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('opening_explorer_human_database_no_records')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_human_database_unavailable')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_local_knowledge_card')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_engine_searching_row')),
+        findsNothing,
+      );
+    },
+  );
+
+  testWidgets('analysis explorer reports a failed human database query', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(
+      humanDatabaseEnabled: true,
+      humanDatabaseFilePath: '/virtual/human.sqlite',
+    );
+    debugOpeningExplorerHumanDatabaseReady = (_) =>
+        const HumanDatabaseReadyResult(
+          ready: true,
+          status: tgf.MillHumanDatabaseStatus(
+            readable: true,
+            initialized: true,
+            error: '',
+            schemaVersion: 'test',
+            buildDate: '2026-07-16',
+            totalGames: 10,
+            positionCount: 1,
+            moveCount: 1,
+          ),
+        );
+    debugOpeningExplorerHumanDatabaseQuery =
+        ({
+          required String fen,
+          required int maxMoves,
+          required int minSamples,
+        }) {
+          return const tgf.MillHumanDatabaseQuery(
+            available: false,
+            stateKey: '',
+            error: 'query failed',
+            moves: <tgf.MillHumanDatabaseMove>[],
+          );
+        };
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byIcon(Icons.explore_outlined));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('opening_explorer_human_database_unavailable')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('opening_explorer_human_database_no_records')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('opening_explorer_engine_searching_row')),
+      findsNothing,
+    );
+  });
+
+  testWidgets('analysis explorer sorts human rows by sample count', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(
+      humanDatabaseEnabled: true,
+      humanDatabaseFilePath: '/virtual/human.sqlite',
+    );
+    debugOpeningExplorerHumanDatabaseReady = (_) =>
+        const HumanDatabaseReadyResult(
+          ready: true,
+          status: tgf.MillHumanDatabaseStatus(
+            readable: true,
+            initialized: true,
+            error: '',
+            schemaVersion: 'test',
+            buildDate: '2026-07-16',
+            totalGames: 110,
+            positionCount: 1,
+            moveCount: 2,
+          ),
+        );
+    debugOpeningExplorerHumanDatabaseQuery =
+        ({
+          required String fen,
+          required int maxMoves,
+          required int minSamples,
+        }) {
+          return const tgf.MillHumanDatabaseQuery(
+            available: true,
+            stateKey: 'start',
+            error: '',
+            moves: <tgf.MillHumanDatabaseMove>[
+              tgf.MillHumanDatabaseMove(
+                notation: 'd6',
+                wins: 4,
+                losses: 3,
+                draws: 3,
+                total: 10,
+                winPct: 0.4,
+                scoreDelta: 0.02,
+              ),
+              tgf.MillHumanDatabaseMove(
+                notation: 'a1',
+                wins: 50,
+                losses: 30,
+                draws: 20,
+                total: 100,
+                winPct: 0.5,
+                scoreDelta: 0.08,
+              ),
+            ],
+          );
+        };
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byIcon(Icons.explore_outlined));
+    await tester.pumpAndSettle();
+
+    final Finder popular = find.byKey(const Key('opening_explorer_move_a1'));
+    final Finder rare = find.byKey(const Key('opening_explorer_move_d6'));
+    expect(popular, findsOneWidget);
+    expect(rare, findsOneWidget);
+    expect(tester.getTopLeft(popular).dy, lessThan(tester.getTopLeft(rare).dy));
+    expect(find.text('100 (91%)'), findsOneWidget);
+    expect(find.text('10 (9%)'), findsOneWidget);
+  });
+
+  testWidgets('perfect move without human samples uses a separate callout', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(
+      humanDatabaseEnabled: true,
+      humanDatabaseFilePath: '/virtual/human.sqlite',
+      usePerfectDatabase: true,
+    );
+    debugOpeningExplorerHumanDatabaseReady = (_) =>
+        const HumanDatabaseReadyResult(
+          ready: true,
+          status: tgf.MillHumanDatabaseStatus(
+            readable: true,
+            initialized: true,
+            error: '',
+            schemaVersion: 'test',
+            buildDate: '2026-07-16',
+            totalGames: 12,
+            positionCount: 1,
+            moveCount: 1,
+          ),
+        );
+    debugOpeningExplorerHumanDatabaseQuery =
+        ({
+          required String fen,
+          required int maxMoves,
+          required int minSamples,
+        }) {
+          return const tgf.MillHumanDatabaseQuery(
+            available: true,
+            stateKey: 'start',
+            error: '',
+            moves: <tgf.MillHumanDatabaseMove>[
+              tgf.MillHumanDatabaseMove(
+                notation: 'd6',
+                wins: 6,
+                losses: 3,
+                draws: 3,
+                total: 12,
+                winPct: 0.5,
+                scoreDelta: 0.08,
+              ),
+            ],
+          );
+        };
+    debugOpeningExplorerPerfectDatabaseAction = (_, _) =>
+        const platform.GameAction(
+          type: 'place',
+          payload: <String, Object?>{'move': 'a1'},
+        );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byIcon(Icons.explore_outlined));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('opening_explorer_perfect_suggestion_card')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('opening_explorer_perfect_suggestion')),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('opening_explorer_move_a1')), findsNothing);
+    expect(find.text('0 (0%)'), findsNothing);
+  });
+
+  testWidgets('perfect move with human samples stays in the statistics row', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(
+      humanDatabaseEnabled: true,
+      humanDatabaseFilePath: '/virtual/human.sqlite',
+      usePerfectDatabase: true,
+    );
+    debugOpeningExplorerHumanDatabaseReady = (_) =>
+        const HumanDatabaseReadyResult(
+          ready: true,
+          status: tgf.MillHumanDatabaseStatus(
+            readable: true,
+            initialized: true,
+            error: '',
+            schemaVersion: 'test',
+            buildDate: '2026-07-16',
+            totalGames: 12,
+            positionCount: 1,
+            moveCount: 1,
+          ),
+        );
+    debugOpeningExplorerHumanDatabaseQuery =
+        ({
+          required String fen,
+          required int maxMoves,
+          required int minSamples,
+        }) {
+          return const tgf.MillHumanDatabaseQuery(
+            available: true,
+            stateKey: 'start',
+            error: '',
+            moves: <tgf.MillHumanDatabaseMove>[
+              tgf.MillHumanDatabaseMove(
+                notation: 'd6',
+                wins: 6,
+                losses: 3,
+                draws: 3,
+                total: 12,
+                winPct: 0.5,
+                scoreDelta: 0.08,
+              ),
+            ],
+          );
+        };
+    debugOpeningExplorerPerfectDatabaseAction = (_, _) =>
+        const platform.GameAction(
+          type: 'place',
+          payload: <String, Object?>{'move': 'd6'},
+        );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byIcon(Icons.explore_outlined));
+    await tester.pumpAndSettle();
+
+    final Finder row = find.byKey(const Key('opening_explorer_move_d6'));
+    expect(row, findsOneWidget);
+    expect(
+      find.descendant(of: row, matching: find.byIcon(Icons.verified_rounded)),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('opening_explorer_perfect_suggestion_card')),
+      findsNothing,
+    );
+  });
+
   testWidgets('analysis explorer moves are applied to the analysis tree', (
     WidgetTester tester,
   ) async {
+    db.generalSettings = const GeneralSettings(
+      humanDatabaseEnabled: true,
+      humanDatabaseFilePath: '/virtual/human.sqlite',
+    );
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
     );
+    debugOpeningExplorerHumanDatabaseReady = (_) =>
+        const HumanDatabaseReadyResult(
+          ready: true,
+          status: tgf.MillHumanDatabaseStatus(
+            readable: true,
+            initialized: true,
+            error: '',
+            schemaVersion: 'test',
+            buildDate: '2026-07-16',
+            totalGames: 20,
+            positionCount: 1,
+            moveCount: 1,
+          ),
+        );
+    late final String startFen;
+    debugOpeningExplorerHumanDatabaseQuery =
+        ({
+          required String fen,
+          required int maxMoves,
+          required int minSamples,
+        }) {
+          return tgf.MillHumanDatabaseQuery(
+            available: true,
+            stateKey: fen,
+            error: '',
+            moves: fen == startFen
+                ? const <tgf.MillHumanDatabaseMove>[
+                    tgf.MillHumanDatabaseMove(
+                      notation: 'd6',
+                      wins: 10,
+                      losses: 6,
+                      draws: 4,
+                      total: 20,
+                      winPct: 0.5,
+                      scoreDelta: 0.08,
+                    ),
+                  ]
+                : const <tgf.MillHumanDatabaseMove>[],
+          );
+        };
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
     );
+    startFen = session.getFen();
     final MillSessionRecorderBridge recorderBridge =
         MillSessionRecorderBridge.forGameController(session: session);
     addTearDown(recorderBridge.dispose);
@@ -5213,18 +5714,11 @@ void main() {
     }
     await tester.pumpAndSettle();
 
-    final Finder moveRows = find.byWidgetPredicate((Widget widget) {
-      final Key? key = widget.key;
-      return key is ValueKey<String> &&
-          key.value.startsWith('opening_explorer_move_');
-    }, description: 'rendered opening explorer move row');
-    expect(moveRows, findsWidgets);
-    final Finder firstMoveFinder = moveRows.first;
+    const String selectedMove = 'd6';
+    final Finder firstMoveFinder = find.byKey(
+      const Key('opening_explorer_move_d6'),
+    );
     expect(firstMoveFinder, findsOneWidget);
-
-    final Widget firstMoveWidget = tester.widget<Widget>(firstMoveFinder);
-    final String selectedMove = (firstMoveWidget.key! as ValueKey<String>).value
-        .substring('opening_explorer_move_'.length);
 
     await tester.tap(firstMoveFinder);
     await tester.pump();
@@ -5233,7 +5727,7 @@ void main() {
 
     expect(_currentPathMoves(), <String>[selectedMove]);
     expect(
-      find.byKey(Key('opening_explorer_move_$selectedMove')),
+      find.byKey(const Key('opening_explorer_move_$selectedMove')),
       findsNothing,
     );
 
@@ -5246,7 +5740,7 @@ void main() {
 
     expect(_currentPathMoves(), isEmpty);
     expect(
-      find.byKey(Key('opening_explorer_move_$selectedMove')),
+      find.byKey(const Key('opening_explorer_move_$selectedMove')),
       findsOneWidget,
     );
   });
@@ -5373,7 +5867,10 @@ void main() {
       find.byKey(const Key('play_area_analysis_moves_header_title')),
     );
     expect(movesHeaderTitle.data, 'Move list');
-    expect(movesHeaderTitle.style?.color, db.colorSettings.messageColor);
+    expect(
+      movesHeaderTitle.style?.color,
+      AppTheme.lightThemeData.colorScheme.onSurface,
+    );
     final Text movesHeaderSubtitle = tester.widget<Text>(
       find.byKey(const Key('play_area_analysis_moves_header_subtitle')),
     );
@@ -6726,6 +7223,74 @@ void main() {
     expect(_currentPathMoves(), expectedMoves);
   });
 
+  testWidgets('analysis board transform updates the tree and restarts search', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    _bindExistingNativeGame(GameMode.analysis, session);
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    expect(await session.replayMainline(_takeBackCaptureFixture()), isTrue);
+    await tester.pump();
+    final String fenBeforeTransform = session.getFen();
+    final List<String> movesBeforeTransform = _currentPathMoves();
+    final String expectedFen = transformFEN(
+      fenBeforeTransform,
+      TransformationType.rotate90,
+    );
+    final List<String> expectedMoves = movesBeforeTransform
+        .map(
+          (String move) =>
+              transformMoveNotation(move, TransformationType.rotate90),
+        )
+        .toList(growable: false);
+
+    AnalysisMode.enable(const <MoveAnalysisResult>[
+      MoveAnalysisResult(move: 'g7', outcome: AnalysisOutcome.win),
+    ], source: AnalysisSource.engine);
+    await _pumpSessionPlayArea(tester, session);
+    session.requestedMultiPvValues.clear();
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+    final Finder flipBoard = find.byKey(
+      const Key('play_area_regular_game_menu_flip_board'),
+    );
+    await tester.ensureVisible(flipBoard);
+    await tester.tap(flipBoard);
+    await tester.pumpAndSettle();
+
+    for (final MillBoardTransformAction action
+        in allMillBoardTransformActions) {
+      expect(
+        find.byKey(Key('play_area_regular_board_transform_${action.id}')),
+        findsOneWidget,
+      );
+    }
+
+    await tester.tap(
+      find.byKey(const Key('play_area_regular_board_transform_rotate')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(session.getFen(), expectedFen);
+    expect(_currentPathMoves(), expectedMoves);
+    expect(AnalysisMode.isEnabled, isTrue);
+    expect(session.requestedMultiPvValues, isNotEmpty);
+    expect(
+      session.requestedMultiPvValues.last,
+      AnalysisMode.defaultEngineLineCount,
+    );
+  });
+
   testWidgets('offline board undo removes the latest complete turn', (
     WidgetTester tester,
   ) async {
@@ -6781,13 +7346,17 @@ void main() {
   });
 }
 
-Widget _localizedApp(Widget child) => MaterialApp(
+Widget _localizedApp(
+  Widget child, {
+  Locale locale = const Locale('en'),
+  ThemeData? theme,
+}) => MaterialApp(
   navigatorKey: currentNavigatorKey,
   scaffoldMessengerKey: rootScaffoldMessengerKey,
-  theme: AppTheme.lightThemeData,
+  theme: theme ?? AppTheme.lightThemeData,
   localizationsDelegates: sanmillLocalizationsDelegates,
   supportedLocales: S.supportedLocales,
-  locale: const Locale('en'),
+  locale: locale,
   home: child,
 );
 

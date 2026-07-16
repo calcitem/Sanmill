@@ -4921,5 +4921,22 @@
     "onlineOpponentLeft": "对手已离开对局。",
     "@onlineOpponentLeft": {"description": "对手永久离开时的状态。"},
     "onlineActionRejected": "服务器拒绝了该着法，棋盘已重新同步。",
-    "@onlineActionRejected": {"description": "权威服务器拒绝着法并同步后的错误信息。"}
+    "@onlineActionRejected": {"description": "权威服务器拒绝着法并同步后的错误信息。"},
+    "flipBoard": "翻转棋盘",
+    "analysisSettingsLayout": "布局",
+    "analysisSettingsKnowledgeSources": "知识来源",
+    "analysisSettingsLocalEngine": "本地引擎",
+    "showEvaluationGauge": "显示力量条",
+    "showAllBoardResults": "显示全部候选",
+    "showAllBoardResultsDescription": "展开完美数据库中的全部合法着法结论",
+    "humanDatabaseUnavailable": "人类对局数据库不可用",
+    "humanDatabaseUnavailableHint": "下载或导入数据库后可查看人类对局统计。",
+    "humanDatabaseNoPositionRecords": "当前局面无人类对局记录",
+    "manageKnowledgeSources": "管理",
+    "localOpeningKnowledge": "本地开局知识",
+    "perfectDatabaseSuggestion": "无对应人类样本的完美数据库着法",
+    "boardTransformIdentity": "原始方向",
+    "boardTransformRotateDegrees": "旋转 {degrees}°",
+    "boardTransformBackslashMirror": "沿反斜线镜像",
+    "boardTransformSlashMirror": "沿斜线镜像"
 }

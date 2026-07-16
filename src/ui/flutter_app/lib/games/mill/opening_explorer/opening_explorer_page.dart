@@ -17,11 +17,11 @@ import '../../../game_page/services/transform/transform.dart';
 import '../../../game_page/widgets/game_page.dart';
 import '../../../game_platform/game_session.dart';
 import '../../../general_settings/models/general_settings.dart';
+import '../../../general_settings/widgets/general_settings_page.dart';
 import '../../../generated/intl/l10n.dart';
 import '../../../rule_settings/models/rule_settings.dart';
 import '../../../shared/database/database.dart' show DB;
 import '../../../shared/services/human_database_service.dart';
-import '../../../shared/services/logger.dart';
 import '../../../shared/services/snackbar_service.dart';
 import '../../../shared/themes/app_styles.dart';
 import '../../../shared/themes/app_theme.dart';
@@ -43,6 +43,22 @@ import '../opening_book/opening_book_models.dart';
 import '../opening_book/opening_book_repository.dart';
 
 typedef OpeningExplorerMoveSelected = Future<bool> Function(GameAction action);
+
+@visibleForTesting
+HumanDatabaseReadyResult Function(String path)?
+debugOpeningExplorerHumanDatabaseReady;
+
+@visibleForTesting
+tgf.MillHumanDatabaseQuery Function({
+  required String fen,
+  required int maxMoves,
+  required int minSamples,
+})?
+debugOpeningExplorerHumanDatabaseQuery;
+
+@visibleForTesting
+GameAction? Function(NativeMillGameSession session, GeneralSettings settings)?
+debugOpeningExplorerPerfectDatabaseAction;
 
 class OpeningExplorerPage extends StatefulWidget {
   const OpeningExplorerPage({
@@ -97,21 +113,6 @@ const List<String> _openingExplorerHorizontalCoordinates = <String>[
   'g',
 ];
 
-/// Sentinel used only for sorting engine-backfill rows: any real evaluation
-/// outranks a missing one.
-const int _engineScoreFloor = -1 << 30;
-
-/// Search parameters for the engine heuristic-fill backfill. Deliberately a
-/// small, fixed budget independent of the user's Analysis-panel settings:
-/// this runs automatically in the background whenever the book/human/perfect
-/// sources have nothing at all for the current position, so it must stay
-/// fast rather than reflect the user's (possibly much longer) deliberate
-/// analysis time preference.
-const int _explorerEngineBackfillDepth = 20;
-const int _explorerEngineBackfillMoveLimitMs = 1200;
-const int _explorerEngineBackfillLineCount = 4;
-const String _openingExplorerLogTag = '[OpeningExplorer]';
-
 /// Delay between plies while "watching a line play out".
 const Duration _explorerLinePlaybackStepInterval = Duration(milliseconds: 650);
 
@@ -160,14 +161,6 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
   String? _lastSourceFen;
   List<String> _initialPlacementMoves = const <String>[];
   int _explorerCursor = 0;
-
-  // Engine heuristic-fill state (see `_maybeStartEngineBackfill`). Keyed by
-  // FEN so a stale result never gets applied after the user has already
-  // navigated elsewhere by the time the background search completes.
-  String? _engineFillFen;
-  List<NativeMillPrincipalVariation> _engineFillMoves =
-      const <NativeMillPrincipalVariation>[];
-  bool _engineFillInFlight = false;
 
   // "Watch it play out" line-playback state. `_linePlaybackToken` is bumped
   // on every start/stop so an in-flight async playback loop can notice it
@@ -253,8 +246,6 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
     _explorerHistory.clear();
     _explorerCursor = 0;
     _tapController.clearSelection();
-    _engineFillFen = null;
-    _engineFillMoves = const <NativeMillPrincipalVariation>[];
     _linePlaybackToken++;
     _isLinePlaybackActive = false;
 
@@ -289,60 +280,6 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
       ))
         if (_isPlacementMoveLabel(entry.label)) entry.label,
     ];
-  }
-
-  /// Kicks off a background heuristic-search backfill for [snapshot.fen]
-  /// when the book/human/perfect sources found nothing at all. Safe to call
-  /// from every `build()` (including the two independent snapshot
-  /// constructions for the body and the bottom bar): the FEN/in-flight
-  /// guards make repeated calls for the same position a no-op.
-  void _maybeStartEngineBackfill(_OpeningExplorerSnapshot snapshot) {
-    if (!snapshot.needsEngineFallback) {
-      return;
-    }
-    if (_engineFillInFlight || _engineFillFen == snapshot.fen) {
-      return;
-    }
-    unawaited(_runEngineBackfill(snapshot.fen));
-  }
-
-  Future<void> _runEngineBackfill(String fen) async {
-    final NativeMillGameSession? session = _explorerSession;
-    if (session == null) {
-      return;
-    }
-    _engineFillInFlight = true;
-    try {
-      final List<NativeMillPrincipalVariation> variations = await session
-          .searchPrincipalVariations(
-            depth: _explorerEngineBackfillDepth,
-            moveLimitMs: _explorerEngineBackfillMoveLimitMs,
-            multiPv: _explorerEngineBackfillLineCount,
-            engineSettings: DB().generalSettings,
-          );
-      // The explorer may have navigated away (or even torn down its
-      // session) while the search was running; only apply a result that
-      // still matches where the user currently is.
-      if (!mounted ||
-          !identical(session, _explorerSession) ||
-          session.getFen() != fen) {
-        return;
-      }
-      setState(() {
-        _engineFillFen = fen;
-        _engineFillMoves = variations;
-      });
-    } on Object catch (e) {
-      logger.w('$_openingExplorerLogTag engine backfill failed for $fen: $e');
-    } finally {
-      _engineFillInFlight = false;
-    }
-  }
-
-  List<NativeMillPrincipalVariation> _engineSuggestionsFor(String fen) {
-    return _engineFillFen == fen
-        ? _engineFillMoves
-        : const <NativeMillPrincipalVariation>[];
   }
 
   /// The standard starting FEN for the currently active rule settings. Used
@@ -649,13 +586,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
                                 ruleSettings: DB().ruleSettings,
                                 generalSettings: DB().generalSettings,
                                 placementMoves: _currentPlacementMoves(),
-                                engineSuggestions: _engineSuggestionsFor(
-                                  session.getFen(),
-                                ),
                               );
-                          WidgetsBinding.instance.addPostFrameCallback(
-                            (_) => _maybeStartEngineBackfill(snapshot),
-                          );
                           return _OpeningExplorerContent(
                             session: session,
                             snapshot: snapshot,
@@ -666,9 +597,6 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
                             isLoading:
                                 openingBookSnapshot.connectionState !=
                                 ConnectionState.done,
-                            isEngineBackfilling:
-                                snapshot.needsEngineFallback &&
-                                _engineFillInFlight,
                           );
                         },
                   );
@@ -706,13 +634,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
                           ruleSettings: DB().ruleSettings,
                           generalSettings: DB().generalSettings,
                           placementMoves: _currentPlacementMoves(),
-                          engineSuggestions: _engineSuggestionsFor(
-                            session.getFen(),
-                          ),
                         );
-                    WidgetsBinding.instance.addPostFrameCallback(
-                      (_) => _maybeStartEngineBackfill(snapshot),
-                    );
                     return _OpeningExplorerBottomBar(
                       snapshot: snapshot,
                       canGoPrevious: _explorerCursor > 0,
@@ -828,7 +750,6 @@ class _OpeningExplorerContent extends StatelessWidget {
     required this.onPositionChanged,
     required this.showBoard,
     required this.isLoading,
-    required this.isEngineBackfilling,
   });
 
   final NativeMillGameSession session;
@@ -838,7 +759,6 @@ class _OpeningExplorerContent extends StatelessWidget {
   final _OpeningExplorerPositionChanged onPositionChanged;
   final bool showBoard;
   final bool isLoading;
-  final bool isEngineBackfilling;
 
   @override
   Widget build(BuildContext context) {
@@ -911,6 +831,11 @@ class _OpeningExplorerContent extends StatelessWidget {
 
   List<Widget> _buildDataSections(BuildContext context) {
     final S strings = S.of(context);
+    final List<_OpeningExplorerMove> humanMoves = snapshot.humanMoves;
+    final List<_OpeningExplorerMove> localKnowledgeMoves =
+        snapshot.localKnowledgeOnlyMoves;
+    final List<_OpeningExplorerMove> perfectOnlyMoves =
+        snapshot.perfectOnlyMoves;
 
     return <Widget>[
       if (!snapshot.isRuleSupported)
@@ -921,20 +846,13 @@ class _OpeningExplorerContent extends StatelessWidget {
       if (!isLoading && snapshot.openingRecognition.isNamed)
         _OpeningNameSection(recognition: snapshot.openingRecognition),
       LichessListSection(
-        header: Text(strings.openingExplorerMoves),
-        cardKey: const Key('opening_explorer_moves_card'),
+        header: Text(strings.humanGameDatabaseSettings),
+        cardKey: const Key('opening_explorer_human_moves_card'),
         children: <Widget>[
-          const _OpeningExplorerMovesHeader(),
-          if (isLoading)
-            for (int index = 0; index < 6; index++)
-              _OpeningExplorerLoadingTile(index: index)
-          else if (snapshot.moves.isEmpty)
-            isEngineBackfilling
-                ? const _OpeningExplorerEngineSearchingTile()
-                : const _OpeningExplorerNoDataTile()
-          else ...<Widget>[
+          if (humanMoves.isNotEmpty) ...<Widget>[
+            const _OpeningExplorerMovesHeader(),
             for (final (int index, _OpeningExplorerMove move)
-                in snapshot.moves.indexed)
+                in humanMoves.indexed)
               _OpeningMoveTile(
                 index: index,
                 move: move,
@@ -943,11 +861,40 @@ class _OpeningExplorerContent extends StatelessWidget {
             if (snapshot.aggregateHumanStats != null)
               _OpeningExplorerTotalTile(
                 stats: snapshot.aggregateHumanStats!,
-                rowIndex: snapshot.moves.length,
+                rowIndex: humanMoves.length,
               ),
-          ],
+          ] else
+            _HumanDatabaseStatusTile(
+              state: snapshot.humanDatabaseState,
+              onManage: () => Navigator.of(
+                context,
+              ).push(GeneralSettingsPage.aiKnowledgeSourcesRoute()),
+            ),
         ],
       ),
+      if (perfectOnlyMoves.isNotEmpty)
+        _PerfectDatabaseSuggestionSection(
+          move: perfectOnlyMoves.first,
+          onSelected: () => onMoveSelected(perfectOnlyMoves.first.action),
+        ),
+      if (isLoading || localKnowledgeMoves.isNotEmpty)
+        LichessListSection(
+          header: Text(strings.localOpeningKnowledge),
+          cardKey: const Key('opening_explorer_local_knowledge_card'),
+          children: <Widget>[
+            if (isLoading)
+              for (int index = 0; index < 3; index++)
+                _OpeningExplorerLoadingTile(index: index)
+            else
+              for (final (int index, _OpeningExplorerMove move)
+                  in localKnowledgeMoves.indexed)
+                _OpeningKnowledgeMoveTile(
+                  index: index,
+                  move: move,
+                  onSelected: () => onMoveSelected(move.action),
+                ),
+          ],
+        ),
     ];
   }
 }
@@ -2223,92 +2170,111 @@ class _OpeningExplorerLoadingCell extends StatelessWidget {
   }
 }
 
-class _OpeningExplorerNoDataTile extends StatelessWidget {
-  const _OpeningExplorerNoDataTile();
+class _HumanDatabaseStatusTile extends StatelessWidget {
+  const _HumanDatabaseStatusTile({required this.state, required this.onManage});
+
+  final _HumanDatabaseState state;
+  final VoidCallback onManage;
 
   @override
   Widget build(BuildContext context) {
+    assert(
+      state != _HumanDatabaseState.hasRecords,
+      'Human Database status rows are only used when no records are shown.',
+    );
+    final S strings = S.of(context);
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final TextStyle? textStyle = Theme.of(context).textTheme.bodyMedium
-        ?.copyWith(color: colorScheme.onSurfaceVariant, letterSpacing: 0);
-
-    return ColoredBox(
-      color: _openingExplorerRowColor(context, 0),
-      child: Padding(
-        key: const Key('opening_explorer_no_data_row'),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              flex: _explorerMoveColumnFlex,
-              child: Icon(
-                Icons.not_interested_outlined,
-                size: 18,
-                color: colorScheme.onSurfaceVariant,
-              ),
-            ),
-            const SizedBox(width: _explorerColumnGap),
-            Expanded(
-              flex: _explorerGamesColumnFlex,
-              child: Text(
-                S.of(context).openingExplorerNoData,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: textStyle,
-              ),
-            ),
-            const SizedBox(width: _explorerColumnGap),
-            const Expanded(
-              flex: _explorerStatsColumnFlex,
-              child: SizedBox.shrink(),
-            ),
-          ],
-        ),
+    final bool ready = state == _HumanDatabaseState.readyNoRecords;
+    return ListTile(
+      key: Key(
+        ready
+            ? 'opening_explorer_human_database_no_records'
+            : 'opening_explorer_human_database_unavailable',
+      ),
+      leading: Icon(
+        ready ? Icons.search_off_rounded : Icons.cloud_off_outlined,
+        color: colorScheme.onSurfaceVariant,
+      ),
+      title: Text(
+        ready
+            ? strings.humanDatabaseNoPositionRecords
+            : strings.humanDatabaseUnavailable,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: ready ? null : Text(strings.humanDatabaseUnavailableHint),
+      trailing: TextButton(
+        key: const Key('opening_explorer_manage_human_database'),
+        onPressed: onManage,
+        child: Text(strings.manageKnowledgeSources),
       ),
     );
   }
 }
 
-class _OpeningExplorerEngineSearchingTile extends StatelessWidget {
-  const _OpeningExplorerEngineSearchingTile();
+class _OpeningKnowledgeMoveTile extends StatelessWidget {
+  const _OpeningKnowledgeMoveTile({
+    required this.index,
+    required this.move,
+    required this.onSelected,
+  });
+
+  final int index;
+  final _OpeningExplorerMove move;
+  final VoidCallback onSelected;
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final TextStyle? textStyle = Theme.of(context).textTheme.bodyMedium
-        ?.copyWith(color: colorScheme.onSurfaceVariant, letterSpacing: 0);
-
-    return ColoredBox(
-      color: _openingExplorerRowColor(context, 0),
-      child: Padding(
-        key: const Key('opening_explorer_engine_searching_row'),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              flex: _explorerMoveColumnFlex,
-              child: SizedBox(
-                width: 16,
-                height: 16,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ),
-            const SizedBox(width: _explorerColumnGap),
-            Expanded(
-              flex: _explorerGamesColumnFlex + _explorerStatsColumnFlex,
-              child: Text(
-                S.of(context).openingExplorerEngineSearching,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: textStyle,
-              ),
-            ),
-          ],
-        ),
+    return Material(
+      color: _openingExplorerRowColor(context, index),
+      child: ListTile(
+        key: Key('opening_explorer_knowledge_move_${move.notation}'),
+        leading: const Icon(Icons.auto_stories_outlined),
+        title: _MoveCell(move: move),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: onSelected,
       ),
+    );
+  }
+}
+
+class _PerfectDatabaseSuggestionSection extends StatelessWidget {
+  const _PerfectDatabaseSuggestionSection({
+    required this.move,
+    required this.onSelected,
+  });
+
+  final _OpeningExplorerMove move;
+  final VoidCallback onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    return LichessListSection(
+      header: Text(strings.perfectDatabaseSettings),
+      cardKey: const Key('opening_explorer_perfect_suggestion_card'),
+      hasLeading: false,
+      children: <Widget>[
+        Material(
+          color: colorScheme.primaryContainer.withValues(alpha: 0.54),
+          child: ListTile(
+            key: const Key('opening_explorer_perfect_suggestion'),
+            leading: Icon(Icons.verified_rounded, color: colorScheme.primary),
+            title: Text(strings.perfectDatabaseSuggestion),
+            subtitle: Text(
+              move.notation,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: colorScheme.onPrimaryContainer,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0,
+              ),
+            ),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: onSelected,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -2356,12 +2322,6 @@ class _MoveCell extends StatelessWidget {
             color: colorScheme.secondary,
             icon: Icons.people_alt_rounded,
           ),
-        if (move.engineScore != null)
-          _SourceBadge(
-            label: strings.openingExplorerEngineBadge,
-            color: colorScheme.outline,
-            icon: Icons.auto_awesome_rounded,
-          ),
       ],
     );
   }
@@ -2375,18 +2335,16 @@ class _MoveGamesCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _HumanMoveStats? stats = move.humanStats;
-    final int? engineScore = move.engineScore;
+    assert(stats != null, 'Human statistics rows require game samples.');
     final TextStyle? style = Theme.of(context).textTheme.bodySmall?.copyWith(
       fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
       letterSpacing: 0,
     );
 
-    final String text = stats == null && engineScore != null
-        ? _formatExplorerEngineScore(engineScore)
-        : _formatExplorerGamesText(
-            games: stats?.total ?? 0,
-            percent: stats == null ? 0 : move.gamesPercent,
-          );
+    final String text = _formatExplorerGamesText(
+      games: stats!.total,
+      percent: move.gamesPercent,
+    );
 
     return Align(
       alignment: Alignment.centerLeft,
@@ -2578,12 +2536,6 @@ String _formatExplorerGamesText({required int games, required int percent}) {
   return '${_formatExplorerSampleCount(games)} ($percent%)';
 }
 
-/// Formats a heuristic engine evaluation (mover's perspective) as a signed
-/// number, e.g. `+42`, `-15`, `0`.
-String _formatExplorerEngineScore(int score) {
-  return score > 0 ? '+$score' : '$score';
-}
-
 int _explorerBarFlex(int count, int total) {
   assert(count > 0, 'Opening explorer bar segment count must be positive.');
   assert(total > 0, 'Opening explorer bar total must be positive.');
@@ -2665,7 +2617,7 @@ class _OpeningExplorerSnapshot {
     required this.openingBookMoveCount,
     required this.humanDatabaseMoveCount,
     required this.perfectMoveAvailable,
-    required this.usedEngineFallback,
+    required this.humanDatabaseState,
     required this.openingRecognition,
     required this.aggregateHumanStats,
     required this.moves,
@@ -2676,8 +2628,6 @@ class _OpeningExplorerSnapshot {
     required RuleSettings ruleSettings,
     required GeneralSettings generalSettings,
     required List<String> placementMoves,
-    List<NativeMillPrincipalVariation> engineSuggestions =
-        const <NativeMillPrincipalVariation>[],
   }) {
     final String fen = session.getFen();
     final bool isRuleSupported =
@@ -2734,33 +2684,59 @@ class _OpeningExplorerSnapshot {
     }
 
     int humanDatabaseMoveCount = 0;
-    if (_canQueryHumanDatabase(session, ruleSettings, generalSettings)) {
-      final HumanDatabaseReadyResult ready = HumanDatabaseService.instance
-          .ensureReadySync(generalSettings.humanDatabaseFilePath);
+    _HumanDatabaseState humanDatabaseState = _HumanDatabaseState.unavailable;
+    final bool humanDatabaseConfigured =
+        generalSettings.humanDatabaseEnabled &&
+        generalSettings.humanDatabaseFilePath.trim().isNotEmpty &&
+        _supportsHumanDatabaseRules(ruleSettings);
+    if (humanDatabaseConfigured) {
+      final HumanDatabaseReadyResult ready =
+          debugOpeningExplorerHumanDatabaseReady?.call(
+            generalSettings.humanDatabaseFilePath,
+          ) ??
+          HumanDatabaseService.instance.ensureReadySync(
+            generalSettings.humanDatabaseFilePath,
+          );
       if (ready.ready) {
-        final tgf.MillHumanDatabaseQuery query = tgf.millHumanDbQuery(
-          fen: fen,
-          maxMoves: 24,
-          minSamples: MillHumanDatabaseProvider.minSamplesForSkill(
-            generalSettings.skillLevel,
-          ),
-        );
-        if (query.available) {
-          for (final tgf.MillHumanDatabaseMove humanMove in query.moves) {
-            final String notation = _baseMoveFromHumanDatabase(
-              humanMove.notation,
-            );
-            if (!legalActions.containsKey(notation)) {
-              continue;
+        humanDatabaseState = _HumanDatabaseState.readyNoRecords;
+        if (_canQueryHumanDatabase(session, ruleSettings, generalSettings)) {
+          final tgf.MillHumanDatabaseQuery query =
+              debugOpeningExplorerHumanDatabaseQuery?.call(
+                fen: fen,
+                maxMoves: 24,
+                minSamples: MillHumanDatabaseProvider.minSamplesForSkill(
+                  generalSettings.skillLevel,
+                ),
+              ) ??
+              tgf.millHumanDbQuery(
+                fen: fen,
+                maxMoves: 24,
+                minSamples: MillHumanDatabaseProvider.minSamplesForSkill(
+                  generalSettings.skillLevel,
+                ),
+              );
+          if (query.available) {
+            for (final tgf.MillHumanDatabaseMove humanMove in query.moves) {
+              final String notation = _baseMoveFromHumanDatabase(
+                humanMove.notation,
+              );
+              if (!legalActions.containsKey(notation)) {
+                continue;
+              }
+              humanDatabaseMoveCount++;
+              ensureMove(notation).humanStats = _HumanMoveStats(
+                wins: humanMove.wins,
+                losses: humanMove.losses,
+                draws: humanMove.draws,
+                total: humanMove.total,
+                scoreDelta: humanMove.scoreDelta,
+              );
             }
-            humanDatabaseMoveCount++;
-            ensureMove(notation).humanStats = _HumanMoveStats(
-              wins: humanMove.wins,
-              losses: humanMove.losses,
-              draws: humanMove.draws,
-              total: humanMove.total,
-              scoreDelta: humanMove.scoreDelta,
-            );
+            if (humanDatabaseMoveCount > 0) {
+              humanDatabaseState = _HumanDatabaseState.hasRecords;
+            }
+          } else {
+            humanDatabaseState = _HumanDatabaseState.unavailable;
           }
         }
       }
@@ -2769,31 +2745,18 @@ class _OpeningExplorerSnapshot {
     bool perfectMoveAvailable = false;
 
     if (generalSettings.usePerfectDatabase) {
-      final GameAction? perfectAction = session.perfectDatabaseBestAction(
-        engineSettings: generalSettings,
-      );
+      final GameAction? perfectAction =
+          debugOpeningExplorerPerfectDatabaseAction?.call(
+            session,
+            generalSettings,
+          ) ??
+          session.perfectDatabaseBestAction(engineSettings: generalSettings);
       if (perfectAction != null) {
         final String? notation = MillActionCodec.moveStringFrom(perfectAction);
         if (notation != null && legalActions.containsKey(notation)) {
           perfectMoveAvailable = true;
           ensureMove(notation).isPerfectMove = true;
         }
-      }
-    }
-
-    // Heuristic fill: when the opening book, human database, and perfect
-    // database all have nothing for this exact position, fall back to
-    // whatever engine suggestions the caller already fetched (if any) so
-    // the explorer is never simply empty for well-motivated deviations that
-    // happen to be absent from every curated/recorded source.
-    bool usedEngineFallback = false;
-    if (moves.isEmpty && engineSuggestions.isNotEmpty) {
-      for (final NativeMillPrincipalVariation variation in engineSuggestions) {
-        if (!legalActions.containsKey(variation.move)) {
-          continue;
-        }
-        ensureMove(variation.move).engineScore = variation.score;
-        usedEngineFallback = true;
       }
     }
 
@@ -2838,7 +2801,7 @@ class _OpeningExplorerSnapshot {
       openingBookMoveCount: openingBookMoveCount,
       humanDatabaseMoveCount: humanDatabaseMoveCount,
       perfectMoveAvailable: perfectMoveAvailable,
-      usedEngineFallback: usedEngineFallback,
+      humanDatabaseState: humanDatabaseState,
       openingRecognition: openingRecognition,
       aggregateHumanStats: aggregateHumanStats,
       moves: sortedMoves,
@@ -2850,24 +2813,34 @@ class _OpeningExplorerSnapshot {
   final int openingBookMoveCount;
   final int humanDatabaseMoveCount;
   final bool perfectMoveAvailable;
-  final bool usedEngineFallback;
+  final _HumanDatabaseState humanDatabaseState;
   final MillOpeningRecognition openingRecognition;
   final _HumanMoveStats? aggregateHumanStats;
   final List<_OpeningExplorerMove> moves;
 
-  /// True exactly when the book/human/perfect sources had nothing at all
-  /// for this position and every listed move is instead a heuristic engine
-  /// suggestion (see [_OpeningExplorerMove.engineScore]).
-  bool get needsEngineFallback =>
-      !usedEngineFallback && moves.isEmpty && isRuleSupported;
+  List<_OpeningExplorerMove> get humanMoves => moves
+      .where((_OpeningExplorerMove move) => move.humanStats != null)
+      .toList(growable: false);
+
+  List<_OpeningExplorerMove> get perfectOnlyMoves => moves
+      .where(
+        (_OpeningExplorerMove move) =>
+            move.humanStats == null && move.isPerfectMove,
+      )
+      .toList(growable: false);
+
+  List<_OpeningExplorerMove> get localKnowledgeOnlyMoves => moves
+      .where(
+        (_OpeningExplorerMove move) =>
+            move.humanStats == null && !move.isPerfectMove,
+      )
+      .toList(growable: false);
 
   String sourceSummary(S strings) {
     final List<String> parts = <String>[
       '${strings.openingBookSettings}: $openingBookMoveCount',
       '${strings.humanGameDatabaseSettings}: $humanDatabaseMoveCount',
       '${strings.perfectDatabaseSettings}: ${perfectMoveAvailable ? strings.openingExplorerAvailable : strings.openingExplorerNoDataShort}',
-      if (usedEngineFallback)
-        '${strings.openingExplorerEngineSource}: ${strings.openingExplorerAvailable}',
     ];
     return parts.join(' · ');
   }
@@ -2915,13 +2888,6 @@ class _OpeningExplorerSnapshot {
     _OpeningExplorerMove a,
     _OpeningExplorerMove b,
   ) {
-    if (a.isPerfectMove != b.isPerfectMove) {
-      return a.isPerfectMove ? -1 : 1;
-    }
-    final int bookCompare = _compareNullableRank(a.bookRank, b.bookRank);
-    if (bookCompare != 0) {
-      return bookCompare;
-    }
     final int humanTotalCompare = (b.humanStats?.total ?? 0).compareTo(
       a.humanStats?.total ?? 0,
     );
@@ -2934,14 +2900,12 @@ class _OpeningExplorerSnapshot {
     if (humanScoreCompare != 0) {
       return humanScoreCompare;
     }
-    // Only ever discriminates when every move is an engine-only backfill
-    // suggestion (book/human/perfect fields above are all null/false/0 for
-    // every candidate in that case); higher mover-relative eval sorts first.
-    final int engineCompare = (b.engineScore ?? _engineScoreFloor).compareTo(
-      a.engineScore ?? _engineScoreFloor,
-    );
-    if (engineCompare != 0) {
-      return engineCompare;
+    if (a.isPerfectMove != b.isPerfectMove) {
+      return a.isPerfectMove ? -1 : 1;
+    }
+    final int bookCompare = _compareNullableRank(a.bookRank, b.bookRank);
+    if (bookCompare != 0) {
+      return bookCompare;
     }
     return a.notation.compareTo(b.notation);
   }
@@ -2969,14 +2933,9 @@ class _OpeningExplorerMove {
   _HumanMoveStats? humanStats;
   int gamesPercent = 0;
   bool isPerfectMove = false;
-
-  /// Heuristic search evaluation (mover's perspective; positive favors the
-  /// side to move), populated only when [OpeningExplorerPage] had to fall
-  /// back to an engine suggestion because the opening book, human database,
-  /// and perfect database had no entry for this position at all. `null`
-  /// whenever any real data source covers the move.
-  int? engineScore;
 }
+
+enum _HumanDatabaseState { unavailable, readyNoRecords, hasRecords }
 
 class _HumanMoveStats {
   const _HumanMoveStats({
