@@ -245,8 +245,9 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
       appBar: AppBar(
         title: Text(s.puzzleStreak),
         leading: IconButton(
-          icon: const Icon(FluentIcons.dismiss_24_regular),
+          icon: Icon(FluentIcons.dismiss_24_regular, semanticLabel: s.quit),
           onPressed: _confirmQuit,
+          tooltip: s.quit,
         ),
       ),
       body: Column(
@@ -614,7 +615,7 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
       builder: (BuildContext dialogContext) {
         final S s = S.of(dialogContext);
         return AlertDialog(
-          title: Text(s.confirm),
+          title: Text(s.puzzleStreakQuitTitle),
           content: Text(s.puzzleStreakQuitConfirm),
           actions: <Widget>[
             TextButton(
@@ -622,6 +623,9 @@ class _PuzzleStreakPageState extends State<PuzzleStreakPage> {
               child: Text(s.cancel),
             ),
             TextButton(
+              style: TextButton.styleFrom(
+                foregroundColor: Theme.of(dialogContext).colorScheme.error,
+              ),
               onPressed: () {
                 // Persist the streak before leaving so it is not lost.
                 _saveStreakResult();

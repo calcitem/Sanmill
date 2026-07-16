@@ -3114,7 +3114,7 @@
     "@puzzleStreakTryAgain": {
         "description": "Try again button"
     },
-    "puzzleStreakQuitConfirm": "Are you sure you want to quit? Your streak will be lost.",
+    "puzzleStreakQuitConfirm": "Your current run will end.",
     "@puzzleStreakQuitConfirm": {
         "description": "Quit streak confirmation"
     },
@@ -5486,5 +5486,9 @@
     "cancelPuzzleSelection": "Cancel selection",
     "@cancelPuzzleSelection": {
         "description": "Action that exits puzzle multi-select mode"
+    },
+    "puzzleStreakQuitTitle": "Quit puzzle streak?",
+    "@puzzleStreakQuitTitle": {
+        "description": "Title of the confirmation dialog for ending the current puzzle streak"
     }
 }
