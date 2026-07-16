@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/shared/themes/app_theme.dart';
 import 'package:sanmill/shared/widgets/settings/settings.dart';
 
 void main() {
@@ -106,4 +107,39 @@ void main() {
       expect(trailingBox.constraints.maxWidth, 100);
     },
   );
+
+  testWidgets('SettingsListTile keeps secondary text fully readable', (
+    WidgetTester tester,
+  ) async {
+    for (final ThemeData theme in <ThemeData>[
+      AppTheme.lightThemeData,
+      AppTheme.darkThemeData,
+    ]) {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: theme,
+          darkTheme: theme,
+          themeMode: theme.brightness == Brightness.dark
+              ? ThemeMode.dark
+              : ThemeMode.light,
+          home: Scaffold(
+            body: SettingsListTile(
+              titleString: 'Theme mode',
+              subtitleString: 'Follows the device appearance',
+              trailingString: 'System',
+              onTap: () {},
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final Text subtitle = tester.widget<Text>(
+        find.text('Follows the device appearance'),
+      );
+      final Text trailing = tester.widget<Text>(find.text('System'));
+      expect(subtitle.style?.color, theme.colorScheme.onSurfaceVariant);
+      expect(trailing.style?.color, theme.colorScheme.onSurfaceVariant);
+    }
+  });
 }

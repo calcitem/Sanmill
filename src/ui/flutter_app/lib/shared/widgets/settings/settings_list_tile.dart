@@ -82,16 +82,10 @@ class SettingsListTile extends StatelessWidget {
 
     final TextStyle subtitleStyle =
         theme.textTheme.bodyMedium?.copyWith(
-          color: colorScheme.onSurfaceVariant.withValues(
-            alpha: AppStyles.subtitleOpacity,
-          ),
+          color: colorScheme.onSurfaceVariant,
           letterSpacing: 0,
         ) ??
-        AppStyles.tileSubtitle.copyWith(
-          color: colorScheme.onSurfaceVariant.withValues(
-            alpha: AppStyles.subtitleOpacity,
-          ),
-        );
+        AppStyles.tileSubtitle.copyWith(color: colorScheme.onSurfaceVariant);
 
     final Widget title = Text(
       titleString,
@@ -134,9 +128,7 @@ class SettingsListTile extends StatelessWidget {
           trailing = Icon(
             Icons.chevron_right,
             size: 20,
-            color: colorScheme.onSurfaceVariant.withValues(
-              alpha: AppStyles.subtitleOpacity,
-            ),
+            color: colorScheme.onSurfaceVariant,
           );
         }
 
