@@ -5388,5 +5388,9 @@
     "moveListLayoutDetails": "Move details",
     "@moveListLayoutDetails": {
         "description": "Move-list layout with notation and comments but no board previews"
+    },
+    "noGameToSave": "No game to save",
+    "@noGameToSave": {
+        "description": "Feedback shown when saving a game with no moves or setup position"
     }
 }

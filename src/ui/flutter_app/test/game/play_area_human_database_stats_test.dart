@@ -6107,6 +6107,29 @@ void main() {
     expect(db.displaySettings.movesViewLayout, MovesViewLayout.list);
   });
 
+  testWidgets('saving an empty game explains why nothing was saved', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      _localizedApp(
+        Builder(
+          builder: (BuildContext context) => Scaffold(
+            body: TextButton(
+              key: const Key('save_empty_game'),
+              onPressed: () => LoadService.saveGame(context, shouldPop: false),
+              child: const Text('Save'),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.byKey(const Key('save_empty_game')));
+    await tester.pump();
+
+    expect(find.text('No game to save'), findsOneWidget);
+  });
+
   testWidgets('analysis moves tab shows a variations bar', (
     WidgetTester tester,
   ) async {

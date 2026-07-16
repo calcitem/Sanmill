@@ -169,19 +169,22 @@ class LoadService {
     bool shouldPop = true,
   }) async {
     DiagnosticReplayGuard.requireAllowed('Game saving');
-    if (EnvironmentConfig.test == true) {
-      return null;
-    }
-
     final String strGameSavedTo = S.of(context).gameSavedTo;
     final String strExperimental = S.of(context).experimental;
     final GameRecorder recorder = GameController().gameRecorder;
 
     if (!(recorder.activeNode?.parent != null ||
         GameController().isPositionSetup == true)) {
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+        S.of(context).noGameToSave,
+      );
       if (shouldPop) {
         Navigator.pop(context);
       }
+      return null;
+    }
+
+    if (EnvironmentConfig.test == true) {
       return null;
     }
 
