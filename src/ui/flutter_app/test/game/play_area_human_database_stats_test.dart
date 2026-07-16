@@ -8,6 +8,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 import 'package:sanmill/appearance_settings/models/color_settings.dart';
@@ -6128,6 +6129,43 @@ void main() {
     await tester.pump();
 
     expect(find.text('No game to save'), findsOneWidget);
+  });
+
+  testWidgets('importing an empty clipboard explains the missing content', (
+    WidgetTester tester,
+  ) async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(SystemChannels.platform, (
+          MethodCall methodCall,
+        ) async {
+          if (methodCall.method == 'Clipboard.getData') {
+            return null;
+          }
+          return null;
+        });
+    addTearDown(
+      () => TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(SystemChannels.platform, null),
+    );
+
+    late BuildContext importContext;
+    await tester.pumpWidget(
+      _localizedApp(
+        Builder(
+          builder: (BuildContext context) {
+            importContext = context;
+            return const Scaffold(body: SizedBox.shrink());
+          },
+        ),
+      ),
+    );
+
+    await ImportService.importGame(importContext, shouldPop: false);
+    await tester.pump();
+
+    expect(find.text('Clipboard is empty'), findsOneWidget);
+    expect(find.textContaining('null'), findsNothing);
+    await tester.pump(const Duration(milliseconds: 1));
   });
 
   testWidgets('analysis moves tab shows a variations bar', (

@@ -32,12 +32,15 @@ class ImportService {
       return;
     }
 
-    // Check if data is null - show error message
-    if (data == null) {
+    final String? clipboardText = data?.text;
+
+    // If the clipboard has no usable text, explain the actual problem rather
+    // than exposing an internal null value.
+    if (clipboardText == null || clipboardText.trim().isEmpty) {
       rootScaffoldMessengerKey.currentState?.showSnackBarClear(
-        s.cannotImport("null"),
+        s.clipboardEmpty,
       );
-      GameController().headerTipNotifier.showTip(s.cannotImport("null"));
+      GameController().headerTipNotifier.showTip(s.clipboardEmpty);
 
       if (shouldPop) {
         navigator.pop();
@@ -45,20 +48,7 @@ class ImportService {
       return;
     }
 
-    final String? text = data.text;
-
-    // If clipboard is empty or missing text, pop and return
-    if (text == null) {
-      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
-        s.cannotImport("null"),
-      );
-      GameController().headerTipNotifier.showTip(s.cannotImport("null"));
-
-      if (shouldPop) {
-        navigator.pop();
-      }
-      return;
-    }
+    final String text = clipboardText;
 
     // Check if the PGN contains variations before importing
     bool includeVariations = true;
