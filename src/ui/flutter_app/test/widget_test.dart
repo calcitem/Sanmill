@@ -3086,6 +3086,48 @@ void main() {
   );
 
   testWidgets(
+    'PuzzleCreationPage recorded move status uses the theme primary',
+    (WidgetTester tester) async {
+      final PuzzleInfo puzzle = PuzzleInfo(
+        id: 'solution-colors',
+        title: 'Solution colors',
+        description: 'Verify recorded move status contrast.',
+        category: PuzzleCategory.formMill,
+        difficulty: PuzzleDifficulty.easy,
+        initialPosition: '********/********/******** w p p 0 9 0 9 0 0',
+        solutions: const <PuzzleSolution>[
+          PuzzleSolution(
+            moves: <PuzzleMove>[
+              PuzzleMove(notation: 'a1', side: PieceColor.white),
+            ],
+          ),
+        ],
+      );
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightThemeData,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: PuzzleCreationPage(puzzleToEdit: puzzle),
+        ),
+      );
+      await tester.pump();
+
+      final BuildContext pageContext = tester.element(
+        find.byKey(const Key('puzzle_creation_page_scaffold')),
+      );
+      final Finder recordedMoves = find.text(
+        S.of(pageContext).puzzleSolutionMoves(1),
+      );
+      expect(
+        tester.widget<Text>(recordedMoves).style?.color,
+        Theme.of(pageContext).colorScheme.primary,
+      );
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Repeated puzzle tab tap scrolls the root list to top',
     (WidgetTester tester) async {
       tester.view

@@ -1105,7 +1105,8 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
   }
 
   Widget _buildSolutionRecordingSection(BuildContext context) {
-    final Color hintColor = Theme.of(context).colorScheme.onSurfaceVariant;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final Color hintColor = colorScheme.onSurfaceVariant;
     // Wrap in RepaintBoundary for performance isolation
     return RepaintBoundary(
       child: _buildSectionCard(
@@ -1324,23 +1325,23 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                 padding: const EdgeInsets.all(8),
                 margin: const EdgeInsets.only(bottom: 12),
                 decoration: BoxDecoration(
-                  color: Colors.green.withValues(alpha: 0.2),
+                  color: colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.green),
+                  border: Border.all(color: colorScheme.primary),
                 ),
                 child: Row(
                   children: <Widget>[
                     Icon(
                       FluentIcons.record_24_filled,
-                      color: Colors.red[400],
+                      color: colorScheme.error,
                       size: 16,
                     ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         S.of(context).puzzleRecording,
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: colorScheme.onPrimaryContainer,
                           fontWeight: FontWeight.bold,
                           fontSize: 13,
                         ),
@@ -1356,7 +1357,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                 children: <Widget>[
                   Icon(
                     FluentIcons.checkmark_circle_24_filled,
-                    color: Colors.green[300],
+                    color: colorScheme.primary,
                     size: 20,
                   ),
                   const SizedBox(width: 8),
@@ -1364,7 +1365,7 @@ class _PuzzleCreationPageState extends State<PuzzleCreationPage>
                     S
                         .of(context)
                         .puzzleSolutionMoves(_currentSolution.moves.length),
-                    style: TextStyle(color: Colors.green[300], fontSize: 14),
+                    style: TextStyle(color: colorScheme.primary, fontSize: 14),
                   ),
                 ],
               ),
