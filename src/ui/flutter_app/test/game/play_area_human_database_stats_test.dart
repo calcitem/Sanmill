@@ -1637,6 +1637,91 @@ void main() {
     expect(find.byKey(const Key('play_area_analysis_panel')), findsOne);
   });
 
+  testWidgets('analysis tabs keep selected and unselected icons legible', (
+    WidgetTester tester,
+  ) async {
+    db.colorSettings = const ColorSettings(messageColor: Colors.white);
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    for (final ThemeData theme in <ThemeData>[
+      AppTheme.lightThemeData,
+      AppTheme.darkThemeData,
+    ]) {
+      await tester.pumpWidget(
+        _localizedApp(
+          GameSessionScope(
+            session: session,
+            child: const Scaffold(
+              body: PlayArea(
+                boardImage: null,
+                child: SizedBox.square(
+                  key: Key('test_board_square'),
+                  dimension: 390,
+                ),
+              ),
+            ),
+          ),
+          theme: theme,
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('play_area_analysis_tab_moves')));
+      await tester.pumpAndSettle();
+
+      final TabBar tabBar = tester.widget<TabBar>(
+        find.byKey(const Key('play_area_analysis_tabs')),
+      );
+      expect(tabBar.labelColor, theme.colorScheme.primary);
+      expect(tabBar.unselectedLabelColor, theme.colorScheme.onSurfaceVariant);
+      expect(tabBar.indicatorColor, theme.colorScheme.primary);
+
+      final Finder explorerIcon = find.descendant(
+        of: find.byKey(const Key('play_area_analysis_tab_explorer')),
+        matching: find.byIcon(Icons.explore_outlined),
+      );
+      final Finder movesIcon = find.descendant(
+        of: find.byKey(const Key('play_area_analysis_tab_moves')),
+        matching: find.byIcon(Icons.account_tree_outlined),
+      );
+      final Finder summaryIcon = find.descendant(
+        of: find.byKey(const Key('play_area_analysis_tab_summary')),
+        matching: find.byIcon(Icons.area_chart_outlined),
+      );
+      expect(
+        IconTheme.of(tester.element(explorerIcon)).color,
+        theme.colorScheme.onSurfaceVariant,
+      );
+      expect(
+        IconTheme.of(tester.element(movesIcon)).color,
+        theme.colorScheme.primary,
+      );
+      expect(
+        IconTheme.of(tester.element(summaryIcon)).color,
+        theme.colorScheme.onSurfaceVariant,
+      );
+
+      await tester.tap(
+        find.byKey(const Key('play_area_analysis_tab_explorer')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        IconTheme.of(tester.element(explorerIcon)).color,
+        theme.colorScheme.primary,
+      );
+      expect(
+        IconTheme.of(tester.element(movesIcon)).color,
+        theme.colorScheme.onSurfaceVariant,
+      );
+    }
+  });
+
   testWidgets('analysis gauge stays physically left and releases board width', (
     WidgetTester tester,
   ) async {

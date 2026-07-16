@@ -6103,6 +6103,10 @@ class _AnalysisPanel extends StatelessWidget {
             color: colorScheme.surface,
             child: TabBar(
               key: const Key('play_area_analysis_tabs'),
+              labelColor: colorScheme.primary,
+              unselectedLabelColor: colorScheme.onSurfaceVariant,
+              indicatorColor: colorScheme.primary,
+              dividerColor: colorScheme.outlineVariant,
               tabs: <Widget>[
                 Tab(
                   key: const Key('play_area_analysis_tab_explorer'),
