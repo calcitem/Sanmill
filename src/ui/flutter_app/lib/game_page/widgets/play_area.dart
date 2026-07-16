@@ -38,6 +38,7 @@ import '../../shared/database/database.dart';
 import '../../shared/services/screenshot_service.dart';
 import '../../shared/themes/app_styles.dart';
 import '../../shared/themes/app_theme.dart';
+import '../../shared/utils/helpers/color_helpers/color_helper.dart';
 import '../../shared/utils/screen_insets.dart';
 import '../../shared/widgets/lichess_action_sheet.dart';
 import '../../shared/widgets/lichess_bottom_bar.dart';
@@ -3586,6 +3587,7 @@ class PlayAreaState extends State<PlayArea> {
                   showMoveAnnotations: AnalysisMode.showMoveAnnotations,
                   showMoveComments: AnalysisMode.showMoveComments,
                   showRootComments: true,
+                  usesGameSurfaceColors: false,
                   layout: AnalysisMode.inlineNotation
                       ? _InlineMoveListLayout.stacked
                       : _InlineMoveListLayout.twoColumn,
@@ -4694,6 +4696,7 @@ class _InlineMoveList extends StatefulWidget {
     this.showMoveComments = false,
     this.showRootComments = false,
     this.showMainlineContinuation = false,
+    this.usesGameSurfaceColors = true,
     this.layout = _InlineMoveListLayout.wrap,
     this.groupByRound = false,
     this.maxHeight,
@@ -4722,6 +4725,7 @@ class _InlineMoveList extends StatefulWidget {
   final bool showMoveComments;
   final bool showRootComments;
   final bool showMainlineContinuation;
+  final bool usesGameSurfaceColors;
   final _InlineMoveListLayout layout;
   final bool groupByRound;
   final double? maxHeight;
@@ -4833,6 +4837,16 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       return _currentPathNodes();
     }
     return _recorderPathWithMainlineContinuation(GameController().gameRecorder);
+  }
+
+  Color? _gameSurfaceForegroundColor() {
+    if (!widget.usesGameSurfaceColors) {
+      return null;
+    }
+    return readableForegroundColor(
+      preferred: DB().colorSettings.messageColor,
+      background: DB().colorSettings.darkBackgroundColor,
+    );
   }
 
   @override
@@ -5049,9 +5063,11 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       return null;
     }
 
-    final TextStyle style = _inlineMoveListTextStyle(
-      context,
-    ).copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant);
+    final TextStyle style = _inlineMoveListTextStyle(context).copyWith(
+      color:
+          _gameSurfaceForegroundColor() ??
+          Theme.of(context).colorScheme.onSurfaceVariant,
+    );
     return LayoutBuilder(
       key: const Key('play_area_analysis_root_comments'),
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -5079,7 +5095,10 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       key: Key('$roundKeyPrefix${round.number}'),
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        _InlineMoveCount(count: round.number),
+        _InlineMoveCount(
+          count: round.number,
+          foregroundColor: _gameSurfaceForegroundColor(),
+        ),
         for (final _InlineMoveSegment segment in round.segments)
           _buildMoveSegment(context, segment),
       ],
@@ -5105,7 +5124,10 @@ class _InlineMoveListState extends State<_InlineMoveList> {
               width: 34,
               child: Padding(
                 padding: const EdgeInsets.only(top: 9, left: 2),
-                child: _InlineMoveCount(count: round.number),
+                child: _InlineMoveCount(
+                  count: round.number,
+                  foregroundColor: _gameSurfaceForegroundColor(),
+                ),
               ),
             ),
             Expanded(
@@ -5173,7 +5195,10 @@ class _InlineMoveListState extends State<_InlineMoveList> {
           return Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              _InlineMoveCount(count: round.number),
+              _InlineMoveCount(
+                count: round.number,
+                foregroundColor: _gameSurfaceForegroundColor(),
+              ),
               _buildMoveSegment(
                 context,
                 round.segments.first,
@@ -5224,7 +5249,9 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       selected: selected,
       selectedColor: colorScheme.primaryContainer,
       selectedTextColor: colorScheme.onPrimaryContainer,
-      textStyle: _inlineMoveListTextStyle(context),
+      textStyle: _inlineMoveListTextStyle(
+        context,
+      ).copyWith(color: _gameSurfaceForegroundColor()),
       style: _GameMoveChipStyle.inlineText,
       maxLines: allowMultiline ? null : 1,
       onTap: widget.onMoveTap == null
@@ -5266,7 +5293,9 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       selected: selected,
       selectedColor: colorScheme.primaryContainer,
       selectedTextColor: colorScheme.onPrimaryContainer,
-      textStyle: _inlineMoveListTextStyle(context),
+      textStyle: _inlineMoveListTextStyle(
+        context,
+      ).copyWith(color: _gameSurfaceForegroundColor()),
       style: widget.layout == _InlineMoveListLayout.horizontal
           ? _GameMoveChipStyle.inlineText
           : _GameMoveChipStyle.filled,
@@ -5790,13 +5819,15 @@ class _BoundedMoveWrap extends StatelessWidget {
 }
 
 class _InlineMoveCount extends StatelessWidget {
-  const _InlineMoveCount({required this.count});
+  const _InlineMoveCount({required this.count, this.foregroundColor});
 
   final int count;
+  final Color? foregroundColor;
 
   @override
   Widget build(BuildContext context) {
-    final Color color = Theme.of(context).colorScheme.onSurfaceVariant;
+    final Color color =
+        foregroundColor ?? Theme.of(context).colorScheme.onSurfaceVariant;
     return Padding(
       padding: const EdgeInsets.only(right: 3),
       child: Text(
@@ -5851,7 +5882,9 @@ class _GameMoveChip extends StatelessWidget {
             _GameMoveChipStyle.filled =>
               selected ? selectedTextColor : colorScheme.onSurfaceVariant,
             _GameMoveChipStyle.inlineText =>
-              selected ? colorScheme.onPrimaryContainer : colorScheme.onSurface,
+              selected
+                  ? colorScheme.onPrimaryContainer
+                  : textStyle?.color ?? colorScheme.onSurface,
           },
           fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
         ) ??

@@ -257,6 +257,10 @@ void main() {
   testWidgets('regular game uses a Lichess-style inline move list', (
     WidgetTester tester,
   ) async {
+    db.colorSettings = const ColorSettings(
+      darkBackgroundColor: Color(0xFF006400),
+      messageColor: Color(0xFFA4A293),
+    );
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
@@ -316,6 +320,8 @@ void main() {
     expect(blackMoveText.style?.fontFamily, 'monospace');
     expect(roundText.style?.fontSize, whiteMoveText.style?.fontSize);
     expect(whiteMoveText.style?.fontSize, blackMoveText.style?.fontSize);
+    expect(roundText.style?.color, Colors.white);
+    expect(whiteMoveText.style?.color, Colors.white);
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_regular_move_2')),
