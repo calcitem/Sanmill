@@ -2421,10 +2421,11 @@ class _OpeningExplorerTotalTile extends StatelessWidget {
           children: <Widget>[
             Expanded(
               flex: _explorerMoveColumnFlex,
-              child: Icon(
-                Icons.functions,
-                size: 18,
-                color: colorScheme.onSurfaceVariant,
+              child: Text(
+                S.of(context).openingExplorerTotal,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: textStyle,
               ),
             ),
             const SizedBox(width: _explorerColumnGap),

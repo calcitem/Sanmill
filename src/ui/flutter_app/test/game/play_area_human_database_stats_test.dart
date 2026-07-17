@@ -5710,6 +5710,12 @@ void main() {
     expect(tester.getTopLeft(popular).dy, lessThan(tester.getTopLeft(rare).dy));
     expect(find.text('100 (91%)'), findsOneWidget);
     expect(find.text('10 (9%)'), findsOneWidget);
+    final Finder totalRow = find.byKey(const Key('opening_explorer_total_row'));
+    expect(totalRow, findsOneWidget);
+    expect(
+      find.descendant(of: totalRow, matching: find.text('Total')),
+      findsOneWidget,
+    );
     final Finder drawPercentage = find.descendant(
       of: popular,
       matching: find.text('20%'),

@@ -5794,5 +5794,9 @@
                 "example": "a1b2c3d4"
             }
         }
+    },
+    "openingExplorerTotal": "Total",
+    "@openingExplorerTotal": {
+        "description": "Label for the aggregate row in the opening explorer statistics table"
     }
 }
