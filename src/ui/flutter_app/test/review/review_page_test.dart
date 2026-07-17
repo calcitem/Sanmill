@@ -67,6 +67,12 @@ void main() {
         '1/2',
       );
       expect(
+        tester
+            .getSemantics(find.byKey(const Key('review_turn_progress')))
+            .label,
+        contains('Move 1 of 2'),
+      );
+      expect(
         find.byKey(const Key('review_collapsible_move_list')),
         findsOneWidget,
       );

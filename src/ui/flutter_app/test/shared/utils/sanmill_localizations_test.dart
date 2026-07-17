@@ -70,6 +70,7 @@ void main() {
     expect(english.reviewPreviousMove, 'Previous move');
     expect(english.reviewNextMove, 'Next move');
     expect(english.reviewLastMove, 'Last move');
+    expect(english.reviewMoveProgress(2, 14), 'Move 2 of 14');
   });
 
   test('separates computer-play and generative AI terminology', () {

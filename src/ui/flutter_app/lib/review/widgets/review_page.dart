@@ -375,9 +375,10 @@ class _ReviewPageState extends State<ReviewPage> {
               ),
             ),
             Semantics(
-              label: S
-                  .of(context)
-                  .reviewProgress(currentIndex + 1, report.turns.length),
+              label: strings.reviewMoveProgress(
+                currentIndex + 1,
+                report.turns.length,
+              ),
               child: Text(
                 '${currentIndex + 1}/${report.turns.length}',
                 key: const Key('review_turn_progress'),

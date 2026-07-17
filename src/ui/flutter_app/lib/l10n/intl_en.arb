@@ -6393,5 +6393,17 @@
     "reviewLastMove": "Last move",
     "@reviewLastMove": {
         "description": "Tooltip and accessibility label for jumping to the last move in game review"
+    },
+    "reviewMoveProgress": "Move {current} of {total}",
+    "@reviewMoveProgress": {
+        "description": "Accessibility label for the currently selected move in game review",
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
     }
 }
