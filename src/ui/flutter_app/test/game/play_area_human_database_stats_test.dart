@@ -4635,7 +4635,10 @@ void main() {
       find.text('Show principal variations below the board'),
       findsOneWidget,
     );
-    expect(find.text('Mark visible engine lines on the board'), findsOneWidget);
+    expect(
+      find.text('Show the first move of each visible engine line on the board'),
+      findsOneWidget,
+    );
     expect(find.text('3 lines · text and board markers'), findsOneWidget);
 
     final Finder perfectDatabaseSwitchFinder = find.byKey(
