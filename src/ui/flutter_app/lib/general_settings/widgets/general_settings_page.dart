@@ -392,6 +392,7 @@ class GeneralSettingsPage extends StatelessWidget {
     }
 
     final FilePickerResult? result = await FilePicker.pickFiles(
+      dialogTitle: S.of(context).selectHumanGameDatabaseFile,
       type: FileType.custom,
       allowedExtensions: <String>['sqlite', 'sqlite3', 'db'],
     );

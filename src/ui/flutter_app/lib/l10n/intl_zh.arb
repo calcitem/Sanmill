@@ -5055,5 +5055,9 @@
     "removeCount": "吃子数（{count}）",
     "buildBranch": "分支：{branch}",
     "buildRevision": "修订版本：{revision}",
-    "buildTime": "构建时间：{time}"
+    "buildTime": "构建时间：{time}",
+    "selectHumanGameDatabaseFile": "选择人类对局数据库",
+    "@selectHumanGameDatabaseFile": {
+        "description": "Title of the system file picker used to import a human game database"
+    }
 }

@@ -5838,5 +5838,9 @@
                 "example": "2026-07-15T07:37:47Z"
             }
         }
+    },
+    "selectHumanGameDatabaseFile": "Select human game database",
+    "@selectHumanGameDatabaseFile": {
+        "description": "Title of the system file picker used to import a human game database"
     }
 }
