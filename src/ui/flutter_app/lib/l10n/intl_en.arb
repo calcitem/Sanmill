@@ -613,9 +613,9 @@
     "@blackPieceColor": {
         "description": "Player 2 piece color"
     },
-    "messageColor": "Message color",
+    "messageColor": "Game text and icon color",
     "@messageColor": {
-        "description": "Message color"
+        "description": "Color used for text, icons, and related foreground details on the game screen"
     },
     "isPieceCountInHandShown": "Show count of unplaced pieces",
     "@isPieceCountInHandShown": {
