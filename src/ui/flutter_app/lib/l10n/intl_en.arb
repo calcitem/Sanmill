@@ -4132,11 +4132,11 @@
     "@deleteAllSessions": {
         "description": "Button label to delete all recording sessions"
     },
-    "confirmDeleteSession": "Are you sure you want to delete this recording session?",
+    "confirmDeleteSession": "This recording session will be permanently deleted.",
     "@confirmDeleteSession": {
         "description": "Confirmation dialog text for deleting a session"
     },
-    "confirmDeleteAllSessions": "Are you sure you want to delete all recording sessions?",
+    "confirmDeleteAllSessions": "All recording sessions will be permanently deleted.",
     "@confirmDeleteAllSessions": {
         "description": "Confirmation dialog text for deleting all sessions"
     },

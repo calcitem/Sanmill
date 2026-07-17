@@ -93,6 +93,19 @@ void main() {
     );
   });
 
+  test('explains English recording deletion consequences', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(
+      english.confirmDeleteSession,
+      'This recording session will be permanently deleted.',
+    );
+    expect(
+      english.confirmDeleteAllSessions,
+      'All recording sessions will be permanently deleted.',
+    );
+  });
+
   test('uses consistent English variation-deletion terminology', () {
     final S english = lookupS(const Locale('en'));
 
