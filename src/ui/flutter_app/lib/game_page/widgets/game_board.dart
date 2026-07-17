@@ -506,6 +506,11 @@ class _GameBoardState extends State<GameBoard>
                             placeEffectAnimation: placeEffectAnimation,
                             removeEffectAnimation: removeEffectAnimation,
                             nativeBoardView: nativeBoardView,
+                            capturableGridIndices:
+                                PiecePainter.capturableGridIndicesFromLegalActions(
+                                  scopedSession?.legalActions ??
+                                      const <GameAction>[],
+                                ),
                           ),
                           child: DB().generalSettings.screenReaderSupport
                               ? const _BoardSemantics()

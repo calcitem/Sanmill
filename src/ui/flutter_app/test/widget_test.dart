@@ -1689,7 +1689,7 @@ void main() {
             'display_settings_card_capturable_pieces_highlight_shown_switch_tile',
           ),
         ),
-        findsNothing,
+        findsOneWidget,
       );
       final double displaySettingsOffset = tester
           .state<ScrollableState>(appearanceScrollable)

@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import '../../../appearance_settings/models/color_settings.dart';
 import '../../../appearance_settings/models/display_settings.dart';
 import '../../../game_platform/game_session.dart';
+import '../../../games/mill/mill_action_codec.dart';
 import '../../../games/mill/mill_board_coordinate_maps.dart';
 import '../../../games/mill/native_mill_snapshot_board_view.dart';
 import '../../../rule_settings/models/rule_settings.dart';

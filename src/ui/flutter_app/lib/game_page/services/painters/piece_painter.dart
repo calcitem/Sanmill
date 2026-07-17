@@ -21,6 +21,7 @@ class PiecePainter extends CustomPainter {
     required this.placeEffectAnimation,
     required this.removeEffectAnimation,
     this.nativeBoardView,
+    this.capturableGridIndices = const <int>{},
   });
 
   final double placeAnimationValue;
@@ -32,10 +33,43 @@ class PiecePainter extends CustomPainter {
 
   final Map<PieceColor, ui.Image?>? pieceImages;
   final NativeMillSnapshotBoardView? nativeBoardView;
+  final Set<int> capturableGridIndices;
 
   // Animation instances for place and remove effects.
   final PieceEffectAnimation placeEffectAnimation;
   final PieceEffectAnimation removeEffectAnimation;
+
+  @visibleForTesting
+  static Set<int> capturableGridIndicesFromLegalActions(
+    Iterable<GameAction> legalActions,
+  ) {
+    final Set<int> indices = <int>{};
+    for (final GameAction action in legalActions) {
+      if (action.type != MillActionTypes.remove) {
+        continue;
+      }
+      final Object? rawNode = action.payload['toNode'];
+      assert(
+        rawNode is int,
+        'Native Mill remove actions must provide an integer toNode.',
+      );
+      if (rawNode is! int) {
+        continue;
+      }
+      final int? square = MillBoardCoordinateMaps.nodeToLegacySquare[rawNode];
+      final int? gridIndex = square == null
+          ? null
+          : MillBoardCoordinateMaps.squareToGridIndex[square];
+      assert(
+        gridIndex != null,
+        'Native Mill remove node $rawNode must map to a board point.',
+      );
+      if (gridIndex != null) {
+        indices.add(gridIndex);
+      }
+    }
+    return indices;
+  }
 
   PieceColor _pieceColorAtGridIndex(int index) {
     final NativeMillSnapshotBoardView? view = nativeBoardView;
@@ -645,11 +679,20 @@ class PiecePainter extends CustomPainter {
       }
     }
 
-    // Capturable-piece highlight relied on the legacy
-    // `Position.getCapturablePieces()` which is gone; the native
-    // session does not yet expose an equivalent. The stored preference
-    // remains for compatibility, but the toggle is hidden until a
-    // Rust-backed replacement lands.
+    if (DB().displaySettings.isCapturablePiecesHighlightShown &&
+        GameController().gameInstance.gameMode != GameMode.setupPosition) {
+      paint.color = DB().colorSettings.capturablePieceHighlightColor;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 3;
+
+      for (final int gridIndex in capturableGridIndices) {
+        canvas.drawCircle(
+          pointFromIndex(gridIndex, size),
+          pieceWidth / 2,
+          paint,
+        );
+      }
+    }
 
     // Draw focus and blur positions.
     if (focusIndex != null) {
@@ -712,6 +755,7 @@ class PiecePainter extends CustomPainter {
       pickUpAnimationValue != oldDelegate.pickUpAnimationValue ||
       putDownAnimationValue != oldDelegate.putDownAnimationValue ||
       isPutDownAnimating != oldDelegate.isPutDownAnimating ||
+      !setEquals(capturableGridIndices, oldDelegate.capturableGridIndices) ||
       _nativeBoardVisibleStateChanged(oldDelegate);
 
   bool _nativeBoardVisibleStateChanged(PiecePainter oldDelegate) {

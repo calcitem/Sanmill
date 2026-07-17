@@ -11,6 +11,7 @@ import 'package:sanmill/game_page/services/painters/animations/piece_effect_anim
 import 'package:sanmill/game_page/services/painters/painters.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
+import 'package:sanmill/games/mill/mill_action_codec.dart';
 import 'package:sanmill/games/mill/mill_board_coordinate_maps.dart';
 import 'package:sanmill/games/mill/native_mill_snapshot_board_view.dart';
 import 'package:sanmill/shared/database/database.dart';
@@ -27,6 +28,26 @@ void main() {
   });
 
   group('PiecePainter', () {
+    test('maps native remove actions to capturable board points', () {
+      final Set<int> indices =
+          PiecePainter.capturableGridIndicesFromLegalActions(<GameAction>[
+            GameAction(
+              type: MillActionTypes.remove,
+              payload: <String, Object?>{'toNode': _nodeFor('a7')},
+            ),
+            GameAction(
+              type: MillActionTypes.remove,
+              payload: <String, Object?>{'toNode': _nodeFor('d7')},
+            ),
+            GameAction(
+              type: MillActionTypes.move,
+              payload: <String, Object?>{'toNode': _nodeFor('g7')},
+            ),
+          ]);
+
+      expect(indices, <int>{_legacyGridIndex('a7'), _legacyGridIndex('d7')});
+    });
+
     test('repaints when native board occupancy changes', () {
       final NativeMillSnapshotBoardView before = _viewWithBlackAtNode(23);
       final NativeMillSnapshotBoardView after = _viewWithBlackAtNode(22);
