@@ -41,6 +41,22 @@ void main() {
     expect(chinese.imageSavingNotSupported, '当前平台不支持保存图片。');
   });
 
+  test('localizes annotation semantics in English and Chinese', () {
+    final S english = lookupS(const Locale('en'));
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(english.annotationToolName('line'), 'Line tool');
+    expect(
+      english.selectAnnotationColor(english.annotationColorName('red')),
+      'Select red',
+    );
+    expect(chinese.annotationToolName('line'), '直线工具');
+    expect(
+      chinese.selectAnnotationColor(chinese.annotationColorName('red')),
+      '选择红色',
+    );
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =

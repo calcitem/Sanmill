@@ -5191,5 +5191,32 @@
     "imageSavingNotSupported": "当前平台不支持保存图片。",
     "@imageSavingNotSupported": {
         "description": "Error shown when the current platform cannot save an image"
+    },
+    "annotationToolName": "{tool, select, line{直线工具} arrow{箭头工具} circle{圆形工具} dot{圆点工具} cross{叉号工具} rect{矩形工具} text{文字工具} move{移动工具} other{标注工具}}",
+    "@annotationToolName": {
+        "description": "Accessible name for an annotation tool",
+        "placeholders": {
+            "tool": {
+                "type": "String"
+            }
+        }
+    },
+    "annotationColorName": "{color, select, white{白色} black{黑色} grey{灰色} red{红色} yellow{黄色} blue{蓝色} green{绿色} pink{粉色} purple{紫色} indigo{靛蓝色} other{未知颜色}}",
+    "@annotationColorName": {
+        "description": "Localized color name used by the annotation color picker",
+        "placeholders": {
+            "color": {
+                "type": "String"
+            }
+        }
+    },
+    "selectAnnotationColor": "选择{color}",
+    "@selectAnnotationColor": {
+        "description": "Accessible action label for an annotation color",
+        "placeholders": {
+            "color": {
+                "type": "String"
+            }
+        }
     }
 }

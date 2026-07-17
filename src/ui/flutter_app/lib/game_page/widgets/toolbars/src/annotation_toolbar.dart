@@ -163,62 +163,37 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
   /// Returns a semantic label for the given annotation tool.
   /// This label helps screen readers describe the tool to visually impaired users.
   String _toolLabel(BuildContext context, AnnotationTool tool) {
-    // Not localized: visually impaired users rarely use annotation tools.
-    switch (tool) {
-      case AnnotationTool.line:
-        return "Line Tool";
-      case AnnotationTool.arrow:
-        return "Arrow Tool";
-      case AnnotationTool.circle:
-        return "Circle Tool";
-      case AnnotationTool.dot:
-        return "Dot Tool";
-      case AnnotationTool.cross:
-        return "Cross Tool";
-      case AnnotationTool.rect:
-        return "Rectangle Tool";
-      case AnnotationTool.text:
-        return "Text Tool";
-      case AnnotationTool.move:
-        return "Move Tool";
-    }
+    return S.of(context).annotationToolName(tool.name);
   }
 
   /// Helper method to get a color name string from a Color.
   /// This is used for accessibility labels in the color picker.
-  String _colorName(Color color) {
-    // Not localized: visually impaired users rarely use annotation tools.
+  String _colorName(BuildContext context, Color color) {
+    final String colorId;
     if (color == Colors.white) {
-      return "white";
+      colorId = 'white';
+    } else if (color == Colors.black) {
+      colorId = 'black';
+    } else if (color == Colors.grey) {
+      colorId = 'grey';
+    } else if (color == Colors.red) {
+      colorId = 'red';
+    } else if (color == Colors.yellow) {
+      colorId = 'yellow';
+    } else if (color == Colors.blue) {
+      colorId = 'blue';
+    } else if (color == Colors.green) {
+      colorId = 'green';
+    } else if (color == Colors.pink) {
+      colorId = 'pink';
+    } else if (color == Colors.purple) {
+      colorId = 'purple';
+    } else if (color == Colors.indigo) {
+      colorId = 'indigo';
+    } else {
+      colorId = 'other';
     }
-    if (color == Colors.black) {
-      return "black";
-    }
-    if (color == Colors.grey) {
-      return "grey";
-    }
-    if (color == Colors.red) {
-      return "red";
-    }
-    if (color == Colors.yellow) {
-      return "yellow";
-    }
-    if (color == Colors.blue) {
-      return "blue";
-    }
-    if (color == Colors.green) {
-      return "green";
-    }
-    if (color == Colors.pink) {
-      return "pink";
-    }
-    if (color == Colors.purple) {
-      return "purple";
-    }
-    if (color == Colors.indigo) {
-      return "indigo";
-    }
-    return "unknown";
+    return S.of(context).annotationColorName(colorId);
   }
 
   /// Builds a horizontal list of color circles. The selected color has
@@ -237,7 +212,9 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
           final bool isSelected = (color == activeColor);
           return Semantics(
             // Provide a semantic label for each color circle.
-            label: 'Select ${_colorName(color)} color',
+            label: S
+                .of(context)
+                .selectAnnotationColor(_colorName(context, color)),
             button: true,
             child: GestureDetector(
               onTap: () {
