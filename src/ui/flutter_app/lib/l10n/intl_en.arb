@@ -405,7 +405,7 @@
     "@backgroundMusic": {
         "description": "Background music"
     },
-    "backgroundMusicDescription": "Play a local audio file as background music",
+    "backgroundMusicDescription": "Play a local audio file as background music.",
     "@backgroundMusicDescription": {
         "description": "Description for background music option"
     },

@@ -203,6 +203,15 @@ void main() {
     expect(english.pasteAndImportGameHint, 'Tap to paste and import a game');
   });
 
+  test('punctuates the English background-music description', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(
+      english.backgroundMusicDescription,
+      'Play a local audio file as background music.',
+    );
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =
