@@ -97,8 +97,10 @@ class _GameHeaderState extends State<GameHeader> {
       };
     }
     if (controller.gameInstance.getPlayerByColor(side).isAi) {
-      return aiMoveTypeIcons[controller.aiMoveType] ??
-          FluentIcons.bot_24_filled;
+      // The robot remains the computer-opponent identity. Optional move
+      // sources are shown as an adjacent badge where the UI can attribute a
+      // completed computer turn without ambiguity.
+      return FluentIcons.bot_24_filled;
     }
     return FluentIcons.person_24_filled;
   }

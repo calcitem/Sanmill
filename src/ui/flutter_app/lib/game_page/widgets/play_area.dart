@@ -6035,6 +6035,63 @@ class _GameMoveChip extends StatelessWidget {
   }
 }
 
+class _ComputerMoveSource {
+  const _ComputerMoveSource({required this.icon, required this.label});
+
+  final IconData icon;
+  final String label;
+}
+
+_ComputerMoveSource? _computerMoveSourceFor(
+  BuildContext context,
+  AiMoveType? moveType,
+) {
+  return switch (moveType) {
+    AiMoveType.openingBook => _ComputerMoveSource(
+      icon: FluentIcons.book_24_filled,
+      label: S.of(context).openingBookSettings,
+    ),
+    AiMoveType.humanDatabase => _ComputerMoveSource(
+      icon: FluentIcons.book_database_24_filled,
+      label: S.of(context).humanGameDatabaseSettings,
+    ),
+    AiMoveType.perfect => _ComputerMoveSource(
+      icon: FluentIcons.database_24_filled,
+      label: S.of(context).perfectDatabaseSettings,
+    ),
+    _ => null,
+  };
+}
+
+/// A compact provenance badge for a completed computer move.
+///
+/// It complements, rather than replaces, the robot avatar so an automated
+/// opponent remains recognisable even when a move came from a data source.
+class _ComputerMoveSourceBadge extends StatelessWidget {
+  const _ComputerMoveSourceBadge({
+    super.key,
+    required this.source,
+    required this.color,
+  });
+
+  final _ComputerMoveSource source;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      image: true,
+      label: source.label,
+      child: Tooltip(
+        message: source.label,
+        child: ExcludeSemantics(
+          child: Icon(source.icon, size: 16, color: color),
+        ),
+      ),
+    );
+  }
+}
+
 class _HumanAiPlayerPanel extends StatelessWidget {
   const _HumanAiPlayerPanel({super.key, required this.isRobot});
 
@@ -6074,6 +6131,12 @@ class _HumanAiPlayerPanel extends StatelessWidget {
         (sideToMove == PieceColor.white || sideToMove == PieceColor.black) &&
         controller.gameInstance.getPlayerByColor(sideToMove).isAi == isRobot;
     final bool showTip = DB().generalSettings.showGameTips && isActivePlayer;
+    // A source is known only after the computer has completed its turn. Do
+    // not show the previous source while it is thinking about a new move.
+    final _ComputerMoveSource? completedMoveSource =
+        isRobot && !isThinking && !isActivePlayer
+        ? _computerMoveSourceFor(context, controller.aiMoveType)
+        : null;
     final String tip = controller.headerTipNotifier.message.isEmpty
         ? S.of(context).welcome
         : controller.headerTipNotifier.message;
@@ -6101,6 +6164,14 @@ class _HumanAiPlayerPanel extends StatelessWidget {
                 ),
               ),
             ),
+            if (completedMoveSource != null) ...<Widget>[
+              const SizedBox(width: 4),
+              _ComputerMoveSourceBadge(
+                key: const Key('play_area_human_ai_robot_move_source'),
+                source: completedMoveSource,
+                color: messageColor.withValues(alpha: 0.72),
+              ),
+            ],
             if (isThinking) ...<Widget>[
               const SizedBox(width: 8),
               Icon(

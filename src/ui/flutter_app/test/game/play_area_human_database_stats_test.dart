@@ -1499,6 +1499,79 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('human vs computer identifies completed move sources', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillGameSession session = await _bindNativeHumanAiGame();
+    await _pumpSessionPlayArea(tester, session);
+
+    await session.apply(
+      const platform.GameAction(
+        type: MillActionTypes.place,
+        payload: <String, Object?>{'move': 'a1'},
+      ),
+    );
+    await session.apply(
+      const platform.GameAction(
+        type: MillActionTypes.place,
+        payload: <String, Object?>{'move': 'd1'},
+      ),
+    );
+
+    final GameController controller = GameController();
+    final Finder robotPanel = find.byKey(
+      const Key('play_area_human_ai_robot_panel'),
+    );
+    final Finder sourceBadge = find.descendant(
+      of: robotPanel,
+      matching: find.byKey(const Key('play_area_human_ai_robot_move_source')),
+    );
+
+    expect(controller.activeBoardView.sideToMove, PieceColor.white);
+    expect(controller.engineActivityNotifier.value, isFalse);
+    controller.aiMoveType = AiMoveType.openingBook;
+    controller.headerIconsNotifier.showIcons();
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.pump(const Duration(milliseconds: 1));
+    expect(find.byIcon(Icons.smart_toy_outlined), findsOneWidget);
+    expect(sourceBadge, findsOneWidget);
+    expect(find.byTooltip('Opening book'), findsOneWidget);
+    expect(
+      tester.getBottomRight(sourceBadge).dx,
+      lessThanOrEqualTo(tester.getBottomRight(robotPanel).dx),
+    );
+
+    controller.aiMoveType = AiMoveType.humanDatabase;
+    controller.headerIconsNotifier.showIcons();
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.pump(const Duration(milliseconds: 1));
+    expect(sourceBadge, findsOneWidget);
+    expect(find.byTooltip('Human game database'), findsOneWidget);
+
+    controller.aiMoveType = AiMoveType.perfect;
+    controller.headerIconsNotifier.showIcons();
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.pump(const Duration(milliseconds: 1));
+    expect(sourceBadge, findsOneWidget);
+    expect(find.byTooltip('Perfect database'), findsOneWidget);
+
+    await session.apply(
+      const platform.GameAction(
+        type: MillActionTypes.place,
+        payload: <String, Object?>{'move': 'a4'},
+      ),
+    );
+    controller.headerIconsNotifier.showIcons();
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.pump(const Duration(milliseconds: 1));
+    expect(sourceBadge, findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('human vs ai hides piece rows when the display switch is off', (
     WidgetTester tester,
   ) async {
