@@ -158,7 +158,7 @@ void main() {
       await tester.pump();
       await tester.tap(goodChoice);
       await tester.pump();
-      expect(find.text('Accepted: best or good move.'), findsOneWidget);
+      expect(find.text('Accepted. Good move.'), findsOneWidget);
       expect(find.text('Done'), findsOneWidget);
       expect(find.text('Skip'), findsOneWidget);
       expect(find.text('Show answer'), findsOneWidget);
