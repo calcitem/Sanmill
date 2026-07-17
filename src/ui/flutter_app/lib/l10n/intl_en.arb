@@ -911,9 +911,9 @@
             }
         }
     },
-    "boardTop": "Board offset from the top",
+    "boardTop": "Space above board",
     "@boardTop": {
-        "description": "Board offset from the top"
+        "description": "Vertical space between the top of the game area and the board"
     },
     "notAIsTurn": "It is not the AI's turn.",
     "@notAIsTurn": {
