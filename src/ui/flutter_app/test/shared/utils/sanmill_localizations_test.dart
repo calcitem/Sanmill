@@ -232,6 +232,12 @@ void main() {
       english.clearLogsConfirmation,
       'All diagnostic logs will be permanently deleted.',
     );
+    expect(english.downloadFailed, 'Could not save logs. Try again.');
+    expect(
+      english.logStoragePermissionRequired,
+      'Storage permission is required to save logs.',
+    );
+    expect(english.shareLogsFailed, 'Could not share logs. Try again.');
   });
 
   test('explains the English prompt-template restore consequence', () {

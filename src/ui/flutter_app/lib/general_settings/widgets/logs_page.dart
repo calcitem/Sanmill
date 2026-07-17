@@ -586,7 +586,7 @@ class _LogsPageState extends State<LogsPage> {
           if (!manageStatus.isGranted) {
             if (mounted) {
               rootScaffoldMessengerKey.currentState?.showSnackBarClear(
-                '${s.downloadFailed}: Storage permission denied',
+                s.logStoragePermissionRequired,
               );
             }
             return;
@@ -639,9 +639,10 @@ class _LogsPageState extends State<LogsPage> {
         s.downloadSuccess(file.path),
       );
     } catch (e) {
+      logger.w('Log download failed: ${e.runtimeType}');
       if (mounted) {
         rootScaffoldMessengerKey.currentState?.showSnackBarClear(
-          '${s.downloadFailed}: $e',
+          s.downloadFailed,
         );
       }
     } finally {
@@ -701,9 +702,10 @@ class _LogsPageState extends State<LogsPage> {
         ShareParams(files: <XFile>[XFile(file.path)], text: s.logs),
       );
     } catch (e) {
+      logger.w('Log sharing failed: ${e.runtimeType}');
       if (mounted) {
         rootScaffoldMessengerKey.currentState?.showSnackBarClear(
-          '${s.downloadFailed}: $e',
+          s.shareLogsFailed,
         );
       }
     } finally {

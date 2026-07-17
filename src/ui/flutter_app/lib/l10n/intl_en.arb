@@ -3549,7 +3549,7 @@
     "@noLogsToDownload": {
         "description": "Message shown when trying to download but no logs exist"
     },
-    "downloadFailed": "Download failed",
+    "downloadFailed": "Could not save logs. Try again.",
     "@downloadFailed": {
         "description": "Message shown when log download fails"
     },
@@ -6445,5 +6445,13 @@
     "gameImportFailed": "Could not import this game. Check the PGN and current rules, then try again.",
     "@gameImportFailed": {
         "description": "Generic error shown when a PGN game import fails without a specific invalid move"
+    },
+    "logStoragePermissionRequired": "Storage permission is required to save logs.",
+    "@logStoragePermissionRequired": {
+        "description": "Error shown when Android storage permission prevents saving diagnostic logs"
+    },
+    "shareLogsFailed": "Could not share logs. Try again.",
+    "@shareLogsFailed": {
+        "description": "Error shown when creating or opening the diagnostic log share sheet fails"
     }
 }
