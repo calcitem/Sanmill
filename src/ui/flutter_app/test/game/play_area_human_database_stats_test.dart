@@ -163,7 +163,7 @@ void main() {
     );
     final BoxDecoration statsDecoration = statsBox.decoration as BoxDecoration;
     expect(statsDecoration.color, Colors.transparent);
-    expect(find.text('No human-game statistics to show'), findsOneWidget);
+    expect(find.text('No human database move yet'), findsOneWidget);
     expect(find.text('Human game database'), findsNothing);
     expect(
       find.byKey(const Key('play_area_human_database_stats_empty')),

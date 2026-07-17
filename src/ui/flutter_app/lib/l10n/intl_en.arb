@@ -4480,17 +4480,17 @@
     },
     "useHumanGameDatabase": "Use human game database",
     "@useHumanGameDatabase": {},
-    "useHumanGameDatabase_Detail": "Consult recorded human games before falling back to engine search.",
+    "useHumanGameDatabase_Detail": "Consult recorded human moves after the opening book and before engine search.",
     "@useHumanGameDatabase_Detail": {},
     "humanGameDatabaseFile": "Human game database file",
     "@humanGameDatabaseFile": {},
-    "humanGameDatabaseFile_Detail": "Select a SQLite database file. Sanmill keeps an app-private copy.",
+    "humanGameDatabaseFile_Detail": "Choose a compatible SQLite database. Sanmill copies it into app-private storage.",
     "@humanGameDatabaseFile_Detail": {},
     "clearHumanGameDatabaseFile": "Clear human game database file",
     "@clearHumanGameDatabaseFile": {},
-    "showHumanGameDatabaseStats": "Show database statistics during games",
+    "showHumanGameDatabaseStats": "Show human-game statistics during games",
     "@showHumanGameDatabaseStats": {},
-    "showHumanGameDatabaseStats_Detail": "For the latest database move, show how often it led the player to a win, draw, or loss and the number of recorded games.",
+    "showHumanGameDatabaseStats_Detail": "For the latest database move, show the moving player's recorded win, draw, and loss rates and the number of games.",
     "@showHumanGameDatabaseStats_Detail": {},
     "humanGameDatabaseLoaded": "Human game database loaded: {positionCount} positions, {moveCount} move records.",
     "@humanGameDatabaseLoaded": {
@@ -4539,7 +4539,7 @@
             }
         }
     },
-    "humanGameDatabaseStatsUnavailable": "No human-game statistics to show",
+    "humanGameDatabaseStatsUnavailable": "No human database move yet",
     "@humanGameDatabaseStatsUnavailable": {},
     "ticTacToeSample": "Tic-Tac-Toe (sample)",
     "@ticTacToeSample": {
@@ -4658,9 +4658,9 @@
     "@openingRandomness_Detail": {},
     "downloadHumanGameDatabase": "Download human game database",
     "@downloadHumanGameDatabase": {},
-    "downloadHumanGameDatabase_Detail": "Download the database in your browser. When it finishes, return here and select the downloaded file.",
+    "downloadHumanGameDatabase_Detail": "Open the large database download in your browser, then return and select the downloaded file.",
     "@downloadHumanGameDatabase_Detail": {},
-    "downloadHumanGameDatabaseConfirmation": "Open your browser to download the human game database? When it finishes, return here and select the downloaded file.",
+    "downloadHumanGameDatabaseConfirmation": "Open your browser to download the large human game database? When it finishes, return here and select the downloaded file.",
     "@downloadHumanGameDatabaseConfirmation": {},
     "useLazySmp": "Multi-threaded search",
     "@useLazySmp": {},
@@ -5179,13 +5179,13 @@
     "@humanDatabaseUnavailable": {"description": "Opening explorer state when the human database cannot be used."},
     "humanDatabaseUnavailableHint": "Check the selected file in Knowledge sources.",
     "@humanDatabaseUnavailableHint": {"description": "Hint for configuring the human game database."},
-    "humanDatabaseNoPositionRecords": "No human games for this position",
+    "humanDatabaseNoPositionRecords": "Not enough human-game data for this position",
     "@humanDatabaseNoPositionRecords": {"description": "Opening explorer state when a loaded human database has no current-position records."},
     "manageKnowledgeSources": "Manage",
     "@manageKnowledgeSources": {"description": "Button opening AI knowledge source management."},
     "localOpeningKnowledge": "Local opening knowledge",
     "@localOpeningKnowledge": {"description": "Header for bundled opening book candidates."},
-    "perfectDatabaseSuggestion": "Recommended move (no human game data)",
+    "perfectDatabaseSuggestion": "Recommended move (no usable human-game data)",
     "@perfectDatabaseSuggestion": {"description": "Callout for a perfect move that has no human database samples."},
     "boardTransformIdentity": "Original orientation",
     "@boardTransformIdentity": {"description": "Identity option in the Mill board transform picker."},
@@ -5839,7 +5839,7 @@
             }
         }
     },
-    "selectHumanGameDatabaseFile": "Select human game database",
+    "selectHumanGameDatabaseFile": "Select human game database file",
     "@selectHumanGameDatabaseFile": {
         "description": "Title of the system file picker used to import a human game database"
     },
