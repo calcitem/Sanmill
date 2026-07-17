@@ -1639,7 +1639,7 @@
     "@legendaryLand": {},
     "vignetteEffect": "Vignette effect",
     "@vignetteEffect": {},
-    "promptMakeToolbarTransparent": "Would you like to make the toolbar fully transparent when a board background image is set?",
+    "promptMakeToolbarTransparent": "Make the toolbars transparent so the board image remains visible underneath?",
     "@promptMakeToolbarTransparent": {},
     "vibration": "Vibrate during games",
     "@vibration": {},
@@ -5684,5 +5684,9 @@
     "boardTheme": "Board theme",
     "@boardTheme": {
         "description": "Setting that opens the board color theme selector"
+    },
+    "transparentToolbars": "Transparent toolbars",
+    "@transparentToolbars": {
+        "description": "Title of the prompt to make board toolbars transparent"
     }
 }

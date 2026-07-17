@@ -229,7 +229,7 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
         builder: (BuildContext context) {
           return AlertDialog(
             key: const Key('make_toolbars_transparent_alert_dialog'),
-            title: Text(S.of(context).color),
+            title: Text(S.of(context).transparentToolbars),
             content: Text(S.of(context).promptMakeToolbarTransparent),
             actions: <Widget>[
               TextButton(
