@@ -21,6 +21,49 @@ class EffectItem {
   final PieceEffectAnimation animation;
 }
 
+const Set<String> _pieceEffectIds = <String>{
+  'Aura',
+  'Echo',
+  'Ripple',
+  'Spiral',
+  'Rotate',
+  'Orbit',
+  'Radial',
+  'Expand',
+  'Glow',
+  'Disperse',
+  'Sparkle',
+  'Burst',
+  'Shatter',
+  'Fireworks',
+  'Explode',
+  'RippleGradient',
+  'WarpWave',
+  'ShockWave',
+  'PulseRing',
+  'RainbowWave',
+  'Twist',
+  'ShadowPulse',
+  'RainRipple',
+  'NeonFlash',
+  'InkSpread',
+  'BubblePop',
+  'ColorSwirl',
+  'Starburst',
+  'PixelGlitch',
+  'FireTrail',
+  'Vanish',
+  'Fade',
+  'Melt',
+};
+
+String _pieceEffectLabel(S strings, String effectId) {
+  if (!_pieceEffectIds.contains(effectId)) {
+    throw StateError('Unknown piece effect ID: $effectId');
+  }
+  return strings.pieceEffectName(effectId);
+}
+
 /// The main page that displays the animations in a grid.
 class PieceEffectSelectionPage extends StatefulWidget {
   const PieceEffectSelectionPage({super.key, required this.moveType});
@@ -105,14 +148,15 @@ class PieceEffectSelectionPageState extends State<PieceEffectSelectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final S strings = S.of(context);
     return Scaffold(
       key: const Key('piece_effect_selection_page_scaffold'),
       appBar: AppBar(
         key: const Key('piece_effect_selection_page_appbar'),
         title: Text(
           widget.moveType == MoveType.place
-              ? S.of(context).placeEffectAnimation
-              : S.of(context).removeEffectAnimation,
+              ? strings.placeEffectAnimation
+              : strings.removeEffectAnimation,
           key: const Key('piece_effect_selection_page_appbar_title'),
         ),
       ),
@@ -130,6 +174,7 @@ class PieceEffectSelectionPageState extends State<PieceEffectSelectionPage> {
           return EffectGridItem(
             key: Key('effect_grid_item_$index'),
             effectItem: effectItem,
+            displayName: _pieceEffectLabel(strings, effectItem.name),
             onTap: () {
               // Handle the selection logic here.
               if (kDebugMode) {
@@ -153,10 +198,12 @@ class EffectGridItem extends StatefulWidget {
   const EffectGridItem({
     super.key,
     required this.effectItem,
+    required this.displayName,
     required this.onTap,
   });
 
   final EffectItem effectItem;
+  final String displayName;
   final VoidCallback onTap;
 
   @override
@@ -226,7 +273,7 @@ class EffectGridItemState extends State<EffectGridItem>
             const SizedBox(key: Key('effect_grid_item_sized_box'), height: 4.0),
             // Customize text color here.
             Text(
-              widget.effectItem.name,
+              widget.displayName,
               key: const Key('effect_grid_item_text'),
               style: TextStyle(
                 color: DB().colorSettings.boardLineColor.withAlpha(

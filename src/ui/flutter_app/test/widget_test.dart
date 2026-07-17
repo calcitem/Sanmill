@@ -14,6 +14,7 @@ import 'package:sanmill/app_shell/sanmill_app_shell.dart';
 import 'package:sanmill/appearance_settings/models/color_settings.dart';
 import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/appearance_settings/widgets/appearance_settings_page.dart';
+import 'package:sanmill/appearance_settings/widgets/piece_effect_selection_page.dart';
 import 'package:sanmill/appearance_settings/widgets/theme_selection_page.dart';
 import 'package:sanmill/game_page/services/analysis_mode.dart';
 import 'package:sanmill/game_page/services/mill.dart';
@@ -2606,6 +2607,40 @@ void main() {
       expect(sliderSemantics.value, '1 second');
       expect(sliderSemantics.decreasedValue, '0.9 seconds');
       semantics.dispose();
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
+    'Piece effect names are localized without changing stable IDs',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: Locale('en'),
+          home: PieceEffectSelectionPage(moveType: MoveType.place),
+        ),
+      );
+      await tester.pump();
+
+      await tester.drag(
+        find.byKey(const Key('piece_effect_selection_page_gridview_builder')),
+        const Offset(0, -1000),
+      );
+      await tester.pump();
+
+      final Finder rippleGradientItem = find.byKey(
+        const Key('effect_grid_item_15'),
+      );
+      expect(rippleGradientItem, findsOneWidget);
+      final EffectGridItem item = tester.widget<EffectGridItem>(
+        rippleGradientItem,
+      );
+      expect(item.effectItem.name, 'RippleGradient');
+      expect(item.displayName, 'Ripple Gradient');
+      expect(find.text('Ripple Gradient'), findsOneWidget);
+      expect(find.text('RippleGradient'), findsNothing);
     },
     skip: nativeLibrarySkipReason() != null,
   );

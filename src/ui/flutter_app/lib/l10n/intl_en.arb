@@ -5730,5 +5730,15 @@
     "fontSizePreview": "Aa Bb Cc 123",
     "@fontSizePreview": {
         "description": "Sample text shown below the font size slider"
+    },
+    "pieceEffectName": "{effect, select, Aura{Aura} Echo{Echo} Ripple{Ripple} Spiral{Spiral} Rotate{Rotate} Orbit{Orbit} Radial{Radial} Expand{Expand} Glow{Glow} Disperse{Disperse} Sparkle{Sparkle} Burst{Burst} Shatter{Shatter} Fireworks{Fireworks} Explode{Explode} RippleGradient{Ripple Gradient} WarpWave{Warp Wave} ShockWave{Shock Wave} PulseRing{Pulse Ring} RainbowWave{Rainbow Wave} Twist{Twist} ShadowPulse{Shadow Pulse} RainRipple{Rain Ripple} NeonFlash{Neon Flash} InkSpread{Ink Spread} BubblePop{Bubble Pop} ColorSwirl{Color Swirl} Starburst{Starburst} PixelGlitch{Pixel Glitch} FireTrail{Fire Trail} Vanish{Vanish} Fade{Fade} Melt{Melt} other{{effect}}}",
+    "@pieceEffectName": {
+        "description": "Localized display name for a stable piece animation effect ID",
+        "placeholders": {
+            "effect": {
+                "type": "String",
+                "example": "RippleGradient"
+            }
+        }
     }
 }
