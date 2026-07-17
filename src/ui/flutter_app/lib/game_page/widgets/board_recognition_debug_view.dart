@@ -612,9 +612,9 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
-                      'FEN:',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      '${S.of(context).generatedFen}:',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Container(
                       padding: const EdgeInsets.all(8),
