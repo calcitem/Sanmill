@@ -1035,9 +1035,9 @@
     "@picture": {
         "description": "Picture"
     },
-    "chooseYourPicture": "Choose your picture",
+    "chooseYourPicture": "Choose an image",
     "@chooseYourPicture": {
-        "description": "Choose your picture"
+        "description": "Action for selecting a custom image"
     },
     "themeMode": "Theme mode",
     "@themeMode": {
