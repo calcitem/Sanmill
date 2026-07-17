@@ -489,11 +489,11 @@ class GeneralSettingsPage extends StatelessWidget {
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text(S.of(ctx).no),
+            child: Text(S.of(ctx).cancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(S.of(ctx).yes),
+            child: Text(S.of(ctx).download),
           ),
         ],
       ),
