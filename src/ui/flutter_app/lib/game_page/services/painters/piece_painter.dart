@@ -41,7 +41,6 @@ class PiecePainter extends CustomPainter {
   final PieceEffectAnimation placeEffectAnimation;
   final PieceEffectAnimation removeEffectAnimation;
 
-  @visibleForTesting
   static Set<int> capturableGridIndicesFromLegalActions(
     Iterable<GameAction> legalActions,
   ) {
