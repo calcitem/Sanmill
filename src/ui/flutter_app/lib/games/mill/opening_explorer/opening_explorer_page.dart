@@ -1066,6 +1066,7 @@ class _ExplorerPieceCountRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ColorSettings colors = DB().colorSettings;
+    final S strings = S.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -1074,12 +1075,18 @@ class _ExplorerPieceCountRow extends StatelessWidget {
           count: firstCount,
           color: colors.whitePieceColor,
           muted: muted,
+          semanticLabel: muted
+              ? strings.piecesRemoved(strings.white, firstCount)
+              : strings.inHand(strings.white, firstCount),
         ),
         _ExplorerPieceCountText(
           key: secondKey,
           count: secondCount,
           color: colors.blackPieceColor,
           muted: muted,
+          semanticLabel: muted
+              ? strings.piecesRemoved(strings.black, secondCount)
+              : strings.inHand(strings.black, secondCount),
         ),
       ],
     );
@@ -1092,11 +1099,13 @@ class _ExplorerPieceCountText extends StatelessWidget {
     required this.count,
     required this.color,
     required this.muted,
+    required this.semanticLabel,
   }) : assert(count >= 0, 'Piece count text cannot be negative.');
 
   final int count;
   final Color color;
   final bool muted;
+  final String semanticLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -1104,19 +1113,26 @@ class _ExplorerPieceCountText extends StatelessWidget {
     final String dots = '●' * visibleDots;
     final String label = count <= 3 ? dots : '$dots $count';
     final Color textColor = muted ? color.withValues(alpha: 0.55) : color;
+    final Color outlineColor =
+        ThemeData.estimateBrightnessForColor(color) == Brightness.light
+        ? Colors.black
+        : Colors.white;
+    final Color visibleOutlineColor = outlineColor.withValues(
+      alpha: muted ? 0.45 : 0.8,
+    );
 
     return Text(
       label,
+      semanticsLabel: semanticLabel,
       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
         color: textColor,
         fontWeight: FontWeight.w700,
         letterSpacing: 0,
-        shadows: const <Shadow>[
-          Shadow(
-            offset: Offset(0, 1),
-            blurRadius: 2,
-            color: Color.fromARGB(110, 0, 0, 0),
-          ),
+        shadows: <Shadow>[
+          Shadow(offset: const Offset(-1, 0), color: visibleOutlineColor),
+          Shadow(offset: const Offset(1, 0), color: visibleOutlineColor),
+          Shadow(offset: const Offset(0, -1), color: visibleOutlineColor),
+          Shadow(offset: const Offset(0, 1), color: visibleOutlineColor),
         ],
       ),
     );

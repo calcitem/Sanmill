@@ -2714,6 +2714,10 @@ void main() {
       expect(secondInHandText.data, '●●● 9');
       expect(firstRemovedText.data, isEmpty);
       expect(secondRemovedText.data, isEmpty);
+      expect(firstInHandText.semanticsLabel, 'Player 1: 9 pieces in hand');
+      expect(secondInHandText.semanticsLabel, 'Player 2: 9 pieces in hand');
+      expect(firstRemovedText.semanticsLabel, 'Player 1: 0 pieces removed');
+      expect(secondRemovedText.semanticsLabel, 'Player 2: 0 pieces removed');
       expect(
         find.byKey(const Key('opening_explorer_bottom_bar')),
         findsOneWidget,
