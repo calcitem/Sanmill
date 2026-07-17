@@ -12,6 +12,7 @@ import '../shared/database/database.dart';
 import '../shared/themes/app_styles.dart';
 import '../shared/widgets/lichess_list_section.dart';
 import '../shared/widgets/snackbars/scaffold_messenger.dart';
+import 'mill_variant_popularity_map.dart';
 
 class MillVariantsPage extends StatelessWidget {
   const MillVariantsPage({super.key});
@@ -179,6 +180,7 @@ class _MillVariantDetailsPage extends StatelessWidget {
                     ListTile(title: Text(feature)),
                 ],
               ),
+              _VariantPopularitySection(entry: entry),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: FilledButton.icon(
@@ -204,6 +206,29 @@ class _MillVariantDetailsPage extends StatelessWidget {
   }
 }
 
+class _VariantPopularitySection extends StatelessWidget {
+  const _VariantPopularitySection({required this.entry});
+
+  final _VariantEntry entry;
+
+  @override
+  Widget build(BuildContext context) {
+    return LichessListSection(
+      cardKey: Key('mill_variant_detail_popularity_${entry.id}'),
+      hasLeading: false,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: MillVariantPopularityMap(
+            key: Key('mill_variant_popularity_map_${entry.id}'),
+            variantId: entry.id,
+            semanticsLabel: entry.title,
+          ),
+        ),
+      ],
+    );
+  }
+}
 class _VariantTile extends StatelessWidget {
   const _VariantTile({
     super.key,

@@ -106,6 +106,8 @@ flutter:
     - assets/files/git-revision.txt
     - assets/files/build-time.txt
     - assets/licenses/AGPL-3.0.txt
+    - assets/licenses/Natural-Earth.license
+    - assets/maps/
     - assets/audios/ball/select.mp3
     - assets/audios/ball/place.mp3
     - assets/audios/ball/mill.mp3

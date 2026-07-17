@@ -2081,6 +2081,25 @@ void main() {
       find.byKey(const Key('mill_variant_detail_rules_twelve_mens_morris')),
       findsOneWidget,
     );
+    expect(
+      find.byKey(
+        const Key('mill_variant_detail_popularity_twelve_mens_morris'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('mill_variant_popularity_map_twelve_mens_morris')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(
+          const Key('mill_variant_detail_popularity_twelve_mens_morris'),
+        ),
+        matching: find.byType(Text),
+      ),
+      findsNothing,
+    );
     expect(find.byType(CircleAvatar), findsNothing);
     expect(find.byIcon(Icons.category_outlined), findsNothing);
     expect(
@@ -2107,6 +2126,11 @@ void main() {
     );
     expect(DB().ruleSettings.piecesCount, 9);
 
+    await tester.scrollUntilVisible(
+      find.byKey(const Key('mill_variant_detail_apply_button')),
+      300,
+      scrollable: find.byType(Scrollable).last,
+    );
     await tester.tap(find.byKey(const Key('mill_variant_detail_apply_button')));
     await tester.pumpAndSettle();
 
