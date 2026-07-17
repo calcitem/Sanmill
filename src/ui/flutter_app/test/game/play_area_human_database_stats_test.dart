@@ -5597,6 +5597,10 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('Human game database is turned off'), findsOneWidget);
+    expect(
+      find.text('Select Manage to enable it and see human-game statistics.'),
+      findsOneWidget,
+    );
 
     final Finder manageHumanDatabase = find.byKey(
       const Key('opening_explorer_manage_human_database'),
@@ -5639,6 +5643,10 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('No human game database selected'), findsOneWidget);
+    expect(
+      find.text('Select Manage to download or choose a database.'),
+      findsOneWidget,
+    );
     expect(
       find.byKey(const Key('opening_explorer_manage_human_database')),
       findsOneWidget,
@@ -5846,6 +5854,10 @@ void main() {
 
     expect(
       find.byKey(const Key('opening_explorer_human_database_unavailable')),
+      findsOneWidget,
+    );
+    expect(
+      find.text('Select Manage to check the selected file.'),
       findsOneWidget,
     );
     expect(

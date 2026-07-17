@@ -5177,7 +5177,7 @@
     "@showAllBoardResultsDescription": {"description": "Description of the all-candidates analysis setting."},
     "humanDatabaseUnavailable": "Human game database unavailable",
     "@humanDatabaseUnavailable": {"description": "Opening explorer state when the human database cannot be used."},
-    "humanDatabaseUnavailableHint": "Check the selected file in Knowledge sources.",
+    "humanDatabaseUnavailableHint": "Select Manage to check the selected file.",
     "@humanDatabaseUnavailableHint": {"description": "Hint for configuring the human game database."},
     "humanDatabaseNoPositionRecords": "Not enough human-game data for this position",
     "@humanDatabaseNoPositionRecords": {"description": "Opening explorer state when a loaded human database has no current-position records."},
@@ -5915,7 +5915,7 @@
     "@humanDatabaseDisabled": {
         "description": "Opening explorer state when the human game database setting is disabled"
     },
-    "humanDatabaseDisabledHint": "Enable it in Knowledge sources to see human-game statistics.",
+    "humanDatabaseDisabledHint": "Select Manage to enable it and see human-game statistics.",
     "@humanDatabaseDisabledHint": {
         "description": "Opening explorer action hint when the human game database setting is disabled"
     },
@@ -5923,7 +5923,7 @@
     "@humanDatabaseNotSelected": {
         "description": "Opening explorer state when human database use is enabled but no file is selected"
     },
-    "humanDatabaseNotSelectedHint": "Download or select a database in Knowledge sources.",
+    "humanDatabaseNotSelectedHint": "Select Manage to download or choose a database.",
     "@humanDatabaseNotSelectedHint": {
         "description": "Opening explorer action hint when no human game database file is selected"
     },

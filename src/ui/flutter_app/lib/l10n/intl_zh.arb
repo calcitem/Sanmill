@@ -4930,7 +4930,7 @@
     "showAllBoardResults": "显示全部候选",
     "showAllBoardResultsDescription": "展开完美数据库中的全部合法着法结论",
     "humanDatabaseUnavailable": "人类对局数据库不可用",
-    "humanDatabaseUnavailableHint": "请在“知识来源”中检查已选择的文件。",
+    "humanDatabaseUnavailableHint": "点按“管理”以检查已选择的文件。",
     "humanDatabaseNoPositionRecords": "当前局面的人类实战数据不足",
     "manageKnowledgeSources": "管理",
     "localOpeningKnowledge": "本地开局知识",
@@ -5132,7 +5132,7 @@
     "@humanDatabaseDisabled": {
         "description": "Opening explorer state when the human game database setting is disabled"
     },
-    "humanDatabaseDisabledHint": "请在“知识来源”中启用，以查看人类实战统计。",
+    "humanDatabaseDisabledHint": "点按“管理”启用后，即可查看人类实战统计。",
     "@humanDatabaseDisabledHint": {
         "description": "Opening explorer action hint when the human game database setting is disabled"
     },
@@ -5140,7 +5140,7 @@
     "@humanDatabaseNotSelected": {
         "description": "Opening explorer state when human database use is enabled but no file is selected"
     },
-    "humanDatabaseNotSelectedHint": "请在“知识来源”中下载或选择数据库。",
+    "humanDatabaseNotSelectedHint": "点按“管理”以下载或选择数据库。",
     "@humanDatabaseNotSelectedHint": {
         "description": "Opening explorer action hint when no human game database file is selected"
     },
