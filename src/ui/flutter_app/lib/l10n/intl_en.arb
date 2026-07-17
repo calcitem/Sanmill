@@ -541,7 +541,7 @@
     "@mayFly": {
         "description": "Flying"
     },
-    "mayFly_Detail": "Allow players at or below the configured piece threshold to move to any empty point.",
+    "mayFly_Detail": "Players at or below the configured piece threshold may move to any empty point.",
     "@mayFly_Detail": {
         "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
     },
@@ -549,7 +549,7 @@
     "@nMoveRule": {
         "description": "N-move rule"
     },
-    "nMoveRule_Detail": "The game is drawn if there has been no removal in a specific number of moves.",
+    "nMoveRule_Detail": "Draw after the configured number of moves without a removal.",
     "@nMoveRule_Detail": {
         "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
     },
@@ -1255,7 +1255,7 @@
     "@threefoldRepetitionRule": {
         "description": "Threefold repetition rule"
     },
-    "threefoldRepetitionRule_Detail": "The game is drawn if a position occurs for the third time.",
+    "threefoldRepetitionRule_Detail": "Draw when the same position occurs three times.",
     "@threefoldRepetitionRule_Detail": {
         "description": "The game is drawn if a position occurs for the third time."
     },
@@ -2175,15 +2175,15 @@
     "@captureDiagonalLines": {},
     "captureExecutionPhases": "Execution phases",
     "@captureExecutionPhases": {},
-    "capturePiecesCondition": "Piece-based availability during moving phase",
+    "capturePiecesCondition": "Availability during the moving phase",
     "@capturePiecesCondition": {},
     "capturePiecesConditionUnlimited": "No restriction",
     "@capturePiecesConditionUnlimited": {},
-    "capturePiecesConditionSelfLeqThree": "Available when you have 3 or fewer pieces",
+    "capturePiecesConditionSelfLeqThree": "Only with 3 or fewer pieces",
     "@capturePiecesConditionSelfLeqThree": {},
-    "stopPlacingWhenTwoEmptySquares": "Stop placing when only two empty squares remain",
+    "stopPlacingWhenTwoEmptySquares": "Stop placing when only two empty points remain",
     "@stopPlacingWhenTwoEmptySquares": {},
-    "stopPlacingWhenTwoEmptySquares_Detail": "When enabled, the placing phase ends and moving phase begins when the board has only 2 empty spaces left, regardless of pieces in hand. This rule only applies to 12-piece games.",
+    "stopPlacingWhenTwoEmptySquares_Detail": "End the placing phase and begin the moving phase when only two empty points remain, even if pieces remain in hand. Available only in 12-piece games.",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "You can only request a take back immediately after your move.",
     "@canOnlyRequestTakeBackRightAfterYourMove": {},
@@ -5676,5 +5676,9 @@
     "chooseRulePreset": "Choose a preset",
     "@chooseRulePreset": {
         "description": "Heading in the rule preset selection sheet"
+    },
+    "allowFlying": "Allow flying",
+    "@allowFlying": {
+        "description": "Switch allowing low-piece-count players to move to any empty point"
     }
 }

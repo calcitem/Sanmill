@@ -1080,7 +1080,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               value: ruleSettings.mayFly,
               onChanged: (bool val) =>
                   _setAllowFlyingAllowed(ruleSettings, val),
-              titleString: S.of(context).mayFly,
+              titleString: S.of(context).allowFlying,
               subtitleString: S.of(context).mayFly_Detail,
             ),
             SettingsListTile(
