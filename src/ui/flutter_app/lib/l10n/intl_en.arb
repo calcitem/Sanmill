@@ -4516,8 +4516,9 @@
             }
         }
     },
-    "humanGameDatabaseStatsLine": "{move}  W {winPct}%  D {drawPct}%  L {lossPct}%  n={total}",
+    "humanGameDatabaseStatsLine": "{move}  W {winPct}%  D {drawPct}%  L {lossPct}%  Games {total}",
     "@humanGameDatabaseStatsLine": {
+        "description": "Compact in-game summary of a human database move and its results",
         "placeholders": {
             "move": {
                 "description": "Move notation selected from the human database.",

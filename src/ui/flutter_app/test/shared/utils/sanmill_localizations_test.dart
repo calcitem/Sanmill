@@ -231,6 +231,10 @@ void main() {
     final S english = lookupS(const Locale('en'));
 
     expect(
+      english.humanGameDatabaseStatsLine('d6', '50', '30', '20', 100),
+      'd6  W 50%  D 30%  L 20%  Games 100',
+    );
+    expect(
       english.humanGameDatabaseStatsSemantics('d6', '100', '0', '0', 1),
       "Human game database move d6. From the moving player's perspective: "
       '100 percent wins, 0 percent draws, and 0 percent losses. '

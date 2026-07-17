@@ -228,7 +228,10 @@ void main() {
 
     expect(find.textContaining('Human Database'), findsNothing);
     expect(find.textContaining('Human game database'), findsNothing);
-    expect(find.text('d6  W 50.0%  D 30.0%  L 20.0%  n=100'), findsOneWidget);
+    expect(
+      find.text('d6  W 50.0%  D 30.0%  L 20.0%  Games 100'),
+      findsOneWidget,
+    );
     final Semantics statsSemantics = tester.widget<Semantics>(
       find.byKey(const Key('play_area_human_database_stats_semantics')),
     );
