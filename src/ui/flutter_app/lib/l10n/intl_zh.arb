@@ -20,17 +20,17 @@
     "@game": {
         "description": "Game"
     },
-    "humanVsAi": "人机对战",
+    "humanVsAi": "人机对弈",
     "@humanVsAi": {
-        "description": "Human Vs AI"
+        "description": "Human vs computer"
     },
     "humanVsHuman": "双人对战",
     "@humanVsHuman": {
         "description": "Human Vs Human"
     },
-    "aiVsAi": "机器对战",
+    "aiVsAi": "电脑自弈",
     "@aiVsAi": {
-        "description": "AI Vs AI"
+        "description": "Computer vs computer"
     },
     "humanVsCloud": "挑战云端",
     "@humanVsCloud": {
@@ -381,9 +381,9 @@
     "@skillLevel": {
         "description": "Difficulty level"
     },
-    "moveTime": "AI 思考时间",
+    "moveTime": "电脑思考时间",
     "@moveTime": {
-        "description": "AI thinking time"
+        "description": "Computer thinking time"
     },
     "difficulty": "游戏难度",
     "@difficulty": {
@@ -433,9 +433,9 @@
     "@human": {
         "description": "Human"
     },
-    "ai": "AI",
+    "ai": "电脑",
     "@ai": {
-        "description": "AI"
+        "description": "Computer opponent"
     },
     "alternate": "交替",
     "@alternate": {
@@ -449,7 +449,7 @@
     "@isAutoChangeFirstMove": {
         "description": "Auto Change First Move"
     },
-    "shufflingEnabled": "AI 随机走子",
+    "shufflingEnabled": "电脑随机走子",
     "@shufflingEnabled": {
         "description": "Random move"
     },
@@ -849,9 +849,9 @@
     "@gameOverCondition": {
         "description": "Game over condition"
     },
-    "aisPlayStyle": "AI 的棋风",
+    "aisPlayStyle": "电脑棋风",
     "@aisPlayStyle": {
-        "description": "AI's play style"
+        "description": "Computer play style"
     },
     "passive": "消极被动",
     "@passive": {
@@ -911,13 +911,13 @@
     "@boardTop": {
         "description": "Board offset from the top"
     },
-    "notAIsTurn": "现在不是轮到 AI 行棋",
+    "notAIsTurn": "当前不是电脑的回合。",
     "@notAIsTurn": {
-        "description": "It is not the AI's turn."
+        "description": "It is not the computer's turn."
     },
-    "aiIsNotThinking": "AI 并非正在思考中",
+    "aiIsNotThinking": "电脑当前没有思考。",
     "@aiIsNotThinking": {
-        "description": "AI is not thinking."
+        "description": "Computer is not thinking."
     },
     "atEnd": "已经到底了",
     "@atEnd": {
@@ -1401,27 +1401,27 @@
     "@youCanModifyRules": {},
     "youCanUseMouseWheelInPicker": "您可以使用鼠标滚轮来选择值。",
     "@youCanUseMouseWheelInPicker": {},
-    "noTimeLimitForThinking": "AI 思考时间设置为 0 则表示没有思考时间的限制。",
+    "noTimeLimitForThinking": "将电脑思考时间设为 0 即可取消限制。",
     "@noTimeLimitForThinking": {},
     "whatIsMtdf": "MTD(f) 是 Alpha-Beta 搜索算法的一种改进算法，旨在通过重用中间搜索结果和使用良好的初始猜测来缩小搜索空间来提高效率。",
     "@whatIsMtdf": {},
-    "noteAiThinkingTimeMayNotBePrecise": "请注意，AI 思考时间的调整可能并不精确。当难度等级设置为较低值时，实际思考时间可能会更短，而当时间耗尽时 AI 还在思考时，则实际思考时间可能会更长。",
+    "noteAiThinkingTimeMayNotBePrecise": "电脑思考时间为近似值。较低难度可能提前结束，已经开始的搜索也可能略晚结束。",
     "@noteAiThinkingTimeMayNotBePrecise": {},
-    "noteActualDifficultyLevelMayBeLimited": "如果将难度设置得很高，但未增加 AI 的思考时间，实际难度可能会因为思考时间的限制而被压缩在较低的水平。实际的难度水平会因 AI 性能而异。",
+    "noteActualDifficultyLevelMayBeLimited": "此思考时间限制可能导致电脑在当前设备上无法达到所选难度。",
     "@noteActualDifficultyLevelMayBeLimited": {},
     "whatIsPvs": "PVS 是一种搜索算法，用于在给定局面找到最佳着法。它是对 Alpha-Beta 算法的增强，并使用空或零窗口搜索来确认着法是否比主要变例的安全分数更差或不差。 PVS 关注最有前途的着法，避免不必要的次优分支搜索，有助于提高搜索效率。",
     "@whatIsPvs": {},
-    "whatIsAlphaBeta": "Alpha-beta 算法是一种寻找最佳着法的搜索算法。它使用 minimax 原则和两个值 alpha 和 beta 来修剪搜索树并提高效率。 alpha 代表计算机确定能得到的最低分数，而 beta 代表它的对手能得到的最大分数。该算法帮助计算机在游戏中做出明智、高效的决策。",
+    "whatIsAlphaBeta": "Alpha-beta 算法是一种寻找最佳着法的搜索算法。它依据 minimax 原理，使用 alpha 和 beta 两个值剪枝搜索树以提高效率。Alpha 表示引擎确定能够达到的最低分，beta 表示对手能够达到的最高分，从而帮助引擎高效搜索。",
     "@whatIsAlphaBeta": {},
-    "drawOnTheHumanExperienceDetail": "孙子曰：昔之善战者，先为不可胜，以待敌之可胜。不可胜在己，可胜在敌。故善战者，能为不可胜，不能使敌之必可胜。故曰：胜可知，而不可为。如开启这一选项，将使得 AI 在开局阶段不会猛烈进攻，而是用缓着静待时机到来。",
+    "drawOnTheHumanExperienceDetail": "孙子曰：昔之善战者，先为不可胜，以待敌之可胜。不可胜在己，可胜在敌。故善战者，能为不可胜，不能使敌之必可胜。故曰：胜可知，而不可为。如开启这一选项，将使得电脑在开局阶段不会猛烈进攻，而是用缓着静待时机到来。",
     "@drawOnTheHumanExperienceDetail": {},
     "firstMoveDetail": "在这个游戏中，后手方比先手方更容易取胜。",
     "@firstMoveDetail": {},
-    "passiveDetail": "启用“消极被动”选项将使得 AI 在占据主动时有所放松，手下留情，而不是力争尽快取胜。",
+    "passiveDetail": "启用“消极被动”选项将使得电脑在占据主动时有所放松，手下留情，而不是力争尽快取胜。",
     "@passiveDetail": {},
-    "moveRandomlyDetail": "启用此选项可增加游戏的随机性和趣味性，而禁用此选项可有助于探索击败 AI 之道。",
+    "moveRandomlyDetail": "启用此选项可增加游戏的随机性和趣味性，而禁用此选项可有助于探索击败电脑之道。",
     "@moveRandomlyDetail": {},
-    "considerMobilityOfPiecesDetail": "如若 AI 考虑到自己棋子的机动性，那么它不仅会以最快的速度吃掉对方的棋子为目标，还会考虑封堵对方的路线，让对方无路可走，并力图避免对方以其人之道还治其人之身。",
+    "considerMobilityOfPiecesDetail": "如若电脑考虑到自己棋子的机动性，那么它不仅会以最快的速度吃掉对方的棋子为目标，还会考虑封堵对方的路线，让对方无路可走，并力图避免对方以其人之道还治其人之身。",
     "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "当棋盘摆满时",
     "@whenBoardIsFull": {},
@@ -1457,9 +1457,9 @@
     "@removeOpponentsPieceAndChangeSideToMove": {},
     "bothPlayersRemoveOpponentsPiece": "双方各移除对手的一枚相邻棋子，然后继续游戏。",
     "@bothPlayersRemoveOpponentsPiece": {},
-    "aiResponseDelayTime": "AI 响应延迟时间",
+    "aiResponseDelayTime": "电脑响应延迟",
     "@aiResponseDelayTime": {},
-    "aiIsDelaying": "AI 目前处于延迟响应阶段。请稍等片刻再继续。",
+    "aiIsDelaying": "电脑正在延迟响应，请稍后再继续。",
     "@aiIsDelaying": {},
     "tipCanNotRemoveNonadjacent": "只能移除和自己棋子相邻的棋子",
     "@tipCanNotRemoveNonadjacent": {},
@@ -1501,11 +1501,11 @@
     "@showPositionalAdvantageIndicator": {},
     "usePerfectDatabase": "使用完美数据库",
     "@usePerfectDatabase": {},
-    "perfectDatabaseDescription": "开启此选项以使用由尖端算法生成的完美游戏数据库。该功能集成了开局和残局策略以推荐最佳着法，是寻求游戏中最高精确度的玩家的首选。数据库通过精密的计算技术创建，旨在提供接近完美的游戏解决方案。\n\n注意：如果 AI 无法访问数据库，那么将转向传统算法进行游戏决策。当数据库可用时，“难度等级”实际上变得极高，而“AI 思考时间”将大幅缩短。“AI 的棋风”选项中的许多设置也将被覆盖，因为数据库结果具有最高优先级。\n\n如需了解如何使用该完美数据库，请点击这里。",
+    "perfectDatabaseDescription": "使用已求解局面选择经过验证的最优着法。\n\n对于受支持的规则集，完美数据库可以直接提供着法，并验证从人类对局数据库选出的着法。数据库无法回答时，电脑会改用其他已启用的着法来源或引擎搜索。\n\n数据库着法不受难度及大多数棋风设置影响，通常也只需很短的思考时间。",
     "@perfectDatabaseDescription": {},
     "backgroundImage": "背景图片",
     "@backgroundImage": {},
-    "whatIsRandom": "当“使用完美数据库”选项未启用时，“随机”设置会导致 AI 在不使用任何移动选择算法的情况下随机移动棋子。这通常会导致游戏性明显较弱。相反，当启用“使用完美数据库”时，人工智能完全依赖“完美数据库”进行决策，而不是将其与传统的人工智能算法混合。在这种模式下，人工智能的动作完全基于数据库的内容，避免了对实时计算或搜索算法的依赖。",
+    "whatIsRandom": "未启用“使用完美数据库”时，“随机”会让电脑不经过引擎搜索而随机走子，棋力会明显降低。启用数据库后，电脑会在数据库可回答时采用数据库着法，而不是随机着法或引擎搜索。",
     "@whatIsRandom": {},
     "removeOpponentsPieceFromHandThenOpponentsTurn": "吃掉对方手中的棋子；然后轮到对方摆子。",
     "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
@@ -1575,7 +1575,7 @@
     "@currentRulesNoPerfectDatabase": {},
     "focusOnBlockingPaths": "专注于封堵路径",
     "@focusOnBlockingPaths": {},
-    "focusOnBlockingPaths_Detail": "在游戏的特定阶段中，优先阻碍对手走棋，而不是形成三连。在这些阶段中，AI 不会专注于通过形成三连来吃掉对方的棋子，而是旨在困住对方，使对方的棋子无法移动，并通过消耗战而不是积极进攻来争取胜利。这种针对特定阶段的策略不会主动阻止对方形成三连。",
+    "focusOnBlockingPaths_Detail": "在游戏的特定阶段中，优先阻碍对手走棋，而不是形成三连。在这些阶段中，电脑不会专注于通过形成三连来吃掉对方的棋子，而是旨在困住对方，使对方的棋子无法移动，并通过消耗战而不是积极进攻来争取胜利。这种针对特定阶段的策略不会主动阻止对方形成三连。",
     "@focusOnBlockingPaths_Detail": {},
     "pieceImage": "棋子图片",
     "@pieceImage": {},
@@ -1651,11 +1651,11 @@
     "@oneTimeMill": {},
     "daSanQi": "打三棋",
     "@daSanQi": {},
-    "useOpeningBook_Detail": "让 AI 在开局阶段采用人类专业棋手惯用的着法。注意：此功能目前仅适用于特定棋规。",
+    "useOpeningBook_Detail": "让电脑在开局阶段采用人类专业棋手惯用的着法。注意：此功能目前仅适用于特定棋规。",
     "@useOpeningBook_Detail": {},
     "showAdvantageGraph": "显示优势图",
     "@showAdvantageGraph": {},
-    "advantageGraphHint": "仅当 AI 行棋后，优势图才会绘制。人类棋手行棋时则不会绘制。",
+    "advantageGraphHint": "优势图仅在电脑行棋后更新；真人着法不会被评估。",
     "@advantageGraphHint": {},
     "removalBasedOnMillCounts": "在所有棋子摆完之前，不能吃掉对方棋子。摆完后，根据三连数量来吃子。",
     "@removalBasedOnMillCounts": {},
@@ -2085,7 +2085,7 @@
     "@drawRate": {},
     "lossRate": "输棋率",
     "@lossRate": {},
-    "aiStatistics": "AI 统计数据",
+    "aiStatistics": "人机对局统计",
     "@aiStatistics": {},
     "enableStatistics": "启用统计",
     "@enableStatistics": {},
@@ -4274,19 +4274,19 @@
     "@configImportErrorReadFailed": {},
     "engineTimeoutPerformanceWarningTitle": "性能警告",
     "@engineTimeoutPerformanceWarningTitle": {
-        "description": "Title of dialog shown when AI engine times out due to insufficient performance"
+        "description": "Title of dialog shown when the game engine times out due to insufficient performance"
     },
-    "engineTimeoutPerformanceWarningContent": "AI 引擎超时，您的设备可能性能不足。建议在设置中降低 AI 思考时间。如问题持续，请通过反馈功能告知我们。",
+    "engineTimeoutPerformanceWarningContent": "棋力引擎超时。设备性能可能不足，请在设置中缩短电脑思考时间；若问题仍然存在，请提交反馈。",
     "@engineTimeoutPerformanceWarningContent": {
-        "description": "Content of dialog shown when AI engine times out due to insufficient performance"
+        "description": "Content of dialog shown when the game engine times out due to insufficient performance"
     },
-    "engineFailureTitle": "引擎错误",
+    "engineFailureTitle": "棋力引擎错误",
     "@engineFailureTitle": {
-        "description": "Title of dialog shown when AI engine fails to find a move"
+        "description": "Title of dialog shown when the game engine fails to find a move"
     },
-    "engineFailureContent": "AI 引擎未能产生着法，这是一个非预期的内部错误。是否发送诊断报告以协助我们调查？",
+    "engineFailureContent": "棋力引擎未能产生着法，这是一个非预期的内部错误。是否发送诊断报告以协助我们调查？",
     "@engineFailureContent": {
-        "description": "Content of dialog shown when AI engine fails to find a move"
+        "description": "Content of dialog shown when the game engine fails to find a move"
     },
     "sendReport": "发送报告",
     "@sendReport": {
@@ -4405,7 +4405,7 @@
     "@openingFavours": {},
     "preferFavoredOpenings": "优先选择有利开局",
     "@preferFavoredOpenings": {},
-    "preferFavoredOpenings_Detail": "开启开局库时，让 AI 在回退到引擎最佳着法之前，沿用一条对己方有利的已知开局路线。这会增加变化并带来更接近人类的感觉，但可能偏离最强着法。",
+    "preferFavoredOpenings_Detail": "开启开局库时，让电脑在回退到引擎最佳着法之前，沿用一条对己方有利的已知开局路线。这会增加变化并带来更接近人类的感觉，但可能偏离最强着法。",
     "@preferFavoredOpenings_Detail": {},
     "openingBookStudio": "开局库工作室",
     "@openingBookStudio": {},
@@ -4516,11 +4516,11 @@
     "@engineThreads": {},
     "engineThreads_Detail": "仅在启用多线程搜索时使用。线程数不是越多越好，棋力不会按线程数成倍提升；线程过多反而可能更慢或更弱。",
     "@engineThreads_Detail": {},
-    "aiKnowledgeSources": "AI 知识源",
+    "aiKnowledgeSources": "电脑着法来源",
     "@aiKnowledgeSources": {},
     "aiKnowledgeSources_Detail": "开局库、完美数据库、人类对局数据库和陷阱库。",
     "@aiKnowledgeSources_Detail": {},
-    "advancedAiSearch": "高级 AI 搜索",
+    "advancedAiSearch": "高级引擎搜索",
     "@advancedAiSearch": {},
     "advancedAiSearch_Detail": "算法、随机性、搜索行为和线程设置。",
     "@advancedAiSearch_Detail": {},
@@ -4546,7 +4546,7 @@
     "@recentGames": {},
     "play": "开始下棋",
     "@play": {},
-    "playAgainstComputer": "和电脑下棋",
+    "playAgainstComputer": "与电脑对弈",
     "@playAgainstComputer": {},
     "overTheBoard": "面对面下棋",
     "@overTheBoard": {},
@@ -4590,7 +4590,7 @@
     "@ongoingGames": {},
     "boardOrientation": "棋盘方向",
     "@boardOrientation": {},
-    "humanAiRobotLevel": "机器人 级别 {level}",
+    "humanAiRobotLevel": "电脑等级 {level}",
     "@humanAiRobotLevel": {
         "placeholders": {
             "level": {
@@ -4722,9 +4722,9 @@
     "@openingExplorerSelectLine": {},
     "openingExplorerCurrentLine": "当前路线",
     "@openingExplorerCurrentLine": {},
-    "forceAiRedo": "让 AI 重新考虑",
+    "forceAiRedo": "让电脑重新计算",
     "@forceAiRedo": {},
-    "aiNoAlternativeMove": "没有其他可选着法,AI 已恢复原来的着法。",
+    "aiNoAlternativeMove": "没有其他可选着法，电脑已恢复原着。",
     "@aiNoAlternativeMove": {},
     "offerDraw": "提和",
     "@offerDraw": {},
@@ -4732,7 +4732,7 @@
     "@confirmOfferDraw": {},
     "areYouSureYouWantToOfferADraw": "确定要提出和棋吗?",
     "@areYouSureYouWantToOfferADraw": {},
-    "aiDeclinedDraw": "AI 拒绝了你的和棋请求。",
+    "aiDeclinedDraw": "电脑拒绝了你的和棋请求。",
     "@aiDeclinedDraw": {},
     "decline": "拒绝",
     "@decline": {},

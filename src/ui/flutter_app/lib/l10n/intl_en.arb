@@ -20,17 +20,17 @@
     "@game": {
         "description": "Game"
     },
-    "humanVsAi": "Human vs AI",
+    "humanVsAi": "Human vs computer",
     "@humanVsAi": {
-        "description": "Human Vs AI"
+        "description": "Human vs computer"
     },
     "humanVsHuman": "Human vs human",
     "@humanVsHuman": {
         "description": "Human Vs Human"
     },
-    "aiVsAi": "AI vs AI",
+    "aiVsAi": "Computer vs computer",
     "@aiVsAi": {
-        "description": "AI Vs AI"
+        "description": "Computer vs computer"
     },
     "humanVsCloud": "Human vs cloud",
     "@humanVsCloud": {
@@ -330,7 +330,7 @@
     },
     "challengeHarderLevel": "Try level {level} next?",
     "@challengeHarderLevel": {
-        "description": "Asks whether to play the next AI difficulty level.",
+        "description": "Asks whether to play the next computer difficulty level.",
         "placeholders": {
             "level": {
                 "description": "The new level",
@@ -385,9 +385,9 @@
     "@skillLevel": {
         "description": "Difficulty level"
     },
-    "moveTime": "AI thinking time",
+    "moveTime": "Computer thinking time",
     "@moveTime": {
-        "description": "AI thinking time"
+        "description": "Computer thinking time"
     },
     "difficulty": "Difficulty",
     "@difficulty": {
@@ -437,9 +437,9 @@
     "@human": {
         "description": "Human"
     },
-    "ai": "AI",
+    "ai": "Computer",
     "@ai": {
-        "description": "AI"
+        "description": "Computer opponent"
     },
     "alternate": "Alternate",
     "@alternate": {
@@ -853,9 +853,9 @@
     "@gameOverCondition": {
         "description": "Game over condition"
     },
-    "aisPlayStyle": "AI's play style",
+    "aisPlayStyle": "Computer play style",
     "@aisPlayStyle": {
-        "description": "AI's play style"
+        "description": "Computer play style"
     },
     "passive": "Play less aggressively when ahead",
     "@passive": {
@@ -915,13 +915,13 @@
     "@boardTop": {
         "description": "Vertical space between the top of the game area and the board"
     },
-    "notAIsTurn": "It is not the AI's turn.",
+    "notAIsTurn": "It is not the computer's turn.",
     "@notAIsTurn": {
-        "description": "It is not the AI's turn."
+        "description": "It is not the computer's turn."
     },
-    "aiIsNotThinking": "AI is not thinking.",
+    "aiIsNotThinking": "Computer is not thinking.",
     "@aiIsNotThinking": {
-        "description": "AI is not thinking."
+        "description": "Computer is not thinking."
     },
     "atEnd": "You are at the end of the move list.",
     "@atEnd": {
@@ -1433,27 +1433,27 @@
     "@youCanModifyRules": {},
     "youCanUseMouseWheelInPicker": "You can use the mouse wheel to adjust the value in the picker.",
     "@youCanUseMouseWheelInPicker": {},
-    "noTimeLimitForThinking": "Set AI thinking time to 0 to remove the limit.",
+    "noTimeLimitForThinking": "Set computer thinking time to 0 to remove the limit.",
     "@noTimeLimitForThinking": {},
     "whatIsMtdf": "MTD(f) is a modified form of the alpha-beta search algorithm that aims to improve efficiency by reusing intermediate search results and using a good initial guess to narrow the search space.",
     "@whatIsMtdf": {},
     "noteAiThinkingTimeMayNotBePrecise": "Thinking time is approximate. Lower difficulty levels may finish early, and a search already in progress may finish slightly late.",
     "@noteAiThinkingTimeMayNotBePrecise": {},
-    "noteActualDifficultyLevelMayBeLimited": "This thinking-time limit may prevent the AI from reaching the selected difficulty on this device.",
+    "noteActualDifficultyLevelMayBeLimited": "This thinking-time limit may prevent the computer from reaching the selected difficulty on this device.",
     "@noteActualDifficultyLevelMayBeLimited": {},
     "whatIsPvs": "PVS (Principal Variation Search) is a search algorithm to find the best move in a given position. It is an enhancement of the alpha-beta algorithm and uses null or zero window searches to confirm that a move is worse or not worse than an already safe score from the principal variation. PVS focuses on the most promising moves and avoids unnecessary searches of suboptimal branches, which helps improve the efficiency of the search.",
     "@whatIsPvs": {},
-    "whatIsAlphaBeta": "The alpha-beta algorithm is a search algorithm to find the best move. It uses the minimax principle and two values, alpha and beta, to prune the search tree and increase efficiency. Alpha represents the minimum score the computer is sure it can get, while beta represents the maximum score its opponent can get. The algorithm helps the computer make smart, efficient decisions in a game.",
+    "whatIsAlphaBeta": "The alpha-beta algorithm is a search algorithm for finding the best move. It uses the minimax principle and two values, alpha and beta, to prune the search tree and improve efficiency. Alpha represents the minimum score the engine is sure it can achieve, while beta represents the maximum score its opponent can achieve. This helps the engine search efficiently.",
     "@whatIsAlphaBeta": {},
     "drawOnTheHumanExperienceDetail": "Adjust search depth by the number of pieces already placed. Turn this off to use the selected difficulty level as the depth throughout the placement phase.",
     "@drawOnTheHumanExperienceDetail": {},
     "firstMoveDetail": "In this game, it is easier for the second player to win compared to the first player.",
     "@firstMoveDetail": {},
-    "passiveDetail": "Reduce the AI's search depth when it has a clear advantage, so it may not find the fastest win.",
+    "passiveDetail": "Reduce the computer's search depth when it has a clear advantage, so it may not find the fastest win.",
     "@passiveDetail": {},
-    "moveRandomlyDetail": "Allow the AI to vary its choice among comparable moves. Turn this off for more deterministic play.",
+    "moveRandomlyDetail": "Allow the computer to vary its choice among comparable moves. Turn this off for more deterministic play.",
     "@moveRandomlyDetail": {},
-    "considerMobilityOfPiecesDetail": "Include each side's available movement in the position evaluation, helping the AI value open routes and restrict the opponent.",
+    "considerMobilityOfPiecesDetail": "Include each side's available movement in the position evaluation, helping the computer value open routes and restrict the opponent.",
     "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "When the board is full",
     "@whenBoardIsFull": {},
@@ -1489,9 +1489,9 @@
     "@removeOpponentsPieceAndChangeSideToMove": {},
     "bothPlayersRemoveOpponentsPiece": "Each player removes one adjacent opposing piece, then play continues",
     "@bothPlayersRemoveOpponentsPiece": {},
-    "aiResponseDelayTime": "AI response delay time",
+    "aiResponseDelayTime": "Computer response delay",
     "@aiResponseDelayTime": {},
-    "aiIsDelaying": "AI is currently in a delayed response phase. Please wait for a while before proceeding.",
+    "aiIsDelaying": "The computer's response is currently delayed. Please wait before proceeding.",
     "@aiIsDelaying": {},
     "tipCanNotRemoveNonadjacent": "You cannot remove a nonadjacent piece.",
     "@tipCanNotRemoveNonadjacent": {},
@@ -1533,11 +1533,11 @@
     "@showPositionalAdvantageIndicator": {},
     "usePerfectDatabase": "Use perfect database",
     "@usePerfectDatabase": {},
-    "perfectDatabaseDescription": "Use solved positions to choose proven optimal moves.\n\nFor supported rule sets, the perfect database can supply moves directly and verify moves selected from the human game database. The AI uses other enabled sources or engine search when the database cannot answer.\n\nDatabase moves are not affected by difficulty or most play-style settings and usually require much less thinking time.",
+    "perfectDatabaseDescription": "Use solved positions to choose proven optimal moves.\n\nFor supported rule sets, the perfect database can supply moves directly and verify moves selected from the human game database. The computer uses other enabled sources or engine search when the database cannot answer.\n\nDatabase moves are not affected by difficulty or most play-style settings and usually require much less thinking time.",
     "@perfectDatabaseDescription": {},
     "backgroundImage": "Background image",
     "@backgroundImage": {},
-    "whatIsRandom": "When the 'Use perfect database' option is not enabled, the 'Random' setting causes the AI to move pieces randomly without using any algorithms for move selection. This typically results in significantly weaker gameplay. Conversely, when 'Use perfect database' is enabled, the AI exclusively relies on the 'Perfect Database' for making decisions, instead of blending it with traditional AI algorithms. In this mode, the AI's moves are entirely based on the database's content, eschewing reliance on real-time calculations or search algorithms.",
+    "whatIsRandom": "When 'Use perfect database' is off, 'Random' makes the computer choose moves randomly without engine search, resulting in much weaker play. When the database is on, the computer uses database moves instead of random or engine-selected moves whenever the database can answer.",
     "@whatIsRandom": {},
     "removeOpponentsPieceFromHandThenOpponentsTurn": "Remove the required pieces from the opponent's hand, then they take a turn",
     "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
@@ -1693,7 +1693,7 @@
     "@useOpeningBook_Detail": {},
     "showAdvantageGraph": "Show advantage graph",
     "@showAdvantageGraph": {},
-    "advantageGraphHint": "The graph updates only after AI moves; human moves are not evaluated.",
+    "advantageGraphHint": "The graph updates only after computer moves; human moves are not evaluated.",
     "@advantageGraphHint": {},
     "removalBasedOnMillCounts": "Remove pieces after placement based on mill counts",
     "@removalBasedOnMillCounts": {},
@@ -2123,7 +2123,7 @@
     "@drawRate": {},
     "lossRate": "Loss rate",
     "@lossRate": {},
-    "aiStatistics": "AI statistics",
+    "aiStatistics": "Computer-game statistics",
     "@aiStatistics": {},
     "enableStatistics": "Enable statistics",
     "@enableStatistics": {},
@@ -4428,19 +4428,19 @@
     "@configImportErrorReadFailed": {},
     "engineTimeoutPerformanceWarningTitle": "Performance Warning",
     "@engineTimeoutPerformanceWarningTitle": {
-        "description": "Title of dialog shown when AI engine times out due to insufficient performance"
+        "description": "Title of dialog shown when the game engine times out due to insufficient performance"
     },
-    "engineTimeoutPerformanceWarningContent": "The AI engine timed out. Your device may have insufficient performance. Try reducing the AI thinking time in Settings. If the issue persists, please submit Feedback.",
+    "engineTimeoutPerformanceWarningContent": "The game engine timed out. Your device may have insufficient performance. Try reducing the computer thinking time in Settings. If the issue persists, please submit Feedback.",
     "@engineTimeoutPerformanceWarningContent": {
-        "description": "Content of dialog shown when AI engine times out due to insufficient performance"
+        "description": "Content of dialog shown when the game engine times out due to insufficient performance"
     },
-    "engineFailureTitle": "Engine Error",
+    "engineFailureTitle": "Game engine error",
     "@engineFailureTitle": {
-        "description": "Title of dialog shown when AI engine fails to find a move"
+        "description": "Title of dialog shown when the game engine fails to find a move"
     },
-    "engineFailureContent": "The AI engine failed to produce a move. This is an unexpected internal error. Would you like to send a diagnostic report to help us investigate?",
+    "engineFailureContent": "The game engine failed to produce a move. This is an unexpected internal error. Would you like to send a diagnostic report to help us investigate?",
     "@engineFailureContent": {
-        "description": "Content of dialog shown when AI engine fails to find a move"
+        "description": "Content of dialog shown when the game engine fails to find a move"
     },
     "sendReport": "Send Report",
     "@sendReport": {
@@ -4559,7 +4559,7 @@
     "@openingFavours": {},
     "preferFavoredOpenings": "Prefer favorable openings",
     "@preferFavoredOpenings": {},
-    "preferFavoredOpenings_Detail": "Prefer a known opening line that favors the AI before falling back to the engine's choice. This may differ from the strongest move.",
+    "preferFavoredOpenings_Detail": "Prefer a known opening line that favors the computer before falling back to the engine's choice. This may differ from the strongest move.",
     "@preferFavoredOpenings_Detail": {},
     "openingBookStudio": "Opening Book Studio",
     "@openingBookStudio": {},
@@ -4654,7 +4654,7 @@
     "@openingBookStudioSampleSize": {},
     "openingRandomness": "Opening randomness",
     "@openingRandomness": {},
-    "openingRandomness_Detail": "When move variation is enabled, control how broadly the AI chooses among opening-book candidates. 0% always selects the strongest move; 100% selects candidates uniformly. The 60% default favors stronger moves while still varying play.",
+    "openingRandomness_Detail": "When move variation is enabled, control how broadly the computer chooses among opening-book candidates. 0% always selects the strongest move; 100% selects candidates uniformly. The 60% default favors stronger moves while still varying play.",
     "@openingRandomness_Detail": {},
     "downloadHumanGameDatabase": "Download human game database",
     "@downloadHumanGameDatabase": {},
@@ -4670,11 +4670,11 @@
     "@engineThreads": {},
     "engineThreads_Detail": "Used only when multi-threaded search is enabled. More threads are not always stronger; strength does not scale linearly with thread count, and too many threads can be slower or weaker.",
     "@engineThreads_Detail": {},
-    "aiKnowledgeSources": "AI knowledge sources",
+    "aiKnowledgeSources": "Computer move sources",
     "@aiKnowledgeSources": {},
     "aiKnowledgeSources_Detail": "Opening book, perfect database, human game database, and trap library.",
     "@aiKnowledgeSources_Detail": {},
-    "advancedAiSearch": "Advanced AI search",
+    "advancedAiSearch": "Advanced engine search",
     "@advancedAiSearch": {},
     "advancedAiSearch_Detail": "Algorithm, randomness, search behavior, and threading.",
     "@advancedAiSearch_Detail": {},
@@ -4744,7 +4744,7 @@
     "@ongoingGames": {},
     "boardOrientation": "Board orientation",
     "@boardOrientation": {},
-    "humanAiRobotLevel": "Robot level {level}",
+    "humanAiRobotLevel": "Computer level {level}",
     "@humanAiRobotLevel": {
         "placeholders": {
             "level": {
@@ -4876,9 +4876,9 @@
     "@openingExplorerSelectLine": {},
     "openingExplorerCurrentLine": "Current line",
     "@openingExplorerCurrentLine": {},
-    "forceAiRedo": "Let AI reconsider",
+    "forceAiRedo": "Let computer recalculate",
     "@forceAiRedo": {},
-    "aiNoAlternativeMove": "No alternative move available; the AI restored its original move.",
+    "aiNoAlternativeMove": "No alternative move available; the computer restored its original move.",
     "@aiNoAlternativeMove": {},
     "offerDraw": "Offer draw",
     "@offerDraw": {},
@@ -4886,7 +4886,7 @@
     "@confirmOfferDraw": {},
     "areYouSureYouWantToOfferADraw": "Are you sure you want to offer a draw?",
     "@areYouSureYouWantToOfferADraw": {},
-    "aiDeclinedDraw": "The AI declined your draw offer.",
+    "aiDeclinedDraw": "The computer declined your draw offer.",
     "@aiDeclinedDraw": {},
     "decline": "Decline",
     "@decline": {},
@@ -5182,7 +5182,7 @@
     "humanDatabaseNoPositionRecords": "Not enough human-game data for this position",
     "@humanDatabaseNoPositionRecords": {"description": "Opening explorer state when a loaded human database has no current-position records."},
     "manageKnowledgeSources": "Manage",
-    "@manageKnowledgeSources": {"description": "Button opening AI knowledge source management."},
+    "@manageKnowledgeSources": {"description": "Button opening computer move source management."},
     "localOpeningKnowledge": "Local opening knowledge",
     "@localOpeningKnowledge": {"description": "Header for bundled opening book candidates."},
     "perfectDatabaseSuggestion": "Recommended move (no usable human-game data)",
@@ -5617,15 +5617,15 @@
     },
     "statisticsOverallRecord": "Overall",
     "@statisticsOverallRecord": {
-        "description": "Label for the combined win/draw/loss record at one AI difficulty"
+        "description": "Label for the combined win/draw/loss record at one computer difficulty"
     },
     "humanMovesFirst": "Human moves first",
     "@humanMovesFirst": {
-        "description": "Switch controlling whether the human or AI makes the first move"
+        "description": "Switch controlling whether the human or computer makes the first move"
     },
     "aiThinkingTimeValue": "{seconds, plural, =0{No limit} =1{1 second} other{{seconds} seconds}}",
     "@aiThinkingTimeValue": {
-        "description": "Displayed value for the maximum AI thinking time per move",
+        "description": "Displayed value for the maximum computer thinking time per move",
         "placeholders": {
             "seconds": {
                 "type": "int",

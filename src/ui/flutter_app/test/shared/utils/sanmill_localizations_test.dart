@@ -9,6 +9,36 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 
 void main() {
+  test('separates computer-play and generative AI terminology', () {
+    final S english = lookupS(const Locale('en'));
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(english.humanVsAi, 'Human vs computer');
+    expect(english.aiVsAi, 'Computer vs computer');
+    expect(english.humanAiRobotLevel(7), 'Computer level 7');
+    expect(english.advancedAiSearch, 'Advanced engine search');
+    expect(english.aiChatTitle, 'AI Assistant');
+    expect(english.aiAnalysisTitle, 'AI Game Analysis');
+
+    expect(chinese.humanVsAi, '人机对弈');
+    expect(chinese.aiVsAi, '电脑自弈');
+    expect(chinese.humanAiRobotLevel(7), '电脑等级 7');
+    expect(chinese.advancedAiSearch, '高级引擎搜索');
+    expect(chinese.aiChatTitle, 'AI 助手');
+    expect(chinese.aiAnalysisTitle, 'AI 棋局分析');
+  });
+
+  test('loads gameplay and AI terms in unchanged locales', () {
+    for (final Locale locale in <Locale>[
+      const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'),
+      const Locale('fr'),
+    ]) {
+      final S strings = lookupS(locale);
+      expect(strings.humanVsAi, isNotEmpty);
+      expect(strings.aiChatTitle, isNotEmpty);
+    }
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =

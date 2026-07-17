@@ -1032,6 +1032,19 @@ void main() {
     expect(
       tester
           .widget<Text>(find.byKey(const Key('play_area_human_ai_robot_title')))
+          .data,
+      'Computer level 1',
+    );
+    expect(
+      find.descendant(
+        of: robotPanel,
+        matching: find.byIcon(Icons.smart_toy_outlined),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      tester
+          .widget<Text>(find.byKey(const Key('play_area_human_ai_robot_title')))
           .style
           ?.color,
       messageTextColor,
@@ -7059,6 +7072,7 @@ void main() {
       find.byKey(const Key('play_area_human_ai_robot_thinking_icon')),
       findsOneWidget,
     );
+    expect(find.text('Computer level 1'), findsOneWidget);
 
     controller.isEngineRunning = false;
     controller.isEngineInDelay = true;

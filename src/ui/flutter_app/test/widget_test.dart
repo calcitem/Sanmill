@@ -581,6 +581,20 @@ void main() {
         find.byKey(const Key('sanmill_home_play_sheet_mill.play.aiVsAi')),
         findsOneWidget,
       );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('sanmill_home_play_sheet')),
+          matching: find.text('Play against computer'),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('sanmill_home_play_sheet')),
+          matching: find.text('Computer vs computer'),
+        ),
+        findsOneWidget,
+      );
 
       await tester.tap(
         find.byKey(const Key('sanmill_home_play_sheet_mill.play.humanVsAi')),
@@ -594,6 +608,13 @@ void main() {
       );
       expect(find.byKey(const Key('human_ai')), findsNothing);
       expect(find.byKey(const Key('human_ai_new_game_sheet')), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('human_ai_new_game_sheet')),
+          matching: find.text('Human vs computer'),
+        ),
+        findsOneWidget,
+      );
       expect(
         find.byKey(const Key('sanmill_bottom_navigation_bar')),
         findsOneWidget,
@@ -1435,6 +1456,7 @@ void main() {
         ShellRouteIds.appSettingsGroup.value,
       );
       expect(find.text('Human moves first'), findsOneWidget);
+      expect(find.text('Computer thinking time'), findsOneWidget);
       expect(find.text('1 second'), findsOneWidget);
       expect(
         find.byKey(
@@ -1455,6 +1477,9 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
+      expect(find.text('Computer play style'), findsOneWidget);
+      expect(find.text('Computer move sources'), findsOneWidget);
+      expect(find.text('Advanced engine search'), findsOneWidget);
       await tester.tap(
         find.byKey(
           const Key(
@@ -1477,6 +1502,13 @@ void main() {
       expect(
         advancedAiScaffold.backgroundColor,
         Theme.of(advancedAiContext).colorScheme.surface,
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('advanced_ai_search_page')),
+          matching: find.text('Advanced engine search'),
+        ),
+        findsOneWidget,
       );
 
       await tester.binding.handlePopRoute();

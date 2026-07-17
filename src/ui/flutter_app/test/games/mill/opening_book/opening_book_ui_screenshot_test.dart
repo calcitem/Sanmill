@@ -69,14 +69,12 @@ void main() {
     await tester.pumpWidget(_localizedApp(const GeneralSettingsPage()));
     await tester.pump();
 
-    await tester.tap(find.text('AI knowledge sources'));
+    await tester.tap(find.text('Computer move sources'));
     await tester.pumpAndSettle();
 
     final Finder useOpeningBook = find.text('Use opening book');
     final Finder showOpeningInfo = find.text('Show opening information');
-    final Finder preferFavoredOpenings = find.text(
-      'Prefer favorable openings',
-    );
+    final Finder preferFavoredOpenings = find.text('Prefer favorable openings');
     final Finder settingsList = find.byKey(const Key('settings_list'));
     expect(useOpeningBook, findsOneWidget);
     expect(showOpeningInfo, findsOneWidget);
