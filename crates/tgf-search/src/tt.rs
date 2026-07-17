@@ -247,7 +247,10 @@ fn ratio_pct(numerator: usize, denominator: usize) -> f64 {
 }
 
 impl ClusteredTt {
-    /// 24 → 16 Mi packed entries (~128 MiB), matching master
+    /// 24 → 16 Mi packed entries (~256 MiB), matching master's entry
+    /// count while keeping each four-entry Rust bucket in one cache line.
+    ///
+    /// Master uses
     /// `TRANSPOSITION_TABLE_SIZE = 0x1000000` (16 Mi entries) in
     /// `src/tt.cpp`.  Users with constrained memory
     /// can downsize via `Searcher::resize_tt_by_mb` or the
@@ -260,7 +263,7 @@ impl ClusteredTt {
 
     pub(crate) fn new_with_cluster_bits_and_tt_move(bits: u32, enable_tt_move: bool) -> Self {
         // Permit larger TTs: master defaults to 16 Mi slots which
-        // requires cluster_bits >= 23.  Cap at 26 (≈512 MiB) to keep
+        // requires cluster_bits >= 24.  Cap at 26 (≈1 GiB) to keep
         // accidental misuse from immediately exhausting memory.
         let bits = bits.clamp(10, 26);
         let cluster_bits = bits.saturating_sub(TT_CLUSTER_ENTRY_BITS);
@@ -728,12 +731,24 @@ impl SharedTt {
         enable_tt_move: bool,
     ) -> Self {
         let bytes = (mb.max(1) as usize).saturating_mul(1024 * 1024);
-        let entry_size = std::mem::size_of::<AtomicU64>().max(1);
-        let slots = (bytes / entry_size).max(1);
-        let bits = (usize::BITS - 1 - slots.leading_zeros())
+        // Size from the physical 64-byte bucket, not just the four packed
+        // AtomicU64 meta lanes.  Each bucket also carries co-located TT moves
+        // and alignment padding, so treating a logical slot as eight bytes
+        // makes every `Hash` request allocate twice its advertised capacity.
+        let cluster_size = std::mem::size_of::<TtCluster>().max(1);
+        let clusters = (bytes / cluster_size).max(1);
+        let cluster_bits = usize::BITS - 1 - clusters.leading_zeros();
+        let bits = cluster_bits
+            .saturating_add(TT_CLUSTER_ENTRY_BITS)
             .max(cluster_bits_floor)
             .clamp(10, 26);
         Self::new_with_tt_move(bits, enable_tt_move)
+    }
+
+    /// Physical bytes reserved by the TT cluster allocation.
+    #[inline]
+    pub fn capacity_bytes(&self) -> usize {
+        self.inner.clusters.len * std::mem::size_of::<TtCluster>()
     }
 
     /// Whether this TT reads and writes in-cluster TT move-order hints.

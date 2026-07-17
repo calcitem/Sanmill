@@ -1083,6 +1083,21 @@ fn shared_tt_with_capacity_mb_respects_requested_floor() {
 }
 
 #[test]
+fn shared_tt_with_capacity_mb_counts_physical_cluster_storage() {
+    let one_mb = SharedTt::with_capacity_mb(1, 10);
+    let sixty_four_mb = SharedTt::with_capacity_mb(64, 10);
+    let floored = SharedTt::with_capacity_mb(1, 20);
+
+    assert_eq!(one_mb.capacity_bytes(), 1 << 20);
+    assert_eq!(sixty_four_mb.capacity_bytes(), 64 << 20);
+    assert_eq!(
+        floored.capacity_bytes(),
+        16 << 20,
+        "the slot-count floor may raise the physical capacity"
+    );
+}
+
+#[test]
 fn shared_tt_storage_is_page_aligned_with_one_cache_line_buckets() {
     let tt = SharedTt::with_capacity_mb(1, 14);
     let addr = tt.inner.clusters.as_ptr() as usize;

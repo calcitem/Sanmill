@@ -1500,17 +1500,36 @@ Behavior-changing or high-risk experiments:
     `SKILL=30 MOVETIME=1 PARENT_REV=HEAD^ GAMES=5000 JOBS=20
     bash scripts/run_h2h_head_vs_parent.sh` (no `H2H_CURRENT_ENV`, both
     sides default TT move ON). 5000 games yields a 99.9% CI near +-3.5%.
-  - The FRB / Flutter production path still uses `SharedTt::default()`
-    (`enable_tt_move=false`), so the App does not yet benefit from TT move
-    ordering at all, regardless of layout. Wiring TT move into
-    `crates/tgf-frb/src/games/mill/search.rs::MILL_SHARED_TT` is a separate
-    decision that depends on confirming the H2H win at full sample and on a
-    mobile memory budget (256 MiB is too large for phones; mobile would need
-    a smaller `cluster_bits` or a dedicated hash cap).
-  - OFF-path memory regression (256 MiB even when TT move is disabled) is
-    accepted for now because OFF is an A/B rollback, not a release path. If
-    OFF-on-mobile becomes relevant, introduce a dual layout rather than
-    re-adding the side array.
+  - RESOLVED 2026-07-17: the FRB / Flutter production path still leaves TT
+    move ordering disabled, but Android, iOS, and wasm now allocate a dedicated
+    16 MiB process-global table instead of `SharedTt::default()`'s 256 MiB
+    desktop table. Desktop keeps the master-equivalent 16 Mi-entry table. The
+    shared `with_capacity_mb` calculation was also corrected to size from the
+    physical 64-byte cluster rather than only its four 8-byte meta lanes; the
+    old calculation allocated twice the advertised `Hash` capacity after move
+    co-location.
+
+    Pixel 7 Profile A/B isolated the allocation: before the fix, the first AI
+    search raised Native Heap from 57,380 KiB to 319,840 KiB (+262,460 KiB)
+    and total RSS from 448,532 KiB to 712,572 KiB. After the fix, the same
+    first-search transition raised Native Heap from 38,972 KiB to 56,156 KiB
+    (+17,184 KiB) and total RSS from 399,800 KiB to 439,504 KiB; a second AI
+    search left Native Heap stable at 56,128 KiB. The app returned and applied
+    legal AI moves in both searches.
+
+    Fixed-depth 16 MiB-vs-256 MiB diagnostics kept bestmove and score equal on
+    `start` / `reduced_material` depth 12 and `moving_entry` /
+    `capture_pending` depths 15 and 18. TT collision differences changed node
+    counts slightly in three cases, as expected for a capacity change, while
+    median wall time on this Windows host improved or stayed within noise.
+    Raw CSVs:
+    `out/diagnostics/sanmill-perf/mobile16_vs_desktop256_primary.csv`,
+    `out/diagnostics/sanmill-perf/mobile16_vs_desktop256_deep.csv` and
+    `out/diagnostics/sanmill-perf/mobile16_vs_desktop256_deeper.csv`.
+  - The desktop OFF-path memory regression (256 MiB even when TT move is
+    disabled) remains accepted because OFF is an A/B rollback there, not a
+    constrained-target release path. Android, iOS, and wasm no longer pay that
+    footprint.
 
 - Fresh profile after TT move co-location (2026-06-25, commit `8f8da79a6`):
   Re-profile before choosing the next optimization; the post-co-location

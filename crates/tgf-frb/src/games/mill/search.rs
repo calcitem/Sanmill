@@ -57,12 +57,37 @@ pub(crate) static ACTIVE_SEARCH: Lazy<Mutex<Option<SearchAbortHandle>>> =
     Lazy::new(|| Mutex::new(None));
 
 static MILL_SHARED_TT: Lazy<SharedTt> = Lazy::new(|| {
-    let tt = SharedTt::default();
+    let tt = new_process_mill_tt();
     // Match master's process-global TT lifecycle: pay physical initialization
     // once, then use fake-clean generation bumps before each search.
     tt.clear();
     tt
 });
+
+#[cfg(any(target_os = "android", target_os = "ios", target_arch = "wasm32", test))]
+const CONSTRAINED_TARGET_TT_MB: u32 = 16;
+#[cfg(any(target_os = "android", target_os = "ios", target_arch = "wasm32", test))]
+const CONSTRAINED_TARGET_TT_CLUSTER_BITS_FLOOR: u32 = 14;
+
+fn new_process_mill_tt() -> SharedTt {
+    #[cfg(any(target_os = "android", target_os = "ios", target_arch = "wasm32"))]
+    let tt = new_constrained_target_mill_tt();
+    #[cfg(not(any(target_os = "android", target_os = "ios", target_arch = "wasm32")))]
+    let tt = SharedTt::default();
+    tt
+}
+
+#[cfg(any(target_os = "android", target_os = "ios", target_arch = "wasm32", test))]
+fn new_constrained_target_mill_tt() -> SharedTt {
+    // The desktop table keeps master's 16 Mi-entry parity but physically
+    // occupies 256 MiB after TT moves were co-located into 64-byte buckets.
+    // That single allocation is too large for a mobile process or wasm linear
+    // memory.  Use the engine's existing 16 MiB default hash budget there.
+    SharedTt::with_capacity_mb(
+        CONSTRAINED_TARGET_TT_MB,
+        CONSTRAINED_TARGET_TT_CLUSTER_BITS_FLOOR,
+    )
+}
 
 const ANALYSIS_MULTI_PV_TT_MB: u32 = 16;
 const ANALYSIS_MULTI_PV_TT_CLUSTER_BITS_FLOOR: u32 = 14;
@@ -1169,6 +1194,15 @@ pub(crate) fn request_abort_active_search() -> bool {
 mod tests {
     use super::*;
     use tgf_mill::MillRules;
+
+    #[test]
+    fn constrained_target_tt_honors_its_physical_memory_budget() {
+        let tt = new_constrained_target_mill_tt();
+        assert_eq!(
+            tt.capacity_bytes(),
+            CONSTRAINED_TARGET_TT_MB as usize * 1024 * 1024
+        );
+    }
 
     #[test]
     fn move_none_fallback_recovers_legal_move_from_initial_position() {
