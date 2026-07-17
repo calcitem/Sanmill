@@ -5373,5 +5373,13 @@
                 "example": "42.5"
             }
         }
+    },
+    "showGameTips": "显示对局提示",
+    "@showGameTips": {
+        "description": "Persistent in-game switch for turn guidance and opening information"
+    },
+    "showGameTips_Detail": "在当前行棋方旁显示行棋提示和开局信息。",
+    "@showGameTips_Detail": {
+        "description": "Explanation of the game tips preference"
     }
 }

@@ -7,7 +7,7 @@ import 'package:sanmill/generated/intl/l10n.dart';
 
 void main() {
   test(
-    'Simplified Chinese localizes first move and thinking-time values',
+    'Simplified Chinese localizes first move, tips, and thinking-time values',
     () async {
       final S strings = await S.delegate.load(const Locale('zh'));
 
@@ -15,6 +15,8 @@ void main() {
       expect(strings.aiThinkingTimeValue(0), '不限时');
       expect(strings.aiThinkingTimeValue(1), '1 秒');
       expect(strings.aiThinkingTimeValue(6), '6 秒');
+      expect(strings.showGameTips, '显示对局提示');
+      expect(strings.showGameTips_Detail, '在当前行棋方旁显示行棋提示和开局信息。');
     },
   );
 }
