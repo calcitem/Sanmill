@@ -227,6 +227,23 @@ void main() {
     expect(english.analysisDepthSemantics(24), 'Depth 24');
   });
 
+  test('states English human database game counts without ambiguity', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(
+      english.humanGameDatabaseStatsSemantics('d6', '100', '0', '0', 1),
+      "Human game database move d6. From the moving player's perspective: "
+      '100 percent wins, 0 percent draws, and 0 percent losses. '
+      'Recorded games: 1.',
+    );
+    expect(
+      english.humanGameDatabaseResultsSemantics(50, 20, 30, 2),
+      "Human game database results. From the moving player's perspective: "
+      '50 percent wins, 20 percent draws, and 30 percent losses. '
+      'Recorded games: 2.',
+    );
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =

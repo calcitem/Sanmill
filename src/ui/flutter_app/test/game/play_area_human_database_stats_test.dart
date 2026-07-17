@@ -235,8 +235,8 @@ void main() {
     expect(
       statsSemantics.properties.label,
       "Human game database move d6. From the moving player's perspective: "
-      '50.0 percent wins, 30.0 percent draws, and 20.0 percent losses '
-      'across 100 recorded games.',
+      '50.0 percent wins, 30.0 percent draws, and 20.0 percent losses. '
+      'Recorded games: 100.',
     );
   });
 
@@ -6045,7 +6045,7 @@ void main() {
               widget.properties.label ==
                   "Human game database results. From the moving player's "
                       'perspective: 50 percent wins, 20 percent draws, and '
-                      '30 percent losses across 100 recorded games.',
+                      '30 percent losses. Recorded games: 100.',
         ),
       ),
       findsOneWidget,
