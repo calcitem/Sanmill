@@ -129,6 +129,10 @@ void main() {
         english.savedGameRenameFailed,
         'Could not rename this saved game. Check the filename and try again.',
       );
+      expect(
+        english.savedGameOpenFailed,
+        'Could not open this PGN file. Choose another file and try again.',
+      );
     },
   );
 

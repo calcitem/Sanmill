@@ -6433,5 +6433,9 @@
     "savedGameRenameFailed": "Could not rename this saved game. Check the filename and try again.",
     "@savedGameRenameFailed": {
         "description": "Error shown when renaming a saved PGN game file fails"
+    },
+    "savedGameOpenFailed": "Could not open this PGN file. Choose another file and try again.",
+    "@savedGameOpenFailed": {
+        "description": "Error shown when selecting, reading, or previewing a PGN game file fails"
     }
 }
