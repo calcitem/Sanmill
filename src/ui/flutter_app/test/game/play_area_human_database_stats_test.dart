@@ -519,11 +519,11 @@ void main() {
       find.byKey(const Key('play_area_regular_bottom_bar_take_back')),
       findsOneWidget,
     );
-    final double headerToBoardGap =
-        tester.getTopLeft(find.byKey(const Key('test_board_square'))).dy -
-        tester.getBottomLeft(find.byKey(const Key('play_area_game_header'))).dy;
-    expect(headerToBoardGap, greaterThanOrEqualTo(0));
-    expect(headerToBoardGap, lessThan(120));
+    expect(
+      find.byKey(const Key('play_area_game_header_hidden')),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('play_area_game_header')), findsNothing);
 
     expect(
       tester
@@ -598,6 +598,9 @@ void main() {
     await tester.tap(gameTipsAction);
     await tester.pumpAndSettle();
     expect(db.generalSettings.showGameTips, isTrue);
+    expect(find.byKey(const Key('play_area_game_header')), findsOneWidget);
+    expect(find.byKey(const Key('game_header_contextual_tip')), findsOneWidget);
+    expect(tester.takeException(), isNull);
     expect(
       find.byKey(const Key('play_area_regular_game_menu_sheet')),
       findsOneWidget,
@@ -7133,6 +7136,62 @@ void main() {
       tester.getTopLeft(boardPane).dx,
       lessThan(tester.getTopLeft(sidePanel).dx),
     );
+  });
+
+  testWidgets('regular landscape keeps the contextual tip in the side panel', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(showGameTips: true);
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final GameController controller = GameController();
+    controller.gameInstance.gameMode = GameMode.aiVsAi;
+    <ExtMove>[
+      ExtMove('a1', side: PieceColor.white, roundIndex: 1),
+      ExtMove('d1', side: PieceColor.black, roundIndex: 1),
+    ].forEach(controller.gameRecorder.appendMove);
+    controller.headerTipNotifier.showTip(
+      'Computer is thinking',
+      snackBar: false,
+    );
+
+    await tester.binding.setSurfaceSize(const Size(900, 420));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 388,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final Finder sidePanel = find.byKey(
+      const Key('play_area_regular_landscape_side_panel'),
+    );
+    final Finder contextualHeader = find.byKey(
+      const Key('play_area_regular_landscape_header'),
+    );
+
+    expect(sidePanel, findsOneWidget);
+    expect(contextualHeader, findsOneWidget);
+    expect(
+      find.descendant(
+        of: sidePanel,
+        matching: find.byKey(const Key('game_header_contextual_tip')),
+      ),
+      findsOneWidget,
+    );
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('human vs ai uses landscape side panel layout', (

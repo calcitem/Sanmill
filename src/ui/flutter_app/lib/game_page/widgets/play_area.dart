@@ -2490,7 +2490,9 @@ class PlayAreaState extends State<PlayArea> {
     assert(_supportsGameTips, 'Game tips require a playable game mode.');
     final GeneralSettings current = DB().generalSettings;
     final bool enabled = !current.showGameTips;
-    DB().generalSettings = current.copyWith(showGameTips: enabled);
+    setState(() {
+      DB().generalSettings = current.copyWith(showGameTips: enabled);
+    });
     RecordingService().recordEvent(
       RecordingEventType.toolbarAction,
       <String, dynamic>{
@@ -3841,8 +3843,16 @@ class PlayAreaState extends State<PlayArea> {
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           final Widget moveList = _buildMoveListForRegularGame(context);
-          const Widget topTable = GameHeader(key: Key('play_area_game_header'));
-          const double topPanelHeight = kToolbarHeight + AppTheme.boardMargin;
+          final bool showContextualTip =
+              isPlayableGame &&
+              _supportsGameTips &&
+              DB().generalSettings.showGameTips;
+          final Widget topTable = showContextualTip
+              ? const GameHeader(key: Key('play_area_game_header'))
+              : const SizedBox.shrink(key: Key('play_area_game_header_hidden'));
+          final double topPanelHeight = showContextualTip
+              ? GameHeader.contextualHeight
+              : 0;
           final double moveListReserve = isPlayableGame
               ? _wrappedMoveListReservedHeightForRoute(context)
               : 0;
@@ -3912,9 +3922,9 @@ class PlayAreaState extends State<PlayArea> {
                 key: const Key('play_area_column'),
                 children: <Widget>[
                   moveList,
-                  const Expanded(
+                  Expanded(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: Align(
                         alignment: Alignment.bottomCenter,
                         child: topTable,
@@ -4328,9 +4338,11 @@ class PlayAreaState extends State<PlayArea> {
                         ),
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          const GameHeader(
-                            key: Key('play_area_regular_landscape_header'),
-                          ),
+                          if (_supportsGameTips &&
+                              DB().generalSettings.showGameTips)
+                            const GameHeader(
+                              key: Key('play_area_regular_landscape_header'),
+                            ),
                           Expanded(
                             child: _InlineMoveList(
                               key: const Key(

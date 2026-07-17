@@ -36,35 +36,11 @@ void main() {
       expect(legacySpacingSize.height, kToolbarHeight + AppTheme.boardMargin);
     });
 
-    testWidgets("GameHeader updates tip", (WidgetTester tester) async {
-      const String testString = "Test";
-
-      final MockDB db = MockDB();
-      db.generalSettings = const GeneralSettings(showGameTips: true);
-      DB.instance = db;
-      final GameController controller = GameController();
-      controller.gameInstance.gameMode = GameMode.humanVsHuman;
-      const HeaderTip screen = HeaderTip();
-
-      // Wrap the widget with necessary context (MaterialApp and Localizations)
-      await tester.pumpWidget(makeTestableWidget(screen));
-
-      // Verify initial text
-      expect(find.text(SEn().welcome), findsOneWidget);
-
-      // Trigger tip update
-      controller.headerTipNotifier.showTip(testString, snackBar: false);
-
-      // Ensure all updates are applied
-      await tester.pumpAndSettle();
-
-      // Verify updated text
-      expect(find.text(testString), findsOneWidget);
-    });
-
-    testWidgets("HeaderTip scrolls overflowing tip", (
+    testWidgets("GameHeader updates its contextual tip", (
       WidgetTester tester,
     ) async {
+      const String testString = "Test";
+
       final MockDB db = MockDB();
       db.generalSettings = const GeneralSettings(showGameTips: true);
       DB.instance = db;
@@ -75,31 +51,43 @@ void main() {
       await tester.pumpWidget(
         makeTestableWidget(
           const Center(
-            child: SizedBox(width: 140, height: 48, child: HeaderTip()),
+            child: SizedBox(width: 360, height: 64, child: GameHeader()),
           ),
         ),
       );
 
-      controller.headerTipNotifier.showTip(
-        'Opening: Very long header text that must scroll horizontally',
-        snackBar: false,
-      );
-      await tester.pump(const Duration(milliseconds: 1));
-      await tester.pump(const Duration(milliseconds: 1));
+      expect(find.text(SEn().welcome), findsOneWidget);
 
-      expect(find.byKey(const Key('header_tip_marquee')), findsOneWidget);
-      final Finder textFinder = find.textContaining('Opening:').first;
-      final double initialLeft = tester.getTopLeft(textFinder).dx;
+      controller.headerTipNotifier.showTip(testString, snackBar: false);
+      await tester.pumpAndSettle();
 
-      await tester.pump(const Duration(milliseconds: 800));
-
-      final double movedLeft = tester.getTopLeft(textFinder).dx;
-      expect(movedLeft, lessThan(initialLeft));
-
-      await tester.pumpWidget(const SizedBox.shrink());
+      expect(find.text(testString), findsOneWidget);
+      expect(find.byKey(const Key('game_header_contextual_tip')), findsOne);
     });
 
-    testWidgets("HeaderTip normalizes unsafe punctuation", (
+    testWidgets("GameTipBubble bounds a long tip on narrow widths", (
+      WidgetTester tester,
+    ) async {
+      const String message =
+          'Opening: Very long guidance that must remain inside the player row';
+
+      await tester.pumpWidget(
+        makeTestableWidget(
+          const Center(
+            child: SizedBox(width: 140, child: GameTipBubble(message: message)),
+          ),
+        ),
+      );
+
+      expect(find.byTooltip(message), findsOneWidget);
+      expect(
+        tester.getSize(find.byType(GameTipBubble)).width,
+        lessThanOrEqualTo(140),
+      );
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets("HeaderTipNotifier normalizes unsafe punctuation", (
       WidgetTester tester,
     ) async {
       DB.instance = MockDB();
@@ -117,60 +105,23 @@ void main() {
       );
     });
 
-    testWidgets("GameHeader renders without drawer context", (
+    testWidgets("GameHeader hides when game tips are disabled", (
       WidgetTester tester,
     ) async {
       DB.instance = MockDB();
       final GameController controller = GameController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
-      const Scaffold screen = Scaffold(appBar: GameHeader());
-
-      await tester.pumpWidget(makeTestableWidget(screen));
-
-      await tester.pumpAndSettle();
-
-      expect(find.byType(HeaderIcons), findsOneWidget);
-      expect(find.byKey(const Key("header_icon_row")), findsOneWidget);
-      expect(
-        tester
-            .widget<Padding>(find.byKey(const Key('game_header_padding')))
-            .padding,
-        EdgeInsets.zero,
-      );
-    });
-
-    testWidgets(
-      "GameHeader clamps positional advantage divider on narrow width",
-      (WidgetTester tester) async {
-        final MockDB db = MockDB();
-        db.displaySettings = const DisplaySettings(
-          boardTop: 0,
-          isPositionalAdvantageIndicatorShown: true,
-        );
-        DB.instance = db;
-        final GameController controller = GameController();
-        controller.gameInstance.gameMode = GameMode.humanVsHuman;
-
-        await tester.pumpWidget(
-          makeTestableWidget(
-            const Center(
-              child: SizedBox(width: 156, height: 96, child: GameHeader()),
-            ),
+      await tester.pumpWidget(
+        makeTestableWidget(
+          const Center(
+            child: SizedBox(width: 360, height: 64, child: GameHeader()),
           ),
-        );
-        await tester.pumpAndSettle();
+        ),
+      );
 
-        expect(tester.takeException(), isNull);
-        final Size dividerSize = tester.getSize(
-          find.byKey(const Key('positional_advantage_divider')),
-        );
-        final Size rowSize = tester.getSize(
-          find.byKey(const Key('positional_advantage_row')),
-        );
-        expect(dividerSize.width, lessThanOrEqualTo(156));
-        expect(rowSize.width, dividerSize.width);
-      },
-    );
+      expect(find.byKey(const Key('game_header_hidden')), findsOneWidget);
+      expect(find.byKey(const Key('game_header_contextual_row')), findsNothing);
+    });
   });
 }

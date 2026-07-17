@@ -5,214 +5,102 @@
 
 part of 'game_page.dart';
 
-@visibleForTesting
 class GameHeader extends StatefulWidget implements PreferredSizeWidget {
   const GameHeader({super.key});
 
+  static const double contextualHeight = kToolbarHeight + AppTheme.boardMargin;
+
   @override
-  Size get preferredSize =>
-      const Size.fromHeight(kToolbarHeight + AppTheme.boardMargin);
+  Size get preferredSize => const Size.fromHeight(contextualHeight);
 
   @override
   State<GameHeader> createState() => _GameHeaderState();
 }
 
 class _GameHeaderState extends State<GameHeader> {
-  ScrollNotificationObserverState? _scrollNotificationObserver;
-  bool _scrolledUnder = false;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _updateScrollObserver();
-    _validatePosition();
-  }
-
-  void _updateScrollObserver() {
-    if (_scrollNotificationObserver != null) {
-      _scrollNotificationObserver!.removeListener(_handleScrollNotification);
-    }
-    _scrollNotificationObserver = ScrollNotificationObserver.of(context);
-    if (_scrollNotificationObserver != null) {
-      _scrollNotificationObserver!.addListener(_handleScrollNotification);
-    }
-  }
-
-  void _validatePosition() {
-    // The native session validates positions on every move; the
-    // legacy `Position.validateFen` fallback is gone with the
-    // rule-machine cleanup, so this method is effectively a no-op
-    // when the native session is bound.  Kept as a hook for any
-    // future client-side validation surface.
-  }
-
-  @override
-  void dispose() {
-    _removeScrollObserver();
-    super.dispose();
-  }
-
-  void _removeScrollObserver() {
-    if (_scrollNotificationObserver != null) {
-      _scrollNotificationObserver!.removeListener(_handleScrollNotification);
-      _scrollNotificationObserver = null;
-    }
-  }
-
-  void _handleScrollNotification(ScrollNotification notification) {
-    if (notification is ScrollUpdateNotification) {
-      final bool oldScrolledUnder = _scrolledUnder;
-      _scrolledUnder =
-          notification.depth == 0 &&
-          notification.metrics.extentBefore > 0 &&
-          notification.metrics.axis == Axis.vertical;
-      if (_scrolledUnder != oldScrolledUnder) {
-        setState(() {
-          // React to a change in MaterialState.scrolledUnder
-        });
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Align(
-      key: const Key('game_header_align'),
-      alignment: Alignment.topCenter,
-      child: BlockSemantics(
-        key: const Key('game_header_block_semantics'),
-        child: Center(
-          key: const Key('game_header_center'),
+    final GameController controller = GameController();
+    return AnimatedBuilder(
+      animation: Listenable.merge(<Listenable>[
+        controller.headerTipNotifier,
+        controller.headerIconsNotifier,
+      ]),
+      builder: (BuildContext context, Widget? child) {
+        if (!DB().generalSettings.showGameTips) {
+          return const SizedBox.shrink(key: Key('game_header_hidden'));
+        }
+
+        final PieceColor side =
+            controller.activeSessionSideToMove ??
+            controller.activeBoardView.sideToMove;
+        final String playerLabel = switch (side) {
+          PieceColor.white => S.of(context).white,
+          PieceColor.black => S.of(context).black,
+          _ => S.of(context).none,
+        };
+        final String message = controller.headerTipNotifier.message.isEmpty
+            ? S.of(context).welcome
+            : controller.headerTipNotifier.message;
+        return SizedBox(
+          key: const Key('game_header_contextual_row'),
+          height: widget.preferredSize.height,
           child: Padding(
             key: const Key('game_header_padding'),
-            padding: EdgeInsets.zero,
-            child: Column(
-              key: const Key('game_header_column'),
+            padding: const EdgeInsets.fromLTRB(12, 4, 12, AppTheme.boardMargin),
+            child: Row(
               children: <Widget>[
-                const HeaderIcons(key: Key('header_icons')),
-                _buildDivider(),
-                const HeaderTip(key: Key('header_tip')),
+                Semantics(
+                  image: true,
+                  label: playerLabel,
+                  child: ExcludeSemantics(
+                    child: SizedBox.square(
+                      dimension: 44,
+                      child: Icon(
+                        _activePlayerIcon(controller, side),
+                        key: const Key('game_header_active_player_avatar'),
+                        size: 32,
+                        color: DB().colorSettings.messageColor,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: GameTipBubble(
+                    key: const Key('game_header_contextual_tip'),
+                    message: message,
+                  ),
+                ),
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDivider() {
-    if (DB().displaySettings.isPositionalAdvantageIndicatorShown) {
-      return _buildPositionalAdvantageDivider();
-    } else {
-      return _buildDefaultDivider();
-    }
-  }
-
-  Widget _buildPositionalAdvantageDivider() {
-    int value = GameController().value == null
-        ? 0
-        : int.parse(GameController().value!);
-    const double opacity = 1;
-    const int valueLimit = 100;
-
-    if ((value == valueUnique || value == -valueUnique) ||
-        GameController().gameInstance.gameMode == GameMode.humanVsHuman) {
-      // pieceCountDiff = (white on board + in hand) - (black on board + in hand).
-      // Express via the active read-only board view so this widget no longer
-      // needs the legacy `Position` instance.
-      final MillBoardView view = GameController().activeBoardView;
-      final int whiteTotal =
-          view.pieceOnBoardCountFor(PieceColor.white) +
-          view.pieceInHandCountFor(PieceColor.white);
-      final int blackTotal =
-          view.pieceOnBoardCountFor(PieceColor.black) +
-          view.pieceInHandCountFor(PieceColor.black);
-      value = valueEachPiece * (whiteTotal - blackTotal);
-    }
-
-    value = (value * 2).clamp(-valueLimit, valueLimit);
-
-    final num dividerWhiteLength = valueLimit + value;
-    final num dividerBlackLength = valueLimit - value;
-
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        const double fullWidth = valueLimit * 2.0;
-        final double availableWidth = constraints.hasBoundedWidth
-            ? constraints.maxWidth
-            : fullWidth;
-        final double dividerWidth = availableWidth < fullWidth
-            ? availableWidth
-            : fullWidth;
-        final double whiteWidth =
-            dividerWidth * dividerWhiteLength.toDouble() / fullWidth;
-        final double blackWidth =
-            dividerWidth * dividerBlackLength.toDouble() / fullWidth;
-
-        return Container(
-          key: const Key('positional_advantage_divider'),
-          height: 2,
-          width: dividerWidth,
-          margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(2)),
-          child: Row(
-            key: const Key('positional_advantage_row'),
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                key: const Key('divider_white_container'),
-                height: 2,
-                width: whiteWidth,
-                color: DB().colorSettings.whitePieceColor.withValues(
-                  alpha: opacity,
-                ),
-              ),
-              Container(
-                key: const Key('divider_black_container'),
-                height: 2,
-                width: blackWidth,
-                color: DB().colorSettings.blackPieceColor.withValues(
-                  alpha: opacity,
-                ),
-              ),
-            ],
-          ),
         );
       },
     );
   }
 
-  Widget _buildDefaultDivider() {
-    const double opacity = 1;
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        const double targetWidth = 180;
-        final double availableWidth = constraints.hasBoundedWidth
-            ? constraints.maxWidth
-            : targetWidth;
-        final double dividerWidth = availableWidth < targetWidth
-            ? availableWidth
-            : targetWidth;
-
-        return Container(
-          key: const Key('default_divider'),
-          height: 2,
-          width: dividerWidth,
-          margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
-          decoration: BoxDecoration(
-            color:
-                (DB().colorSettings.darkBackgroundColor == Colors.white ||
-                    DB().colorSettings.darkBackgroundColor ==
-                        const Color.fromARGB(1, 255, 255, 255))
-                ? DB().colorSettings.messageColor.withValues(alpha: opacity)
-                : DB().colorSettings.boardBackgroundColor.withValues(
-                    alpha: opacity,
-                  ),
-            borderRadius: BorderRadius.circular(2),
-          ),
-        );
-      },
-    );
+  IconData _activePlayerIcon(GameController controller, PieceColor side) {
+    if (side != PieceColor.white && side != PieceColor.black) {
+      return controller.activeSideToMoveIcon;
+    }
+    if (controller.isRemoteGameMode) {
+      if (side == controller.getLocalColor()) {
+        return FluentIcons.person_24_filled;
+      }
+      return switch (controller.gameInstance.gameMode) {
+        GameMode.humanVsBluetooth => FluentIcons.bluetooth_24_filled,
+        GameMode.humanVsCloud => FluentIcons.cloud_24_filled,
+        GameMode.humanVsLAN ||
+        GameMode.testViaLAN => FluentIcons.wifi_1_24_filled,
+        _ => FluentIcons.person_24_filled,
+      };
+    }
+    if (controller.gameInstance.getPlayerByColor(side).isAi) {
+      return aiMoveTypeIcons[controller.aiMoveType] ??
+          FluentIcons.bot_24_filled;
+    }
+    return FluentIcons.person_24_filled;
   }
 }
 
