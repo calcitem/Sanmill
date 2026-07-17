@@ -445,7 +445,7 @@
     "@alternate": {
         "description": "Alternate"
     },
-    "isAutoRestart": "Auto-restart game when game over",
+    "isAutoRestart": "Restart automatically after a game ends",
     "@isAutoRestart": {
         "description": "Auto-restart game when game over"
     },
@@ -4178,11 +4178,11 @@
     "@puzzleTransformed": {
         "description": "Snackbar message after a puzzle board transformation is applied"
     },
-    "experienceRecording": "Experience Recording",
+    "experienceRecording": "Experience recording",
     "@experienceRecording": {
         "description": "Title for the experience recording feature toggle"
     },
-    "experienceRecordingDescription": "Record user operations for bug reproduction replay",
+    "experienceRecordingDescription": "Record in-app actions for later bug reproduction and replay.",
     "@experienceRecordingDescription": {
         "description": "Subtitle for the experience recording feature toggle"
     },
@@ -4190,15 +4190,15 @@
     "@recording": {
         "description": "Label shown when recording is active"
     },
-    "startRecording": "Start Recording",
+    "startRecording": "Start recording",
     "@startRecording": {
         "description": "Button label to start a recording session"
     },
-    "stopRecording": "Stop Recording",
+    "stopRecording": "Stop recording",
     "@stopRecording": {
         "description": "Button label to stop a recording session"
     },
-    "recordingSessions": "Recording Sessions",
+    "recordingSessions": "Recording sessions",
     "@recordingSessions": {
         "description": "Title for the recording sessions list page"
     },
@@ -4210,11 +4210,11 @@
     "@exportSession": {
         "description": "Button label to export a recording session"
     },
-    "deleteSession": "Delete Session",
+    "deleteSession": "Delete session",
     "@deleteSession": {
         "description": "Button label to delete a recording session"
     },
-    "deleteAllSessions": "Delete All Sessions",
+    "deleteAllSessions": "Delete all sessions",
     "@deleteAllSessions": {
         "description": "Button label to delete all recording sessions"
     },
@@ -4226,7 +4226,7 @@
     "@confirmDeleteAllSessions": {
         "description": "Confirmation dialog text for deleting all sessions"
     },
-    "sessionExported": "Session exported successfully",
+    "sessionExported": "Session copied to the clipboard",
     "@sessionExported": {
         "description": "Snackbar message after successful session export"
     },
@@ -4234,7 +4234,7 @@
     "@replay": {
         "description": "Button label to replay a recording session"
     },
-    "replaySpeed": "Replay Speed",
+    "replaySpeed": "Replay speed",
     "@replaySpeed": {
         "description": "Label for the replay speed selector"
     },
@@ -4254,7 +4254,7 @@
     "@replayInProgress": {
         "description": "Confirmation dialog text before starting a replay"
     },
-    "importSession": "Import Session",
+    "importSession": "Import session",
     "@importSession": {
         "description": "Button label to import a recording session"
     },
@@ -4266,7 +4266,7 @@
     "@importFromClipboard": {
         "description": "Option to import a recording session from clipboard JSON text"
     },
-    "importSessionSuccess": "Session imported successfully",
+    "importSessionSuccess": "Session imported",
     "@importSessionSuccess": {
         "description": "Snackbar message after successful session import"
     },
@@ -5078,13 +5078,13 @@
     "@onlineOpponentLeft": {"description": "Status when the opponent permanently leaves."},
     "onlineActionRejected": "The server rejected that move. The board has been synchronized.",
     "@onlineActionRejected": {"description": "Error after authoritative move rejection and resync."},
-    "diagnosticReport": "Diagnostic Report",
+    "diagnosticReport": "Diagnostic report",
     "@diagnosticReport": {"description": "Title of the first-party crash and feedback report page."},
     "diagnosticBundleCopied": "Diagnostic bundle copied.",
     "@diagnosticBundleCopied": {"description": "Confirmation after copying a diagnostic bundle."},
-    "diagnosticCopyAndOpenIssue": "Copy and Open GitHub Issue",
+    "diagnosticCopyAndOpenIssue": "Copy and open a GitHub issue",
     "@diagnosticCopyAndOpenIssue": {"description": "Copies the exact diagnostic bundle and opens the source repository issue form."},
-    "sendDiagnosticReport": "Send Diagnostic Report",
+    "sendDiagnosticReport": "Send diagnostic report",
     "@sendDiagnosticReport": {"description": "Confirmation dialog title before a network report is sent."},
     "diagnosticSendConfirmation": "Send exactly the previewed data to {recipient} for fault diagnosis and distribution-source verification? No screenshot is included and a failed send is not retried automatically.",
     "@diagnosticSendConfirmation": {
@@ -5124,15 +5124,15 @@
     "@diagnosticLoadingPreview": {"description": "Progress text while constructing a diagnostic bundle."},
     "diagnosticSending": "Sending…",
     "@diagnosticSending": {"description": "Progress label during the single network request."},
-    "diagnosticActionTrail": "Diagnostic Action Trail",
+    "diagnosticActionTrail": "Diagnostic action trail",
     "@diagnosticActionTrail": {"description": "Title for the always-local short semantic operation trail."},
-    "diagnosticActionTrailDescription": "Keeps up to 500 sanitized semantic actions for 30 minutes, within 192 KiB. It never records typed text, raw touches, screenshots, audio, or video. The local cache expires after 24 hours and is never sent without preview and confirmation.",
+    "diagnosticActionTrailDescription": "Keeps up to 500 sanitized actions for 30 minutes (up to 192 KiB). It never records typed text, raw touches, screenshots, audio, or video. Cached data expires after 24 hours and is sent only after preview and confirmation.",
     "@diagnosticActionTrailDescription": {"description": "Privacy description for the local diagnostic action trail."},
     "diagnosticClearActionTrail": "Clear action trail now",
     "@diagnosticClearActionTrail": {"description": "Button to remove all locally retained diagnostic actions."},
     "diagnosticActionTrailCleared": "Diagnostic action trail cleared.",
     "@diagnosticActionTrailCleared": {"description": "Confirmation after clearing the local action trail."},
-    "diagnosticPasteAndReproduce": "Paste Diagnostic Bundle and Reproduce",
+    "diagnosticPasteAndReproduce": "Paste diagnostic bundle and reproduce",
     "@diagnosticPasteAndReproduce": {"description": "Developer action that imports a bundle from the clipboard."},
     "diagnosticPasteAndReproduceDescription": "Validates the checksum, backs up current safe settings and game, then restores the reported state.",
     "@diagnosticPasteAndReproduceDescription": {"description": "Description for diagnostic reproduction import."},
@@ -5141,7 +5141,7 @@
         "description": "Strict diagnostic bundle validation or restoration error.",
         "placeholders": {"message": {"description": "Validation error.", "example": "Checksum mismatch"}}
     },
-    "diagnosticReproduction": "Diagnostic Reproduction",
+    "diagnosticReproduction": "Diagnostic reproduction",
     "@diagnosticReproduction": {"description": "Title after a diagnostic bundle has been restored."},
     "diagnosticStateRestored": "Safe settings and the final reported game state are now active. They remain active after restart unless you restore the backup below.",
     "@diagnosticStateRestored": {"description": "Explains the persistent diagnostic import behavior."},
@@ -5151,7 +5151,7 @@
     "@diagnosticBackupRestored": {"description": "Confirmation after restoring an import backup."},
     "diagnosticNoBackup": "No diagnostic import backup is available.",
     "@diagnosticNoBackup": {"description": "Shown when restore is requested without a backup."},
-    "diagnosticSavedDrafts": "Saved Diagnostic Drafts",
+    "diagnosticSavedDrafts": "Saved diagnostic drafts",
     "@diagnosticSavedDrafts": {"description": "Title for locally retained crash and failed-feedback drafts."},
     "diagnosticSavedDraftsDescription": "Reopen, copy, retry, or delete drafts retained for up to 7 days.",
     "@diagnosticSavedDraftsDescription": {"description": "Developer-options description for local diagnostic drafts."},

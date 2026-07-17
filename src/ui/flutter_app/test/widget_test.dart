@@ -3140,8 +3140,8 @@ void main() {
       expect(find.text('Developer options'), findsOneWidget);
       expect(find.text('Tools'), findsOneWidget);
       expect(find.text('Diagnostics'), findsOneWidget);
-      await tester.scrollUntilVisible(find.text('Experience Recording'), 300);
-      expect(find.text('Experience Recording'), findsOneWidget);
+      await tester.scrollUntilVisible(find.text('Experience recording'), 300);
+      expect(find.text('Experience recording'), findsOneWidget);
       expect(find.text('Record user interactions'), findsOneWidget);
 
       // Drain any settings-save debounce timer (see the smoke test above).
