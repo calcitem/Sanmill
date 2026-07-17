@@ -53,6 +53,58 @@ class NativeMillPrincipalVariation {
   final List<String> line;
 }
 
+@immutable
+class _MillPieceNumberState {
+  const _MillPieceNumberState._(this.lastPlacedNumber, this.byNode);
+
+  static const _MillPieceNumberState empty = _MillPieceNumberState._(
+    0,
+    <int, int>{},
+  );
+
+  final int lastPlacedNumber;
+  final Map<int, int> byNode;
+
+  _MillPieceNumberState after(GameAction action) {
+    final tgf_kernel.TgfAction? nativeAction = MillActionCodec.toTgfAction(
+      action,
+    );
+    assert(
+      nativeAction != null,
+      'Numbered Mill actions must contain valid move notation.',
+    );
+    if (nativeAction == null) {
+      return this;
+    }
+
+    final Map<int, int> next = Map<int, int>.of(byNode);
+    int nextLastPlacedNumber = lastPlacedNumber;
+    switch (action.type) {
+      case MillActionTypes.place:
+        nextLastPlacedNumber++;
+        next[nativeAction.toNode] = nextLastPlacedNumber;
+        break;
+      case MillActionTypes.move:
+        final int? pieceNumber = next.remove(nativeAction.fromNode);
+        next.remove(nativeAction.toNode);
+        if (pieceNumber != null) {
+          next[nativeAction.toNode] = pieceNumber;
+        }
+        break;
+      case MillActionTypes.remove:
+        next.remove(nativeAction.toNode);
+        break;
+      default:
+        assert(false, 'Unknown Mill action type: ${action.type}.');
+        return this;
+    }
+    return _MillPieceNumberState._(
+      nextLastPlacedNumber,
+      Map<int, int>.unmodifiable(next),
+    );
+  }
+}
+
 class NativeMillGameSession implements GameSessionHandle {
   factory NativeMillGameSession({
     NativeMillRulesPort? rulesPort,
@@ -94,6 +146,10 @@ class NativeMillGameSession implements GameSessionHandle {
       StreamController<GameSessionEvent>.broadcast(sync: true);
   bool _disposed = false;
   GameAction? _lastSearchLegalAction;
+  final List<_MillPieceNumberState> _pieceNumberHistory =
+      <_MillPieceNumberState>[_MillPieceNumberState.empty];
+  final List<_MillPieceNumberState> _pieceNumberRedo =
+      <_MillPieceNumberState>[];
 
   /// FEN / native Zobrist captured the moment the most recent engine
   /// `bestMove` was validated as legal in [_legalActionForBestMove].  These
@@ -156,6 +212,12 @@ class NativeMillGameSession implements GameSessionHandle {
 
   int get redoDepth => rulesPort.redoDepth;
 
+  /// Placement-order labels carried by pieces in the current action history.
+  ///
+  /// A standalone FEN or manually arranged position has no placement history,
+  /// so those pieces deliberately have no numbers until new pieces are placed.
+  Map<int, int> get pieceNumbersByNode => _pieceNumberHistory.last.byNode;
+
   // -------------------------------------------------------- setup-position API
 
   /// Reset the game to the initial state (all pieces in hand, empty board,
@@ -168,6 +230,7 @@ class NativeMillGameSession implements GameSessionHandle {
     lastAiMoveType = AiMoveType.unknown;
     lastAiBestValue = null;
     lastHumanDatabaseMoveStats = null;
+    _resetPieceNumbers();
     if (rules != null) {
       final NativeMillRulesPort nextPort = NativeMillRulesPort(
         ruleSettings: rules,
@@ -192,6 +255,7 @@ class NativeMillGameSession implements GameSessionHandle {
       return;
     }
     final GameStateSnapshot next = rulesPort.setupClear();
+    _resetPieceNumbers();
     _setState(next);
   }
 
@@ -202,6 +266,7 @@ class NativeMillGameSession implements GameSessionHandle {
       return;
     }
     final GameStateSnapshot next = rulesPort.setupSetPiece(node, owner);
+    _resetPieceNumbers();
     _setState(next);
   }
 
@@ -232,6 +297,7 @@ class NativeMillGameSession implements GameSessionHandle {
     }
     try {
       final GameStateSnapshot next = rulesPort.setFromFen(fen);
+      _resetPieceNumbers();
       _setState(next);
       return true;
     } on Object {
@@ -386,6 +452,7 @@ class NativeMillGameSession implements GameSessionHandle {
       boardLayout != null,
       'Native Mill snapshots must carry a tgfPayload board layout.',
     );
+    _recordPieceNumbersAfter(action);
     _setState(next);
     _emit(MillEventTypes.moveApplied, <String, Object?>{
       'type': action.type,
@@ -403,7 +470,9 @@ class NativeMillGameSession implements GameSessionHandle {
     }
     try {
       lastHumanDatabaseMoveStats = null;
-      _setState(rulesPort.undo());
+      final GameStateSnapshot next = rulesPort.undo();
+      _undoPieceNumbers();
+      _setState(next);
       _emit(MillEventTypes.undoApplied, const <String, Object?>{});
     } on Object catch (e) {
       _emit(MillEventTypes.actionIgnored, <String, Object?>{'reason': '$e'});
@@ -417,7 +486,9 @@ class NativeMillGameSession implements GameSessionHandle {
     }
     try {
       lastHumanDatabaseMoveStats = null;
-      _setState(rulesPort.redo());
+      final GameStateSnapshot next = rulesPort.redo();
+      _redoPieceNumbers();
+      _setState(next);
       _emit(MillEventTypes.redoApplied, const <String, Object?>{});
     } on Object catch (e) {
       _emit(MillEventTypes.actionIgnored, <String, Object?>{'reason': '$e'});
@@ -948,6 +1019,40 @@ class NativeMillGameSession implements GameSessionHandle {
       'activeSeat': next.activeSeat.name,
       'outcome': next.outcome.kind.name,
     });
+  }
+
+  void _recordPieceNumbersAfter(GameAction action) {
+    _pieceNumberHistory.add(_pieceNumberHistory.last.after(action));
+    _pieceNumberRedo.clear();
+  }
+
+  void _undoPieceNumbers() {
+    assert(
+      _pieceNumberHistory.length > 1,
+      'Native Mill undo history must match piece-number history.',
+    );
+    if (_pieceNumberHistory.length <= 1) {
+      return;
+    }
+    _pieceNumberRedo.add(_pieceNumberHistory.removeLast());
+  }
+
+  void _redoPieceNumbers() {
+    assert(
+      _pieceNumberRedo.isNotEmpty,
+      'Native Mill redo history must match piece-number history.',
+    );
+    if (_pieceNumberRedo.isEmpty) {
+      return;
+    }
+    _pieceNumberHistory.add(_pieceNumberRedo.removeLast());
+  }
+
+  void _resetPieceNumbers() {
+    _pieceNumberHistory
+      ..clear()
+      ..add(_MillPieceNumberState.empty);
+    _pieceNumberRedo.clear();
   }
 
   void _emit(String type, Map<String, Object?> payload) {

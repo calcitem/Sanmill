@@ -16,7 +16,7 @@ class Piece {
     required this.pos,
     required this.diameter,
     required this.index,
-    this.squareAttribute,
+    this.number,
     this.image,
   });
 
@@ -32,9 +32,7 @@ class Piece {
   /// The index of the piece.
   final int index;
 
-  /// Legacy per-square attribute used by the (now-deleted) setup
-  /// position editor.  The field is kept as an opaque `Object?` for
-  /// API compat; the painter always passes null on this branch.
-  final Object? squareAttribute;
+  /// Placement-order number that follows this piece when it moves.
+  final int? number;
   final Image? image;
 }

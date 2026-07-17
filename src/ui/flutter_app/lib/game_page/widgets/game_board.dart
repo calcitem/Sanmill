@@ -511,6 +511,10 @@ class _GameBoardState extends State<GameBoard>
                                   scopedSession?.legalActions ??
                                       const <GameAction>[],
                                 ),
+                            pieceNumbersByNode:
+                                scopedSession is NativeMillGameSession
+                                ? scopedSession.pieceNumbersByNode
+                                : const <int, int>{},
                           ),
                           child: DB().generalSettings.screenReaderSupport
                               ? const _BoardSemantics()

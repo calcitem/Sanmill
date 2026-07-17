@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/animation/headless_animation_manager.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/painters/animations/piece_effect_animation.dart';
@@ -56,6 +57,35 @@ void main() {
       final PiecePainter newPainter = _painterFor(after);
 
       expect(newPainter.shouldRepaint(oldPainter), isTrue);
+    });
+
+    test('repaints when a piece number changes', () {
+      final NativeMillSnapshotBoardView view = _viewWithBlackAtNode(23);
+      final PiecePainter oldPainter = _painterFor(view);
+      final PiecePainter newPainter = _painterFor(
+        view,
+        pieceNumbersByNode: const <int, int>{23: 1},
+      );
+
+      expect(newPainter.shouldRepaint(oldPainter), isTrue);
+    });
+
+    testWidgets('paints a placement number when the setting is enabled', (
+      WidgetTester tester,
+    ) async {
+      DB().displaySettings = DB().displaySettings.copyWith(
+        isNumbersOnPiecesShown: true,
+      );
+      final NativeMillSnapshotBoardView view = _viewWithBlackAtNode(23);
+      final PiecePainter painter = _painterFor(
+        view,
+        pieceNumbersByNode: const <int, int>{23: 7},
+      );
+
+      void paint(Canvas canvas) =>
+          painter.paint(canvas, const Size.square(350));
+
+      expect(paint, paints..paragraph());
     });
 
     testWidgets('paints completed native move at destination', (
@@ -164,7 +194,10 @@ NativeMillSnapshotBoardView _viewWithBlackAtNode(int node) {
   )!;
 }
 
-PiecePainter _painterFor(NativeMillSnapshotBoardView view) {
+PiecePainter _painterFor(
+  NativeMillSnapshotBoardView view, {
+  Map<int, int> pieceNumbersByNode = const <int, int>{},
+}) {
   return PiecePainter(
     placeAnimationValue: 1.0,
     moveAnimationValue: 1.0,
@@ -176,6 +209,7 @@ PiecePainter _painterFor(NativeMillSnapshotBoardView view) {
     placeEffectAnimation: RadialPieceEffectAnimation(),
     removeEffectAnimation: ExplodePieceEffectAnimation(),
     nativeBoardView: view,
+    pieceNumbersByNode: pieceNumbersByNode,
   );
 }
 

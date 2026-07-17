@@ -1681,7 +1681,7 @@ void main() {
             'display_settings_card_numbers_on_pieces_shown_switch_tile',
           ),
         ),
-        findsNothing,
+        findsOneWidget,
       );
       expect(
         find.byKey(

@@ -22,6 +22,7 @@ class PiecePainter extends CustomPainter {
     required this.removeEffectAnimation,
     this.nativeBoardView,
     this.capturableGridIndices = const <int>{},
+    this.pieceNumbersByNode = const <int, int>{},
   });
 
   final double placeAnimationValue;
@@ -34,6 +35,7 @@ class PiecePainter extends CustomPainter {
   final Map<PieceColor, ui.Image?>? pieceImages;
   final NativeMillSnapshotBoardView? nativeBoardView;
   final Set<int> capturableGridIndices;
+  final Map<int, int> pieceNumbersByNode;
 
   // Animation instances for place and remove effects.
   final PieceEffectAnimation placeEffectAnimation;
@@ -83,11 +85,47 @@ class PiecePainter extends CustomPainter {
     return GameController().activeBoardView.pieceOnGrid(index);
   }
 
-  Object? _squareAttributeAtGridIndex(int index) {
-    // The legacy `Position.sqAttrList` was a setup-position-only
-    // field tracking placement order for the editor; both the
-    // editor and the field are gone with the rule-machine cleanup.
-    return null;
+  int? _pieceNumberAtGridIndex(int index) {
+    final int? square = MillBoardCoordinateMaps.gridIndexToSquare[index];
+    final int? node = square == null
+        ? null
+        : MillBoardCoordinateMaps.legacySquareToNode[square];
+    return node == null ? null : pieceNumbersByNode[node];
+  }
+
+  void _paintPieceNumber(
+    Canvas canvas,
+    Piece piece,
+    Offset position, {
+    double opacity = 1,
+  }) {
+    final int? number = piece.number;
+    if (!DB().displaySettings.isNumbersOnPiecesShown ||
+        number == null ||
+        number <= 0) {
+      return;
+    }
+    final Color baseColor = piece.pieceColor.mainColor.computeLuminance() > 0.5
+        ? Colors.black
+        : Colors.white;
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(
+        text: number.toString(),
+        style: TextStyle(
+          color: baseColor.withValues(alpha: opacity),
+          fontSize: piece.diameter * 0.5,
+        ),
+      ),
+      textAlign: TextAlign.center,
+      textDirection: TextDirection.ltr,
+    )..layout();
+    textPainter.paint(
+      canvas,
+      Offset(
+        position.dx - textPainter.width / 2,
+        position.dy - textPainter.height / 2,
+      ),
+    );
   }
 
   Phase get _phase => GameController().activeBoardView.phase;
@@ -437,8 +475,6 @@ class PiecePainter extends CustomPainter {
           continue;
         }
 
-        final Object? squareAttribute = _squareAttributeAtGridIndex(index);
-
         final ui.Image? image = pieceImages == null
             ? null
             : pieceImages?[drawPieceColor];
@@ -450,7 +486,7 @@ class PiecePainter extends CustomPainter {
           pos: pos,
           diameter: adjustedPieceWidth,
           index: index,
-          squareAttribute: squareAttribute,
+          number: _pieceNumberAtGridIndex(index),
           image: image,
         );
 
@@ -575,10 +611,7 @@ class PiecePainter extends CustomPainter {
         canvas.drawCircle(drawPos, pieceInnerRadius, paint);
       }
 
-      // Numbers-on-pieces overlay is disabled: it depended on
-      // `Position.sqAttrList` which was a setup-position-only
-      // metadata field, both gone with the rule-machine cleanup. The stored
-      // preference remains for compatibility, but the toggle is hidden.
+      _paintPieceNumber(canvas, piece, drawPos);
     }
 
     // Draw moving pieces on top of normal pieces.
@@ -670,7 +703,7 @@ class PiecePainter extends CustomPainter {
         canvas.drawCircle(drawPos, pieceInnerRadius, paint);
       }
 
-      // Numbers-on-pieces overlay is disabled (see note above).
+      _paintPieceNumber(canvas, piece, drawPos, opacity: opacity);
 
       // Restore canvas if we applied rotation
       if (isRemovingThisPiece &&
@@ -756,6 +789,7 @@ class PiecePainter extends CustomPainter {
       putDownAnimationValue != oldDelegate.putDownAnimationValue ||
       isPutDownAnimating != oldDelegate.isPutDownAnimating ||
       !setEquals(capturableGridIndices, oldDelegate.capturableGridIndices) ||
+      !mapEquals(pieceNumbersByNode, oldDelegate.pieceNumbersByNode) ||
       _nativeBoardVisibleStateChanged(oldDelegate);
 
   bool _nativeBoardVisibleStateChanged(PiecePainter oldDelegate) {

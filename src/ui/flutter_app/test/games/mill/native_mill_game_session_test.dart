@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/lan_session_meta.dart';
+import 'package:sanmill/games/mill/mill_board_coordinate_maps.dart';
 import 'package:sanmill/games/mill/mill_constants.dart';
 import 'package:sanmill/games/mill/mill_marked_pieces_codec.dart';
 import 'package:sanmill/games/mill/mill_types.dart';
@@ -92,9 +93,12 @@ void main() {
       addTearDown(sub.cancel);
 
       await session.apply(rulesPort.placeA7);
+      final int a7 = MillBoardCoordinateMaps.notationToNode('a7');
+      expect(session.pieceNumbersByNode[a7], 1);
       await session.undo();
       await Future<void>.delayed(Duration.zero);
       expect(rulesPort.undoCount, 1);
+      expect(session.pieceNumbersByNode[a7], isNull);
       expect(session.state.value.activeSeat, PlayerSeat.first);
       expect(
         events.map((GameSessionEvent e) => e.type),
@@ -104,11 +108,60 @@ void main() {
       await session.redo();
       await Future<void>.delayed(Duration.zero);
       expect(rulesPort.redoCount, 1);
+      expect(session.pieceNumbersByNode[a7], 1);
       expect(session.state.value.activeSeat, PlayerSeat.second);
       expect(
         events.map((GameSessionEvent e) => e.type),
         contains(MillEventTypes.redoApplied),
       );
+    });
+
+    test('piece numbers follow moves and captures in action history', () async {
+      const GameAction placeA7 = GameAction(
+        type: MillActionTypes.place,
+        payload: <String, Object?>{'move': 'a7'},
+      );
+      const GameAction placeD7 = GameAction(
+        type: MillActionTypes.place,
+        payload: <String, Object?>{'move': 'd7'},
+      );
+      const GameAction moveA7A4 = GameAction(
+        type: MillActionTypes.move,
+        payload: <String, Object?>{'move': 'a7-a4'},
+      );
+      const GameAction removeD7 = GameAction(
+        type: MillActionTypes.remove,
+        payload: <String, Object?>{'move': 'xd7'},
+      );
+      final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+        legalActionsOverride: const <GameAction>[
+          placeA7,
+          placeD7,
+          moveA7A4,
+          removeD7,
+        ],
+      );
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: rulesPort,
+      );
+      addTearDown(session.dispose);
+
+      final int a7 = MillBoardCoordinateMaps.notationToNode('a7');
+      final int d7 = MillBoardCoordinateMaps.notationToNode('d7');
+      final int a4 = MillBoardCoordinateMaps.notationToNode('a4');
+      await session.apply(placeA7);
+      await session.apply(placeD7);
+      expect(session.pieceNumbersByNode, <int, int>{a7: 1, d7: 2});
+
+      await session.apply(moveA7A4);
+      expect(session.pieceNumbersByNode, <int, int>{a4: 1, d7: 2});
+
+      await session.apply(removeD7);
+      expect(session.pieceNumbersByNode, <int, int>{a4: 1});
+      await session.undo();
+      expect(session.pieceNumbersByNode, <int, int>{a4: 1, d7: 2});
+      await session.redo();
+      expect(session.pieceNumbersByNode, <int, int>{a4: 1});
     });
 
     test('terminal outcomes expose no legal actions', () {
