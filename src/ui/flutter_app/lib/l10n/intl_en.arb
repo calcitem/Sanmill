@@ -393,7 +393,7 @@
     "@difficulty": {
         "description": "Difficulty"
     },
-    "playSounds": "Sound effects",
+    "playSounds": "Sound",
     "@playSounds": {
         "description": "Sound effects"
     },
