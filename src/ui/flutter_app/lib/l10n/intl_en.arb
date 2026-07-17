@@ -1587,12 +1587,18 @@
     "@cannotTransform": {},
     "rotate": "Rotate",
     "@rotate": {},
-    "horizontalFlip": "H Flip",
-    "@horizontalFlip": {},
-    "verticalFlip": "V Flip",
-    "@verticalFlip": {},
-    "innerOuterFlip": "IO Flip",
-    "@innerOuterFlip": {},
+    "horizontalFlip": "Flip horizontally",
+    "@horizontalFlip": {
+        "description": "Reflect the board left to right"
+    },
+    "verticalFlip": "Flip vertically",
+    "@verticalFlip": {
+        "description": "Reflect the board top to bottom"
+    },
+    "innerOuterFlip": "Swap inner and outer rings",
+    "@innerOuterFlip": {
+        "description": "Exchange the innermost and outermost Mill board rings"
+    },
     "transparentCanvas": "Transparent Canvas",
     "@transparentCanvas": {},
     "restrictRepeatedMillsFormation": "Restrict repeated mills formation",
