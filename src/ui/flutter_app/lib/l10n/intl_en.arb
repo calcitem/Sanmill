@@ -2427,7 +2427,7 @@
     "@puzzleRuleMismatch": {
         "description": "Badge shown when puzzle rules don't match current settings"
     },
-    "puzzleRuleMismatchWarning": "For {puzzleRules}, currently {currentRules}",
+    "puzzleRuleMismatchWarning": "This puzzle uses {puzzleRules}; the current rules are {currentRules}.",
     "@puzzleRuleMismatchWarning": {
         "description": "Warning message when opening a puzzle with mismatched rules",
         "placeholders": {
