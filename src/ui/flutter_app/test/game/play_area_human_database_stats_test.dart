@@ -1960,6 +1960,7 @@ void main() {
       findsOne,
     );
     expect(find.byKey(const Key('setup_position_three_row_toolbar')), findsOne);
+    expect(GameController().headerTipNotifier.message, 'Board editor');
   });
 
   testWidgets('setup position dispose cleanup waits until the tree unlocks', (

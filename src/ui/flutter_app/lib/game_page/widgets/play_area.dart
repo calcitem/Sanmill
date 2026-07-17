@@ -1075,6 +1075,10 @@ class PlayAreaState extends State<PlayArea> {
   void _openBoardEditorFromAnalysis() {
     assert(_isAnalysisMode, 'Board editor menu entry is analysis-mode only.');
     GameController().enterSetupPosition();
+    GameController().headerTipNotifier.showTip(
+      S.of(context).boardEditor,
+      snackBar: false,
+    );
     if (mounted) {
       setState(() {});
     }

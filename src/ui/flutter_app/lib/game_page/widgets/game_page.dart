@@ -154,6 +154,10 @@ class _GamePageInnerState extends State<_GamePageInner> {
             widget.controller.gameInstance.gameMode == GameMode.setupPosition &&
             widget.controller.setupPositionController == null) {
           widget.controller.enterSetupPosition();
+          widget.controller.headerTipNotifier.showTip(
+            S.of(context).boardEditor,
+            snackBar: false,
+          );
         }
       });
     }
