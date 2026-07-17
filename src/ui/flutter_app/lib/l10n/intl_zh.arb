@@ -5084,5 +5084,23 @@
     "humanGameDatabaseInvalidFile": "无法将此文件加载为人类对局数据库。请选择兼容的 SQLite 数据库文件。",
     "@humanGameDatabaseInvalidFile": {
         "description": "User-facing error shown when a selected human game database cannot be loaded"
+    },
+    "humanGameDatabaseResultsSemantics": "人类对局数据库结果：行棋方获胜 {winPct}%，和棋 {drawPct}%，落败 {lossPct}%，共 {total} 局。",
+    "@humanGameDatabaseResultsSemantics": {
+        "description": "Screen-reader label for a human game database win, draw, and loss bar",
+        "placeholders": {
+            "winPct": {
+                "example": "68"
+            },
+            "drawPct": {
+                "example": "2"
+            },
+            "lossPct": {
+                "example": "30"
+            },
+            "total": {
+                "example": "137"
+            }
+        }
     }
 }

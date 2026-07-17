@@ -2508,37 +2508,50 @@ class _HumanStatsBar extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(5),
-      child: SizedBox(
-        height: 20,
-        child: Row(
-          children: <Widget>[
-            if (stats.wins > 0)
-              _HumanStatsBarSegment(
-                count: stats.wins,
-                total: total,
-                flex: _explorerBarFlex(stats.wins, total),
-                color: _explorerWinBoxColor(context),
-                textColor: Colors.black,
-              ),
-            if (stats.draws > 0)
-              _HumanStatsBarSegment(
-                count: stats.draws,
-                total: total,
-                flex: _explorerBarFlex(stats.draws, total),
-                color: Colors.grey,
-                textColor: Colors.black,
-              ),
-            if (stats.losses > 0)
-              _HumanStatsBarSegment(
-                count: stats.losses,
-                total: total,
-                flex: _explorerBarFlex(stats.losses, total),
-                color: _explorerLossBoxColor(context),
-                textColor: Colors.white,
-              ),
-          ],
+    final String semanticsLabel = S
+        .of(context)
+        .humanGameDatabaseResultsSemantics(
+          (stats.wins * 100 / total).round(),
+          (stats.draws * 100 / total).round(),
+          (stats.losses * 100 / total).round(),
+          total,
+        );
+
+    return Semantics(
+      label: semanticsLabel,
+      excludeSemantics: true,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(5),
+        child: SizedBox(
+          height: 20,
+          child: Row(
+            children: <Widget>[
+              if (stats.wins > 0)
+                _HumanStatsBarSegment(
+                  count: stats.wins,
+                  total: total,
+                  flex: _explorerBarFlex(stats.wins, total),
+                  color: _explorerWinBoxColor(context),
+                  textColor: Colors.black,
+                ),
+              if (stats.draws > 0)
+                _HumanStatsBarSegment(
+                  count: stats.draws,
+                  total: total,
+                  flex: _explorerBarFlex(stats.draws, total),
+                  color: Colors.grey,
+                  textColor: Colors.black,
+                ),
+              if (stats.losses > 0)
+                _HumanStatsBarSegment(
+                  count: stats.losses,
+                  total: total,
+                  flex: _explorerBarFlex(stats.losses, total),
+                  color: _explorerLossBoxColor(context),
+                  textColor: Colors.white,
+                ),
+            ],
+          ),
         ),
       ),
     );

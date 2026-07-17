@@ -5725,6 +5725,20 @@ void main() {
       matching: find.text('20%'),
     );
     expect(tester.widget<Text>(drawPercentage).style?.color, Colors.black);
+    expect(
+      find.descendant(
+        of: popular,
+        matching: find.byWidgetPredicate(
+          (Widget widget) =>
+              widget is Semantics &&
+              widget.properties.label ==
+                  'Human game database results. The player won 50 percent, '
+                      'drew 20 percent, and lost 30 percent across 100 '
+                      'recorded games.',
+        ),
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets('perfect move without human samples uses a separate callout', (

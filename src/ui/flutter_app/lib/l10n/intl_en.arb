@@ -5867,5 +5867,23 @@
     "humanGameDatabaseInvalidFile": "Could not load this file as a human game database. Select a compatible SQLite database file.",
     "@humanGameDatabaseInvalidFile": {
         "description": "User-facing error shown when a selected human game database cannot be loaded"
+    },
+    "humanGameDatabaseResultsSemantics": "Human game database results. The player won {winPct} percent, drew {drawPct} percent, and lost {lossPct} percent across {total} recorded games.",
+    "@humanGameDatabaseResultsSemantics": {
+        "description": "Screen-reader label for a human game database win, draw, and loss bar",
+        "placeholders": {
+            "winPct": {
+                "example": "68"
+            },
+            "drawPct": {
+                "example": "2"
+            },
+            "lossPct": {
+                "example": "30"
+            },
+            "total": {
+                "example": "137"
+            }
+        }
     }
 }
