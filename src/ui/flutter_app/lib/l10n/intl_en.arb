@@ -4426,7 +4426,7 @@
     "@configImportErrorInvalidFile": {},
     "configImportErrorReadFailed": "Could not read this settings file.",
     "@configImportErrorReadFailed": {},
-    "engineTimeoutPerformanceWarningTitle": "Performance Warning",
+    "engineTimeoutPerformanceWarningTitle": "Performance warning",
     "@engineTimeoutPerformanceWarningTitle": {
         "description": "Title of dialog shown when the game engine times out due to insufficient performance"
     },
@@ -4442,7 +4442,7 @@
     "@engineFailureContent": {
         "description": "Content of dialog shown when the game engine fails to find a move"
     },
-    "sendReport": "Send Report",
+    "sendReport": "Send report",
     "@sendReport": {
         "description": "Button label for sending a diagnostic report"
     },
