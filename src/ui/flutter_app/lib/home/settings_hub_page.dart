@@ -172,7 +172,7 @@ class SettingsHubPage extends StatelessWidget {
                 _SettingsHubTile(
                   key: const Key('settings_hub_appearance'),
                   icon: Icons.grid_view_rounded,
-                  title: strings.board,
+                  title: strings.appearance,
                   pageBuilder: (_) => const AppearanceSettingsPage(),
                 ),
               ],

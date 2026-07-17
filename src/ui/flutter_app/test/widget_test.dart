@@ -1392,14 +1392,14 @@ void main() {
       expect(
         find.descendant(
           of: find.byKey(const Key('settings_hub_appearance')),
-          matching: find.text('Board'),
+          matching: find.text('Appearance'),
         ),
         findsOneWidget,
       );
       expect(
         find.descendant(
           of: find.byKey(const Key('settings_hub_appearance')),
-          matching: find.text('Appearance'),
+          matching: find.text('Board'),
         ),
         findsNothing,
       );
@@ -1590,7 +1590,7 @@ void main() {
       final Text appearanceTitle = tester.widget<Text>(
         find.byKey(const Key('appearance_settings_page_appbar_title')),
       );
-      expect(appearanceTitle.data, 'Board');
+      expect(appearanceTitle.data, 'Appearance');
       expect(
         find.descendant(
           of: find.byKey(const Key('appearance_settings_page_appbar')),
