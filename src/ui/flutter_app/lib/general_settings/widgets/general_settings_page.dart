@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
@@ -67,6 +68,11 @@ class GeneralSettingsPage extends StatelessWidget {
 
   SettingsRepository get _settingsRepository =>
       SettingsRepositories.instance.current.repository;
+
+  String _formatHumanDatabaseCount(BuildContext context, int count) =>
+      NumberFormat.decimalPattern(
+        Localizations.localeOf(context).toLanguageTag(),
+      ).format(count);
 
   void _setSkillLevel(BuildContext context) => showDialog(
     context: context,
@@ -373,8 +379,8 @@ class GeneralSettingsPage extends StatelessWidget {
           S
               .of(context)
               .humanGameDatabaseLoaded(
-                ready.status.positionCount,
-                ready.status.moveCount,
+                _formatHumanDatabaseCount(context, ready.status.positionCount),
+                _formatHumanDatabaseCount(context, ready.status.moveCount),
               ),
         ),
       ),
@@ -467,8 +473,8 @@ class GeneralSettingsPage extends StatelessWidget {
           S
               .of(context)
               .humanGameDatabaseLoaded(
-                ready.status.positionCount,
-                ready.status.moveCount,
+                _formatHumanDatabaseCount(context, ready.status.positionCount),
+                _formatHumanDatabaseCount(context, ready.status.moveCount),
               ),
         ),
       ),
