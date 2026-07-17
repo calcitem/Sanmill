@@ -2658,7 +2658,7 @@
     "@puzzleCannotDeleteBuiltIn": {
         "description": "Error when trying to delete built-in puzzles"
     },
-    "puzzleCreationInstructions": "How to Create a Puzzle",
+    "puzzleCreationInstructions": "How to create a puzzle",
     "@puzzleCreationInstructions": {
         "description": "Puzzle creation instructions header"
     },
@@ -2666,39 +2666,39 @@
     "@puzzleCreationSteps": {
         "description": "Steps for creating a puzzle"
     },
-    "puzzleSetupPosition": "Setup Position",
+    "puzzleSetupPosition": "Set up position",
     "@puzzleSetupPosition": {
-        "description": "Setup the board position section"
+        "description": "Set up the board position section"
     },
-    "puzzlePositionSnapshotted2": "Position Snapshotted",
+    "puzzlePositionSnapshotted2": "Position saved",
     "@puzzlePositionSnapshotted2": {
-        "description": "Header showing position has been snapshotted (title case)"
+        "description": "Header showing that the puzzle position has been saved"
     },
-    "puzzleInitialPosition": "Initial Position",
+    "puzzleInitialPosition": "Initial position",
     "@puzzleInitialPosition": {
         "description": "Label for initial puzzle position"
     },
-    "puzzleFinalPosition": "Final Position",
+    "puzzleFinalPosition": "Final position",
     "@puzzleFinalPosition": {
         "description": "Label for final puzzle position after solution"
     },
-    "puzzleNoPositionSnapshotted": "No snapshot yet",
+    "puzzleNoPositionSnapshotted": "No saved position yet",
     "@puzzleNoPositionSnapshotted": {
         "description": "No position snapshotted message"
     },
-    "puzzleSnapshotPositionFirst": "Snapshot position first",
+    "puzzleSnapshotPositionFirst": "Save the starting position first",
     "@puzzleSnapshotPositionFirst": {
         "description": "Error when trying to record without position"
     },
-    "puzzleRecordSolution": "Record Solution",
+    "puzzleRecordSolution": "Record solution",
     "@puzzleRecordSolution": {
         "description": "Record solution moves section"
     },
-    "puzzleStartRecording": "Start Recording",
+    "puzzleStartRecording": "Start recording",
     "@puzzleStartRecording": {
         "description": "Start recording solution moves"
     },
-    "puzzleStopRecording": "Stop Recording",
+    "puzzleStopRecording": "Stop recording",
     "@puzzleStopRecording": {
         "description": "Stop recording solution moves"
     },
@@ -2732,7 +2732,7 @@
     "@puzzleNoSolutionRecorded": {
         "description": "No solution recorded message"
     },
-    "puzzleClearSolution": "Clear Solution",
+    "puzzleClearSolution": "Clear solution",
     "@puzzleClearSolution": {
         "description": "Clear recorded solution"
     },
@@ -2745,11 +2745,11 @@
             }
         }
     },
-    "puzzleAddSolution": "Add Another Solution",
+    "puzzleAddSolution": "Add another solution",
     "@puzzleAddSolution": {
         "description": "Button to add another solution"
     },
-    "puzzleRemoveSolution": "Remove This Solution",
+    "puzzleRemoveSolution": "Remove this solution",
     "@puzzleRemoveSolution": {
         "description": "Button to remove current solution"
     },
@@ -2761,7 +2761,7 @@
     "@puzzleAlternativeSolution": {
         "description": "Badge for alternative solution"
     },
-    "puzzleMarkAsOptimal": "Mark as Optimal",
+    "puzzleMarkAsOptimal": "Mark as optimal",
     "@puzzleMarkAsOptimal": {
         "description": "Button to mark solution as optimal"
     },
@@ -2778,11 +2778,11 @@
     "@puzzleRemoveSolutionConfirm": {
         "description": "Confirmation dialog for removing solution"
     },
-    "puzzleAtLeastOneSolution": "At least one solution required",
+    "puzzleAtLeastOneSolution": "At least one solution is required",
     "@puzzleAtLeastOneSolution": {
         "description": "At least one solution required validation message"
     },
-    "puzzleDetails": "Puzzle Details",
+    "puzzleDetails": "Puzzle details",
     "@puzzleDetails": {
         "description": "Puzzle details section"
     },
@@ -2810,7 +2810,7 @@
     "@puzzleTags": {
         "description": "Puzzle tags field"
     },
-    "puzzleTagsHint": "Comma separated",
+    "puzzleTagsHint": "Separate tags with commas",
     "@puzzleTagsHint": {
         "description": "Hint for tags input"
     },
@@ -2818,7 +2818,7 @@
     "@puzzleAuthor": {
         "description": "Puzzle author field"
     },
-    "puzzleCompletionMessage": "Completion Message",
+    "puzzleCompletionMessage": "Completion message",
     "@puzzleCompletionMessage": {
         "description": "Completion message shown after solving puzzle"
     },
@@ -3241,15 +3241,15 @@
     "@puzzleInvalidPosition": {
         "description": "Error message when puzzle position is invalid"
     },
-    "puzzleOpenBoardSetup": "Open Board (Setup Position)",
+    "puzzleOpenBoardSetup": "Open board (set up position)",
     "@puzzleOpenBoardSetup": {
         "description": "Open the game board in Setup Position mode to arrange the starting position."
     },
-    "puzzleOpenBoardPlay": "Open Board (Play Moves)",
+    "puzzleOpenBoardPlay": "Open board (play moves)",
     "@puzzleOpenBoardPlay": {
         "description": "Open the game board to play the solution moves while recording."
     },
-    "puzzleRecordingHintUseButton": "Use the button below to open the board, then press Back to return.",
+    "puzzleRecordingHintUseButton": "Use a button below to open the board, then use Back to return.",
     "@puzzleRecordingHintUseButton": {
         "description": "Hint telling users to use the provided button to navigate to the board and return."
     },
@@ -3257,51 +3257,51 @@
     "@puzzleInvalidPositionFormat": {
         "description": "Error message when position format is invalid"
     },
-    "puzzleFailedLoadPosition": "Failed to load position. Please resnapshot.",
+    "puzzleFailedLoadPosition": "Could not load the position. Save it again.",
     "@puzzleFailedLoadPosition": {
         "description": "Error message when failed to load position"
     },
-    "puzzleInvalidPositionFormatRecapture": "Invalid position format. Please resnapshot the position.",
+    "puzzleInvalidPositionFormatRecapture": "Invalid position format. Save the position again.",
     "@puzzleInvalidPositionFormatRecapture": {
-        "description": "Error message when position format is invalid and needs to be re-snapshotted"
+        "description": "Error message when position format is invalid and must be saved again"
     },
     "puzzleShowDetailedWorkflow": "Show detailed workflow",
     "@puzzleShowDetailedWorkflow": {
         "description": "Tooltip for showing detailed workflow"
     },
-    "puzzleCreationWorkflow": "Puzzle Creation Workflow",
+    "puzzleCreationWorkflow": "Puzzle creation workflow",
     "@puzzleCreationWorkflow": {
         "description": "Title for puzzle creation workflow dialog"
     },
-    "puzzleWorkflowStepSetup": "Setup Position",
+    "puzzleWorkflowStepSetup": "Set up position",
     "@puzzleWorkflowStepSetup": {
         "description": "Workflow step: setup position"
     },
-    "puzzleWorkflowStepSetupDesc": "Open board, setup position, snapshot",
+    "puzzleWorkflowStepSetupDesc": "Open the board, set up the position, and save it.",
     "@puzzleWorkflowStepSetupDesc": {
         "description": "Description for setup position workflow step"
     },
-    "puzzleWorkflowStepRecord": "Record Solution",
+    "puzzleWorkflowStepRecord": "Record solution",
     "@puzzleWorkflowStepRecord": {
         "description": "Workflow step: record solution"
     },
-    "puzzleWorkflowStepRecordDesc": "Start recording, play moves, stop",
+    "puzzleWorkflowStepRecordDesc": "Start recording, play the moves, then stop recording.",
     "@puzzleWorkflowStepRecordDesc": {
         "description": "Description for record solution workflow step"
     },
-    "puzzleWorkflowStepDetails": "Add Details",
+    "puzzleWorkflowStepDetails": "Add details",
     "@puzzleWorkflowStepDetails": {
         "description": "Workflow step: add details"
     },
-    "puzzleWorkflowStepDetailsDesc": "Fill title, category, difficulty",
+    "puzzleWorkflowStepDetailsDesc": "Enter a title, category, and difficulty.",
     "@puzzleWorkflowStepDetailsDesc": {
         "description": "Description for add details workflow step"
     },
-    "puzzleWorkflowStepSave": "Save Puzzle",
+    "puzzleWorkflowStepSave": "Save puzzle",
     "@puzzleWorkflowStepSave": {
         "description": "Workflow step: save puzzle"
     },
-    "puzzleWorkflowStepSaveDesc": "Click save button",
+    "puzzleWorkflowStepSaveDesc": "Tap Save.",
     "@puzzleWorkflowStepSaveDesc": {
         "description": "Description for save puzzle workflow step"
     },
@@ -3309,15 +3309,15 @@
     "@puzzleWorkflowTip": {
         "description": "Tip message for puzzle creation workflow"
     },
-    "puzzlePositionSnapshotHelp": "Position Snapshot Help",
+    "puzzlePositionSnapshotHelp": "Position snapshot help",
     "@puzzlePositionSnapshotHelp": {
         "description": "Title for position snapshot help dialog"
     },
-    "puzzlePositionSnapshotHelpContent": "How to snapshot the puzzle starting position:\n\n1. Click \"Open Board (Setup Position)\" to manually place pieces, OR click \"Open Board (Play Moves)\" to reach the position by making moves\n\n2. Arrange the board to your desired puzzle starting position\n\n3. Press the back button to return to this page\n\n4. The position will be automatically snapshotted and saved\n\nThis snapshotted position will be used as the starting point for your puzzle.",
+    "puzzlePositionSnapshotHelpContent": "How to save the puzzle's starting position:\n\n1. Tap “Open board (set up position)” to place pieces manually, or tap “Open board (play moves)” to reach the position by playing moves.\n\n2. Arrange the board in the desired starting position.\n\n3. Use Back to return to this page.\n\n4. The position is saved automatically.\n\nThis saved position becomes the puzzle's starting point.",
     "@puzzlePositionSnapshotHelpContent": {
         "description": "Help content for snapshotting puzzle starting position"
     },
-    "puzzleSolutionRecordingHelp": "Solution Recording Help",
+    "puzzleSolutionRecordingHelp": "Solution recording help",
     "@puzzleSolutionRecordingHelp": {
         "description": "Title for solution recording help dialog"
     },
@@ -3325,23 +3325,23 @@
     "@puzzleSolutionRecordingHelpContent": {
         "description": "Header text for solution recording help"
     },
-    "puzzleSolutionStep1": "Snapshot the starting position first",
+    "puzzleSolutionStep1": "Save the starting position first",
     "@puzzleSolutionStep1": {
         "description": "Step 1 for recording solution"
     },
-    "puzzleSolutionStep2": "Click \"Start Recording\" button (this resets the board to your snapshotted position)",
+    "puzzleSolutionStep2": "Tap “Start recording”. This resets the board to your saved position.",
     "@puzzleSolutionStep2": {
         "description": "Step 2 for recording solution"
     },
-    "puzzleSolutionStep4": "Return here and click \"Stop Recording\"",
+    "puzzleSolutionStep4": "Return here and tap “Stop recording”.",
     "@puzzleSolutionStep4": {
         "description": "Step 4 for recording solution"
     },
-    "puzzleSolutionRecordingTip": "Tip: The board will automatically reset to your snapshotted position when you start recording.",
+    "puzzleSolutionRecordingTip": "Tip: Starting a recording automatically resets the board to your saved position.",
     "@puzzleSolutionRecordingTip": {
         "description": "Tip message for solution recording"
     },
-    "puzzleMultipleSolutionsSupported": "You can add multiple solutions (no limit). Mark the shortest/best one as optimal.",
+    "puzzleMultipleSolutionsSupported": "You can add any number of solutions. Mark the shortest or best one as optimal.",
     "@puzzleMultipleSolutionsSupported": {
         "description": "Information about multiple solutions support"
     },
