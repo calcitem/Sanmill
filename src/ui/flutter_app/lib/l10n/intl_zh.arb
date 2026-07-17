@@ -5363,5 +5363,15 @@
     "guides": "指南",
     "@guides": {
         "description": "Guides"
+    },
+    "puzzleCompletionProgress": "已完成 {percentage}%",
+    "@puzzleCompletionProgress": {
+        "description": "Completion percentage shown below the puzzle progress bar",
+        "placeholders": {
+            "percentage": {
+                "type": "String",
+                "example": "42.5"
+            }
+        }
     }
 }
