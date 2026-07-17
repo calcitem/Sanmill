@@ -793,6 +793,17 @@ class PlayAreaState extends State<PlayArea> {
                 stats.lossPercent.toStringAsFixed(1),
                 stats.total,
               );
+    final String statsSemanticsLabel = stats == null
+        ? statsText
+        : S
+              .of(context)
+              .humanGameDatabaseStatsSemantics(
+                stats.notation,
+                stats.winPercent.toStringAsFixed(1),
+                stats.drawPercent.toStringAsFixed(1),
+                stats.lossPercent.toStringAsFixed(1),
+                stats.total,
+              );
 
     return Padding(
       key: const Key('play_area_human_database_stats_strip'),
@@ -802,6 +813,8 @@ class PlayAreaState extends State<PlayArea> {
       ),
       child: Semantics(
         key: const Key('play_area_human_database_stats_semantics'),
+        label: statsSemanticsLabel,
+        excludeSemantics: true,
         liveRegion: stats != null,
         child: DecoratedBox(
           key: const Key('play_area_human_database_stats'),

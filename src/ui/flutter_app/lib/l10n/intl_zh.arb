@@ -5059,5 +5059,26 @@
     "selectHumanGameDatabaseFile": "选择人类对局数据库",
     "@selectHumanGameDatabaseFile": {
         "description": "Title of the system file picker used to import a human game database"
+    },
+    "humanGameDatabaseStatsSemantics": "人类对局数据库着法 {move}：行棋方获胜 {winPct}%，和棋 {drawPct}%，落败 {lossPct}%，共 {total} 局。",
+    "@humanGameDatabaseStatsSemantics": {
+        "description": "Screen-reader expansion of compact human game database move statistics",
+        "placeholders": {
+            "move": {
+                "example": "d6-d7xa4"
+            },
+            "winPct": {
+                "example": "68.4"
+            },
+            "drawPct": {
+                "example": "2.1"
+            },
+            "lossPct": {
+                "example": "29.5"
+            },
+            "total": {
+                "example": "137"
+            }
+        }
     }
 }

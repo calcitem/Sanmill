@@ -198,6 +198,14 @@ void main() {
     expect(find.textContaining('Human Database'), findsNothing);
     expect(find.textContaining('Human game database'), findsNothing);
     expect(find.text('d6  W 50.0%  D 30.0%  L 20.0%  n=100'), findsOneWidget);
+    final Semantics statsSemantics = tester.widget<Semantics>(
+      find.byKey(const Key('play_area_human_database_stats_semantics')),
+    );
+    expect(
+      statsSemantics.properties.label,
+      'Human game database move d6. The player won 50.0 percent, drew '
+      '30.0 percent, and lost 20.0 percent across 100 recorded games.',
+    );
   });
 
   testWidgets('screen reader board uses a stable semantics grid', (
