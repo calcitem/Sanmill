@@ -254,8 +254,8 @@ fn select_theme(traits: &PuzzleTraits, line: &LineTraits) -> ThemeProse {
         return ThemeProse {
             tag: "trap:wrong-mill",
             headline: "pick the right capture",
-            hint: "More than one capture is on the board, but only one keeps the win. \
-                   Compare what each removal leaves behind.",
+            hint: "More than one capture is available, but only one keeps the win. \
+                   Compare the positions each removal leaves behind.",
             completion: "Only one of the tempting captures kept the forced win; the others \
                          handed the game back.",
         };

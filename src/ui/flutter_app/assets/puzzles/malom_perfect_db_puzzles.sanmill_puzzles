@@ -1330,7 +1330,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "More than one capture is on the board, but only one keeps the win. Compare what each removal leaves behind.",
+      "hint": "More than one capture is available, but only one keeps the win. Compare the positions each removal leaves behind.",
       "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back.",
       "tags": [
         "generated",
@@ -2663,7 +2663,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "More than one capture is on the board, but only one keeps the win. Compare what each removal leaves behind.",
+      "hint": "More than one capture is available, but only one keeps the win. Compare the positions each removal leaves behind.",
       "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back. 2 of the 6 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
@@ -3211,7 +3211,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "More than one capture is on the board, but only one keeps the win. Compare what each removal leaves behind.",
+      "hint": "More than one capture is available, but only one keeps the win. Compare the positions each removal leaves behind.",
       "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back. 1 of the 6 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
@@ -3803,7 +3803,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "More than one capture is on the board, but only one keeps the win. Compare what each removal leaves behind.",
+      "hint": "More than one capture is available, but only one keeps the win. Compare the positions each removal leaves behind.",
       "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back. 4 of the 6 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
@@ -4175,7 +4175,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "More than one capture is on the board, but only one keeps the win. Compare what each removal leaves behind.",
+      "hint": "More than one capture is available, but only one keeps the win. Compare the positions each removal leaves behind.",
       "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back.",
       "tags": [
         "generated",
@@ -4340,7 +4340,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "More than one capture is on the board, but only one keeps the win. Compare what each removal leaves behind.",
+      "hint": "More than one capture is available, but only one keeps the win. Compare the positions each removal leaves behind.",
       "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back. 1 of the 6 follow-up decisions allowed exactly one winning move.",
       "tags": [
         "generated",
