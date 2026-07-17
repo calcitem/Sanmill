@@ -821,6 +821,10 @@ class _PuzzleListPageState extends State<PuzzleListPage> {
       return;
     }
 
+    if (result.userCancelled) {
+      return;
+    }
+
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     if (result.success) {
       ScaffoldMessenger.of(context).showSnackBar(

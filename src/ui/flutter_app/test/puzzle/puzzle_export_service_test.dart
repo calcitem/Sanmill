@@ -17,6 +17,17 @@ import '../helpers/test_native_library.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  test('represents a dismissed file picker without an import error', () {
+    final ImportResult result = ImportResult(
+      success: false,
+      userCancelled: true,
+    );
+
+    expect(result.userCancelled, isTrue);
+    expect(result.errorMessage, isNull);
+    expect(result.errorKey, isNull);
+  });
+
   const MethodChannel engineChannel = MethodChannel(
     'com.calcitem.sanmill/engine',
   );

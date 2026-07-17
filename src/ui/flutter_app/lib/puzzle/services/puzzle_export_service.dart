@@ -112,11 +112,7 @@ class PuzzleExportService {
       );
 
       if (result == null || result.files.isEmpty) {
-        return ImportResult(
-          success: false,
-          errorKey: 'puzzleImportNoFileSelected',
-          errorMessage: 'No file selected',
-        );
+        return ImportResult(success: false, userCancelled: true);
       }
 
       final PlatformFile pickedFile = result.files.first;
@@ -683,6 +679,7 @@ class PuzzleExportService {
 class ImportResult {
   ImportResult({
     required this.success,
+    this.userCancelled = false,
     this.puzzles = const <PuzzleInfo>[],
     this.metadata,
     this.errorMessage,
@@ -694,6 +691,9 @@ class ImportResult {
 
   /// Whether the import was successful
   final bool success;
+
+  /// Whether the file picker was dismissed without choosing a file.
+  final bool userCancelled;
 
   /// Successfully imported puzzles
   final List<PuzzleInfo> puzzles;

@@ -435,6 +435,10 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       return;
     }
 
+    if (result.userCancelled) {
+      return;
+    }
+
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     if (result.success) {
       ScaffoldMessenger.of(context).showSnackBar(
