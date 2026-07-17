@@ -6359,5 +6359,23 @@
     "gifImageScaleDescription": "Export resolution relative to the board on screen.",
     "@gifImageScaleDescription": {
         "description": "Explanation below the GIF image-scale setting"
+    },
+    "backgroundMusicFormatUnsupported": "The {extension} format is not supported on this device. Choose one of these formats: {supportedFormats}.",
+    "@backgroundMusicFormatUnsupported": {
+        "description": "Error shown after selecting an unsupported background-music file",
+        "placeholders": {
+            "extension": {
+                "type": "String",
+                "example": ".ogg"
+            },
+            "supportedFormats": {
+                "type": "String",
+                "example": ".mp3, .wav, .m4a"
+            }
+        }
+    },
+    "backgroundMusicImportFailed": "Could not import this audio file. Choose another file and try again.",
+    "@backgroundMusicImportFailed": {
+        "description": "Error shown when a selected background-music file cannot be copied into app storage"
     }
 }

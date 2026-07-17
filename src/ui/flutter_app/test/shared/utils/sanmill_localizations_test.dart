@@ -27,6 +27,20 @@ void main() {
     );
   });
 
+  test('gives actionable English background-music import errors', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(
+      english.backgroundMusicFormatUnsupported('.ogg', '.mp3, .wav'),
+      'The .ogg format is not supported on this device. '
+      'Choose one of these formats: .mp3, .wav.',
+    );
+    expect(
+      english.backgroundMusicImportFailed,
+      'Could not import this audio file. Choose another file and try again.',
+    );
+  });
+
   test('separates computer-play and generative AI terminology', () {
     final S english = lookupS(const Locale('en'));
     final S chinese = lookupS(const Locale('zh'));

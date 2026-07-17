@@ -655,9 +655,7 @@ class GeneralSettingsPage extends StatelessWidget {
           content: Text(
             S
                 .of(context)
-                .error(
-                  'Format $ext is not supported. Supported: $supportedFormats',
-                ),
+                .backgroundMusicFormatUnsupported(ext, supportedFormats),
           ),
         ),
       );
@@ -676,6 +674,11 @@ class GeneralSettingsPage extends StatelessWidget {
       await File(picked).copy(newPath);
     } catch (e) {
       logger.e("$_logTag Failed to copy background music file: $e");
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(S.of(context).backgroundMusicImportFailed)),
+        );
+      }
       return;
     }
 
