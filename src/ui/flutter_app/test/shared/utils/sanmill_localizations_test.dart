@@ -78,6 +78,21 @@ void main() {
     );
   });
 
+  test('uses consequence-focused English game confirmations', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.confirmResignation, 'Resign this game?');
+    expect(
+      english.areYouSureYouWantToResignThisGame,
+      'The game will end immediately.',
+    );
+    expect(english.confirmOfferDraw, 'Offer a draw?');
+    expect(
+      english.areYouSureYouWantToOfferADraw,
+      'The game ends as a draw if your opponent accepts.',
+    );
+  });
+
   test('uses consistent English variation-deletion terminology', () {
     final S english = lookupS(const Locale('en'));
 
