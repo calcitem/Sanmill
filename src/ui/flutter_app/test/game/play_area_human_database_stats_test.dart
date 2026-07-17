@@ -1223,6 +1223,19 @@ void main() {
       find.byKey(const Key('play_area_advantage_indicator')),
       findsOneWidget,
     );
+    final Rect screenshotRect = tester.getRect(board);
+    final Rect advantageIndicatorRect = tester.getRect(
+      find.byKey(const Key('play_area_advantage_indicator_positioned')),
+    );
+    final Rect boardRect = tester.getRect(
+      find.byKey(const Key('test_board_square')),
+    );
+    expect(
+      advantageIndicatorRect.left,
+      greaterThanOrEqualTo(screenshotRect.left),
+    );
+    expect(advantageIndicatorRect.right, lessThan(boardRect.left));
+    expect(boardRect.right, lessThanOrEqualTo(screenshotRect.right));
     final double robotToBoardTableGap =
         tester.getTopLeft(pieceCountRow).dy -
         tester.getBottomLeft(robotPanel).dy;

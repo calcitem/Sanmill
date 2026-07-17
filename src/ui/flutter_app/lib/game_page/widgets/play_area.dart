@@ -673,6 +673,8 @@ class PlayAreaState extends State<PlayArea> {
   static const double _kHumanDatabaseStatsStripHeight = 40;
   static const double _kAdvantageIndicatorWidth = 16;
   static const double _kAdvantageIndicatorGap = 6;
+  static const double _kAdvantageIndicatorReserve =
+      _kAdvantageIndicatorWidth + _kAdvantageIndicatorGap;
 
   @override
   void initState() {
@@ -3169,28 +3171,56 @@ class PlayAreaState extends State<PlayArea> {
     return NativeScreenshot(
       key: const Key('play_area_native_screenshot'),
       controller: ScreenshotService.screenshotController,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: <Widget>[
-          Container(
-            key: const Key('play_area_game_board_container'),
-            alignment: Alignment.center,
-            child: RotatedBox(
-              key: const Key('play_area_board_orientation'),
-              quarterTurns: _isBoardFlipped ? 2 : 0,
-              child: widget.child,
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          assert(
+            constraints.hasBoundedWidth && constraints.hasBoundedHeight,
+            'The game board requires bounded screenshot dimensions.',
+          );
+          final double reserve = showAdvantageIndicator
+              ? _kAdvantageIndicatorReserve
+              : 0;
+          final double boardSize = math.min(
+            constraints.maxHeight,
+            math.max(0, constraints.maxWidth - reserve),
+          );
+          final Widget board = SizedBox.square(
+            dimension: boardSize,
+            child: Container(
+              key: const Key('play_area_game_board_container'),
+              alignment: Alignment.center,
+              child: RotatedBox(
+                key: const Key('play_area_board_orientation'),
+                quarterTurns: _isBoardFlipped ? 2 : 0,
+                child: widget.child,
+              ),
             ),
-          ),
-          if (showAdvantageIndicator)
-            PositionedDirectional(
-              key: const Key('play_area_advantage_indicator_positioned'),
-              start: -_kAdvantageIndicatorWidth - _kAdvantageIndicatorGap,
-              top: 0,
-              bottom: 0,
-              width: _kAdvantageIndicatorWidth,
-              child: _PositionalAdvantageIndicator(value: advantageValue),
+          );
+          if (!showAdvantageIndicator) {
+            return Center(child: board);
+          }
+          return Center(
+            child: SizedBox(
+              width: boardSize + reserve,
+              height: boardSize,
+              child: Row(
+                children: <Widget>[
+                  SizedBox(
+                    key: const Key('play_area_advantage_indicator_positioned'),
+                    width: _kAdvantageIndicatorWidth,
+                    height: boardSize,
+                    child: _PositionalAdvantageIndicator(
+                      value: advantageValue,
+                      whiteAtBottom: !_isBoardFlipped,
+                    ),
+                  ),
+                  const SizedBox(width: _kAdvantageIndicatorGap),
+                  board,
+                ],
+              ),
             ),
-        ],
+          );
+        },
       ),
     );
   }
@@ -3602,6 +3632,7 @@ class PlayAreaState extends State<PlayArea> {
               width: _kAdvantageIndicatorWidth,
               child: _PositionalAdvantageIndicator(
                 value: _analysisEvaluationGaugeValue(),
+                whiteAtBottom: !_isBoardFlipped,
               ),
             ),
             const SizedBox(width: _kAdvantageIndicatorGap),
@@ -5790,10 +5821,13 @@ class _InlineMoveListState extends State<_InlineMoveList> {
 }
 
 class _PositionalAdvantageIndicator extends StatelessWidget {
-  const _PositionalAdvantageIndicator({required this.value})
-    : assert(value >= -100 && value <= 100);
+  const _PositionalAdvantageIndicator({
+    required this.value,
+    required this.whiteAtBottom,
+  }) : assert(value >= -100 && value <= 100);
 
   final int value;
+  final bool whiteAtBottom;
 
   @override
   Widget build(BuildContext context) {
@@ -5830,16 +5864,31 @@ class _PositionalAdvantageIndicator extends StatelessWidget {
                 final double height = constraints.maxHeight;
                 final double whiteHeight = height * whiteFraction;
                 final double blackHeight = height - whiteHeight;
+                final bool firstIsWhite = !whiteAtBottom;
+                final double firstHeight = firstIsWhite
+                    ? whiteHeight
+                    : blackHeight;
+                final double secondHeight = math.max(
+                  0,
+                  height - firstHeight - 1,
+                );
+                Widget section({required double height, required Color color}) {
+                  return SizedBox(
+                    height: height,
+                    width: double.infinity,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: color.withValues(alpha: 0.88),
+                      ),
+                    ),
+                  );
+                }
+
                 return Column(
                   children: <Widget>[
-                    SizedBox(
-                      height: blackHeight,
-                      width: double.infinity,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: blackColor.withValues(alpha: 0.88),
-                        ),
-                      ),
+                    section(
+                      height: firstHeight,
+                      color: firstIsWhite ? whiteColor : blackColor,
                     ),
                     SizedBox(
                       height: 1,
@@ -5852,14 +5901,9 @@ class _PositionalAdvantageIndicator extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: math.max(0.0, whiteHeight - 1),
-                      width: double.infinity,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: whiteColor.withValues(alpha: 0.88),
-                        ),
-                      ),
+                    section(
+                      height: secondHeight,
+                      color: firstIsWhite ? blackColor : whiteColor,
                     ),
                   ],
                 );
