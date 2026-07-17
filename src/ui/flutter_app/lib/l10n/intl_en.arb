@@ -5885,5 +5885,9 @@
                 "example": "137"
             }
         }
+    },
+    "importingHumanGameDatabase": "Importing human game database…",
+    "@importingHumanGameDatabase": {
+        "description": "Progress message shown while a selected human game database is copied into app storage"
     }
 }

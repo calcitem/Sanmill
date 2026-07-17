@@ -415,7 +415,7 @@ class GeneralSettingsPage extends StatelessWidget {
           children: <Widget>[
             const CircularProgressIndicator(),
             const SizedBox(width: 16),
-            Expanded(child: Text(S.of(context).pleaseWait)),
+            Expanded(child: Text(S.of(context).importingHumanGameDatabase)),
           ],
         ),
       ),
