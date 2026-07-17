@@ -4627,7 +4627,7 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('Search time'), findsOneWidget);
-    expect(find.text('6s'), findsOneWidget);
+    expect(find.text('6 seconds'), findsOneWidget);
     expect(find.text('Use perfect database'), findsOneWidget);
     expect(find.text('Search threads'), findsOneWidget);
     expect(find.text('Multiple lines'), findsOneWidget);
