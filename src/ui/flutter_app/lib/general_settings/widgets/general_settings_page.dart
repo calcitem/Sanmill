@@ -354,12 +354,12 @@ class GeneralSettingsPage extends StatelessWidget {
       _settingsRepository.generalSettings = generalSettings.copyWith(
         humanDatabaseEnabled: false,
       );
+      logger.w(
+        '$_logTag Human database could not be enabled: '
+        '${ready.status.error}',
+      );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            S.of(context).humanGameDatabaseLoadFailed(ready.status.error),
-          ),
-        ),
+        SnackBar(content: Text(S.of(context).humanGameDatabaseInvalidFile)),
       );
       return;
     }
@@ -446,16 +446,12 @@ class GeneralSettingsPage extends StatelessWidget {
         persistentPath == null ||
         ready == null ||
         !ready.ready) {
+      logger.w(
+        '$_logTag Human database import failed: '
+        '${error ?? ready?.status.error ?? 'unknown error'}',
+      );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            S
-                .of(context)
-                .humanGameDatabaseLoadFailed(
-                  error ?? ready?.status.error ?? '',
-                ),
-          ),
-        ),
+        SnackBar(content: Text(S.of(context).humanGameDatabaseInvalidFile)),
       );
       return;
     }

@@ -5080,5 +5080,9 @@
                 "example": "137"
             }
         }
+    },
+    "humanGameDatabaseInvalidFile": "无法将此文件加载为人类对局数据库。请选择兼容的 SQLite 数据库文件。",
+    "@humanGameDatabaseInvalidFile": {
+        "description": "User-facing error shown when a selected human game database cannot be loaded"
     }
 }
