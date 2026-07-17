@@ -75,6 +75,10 @@ class _LanguagePickerState extends State<_LanguagePicker> {
     return AlertDialog(
       key: const Key('language_picker_alert_dialog'),
       scrollable: true,
+      title: Text(
+        S.of(context).language,
+        key: const Key('language_picker_title'),
+      ),
       content: languageColumn,
     );
   }
