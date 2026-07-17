@@ -313,7 +313,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
         ),
       );
     } catch (e) {
-      logger.e('[saved_games] Failed to export saved games: $e');
+      logger.e('[saved_games] Failed to export saved games: ${e.runtimeType}');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(S.of(context).savedGamesExportFailed)),
