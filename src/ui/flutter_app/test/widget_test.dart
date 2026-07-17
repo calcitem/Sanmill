@@ -2270,6 +2270,9 @@ void main() {
     final Finder boardThemeTile = find.byKey(
       const Key('color_settings_card_theme_settings_list_tile'),
     );
+    final Finder themeModeTile = find.byKey(
+      const Key('display_settings_card_theme_mode_settings_list_tile'),
+    );
     final Finder pieceSetTile = find.byKey(
       const Key('display_settings_card_piece_image_settings_list_tile'),
     );
@@ -2286,6 +2289,7 @@ void main() {
     );
 
     expect(boardThemeTile, findsOneWidget);
+    expect(themeModeTile, findsOneWidget);
     expect(pieceSetTile, findsOneWidget);
     expect(boardCoordinatesTile, findsOneWidget);
     expect(pieceAnimationTile, findsOneWidget);
@@ -2298,6 +2302,10 @@ void main() {
     );
     expect(
       tester.getTopLeft(pieceSetTile).dy,
+      greaterThan(tester.getTopLeft(themeModeTile).dy),
+    );
+    expect(
+      tester.getTopLeft(themeModeTile).dy,
       greaterThan(tester.getTopLeft(boardThemeTile).dy),
     );
     expect(

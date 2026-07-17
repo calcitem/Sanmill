@@ -471,6 +471,35 @@ class AppearanceSettingsPage extends StatelessWidget {
               trailingString: _activeBoardThemeLabel(context, colorSettings),
               onTap: () => _setTheme(context, colorSettings),
             ),
+            ValueListenableBuilder<Box<DisplaySettings>>(
+              key: const Key(
+                'display_settings_card_theme_mode_value_listenable_builder',
+              ),
+              valueListenable: DB().listenDisplaySettings,
+              builder:
+                  (
+                    BuildContext context,
+                    Box<DisplaySettings> box,
+                    Widget? child,
+                  ) {
+                    final DisplaySettings displaySettings = box.get(
+                      DB.displaySettingsKey,
+                      defaultValue: const DisplaySettings(),
+                    )!;
+                    return SettingsListTile(
+                      key: const Key(
+                        'display_settings_card_theme_mode_settings_list_tile',
+                      ),
+                      leading: const Icon(Icons.brightness_6_outlined),
+                      titleString: S.of(context).themeMode,
+                      trailingString: _themeModeLabel(
+                        context,
+                        displaySettings.themeMode,
+                      ),
+                      onTap: () => _setThemeMode(context, displaySettings),
+                    );
+                  },
+            ),
             SettingsListTile(
               key: const Key(
                 'display_settings_card_piece_image_settings_list_tile',
@@ -860,17 +889,6 @@ class AppearanceSettingsPage extends StatelessWidget {
                   ? localeToLanguageName[displaySettings.locale]
                   : null,
               onTap: () => _selectLanguage(context, displaySettings),
-            ),
-            SettingsListTile(
-              key: const Key(
-                'display_settings_card_theme_mode_settings_list_tile',
-              ),
-              titleString: strings.themeMode,
-              trailingString: _themeModeLabel(
-                context,
-                displaySettings.themeMode,
-              ),
-              onTap: () => _setThemeMode(context, displaySettings),
             ),
             if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
               SettingsListTile.switchTile(
