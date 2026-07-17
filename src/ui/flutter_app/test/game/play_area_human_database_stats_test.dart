@@ -2893,10 +2893,12 @@ void main() {
       find.byKey(const Key('play_area_analysis_share_export_share_pgn')),
       findsOneWidget,
     );
+    expect(find.text('Share PGN'), findsOneWidget);
     expect(
       find.byKey(const Key('play_area_analysis_share_export_share_fen')),
       findsOneWidget,
     );
+    expect(find.text('Share position as FEN'), findsOneWidget);
     expect(
       find.byKey(const Key('play_area_analysis_share_export_copy_pgn')),
       findsOneWidget,

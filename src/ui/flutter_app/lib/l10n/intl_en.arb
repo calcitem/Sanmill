@@ -6405,5 +6405,13 @@
                 "type": "int"
             }
         }
+    },
+    "sharePgn": "Share PGN",
+    "@sharePgn": {
+        "description": "Share a game record in PGN format from the analysis screen"
+    },
+    "shareFen": "Share position as FEN",
+    "@shareFen": {
+        "description": "Share the current board position in FEN format from the analysis screen"
     }
 }

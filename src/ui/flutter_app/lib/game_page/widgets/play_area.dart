@@ -1302,8 +1302,7 @@ class PlayAreaState extends State<PlayArea> {
         LichessActionSheetAction(
           key: const Key('play_area_analysis_share_export_share_pgn'),
           leading: const Icon(Icons.ios_share_outlined),
-          makeLabel: (BuildContext context) =>
-              Text('${effectiveStrings.shareQrCode} PGN'),
+          makeLabel: (BuildContext context) => Text(effectiveStrings.sharePgn),
           onPressed: () => unawaited(
             _shareAnalysisText(
               text: sharePgn,
@@ -1316,8 +1315,7 @@ class PlayAreaState extends State<PlayArea> {
         LichessActionSheetAction(
           key: const Key('play_area_analysis_share_export_share_fen'),
           leading: const Icon(Icons.ios_share_outlined),
-          makeLabel: (BuildContext context) =>
-              Text('${effectiveStrings.shareQrCode} FEN'),
+          makeLabel: (BuildContext context) => Text(effectiveStrings.shareFen),
           onPressed: () => unawaited(
             _shareAnalysisText(
               text: fen,

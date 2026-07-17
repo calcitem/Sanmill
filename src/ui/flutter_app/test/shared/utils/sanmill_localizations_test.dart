@@ -102,6 +102,13 @@ void main() {
     expect(english.clearBackgroundMusic, 'Remove background music file');
   });
 
+  test('uses complete English labels for analysis sharing actions', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.sharePgn, 'Share PGN');
+    expect(english.shareFen, 'Share position as FEN');
+  });
+
   test('separates computer-play and generative AI terminology', () {
     final S english = lookupS(const Locale('en'));
     final S chinese = lookupS(const Locale('zh'));
