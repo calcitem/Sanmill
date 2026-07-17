@@ -397,7 +397,7 @@
     "@playSounds": {
         "description": "Sound effects"
     },
-    "playSoundsInTheGame": "Play sounds in the game",
+    "playSoundsInTheGame": "Play game sounds",
     "@playSoundsInTheGame": {
         "description": "Play sounds in the game"
     },
@@ -421,7 +421,7 @@
     "@musicFiles": {
         "description": "Root label for music file picker"
     },
-    "keepMuteWhenTakingBack": "Keep mute when taking back",
+    "keepMuteWhenTakingBack": "Mute sounds during takebacks",
     "@keepMuteWhenTakingBack": {
         "description": "Keep mute when taking back"
     },
@@ -1641,7 +1641,7 @@
     "@vignetteEffect": {},
     "promptMakeToolbarTransparent": "Would you like to make the toolbar fully transparent when a board background image is set?",
     "@promptMakeToolbarTransparent": {},
-    "vibration": "Enable vibration in the game",
+    "vibration": "Vibrate during games",
     "@vibration": {},
     "soundTheme": "Sound theme",
     "@soundTheme": {},
