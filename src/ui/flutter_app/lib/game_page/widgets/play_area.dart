@@ -770,7 +770,8 @@ class PlayAreaState extends State<PlayArea> {
   }
 
   Widget? _buildHumanDatabaseStatsStrip(BuildContext context) {
-    if (!DB().generalSettings.showHumanDatabaseStats) {
+    final GeneralSettings settings = DB().generalSettings;
+    if (!settings.humanDatabaseEnabled || !settings.showHumanDatabaseStats) {
       return null;
     }
     final HumanDatabaseMoveStats? stats =

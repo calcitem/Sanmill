@@ -172,17 +172,18 @@ class _AiKnowledgeSourcesPage extends StatelessWidget {
             titleString: S.of(context).clearHumanGameDatabaseFile,
             onTap: () => parent._clearHumanDatabaseFile(generalSettings),
           ),
-        SettingsListTile.switchTile(
-          key: const Key(
-            'general_settings_page_settings_card_ais_play_style_show_human_database_stats',
+        if (generalSettings.humanDatabaseEnabled)
+          SettingsListTile.switchTile(
+            key: const Key(
+              'general_settings_page_settings_card_ais_play_style_show_human_database_stats',
+            ),
+            value: generalSettings.showHumanDatabaseStats,
+            onChanged: (bool val) {
+              parent._setShowHumanDatabaseStats(generalSettings, val);
+            },
+            titleString: S.of(context).showHumanGameDatabaseStats,
+            subtitleString: S.of(context).showHumanGameDatabaseStats_Detail,
           ),
-          value: generalSettings.showHumanDatabaseStats,
-          onChanged: (bool val) {
-            parent._setShowHumanDatabaseStats(generalSettings, val);
-          },
-          titleString: S.of(context).showHumanGameDatabaseStats,
-          subtitleString: S.of(context).showHumanGameDatabaseStats_Detail,
-        ),
       ],
     );
   }

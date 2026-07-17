@@ -70,7 +70,10 @@ void main() {
 
   setUp(() {
     db = MockDB();
-    db.generalSettings = const GeneralSettings(showHumanDatabaseStats: true);
+    db.generalSettings = const GeneralSettings(
+      humanDatabaseEnabled: true,
+      showHumanDatabaseStats: true,
+    );
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
@@ -174,6 +177,32 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_human_database_stats_overlay')),
+      findsNothing,
+    );
+  });
+
+  testWidgets('human database stats strip stays hidden while disabled', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(
+      humanDatabaseEnabled: false,
+      showHumanDatabaseStats: true,
+    );
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(dimension: 390),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_human_database_stats_strip')),
       findsNothing,
     );
   });
