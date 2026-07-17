@@ -178,6 +178,12 @@ void main() {
     );
   });
 
+  test('uses a plural English home training heading', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.dailyTraining, 'Puzzles and training');
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =
