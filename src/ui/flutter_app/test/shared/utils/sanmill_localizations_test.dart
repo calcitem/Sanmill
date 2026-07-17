@@ -88,6 +88,15 @@ void main() {
     );
   });
 
+  test('explains the English diagnostic log clearing consequence', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(
+      english.clearLogsConfirmation,
+      'All diagnostic logs will be permanently deleted.',
+    );
+  });
+
   test('uses consequence-focused English game confirmations', () {
     final S english = lookupS(const Locale('en'));
 

@@ -3630,7 +3630,7 @@
     "@clearLogs": {
         "description": "Label for clear logs action"
     },
-    "clearLogsConfirmation": "Are you sure you want to clear all logs? This action cannot be undone.",
+    "clearLogsConfirmation": "All diagnostic logs will be permanently deleted.",
     "@clearLogsConfirmation": {
         "description": "Confirmation message for clearing logs"
     },
