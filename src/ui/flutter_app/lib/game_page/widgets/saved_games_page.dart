@@ -50,9 +50,14 @@ class SavedGameEntry {
 
 /// A page that lists saved PGN files with a MiniBoard preview.
 class SavedGamesPage extends StatefulWidget {
-  const SavedGamesPage({super.key, this.onGameLoaded});
+  const SavedGamesPage({
+    super.key,
+    this.onGameLoaded,
+    @visibleForTesting this.initialEntries,
+  });
 
   final VoidCallback? onGameLoaded;
+  final List<SavedGameEntry>? initialEntries;
 
   @override
   State<SavedGamesPage> createState() => _SavedGamesPageState();
@@ -69,7 +74,13 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
   @override
   void initState() {
     super.initState();
-    _refresh();
+    final List<SavedGameEntry>? initialEntries = widget.initialEntries;
+    if (initialEntries == null) {
+      _refresh();
+    } else {
+      _entries.addAll(initialEntries);
+      _loading = false;
+    }
   }
 
   @override
@@ -716,7 +727,6 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
               padding: const EdgeInsets.only(top: 16, bottom: 24),
               children: <Widget>[
                 LichessListSection(
-                  header: Text(strings.savedGames),
                   cardKey: const Key('saved_games_page_section'),
                   hasLeading: false,
                   children: <Widget>[

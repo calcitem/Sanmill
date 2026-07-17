@@ -3,6 +3,7 @@
 
 import 'dart:io';
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/widgets/saved_games_page.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
@@ -41,5 +42,29 @@ void main() {
     expect(find.text('Saved games'), findsOneWidget);
     expect(find.text('No saved games yet.'), findsOneWidget);
     expect(find.text('Load game'), findsNothing);
+  });
+
+  testWidgets('does not repeat the page title above saved files', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      makeTestableWidget(
+        SavedGamesPage(
+          initialEntries: <SavedGameEntry>[
+            SavedGameEntry(
+              path: '${savedGamesDirectory.path}/example.pgn',
+              filename: 'example.pgn',
+              modified: DateTime(2026),
+              isLoading: false,
+            ),
+          ],
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.text('Saved games'), findsOneWidget);
+    expect(find.byKey(const Key('saved_games_page_section')), findsOneWidget);
+    expect(find.text('example.pgn'), findsOneWidget);
   });
 }
