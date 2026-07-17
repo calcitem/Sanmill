@@ -1286,7 +1286,7 @@
     "@gameFiles": {
         "description": "Game files"
     },
-    "gameSavedTo": "The game is saved to",
+    "gameSavedTo": "Game saved to",
     "@gameSavedTo": {
         "description": "The game is saved to"
     },
