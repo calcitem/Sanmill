@@ -637,7 +637,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       key: const Key('saved_games_page_scaffold'),
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: Text(strings.loadGame),
+        title: Text(strings.savedGames),
         actions: <Widget>[
           // Browse button
           IconButton(
@@ -694,7 +694,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
           : _entries.isEmpty
           ? Center(
               child: Text(
-                strings.none,
+                strings.noSavedGames,
                 style: textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                 ),
@@ -705,7 +705,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
               padding: const EdgeInsets.only(top: 16, bottom: 24),
               children: <Widget>[
                 LichessListSection(
-                  header: Text(strings.recentGames),
+                  header: Text(strings.savedGames),
                   cardKey: const Key('saved_games_page_section'),
                   hasLeading: false,
                   children: <Widget>[

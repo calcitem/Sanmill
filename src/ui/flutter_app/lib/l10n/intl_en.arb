@@ -6413,5 +6413,13 @@
     "shareFen": "Share position as FEN",
     "@shareFen": {
         "description": "Share the current board position in FEN format from the analysis screen"
+    },
+    "savedGames": "Saved games",
+    "@savedGames": {
+        "description": "Title and list heading for the page that manages saved PGN game files"
+    },
+    "noSavedGames": "No saved games yet.",
+    "@noSavedGames": {
+        "description": "Empty-state message on the saved-games page"
     }
 }

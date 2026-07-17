@@ -109,6 +109,17 @@ void main() {
     expect(english.shareFen, 'Share position as FEN');
   });
 
+  test(
+    'distinguishes the English saved-games library from loading actions',
+    () {
+      final S english = lookupS(const Locale('en'));
+
+      expect(english.loadGame, 'Load game');
+      expect(english.savedGames, 'Saved games');
+      expect(english.noSavedGames, 'No saved games yet.');
+    },
+  );
+
   test('separates computer-play and generative AI terminology', () {
     final S english = lookupS(const Locale('en'));
     final S chinese = lookupS(const Locale('zh'));
