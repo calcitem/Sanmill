@@ -5177,7 +5177,7 @@
     "@showAllBoardResultsDescription": {"description": "Description of the all-candidates analysis setting."},
     "humanDatabaseUnavailable": "Human game database unavailable",
     "@humanDatabaseUnavailable": {"description": "Opening explorer state when the human database cannot be used."},
-    "humanDatabaseUnavailableHint": "Download or import a database to see game statistics.",
+    "humanDatabaseUnavailableHint": "Download or select a database to see human-game statistics.",
     "@humanDatabaseUnavailableHint": {"description": "Hint for configuring the human game database."},
     "humanDatabaseNoPositionRecords": "No human games for this position",
     "@humanDatabaseNoPositionRecords": {"description": "Opening explorer state when a loaded human database has no current-position records."},
