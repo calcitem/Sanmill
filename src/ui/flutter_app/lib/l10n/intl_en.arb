@@ -3126,7 +3126,7 @@
     "@puzzleHistoryDesc": {
         "description": "Puzzle history description"
     },
-    "puzzleHistoryEmpty": "No Puzzle History",
+    "puzzleHistoryEmpty": "No puzzle history",
     "@puzzleHistoryEmpty": {
         "description": "Empty history message"
     },
@@ -3134,15 +3134,15 @@
     "@puzzleHistoryEmptyHint": {
         "description": "Empty history hint"
     },
-    "puzzleHistorySuccess": "Success Only",
+    "puzzleHistorySuccess": "Successful only",
     "@puzzleHistorySuccess": {
         "description": "Success filter"
     },
-    "puzzleHistoryFailed": "Failed Only",
+    "puzzleHistoryFailed": "Failed only",
     "@puzzleHistoryFailed": {
         "description": "Failed filter"
     },
-    "puzzleHistoryUnknown": "Unknown Puzzle",
+    "puzzleHistoryUnknown": "Unknown puzzle",
     "@puzzleHistoryUnknown": {
         "description": "Unknown puzzle label"
     },

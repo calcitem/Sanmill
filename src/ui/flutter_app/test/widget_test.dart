@@ -966,6 +966,7 @@ void main() {
         find.byKey(const Key('puzzle_history_filter_button')),
         findsOneWidget,
       );
+      expect(find.byTooltip('Filter'), findsOneWidget);
       expect(
         find
                 .byKey(const Key('puzzle_history_page_list'))

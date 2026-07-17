@@ -102,7 +102,8 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
 
     return PopupMenuButton<String>(
       key: const Key('puzzle_history_filter_button'),
-      icon: const Icon(FluentIcons.filter_24_regular),
+      icon: Icon(FluentIcons.filter_24_regular, semanticLabel: s.filter),
+      tooltip: s.filter,
       initialValue: _currentFilterValue,
       onSelected: _selectFilter,
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
