@@ -4704,7 +4704,7 @@
     "@coordinateTrainingAbort": {},
     "coordinateTrainingShowCoordinates": "Show coordinates",
     "@coordinateTrainingShowCoordinates": {},
-    "coordinateTrainingDescription": "A coordinate appears on the board. Tap the matching Mill point and continue until you choose to finish the session.",
+    "coordinateTrainingDescription": "For each coordinate, tap the matching point on the board. There is no time limit; finish whenever you like.",
     "@coordinateTrainingDescription": {},
     "board": "Board",
     "@board": {},

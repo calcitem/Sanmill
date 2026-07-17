@@ -306,6 +306,16 @@ void main() {
     expect(english.dailyTraining, 'Puzzles and training');
   });
 
+  test('describes untimed English coordinate training directly', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(
+      english.coordinateTrainingDescription,
+      'For each coordinate, tap the matching point on the board. There is no '
+      'time limit; finish whenever you like.',
+    );
+  });
+
   test('describes English puzzle streaks naturally', () {
     final S english = lookupS(const Locale('en'));
 
