@@ -4539,7 +4539,7 @@
             }
         }
     },
-    "humanGameDatabaseStatsUnavailable": "No human database stats for this position",
+    "humanGameDatabaseStatsUnavailable": "No human-game statistics to show",
     "@humanGameDatabaseStatsUnavailable": {},
     "ticTacToeSample": "Tic-Tac-Toe (sample)",
     "@ticTacToeSample": {

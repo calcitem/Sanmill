@@ -4385,7 +4385,7 @@
             }
         }
     },
-    "humanGameDatabaseStatsUnavailable": "当前局面暂无人类数据库统计",
+    "humanGameDatabaseStatsUnavailable": "暂无可显示的人类实战统计",
     "@humanGameDatabaseStatsUnavailable": {},
     "ticTacToeSample": "井字棋（示例）",
     "@ticTacToeSample": {
