@@ -121,6 +121,15 @@ void main() {
     );
   });
 
+  test('gives actionable English resignation failure feedback', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(
+      english.failedToSendResignation,
+      'Could not resign. Check your connection and try again.',
+    );
+  });
+
   test('explains English recording deletion consequences', () {
     final S english = lookupS(const Locale('en'));
 

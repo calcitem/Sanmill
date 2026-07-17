@@ -4050,7 +4050,7 @@
     "@variations": {},
     "resign": "Resign",
     "@resign": {},
-    "failedToSendResignation": "Failed to send resignation",
+    "failedToSendResignation": "Could not resign. Check your connection and try again.",
     "@failedToSendResignation": {},
     "opponentRequestsTakeBackAccept": "{steps, select, 1{Your opponent wants to take back 1 move. Accept?} other{Your opponent wants to take back {steps} moves. Accept?}}",
     "@opponentRequestsTakeBackAccept": {
