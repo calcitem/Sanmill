@@ -4826,7 +4826,7 @@
     },
     "leaveCurrentGame": "Leave current game?",
     "@leaveCurrentGame": {},
-    "currentGameWillBeKept": "No worries, your game will be kept.",
+    "currentGameWillBeKept": "Your game will be kept.",
     "@currentGameWillBeKept": {},
     "engine": "Engine",
     "@engine": {},
