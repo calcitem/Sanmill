@@ -63,6 +63,15 @@ void main() {
     expect(english.deepAnalysis, isNot(contains('deepen')));
   });
 
+  test('labels English review navigation as moves rather than pages', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.reviewFirstMove, 'First move');
+    expect(english.reviewPreviousMove, 'Previous move');
+    expect(english.reviewNextMove, 'Next move');
+    expect(english.reviewLastMove, 'Last move');
+  });
+
   test('separates computer-play and generative AI terminology', () {
     final S english = lookupS(const Locale('en'));
     final S chinese = lookupS(const Locale('zh'));

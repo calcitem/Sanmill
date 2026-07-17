@@ -89,11 +89,11 @@ void main() {
       expect((boardPaint.painter! as MiniBoardPainter).showCoordinates, isTrue);
       expect(
         tester.getSemantics(find.byKey(const Key('review_next_turn'))).label,
-        contains('Next page'),
+        contains('Next move'),
       );
       expect(
         tester.getSemantics(find.byKey(const Key('review_last_turn'))).label,
-        contains('Last page'),
+        contains('Last move'),
       );
 
       await tester.tap(find.byKey(const Key('review_next_turn')));
@@ -113,13 +113,13 @@ void main() {
       expect(nextButton.onPressed, isNull);
       expect(
         tester.getSemantics(find.byKey(const Key('review_first_turn'))).label,
-        contains('First page'),
+        contains('First move'),
       );
       expect(
         tester
             .getSemantics(find.byKey(const Key('review_previous_turn')))
             .label,
-        contains('Previous page'),
+        contains('Previous move'),
       );
     },
   );

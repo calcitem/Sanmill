@@ -340,9 +340,7 @@ class _ReviewPageState extends State<ReviewPage> {
       (ReviewTurnBoundary turn) => turn.groupIndex == _selectedGroup,
     );
     final int currentIndex = selectedIndex < 0 ? 0 : selectedIndex;
-    final MaterialLocalizations localizations = MaterialLocalizations.of(
-      context,
-    );
+    final S strings = S.of(context);
 
     void selectIndex(int index) {
       assert(index >= 0 && index < report.turns.length);
@@ -358,22 +356,22 @@ class _ReviewPageState extends State<ReviewPage> {
           children: <Widget>[
             IconButton(
               key: const Key('review_first_turn'),
-              tooltip: localizations.firstPageTooltip,
+              tooltip: strings.reviewFirstMove,
               onPressed: currentIndex == 0 ? null : () => selectIndex(0),
               icon: Icon(
                 Icons.first_page_rounded,
-                semanticLabel: localizations.firstPageTooltip,
+                semanticLabel: strings.reviewFirstMove,
               ),
             ),
             IconButton(
               key: const Key('review_previous_turn'),
-              tooltip: localizations.previousPageTooltip,
+              tooltip: strings.reviewPreviousMove,
               onPressed: currentIndex == 0
                   ? null
                   : () => selectIndex(currentIndex - 1),
               icon: Icon(
                 Icons.chevron_left_rounded,
-                semanticLabel: localizations.previousPageTooltip,
+                semanticLabel: strings.reviewPreviousMove,
               ),
             ),
             Semantics(
@@ -388,24 +386,24 @@ class _ReviewPageState extends State<ReviewPage> {
             ),
             IconButton(
               key: const Key('review_next_turn'),
-              tooltip: localizations.nextPageTooltip,
+              tooltip: strings.reviewNextMove,
               onPressed: currentIndex == report.turns.length - 1
                   ? null
                   : () => selectIndex(currentIndex + 1),
               icon: Icon(
                 Icons.chevron_right_rounded,
-                semanticLabel: localizations.nextPageTooltip,
+                semanticLabel: strings.reviewNextMove,
               ),
             ),
             IconButton(
               key: const Key('review_last_turn'),
-              tooltip: localizations.lastPageTooltip,
+              tooltip: strings.reviewLastMove,
               onPressed: currentIndex == report.turns.length - 1
                   ? null
                   : () => selectIndex(report.turns.length - 1),
               icon: Icon(
                 Icons.last_page_rounded,
-                semanticLabel: localizations.lastPageTooltip,
+                semanticLabel: strings.reviewLastMove,
               ),
             ),
           ],

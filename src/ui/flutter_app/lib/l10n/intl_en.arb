@@ -6377,5 +6377,21 @@
     "backgroundMusicImportFailed": "Could not import this audio file. Choose another file and try again.",
     "@backgroundMusicImportFailed": {
         "description": "Error shown when a selected background-music file cannot be copied into app storage"
+    },
+    "reviewFirstMove": "First move",
+    "@reviewFirstMove": {
+        "description": "Tooltip and accessibility label for jumping to the first move in game review"
+    },
+    "reviewPreviousMove": "Previous move",
+    "@reviewPreviousMove": {
+        "description": "Tooltip and accessibility label for moving backward in game review"
+    },
+    "reviewNextMove": "Next move",
+    "@reviewNextMove": {
+        "description": "Tooltip and accessibility label for moving forward in game review"
+    },
+    "reviewLastMove": "Last move",
+    "@reviewLastMove": {
+        "description": "Tooltip and accessibility label for jumping to the last move in game review"
     }
 }
