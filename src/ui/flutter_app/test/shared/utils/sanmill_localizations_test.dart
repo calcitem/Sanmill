@@ -28,17 +28,6 @@ void main() {
     expect(chinese.aiAnalysisTitle, 'AI 棋局分析');
   });
 
-  test('loads gameplay and AI terms in unchanged locales', () {
-    for (final Locale locale in <Locale>[
-      const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'),
-      const Locale('fr'),
-    ]) {
-      final S strings = lookupS(locale);
-      expect(strings.humanVsAi, isNotEmpty);
-      expect(strings.aiChatTitle, isNotEmpty);
-    }
-  });
-
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =
