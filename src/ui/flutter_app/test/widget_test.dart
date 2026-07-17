@@ -1308,6 +1308,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byKey(const Key('settings_hub_list')), findsOneWidget);
+      expect(find.text('Settings'), findsOneWidget);
       expect(
         shellState.debugCurrentRouteId,
         ShellRouteIds.appSettingsGroup.value,

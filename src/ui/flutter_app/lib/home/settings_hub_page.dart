@@ -146,8 +146,6 @@ class SettingsHubPage extends StatelessWidget {
           padding: const EdgeInsets.only(top: 16, bottom: 24),
           children: <Widget>[
             LichessListSection(
-              header: Text(strings.settings),
-              headerKey: const Key('settings_hub_group'),
               cardKey: const Key('settings_hub_settings_card'),
               children: <Widget>[
                 _SettingsHubTile(
