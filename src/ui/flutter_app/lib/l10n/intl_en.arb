@@ -4480,19 +4480,19 @@
     },
     "useHumanGameDatabase": "Use human game database",
     "@useHumanGameDatabase": {},
-    "useHumanGameDatabase_Detail": "Consult an external database of human games before using engine search.",
+    "useHumanGameDatabase_Detail": "Consult recorded human games before falling back to engine search.",
     "@useHumanGameDatabase_Detail": {},
     "humanGameDatabaseFile": "Human game database file",
     "@humanGameDatabaseFile": {},
-    "humanGameDatabaseFile_Detail": "Choose an external SQLite database. Sanmill does not bundle one.",
+    "humanGameDatabaseFile_Detail": "Select a SQLite database file. Sanmill keeps an app-private copy.",
     "@humanGameDatabaseFile_Detail": {},
     "clearHumanGameDatabaseFile": "Clear human game database file",
     "@clearHumanGameDatabaseFile": {},
     "showHumanGameDatabaseStats": "Show database statistics during games",
     "@showHumanGameDatabaseStats": {},
-    "showHumanGameDatabaseStats_Detail": "For the latest AI move selected from the human game database, show its win, draw, and loss record and sample size.",
+    "showHumanGameDatabaseStats_Detail": "For the latest database move, show how often it led the player to a win, draw, or loss and the number of recorded games.",
     "@showHumanGameDatabaseStats_Detail": {},
-    "humanGameDatabaseLoaded": "Human game database loaded: {positionCount} positions, {moveCount} moves.",
+    "humanGameDatabaseLoaded": "Human game database loaded: {positionCount} positions, {moveCount} move records.",
     "@humanGameDatabaseLoaded": {
         "placeholders": {
             "positionCount": {

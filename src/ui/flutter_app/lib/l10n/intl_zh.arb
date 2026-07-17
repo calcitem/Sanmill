@@ -4326,19 +4326,19 @@
     },
     "useHumanGameDatabase": "使用人类对局数据库",
     "@useHumanGameDatabase": {},
-    "useHumanGameDatabase_Detail": "让 AI 在回退到搜索之前先查询外部人类对局 SQLite 数据库。",
+    "useHumanGameDatabase_Detail": "先查询收录的人类实战数据；没有可用记录时再回退到引擎搜索。",
     "@useHumanGameDatabase_Detail": {},
     "humanGameDatabaseFile": "人类对局数据库文件",
     "@humanGameDatabaseFile": {},
-    "humanGameDatabaseFile_Detail": "选择外部 SQLite 数据库文件。该数据库不会随应用一起提供。",
+    "humanGameDatabaseFile_Detail": "选择 SQLite 数据库文件。Sanmill 会在应用私有目录中保留一份副本。",
     "@humanGameDatabaseFile_Detail": {},
     "clearHumanGameDatabaseFile": "清除人类对局数据库文件",
     "@clearHumanGameDatabaseFile": {},
     "showHumanGameDatabaseStats": "在对局界面显示人类数据库统计",
     "@showHumanGameDatabaseStats": {},
-    "showHumanGameDatabaseStats_Detail": "显示最近一次由人类对局数据库提供的 AI 着法的胜、和、负及样本数统计。",
+    "showHumanGameDatabaseStats_Detail": "显示最近一个数据库着法令行棋方获胜、和棋或落败的比例，以及收录的对局数。",
     "@showHumanGameDatabaseStats_Detail": {},
-    "humanGameDatabaseLoaded": "人类对局数据库已加载：{positionCount} 个局面，{moveCount} 个着法。",
+    "humanGameDatabaseLoaded": "人类对局数据库已加载：{positionCount} 个局面，{moveCount} 条着法记录。",
     "@humanGameDatabaseLoaded": {
         "placeholders": {
             "positionCount": {
