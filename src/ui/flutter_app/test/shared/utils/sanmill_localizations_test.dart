@@ -125,6 +125,10 @@ void main() {
         english.savedGameDeleteFailed,
         'Could not delete this saved game. Try again.',
       );
+      expect(
+        english.savedGameRenameFailed,
+        'Could not rename this saved game. Check the filename and try again.',
+      );
     },
   );
 

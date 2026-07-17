@@ -6429,5 +6429,9 @@
     "savedGameDeleteFailed": "Could not delete this saved game. Try again.",
     "@savedGameDeleteFailed": {
         "description": "Error shown when deleting a saved PGN game file fails"
+    },
+    "savedGameRenameFailed": "Could not rename this saved game. Check the filename and try again.",
+    "@savedGameRenameFailed": {
+        "description": "Error shown when renaming a saved PGN game file fails"
     }
 }
