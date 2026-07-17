@@ -197,6 +197,12 @@ void main() {
     expect(english.puzzleStatsCurrentRating, 'Current rating');
   });
 
+  test('uses a direct English import-field hint', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.pasteAndImportGameHint, 'Tap to paste and import a game');
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =

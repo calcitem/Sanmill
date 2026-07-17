@@ -5555,7 +5555,7 @@
     "@guides": {
         "description": "Learn-tab section containing the tutorial and how-to-play guide"
     },
-    "pasteAndImportGameHint": "Tap here to paste and import a game",
+    "pasteAndImportGameHint": "Tap to paste and import a game",
     "@pasteAndImportGameHint": {
         "description": "Hint in the read-only PGN field that imports clipboard text when tapped"
     },
