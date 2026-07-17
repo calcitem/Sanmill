@@ -181,10 +181,9 @@ class _MillVariantDetailsPage extends StatelessWidget {
           return ListView(
             padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
             children: <Widget>[
-              _VariantDetailsHeader(
+              _VariantDetailsSummary(
                 key: Key('mill_variant_detail_header_${entry.id}'),
                 entry: entry,
-                selected: selected,
               ),
               LichessListSection(
                 header: Text(strings.rules),
@@ -219,49 +218,22 @@ class _MillVariantDetailsPage extends StatelessWidget {
   }
 }
 
-class _VariantDetailsHeader extends StatelessWidget {
-  const _VariantDetailsHeader({
-    super.key,
-    required this.entry,
-    required this.selected,
-  });
+class _VariantDetailsSummary extends StatelessWidget {
+  const _VariantDetailsSummary({super.key, required this.entry});
 
   final _VariantEntry entry;
-  final bool selected;
 
   @override
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final TextTheme textTheme = Theme.of(context).textTheme;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Text(
-                  entry.title,
-                  style: textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              if (selected)
-                Icon(Icons.check_rounded, color: colorScheme.primary),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Text(
-            entry.description,
-            style: AppStyles.tileSubtitle.copyWith(
-              color: colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ],
+      child: Text(
+        entry.description,
+        style: AppStyles.tileSubtitle.copyWith(
+          color: colorScheme.onSurfaceVariant,
+        ),
       ),
     );
   }
