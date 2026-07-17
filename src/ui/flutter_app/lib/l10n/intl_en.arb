@@ -2928,9 +2928,9 @@
     "@dailyPuzzleLongestStreak": {
         "description": "Longest streak label"
     },
-    "dailyPuzzleTotalCompleted": "Total completed",
+    "dailyPuzzleTotalCompleted": "Daily puzzles solved",
     "@dailyPuzzleTotalCompleted": {
-        "description": "Total completed puzzles label"
+        "description": "Label for the total number of daily puzzles solved"
     },
     "dailyPuzzleStreakInfo": "Solve puzzles every day to maintain your streak. Missing a day will reset it!",
     "@dailyPuzzleStreakInfo": {

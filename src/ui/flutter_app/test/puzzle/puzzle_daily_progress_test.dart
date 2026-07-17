@@ -127,6 +127,7 @@ void main() {
       find.byKey(const Key('daily_puzzle_best_streak_tile')),
       findsNothing,
     );
+    expect(find.text('Daily puzzles solved'), findsOne);
     expect(find.text('Not completed yet'), findsOne);
     expect(find.text('0'), findsOne);
 
