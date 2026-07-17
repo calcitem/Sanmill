@@ -38,9 +38,9 @@ class _SessionListPageState extends State<SessionListPage> {
   List<RecordingSession> _sessions = <RecordingSession>[];
   bool _isLoading = true;
 
-  GameMode _parseGameMode(String? raw) {
+  GameMode? _tryParseGameMode(String? raw) {
     if (raw == null || raw.trim().isEmpty) {
-      return GameMode.humanVsAi;
+      return null;
     }
 
     final String v = raw.trim().toLowerCase();
@@ -56,6 +56,9 @@ class _SessionListPageState extends State<SessionListPage> {
     if (v.contains('analysis')) {
       return GameMode.analysis;
     }
+    if (v.contains('humanvscloud')) {
+      return GameMode.humanVsCloud;
+    }
     if (v.contains('humanvslan')) {
       return GameMode.humanVsLAN;
     }
@@ -68,8 +71,31 @@ class _SessionListPageState extends State<SessionListPage> {
     if (v.contains('puzzle')) {
       return GameMode.puzzle;
     }
+    if (v.contains('testvialan')) {
+      return GameMode.testViaLAN;
+    }
 
-    return GameMode.humanVsAi;
+    return null;
+  }
+
+  GameMode _parseGameMode(String? raw) =>
+      _tryParseGameMode(raw) ?? GameMode.humanVsAi;
+
+  String _gameModeLabel(BuildContext context, String? raw) {
+    final S strings = S.of(context);
+    return switch (_tryParseGameMode(raw)) {
+      GameMode.humanVsAi => strings.playAgainstComputer,
+      GameMode.humanVsHuman => strings.offlineBoard,
+      GameMode.aiVsAi => strings.aiVsAi,
+      GameMode.setupPosition => strings.boardEditor,
+      GameMode.puzzle => strings.puzzle,
+      GameMode.humanVsCloud => strings.humanVsCloud,
+      GameMode.humanVsLAN => strings.humanVsLAN,
+      GameMode.humanVsBluetooth => strings.humanVsBluetooth,
+      GameMode.testViaLAN => strings.testViaLAN,
+      GameMode.analysis => strings.analysis,
+      null => strings.unknown,
+    };
   }
 
   @override
@@ -490,7 +516,7 @@ class _SessionListPageState extends State<SessionListPage> {
                 if (session.gameMode != null)
                   Chip(
                     label: Text(
-                      session.gameMode!,
+                      _gameModeLabel(context, session.gameMode),
                       style: const TextStyle(fontSize: 11),
                     ),
                     visualDensity: VisualDensity.compact,
