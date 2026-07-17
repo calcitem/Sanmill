@@ -453,7 +453,7 @@
     "@isAutoChangeFirstMove": {
         "description": "Auto Change First Move"
     },
-    "shufflingEnabled": "Move randomly",
+    "shufflingEnabled": "Vary move selection",
     "@shufflingEnabled": {
         "description": "Random move"
     },
@@ -857,7 +857,7 @@
     "@aisPlayStyle": {
         "description": "AI's play style"
     },
-    "passive": "Passive",
+    "passive": "Play less aggressively when ahead",
     "@passive": {
         "description": "Passive"
     },
@@ -869,11 +869,11 @@
     "@appearance": {
         "description": "Appearance"
     },
-    "drawOnHumanExperience": "Draw on the human experience",
+    "drawOnHumanExperience": "Use adaptive placement depth",
     "@drawOnHumanExperience": {
         "description": "Draw on the human experience"
     },
-    "considerMobility": "Consider mobility of pieces",
+    "considerMobility": "Evaluate piece mobility",
     "@considerMobility": {
         "description": "Consider mobility of pieces"
     },
@@ -1445,15 +1445,15 @@
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "The alpha-beta algorithm is a search algorithm to find the best move. It uses the minimax principle and two values, alpha and beta, to prune the search tree and increase efficiency. Alpha represents the minimum score the computer is sure it can get, while beta represents the maximum score its opponent can get. The algorithm helps the computer make smart, efficient decisions in a game.",
     "@whatIsAlphaBeta": {},
-    "drawOnTheHumanExperienceDetail": "According to human experience, if you try to win, you will lose. Instead, aim for a draw as your goal and avoid losing the game. Observe your opponent and gently lure them into a position where they may make mistakes. When they show weakness, seize the opportunity and gently push for the win. In this way, you can win the game.",
+    "drawOnTheHumanExperienceDetail": "Adjust search depth by the number of pieces already placed. Turn this off to use the selected difficulty level as the depth throughout the placement phase.",
     "@drawOnTheHumanExperienceDetail": {},
     "firstMoveDetail": "In this game, it is easier for the second player to win compared to the first player.",
     "@firstMoveDetail": {},
-    "passiveDetail": "Enabling the Passive option will cause the AI to relax when it has an advantage in the position, rather than aggressively trying to win as quickly as possible.",
+    "passiveDetail": "Reduce the AI's search depth when it has a clear advantage, so it may not find the fastest win.",
     "@passiveDetail": {},
-    "moveRandomlyDetail": "Enabling this option increases the randomness and fun of the game while disabling it can help study ways to beat the AI.",
+    "moveRandomlyDetail": "Allow the AI to vary its choice among comparable moves. Turn this off for more deterministic play.",
     "@moveRandomlyDetail": {},
-    "considerMobilityOfPiecesDetail": "If the AI considers the mobility of its pieces, it will not only aim to capture the opponent's pieces as quickly as possible, but also consider blocking the opponent's movements and preventing them from doing the same.",
+    "considerMobilityOfPiecesDetail": "Include each side's available movement in the position evaluation, helping the AI value open routes and restrict the opponent.",
     "@considerMobilityOfPiecesDetail": {},
     "whenBoardIsFull": "When the board is full",
     "@whenBoardIsFull": {},
@@ -1611,9 +1611,9 @@
     "@oneTimeUseMill_Detail": {},
     "currentRulesNoPerfectDatabase": "The current rules you have set do not have a corresponding perfect database. For more information about the perfect database, please click here.",
     "@currentRulesNoPerfectDatabase": {},
-    "focusOnBlockingPaths": "Focus on blocking paths",
+    "focusOnBlockingPaths": "Prioritize blocking routes",
     "@focusOnBlockingPaths": {},
-    "focusOnBlockingPaths_Detail": "During specific phases of the game, prioritize obstructing the opponent's movement over forming mills. Instead of focusing on removing pieces by completing mills, the AI aims to trap the opponent during these phases, rendering them unable to move and securing a win through attrition rather than aggressive play. This phase-specific strategy does not actively block the opponent's mills.",
+    "focusOnBlockingPaths_Detail": "During supported phases, emphasize restricting the opponent's movement over material gain. This can pursue a win by immobilization but may choose weaker moves.",
     "@focusOnBlockingPaths_Detail": {},
     "pieceImage": "Piece image",
     "@pieceImage": {},
@@ -4664,7 +4664,7 @@
     "@downloadHumanGameDatabaseConfirmation": {},
     "useLazySmp": "Multi-threaded search",
     "@useLazySmp": {},
-    "useLazySmp_Detail": "Off by default. Multi-threaded search can improve strength on some devices, but it does not guarantee a positive gain. It is used only when Move randomly is enabled and may use more power or make search less stable.",
+    "useLazySmp_Detail": "Search on multiple CPU threads when move variation is enabled. This can improve strength on some devices, but may use more power and is not always faster or stronger.",
     "@useLazySmp_Detail": {},
     "engineThreads": "Search threads",
     "@engineThreads": {},
