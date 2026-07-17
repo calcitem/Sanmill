@@ -23,13 +23,17 @@ class _RuleSetModal extends StatelessWidget {
           key: const Key('rule_set_column'),
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            RadioListTile<RuleSet>(
-              key: const Key('radio_current_rule'),
-              title: Text(S.of(context).currentRule),
-              groupValue: ruleSet,
-              value: RuleSet.current,
-              onChanged: onChanged,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 20, 24, 12),
+              child: Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: Text(
+                  S.of(context).chooseRulePreset,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
             ),
+            const Divider(height: 1),
             RadioListTile<RuleSet>(
               key: const Key('radio_nine_mens_morris'),
               title: Text(S.of(context).nineMensMorris),

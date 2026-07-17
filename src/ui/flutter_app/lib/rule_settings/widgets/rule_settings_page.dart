@@ -8,6 +8,7 @@ import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
 import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
+import '../../puzzle/models/rule_variant.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
@@ -34,6 +35,46 @@ class RuleSettingsPage extends StatefulWidget {
 }
 
 class _RuleSettingsPageState extends State<RuleSettingsPage> {
+  RuleSet _exactRuleSetFor(RuleSettings settings) {
+    return switch (RuleVariant.exactCanonicalIdFor(settings)) {
+      null => RuleSet.current,
+      'standard_9mm' => RuleSet.nineMensMorris,
+      'twelve_mens_morris' => RuleSet.twelveMensMorris,
+      'morabaraba' => RuleSet.morabaraba,
+      'dooz' => RuleSet.dooz,
+      'lasker_morris' => RuleSet.laskerMorris,
+      'russian_mill' => RuleSet.oneTimeMill,
+      'cham_gonu' => RuleSet.chamGonu,
+      'zhi_qi' => RuleSet.zhiQi,
+      'cheng_san_qi' => RuleSet.chengSanQi,
+      'da_san_qi' => RuleSet.daSanQi,
+      'mul_mulan' => RuleSet.mulMulan,
+      'nerenchi' => RuleSet.nerenchi,
+      'el_filja' => RuleSet.elfilja,
+      final String id => throw StateError('Unknown canonical rule set: $id'),
+    };
+  }
+
+  String _ruleSetName(BuildContext context, RuleSet ruleSet) {
+    final S strings = S.of(context);
+    return switch (ruleSet) {
+      RuleSet.current => strings.custom,
+      RuleSet.nineMensMorris => strings.nineMensMorris,
+      RuleSet.twelveMensMorris => strings.twelveMensMorris,
+      RuleSet.morabaraba => strings.morabaraba,
+      RuleSet.dooz => strings.dooz,
+      RuleSet.laskerMorris => strings.laskerMorris,
+      RuleSet.oneTimeMill => strings.oneTimeMill,
+      RuleSet.chamGonu => strings.chamGonu,
+      RuleSet.zhiQi => strings.zhiQi,
+      RuleSet.chengSanQi => strings.chengSanQi,
+      RuleSet.daSanQi => strings.daSanQi,
+      RuleSet.mulMulan => strings.mulMulan,
+      RuleSet.nerenchi => strings.nerenchi,
+      RuleSet.elfilja => strings.elfilja,
+    };
+  }
+
   @override
   void initState() {
     super.initState();
@@ -77,8 +118,10 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
     // Display a modal bottom sheet with the available rule sets.
     showModalBottomSheet(
       context: context,
-      builder: (_) =>
-          _RuleSetModal(ruleSet: RuleSet.current, onChanged: callback),
+      builder: (_) => _RuleSetModal(
+        ruleSet: _exactRuleSetFor(ruleSettings),
+        onChanged: callback,
+      ),
     );
   }
 
@@ -893,6 +936,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
       DB.ruleSettingsKey,
       defaultValue: RuleSettings.fromLocale(locale),
     )!;
+    final RuleSet activeRuleSet = _exactRuleSetFor(ruleSettings);
     return SettingsList(
       key: const Key('rule_settings_list'),
       children: <Widget>[
@@ -902,9 +946,8 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
           children: <Widget>[
             SettingsListTile(
               key: const Key('rule_settings_tile_rule_set'),
-              titleString: S.of(context).ruleSet,
-              //subtitleString: S.of(context).ruleSet_Detail,
-              //trailingString: ruleSettings.ruleSet,
+              titleString: S.of(context).rulePreset,
+              trailingString: _ruleSetName(context, activeRuleSet),
               onTap: () => _setRuleSet(context, ruleSettings),
             ),
           ],

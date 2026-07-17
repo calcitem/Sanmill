@@ -5668,5 +5668,13 @@
     "openingBookStudioEqual": "Equal",
     "@openingBookStudioEqual": {
         "description": "Equal expected outcome option in Opening Book Studio"
+    },
+    "rulePreset": "Preset",
+    "@rulePreset": {
+        "description": "Label for the active canonical rule preset"
+    },
+    "chooseRulePreset": "Choose a preset",
+    "@chooseRulePreset": {
+        "description": "Heading in the rule preset selection sheet"
     }
 }

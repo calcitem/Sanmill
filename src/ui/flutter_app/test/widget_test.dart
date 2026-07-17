@@ -473,13 +473,16 @@ void main() {
       addTearDown(tester.view.resetDevicePixelRatio);
       final GeneralSettings originalGeneralSettings = DB().generalSettings;
       final DisplaySettings originalDisplaySettings = DB().displaySettings;
+      final RuleSettings originalRuleSettings = DB().ruleSettings;
       DB().generalSettings = GeneralSettings.fromJson(
         Map<String, dynamic>.from(originalGeneralSettings.toJson())
           ..['aiChatEnabled'] = true,
       );
+      DB().ruleSettings = const NineMensMorrisRuleSettings();
       addTearDown(() {
         DB().generalSettings = originalGeneralSettings;
         DB().displaySettings = originalDisplaySettings;
+        DB().ruleSettings = originalRuleSettings;
         AnalysisMode.setShowEngineLines(true);
         AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
       });
@@ -1479,6 +1482,28 @@ void main() {
         ruleSettingsScaffold.backgroundColor,
         Theme.of(ruleSettingsContext).colorScheme.surface,
       );
+      expect(find.text('Preset'), findsOneWidget);
+      expect(find.text("Nine Men's Morris"), findsOneWidget);
+      await tester.tap(find.byKey(const Key('rule_settings_tile_rule_set')));
+      await tester.pumpAndSettle();
+      expect(find.text('Choose a preset'), findsOneWidget);
+      expect(find.text('Current'), findsNothing);
+      expect(
+        tester
+            .widget<RadioListTile<RuleSet>>(
+              find.byKey(const Key('radio_nine_mens_morris')),
+            )
+            .groupValue,
+        RuleSet.nineMensMorris,
+      );
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      DB().ruleSettings = DB().ruleSettings.copyWith(piecesCount: 10);
+      await tester.pumpAndSettle();
+      expect(find.text('Custom'), findsOneWidget);
+      DB().ruleSettings = const NineMensMorrisRuleSettings();
+      await tester.pumpAndSettle();
       expect(
         shellState.debugCurrentRouteId,
         SanmillShellRouteIds.moreRoot.value,
