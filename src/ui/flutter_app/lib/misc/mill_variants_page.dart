@@ -239,6 +239,7 @@ class _VariantPopularitySection extends StatelessWidget {
     );
   }
 }
+
 class _CustomMillVariantDetailsPage extends StatelessWidget {
   const _CustomMillVariantDetailsPage();
 
