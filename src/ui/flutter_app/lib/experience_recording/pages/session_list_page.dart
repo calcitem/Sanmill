@@ -487,7 +487,7 @@ class _SessionListPageState extends State<SessionListPage> {
   }
 
   Widget _buildSessionCard(BuildContext context, RecordingSession session) {
-    final String dateStr = _formatDate(session.startTime);
+    final String dateStr = _formatDate(context, session.startTime);
     final String durationStr = _formatDuration(session.duration);
 
     return Card(
@@ -624,9 +624,16 @@ class _SessionListPageState extends State<SessionListPage> {
   // Formatting helpers
   // -----------------------------------------------------------------------
 
-  String _formatDate(DateTime dt) {
-    return '${dt.year}-${_pad(dt.month)}-${_pad(dt.day)} '
-        '${_pad(dt.hour)}:${_pad(dt.minute)}:${_pad(dt.second)}';
+  String _formatDate(BuildContext context, DateTime dateTime) {
+    final MaterialLocalizations localizations = MaterialLocalizations.of(
+      context,
+    );
+    final String date = localizations.formatShortDate(dateTime);
+    final String time = localizations.formatTimeOfDay(
+      TimeOfDay.fromDateTime(dateTime),
+      alwaysUse24HourFormat: MediaQuery.alwaysUse24HourFormatOf(context),
+    );
+    return '$date $time';
   }
 
   String _formatDuration(Duration d) {
@@ -634,6 +641,4 @@ class _SessionListPageState extends State<SessionListPage> {
     final int seconds = d.inSeconds % 60;
     return '${minutes}m ${seconds}s';
   }
-
-  String _pad(int value) => value.toString().padLeft(2, '0');
 }
