@@ -139,6 +139,18 @@ void main() {
     );
   });
 
+  test('accurately describes the English app-data reset scope', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.resetAppData, 'Reset app data');
+    expect(
+      english.restoreDefaultSettingsConfirmation,
+      'This resets settings and ratings, and permanently deletes puzzle '
+      'progress, private game history, saved reviews, and custom themes. '
+      'This cannot be undone.',
+    );
+  });
+
   test('explains English recording deletion consequences', () {
     final S english = lookupS(const Locale('en'));
 

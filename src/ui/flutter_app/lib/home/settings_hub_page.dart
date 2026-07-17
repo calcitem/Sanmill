@@ -198,14 +198,14 @@ class SettingsHubPage extends StatelessWidget {
                 ],
               ),
             LichessListSection(
-              header: Text(strings.restore),
+              header: Text(strings.reset),
               headerKey: const Key('settings_hub_restore_title'),
               cardKey: const Key('settings_hub_restore_card'),
               children: <Widget>[
                 _SettingsHubActionTile(
                   key: const Key('settings_hub_restore_default_settings'),
                   icon: Icons.restore_rounded,
-                  title: strings.restoreDefaultSettings,
+                  title: strings.resetAppData,
                   onTap: () => _restoreFactoryDefaultSettings(context),
                 ),
               ],
@@ -259,7 +259,7 @@ class _SettingsHubResetSettingsDialog extends StatelessWidget {
     return AlertDialog(
       key: const Key('reset_settings_alert_dialog_alert_dialog'),
       title: Text(
-        S.of(context).restoreDefaultSettings,
+        S.of(context).resetAppData,
         key: const Key('reset_settings_alert_dialog_title'),
         style: AppTheme.dialogTitleTextStyle,
       ),
@@ -292,7 +292,7 @@ class _SettingsHubResetSettingsDialog extends StatelessWidget {
           ),
           onPressed: () => _restore(context),
           child: Text(
-            S.of(context).restore,
+            S.of(context).reset,
             key: const Key('reset_settings_alert_dialog_restore_button_text'),
             style: TextStyle(
               fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),

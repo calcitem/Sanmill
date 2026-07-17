@@ -1409,10 +1409,11 @@ void main() {
         find.byKey(const Key('reset_settings_alert_dialog_alert_dialog')),
         findsOneWidget,
       );
-      expect(find.text('Restore default settings'), findsNWidgets(2));
+      expect(find.text('Reset app data'), findsNWidgets(2));
       expect(
         find.text(
-          'This will replace all current settings with their defaults. '
+          'This resets settings and ratings, and permanently deletes puzzle '
+          'progress, private game history, saved reviews, and custom themes. '
           'This cannot be undone.',
         ),
         findsOneWidget,
