@@ -5453,5 +5453,99 @@
     "analysisShowMoveComments": "显示着法评论",
     "@analysisShowMoveComments": {
         "description": "Switch for move comments in analysis"
+    },
+    "copyGameToClipboard": "复制棋局到剪贴板",
+    "@copyGameToClipboard": {
+        "description": "Action that copies a complete game record to the clipboard"
+    },
+    "deleteSavedGameMessage": "删除“{filename}”？此操作无法撤销。",
+    "@deleteSavedGameMessage": {
+        "description": "Confirmation message for permanently deleting one saved game file",
+        "placeholders": {
+            "filename": {
+                "type": "String",
+                "example": "game.pgn"
+            }
+        }
+    },
+    "deleteSavedGameTitle": "删除已保存棋局？",
+    "@deleteSavedGameTitle": {
+        "description": "Title for the saved-game deletion confirmation"
+    },
+    "exportGameArchive": "导出棋局归档",
+    "@exportGameArchive": {
+        "description": "Action that exports saved PGN games as an archive"
+    },
+    "importGameArchive": "导入棋局归档",
+    "@importGameArchive": {
+        "description": "Action that imports saved PGN games from an archive"
+    },
+    "importGameFromClipboard": "从剪贴板导入",
+    "@importGameFromClipboard": {
+        "description": "Action that imports a game from clipboard text"
+    },
+    "noGameToSave": "没有可保存的棋局",
+    "@noGameToSave": {
+        "description": "Message shown when the user tries to save without a game"
+    },
+    "noPgnFilesInArchive": "归档中未找到 PGN 文件。",
+    "@noPgnFilesInArchive": {
+        "description": "Message shown when an imported archive has no PGN files"
+    },
+    "noSavedGamesToExport": "没有可导出的已保存棋局。",
+    "@noSavedGamesToExport": {
+        "description": "Message shown when the saved-game archive is empty"
+    },
+    "openGameFile": "打开棋局文件",
+    "@openGameFile": {
+        "description": "Action that opens a saved game file"
+    },
+    "pasteAndImportGameHint": "点击以粘贴并导入棋局",
+    "@pasteAndImportGameHint": {
+        "description": "Hint on a button that imports a pasted game"
+    },
+    "pgnFilesImported": "{count, plural, =1{已导入 1 个 PGN 文件} other{已导入 {count} 个 PGN 文件}}",
+    "@pgnFilesImported": {
+        "description": "Result shown after importing PGN files from an archive",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "renameGame": "重命名棋局",
+    "@renameGame": {
+        "description": "Action that renames a saved game"
+    },
+    "savedGameActions": "{filename} 的操作",
+    "@savedGameActions": {
+        "description": "Accessible label and tooltip for a saved game's rename and delete menu",
+        "placeholders": {
+            "filename": {
+                "type": "String",
+                "example": "game.pgn"
+            }
+        }
+    },
+    "savedGameFolderUnavailable": "已保存棋局文件夹不可用。",
+    "@savedGameFolderUnavailable": {
+        "description": "Error shown when the saved-game directory cannot be opened"
+    },
+    "savedGamesShareText": "Sanmill 已保存棋局",
+    "@savedGamesShareText": {
+        "description": "Share-sheet title for a saved-game archive"
+    },
+    "selectedArchiveNotFound": "找不到所选归档。",
+    "@selectedArchiveNotFound": {
+        "description": "Error shown when a selected import archive disappears"
+    },
+    "sortNewestFirst": "最新优先",
+    "@sortNewestFirst": {
+        "description": "Sort option that places newer games first"
+    },
+    "sortOldestFirst": "最早优先",
+    "@sortOldestFirst": {
+        "description": "Sort option that places older games first"
     }
 }
