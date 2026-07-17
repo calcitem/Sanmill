@@ -169,6 +169,15 @@ void main() {
     );
   });
 
+  test('uses recipient terminology in English diagnostic reports', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(
+      english.diagnosticRecipient('Sanmill diagnostics'),
+      'Recipient: Sanmill diagnostics',
+    );
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =

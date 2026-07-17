@@ -5098,7 +5098,7 @@
         "description": "One-shot diagnostic send error.",
         "placeholders": {"message": {"description": "Transport error.", "example": "HTTP 503"}}
     },
-    "diagnosticRecipient": "Receiver: {recipient}",
+    "diagnosticRecipient": "Recipient: {recipient}",
     "@diagnosticRecipient": {
         "description": "Names the configured report receiver.",
         "placeholders": {"recipient": {"description": "Configured receiver.", "example": "Sanmill project GlitchTip"}}
