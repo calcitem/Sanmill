@@ -5229,5 +5229,17 @@
     "system": "跟随系统",
     "@system": {
         "description": "Theme mode option that follows the operating system"
+    },
+    "rulePreset": "预设",
+    "@rulePreset": {
+        "description": "Label for the active canonical rule preset"
+    },
+    "chooseRulePreset": "选择预设",
+    "@chooseRulePreset": {
+        "description": "Heading in the rule preset selection sheet"
+    },
+    "allowFlying": "允许飞子",
+    "@allowFlying": {
+        "description": "Switch allowing low-piece-count players to move to any empty point"
     }
 }
