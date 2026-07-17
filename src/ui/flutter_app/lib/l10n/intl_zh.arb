@@ -1773,7 +1773,7 @@
     "@localNetworkSettings": {},
     "reconnectedSuccessfully": "重新连接成功！",
     "@reconnectedSuccessfully": {},
-    "failedToSaveImageToGallery": "保存图片到图库失败。",
+    "failedToSaveImageToGallery": "无法保存图片。",
     "@failedToSaveImageToGallery": {},
     "opponentRequestedToRestartTheGameDoYouAccept": "对手请求重启游戏。你同意吗？",
     "@opponentRequestedToRestartTheGameDoYouAccept": {},
@@ -5187,5 +5187,9 @@
     "recordingDiagnosticReplayValidated": "诊断包 v1 回放已验证",
     "@recordingDiagnosticReplayValidated": {
         "description": "System note on a replay session created from a validated diagnostic bundle"
+    },
+    "imageSavingNotSupported": "当前平台不支持保存图片。",
+    "@imageSavingNotSupported": {
+        "description": "Error shown when the current platform cannot save an image"
     }
 }

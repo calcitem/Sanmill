@@ -1811,7 +1811,7 @@
     "@localNetworkSettings": {},
     "reconnectedSuccessfully": "Reconnected.",
     "@reconnectedSuccessfully": {},
-    "failedToSaveImageToGallery": "Could not save the image to the gallery.",
+    "failedToSaveImageToGallery": "Could not save the image.",
     "@failedToSaveImageToGallery": {},
     "opponentRequestedToRestartTheGameDoYouAccept": "Opponent requested to restart the game. Do you accept?",
     "@opponentRequestedToRestartTheGameDoYouAccept": {},
@@ -5970,5 +5970,9 @@
     "recordingDiagnosticReplayValidated": "Diagnostic bundle v1 replay validated",
     "@recordingDiagnosticReplayValidated": {
         "description": "System note on a replay session created from a validated diagnostic bundle"
+    },
+    "imageSavingNotSupported": "Saving images is not supported on this platform.",
+    "@imageSavingNotSupported": {
+        "description": "Error shown when the current platform cannot save an image"
     }
 }

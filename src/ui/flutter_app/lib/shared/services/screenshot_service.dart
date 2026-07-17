@@ -36,6 +36,13 @@ class ScreenshotService {
 
   static const String _logTag = "[ScreenshotService]";
 
+  static S get _strings {
+    final BuildContext? context = SnackBarService.currentContext;
+    return context != null
+        ? S.of(context)
+        : lookupS(ui.PlatformDispatcher.instance.locale);
+  }
+
   static final NativeScreenshotController screenshotController =
       NativeScreenshotController();
 
@@ -145,9 +152,7 @@ class ScreenshotService {
         // ... (rest of the desktop logic remains unchanged)
         if (kIsWeb) {
           logger.e("Saving images to the gallery is not supported on the web");
-          SnackBarService.showRootSnackBar(
-            "Saving images to the gallery is not supported on the web",
-          );
+          SnackBarService.showRootSnackBar(_strings.imageSavingNotSupported);
           return;
         } else {
           // For desktop platforms, save to the 'screenshots' directory
@@ -167,7 +172,7 @@ class ScreenshotService {
       }
     } catch (e) {
       logger.e("Failed to save image: $e");
-      SnackBarService.showRootSnackBar("Failed to save image: $e");
+      SnackBarService.showRootSnackBar(_strings.failedToSaveImageToGallery);
     }
   }
 
@@ -179,15 +184,11 @@ class ScreenshotService {
         SnackBarService.showRootSnackBar(filename);
       } else {
         logger.e("$_logTag Failed to save image to Gallery");
-        final BuildContext? context = SnackBarService.currentContext;
-        final String message = context != null
-            ? S.of(context).failedToSaveImageToGallery
-            : "Failed to save image to Gallery";
-        SnackBarService.showRootSnackBar(message);
+        SnackBarService.showRootSnackBar(_strings.failedToSaveImageToGallery);
       }
     } else {
       logger.e("Unexpected result type");
-      SnackBarService.showRootSnackBar("Unexpected result type");
+      SnackBarService.showRootSnackBar(_strings.failedToSaveImageToGallery);
     }
   }
 

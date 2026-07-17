@@ -28,6 +28,19 @@ void main() {
     expect(chinese.aiAnalysisTitle, 'AI 棋局分析');
   });
 
+  test('localizes screenshot save failures in English and Chinese', () {
+    final S english = lookupS(const Locale('en'));
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(english.failedToSaveImageToGallery, 'Could not save the image.');
+    expect(
+      english.imageSavingNotSupported,
+      'Saving images is not supported on this platform.',
+    );
+    expect(chinese.failedToSaveImageToGallery, '无法保存图片。');
+    expect(chinese.imageSavingNotSupported, '当前平台不支持保存图片。');
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =
