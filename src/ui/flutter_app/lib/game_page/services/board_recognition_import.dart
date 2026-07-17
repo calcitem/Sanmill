@@ -283,7 +283,11 @@ abstract final class BoardRecognitionImport {
                       ),
                       const SizedBox(height: 16),
                       buildSlider(
-                        label: 'Contrast Enhancement',
+                        label: S
+                            .of(context)
+                            .boardRecognitionParameterName(
+                              'contrastEnhancement',
+                            ),
                         value: contrastEnhancementFactor,
                         min: 1.0,
                         max: 3.0,
@@ -291,7 +295,11 @@ abstract final class BoardRecognitionImport {
                         onChanged: (double v) => contrastEnhancementFactor = v,
                       ),
                       buildSlider(
-                        label: 'Piece Detection Threshold',
+                        label: S
+                            .of(context)
+                            .boardRecognitionParameterName(
+                              'pieceDetectionThreshold',
+                            ),
                         value: pieceThreshold,
                         min: 0.1,
                         max: 0.5,
@@ -299,7 +307,11 @@ abstract final class BoardRecognitionImport {
                         onChanged: (double v) => pieceThreshold = v,
                       ),
                       buildSlider(
-                        label: 'Board Color Distance',
+                        label: S
+                            .of(context)
+                            .boardRecognitionParameterName(
+                              'boardColorDistance',
+                            ),
                         value: boardColorDistanceThreshold,
                         min: 10.0,
                         max: 50.0,
@@ -308,7 +320,11 @@ abstract final class BoardRecognitionImport {
                             boardColorDistanceThreshold = v,
                       ),
                       buildSlider(
-                        label: 'Piece Color Match Threshold',
+                        label: S
+                            .of(context)
+                            .boardRecognitionParameterName(
+                              'pieceColorMatchThreshold',
+                            ),
                         value: pieceColorMatchThreshold,
                         min: 10.0,
                         max: 50.0,
@@ -316,7 +332,11 @@ abstract final class BoardRecognitionImport {
                         onChanged: (double v) => pieceColorMatchThreshold = v,
                       ),
                       buildSlider(
-                        label: 'White Brightness Threshold',
+                        label: S
+                            .of(context)
+                            .boardRecognitionParameterName(
+                              'whiteBrightnessThreshold',
+                            ),
                         value: whiteBrightnessThreshold.toDouble(),
                         min: 120.0,
                         max: 220.0,
@@ -325,7 +345,11 @@ abstract final class BoardRecognitionImport {
                             whiteBrightnessThreshold = v.round(),
                       ),
                       buildSlider(
-                        label: 'Black Brightness Threshold',
+                        label: S
+                            .of(context)
+                            .boardRecognitionParameterName(
+                              'blackBrightnessThreshold',
+                            ),
                         value: blackBrightnessThreshold.toDouble(),
                         min: 80.0,
                         max: 180.0,
@@ -334,7 +358,11 @@ abstract final class BoardRecognitionImport {
                             blackBrightnessThreshold = v.round(),
                       ),
                       buildSlider(
-                        label: 'Black Saturation Threshold',
+                        label: S
+                            .of(context)
+                            .boardRecognitionParameterName(
+                              'blackSaturationThreshold',
+                            ),
                         value: blackSaturationThreshold,
                         min: 0.05,
                         max: 0.5,
@@ -342,7 +370,11 @@ abstract final class BoardRecognitionImport {
                         onChanged: (double v) => blackSaturationThreshold = v,
                       ),
                       buildSlider(
-                        label: 'Black Color Variance',
+                        label: S
+                            .of(context)
+                            .boardRecognitionParameterName(
+                              'blackColorVariance',
+                            ),
                         value: blackColorVarianceThreshold.toDouble(),
                         min: 10.0,
                         max: 80.0,

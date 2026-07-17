@@ -2007,7 +2007,7 @@
     "@llmPromptTemplateFooter": {},
     "loadingResponse": "Loading response…",
     "@loadingResponse": {},
-    "applyThisResultToBoard": "Apply this result to board",
+    "applyThisResultToBoard": "Apply to board",
     "@applyThisResultToBoard": {},
     "takingPicture": "Taking picture…",
     "@takingPicture": {},
@@ -2055,11 +2055,11 @@
     "@llmDeepThinkingWait": {},
     "llmPresentingSoon": "Presenting soon…",
     "@llmPresentingSoon": {},
-    "recognitionParameters": "Recognition parameters",
+    "recognitionParameters": "Recognition settings",
     "@recognitionParameters": {},
     "adjustParamsDesc": "Adjust these settings to improve board recognition.",
     "@adjustParamsDesc": {},
-    "saveParameters": "Save parameters",
+    "saveParameters": "Save settings",
     "@saveParameters": {},
     "unableToStartImageRecognition": "Unable to start image recognition: {error}",
     "@unableToStartImageRecognition": {
@@ -2092,7 +2092,7 @@
             }
         }
     },
-    "fenCopiedToClipboard": "(FEN copied to clipboard)",
+    "fenCopiedToClipboard": "FEN copied to clipboard.",
     "@fenCopiedToClipboard": {},
     "recognitionFailed": "Recognition failed: {error}",
     "@recognitionFailed": {
@@ -6009,5 +6009,22 @@
     "boardRecognitionFailedTryAgain": "Board recognition failed. Try a clearer image with the full board visible.",
     "@boardRecognitionFailedTryAgain": {
         "description": "Error shown when board recognition throws an internal exception"
+    },
+    "boardRecognitionParameterName": "{parameter, select, contrastEnhancement{Contrast enhancement} pieceDetectionThreshold{Piece detection threshold} boardColorDistance{Board color distance} pieceColorMatchThreshold{Piece color match threshold} whiteBrightnessThreshold{White brightness threshold} blackBrightnessThreshold{Black brightness threshold} blackSaturationThreshold{Black saturation threshold} blackColorVariance{Black color variance} other{Recognition parameter}}",
+    "@boardRecognitionParameterName": {
+        "description": "Name of a tunable board-recognition parameter",
+        "placeholders": {
+            "parameter": {
+                "type": "String"
+            }
+        }
+    },
+    "generatedFen": "Generated FEN",
+    "@generatedFen": {
+        "description": "Heading above a generated FEN position string"
+    },
+    "boardRecognitionApplyHint": "Choose “Apply to board” to use this position.",
+    "@boardRecognitionApplyHint": {
+        "description": "Instruction below generated FEN in the board-recognition preview"
     }
 }

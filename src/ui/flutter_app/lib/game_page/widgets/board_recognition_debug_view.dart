@@ -601,9 +601,9 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          const Text(
-                            'Click S.of(context).applyToBoard to set up this position',
-                            style: TextStyle(
+                          Text(
+                            S.of(context).boardRecognitionApplyHint,
+                            style: const TextStyle(
                               fontStyle: FontStyle.italic,
                               fontSize: 11,
                               color: Colors.blue,
@@ -1064,9 +1064,9 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          const Text(
-                            'Click S.of(context).applyToBoard to set up this position',
-                            style: TextStyle(
+                          Text(
+                            S.of(context).boardRecognitionApplyHint,
+                            style: const TextStyle(
                               fontStyle: FontStyle.italic,
                               fontSize: 11,
                               color: Colors.blue,

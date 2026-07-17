@@ -164,16 +164,16 @@ class _FenPreviewCard extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              const Text(
-                'Generated FEN:',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Text(
+                '${S.of(context).generatedFen}:',
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const Spacer(),
               ElevatedButton.icon(
                 onPressed: () =>
                     BoardRecognitionDebugPage._copyFen(context, fen),
                 icon: const Icon(Icons.copy),
-                label: const Text('Copy'),
+                label: Text(S.of(context).copy),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
                   foregroundColor: Colors.white,

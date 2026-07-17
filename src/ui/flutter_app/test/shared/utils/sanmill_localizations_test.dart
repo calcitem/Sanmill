@@ -94,6 +94,17 @@ void main() {
     );
     expect(english.whiteSMove, 'White to move');
     expect(english.blackSMove, 'Black to move');
+    expect(english.recognitionParameters, 'Recognition settings');
+    expect(
+      english.boardRecognitionParameterName('pieceDetectionThreshold'),
+      'Piece detection threshold',
+    );
+    expect(english.generatedFen, 'Generated FEN');
+    expect(english.applyThisResultToBoard, 'Apply to board');
+    expect(
+      english.boardRecognitionApplyHint,
+      'Choose “Apply to board” to use this position.',
+    );
   });
 
   test('provides framework localizations for every Sanmill locale', () async {
