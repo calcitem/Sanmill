@@ -10,6 +10,11 @@ class _AiKnowledgeSourcesPage extends StatelessWidget {
 
   final GeneralSettingsPage parent;
 
+  // The trap library can currently avoid known mistakes, but its proactive
+  // move-selection mode is not ready for users. Keep the implementation and
+  // setting intact until it is ready to be exposed again.
+  bool get _showMakeTrapsControl => false;
+
   SettingsCard _buildOpeningBookCard(
     BuildContext context,
     GeneralSettings generalSettings,
@@ -191,17 +196,18 @@ class _AiKnowledgeSourcesPage extends StatelessWidget {
           titleString: S.of(context).patchAvoidTraps,
           subtitleString: S.of(context).patchAvoidTraps_Detail,
         ),
-        SettingsListTile.switchTile(
-          key: const Key(
-            'general_settings_page_settings_card_ais_play_style_patch_make_traps',
+        if (_showMakeTrapsControl)
+          SettingsListTile.switchTile(
+            key: const Key(
+              'general_settings_page_settings_card_ais_play_style_patch_make_traps',
+            ),
+            value: generalSettings.patchMakeTraps,
+            onChanged: (bool val) {
+              parent._setPatchMakeTraps(generalSettings, val);
+            },
+            titleString: S.of(context).patchMakeTraps,
+            subtitleString: S.of(context).patchMakeTraps_Detail,
           ),
-          value: generalSettings.patchMakeTraps,
-          onChanged: (bool val) {
-            parent._setPatchMakeTraps(generalSettings, val);
-          },
-          titleString: S.of(context).patchMakeTraps,
-          subtitleString: S.of(context).patchMakeTraps_Detail,
-        ),
       ],
     );
   }

@@ -117,6 +117,25 @@ void main() {
     expect(find.text('Prefer favorable openings'), findsNothing);
   });
 
+  testWidgets('settings page hides the unfinished set-traps control', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(_localizedApp(const GeneralSettingsPage()));
+    await tester.pump();
+
+    await tester.tap(find.text('Computer move sources'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(
+        const Key(
+          'general_settings_page_settings_card_ais_play_style_patch_make_traps',
+        ),
+      ),
+      findsNothing,
+    );
+  });
+
   testWidgets('game header screenshot shows recognised opening information', (
     WidgetTester tester,
   ) async {
