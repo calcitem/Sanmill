@@ -641,7 +641,7 @@
     "@boardInnerLineWidth": {
         "description": "Board inner line width"
     },
-    "pieceWidth": "Piece width",
+    "pieceWidth": "Piece size",
     "@pieceWidth": {
         "description": "Piece width"
     },
@@ -1267,7 +1267,7 @@
     "@pointStyle": {
         "description": "Point style"
     },
-    "pointWidth": "Point width",
+    "pointWidth": "Point size",
     "@pointWidth": {
         "description": "Point width"
     },
