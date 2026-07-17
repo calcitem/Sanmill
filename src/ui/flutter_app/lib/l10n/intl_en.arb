@@ -4962,7 +4962,7 @@
     "@onlineRoomFull": {"description": "Error for a room that already has two players."},
     "onlineVersionMismatch": "This game requires a compatible Sanmill version.",
     "@onlineVersionMismatch": {"description": "Error for incompatible protocol or rules."},
-    "onlineServiceUnavailable": "Online play is temporarily unavailable. You can still play over WLAN or offline.",
+    "onlineServiceUnavailable": "Online play is temporarily unavailable. You can still play over a local network or offline.",
     "@onlineServiceUnavailable": {"description": "Error when the online service cannot be used."},
     "onlineSynchronizing": "Synchronizing the game…",
     "@onlineSynchronizing": {"description": "Status while applying an authoritative snapshot."},
