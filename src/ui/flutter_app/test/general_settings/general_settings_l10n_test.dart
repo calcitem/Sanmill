@@ -17,6 +17,12 @@ void main() {
       expect(strings.aiThinkingTimeValue(6), '6 秒');
       expect(strings.showGameTips, '显示对局提示');
       expect(strings.showGameTips_Detail, '在当前行棋方旁显示行棋提示和开局信息。');
+      expect(
+        strings.llmAssistedDevelopmentDescription,
+        '描述要完成的任务，以生成可直接分享的提示词。若剪贴板中含有 Sanmill 日志，将附上相关片段。',
+      );
+      expect(strings.copyPrompt, '复制提示词');
+      expect(strings.rename, '重命名');
     },
   );
 }
