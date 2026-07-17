@@ -617,9 +617,9 @@
     "@messageColor": {
         "description": "Color used for text, icons, and related foreground details on the game screen"
     },
-    "isPieceCountInHandShown": "Show count of unplaced pieces",
+    "isPieceCountInHandShown": "Show unplaced piece count on board",
     "@isPieceCountInHandShown": {
-        "description": "Show count of pieces in hand"
+        "description": "Show the side-to-move's unplaced piece count in the center of the board"
     },
     "isNotationsShown": "Show board coordinates",
     "@isNotationsShown": {
@@ -1395,9 +1395,9 @@
     "@cannotPaste": {
         "description": "Cannot paste."
     },
-    "isUnplacedAndRemovedPiecesShown": "Show unplaced and removed pieces",
+    "isUnplacedAndRemovedPiecesShown": "Show unplaced and removed piece rows",
     "@isUnplacedAndRemovedPiecesShown": {
-        "description": "Show unplaced and removed pieces"
+        "description": "Show rows representing both players' unplaced and removed pieces around the board"
     },
     "fullScreen": "Full screen",
     "@fullScreen": {
