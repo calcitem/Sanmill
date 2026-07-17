@@ -11,7 +11,9 @@ import '../services/review_storage.dart';
 import 'review_page.dart';
 
 class ReviewHistoryPage extends StatefulWidget {
-  const ReviewHistoryPage({super.key});
+  const ReviewHistoryPage({super.key, @visibleForTesting this.initialRecords});
+
+  final List<PrivateGameRecord>? initialRecords;
 
   @override
   State<ReviewHistoryPage> createState() => _ReviewHistoryPageState();
@@ -23,7 +25,7 @@ class _ReviewHistoryPageState extends State<ReviewHistoryPage> {
   @override
   void initState() {
     super.initState();
-    _records = ReviewStorage.instance.listGames();
+    _records = widget.initialRecords ?? ReviewStorage.instance.listGames();
   }
 
   @override
@@ -73,7 +75,7 @@ class _ReviewHistoryPageState extends State<ReviewHistoryPage> {
                         strings.game,
                   ),
                   subtitle: Text(
-                    '${record.result} · ${MaterialLocalizations.of(context).formatShortDate(record.completedAt.toLocal())}',
+                    '${MaterialLocalizations.of(context).formatShortDate(record.completedAt.toLocal())} · ${record.result}',
                   ),
                   trailing: IconButton(
                     key: Key('review_history_open_${record.id}'),
