@@ -18,6 +18,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
+import '../../shared/services/logger.dart';
 import '../../shared/themes/app_styles.dart';
 import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../../shared/widgets/lichess_list_section.dart';
@@ -312,10 +313,10 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
         ),
       );
     } catch (e) {
-      // Show error message using existing localized text
+      logger.e('[saved_games] Failed to export saved games: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(S.of(context).error(e.toString()))),
+          SnackBar(content: Text(S.of(context).savedGamesExportFailed)),
         );
       }
     }

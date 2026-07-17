@@ -117,6 +117,10 @@ void main() {
       expect(english.loadGame, 'Load game');
       expect(english.savedGames, 'Saved games');
       expect(english.noSavedGames, 'No saved games yet.');
+      expect(
+        english.savedGamesExportFailed,
+        'Could not export saved games. Try again.',
+      );
     },
   );
 

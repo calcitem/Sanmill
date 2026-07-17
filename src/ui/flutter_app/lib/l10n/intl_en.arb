@@ -6421,5 +6421,9 @@
     "noSavedGames": "No saved games yet.",
     "@noSavedGames": {
         "description": "Empty-state message on the saved-games page"
+    },
+    "savedGamesExportFailed": "Could not export saved games. Try again.",
+    "@savedGamesExportFailed": {
+        "description": "Error shown when creating or sharing the saved-games archive fails"
     }
 }
