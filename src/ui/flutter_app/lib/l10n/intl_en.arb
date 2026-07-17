@@ -4184,7 +4184,7 @@
     "@importSessionSuccess": {
         "description": "Snackbar message after successful session import"
     },
-    "importSessionFailed": "Failed to import session. Please check the file format.",
+    "importSessionFailed": "Could not import this recording session. Check the file format and try again.",
     "@importSessionFailed": {
         "description": "Snackbar message when session import fails"
     },

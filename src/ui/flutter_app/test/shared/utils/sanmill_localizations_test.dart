@@ -106,6 +106,16 @@ void main() {
     );
   });
 
+  test('gives actionable English recording import feedback', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(
+      english.importSessionFailed,
+      'Could not import this recording session. Check the file format and '
+      'try again.',
+    );
+  });
+
   test('uses consistent English variation-deletion terminology', () {
     final S english = lookupS(const Locale('en'));
 
