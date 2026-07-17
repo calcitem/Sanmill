@@ -240,48 +240,65 @@ class EffectGridItemState extends State<EffectGridItem>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      key: const Key('effect_grid_item_gesture_detector'),
+    final Color backgroundColor = DB().colorSettings.boardBackgroundColor;
+    final Color labelColor =
+        ThemeData.estimateBrightnessForColor(backgroundColor) == Brightness.dark
+        ? Colors.white
+        : Colors.black87;
+
+    return Semantics(
+      label: widget.displayName,
+      button: true,
+      excludeSemantics: true,
       onTap: widget.onTap,
-      child: Container(
-        key: const Key('effect_grid_item_container'),
-        // Set the background color of each grid item here.
-        color: DB()
-            .colorSettings
-            .boardBackgroundColor, // Change to your preferred color.
-        child: Column(
-          key: const Key('effect_grid_item_column'),
-          children: <Widget>[
-            Expanded(
-              child: AspectRatio(
-                aspectRatio: 1.0,
-                child: AnimatedBuilder(
-                  key: const Key('effect_grid_item_animated_builder'),
-                  animation: _animation,
-                  builder: (BuildContext context, Widget? child) {
-                    return CustomPaint(
-                      key: const Key('effect_grid_item_custom_paint'),
-                      painter: EffectPainter(
-                        animation: widget.effectItem.animation,
-                        animationValue: _animation.value,
-                      ),
-                    );
-                  },
+      child: GestureDetector(
+        key: const Key('effect_grid_item_gesture_detector'),
+        excludeFromSemantics: true,
+        onTap: widget.onTap,
+        child: Container(
+          key: const Key('effect_grid_item_container'),
+          color: backgroundColor,
+          child: Column(
+            key: const Key('effect_grid_item_column'),
+            children: <Widget>[
+              Expanded(
+                child: AspectRatio(
+                  aspectRatio: 1.0,
+                  child: AnimatedBuilder(
+                    key: const Key('effect_grid_item_animated_builder'),
+                    animation: _animation,
+                    builder: (BuildContext context, Widget? child) {
+                      return CustomPaint(
+                        key: const Key('effect_grid_item_custom_paint'),
+                        painter: EffectPainter(
+                          animation: widget.effectItem.animation,
+                          animationValue: _animation.value,
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(key: Key('effect_grid_item_sized_box'), height: 4.0),
-            // Customize text color here.
-            Text(
-              widget.displayName,
-              key: const Key('effect_grid_item_text'),
-              style: TextStyle(
-                color: DB().colorSettings.boardLineColor.withAlpha(
-                  100,
-                ), // Set the effect name text color.
+              const SizedBox(
+                key: Key('effect_grid_item_sized_box'),
+                height: 4.0,
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    widget.displayName,
+                    key: const Key('effect_grid_item_text'),
+                    maxLines: 1,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelLarge?.copyWith(color: labelColor),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

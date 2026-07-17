@@ -2614,6 +2614,7 @@ void main() {
   testWidgets(
     'Piece effect names are localized without changing stable IDs',
     (WidgetTester tester) async {
+      final SemanticsHandle semantics = tester.ensureSemantics();
       await tester.pumpWidget(
         const MaterialApp(
           localizationsDelegates: sanmillLocalizationsDelegates,
@@ -2641,6 +2642,19 @@ void main() {
       expect(item.displayName, 'Ripple Gradient');
       expect(find.text('Ripple Gradient'), findsOneWidget);
       expect(find.text('RippleGradient'), findsNothing);
+      final SemanticsData effectSemantics = tester
+          .getSemantics(rippleGradientItem)
+          .getSemanticsData();
+      expect(effectSemantics.label, 'Ripple Gradient');
+      expect(effectSemantics.hasFlag(SemanticsFlag.isButton), isTrue);
+      final Text effectLabel = tester.widget<Text>(
+        find.descendant(
+          of: rippleGradientItem,
+          matching: find.byKey(const Key('effect_grid_item_text')),
+        ),
+      );
+      expect(effectLabel.style?.color?.a, greaterThan(0.8));
+      semantics.dispose();
     },
     skip: nativeLibrarySkipReason() != null,
   );
