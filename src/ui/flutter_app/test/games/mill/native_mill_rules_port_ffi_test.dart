@@ -504,6 +504,68 @@ void main() {
     );
 
     test(
+      'pending-removal FEN supports live principal variation search',
+      () async {
+        final NativeMillGameSession source = NativeMillGameSession();
+        addTearDown(source.dispose);
+        await replayMoves(source, <String>[
+          'd2',
+          'd6',
+          'f4',
+          'b4',
+          'f2',
+          'g4',
+          'f6',
+        ]);
+
+        expect(
+          mill.LiveEvaluationService.isRemovalPending(source.state.value),
+          isTrue,
+        );
+        final String pendingFen = source.getFen();
+        final NativeMillGameSession searchSession = NativeMillGameSession();
+        addTearDown(searchSession.dispose);
+        expect(searchSession.loadFen(pendingFen), isTrue);
+        expect(
+          mill.LiveEvaluationService.isRemovalPending(
+            searchSession.state.value,
+          ),
+          isTrue,
+        );
+        expect(
+          searchSession.legalActions.every(
+            (GameAction action) => action.type == MillActionTypes.remove,
+          ),
+          isTrue,
+        );
+
+        final List<NativeMillPrincipalVariation> variations =
+            await searchSession.searchPrincipalVariations(
+              depth: 4,
+              moveLimitMs: 500,
+              multiPv: 1,
+              engineSettings: const GeneralSettings(
+                searchAlgorithm: SearchAlgorithm.pvs,
+                aiIsLazy: false,
+                skillLevel: 30,
+                resignIfMostLose: false,
+                shufflingEnabled: false,
+                useLazySmp: false,
+                engineThreads: 1,
+              ),
+            );
+
+        expect(variations, isNotEmpty);
+        final Set<String?> legalMoves = searchSession.legalActions
+            .map(MillActionCodec.moveStringFrom)
+            .toSet();
+        expect(legalMoves, contains(variations.first.move));
+        expect(variations.first.move, startsWith('x'));
+      },
+      skip: _nativeLibrarySkipReason,
+    );
+
+    test(
       'recorder bridge follows real session apply undo redo events',
       () async {
         final NativeMillGameSession session = NativeMillGameSession();
