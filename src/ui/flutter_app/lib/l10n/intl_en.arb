@@ -2632,7 +2632,7 @@
     "@puzzleValidationDescriptionTooLong": {
         "description": "Validation error: description too long"
     },
-    "puzzleValidationAuthorRequired": "Please add your name as author before contributing",
+    "puzzleValidationAuthorRequired": "Add your name as the author before contributing.",
     "@puzzleValidationAuthorRequired": {
         "description": "Validation error: author required for contribution"
     },
