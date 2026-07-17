@@ -2057,6 +2057,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('mill_variants_section_card')), findsOneWidget);
+    expect(find.byKey(const Key('mill_variant_custom')), findsOneWidget);
     expect(
       find.byKey(const Key('mill_variants_mainline_header')),
       findsNothing,
@@ -2078,6 +2079,27 @@ void main() {
       ),
     );
     expect(standardVariantTile.leading, isNull);
+
+    final ListTile customVariantTile = tester.widget<ListTile>(
+      find.descendant(
+        of: find.byKey(const Key('mill_variant_custom')),
+        matching: find.byType(ListTile),
+      ),
+    );
+    expect(customVariantTile.selected, isFalse);
+
+    await tester.tap(find.byKey(const Key('mill_variant_custom')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('mill_variant_detail_custom')), findsOneWidget);
+    expect(find.text('Matches this rule set exactly'), findsOneWidget);
+    expect(
+      find.byKey(const Key('mill_variant_custom_differences_card')),
+      findsNothing,
+    );
+
+    await tester.pageBack();
+    await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(const Key('mill_variant_twelve_mens_morris')));
     await tester.pumpAndSettle();
@@ -2179,6 +2201,42 @@ void main() {
       ),
     );
     expect(standardVariantTile.selected, isFalse);
+
+    final ListTile customVariantTile = tester.widget<ListTile>(
+      find.descendant(
+        of: find.byKey(const Key('mill_variant_custom')),
+        matching: find.byType(ListTile),
+      ),
+    );
+    expect(customVariantTile.selected, isTrue);
+
+    await tester.tap(find.byKey(const Key('mill_variant_custom')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('mill_variant_detail_custom')), findsOneWidget);
+    expect(
+      find.byKey(const Key('mill_variant_custom_closest_preset_card')),
+      findsOneWidget,
+    );
+    expect(find.text("Nine Men's Morris"), findsOneWidget);
+    expect(
+      find.byKey(const Key('mill_variant_custom_differences_card')),
+      findsOneWidget,
+    );
+    expect(find.text('N-move rule'), findsOneWidget);
+    expect(find.text('Current: 99'), findsOneWidget);
+    expect(find.text("Nine Men's Morris: 100"), findsOneWidget);
+    expect(
+      find.byKey(const Key('mill_variant_custom_customize_button')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('mill_variant_detail_apply_button')),
+      findsNothing,
+    );
+
+    await tester.pageBack();
+    await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(const Key('mill_variant_standard_9mm')));
     await tester.pumpAndSettle();

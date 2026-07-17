@@ -233,6 +233,29 @@ void main() {
       },
     );
 
+    test('reports the closest preset and every serialized difference', () {
+      const RuleSettings custom = RuleSettings(nMoveRule: 99);
+
+      expect(RuleVariant.closestCanonicalIdFor(custom), 'standard_9mm');
+      expect(
+        RuleVariant.differingCanonicalSettingKeys(custom, 'standard_9mm'),
+        <String>['NMoveRule'],
+      );
+    });
+
+    test('reports an exact preset with no differences', () {
+      const RuleSettings settings = TwelveMensMorrisRuleSettings();
+
+      expect(RuleVariant.closestCanonicalIdFor(settings), 'twelve_mens_morris');
+      expect(
+        RuleVariant.differingCanonicalSettingKeys(
+          settings,
+          'twelve_mens_morris',
+        ),
+        isEmpty,
+      );
+    });
+
     test('opening book supports only exact authored presets', () {
       expect(
         RuleVariant.openingBookVariantIdFor(const NineMensMorrisRuleSettings()),

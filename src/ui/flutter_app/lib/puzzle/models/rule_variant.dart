@@ -139,6 +139,69 @@ class RuleVariant {
     return null;
   }
 
+  /// Returns the closest canonical preset to [settings].
+  ///
+  /// Closeness is the number of different fields in the complete serialized
+  /// [RuleSettings] value. This deliberately uses the same full comparison as
+  /// [exactCanonicalIdFor]: a custom setting is never silently treated as a
+  /// named preset merely because it belongs to the same variant family.
+  ///
+  /// Ties keep the canonical map order, which makes the result stable for the
+  /// Custom-rule explanation in the UI.
+  static String closestCanonicalIdFor(RuleSettings settings) {
+    assert(canonicalSettings.isNotEmpty, 'At least one preset is required.');
+
+    final Map<String, dynamic> candidate = settings.toJson();
+    String? closestId;
+    int? smallestDifferenceCount;
+
+    for (final MapEntry<String, RuleSettings> entry
+        in canonicalSettings.entries) {
+      final int differenceCount = _differentSettingKeys(
+        candidate,
+        entry.value.toJson(),
+      ).length;
+      if (smallestDifferenceCount == null ||
+          differenceCount < smallestDifferenceCount) {
+        closestId = entry.key;
+        smallestDifferenceCount = differenceCount;
+      }
+    }
+
+    return closestId!;
+  }
+
+  /// Lists the serialized rule-setting keys that differ from [canonicalId].
+  ///
+  /// The order follows [RuleSettings.toJson], so the Custom-rule details stay
+  /// predictable and follow the settings model rather than a fuzzy family
+  /// detector.
+  static List<String> differingCanonicalSettingKeys(
+    RuleSettings settings,
+    String canonicalId,
+  ) {
+    final RuleSettings? canonical = canonicalSettings[canonicalId];
+    if (canonical == null) {
+      throw ArgumentError.value(
+        canonicalId,
+        'canonicalId',
+        'Unknown canonical rule preset.',
+      );
+    }
+
+    return _differentSettingKeys(settings.toJson(), canonical.toJson());
+  }
+
+  static List<String> _differentSettingKeys(
+    Map<String, dynamic> first,
+    Map<String, dynamic> second,
+  ) {
+    final Set<String> keys = <String>{...first.keys, ...second.keys};
+    return keys
+        .where((String key) => first[key] != second[key])
+        .toList(growable: false);
+  }
+
   /// Returns the canonical opening-book variant ID supported by [settings].
   ///
   /// Opening-book data is authored only for the exact Nine Men's Morris and
