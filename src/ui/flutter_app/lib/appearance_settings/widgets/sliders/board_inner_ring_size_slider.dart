@@ -12,7 +12,7 @@ class _BoardInnerRingSizeSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       key: const Key('board_inner_ring_size_semantics'),
-      label: "Board Inner Ring Size",
+      label: S.of(context).boardInnerRingSize,
       child: ValueListenableBuilder<Box<DisplaySettings>>(
         key: const Key('board_inner_ring_size_value_listenable_builder'),
         valueListenable: DB().listenDisplaySettings,
