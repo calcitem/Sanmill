@@ -105,6 +105,48 @@ void main() {
       english.boardRecognitionApplyHint,
       'Choose “Apply to board” to use this position.',
     );
+    expect(
+      <String, String>{
+        for (final String stage in <String>[
+          'originalImage',
+          'resizedImage',
+          'enhancedImage',
+          'boardMaskRaw',
+          'boardMaskProcessed',
+          'boardDetection',
+          'boardPointsDetection',
+          'colorAnalysis',
+          'pieceDetection',
+          'finalResult',
+        ])
+          stage: english.boardRecognitionDebugStageName(stage),
+      },
+      <String, String>{
+        'originalImage': 'Original image',
+        'resizedImage': 'Resized image',
+        'enhancedImage': 'Enhanced contrast',
+        'boardMaskRaw': 'Initial mask',
+        'boardMaskProcessed': 'Processed mask',
+        'boardDetection': 'Board detection',
+        'boardPointsDetection': 'Point detection',
+        'colorAnalysis': 'Color analysis',
+        'pieceDetection': 'Piece detection',
+        'finalResult': 'Final result',
+      },
+    );
+    expect(
+      english.boardRecognitionPointDetectionHelp,
+      contains("standard Nine Men's Morris layout"),
+    );
+    expect(
+      english.boardRecognitionPointDetectionHelp.toLowerCase(),
+      isNot(contains('chess')),
+    );
+    expect(english.boardRecognitionPointCount(18), 'Detected 18 of 24 points.');
+    expect(
+      english.boardRecognitionIdentifiedPieces(4, 3),
+      'Detected pieces: 4 white · 3 black',
+    );
   });
 
   test('provides framework localizations for every Sanmill locale', () async {

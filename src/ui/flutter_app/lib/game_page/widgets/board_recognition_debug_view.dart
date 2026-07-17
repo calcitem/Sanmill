@@ -284,6 +284,9 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
 
   /// Build stage selector
   Widget _buildStageSelector() {
+    String label(int number, DebugStage stage) =>
+        '$number. ${_debugStageName(stage)}';
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       physics: const BouncingScrollPhysics(),
@@ -292,21 +295,54 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _stageButton('1. Original Image', DebugStage.originalImage),
-            _stageButton('2. Resized Image', DebugStage.resizedImage),
-            _stageButton('3. Enhanced Contrast', DebugStage.enhancedImage),
-            _stageButton('4. Initial Mask', DebugStage.boardMaskRaw),
-            _stageButton('5. Processed Mask', DebugStage.boardMaskProcessed),
-            _stageButton('6. Board Detection', DebugStage.boardDetection),
-            _stageButton('7. Point Detection', DebugStage.boardPointsDetection),
-            _stageButton('8. Color Analysis', DebugStage.colorAnalysis),
-            _stageButton('9. Piece Detection', DebugStage.pieceDetection),
-            _stageButton('10. Final Result', DebugStage.finalResult),
+            _stageButton(
+              label(1, DebugStage.originalImage),
+              DebugStage.originalImage,
+            ),
+            _stageButton(
+              label(2, DebugStage.resizedImage),
+              DebugStage.resizedImage,
+            ),
+            _stageButton(
+              label(3, DebugStage.enhancedImage),
+              DebugStage.enhancedImage,
+            ),
+            _stageButton(
+              label(4, DebugStage.boardMaskRaw),
+              DebugStage.boardMaskRaw,
+            ),
+            _stageButton(
+              label(5, DebugStage.boardMaskProcessed),
+              DebugStage.boardMaskProcessed,
+            ),
+            _stageButton(
+              label(6, DebugStage.boardDetection),
+              DebugStage.boardDetection,
+            ),
+            _stageButton(
+              label(7, DebugStage.boardPointsDetection),
+              DebugStage.boardPointsDetection,
+            ),
+            _stageButton(
+              label(8, DebugStage.colorAnalysis),
+              DebugStage.colorAnalysis,
+            ),
+            _stageButton(
+              label(9, DebugStage.pieceDetection),
+              DebugStage.pieceDetection,
+            ),
+            _stageButton(
+              label(10, DebugStage.finalResult),
+              DebugStage.finalResult,
+            ),
           ],
         ),
       ),
     );
   }
+
+  String _debugStageName(DebugStage stage) =>
+      S.of(context).boardRecognitionDebugStageName(stage.name);
 
   /// Build stage button
   Widget _stageButton(String label, DebugStage stage) {
@@ -382,7 +418,7 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Please try adjusting the camera angle or lighting conditions',
+                    S.of(context).boardRecognitionAdjustPhotoHint,
                     style: Theme.of(
                       context,
                     ).textTheme.bodyMedium?.copyWith(color: Colors.white),
@@ -529,15 +565,14 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Text(
-                  'Final Recognition Failed',
-                  style: TextStyle(
+                Text(
+                  S.of(context).entireRecognitionProcessFailedToComplete,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.red,
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(S.of(context).entireRecognitionProcessFailedToComplete),
                 Text(
                   S.of(context).suggestionTryTakingAClearerPictureOfTheBoard,
                 ),
@@ -564,15 +599,13 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
-                'Final Recognition Result: ',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Text(
+                S.of(context).boardRecognitionFinalResultHeading,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text('White Pieces: $whiteCount'),
-              Text('Black Pieces: $blackCount'),
-              const Text(
-                'Red Circle Indicates Black Pieces, Green Circle Indicates White Pieces',
-              ),
+              Text(S.of(context).boardRecognitionWhitePieceCount(whiteCount)),
+              Text(S.of(context).boardRecognitionBlackPieceCount(blackCount)),
+              Text(S.of(context).boardRecognitionFinalLegend),
               const SizedBox(height: 10),
               // Add FEN string display
               if (fenString != null)
@@ -635,21 +668,21 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
         if (_cachedOriginalImage != null) {
           return Image.memory(_cachedOriginalImage!, fit: BoxFit.contain);
         }
-        return _buildImageNotAvailable('Original Image');
+        return _buildImageNotAvailable(DebugStage.originalImage);
 
       case DebugStage.resizedImage:
         // Resized image
         if (_cachedResizedImage != null) {
           return Image.memory(_cachedResizedImage!, fit: BoxFit.contain);
         }
-        return _buildImageNotAvailable('Resized Image');
+        return _buildImageNotAvailable(DebugStage.resizedImage);
 
       case DebugStage.enhancedImage:
         // Use cached contrast-enhanced image
         if (_cachedEnhancedImage != null) {
           return Image.memory(_cachedEnhancedImage!, fit: BoxFit.contain);
         }
-        return _buildImageNotAvailable('Enhanced Contrast Image');
+        return _buildImageNotAvailable(DebugStage.enhancedImage);
 
       case DebugStage.boardMaskRaw:
         // Display initial board mask
@@ -662,11 +695,11 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                 widget.processedImageHeight.toDouble(),
               ),
               maskColor: Colors.blue.withValues(alpha: 0.7),
-              label: 'Initial Mask',
+              label: _debugStageName(DebugStage.boardMaskRaw),
             ),
           );
         }
-        return _buildImageNotAvailable('Initial Board Mask');
+        return _buildImageNotAvailable(DebugStage.boardMaskRaw);
 
       case DebugStage.boardMaskProcessed:
         // Display processed board mask (after dilation/erosion)
@@ -679,11 +712,11 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                 widget.processedImageHeight.toDouble(),
               ),
               maskColor: Colors.green.withValues(alpha: 0.7),
-              label: 'Processed Mask',
+              label: _debugStageName(DebugStage.boardMaskProcessed),
             ),
           );
         }
-        return _buildImageNotAvailable('Processed Mask');
+        return _buildImageNotAvailable(DebugStage.boardMaskProcessed);
 
       case DebugStage.boardDetection:
         // Use original image as background in board detection step for easier detection result visibility
@@ -698,13 +731,17 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
   }
 
   /// Build image not available display
-  Widget _buildImageNotAvailable(String label) {
+  Widget _buildImageNotAvailable(DebugStage stage) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           const Icon(Icons.image_not_supported, size: 48),
-          Text('$label Not Available'),
+          Text(
+            S
+                .of(context)
+                .boardRecognitionImageUnavailable(_debugStageName(stage)),
+          ),
         ],
       ),
     );
@@ -712,41 +749,66 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
 
   /// Build stage information text
   Widget _buildStageInfo() {
+    final S strings = S.of(context);
     switch (_currentStage) {
       case DebugStage.originalImage:
         final img.Image? original = widget.debugInfo?.originalImage;
         if (original == null) {
-          return const Text('Original Image Information Not Available');
+          return Text(
+            strings.boardRecognitionImageUnavailable(
+              _debugStageName(DebugStage.originalImage),
+            ),
+          );
         }
         return Text(
-          'Original Image: ${original.width}x${original.height} Pixels',
+          strings.boardRecognitionImageDimensions(
+            _debugStageName(DebugStage.originalImage),
+            original.width,
+            original.height,
+          ),
           style: const TextStyle(fontWeight: FontWeight.bold),
         );
 
       case DebugStage.resizedImage:
         return Text(
-          'Resized: ${widget.processedImageWidth}x${widget.processedImageHeight} Pixels',
+          strings.boardRecognitionImageDimensions(
+            _debugStageName(DebugStage.resizedImage),
+            widget.processedImageWidth,
+            widget.processedImageHeight,
+          ),
           style: const TextStyle(fontWeight: FontWeight.bold),
         );
 
       case DebugStage.enhancedImage:
         final ImageCharacteristics? chars = widget.debugInfo?.characteristics;
         if (chars == null) {
-          return const Text('Enhanced Image Information Not Available');
+          return Text(
+            strings.boardRecognitionImageUnavailable(
+              _debugStageName(DebugStage.enhancedImage),
+            ),
+          );
         }
+        final String background = strings.boardRecognitionBackgroundType(
+          chars.isDarkBackground ? 'dark' : 'light',
+        );
+        final String contrast = strings.boardRecognitionContrastLevel(
+          chars.isHighContrast ? 'high' : 'low',
+        );
         return SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
-                'Enhanced Contrast: Contrast Factor=1.8',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Text(
+                strings.boardRecognitionContrastFactor('1.8'),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
-                'Brightness=${chars.averageBrightness.toStringAsFixed(1)}, '
-                '${chars.isDarkBackground ? "Dark Background" : "Light Background"}, '
-                'Contrast=${chars.isHighContrast ? "High" : "Low"}, '
-                'Contrast Ratio=${chars.contrastRatio.toStringAsFixed(2)}',
+                strings.boardRecognitionImageMetrics(
+                  chars.averageBrightness.toStringAsFixed(1),
+                  background,
+                  contrast,
+                  chars.contrastRatio.toStringAsFixed(2),
+                ),
               ),
             ],
           ),
@@ -755,7 +817,11 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
       case DebugStage.boardMaskRaw:
         final List<List<bool>>? mask = widget.debugInfo?.boardMask;
         if (mask == null) {
-          return const Text('Board Mask Information Not Available');
+          return Text(
+            strings.boardRecognitionImageUnavailable(
+              _debugStageName(DebugStage.boardMaskRaw),
+            ),
+          );
         }
 
         // Calculate the number of set points in the mask
@@ -768,14 +834,14 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
           }
         }
         return Text(
-          'Initial Board Mask: ${mask.length} Rows, Mask Point Count=$setPoints',
+          strings.boardRecognitionInitialMaskSummary(mask.length, setPoints),
           style: const TextStyle(fontWeight: FontWeight.bold),
         );
 
       case DebugStage.boardMaskProcessed:
-        return const Text(
-          'Mask Processing: Dilation (Expand Area) -> Erosion (Remove Noise)',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        return Text(
+          strings.boardRecognitionMaskProcessing,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         );
 
       case DebugStage.boardDetection:
@@ -793,15 +859,7 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                   ),
                 ),
                 const SizedBox(height: 4),
-                const Text('Possible Reasons:'),
-                const Text('1. Insufficient Board Area Contrast'),
-                const Text('2. Board is Obstructed or Out of Image Range'),
-                const Text(
-                  '3. Poor Lighting Conditions Causing Board Boundary Blur',
-                ),
-                const Text(
-                  'Suggestion: Try Taking a Picture in a Well-lit Environment to Ensure Complete and Clear Visibility of the Board',
-                ),
+                Text(strings.boardRecognitionBoardDetectionHelp),
               ],
             ),
           );
@@ -810,16 +868,18 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
-                'Board Region Detection Result: ',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text('Top-left: (${rect.left}, ${rect.top})'),
-              Text('Size: Width=${rect.width}, Height=${rect.height}'),
               Text(
-                'Aspect Ratio: ${(rect.width / rect.height).toStringAsFixed(2)}',
+                strings.boardRecognitionBoardRegionHeading,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              const Text('Yellow Rectangle Indicates Detected Board Area'),
+              Text(strings.boardRecognitionTopLeft(rect.left, rect.top)),
+              Text(strings.boardRecognitionRegionSize(rect.width, rect.height)),
+              Text(
+                strings.boardRecognitionAspectRatio(
+                  (rect.width / rect.height).toStringAsFixed(2),
+                ),
+              ),
+              Text(strings.boardRecognitionBoardRegionLegend),
             ],
           ),
         );
@@ -827,26 +887,19 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
       case DebugStage.boardPointsDetection:
         final int pointCount = widget.boardPoints.length;
         if (pointCount == 0) {
-          return const SingleChildScrollView(
+          return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'No board point detected!',
-                  style: TextStyle(
+                  strings.noBoardPointDetected,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.red,
                   ),
                 ),
-                SizedBox(height: 4),
-                Text('Possible Reasons:'),
-                Text('1. Board Area Detection Failed'),
-                Text(
-                  '2. Board Pattern Does Not Match Standard Nine-piece Chess Layout',
-                ),
-                Text(
-                  'Suggestion: Ensure Using Standard Nine-piece Chess Board',
-                ),
+                const SizedBox(height: 4),
+                Text(strings.boardRecognitionPointDetectionHelp),
               ],
             ),
           );
@@ -855,18 +908,16 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
-                'Board Point Detection Result: ',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Text(
+                strings.boardRecognitionPointDetectionHeading,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text('Detected $pointCount Points (Should Be 24)'),
-              const Text(
-                'Blue Circle Indicates Detected Points, Number Indicates Point Index',
-              ),
+              Text(strings.boardRecognitionPointCount(pointCount)),
+              Text(strings.boardRecognitionPointLegend),
               if (pointCount < 24)
-                const Text(
-                  'Warning: Point Count Less Than 24, Detection May Be Inaccurate',
-                  style: TextStyle(
+                Text(
+                  strings.boardRecognitionPointCountWarning,
+                  style: const TextStyle(
                     color: Colors.red,
                     fontWeight: FontWeight.bold,
                   ),
@@ -878,26 +929,19 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
       case DebugStage.colorAnalysis:
         final ColorProfile? profile = widget.debugInfo?.colorProfile;
         if (profile == null) {
-          return const SingleChildScrollView(
+          return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'Color Analysis Failed!',
-                  style: TextStyle(
+                  strings.colorAnalysisFailed,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.red,
                   ),
                 ),
-                SizedBox(height: 4),
-                Text('Possible Reasons:'),
-                Text('1. Board Area or Point Detection Failed'),
-                Text(
-                  '2. Insufficient Image Contrast, Difficult to Distinguish Colors',
-                ),
-                Text(
-                  'Suggestion: Take a Picture in a Uniformly Lit Environment',
-                ),
+                const SizedBox(height: 4),
+                Text(strings.boardRecognitionColorAnalysisHelp),
               ],
             ),
           );
@@ -906,46 +950,51 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
-                'Color Analysis Result: ',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Text(
+                strings.boardRecognitionColorAnalysisHeading,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               Text(
-                'White Mean: ${profile.whiteMean.toStringAsFixed(1)}, Standard Deviation: ${profile.whiteStd.toStringAsFixed(1)}',
+                strings.boardRecognitionColorSampleStats(
+                  strings.whitePiece,
+                  profile.whiteMean.toStringAsFixed(1),
+                  profile.whiteStd.toStringAsFixed(1),
+                ),
               ),
               Text(
-                'Black Mean: ${profile.blackMean.toStringAsFixed(1)}, Standard Deviation: ${profile.blackStd.toStringAsFixed(1)}',
+                strings.boardRecognitionColorSampleStats(
+                  strings.blackPiece,
+                  profile.blackMean.toStringAsFixed(1),
+                  profile.blackStd.toStringAsFixed(1),
+                ),
               ),
               Text(
-                'Empty Mean: ${profile.emptyMean.toStringAsFixed(1)}, Standard Deviation: ${profile.emptyStd.toStringAsFixed(1)}',
+                strings.boardRecognitionColorSampleStats(
+                  strings.emptyPoint,
+                  profile.emptyMean.toStringAsFixed(1),
+                  profile.emptyStd.toStringAsFixed(1),
+                ),
               ),
-              const Text(
-                'Orange Indicates White Sample, Blue Indicates Black Sample, Green Indicates Empty Sample',
-              ),
+              Text(strings.boardRecognitionColorLegend),
             ],
           ),
         );
 
       case DebugStage.pieceDetection:
         if (widget.boardPoints.isEmpty) {
-          return const SingleChildScrollView(
+          return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'Piece Detection Failed!',
-                  style: TextStyle(
+                  strings.boardRecognitionPieceDetectionFailed,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.red,
                   ),
                 ),
-                SizedBox(height: 4),
-                Text('Possible Reasons:'),
-                Text('1. Board Point Detection Failed'),
-                Text('2. Unable to Determine Sampling Point Location'),
-                Text(
-                  'Suggestion: Ensure Clear Visibility of the Board and Pieces',
-                ),
+                const SizedBox(height: 4),
+                Text(strings.boardRecognitionPieceDetectionHelp),
               ],
             ),
           );
@@ -963,25 +1012,30 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
-                'Piece Detection Process: ',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Text(
+                strings.boardRecognitionPieceDetectionHeading,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              const Text(
-                'Analyze Color Characteristics of Each Point to Determine If There Is a Piece',
+              Text(strings.boardRecognitionPieceDetectionMethod),
+              Text(
+                strings.boardRecognitionWhiteThreshold(
+                  widget.debugInfo?.characteristics?.whiteBrightnessThreshold ??
+                      0,
+                ),
               ),
               Text(
-                'White Threshold: ${widget.debugInfo?.characteristics?.whiteBrightnessThreshold ?? 0}',
+                strings.boardRecognitionBlackThreshold(
+                  widget.debugInfo?.characteristics?.blackBrightnessThreshold ??
+                      0,
+                ),
               ),
               Text(
-                'Black Threshold: ${widget.debugInfo?.characteristics?.blackBrightnessThreshold ?? 0}',
+                strings.boardRecognitionIdentifiedPieces(
+                  whiteCount,
+                  blackCount,
+                ),
               ),
-              Text(
-                'Currently Identified: White Pieces=$whiteCount, Black Pieces=$blackCount',
-              ),
-              const Text(
-                'Yellow Outline Sampling Area, Red Indicates Identified as Black, Green Indicates Identified as White',
-              ),
+              Text(strings.boardRecognitionPieceDetectionLegend),
             ],
           ),
         );
@@ -992,18 +1046,15 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Text(
-                  'Final Recognition Failed',
-                  style: TextStyle(
+                Text(
+                  strings.entireRecognitionProcessFailedToComplete,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.red,
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(S.of(context).entireRecognitionProcessFailedToComplete),
-                Text(
-                  S.of(context).suggestionTryTakingAClearerPictureOfTheBoard,
-                ),
+                Text(strings.suggestionTryTakingAClearerPictureOfTheBoard),
               ],
             ),
           );
@@ -1027,24 +1078,22 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text(
-                'Final Recognition Result: ',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Text(
+                strings.boardRecognitionFinalResultHeading,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text('White Pieces: $whiteCount'),
-              Text('Black Pieces: $blackCount'),
-              const Text(
-                'Red Circle Indicates Black Pieces, Green Circle Indicates White Pieces',
-              ),
+              Text(strings.boardRecognitionWhitePieceCount(whiteCount)),
+              Text(strings.boardRecognitionBlackPieceCount(blackCount)),
+              Text(strings.boardRecognitionFinalLegend),
               const SizedBox(height: 10),
               // Add FEN string display
               if (fenString != null)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text(
-                      'FEN:',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      '${strings.generatedFen}:',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Container(
                       padding: const EdgeInsets.all(8),
@@ -1065,7 +1114,7 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            S.of(context).boardRecognitionApplyHint,
+                            strings.boardRecognitionApplyHint,
                             style: const TextStyle(
                               fontStyle: FontStyle.italic,
                               fontSize: 11,

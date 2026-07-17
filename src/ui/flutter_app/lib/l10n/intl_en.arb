@@ -1935,7 +1935,7 @@
     "@youCanEnterAnyModelName": {},
     "boardPositionAppliedFenCopiedToClipboard": "Board position applied. FEN copied to clipboard.",
     "@boardPositionAppliedFenCopiedToClipboard": {},
-    "suggestionTryTakingAClearerPictureOfTheBoard": "Suggestion: try taking a clearer picture of the board.",
+    "suggestionTryTakingAClearerPictureOfTheBoard": "Try a clearer image with the full board visible.",
     "@suggestionTryTakingAClearerPictureOfTheBoard": {},
     "llmPromptTemplate": "LLM prompt template",
     "@llmPromptTemplate": {},
@@ -1989,7 +1989,7 @@
     "@adjustBoardArea": {},
     "viewCommonUrls": "View common URLs",
     "@viewCommonUrls": {},
-    "colorAnalysisFailed": "Color analysis failed!",
+    "colorAnalysisFailed": "Color analysis failed.",
     "@colorAnalysisFailed": {},
     "analyzingGameBoardImage": "Analyzing board image…",
     "@analyzingGameBoardImage": {},
@@ -6026,5 +6026,276 @@
     "boardRecognitionApplyHint": "Choose “Apply to board” to use this position.",
     "@boardRecognitionApplyHint": {
         "description": "Instruction below generated FEN in the board-recognition preview"
+    },
+    "boardRecognitionDebugStageName": "{stage, select, originalImage{Original image} resizedImage{Resized image} enhancedImage{Enhanced contrast} boardMaskRaw{Initial mask} boardMaskProcessed{Processed mask} boardDetection{Board detection} boardPointsDetection{Point detection} colorAnalysis{Color analysis} pieceDetection{Piece detection} finalResult{Final result} other{Debug stage}}",
+    "@boardRecognitionDebugStageName": {
+        "description": "Name of a board-recognition diagnostic stage",
+        "placeholders": {
+            "stage": {
+                "type": "String"
+            }
+        }
+    },
+    "boardRecognitionAdjustPhotoHint": "Try a straighter camera angle or more even lighting.",
+    "@boardRecognitionAdjustPhotoHint": {
+        "description": "Advice shown when the board area cannot be detected"
+    },
+    "boardRecognitionImageUnavailable": "{image} is unavailable.",
+    "@boardRecognitionImageUnavailable": {
+        "description": "Diagnostic message when an intermediate recognition image is missing",
+        "placeholders": {
+            "image": {
+                "type": "String"
+            }
+        }
+    },
+    "boardRecognitionImageDimensions": "{image}: {width} × {height} px",
+    "@boardRecognitionImageDimensions": {
+        "description": "Dimensions of a board-recognition diagnostic image",
+        "placeholders": {
+            "image": {
+                "type": "String"
+            },
+            "width": {
+                "type": "int"
+            },
+            "height": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionContrastFactor": "Contrast factor: {factor}",
+    "@boardRecognitionContrastFactor": {
+        "description": "Contrast factor used by board recognition",
+        "placeholders": {
+            "factor": {
+                "type": "String"
+            }
+        }
+    },
+    "boardRecognitionBackgroundType": "{type, select, dark{dark} light{light} other{unknown}}",
+    "@boardRecognitionBackgroundType": {
+        "description": "Detected image background brightness",
+        "placeholders": {
+            "type": {
+                "type": "String"
+            }
+        }
+    },
+    "boardRecognitionContrastLevel": "{level, select, high{high} low{low} other{unknown}}",
+    "@boardRecognitionContrastLevel": {
+        "description": "Detected image contrast level",
+        "placeholders": {
+            "level": {
+                "type": "String"
+            }
+        }
+    },
+    "boardRecognitionImageMetrics": "Brightness {brightness} · {background} background · {contrast} contrast · ratio {ratio}",
+    "@boardRecognitionImageMetrics": {
+        "description": "Summary of image characteristics used by board recognition",
+        "placeholders": {
+            "brightness": {
+                "type": "String"
+            },
+            "background": {
+                "type": "String"
+            },
+            "contrast": {
+                "type": "String"
+            },
+            "ratio": {
+                "type": "String"
+            }
+        }
+    },
+    "boardRecognitionInitialMaskSummary": "Initial mask: {rows} rows · {activePixels} active pixels",
+    "@boardRecognitionInitialMaskSummary": {
+        "description": "Summary of the initial board mask",
+        "placeholders": {
+            "rows": {
+                "type": "int"
+            },
+            "activePixels": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionMaskProcessing": "Mask processing: dilate to expand regions, then erode to remove noise.",
+    "@boardRecognitionMaskProcessing": {
+        "description": "Explanation of board-mask post-processing"
+    },
+    "boardRecognitionBoardDetectionHelp": "Possible causes:\n• The board has too little contrast\n• Part of the board is cropped or obstructed\n• Lighting blurs the board boundary\n\nTry again with the entire board clearly visible in even lighting.",
+    "@boardRecognitionBoardDetectionHelp": {
+        "description": "Diagnostic help when the board region cannot be detected"
+    },
+    "boardRecognitionBoardRegionHeading": "Detected board region",
+    "@boardRecognitionBoardRegionHeading": {
+        "description": "Heading for board-region diagnostic results"
+    },
+    "boardRecognitionTopLeft": "Top-left: ({x}, {y})",
+    "@boardRecognitionTopLeft": {
+        "description": "Top-left coordinates of the detected board region",
+        "placeholders": {
+            "x": {
+                "type": "int"
+            },
+            "y": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionRegionSize": "Size: {width} × {height} px",
+    "@boardRecognitionRegionSize": {
+        "description": "Size of the detected board region",
+        "placeholders": {
+            "width": {
+                "type": "int"
+            },
+            "height": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionAspectRatio": "Aspect ratio: {ratio}",
+    "@boardRecognitionAspectRatio": {
+        "description": "Aspect ratio of the detected board region",
+        "placeholders": {
+            "ratio": {
+                "type": "String"
+            }
+        }
+    },
+    "boardRecognitionBoardRegionLegend": "The yellow rectangle marks the detected board.",
+    "@boardRecognitionBoardRegionLegend": {
+        "description": "Legend for the detected board-region overlay"
+    },
+    "boardRecognitionPointDetectionHelp": "Possible causes:\n• Board detection failed\n• The image does not show a standard Nine Men's Morris layout\n\nUse a standard board with all 24 points visible.",
+    "@boardRecognitionPointDetectionHelp": {
+        "description": "Diagnostic help when board points cannot be detected"
+    },
+    "boardRecognitionPointDetectionHeading": "Detected board points",
+    "@boardRecognitionPointDetectionHeading": {
+        "description": "Heading for board-point diagnostic results"
+    },
+    "boardRecognitionPointCount": "Detected {count} of 24 points.",
+    "@boardRecognitionPointCount": {
+        "description": "Number of Mill board points detected",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionPointLegend": "Blue circles mark detected points; numbers show the point indexes.",
+    "@boardRecognitionPointLegend": {
+        "description": "Legend for the board-point detection overlay"
+    },
+    "boardRecognitionPointCountWarning": "Fewer than 24 points were detected, so the result may be inaccurate.",
+    "@boardRecognitionPointCountWarning": {
+        "description": "Warning for an incomplete set of detected Mill board points"
+    },
+    "boardRecognitionColorAnalysisHelp": "Possible causes:\n• Board or point detection failed\n• Lighting makes piece colors hard to distinguish\n\nTry again in even lighting.",
+    "@boardRecognitionColorAnalysisHelp": {
+        "description": "Diagnostic help when board color analysis fails"
+    },
+    "boardRecognitionColorAnalysisHeading": "Color samples",
+    "@boardRecognitionColorAnalysisHeading": {
+        "description": "Heading for board color-analysis results"
+    },
+    "boardRecognitionColorSampleStats": "{sample}: mean {mean} · standard deviation {standardDeviation}",
+    "@boardRecognitionColorSampleStats": {
+        "description": "Statistics for a sampled board-point color",
+        "placeholders": {
+            "sample": {
+                "type": "String"
+            },
+            "mean": {
+                "type": "String"
+            },
+            "standardDeviation": {
+                "type": "String"
+            }
+        }
+    },
+    "boardRecognitionColorLegend": "Orange: white sample · Blue: black sample · Green: empty point",
+    "@boardRecognitionColorLegend": {
+        "description": "Legend for the board color-analysis overlay"
+    },
+    "boardRecognitionPieceDetectionFailed": "Piece detection failed.",
+    "@boardRecognitionPieceDetectionFailed": {
+        "description": "Heading shown when pieces cannot be detected"
+    },
+    "boardRecognitionPieceDetectionHelp": "Possible causes:\n• Board-point detection failed\n• Sample locations could not be determined\n\nMake sure the board and every piece are clearly visible.",
+    "@boardRecognitionPieceDetectionHelp": {
+        "description": "Diagnostic help when pieces cannot be detected"
+    },
+    "boardRecognitionPieceDetectionHeading": "Piece detection",
+    "@boardRecognitionPieceDetectionHeading": {
+        "description": "Heading for piece-detection diagnostic results"
+    },
+    "boardRecognitionPieceDetectionMethod": "Each board point is sampled and classified by color.",
+    "@boardRecognitionPieceDetectionMethod": {
+        "description": "Short explanation of the piece-detection method"
+    },
+    "boardRecognitionWhiteThreshold": "White brightness threshold: {value}",
+    "@boardRecognitionWhiteThreshold": {
+        "description": "White-piece brightness threshold",
+        "placeholders": {
+            "value": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionBlackThreshold": "Black brightness threshold: {value}",
+    "@boardRecognitionBlackThreshold": {
+        "description": "Black-piece brightness threshold",
+        "placeholders": {
+            "value": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionIdentifiedPieces": "Detected pieces: {whiteCount} white · {blackCount} black",
+    "@boardRecognitionIdentifiedPieces": {
+        "description": "Summary of pieces detected by color",
+        "placeholders": {
+            "whiteCount": {
+                "type": "int"
+            },
+            "blackCount": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionPieceDetectionLegend": "Yellow outlines: sampled areas · Red: black pieces · Green: white pieces",
+    "@boardRecognitionPieceDetectionLegend": {
+        "description": "Legend for the piece-detection overlay"
+    },
+    "boardRecognitionFinalResultHeading": "Final recognition result",
+    "@boardRecognitionFinalResultHeading": {
+        "description": "Heading for the final board-recognition result"
+    },
+    "boardRecognitionWhitePieceCount": "White pieces: {count}",
+    "@boardRecognitionWhitePieceCount": {
+        "description": "Number of white pieces recognized",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionBlackPieceCount": "Black pieces: {count}",
+    "@boardRecognitionBlackPieceCount": {
+        "description": "Number of black pieces recognized",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionFinalLegend": "Red circles: black pieces · Green circles: white pieces",
+    "@boardRecognitionFinalLegend": {
+        "description": "Legend for the final piece overlay"
     }
 }

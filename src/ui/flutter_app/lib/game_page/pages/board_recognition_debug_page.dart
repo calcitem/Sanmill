@@ -93,7 +93,11 @@ abstract final class BoardRecognitionDebugPage {
                             color: Colors.green,
                             size: 24,
                           ),
-                          Text("${S.of(context).whitePiece}: $whiteCount"),
+                          Text(
+                            S
+                                .of(context)
+                                .boardRecognitionWhitePieceCount(whiteCount),
+                          ),
                         ],
                       ),
                     ),
@@ -101,7 +105,11 @@ abstract final class BoardRecognitionDebugPage {
                       child: Column(
                         children: <Widget>[
                           const Icon(Icons.circle, color: Colors.red, size: 24),
-                          Text("${S.of(context).blackPiece}: $blackCount"),
+                          Text(
+                            S
+                                .of(context)
+                                .boardRecognitionBlackPieceCount(blackCount),
+                          ),
                         ],
                       ),
                     ),
