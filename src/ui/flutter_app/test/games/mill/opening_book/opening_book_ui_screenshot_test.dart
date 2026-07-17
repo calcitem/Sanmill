@@ -167,12 +167,12 @@ void main() {
             return Center(
               child: SizedBox(
                 width: 2200,
-                height: 48,
+                height: 64,
                 child: ColoredBox(
                   color: Colors.black,
                   child: RepaintBoundary(
                     key: screenshotKey,
-                    child: const HeaderTip(),
+                    child: const GameHeader(),
                   ),
                 ),
               ),
@@ -230,13 +230,8 @@ void main() {
     );
     expect(find.textContaining('Opening:'), findsAtLeastNWidgets(1));
     expect(find.text('existing user comment'), findsNothing);
-    // The marquee widget is only shown when the text overflows; with a
-    // wide test surface the text may fit in a plain Text widget instead.
-    expect(
-      find.byKey(const Key('header_tip_marquee')).evaluate().length +
-          find.byKey(const Key('header_tip_text')).evaluate().length,
-      greaterThan(0),
-    );
+    expect(find.byKey(const Key('game_header_contextual_row')), findsOneWidget);
+    expect(find.byKey(const Key('game_header_contextual_tip')), findsOneWidget);
 
     final int brightPixels =
         await tester.runAsync<int>(() async {
