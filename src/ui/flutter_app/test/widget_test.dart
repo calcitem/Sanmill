@@ -1042,8 +1042,29 @@ void main() {
         findsOneWidget,
       );
       expect(
+        find.byKey(const Key('statistics_page_settings_card')),
+        findsOneWidget,
+      );
+      await tester.drag(
+        find.byKey(const Key('statistics_page_settings_list')),
+        const Offset(0, -500),
+      );
+      await tester.pumpAndSettle();
+      expect(
         find.byKey(const Key('statistics_page_ai_statistics_card')),
         findsOneWidget,
+      );
+      expect(
+        tester
+            .getTopLeft(find.byKey(const Key('statistics_page_settings_card')))
+            .dy,
+        lessThan(
+          tester
+              .getTopLeft(
+                find.byKey(const Key('statistics_page_ai_statistics_card')),
+              )
+              .dy,
+        ),
       );
       expect(
         find.byKey(const Key('statistics_page_ai_level_1')),

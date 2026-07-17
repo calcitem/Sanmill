@@ -43,8 +43,8 @@ class StatisticsPage extends StatelessWidget {
               key: const Key('statistics_page_settings_list'),
               children: <Widget>[
                 _buildHumanStatsCard(context, settings.humanStats),
-                _buildAiDifficultyStatsCard(context, settings),
                 _buildStatsSettingsCard(context, settings),
+                _buildAiDifficultyStatsCard(context, settings),
               ],
             );
           },
