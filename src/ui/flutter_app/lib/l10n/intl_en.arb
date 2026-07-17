@@ -5562,5 +5562,51 @@
                 "example": "2"
             }
         }
+    },
+    "analysisSettingsTitle": "Analysis settings",
+    "@analysisSettingsTitle": {
+        "description": "Title of the analysis-mode settings dialog"
+    },
+    "analysisInlineNotation": "Inline notation",
+    "@analysisInlineNotation": {
+        "description": "Toggle for showing the move list inline with the analysis board"
+    },
+    "analysisShowMoveAnnotations": "Show move annotations",
+    "@analysisShowMoveAnnotations": {
+        "description": "Toggle for quality symbols such as question marks on analysis moves"
+    },
+    "analysisShowMoveComments": "Show move comments",
+    "@analysisShowMoveComments": {
+        "description": "Toggle for comments attached to moves in analysis mode"
+    },
+    "analysisEngineLinesDescription": "Show principal variations below the board",
+    "@analysisEngineLinesDescription": {
+        "description": "Description of the analysis engine-line toggle"
+    },
+    "analysisBestMoveArrow": "Best move arrow",
+    "@analysisBestMoveArrow": {
+        "description": "Toggle for marking engine suggestions on the analysis board"
+    },
+    "analysisBestMoveArrowDescription": "Mark visible engine lines on the board",
+    "@analysisBestMoveArrowDescription": {
+        "description": "Description of the best-move arrow toggle"
+    },
+    "analysisEngineThreadsSingleLineOnly": "Available only with one engine line",
+    "@analysisEngineThreadsSingleLineOnly": {
+        "description": "Reason the analysis thread control is disabled for multiple engine lines"
+    },
+    "analysisEngineLineDisplay": "{count, plural, =0{Off} =1{1 line · text and board markers} other{{count} lines · text and board markers}}",
+    "@analysisEngineLineDisplay": {
+        "description": "Summary of how many analysis engine lines and markers are displayed",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
+    "analysisPerfectDatabaseShortLabel": "Database",
+    "@analysisPerfectDatabaseShortLabel": {
+        "description": "Compact analysis-source label for the perfect endgame database"
     }
 }

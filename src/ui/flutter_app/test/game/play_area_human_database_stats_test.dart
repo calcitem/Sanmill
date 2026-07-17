@@ -2802,7 +2802,7 @@ void main() {
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_bottom_bar_engine')),
-        matching: find.text('DB · Engine'),
+        matching: find.text('Database · Engine'),
       ),
       findsOneWidget,
     );
@@ -2843,7 +2843,7 @@ void main() {
     );
     expect(bestMove, findsOneWidget);
     expect(
-      find.descendant(of: bestMove, matching: find.text('Best Move')),
+      find.descendant(of: bestMove, matching: find.text('Best move')),
       findsOneWidget,
     );
     expect(
@@ -3930,8 +3930,8 @@ void main() {
     Text sourceLabel = tester.widget<Text>(
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_label')),
     );
-    expect(sourceLabel.data, 'DB');
-    expect(find.byTooltip('Engine · DB · 1'), findsOneWidget);
+    expect(sourceLabel.data, 'Database');
+    expect(find.byTooltip('Engine · Database · 1'), findsOneWidget);
 
     AnalysisMode.enable(<MoveAnalysisResult>[
       const MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.advantage),
@@ -4041,12 +4041,12 @@ void main() {
     sourceLabel = tester.widget<Text>(
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_label')),
     );
-    expect(sourceLabel.data, 'DB · Engine');
+    expect(sourceLabel.data, 'Database · Engine');
     engineValue = tester.widget<Text>(
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
     );
     expect(engineValue.data, '7');
-    expect(find.byTooltip('DB · Engine · d7'), findsOneWidget);
+    expect(find.byTooltip('Database · Engine · d7'), findsOneWidget);
     expect(find.text('1. f4 a1'), findsOneWidget);
 
     GameController().gameRecorder.appendMove(
@@ -4431,6 +4431,7 @@ void main() {
 
     await _openAnalysisSettingsFromEnginePopup(tester);
 
+    expect(find.text('Analysis settings'), findsOneWidget);
     expect(
       find.byKey(const Key('play_area_analysis_settings_sheet')),
       findsOneWidget,
@@ -4518,9 +4519,12 @@ void main() {
     expect(find.text('Use perfect database'), findsOneWidget);
     expect(find.text('Search threads'), findsOneWidget);
     expect(find.text('Multiple lines'), findsOneWidget);
-    expect(find.text('Show PV text lines below the board'), findsOneWidget);
-    expect(find.text('Mark visible PV lines on the board'), findsOneWidget);
-    expect(find.text('3 · PV text and board markers'), findsOneWidget);
+    expect(
+      find.text('Show principal variations below the board'),
+      findsOneWidget,
+    );
+    expect(find.text('Mark visible engine lines on the board'), findsOneWidget);
+    expect(find.text('3 lines · text and board markers'), findsOneWidget);
 
     final Finder perfectDatabaseSwitchFinder = find.byKey(
       const Key('play_area_analysis_settings_perfect_database'),
@@ -4548,7 +4552,7 @@ void main() {
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_settings_engine_threads')),
-        matching: find.text('Only available with one engine line'),
+        matching: find.text('Available only with one engine line'),
       ),
       findsOneWidget,
     );
@@ -4596,7 +4600,7 @@ void main() {
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_settings_engine_threads')),
-        matching: find.text('Only available with one engine line'),
+        matching: find.text('Available only with one engine line'),
       ),
       findsNothing,
     );

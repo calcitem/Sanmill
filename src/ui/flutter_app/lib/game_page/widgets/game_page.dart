@@ -650,17 +650,10 @@ class _GamePageInnerState extends State<_GamePageInner> {
             ? '${strings.analysisThreat} · ${strings.engine}'
             : strings.engine,
       AnalysisSource.perfectDatabaseAndEngine =>
-        '${_analysisAppBarPerfectDatabaseShortLabel(strings)} · ${strings.engine}',
+        '${strings.analysisPerfectDatabaseShortLabel} · ${strings.engine}',
       AnalysisSource.perfectDatabase =>
-        _analysisAppBarPerfectDatabaseShortLabel(strings),
+        strings.analysisPerfectDatabaseShortLabel,
       null => strings.engine,
-    };
-  }
-
-  String _analysisAppBarPerfectDatabaseShortLabel(S strings) {
-    return switch (strings.localeName.split('_').first) {
-      'zh' => '库',
-      _ => 'DB',
     };
   }
 

@@ -92,7 +92,7 @@ Future<void> showAnalysisSettingsSheet(
                     children: <Widget>[
                       Expanded(
                         child: Text(
-                          strings.settings,
+                          strings.analysisSettingsTitle,
                           style: theme.textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.w600,
                             letterSpacing: 0,
@@ -134,7 +134,7 @@ Future<void> showAnalysisSettingsSheet(
                         'play_area_analysis_settings_inline_notation',
                       ),
                       secondary: const Icon(Icons.short_text_outlined),
-                      title: Text(_analysisInlineNotationLabel(strings)),
+                      title: Text(strings.analysisInlineNotation),
                       value: AnalysisMode.inlineNotation,
                       onChanged: (bool value) {
                         RecordingService().recordEvent(
@@ -175,7 +175,7 @@ Future<void> showAnalysisSettingsSheet(
                         'play_area_analysis_settings_move_annotations',
                       ),
                       secondary: const Icon(Icons.rate_review_outlined),
-                      title: Text(_analysisMoveAnnotationsLabel(strings)),
+                      title: Text(strings.analysisShowMoveAnnotations),
                       value: AnalysisMode.showMoveAnnotations,
                       onChanged: (bool value) {
                         RecordingService().recordEvent(
@@ -197,7 +197,7 @@ Future<void> showAnalysisSettingsSheet(
                         'play_area_analysis_settings_move_comments',
                       ),
                       secondary: const Icon(Icons.notes_outlined),
-                      title: Text(_analysisMoveCommentsLabel(strings)),
+                      title: Text(strings.analysisShowMoveComments),
                       value: AnalysisMode.showMoveComments,
                       onChanged: (bool value) {
                         RecordingService().recordEvent(
@@ -321,7 +321,7 @@ Future<void> showAnalysisSettingsSheet(
                       ),
                       secondary: const Icon(Icons.subtitles_outlined),
                       title: Text(strings.showEngineLines),
-                      subtitle: Text(_analysisEngineLinesSubtitle(strings)),
+                      subtitle: Text(strings.analysisEngineLinesDescription),
                       value: AnalysisMode.showEngineLines,
                       onChanged: (bool value) {
                         RecordingService().recordEvent(
@@ -340,8 +340,8 @@ Future<void> showAnalysisSettingsSheet(
                         'play_area_analysis_settings_best_move_arrow',
                       ),
                       secondary: const Icon(Icons.near_me_outlined),
-                      title: Text(_analysisBestMoveArrowLabel(strings)),
-                      subtitle: Text(_analysisBestMoveArrowSubtitle(strings)),
+                      title: Text(strings.analysisBestMoveArrow),
+                      subtitle: Text(strings.analysisBestMoveArrowDescription),
                       value: AnalysisMode.showBestMoveArrow,
                       onChanged: (bool value) {
                         RecordingService().recordEvent(
@@ -599,87 +599,25 @@ String _analysisEngineThreadsSubtitle(
   if (canUseAnalysisThreads) {
     return '$currentEngineThreads';
   }
-  return switch (strings.localeName.split('_').first) {
-    'zh' => '仅单条引擎线可调',
-    _ => 'Only available with one engine line',
-  };
-}
-
-String _analysisEngineLinesSubtitle(S strings) {
-  return switch (strings.localeName.split('_').first) {
-    'zh' => '显示棋盘下方的 PV 文本线路',
-    _ => 'Show PV text lines below the board',
-  };
+  return strings.analysisEngineThreadsSingleLineOnly;
 }
 
 String _analysisEngineLineCountSubtitle(S strings) {
-  final String countLabel = AnalysisMode.engineLineCount == 0
-      ? switch (strings.localeName.split('_').first) {
-          'zh' => '关闭',
-          _ => 'Off',
-        }
-      : '${AnalysisMode.engineLineCount}';
-  return switch (strings.localeName.split('_').first) {
-    'zh' => '$countLabel · PV 文本和棋盘标记',
-    _ => '$countLabel · PV text and board markers',
-  };
-}
-
-String _analysisMoveAnnotationsLabel(S strings) {
-  return switch (strings.localeName.split('_').first) {
-    'zh' => '显示走法标注',
-    _ => 'Show move annotations',
-  };
-}
-
-String _analysisInlineNotationLabel(S strings) {
-  return switch (strings.localeName.split('_').first) {
-    'zh' => '内联记谱',
-    _ => 'Inline notation',
-  };
-}
-
-String _analysisMoveCommentsLabel(S strings) {
-  return switch (strings.localeName.split('_').first) {
-    'zh' => '显示走法评论',
-    _ => 'Show move comments',
-  };
-}
-
-String _analysisBestMoveArrowLabel(S strings) {
-  return switch (strings.localeName.split('_').first) {
-    'zh' => '最佳着法箭头',
-    _ => 'Best move arrow',
-  };
-}
-
-String _analysisBestMoveArrowSubtitle(S strings) {
-  return switch (strings.localeName.split('_').first) {
-    'zh' => '在棋盘上标出可见 PV 线路',
-    _ => 'Mark visible PV lines on the board',
-  };
+  return strings.analysisEngineLineDisplay(AnalysisMode.engineLineCount);
 }
 
 String _analysisThreatLabel(S strings) {
-  return switch (strings.localeName.split('_').first) {
-    'zh' => '威胁',
-    _ => 'Threat',
-  };
+  return strings.analysisThreat;
 }
 
 String _analysisThreatActionLabel(S strings) {
-  final bool stop = AnalysisMode.isThreatMode;
-  return switch (strings.localeName.split('_').first) {
-    'zh' => stop ? '停止显示威胁' : '显示威胁',
-    _ => stop ? 'Stop showing threat' : 'Show threat',
-  };
+  return AnalysisMode.isThreatMode
+      ? strings.stopShowingThreat
+      : strings.showThreat;
 }
 
 String _analysisPerfectDatabaseShortLabel(S strings) {
-  return switch (strings.localeName.split('_').first) {
-    'zh' => '库',
-    _ => 'DB',
-  };
+  return strings.analysisPerfectDatabaseShortLabel;
 }
 
 /// The PlayArea widget is the main content of the game page.
