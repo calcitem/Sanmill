@@ -3150,40 +3150,40 @@
     "@puzzleHistoryHints": {
         "description": "Hints label"
     },
-    "puzzleStatisticsDesc": "View detailed analytics",
+    "puzzleStatisticsDesc": "Review your puzzle performance",
     "@puzzleStatisticsDesc": {
         "description": "Statistics page description"
     },
-    "puzzleStatsRating": "Your Puzzle Rating",
+    "puzzleStatsRating": "Puzzle rating",
     "@puzzleStatsRating": {
         "description": "Puzzle rating header"
     },
-    "puzzleStatsProvisional": "Provisional ({gamesLeft} games left)",
+    "puzzleStatsProvisional": "{gamesLeft, plural, =1{Provisional (1 attempt left)} other{Provisional ({gamesLeft} attempts left)}}",
     "@puzzleStatsProvisional": {
-        "description": "Provisional rating message",
+        "description": "Provisional rating message with attempts remaining",
         "placeholders": {
             "gamesLeft": {
                 "type": "int"
             }
         }
     },
-    "puzzleStatsGamesPlayed": "Games Played",
+    "puzzleStatsGamesPlayed": "Attempts",
     "@puzzleStatsGamesPlayed": {
-        "description": "Games played label"
+        "description": "Puzzle attempts label"
     },
-    "puzzleStatsDeviation": "Deviation",
+    "puzzleStatsDeviation": "Rating deviation",
     "@puzzleStatsDeviation": {
         "description": "Rating deviation label"
     },
-    "puzzleStatsPerformance": "Performance Overview",
+    "puzzleStatsPerformance": "Performance",
     "@puzzleStatsPerformance": {
         "description": "Performance overview header"
     },
-    "puzzleStatsSuccessRate": "Success Rate",
+    "puzzleStatsSuccessRate": "Success rate",
     "@puzzleStatsSuccessRate": {
         "description": "Success rate label"
     },
-    "puzzleStatsAvgTime": "Avg. Time",
+    "puzzleStatsAvgTime": "Average time",
     "@puzzleStatsAvgTime": {
         "description": "Average time label"
     },
@@ -3195,15 +3195,15 @@
     "@puzzleStatsFailed": {
         "description": "Failed count label"
     },
-    "puzzleStatsByDifficulty": "Success by Difficulty",
+    "puzzleStatsByDifficulty": "Success by difficulty",
     "@puzzleStatsByDifficulty": {
         "description": "Success by difficulty header"
     },
-    "puzzleStatsByCategory": "Success by Category",
+    "puzzleStatsByCategory": "Success by category",
     "@puzzleStatsByCategory": {
         "description": "Success by category header"
     },
-    "puzzleStatsRecentActivity": "Recent Activity",
+    "puzzleStatsRecentActivity": "Recent activity",
     "@puzzleStatsRecentActivity": {
         "description": "Recent activity header"
     },
