@@ -9,7 +9,7 @@
   "metadata": {
     "id": "malom_perfect_db_v1",
     "name": "Malom Perfect DB Puzzles",
-    "description": "Forced-win puzzles generated from the Malom Nine Men's Morris perfect-play database. Every position is filtered for challenge: only a few first moves keep the win, plenty of natural-looking moves throw it away, and shallow tactics are rejected via a search probe. The opponent replies with a practical engine defense rather than the theoretically slowest loss.",
+    "description": "Forced-win puzzles generated from the Malom Nine Men's Morris perfect-play database. Each position is selected for its challenge: only a few first moves preserve the win, natural-looking alternatives throw it away, and a search probe filters out shallow tactics. The opponent follows a practical engine defense rather than merely delaying defeat.",
     "author": "Sanmill Perfect DB Generator",
     "version": "1.1.0",
     "tags": [

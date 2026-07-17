@@ -451,10 +451,10 @@ fn build_pack_metadata(cfg: &GenConfig) -> Option<PuzzlePackMetadataJson> {
         return None;
     }
     let description = if cfg.pack_description.is_empty() {
-        "Forced-win puzzles generated from the Malom perfect-play database. Every puzzle \
-         is filtered for challenge: few winning first moves, real ways to go wrong, and \
-         a first move that shallow tactics do not find; the opponent replies with a \
-         practical engine defense rather than the theoretically slowest loss."
+        "Forced-win puzzles generated from the Malom perfect-play database. Each position \
+         is selected for its challenge: few first moves preserve the win, natural-looking \
+         alternatives throw it away, and a search probe filters out shallow tactics. The \
+         opponent follows a practical engine defense rather than merely delaying defeat."
             .to_string()
     } else {
         cfg.pack_description.clone()
