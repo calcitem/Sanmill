@@ -5663,5 +5663,87 @@
     "viewContributionGuide": "查看指南",
     "@viewContributionGuide": {
         "description": "Action that opens the puzzle-contribution guide"
+    },
+    "eloRating": "等级分：{rating}",
+    "@eloRating": {
+        "description": "A player's Elo rating shown beside their name",
+        "placeholders": {
+            "rating": {
+                "type": "int",
+                "example": "1400"
+            }
+        }
+    },
+    "engineLineCount": "{count, plural, =1{1 条变化} other{{count} 条变化}}",
+    "@engineLineCount": {
+        "description": "Number of principal-variation lines shown by the analysis engine",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
+    "gameDurationMinutesSeconds": "对局时长：{minutes} 分 {seconds} 秒",
+    "@gameDurationMinutesSeconds": {
+        "description": "Duration of a completed game in minutes and seconds",
+        "placeholders": {
+            "minutes": {
+                "type": "int",
+                "example": "3"
+            },
+            "seconds": {
+                "type": "int",
+                "example": "42"
+            }
+        }
+    },
+    "generatedFen": "生成的 FEN",
+    "@generatedFen": {
+        "description": "Heading above a generated FEN position string"
+    },
+    "moveListLayoutDetails": "着法详情",
+    "@moveListLayoutDetails": {
+        "description": "Move-list layout option that shows details"
+    },
+    "moveListLayoutLargeBoards": "大棋盘",
+    "@moveListLayoutLargeBoards": {
+        "description": "Move-list layout option for large boards"
+    },
+    "moveListLayoutMediumBoards": "中棋盘",
+    "@moveListLayoutMediumBoards": {
+        "description": "Move-list layout option for medium boards"
+    },
+    "moveListLayoutSmallBoards": "小棋盘",
+    "@moveListLayoutSmallBoards": {
+        "description": "Move-list layout option for small boards"
+    },
+    "moveListLayoutTable": "着法表",
+    "@moveListLayoutTable": {
+        "description": "Move-list layout option that displays a compact table"
+    },
+    "remoteHistoryNavigationUnavailable": "联网对局仅可申请悔回自己最近的一步。",
+    "@remoteHistoryNavigationUnavailable": {
+        "description": "Explains why full history navigation is unavailable in a remote game"
+    },
+    "restoreDefaultSettingsConfirmation": "这会用默认值替换所有当前设置，且无法撤销。",
+    "@restoreDefaultSettingsConfirmation": {
+        "description": "Confirmation warning before all app settings are reset"
+    },
+    "shellBackToMainGame": "返回主对局",
+    "@shellBackToMainGame": {
+        "description": "Navigation action that returns from a shell page to the active game"
+    },
+    "statisticsOverallRecord": "总计",
+    "@statisticsOverallRecord": {
+        "description": "Label for the combined win/draw/loss record at one computer difficulty"
+    },
+    "tutorialFlyingRule": "启用飞子后，当一方棋子达到设定数量时，其任一棋子均可移动到任意空点。",
+    "@tutorialFlyingRule": {
+        "description": "Tutorial explanation of the flying rule"
+    },
+    "tutorialUnplacedPieceCounter": "棋盘中央显示还可摆放的棋子数量。",
+    "@tutorialUnplacedPieceCounter": {
+        "description": "Tutorial explanation of the center unplaced-piece counter"
     }
 }
