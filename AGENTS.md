@@ -8,8 +8,8 @@ consistent, high-quality contributions.
 
 ## 1) Purpose & Scope
 
-* Provide consistent guidance for AI Agents (code assistants, automation
-  bots).
+* Provide consistent guidance for AI Agents (primarily Codex, plus code
+  assistants and automation bots).
 * Cover planning, execution, safety, testing, and collaboration practices.
 * Maintain code quality across Rust/TGF, Flutter/Dart, and build tooling.
 
@@ -62,6 +62,8 @@ All gameplay logic and AI search live in the Rust/TGF stack.
 
 ```
 /
+├── .agents/
+│   └── skills/                # Project-level Codex workflows
 ├── crates/                    # Rust/TGF workspace
 │   ├── tgf-core/              # Game-neutral traits and POD types
 │   ├── tgf-search/            # Generic searchers (PVS, MTD(f), MCTS)
@@ -221,6 +223,19 @@ is rarely touched.
 ---
 
 ## 7) Tool Usage Guidelines
+
+### Project Skills
+
+* Project-level Skills live in `.agents/skills/<skill-name>/SKILL.md`.
+* `.agents/skills/` is the single source of truth. Do not duplicate Skills
+  under tool-specific directories.
+* Codex selects Skills from their `name` and `description` frontmatter. Keep
+  descriptions specific enough to state both what the Skill does and when it
+  should be used.
+* When repository paths, commands, or architecture change, update affected
+  Skills in the same change.
+* Keep `.agents/skills/README.md` synchronized with the available project
+  Skills.
 
 ### Version Control (git)
 
@@ -483,5 +498,6 @@ flutter test
 * `src/ui/flutter_app/l10n.yaml` - Localization configuration
 * `format.sh` - Code formatting/check script (Dart, Rust fmt/clippy)
 * `AGENTS.md` - This file
+* `.agents/skills/README.md` - Project-level Codex Skill catalog
 * `docs/FRAMEWORK_API.md` - Rust/TGF framework API contract
 * `README.md` - User-facing documentation
