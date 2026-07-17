@@ -102,7 +102,7 @@ class _LlmPromptDialogState extends State<LlmPromptDialog> {
                 Navigator.pop(dialogContext);
                 _resetToDefaults();
               },
-              child: Text(S.of(context).ok),
+              child: Text(S.of(context).restore),
             ),
           ],
         );

@@ -1981,7 +1981,7 @@
     "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
     "llmConfig": "LLM configuration",
     "@llmConfig": {},
-    "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "Are you sure you want to reset the prompt templates to default values?",
+    "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "The prompt header and footer will be replaced with their defaults.",
     "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
     "llmPromptTemplateFooter": "LLM prompt template footer",
     "@llmPromptTemplateFooter": {},

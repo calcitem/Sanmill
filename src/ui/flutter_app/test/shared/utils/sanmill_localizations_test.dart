@@ -97,6 +97,15 @@ void main() {
     );
   });
 
+  test('explains the English prompt-template restore consequence', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(
+      english.areYouSureYouWantToResetThePromptTemplatesToDefaultValues,
+      'The prompt header and footer will be replaced with their defaults.',
+    );
+  });
+
   test('uses consequence-focused English game confirmations', () {
     final S english = lookupS(const Locale('en'));
 
