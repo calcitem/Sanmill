@@ -5177,7 +5177,7 @@
     "@showAllBoardResultsDescription": {"description": "Description of the all-candidates analysis setting."},
     "humanDatabaseUnavailable": "Human game database unavailable",
     "@humanDatabaseUnavailable": {"description": "Opening explorer state when the human database cannot be used."},
-    "humanDatabaseUnavailableHint": "Download or select a database to see human-game statistics.",
+    "humanDatabaseUnavailableHint": "Check the selected file in Knowledge sources.",
     "@humanDatabaseUnavailableHint": {"description": "Hint for configuring the human game database."},
     "humanDatabaseNoPositionRecords": "No human games for this position",
     "@humanDatabaseNoPositionRecords": {"description": "Opening explorer state when a loaded human database has no current-position records."},
@@ -5910,5 +5910,41 @@
                 "example": "10"
             }
         }
+    },
+    "humanDatabaseDisabled": "Human game database is turned off",
+    "@humanDatabaseDisabled": {
+        "description": "Opening explorer state when the human game database setting is disabled"
+    },
+    "humanDatabaseDisabledHint": "Enable it in Knowledge sources to see human-game statistics.",
+    "@humanDatabaseDisabledHint": {
+        "description": "Opening explorer action hint when the human game database setting is disabled"
+    },
+    "humanDatabaseNotSelected": "No human game database selected",
+    "@humanDatabaseNotSelected": {
+        "description": "Opening explorer state when human database use is enabled but no file is selected"
+    },
+    "humanDatabaseNotSelectedHint": "Download or select a database in Knowledge sources.",
+    "@humanDatabaseNotSelectedHint": {
+        "description": "Opening explorer action hint when no human game database file is selected"
+    },
+    "humanDatabaseRulesUnsupported": "Human game database does not cover these rules",
+    "@humanDatabaseRulesUnsupported": {
+        "description": "Opening explorer state when the current rules are incompatible with the human game database"
+    },
+    "humanDatabaseRulesUnsupportedHint": "Change to supported rules to see human-game statistics.",
+    "@humanDatabaseRulesUnsupportedHint": {
+        "description": "Opening explorer hint when the current rules are incompatible with the human game database"
+    },
+    "humanDatabaseCaptureStepUnavailable": "Human-game statistics are unavailable during capture",
+    "@humanDatabaseCaptureStepUnavailable": {
+        "description": "Opening explorer state during a separate Mill capture action"
+    },
+    "humanDatabaseCaptureStepUnavailableHint": "Database records combine a move and its capture.",
+    "@humanDatabaseCaptureStepUnavailableHint": {
+        "description": "Explanation that human database records store a Mill move and capture together"
+    },
+    "humanDatabaseGameOverUnavailable": "No human-game statistics after game over",
+    "@humanDatabaseGameOverUnavailable": {
+        "description": "Opening explorer state for a finished game with no next move to query"
     }
 }

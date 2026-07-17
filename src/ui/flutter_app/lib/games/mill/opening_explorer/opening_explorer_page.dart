@@ -2215,30 +2215,73 @@ class _HumanDatabaseStatusTile extends StatelessWidget {
     );
     final S strings = S.of(context);
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final bool ready = state == _HumanDatabaseState.readyNoRecords;
+    final ({IconData icon, String title, String? subtitle}) content =
+        switch (state) {
+          _HumanDatabaseState.disabled => (
+            icon: Icons.toggle_off_outlined,
+            title: strings.humanDatabaseDisabled,
+            subtitle: strings.humanDatabaseDisabledHint,
+          ),
+          _HumanDatabaseState.notSelected => (
+            icon: Icons.storage_outlined,
+            title: strings.humanDatabaseNotSelected,
+            subtitle: strings.humanDatabaseNotSelectedHint,
+          ),
+          _HumanDatabaseState.rulesUnsupported => (
+            icon: Icons.rule_outlined,
+            title: strings.humanDatabaseRulesUnsupported,
+            subtitle: strings.humanDatabaseRulesUnsupportedHint,
+          ),
+          _HumanDatabaseState.captureStep => (
+            icon: Icons.remove_circle_outline,
+            title: strings.humanDatabaseCaptureStepUnavailable,
+            subtitle: strings.humanDatabaseCaptureStepUnavailableHint,
+          ),
+          _HumanDatabaseState.gameOver => (
+            icon: Icons.sports_score_outlined,
+            title: strings.humanDatabaseGameOverUnavailable,
+            subtitle: null,
+          ),
+          _HumanDatabaseState.unavailable => (
+            icon: Icons.cloud_off_outlined,
+            title: strings.humanDatabaseUnavailable,
+            subtitle: strings.humanDatabaseUnavailableHint,
+          ),
+          _HumanDatabaseState.readyNoRecords => (
+            icon: Icons.search_off_rounded,
+            title: strings.humanDatabaseNoPositionRecords,
+            subtitle: null,
+          ),
+          _HumanDatabaseState.hasRecords => throw StateError(
+            'Human Database records must render as move rows.',
+          ),
+        };
+    final bool canManage =
+        state == _HumanDatabaseState.disabled ||
+        state == _HumanDatabaseState.notSelected ||
+        state == _HumanDatabaseState.unavailable;
+    final String keySuffix = switch (state) {
+      _HumanDatabaseState.disabled => 'disabled',
+      _HumanDatabaseState.notSelected => 'not_selected',
+      _HumanDatabaseState.rulesUnsupported => 'rules_unsupported',
+      _HumanDatabaseState.captureStep => 'capture_step',
+      _HumanDatabaseState.gameOver => 'game_over',
+      _HumanDatabaseState.unavailable => 'unavailable',
+      _HumanDatabaseState.readyNoRecords => 'no_records',
+      _HumanDatabaseState.hasRecords => 'has_records',
+    };
     return ListTile(
-      key: Key(
-        ready
-            ? 'opening_explorer_human_database_no_records'
-            : 'opening_explorer_human_database_unavailable',
-      ),
-      leading: Icon(
-        ready ? Icons.search_off_rounded : Icons.cloud_off_outlined,
-        color: colorScheme.onSurfaceVariant,
-      ),
-      title: Text(
-        ready
-            ? strings.humanDatabaseNoPositionRecords
-            : strings.humanDatabaseUnavailable,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-      ),
-      subtitle: ready ? null : Text(strings.humanDatabaseUnavailableHint),
-      trailing: TextButton(
-        key: const Key('opening_explorer_manage_human_database'),
-        onPressed: onManage,
-        child: Text(strings.manageKnowledgeSources),
-      ),
+      key: Key('opening_explorer_human_database_$keySuffix'),
+      leading: Icon(content.icon, color: colorScheme.onSurfaceVariant),
+      title: Text(content.title, maxLines: 2, overflow: TextOverflow.ellipsis),
+      subtitle: content.subtitle == null ? null : Text(content.subtitle!),
+      trailing: canManage
+          ? TextButton(
+              key: const Key('opening_explorer_manage_human_database'),
+              onPressed: onManage,
+              child: Text(strings.manageKnowledgeSources),
+            )
+          : null,
     );
   }
 }
@@ -2729,12 +2772,15 @@ class _OpeningExplorerSnapshot {
     }
 
     int humanDatabaseMoveCount = 0;
-    _HumanDatabaseState humanDatabaseState = _HumanDatabaseState.unavailable;
-    final bool humanDatabaseConfigured =
-        generalSettings.humanDatabaseEnabled &&
-        generalSettings.humanDatabaseFilePath.trim().isNotEmpty &&
-        _supportsHumanDatabaseRules(ruleSettings);
-    if (humanDatabaseConfigured) {
+    late _HumanDatabaseState humanDatabaseState;
+    if (!generalSettings.humanDatabaseEnabled) {
+      humanDatabaseState = _HumanDatabaseState.disabled;
+    } else if (generalSettings.humanDatabaseFilePath.trim().isEmpty) {
+      humanDatabaseState = _HumanDatabaseState.notSelected;
+    } else if (!_supportsHumanDatabaseRules(ruleSettings)) {
+      humanDatabaseState = _HumanDatabaseState.rulesUnsupported;
+    } else {
+      humanDatabaseState = _HumanDatabaseState.unavailable;
       final HumanDatabaseReadyResult ready =
           debugOpeningExplorerHumanDatabaseReady?.call(
             generalSettings.humanDatabaseFilePath,
@@ -2743,8 +2789,14 @@ class _OpeningExplorerSnapshot {
             generalSettings.humanDatabaseFilePath,
           );
       if (ready.ready) {
-        humanDatabaseState = _HumanDatabaseState.readyNoRecords;
-        if (_canQueryHumanDatabase(session, ruleSettings, generalSettings)) {
+        if (session.outcome.isTerminal) {
+          humanDatabaseState = _HumanDatabaseState.gameOver;
+        } else if (session.legalActions.any(
+          (GameAction action) => action.type == MillActionTypes.remove,
+        )) {
+          humanDatabaseState = _HumanDatabaseState.captureStep;
+        } else {
+          humanDatabaseState = _HumanDatabaseState.readyNoRecords;
           final tgf.MillHumanDatabaseQuery query =
               debugOpeningExplorerHumanDatabaseQuery?.call(
                 fen: fen,
@@ -2890,24 +2942,6 @@ class _OpeningExplorerSnapshot {
     return parts.join(' · ');
   }
 
-  static bool _canQueryHumanDatabase(
-    NativeMillGameSession session,
-    RuleSettings ruleSettings,
-    GeneralSettings generalSettings,
-  ) {
-    if (!generalSettings.humanDatabaseEnabled ||
-        generalSettings.humanDatabaseFilePath.trim().isEmpty ||
-        session.outcome.isTerminal) {
-      return false;
-    }
-    if (!_supportsHumanDatabaseRules(ruleSettings)) {
-      return false;
-    }
-    return !session.legalActions.any(
-      (GameAction action) => action.type == MillActionTypes.remove,
-    );
-  }
-
   static bool _supportsHumanDatabaseRules(RuleSettings ruleSettings) {
     return ruleSettings.isHumanGameDatabaseCompatible();
   }
@@ -2976,7 +3010,16 @@ class _OpeningExplorerMove {
   bool isPerfectMove = false;
 }
 
-enum _HumanDatabaseState { unavailable, readyNoRecords, hasRecords }
+enum _HumanDatabaseState {
+  disabled,
+  notSelected,
+  rulesUnsupported,
+  captureStep,
+  gameOver,
+  unavailable,
+  readyNoRecords,
+  hasRecords,
+}
 
 class _HumanMoveStats {
   const _HumanMoveStats({

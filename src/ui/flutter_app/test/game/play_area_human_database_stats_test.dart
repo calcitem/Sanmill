@@ -28,6 +28,7 @@ import 'package:sanmill/game_page/widgets/play_area.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart' as platform;
 import 'package:sanmill/game_shell/game_session_scope.dart';
+import 'package:sanmill/games/mill/mill_action_codec.dart';
 import 'package:sanmill/games/mill/mill_board_transform_actions.dart';
 import 'package:sanmill/games/mill/mill_session_recorder_bridge.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
@@ -36,6 +37,7 @@ import 'package:sanmill/games/mill/opening_book/opening_book_repository.dart';
 import 'package:sanmill/games/mill/opening_explorer/opening_explorer_page.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/config/constants.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/human_database_service.dart';
@@ -5591,9 +5593,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(
-      find.byKey(const Key('opening_explorer_human_database_unavailable')),
+      find.byKey(const Key('opening_explorer_human_database_disabled')),
       findsOneWidget,
     );
+    expect(find.text('Human game database is turned off'), findsOneWidget);
 
     final Finder manageHumanDatabase = find.byKey(
       const Key('opening_explorer_manage_human_database'),
@@ -5613,10 +5616,190 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(
-      find.byKey(const Key('opening_explorer_human_database_unavailable')),
+      find.byKey(const Key('opening_explorer_human_database_disabled')),
       findsNothing,
     );
     expect(find.byKey(const Key('opening_explorer_move_d6')), findsOneWidget);
+  });
+
+  testWidgets('analysis explorer explains a missing human database file', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(humanDatabaseEnabled: true);
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byIcon(Icons.explore_outlined));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('opening_explorer_human_database_not_selected')),
+      findsOneWidget,
+    );
+    expect(find.text('No human game database selected'), findsOneWidget);
+    expect(
+      find.byKey(const Key('opening_explorer_manage_human_database')),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('analysis explorer identifies unsupported human database rules', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(
+      humanDatabaseEnabled: true,
+      humanDatabaseFilePath: '/virtual/human.sqlite',
+    );
+    db.ruleSettings = const RuleSettings(mayFly: false);
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byIcon(Icons.explore_outlined));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(
+        const Key('opening_explorer_human_database_rules_unsupported'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.text('Human game database does not cover these rules'),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('opening_explorer_manage_human_database')),
+      findsNothing,
+    );
+  });
+
+  testWidgets('analysis explorer explains the separate capture step', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(
+      humanDatabaseEnabled: true,
+      humanDatabaseFilePath: '/virtual/human.sqlite',
+    );
+    debugOpeningExplorerHumanDatabaseReady = (_) =>
+        const HumanDatabaseReadyResult(
+          ready: true,
+          status: tgf.MillHumanDatabaseStatus(
+            readable: true,
+            initialized: true,
+            error: '',
+            schemaVersion: 'test',
+            buildDate: '2026-07-16',
+            totalGames: 20,
+            positionCount: 1,
+            moveCount: 1,
+          ),
+        );
+    debugOpeningExplorerHumanDatabaseQuery =
+        ({
+          required String fen,
+          required int maxMoves,
+          required int minSamples,
+        }) => throw StateError('Capture steps must not query the database.');
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    for (final String notation in <String>[
+      'd2',
+      'd6',
+      'f4',
+      'b4',
+      'f2',
+      'g4',
+      'f6',
+    ]) {
+      final platform.GameAction action = session.legalActions.firstWhere(
+        (platform.GameAction candidate) =>
+            MillActionCodec.moveStringFrom(candidate)?.toLowerCase() ==
+            notation,
+      );
+      await session.apply(action);
+    }
+    expect(
+      session.legalActions.every(
+        (platform.GameAction action) => action.type == MillActionTypes.remove,
+      ),
+      isTrue,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byIcon(Icons.explore_outlined));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('opening_explorer_human_database_capture_step')),
+      findsOneWidget,
+    );
+    expect(
+      find.text('Human-game statistics are unavailable during capture'),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('opening_explorer_manage_human_database')),
+      findsNothing,
+    );
+  });
+
+  testWidgets('analysis explorer explains finished-game human data', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(
+      humanDatabaseEnabled: true,
+      humanDatabaseFilePath: '/virtual/human.sqlite',
+    );
+    debugOpeningExplorerHumanDatabaseReady = (_) =>
+        const HumanDatabaseReadyResult(
+          ready: true,
+          status: tgf.MillHumanDatabaseStatus(
+            readable: true,
+            initialized: true,
+            error: '',
+            schemaVersion: 'test',
+            buildDate: '2026-07-16',
+            totalGames: 20,
+            positionCount: 1,
+            moveCount: 1,
+          ),
+        );
+    debugOpeningExplorerHumanDatabaseQuery =
+        ({
+          required String fen,
+          required int maxMoves,
+          required int minSamples,
+        }) => throw StateError('Finished games must not query the database.');
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    expect(
+      session.loadFen(
+        '********/@@@*O*@@/******** b m s '
+        '1 1 5 4 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
+      ),
+      isTrue,
+    );
+    expect(session.outcome.isTerminal, isTrue);
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byIcon(Icons.explore_outlined));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('opening_explorer_human_database_game_over')),
+      findsOneWidget,
+    );
+    expect(find.text('No human-game statistics after game over'), findsOne);
+    expect(
+      find.byKey(const Key('opening_explorer_manage_human_database')),
+      findsNothing,
+    );
   });
 
   testWidgets('analysis explorer reports a failed human database query', (

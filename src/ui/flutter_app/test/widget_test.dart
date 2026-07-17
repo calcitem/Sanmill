@@ -2981,7 +2981,7 @@ void main() {
         findsOneWidget,
       );
       expect(
-        find.byKey(const Key('opening_explorer_human_database_unavailable')),
+        find.byKey(const Key('opening_explorer_human_database_disabled')),
         findsOneWidget,
       );
 
@@ -3082,7 +3082,7 @@ void main() {
       }, description: 'rendered opening explorer move row');
       expect(firstMoveFinder, findsNothing);
       expect(
-        find.byKey(const Key('opening_explorer_human_database_unavailable')),
+        find.byKey(const Key('opening_explorer_human_database_disabled')),
         findsOneWidget,
       );
       expect(

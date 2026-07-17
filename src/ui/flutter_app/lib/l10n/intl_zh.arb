@@ -4930,7 +4930,7 @@
     "showAllBoardResults": "显示全部候选",
     "showAllBoardResultsDescription": "展开完美数据库中的全部合法着法结论",
     "humanDatabaseUnavailable": "人类对局数据库不可用",
-    "humanDatabaseUnavailableHint": "下载或选择数据库后即可查看人类实战统计。",
+    "humanDatabaseUnavailableHint": "请在“知识来源”中检查已选择的文件。",
     "humanDatabaseNoPositionRecords": "当前局面无人类对局记录",
     "manageKnowledgeSources": "管理",
     "localOpeningKnowledge": "本地开局知识",
@@ -5127,5 +5127,41 @@
                 "example": "10"
             }
         }
+    },
+    "humanDatabaseDisabled": "人类对局数据库已关闭",
+    "@humanDatabaseDisabled": {
+        "description": "Opening explorer state when the human game database setting is disabled"
+    },
+    "humanDatabaseDisabledHint": "请在“知识来源”中启用，以查看人类实战统计。",
+    "@humanDatabaseDisabledHint": {
+        "description": "Opening explorer action hint when the human game database setting is disabled"
+    },
+    "humanDatabaseNotSelected": "尚未选择人类对局数据库",
+    "@humanDatabaseNotSelected": {
+        "description": "Opening explorer state when human database use is enabled but no file is selected"
+    },
+    "humanDatabaseNotSelectedHint": "请在“知识来源”中下载或选择数据库。",
+    "@humanDatabaseNotSelectedHint": {
+        "description": "Opening explorer action hint when no human game database file is selected"
+    },
+    "humanDatabaseRulesUnsupported": "人类对局数据库不支持当前规则",
+    "@humanDatabaseRulesUnsupported": {
+        "description": "Opening explorer state when the current rules are incompatible with the human game database"
+    },
+    "humanDatabaseRulesUnsupportedHint": "改用受支持的规则后即可查看人类实战统计。",
+    "@humanDatabaseRulesUnsupportedHint": {
+        "description": "Opening explorer hint when the current rules are incompatible with the human game database"
+    },
+    "humanDatabaseCaptureStepUnavailable": "单独吃子时无法显示人类实战统计",
+    "@humanDatabaseCaptureStepUnavailable": {
+        "description": "Opening explorer state during a separate Mill capture action"
+    },
+    "humanDatabaseCaptureStepUnavailableHint": "数据库会将行棋及其后续吃子合并记录。",
+    "@humanDatabaseCaptureStepUnavailableHint": {
+        "description": "Explanation that human database records store a Mill move and capture together"
+    },
+    "humanDatabaseGameOverUnavailable": "对局结束后没有可显示的人类实战统计",
+    "@humanDatabaseGameOverUnavailable": {
+        "description": "Opening explorer state for a finished game with no next move to query"
     }
 }
