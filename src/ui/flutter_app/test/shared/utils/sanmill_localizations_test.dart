@@ -41,6 +41,20 @@ void main() {
     );
   });
 
+  test('keeps internal review terminology out of the English UI', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(
+      english.reviewStructureCounts(12, 15, 1),
+      '12 moves · 15 actions · 1 variation',
+    );
+    expect(
+      english.reviewStructureCounts(1, 1, 2),
+      '1 move · 1 action · 2 variations',
+    );
+    expect(english.reviewStructureCounts(12, 15, 1), isNot(contains('atomic')));
+  });
+
   test('separates computer-play and generative AI terminology', () {
     final S english = lookupS(const Locale('en'));
     final S chinese = lookupS(const Locale('zh'));

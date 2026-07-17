@@ -58,10 +58,7 @@ void main() {
       expect(find.byKey(const Key('review_phone_layout')), findsOneWidget);
       expect(find.byKey(const Key('review_wide_layout')), findsNothing);
       expect(find.byKey(const Key('review_structure_summary')), findsOneWidget);
-      expect(
-        find.text('2 moves · 2 atomic actions · 0 variations'),
-        findsOneWidget,
-      );
+      expect(find.text('2 moves · 2 actions · 0 variations'), findsOneWidget);
       expect(find.byKey(const Key('review_board')), findsOneWidget);
       expect(find.byKey(const Key('review_turn_navigation')), findsOneWidget);
       expect(find.byKey(const Key('review_turn_progress')), findsOneWidget);

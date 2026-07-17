@@ -5172,7 +5172,7 @@
     "cancelAnalysis": "Cancel analysis",
     "reanalyze": "Analyze again",
     "structuralSummary": "Game structure",
-    "reviewStructureCounts": "{turns} moves · {actions} atomic actions · {variations} variations",
+    "reviewStructureCounts": "{turns, plural, =1{1 move} other{{turns} moves}} · {actions, plural, =1{1 action} other{{actions} actions}} · {variations, plural, =1{1 variation} other{{variations} variations}}",
     "@reviewStructureCounts": {"placeholders": {"turns": {"type": "int"}, "actions": {"type": "int"}, "variations": {"type": "int"}}},
     "quickAnalysis": "Quick local analysis",
     "reviewProgress": "{current}/{total}",
