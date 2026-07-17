@@ -45,6 +45,9 @@ REM To detect changes in package we compare output of DIR /s (recursive)
 set PREV_PACKAGE_INFO=.dart_tool\package_info.prev
 set CUR_PACKAGE_INFO=.dart_tool\package_info.cur
 
+if not exist .dart_tool mkdir .dart_tool
+if errorlevel 1 exit /b %ERRORLEVEL%
+
 DIR "%BUILD_TOOL_PKG_DIR%" /s > "%CUR_PACKAGE_INFO%_orig"
 
 REM Last line in dir output is free space on harddrive. That is bound to
@@ -75,17 +78,24 @@ If %ERRORLEVEL% neq 0 (
 
 REM There is no CUR_PACKAGE_INFO it was renamed in previous step to %PREV_PACKAGE_INFO%
 REM which means  we need to do pub get and precompile
-if not exist "%PRECOMPILED%" (
-    echo Running pub get in "%cd%"
-    "%DART%" pub get --no-precompile
-    "%DART%" compile kernel bin/build_tool_runner.dart
-)
+if exist "%PRECOMPILED%" goto run_build_tool
 
+echo Running pub get in "%cd%"
+"%DART%" pub get --no-precompile
+if errorlevel 1 exit /b %ERRORLEVEL%
+"%DART%" compile kernel bin/build_tool_runner.dart
+if errorlevel 1 exit /b %ERRORLEVEL%
+
+:run_build_tool
 "%DART%" "%PRECOMPILED%" %*
+SET BUILD_EXIT_CODE=%ERRORLEVEL%
 
 REM 253 means invalid snapshot version.
-If %ERRORLEVEL% equ 253 (
-    "%DART%" pub get --no-precompile
-    "%DART%" compile kernel bin/build_tool_runner.dart
-    "%DART%" "%PRECOMPILED%" %*
-)
+If not %BUILD_EXIT_CODE% equ 253 exit /b %BUILD_EXIT_CODE%
+
+"%DART%" pub get --no-precompile
+if errorlevel 1 exit /b %ERRORLEVEL%
+"%DART%" compile kernel bin/build_tool_runner.dart
+if errorlevel 1 exit /b %ERRORLEVEL%
+"%DART%" "%PRECOMPILED%" %*
+exit /b %ERRORLEVEL%
