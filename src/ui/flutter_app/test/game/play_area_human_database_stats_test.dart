@@ -163,7 +163,7 @@ void main() {
     );
     final BoxDecoration statsDecoration = statsBox.decoration as BoxDecoration;
     expect(statsDecoration.color, Colors.transparent);
-    expect(find.text('No human database move yet'), findsOneWidget);
+    expect(find.text('No database move to show yet'), findsOneWidget);
     expect(find.text('Human game database'), findsNothing);
     expect(
       find.byKey(const Key('play_area_human_database_stats_empty')),
@@ -234,8 +234,9 @@ void main() {
     );
     expect(
       statsSemantics.properties.label,
-      'Human game database move d6. The player won 50.0 percent, drew '
-      '30.0 percent, and lost 20.0 percent across 100 recorded games.',
+      "Human game database move d6. From the moving player's perspective: "
+      '50.0 percent wins, 30.0 percent draws, and 20.0 percent losses '
+      'across 100 recorded games.',
     );
   });
 
@@ -5609,9 +5610,9 @@ void main() {
       find.byKey(const Key('opening_explorer_human_database_disabled')),
       findsOneWidget,
     );
-    expect(find.text('Human game database is turned off'), findsOneWidget);
+    expect(find.text('Human game database is off'), findsOneWidget);
     expect(
-      find.text('Select Manage to enable it and see human-game statistics.'),
+      find.text('Select Manage to turn it on and see human move statistics.'),
       findsOneWidget,
     );
 
@@ -5689,7 +5690,7 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.text('Human game database does not cover these rules'),
+      find.text('Human game database does not support these rules'),
       findsOneWidget,
     );
     expect(
@@ -5760,7 +5761,7 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.text('Human-game statistics are unavailable during capture'),
+      find.text('Human move statistics are unavailable during capture'),
       findsOneWidget,
     );
     expect(
@@ -5816,7 +5817,10 @@ void main() {
       find.byKey(const Key('opening_explorer_human_database_game_over')),
       findsOneWidget,
     );
-    expect(find.text('No human-game statistics after game over'), findsOne);
+    expect(
+      find.text('Human move statistics are unavailable after the game ends'),
+      findsOne,
+    );
     expect(
       find.byKey(const Key('opening_explorer_manage_human_database')),
       findsNothing,
@@ -5870,7 +5874,7 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.text('Select Manage to check the selected file.'),
+      find.text('Select Manage to check the database file.'),
       findsOneWidget,
     );
     expect(
@@ -5969,9 +5973,9 @@ void main() {
           (Widget widget) =>
               widget is Semantics &&
               widget.properties.label ==
-                  'Human game database results. The player won 50 percent, '
-                      'drew 20 percent, and lost 30 percent across 100 '
-                      'recorded games.',
+                  'Human game database results. From the moving player\'s '
+                      'perspective: 50 percent wins, 20 percent draws, and '
+                      '30 percent losses across 100 recorded games.',
         ),
       ),
       findsOneWidget,

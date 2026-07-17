@@ -4480,19 +4480,19 @@
     },
     "useHumanGameDatabase": "Use human game database",
     "@useHumanGameDatabase": {},
-    "useHumanGameDatabase_Detail": "Consult recorded human moves after the opening book and before engine search.",
+    "useHumanGameDatabase_Detail": "Use recorded human moves after the opening book and before engine search.",
     "@useHumanGameDatabase_Detail": {},
     "humanGameDatabaseFile": "Human game database file",
     "@humanGameDatabaseFile": {},
-    "humanGameDatabaseFile_Detail": "Choose a compatible SQLite database. Sanmill copies it into app-private storage.",
+    "humanGameDatabaseFile_Detail": "Choose a compatible SQLite database. Sanmill copies it to the app's private storage.",
     "@humanGameDatabaseFile_Detail": {},
     "clearHumanGameDatabaseFile": "Clear human game database file",
     "@clearHumanGameDatabaseFile": {},
-    "showHumanGameDatabaseStats": "Show human-game statistics during games",
+    "showHumanGameDatabaseStats": "Show human move statistics during games",
     "@showHumanGameDatabaseStats": {},
-    "showHumanGameDatabaseStats_Detail": "For the latest database move, show the moving player's recorded win, draw, and loss rates and the number of games.",
+    "showHumanGameDatabaseStats_Detail": "After a database move, show its win, draw, and loss rates from the moving player's perspective, plus the number of games.",
     "@showHumanGameDatabaseStats_Detail": {},
-    "humanGameDatabaseLoaded": "Human game database loaded: {positionCount} positions, {moveCount} move records.",
+    "humanGameDatabaseLoaded": "Human game database loaded: {positionCount} positions and {moveCount} moves.",
     "@humanGameDatabaseLoaded": {
         "placeholders": {
             "positionCount": {
@@ -4539,7 +4539,7 @@
             }
         }
     },
-    "humanGameDatabaseStatsUnavailable": "No human database move yet",
+    "humanGameDatabaseStatsUnavailable": "No database move to show yet",
     "@humanGameDatabaseStatsUnavailable": {},
     "ticTacToeSample": "Tic-Tac-Toe (sample)",
     "@ticTacToeSample": {
@@ -5177,9 +5177,9 @@
     "@showAllBoardResultsDescription": {"description": "Description of the all-candidates analysis setting."},
     "humanDatabaseUnavailable": "Human game database unavailable",
     "@humanDatabaseUnavailable": {"description": "Opening explorer state when the human database cannot be used."},
-    "humanDatabaseUnavailableHint": "Select Manage to check the selected file.",
+    "humanDatabaseUnavailableHint": "Select Manage to check the database file.",
     "@humanDatabaseUnavailableHint": {"description": "Hint for configuring the human game database."},
-    "humanDatabaseNoPositionRecords": "Not enough human-game data for this position",
+    "humanDatabaseNoPositionRecords": "Not enough recorded games for this position",
     "@humanDatabaseNoPositionRecords": {"description": "Opening explorer state when a loaded human database has no current-position records."},
     "manageKnowledgeSources": "Manage",
     "@manageKnowledgeSources": {"description": "Button opening computer move source management."},
@@ -5843,7 +5843,7 @@
     "@selectHumanGameDatabaseFile": {
         "description": "Title of the system file picker used to import a human game database"
     },
-    "humanGameDatabaseStatsSemantics": "Human game database move {move}. The player won {winPct} percent, drew {drawPct} percent, and lost {lossPct} percent across {total} recorded games.",
+    "humanGameDatabaseStatsSemantics": "Human game database move {move}. From the moving player's perspective: {winPct} percent wins, {drawPct} percent draws, and {lossPct} percent losses across {total} recorded games.",
     "@humanGameDatabaseStatsSemantics": {
         "description": "Screen-reader expansion of compact human game database move statistics",
         "placeholders": {
@@ -5868,7 +5868,7 @@
     "@humanGameDatabaseInvalidFile": {
         "description": "User-facing error shown when a selected human game database cannot be loaded"
     },
-    "humanGameDatabaseResultsSemantics": "Human game database results. The player won {winPct} percent, drew {drawPct} percent, and lost {lossPct} percent across {total} recorded games.",
+    "humanGameDatabaseResultsSemantics": "Human game database results. From the moving player's perspective: {winPct} percent wins, {drawPct} percent draws, and {lossPct} percent losses across {total} recorded games.",
     "@humanGameDatabaseResultsSemantics": {
         "description": "Screen-reader label for a human game database win, draw, and loss bar",
         "placeholders": {
@@ -5911,11 +5911,11 @@
             }
         }
     },
-    "humanDatabaseDisabled": "Human game database is turned off",
+    "humanDatabaseDisabled": "Human game database is off",
     "@humanDatabaseDisabled": {
         "description": "Opening explorer state when the human game database setting is disabled"
     },
-    "humanDatabaseDisabledHint": "Select Manage to enable it and see human-game statistics.",
+    "humanDatabaseDisabledHint": "Select Manage to turn it on and see human move statistics.",
     "@humanDatabaseDisabledHint": {
         "description": "Opening explorer action hint when the human game database setting is disabled"
     },
@@ -5927,23 +5927,23 @@
     "@humanDatabaseNotSelectedHint": {
         "description": "Opening explorer action hint when no human game database file is selected"
     },
-    "humanDatabaseRulesUnsupported": "Human game database does not cover these rules",
+    "humanDatabaseRulesUnsupported": "Human game database does not support these rules",
     "@humanDatabaseRulesUnsupported": {
         "description": "Opening explorer state when the current rules are incompatible with the human game database"
     },
-    "humanDatabaseRulesUnsupportedHint": "Change to supported rules to see human-game statistics.",
+    "humanDatabaseRulesUnsupportedHint": "Use a supported rule set to see human move statistics.",
     "@humanDatabaseRulesUnsupportedHint": {
         "description": "Opening explorer hint when the current rules are incompatible with the human game database"
     },
-    "humanDatabaseCaptureStepUnavailable": "Human-game statistics are unavailable during capture",
+    "humanDatabaseCaptureStepUnavailable": "Human move statistics are unavailable during capture",
     "@humanDatabaseCaptureStepUnavailable": {
         "description": "Opening explorer state during a separate Mill capture action"
     },
-    "humanDatabaseCaptureStepUnavailableHint": "Database records combine a move and its capture.",
+    "humanDatabaseCaptureStepUnavailableHint": "Each database record combines a move with its capture.",
     "@humanDatabaseCaptureStepUnavailableHint": {
         "description": "Explanation that human database records store a Mill move and capture together"
     },
-    "humanDatabaseGameOverUnavailable": "No human-game statistics after game over",
+    "humanDatabaseGameOverUnavailable": "Human move statistics are unavailable after the game ends",
     "@humanDatabaseGameOverUnavailable": {
         "description": "Opening explorer state for a finished game with no next move to query"
     },
