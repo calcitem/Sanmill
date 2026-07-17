@@ -269,6 +269,14 @@ class RuleSettings {
         !enableInterventionCapture;
   }
 
+  bool isHumanGameDatabaseCompatible() {
+    return isLikelyNineMensMorris() &&
+        flyPieceCount == 3 &&
+        mayFly &&
+        !mayRemoveMultiple &&
+        !mayRemoveFromMillsAlways;
+  }
+
   bool isLikelyTwelveMensMorris() {
     return piecesCount == 12 &&
         hasDiagonalLines &&

@@ -2909,11 +2909,7 @@ class _OpeningExplorerSnapshot {
   }
 
   static bool _supportsHumanDatabaseRules(RuleSettings ruleSettings) {
-    return ruleSettings.isLikelyNineMensMorris() &&
-        ruleSettings.flyPieceCount == 3 &&
-        ruleSettings.mayFly &&
-        !ruleSettings.mayRemoveMultiple &&
-        !ruleSettings.mayRemoveFromMillsAlways;
+    return ruleSettings.isHumanGameDatabaseCompatible();
   }
 
   static String _baseMoveFromHumanDatabase(String notation) {

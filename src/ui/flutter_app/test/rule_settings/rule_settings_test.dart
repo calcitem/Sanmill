@@ -145,6 +145,35 @@ void main() {
       const RuleSettings r = RuleSettings(enableCustodianCapture: true);
       expect(r.isLikelyNineMensMorris(), isFalse);
     });
+
+    test('human game database compatibility matches query constraints', () {
+      expect(const RuleSettings().isHumanGameDatabaseCompatible(), isTrue);
+      expect(
+        const RuleSettings(nMoveRule: 50).isHumanGameDatabaseCompatible(),
+        isTrue,
+        reason: 'Compatible custom rule tweaks must remain supported.',
+      );
+      expect(
+        const RuleSettings(mayFly: false).isHumanGameDatabaseCompatible(),
+        isFalse,
+      );
+      expect(
+        const RuleSettings(flyPieceCount: 4).isHumanGameDatabaseCompatible(),
+        isFalse,
+      );
+      expect(
+        const RuleSettings(
+          mayRemoveMultiple: true,
+        ).isHumanGameDatabaseCompatible(),
+        isFalse,
+      );
+      expect(
+        const RuleSettings(
+          mayRemoveFromMillsAlways: true,
+        ).isHumanGameDatabaseCompatible(),
+        isFalse,
+      );
+    });
   });
 
   // ---------------------------------------------------------------------------

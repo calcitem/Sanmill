@@ -289,11 +289,7 @@ class MillHumanDatabaseProvider implements OpeningBookProvider {
   }
 
   bool _supportsCurrentRules() {
-    return ruleSettings.isLikelyNineMensMorris() &&
-        ruleSettings.flyPieceCount == 3 &&
-        ruleSettings.mayFly &&
-        !ruleSettings.mayRemoveMultiple &&
-        !ruleSettings.mayRemoveFromMillsAlways;
+    return ruleSettings.isHumanGameDatabaseCompatible();
   }
 
   bool _isRemoveTurn(NativeMillGameSession session) {

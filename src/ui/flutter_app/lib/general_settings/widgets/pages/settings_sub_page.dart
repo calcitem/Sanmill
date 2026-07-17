@@ -54,7 +54,7 @@ bool _openingBookSettingsAvailable() =>
     DB().ruleSettings.isLikelyElFilja();
 
 bool _humanDatabaseSettingsAvailable() =>
-    DB().ruleSettings.isLikelyNineMensMorris();
+    DB().ruleSettings.isHumanGameDatabaseCompatible();
 
 int _aiKnowledgeSourcesAvailableCount() {
   int count = 0;
