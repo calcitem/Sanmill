@@ -202,11 +202,14 @@ class _ImportGamePageState extends State<ImportGamePage> {
                   textAlignVertical: TextAlignVertical.top,
                   onTap: _pasteAndImport,
                   decoration: InputDecoration(
-                    hintText: strings.importFromClipboard,
+                    hintText: strings.pasteAndImportGameHint,
                     alignLabelWithHint: true,
                     suffixIcon: IconButton(
                       key: const Key('import_game_paste_icon_button'),
-                      icon: const Icon(FluentIcons.clipboard_paste_24_regular),
+                      icon: Icon(
+                        FluentIcons.clipboard_paste_24_regular,
+                        semanticLabel: strings.paste,
+                      ),
                       tooltip: strings.paste,
                       onPressed: _isImporting ? null : _pasteAndImport,
                     ),

@@ -4252,11 +4252,11 @@
     "@importSession": {
         "description": "Button label to import a recording session"
     },
-    "importFromFile": "Import from File",
+    "importFromFile": "Import from file",
     "@importFromFile": {
         "description": "Option to import a recording session from a JSON file"
     },
-    "importFromClipboard": "Import from Clipboard",
+    "importFromClipboard": "Import from clipboard",
     "@importFromClipboard": {
         "description": "Option to import a recording session from clipboard JSON text"
     },
@@ -4376,7 +4376,7 @@
     "@qrCodeOpenInBrowser": {
         "description": "Button label to open a URL from an unrecognized QR code in the system browser"
     },
-    "importFailed": "Import Failed",
+    "importFailed": "Import failed",
     "@importFailed": {
         "description": "Title of the dialog shown when clipboard content cannot be imported as a game"
     },
@@ -5548,5 +5548,9 @@
     "guides": "Guides",
     "@guides": {
         "description": "Learn-tab section containing the tutorial and how-to-play guide"
+    },
+    "pasteAndImportGameHint": "Tap here to paste and import a game",
+    "@pasteAndImportGameHint": {
+        "description": "Hint in the read-only PGN field that imports clipboard text when tapped"
     }
 }

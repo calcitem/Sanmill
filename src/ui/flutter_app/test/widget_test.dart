@@ -1103,6 +1103,17 @@ void main() {
         find.byKey(const Key('import_game_from_clipboard_button')),
         findsOneWidget,
       );
+      expect(find.text('Import from file'), findsOneWidget);
+      expect(find.text('Scan QR code'), findsOneWidget);
+      expect(find.text('Import from clipboard'), findsOneWidget);
+      expect(find.byTooltip('Paste'), findsOneWidget);
+      final TextField importPasteField = tester.widget<TextField>(
+        find.byKey(const Key('import_game_paste_field')),
+      );
+      expect(
+        importPasteField.decoration?.hintText,
+        'Tap here to paste and import a game',
+      );
 
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
