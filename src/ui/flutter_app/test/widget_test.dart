@@ -2492,6 +2492,67 @@ void main() {
   );
 
   testWidgets(
+    'Background image options expose accessible names and selection',
+    (WidgetTester tester) async {
+      final SemanticsHandle semantics = tester.ensureSemantics();
+      final DisplaySettings previousDisplaySettings = DB().displaySettings;
+      addTearDown(() => DB().displaySettings = previousDisplaySettings);
+      DB().displaySettings = const DisplaySettings();
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: Locale('en'),
+          home: AppearanceSettingsPage(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final Finder backgroundImageTile = find.byKey(
+        const Key('display_settings_card_background_image_settings_list_tile'),
+      );
+      final Finder appearanceScrollable = find.descendant(
+        of: find.byKey(const Key('settings_list')),
+        matching: find.byType(Scrollable),
+      );
+      await tester.scrollUntilVisible(
+        backgroundImageTile,
+        320,
+        scrollable: appearanceScrollable,
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(backgroundImageTile);
+      await tester.pumpAndSettle();
+
+      final SemanticsData solidColor = tester
+          .getSemantics(find.bySemanticsLabel('Solid color'))
+          .getSemanticsData();
+      expect(solidColor.hasFlag(SemanticsFlag.isButton), isTrue);
+      expect(solidColor.hasFlag(SemanticsFlag.isSelected), isTrue);
+
+      final SemanticsData firstImage = tester
+          .getSemantics(find.bySemanticsLabel('Background image 1'))
+          .getSemanticsData();
+      expect(firstImage.hasFlag(SemanticsFlag.isButton), isTrue);
+      expect(firstImage.hasFlag(SemanticsFlag.isSelected), isFalse);
+
+      await tester.drag(
+        find.byKey(const Key('background_image_gridview')),
+        const Offset(0, -600),
+      );
+      await tester.pumpAndSettle();
+      final SemanticsData customImage = tester
+          .getSemantics(find.bySemanticsLabel('Custom background image'))
+          .getSemanticsData();
+      expect(customImage.hasFlag(SemanticsFlag.isButton), isTrue);
+      expect(customImage.hasFlag(SemanticsFlag.isSelected), isFalse);
+      semantics.dispose();
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Opening explorer uses split panes in landscape',
     (WidgetTester tester) async {
       tester.view

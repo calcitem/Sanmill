@@ -70,6 +70,9 @@ class _BackgroundImagePickerState extends State<_BackgroundImagePicker> {
                 return _BackgroundImageItem(
                   key: Key('background_image_item_$index'),
                   asset: asset,
+                  semanticLabel: index == 0
+                      ? S.of(context).solidColor
+                      : S.of(context).backgroundImageOption(index),
                   isSelect: displaySettings.backgroundImagePath == asset,
                   onChanged: () {
                     // Update only the backgroundImagePath to the selected built-in image or default,
@@ -83,6 +86,7 @@ class _BackgroundImagePickerState extends State<_BackgroundImagePicker> {
                 // Last item: Custom Image Picker
                 return _CustomBackgroundImageItem(
                   key: const Key('custom_background_image_item'),
+                  semanticLabel: S.of(context).customBackgroundImage,
                   isSelected:
                       displaySettings.backgroundImagePath ==
                       displaySettings.customBackgroundImagePath,
@@ -200,54 +204,65 @@ class _BackgroundImagePickerState extends State<_BackgroundImagePicker> {
 class _BackgroundImageItem extends StatelessWidget {
   const _BackgroundImageItem({
     required this.asset,
+    required this.semanticLabel,
     this.isSelect = false,
     this.onChanged,
     super.key,
   });
 
   final String asset;
+  final String semanticLabel;
   final bool isSelect;
   final VoidCallback? onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      key: Key('background_image_gesture_$asset'),
-      onTap: () {
-        if (!isSelect) {
-          onChanged?.call();
-        }
-      },
-      child: Stack(
-        children: <Widget>[
-          Container(
-            key: Key('background_image_container_$asset'),
-            decoration: BoxDecoration(
-              color: asset.isEmpty
-                  ? DB().colorSettings.darkBackgroundColor
-                  : null, // Use solid color if asset is empty
-              image: asset.isEmpty
-                  ? null
-                  : DecorationImage(
-                      image: getBackgroundImageProvider(
-                        DisplaySettings(backgroundImagePath: asset),
-                      )!,
-                      fit: BoxFit.cover,
-                    ),
-              borderRadius: BorderRadius.circular(8),
+    void onTap() {
+      if (!isSelect) {
+        onChanged?.call();
+      }
+    }
+
+    return Semantics(
+      label: semanticLabel,
+      button: true,
+      selected: isSelect,
+      onTap: onTap,
+      child: GestureDetector(
+        key: Key('background_image_gesture_$asset'),
+        excludeFromSemantics: true,
+        onTap: onTap,
+        child: Stack(
+          children: <Widget>[
+            Container(
+              key: Key('background_image_container_$asset'),
+              decoration: BoxDecoration(
+                color: asset.isEmpty
+                    ? DB().colorSettings.darkBackgroundColor
+                    : null, // Use solid color if asset is empty
+                image: asset.isEmpty
+                    ? null
+                    : DecorationImage(
+                        image: getBackgroundImageProvider(
+                          DisplaySettings(backgroundImagePath: asset),
+                        )!,
+                        fit: BoxFit.cover,
+                      ),
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
-          ),
-          Positioned(
-            key: Key('background_image_icon_positioned_$asset'),
-            right: 8,
-            top: 8,
-            child: Icon(
-              isSelect ? Icons.check_circle : Icons.check_circle_outline,
-              color: Colors.white,
-              key: Key('background_image_icon_$asset'),
+            Positioned(
+              key: Key('background_image_icon_positioned_$asset'),
+              right: 8,
+              top: 8,
+              child: Icon(
+                isSelect ? Icons.check_circle : Icons.check_circle_outline,
+                color: Colors.white,
+                key: Key('background_image_icon_$asset'),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -258,6 +273,7 @@ class _BackgroundImageItem extends StatelessWidget {
 /// - If a custom image is selected, it displays the image with an edit icon at the center and a check icon at the top-right if selected.
 class _CustomBackgroundImageItem extends StatelessWidget {
   const _CustomBackgroundImageItem({
+    required this.semanticLabel,
     required this.isSelected,
     required this.customImagePath,
     required this.onSelect,
@@ -265,6 +281,7 @@ class _CustomBackgroundImageItem extends StatelessWidget {
     super.key,
   });
 
+  final String semanticLabel;
   final bool isSelected;
   final String? customImagePath;
   final VoidCallback onSelect;
@@ -272,62 +289,71 @@ class _CustomBackgroundImageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      key: const Key('custom_background_gesture'),
-      // Tap to select the image if customImagePath is available, otherwise prompt to pick an image
-      onTap: customImagePath != null ? onSelect : onPickImage,
-      child: Stack(
-        children: <Widget>[
-          // Background container with image or placeholder color
-          Container(
-            key: const Key('custom_background_container'),
-            decoration: BoxDecoration(
-              color: customImagePath == null
-                  ? Colors
-                        .grey // Grey color if no custom image is selected
-                  : null,
-              image: customImagePath != null
-                  ? DecorationImage(
-                      image: FileImage(File(customImagePath!)),
-                      fit: BoxFit.cover,
+    final VoidCallback onTap = customImagePath != null ? onSelect : onPickImage;
+    return Semantics(
+      container: true,
+      explicitChildNodes: true,
+      label: semanticLabel,
+      button: true,
+      selected: isSelected,
+      onTap: onTap,
+      child: GestureDetector(
+        key: const Key('custom_background_gesture'),
+        excludeFromSemantics: true,
+        onTap: onTap,
+        child: Stack(
+          children: <Widget>[
+            // Background container with image or placeholder color
+            Container(
+              key: const Key('custom_background_container'),
+              decoration: BoxDecoration(
+                color: customImagePath == null
+                    ? Colors
+                          .grey // Grey color if no custom image is selected
+                    : null,
+                image: customImagePath != null
+                    ? DecorationImage(
+                        image: FileImage(File(customImagePath!)),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              // Centered add icon when no custom image is selected
+              child: customImagePath == null
+                  ? const Center(
+                      child: Icon(
+                        Icons.add,
+                        size: 32,
+                        color: Colors.white,
+                        key: Key('custom_background_add_icon'),
+                      ),
                     )
                   : null,
-              borderRadius: BorderRadius.circular(8),
             ),
-            // Centered add icon when no custom image is selected
-            child: customImagePath == null
-                ? const Center(
-                    child: Icon(
-                      Icons.add,
-                      size: 32,
-                      color: Colors.white,
-                      key: Key('custom_background_add_icon'),
-                    ),
-                  )
-                : null,
-          ),
-          // Centered edit icon when custom image is present
-          if (customImagePath != null)
-            Center(
-              child: IconButton(
-                key: const Key('custom_background_edit_button'),
-                icon: const Icon(Icons.edit, color: Colors.white, size: 32),
-                onPressed: onPickImage,
-                tooltip: S.of(context).chooseYourPicture,
+            // Centered edit icon when custom image is present
+            if (customImagePath != null)
+              Center(
+                child: IconButton(
+                  key: const Key('custom_background_edit_button'),
+                  icon: const Icon(Icons.edit, color: Colors.white, size: 32),
+                  onPressed: onPickImage,
+                  tooltip: S.of(context).chooseYourPicture,
+                ),
+              ),
+            // Checkmark icon at the top-right corner when selected
+            Positioned(
+              key: const Key('custom_background_check_positioned'),
+              right: 8,
+              top: 8,
+              child: Icon(
+                isSelected ? Icons.check_circle : Icons.check_circle_outline,
+                color: Colors.white,
+                key: const Key('custom_background_check_icon'),
               ),
             ),
-          // Checkmark icon at the top-right corner when selected
-          Positioned(
-            key: const Key('custom_background_check_positioned'),
-            right: 8,
-            top: 8,
-            child: Icon(
-              isSelected ? Icons.check_circle : Icons.check_circle_outline,
-              color: Colors.white,
-              key: const Key('custom_background_check_icon'),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

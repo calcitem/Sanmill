@@ -5702,5 +5702,19 @@
     "customBoardImage": "Custom board image",
     "@customBoardImage": {
         "description": "Accessible label for the custom board image option"
+    },
+    "backgroundImageOption": "Background image {number}",
+    "@backgroundImageOption": {
+        "description": "Accessible label for a built-in background image option",
+        "placeholders": {
+            "number": {
+                "type": "int",
+                "example": "1"
+            }
+        }
+    },
+    "customBackgroundImage": "Custom background image",
+    "@customBackgroundImage": {
+        "description": "Accessible label for the custom background image option"
     }
 }
