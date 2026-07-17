@@ -143,7 +143,7 @@ abstract final class BoardRecognitionImport {
       dismissProgress();
       logger.e('$_logTag Error during board recognition: $e');
       messenger.showSnackBar(
-        SnackBar(content: Text(strings.imageRecognitionFailed(e.toString()))),
+        SnackBar(content: Text(strings.boardRecognitionFailedTryAgain)),
       );
     }
   }
@@ -189,7 +189,7 @@ abstract final class BoardRecognitionImport {
     final String next = controller.sideToMove == PieceColor.black
         ? strings.blackSMove
         : strings.whiteSMove;
-    messenger.showSnackBarClear('$details, $next');
+    messenger.showSnackBarClear('$details. $next.');
     logger.i('$_logTag Applied recognized FEN to setup session: $fen');
     return true;
   }

@@ -78,6 +78,24 @@ void main() {
     );
   });
 
+  test('uses actionable English board-recognition feedback', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.analyzingGameBoardImage, 'Analyzing board image…');
+    expect(english.identificationResults, 'Recognition results');
+    expect(
+      english.noPiecesWereRecognizedInTheImagePleaseTryAgain,
+      'No pieces were detected. Try a clearer board image.',
+    );
+    expect(
+      english.boardRecognitionFailedTryAgain,
+      'Board recognition failed. Try a clearer image with the full board '
+      'visible.',
+    );
+    expect(english.whiteSMove, 'White to move');
+    expect(english.blackSMove, 'Black to move');
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =
