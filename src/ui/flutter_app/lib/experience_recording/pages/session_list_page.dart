@@ -422,11 +422,6 @@ class _SessionListPageState extends State<SessionListPage> {
       appBar: AppBar(
         title: Text(S.of(context).recordingSessions),
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.file_download_outlined),
-            tooltip: S.of(context).importSession,
-            onPressed: _showImportOptions,
-          ),
           if (_sessions.isNotEmpty)
             IconButton(
               icon: const Icon(Icons.delete_sweep),
