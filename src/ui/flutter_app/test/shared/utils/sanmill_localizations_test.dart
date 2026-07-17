@@ -207,6 +207,28 @@ void main() {
     expect(chinese.boardRecognitionFinalLegend, '红色圆圈：黑棋 · 绿色圆圈：白棋');
   });
 
+  test('localizes diagnostic privacy controls in Chinese', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.diagnostics, '诊断');
+    expect(chinese.recordUserInteractions, '记录用户操作');
+    expect(
+      chinese.diagnosticSendConfirmation('Sanmill diagnostics'),
+      '要将预览中显示的全部数据发送给 Sanmill diagnostics，用于诊断故障并核验应用的分发来源吗？不包含截图；发送失败不会自动重试。',
+    );
+    expect(chinese.diagnosticIncludeConfiguration, '包含可复现的非敏感设置');
+    expect(chinese.diagnosticIncludeLogs, '包含已脱敏日志');
+    expect(
+      chinese.diagnosticActionTrailDescription,
+      contains('绝不记录输入文字、原始触摸、截图、音频或视频'),
+    );
+    expect(
+      chinese.diagnosticPasteAndReproduceDescription,
+      '校验校验和，备份当前的非敏感设置和棋局，然后还原报告中的状态。',
+    );
+    expect(chinese.unsafeLegacyRecording, contains('已禁用分享和回放；你只能删除它。'));
+  });
+
   test('uses consistent English cat-fishing terminology', () {
     final S english = lookupS(const Locale('en'));
 

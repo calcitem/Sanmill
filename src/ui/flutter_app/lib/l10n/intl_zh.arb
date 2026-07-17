@@ -6061,5 +6061,184 @@
     "boardRecognitionFinalLegend": "红色圆圈：黑棋 · 绿色圆圈：白棋",
     "@boardRecognitionFinalLegend": {
         "description": "Legend for the final piece overlay"
+    },
+    "diagnosticReport": "诊断报告",
+    "@diagnosticReport": {
+        "description": "Title of the first-party crash and feedback report page."
+    },
+    "diagnosticBundleCopied": "诊断包已复制。",
+    "@diagnosticBundleCopied": {
+        "description": "Confirmation after copying a diagnostic bundle."
+    },
+    "diagnosticCopyAndOpenIssue": "复制并打开 GitHub 问题",
+    "@diagnosticCopyAndOpenIssue": {
+        "description": "Copies the exact diagnostic bundle and opens the source repository issue form."
+    },
+    "sendDiagnosticReport": "发送诊断报告",
+    "@sendDiagnosticReport": {
+        "description": "Confirmation dialog title before a network report is sent."
+    },
+    "diagnosticSendConfirmation": "要将预览中显示的全部数据发送给 {recipient}，用于诊断故障并核验应用的分发来源吗？不包含截图；发送失败不会自动重试。",
+    "@diagnosticSendConfirmation": {
+        "description": "Explicit per-report confirmation naming the configured receiver.",
+        "placeholders": {
+            "recipient": {
+                "description": "Configured diagnostic report receiver.",
+                "example": "Sanmill project GlitchTip"
+            }
+        }
+    },
+    "diagnosticReportSent": "诊断报告已发送。",
+    "@diagnosticReportSent": {
+        "description": "Confirmation after a diagnostic report is accepted by the server."
+    },
+    "diagnosticSendFailed": "未能发送报告：{message}",
+    "@diagnosticSendFailed": {
+        "description": "One-shot diagnostic send error.",
+        "placeholders": {
+            "message": {
+                "description": "Transport error.",
+                "example": "HTTP 503"
+            }
+        }
+    },
+    "diagnosticRecipient": "接收方：{recipient}",
+    "@diagnosticRecipient": {
+        "description": "Names the configured report receiver.",
+        "placeholders": {
+            "recipient": {
+                "description": "Configured receiver.",
+                "example": "Sanmill project GlitchTip"
+            }
+        }
+    },
+    "diagnosticLocalOnly": "此构建不支持远程报告。你仍可复制完整诊断包。",
+    "@diagnosticLocalOnly": {
+        "description": "Shown when no complete GlitchTip configuration exists or reporting is disabled."
+    },
+    "diagnosticIncludeConfiguration": "包含可复现的非敏感设置",
+    "@diagnosticIncludeConfiguration": {
+        "description": "Report data category checkbox."
+    },
+    "diagnosticIncludeActionTrail": "包含诊断操作轨迹",
+    "@diagnosticIncludeActionTrail": {
+        "description": "Report data category checkbox."
+    },
+    "diagnosticIncludeLogs": "包含已脱敏日志",
+    "@diagnosticIncludeLogs": {
+        "description": "Report data category checkbox."
+    },
+    "diagnosticActionTimeline": "操作时间线（{count}）",
+    "@diagnosticActionTimeline": {
+        "description": "Expandable semantic action timeline title.",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "description": "Number of retained events.",
+                "example": "42"
+            }
+        }
+    },
+    "diagnosticNoActionEvents": "未包含操作事件。",
+    "@diagnosticNoActionEvents": {
+        "description": "Empty diagnostic timeline message."
+    },
+    "diagnosticExactPreview": "复制/发送内容预览",
+    "@diagnosticExactPreview": {
+        "description": "Heading above the immutable diagnostic bundle preview."
+    },
+    "diagnosticLoadingPreview": "正在生成预览…",
+    "@diagnosticLoadingPreview": {
+        "description": "Progress text while constructing a diagnostic bundle."
+    },
+    "diagnosticSending": "正在发送…",
+    "@diagnosticSending": {
+        "description": "Progress label during the single network request."
+    },
+    "diagnosticActionTrail": "诊断操作轨迹",
+    "@diagnosticActionTrail": {
+        "description": "Title for the always-local short semantic operation trail."
+    },
+    "diagnosticActionTrailDescription": "本地最多保留 500 条已脱敏操作，时长最多 30 分钟（最多 192 KiB）。绝不记录输入文字、原始触摸、截图、音频或视频。缓存 24 小时后过期，且仅会在预览并确认后发送。",
+    "@diagnosticActionTrailDescription": {
+        "description": "Privacy description for the local diagnostic action trail."
+    },
+    "diagnosticClearActionTrail": "立即清空操作轨迹",
+    "@diagnosticClearActionTrail": {
+        "description": "Button to remove all locally retained diagnostic actions."
+    },
+    "diagnosticActionTrailCleared": "诊断操作轨迹已清空。",
+    "@diagnosticActionTrailCleared": {
+        "description": "Confirmation after clearing the local action trail."
+    },
+    "diagnosticPasteAndReproduce": "粘贴诊断包并复现",
+    "@diagnosticPasteAndReproduce": {
+        "description": "Developer action that imports a bundle from the clipboard."
+    },
+    "diagnosticPasteAndReproduceDescription": "校验校验和，备份当前的非敏感设置和棋局，然后还原报告中的状态。",
+    "@diagnosticPasteAndReproduceDescription": {
+        "description": "Description for diagnostic reproduction import."
+    },
+    "diagnosticImportFailed": "导入诊断包失败：{message}",
+    "@diagnosticImportFailed": {
+        "description": "Strict diagnostic bundle validation or restoration error.",
+        "placeholders": {
+            "message": {
+                "description": "Validation error.",
+                "example": "Checksum mismatch"
+            }
+        }
+    },
+    "diagnosticReproduction": "诊断复现",
+    "@diagnosticReproduction": {
+        "description": "Title after a diagnostic bundle has been restored."
+    },
+    "diagnosticStateRestored": "已启用非敏感设置和报告中的最终棋局状态。除非使用下方备份还原，否则重启后仍会保留。",
+    "@diagnosticStateRestored": {
+        "description": "Explains the persistent diagnostic import behavior."
+    },
+    "diagnosticRestorePreImportState": "还原导入前状态",
+    "@diagnosticRestorePreImportState": {
+        "description": "Restores the most recent local state backup."
+    },
+    "diagnosticBackupRestored": "已还原导入前的设置和棋局。",
+    "@diagnosticBackupRestored": {
+        "description": "Confirmation after restoring an import backup."
+    },
+    "diagnosticNoBackup": "没有可用的诊断导入备份。",
+    "@diagnosticNoBackup": {
+        "description": "Shown when restore is requested without a backup."
+    },
+    "diagnosticSavedDrafts": "已保存的诊断草稿",
+    "@diagnosticSavedDrafts": {
+        "description": "Title for locally retained crash and failed-feedback drafts."
+    },
+    "diagnosticSavedDraftsDescription": "可重新打开、复制、重试或删除最多保留 7 天的草稿。",
+    "@diagnosticSavedDraftsDescription": {
+        "description": "Developer-options description for local diagnostic drafts."
+    },
+    "unsafeLegacyRecording": "旧版记录无法安全迁移，可能含有私人数据。已禁用分享和回放；你只能删除它。",
+    "@unsafeLegacyRecording": {
+        "description": "Warning shown for an unmigratable legacy experience recording."
+    },
+    "diagnosticNoSavedDrafts": "没有已保存的诊断草稿。",
+    "@diagnosticNoSavedDrafts": {
+        "description": "Empty state for the local diagnostic draft list."
+    },
+    "diagnosticCrashDraft": "崩溃",
+    "@diagnosticCrashDraft": {
+        "description": "Label for a locally retained crash draft."
+    },
+    "diagnosticConfigurationDifferences": "非敏感设置差异",
+    "@diagnosticConfigurationDifferences": {
+        "description": "Expandable comparison between local and imported safe settings."
+    },
+    "diagnostics": "诊断",
+    "@diagnostics": {
+        "description": "Section heading for diagnostic developer tools"
+    },
+    "recordUserInteractions": "记录用户操作",
+    "@recordUserInteractions": {
+        "description": "Toggle for recording in-app interactions for later reproduction"
     }
 }
