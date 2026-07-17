@@ -6035,7 +6035,7 @@ void main() {
           (Widget widget) =>
               widget is Semantics &&
               widget.properties.label ==
-                  'Human game database results. From the moving player\'s '
+                  "Human game database results. From the moving player's "
                       'perspective: 50 percent wins, 20 percent draws, and '
                       '30 percent losses across 100 recorded games.',
         ),
