@@ -5341,5 +5341,19 @@
     "learn": "学习",
     "@learn": {
         "description": "Learn"
+    },
+    "humanMovesFirst": "真人先手",
+    "@humanMovesFirst": {
+        "description": "Switch controlling whether the human or computer makes the first move"
+    },
+    "aiThinkingTimeValue": "{seconds, plural, =0{不限时} =1{1 秒} other{{seconds} 秒}}",
+    "@aiThinkingTimeValue": {
+        "description": "Displayed value for the maximum computer thinking time per move",
+        "placeholders": {
+            "seconds": {
+                "type": "int",
+                "example": "6"
+            }
+        }
     }
 }
