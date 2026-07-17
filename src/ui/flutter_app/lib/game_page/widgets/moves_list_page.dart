@@ -2739,6 +2739,7 @@ class MovesListPageState extends State<MovesListPage> {
           // The "three vertical dots" menu with multiple PopupMenuItem.
           PopupMenuButton<String>(
             key: const Key('moves_list_more_menu_button'),
+            tooltip: S.of(context).menu,
             onSelected: (String value) async {
               switch (value) {
                 case 'top':

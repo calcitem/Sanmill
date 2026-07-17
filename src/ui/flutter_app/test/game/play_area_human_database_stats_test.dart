@@ -6066,6 +6066,10 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('7... f6'), findsOneWidget);
+    final PopupMenuButton<String> moreMenu = tester.widget(
+      find.byKey(const Key('moves_list_more_menu_button')),
+    );
+    expect(moreMenu.tooltip, 'Menu');
   });
 
   testWidgets('move list layout choices are named and selectable', (
