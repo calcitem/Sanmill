@@ -967,9 +967,9 @@
     "@language": {
         "description": "Languages"
     },
-    "defaultLanguage": "Default language",
+    "defaultLanguage": "System language",
     "@defaultLanguage": {
-        "description": "Default language"
+        "description": "Option that follows the device system language"
     },
     "mayMoveInPlacingPhase": "Allow movement during placement",
     "@mayMoveInPlacingPhase": {
