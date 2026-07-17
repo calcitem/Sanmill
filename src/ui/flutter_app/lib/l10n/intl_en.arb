@@ -4672,7 +4672,7 @@
     "@engineThreads_Detail": {},
     "aiKnowledgeSources": "AI knowledge sources",
     "@aiKnowledgeSources": {},
-    "aiKnowledgeSources_Detail": "Opening book, perfect database, and human game database.",
+    "aiKnowledgeSources_Detail": "Opening book, perfect database, human game database, and trap library.",
     "@aiKnowledgeSources_Detail": {},
     "advancedAiSearch": "Advanced AI search",
     "@advancedAiSearch": {},

@@ -4518,7 +4518,7 @@
     "@engineThreads_Detail": {},
     "aiKnowledgeSources": "AI 知识源",
     "@aiKnowledgeSources": {},
-    "aiKnowledgeSources_Detail": "开局库、完美数据库和人类对局数据库。",
+    "aiKnowledgeSources_Detail": "开局库、完美数据库、人类对局数据库和陷阱库。",
     "@aiKnowledgeSources_Detail": {},
     "advancedAiSearch": "高级 AI 搜索",
     "@advancedAiSearch": {},
