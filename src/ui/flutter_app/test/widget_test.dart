@@ -1180,7 +1180,7 @@ void main() {
       );
       expect(
         importPasteField.decoration?.hintText,
-        'Tap here to paste and import a game',
+        'Tap to paste and import a game',
       );
 
       await tester.binding.handlePopRoute();
