@@ -4558,7 +4558,7 @@
     "@openingBookStudioSampleSize": {},
     "openingRandomness": "Opening randomness",
     "@openingRandomness": {},
-    "openingRandomness_Detail": "When move variation is enabled, control how broadly the computer chooses among opening-book candidates. 0% always selects the strongest move; 100% selects candidates uniformly. The 60% default favors stronger moves while still varying play.",
+    "openingRandomness_Detail": "Controls how widely the computer varies opening-book moves: 0% always picks the strongest, while 100% treats all candidates equally.",
     "@openingRandomness_Detail": {},
     "downloadHumanGameDatabase": "Download human game database",
     "@downloadHumanGameDatabase": {},

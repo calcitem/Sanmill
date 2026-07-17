@@ -85,6 +85,17 @@ void main() {
     expect(english.noHumanMistakesToCorrect, 'No human mistakes to review.');
   });
 
+  test('explains English opening randomness without implementation detail', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(
+      english.openingRandomness_Detail,
+      'Controls how widely the computer varies opening-book moves: 0% always '
+      'picks the strongest, while 100% treats all candidates equally.',
+    );
+    expect(english.openingRandomness_Detail, isNot(contains('bias')));
+  });
+
   test('separates computer-play and generative AI terminology', () {
     final S english = lookupS(const Locale('en'));
     final S chinese = lookupS(const Locale('zh'));

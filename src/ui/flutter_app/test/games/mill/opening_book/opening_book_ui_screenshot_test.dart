@@ -60,7 +60,11 @@ void main() {
   ) async {
     final _OpeningBookUiDb db = DB.instance! as _OpeningBookUiDb;
     db.updateGeneralSettings(
-      const GeneralSettings(humanDatabaseFilePath: '/tmp/human.sqlite'),
+      const GeneralSettings(
+        humanDatabaseFilePath: '/tmp/human.sqlite',
+        useOpeningBook: true,
+        shufflingEnabled: true,
+      ),
     );
 
     await tester.binding.setSurfaceSize(const Size(1100, 900));
@@ -76,6 +80,14 @@ void main() {
     final Finder preferFavoredOpenings = find.text('Prefer favorable openings');
     final Finder settingsList = find.byKey(const Key('settings_list'));
     expect(useOpeningBook, findsOneWidget);
+    expect(find.text('Opening randomness'), findsOneWidget);
+    expect(
+      find.text(
+        'Controls how widely the computer varies opening-book moves: 0% '
+        'always picks the strongest, while 100% treats all candidates equally.',
+      ),
+      findsOneWidget,
+    );
     expect(find.text('Show opening information'), findsNothing);
     await tester.drag(settingsList, const Offset(0, -240));
     await tester.pumpAndSettle();

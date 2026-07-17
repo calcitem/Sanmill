@@ -43,6 +43,7 @@ class _AiKnowledgeSourcesPage extends StatelessWidget {
               'general_settings_page_settings_card_ais_play_style_opening_randomness',
             ),
             titleString: S.of(context).openingRandomness,
+            subtitleString: S.of(context).openingRandomness_Detail,
             trailingString: '${generalSettings.openingRandomness}%',
             onTap: () => parent._setOpeningRandomness(context),
           ),
