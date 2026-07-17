@@ -5688,5 +5688,19 @@
     "transparentToolbars": "Transparent toolbars",
     "@transparentToolbars": {
         "description": "Title of the prompt to make board toolbars transparent"
+    },
+    "boardImageOption": "Board image {number}",
+    "@boardImageOption": {
+        "description": "Accessible label for a built-in board image option",
+        "placeholders": {
+            "number": {
+                "type": "int",
+                "example": "1"
+            }
+        }
+    },
+    "customBoardImage": "Custom board image",
+    "@customBoardImage": {
+        "description": "Accessible label for the custom board image option"
     }
 }

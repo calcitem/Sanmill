@@ -67,6 +67,9 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
                 return _BoardImageItem(
                   key: Key('board_image_item_$index'),
                   asset: asset,
+                  semanticLabel: index == 0
+                      ? S.of(context).solidColor
+                      : S.of(context).boardImageOption(index),
                   isSelect: isSelected,
                   onTap: () =>
                       _handleSelectImage(asset, displaySettings.boardImagePath),
@@ -75,6 +78,7 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
                 // Last item: Custom Image Picker
                 return _CustomBoardImageItem(
                   key: const Key('custom_board_image_item'),
+                  semanticLabel: S.of(context).customBoardImage,
                   isSelected:
                       displaySettings.boardImagePath ==
                       displaySettings.customBoardImagePath,
@@ -291,50 +295,59 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
 class _BoardImageItem extends StatelessWidget {
   const _BoardImageItem({
     required this.asset,
+    required this.semanticLabel,
     this.isSelect = false,
     required this.onTap,
     super.key,
   });
 
   final String asset;
+  final String semanticLabel;
   final bool isSelect;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      key: Key('board_image_gesture_$asset'),
-      onTap: onTap, // Calls the callback passed by the parent widget
-      child: Stack(
-        children: <Widget>[
-          Container(
-            key: Key('board_image_container_$asset'),
-            decoration: BoxDecoration(
-              color: asset.isEmpty
-                  ? DB().colorSettings.boardBackgroundColor
-                  : null, // If asset is empty, use solid color background
-              image: asset.isEmpty
-                  ? null
-                  : DecorationImage(
-                      image: getBoardImageProvider(
-                        DisplaySettings(boardImagePath: asset),
-                      )!,
-                      fit: BoxFit.cover,
-                    ),
-              borderRadius: BorderRadius.circular(8),
+    return Semantics(
+      label: semanticLabel,
+      button: true,
+      selected: isSelect,
+      onTap: onTap,
+      child: GestureDetector(
+        key: Key('board_image_gesture_$asset'),
+        excludeFromSemantics: true,
+        onTap: onTap,
+        child: Stack(
+          children: <Widget>[
+            Container(
+              key: Key('board_image_container_$asset'),
+              decoration: BoxDecoration(
+                color: asset.isEmpty
+                    ? DB().colorSettings.boardBackgroundColor
+                    : null, // If asset is empty, use solid color background
+                image: asset.isEmpty
+                    ? null
+                    : DecorationImage(
+                        image: getBoardImageProvider(
+                          DisplaySettings(boardImagePath: asset),
+                        )!,
+                        fit: BoxFit.cover,
+                      ),
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
-          ),
-          Positioned(
-            key: Key('board_image_icon_positioned_$asset'),
-            right: 8,
-            top: 8,
-            child: Icon(
-              isSelect ? Icons.check_circle : Icons.check_circle_outline,
-              color: Colors.white,
-              key: Key('board_image_icon_$asset'),
+            Positioned(
+              key: Key('board_image_icon_positioned_$asset'),
+              right: 8,
+              top: 8,
+              child: Icon(
+                isSelect ? Icons.check_circle : Icons.check_circle_outline,
+                color: Colors.white,
+                key: Key('board_image_icon_$asset'),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -345,6 +358,7 @@ class _BoardImageItem extends StatelessWidget {
 /// - If a custom image is selected, it displays the image with an edit icon at the center and a check icon at the top-right if selected.
 class _CustomBoardImageItem extends StatelessWidget {
   const _CustomBoardImageItem({
+    required this.semanticLabel,
     required this.isSelected,
     required this.customImagePath,
     required this.onSelect,
@@ -352,6 +366,7 @@ class _CustomBoardImageItem extends StatelessWidget {
     super.key,
   });
 
+  final String semanticLabel;
   final bool isSelected;
   final String? customImagePath;
   final VoidCallback onSelect;
@@ -359,68 +374,71 @@ class _CustomBoardImageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      key: const Key('custom_board_image_gesture'),
-      // Tap to select the image if customImagePath is available, otherwise prompt to pick an image
-      onTap: () {
-        if (customImagePath != null) {
-          onSelect();
-        } else {
-          onPickImage();
-        }
-      },
-      child: Stack(
-        children: <Widget>[
-          // Background container displaying either an image or a placeholder color
-          Container(
-            key: const Key('custom_board_image_container'),
-            decoration: BoxDecoration(
-              color: customImagePath == null
-                  ? Colors
-                        .grey // Displays grey if no custom image is selected
-                  : null,
-              image: customImagePath != null
-                  ? DecorationImage(
-                      image: FileImage(File(customImagePath!)),
-                      fit: BoxFit.cover,
+    final VoidCallback onTap = customImagePath != null ? onSelect : onPickImage;
+    return Semantics(
+      container: true,
+      explicitChildNodes: true,
+      label: semanticLabel,
+      button: true,
+      selected: isSelected,
+      onTap: onTap,
+      child: GestureDetector(
+        key: const Key('custom_board_image_gesture'),
+        excludeFromSemantics: true,
+        onTap: onTap,
+        child: Stack(
+          children: <Widget>[
+            // Background container displaying either an image or a placeholder color
+            Container(
+              key: const Key('custom_board_image_container'),
+              decoration: BoxDecoration(
+                color: customImagePath == null
+                    ? Colors
+                          .grey // Displays grey if no custom image is selected
+                    : null,
+                image: customImagePath != null
+                    ? DecorationImage(
+                        image: FileImage(File(customImagePath!)),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              // Shows an add icon when no custom image is selected
+              child: customImagePath == null
+                  ? const Center(
+                      child: Icon(
+                        Icons.add,
+                        size: 32,
+                        color: Colors.white,
+                        key: Key('custom_board_image_add_icon'),
+                      ),
                     )
                   : null,
-              borderRadius: BorderRadius.circular(8),
             ),
-            // Shows an add icon when no custom image is selected
-            child: customImagePath == null
-                ? const Center(
-                    child: Icon(
-                      Icons.add,
-                      size: 32,
-                      color: Colors.white,
-                      key: Key('custom_board_image_add_icon'),
-                    ),
-                  )
-                : null,
-          ),
-          // Shows an edit icon if a custom image is selected
-          if (customImagePath != null)
-            Center(
-              child: IconButton(
-                key: const Key('custom_board_image_edit_button'),
-                icon: const Icon(Icons.edit, color: Colors.white, size: 32),
-                onPressed: onPickImage,
-                tooltip: S.of(context).chooseYourPicture,
+            // Shows an edit icon if a custom image is selected
+            if (customImagePath != null)
+              Center(
+                child: IconButton(
+                  key: const Key('custom_board_image_edit_button'),
+                  icon: const Icon(Icons.edit, color: Colors.white, size: 32),
+                  onPressed: onPickImage,
+                  tooltip: S.of(context).chooseYourPicture,
+                ),
+              ),
+            // Displays a checkmark icon in the top-right corner if selected
+            Positioned(
+              key: const Key('custom_board_image_check_positioned'),
+              right: 8,
+              top: 8,
+              child: Icon(
+                isSelected ? Icons.check_circle : Icons.check_circle_outline,
+                color: Colors.white,
+                key: const Key('custom_board_image_check_icon'),
               ),
             ),
-          // Displays a checkmark icon in the top-right corner if selected
-          Positioned(
-            key: const Key('custom_board_image_check_positioned'),
-            right: 8,
-            top: 8,
-            child: Icon(
-              isSelected ? Icons.check_circle : Icons.check_circle_outline,
-              color: Colors.white,
-              key: const Key('custom_board_image_check_icon'),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

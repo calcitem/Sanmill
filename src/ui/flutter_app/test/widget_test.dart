@@ -7,6 +7,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart'; // Import flutter services
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/app_shell/sanmill_app_shell.dart';
@@ -2425,6 +2426,67 @@ void main() {
         ),
       );
       expect(selectedSetTile.selected, isTrue);
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
+    'Board image options expose accessible names and selection',
+    (WidgetTester tester) async {
+      final SemanticsHandle semantics = tester.ensureSemantics();
+      final DisplaySettings previousDisplaySettings = DB().displaySettings;
+      addTearDown(() => DB().displaySettings = previousDisplaySettings);
+      DB().displaySettings = const DisplaySettings();
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: Locale('en'),
+          home: AppearanceSettingsPage(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final Finder boardImageTile = find.byKey(
+        const Key('display_settings_card_board_image_settings_list_tile'),
+      );
+      final Finder appearanceScrollable = find.descendant(
+        of: find.byKey(const Key('settings_list')),
+        matching: find.byType(Scrollable),
+      );
+      await tester.scrollUntilVisible(
+        boardImageTile,
+        320,
+        scrollable: appearanceScrollable,
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(boardImageTile);
+      await tester.pumpAndSettle();
+
+      final SemanticsData solidColor = tester
+          .getSemantics(find.bySemanticsLabel('Solid color'))
+          .getSemanticsData();
+      expect(solidColor.hasFlag(SemanticsFlag.isButton), isTrue);
+      expect(solidColor.hasFlag(SemanticsFlag.isSelected), isTrue);
+
+      final SemanticsData firstImage = tester
+          .getSemantics(find.bySemanticsLabel('Board image 1'))
+          .getSemanticsData();
+      expect(firstImage.hasFlag(SemanticsFlag.isButton), isTrue);
+      expect(firstImage.hasFlag(SemanticsFlag.isSelected), isFalse);
+
+      await tester.drag(
+        find.byKey(const Key('board_image_gridview')),
+        const Offset(0, -600),
+      );
+      await tester.pumpAndSettle();
+      final SemanticsData customImage = tester
+          .getSemantics(find.bySemanticsLabel('Custom board image'))
+          .getSemanticsData();
+      expect(customImage.hasFlag(SemanticsFlag.isButton), isTrue);
+      expect(customImage.hasFlag(SemanticsFlag.isSelected), isFalse);
+      semantics.dispose();
     },
     skip: nativeLibrarySkipReason() != null,
   );
