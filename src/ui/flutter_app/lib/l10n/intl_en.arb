@@ -2287,7 +2287,7 @@
     "@category": {
         "description": "Category"
     },
-    "clearFilter": "Clear Filter",
+    "clearFilter": "Clear filter",
     "@clearFilter": {
         "description": "Clear all filters"
     },
