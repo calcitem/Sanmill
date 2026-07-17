@@ -413,9 +413,9 @@
     "@backgroundMusicFile": {
         "description": "Background music file"
     },
-    "clearBackgroundMusic": "Clear background music",
+    "clearBackgroundMusic": "Remove background music file",
     "@clearBackgroundMusic": {
-        "description": "Clear background music"
+        "description": "Delete the imported background music file from app storage"
     },
     "musicFiles": "Music files",
     "@musicFiles": {

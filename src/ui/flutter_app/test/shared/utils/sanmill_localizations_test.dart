@@ -96,6 +96,12 @@ void main() {
     expect(english.openingRandomness_Detail, isNot(contains('bias')));
   });
 
+  test('describes removal of the imported background-music file', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.clearBackgroundMusic, 'Remove background music file');
+  });
+
   test('separates computer-play and generative AI terminology', () {
     final S english = lookupS(const Locale('en'));
     final S chinese = lookupS(const Locale('zh'));
