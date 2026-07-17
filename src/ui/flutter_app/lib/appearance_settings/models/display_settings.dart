@@ -88,6 +88,8 @@ class DisplaySettings {
     this.pieceWidth = 0.9,
     @Deprecated("Use [fontScale] instead.") this.fontSize = 16.0,
     this.fontScale = 1.0,
+    // Retained only to decode legacy stored preferences. It has no layout
+    // effect.
     this.boardTop = kToolbarHeight,
     this.animationDuration = 1.0,
     @Deprecated("Deprecated.") this.aiResponseDelayTime = 0.0,
@@ -179,6 +181,7 @@ class DisplaySettings {
   @HiveField(10, defaultValue: 16.0)
   final double fontSize;
 
+  /// Retained for decoding legacy preferences. It no longer affects layout.
   @HiveField(11, defaultValue: kToolbarHeight)
   final double boardTop;
 

@@ -7,12 +7,11 @@ part of 'game_page.dart';
 
 @visibleForTesting
 class GameHeader extends StatefulWidget implements PreferredSizeWidget {
-  GameHeader({super.key});
+  const GameHeader({super.key});
 
   @override
-  final Size preferredSize = Size.fromHeight(
-    kToolbarHeight + DB().displaySettings.boardTop + AppTheme.boardMargin,
-  );
+  Size get preferredSize =>
+      const Size.fromHeight(kToolbarHeight + AppTheme.boardMargin);
 
   @override
   State<GameHeader> createState() => _GameHeaderState();
@@ -86,7 +85,7 @@ class _GameHeaderState extends State<GameHeader> {
           key: const Key('game_header_center'),
           child: Padding(
             key: const Key('game_header_padding'),
-            padding: EdgeInsets.only(top: DB().displaySettings.boardTop),
+            padding: EdgeInsets.zero,
             child: Column(
               key: const Key('game_header_column'),
               children: <Widget>[

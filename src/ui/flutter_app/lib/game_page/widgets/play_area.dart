@@ -3841,13 +3841,8 @@ class PlayAreaState extends State<PlayArea> {
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           final Widget moveList = _buildMoveListForRegularGame(context);
-          final Widget topTable = GameHeader(
-            key: const Key('play_area_game_header'),
-          );
-          final double topPanelHeight =
-              kToolbarHeight +
-              DB().displaySettings.boardTop +
-              AppTheme.boardMargin;
+          const Widget topTable = GameHeader(key: Key('play_area_game_header'));
+          const double topPanelHeight = kToolbarHeight + AppTheme.boardMargin;
           final double moveListReserve = isPlayableGame
               ? _wrappedMoveListReservedHeightForRoute(context)
               : 0;
@@ -3917,9 +3912,9 @@ class PlayAreaState extends State<PlayArea> {
                 key: const Key('play_area_column'),
                 children: <Widget>[
                   moveList,
-                  Expanded(
+                  const Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      padding: EdgeInsets.symmetric(horizontal: 12),
                       child: Align(
                         alignment: Alignment.bottomCenter,
                         child: topTable,
@@ -4333,10 +4328,8 @@ class PlayAreaState extends State<PlayArea> {
                         ),
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          GameHeader(
-                            key: const Key(
-                              'play_area_regular_landscape_header',
-                            ),
+                          const GameHeader(
+                            key: Key('play_area_regular_landscape_header'),
                           ),
                           Expanded(
                             child: _InlineMoveList(

@@ -42,7 +42,6 @@ part 'package:sanmill/appearance_settings/widgets/sliders/board_boarder_line_wid
 part 'package:sanmill/appearance_settings/widgets/sliders/board_corner_radius_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/board_inner_ring_size_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/board_inner_line_width_slider.dart';
-part 'package:sanmill/appearance_settings/widgets/sliders/board_top_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/font_size_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/piece_width_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/point_width_slider.dart';
@@ -144,11 +143,6 @@ class AppearanceSettingsPage extends StatelessWidget {
   void setFontSize(BuildContext context) => showModalBottomSheet(
     context: context,
     builder: (_) => const _FontSizeSlider(),
-  );
-
-  void setBoardTop(BuildContext context) => showModalBottomSheet(
-    context: context,
-    builder: (_) => const _BoardTopSlider(),
   );
 
   void setAnimationDuration(BuildContext context) => showModalBottomSheet(
@@ -964,13 +958,6 @@ class AppearanceSettingsPage extends StatelessWidget {
               ),
               titleString: strings.pointWidth,
               onTap: () => setPointWidth(context),
-            ),
-            SettingsListTile(
-              key: const Key(
-                'display_settings_card_board_top_settings_list_tile',
-              ),
-              titleString: strings.boardTop,
-              onTap: () => setBoardTop(context),
             ),
           ],
         ),

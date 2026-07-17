@@ -11,6 +11,7 @@ import 'package:sanmill/game_page/widgets/game_page.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/generated/intl/l10n_en.dart';
 import 'package:sanmill/shared/database/database.dart';
+import 'package:sanmill/shared/themes/app_theme.dart';
 
 import '../helpers/locale_helper.dart';
 import '../helpers/mocks/mock_database.dart';
@@ -21,6 +22,20 @@ void main() {
   });
 
   group("GameHeader", () {
+    test('GameHeader ignores the legacy board-top preference', () {
+      final MockDB db = MockDB();
+      DB.instance = db;
+
+      db.displaySettings = const DisplaySettings(boardTop: 0);
+      final Size zeroSpacingSize = const GameHeader().preferredSize;
+
+      db.displaySettings = const DisplaySettings(boardTop: 288);
+      final Size legacySpacingSize = const GameHeader().preferredSize;
+
+      expect(legacySpacingSize, zeroSpacingSize);
+      expect(legacySpacingSize.height, kToolbarHeight + AppTheme.boardMargin);
+    });
+
     testWidgets("GameHeader updates tip", (WidgetTester tester) async {
       const String testString = "Test";
 
@@ -109,7 +124,7 @@ void main() {
       final GameController controller = GameController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
-      final Scaffold screen = Scaffold(appBar: GameHeader());
+      const Scaffold screen = Scaffold(appBar: GameHeader());
 
       await tester.pumpWidget(makeTestableWidget(screen));
 
@@ -117,20 +132,29 @@ void main() {
 
       expect(find.byType(HeaderIcons), findsOneWidget);
       expect(find.byKey(const Key("header_icon_row")), findsOneWidget);
+      expect(
+        tester
+            .widget<Padding>(find.byKey(const Key('game_header_padding')))
+            .padding,
+        EdgeInsets.zero,
+      );
     });
 
     testWidgets(
       "GameHeader clamps positional advantage divider on narrow width",
       (WidgetTester tester) async {
         final MockDB db = MockDB();
-        db.displaySettings = const DisplaySettings(boardTop: 0);
+        db.displaySettings = const DisplaySettings(
+          boardTop: 0,
+          isPositionalAdvantageIndicatorShown: true,
+        );
         DB.instance = db;
         final GameController controller = GameController();
         controller.gameInstance.gameMode = GameMode.humanVsHuman;
 
         await tester.pumpWidget(
           makeTestableWidget(
-            Center(
+            const Center(
               child: SizedBox(width: 156, height: 96, child: GameHeader()),
             ),
           ),

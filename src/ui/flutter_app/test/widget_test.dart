@@ -2291,6 +2291,12 @@ void main() {
     expect(pieceAnimationTile, findsOneWidget);
     expect(boardImageTile, findsOneWidget);
     expect(
+      find.byKey(
+        const Key('display_settings_card_board_top_settings_list_tile'),
+      ),
+      findsNothing,
+    );
+    expect(
       tester.getTopLeft(pieceSetTile).dy,
       greaterThan(tester.getTopLeft(boardThemeTile).dy),
     );
