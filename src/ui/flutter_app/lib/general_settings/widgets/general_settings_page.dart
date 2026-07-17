@@ -910,7 +910,9 @@ class GeneralSettingsPage extends StatelessWidget {
                 'general_settings_page_settings_card_difficulty_skill_level',
               ),
               titleString: S.of(context).skillLevel,
-              trailingString: DB().generalSettings.skillLevel.toString(),
+              trailingString:
+                  '${DB().generalSettings.skillLevel}/'
+                  '${Constants.highestSkillLevel}',
               onTap: () {
                 if (EnvironmentConfig.test == false) {
                   _setSkillLevel(context);
