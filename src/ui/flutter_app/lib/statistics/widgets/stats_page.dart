@@ -292,13 +292,6 @@ class _RatingSummary extends StatelessWidget {
               fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
             ),
           ),
-          const SizedBox(height: 2),
-          Text(
-            S.of(context).myRating,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
         ],
       ),
     );

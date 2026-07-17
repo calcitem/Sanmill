@@ -1036,6 +1036,7 @@ void main() {
         find.byKey(const Key('statistics_page_human_rating_card')),
         findsOneWidget,
       );
+      expect(find.text('My rating'), findsOneWidget);
       expect(
         find.byKey(const Key('statistics_page_games_played_row')),
         findsOneWidget,
