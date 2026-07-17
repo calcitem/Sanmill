@@ -2114,6 +2114,49 @@ void main() {
     expect(find.byKey(const Key('mill_variants_page_list')), findsOneWidget);
   });
 
+  testWidgets('Variants page treats every manual rule change as custom', (
+    WidgetTester tester,
+  ) async {
+    final RuleSettings previousRuleSettings = DB().ruleSettings;
+    addTearDown(() {
+      DB().ruleSettings = previousRuleSettings;
+    });
+    DB().ruleSettings = const RuleSettings(nMoveRule: 99);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightThemeData,
+        localizationsDelegates: sanmillLocalizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        locale: const Locale('en'),
+        home: const MillVariantsPage(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final ListTile standardVariantTile = tester.widget<ListTile>(
+      find.descendant(
+        of: find.byKey(const Key('mill_variant_standard_9mm')),
+        matching: find.byType(ListTile),
+      ),
+    );
+    expect(standardVariantTile.selected, isFalse);
+
+    await tester.tap(find.byKey(const Key('mill_variant_standard_9mm')));
+    await tester.pumpAndSettle();
+
+    final FilledButton applyButton = tester.widget<FilledButton>(
+      find.byKey(const Key('mill_variant_detail_apply_button')),
+    );
+    expect(applyButton.onPressed, isNotNull);
+
+    await tester.tap(find.byKey(const Key('mill_variant_detail_apply_button')));
+    await tester.pumpAndSettle();
+
+    expect(RuleVariant.exactCanonicalIdFor(DB().ruleSettings), 'standard_9mm');
+    expect(DB().ruleSettings.nMoveRule, 100);
+  });
+
   testWidgets('Appearance board settings follow Lichess primary order', (
     WidgetTester tester,
   ) async {

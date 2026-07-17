@@ -28,7 +28,7 @@ class MillVariantsPage extends StatelessWidget {
         valueListenable: DB().listenRuleSettings,
         builder: (BuildContext context, Box<RuleSettings> box, Widget? child) {
           final RuleSettings currentSettings = DB().ruleSettings;
-          final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
+          final String? currentVariantId = RuleVariant.exactCanonicalIdFor(
             currentSettings,
           );
           final List<_VariantEntry> entries = _variantEntries(context);
@@ -44,7 +44,7 @@ class MillVariantsPage extends StatelessWidget {
                     _VariantTile(
                       key: Key('mill_variant_${entry.id}'),
                       entry: entry,
-                      selected: entry.id == currentVariant.id,
+                      selected: entry.id == currentVariantId,
                       onTap: () => _openVariantDetails(context, entry),
                     ),
                 ],
@@ -76,16 +76,11 @@ class MillVariantsPage extends StatelessWidget {
 
     return variantIds
         .map((String variantId) {
-          final RuleSettings? settings =
-              RuleVariant.canonicalSettings[variantId];
+          final RuleSettings settings =
+              RuleVariant.canonicalSettings[variantId]!;
           assert(
-            settings != null,
-            'Missing canonical settings for $variantId.',
-          );
-          final RuleVariant variant = RuleVariant.fromRuleSettings(settings!);
-          assert(
-            variant.id == variantId,
-            'Variant id mismatch: expected $variantId, got ${variant.id}.',
+            RuleVariant.exactCanonicalIdFor(settings) == variantId,
+            'Canonical settings do not match $variantId.',
           );
           return _VariantEntry(
             id: variantId,
@@ -140,10 +135,7 @@ class MillVariantsPage extends StatelessWidget {
     _VariantEntry entry, {
     bool closeRoute = false,
   }) {
-    final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
-      DB().ruleSettings,
-    );
-    if (currentVariant.id == entry.id) {
+    if (RuleVariant.exactCanonicalIdFor(DB().ruleSettings) == entry.id) {
       return;
     }
 
@@ -173,10 +165,8 @@ class _MillVariantDetailsPage extends StatelessWidget {
       body: ValueListenableBuilder<Box<RuleSettings>>(
         valueListenable: DB().listenRuleSettings,
         builder: (BuildContext context, Box<RuleSettings> box, Widget? child) {
-          final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
-            DB().ruleSettings,
-          );
-          final bool selected = currentVariant.id == entry.id;
+          final bool selected =
+              RuleVariant.exactCanonicalIdFor(DB().ruleSettings) == entry.id;
 
           return ListView(
             padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
