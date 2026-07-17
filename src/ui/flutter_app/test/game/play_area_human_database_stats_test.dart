@@ -291,6 +291,68 @@ void main() {
     expect(_boardSquareSemanticsFinder(), findsNWidgets(49));
   });
 
+  testWidgets('piece animation leaves the static board layer unchanged', (
+    WidgetTester tester,
+  ) async {
+    db = _GamePageDb(
+      generalSettings: const GeneralSettings(),
+      displaySettings: const DisplaySettings(
+        isUnplacedAndRemovedPiecesShown: false,
+        isHistoryNavigationToolbarShown: false,
+      ),
+    );
+    DB.instance = db;
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.humanVsHuman,
+    );
+
+    await tester.pumpWidget(
+      _localizedApp(
+        GameSessionScope(
+          session: session,
+          child: const Scaffold(
+            body: SizedBox.square(
+              dimension: 390,
+              child: GameBoard(boardImage: null),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.runAsync(() async {
+      await Future<void>.delayed(const Duration(milliseconds: 300));
+    });
+    await tester.pump();
+
+    final Finder boardFinder = find.byKey(
+      const Key('custom_paint_board_painter'),
+    );
+    final Finder pieceFinder = find.byKey(
+      const Key('custom_paint_piece_painter'),
+    );
+    final CustomPaint boardBefore = tester.widget<CustomPaint>(boardFinder);
+    final CustomPaint piecesBefore = tester.widget<CustomPaint>(pieceFinder);
+
+    expect(boardBefore.painter, isA<BoardPainter>());
+    expect(piecesBefore.painter, isA<PiecePainter>());
+    expect(
+      find.byKey(const Key('repaint_boundary_board_painter')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('repaint_boundary_piece_painter')),
+      findsOneWidget,
+    );
+
+    GameController().animationManager.moveAnimationController.value = 0.5;
+    await tester.pump();
+
+    expect(tester.widget<CustomPaint>(boardFinder), same(boardBefore));
+    expect(tester.widget<CustomPaint>(pieceFinder), isNot(same(piecesBefore)));
+  });
+
   testWidgets('regular game uses a Lichess-style inline move list', (
     WidgetTester tester,
   ) async {

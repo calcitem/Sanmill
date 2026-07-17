@@ -428,51 +428,63 @@ class _GameBoardState extends State<GameBoard>
             animationMap[removeEffectName]?.call() ??
             ExplodePieceEffectAnimation();
 
-        final AnimatedBuilder customPaint = AnimatedBuilder(
-          key: const Key('animated_builder_custom_paint'),
-          animation: Listenable.merge(<Listenable>[
-            animationManager.placeAnimationController,
-            animationManager.moveAnimationController,
-            animationManager.removeAnimationController,
-            animationManager.pickUpAnimationController,
-            animationManager.putDownAnimationController,
-            if (scopedSession != null) scopedSession.state,
-          ]),
-          builder: (_, Widget? child) {
-            final NativeMillSnapshotBoardView? nativeBoardView =
-                scopedSession == null
-                ? null
-                : NativeMillSnapshotBoardView.fromSnapshot(
-                    scopedSession.state.value,
-                  );
-            return FutureBuilder<GameImages>(
-              key: const Key('future_builder_game_images'),
-              future: gameImagesFuture,
-              builder:
-                  (BuildContext context, AsyncSnapshot<GameImages> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        key: Key('center_loading'),
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (snapshot.hasError) {
-                      // Handle errors appropriately
-                      return Center(
-                        key: const Key('center_error'),
-                        child: Text(S.of(context).errorLoadingImages),
-                      );
-                    } else {
-                      final GameImages? gameImages = snapshot.data;
-                      return SizedBox.expand(
-                        key: const Key('sized_box_expand_custom_paint'),
-                        child: CustomPaint(
-                          key: const Key('custom_paint_board_painter'),
-                          // Pass the resolved ui.Image? to BoardPainter
-                          painter: BoardPainter(
-                            context,
-                            gameImages?.boardImage,
-                          ),
-                          foregroundPainter: PiecePainter(
+        final FutureBuilder<GameImages> customPaint = FutureBuilder<GameImages>(
+          key: const Key('future_builder_game_images'),
+          future: gameImagesFuture,
+          builder: (BuildContext context, AsyncSnapshot<GameImages> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                key: Key('center_loading'),
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              // Handle errors appropriately
+              return Center(
+                key: const Key('center_error'),
+                child: Text(S.of(context).errorLoadingImages),
+              );
+            }
+
+            final GameImages? gameImages = snapshot.data;
+            return SizedBox.expand(
+              key: const Key('sized_box_expand_custom_paint'),
+              child: Stack(
+                fit: StackFit.expand,
+                children: <Widget>[
+                  RepaintBoundary(
+                    key: const Key('repaint_boundary_board_painter'),
+                    child: AnimatedBuilder(
+                      animation: Listenable.merge(<Listenable>[
+                        if (scopedSession != null) scopedSession.state,
+                      ]),
+                      builder: (_, Widget? child) => CustomPaint(
+                        key: const Key('custom_paint_board_painter'),
+                        painter: BoardPainter(context, gameImages?.boardImage),
+                      ),
+                    ),
+                  ),
+                  RepaintBoundary(
+                    key: const Key('repaint_boundary_piece_painter'),
+                    child: AnimatedBuilder(
+                      key: const Key('animated_builder_custom_paint'),
+                      animation: Listenable.merge(<Listenable>[
+                        animationManager.placeAnimationController,
+                        animationManager.moveAnimationController,
+                        animationManager.removeAnimationController,
+                        animationManager.pickUpAnimationController,
+                        animationManager.putDownAnimationController,
+                        if (scopedSession != null) scopedSession.state,
+                      ]),
+                      builder: (_, Widget? child) {
+                        final NativeMillSnapshotBoardView? nativeBoardView =
+                            scopedSession == null
+                            ? null
+                            : NativeMillSnapshotBoardView.fromSnapshot(
+                                scopedSession.state.value,
+                              );
+                        return CustomPaint(
+                          key: const Key('custom_paint_piece_painter'),
+                          painter: PiecePainter(
                             placeAnimationValue:
                                 animationManager.placeAnimation.value,
                             moveAnimationValue:
@@ -504,10 +516,12 @@ class _GameBoardState extends State<GameBoard>
                                       .youCanEnableScreenReaderSupport,
                                   container: true,
                                 ),
-                        ),
-                      );
-                    }
-                  },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             );
           },
         );
