@@ -70,6 +70,47 @@ void main() {
     );
 
     test(
+      'capture transition keeps the opponent moving when a move remains',
+      () async {
+        final NativeMillGameSession session = NativeMillGameSession();
+        addTearDown(session.dispose);
+
+        await replayMoves(session, const <String>[
+          'a7',
+          'd2',
+          'd7',
+          'b4',
+          'a4',
+          'f4',
+          'g4',
+          'd6',
+          'c5',
+          'g7',
+          'e3',
+          'a1',
+          'b6',
+          'e5',
+          'f6',
+          'c3',
+          'g1',
+          'd1',
+          'c5-d5',
+          'c3-d3',
+          'xd5',
+        ]);
+
+        expect(session.state.value.phase, 'moving');
+        expect(session.state.value.activeSeat, PlayerSeat.first);
+        expect(session.outcome.isTerminal, isFalse);
+        expect(
+          session.legalActions.map(MillActionCodec.moveStringFrom),
+          <String>['e3-e4'],
+        );
+      },
+      skip: _nativeLibrarySkipReason,
+    );
+
+    test(
       'resetGame rebuilds the native kernel with current rule settings',
       () async {
         final NativeMillGameSession session = NativeMillGameSession();
