@@ -5680,5 +5680,9 @@
     "allowFlying": "Allow flying",
     "@allowFlying": {
         "description": "Switch allowing low-piece-count players to move to any empty point"
+    },
+    "boardTheme": "Board theme",
+    "@boardTheme": {
+        "description": "Setting that opens the board color theme selector"
     }
 }

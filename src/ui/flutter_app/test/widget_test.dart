@@ -2154,6 +2154,10 @@ void main() {
         find.descendant(of: boardThemeTile, matching: find.byType(ListTile)),
       );
       expect(
+        find.descendant(of: boardThemeTile, matching: find.text('Board theme')),
+        findsOneWidget,
+      );
+      expect(
         (boardThemeListTile.leading! as Icon).icon,
         Icons.dashboard_outlined,
       );

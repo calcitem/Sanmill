@@ -471,7 +471,7 @@ class AppearanceSettingsPage extends StatelessWidget {
             SettingsListTile(
               key: const Key('color_settings_card_theme_settings_list_tile'),
               leading: const Icon(Icons.dashboard_outlined),
-              titleString: S.of(context).board,
+              titleString: S.of(context).boardTheme,
               trailingString: _activeBoardThemeLabel(context, colorSettings),
               onTap: () => _setTheme(context, colorSettings),
             ),
