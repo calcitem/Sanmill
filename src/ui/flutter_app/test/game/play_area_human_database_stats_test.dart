@@ -163,7 +163,7 @@ void main() {
     );
     final BoxDecoration statsDecoration = statsBox.decoration as BoxDecoration;
     expect(statsDecoration.color, Colors.transparent);
-    expect(find.text('No database move to show yet'), findsOneWidget);
+    expect(find.text('No human database move played yet'), findsOneWidget);
     expect(find.text('Human game database'), findsNothing);
     expect(
       find.byKey(const Key('play_area_human_database_stats_empty')),
@@ -5690,6 +5690,10 @@ void main() {
         findsOneWidget,
       );
       expect(
+        find.text('Not enough recorded human games for this position'),
+        findsOneWidget,
+      );
+      expect(
         find.byKey(const Key('opening_explorer_human_database_unavailable')),
         findsNothing,
       );
@@ -5846,7 +5850,7 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.text('Human game database does not support these rules'),
+      find.text('Human game database is unavailable for the current rules'),
       findsOneWidget,
     );
     expect(
@@ -5917,7 +5921,7 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.text('Human move statistics are unavailable during capture'),
+      find.text('Human move statistics are unavailable while removing a piece'),
       findsOneWidget,
     );
     expect(
@@ -6030,7 +6034,7 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.text('Select Manage to check the database file.'),
+      find.text('Select Manage to review or replace the database file.'),
       findsOneWidget,
     );
     expect(

@@ -4492,9 +4492,9 @@
     "@humanGameDatabaseFile": {},
     "humanGameDatabaseFile_Detail": "Choose a compatible SQLite database. Sanmill copies it to the app's private storage.",
     "@humanGameDatabaseFile_Detail": {},
-    "showHumanGameDatabaseStats": "Show human move statistics during games",
+    "showHumanGameDatabaseStats": "Show human database move statistics during games",
     "@showHumanGameDatabaseStats": {},
-    "showHumanGameDatabaseStats_Detail": "After a database move, show its win, draw, and loss rates from the moving player's perspective, plus the number of games.",
+    "showHumanGameDatabaseStats_Detail": "After the computer plays a human database move, show its win, draw, and loss rates from that side's perspective, plus the number of recorded games.",
     "@showHumanGameDatabaseStats_Detail": {},
     "humanGameDatabaseLoaded": "Human game database loaded: {positionCount} positions and {moveCount} moves.",
     "@humanGameDatabaseLoaded": {
@@ -4535,7 +4535,7 @@
             }
         }
     },
-    "humanGameDatabaseStatsUnavailable": "No database move to show yet",
+    "humanGameDatabaseStatsUnavailable": "No human database move played yet",
     "@humanGameDatabaseStatsUnavailable": {},
     "ticTacToeSample": "Tic-Tac-Toe (sample)",
     "@ticTacToeSample": {
@@ -5173,15 +5173,15 @@
     "@showAllBoardResultsDescription": {"description": "Description of the all-candidates analysis setting."},
     "humanDatabaseUnavailable": "Human game database unavailable",
     "@humanDatabaseUnavailable": {"description": "Opening explorer state when the human database cannot be used."},
-    "humanDatabaseUnavailableHint": "Select Manage to check the database file.",
+    "humanDatabaseUnavailableHint": "Select Manage to review or replace the database file.",
     "@humanDatabaseUnavailableHint": {"description": "Hint for configuring the human game database."},
-    "humanDatabaseNoPositionRecords": "Not enough recorded games for this position",
+    "humanDatabaseNoPositionRecords": "Not enough recorded human games for this position",
     "@humanDatabaseNoPositionRecords": {"description": "Opening explorer state when a loaded human database has no current-position records."},
     "manageKnowledgeSources": "Manage",
     "@manageKnowledgeSources": {"description": "Button opening computer move source management."},
     "localOpeningKnowledge": "Local opening knowledge",
     "@localOpeningKnowledge": {"description": "Header for bundled opening book candidates."},
-    "perfectDatabaseSuggestion": "Recommended move (no usable human-game data)",
+    "perfectDatabaseSuggestion": "Recommended move (no human game data)",
     "@perfectDatabaseSuggestion": {"description": "Callout for a perfect move that has no human database samples."},
     "boardTransformIdentity": "Original orientation",
     "@boardTransformIdentity": {"description": "Identity option in the Mill board transform picker."},
@@ -5923,11 +5923,11 @@
     "@humanDatabaseNotSelectedHint": {
         "description": "Opening explorer action hint when no human game database file is selected"
     },
-    "humanDatabaseRulesUnsupported": "Human game database does not support these rules",
+    "humanDatabaseRulesUnsupported": "Human game database is unavailable for the current rules",
     "@humanDatabaseRulesUnsupported": {
         "description": "Opening explorer state when the current rules are incompatible with the human game database"
     },
-    "humanDatabaseRulesUnsupportedHint": "Use a supported rule set to see human move statistics.",
+    "humanDatabaseRulesUnsupportedHint": "Use rules compatible with Nine Men's Morris to see human move statistics.",
     "@humanDatabaseRulesUnsupportedHint": {
         "description": "Opening explorer hint when the current rules are incompatible with the human game database"
     },

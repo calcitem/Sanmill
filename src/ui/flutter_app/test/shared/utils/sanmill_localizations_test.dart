@@ -253,6 +253,41 @@ void main() {
     final S english = lookupS(const Locale('en'));
 
     expect(
+      english.showHumanGameDatabaseStats,
+      'Show human database move statistics during games',
+    );
+    expect(
+      english.showHumanGameDatabaseStats_Detail,
+      "After the computer plays a human database move, show its win, draw, "
+      "and loss rates from that side's perspective, plus the number of "
+      'recorded games.',
+    );
+    expect(
+      english.humanDatabaseRulesUnsupported,
+      'Human game database is unavailable for the current rules',
+    );
+    expect(
+      english.humanDatabaseRulesUnsupportedHint,
+      "Use rules compatible with Nine Men's Morris to see human move "
+      'statistics.',
+    );
+    expect(
+      english.humanGameDatabaseStatsUnavailable,
+      'No human database move played yet',
+    );
+    expect(
+      english.humanDatabaseNoPositionRecords,
+      'Not enough recorded human games for this position',
+    );
+    expect(
+      english.humanDatabaseUnavailableHint,
+      'Select Manage to review or replace the database file.',
+    );
+    expect(
+      english.perfectDatabaseSuggestion,
+      'Recommended move (no human game data)',
+    );
+    expect(
       english.humanGameDatabaseStatsLine('d6', '50', '30', '20', 100),
       'd6  W 50%  D 30%  L 20%  Games 100',
     );
