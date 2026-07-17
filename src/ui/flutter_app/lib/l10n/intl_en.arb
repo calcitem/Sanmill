@@ -421,7 +421,7 @@
     "@musicFiles": {
         "description": "Root label for music file picker"
     },
-    "keepMuteWhenTakingBack": "Mute sounds during takebacks",
+    "keepMuteWhenTakingBack": "Mute sounds while taking back moves",
     "@keepMuteWhenTakingBack": {
         "description": "Keep mute when taking back"
     },
@@ -1747,7 +1747,7 @@
     "@llmPrompt": {},
     "gameRestarted": "Game restarted.",
     "@gameRestarted": {},
-    "takeBackRejected": "Take back rejected.",
+    "takeBackRejected": "Take-back request declined.",
     "@takeBackRejected": {},
     "areYouSureYouWantToResignThisGame": "Are you sure you want to resign this game?",
     "@areYouSureYouWantToResignThisGame": {},
@@ -1759,7 +1759,7 @@
     "@connectedWaitingForOpponentSMove": {},
     "networkStatusDisconnected": "Network status: disconnected",
     "@networkStatusDisconnected": {},
-    "takeBackRequestSentToTheOpponent": "Take back request sent to the opponent.",
+    "takeBackRequestSentToTheOpponent": "Take-back request sent.",
     "@takeBackRequestSentToTheOpponent": {},
     "theOpponentMayHaveLeftTheGame": "The opponent may have left the game.",
     "@theOpponentMayHaveLeftTheGame": {},
@@ -1787,7 +1787,7 @@
     "@opponentSTurn": {},
     "waitingAClientConnection": "Waiting for a player to connect…",
     "@waitingAClientConnection": {},
-    "takeBackRequestWasRejectedOrFailed": "Take back request was rejected or failed.",
+    "takeBackRequestWasRejectedOrFailed": "The take-back request was declined or could not be completed.",
     "@takeBackRequestWasRejectedOrFailed": {},
     "addText": "Add text",
     "@addText": {},
@@ -1803,9 +1803,9 @@
     "@serverIsStopped": {},
     "restartRequest": "Restart request",
     "@restartRequest": {},
-    "cannotRequestATakeBackWhenItSNotYourTurn": "Cannot request a take back when it's not your turn.",
+    "cannotRequestATakeBackWhenItSNotYourTurn": "You can request a take back only on your turn.",
     "@cannotRequestATakeBackWhenItSNotYourTurn": {},
-    "takeBackAccepted": "Take back accepted.",
+    "takeBackAccepted": "Take-back request accepted.",
     "@takeBackAccepted": {},
     "localNetworkSettings": "Local network settings",
     "@localNetworkSettings": {},
@@ -2127,7 +2127,7 @@
     "@aiStatistics": {},
     "enableStatistics": "Enable statistics",
     "@enableStatistics": {},
-    "enableStatistics_Detail": "When enabled, game results will be recorded in statistics. However, games involving take-backs will not be recorded. When disabled, statistics collection is paused.",
+    "enableStatistics_Detail": "Record completed games in statistics. Games with taken-back moves are excluded. Turn this off to pause recording.",
     "@enableStatistics_Detail": {},
     "thisWillResetAllGameStatistics": "This will reset all game statistics. This action cannot be undone.",
     "@thisWillResetAllGameStatistics": {},
@@ -4138,7 +4138,7 @@
     "@resign": {},
     "failedToSendResignation": "Failed to send resignation",
     "@failedToSendResignation": {},
-    "opponentRequestsTakeBackAccept": "{steps, select, 1{Opponent requests to take back 1 move. Accept?} other{Opponent requests to take back {steps} moves. Accept?}}",
+    "opponentRequestsTakeBackAccept": "{steps, select, 1{Your opponent wants to take back 1 move. Accept?} other{Your opponent wants to take back {steps} moves. Accept?}}",
     "@opponentRequestsTakeBackAccept": {
         "placeholders": {
             "steps": {
@@ -6001,5 +6001,9 @@
                 "type": "String"
             }
         }
+    },
+    "remoteHistoryNavigationUnavailable": "Remote games support only a take-back request for your latest move.",
+    "@remoteHistoryNavigationUnavailable": {
+        "description": "Message shown when a remote player selects unsupported history navigation"
     }
 }

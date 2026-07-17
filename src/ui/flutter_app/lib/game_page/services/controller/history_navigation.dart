@@ -74,10 +74,12 @@ class HistoryNavigator {
       } else {
         // For takeBackAll, stepForward, stepForwardAll => disallow
         if (context.mounted) {
-          final String takeBackRejected = S.of(context).takeBackRejected;
+          final String unavailable = S
+              .of(context)
+              .remoteHistoryNavigationUnavailable;
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text(takeBackRejected)));
+          ).showSnackBar(SnackBar(content: Text(unavailable)));
         }
         if (pop && context.mounted) {
           Navigator.pop(context);

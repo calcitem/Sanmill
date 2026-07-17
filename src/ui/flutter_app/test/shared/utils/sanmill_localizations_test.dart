@@ -57,6 +57,27 @@ void main() {
     );
   });
 
+  test('uses clear English take-back terminology', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.takeBack, 'Take back');
+    expect(english.takeBackRejected, 'Take-back request declined.');
+    expect(english.takeBackAccepted, 'Take-back request accepted.');
+    expect(english.takeBackRequestSentToTheOpponent, 'Take-back request sent.');
+    expect(
+      english.cannotRequestATakeBackWhenItSNotYourTurn,
+      'You can request a take back only on your turn.',
+    );
+    expect(
+      english.opponentRequestsTakeBackAccept('1'),
+      'Your opponent wants to take back 1 move. Accept?',
+    );
+    expect(
+      english.remoteHistoryNavigationUnavailable,
+      'Remote games support only a take-back request for your latest move.',
+    );
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =
