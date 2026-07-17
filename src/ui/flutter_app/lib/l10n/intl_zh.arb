@@ -5163,5 +5163,29 @@
     "humanDatabaseGameOverUnavailable": "对局结束后没有可显示的人类实战统计",
     "@humanDatabaseGameOverUnavailable": {
         "description": "Opening explorer state for a finished game with no next move to query"
+    },
+    "recordingStoppedAtEventLimit": "录制已停止：达到事件数量上限",
+    "@recordingStoppedAtEventLimit": {
+        "description": "System note shown when an experience recording reaches its event limit"
+    },
+    "recordingStoppedAtDetailedEventLimit": "录制已停止：达到详细事件数量上限",
+    "@recordingStoppedAtDetailedEventLimit": {
+        "description": "System note shown when an experience recording reaches its detailed-event limit"
+    },
+    "recordingStillInProgress": "录制未完成：仍在进行中",
+    "@recordingStillInProgress": {
+        "description": "System note on a safety snapshot saved while experience recording is still active"
+    },
+    "recordingStoppedForReplay": "开始回放时已停止录制",
+    "@recordingStoppedForReplay": {
+        "description": "System note explaining that experience recording stopped before replay"
+    },
+    "recordingStoppedForDiagnosticReplay": "开始诊断回放时已停止录制",
+    "@recordingStoppedForDiagnosticReplay": {
+        "description": "System note explaining that experience recording stopped before diagnostic replay"
+    },
+    "recordingDiagnosticReplayValidated": "诊断包 v1 回放已验证",
+    "@recordingDiagnosticReplayValidated": {
+        "description": "System note on a replay session created from a validated diagnostic bundle"
     }
 }

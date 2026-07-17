@@ -134,6 +134,23 @@ class RecordingEvent {
       'RecordingEvent(${type.name}, +${timestampMs}ms, page=$page, $data)';
 }
 
+/// Stable notes written by Sanmill itself.
+///
+/// Imported or user-provided notes are not included here and must remain
+/// untouched. The session list maps only these known values to localized UI
+/// text while preserving the readable English values in exported diagnostics.
+abstract final class RecordingSessionNotes {
+  static const String eventLimitReached = 'Auto-stopped: event limit reached';
+  static const String typedEventLimitReached =
+      'Auto-stopped: typed event limit reached';
+  static const String recordingInProgress = '(partial – recording in progress)';
+  static const String replayStarted = 'Auto-stopped: replay started';
+  static const String diagnosticReplayStarted =
+      'Auto-stopped: diagnostic replay started';
+  static const String diagnosticReplayValidated =
+      'Validated SanmillDiagnosticBundle v1 replay';
+}
+
 /// A complete recording session capturing an initial configuration snapshot
 /// and a chronological sequence of user / system events.
 ///

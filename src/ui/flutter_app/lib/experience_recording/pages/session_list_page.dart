@@ -21,6 +21,23 @@ import '../models/recording_models.dart';
 import '../services/recording_service.dart';
 import '../services/replay_service.dart';
 
+String recordingSessionNoteText(S strings, String notes) {
+  return switch (notes) {
+    RecordingSessionNotes.eventLimitReached =>
+      strings.recordingStoppedAtEventLimit,
+    RecordingSessionNotes.typedEventLimitReached =>
+      strings.recordingStoppedAtDetailedEventLimit,
+    RecordingSessionNotes.recordingInProgress =>
+      strings.recordingStillInProgress,
+    RecordingSessionNotes.replayStarted => strings.recordingStoppedForReplay,
+    RecordingSessionNotes.diagnosticReplayStarted =>
+      strings.recordingStoppedForDiagnosticReplay,
+    RecordingSessionNotes.diagnosticReplayValidated =>
+      strings.recordingDiagnosticReplayValidated,
+    _ => notes,
+  };
+}
+
 /// Page listing all saved recording sessions.
 ///
 /// Each session card shows its date, duration, event count, and game mode.
@@ -248,7 +265,7 @@ class _SessionListPageState extends State<SessionListPage> {
 
     // Stop any ongoing recording before navigating to the replay board.
     await RecordingService().stopRecording(
-      notes: 'Auto-stopped: replay started',
+      notes: RecordingSessionNotes.replayStarted,
     );
 
     // Prevent GamePage from auto-starting a new recording while we are
@@ -558,7 +575,7 @@ class _SessionListPageState extends State<SessionListPage> {
                 session.notes!.isNotEmpty) ...<Widget>[
               const SizedBox(height: 4),
               Text(
-                session.notes!,
+                recordingSessionNoteText(S.of(context), session.notes!),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: AppTheme.listTileSubtitleColor,
                 ),

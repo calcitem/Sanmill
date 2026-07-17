@@ -5946,5 +5946,29 @@
     "humanDatabaseGameOverUnavailable": "No human-game statistics after game over",
     "@humanDatabaseGameOverUnavailable": {
         "description": "Opening explorer state for a finished game with no next move to query"
+    },
+    "recordingStoppedAtEventLimit": "Recording stopped: event limit reached",
+    "@recordingStoppedAtEventLimit": {
+        "description": "System note shown when an experience recording reaches its event limit"
+    },
+    "recordingStoppedAtDetailedEventLimit": "Recording stopped: detailed-event limit reached",
+    "@recordingStoppedAtDetailedEventLimit": {
+        "description": "System note shown when an experience recording reaches its detailed-event limit"
+    },
+    "recordingStillInProgress": "Partial recording: recording still in progress",
+    "@recordingStillInProgress": {
+        "description": "System note on a safety snapshot saved while experience recording is still active"
+    },
+    "recordingStoppedForReplay": "Recording stopped when replay started",
+    "@recordingStoppedForReplay": {
+        "description": "System note explaining that experience recording stopped before replay"
+    },
+    "recordingStoppedForDiagnosticReplay": "Recording stopped when diagnostic replay started",
+    "@recordingStoppedForDiagnosticReplay": {
+        "description": "System note explaining that experience recording stopped before diagnostic replay"
+    },
+    "recordingDiagnosticReplayValidated": "Diagnostic bundle v1 replay validated",
+    "@recordingDiagnosticReplayValidated": {
+        "description": "System note on a replay session created from a validated diagnostic bundle"
     }
 }

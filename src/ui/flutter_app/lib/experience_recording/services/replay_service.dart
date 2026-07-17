@@ -130,7 +130,7 @@ class ReplayService {
 
     // Stop any ongoing recording to avoid confusing "REC" + replay UI overlap.
     await RecordingService().stopRecording(
-      notes: 'Auto-stopped: replay started',
+      notes: RecordingSessionNotes.replayStarted,
     );
 
     _session = session;

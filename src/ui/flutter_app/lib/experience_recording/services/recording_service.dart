@@ -216,7 +216,7 @@ class RecordingService {
     // Safety valve: stop recording if we hit the event limit.
     if (_events.length >= maxEventsPerSession) {
       logger.w('$_logTag Max events reached, auto-stopping recording.');
-      unawaited(stopRecording(notes: 'Auto-stopped: event limit reached'));
+      unawaited(stopRecording(notes: RecordingSessionNotes.eventLimitReached));
       return;
     }
 
@@ -239,7 +239,7 @@ class RecordingService {
       if (!_typedLimitStopRequested) {
         _typedLimitStopRequested = true;
         unawaited(
-          stopRecording(notes: 'Auto-stopped: typed event limit reached'),
+          stopRecording(notes: RecordingSessionNotes.typedEventLimitReached),
         );
       }
       return;
@@ -450,7 +450,7 @@ class RecordingService {
         actionCheckpoint: _actionCheckpoint,
         actionEvents: List<UserActionEventV1>.from(_actionEvents),
         gameMode: _gameMode,
-        notes: '(partial – recording in progress)',
+        notes: RecordingSessionNotes.recordingInProgress,
       );
       await _saveSession(partial);
     } catch (e) {

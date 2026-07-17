@@ -102,7 +102,7 @@ class _DiagnosticReproductionPageState
         .buildReplaySession(widget.result.bundle);
     ReplayService().stop(restartRecording: false);
     await RecordingService().stopRecording(
-      notes: 'Auto-stopped: diagnostic replay started',
+      notes: RecordingSessionNotes.diagnosticReplayStarted,
     );
     RecordingService().isSuppressed = true;
     final NavigatorState? navigator = currentNavigatorKey.currentState;

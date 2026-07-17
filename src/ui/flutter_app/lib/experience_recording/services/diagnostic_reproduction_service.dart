@@ -147,7 +147,7 @@ class DiagnosticReproductionService {
       },
       events: events,
       gameMode: checkpoint.game['mode'] as String?,
-      notes: 'Validated SanmillDiagnosticBundle v1 replay',
+      notes: RecordingSessionNotes.diagnosticReplayValidated,
     );
   }
 
