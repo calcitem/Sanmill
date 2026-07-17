@@ -61,13 +61,14 @@ class _ReplayBar extends StatelessWidget {
           const SizedBox(width: 8),
 
           // Play/Pause toggle.
-          _buildPlayPauseButton(service),
+          _buildPlayPauseButton(context, service),
           const SizedBox(width: 4),
 
           if (state == ReplayState.paused) ...<Widget>[
             _buildIconButton(
               icon: Icons.skip_next,
               color: Colors.white,
+              label: S.of(context).stepForward,
               onTap: service.step,
             ),
             const SizedBox(width: 4),
@@ -77,6 +78,7 @@ class _ReplayBar extends StatelessWidget {
           _buildIconButton(
             icon: Icons.stop,
             color: Colors.red,
+            label: S.of(context).stop,
             onTap: service.stop,
           ),
           const SizedBox(width: 8),
@@ -92,11 +94,12 @@ class _ReplayBar extends StatelessWidget {
     );
   }
 
-  Widget _buildPlayPauseButton(ReplayService service) {
+  Widget _buildPlayPauseButton(BuildContext context, ReplayService service) {
     if (state == ReplayState.finished) {
       return _buildIconButton(
         icon: Icons.check_circle_outline,
         color: Colors.green,
+        label: S.of(context).close,
         onTap: service.stop,
       );
     }
@@ -104,6 +107,7 @@ class _ReplayBar extends StatelessWidget {
     return _buildIconButton(
       icon: playing ? Icons.pause : Icons.play_arrow,
       color: Colors.white,
+      label: playing ? S.of(context).pause : S.of(context).resume,
       onTap: playing ? service.pause : service.resume,
     );
   }
@@ -111,14 +115,23 @@ class _ReplayBar extends StatelessWidget {
   Widget _buildIconButton({
     required IconData icon,
     required Color color,
+    required String label,
     required VoidCallback onTap,
   }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Padding(
-        padding: const EdgeInsets.all(4),
-        child: Icon(icon, color: color, size: 20),
+    return Tooltip(
+      message: label,
+      child: Semantics(
+        button: true,
+        label: label,
+        excludeSemantics: true,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(12),
+          child: Padding(
+            padding: const EdgeInsets.all(4),
+            child: Icon(icon, color: color, size: 20),
+          ),
+        ),
       ),
     );
   }
@@ -127,25 +140,34 @@ class _ReplayBar extends StatelessWidget {
     return ValueListenableBuilder<ReplaySpeed>(
       valueListenable: service.speedNotifier,
       builder: (BuildContext context, ReplaySpeed speed, Widget? _) {
-        return GestureDetector(
-          onTap: () {
-            // Cycle through speeds.
-            const List<ReplaySpeed> speeds = ReplaySpeed.values;
-            final int nextIdx = (speeds.indexOf(speed) + 1) % speeds.length;
-            service.speed = speeds[nextIdx];
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.white38),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Text(
-              speed.label,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
+        final String label = S.of(context).replaySpeedValue(speed.label);
+        return Tooltip(
+          message: label,
+          child: Semantics(
+            button: true,
+            label: label,
+            excludeSemantics: true,
+            child: GestureDetector(
+              onTap: () {
+                // Cycle through speeds.
+                const List<ReplaySpeed> speeds = ReplaySpeed.values;
+                final int nextIdx = (speeds.indexOf(speed) + 1) % speeds.length;
+                service.speed = speeds[nextIdx];
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white38),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  speed.label,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
             ),
           ),
@@ -166,17 +188,27 @@ class _ReplayBar extends StatelessWidget {
               valueListenable: service.divergenceNotifier,
               builder:
                   (BuildContext context, String? divergence, Widget? child) {
+                    final String progressLabel = S
+                        .of(context)
+                        .replayProgressValue(display, total);
+                    final String semanticsLabel = divergence == null
+                        ? progressLabel
+                        : '$progressLabel. $divergence';
                     return Tooltip(
-                      message: divergence ?? '',
-                      child: Text(
-                        divergence == null
-                            ? '$display/$total'
-                            : '⚠ $display/$total',
-                        style: TextStyle(
-                          color: divergence == null
-                              ? Colors.white70
-                              : Colors.redAccent,
-                          fontSize: 11,
+                      message: divergence ?? progressLabel,
+                      child: Semantics(
+                        label: semanticsLabel,
+                        excludeSemantics: true,
+                        child: Text(
+                          divergence == null
+                              ? '$display/$total'
+                              : '⚠ $display/$total',
+                          style: TextStyle(
+                            color: divergence == null
+                                ? Colors.white70
+                                : Colors.redAccent,
+                            fontSize: 11,
+                          ),
                         ),
                       ),
                     );

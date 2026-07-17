@@ -5106,5 +5106,26 @@
     "importingHumanGameDatabase": "正在导入人类对局数据库…",
     "@importingHumanGameDatabase": {
         "description": "Progress message shown while a selected human game database is copied into app storage"
+    },
+    "replaySpeedValue": "回放速度：{speed}",
+    "@replaySpeedValue": {
+        "description": "Accessible label for the current experience replay speed",
+        "placeholders": {
+            "speed": {
+                "example": "2×"
+            }
+        }
+    },
+    "replayProgressValue": "正在回放第 {current} 个操作，共 {total} 个",
+    "@replayProgressValue": {
+        "description": "Accessible progress label for an experience replay",
+        "placeholders": {
+            "current": {
+                "example": "2"
+            },
+            "total": {
+                "example": "10"
+            }
+        }
     }
 }

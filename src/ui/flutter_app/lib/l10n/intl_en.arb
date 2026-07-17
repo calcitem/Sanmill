@@ -5889,5 +5889,26 @@
     "importingHumanGameDatabase": "Importing human game database…",
     "@importingHumanGameDatabase": {
         "description": "Progress message shown while a selected human game database is copied into app storage"
+    },
+    "replaySpeedValue": "Replay speed: {speed}",
+    "@replaySpeedValue": {
+        "description": "Accessible label for the current experience replay speed",
+        "placeholders": {
+            "speed": {
+                "example": "2×"
+            }
+        }
+    },
+    "replayProgressValue": "Replay event {current} of {total}",
+    "@replayProgressValue": {
+        "description": "Accessible progress label for an experience replay",
+        "placeholders": {
+            "current": {
+                "example": "2"
+            },
+            "total": {
+                "example": "10"
+            }
+        }
     }
 }
