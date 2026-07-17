@@ -1231,9 +1231,9 @@
     "@pieceHighlightColor": {
         "description": "Piece highlight color"
     },
-    "capturablePieceHighlightColor": "Capturable piece highlight color",
+    "capturablePieceHighlightColor": "Removable piece highlight color",
     "@capturablePieceHighlightColor": {
-        "description": "Capturable piece highlight color"
+        "description": "Removable piece highlight color"
     },
     "algorithm": "Algorithm",
     "@algorithm": {
@@ -2217,9 +2217,9 @@
     "@switchToMctsSuggestion": {},
     "switchToMtdfSuggestion": "Congratulations on winning at MCTS Level 30! Would you like to switch to the MTD(f) algorithm for a greater challenge?",
     "@switchToMtdfSuggestion": {},
-    "highlightCapturablePieces": "Highlight capturable pieces",
+    "highlightCapturablePieces": "Highlight removable pieces",
     "@highlightCapturablePieces": {
-        "description": "Highlight capturable pieces"
+        "description": "Highlight removable pieces"
     },
     "undo": "Undo",
     "@undo": {
@@ -2345,9 +2345,9 @@
     "@puzzleCategoryFormMill": {
         "description": "Form a mill category"
     },
-    "puzzleCategoryCapturePieces": "Capture",
+    "puzzleCategoryCapturePieces": "Remove pieces",
     "@puzzleCategoryCapturePieces": {
-        "description": "Capture pieces category"
+        "description": "Piece-removal puzzle category"
     },
     "puzzleCategoryWinGame": "Win the game",
     "@puzzleCategoryWinGame": {
@@ -4789,7 +4789,7 @@
     "@variantOneTimeMillRule": {},
     "variantSpecialCapture": "special capture",
     "@variantSpecialCapture": {},
-    "variantDelayedCapture": "delayed capture",
+    "variantDelayedCapture": "delayed removal",
     "@variantDelayedCapture": {},
     "variantApplied": "{variant} selected",
     "@variantApplied": {
@@ -5942,13 +5942,13 @@
     "@humanDatabaseRulesUnsupportedHint": {
         "description": "Opening explorer hint when the current rules are incompatible with the human game database"
     },
-    "humanDatabaseCaptureStepUnavailable": "Human move statistics are unavailable during capture",
+    "humanDatabaseCaptureStepUnavailable": "Human move statistics are unavailable while removing a piece",
     "@humanDatabaseCaptureStepUnavailable": {
-        "description": "Opening explorer state during a separate Mill capture action"
+        "description": "Opening explorer state during a separate Mill removal action"
     },
-    "humanDatabaseCaptureStepUnavailableHint": "Each database record combines a move with its capture.",
+    "humanDatabaseCaptureStepUnavailableHint": "Each database record combines a move with any resulting removal.",
     "@humanDatabaseCaptureStepUnavailableHint": {
-        "description": "Explanation that human database records store a Mill move and capture together"
+        "description": "Explanation that human database records store a Mill move and any resulting removal together"
     },
     "humanDatabaseGameOverUnavailable": "Human move statistics are unavailable after the game ends",
     "@humanDatabaseGameOverUnavailable": {
