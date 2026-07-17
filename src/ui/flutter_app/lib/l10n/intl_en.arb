@@ -5179,7 +5179,7 @@
     "@reviewProgress": {"placeholders": {"current": {"type": "int"}, "total": {"type": "int"}}},
     "reviewUnsupportedPosition": "This position has {count} legal actions under the current rules, exceeding the supported search capacity of {capacity}.",
     "@reviewUnsupportedPosition": {"placeholders": {"count": {"type": "int"}, "capacity": {"type": "int"}}},
-    "reviewAnalysisFailed": "Local review could not analyze this game.",
+    "reviewAnalysisFailed": "Could not analyze this game locally.",
     "analysisCancelled": "Analysis cancelled",
     "qualityAnnotation": "Move quality annotation",
     "reviewBestLine": "Best line: {line}",
