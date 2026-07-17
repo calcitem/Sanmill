@@ -64,6 +64,82 @@ class LiveEvaluationState {
   final bool isRemovalPending;
 }
 
+/// Reduces progressive live evaluations into one graph point per complete
+/// Mill turn.
+///
+/// A place or move that forms a mill creates a provisional point while the
+/// removal is still owed. Further pending-removal positions replace that
+/// point, and the first completed position after removal finalizes it in
+/// place. Ordinary completed turns append one point.
+class LiveAdvantageHistory {
+  LiveAdvantageHistory(this.values);
+
+  final List<int> values;
+
+  bool _wasEnabled = false;
+  bool _waitingForInitialScore = false;
+  bool _hasProvisionalPoint = false;
+  String? _lastPositionKey;
+
+  bool update(LiveEvaluationState state, {required int fallbackScore}) {
+    bool changed = false;
+    if (!state.enabled) {
+      _wasEnabled = false;
+      _waitingForInitialScore = false;
+      _hasProvisionalPoint = false;
+      _lastPositionKey = null;
+      return false;
+    }
+
+    if (!_wasEnabled) {
+      _wasEnabled = true;
+      _waitingForInitialScore = true;
+      _hasProvisionalPoint = false;
+      _lastPositionKey = null;
+      values
+        ..clear()
+        ..add(fallbackScore.clamp(-100, 100));
+      changed = true;
+    }
+
+    final int? score = state.whiteScore;
+    final String? positionKey = state.positionKey;
+    if (score == null || positionKey == null) {
+      return changed;
+    }
+
+    if (_waitingForInitialScore) {
+      values[values.length - 1] = score;
+      _waitingForInitialScore = false;
+      _hasProvisionalPoint = state.isRemovalPending;
+      _lastPositionKey = positionKey;
+      return true;
+    }
+
+    if (_lastPositionKey == positionKey) {
+      values[values.length - 1] = score;
+      _hasProvisionalPoint = state.isRemovalPending;
+      return true;
+    }
+
+    if (state.isRemovalPending) {
+      if (_hasProvisionalPoint) {
+        values[values.length - 1] = score;
+      } else {
+        values.add(score);
+      }
+      _hasProvisionalPoint = true;
+    } else if (_hasProvisionalPoint) {
+      values[values.length - 1] = score;
+      _hasProvisionalPoint = false;
+    } else {
+      values.add(score);
+    }
+    _lastPositionKey = positionKey;
+    return true;
+  }
+}
+
 typedef LiveEvaluationSearchOverride =
     Future<List<NativeMillPrincipalVariation>> Function(
       LiveEvaluationPosition position,
@@ -232,7 +308,6 @@ class LiveEvaluationService {
     debugGameMode = null;
   }
 
-  @visibleForTesting
   static int whitePerspectiveScore(PlayerSeat activeSeat, int rootScore) {
     assert(
       activeSeat != PlayerSeat.none,

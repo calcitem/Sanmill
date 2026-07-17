@@ -148,6 +148,32 @@ void main() {
 
     expect(LiveEvaluationService.isRemovalPending(snapshot), isTrue);
   });
+
+  test('replaces pending-removal graph point when the turn completes', () {
+    final List<int> values = <int>[99];
+    final LiveAdvantageHistory history = LiveAdvantageHistory(values);
+
+    history.update(_liveState('start', 10), fallbackScore: 0);
+    expect(values, <int>[10]);
+
+    history.update(
+      _liveState('formed-mill', 20, isRemovalPending: true),
+      fallbackScore: 0,
+    );
+    expect(values, <int>[10, 20]);
+
+    history.update(
+      _liveState('second-pending-position', 25, isRemovalPending: true),
+      fallbackScore: 0,
+    );
+    expect(values, <int>[10, 25]);
+
+    history.update(_liveState('removal-complete', 30), fallbackScore: 0);
+    expect(values, <int>[10, 30]);
+
+    history.update(_liveState('next-turn', -8), fallbackScore: 0);
+    expect(values, <int>[10, 30, -8]);
+  });
 }
 
 LiveEvaluationPosition _position({
@@ -172,5 +198,19 @@ NativeMillPrincipalVariation _variation({int score = 0, int depth = 8}) {
     score: score,
     nodes: 100,
     depth: depth,
+  );
+}
+
+LiveEvaluationState _liveState(
+  String positionKey,
+  int whiteScore, {
+  bool isRemovalPending = false,
+}) {
+  return LiveEvaluationState(
+    enabled: true,
+    isSearching: false,
+    whiteScore: whiteScore,
+    positionKey: positionKey,
+    isRemovalPending: isRemovalPending,
   );
 }

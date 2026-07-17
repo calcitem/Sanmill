@@ -1697,7 +1697,7 @@
     "@useOpeningBook_Detail": {},
     "showAdvantageGraph": "Show advantage graph",
     "@showAdvantageGraph": {},
-    "advantageGraphHint": "The graph updates only after computer moves; human moves are not evaluated.",
+    "advantageGraphHint": "In local games, turn on Live evaluation from the game menu to update the gauge and graph after every action.",
     "@advantageGraphHint": {},
     "removalBasedOnMillCounts": "Remove pieces after placement based on mill counts",
     "@removalBasedOnMillCounts": {},
@@ -6359,5 +6359,9 @@
     "showGameTips_Detail": "Show turn guidance and opening information beside the player to move.",
     "@showGameTips_Detail": {
         "description": "Explanation of the game tips preference"
+    },
+    "liveEvaluation": "Live evaluation",
+    "@liveEvaluation": {
+        "description": "Session-only game-menu switch for continuously updating the evaluation gauge and graph"
     }
 }

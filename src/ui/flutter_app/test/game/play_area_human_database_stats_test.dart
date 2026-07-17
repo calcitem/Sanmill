@@ -359,6 +359,8 @@ void main() {
   testWidgets('regular game uses a Lichess-style inline move list', (
     WidgetTester tester,
   ) async {
+    await LiveEvaluationService.debugReset();
+    addTearDown(LiveEvaluationService.debugReset);
     db.colorSettings = const ColorSettings(
       darkBackgroundColor: Color(0xFF006400),
       messageColor: Color(0xFFA4A293),
@@ -535,6 +537,31 @@ void main() {
     await tester.tap(gameTipsAction);
     await tester.pumpAndSettle();
     expect(db.generalSettings.showGameTips, isTrue);
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_sheet')),
+      findsOneWidget,
+    );
+    final Finder liveEvaluationAction = find.byKey(
+      const Key('play_area_regular_game_menu_live_evaluation'),
+    );
+    expect(liveEvaluationAction, findsOneWidget);
+    expect(find.text('Live evaluation'), findsOneWidget);
+    expect(LiveEvaluationService.enabled, isFalse);
+    await tester.ensureVisible(liveEvaluationAction);
+    await tester.tap(liveEvaluationAction);
+    await tester.pumpAndSettle();
+    expect(LiveEvaluationService.enabled, isTrue);
+    expect(
+      tester
+          .widget<Switch>(
+            find.byKey(const Key('play_area_live_evaluation_switch')),
+          )
+          .value,
+      isTrue,
+    );
+    await tester.tap(liveEvaluationAction);
+    await tester.pumpAndSettle();
+    expect(LiveEvaluationService.enabled, isFalse);
     expect(
       find.byKey(const Key('play_area_regular_game_menu_sheet')),
       findsOneWidget,

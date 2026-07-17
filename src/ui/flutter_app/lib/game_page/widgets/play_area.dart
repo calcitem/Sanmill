@@ -647,6 +647,7 @@ class PlayArea extends StatefulWidget {
 class PlayAreaState extends State<PlayArea> {
   /// A list to store historical advantage values for the advantage chart.
   List<int> advantageData = <int>[];
+  late final LiveAdvantageHistory _liveAdvantageHistory;
 
   bool _isBoardFlipped = false;
   Timer? _analysisRefreshDebounceTimer;
@@ -678,10 +679,21 @@ class PlayAreaState extends State<PlayArea> {
     super.initState();
     // Listen to changes in header icons (usually triggered after a move).
     GameController().headerIconsNotifier.addListener(_updateUI);
+    _liveAdvantageHistory = LiveAdvantageHistory(advantageData);
+    LiveEvaluationService.stateNotifier.addListener(
+      _handleLiveEvaluationChanged,
+    );
     _syncAnalysisMoveListener();
 
     // Optionally, initialize advantageData with the current value:
     advantageData.add(_getCurrentAdvantageValue());
+    if (LiveEvaluationService.enabled) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          unawaited(LiveEvaluationService.requestCurrentPosition());
+        }
+      });
+    }
   }
 
   @override
@@ -689,6 +701,9 @@ class PlayAreaState extends State<PlayArea> {
     AnalysisService.stopActiveEngineAnalysis();
     AnalysisService.invalidateBestMoveHintCache();
     GameController().headerIconsNotifier.removeListener(_updateUI);
+    LiveEvaluationService.stateNotifier.removeListener(
+      _handleLiveEvaluationChanged,
+    );
     _analysisMoveRecorder?.moveCountNotifier.removeListener(
       _handleAnalysisPositionChanged,
     );
@@ -763,10 +778,31 @@ class PlayAreaState extends State<PlayArea> {
   /// value > 0 means white advantage, value < 0 means black advantage.
   /// The range is [-100, 100].
   int _getCurrentAdvantageValue() {
+    final int? liveScore = LiveEvaluationService.state.whiteScore;
+    if (LiveEvaluationService.enabled && liveScore != null) {
+      return liveScore;
+    }
+    return _getLegacyAdvantageValue();
+  }
+
+  int _getLegacyAdvantageValue() {
     final int value = GameController().value == null
         ? 0
         : int.parse(GameController().value!);
     return value;
+  }
+
+  void _handleLiveEvaluationChanged() {
+    if (!mounted) {
+      return;
+    }
+    final bool changed = _liveAdvantageHistory.update(
+      LiveEvaluationService.state,
+      fallbackScore: _getLegacyAdvantageValue(),
+    );
+    if (changed) {
+      setState(() {});
+    }
   }
 
   Widget? _buildHumanDatabaseStatsStrip(BuildContext context) {
@@ -950,7 +986,8 @@ class PlayAreaState extends State<PlayArea> {
         advantageData.add(_getCurrentAdvantageValue());
       }
 
-      if (GameController().lastMoveFromAI &&
+      if (!LiveEvaluationService.enabled &&
+          GameController().lastMoveFromAI &&
           GameController().value != null &&
           GameController().aiMoveType != AiMoveType.unknown) {
         advantageData.add(_getCurrentAdvantageValue());
@@ -2431,6 +2468,47 @@ class PlayAreaState extends State<PlayArea> {
     };
   }
 
+  bool get _supportsLiveEvaluation => LiveEvaluationService.supportsMode(
+    GameController().gameInstance.gameMode,
+  );
+
+  void _toggleLiveEvaluation({required String toolbar}) {
+    assert(
+      _supportsLiveEvaluation,
+      'Live evaluation requires a supported local game mode.',
+    );
+    final bool enabled = !LiveEvaluationService.enabled;
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{
+        'toolbar': toolbar,
+        'action': 'toggleLiveEvaluation',
+        'enabled': enabled,
+      },
+    );
+    if (enabled) {
+      LiveEvaluationService.enable();
+    } else {
+      unawaited(LiveEvaluationService.disableAndWait());
+    }
+  }
+
+  LichessActionSheetAction _liveEvaluationMenuAction({
+    required Key key,
+    required String toolbar,
+  }) {
+    assert(
+      _supportsLiveEvaluation,
+      'Live evaluation requires a supported local game mode.',
+    );
+    return LichessActionSheetAction(
+      key: key,
+      dismissOnPress: false,
+      makeLabel: (BuildContext context) => const _LiveEvaluationActionLabel(),
+      onPressed: () => _toggleLiveEvaluation(toolbar: toolbar),
+    );
+  }
+
   bool _toggleGameTips({required String toolbar}) {
     assert(_supportsGameTips, 'Game tips require a playable game mode.');
     final GeneralSettings current = DB().generalSettings;
@@ -2523,6 +2601,10 @@ class PlayAreaState extends State<PlayArea> {
         ),
         _gameTipsMenuAction(
           key: const Key('play_area_offline_board_menu_game_tips'),
+          toolbar: 'offlineBoardMenu',
+        ),
+        _liveEvaluationMenuAction(
+          key: const Key('play_area_offline_board_menu_live_evaluation'),
           toolbar: 'offlineBoardMenu',
         ),
         if (_isRegularGameOver)
@@ -2671,6 +2753,11 @@ class PlayAreaState extends State<PlayArea> {
         if (!_isAnalysisMode && _supportsGameTips)
           _gameTipsMenuAction(
             key: const Key('play_area_regular_game_menu_game_tips'),
+            toolbar: 'regularGameMenu',
+          ),
+        if (!_isAnalysisMode && _supportsLiveEvaluation)
+          _liveEvaluationMenuAction(
+            key: const Key('play_area_regular_game_menu_live_evaluation'),
             toolbar: 'regularGameMenu',
           ),
         if (!_isAnalysisMode)
@@ -2840,6 +2927,10 @@ class PlayAreaState extends State<PlayArea> {
         ),
         _gameTipsMenuAction(
           key: const Key('play_area_game_menu_game_tips'),
+          toolbar: 'humanAiGameMenu',
+        ),
+        _liveEvaluationMenuAction(
+          key: const Key('play_area_game_menu_live_evaluation'),
           toolbar: 'humanAiGameMenu',
         ),
         if (_shouldShowMoveNowMenuAction)
@@ -4662,6 +4753,42 @@ class _GameTipsActionLabel extends StatelessWidget {
                   child: Switch.adaptive(
                     key: const Key('play_area_game_tips_switch'),
                     value: isEnabled,
+                    onChanged: (_) {},
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _LiveEvaluationActionLabel extends StatelessWidget {
+  const _LiveEvaluationActionLabel();
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<LiveEvaluationState>(
+      valueListenable: LiveEvaluationService.stateNotifier,
+      builder: (BuildContext context, LiveEvaluationState state, _) {
+        final String label = S.of(context).liveEvaluation;
+        return Semantics(
+          label: label,
+          button: true,
+          toggled: state.enabled,
+          child: ExcludeSemantics(
+            child: Row(
+              children: <Widget>[
+                const Icon(Icons.monitor_heart_outlined),
+                const SizedBox(width: 15),
+                Expanded(child: Text(label, textAlign: TextAlign.start)),
+                const SizedBox(width: 10),
+                IgnorePointer(
+                  child: Switch.adaptive(
+                    key: const Key('play_area_live_evaluation_switch'),
+                    value: state.enabled,
                     onChanged: (_) {},
                   ),
                 ),
