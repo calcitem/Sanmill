@@ -4966,7 +4966,7 @@
     "@bluetoothScan": {},
     "bluetoothScanning": "Scanning for Bluetooth games…",
     "@bluetoothScanning": {},
-    "bluetoothNoDevices": "No Sanmill Bluetooth game was found.",
+    "bluetoothNoDevices": "No Sanmill Bluetooth games found.",
     "@bluetoothNoDevices": {},
     "bluetoothHostNotSupported": "Bluetooth hosting is not supported on this platform. You can still join a game.",
     "@bluetoothHostNotSupported": {},
