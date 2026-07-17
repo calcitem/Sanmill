@@ -1403,9 +1403,9 @@
     "@fullScreen": {
         "description": "Full screen"
     },
-    "reopenToTakeEffect": "Exit and reopen app for settings to take effect.",
+    "reopenToTakeEffect": "Restart the app for this change to take effect.",
     "@reopenToTakeEffect": {
-        "description": "Exit and reopen app for settings to take effect."
+        "description": "Prompt to restart the app after a setting changes"
     },
     "forest": "Forest",
     "@forest": {},
