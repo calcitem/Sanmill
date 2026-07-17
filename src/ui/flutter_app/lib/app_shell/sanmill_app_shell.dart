@@ -2692,9 +2692,13 @@ class _LearnTabRoot extends StatelessWidget {
           controller: scrollController,
           padding: const EdgeInsets.only(top: 16, bottom: 8),
           children: <Widget>[
-            LichessListSection(children: coordinateTrainingSection),
             _MoreSection(
-              title: strings.learn,
+              title: strings.practice,
+              headerKey: const Key('sanmill_learn_practice_group'),
+              children: coordinateTrainingSection,
+            ),
+            _MoreSection(
+              title: strings.guides,
               headerKey: const Key('sanmill_learn_guides_group'),
               children: guideSection,
             ),

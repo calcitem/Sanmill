@@ -5540,5 +5540,13 @@
     "tutorialFlyingRule": "When flying is enabled and a player reaches the configured piece limit, any piece may move to any empty point.",
     "@tutorialFlyingRule": {
         "description": "Tutorial explanation of the configurable flying rule"
+    },
+    "practice": "Practice",
+    "@practice": {
+        "description": "Learn-tab section containing hands-on training activities"
+    },
+    "guides": "Guides",
+    "@guides": {
+        "description": "Learn-tab section containing the tutorial and how-to-play guide"
     }
 }

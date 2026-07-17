@@ -660,9 +660,15 @@ void main() {
       );
       expect(find.byKey(const Key('sanmill_learn_list')), findsOneWidget);
       expect(
+        find.byKey(const Key('sanmill_learn_practice_group')),
+        findsOneWidget,
+      );
+      expect(
         find.byKey(const Key('sanmill_learn_guides_group')),
         findsOneWidget,
       );
+      expect(find.text('Practice'), findsOneWidget);
+      expect(find.text('Guides'), findsOneWidget);
       expect(find.byKey(const Key('sanmill_learn_tools_group')), findsNothing);
       expect(
         find.byKey(const Key('sanmill_learn_coordinate_training')),
