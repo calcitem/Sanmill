@@ -115,6 +115,31 @@ void main() {
       english.deleteBranchContainsPosition,
       english.deleteCurrentBranchWarning,
     );
+    expect(english.deleteBranch, 'Delete variation');
+    expect(english.branchDeleted, 'Variation deleted.');
+    expect(english.branchMoves, 'Moves in this variation');
+  });
+
+  test('uses plain English variation-navigation terminology', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.jumpToMainLine, 'Go to main line');
+    expect(english.jumpToVariation, 'Open variation');
+    expect(english.jumpToThisVariation, 'Open this variation');
+    expect(english.switchToThisBranch, 'Go to its first move');
+    expect(english.previousBranchPoint, 'Previous variation point');
+    expect(english.nextBranchPoint, 'Next variation point');
+    expect(english.noBranchPointsFound, 'No variation points found.');
+    expect(
+      english.jumpedToPreviousBranchPoint,
+      'Moved to the previous variation point.',
+    );
+    expect(
+      english.jumpedToNextBranchPoint,
+      'Moved to the next variation point.',
+    );
+    expect(english.noPreviousBranchPoint, 'No previous variation point.');
+    expect(english.noNextBranchPoint, 'No next variation point.');
   });
 
   test('uses actionable English board-recognition feedback', () {

@@ -3924,7 +3924,7 @@
     "@monthDecember": {
         "description": "December month name"
     },
-    "jumpToMainLine": "Jump to main line",
+    "jumpToMainLine": "Go to main line",
     "@jumpToMainLine": {
         "description": "Jump to main line action"
     },
@@ -3952,11 +3952,11 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "previousBranchPoint": "Previous branch point",
+    "previousBranchPoint": "Previous variation point",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
     },
-    "nextBranchPoint": "Next branch point",
+    "nextBranchPoint": "Next variation point",
     "@nextBranchPoint": {
         "description": "Navigate to next branch point"
     },
@@ -3968,23 +3968,23 @@
     "@noActivePosition": {
         "description": "Message when there is no active position"
     },
-    "noBranchPointsFound": "No branch points found",
+    "noBranchPointsFound": "No variation points found.",
     "@noBranchPointsFound": {
         "description": "Message when no branch points are found"
     },
-    "jumpedToPreviousBranchPoint": "Jumped to previous branch point",
+    "jumpedToPreviousBranchPoint": "Moved to the previous variation point.",
     "@jumpedToPreviousBranchPoint": {
         "description": "Message when jumped to previous branch point"
     },
-    "noPreviousBranchPoint": "No previous branch point",
+    "noPreviousBranchPoint": "No previous variation point.",
     "@noPreviousBranchPoint": {
         "description": "Message when there is no previous branch point"
     },
-    "jumpedToNextBranchPoint": "Jumped to next branch point",
+    "jumpedToNextBranchPoint": "Moved to the next variation point.",
     "@jumpedToNextBranchPoint": {
         "description": "Message when jumped to next branch point"
     },
-    "noNextBranchPoint": "No next branch point",
+    "noNextBranchPoint": "No next variation point.",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
     },
@@ -4000,7 +4000,7 @@
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "Mainline only",
     "@includeVariationsMainline": {},
-    "jumpToVariation": "Jump to variation",
+    "jumpToVariation": "Open variation",
     "@jumpToVariation": {},
     "variationNotation": "Variation: {notation}",
     "@variationNotation": {
@@ -4010,15 +4010,15 @@
             }
         }
     },
-    "jumpToThisVariation": "Jump to this variation",
+    "jumpToThisVariation": "Open this variation",
     "@jumpToThisVariation": {},
-    "switchToThisBranch": "Switch to this branch",
+    "switchToThisBranch": "Go to its first move",
     "@switchToThisBranch": {},
     "setAsMainLine": "Set as main line",
     "@setAsMainLine": {},
     "makeThisPrimaryVariation": "Make this the primary variation",
     "@makeThisPrimaryVariation": {},
-    "deleteBranch": "Delete branch",
+    "deleteBranch": "Delete variation",
     "@deleteBranch": {},
     "removeVariationPermanently": "Remove this variation permanently",
     "@removeVariationPermanently": {},
@@ -4040,11 +4040,11 @@
     "@deleteBranchContainsPosition": {},
     "cannotDeleteNoParent": "Cannot delete: no parent node",
     "@cannotDeleteNoParent": {},
-    "branchDeleted": "Branch deleted",
+    "branchDeleted": "Variation deleted.",
     "@branchDeleted": {},
     "cannotDeleteAlreadyMainLine": "Cannot delete: already on main line",
     "@cannotDeleteAlreadyMainLine": {},
-    "branchMoves": "Branch moves",
+    "branchMoves": "Moves in this variation",
     "@branchMoves": {},
     "variations": "Variations",
     "@variations": {},
