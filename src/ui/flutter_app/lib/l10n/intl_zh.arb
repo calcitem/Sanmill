@@ -4934,7 +4934,7 @@
     "humanDatabaseNoPositionRecords": "当前局面无人类对局记录",
     "manageKnowledgeSources": "管理",
     "localOpeningKnowledge": "本地开局知识",
-    "perfectDatabaseSuggestion": "无对应人类样本的完美数据库着法",
+    "perfectDatabaseSuggestion": "推荐着法（无人类对局数据）",
     "boardTransformIdentity": "原始方向",
     "boardTransformRotateDegrees": "旋转 {degrees}°",
     "boardTransformBackslashMirror": "沿反斜线镜像",

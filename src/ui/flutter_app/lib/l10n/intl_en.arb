@@ -5185,7 +5185,7 @@
     "@manageKnowledgeSources": {"description": "Button opening AI knowledge source management."},
     "localOpeningKnowledge": "Local opening knowledge",
     "@localOpeningKnowledge": {"description": "Header for bundled opening book candidates."},
-    "perfectDatabaseSuggestion": "Perfect database move without human samples",
+    "perfectDatabaseSuggestion": "Recommended move (no human game data)",
     "@perfectDatabaseSuggestion": {"description": "Callout for a perfect move that has no human database samples."},
     "boardTransformIdentity": "Original orientation",
     "@boardTransformIdentity": {"description": "Identity option in the Mill board transform picker."},
