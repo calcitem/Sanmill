@@ -184,6 +184,12 @@ void main() {
     expect(english.dailyTraining, 'Puzzles and training');
   });
 
+  test('describes English puzzle streaks naturally', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.puzzleStreakDesc, 'Solve puzzles in a row without mistakes');
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =

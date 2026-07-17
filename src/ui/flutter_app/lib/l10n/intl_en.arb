@@ -3064,7 +3064,7 @@
     "@puzzleStreak": {
         "description": "Puzzle streak mode name"
     },
-    "puzzleStreakDesc": "Solve consecutively without mistakes",
+    "puzzleStreakDesc": "Solve puzzles in a row without mistakes",
     "@puzzleStreakDesc": {
         "description": "Puzzle streak mode description"
     },
