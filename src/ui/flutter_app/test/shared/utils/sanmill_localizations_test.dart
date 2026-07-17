@@ -195,6 +195,7 @@ void main() {
 
     expect(english.puzzleStatsRating, 'Puzzle rating');
     expect(english.puzzleStatsCurrentRating, 'Current rating');
+    expect(english.puzzleStatsDeviation, 'Rating uncertainty');
   });
 
   test('uses a direct English import-field hint', () {

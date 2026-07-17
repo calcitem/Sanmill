@@ -3177,9 +3177,9 @@
     "@puzzleStatsGamesPlayed": {
         "description": "Puzzle attempts label"
     },
-    "puzzleStatsDeviation": "Rating deviation",
+    "puzzleStatsDeviation": "Rating uncertainty",
     "@puzzleStatsDeviation": {
-        "description": "Rating deviation label"
+        "description": "Plain-language label for the puzzle rating deviation"
     },
     "puzzleStatsPerformance": "Performance",
     "@puzzleStatsPerformance": {
