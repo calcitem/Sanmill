@@ -40,6 +40,7 @@ void main() {
       expect(s.remindedOpponentMayFly, isFalse);
       expect(s.vibrationEnabled, isFalse);
       expect(s.soundTheme, SoundTheme.ball);
+      expect(s.useOpeningBook, isTrue);
       expect(s.llmProvider, LlmProvider.openai);
       expect(s.llmTemperature, 0.7);
       expect(s.aiChatEnabled, isFalse);

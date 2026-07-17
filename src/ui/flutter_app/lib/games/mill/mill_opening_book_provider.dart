@@ -4,6 +4,7 @@
 import '../../game_platform/game_session.dart';
 import '../../game_platform/opening_book_provider.dart';
 import '../../general_settings/models/general_settings.dart';
+import '../../puzzle/models/rule_variant.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../shared/services/logger.dart';
 import 'mill_action_codec.dart';
@@ -32,10 +33,13 @@ class MillOpeningBookProvider implements OpeningBookProvider {
     if (!generalSettings.useOpeningBook) {
       return null;
     }
-    if (!ruleSettings.isLikelyNineMensMorris() &&
-        !ruleSettings.isLikelyElFilja()) {
+    final String? openingBookVariantId = RuleVariant.openingBookVariantIdFor(
+      ruleSettings,
+    );
+    if (openingBookVariantId == null) {
       return null;
     }
+    final bool isElFilja = openingBookVariantId == 'el_filja';
     if (session is! NativeMillGameSession) {
       return null;
     }
@@ -60,7 +64,7 @@ class MillOpeningBookProvider implements OpeningBookProvider {
     final String normalizedFen = normalizeOpeningBookFen(session.getFen());
 
     final Map<String, List<String>> book = OpeningBookRepository.instance
-        .oracleFor(isElFilja: ruleSettings.isLikelyElFilja());
+        .oracleFor(isElFilja: isElFilja);
     final List<String>? bestMoves = lookupCanonicalOpeningBook(
       book,
       normalizedFen,
@@ -112,7 +116,8 @@ class MillOpeningBookProvider implements OpeningBookProvider {
       MillOpeningRecognizer.favoredOpeningMoves(
         history,
         OpeningBookRepository.instance.openingsFor(
-          isElFilja: ruleSettings.isLikelyElFilja(),
+          isElFilja:
+              RuleVariant.openingBookVariantIdFor(ruleSettings) == 'el_filja',
         ),
         aiSide,
       ),
@@ -134,7 +139,8 @@ class MillOpeningBookProvider implements OpeningBookProvider {
       MillOpeningRecognizer.bookContinuationMoves(
         history,
         OpeningBookRepository.instance.openingsFor(
-          isElFilja: ruleSettings.isLikelyElFilja(),
+          isElFilja:
+              RuleVariant.openingBookVariantIdFor(ruleSettings) == 'el_filja',
         ),
       ),
     );

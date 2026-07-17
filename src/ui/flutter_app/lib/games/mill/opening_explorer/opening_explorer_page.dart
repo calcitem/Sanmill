@@ -19,6 +19,7 @@ import '../../../game_platform/game_session.dart';
 import '../../../general_settings/models/general_settings.dart';
 import '../../../general_settings/widgets/general_settings_page.dart';
 import '../../../generated/intl/l10n.dart';
+import '../../../puzzle/models/rule_variant.dart';
 import '../../../rule_settings/models/rule_settings.dart';
 import '../../../shared/database/database.dart' show DB;
 import '../../../shared/services/human_database_service.dart';
@@ -384,7 +385,13 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
     if (session == null) {
       return;
     }
-    final bool isElFilja = DB().ruleSettings.isLikelyElFilja();
+    final String? openingBookVariantId = RuleVariant.openingBookVariantIdFor(
+      DB().ruleSettings,
+    );
+    if (openingBookVariantId == null) {
+      return;
+    }
+    final bool isElFilja = openingBookVariantId == 'el_filja';
     final List<OpeningEntry> openings = OpeningBookRepository.instance
         .openingsFor(isElFilja: isElFilja);
     final List<String> currentLine = <String>[
@@ -2718,9 +2725,11 @@ class _OpeningExplorerSnapshot {
     required List<String> placementMoves,
   }) {
     final String fen = session.getFen();
-    final bool isRuleSupported =
-        ruleSettings.isLikelyNineMensMorris() || ruleSettings.isLikelyElFilja();
-    final bool isElFilja = ruleSettings.isLikelyElFilja();
+    final String? openingBookVariantId = RuleVariant.openingBookVariantIdFor(
+      ruleSettings,
+    );
+    final bool isRuleSupported = openingBookVariantId != null;
+    final bool isElFilja = openingBookVariantId == 'el_filja';
     final List<OpeningEntry> openingLines = isRuleSupported
         ? OpeningBookRepository.instance.openingsFor(isElFilja: isElFilja)
         : const <OpeningEntry>[];

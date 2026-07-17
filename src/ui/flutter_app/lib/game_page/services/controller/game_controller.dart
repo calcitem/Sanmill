@@ -386,11 +386,14 @@ class GameController {
     if (!DB().generalSettings.showOpeningInfo) {
       return null;
     }
-    final RuleSettings rules = DB().ruleSettings;
-    final bool isElFilja = rules.isLikelyElFilja();
-    if (!rules.isLikelyNineMensMorris() && !isElFilja) {
+    final RuleSettings rules = ruleSettingsForActiveBoard;
+    final String? openingBookVariantId = RuleVariant.openingBookVariantIdFor(
+      rules,
+    );
+    if (openingBookVariantId == null) {
       return null;
     }
+    final bool isElFilja = openingBookVariantId == 'el_filja';
     final List<String> placements = openingBookPlacementHistory();
     if (placements.isEmpty) {
       return null;

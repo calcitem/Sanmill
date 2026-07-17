@@ -18,6 +18,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../game_page/services/gif_share/gif_share.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
+import '../../puzzle/models/rule_variant.dart';
 import '../../shared/config/ai_compliance_config.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';

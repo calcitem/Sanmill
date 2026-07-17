@@ -232,6 +232,27 @@ void main() {
         expect(RuleVariant.canonicalSettingsFromPgn(null), isNull);
       },
     );
+
+    test('opening book supports only exact authored presets', () {
+      expect(
+        RuleVariant.openingBookVariantIdFor(const NineMensMorrisRuleSettings()),
+        'standard_9mm',
+      );
+      expect(
+        RuleVariant.openingBookVariantIdFor(const ELFiljaRuleSettings()),
+        'el_filja',
+      );
+      expect(
+        RuleVariant.openingBookVariantIdFor(const RuleSettings(nMoveRule: 99)),
+        isNull,
+      );
+      expect(
+        RuleVariant.openingBookVariantIdFor(
+          const TwelveMensMorrisRuleSettings(),
+        ),
+        isNull,
+      );
+    });
   });
 
   // ---------------------------------------------------------------------------

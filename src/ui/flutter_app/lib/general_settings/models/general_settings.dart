@@ -153,8 +153,7 @@ class GeneralSettings {
     this.remindedOpponentMayFly = false,
     this.vibrationEnabled = false,
     this.soundTheme = SoundTheme.ball,
-    @Deprecated('Removed; field retained for Hive backward compatibility.')
-    this.useOpeningBook = false,
+    this.useOpeningBook = true,
     this.llmPromptHeader = '',
     this.llmPromptFooter = '',
     this.llmProvider = LlmProvider.openai,
@@ -311,8 +310,7 @@ class GeneralSettings {
   @HiveField(30, defaultValue: SoundTheme.ball)
   final SoundTheme? soundTheme;
 
-  @HiveField(31, defaultValue: false)
-  @Deprecated('Removed; field retained for Hive backward compatibility.')
+  @HiveField(31, defaultValue: true)
   final bool useOpeningBook;
 
   @HiveField(32, defaultValue: 0)

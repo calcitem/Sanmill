@@ -139,6 +139,20 @@ class RuleVariant {
     return null;
   }
 
+  /// Returns the canonical opening-book variant ID supported by [settings].
+  ///
+  /// Opening-book data is authored only for the exact Nine Men's Morris and
+  /// El Filja presets. A single manual rule change makes the configuration
+  /// custom and must disable the book rather than borrowing data from a
+  /// merely similar rule family.
+  static String? openingBookVariantIdFor(RuleSettings settings) {
+    return switch (exactCanonicalIdFor(settings)) {
+      'standard_9mm' => 'standard_9mm',
+      'el_filja' => 'el_filja',
+      _ => null,
+    };
+  }
+
   /// Fixed English PGN `[Variant]` value for [settings].
   static String pgnNameFor(RuleSettings settings) {
     final String? id = exactCanonicalIdFor(settings);

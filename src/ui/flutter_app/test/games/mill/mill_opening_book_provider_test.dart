@@ -153,6 +153,24 @@ void main() {
       expect(provider.lookup(session), isNull);
     }, skip: skip);
 
+    test('returns null for a custom rule close to standard 9mm', () {
+      (DB.instance! as MockDB).generalSettings = DB().generalSettings.copyWith(
+        useOpeningBook: true,
+      );
+      const RuleSettings customRules = RuleSettings(nMoveRule: 99);
+      final NativeMillGameSession session = NativeMillGameSession(
+        rules: customRules,
+      );
+      addTearDown(session.dispose);
+      final MillOpeningBookProvider provider = MillOpeningBookProvider(
+        ruleSettings: customRules,
+        generalSettings: DB().generalSettings,
+      );
+
+      expect(customRules.isLikelyNineMensMorris(), isTrue);
+      expect(provider.lookup(session), isNull);
+    }, skip: skip);
+
     test('skips FEN export outside placing phase', () {
       (DB.instance! as MockDB).generalSettings = DB().generalSettings.copyWith(
         useOpeningBook: true,

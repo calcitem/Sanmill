@@ -50,8 +50,7 @@ String _settingsFirstLine(String text) {
 }
 
 bool _openingBookSettingsAvailable() =>
-    DB().ruleSettings.isLikelyNineMensMorris() ||
-    DB().ruleSettings.isLikelyElFilja();
+    RuleVariant.openingBookVariantIdFor(DB().ruleSettings) != null;
 
 bool _humanDatabaseSettingsAvailable() =>
     DB().ruleSettings.isHumanGameDatabaseCompatible();

@@ -99,6 +99,25 @@ void main() {
     );
   });
 
+  testWidgets('settings page hides opening-book controls for custom rules', (
+    WidgetTester tester,
+  ) async {
+    final _OpeningBookUiDb db = DB.instance! as _OpeningBookUiDb;
+    db.ruleSettings = const RuleSettings(nMoveRule: 99);
+
+    await tester.binding.setSurfaceSize(const Size(1100, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(_localizedApp(const GeneralSettingsPage()));
+    await tester.pump();
+    await tester.tap(find.text('Computer move sources'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Use opening book'), findsNothing);
+    expect(find.text('Show opening information'), findsNothing);
+    expect(find.text('Prefer favorable openings'), findsNothing);
+  });
+
   testWidgets('game header screenshot shows recognised opening information', (
     WidgetTester tester,
   ) async {
