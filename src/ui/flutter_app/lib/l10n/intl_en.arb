@@ -3779,7 +3779,7 @@
     "@puzzleHintDialogTitle": {
         "description": "Title for hint dialog"
     },
-    "puzzleValidationErrors": "Validation Errors",
+    "puzzleValidationErrors": "Validation errors",
     "@puzzleValidationErrors": {
         "description": "Title for validation errors dialog"
     },
@@ -3787,11 +3787,11 @@
     "@puzzleValidationErrorsMessage": {
         "description": "Message for validation errors dialog"
     },
-    "puzzleContributeDialogTitle": "Contribute Puzzles to Sanmill",
+    "puzzleContributeDialogTitle": "Contribute puzzles to Sanmill",
     "@puzzleContributeDialogTitle": {
         "description": "Title for contribute puzzles dialog"
     },
-    "puzzleContributeCount": "{count, plural, =1{You are about to export 1 puzzle for contribution.} other{You are about to export {count} puzzles for contribution.}}",
+    "puzzleContributeCount": "{count, plural, =1{Exporting 1 puzzle for contribution.} other{Exporting {count} puzzles for contribution.}}",
     "@puzzleContributeCount": {
         "description": "Message showing number of puzzles to contribute",
         "placeholders": {
@@ -3800,27 +3800,27 @@
             }
         }
     },
-    "puzzleContributeWhatNext": "What happens next:",
+    "puzzleContributeWhatNext": "What happens next",
     "@puzzleContributeWhatNext": {
         "description": "Label for what happens next section"
     },
-    "puzzleContributeStep1": "1. Your puzzles will be exported to a JSON file",
+    "puzzleContributeStep1": "1. The app exports your puzzles to a JSON file.",
     "@puzzleContributeStep1": {
         "description": "Contribution step 1"
     },
-    "puzzleContributeStep2": "2. You can share this file via the share dialog",
+    "puzzleContributeStep2": "2. Use the share sheet to send the file.",
     "@puzzleContributeStep2": {
         "description": "Contribution step 2"
     },
-    "puzzleContributeStep3": "3. Submit via GitHub, email, or GitHub issue (see guide)",
+    "puzzleContributeStep3": "3. Submit it through a GitHub pull request or issue, or by email; see the guide for details.",
     "@puzzleContributeStep3": {
         "description": "Contribution step 3"
     },
-    "puzzleContributeStep4": "4. Puzzles will be reviewed by maintainers",
+    "puzzleContributeStep4": "4. Sanmill maintainers review the puzzles.",
     "@puzzleContributeStep4": {
         "description": "Contribution step 4"
     },
-    "puzzleContributeStep5": "5. Once approved, they become built-in puzzles!",
+    "puzzleContributeStep5": "5. Approved puzzles can be included with Sanmill.",
     "@puzzleContributeStep5": {
         "description": "Contribution step 5"
     },
@@ -3828,15 +3828,15 @@
     "@puzzleContributeLicense": {
         "description": "License agreement message for contributions"
     },
-    "puzzleExportForContribution": "Export for Contribution",
+    "puzzleExportForContribution": "Export for contribution",
     "@puzzleExportForContribution": {
         "description": "Button label for exporting puzzles for contribution"
     },
-    "puzzleStartContributing": "Start Contributing",
+    "puzzleStartContributing": "Start contributing",
     "@puzzleStartContributing": {
         "description": "Button label to start contributing"
     },
-    "puzzleContributeInfo": "How to Contribute Puzzles",
+    "puzzleContributeInfo": "Contribute puzzles",
     "@puzzleContributeInfo": {
         "description": "Title for contribution info dialog"
     },
@@ -3858,11 +3858,11 @@
             }
         }
     },
-    "puzzleContributionShareText": "Puzzle contribution.\n\nSee PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.",
+    "puzzleContributionShareText": "Puzzle contribution for Sanmill.\n\nSee PUZZLE_CONTRIBUTION_GUIDE.md in the Sanmill repository for submission instructions.",
     "@puzzleContributionShareText": {
         "description": "Message when sharing puzzle for contribution"
     },
-    "puzzleContributionShareSubject": "Puzzle Contribution: {title}",
+    "puzzleContributionShareSubject": "Puzzle contribution: {title}",
     "@puzzleContributionShareSubject": {
         "description": "Subject line when sharing puzzle contribution",
         "placeholders": {
@@ -3871,11 +3871,11 @@
             }
         }
     },
-    "puzzleContributionsShareText": "Puzzle contributions.\n\nSee PUZZLE_CONTRIBUTION_GUIDE.md for submission instructions.",
+    "puzzleContributionsShareText": "Puzzle contributions for Sanmill.\n\nSee PUZZLE_CONTRIBUTION_GUIDE.md in the Sanmill repository for submission instructions.",
     "@puzzleContributionsShareText": {
         "description": "Message when sharing multiple puzzles for contribution"
     },
-    "puzzleContributionsShareSubject": "Puzzle Contributions ({count} puzzles)",
+    "puzzleContributionsShareSubject": "Puzzle contributions ({count})",
     "@puzzleContributionsShareSubject": {
         "description": "Subject line when sharing multiple puzzle contributions",
         "placeholders": {
@@ -3884,23 +3884,23 @@
             }
         }
     },
-    "puzzleContributeHelp": "Help make this program better by contributing your puzzles!",
+    "puzzleContributeHelp": "Help improve Sanmill by contributing your puzzles.",
     "@puzzleContributeHelp": {
         "description": "Header text for contribution help dialog"
     },
-    "puzzleContributeQuickStart": "Quick Start:",
+    "puzzleContributeQuickStart": "Quick start",
     "@puzzleContributeQuickStart": {
         "description": "Quick start section header"
     },
-    "puzzleContributeStep1Title": "Create Quality Puzzles",
+    "puzzleContributeStep1Title": "Create quality puzzles",
     "@puzzleContributeStep1Title": {
         "description": "Step 1 title in contribution guide"
     },
-    "puzzleContributeStep1Desc": "Ensure your puzzle has a clear solution, good metadata, and teaches something valuable.",
+    "puzzleContributeStep1Desc": "Make sure each puzzle has a clear solution, complete metadata, and something useful to teach.",
     "@puzzleContributeStep1Desc": {
         "description": "Step 1 description in contribution guide"
     },
-    "puzzleContributeStep2Title": "Add Your Name",
+    "puzzleContributeStep2Title": "Add your name",
     "@puzzleContributeStep2Title": {
         "description": "Step 2 title in contribution guide"
     },
@@ -3908,7 +3908,7 @@
     "@puzzleContributeStep2Desc": {
         "description": "Step 2 description in contribution guide"
     },
-    "puzzleContributeStep3Title": "Export for Contribution",
+    "puzzleContributeStep3Title": "Export for contribution",
     "@puzzleContributeStep3Title": {
         "description": "Step 3 title in contribution guide"
     },
@@ -3920,19 +3920,19 @@
     "@puzzleContributeStep4Title": {
         "description": "Step 4 title in contribution guide"
     },
-    "puzzleContributeStep4Desc": "Share the exported file via GitHub Pull Request, Issue, or email.",
+    "puzzleContributeStep4Desc": "Share the exported file through a GitHub pull request or issue, or by email.",
     "@puzzleContributeStep4Desc": {
         "description": "Step 4 description in contribution guide"
     },
-    "puzzleContributeFullDocs": "Full Documentation",
+    "puzzleContributeFullDocs": "Full documentation",
     "@puzzleContributeFullDocs": {
         "description": "Full documentation label"
     },
-    "puzzleContributeDocsDesc": "See PUZZLE_CONTRIBUTION_GUIDE.md in the repository for complete instructions, quality guidelines, and submission options.",
+    "puzzleContributeDocsDesc": "Read PUZZLE_CONTRIBUTION_GUIDE.md in the Sanmill repository for submission options and quality guidelines.",
     "@puzzleContributeDocsDesc": {
         "description": "Description for full documentation"
     },
-    "puzzleContributeQualityRequirements": "Quality Requirements:",
+    "puzzleContributeQualityRequirements": "Quality requirements",
     "@puzzleContributeQualityRequirements": {
         "description": "Quality requirements section header"
     },
@@ -3940,19 +3940,19 @@
     "@puzzleContributeReqClearSolution": {
         "description": "Quality requirement: clear solution"
     },
-    "puzzleContributeReqMetadata": "✓ Complete metadata (title, description, etc.)",
+    "puzzleContributeReqMetadata": "✓ Complete title and description",
     "@puzzleContributeReqMetadata": {
         "description": "Quality requirement: complete metadata"
     },
-    "puzzleContributeReqAttribution": "✓ Author attribution",
+    "puzzleContributeReqAttribution": "✓ Author name",
     "@puzzleContributeReqAttribution": {
         "description": "Quality requirement: author attribution"
     },
-    "puzzleContributeReqDifficulty": "✓ Accurate difficulty rating",
+    "puzzleContributeReqDifficulty": "✓ Accurate difficulty",
     "@puzzleContributeReqDifficulty": {
         "description": "Quality requirement: difficulty rating"
     },
-    "puzzleContributeReqInstructive": "✓ Instructive or entertaining",
+    "puzzleContributeReqInstructive": "✓ Instructive or entertaining play",
     "@puzzleContributeReqInstructive": {
         "description": "Quality requirement: instructive or entertaining"
     },
