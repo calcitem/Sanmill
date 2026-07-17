@@ -76,7 +76,7 @@
     "@tipSelectWrong": {
         "description": "Select the wrong piece."
     },
-    "tipPlace": "Place your pieces.",
+    "tipPlace": "Place a piece.",
     "@tipPlace": {
         "description": "Place your pieces."
     },
