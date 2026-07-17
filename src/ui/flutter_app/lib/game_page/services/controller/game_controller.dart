@@ -1477,6 +1477,8 @@ class GameController {
       },
     );
 
+    unawaited(LiveEvaluationService.syncWithStoredDisplaySettings());
+
     // Timer is no longer started here.
     // It will be started in tap_handler after the first human move.
   }

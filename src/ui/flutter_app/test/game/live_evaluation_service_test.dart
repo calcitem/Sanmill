@@ -45,6 +45,45 @@ void main() {
     }
   });
 
+  test('display controls jointly drive local live evaluation', () async {
+    LiveEvaluationService.debugGameMode = GameMode.humanVsHuman;
+
+    await LiveEvaluationService.syncWithDisplayPreferences(
+      showIndicator: false,
+      showGraph: false,
+    );
+    expect(LiveEvaluationService.enabled, isFalse);
+
+    await LiveEvaluationService.syncWithDisplayPreferences(
+      showIndicator: true,
+      showGraph: false,
+    );
+    expect(LiveEvaluationService.enabled, isTrue);
+
+    await LiveEvaluationService.syncWithDisplayPreferences(
+      showIndicator: false,
+      showGraph: false,
+    );
+    expect(LiveEvaluationService.enabled, isFalse);
+
+    await LiveEvaluationService.syncWithDisplayPreferences(
+      showIndicator: false,
+      showGraph: true,
+    );
+    expect(LiveEvaluationService.enabled, isTrue);
+  });
+
+  test('display controls never enable evaluation for remote play', () async {
+    LiveEvaluationService.debugGameMode = GameMode.humanVsLAN;
+
+    await LiveEvaluationService.syncWithDisplayPreferences(
+      showIndicator: true,
+      showGraph: true,
+    );
+
+    expect(LiveEvaluationService.enabled, isFalse);
+  });
+
   test('publishes progressive pending-removal evaluation', () async {
     LiveEvaluationService.debugEnableForMode(GameMode.humanVsHuman);
     LiveEvaluationService

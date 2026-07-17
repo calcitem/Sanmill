@@ -541,30 +541,9 @@ void main() {
       find.byKey(const Key('play_area_regular_game_menu_sheet')),
       findsOneWidget,
     );
-    final Finder liveEvaluationAction = find.byKey(
-      const Key('play_area_regular_game_menu_live_evaluation'),
-    );
-    expect(liveEvaluationAction, findsOneWidget);
-    expect(find.text('Live evaluation'), findsOneWidget);
-    expect(LiveEvaluationService.enabled, isFalse);
-    await tester.ensureVisible(liveEvaluationAction);
-    await tester.tap(liveEvaluationAction);
-    await tester.pumpAndSettle();
-    expect(LiveEvaluationService.enabled, isTrue);
     expect(
-      tester
-          .widget<Switch>(
-            find.byKey(const Key('play_area_live_evaluation_switch')),
-          )
-          .value,
-      isTrue,
-    );
-    await tester.tap(liveEvaluationAction);
-    await tester.pumpAndSettle();
-    expect(LiveEvaluationService.enabled, isFalse);
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_sheet')),
-      findsOneWidget,
+      find.byKey(const Key('play_area_regular_game_menu_live_evaluation')),
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_board_orientation')),
@@ -969,7 +948,9 @@ void main() {
       darkBackgroundColor: Color(0xFF006B3F),
       messageColor: messageTextColor,
     );
-    db.displaySettings = const DisplaySettings();
+    db.displaySettings = const DisplaySettings(
+      isPositionalAdvantageIndicatorShown: true,
+    );
     GameController().gameInstance.gameMode = GameMode.humanVsAi;
 
     await tester.binding.setSurfaceSize(const Size(390, 844));

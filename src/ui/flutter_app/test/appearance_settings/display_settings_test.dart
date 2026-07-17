@@ -29,7 +29,7 @@ void main() {
       expect(d.fontScale, 1.0);
       expect(d.boardTop, kToolbarHeight);
       expect(d.animationDuration, 1.0);
-      expect(d.isPositionalAdvantageIndicatorShown, isTrue);
+      expect(d.isPositionalAdvantageIndicatorShown, isFalse);
       expect(d.backgroundImagePath, '');
       expect(d.isNumbersOnPiecesShown, isFalse);
       expect(d.isAnalysisToolbarShown, isFalse);

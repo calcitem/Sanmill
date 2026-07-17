@@ -191,6 +191,34 @@ class LiveEvaluationService {
     GameMode.analysis => false,
   };
 
+  /// Keep live calculation aligned with the two presentation controls that
+  /// consume it. No engine work is needed when both the gauge and graph are
+  /// hidden.
+  static Future<void> syncWithDisplayPreferences({
+    required bool showIndicator,
+    required bool showGraph,
+  }) async {
+    final bool shouldEnable =
+        supportsMode(_currentMode) && (showIndicator || showGraph);
+    if (shouldEnable) {
+      if (!state.enabled) {
+        enable();
+      }
+      return;
+    }
+    if (state.enabled) {
+      await disableAndWait();
+    }
+  }
+
+  static Future<void> syncWithStoredDisplaySettings() {
+    final DisplaySettings settings = DB().displaySettings;
+    return syncWithDisplayPreferences(
+      showIndicator: settings.isPositionalAdvantageIndicatorShown,
+      showGraph: settings.isAdvantageGraphShown,
+    );
+  }
+
   /// Enable evaluation for the current local game and immediately analyze its
   /// current position. This preference is intentionally session-only.
   static void enable() {

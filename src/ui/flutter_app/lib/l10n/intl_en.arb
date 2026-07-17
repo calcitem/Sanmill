@@ -1533,7 +1533,7 @@
     "@whatIsRetrogradeAnalysis": {},
     "viewAlgorithmGuide": "Would you like to view the user guide for this algorithm?",
     "@viewAlgorithmGuide": {},
-    "showPositionalAdvantageIndicator": "Show positional advantage indicator",
+    "showPositionalAdvantageIndicator": "Show evaluation gauge",
     "@showPositionalAdvantageIndicator": {},
     "usePerfectDatabase": "Use perfect database",
     "@usePerfectDatabase": {},
@@ -1697,7 +1697,7 @@
     "@useOpeningBook_Detail": {},
     "showAdvantageGraph": "Show advantage graph",
     "@showAdvantageGraph": {},
-    "advantageGraphHint": "In local games, turn on Live evaluation from the game menu to update the gauge and graph after every action.",
+    "advantageGraphHint": "In local games, showing the evaluation gauge or advantage graph turns on continuous evaluation. Both update after every action.",
     "@advantageGraphHint": {},
     "removalBasedOnMillCounts": "Remove pieces after placement based on mill counts",
     "@removalBasedOnMillCounts": {},
@@ -6359,9 +6359,5 @@
     "showGameTips_Detail": "Show turn guidance and opening information beside the player to move.",
     "@showGameTips_Detail": {
         "description": "Explanation of the game tips preference"
-    },
-    "liveEvaluation": "Live evaluation",
-    "@liveEvaluation": {
-        "description": "Session-only game-menu switch for continuously updating the evaluation gauge and graph"
     }
 }

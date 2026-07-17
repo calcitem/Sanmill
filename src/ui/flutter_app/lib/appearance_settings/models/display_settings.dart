@@ -91,7 +91,7 @@ class DisplaySettings {
     this.boardTop = kToolbarHeight,
     this.animationDuration = 1.0,
     @Deprecated("Deprecated.") this.aiResponseDelayTime = 0.0,
-    this.isPositionalAdvantageIndicatorShown = true,
+    this.isPositionalAdvantageIndicatorShown = false,
     this.backgroundImagePath = '',
     this.isNumbersOnPiecesShown = false,
     this.isAnalysisToolbarShown = false,
@@ -208,7 +208,7 @@ class DisplaySettings {
   @HiveField(18, defaultValue: 0.0)
   final double aiResponseDelayTime;
 
-  @HiveField(19, defaultValue: true)
+  @HiveField(19, defaultValue: false)
   final bool isPositionalAdvantageIndicatorShown;
 
   @HiveField(20, defaultValue: '')

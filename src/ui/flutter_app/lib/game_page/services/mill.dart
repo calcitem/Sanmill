@@ -22,6 +22,7 @@ import 'package:uuid/uuid.dart';
 import 'package:vibration/vibration.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
+import '../../appearance_settings/models/display_settings.dart';
 import '../../experience_recording/models/recording_models.dart';
 import '../../experience_recording/models/user_action_event.dart';
 import '../../experience_recording/services/diagnostic_action_trail_service.dart';
