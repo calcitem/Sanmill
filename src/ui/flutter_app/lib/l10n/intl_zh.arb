@@ -5381,5 +5381,77 @@
     "showGameTips_Detail": "在当前行棋方旁显示行棋提示和开局信息。",
     "@showGameTips_Detail": {
         "description": "Explanation of the game tips preference"
+    },
+    "analysisBestMoveArrow": "引擎变化标记",
+    "@analysisBestMoveArrow": {
+        "description": "Label for markers that show the first move of each visible engine line"
+    },
+    "analysisBestMoveArrowDescription": "在棋盘上标出每条可见引擎变化的首着。",
+    "@analysisBestMoveArrowDescription": {
+        "description": "Explanation of engine-line markers"
+    },
+    "analysisDepthSemantics": "搜索深度 {depth}",
+    "@analysisDepthSemantics": {
+        "description": "Screen-reader label for an engine search depth",
+        "placeholders": {
+            "depth": {
+                "type": "int"
+            }
+        }
+    },
+    "analysisEngineLineDisplay": "{count, plural, =0{关闭} =1{1 条变化 · 文字和棋盘标记} other{{count} 条变化 · 文字和棋盘标记}}",
+    "@analysisEngineLineDisplay": {
+        "description": "Summary of how many engine lines are shown",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "analysisEngineLineSemantics": "第 {rank} 条引擎变化",
+    "@analysisEngineLineSemantics": {
+        "description": "Screen-reader label for one engine line",
+        "placeholders": {
+            "rank": {
+                "type": "int"
+            }
+        }
+    },
+    "analysisEngineLinesDescription": "在棋盘下方显示引擎变化。",
+    "@analysisEngineLinesDescription": {
+        "description": "Explanation of the engine-lines switch"
+    },
+    "analysisEngineThreadsSingleLineOnly": "仅在显示一条引擎变化时可用",
+    "@analysisEngineThreadsSingleLineOnly": {
+        "description": "Explanation for disabled engine-thread control"
+    },
+    "analysisEvaluationSemantics": "评估 {value}",
+    "@analysisEvaluationSemantics": {
+        "description": "Screen-reader label for an engine evaluation",
+        "placeholders": {
+            "value": {
+                "type": "String"
+            }
+        }
+    },
+    "analysisInlineNotation": "行内着法",
+    "@analysisInlineNotation": {
+        "description": "Switch for rendering notation inline"
+    },
+    "analysisPerfectDatabaseShortLabel": "完美数据库",
+    "@analysisPerfectDatabaseShortLabel": {
+        "description": "Compact analysis-source label for the perfect endgame database"
+    },
+    "analysisSettingsTitle": "分析设置",
+    "@analysisSettingsTitle": {
+        "description": "Title for the analysis settings sheet"
+    },
+    "analysisShowMoveAnnotations": "显示着法标注",
+    "@analysisShowMoveAnnotations": {
+        "description": "Switch for move-quality annotations in analysis"
+    },
+    "analysisShowMoveComments": "显示着法评论",
+    "@analysisShowMoveComments": {
+        "description": "Switch for move comments in analysis"
     }
 }
