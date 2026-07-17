@@ -1082,6 +1082,13 @@ void main() {
         ),
         findsOneWidget,
       );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('statistics_page_ai_level_1')),
+          matching: find.text('300 Elo'),
+        ),
+        findsOneWidget,
+      );
       expect(find.byType(DataTable), findsNothing);
 
       await tester.binding.handlePopRoute();

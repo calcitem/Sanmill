@@ -387,7 +387,7 @@ class _AiDifficultyStatsTile extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         style: monoStyle,
       ),
-      trailing: _StatTrailingText(rating.toString(), color: ratingColor),
+      trailing: _StatTrailingText(l10n.eloRating(rating), color: ratingColor),
     );
   }
 
