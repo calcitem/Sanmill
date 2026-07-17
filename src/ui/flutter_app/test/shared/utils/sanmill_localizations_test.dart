@@ -121,6 +121,10 @@ void main() {
         english.savedGamesExportFailed,
         'Could not export saved games. Try again.',
       );
+      expect(
+        english.savedGameDeleteFailed,
+        'Could not delete this saved game. Try again.',
+      );
     },
   );
 

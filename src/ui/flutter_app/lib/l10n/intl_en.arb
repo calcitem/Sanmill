@@ -6425,5 +6425,9 @@
     "savedGamesExportFailed": "Could not export saved games. Try again.",
     "@savedGamesExportFailed": {
         "description": "Error shown when creating or sharing the saved-games archive fails"
+    },
+    "savedGameDeleteFailed": "Could not delete this saved game. Try again.",
+    "@savedGameDeleteFailed": {
+        "description": "Error shown when deleting a saved PGN game file fails"
     }
 }

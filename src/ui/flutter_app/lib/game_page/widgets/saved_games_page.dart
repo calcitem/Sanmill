@@ -334,10 +334,13 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
         });
       }
     } catch (error) {
-      // Show error message using existing localized text
+      logger.e(
+        '[saved_games] Failed to delete ${e.filename}: '
+        '${error.runtimeType}',
+      );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(S.of(context).error(error.toString()))),
+          SnackBar(content: Text(S.of(context).savedGameDeleteFailed)),
         );
       }
     }
