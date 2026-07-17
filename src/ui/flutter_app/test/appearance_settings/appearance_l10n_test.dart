@@ -12,5 +12,17 @@ void main() {
     expect(strings.boardTheme, '棋盘主题');
     expect(strings.themeMode, '主题模式');
     expect(strings.system, '跟随系统');
+    expect(strings.animationDurationValue(0), '关闭');
+    expect(strings.animationDurationValue(1), '1 秒');
+    expect(strings.animationDurationValue(1.5), '1.5 秒');
+    expect(strings.backgroundImageOption(2), '背景图片 2');
+    expect(strings.boardImageOption(3), '棋盘图片 3');
+    expect(strings.customBackgroundImage, '自定义背景图片');
+    expect(strings.customBoardImage, '自定义棋盘图片');
+    expect(strings.transparentToolbars, '透明工具栏');
+    expect(strings.pieceEffectName('RippleGradient'), '渐变涟漪');
+    expect(strings.pieceEffectName('FireTrail'), '火焰拖尾');
+    expect(strings.pieceEffectName('Unknown'), 'Unknown');
+    expect(strings.fontSizePreview, '示例文字 123');
   });
 }

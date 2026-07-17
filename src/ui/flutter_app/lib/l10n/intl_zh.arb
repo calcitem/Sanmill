@@ -5547,5 +5547,61 @@
     "sortOldestFirst": "最早优先",
     "@sortOldestFirst": {
         "description": "Sort option that places older games first"
+    },
+    "animationDurationValue": "{seconds, plural, =0{关闭} =1{1 秒} other{{seconds} 秒}}",
+    "@animationDurationValue": {
+        "description": "Current piece animation duration shown beside its slider",
+        "placeholders": {
+            "seconds": {
+                "type": "num",
+                "example": "1.5"
+            }
+        }
+    },
+    "backgroundImageOption": "背景图片 {number}",
+    "@backgroundImageOption": {
+        "description": "Accessible label for a built-in background image option",
+        "placeholders": {
+            "number": {
+                "type": "int",
+                "example": "1"
+            }
+        }
+    },
+    "boardImageOption": "棋盘图片 {number}",
+    "@boardImageOption": {
+        "description": "Accessible label for a built-in board image option",
+        "placeholders": {
+            "number": {
+                "type": "int",
+                "example": "1"
+            }
+        }
+    },
+    "customBackgroundImage": "自定义背景图片",
+    "@customBackgroundImage": {
+        "description": "Accessible label for the custom background image picker"
+    },
+    "customBoardImage": "自定义棋盘图片",
+    "@customBoardImage": {
+        "description": "Accessible label for the custom board image picker"
+    },
+    "transparentToolbars": "透明工具栏",
+    "@transparentToolbars": {
+        "description": "Switch for drawing game toolbars transparently over a board image"
+    },
+    "pieceEffectName": "{effect, select, Aura{光环} Echo{回响} Ripple{涟漪} Spiral{螺旋} Rotate{旋转} Orbit{环绕} Radial{径向} Expand{扩张} Glow{发光} Disperse{消散} Sparkle{闪烁} Burst{爆裂} Shatter{碎裂} Fireworks{烟花} Explode{爆炸} RippleGradient{渐变涟漪} WarpWave{扭曲波} ShockWave{冲击波} PulseRing{脉冲环} RainbowWave{彩虹波} Twist{扭转} ShadowPulse{阴影脉冲} RainRipple{雨滴涟漪} NeonFlash{霓虹闪光} InkSpread{墨迹扩散} BubblePop{气泡破裂} ColorSwirl{彩色旋涡} Starburst{星芒爆发} PixelGlitch{像素故障} FireTrail{火焰拖尾} Vanish{消失} Fade{淡出} Melt{融化} other{{effect}}}",
+    "@pieceEffectName": {
+        "description": "Localized display name for a stable piece animation effect ID",
+        "placeholders": {
+            "effect": {
+                "type": "String",
+                "example": "RippleGradient"
+            }
+        }
+    },
+    "fontSizePreview": "示例文字 123",
+    "@fontSizePreview": {
+        "description": "Preview text displayed in the font-size selector"
     }
 }
