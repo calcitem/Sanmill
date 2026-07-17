@@ -111,14 +111,18 @@ void main() {
         addTearDown(session.dispose);
         final _FakeHumanDatabaseProvider humanDatabase =
             _FakeHumanDatabaseProvider(humanAction);
-        final NativeMillAiTurnController controller =
-            NativeMillAiTurnController(
-              generalSettings: const GeneralSettings(
-                aiMovesFirst: true,
-                usePerfectDatabase: true,
-              ),
-              humanDatabase: humanDatabase,
-            );
+        final List<(PlayerSeat, int)> rootEvaluations = <(PlayerSeat, int)>[];
+        final NativeMillAiTurnController
+        controller = NativeMillAiTurnController(
+          generalSettings: const GeneralSettings(
+            aiMovesFirst: true,
+            usePerfectDatabase: true,
+          ),
+          humanDatabase: humanDatabase,
+          onRootEvaluation: (NativeMillGameSession session, int whiteScore) {
+            rootEvaluations.add((session.state.value.activeSeat, whiteScore));
+          },
+        );
 
         final GameAction? applied = await controller.playIfAiTurn(session);
 
@@ -128,6 +132,7 @@ void main() {
         expect(session.lastAiBestValue, 100);
         expect(session.lastHumanDatabaseMoveStats, isNull);
         expect(humanDatabase.discarded, isTrue);
+        expect(rootEvaluations, <(PlayerSeat, int)>[(PlayerSeat.first, 100)]);
       },
     );
 
@@ -175,14 +180,20 @@ void main() {
         addTearDown(session.dispose);
         final _FakeHumanDatabaseProvider humanDatabase =
             _FakeHumanDatabaseProvider(humanAction);
+        final List<int> rootEvaluations = <int>[];
         final NativeMillAiTurnController controller =
-            NativeMillAiTurnController(humanDatabase: humanDatabase);
+            NativeMillAiTurnController(
+              humanDatabase: humanDatabase,
+              onRootEvaluation: (NativeMillGameSession _, int whiteScore) =>
+                  rootEvaluations.add(whiteScore),
+            );
 
         final GameAction? applied = await controller.playIfAiTurn(session);
 
         expect(applied, humanAction);
         expect(session.lastAiMoveType, AiMoveType.humanDatabase);
         expect(session.lastAiBestValue, -50);
+        expect(rootEvaluations, <int>[-50]);
       },
     );
 
@@ -207,10 +218,13 @@ void main() {
       );
       final _FakeHumanDatabaseProvider humanDatabase =
           _FakeHumanDatabaseProvider(humanAction);
+      final List<int> rootEvaluations = <int>[];
       final NativeMillAiTurnController controller = NativeMillAiTurnController(
         generalSettings: const GeneralSettings(aiMovesFirst: true),
         openingBook: openingBook,
         humanDatabase: humanDatabase,
+        onRootEvaluation: (NativeMillGameSession _, int whiteScore) =>
+            rootEvaluations.add(whiteScore),
       );
 
       final GameAction? applied = await controller.playIfAiTurn(session);
@@ -222,6 +236,7 @@ void main() {
       expect(session.lastHumanDatabaseMoveStats, isNull);
       expect(openingBook.lookupCount, 1);
       expect(humanDatabase.lookupCount, 0);
+      expect(rootEvaluations, <int>[0]);
     });
   });
 }

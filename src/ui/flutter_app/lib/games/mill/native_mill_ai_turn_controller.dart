@@ -20,6 +20,15 @@ import 'native_mill_game_session.dart';
 /// before the capture animation/sound (master `engineToGo` parity).
 typedef BeforeRemoveApplyHook = Future<void> Function();
 
+/// Optional hook invoked after an AI source has evaluated the current root
+/// position and immediately before its chosen action is applied.
+///
+/// [whiteScore] always uses White's perspective and is clamped to the
+/// advantage gauge range of -100 to 100. This lets game surfaces reuse work
+/// that the AI already performed instead of starting a competing search.
+typedef AiRootEvaluationHook =
+    void Function(NativeMillGameSession session, int whiteScore);
+
 /// AI-turn adapter for the Rust-native Mill session path.
 ///
 /// This intentionally does not touch `GameController`, timers, or recording.
@@ -33,6 +42,7 @@ class NativeMillAiTurnController {
     this.maxStepsPerTurn = 8,
     this.bothSidesAi = false,
     this.onBeforeRemoveApply,
+    this.onRootEvaluation,
     this.openingBook,
     this.humanDatabase,
   });
@@ -59,6 +69,10 @@ class NativeMillAiTurnController {
 
   /// When set, called before applying a remove action inside [playIfAiTurn].
   final BeforeRemoveApplyHook? onBeforeRemoveApply;
+
+  /// When set, receives the evaluated root position before its action is
+  /// applied. The callback is also invoked for non-search move sources.
+  final AiRootEvaluationHook? onRootEvaluation;
 
   /// Optional opening-book lookup consulted before engine search.
   final OpeningBookProvider? openingBook;
@@ -211,6 +225,7 @@ class NativeMillAiTurnController {
       final GameAction? bookAction = openingBook?.lookup(session);
       if (bookAction != null) {
         final GameAction action = _applyErrorPatch(session, bookAction);
+        onRootEvaluation?.call(session, 0);
         if (action.type == MillActionTypes.remove) {
           await onBeforeRemoveApply?.call();
         }
@@ -248,6 +263,7 @@ class NativeMillAiTurnController {
         }
         final GameAction action = _applyErrorPatch(session, preliminary);
 
+        onRootEvaluation?.call(session, graphScore);
         if (action.type == MillActionTypes.remove) {
           await onBeforeRemoveApply?.call();
         }
@@ -298,6 +314,18 @@ class NativeMillAiTurnController {
       if (session.lastAiMoveType == AiMoveType.perfect ||
           session.lastAiMoveType == AiMoveType.consensus) {
         session.lastAiBestValue = _perfectDatabaseGraphScore(session, action);
+      }
+      final int? rootScore = session.lastAiBestValue;
+      if (rootScore != null) {
+        final int whiteScore =
+            session.lastAiMoveType == AiMoveType.perfect ||
+                session.lastAiMoveType == AiMoveType.consensus
+            ? rootScore
+            : _whitePerspectiveGraphScore(
+                session.state.value.activeSeat,
+                rootScore.toDouble(),
+              );
+        onRootEvaluation?.call(session, whiteScore);
       }
       // #region agent log
       agentDbg(
