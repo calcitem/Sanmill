@@ -391,12 +391,10 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
     let mut completion = String::from(theme.completion);
     if line.only_move_count > 0 && line.decision_point_count > 0 {
         if line.decision_point_count == 1 {
-            completion.push_str(
-                " The follow-up decision allowed exactly one winning move.",
-            );
+            completion.push_str(" At the later decision point, only one move preserved the win.");
         } else {
             completion.push_str(&format!(
-                " {only} of the {total} follow-up decisions allowed exactly one winning move.",
+                " At {only} of the {total} later decision points, only one move preserved the win.",
                 only = line.only_move_count,
                 total = line.decision_point_count,
             ));
@@ -716,11 +714,11 @@ mod tests {
 
         assert!(
             build_completion(1)
-                .contains("The follow-up decision allowed exactly one winning move.")
+                .contains("At the later decision point, only one move preserved the win.")
         );
         assert!(
             build_completion(2)
-                .contains("1 of the 2 follow-up decisions allowed exactly one winning move.")
+                .contains("At 1 of the 2 later decision points, only one move preserved the win.")
         );
     }
 
