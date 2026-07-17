@@ -1817,6 +1817,14 @@ void main() {
       await tester.pumpAndSettle();
     }
 
+    Finder semanticsWithLabel(String label) => find.byWidgetPredicate(
+      (Widget widget) =>
+          widget is Semantics && widget.properties.label == label,
+    );
+
+    expect(semanticsWithLabel('Previous'), findsOneWidget);
+    expect(semanticsWithLabel('Skip'), findsOneWidget);
+    expect(semanticsWithLabel('Next'), findsOneWidget);
     expect(find.text('Mill\nHow to play'), findsOneWidget);
 
     await nextStep();
@@ -1864,6 +1872,7 @@ void main() {
       find.text('You can customize these rules under Rule settings.'),
       findsOneWidget,
     );
+    expect(semanticsWithLabel('Got it'), findsOneWidget);
   });
 
   testWidgets('Variants page opens detail before applying a rule set', (

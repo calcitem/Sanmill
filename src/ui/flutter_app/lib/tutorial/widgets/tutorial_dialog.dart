@@ -188,43 +188,62 @@ class _TutorialDialogState extends State<TutorialDialog> {
     required Key finishButtonKey,
     required Key nextButtonKey,
   }) {
+    final S strings = S.of(context);
+    final String finishLabel = isFinally ? strings.gotIt : strings.skip;
+
     return Container(
       height: kToolbarHeight,
       color: Colors.white,
       child: Row(
         children: <Widget>[
           Semantics(
-            label: S.of(context).previous,
-            child: IconButton(
-              key: previousButtonKey,
-              onPressed: isStart ? null : prevStep,
-              icon: Icon(
-                Icons.arrow_back,
-                color: isStart ? Colors.grey : Colors.black,
+            label: strings.previous,
+            button: true,
+            enabled: !isStart,
+            child: ExcludeSemantics(
+              child: IconButton(
+                key: previousButtonKey,
+                tooltip: strings.previous,
+                onPressed: isStart ? null : prevStep,
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: isStart ? Colors.grey : Colors.black,
+                ),
               ),
             ),
           ),
           const Spacer(),
-          IconButton(
-            key: finishButtonKey,
-            tooltip: isFinally ? S.of(context).gotIt : S.of(context).skip,
-            onPressed: () => _finishTutorial(context),
-            icon: isFinally
-                ? const Icon(Icons.done_outline, color: Colors.black)
-                : const Icon(
-                    FluentIcons.arrow_exit_20_regular,
-                    color: Colors.black,
-                  ),
+          Semantics(
+            label: finishLabel,
+            button: true,
+            child: ExcludeSemantics(
+              child: IconButton(
+                key: finishButtonKey,
+                tooltip: finishLabel,
+                onPressed: () => _finishTutorial(context),
+                icon: isFinally
+                    ? const Icon(Icons.done_outline, color: Colors.black)
+                    : const Icon(
+                        FluentIcons.arrow_exit_20_regular,
+                        color: Colors.black,
+                      ),
+              ),
+            ),
           ),
           const Spacer(),
           Semantics(
-            label: S.of(context).next,
-            child: IconButton(
-              key: nextButtonKey,
-              onPressed: isFinally ? null : nextStep,
-              icon: Icon(
-                Icons.arrow_forward_rounded,
-                color: isFinally ? Colors.grey : Colors.black,
+            label: strings.next,
+            button: true,
+            enabled: !isFinally,
+            child: ExcludeSemantics(
+              child: IconButton(
+                key: nextButtonKey,
+                tooltip: strings.next,
+                onPressed: isFinally ? null : nextStep,
+                icon: Icon(
+                  Icons.arrow_forward_rounded,
+                  color: isFinally ? Colors.grey : Colors.black,
+                ),
               ),
             ),
           ),
