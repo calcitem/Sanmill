@@ -78,6 +78,16 @@ void main() {
     );
   });
 
+  test('uses action-specific English annotation clearing copy', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.confirmClear, 'Clear annotations?');
+    expect(
+      english.areYouSureYouWantToClearAllAnnotations,
+      'All board annotations will be removed.',
+    );
+  });
+
   test('uses consequence-focused English game confirmations', () {
     final S english = lookupS(const Locale('en'));
 

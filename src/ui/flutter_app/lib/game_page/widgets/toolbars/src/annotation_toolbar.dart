@@ -54,11 +54,11 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text(S.of(context).no),
+            child: Text(S.of(context).cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text(S.of(context).yes),
+            child: Text(S.of(context).clear),
           ),
         ],
       ),
