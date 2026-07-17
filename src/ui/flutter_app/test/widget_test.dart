@@ -1645,6 +1645,18 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    final BuildContext trainingContext = tester.element(
+      find.byKey(const Key('mill_coordinate_training_page_scaffold')),
+    );
+    expect(
+      S.of(trainingContext).coordinateTrainingResult(1, 1),
+      '1 correct · 1 attempt',
+    );
+    expect(
+      S.of(trainingContext).coordinateTrainingResult(2, 2),
+      '2 correct · 2 attempts',
+    );
+
     expect(
       find.byKey(const Key('mill_coordinate_training_board')),
       findsOneWidget,

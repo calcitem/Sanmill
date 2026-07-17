@@ -5308,7 +5308,7 @@
     "@reviewCurrentAnnotation": {"placeholders": {"annotation": {"type": "String"}}},
     "reviewNoAnnotation": "No quality annotation",
     "coordinateTrainingFinish": "Finish session",
-    "coordinateTrainingResult": "{correct} correct · {attempts} attempts",
+    "coordinateTrainingResult": "{correct} correct · {attempts, plural, =1{1 attempt} other{{attempts} attempts}}",
     "@coordinateTrainingResult": {"placeholders": {"correct": {"type": "int"}, "attempts": {"type": "int"}}},
     "dailyPuzzleNotCompleted": "Not completed yet",
     "puzzleCompletionProgress": "{percentage}% complete",
