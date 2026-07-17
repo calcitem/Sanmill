@@ -21,7 +21,21 @@ class _PointPaintingStyleModal extends StatelessWidget {
       child: Column(
         key: const Key('point_painting_style_column'),
         mainAxisSize: MainAxisSize.min,
-        children: _buildRadioListTiles(context),
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 20, 24, 12),
+            child: Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: Text(
+                S.of(context).pointStyle,
+                key: const Key('point_painting_style_title'),
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
+          ),
+          const Divider(height: 1),
+          ..._buildRadioListTiles(context),
+        ],
       ),
     );
   }
