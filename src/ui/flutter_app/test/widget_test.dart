@@ -3336,6 +3336,81 @@ void main() {
   );
 
   testWidgets(
+    'Home carousel crops the next game instead of narrowing it',
+    (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(390, 844)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      final GameController controller = GameController();
+      final GeneralSettings previousGeneralSettings = DB().generalSettings;
+      final Directory recordsDirectory = Directory.systemTemp.createTempSync(
+        'sanmill-home-carousel-',
+      );
+      addTearDown(() async {
+        DB().generalSettings = previousGeneralSettings;
+        controller.activeSessionSnapshot = null;
+        controller.gameRecorder.reset();
+        if (recordsDirectory.existsSync()) {
+          await recordsDirectory.delete(recursive: true);
+        }
+      });
+      DB().generalSettings = previousGeneralSettings.copyWith(
+        lastPgnSaveDirectory: recordsDirectory.path,
+      );
+      await File('${recordsDirectory.path}/saved-ongoing.pgn').writeAsString('''
+[Event "Saved game"]
+[White "Alice"]
+[Black "Bob"]
+[Result "*"]
+
+1. d6 f4 *
+''');
+
+      await tester.pumpWidget(const SanmillApp());
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      controller.activeSessionSnapshot = const platform.GameStateSnapshot(
+        gameId: GameId.mill,
+        activeSeat: platform.PlayerSeat.second,
+        outcome: platform.GameOutcome.ongoing(),
+        phase: 'placing',
+      );
+      controller.gameRecorder.appendMove(ExtMove('d6', side: PieceColor.white));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      final Finder activeGame = find.byKey(
+        const Key('sanmill_home_ongoing_game'),
+      );
+      final Finder savedGame = find.byKey(
+        const Key('sanmill_home_saved_ongoing_game_0'),
+      );
+      final Finder carouselFrame = find.byKey(
+        const Key('sanmill_home_game_carousel_frame'),
+      );
+      expect(activeGame, findsOneWidget);
+      expect(savedGame, findsOneWidget);
+
+      final Rect activeGameRect = tester.getRect(activeGame);
+      final Rect savedGameRect = tester.getRect(savedGame);
+      final Rect carouselFrameRect = tester.getRect(carouselFrame);
+      expect(
+        savedGameRect.width,
+        moreOrLessEquals(activeGameRect.width, epsilon: 1),
+      );
+      expect(savedGameRect.right, greaterThan(carouselFrameRect.right));
+
+      // Drain the settings-save debounce timer armed by the temporary path.
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Home tab keeps bottom navigation after leaving an active game',
     (WidgetTester tester) async {
       final GameController controller = GameController();

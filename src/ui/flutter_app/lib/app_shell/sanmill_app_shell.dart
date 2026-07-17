@@ -2148,7 +2148,12 @@ class _HomeGameCarouselSection extends StatefulWidget {
 }
 
 class _HomeGameCarouselSectionState extends State<_HomeGameCarouselSection> {
-  static const List<int> _flexWeights = <int>[7, 3];
+  static const int _primaryFlexWeight = 6;
+  static const int _totalFlexWeight = 8;
+  static const List<int> _flexWeights = <int>[
+    _primaryFlexWeight,
+    _totalFlexWeight - _primaryFlexWeight,
+  ];
   static const EdgeInsets _carouselPadding = EdgeInsets.symmetric(
     horizontal: 8,
   );
@@ -2224,39 +2229,83 @@ class _HomeGameCarouselSectionState extends State<_HomeGameCarouselSection> {
           ),
           Padding(
             padding: _carouselOuterPadding,
-            child: AspectRatio(
-              key: const Key('sanmill_home_game_carousel_frame'),
-              aspectRatio: _carouselAspectRatio,
-              child: CarouselView.weighted(
-                key: widget.listKey,
-                controller: _controller,
-                padding: _carouselPadding,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppStyles.compactRadius),
-                ),
-                elevation: Theme.of(context).platform == TargetPlatform.iOS
-                    ? 0
-                    : 1,
-                flexWeights: _flexWeights,
-                itemSnapping: true,
-                onTap: (int index) {
-                  assert(
-                    index >= 0 && index < widget.children.length,
-                    'Home carousel tap index must point to a child.',
-                  );
-                  final Widget child = widget.children[index];
-                  assert(
-                    child is _GamePreviewCarouselCard,
-                    'Home carousel items must be game preview cards.',
-                  );
-                  (child as _GamePreviewCarouselCard).onTap();
-                },
-                children: widget.children,
-              ),
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                final double primaryCardWidth =
+                    constraints.maxWidth *
+                        _primaryFlexWeight /
+                        _totalFlexWeight -
+                    _carouselPadding.horizontal;
+                final List<Widget> carouselChildren =
+                    widget.children.length == 1
+                    ? widget.children
+                    : widget.children
+                          .map(
+                            (Widget child) => _HomeGameCarouselPreview(
+                              primaryCardWidth: primaryCardWidth,
+                              child: child,
+                            ),
+                          )
+                          .toList(growable: false);
+
+                return AspectRatio(
+                  key: const Key('sanmill_home_game_carousel_frame'),
+                  aspectRatio: _carouselAspectRatio,
+                  child: CarouselView.weighted(
+                    key: widget.listKey,
+                    controller: _controller,
+                    padding: _carouselPadding,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        AppStyles.compactRadius,
+                      ),
+                    ),
+                    elevation: Theme.of(context).platform == TargetPlatform.iOS
+                        ? 0
+                        : 1,
+                    flexWeights: _flexWeights,
+                    itemSnapping: true,
+                    onTap: (int index) {
+                      assert(
+                        index >= 0 && index < widget.children.length,
+                        'Home carousel tap index must point to a child.',
+                      );
+                      final Widget child = widget.children[index];
+                      assert(
+                        child is _GamePreviewCarouselCard,
+                        'Home carousel items must be game preview cards.',
+                      );
+                      (child as _GamePreviewCarouselCard).onTap();
+                    },
+                    children: carouselChildren,
+                  ),
+                );
+              },
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Keeps the next carousel preview at the primary-card width so the carousel
+/// shows a deliberate crop instead of reflowing text into a narrow card.
+class _HomeGameCarouselPreview extends StatelessWidget {
+  const _HomeGameCarouselPreview({
+    required this.primaryCardWidth,
+    required this.child,
+  });
+
+  final double primaryCardWidth;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return OverflowBox(
+      minWidth: primaryCardWidth,
+      maxWidth: primaryCardWidth,
+      child: child,
     );
   }
 }
