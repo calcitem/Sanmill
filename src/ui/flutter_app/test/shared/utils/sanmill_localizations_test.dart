@@ -204,6 +204,12 @@ void main() {
     expect(english.pasteAndImportGameHint, 'Tap to paste and import a game');
   });
 
+  test('explains what the English FEN copy action copies', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.copyFen, 'Copy position as FEN');
+  });
+
   test('punctuates the English background-music description', () {
     final S english = lookupS(const Locale('en'));
 

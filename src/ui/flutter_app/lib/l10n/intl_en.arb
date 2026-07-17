@@ -2029,8 +2029,10 @@
     "@boardDetectionFailed": {},
     "noBoardPointDetectedCannotIdentifyPiece": "No board points were detected, so pieces could not be identified.",
     "@noBoardPointDetectedCannotIdentifyPiece": {},
-    "copyFen": "Copy FEN",
-    "@copyFen": {},
+    "copyFen": "Copy position as FEN",
+    "@copyFen": {
+        "description": "Action that copies the current board position in FEN notation"
+    },
     "commonlyUsedModels": "Commonly used models",
     "@commonlyUsedModels": {},
     "apiKeyOptional": "API Key (optional)",
