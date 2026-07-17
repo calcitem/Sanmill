@@ -5217,5 +5217,17 @@
                 "type": "String"
             }
         }
+    },
+    "boardTheme": "棋盘主题",
+    "@boardTheme": {
+        "description": "Setting that opens the board color theme selector"
+    },
+    "themeMode": "主题模式",
+    "@themeMode": {
+        "description": "Setting title for app light/dark/system theme mode"
+    },
+    "system": "跟随系统",
+    "@system": {
+        "description": "Theme mode option that follows the operating system"
     }
 }
