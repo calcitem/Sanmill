@@ -1476,7 +1476,6 @@ class _HomeTodayProgress extends StatelessWidget {
           title: Text(
             strings.todayProgressSummary(gamesCompleted, reviewsCompleted),
           ),
-          subtitle: Text(strings.todayProgressDescription),
         ),
       ],
     );
