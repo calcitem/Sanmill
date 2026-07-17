@@ -5603,5 +5603,65 @@
     "fontSizePreview": "示例文字 123",
     "@fontSizePreview": {
         "description": "Preview text displayed in the font-size selector"
+    },
+    "cancelPuzzleSelection": "取消选择",
+    "@cancelPuzzleSelection": {
+        "description": "Action that exits puzzle multi-selection mode"
+    },
+    "coordinateTrainingCurrentTarget": "当前目标：{coordinate}",
+    "@coordinateTrainingCurrentTarget": {
+        "description": "Accessible label for the current coordinate-training target",
+        "placeholders": {
+            "coordinate": {
+                "type": "String",
+                "example": "d4"
+            }
+        }
+    },
+    "coordinateTrainingNextTarget": "下一个目标：{coordinate}",
+    "@coordinateTrainingNextTarget": {
+        "description": "Accessible label for the next coordinate-training target",
+        "placeholders": {
+            "coordinate": {
+                "type": "String",
+                "example": "g7"
+            }
+        }
+    },
+    "coordinateTrainingStandardOrientation": "标准",
+    "@coordinateTrainingStandardOrientation": {
+        "description": "Option for the standard coordinate-training board orientation"
+    },
+    "puzzleSolutionActionCount": "{count, plural, =1{1 个原子动作} other{{count} 个原子动作}}",
+    "@puzzleSolutionActionCount": {
+        "description": "Number of atomic placement, movement, or removal actions listed in a puzzle solution",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "7"
+            }
+        }
+    },
+    "puzzleStatsCurrentRating": "当前等级分",
+    "@puzzleStatsCurrentRating": {
+        "description": "Label below the current puzzle-rating value"
+    },
+    "puzzleStreakQuitTitle": "退出连续解谜？",
+    "@puzzleStreakQuitTitle": {
+        "description": "Confirmation title before leaving a puzzle streak"
+    },
+    "puzzlesExportedForContribution": "{count, plural, =1{已导出 1 个谜题以供贡献} other{已导出 {count} 个谜题以供贡献}}",
+    "@puzzlesExportedForContribution": {
+        "description": "Success message after exporting one or more puzzles for contribution",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "3"
+            }
+        }
+    },
+    "viewContributionGuide": "查看指南",
+    "@viewContributionGuide": {
+        "description": "Action that opens the puzzle-contribution guide"
     }
 }

@@ -26,5 +26,8 @@ void main() {
 
     expect(strings.practice, '练习');
     expect(strings.guides, '指南');
+    expect(strings.coordinateTrainingStandardOrientation, '标准');
+    expect(strings.coordinateTrainingCurrentTarget('d4'), '当前目标：d4');
+    expect(strings.coordinateTrainingNextTarget('g7'), '下一个目标：g7');
   });
 }
