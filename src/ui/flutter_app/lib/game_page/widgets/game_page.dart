@@ -538,7 +538,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
             return PopupMenuButton<_AnalysisAppBarAction>(
               key: const Key('game_page_analysis_menu_button'),
               tooltip: strings.menu,
-              icon: const Icon(Icons.more_horiz),
+              icon: Icon(Icons.more_horiz, semanticLabel: strings.menu),
               onSelected: (_AnalysisAppBarAction action) {
                 switch (action) {
                   case _AnalysisAppBarAction.settings:
@@ -636,7 +636,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
     final int lineCount = AnalysisMode.engineLineCount;
     final String lineCountLabel = lineCount <= 0
         ? strings.openingExplorerNoDataShort
-        : '${strings.multipleLines} $lineCount';
+        : strings.engineLineCount(lineCount);
     return <String>[
       _analysisAppBarSourceLabel(strings),
       lineCountLabel,

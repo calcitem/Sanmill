@@ -4834,9 +4834,9 @@
     "@analysisKeyMoments": {},
     "analysisSummaryEmptyHint": "Run analysis to review this position.",
     "@analysisSummaryEmptyHint": {},
-    "showEngineLines": "Show Engine Lines",
+    "showEngineLines": "Show engine lines",
     "@showEngineLines": {},
-    "hideEngineLines": "Hide Engine Lines",
+    "hideEngineLines": "Hide engine lines",
     "@hideEngineLines": {},
     "shareAndExport": "Share and export",
     "@shareAndExport": {},
@@ -5552,5 +5552,15 @@
     "pasteAndImportGameHint": "Tap here to paste and import a game",
     "@pasteAndImportGameHint": {
         "description": "Hint in the read-only PGN field that imports clipboard text when tapped"
+    },
+    "engineLineCount": "{count, plural, =1{1 line} other{{count} lines}}",
+    "@engineLineCount": {
+        "description": "Number of principal-variation lines shown by the analysis engine",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "2"
+            }
+        }
     }
 }

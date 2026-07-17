@@ -1147,6 +1147,11 @@ void main() {
       await tester.tap(find.byKey(const Key('game_page_analysis_menu_button')));
       await tester.pumpAndSettle();
 
+      final BuildContext analysisMenuContext = tester.element(
+        find.byKey(const Key('game_page_analysis_menu_button')),
+      );
+      expect(S.of(analysisMenuContext).engineLineCount(1), '1 line');
+      expect(S.of(analysisMenuContext).engineLineCount(2), '2 lines');
       expect(
         find.byKey(const Key('game_page_analysis_menu_settings')),
         findsOneWidget,
@@ -1155,7 +1160,8 @@ void main() {
         find.byKey(const Key('game_page_analysis_menu_engine_lines')),
         findsOneWidget,
       );
-      expect(find.text('Engine · Multiple lines 2'), findsOneWidget);
+      expect(find.text('Hide engine lines'), findsOneWidget);
+      expect(find.text('Engine · 2 lines'), findsOneWidget);
       expect(AnalysisMode.showEngineLines, isTrue);
 
       await tester.tap(
