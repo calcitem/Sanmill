@@ -20,4 +20,11 @@ void main() {
     expect(strings.previous, '上一步');
     expect(strings.next, '下一步');
   });
+
+  test('Simplified Chinese localizes Learn section labels', () async {
+    final S strings = await S.delegate.load(const Locale('zh'));
+
+    expect(strings.practice, '练习');
+    expect(strings.guides, '指南');
+  });
 }

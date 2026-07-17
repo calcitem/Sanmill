@@ -5355,5 +5355,13 @@
                 "example": "6"
             }
         }
+    },
+    "practice": "练习",
+    "@practice": {
+        "description": "Practice"
+    },
+    "guides": "指南",
+    "@guides": {
+        "description": "Guides"
     }
 }
