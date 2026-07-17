@@ -4386,7 +4386,7 @@
     "@importFailed": {
         "description": "Title of the dialog shown when clipboard content cannot be imported as a game"
     },
-    "strategySuggestionTitle": "Strategy Tip",
+    "strategySuggestionTitle": "Strategy tip",
     "@strategySuggestionTitle": {},
     "nmmStrategySuggestion": "It seems {gameName} is proving challenging. A strategy guide covering openings, tactics, and endgame techniques is available — it might give you the edge you need.",
     "@nmmStrategySuggestion": {
@@ -4398,11 +4398,11 @@
             }
         }
     },
-    "learnMore": "Learn More",
+    "learnMore": "Learn more",
     "@learnMore": {},
-    "notNow": "Not Now",
+    "notNow": "Not now",
     "@notNow": {},
-    "dontShowAgain": "Don't Show Again",
+    "dontShowAgain": "Don't show again",
     "@dontShowAgain": {},
     "configImportExport": "Import and export",
     "@configImportExport": {},
