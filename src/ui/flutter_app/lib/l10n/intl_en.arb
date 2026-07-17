@@ -4492,8 +4492,6 @@
     "@humanGameDatabaseFile": {},
     "humanGameDatabaseFile_Detail": "Choose a compatible SQLite database. Sanmill copies it to the app's private storage.",
     "@humanGameDatabaseFile_Detail": {},
-    "clearHumanGameDatabaseFile": "Clear human game database file",
-    "@clearHumanGameDatabaseFile": {},
     "showHumanGameDatabaseStats": "Show human move statistics during games",
     "@showHumanGameDatabaseStats": {},
     "showHumanGameDatabaseStats_Detail": "After a database move, show its win, draw, and loss rates from the moving player's perspective, plus the number of games.",
@@ -4508,15 +4506,6 @@
             "moveCount": {
                 "description": "Number of moves in the database.",
                 "example": "789012"
-            }
-        }
-    },
-    "humanGameDatabaseLoadFailed": "Human game database could not be loaded: {error}",
-    "@humanGameDatabaseLoadFailed": {
-        "placeholders": {
-            "error": {
-                "description": "Error returned while loading the database.",
-                "example": "missing table moves"
             }
         }
     },
