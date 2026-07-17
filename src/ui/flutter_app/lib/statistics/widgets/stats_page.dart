@@ -113,7 +113,7 @@ class StatisticsPage extends StatelessWidget {
               style: TextButton.styleFrom(
                 foregroundColor: Theme.of(context).colorScheme.error,
               ),
-              child: Text(S.of(context).ok),
+              child: Text(S.of(context).reset),
             ),
           ],
         );
@@ -121,7 +121,7 @@ class StatisticsPage extends StatelessWidget {
     );
   }
 
-  // Reset all game statistics while preserving ratings
+  // Reset all game statistics and ratings.
   void _resetStats() {
     final StatsSettings statsSettings = DB().statsSettings;
 

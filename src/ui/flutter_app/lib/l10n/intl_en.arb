@@ -2111,7 +2111,7 @@
     "@enableStatistics": {},
     "enableStatistics_Detail": "Record completed games in statistics. Games with taken-back moves are excluded. Turn this off to pause recording.",
     "@enableStatistics_Detail": {},
-    "thisWillResetAllGameStatistics": "This will reset all game statistics. This action cannot be undone.",
+    "thisWillResetAllGameStatistics": "All ratings and game results will be reset. This cannot be undone.",
     "@thisWillResetAllGameStatistics": {},
     "boardInnerRingSize": "Board inner ring size",
     "@boardInnerRingSize": {},

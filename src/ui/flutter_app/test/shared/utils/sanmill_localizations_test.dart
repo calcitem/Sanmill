@@ -130,6 +130,15 @@ void main() {
     );
   });
 
+  test('accurately describes the English statistics reset scope', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(
+      english.thisWillResetAllGameStatistics,
+      'All ratings and game results will be reset. This cannot be undone.',
+    );
+  });
+
   test('explains English recording deletion consequences', () {
     final S english = lookupS(const Locale('en'));
 
