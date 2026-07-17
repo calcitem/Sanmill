@@ -216,6 +216,92 @@ class _GameHeaderState extends State<GameHeader> {
   }
 }
 
+/// A compact, accessible speech bubble for a contextual game tip.
+///
+/// The surrounding player row supplies the avatar, so this widget deliberately
+/// focuses on the message. Long opening names and rule-specific guidance stay
+/// available through the standard long-press tooltip instead of forcing the
+/// board layout to grow.
+class GameTipBubble extends StatelessWidget {
+  const GameTipBubble({super.key, required this.message, this.maxLines = 2})
+    : assert(maxLines > 0, 'Game-tip bubbles need at least one line.');
+
+  final String message;
+  final int maxLines;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextStyle textStyle =
+        Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: colorScheme.onSecondaryContainer,
+          height: 1.15,
+        ) ??
+        TextStyle(color: colorScheme.onSecondaryContainer, height: 1.15);
+
+    return Semantics(
+      container: true,
+      liveRegion: true,
+      label: message,
+      child: Tooltip(
+        message: message,
+        child: ExcludeSemantics(
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              // A very narrow side panel cannot show a meaningful tip. Hide
+              // the visual bubble rather than overflowing the board layout;
+              // the live-region label remains available to assistive tech.
+              if (constraints.hasBoundedWidth && constraints.maxWidth < 48) {
+                return const SizedBox.shrink();
+              }
+              final bool compact =
+                  constraints.hasBoundedWidth && constraints.maxWidth < 84;
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: colorScheme.secondaryContainer,
+                  border: Border.all(color: colorScheme.outlineVariant),
+                  borderRadius: BorderRadius.circular(AppTheme.boardMargin),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: compact ? 4 : 8,
+                    vertical: 5,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      if (!compact) ...<Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(top: 1),
+                          child: Icon(
+                            Icons.chat_bubble_outline,
+                            size: 14,
+                            color: colorScheme.onSecondaryContainer,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                      ],
+                      Flexible(
+                        child: Text(
+                          message,
+                          maxLines: maxLines,
+                          overflow: TextOverflow.ellipsis,
+                          style: textStyle,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 @visibleForTesting
 class HeaderTip extends StatefulWidget {
   const HeaderTip({super.key});

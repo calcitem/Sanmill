@@ -6030,20 +6030,26 @@ class _HumanAiPlayerPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isRobot) {
-      return ValueListenableBuilder<bool>(
-        valueListenable: GameController().engineActivityNotifier,
-        builder: (BuildContext context, bool isThinking, Widget? child) {
-          return _buildPanel(context, isThinking: isThinking);
-        },
-      );
-    }
-    return _buildPanel(context, isThinking: false);
+    final GameController controller = GameController();
+    return AnimatedBuilder(
+      animation: Listenable.merge(<Listenable>[
+        controller.headerTipNotifier,
+        controller.headerIconsNotifier,
+        if (isRobot) controller.engineActivityNotifier,
+      ]),
+      builder: (BuildContext context, Widget? child) {
+        return _buildPanel(
+          context,
+          isThinking: isRobot && controller.engineActivityNotifier.value,
+        );
+      },
+    );
   }
 
   Widget _buildPanel(BuildContext context, {required bool isThinking}) {
     final ThemeData theme = Theme.of(context);
     final Color messageColor = DB().colorSettings.messageColor;
+    final GameController controller = GameController();
     final int level = DB().generalSettings.skillLevel;
     final int rating = isRobot
         ? EloRatingService.getFixedAiEloRating(level)
@@ -6051,6 +6057,65 @@ class _HumanAiPlayerPanel extends StatelessWidget {
     final String title = isRobot
         ? S.of(context).humanAiRobotLevel(level)
         : S.of(context).humanAiPlayer;
+    final PieceColor sideToMove = controller.activeBoardView.sideToMove;
+    final bool isActivePlayer =
+        (sideToMove == PieceColor.white || sideToMove == PieceColor.black) &&
+        controller.gameInstance.getPlayerByColor(sideToMove).isAi == isRobot;
+    final bool showTip = DB().generalSettings.showGameTips && isActivePlayer;
+    final String tip = controller.headerTipNotifier.message.isEmpty
+        ? S.of(context).welcome
+        : controller.headerTipNotifier.message;
+    final Widget playerDetails = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Flexible(
+              child: Text(
+                title,
+                key: Key(
+                  isRobot
+                      ? 'play_area_human_ai_robot_title'
+                      : 'play_area_human_ai_player_title',
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: messageColor,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0,
+                ),
+              ),
+            ),
+            if (isThinking) ...<Widget>[
+              const SizedBox(width: 8),
+              Icon(
+                Icons.hourglass_top,
+                key: const Key('play_area_human_ai_robot_thinking_icon'),
+                size: 16,
+                color: messageColor.withValues(alpha: 0.72),
+              ),
+            ],
+          ],
+        ),
+        Text(
+          S.of(context).eloRating(rating),
+          key: Key(
+            isRobot
+                ? 'play_area_human_ai_robot_elo'
+                : 'play_area_human_ai_player_elo',
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: messageColor.withValues(alpha: 0.72),
+            letterSpacing: 0,
+          ),
+        ),
+      ],
+    );
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -6071,59 +6136,25 @@ class _HumanAiPlayerPanel extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Flexible(
-                      child: Text(
-                        title,
-                        key: Key(
-                          isRobot
-                              ? 'play_area_human_ai_robot_title'
-                              : 'play_area_human_ai_player_title',
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: messageColor,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0,
-                        ),
-                      ),
-                    ),
-                    if (isThinking) ...<Widget>[
+            child: showTip
+                ? Row(
+                    children: <Widget>[
+                      Expanded(flex: 4, child: playerDetails),
                       const SizedBox(width: 8),
-                      Icon(
-                        Icons.hourglass_top,
-                        key: const Key(
-                          'play_area_human_ai_robot_thinking_icon',
+                      Expanded(
+                        flex: 6,
+                        child: GameTipBubble(
+                          key: Key(
+                            isRobot
+                                ? 'play_area_human_ai_robot_tip'
+                                : 'play_area_human_ai_player_tip',
+                          ),
+                          message: tip,
                         ),
-                        size: 16,
-                        color: messageColor.withValues(alpha: 0.72),
                       ),
                     ],
-                  ],
-                ),
-                Text(
-                  S.of(context).eloRating(rating),
-                  key: Key(
-                    isRobot
-                        ? 'play_area_human_ai_robot_elo'
-                        : 'play_area_human_ai_player_elo',
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: messageColor.withValues(alpha: 0.72),
-                    letterSpacing: 0,
-                  ),
-                ),
-              ],
-            ),
+                  )
+                : playerDetails,
           ),
         ],
       ),

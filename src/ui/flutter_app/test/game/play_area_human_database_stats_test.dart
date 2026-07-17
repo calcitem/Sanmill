@@ -1419,6 +1419,83 @@ void main() {
     expect(find.byKey(const Key('play_area_human_ai_player_panel')), findsOne);
   });
 
+  testWidgets('human vs computer tips follow the player to move', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(showGameTips: true);
+    final NativeMillGameSession session = await _bindNativeHumanAiGame();
+    await _pumpSessionPlayArea(tester, session);
+
+    final GameController controller = GameController();
+    controller.headerTipNotifier.showTip('Your turn', snackBar: false);
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.pump(const Duration(milliseconds: 1));
+
+    final Finder robotPanel = find.byKey(
+      const Key('play_area_human_ai_robot_panel'),
+    );
+    final Finder playerPanel = find.byKey(
+      const Key('play_area_human_ai_player_panel'),
+    );
+    expect(
+      find.descendant(
+        of: playerPanel,
+        matching: find.byKey(const Key('play_area_human_ai_player_tip')),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: robotPanel,
+        matching: find.byKey(const Key('play_area_human_ai_robot_tip')),
+      ),
+      findsNothing,
+    );
+    expect(
+      tester
+          .getSize(find.byKey(const Key('play_area_human_ai_player_tip')))
+          .width,
+      greaterThanOrEqualTo(48),
+    );
+
+    await session.apply(
+      const platform.GameAction(
+        type: MillActionTypes.place,
+        payload: <String, Object?>{'move': 'a1'},
+      ),
+    );
+    controller.headerIconsNotifier.showIcons();
+    controller.headerTipNotifier.showTip(
+      'Computer is thinking',
+      snackBar: false,
+    );
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.pump(const Duration(milliseconds: 1));
+
+    expect(
+      find.descendant(
+        of: robotPanel,
+        matching: find.byKey(const Key('play_area_human_ai_robot_tip')),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: playerPanel,
+        matching: find.byKey(const Key('play_area_human_ai_player_tip')),
+      ),
+      findsNothing,
+    );
+    expect(
+      tester
+          .getSize(find.byKey(const Key('play_area_human_ai_robot_tip')))
+          .width,
+      greaterThanOrEqualTo(48),
+    );
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('human vs ai hides piece rows when the display switch is off', (
     WidgetTester tester,
   ) async {
