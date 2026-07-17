@@ -5773,5 +5773,293 @@
     "copyPrompt": "复制提示词",
     "@copyPrompt": {
         "description": "Button that builds and copies an LLM development prompt"
+    },
+    "boardRecognitionFailedTryAgain": "棋盘识别失败。请使用棋盘完整可见且更清晰的图片重试。",
+    "@boardRecognitionFailedTryAgain": {
+        "description": "Error shown when board recognition throws an internal exception"
+    },
+    "boardRecognitionParameterName": "{parameter, select, contrastEnhancement{对比度增强} pieceDetectionThreshold{棋子检测阈值} boardColorDistance{棋盘颜色距离} pieceColorMatchThreshold{棋子颜色匹配阈值} whiteBrightnessThreshold{白棋亮度阈值} blackBrightnessThreshold{黑棋亮度阈值} blackSaturationThreshold{黑棋饱和度阈值} blackColorVariance{黑棋颜色方差} other{识别参数}}",
+    "@boardRecognitionParameterName": {
+        "description": "Name of a tunable board-recognition parameter",
+        "placeholders": {
+            "parameter": {
+                "type": "String"
+            }
+        }
+    },
+    "boardRecognitionApplyHint": "选择“应用到棋盘”以使用此局面。",
+    "@boardRecognitionApplyHint": {
+        "description": "Instruction below generated FEN in the board-recognition preview"
+    },
+    "boardRecognitionDebugStageName": "{stage, select, originalImage{原始图片} resizedImage{缩放后的图片} enhancedImage{增强对比度} boardMaskRaw{初始掩码} boardMaskProcessed{处理后的掩码} boardDetection{棋盘检测} boardPointsDetection{点位检测} colorAnalysis{颜色分析} pieceDetection{棋子检测} finalResult{最终结果} other{调试阶段}}",
+    "@boardRecognitionDebugStageName": {
+        "description": "Name of a board-recognition diagnostic stage",
+        "placeholders": {
+            "stage": {
+                "type": "String"
+            }
+        }
+    },
+    "boardRecognitionAdjustPhotoHint": "请尽量正对棋盘拍摄，或使光线更均匀。",
+    "@boardRecognitionAdjustPhotoHint": {
+        "description": "Advice shown when the board area cannot be detected"
+    },
+    "boardRecognitionImageUnavailable": "“{image}”不可用。",
+    "@boardRecognitionImageUnavailable": {
+        "description": "Diagnostic message when an intermediate recognition image is missing",
+        "placeholders": {
+            "image": {
+                "type": "String"
+            }
+        }
+    },
+    "boardRecognitionImageDimensions": "{image}：{width} × {height} 像素",
+    "@boardRecognitionImageDimensions": {
+        "description": "Dimensions of a board-recognition diagnostic image",
+        "placeholders": {
+            "image": {
+                "type": "String"
+            },
+            "width": {
+                "type": "int"
+            },
+            "height": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionContrastFactor": "对比度系数：{factor}",
+    "@boardRecognitionContrastFactor": {
+        "description": "Contrast factor used by board recognition",
+        "placeholders": {
+            "factor": {
+                "type": "String"
+            }
+        }
+    },
+    "boardRecognitionBackgroundType": "{type, select, dark{深色} light{浅色} other{未知}}",
+    "@boardRecognitionBackgroundType": {
+        "description": "Detected image background brightness",
+        "placeholders": {
+            "type": {
+                "type": "String"
+            }
+        }
+    },
+    "boardRecognitionContrastLevel": "{level, select, high{高} low{低} other{未知}}",
+    "@boardRecognitionContrastLevel": {
+        "description": "Detected image contrast level",
+        "placeholders": {
+            "level": {
+                "type": "String"
+            }
+        }
+    },
+    "boardRecognitionImageMetrics": "亮度 {brightness} · {background}背景 · {contrast}对比度 · 比例 {ratio}",
+    "@boardRecognitionImageMetrics": {
+        "description": "Summary of image characteristics used by board recognition",
+        "placeholders": {
+            "brightness": {
+                "type": "String"
+            },
+            "background": {
+                "type": "String"
+            },
+            "contrast": {
+                "type": "String"
+            },
+            "ratio": {
+                "type": "String"
+            }
+        }
+    },
+    "boardRecognitionInitialMaskSummary": "初始掩码：{rows} 行 · {activePixels} 个有效像素",
+    "@boardRecognitionInitialMaskSummary": {
+        "description": "Summary of the initial board mask",
+        "placeholders": {
+            "rows": {
+                "type": "int"
+            },
+            "activePixels": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionMaskProcessing": "掩码处理：先膨胀以扩大区域，再腐蚀以去除噪点。",
+    "@boardRecognitionMaskProcessing": {
+        "description": "Explanation of board-mask post-processing"
+    },
+    "boardRecognitionBoardDetectionHelp": "可能原因：\n• 棋盘与背景对比度不足\n• 棋盘部分被裁切或遮挡\n• 光线使棋盘边界模糊\n\n请在光线均匀、棋盘完整清晰可见时重试。",
+    "@boardRecognitionBoardDetectionHelp": {
+        "description": "Diagnostic help when the board region cannot be detected"
+    },
+    "boardRecognitionBoardRegionHeading": "检测到的棋盘区域",
+    "@boardRecognitionBoardRegionHeading": {
+        "description": "Heading for board-region diagnostic results"
+    },
+    "boardRecognitionTopLeft": "左上角：({x}, {y})",
+    "@boardRecognitionTopLeft": {
+        "description": "Top-left coordinates of the detected board region",
+        "placeholders": {
+            "x": {
+                "type": "int"
+            },
+            "y": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionRegionSize": "尺寸：{width} × {height} 像素",
+    "@boardRecognitionRegionSize": {
+        "description": "Size of the detected board region",
+        "placeholders": {
+            "width": {
+                "type": "int"
+            },
+            "height": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionAspectRatio": "宽高比：{ratio}",
+    "@boardRecognitionAspectRatio": {
+        "description": "Aspect ratio of the detected board region",
+        "placeholders": {
+            "ratio": {
+                "type": "String"
+            }
+        }
+    },
+    "boardRecognitionBoardRegionLegend": "黄色矩形标示检测到的棋盘区域。",
+    "@boardRecognitionBoardRegionLegend": {
+        "description": "Legend for the detected board-region overlay"
+    },
+    "boardRecognitionPointDetectionHelp": "可能原因：\n• 棋盘检测失败\n• 图片未展示标准莫里斯九子棋布局\n\n请使用能完整显示 24 个点位的标准棋盘。",
+    "@boardRecognitionPointDetectionHelp": {
+        "description": "Diagnostic help when board points cannot be detected"
+    },
+    "boardRecognitionPointDetectionHeading": "检测到的棋盘点位",
+    "@boardRecognitionPointDetectionHeading": {
+        "description": "Heading for board-point diagnostic results"
+    },
+    "boardRecognitionPointCount": "已检测到 24 个点位中的 {count} 个。",
+    "@boardRecognitionPointCount": {
+        "description": "Number of Mill board points detected",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionPointLegend": "蓝色圆圈标示检测到的点位；数字为点位索引。",
+    "@boardRecognitionPointLegend": {
+        "description": "Legend for the board-point detection overlay"
+    },
+    "boardRecognitionPointCountWarning": "检测到的点位少于 24 个，结果可能不准确。",
+    "@boardRecognitionPointCountWarning": {
+        "description": "Warning for an incomplete set of detected Mill board points"
+    },
+    "boardRecognitionColorAnalysisHelp": "可能原因：\n• 棋盘或点位检测失败\n• 光线使棋子颜色难以区分\n\n请在光线均匀时重试。",
+    "@boardRecognitionColorAnalysisHelp": {
+        "description": "Diagnostic help when board color analysis fails"
+    },
+    "boardRecognitionColorAnalysisHeading": "颜色采样",
+    "@boardRecognitionColorAnalysisHeading": {
+        "description": "Heading for board color-analysis results"
+    },
+    "boardRecognitionColorSampleStats": "{sample}：均值 {mean} · 标准差 {standardDeviation}",
+    "@boardRecognitionColorSampleStats": {
+        "description": "Statistics for a sampled board-point color",
+        "placeholders": {
+            "sample": {
+                "type": "String"
+            },
+            "mean": {
+                "type": "String"
+            },
+            "standardDeviation": {
+                "type": "String"
+            }
+        }
+    },
+    "boardRecognitionColorLegend": "橙色：白棋样本 · 蓝色：黑棋样本 · 绿色：空点",
+    "@boardRecognitionColorLegend": {
+        "description": "Legend for the board color-analysis overlay"
+    },
+    "boardRecognitionPieceDetectionFailed": "棋子检测失败。",
+    "@boardRecognitionPieceDetectionFailed": {
+        "description": "Heading shown when pieces cannot be detected"
+    },
+    "boardRecognitionPieceDetectionHelp": "可能原因：\n• 棋盘点位检测失败\n• 无法确定采样位置\n\n请确保棋盘及所有棋子清晰可见。",
+    "@boardRecognitionPieceDetectionHelp": {
+        "description": "Diagnostic help when pieces cannot be detected"
+    },
+    "boardRecognitionPieceDetectionHeading": "棋子检测",
+    "@boardRecognitionPieceDetectionHeading": {
+        "description": "Heading for piece-detection diagnostic results"
+    },
+    "boardRecognitionPieceDetectionMethod": "对每个棋盘点位采样，并按颜色分类。",
+    "@boardRecognitionPieceDetectionMethod": {
+        "description": "Short explanation of the piece-detection method"
+    },
+    "boardRecognitionWhiteThreshold": "白棋亮度阈值：{value}",
+    "@boardRecognitionWhiteThreshold": {
+        "description": "White-piece brightness threshold",
+        "placeholders": {
+            "value": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionBlackThreshold": "黑棋亮度阈值：{value}",
+    "@boardRecognitionBlackThreshold": {
+        "description": "Black-piece brightness threshold",
+        "placeholders": {
+            "value": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionIdentifiedPieces": "检测到的棋子：白棋 {whiteCount} 枚 · 黑棋 {blackCount} 枚",
+    "@boardRecognitionIdentifiedPieces": {
+        "description": "Summary of pieces detected by color",
+        "placeholders": {
+            "whiteCount": {
+                "type": "int"
+            },
+            "blackCount": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionPieceDetectionLegend": "黄色轮廓：采样区域 · 红色：黑棋 · 绿色：白棋",
+    "@boardRecognitionPieceDetectionLegend": {
+        "description": "Legend for the piece-detection overlay"
+    },
+    "boardRecognitionFinalResultHeading": "最终识别结果",
+    "@boardRecognitionFinalResultHeading": {
+        "description": "Heading for the final board-recognition result"
+    },
+    "boardRecognitionWhitePieceCount": "白棋：{count} 枚",
+    "@boardRecognitionWhitePieceCount": {
+        "description": "Number of white pieces recognized",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionBlackPieceCount": "黑棋：{count} 枚",
+    "@boardRecognitionBlackPieceCount": {
+        "description": "Number of black pieces recognized",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "boardRecognitionFinalLegend": "红色圆圈：黑棋 · 绿色圆圈：白棋",
+    "@boardRecognitionFinalLegend": {
+        "description": "Legend for the final piece overlay"
     }
 }

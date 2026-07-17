@@ -149,6 +149,64 @@ void main() {
     );
   });
 
+  test('localizes board-recognition feedback in Chinese', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(
+      chinese.boardRecognitionFailedTryAgain,
+      '棋盘识别失败。请使用棋盘完整可见且更清晰的图片重试。',
+    );
+    expect(
+      chinese.boardRecognitionParameterName('pieceDetectionThreshold'),
+      '棋子检测阈值',
+    );
+    expect(chinese.boardRecognitionApplyHint, '选择“应用到棋盘”以使用此局面。');
+    expect(
+      <String, String>{
+        for (final String stage in <String>[
+          'originalImage',
+          'resizedImage',
+          'enhancedImage',
+          'boardMaskRaw',
+          'boardMaskProcessed',
+          'boardDetection',
+          'boardPointsDetection',
+          'colorAnalysis',
+          'pieceDetection',
+          'finalResult',
+        ])
+          stage: chinese.boardRecognitionDebugStageName(stage),
+      },
+      <String, String>{
+        'originalImage': '原始图片',
+        'resizedImage': '缩放后的图片',
+        'enhancedImage': '增强对比度',
+        'boardMaskRaw': '初始掩码',
+        'boardMaskProcessed': '处理后的掩码',
+        'boardDetection': '棋盘检测',
+        'boardPointsDetection': '点位检测',
+        'colorAnalysis': '颜色分析',
+        'pieceDetection': '棋子检测',
+        'finalResult': '最终结果',
+      },
+    );
+    expect(
+      chinese.boardRecognitionBoardDetectionHelp,
+      contains('光线均匀、棋盘完整清晰可见'),
+    );
+    expect(chinese.boardRecognitionPointDetectionHelp, contains('标准莫里斯九子棋布局'));
+    expect(chinese.boardRecognitionPointCount(18), '已检测到 24 个点位中的 18 个。');
+    expect(
+      chinese.boardRecognitionColorSampleStats('白棋', '210.1', '4.2'),
+      '白棋：均值 210.1 · 标准差 4.2',
+    );
+    expect(
+      chinese.boardRecognitionIdentifiedPieces(4, 3),
+      '检测到的棋子：白棋 4 枚 · 黑棋 3 枚',
+    );
+    expect(chinese.boardRecognitionFinalLegend, '红色圆圈：黑棋 · 绿色圆圈：白棋');
+  });
+
   test('uses consistent English cat-fishing terminology', () {
     final S english = lookupS(const Locale('en'));
 
