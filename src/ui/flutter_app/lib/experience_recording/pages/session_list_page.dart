@@ -122,14 +122,14 @@ class _SessionListPageState extends State<SessionListPage> {
 
   Future<void> _shareSession(RecordingSession session) async {
     try {
+      final String subject = S
+          .of(context)
+          .recordingSessionShareSubject(session.id.substring(0, 8));
       final String path = await RecordingService().getSessionFilePath(
         session.id,
       );
       await SharePlus.instance.share(
-        ShareParams(
-          files: <XFile>[XFile(path)],
-          subject: 'Sanmill Recording ${session.id.substring(0, 8)}',
-        ),
+        ShareParams(files: <XFile>[XFile(path)], subject: subject),
       );
     } catch (e) {
       logger.e('$_logTag Share failed: $e');

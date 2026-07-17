@@ -5049,5 +5049,6 @@
     "recordingSessionDurationValue": "{minutes} 分 {seconds} 秒",
     "recordingSessionEventCountValue": "{count} 个操作",
     "recordingSessionImportedWithEventCount": "已导入会话（{count} 个操作）。",
-    "recordingStatusWithEventCount": "正在记录 · {count} 个操作"
+    "recordingStatusWithEventCount": "正在记录 · {count} 个操作",
+    "recordingSessionShareSubject": "Sanmill 体验记录 {shortId}"
 }

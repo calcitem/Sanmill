@@ -5784,5 +5784,15 @@
                 "example": "12"
             }
         }
+    },
+    "recordingSessionShareSubject": "Sanmill recording {shortId}",
+    "@recordingSessionShareSubject": {
+        "description": "Subject used when sharing an experience recording file",
+        "placeholders": {
+            "shortId": {
+                "type": "String",
+                "example": "a1b2c3d4"
+            }
+        }
     }
 }
