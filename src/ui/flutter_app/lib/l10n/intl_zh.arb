@@ -5745,5 +5745,21 @@
     "tutorialUnplacedPieceCounter": "棋盘中央显示还可摆放的棋子数量。",
     "@tutorialUnplacedPieceCounter": {
         "description": "Tutorial explanation of the center unplaced-piece counter"
+    },
+    "openingBookStudioWhite": "先手方",
+    "@openingBookStudioWhite": {
+        "description": "First-side option in Opening Book Studio"
+    },
+    "openingBookStudioBlack": "后手方",
+    "@openingBookStudioBlack": {
+        "description": "Second-side option in Opening Book Studio"
+    },
+    "openingBookStudioBothSides": "双方",
+    "@openingBookStudioBothSides": {
+        "description": "Both-side perspective option in Opening Book Studio"
+    },
+    "openingBookStudioEqual": "均势",
+    "@openingBookStudioEqual": {
+        "description": "Equal expected-outcome option in Opening Book Studio"
     }
 }
