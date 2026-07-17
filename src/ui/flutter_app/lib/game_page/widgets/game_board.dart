@@ -458,6 +458,7 @@ class _GameBoardState extends State<GameBoard>
                     key: const Key('repaint_boundary_board_painter'),
                     child: AnimatedBuilder(
                       animation: Listenable.merge(<Listenable>[
+                        AnalysisMode.stateNotifier,
                         if (scopedSession != null) scopedSession.state,
                       ]),
                       builder: (_, Widget? child) => CustomPaint(

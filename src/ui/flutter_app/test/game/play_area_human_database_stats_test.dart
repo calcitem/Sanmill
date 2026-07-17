@@ -356,6 +356,67 @@ void main() {
     expect(tester.widget<CustomPaint>(pieceFinder), isNot(same(piecesBefore)));
   });
 
+  testWidgets('hint results and clearing redraw the board overlay', (
+    WidgetTester tester,
+  ) async {
+    db = _GamePageDb(
+      generalSettings: const GeneralSettings(),
+      displaySettings: const DisplaySettings(
+        isUnplacedAndRemovedPiecesShown: false,
+        isHistoryNavigationToolbarShown: false,
+      ),
+    );
+    DB.instance = db;
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.humanVsAi,
+    );
+
+    await tester.pumpWidget(
+      _localizedApp(
+        GameSessionScope(
+          session: session,
+          child: const Scaffold(
+            body: SizedBox.square(
+              dimension: 390,
+              child: GameBoard(boardImage: null),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.runAsync(() async {
+      await Future<void>.delayed(const Duration(milliseconds: 300));
+    });
+    await tester.pump();
+
+    final Finder boardFinder = find.byKey(
+      const Key('custom_paint_board_painter'),
+    );
+    final CustomPaint boardBeforeHint = tester.widget<CustomPaint>(boardFinder);
+
+    AnalysisMode.enable(
+      const <MoveAnalysisResult>[
+        MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.advantage),
+      ],
+      mode: AnalysisOverlayMode.hint,
+      source: AnalysisSource.engine,
+    );
+    await tester.pump();
+
+    final CustomPaint boardWithHint = tester.widget<CustomPaint>(boardFinder);
+    expect(AnalysisMode.isHint, isTrue);
+    expect(AnalysisMode.analysisResults, hasLength(1));
+    expect(boardWithHint, isNot(same(boardBeforeHint)));
+
+    AnalysisMode.disable();
+    await tester.pump();
+
+    expect(AnalysisMode.isHint, isFalse);
+    expect(tester.widget<CustomPaint>(boardFinder), isNot(same(boardWithHint)));
+  });
+
   testWidgets('regular game uses a Lichess-style inline move list', (
     WidgetTester tester,
   ) async {
