@@ -4026,15 +4026,15 @@
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
     },
-    "switchToActiveLineView": "Switch to Active Line View",
+    "switchToActiveLineView": "Switch to active line view",
     "@switchToActiveLineView": {
         "description": "Switch to active line view mode"
     },
-    "switchToFullTreeView": "Switch to Full Tree View",
+    "switchToFullTreeView": "Switch to full tree view",
     "@switchToFullTreeView": {
         "description": "Switch to full tree view mode"
     },
-    "reverseMoveOrder": "Reverse Order",
+    "reverseMoveOrder": "Reverse order",
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
@@ -4112,7 +4112,7 @@
     "@cannotPromoteNoParent": {},
     "alreadyMainVariation": "Already the main variation",
     "@alreadyMainVariation": {},
-    "deleteBranchTitle": "Delete Branch",
+    "deleteBranchTitle": "Delete branch",
     "@deleteBranchTitle": {},
     "deleteBranchConfirmWithNotation": "Are you sure you want to delete the variation \"{notation}\" and all its continuations?",
     "@deleteBranchConfirmWithNotation": {
