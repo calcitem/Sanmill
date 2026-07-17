@@ -1429,7 +1429,7 @@
     "@skip": {},
     "gotIt": "Got it",
     "@gotIt": {},
-    "youCanModifyRules": "You can modify the rules of the game in the rule settings.",
+    "youCanModifyRules": "You can customize these rules under Rule settings.",
     "@youCanModifyRules": {},
     "youCanUseMouseWheelInPicker": "You can use the mouse wheel to adjust the value in the picker.",
     "@youCanUseMouseWheelInPicker": {},
@@ -5528,5 +5528,17 @@
                 "example": "d6"
             }
         }
+    },
+    "tutorialUnplacedPieceCounter": "The center shows how many pieces are left to place.",
+    "@tutorialUnplacedPieceCounter": {
+        "description": "Tutorial explanation for the unplaced-piece counter in the center of the board"
+    },
+    "tutorialMillCaptureRule": "Forming a mill lets you remove one opposing piece. A piece in a mill is normally protected while the opponent has a piece outside a mill.",
+    "@tutorialMillCaptureRule": {
+        "description": "Tutorial explanation of the standard rule that usually protects pieces inside mills"
+    },
+    "tutorialFlyingRule": "When flying is enabled and a player reaches the configured piece limit, any piece may move to any empty point.",
+    "@tutorialFlyingRule": {
+        "description": "Tutorial explanation of the configurable flying rule"
     }
 }

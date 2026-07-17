@@ -44,6 +44,7 @@ import 'package:sanmill/shared/services/system_ui_service.dart';
 import 'package:sanmill/shared/themes/app_theme.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 import 'package:sanmill/shared/widgets/lichess_bottom_bar.dart';
+import 'package:sanmill/tutorial/widgets/tutorial_dialog.dart';
 
 import 'games/mill/opening_book/opening_book_test_assets.dart';
 import 'helpers/test_native_library.dart';
@@ -1788,6 +1789,81 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('0 correct · 0 attempts'), findsOneWidget);
+  });
+
+  testWidgets('Tutorial explains configurable Mill rules clearly', (
+    WidgetTester tester,
+  ) async {
+    tester.view
+      ..physicalSize = const Size(390, 844)
+      ..devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    AppTheme.boardPadding = 28.0;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightThemeData,
+        localizationsDelegates: sanmillLocalizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        locale: const Locale('en'),
+        home: const TutorialDialog(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    Future<void> nextStep() async {
+      await tester.tap(find.byKey(const Key('portrait_next_button')));
+      await tester.pumpAndSettle();
+    }
+
+    expect(find.text('Mill\nHow to play'), findsOneWidget);
+
+    await nextStep();
+    expect(
+      find.text('Placing phase\nTap an empty point to place a piece.'),
+      findsOneWidget,
+    );
+
+    await nextStep();
+    expect(
+      find.text('The center shows how many pieces are left to place.'),
+      findsOneWidget,
+    );
+
+    await nextStep();
+    expect(
+      find.text(
+        'Moving phase\nTap one of your pieces to select it.\n'
+        'Tap an adjacent empty point to move the selected piece.',
+      ),
+      findsOneWidget,
+    );
+
+    await nextStep();
+    expect(
+      find.text(
+        'Forming a mill lets you remove one opposing piece. A piece in a '
+        'mill is normally protected while the opponent has a piece outside '
+        'a mill.',
+      ),
+      findsOneWidget,
+    );
+
+    await nextStep();
+    expect(
+      find.text(
+        'When flying is enabled and a player reaches the configured piece '
+        'limit, any piece may move to any empty point.',
+      ),
+      findsOneWidget,
+    );
+
+    await nextStep();
+    expect(
+      find.text('You can customize these rules under Rule settings.'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('Variants page opens detail before applying a rule set', (

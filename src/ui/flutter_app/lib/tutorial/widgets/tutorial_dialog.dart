@@ -509,7 +509,7 @@ class _Step3 extends StatelessWidget {
           top: 32,
           width: 320,
           child: Text(
-            S.of(context).isPieceCountInHandShown,
+            S.of(context).tutorialUnplacedPieceCounter,
             maxLines: 4,
             style: TextStyle(
               fontSize: AppTheme.textScaler.scale(16),
@@ -620,12 +620,6 @@ class _Step5 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String text =
-        "${S.of(context).needToCreateMillFirst}\n${S.of(context).tipCannotRemovePieceFromMill}";
-    if (text[text.length - 1] != ".") {
-      text = "$text!";
-    }
-
     return Stack(
       children: <Widget>[
         Positioned(
@@ -633,7 +627,7 @@ class _Step5 extends StatelessWidget {
           top: 32,
           width: 320,
           child: Text(
-            text,
+            S.of(context).tutorialMillCaptureRule,
             maxLines: 4,
             style: TextStyle(
               fontSize: AppTheme.textScaler.scale(16),
@@ -726,7 +720,7 @@ class _Step6State extends State<_Step6> with SingleTickerProviderStateMixin {
           top: 32,
           width: 320,
           child: Text(
-            S.of(context).mayFly_Detail,
+            S.of(context).tutorialFlyingRule,
             maxLines: 4,
             style: TextStyle(
               fontSize: AppTheme.textScaler.scale(16),
