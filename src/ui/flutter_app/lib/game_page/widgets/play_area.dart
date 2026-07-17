@@ -2811,109 +2811,9 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
-  /// Builds a list of toolbar items by expanding each [ToolbarItem].
-  List<Widget> _buildToolbarItems(
-    BuildContext context,
-    List<ToolbarItem> items,
-  ) {
-    return items.map((ToolbarItem item) => Expanded(child: item)).toList();
-  }
-
   /// Builds the move modal bottom sheet.
   Widget _buildMoveModal(BuildContext context) {
-    if (DB().displaySettings.isHistoryNavigationToolbarShown) {
-      // Delay the opening to the next frame, then show the MoveListDialog.
-      Future<void>.delayed(const Duration(milliseconds: 100), () {
-        if (context.mounted) {
-          _openDialog(context, const MoveListDialog());
-        }
-      });
-      // Placeholder to keep the function signature uniform.
-      return const SizedBox.shrink();
-    }
     return MoveOptionsModal(mainContext: context);
-  }
-
-  /// Retrieves the history navigation toolbar items.
-  List<ToolbarItem> _getHistoryNavToolbarItems(BuildContext context) {
-    final String takeBackAccepted = S.of(context).takeBackAccepted;
-    final String takeBackRejected = S.of(context).takeBackRejected;
-    return <ToolbarItem>[
-      ToolbarItem(
-        key: const Key('play_area_history_nav_take_back_all'),
-        child: Icon(
-          FluentIcons.arrow_previous_24_regular,
-          semanticLabel: S.of(context).takeBackAll,
-        ),
-        onPressed: () =>
-            HistoryNavigator.takeBackAll(context, pop: false, toolbar: true),
-      ),
-      ToolbarItem(
-        key: const Key('play_area_history_nav_take_back'),
-        child: Icon(
-          FluentIcons.chevron_left_24_regular,
-          semanticLabel: S.of(context).takeBack,
-        ),
-        onPressed: () async {
-          if (GameController().isRemoteGameMode) {
-            final ScaffoldMessengerState messenger = ScaffoldMessenger.of(
-              context,
-            );
-            final int? remoteSteps = _remoteTakeBackStepCountOrNull;
-            if (remoteSteps == null) {
-              GameController().headerTipNotifier.showTip(S.of(context).noMove);
-              return;
-            }
-            final bool accepted = await GameController().requestRemoteTakeBack(
-              remoteSteps,
-            );
-            if (!mounted) {
-              return;
-            }
-            if (accepted) {
-              messenger.showSnackBar(SnackBar(content: Text(takeBackAccepted)));
-            } else {
-              messenger.showSnackBar(SnackBar(content: Text(takeBackRejected)));
-            }
-          } else {
-            HistoryNavigator.takeBack(context, pop: false, toolbar: true);
-          }
-        },
-      ),
-      if (!Constants.isSmallScreen(context))
-        ToolbarItem(
-          key: const Key('play_area_history_nav_move_now'),
-          onPressed: () {
-            RecordingService().recordEvent(
-              RecordingEventType.toolbarAction,
-              <String, dynamic>{'toolbar': 'history', 'action': 'moveNow'},
-            );
-            GameController().moveNow(context);
-          },
-          child: Icon(
-            FluentIcons.play_24_regular,
-            semanticLabel: S.of(context).moveNow,
-          ),
-        ),
-      ToolbarItem(
-        key: const Key('play_area_history_nav_step_forward'),
-        child: Icon(
-          FluentIcons.chevron_right_24_regular,
-          semanticLabel: S.of(context).stepForward,
-        ),
-        onPressed: () =>
-            HistoryNavigator.stepForward(context, pop: false, toolbar: true),
-      ),
-      ToolbarItem(
-        key: const Key('play_area_history_nav_step_forward_all'),
-        child: Icon(
-          FluentIcons.arrow_next_24_regular,
-          semanticLabel: S.of(context).stepForwardAll,
-        ),
-        onPressed: () =>
-            HistoryNavigator.stepForwardAll(context, pop: false, toolbar: true),
-      ),
-    ];
   }
 
   /// Returns a string of '●' characters based on [count].
@@ -4616,23 +4516,6 @@ class PlayAreaState extends State<PlayArea> {
                 Expanded(child: mainContent),
 
                 ?bottomHumanDatabaseStatsStrip,
-
-                // History navigation toolbar if enabled
-                if (DB().displaySettings.isHistoryNavigationToolbarShown &&
-                    !isSetupPosition &&
-                    !isPuzzle &&
-                    !isOfflineBoardMode &&
-                    !usesLichessHumanAiToolbar)
-                  GamePageToolbar(
-                    key: const Key('play_area_history_nav_toolbar_bottom'),
-                    backgroundColor:
-                        DB().colorSettings.navigationToolbarBackgroundColor,
-                    itemColor: DB().colorSettings.navigationToolbarIconColor,
-                    children: _buildToolbarItems(
-                      context,
-                      _getHistoryNavToolbarItems(context),
-                    ),
-                  ),
 
                 // Main toolbar (or setup-position toolbar)
                 if (usesLichessHumanAiToolbar)

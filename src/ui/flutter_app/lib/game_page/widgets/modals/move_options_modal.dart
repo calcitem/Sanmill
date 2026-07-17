@@ -28,44 +28,42 @@ class MoveOptionsModal extends StatelessWidget {
     return GamePageDialog(
       semanticLabel: S.of(context).moveNumber(0),
       children: <Widget>[
-        if (!DB().displaySettings.isHistoryNavigationToolbarShown) ...<Widget>[
-          SimpleDialogOption(
-            key: const Key('take_back_option'),
-            onPressed: () => HistoryNavigator.takeBack(context),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2.0),
-              child: Text(S.of(context).takeBack),
-            ),
+        SimpleDialogOption(
+          key: const Key('take_back_option'),
+          onPressed: () => HistoryNavigator.takeBack(context),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2.0),
+            child: Text(S.of(context).takeBack),
           ),
-          const CustomSpacer(),
-          SimpleDialogOption(
-            key: const Key('step_forward_option'),
-            onPressed: () => HistoryNavigator.stepForward(context),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2.0),
-              child: Text(S.of(context).stepForward),
-            ),
+        ),
+        const CustomSpacer(),
+        SimpleDialogOption(
+          key: const Key('step_forward_option'),
+          onPressed: () => HistoryNavigator.stepForward(context),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2.0),
+            child: Text(S.of(context).stepForward),
           ),
-          const CustomSpacer(),
-          SimpleDialogOption(
-            key: const Key('take_back_all_option'),
-            onPressed: () => HistoryNavigator.takeBackAll(context),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2.0),
-              child: Text(S.of(context).takeBackAll),
-            ),
+        ),
+        const CustomSpacer(),
+        SimpleDialogOption(
+          key: const Key('take_back_all_option'),
+          onPressed: () => HistoryNavigator.takeBackAll(context),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2.0),
+            child: Text(S.of(context).takeBackAll),
           ),
-          const CustomSpacer(),
-          SimpleDialogOption(
-            key: const Key('step_forward_all_option'),
-            onPressed: () => HistoryNavigator.stepForwardAll(context),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2.0),
-              child: Text(S.of(context).stepForwardAll),
-            ),
+        ),
+        const CustomSpacer(),
+        SimpleDialogOption(
+          key: const Key('step_forward_all_option'),
+          onPressed: () => HistoryNavigator.stepForwardAll(context),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2.0),
+            child: Text(S.of(context).stepForwardAll),
           ),
-          const CustomSpacer(),
-        ],
+        ),
+        const CustomSpacer(),
         if (GameController().gameRecorder.activeNode?.parent != null ||
             GameController().isPositionSetup == true) ...<Widget>[
           SimpleDialogOption(
@@ -94,18 +92,22 @@ class MoveOptionsModal extends StatelessWidget {
           ),
           const CustomSpacer(),
         ],
-        SimpleDialogOption(
-          key: const Key('move_now_option'),
-          onPressed: () {
-            GameController().moveNow(context);
-            Navigator.pop(context);
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2.0),
-            child: Text(S.of(context).moveNow),
+        if (GameController().gameInstance.gameMode == GameMode.humanVsAi ||
+            GameController().gameInstance.gameMode ==
+                GameMode.aiVsAi) ...<Widget>[
+          SimpleDialogOption(
+            key: const Key('move_now_option'),
+            onPressed: () {
+              GameController().moveNow(context);
+              Navigator.pop(context);
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: Text(S.of(context).moveNow),
+            ),
           ),
-        ),
-        const CustomSpacer(),
+          const CustomSpacer(),
+        ],
         if (DB().generalSettings.screenReaderSupport)
           SimpleDialogOption(
             key: const Key('move_options_modal_close_option'),

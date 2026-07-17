@@ -1034,15 +1034,6 @@ class AppearanceSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile.switchTile(
               key: const Key(
-                'display_settings_card_history_navigation_toolbar_shown_switch_tile',
-              ),
-              value: displaySettings.isHistoryNavigationToolbarShown,
-              onChanged: (bool val) => DB().displaySettings = displaySettings
-                  .copyWith(isHistoryNavigationToolbarShown: val),
-              titleString: strings.isHistoryNavigationToolbarShown,
-            ),
-            SettingsListTile.switchTile(
-              key: const Key(
                 'display_settings_card_annotation_toolbar_shown_switch_tile',
               ),
               value: displaySettings.isAnnotationToolbarShown,

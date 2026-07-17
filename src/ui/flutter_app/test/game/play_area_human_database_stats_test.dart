@@ -365,7 +365,7 @@ void main() {
     );
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
+      isHistoryNavigationToolbarShown: true,
     );
     GameController().gameInstance.gameMode = GameMode.aiVsAi;
     GameController().gameRecorder.reset();
@@ -439,6 +439,10 @@ void main() {
     expect(
       find.byKey(const Key('play_area_main_toolbar_bottom')),
       findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_history_nav_toolbar_bottom')),
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_regular_bottom_bar_menu')),
@@ -5510,6 +5514,46 @@ void main() {
         matching: find.text('Scan QR code'),
       ),
       findsOneWidget,
+    );
+  });
+
+  testWidgets('screen reader move menu keeps every history action reachable', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(screenReaderSupport: true);
+    db.displaySettings = const DisplaySettings(
+      isHistoryNavigationToolbarShown: true,
+    );
+    GameController().gameInstance.gameMode = GameMode.humanVsAi;
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(dimension: 390),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('play_area_game_menu_move_list')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('take_back_option')), findsOneWidget);
+    expect(find.byKey(const Key('step_forward_option')), findsOneWidget);
+    expect(find.byKey(const Key('take_back_all_option')), findsOneWidget);
+    expect(find.byKey(const Key('step_forward_all_option')), findsOneWidget);
+    expect(find.byKey(const Key('move_now_option')), findsOneWidget);
+    expect(
+      find.byKey(const Key('play_area_history_nav_toolbar_bottom')),
+      findsNothing,
     );
   });
 

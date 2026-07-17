@@ -829,12 +829,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
         kLichessBottomBarHeight +
             (DB().generalSettings.showHumanDatabaseStats ? 40 : 0),
       GameMode.analysis => kLichessBottomBarHeight + AppTheme.boardMargin,
-      _ =>
-        kLichessBottomBarHeight +
-            AppTheme.boardMargin +
-            (displaySettings.isHistoryNavigationToolbarShown
-                ? legacyToolbarHeight
-                : 0),
+      _ => kLichessBottomBarHeight + AppTheme.boardMargin,
     };
 
     if (displaySettings.isAnnotationToolbarShown) {
