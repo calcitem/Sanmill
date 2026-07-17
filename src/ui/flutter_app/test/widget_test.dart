@@ -1751,6 +1751,32 @@ void main() {
     await tester.pump();
 
     expect(find.text('0 correct · 0 attempts'), findsOneWidget);
+    final String currentTarget = tester
+        .widget<Text>(
+          find.byKey(const Key('mill_coordinate_training_current_coordinate')),
+        )
+        .data!;
+    final String nextTarget = tester
+        .widget<Text>(
+          find.byKey(const Key('mill_coordinate_training_next_coordinate')),
+        )
+        .data!;
+    expect(
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Semantics &&
+            widget.properties.label == 'Current target: $currentTarget',
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Semantics &&
+            widget.properties.label == 'Next target: $nextTarget',
+      ),
+      findsOneWidget,
+    );
     await tester.pump(const Duration(minutes: 3));
     expect(
       find.byKey(const Key('mill_coordinate_training_current_coordinate')),

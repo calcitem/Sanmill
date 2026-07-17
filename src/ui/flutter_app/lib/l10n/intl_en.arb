@@ -5508,5 +5508,25 @@
     "coordinateTrainingStandardOrientation": "Standard",
     "@coordinateTrainingStandardOrientation": {
         "description": "Fixed, untransformed board orientation used in coordinate training"
+    },
+    "coordinateTrainingCurrentTarget": "Current target: {coordinate}",
+    "@coordinateTrainingCurrentTarget": {
+        "description": "Accessible label for the coordinate the player must tap now",
+        "placeholders": {
+            "coordinate": {
+                "type": "String",
+                "example": "a7"
+            }
+        }
+    },
+    "coordinateTrainingNextTarget": "Next target: {coordinate}",
+    "@coordinateTrainingNextTarget": {
+        "description": "Accessible label for the coordinate that follows the current target",
+        "placeholders": {
+            "coordinate": {
+                "type": "String",
+                "example": "d6"
+            }
+        }
     }
 }

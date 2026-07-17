@@ -529,20 +529,22 @@ class _ScoreAndButton extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        Container(
-          key: const Key('mill_coordinate_training_score'),
-          width: 64,
-          height: 64,
-          decoration: BoxDecoration(
-            color: colorScheme.primary,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            score.toString(),
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: colorScheme.onPrimary,
-              fontWeight: FontWeight.w700,
+        ExcludeSemantics(
+          child: Container(
+            key: const Key('mill_coordinate_training_score'),
+            width: 64,
+            height: 64,
+            decoration: BoxDecoration(
+              color: colorScheme.primary,
+              borderRadius: BorderRadius.circular(6),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              score.toString(),
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                color: colorScheme.onPrimary,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ),
@@ -684,6 +686,7 @@ class _CoordinateDisplayState extends State<_CoordinateDisplay>
 
   @override
   Widget build(BuildContext context) {
+    final S strings = S.of(context);
     final String current = MillBoardCoordinateMaps.nodeToNotation(
       widget.currentNode,
     );
@@ -713,10 +716,17 @@ class _CoordinateDisplayState extends State<_CoordinateDisplay>
               position: _currentSlide,
               child: ScaleTransition(
                 scale: _currentScale,
-                child: Text(
-                  current,
-                  key: const Key('mill_coordinate_training_current_coordinate'),
-                  style: currentStyle,
+                child: Semantics(
+                  label: strings.coordinateTrainingCurrentTarget(current),
+                  child: ExcludeSemantics(
+                    child: Text(
+                      current,
+                      key: const Key(
+                        'mill_coordinate_training_current_coordinate',
+                      ),
+                      style: currentStyle,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -729,12 +739,19 @@ class _CoordinateDisplayState extends State<_CoordinateDisplay>
                 translation: _kNextCoordinateTranslation,
                 child: Transform.scale(
                   scale: _kNextCoordinateScale,
-                  child: Text(
-                    next,
-                    key: const Key('mill_coordinate_training_next_coordinate'),
-                    style: currentStyle.copyWith(
-                      color: Colors.white.withValues(
-                        alpha: _kNextCoordinateOpacity,
+                  child: Semantics(
+                    label: strings.coordinateTrainingNextTarget(next),
+                    child: ExcludeSemantics(
+                      child: Text(
+                        next,
+                        key: const Key(
+                          'mill_coordinate_training_next_coordinate',
+                        ),
+                        style: currentStyle.copyWith(
+                          color: Colors.white.withValues(
+                            alpha: _kNextCoordinateOpacity,
+                          ),
+                        ),
                       ),
                     ),
                   ),
