@@ -5329,5 +5329,17 @@
                 "type": "String"
             }
         }
+    },
+    "tools": "工具",
+    "@tools": {
+        "description": "Tools"
+    },
+    "home": "首页",
+    "@home": {
+        "description": "Home"
+    },
+    "learn": "学习",
+    "@learn": {
+        "description": "Learn"
     }
 }
