@@ -106,56 +106,70 @@ class _RecordingBadgeState extends State<_RecordingBadge>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => _showOptions(context),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: BoxDecoration(
-          color: Colors.black87,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            // Pulsing red dot.
-            AnimatedBuilder(
-              animation: _opacity,
-              builder: (BuildContext context, Widget? child) {
-                return Opacity(opacity: _opacity.value, child: child);
-              },
+    return ValueListenableBuilder<int>(
+      valueListenable: RecordingService().eventCountNotifier,
+      builder: (BuildContext context, int count, Widget? _) {
+        final String status = S
+            .of(context)
+            .recordingStatusWithEventCount(count);
+        return Semantics(
+          button: true,
+          label: status,
+          onTap: () => _showOptions(context),
+          excludeSemantics: true,
+          child: Tooltip(
+            message: status,
+            child: GestureDetector(
+              onTap: () => _showOptions(context),
               child: Container(
-                width: 8,
-                height: 8,
-                decoration: const BoxDecoration(
-                  color: Colors.red,
-                  shape: BoxShape.circle,
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.black87,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    // Pulsing red dot.
+                    AnimatedBuilder(
+                      animation: _opacity,
+                      builder: (BuildContext context, Widget? child) {
+                        return Opacity(opacity: _opacity.value, child: child);
+                      },
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    const Text(
+                      'REC',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '($count)',
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            const SizedBox(width: 6),
-            const Text(
-              'REC',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 0.5,
-              ),
-            ),
-            const SizedBox(width: 4),
-            // Live event counter.
-            ValueListenableBuilder<int>(
-              valueListenable: RecordingService().eventCountNotifier,
-              builder: (BuildContext context, int count, Widget? _) {
-                return Text(
-                  '($count)',
-                  style: const TextStyle(color: Colors.white70, fontSize: 10),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
