@@ -786,6 +786,18 @@ class AppearanceSettingsPage extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 20, 24, 12),
+                  child: Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text(
+                      S.of(context).themeMode,
+                      key: const Key('theme_mode_sheet_title'),
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+                ),
+                const Divider(height: 1),
                 for (final AppThemeMode themeMode in AppThemeMode.values)
                   RadioListTile<AppThemeMode>(
                     key: Key('theme_mode_${themeMode.name}_radio_tile'),
