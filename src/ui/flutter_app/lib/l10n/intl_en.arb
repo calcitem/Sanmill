@@ -4606,9 +4606,9 @@
     "@openingBookStudioOpeningName": {},
     "openingBookStudioFamily": "Family",
     "@openingBookStudioFamily": {},
-    "openingBookStudioSide": "Side",
+    "openingBookStudioSide": "Line perspective",
     "@openingBookStudioSide": {},
-    "openingBookStudioFavoredSide": "Favoured side",
+    "openingBookStudioFavoredSide": "Expected winner",
     "@openingBookStudioFavoredSide": {},
     "openingBookStudioConfidence": "Confidence",
     "@openingBookStudioConfidence": {},
@@ -5652,5 +5652,21 @@
     "copyPrompt": "Copy prompt",
     "@copyPrompt": {
         "description": "Button that builds and copies an LLM development prompt"
+    },
+    "openingBookStudioWhite": "White",
+    "@openingBookStudioWhite": {
+        "description": "White-side option in Opening Book Studio"
+    },
+    "openingBookStudioBlack": "Black",
+    "@openingBookStudioBlack": {
+        "description": "Black-side option in Opening Book Studio"
+    },
+    "openingBookStudioBothSides": "Both sides",
+    "@openingBookStudioBothSides": {
+        "description": "Both-side perspective option in Opening Book Studio"
+    },
+    "openingBookStudioEqual": "Equal",
+    "@openingBookStudioEqual": {
+        "description": "Equal expected outcome option in Opening Book Studio"
     }
 }

@@ -543,6 +543,11 @@ class _OpeningEditorPanel extends StatelessWidget {
                   label: l10n.openingBookStudioSide,
                   value: opening.side,
                   values: const <String>['W', 'B', 'both'],
+                  labels: <String, String>{
+                    'W': l10n.openingBookStudioWhite,
+                    'B': l10n.openingBookStudioBlack,
+                    'both': l10n.openingBookStudioBothSides,
+                  },
                   onChanged: (String value) =>
                       onChanged(opening.copyWith(side: value)),
                 ),
@@ -553,6 +558,11 @@ class _OpeningEditorPanel extends StatelessWidget {
                   label: l10n.openingBookStudioFavoredSide,
                   value: opening.favoredSide,
                   values: const <String>['W', 'B', 'equal'],
+                  labels: <String, String>{
+                    'W': l10n.openingBookStudioWhite,
+                    'B': l10n.openingBookStudioBlack,
+                    'equal': l10n.openingBookStudioEqual,
+                  },
                   onChanged: (String value) =>
                       onChanged(opening.copyWith(favoredSide: value)),
                 ),
@@ -1023,12 +1033,14 @@ class _ChoiceField extends StatelessWidget {
     required this.label,
     required this.value,
     required this.values,
+    required this.labels,
     required this.onChanged,
   });
 
   final String label;
   final String value;
   final List<String> values;
+  final Map<String, String> labels;
   final ValueChanged<String> onChanged;
 
   @override
@@ -1045,8 +1057,10 @@ class _ChoiceField extends StatelessWidget {
           value: values.contains(value) ? value : values.first,
           items: values
               .map(
-                (String item) =>
-                    DropdownMenuItem<String>(value: item, child: Text(item)),
+                (String item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(labels[item] ?? item),
+                ),
               )
               .toList(growable: false),
           onChanged: (String? item) {

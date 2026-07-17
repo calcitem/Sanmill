@@ -37,6 +37,10 @@ void main() {
     expect(find.text('Opening Book Studio'), findsOneWidget);
     expect(find.text('Center Cross'), findsWidgets);
     expect(find.text('Validation passed.'), findsOneWidget);
+    expect(find.text('Line perspective'), findsOneWidget);
+    expect(find.text('Expected winner'), findsOneWidget);
+    expect(find.text('Both sides'), findsOneWidget);
+    expect(find.text('White'), findsOneWidget);
 
     final TextFormField nameField = tester.widget<TextFormField>(
       find.byKey(const Key('opening_book_studio_name_field')),
