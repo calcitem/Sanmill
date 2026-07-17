@@ -3,7 +3,7 @@
 
 import 'dart:io';
 
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, visibleForTesting;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
@@ -88,6 +88,7 @@ class HumanDatabaseService {
   Future<String> importDatabaseFile(
     String pickedPath, {
     Directory? storageRoot,
+    @visibleForTesting bool Function(String path)? validateDatabase,
   }) async {
     assert(pickedPath.trim().isNotEmpty, 'picked path must not be empty');
     // `storageRoot` is a test seam; production resolves the app-specific
@@ -105,11 +106,75 @@ class HumanDatabaseService {
 
     final File source = File(pickedPath);
     if (p.equals(source.absolute.path, File(target).absolute.path)) {
-      // The picked file is already the persisted copy (re-import); keep it.
+      // The picked file is already the persisted copy (re-import). Validate it
+      // in place, but do not replace or prune anything.
+      final bool compatible =
+          validateDatabase?.call(target) ??
+          tgf.millHumanDbStatus(path: target).readable;
+      if (!compatible) {
+        throw FileSystemException(
+          'Selected file is not a compatible human game database.',
+          target,
+        );
+      }
       return target;
     }
 
-    await source.copy(target);
+    // Copy to a unique staging file first. Validation must happen before the
+    // current database is deinitialized or any prior import is removed: a
+    // mistyped or incompatible selection must leave the working database
+    // untouched.
+    final int importId = DateTime.now().microsecondsSinceEpoch;
+    final File staged = File(
+      p.join(dir.path, '.${p.basename(pickedPath)}.$importId.importing'),
+    );
+    await source.copy(staged.path);
+
+    File? backup;
+    try {
+      final bool compatible =
+          validateDatabase?.call(staged.path) ??
+          tgf.millHumanDbStatus(path: staged.path).readable;
+      if (!compatible) {
+        throw FileSystemException(
+          'Selected file is not a compatible human game database.',
+          pickedPath,
+        );
+      }
+
+      // Release the current read-only SQLite handle only after the candidate
+      // passed validation. Keep a same-name target as a temporary backup so a
+      // failed rename can restore it.
+      if (_initializedPath != null) {
+        disable();
+      }
+      final File targetFile = File(target);
+      if (targetFile.existsSync()) {
+        backup = await targetFile.rename('$target.$importId.backup');
+      }
+      try {
+        await staged.rename(target);
+      } catch (_) {
+        if (backup != null && backup.existsSync()) {
+          await backup.rename(target);
+          backup = null;
+        }
+        rethrow;
+      }
+
+      if (backup != null && backup.existsSync()) {
+        try {
+          await backup.delete();
+        } catch (e) {
+          logger.w('Could not remove Human Database import backup: $e');
+        }
+        backup = null;
+      }
+    } finally {
+      if (staged.existsSync()) {
+        await staged.delete();
+      }
+    }
 
     // Keep only the freshly imported database so prior (potentially very
     // large) imports do not accumulate.  Best-effort: a file still held by a

@@ -38,7 +38,11 @@ void main() {
       await source.writeAsString('SQLITE-PAYLOAD');
 
       final String persisted = await HumanDatabaseService.instance
-          .importDatabaseFile(source.path, storageRoot: storageRoot);
+          .importDatabaseFile(
+            source.path,
+            storageRoot: storageRoot,
+            validateDatabase: (_) => true,
+          );
 
       expect(
         persisted,
@@ -57,12 +61,17 @@ void main() {
     await HumanDatabaseService.instance.importDatabaseFile(
       first.path,
       storageRoot: storageRoot,
+      validateDatabase: (_) => true,
     );
 
     final File second = File(p.join(pickSource.path, 'new.sqlite'));
     await second.writeAsString('NEW');
     final String persisted = await HumanDatabaseService.instance
-        .importDatabaseFile(second.path, storageRoot: storageRoot);
+        .importDatabaseFile(
+          second.path,
+          storageRoot: storageRoot,
+          validateDatabase: (_) => true,
+        );
 
     final Directory dir = Directory(p.join(storageRoot.path, 'human_database'));
     final List<String> names = dir
@@ -80,16 +89,71 @@ void main() {
       final File source = File(p.join(pickSource.path, 'human_db.sqlite'));
       await source.writeAsString('DATA');
       final String persisted = await HumanDatabaseService.instance
-          .importDatabaseFile(source.path, storageRoot: storageRoot);
+          .importDatabaseFile(
+            source.path,
+            storageRoot: storageRoot,
+            validateDatabase: (_) => true,
+          );
 
       // Picking the already-persisted file must keep it, not delete-then-fail to
       // copy a file onto itself.
       final String again = await HumanDatabaseService.instance
-          .importDatabaseFile(persisted, storageRoot: storageRoot);
+          .importDatabaseFile(
+            persisted,
+            storageRoot: storageRoot,
+            validateDatabase: (_) => true,
+          );
 
       expect(again, persisted);
       expect(File(again).existsSync(), isTrue);
       expect(File(again).readAsStringSync(), 'DATA');
+    },
+  );
+
+  test(
+    'an invalid same-name replacement preserves the working import',
+    () async {
+      final File original = File(p.join(pickSource.path, 'human_db.sqlite'));
+      await original.writeAsString('WORKING');
+      final String persisted = await HumanDatabaseService.instance
+          .importDatabaseFile(
+            original.path,
+            storageRoot: storageRoot,
+            validateDatabase: (_) => true,
+          );
+
+      final Directory replacementSource = Directory(
+        p.join(pickSource.path, 'replacement'),
+      );
+      await replacementSource.create();
+      final File replacement = File(
+        p.join(replacementSource.path, 'human_db.sqlite'),
+      );
+      await replacement.writeAsString('INVALID');
+
+      await expectLater(
+        HumanDatabaseService.instance.importDatabaseFile(
+          replacement.path,
+          storageRoot: storageRoot,
+          validateDatabase: (String stagedPath) {
+            expect(p.basename(stagedPath), endsWith('.importing'));
+            return false;
+          },
+        ),
+        throwsA(isA<FileSystemException>()),
+      );
+
+      expect(File(persisted).existsSync(), isTrue);
+      expect(File(persisted).readAsStringSync(), 'WORKING');
+      final Directory importDirectory = Directory(
+        p.join(storageRoot.path, 'human_database'),
+      );
+      expect(
+        importDirectory.listSync().whereType<File>().map(
+          (File file) => p.basename(file.path),
+        ),
+        <String>['human_db.sqlite'],
+      );
     },
   );
 }
