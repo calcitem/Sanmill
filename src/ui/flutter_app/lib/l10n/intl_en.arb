@@ -5614,5 +5614,9 @@
     "analysisPerfectDatabaseShortLabel": "Database",
     "@analysisPerfectDatabaseShortLabel": {
         "description": "Compact analysis-source label for the perfect endgame database"
+    },
+    "statisticsOverallRecord": "Overall",
+    "@statisticsOverallRecord": {
+        "description": "Label for the combined win/draw/loss record at one AI difficulty"
     }
 }

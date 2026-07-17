@@ -1048,6 +1048,13 @@ void main() {
         find.byKey(const Key('statistics_page_ai_level_1')),
         findsOneWidget,
       );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('statistics_page_ai_level_1')),
+          matching: find.textContaining('Overall: 0/0/0'),
+        ),
+        findsOneWidget,
+      );
       expect(find.byType(DataTable), findsNothing);
 
       await tester.binding.handlePopRoute();
