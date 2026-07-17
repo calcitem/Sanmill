@@ -78,6 +78,30 @@ void main() {
     );
   });
 
+  test('uses consistent English variation-deletion terminology', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.deleteCurrentBranch, 'Delete current variation');
+    expect(
+      english.deleteCurrentBranchConfirm,
+      'Delete the current variation and all following moves?',
+    );
+    expect(
+      english.deleteCurrentBranchWarning,
+      'This variation contains the current position. You will return to its '
+      'parent position.',
+    );
+    expect(english.deleteBranchTitle, 'Delete variation');
+    expect(
+      english.deleteBranchConfirmWithNotation('d6'),
+      'Delete the variation “d6” and all following moves?',
+    );
+    expect(
+      english.deleteBranchContainsPosition,
+      english.deleteCurrentBranchWarning,
+    );
+  });
+
   test('uses actionable English board-recognition feedback', () {
     final S english = lookupS(const Locale('en'));
 

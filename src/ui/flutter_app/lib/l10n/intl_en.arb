@@ -3928,15 +3928,15 @@
     "@jumpToMainLine": {
         "description": "Jump to main line action"
     },
-    "deleteCurrentBranch": "Delete this line",
+    "deleteCurrentBranch": "Delete current variation",
     "@deleteCurrentBranch": {
         "description": "Delete current variation branch"
     },
-    "deleteCurrentBranchConfirm": "Are you sure you want to delete the current variation line and all its continuations?",
+    "deleteCurrentBranchConfirm": "Delete the current variation and all following moves?",
     "@deleteCurrentBranchConfirm": {
         "description": "Confirmation message for deleting current branch"
     },
-    "deleteCurrentBranchWarning": "Warning: This will delete your current position. You will be moved to the parent position.",
+    "deleteCurrentBranchWarning": "This variation contains the current position. You will return to its parent position.",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
     },
@@ -4026,9 +4026,9 @@
     "@cannotPromoteNoParent": {},
     "alreadyMainVariation": "Already the main variation",
     "@alreadyMainVariation": {},
-    "deleteBranchTitle": "Delete branch",
+    "deleteBranchTitle": "Delete variation",
     "@deleteBranchTitle": {},
-    "deleteBranchConfirmWithNotation": "Are you sure you want to delete the variation \"{notation}\" and all its continuations?",
+    "deleteBranchConfirmWithNotation": "Delete the variation “{notation}” and all following moves?",
     "@deleteBranchConfirmWithNotation": {
         "placeholders": {
             "notation": {
@@ -4036,7 +4036,7 @@
             }
         }
     },
-    "deleteBranchContainsPosition": "Warning: This branch contains your current position. You will be moved to the parent position.",
+    "deleteBranchContainsPosition": "This variation contains the current position. You will return to its parent position.",
     "@deleteBranchContainsPosition": {},
     "cannotDeleteNoParent": "Cannot delete: no parent node",
     "@cannotDeleteNoParent": {},
