@@ -5380,7 +5380,7 @@ void main() {
     expect(
       find.descendant(
         of: find.byKey(const Key('moves_list_menu_scan_qr')),
-        matching: find.text('Scan QR Code'),
+        matching: find.text('Scan QR code'),
       ),
       findsOneWidget,
     );

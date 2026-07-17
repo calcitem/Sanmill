@@ -2871,7 +2871,12 @@ class MovesListPageState extends State<MovesListPage> {
                       color: colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 8),
-                    Text(S.of(context).importGameFromClipboard),
+                    Expanded(
+                      child: Text(
+                        S.of(context).importGameFromClipboard,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -2884,7 +2889,12 @@ class MovesListPageState extends State<MovesListPage> {
                       color: colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 8),
-                    Text(S.of(context).copyGameToClipboard),
+                    Expanded(
+                      child: Text(
+                        S.of(context).copyGameToClipboard,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 ),
               ),
