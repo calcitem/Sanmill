@@ -164,14 +164,6 @@ class _AiKnowledgeSourcesPage extends StatelessWidget {
             unawaited(parent._downloadHumanDatabase(context));
           },
         ),
-        if (generalSettings.humanDatabaseFilePath.isNotEmpty)
-          SettingsListTile(
-            key: const Key(
-              'general_settings_page_settings_card_ais_play_style_clear_human_database_file',
-            ),
-            titleString: S.of(context).clearHumanGameDatabaseFile,
-            onTap: () => parent._clearHumanDatabaseFile(generalSettings),
-          ),
         if (generalSettings.humanDatabaseEnabled)
           SettingsListTile.switchTile(
             key: const Key(

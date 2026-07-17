@@ -506,15 +506,6 @@ class GeneralSettingsPage extends StatelessWidget {
     await launchURL(context, Constants.humanDatabaseDownloadUrl);
   }
 
-  void _clearHumanDatabaseFile(GeneralSettings generalSettings) {
-    HumanDatabaseService.instance.disable();
-    _settingsRepository.generalSettings = generalSettings.copyWith(
-      humanDatabaseEnabled: false,
-      humanDatabaseFilePath: '',
-    );
-    logger.t("$_logTag humanDatabase cleared");
-  }
-
   void _setShowHumanDatabaseStats(GeneralSettings generalSettings, bool value) {
     _settingsRepository.generalSettings = generalSettings.copyWith(
       showHumanDatabaseStats: value,

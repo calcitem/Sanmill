@@ -59,7 +59,9 @@ void main() {
     WidgetTester tester,
   ) async {
     final _OpeningBookUiDb db = DB.instance! as _OpeningBookUiDb;
-    db.updateGeneralSettings(const GeneralSettings());
+    db.updateGeneralSettings(
+      const GeneralSettings(humanDatabaseFilePath: '/tmp/human.sqlite'),
+    );
 
     await tester.binding.setSurfaceSize(const Size(1100, 900));
     addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -73,11 +75,30 @@ void main() {
     final Finder useOpeningBook = find.text('Use opening book');
     final Finder showOpeningInfo = find.text('Show opening information');
     final Finder preferFavoredOpenings = find.text(
-      'Prefer favourable openings',
+      'Prefer favorable openings',
     );
+    final Finder settingsList = find.byKey(const Key('settings_list'));
     expect(useOpeningBook, findsOneWidget);
     expect(showOpeningInfo, findsOneWidget);
+    await tester.drag(settingsList, const Offset(0, -240));
+    await tester.pumpAndSettle();
     expect(preferFavoredOpenings, findsOneWidget);
+
+    final Finder humanDatabaseCard = find.byKey(
+      const Key('ai_knowledge_sources_page_human_database_card'),
+    );
+    await tester.drag(settingsList, const Offset(0, -400));
+    await tester.pumpAndSettle();
+    expect(humanDatabaseCard, findsOneWidget);
+    expect(find.text('human.sqlite'), findsOneWidget);
+    expect(
+      find.byKey(
+        const Key(
+          'general_settings_page_settings_card_ais_play_style_clear_human_database_file',
+        ),
+      ),
+      findsNothing,
+    );
   });
 
   testWidgets('game header screenshot shows recognised opening information', (
@@ -319,9 +340,8 @@ class _SettingsBox<T> extends Fake implements Box<T> {
 }
 
 class _HeaderTestRulesPort implements NativeMillRulesPort {
-  _HeaderTestRulesPort({List<String> legalMoves = const <String>[]})
-    : _legalMoves = legalMoves,
-      _snapshot = GameStateSnapshot(
+  _HeaderTestRulesPort({this._legalMoves = const <String>[]})
+    : _snapshot = GameStateSnapshot(
         gameId: GameId.mill,
         activeSeat: PlayerSeat.first,
         outcome: const GameOutcome.ongoing(),
