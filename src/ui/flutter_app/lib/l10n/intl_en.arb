@@ -1693,7 +1693,7 @@
     "@useOpeningBook_Detail": {},
     "showAdvantageGraph": "Show advantage graph",
     "@showAdvantageGraph": {},
-    "advantageGraphHint": "Advantage graph will only be drawn after the AI makes a move. It will not be drawn when the human player makes a move.",
+    "advantageGraphHint": "The graph updates only after AI moves; human moves are not evaluated.",
     "@advantageGraphHint": {},
     "removalBasedOnMillCounts": "Remove pieces after placement based on mill counts",
     "@removalBasedOnMillCounts": {},
