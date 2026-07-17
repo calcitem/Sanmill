@@ -182,7 +182,7 @@ class _VersionDialog extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Branch: ${info.branch}',
+                    S.of(context).buildBranch(info.branch),
                     style: TextStyle(
                       fontSize: AppTheme.textScaler.scale(
                         AppTheme.defaultFontSize,
@@ -198,7 +198,7 @@ class _VersionDialog extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Revision: ${info.revision}',
+                      S.of(context).buildRevision(info.revision!),
                       style: TextStyle(
                         fontSize: AppTheme.textScaler.scale(
                           AppTheme.defaultFontSize,
@@ -219,12 +219,10 @@ class _VersionDialog extends StatelessWidget {
               if (buildTime == null || buildTime.isEmpty) {
                 return const SizedBox.shrink();
               }
-              // Hardcoded label, consistent with the Branch/Revision build
-              // metadata rows above (developer diagnostics, not localized).
               return Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Build time: $buildTime',
+                  S.of(context).buildTime(buildTime),
                   style: TextStyle(
                     fontSize: AppTheme.textScaler.scale(
                       AppTheme.defaultFontSize,

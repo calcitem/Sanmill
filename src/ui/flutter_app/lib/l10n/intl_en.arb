@@ -5808,5 +5808,35 @@
                 "example": "1"
             }
         }
+    },
+    "buildBranch": "Branch: {branch}",
+    "@buildBranch": {
+        "description": "Source control branch shown in the version dialog",
+        "placeholders": {
+            "branch": {
+                "type": "String",
+                "example": "next"
+            }
+        }
+    },
+    "buildRevision": "Revision: {revision}",
+    "@buildRevision": {
+        "description": "Source control revision shown in the version dialog",
+        "placeholders": {
+            "revision": {
+                "type": "String",
+                "example": "abcdef1234"
+            }
+        }
+    },
+    "buildTime": "Build time: {time}",
+    "@buildTime": {
+        "description": "Build timestamp shown in the version dialog",
+        "placeholders": {
+            "time": {
+                "type": "String",
+                "example": "2026-07-15T07:37:47Z"
+            }
+        }
     }
 }

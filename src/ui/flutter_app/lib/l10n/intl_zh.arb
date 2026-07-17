@@ -5052,5 +5052,8 @@
     "recordingStatusWithEventCount": "正在记录 · {count} 个操作",
     "recordingSessionShareSubject": "Sanmill 体验记录 {shortId}",
     "openingExplorerTotal": "合计",
-    "removeCount": "吃子数（{count}）"
+    "removeCount": "吃子数（{count}）",
+    "buildBranch": "分支：{branch}",
+    "buildRevision": "修订版本：{revision}",
+    "buildTime": "构建时间：{time}"
 }
