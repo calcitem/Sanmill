@@ -5622,5 +5622,15 @@
     "humanMovesFirst": "Human moves first",
     "@humanMovesFirst": {
         "description": "Switch controlling whether the human or AI makes the first move"
+    },
+    "aiThinkingTimeValue": "{seconds, plural, =0{No limit} =1{1 second} other{{seconds} seconds}}",
+    "@aiThinkingTimeValue": {
+        "description": "Displayed value for the maximum AI thinking time per move",
+        "placeholders": {
+            "seconds": {
+                "type": "int",
+                "example": "6"
+            }
+        }
     }
 }

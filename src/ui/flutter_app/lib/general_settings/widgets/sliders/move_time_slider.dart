@@ -89,7 +89,7 @@ class _MoveTimeSliderBodyState extends State<_MoveTimeSliderBody> {
           value: _value,
           max: 60,
           divisions: 60,
-          label: _value.toInt().toString(),
+          label: S.of(context).aiThinkingTimeValue(_value.toInt()),
           onChanged: (double value) {
             setState(() {
               _value = value;

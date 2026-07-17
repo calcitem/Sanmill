@@ -922,7 +922,9 @@ class GeneralSettingsPage extends StatelessWidget {
                 'general_settings_page_settings_card_difficulty_move_time',
               ),
               titleString: S.of(context).moveTime,
-              trailingString: DB().generalSettings.moveTime.toString(),
+              trailingString: S
+                  .of(context)
+                  .aiThinkingTimeValue(generalSettings.moveTime),
               onTap: () => _setMoveTime(context),
             ),
           ],
