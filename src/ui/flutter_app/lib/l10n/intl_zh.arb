@@ -5241,5 +5241,93 @@
     "allowFlying": "允许飞子",
     "@allowFlying": {
         "description": "Switch allowing low-piece-count players to move to any empty point"
+    },
+    "customVariantDescription": "微调任意规则",
+    "@customVariantDescription": {
+        "description": "Subtitle for the persistent Custom entry in the variants list"
+    },
+    "customVariantClosestPreset": "最接近的规则集",
+    "@customVariantClosestPreset": {
+        "description": "Heading for the named preset with the fewest rule differences"
+    },
+    "customVariantDifferenceCount": "{count, plural, =0{与此规则集完全一致} =1{1 项规则不同} other{{count} 项规则不同}}",
+    "@customVariantDifferenceCount": {
+        "description": "Number of rule fields that differ from the closest preset",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "customVariantDifferencesFromPreset": "与{preset}的差异",
+    "@customVariantDifferencesFromPreset": {
+        "description": "Heading above the individual Custom-rule differences",
+        "placeholders": {
+            "preset": {
+                "type": "String"
+            }
+        }
+    },
+    "customVariantCustomizeRules": "自定义规则",
+    "@customVariantCustomizeRules": {
+        "description": "Button that opens the editable rule settings from Custom details"
+    },
+    "customVariantCaptureOption": "{capture}：{option}",
+    "@customVariantCaptureOption": {
+        "description": "A capture-rule type followed by one of its sub-options",
+        "placeholders": {
+            "capture": {
+                "type": "String"
+            },
+            "option": {
+                "type": "String"
+            }
+        }
+    },
+    "customVariantOtherRule": "其他规则：{setting}",
+    "@customVariantOtherRule": {
+        "description": "Fallback label for a future serialized rule setting",
+        "placeholders": {
+            "setting": {
+                "type": "String"
+            }
+        }
+    },
+    "customVariantLegacyBannedLocations": "旧版禁用位置",
+    "@customVariantLegacyBannedLocations": {
+        "description": "Label for a deprecated serialized banned-locations rule"
+    },
+    "customVariantLegacyHandRemoval": "旧版从手中移除棋子",
+    "@customVariantLegacyHandRemoval": {
+        "description": "Label for a deprecated serialized placement-removal rule"
+    },
+    "customVariantLegacyBoardFullResult": "旧版棋盘摆满结果",
+    "@customVariantLegacyBoardFullResult": {
+        "description": "Label for a deprecated serialized full-board result rule"
+    },
+    "customVariantLegacyBlockedPlayerResult": "旧版无子可走结果",
+    "@customVariantLegacyBlockedPlayerResult": {
+        "description": "Label for a deprecated serialized stalemate result rule"
+    },
+    "customVariantCurrentValue": "当前：{value}",
+    "@customVariantCurrentValue": {
+        "description": "Current value for an individual Custom-rule difference",
+        "placeholders": {
+            "value": {
+                "type": "String"
+            }
+        }
+    },
+    "customVariantPresetValue": "{preset}：{value}",
+    "@customVariantPresetValue": {
+        "description": "Closest-preset value for an individual Custom-rule difference",
+        "placeholders": {
+            "preset": {
+                "type": "String"
+            },
+            "value": {
+                "type": "String"
+            }
+        }
     }
 }
