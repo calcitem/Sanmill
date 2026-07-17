@@ -1391,11 +1391,11 @@
     "@invalidPosition": {},
     "shareGIF": "Share GIF",
     "@shareGIF": {},
-    "pixelRatio": "Pixel ratio",
+    "pixelRatio": "Image scale",
     "@pixelRatio": {},
-    "duration": "Duration",
+    "duration": "Repeat count",
     "@duration": {},
-    "gameScreenRecorder": "Game screen recorder",
+    "gameScreenRecorder": "GIF sharing",
     "@gameScreenRecorder": {},
     "previous": "Previous",
     "@previous": {},
@@ -6351,5 +6351,13 @@
     "enableGifSharing": "Enable GIF sharing",
     "@enableGifSharing": {
         "description": "Setting that adds the Share GIF action to the in-game options menu"
+    },
+    "gifRepeatCountDescription": "Number of times the exported GIF repeats.",
+    "@gifRepeatCountDescription": {
+        "description": "Explanation below the GIF repeat-count setting"
+    },
+    "gifImageScaleDescription": "Export resolution relative to the board on screen.",
+    "@gifImageScaleDescription": {
+        "description": "Explanation below the GIF image-scale setting"
     }
 }

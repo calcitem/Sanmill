@@ -12,8 +12,19 @@ void main() {
   test('distinguishes GIF sharing setup from the share action', () {
     final S english = lookupS(const Locale('en'));
 
+    expect(english.gameScreenRecorder, 'GIF sharing');
     expect(english.enableGifSharing, 'Enable GIF sharing');
     expect(english.shareGIF, 'Share GIF');
+    expect(english.duration, 'Repeat count');
+    expect(
+      english.gifRepeatCountDescription,
+      'Number of times the exported GIF repeats.',
+    );
+    expect(english.pixelRatio, 'Image scale');
+    expect(
+      english.gifImageScaleDescription,
+      'Export resolution relative to the board on screen.',
+    );
   });
 
   test('separates computer-play and generative AI terminology', () {

@@ -1080,6 +1080,7 @@ class GeneralSettingsPage extends StatelessWidget {
                   'general_settings_page_settings_card_game_screen_recorder_duration',
                 ),
                 titleString: S.of(context).duration,
+                subtitleString: S.of(context).gifRepeatCountDescription,
                 trailingString: generalSettings.gameScreenRecorderDuration
                     .toString(),
                 onTap: () =>
@@ -1090,6 +1091,7 @@ class GeneralSettingsPage extends StatelessWidget {
                   'general_settings_page_settings_card_game_screen_recorder_pixel_ratio',
                 ),
                 titleString: S.of(context).pixelRatio,
+                subtitleString: S.of(context).gifImageScaleDescription,
                 trailingString:
                     "${generalSettings.gameScreenRecorderPixelRatio}%",
                 onTap: () =>
