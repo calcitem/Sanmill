@@ -1672,7 +1672,7 @@ best: c5, e5
   reference: Nine Men's Morris Strategy — Brandwood
   line: c5 f4 e3 b4 e5 d5 e4
 
-[book-01-a3fa19] Scattered start
+[book-01-a3fa19] Scattered Start
   side W | favours W | source learned
   family: Early Game
   reference: Nine Men's Morris Strategy — Brandwood
@@ -2112,7 +2112,7 @@ best: c5, e5
   family: novel
   line: c5 f4 e3 c4 g4 d7 g1 d1 g7 d1 b4 b6 d6 d3 d2 f2 f6 d5
 
-[novel-98450726] Scattered start
+[novel-98450726] Scattered Start
   side both | favours W | source learned
   family: novel
   line: a4 f4 b2 b4 g4 d1 d2 f2 f6 d7 d5 d3 c4 e5 e4 c3 e3 d6
