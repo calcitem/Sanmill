@@ -6297,5 +6297,21 @@
     "boardRecognitionFinalLegend": "Red circles: black pieces · Green circles: white pieces",
     "@boardRecognitionFinalLegend": {
         "description": "Legend for the final piece overlay"
+    },
+    "catFishingGameDeveloper": "Cat fishing game (developer)",
+    "@catFishingGameDeveloper": {
+        "description": "Name of the developer-only cat fishing mini-game"
+    },
+    "catFishingDebugStats": "Fish caught: {fishCount}\nDifficulty: {difficulty}",
+    "@catFishingDebugStats": {
+        "description": "Developer statistics shown over the cat fishing mini-game",
+        "placeholders": {
+            "fishCount": {
+                "type": "int"
+            },
+            "difficulty": {
+                "type": "String"
+            }
+        }
     }
 }

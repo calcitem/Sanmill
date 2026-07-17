@@ -149,6 +149,16 @@ void main() {
     );
   });
 
+  test('uses consistent English cat-fishing terminology', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.catFishingGameDeveloper, 'Cat fishing game (developer)');
+    expect(
+      english.catFishingDebugStats(4, '0.13'),
+      'Fish caught: 4\nDifficulty: 0.13',
+    );
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =

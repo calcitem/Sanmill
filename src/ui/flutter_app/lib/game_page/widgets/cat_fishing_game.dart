@@ -984,7 +984,14 @@ class _CatFishingGameState extends State<CatFishingGame>
                       padding: const EdgeInsets.all(8),
                       color: Colors.black.withValues(alpha: 0.5),
                       child: Text(
-                        'Fish eaten: $_fishEatenCount\nDifficulty: ${(_fishEatenCount / 30).clamp(0.0, 1.0).toStringAsFixed(2)}',
+                        S
+                            .of(context)
+                            .catFishingDebugStats(
+                              _fishEatenCount,
+                              (_fishEatenCount / 30)
+                                  .clamp(0.0, 1.0)
+                                  .toStringAsFixed(2),
+                            ),
                         style: const TextStyle(color: Colors.white),
                       ),
                     ),
@@ -1032,18 +1039,21 @@ class _CatFishingGameState extends State<CatFishingGame>
                               ),
                             ),
                             const SizedBox(height: 24),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.lightBlue,
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 30,
-                                  vertical: 15,
+                            Tooltip(
+                              message: S.of(context).restart,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.lightBlue,
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 30,
+                                    vertical: 15,
+                                  ),
+                                  textStyle: const TextStyle(fontSize: 18),
                                 ),
-                                textStyle: const TextStyle(fontSize: 18),
+                                onPressed: _restartGame,
+                                child: const Text('🔄'),
                               ),
-                              onPressed: _restartGame,
-                              child: const Text('🔄'),
                             ),
                           ],
                         ),

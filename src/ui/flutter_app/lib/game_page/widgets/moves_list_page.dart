@@ -932,7 +932,7 @@ class MovesListPageState extends State<MovesListPage> {
                                 Icons.catching_pokemon, // Fish-like icon
                                 color: Colors.lightBlue,
                               ),
-                              tooltip: 'Fish Game (Dev)',
+                              tooltip: S.of(context).catFishingGameDeveloper,
                               onPressed: () {
                                 // Show dialog with cat fishing game for testing
                                 showDialog(
@@ -968,7 +968,9 @@ class MovesListPageState extends State<MovesListPage> {
                                                         .spaceBetween,
                                                 children: <Widget>[
                                                   Text(
-                                                    'Cat Fishing Game (Dev)',
+                                                    S
+                                                        .of(context)
+                                                        .catFishingGameDeveloper,
                                                     style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
