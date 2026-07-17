@@ -623,9 +623,12 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
         _refresh();
       }
     } catch (e) {
+      logger.e(
+        '[saved_games] Failed to import a game archive: ${e.runtimeType}',
+      );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(S.of(context).error(e.toString()))),
+          SnackBar(content: Text(S.of(context).gameArchiveImportFailed)),
         );
       }
     }

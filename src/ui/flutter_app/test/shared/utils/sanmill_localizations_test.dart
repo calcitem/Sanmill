@@ -133,6 +133,11 @@ void main() {
         english.savedGameOpenFailed,
         'Could not open this PGN file. Choose another file and try again.',
       );
+      expect(
+        english.gameArchiveImportFailed,
+        'Could not import this game archive. Choose a valid ZIP file and try '
+        'again.',
+      );
     },
   );
 

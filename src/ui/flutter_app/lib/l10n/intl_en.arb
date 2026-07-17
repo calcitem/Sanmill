@@ -6437,5 +6437,9 @@
     "savedGameOpenFailed": "Could not open this PGN file. Choose another file and try again.",
     "@savedGameOpenFailed": {
         "description": "Error shown when selecting, reading, or previewing a PGN game file fails"
+    },
+    "gameArchiveImportFailed": "Could not import this game archive. Choose a valid ZIP file and try again.",
+    "@gameArchiveImportFailed": {
+        "description": "Error shown when selecting, reading, or extracting a saved-games ZIP archive fails"
     }
 }
