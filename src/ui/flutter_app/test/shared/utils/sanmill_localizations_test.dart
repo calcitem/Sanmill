@@ -210,6 +210,15 @@ void main() {
     expect(english.copyFen, 'Copy position as FEN');
   });
 
+  test('confirms unlimited English computer thinking time', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(
+      english.noTimeLimitForThinking,
+      'Computer thinking time is now unlimited.',
+    );
+  });
+
   test('punctuates the English background-music description', () {
     final S english = lookupS(const Locale('en'));
 
