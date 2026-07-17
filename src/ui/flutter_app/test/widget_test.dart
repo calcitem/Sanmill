@@ -2890,6 +2890,7 @@ void main() {
       expect(find.byKey(const Key('paint_color_button')), findsOneWidget);
       expect(find.byKey(const Key('phase_button')), findsOneWidget);
       expect(find.byKey(const Key('remove_button')), findsOneWidget);
+      expect(find.text('Remove (0)'), findsOneWidget);
       expect(find.byKey(const Key('placed_button')), findsOneWidget);
 
       expect(find.byKey(const Key('rotate_button')), findsOneWidget);

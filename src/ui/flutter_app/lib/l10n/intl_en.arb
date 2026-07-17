@@ -5798,5 +5798,15 @@
     "openingExplorerTotal": "Total",
     "@openingExplorerTotal": {
         "description": "Label for the aggregate row in the opening explorer statistics table"
+    },
+    "removeCount": "Remove ({count})",
+    "@removeCount": {
+        "description": "Number of pieces the side to move must remove in the board editor",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "1"
+            }
+        }
     }
 }

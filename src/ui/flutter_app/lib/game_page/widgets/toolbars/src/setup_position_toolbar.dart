@@ -317,6 +317,8 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     final MillSetupPositionController? controller = _controller;
     final S strings = S.of(context);
     final int placed = controller?.placedCount ?? 0;
+    final PieceColor side = controller?.sideToMove ?? PieceColor.white;
+    final int removeCount = controller?.needRemove[side] ?? 0;
 
     final List<Widget> row1 = <Widget>[
       Expanded(
@@ -339,7 +341,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
         child: _toolbarButton(
           key: const Key('remove_button'),
           icon: _needRemoveIcon(),
-          label: strings.remove,
+          label: strings.removeCount(removeCount),
           onPressed: _cycleNeedRemove,
         ),
       ),
