@@ -78,8 +78,7 @@ class _RecordingBadgeState extends State<_RecordingBadge>
                     valueListenable: RecordingService().eventCountNotifier,
                     builder: (BuildContext context, int count, Widget? _) {
                       return Text(
-                        '${S.of(context).recording} · '
-                        '$count ${S.of(context).sessionEventCount}',
+                        S.of(context).recordingStatusWithEventCount(count),
                         style: Theme.of(context).textTheme.titleMedium,
                       );
                     },

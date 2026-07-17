@@ -358,8 +358,11 @@ class _SessionListPageState extends State<SessionListPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              '${S.of(context).importSessionSuccess} '
-              '(${session.events.length} ${S.of(context).sessionEventCount})',
+              S
+                  .of(context)
+                  .recordingSessionImportedWithEventCount(
+                    session.events.length,
+                  ),
             ),
           ),
         );
@@ -417,8 +420,11 @@ class _SessionListPageState extends State<SessionListPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              '${S.of(context).importSessionSuccess} '
-              '(${session.events.length} ${S.of(context).sessionEventCount})',
+              S
+                  .of(context)
+                  .recordingSessionImportedWithEventCount(
+                    session.events.length,
+                  ),
             ),
           ),
         );
@@ -488,7 +494,7 @@ class _SessionListPageState extends State<SessionListPage> {
 
   Widget _buildSessionCard(BuildContext context, RecordingSession session) {
     final String dateStr = _formatDate(context, session.startTime);
-    final String durationStr = _formatDuration(session.duration);
+    final String durationStr = _formatDuration(context, session.duration);
 
     return Card(
       child: Padding(
@@ -529,15 +535,13 @@ class _SessionListPageState extends State<SessionListPage> {
             // Stats row.
             Row(
               children: <Widget>[
-                _statChip(
-                  Icons.timer_outlined,
-                  '$durationStr ${S.of(context).sessionDuration}',
-                ),
+                _statChip(Icons.timer_outlined, durationStr),
                 const SizedBox(width: 12),
                 _statChip(
                   Icons.list_alt,
-                  '${session.events.length} '
-                  '${S.of(context).sessionEventCount}',
+                  S
+                      .of(context)
+                      .recordingSessionEventCountValue(session.events.length),
                 ),
               ],
             ),
@@ -636,9 +640,12 @@ class _SessionListPageState extends State<SessionListPage> {
     return '$date $time';
   }
 
-  String _formatDuration(Duration d) {
-    final int minutes = d.inMinutes;
-    final int seconds = d.inSeconds % 60;
-    return '${minutes}m ${seconds}s';
+  String _formatDuration(BuildContext context, Duration duration) {
+    return S
+        .of(context)
+        .recordingSessionDurationValue(
+          duration.inMinutes,
+          duration.inSeconds % Duration.secondsPerMinute,
+        );
   }
 }

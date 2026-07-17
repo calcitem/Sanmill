@@ -5740,5 +5740,49 @@
                 "example": "RippleGradient"
             }
         }
+    },
+    "recordingSessionDurationValue": "{minutes} min {seconds} sec",
+    "@recordingSessionDurationValue": {
+        "description": "Localized duration shown on an experience recording session card",
+        "placeholders": {
+            "minutes": {
+                "type": "int",
+                "example": "2"
+            },
+            "seconds": {
+                "type": "int",
+                "example": "5"
+            }
+        }
+    },
+    "recordingSessionEventCountValue": "{count, plural, =0{No events} =1{1 event} other{{count} events}}",
+    "@recordingSessionEventCountValue": {
+        "description": "Localized event count shown on an experience recording session card",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "12"
+            }
+        }
+    },
+    "recordingSessionImportedWithEventCount": "{count, plural, =1{Session imported with 1 event.} other{Session imported with {count} events.}}",
+    "@recordingSessionImportedWithEventCount": {
+        "description": "Confirmation after importing an experience recording session",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "12"
+            }
+        }
+    },
+    "recordingStatusWithEventCount": "{count, plural, =0{Recording · No events} =1{Recording · 1 event} other{Recording · {count} events}}",
+    "@recordingStatusWithEventCount": {
+        "description": "Live experience recording status and event count",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "12"
+            }
+        }
     }
 }
