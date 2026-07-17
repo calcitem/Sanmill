@@ -784,11 +784,15 @@ class PlayAreaState extends State<PlayArea> {
     );
     final String statsText = stats == null
         ? S.of(context).humanGameDatabaseStatsUnavailable
-        : '${stats.notation}  '
-              'W ${stats.winPercent.toStringAsFixed(1)}%  '
-              'D ${stats.drawPercent.toStringAsFixed(1)}%  '
-              'L ${stats.lossPercent.toStringAsFixed(1)}%  '
-              'n=${stats.total}';
+        : S
+              .of(context)
+              .humanGameDatabaseStatsLine(
+                stats.notation,
+                stats.winPercent.toStringAsFixed(1),
+                stats.drawPercent.toStringAsFixed(1),
+                stats.lossPercent.toStringAsFixed(1),
+                stats.total,
+              );
 
     return Padding(
       key: const Key('play_area_human_database_stats_strip'),

@@ -4514,7 +4514,7 @@
             }
         }
     },
-    "humanGameDatabaseStatsLine": "Human Database {move}: W {winPct}%, D {drawPct}%, L {lossPct}% (n={total})",
+    "humanGameDatabaseStatsLine": "{move}  W {winPct}%  D {drawPct}%  L {lossPct}%  n={total}",
     "@humanGameDatabaseStatsLine": {
         "placeholders": {
             "move": {

@@ -4360,7 +4360,7 @@
             }
         }
     },
-    "humanGameDatabaseStatsLine": "人类数据库 {move}：胜 {winPct}%，和 {drawPct}%，负 {lossPct}%（n={total}）",
+    "humanGameDatabaseStatsLine": "{move}  胜 {winPct}%  和 {drawPct}%  负 {lossPct}%  样本 {total}",
     "@humanGameDatabaseStatsLine": {
         "placeholders": {
             "move": {

@@ -200,8 +200,7 @@ void main() {
 
     expect(find.textContaining('Human Database'), findsNothing);
     expect(find.textContaining('Human game database'), findsNothing);
-    expect(find.textContaining('n=100'), findsOneWidget);
-    expect(find.textContaining('d6'), findsOneWidget);
+    expect(find.text('d6  W 50.0%  D 30.0%  L 20.0%  n=100'), findsOneWidget);
   });
 
   testWidgets('screen reader board uses a stable semantics grid', (
