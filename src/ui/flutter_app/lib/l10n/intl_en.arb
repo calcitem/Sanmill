@@ -6313,5 +6313,9 @@
                 "type": "String"
             }
         }
+    },
+    "puzzleStatsCurrentRating": "Current rating",
+    "@puzzleStatsCurrentRating": {
+        "description": "Label below the current puzzle-rating value"
     }
 }

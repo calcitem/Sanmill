@@ -63,7 +63,7 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
         _PuzzleRatingSummary(
           key: const Key('puzzle_stats_rating_summary'),
           rating: rating,
-          label: s.puzzleStatsRating,
+          label: s.puzzleStatsCurrentRating,
           color: colorScheme.primary,
           provisionalLabel: rating.isProvisional
               ? s.puzzleStatsProvisional(

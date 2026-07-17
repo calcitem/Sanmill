@@ -190,6 +190,13 @@ void main() {
     expect(english.puzzleStreakDesc, 'Solve puzzles in a row without mistakes');
   });
 
+  test('distinguishes the current English puzzle rating label', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.puzzleStatsRating, 'Puzzle rating');
+    expect(english.puzzleStatsCurrentRating, 'Current rating');
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =
