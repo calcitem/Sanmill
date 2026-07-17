@@ -2029,6 +2029,10 @@ void main() {
     );
     expect(find.text("Twelve Men's Morris"), findsOneWidget);
     expect(
+      find.text('12 pieces per player · diagonal lines · flying at 3'),
+      findsNothing,
+    );
+    expect(
       find.byKey(const Key('mill_variant_detail_rules_twelve_mens_morris')),
       findsOneWidget,
     );

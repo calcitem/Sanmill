@@ -181,10 +181,6 @@ class _MillVariantDetailsPage extends StatelessWidget {
           return ListView(
             padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
             children: <Widget>[
-              _VariantDetailsSummary(
-                key: Key('mill_variant_detail_header_${entry.id}'),
-                entry: entry,
-              ),
               LichessListSection(
                 header: Text(strings.rules),
                 cardKey: Key('mill_variant_detail_rules_${entry.id}'),
@@ -213,27 +209,6 @@ class _MillVariantDetailsPage extends StatelessWidget {
             ],
           );
         },
-      ),
-    );
-  }
-}
-
-class _VariantDetailsSummary extends StatelessWidget {
-  const _VariantDetailsSummary({super.key, required this.entry});
-
-  final _VariantEntry entry;
-
-  @override
-  Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      child: Text(
-        entry.description,
-        style: AppStyles.tileSubtitle.copyWith(
-          color: colorScheme.onSurfaceVariant,
-        ),
       ),
     );
   }
