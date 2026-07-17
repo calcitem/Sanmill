@@ -13,4 +13,11 @@ void main() {
     expect(strings.home, '首页');
     expect(strings.learn, '学习');
   });
+
+  test('Simplified Chinese uses step-based navigation labels', () async {
+    final S strings = await S.delegate.load(const Locale('zh'));
+
+    expect(strings.previous, '上一步');
+    expect(strings.next, '下一步');
+  });
 }
