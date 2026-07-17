@@ -363,6 +363,7 @@ Future<void> showAnalysisSettingsSheet(
                       title: Text(strings.searchTime),
                       subtitle: Text(
                         _analysisSearchTimeValueLabel(
+                          strings,
                           AnalysisMode.engineSearchTimeMs,
                         ),
                       ),
@@ -381,6 +382,7 @@ Future<void> showAnalysisSettingsSheet(
                           divisions:
                               AnalysisMode.engineSearchTimeOptionsMs.length - 1,
                           label: _analysisSearchTimeValueLabel(
+                            strings,
                             AnalysisMode.engineSearchTimeMs,
                           ),
                           onChanged: (double value) {
@@ -583,12 +585,12 @@ void _setAnalysisEngineThreads(int threads) {
   AnalysisMode.refresh();
 }
 
-String _analysisSearchTimeValueLabel(int valueMs) {
+String _analysisSearchTimeValueLabel(S strings, int valueMs) {
   if (valueMs == AnalysisMode.maxEngineSearchTimeMs) {
     return '∞';
   }
   assert(valueMs % 1000 == 0, 'Analysis search time must be whole seconds.');
-  return '${valueMs ~/ 1000}s';
+  return strings.aiThinkingTimeValue(valueMs ~/ 1000);
 }
 
 String _analysisEngineThreadsSubtitle(
@@ -6314,11 +6316,12 @@ class _AnalysisSummaryPanel extends StatelessWidget {
   }
 
   String _engineSummary(BuildContext context, MoveAnalysisResult? result) {
+    final S strings = S.of(context);
     if (result == null) {
       if (AnalysisMode.isAnalyzing) {
-        return S.of(context).analyzing;
+        return strings.analyzing;
       }
-      return S.of(context).analysisSummaryEmptyHint;
+      return strings.analysisSummaryEmptyHint;
     }
 
     final int? depth = _analysisEngineDepth();
@@ -6328,7 +6331,10 @@ class _AnalysisSummaryPanel extends StatelessWidget {
       _analysisEvalLabel(result.outcome),
       if (depth != null) 'd$depth',
       if (AnalysisMode.isEngineAnalysisDeep)
-        _analysisSearchTimeValueLabel(AnalysisMode.maxEngineSearchTimeMs),
+        _analysisSearchTimeValueLabel(
+          strings,
+          AnalysisMode.maxEngineSearchTimeMs,
+        ),
       if (result.nodes != null && result.nodes! > 0)
         _compactAnalysisCount(result.nodes!),
       if (nodesPerSecond != null) _compactAnalysisRate(nodesPerSecond),
@@ -6461,7 +6467,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
       }
       final String continueSearchLabel =
           '${strings.continueFromHere} · '
-          '${_analysisSearchTimeValueLabel(AnalysisMode.maxEngineSearchTimeMs)}';
+          '${_analysisSearchTimeValueLabel(strings, AnalysisMode.maxEngineSearchTimeMs)}';
       return IconButton(
         key: const Key('play_area_analysis_summary_go_deeper'),
         tooltip: continueSearchLabel,
@@ -7976,7 +7982,10 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
       if (isAnalyzing) strings.thinking,
       ?depthText,
       if (isDeepSearch)
-        _analysisSearchTimeValueLabel(AnalysisMode.maxEngineSearchTimeMs),
+        _analysisSearchTimeValueLabel(
+          strings,
+          AnalysisMode.maxEngineSearchTimeMs,
+        ),
       ?nodesText,
       ?nodesPerSecondText,
       if (canGoDeeper) _continueSearchLabel(strings),
@@ -7989,7 +7998,7 @@ class _AnalysisEngineSheetStatus extends StatelessWidget {
 
   String _continueSearchLabel(S strings) {
     return '${strings.continueFromHere} · '
-        '${_analysisSearchTimeValueLabel(AnalysisMode.maxEngineSearchTimeMs)}';
+        '${_analysisSearchTimeValueLabel(strings, AnalysisMode.maxEngineSearchTimeMs)}';
   }
 }
 
