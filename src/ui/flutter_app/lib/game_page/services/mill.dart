@@ -103,6 +103,7 @@ part 'controller/game_recorder.dart';
 part 'controller/game_responses.dart';
 part 'controller/history_navigation.dart';
 part 'controller/tap_handler.dart';
+part 'analysis/live_evaluation_service.dart';
 part 'engine/board_view.dart';
 part 'engine/ext_move.dart';
 part 'engine/game.dart';
