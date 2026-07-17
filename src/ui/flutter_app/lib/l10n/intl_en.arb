@@ -6441,5 +6441,9 @@
     "gameArchiveImportFailed": "Could not import this game archive. Choose a valid ZIP file and try again.",
     "@gameArchiveImportFailed": {
         "description": "Error shown when selecting, reading, or extracting a saved-games ZIP archive fails"
+    },
+    "gameImportFailed": "Could not import this game. Check the PGN and current rules, then try again.",
+    "@gameImportFailed": {
+        "description": "Generic error shown when a PGN game import fails without a specific invalid move"
     }
 }

@@ -20,6 +20,7 @@ import '../../shared/config/prompt_defaults.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/language_locale_mapping.dart';
+import '../../shared/services/logger.dart';
 import '../../shared/utils/helpers/color_helpers/color_helper.dart';
 import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
@@ -678,17 +679,18 @@ class MovesListPageState extends State<MovesListPage> {
         final String failStr = HistoryNavigator.importFailedStr;
         rootScaffoldMessengerKey.currentState?.showSnackBarClear(
           failStr.isEmpty
-              ? S.of(context).cannotImport(scannedData)
+              ? S.of(context).gameImportFailed
               : S.of(context).cannotImport(failStr),
         );
         HistoryNavigator.importFailedStr = "";
       }
     } catch (e) {
+      logger.w('MovesListPage QR game import failed: ${e.runtimeType}');
       if (!mounted) {
         return;
       }
       rootScaffoldMessengerKey.currentState?.showSnackBarClear(
-        S.of(context).cannotImport(e.toString()),
+        S.of(context).gameImportFailed,
       );
       return;
     }

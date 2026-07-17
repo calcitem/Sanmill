@@ -138,6 +138,11 @@ void main() {
         'Could not import this game archive. Choose a valid ZIP file and try '
         'again.',
       );
+      expect(
+        english.gameImportFailed,
+        'Could not import this game. Check the PGN and current rules, then try '
+        'again.',
+      );
     },
   );
 

@@ -119,7 +119,9 @@ class ImportService {
       rootScaffoldMessengerKey.currentState?.showSnackBarClear(message);
       GameController().headerTipNotifier.showTip(message);
     } else {
-      final String tip = s.cannotImport(HistoryNavigator.importFailedStr);
+      final String tip = HistoryNavigator.importFailedStr.isEmpty
+          ? s.gameImportFailed
+          : s.cannotImport(HistoryNavigator.importFailedStr);
       rootScaffoldMessengerKey.currentState?.showSnackBarClear(tip);
       GameController().headerTipNotifier.showTip(tip);
 

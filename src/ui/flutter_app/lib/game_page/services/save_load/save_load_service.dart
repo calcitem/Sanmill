@@ -547,9 +547,8 @@ class LoadService {
 
       return (success: true, includedVariations: includedVariations);
     } catch (exception) {
-      // Extract the specific error message instead of showing entire file content
-      final String errorMessage = exception.toString();
-      final String errorMsg = S.of(context).cannotImport(errorMessage);
+      logger.w('$_logTag Game import failed: ${exception.runtimeType}');
+      final String errorMsg = S.of(context).gameImportFailed;
       // Include experimental warning in error message if variations were selected
       final String tip = includedVariations
           ? '$errorMsg ${S.of(context).experimental}'
@@ -607,17 +606,9 @@ class LoadService {
         return;
       }
 
-      // Format error message to be more specific if importFailedStr is available
-      String errorMessage;
-      if (HistoryNavigator.importFailedStr.isNotEmpty) {
-        // Show specific segment that failed to import
-        errorMessage = HistoryNavigator.importFailedStr;
-      } else {
-        // Fallback to general error if no specific info is available
-        errorMessage = "❌";
-      }
-
-      final String tip = S.of(context).cannotImport(errorMessage);
+      final String tip = HistoryNavigator.importFailedStr.isEmpty
+          ? S.of(context).gameImportFailed
+          : S.of(context).cannotImport(HistoryNavigator.importFailedStr);
       rootScaffoldMessengerKey.currentState?.showSnackBarClear(tip);
       GameController().headerTipNotifier.showTip(tip);
 
