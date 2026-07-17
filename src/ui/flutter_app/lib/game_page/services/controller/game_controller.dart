@@ -1419,6 +1419,7 @@ class GameController {
     isEngineInDelay = false;
     aiLoopEpoch++;
     AnalysisMode.disable();
+    unawaited(LiveEvaluationService.disableAndWait());
 
     if (gameModeBak == GameMode.humanVsAi) {
       GameController().disableStats = false;
@@ -1767,6 +1768,11 @@ class GameController {
       return const EngineResponseSkip();
     }
 
+    await LiveEvaluationService.stopAndWait();
+    if (!context.mounted) {
+      return const EngineResponseSkip();
+    }
+
     if (gameInstance.gameMode == GameMode.humanVsAi) {
       return _nativeSessionEngineToGo(
         context,
@@ -1844,6 +1850,7 @@ class GameController {
           generalSettings: DB().generalSettings,
           bothSidesAi: true,
           onBeforeRemoveApply: gameInstance.awaitPendingMillSoundBeforeRemove,
+          onRootEvaluation: LiveEvaluationService.publishAiRootEvaluation,
           openingBook: MillOpeningBookProvider(
             ruleSettings: DB().ruleSettings,
             generalSettings: DB().generalSettings,
@@ -1883,6 +1890,11 @@ class GameController {
       isEngineRunning = false;
       if (context.mounted) {
         refreshNativeSessionHeader(context, scopedSession);
+      }
+      if (scopedSession.outcome.isTerminal) {
+        LiveEvaluationService.publishTerminalPosition(scopedSession);
+      } else {
+        unawaited(LiveEvaluationService.requestCurrentPosition());
       }
     }
   }
@@ -1952,6 +1964,7 @@ class GameController {
           generalSettings: DB().generalSettings,
           bothSidesAi: true,
           onBeforeRemoveApply: gameInstance.awaitPendingMillSoundBeforeRemove,
+          onRootEvaluation: LiveEvaluationService.publishAiRootEvaluation,
           openingBook: MillOpeningBookProvider(
             ruleSettings: DB().ruleSettings,
             generalSettings: DB().generalSettings,
@@ -2060,6 +2073,9 @@ class GameController {
         }
         searched = true;
         syncAiMoveTypeFromSession(loopSession);
+        if (loopSession.outcome.isTerminal) {
+          LiveEvaluationService.publishTerminalPosition(loopSession);
+        }
         // Record AI-vs-AI game start time on the first applied move
         // so `calculateGameDurationSeconds` reports a meaningful
         // wall-clock duration on the result dialog.

@@ -19,7 +19,7 @@ import '../../../shared/services/logger.dart';
 import '../../../shared/services/perfect_database_service.dart';
 import '../../../src/rust/api/simple.dart' as tgf;
 import '../analysis_mode.dart';
-import '../mill.dart' show GameController;
+import '../mill.dart' show GameController, LiveEvaluationService;
 
 /// Drives the analysis overlay.
 ///
@@ -60,6 +60,7 @@ class AnalysisService {
         _stopCurrentEngineAnalysis();
       }
       AnalysisMode.disable();
+      unawaited(LiveEvaluationService.requestCurrentPosition());
       return;
     }
     await refresh(context);
@@ -343,6 +344,10 @@ class AnalysisService {
     // unwind before starting this pass.  The generation bump above already
     // detaches the draining pass from publishing.  When several requests
     // pile up here, the newest generation wins and older ones return.
+    await LiveEvaluationService.stopAndWait();
+    if (searchGeneration != _analysisSearchGeneration) {
+      return false;
+    }
     while (_activeEngineAnalysis != null) {
       if (searchGeneration != _analysisSearchGeneration) {
         return false;

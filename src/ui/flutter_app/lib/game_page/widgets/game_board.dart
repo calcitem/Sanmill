@@ -167,6 +167,7 @@ class _GameBoardState extends State<GameBoard>
           logger.i("$_logTag App going to background, stopping engine search");
 
           animationManager.completeAllAnimations();
+          unawaited(LiveEvaluationService.stopAndWait());
 
           if (GameController().isEngineRunning) {
             tgf.nativeMillSearchStop();
@@ -186,12 +187,14 @@ class _GameBoardState extends State<GameBoard>
           GameController().isControllerActive = true;
           GameController().isEngineRunning = false;
           GameController().isDisposed = false;
+          unawaited(LiveEvaluationService.requestCurrentPosition());
         }
         break;
 
       case AppLifecycleState.detached:
         // App is being terminated
         logger.i("$_logTag App detached, cleaning up engine");
+        unawaited(LiveEvaluationService.stopAndWait());
         if (GameController().isEngineRunning) {
           tgf.nativeMillSearchStop();
         }
@@ -596,6 +599,11 @@ class _GameBoardState extends State<GameBoard>
                     }
                   }
 
+                  await LiveEvaluationService.stopAndWait();
+                  if (!mounted) {
+                    return;
+                  }
+
                   final EngineResponse response = await tapHandler.onBoardTap(
                     square,
                   );
@@ -820,6 +828,7 @@ class _GameBoardState extends State<GameBoard>
     if (GameController().isEngineRunning) {
       tgf.nativeMillSearchStop();
     }
+    unawaited(LiveEvaluationService.stopAndWait());
 
     // Ensure any loaded images are released promptly to avoid native GPU
     // memory growth during repeated page navigation (Monkey tests).

@@ -1922,6 +1922,10 @@ class PlayAreaState extends State<PlayArea> {
     if (!context.mounted) {
       return;
     }
+    await LiveEvaluationService.stopAndWait();
+    if (!context.mounted) {
+      return;
+    }
     await HistoryNavigator.takeBackN(context, steps, pop: false, toolbar: true);
     if (!context.mounted) {
       return;
@@ -1959,6 +1963,7 @@ class PlayAreaState extends State<PlayArea> {
       final NativeMillAiTurnController restoreController =
           NativeMillAiTurnController(
             generalSettings: DB().generalSettings,
+            onRootEvaluation: LiveEvaluationService.publishAiRootEvaluation,
             openingBook: MillOpeningBookProvider(
               ruleSettings: DB().ruleSettings,
               generalSettings: DB().generalSettings,
@@ -1970,6 +1975,7 @@ class PlayAreaState extends State<PlayArea> {
             ),
           );
       await restoreController.playIfAiTurn(session);
+      unawaited(LiveEvaluationService.requestCurrentPosition());
       return;
     }
 
@@ -1986,6 +1992,7 @@ class PlayAreaState extends State<PlayArea> {
     }
     await session.apply(action);
     if (session.outcome.isTerminal) {
+      LiveEvaluationService.publishTerminalPosition(session);
       return;
     }
     // Consume any trailing removal from the alternative move the same way a
@@ -1993,8 +2000,10 @@ class PlayAreaState extends State<PlayArea> {
     // "forced different" -- only the move that triggered this action does.
     final NativeMillAiTurnController continuation = NativeMillAiTurnController(
       generalSettings: DB().generalSettings,
+      onRootEvaluation: LiveEvaluationService.publishAiRootEvaluation,
     );
     await continuation.playIfAiTurn(session);
+    unawaited(LiveEvaluationService.requestCurrentPosition());
   }
 
   Future<void> _showResignConfirmation(BuildContext context) async {
@@ -2086,6 +2095,10 @@ class PlayAreaState extends State<PlayArea> {
     if (session == null) {
       return;
     }
+    await LiveEvaluationService.stopAndWait();
+    if (!context.mounted) {
+      return;
+    }
     final List<NativeMillPrincipalVariation> variations = await session
         .searchPrincipalVariations(
           depth: 18,
@@ -2097,6 +2110,16 @@ class PlayAreaState extends State<PlayArea> {
       return;
     }
     final int sideToMoveScore = variations.isEmpty ? 0 : variations.first.score;
+    final PlayerSeat activeSeat = session.state.value.activeSeat;
+    if (activeSeat != PlayerSeat.none) {
+      LiveEvaluationService.publishAiRootEvaluation(
+        session,
+        LiveEvaluationService.whitePerspectiveScore(
+          activeSeat,
+          sideToMoveScore,
+        ),
+      );
+    }
     // `score` is relative to whoever is currently to move, which may be
     // either player depending on when the offer happens; normalise to the
     // AI's own perspective before comparing against the acceptance
@@ -2116,6 +2139,7 @@ class PlayAreaState extends State<PlayArea> {
       PieceColor.draw,
       GameOverReason.drawAgreement,
     );
+    LiveEvaluationService.publishTerminalPosition(session);
     GameController().gameResultNotifier.showResult();
   }
 

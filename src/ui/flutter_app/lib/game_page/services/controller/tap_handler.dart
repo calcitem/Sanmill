@@ -186,6 +186,7 @@ class TapHandler {
           generalSettings: DB().generalSettings,
           onBeforeRemoveApply:
               controller.gameInstance.awaitPendingMillSoundBeforeRemove,
+          onRootEvaluation: LiveEvaluationService.publishAiRootEvaluation,
           openingBook: MillOpeningBookProvider(
             ruleSettings: session.activeRuleSettings,
             generalSettings: DB().generalSettings,
@@ -198,6 +199,10 @@ class TapHandler {
         );
     if (mode == GameMode.humanVsAi && aiTurnController.isAiTurn(session)) {
       completeAction(UserActionPhase.cancel);
+      await LiveEvaluationService.stopAndWait();
+      if (!context.mounted) {
+        return const EngineResponseSkip();
+      }
       final PieceColor aiSide = controller.activeBoardView.sideToMove;
       final String aiCorrelationId = _recordAiAttempt(aiSide);
       controller.isEngineRunning = true;
@@ -244,6 +249,11 @@ class TapHandler {
         return const EngineNoBestMove();
       } finally {
         controller.isEngineRunning = false;
+        if (session.outcome.isTerminal) {
+          LiveEvaluationService.publishTerminalPosition(session);
+        } else {
+          unawaited(LiveEvaluationService.requestCurrentPosition());
+        }
       }
     }
 
@@ -311,6 +321,10 @@ class TapHandler {
           showThinking: shouldPlayAi,
         );
         if (shouldPlayAi) {
+          await LiveEvaluationService.stopAndWait();
+          if (!context.mounted) {
+            return const EngineResponseSkip();
+          }
           final PieceColor aiSide = controller.activeBoardView.sideToMove;
           final String aiCorrelationId = _recordAiAttempt(aiSide);
           controller.isEngineRunning = true;
@@ -355,6 +369,11 @@ class TapHandler {
             return const EngineNoBestMove();
           } finally {
             controller.isEngineRunning = false;
+            if (session.outcome.isTerminal) {
+              LiveEvaluationService.publishTerminalPosition(session);
+            } else {
+              unawaited(LiveEvaluationService.requestCurrentPosition());
+            }
           }
         }
         if (mode != GameMode.humanVsHuman && !isRemoteMode) {
@@ -364,6 +383,7 @@ class TapHandler {
           return const EngineResponseSkip();
         }
         controller.refreshNativeSessionHeader(context, session);
+        unawaited(LiveEvaluationService.requestCurrentPosition());
         return const EngineResponseHumanOK();
       case MillSessionTapStatus.ignored:
         logger.t("$_logTag Native Mill ignored tap <$tappedLabel>.");

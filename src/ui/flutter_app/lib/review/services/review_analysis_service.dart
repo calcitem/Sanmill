@@ -4,6 +4,7 @@
 import 'dart:async';
 
 import '../../game_page/services/import_export/pgn.dart';
+import '../../game_page/services/mill.dart' show LiveEvaluationService;
 import '../../game_platform/game_session.dart';
 import '../../games/mill/mill_action_codec.dart';
 import '../../games/mill/native_mill_game_session.dart';
@@ -47,6 +48,7 @@ class ReviewAnalysisService {
     void Function(int completed, int total)? onProgress,
     bool ignoreCache = false,
   }) async {
+    await LiveEvaluationService.stopAndWait();
     final int generation = ++_generation;
     final String engineVersion = _engineCacheVersion();
     if (!ignoreCache) {
@@ -188,6 +190,7 @@ class ReviewAnalysisService {
     int groupIndex,
   ) async {
     assert(report.status == ReviewStatus.complete);
+    await LiveEvaluationService.stopAndWait();
     final int generation = ++_generation;
     final PgnGame<PgnNodeData> game = PgnGame.parsePgn(record.sourcePgn);
     final List<PgnNodeData> groups = game.moves.mainline().toList();
