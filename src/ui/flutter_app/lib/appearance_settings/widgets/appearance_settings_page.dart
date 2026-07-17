@@ -216,6 +216,7 @@ class AppearanceSettingsPage extends StatelessWidget {
 
   Future<void> importColorSettings(BuildContext context) async {
     final String strImport = S.of(context).import;
+    final String strImportColorSettings = S.of(context).importColorSettings;
     final String strClose = S.of(context).close;
     final String strImported = S.of(context).imported;
     final String strInvalidFormat = S.of(context).pleaseCopyJsonToClipboard;
@@ -286,7 +287,7 @@ class AppearanceSettingsPage extends StatelessWidget {
       final AlertDialog alert = AlertDialog(
         key: const Key('import_color_settings_alert_dialog'),
         title: Text(
-          strImport,
+          strImportColorSettings,
           key: const Key('import_color_settings_alert_dialog_title'),
           style: TextStyle(
             fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
@@ -364,7 +365,7 @@ class AppearanceSettingsPage extends StatelessWidget {
     final AlertDialog alert = AlertDialog(
       key: const Key('export_color_settings_alert_dialog'),
       title: Text(
-        S.of(context).export,
+        S.of(context).exportColorSettings,
         key: const Key('export_color_settings_alert_dialog_title'),
         style: TextStyle(
           fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
