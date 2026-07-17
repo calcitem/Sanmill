@@ -158,6 +158,9 @@ class _PuzzleStatsPageState extends State<PuzzleStatsPage> {
                 .map(
                   (PuzzleAttemptResult attempt) => _PuzzleStatsActivityTile(
                     attempt: attempt,
+                    resultLabel: attempt.success
+                        ? s.puzzleStatsSolved
+                        : s.puzzleStatsFailed,
                     timestampLabel: _formatTimestamp(
                       context,
                       attempt.timestamp,
@@ -281,10 +284,12 @@ class _PuzzleStatsMetricTile extends StatelessWidget {
 class _PuzzleStatsActivityTile extends StatelessWidget {
   const _PuzzleStatsActivityTile({
     required this.attempt,
+    required this.resultLabel,
     required this.timestampLabel,
   });
 
   final PuzzleAttemptResult attempt;
+  final String resultLabel;
   final String timestampLabel;
 
   @override
@@ -303,7 +308,12 @@ class _PuzzleStatsActivityTile extends StatelessWidget {
 
     return ListTile(
       leading: Icon(icon, color: color),
-      title: Text(timestampLabel, maxLines: 1, overflow: TextOverflow.ellipsis),
+      title: Text(resultLabel, maxLines: 1, overflow: TextOverflow.ellipsis),
+      subtitle: Text(
+        timestampLabel,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
       trailing: ratingChange == null
           ? null
           : _PuzzleStatsRatingDelta(value: ratingChange),
