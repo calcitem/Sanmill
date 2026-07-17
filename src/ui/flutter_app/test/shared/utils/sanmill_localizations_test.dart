@@ -73,6 +73,18 @@ void main() {
     expect(english.reviewMoveProgress(2, 14), 'Move 2 of 14');
   });
 
+  test('uses concise chess-style feedback in English mistake review', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.interactiveCorrection, 'Review mistakes');
+    expect(english.correctionPrompt('d6xf4'), 'Find a better move than d6xf4.');
+    expect(english.correctionAccepted, 'Good move!');
+    expect(english.correctionTryAgain, 'You can do better. Try another move.');
+    expect(english.correctionAnswer('b6'), 'Best move: b6');
+    expect(english.correctionComplete, 'Mistake review complete');
+    expect(english.noHumanMistakesToCorrect, 'No human mistakes to review.');
+  });
+
   test('separates computer-play and generative AI terminology', () {
     final S english = lookupS(const Locale('en'));
     final S chinese = lookupS(const Locale('zh'));

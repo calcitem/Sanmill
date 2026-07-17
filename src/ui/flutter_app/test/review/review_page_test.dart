@@ -141,6 +141,8 @@ void main() {
       expect(find.byKey(const Key('review_wide_layout')), findsOneWidget);
       expect(find.byKey(const Key('review_phone_layout')), findsNothing);
       expect(find.byKey(const Key('review_correction')), findsOneWidget);
+      expect(find.text('Review mistakes'), findsOneWidget);
+      expect(find.text('Find a better move than a7.'), findsOneWidget);
       expect(find.text('1/1'), findsOneWidget);
       expect(find.text('d6xf4'), findsOneWidget);
       final Rect boardRect = tester.getRect(
@@ -161,7 +163,7 @@ void main() {
       await tester.pump();
       await tester.tap(goodChoice);
       await tester.pump();
-      expect(find.text('Accepted. Good move.'), findsOneWidget);
+      expect(find.text('Good move!'), findsOneWidget);
       expect(find.text('Done'), findsOneWidget);
       expect(find.text('Skip'), findsOneWidget);
       expect(find.text('Show answer'), findsOneWidget);
@@ -174,6 +176,7 @@ void main() {
         find.byKey(const Key('review_correction_complete')),
         findsOneWidget,
       );
+      expect(find.text('Mistake review complete'), findsOneWidget);
     },
   );
 
