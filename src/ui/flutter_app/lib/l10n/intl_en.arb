@@ -621,9 +621,9 @@
     "@isPieceCountInHandShown": {
         "description": "Show count of pieces in hand"
     },
-    "isNotationsShown": "Show notations on board",
+    "isNotationsShown": "Show board coordinates",
     "@isNotationsShown": {
-        "description": "Show notations on board"
+        "description": "Show coordinate labels around the board"
     },
     "isHistoryNavigationToolbarShown": "Show history navigation toolbar",
     "@isHistoryNavigationToolbarShown": {
