@@ -10,40 +10,35 @@ class _BoardTopSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Semantics(
-      key: const Key('board_top_semantics'),
-      label: S.of(context).boardTop,
-      child: ValueListenableBuilder<Box<DisplaySettings>>(
-        key: const Key('board_top_value_listenable_builder'),
-        valueListenable: DB().listenDisplaySettings,
-        builder: (BuildContext context, Box<DisplaySettings> box, _) {
-          final DisplaySettings displaySettings = box.get(
-            DB.displaySettingsKey,
-            defaultValue: const DisplaySettings(),
-          )!;
+    return ValueListenableBuilder<Box<DisplaySettings>>(
+      key: const Key('board_top_value_listenable_builder'),
+      valueListenable: DB().listenDisplaySettings,
+      builder: (BuildContext context, Box<DisplaySettings> box, _) {
+        final DisplaySettings displaySettings = box.get(
+          DB.displaySettingsKey,
+          defaultValue: const DisplaySettings(),
+        )!;
+        final String valueLabel = displaySettings.boardTop.toStringAsFixed(1);
 
-          return Center(
-            key: const Key('board_top_center'),
-            child: SizedBox(
-              key: const Key('board_top_sized_box'),
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: Slider(
-                key: const Key('board_top_slider'),
-                value: displaySettings.boardTop,
-                max: 288.0,
-                divisions: 288,
-                label: displaySettings.boardTop.toStringAsFixed(1),
-                onChanged: (double value) {
-                  logger.t("[config] boardTop value: $value");
-                  DB().displaySettings = displaySettings.copyWith(
-                    boardTop: value,
-                  );
-                },
-              ),
-            ),
-          );
-        },
-      ),
+        return _SettingsSliderSheet(
+          keyPrefix: 'board_top',
+          title: S.of(context).boardTop,
+          valueLabel: valueLabel,
+          slider: Slider(
+            key: const Key('board_top_slider'),
+            value: displaySettings.boardTop,
+            max: 288.0,
+            divisions: 288,
+            label: valueLabel,
+            semanticFormatterCallback: (double value) =>
+                value.toStringAsFixed(1),
+            onChanged: (double value) {
+              logger.t("[config] boardTop value: $value");
+              DB().displaySettings = displaySettings.copyWith(boardTop: value);
+            },
+          ),
+        );
+      },
     );
   }
 }

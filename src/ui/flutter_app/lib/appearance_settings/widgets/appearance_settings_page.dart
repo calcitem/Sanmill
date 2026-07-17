@@ -46,6 +46,7 @@ part 'package:sanmill/appearance_settings/widgets/sliders/board_top_slider.dart'
 part 'package:sanmill/appearance_settings/widgets/sliders/font_size_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/piece_width_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/point_width_slider.dart';
+part 'package:sanmill/appearance_settings/widgets/sliders/settings_slider_sheet.dart';
 
 class _BoardStylePreview extends StatelessWidget {
   const _BoardStylePreview({required this.colors});

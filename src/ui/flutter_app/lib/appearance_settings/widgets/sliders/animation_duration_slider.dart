@@ -10,40 +10,43 @@ class _AnimationDurationSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Semantics(
-      key: const Key('animation_duration_semantics'),
-      label: S.of(context).animationDuration,
-      child: ValueListenableBuilder<Box<DisplaySettings>>(
-        key: const Key('animation_duration_value_listenable_builder'),
-        valueListenable: DB().listenDisplaySettings,
-        builder: (BuildContext context, Box<DisplaySettings> box, _) {
-          final DisplaySettings displaySettings = box.get(
-            DB.displaySettingsKey,
-            defaultValue: const DisplaySettings(),
-          )!;
+    String formatDuration(double seconds) {
+      final num roundedSeconds = num.parse(seconds.toStringAsFixed(1));
+      return S.of(context).animationDurationValue(roundedSeconds);
+    }
 
-          return Center(
-            key: const Key('animation_duration_center'),
-            child: SizedBox(
-              key: const Key('animation_duration_sized_box'),
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: Slider(
-                key: const Key('animation_duration_slider'),
-                value: displaySettings.animationDuration,
-                max: 5.0,
-                divisions: 50,
-                label: displaySettings.animationDuration.toStringAsFixed(1),
-                onChanged: (double value) {
-                  logger.t("[config] AnimationDuration value: $value");
-                  DB().displaySettings = displaySettings.copyWith(
-                    animationDuration: value,
-                  );
-                },
-              ),
-            ),
-          );
-        },
-      ),
+    return ValueListenableBuilder<Box<DisplaySettings>>(
+      key: const Key('animation_duration_value_listenable_builder'),
+      valueListenable: DB().listenDisplaySettings,
+      builder: (BuildContext context, Box<DisplaySettings> box, _) {
+        final DisplaySettings displaySettings = box.get(
+          DB.displaySettingsKey,
+          defaultValue: const DisplaySettings(),
+        )!;
+        final String valueLabel = formatDuration(
+          displaySettings.animationDuration,
+        );
+
+        return _SettingsSliderSheet(
+          keyPrefix: 'animation_duration',
+          title: S.of(context).animationDuration,
+          valueLabel: valueLabel,
+          slider: Slider(
+            key: const Key('animation_duration_slider'),
+            value: displaySettings.animationDuration,
+            max: 5.0,
+            divisions: 50,
+            label: valueLabel,
+            semanticFormatterCallback: formatDuration,
+            onChanged: (double value) {
+              logger.t("[config] AnimationDuration value: $value");
+              DB().displaySettings = displaySettings.copyWith(
+                animationDuration: value,
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

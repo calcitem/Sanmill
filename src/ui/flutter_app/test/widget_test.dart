@@ -2553,6 +2553,64 @@ void main() {
   );
 
   testWidgets(
+    'Appearance sliders show their setting and current value',
+    (WidgetTester tester) async {
+      final SemanticsHandle semantics = tester.ensureSemantics();
+      final DisplaySettings previousDisplaySettings = DB().displaySettings;
+      addTearDown(() => DB().displaySettings = previousDisplaySettings);
+      DB().displaySettings = const DisplaySettings();
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: Locale('en'),
+          home: AppearanceSettingsPage(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final Finder animationDurationTile = find.byKey(
+        const Key(
+          'display_settings_card_animation_duration_settings_list_tile',
+        ),
+      );
+      final Finder appearanceScrollable = find.descendant(
+        of: find.byKey(const Key('settings_list')),
+        matching: find.byType(Scrollable),
+      );
+      await tester.scrollUntilVisible(
+        animationDurationTile,
+        320,
+        scrollable: appearanceScrollable,
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(animationDurationTile);
+      await tester.pumpAndSettle();
+
+      final Finder sheet = find.byKey(const Key('animation_duration_sheet'));
+      expect(sheet, findsOneWidget);
+      expect(
+        find.byKey(const Key('animation_duration_sheet_title')),
+        findsOneWidget,
+      );
+      expect(find.text('Animation duration'), findsWidgets);
+      expect(
+        find.descendant(of: sheet, matching: find.text('1 second')),
+        findsOneWidget,
+      );
+      expect(tester.getSize(sheet).height, lessThan(240));
+      final SemanticsData sliderSemantics = tester
+          .getSemantics(find.byKey(const Key('animation_duration_slider')))
+          .getSemanticsData();
+      expect(sliderSemantics.value, '1 second');
+      expect(sliderSemantics.decreasedValue, '0.9 seconds');
+      semantics.dispose();
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Opening explorer uses split panes in landscape',
     (WidgetTester tester) async {
       tester.view

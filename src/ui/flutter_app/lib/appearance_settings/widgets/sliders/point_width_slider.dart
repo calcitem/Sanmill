@@ -10,41 +10,38 @@ class _PointWidthSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Semantics(
-      key: const Key('point_width_slider_semantics'),
-      label: S.of(context).pointWidth,
-      child: ValueListenableBuilder<Box<DisplaySettings>>(
-        key: const Key('point_width_slider_value_listenable_builder'),
-        valueListenable: DB().listenDisplaySettings,
-        builder: (BuildContext context, Box<DisplaySettings> box, _) {
-          final DisplaySettings displaySettings = box.get(
-            DB.displaySettingsKey,
-            defaultValue: const DisplaySettings(),
-          )!;
+    return ValueListenableBuilder<Box<DisplaySettings>>(
+      key: const Key('point_width_slider_value_listenable_builder'),
+      valueListenable: DB().listenDisplaySettings,
+      builder: (BuildContext context, Box<DisplaySettings> box, _) {
+        final DisplaySettings displaySettings = box.get(
+          DB.displaySettingsKey,
+          defaultValue: const DisplaySettings(),
+        )!;
+        final String valueLabel = displaySettings.pointWidth.toStringAsFixed(1);
 
-          // Divided by [MigrationValues.pieceWidth] To represent the old behavior
-          return Center(
-            key: const Key('point_width_slider_center'),
-            child: SizedBox(
-              key: const Key('point_width_slider_sized_box'),
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: Slider(
-                key: const Key('point_width_slider_slider'),
-                value: displaySettings.pointWidth,
-                max: 30.0,
-                divisions: 30,
-                label: displaySettings.pointWidth.toStringAsFixed(1),
-                onChanged: (double value) {
-                  logger.t("[config] pointWidth value: $value");
-                  DB().displaySettings = displaySettings.copyWith(
-                    pointWidth: value,
-                  );
-                },
-              ),
-            ),
-          );
-        },
-      ),
+        // Divided by [MigrationValues.pieceWidth] To represent the old behavior
+        return _SettingsSliderSheet(
+          keyPrefix: 'point_width_slider',
+          title: S.of(context).pointWidth,
+          valueLabel: valueLabel,
+          slider: Slider(
+            key: const Key('point_width_slider_slider'),
+            value: displaySettings.pointWidth,
+            max: 30.0,
+            divisions: 30,
+            label: valueLabel,
+            semanticFormatterCallback: (double value) =>
+                value.toStringAsFixed(1),
+            onChanged: (double value) {
+              logger.t("[config] pointWidth value: $value");
+              DB().displaySettings = displaySettings.copyWith(
+                pointWidth: value,
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

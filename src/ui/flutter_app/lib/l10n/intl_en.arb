@@ -5716,5 +5716,19 @@
     "customBackgroundImage": "Custom background image",
     "@customBackgroundImage": {
         "description": "Accessible label for the custom background image option"
+    },
+    "animationDurationValue": "{seconds, plural, =0{Off} =1{1 second} other{{seconds} seconds}}",
+    "@animationDurationValue": {
+        "description": "Current piece animation duration shown beside its slider",
+        "placeholders": {
+            "seconds": {
+                "type": "num",
+                "example": "1.5"
+            }
+        }
+    },
+    "fontSizePreview": "Aa Bb Cc 123",
+    "@fontSizePreview": {
+        "description": "Sample text shown below the font size slider"
     }
 }

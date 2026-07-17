@@ -10,40 +10,38 @@ class _BoardInnerLineWidthSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Semantics(
-      key: const Key('board_inner_line_width_semantics'),
-      label: S.of(context).boardInnerLineWidth,
-      child: ValueListenableBuilder<Box<DisplaySettings>>(
-        key: const Key('board_inner_line_width_value_listenable_builder'),
-        valueListenable: DB().listenDisplaySettings,
-        builder: (BuildContext context, Box<DisplaySettings> box, _) {
-          final DisplaySettings displaySettings = box.get(
-            DB.displaySettingsKey,
-            defaultValue: const DisplaySettings(),
-          )!;
+    return ValueListenableBuilder<Box<DisplaySettings>>(
+      key: const Key('board_inner_line_width_value_listenable_builder'),
+      valueListenable: DB().listenDisplaySettings,
+      builder: (BuildContext context, Box<DisplaySettings> box, _) {
+        final DisplaySettings displaySettings = box.get(
+          DB.displaySettingsKey,
+          defaultValue: const DisplaySettings(),
+        )!;
+        final String valueLabel = displaySettings.boardInnerLineWidth
+            .toStringAsFixed(1);
 
-          return Center(
-            key: const Key('board_inner_line_width_center'),
-            child: SizedBox(
-              key: const Key('board_inner_line_width_sized_box'),
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: Slider(
-                key: const Key('board_inner_line_width_slider'),
-                value: displaySettings.boardInnerLineWidth,
-                max: 20,
-                divisions: 200,
-                label: displaySettings.boardInnerLineWidth.toStringAsFixed(1),
-                onChanged: (double value) {
-                  logger.t("[config] BoardInnerLineWidth value: $value");
-                  DB().displaySettings = displaySettings.copyWith(
-                    boardInnerLineWidth: value,
-                  );
-                },
-              ),
-            ),
-          );
-        },
-      ),
+        return _SettingsSliderSheet(
+          keyPrefix: 'board_inner_line_width',
+          title: S.of(context).boardInnerLineWidth,
+          valueLabel: valueLabel,
+          slider: Slider(
+            key: const Key('board_inner_line_width_slider'),
+            value: displaySettings.boardInnerLineWidth,
+            max: 20,
+            divisions: 200,
+            label: valueLabel,
+            semanticFormatterCallback: (double value) =>
+                value.toStringAsFixed(1),
+            onChanged: (double value) {
+              logger.t("[config] BoardInnerLineWidth value: $value");
+              DB().displaySettings = displaySettings.copyWith(
+                boardInnerLineWidth: value,
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

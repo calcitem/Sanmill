@@ -10,41 +10,38 @@ class _PieceWidthSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Semantics(
-      key: const Key('piece_width_slider_semantics'),
-      label: S.of(context).pieceWidth,
-      child: ValueListenableBuilder<Box<DisplaySettings>>(
-        key: const Key('piece_width_slider_value_listenable_builder'),
-        valueListenable: DB().listenDisplaySettings,
-        builder: (BuildContext context, Box<DisplaySettings> box, _) {
-          final DisplaySettings displaySettings = box.get(
-            DB.displaySettingsKey,
-            defaultValue: const DisplaySettings(),
-          )!;
+    return ValueListenableBuilder<Box<DisplaySettings>>(
+      key: const Key('piece_width_slider_value_listenable_builder'),
+      valueListenable: DB().listenDisplaySettings,
+      builder: (BuildContext context, Box<DisplaySettings> box, _) {
+        final DisplaySettings displaySettings = box.get(
+          DB.displaySettingsKey,
+          defaultValue: const DisplaySettings(),
+        )!;
+        final String valueLabel = displaySettings.pieceWidth.toStringAsFixed(1);
 
-          // Divided by [MigrationValues.pieceWidth] To represent the old behavior
-          return Center(
-            key: const Key('piece_width_slider_center'),
-            child: SizedBox(
-              key: const Key('piece_width_slider_sized_box'),
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: Slider(
-                key: const Key('piece_width_slider_slider'),
-                value: displaySettings.pieceWidth,
-                min: 0.5,
-                divisions: 50,
-                label: displaySettings.pieceWidth.toStringAsFixed(1),
-                onChanged: (double value) {
-                  logger.t("[config] pieceWidth value: $value");
-                  DB().displaySettings = displaySettings.copyWith(
-                    pieceWidth: value,
-                  );
-                },
-              ),
-            ),
-          );
-        },
-      ),
+        // Divided by [MigrationValues.pieceWidth] To represent the old behavior
+        return _SettingsSliderSheet(
+          keyPrefix: 'piece_width_slider',
+          title: S.of(context).pieceWidth,
+          valueLabel: valueLabel,
+          slider: Slider(
+            key: const Key('piece_width_slider_slider'),
+            value: displaySettings.pieceWidth,
+            min: 0.5,
+            divisions: 50,
+            label: valueLabel,
+            semanticFormatterCallback: (double value) =>
+                value.toStringAsFixed(1),
+            onChanged: (double value) {
+              logger.t("[config] pieceWidth value: $value");
+              DB().displaySettings = displaySettings.copyWith(
+                pieceWidth: value,
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
