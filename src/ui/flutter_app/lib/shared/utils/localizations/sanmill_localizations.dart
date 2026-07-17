@@ -18,6 +18,34 @@ const List<LocalizationsDelegate<dynamic>> sanmillLocalizationsDelegates =
       ...S.localizationsDelegates,
     ];
 
+/// Returns a localized game-mode label for the app's canonical PGN player
+/// names, while preserving names supplied by people or external PGNs.
+String? localizedGamePlayersSummary(
+  S strings, {
+  required String? white,
+  required String? black,
+}) {
+  if (white == null || black == null) {
+    return white ?? black;
+  }
+
+  final bool whiteIsHuman = white == 'Human';
+  final bool blackIsHuman = black == 'Human';
+  final bool whiteIsComputer = white == 'AI' || white == 'Computer';
+  final bool blackIsComputer = black == 'AI' || black == 'Computer';
+
+  if (whiteIsHuman && blackIsHuman) {
+    return strings.humanVsHuman;
+  }
+  if ((whiteIsHuman && blackIsComputer) || (whiteIsComputer && blackIsHuman)) {
+    return strings.humanVsAi;
+  }
+  if (whiteIsComputer && blackIsComputer) {
+    return strings.aiVsAi;
+  }
+  return '$white – $black';
+}
+
 class _FallbackWidgetsLocalizationsDelegate
     extends LocalizationsDelegate<WidgetsLocalizations> {
   const _FallbackWidgetsLocalizationsDelegate();

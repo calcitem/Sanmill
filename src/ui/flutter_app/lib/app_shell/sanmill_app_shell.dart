@@ -49,6 +49,7 @@ import '../shared/services/diagnostic_report_service.dart';
 import '../shared/services/environment_config.dart';
 import '../shared/services/logger.dart';
 import '../shared/themes/app_styles.dart';
+import '../shared/utils/localizations/sanmill_localizations.dart';
 import '../shared/utils/screen_insets.dart';
 import '../shared/widgets/double_back_to_close_app.dart';
 import '../shared/widgets/lichess_list_section.dart';
@@ -1563,7 +1564,13 @@ class _PrivateHistorySection extends StatelessWidget {
             key: Key('sanmill_home_private_game_${record.id}'),
             boardLayout: record.finalBoardLayout,
             fallbackIcon: Icons.history_rounded,
-            title: '${record.white} – ${record.black}',
+            title:
+                localizedGamePlayersSummary(
+                  strings,
+                  white: record.white,
+                  black: record.black,
+                ) ??
+                strings.game,
             subtitle:
                 '${localizations.formatShortDate(record.completedAt.toLocal())} · ${record.result}',
             detail: strings.reviewGame,
@@ -1824,7 +1831,8 @@ class _HomeEmptyContent extends StatelessWidget {
   }
 }
 
-typedef _SavedGameDetailBuilder = String? Function(SavedGameSummary game);
+typedef _SavedGameDetailBuilder =
+    String? Function(S strings, SavedGameSummary game);
 
 class _ActiveGamePreview {
   const _ActiveGamePreview({
@@ -2045,7 +2053,7 @@ class _SavedGamePreviewSection extends StatelessWidget {
               fallbackIcon: fallbackIcon,
               title: game.displayName,
               subtitle: subtitleForGame(localizations, strings, game),
-              detail: detailForGame(game),
+              detail: detailForGame(strings, game),
               onTap: () => onSavedGameSelected(game.path),
               onReview: onReviewSavedGame == null
                   ? null
@@ -2067,7 +2075,7 @@ class _SavedGamePreviewSection extends StatelessWidget {
             fallbackIcon: fallbackIcon,
             title: game.displayName,
             subtitle: subtitleForGame(localizations, strings, game),
-            detail: detailForGame(game),
+            detail: detailForGame(strings, game),
             onTap: () => onSavedGameSelected(game.path),
             onReview: onReviewSavedGame == null
                 ? null
@@ -2114,13 +2122,10 @@ class _SavedGamePreviewSection extends StatelessWidget {
     return player == null ? null : strings.sideToMove(player);
   }
 
-  static String? players(SavedGameSummary game) {
+  static String? players(S strings, SavedGameSummary game) {
     final String? white = game.preview?.white;
     final String? black = game.preview?.black;
-    if (white != null && black != null) {
-      return '$white – $black';
-    }
-    return white ?? black;
+    return localizedGamePlayersSummary(strings, white: white, black: black);
   }
 }
 

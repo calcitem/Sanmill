@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../game_page/widgets/mini_board.dart';
 import '../../generated/intl/l10n.dart';
+import '../../shared/utils/localizations/sanmill_localizations.dart';
 import '../models/review_models.dart';
 import '../services/review_storage.dart';
 import 'review_page.dart';
@@ -63,7 +64,14 @@ class _ReviewHistoryPageState extends State<ReviewHistoryPage> {
                       ),
                     ),
                   ),
-                  title: Text('${record.white} – ${record.black}'),
+                  title: Text(
+                    localizedGamePlayersSummary(
+                          strings,
+                          white: record.white,
+                          black: record.black,
+                        ) ??
+                        strings.game,
+                  ),
                   subtitle: Text(
                     '${record.result} · ${MaterialLocalizations.of(context).formatShortDate(record.completedAt.toLocal())}',
                   ),
