@@ -796,6 +796,12 @@ void main() {
         find.byKey(const Key('how_to_play_screen_scaffold')),
         findsOneWidget,
       );
+      final Text placingHeading = tester.widget<Text>(find.text('Placing'));
+      expect(placingHeading.style?.fontWeight, FontWeight.w700);
+      final Text helpIntroduction = tester.widget<Text>(
+        find.textContaining('In standard Mill').first,
+      );
+      expect(helpIntroduction.style?.height, 1.35);
 
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
