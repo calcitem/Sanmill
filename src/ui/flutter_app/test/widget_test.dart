@@ -1370,6 +1370,18 @@ void main() {
         find.byKey(const Key('reset_settings_alert_dialog_alert_dialog')),
         findsOneWidget,
       );
+      expect(find.text('Restore default settings'), findsNWidgets(2));
+      expect(
+        find.text(
+          'This will replace all current settings with their defaults. '
+          'This cannot be undone.',
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('reset_settings_alert_dialog_restore_button')),
+        findsOneWidget,
+      );
       await tester.tap(
         find.byKey(const Key('reset_settings_alert_dialog_cancel_button')),
       );

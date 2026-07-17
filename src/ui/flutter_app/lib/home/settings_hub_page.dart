@@ -259,14 +259,14 @@ class _SettingsHubResetSettingsDialog extends StatelessWidget {
     return AlertDialog(
       key: const Key('reset_settings_alert_dialog_alert_dialog'),
       title: Text(
-        S.of(context).restore,
+        S.of(context).restoreDefaultSettings,
         key: const Key('reset_settings_alert_dialog_title'),
         style: AppTheme.dialogTitleTextStyle,
       ),
       content: SingleChildScrollView(
         key: const Key('reset_settings_alert_dialog_content_scroll_view'),
         child: Text(
-          '${S.of(context).restoreDefaultSettings}?',
+          S.of(context).restoreDefaultSettingsConfirmation,
           key: const Key('reset_settings_alert_dialog_content_text'),
           style: TextStyle(
             fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
@@ -275,22 +275,25 @@ class _SettingsHubResetSettingsDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
-          key: const Key('reset_settings_alert_dialog_ok_button'),
-          onPressed: () => _restore(context),
+          key: const Key('reset_settings_alert_dialog_cancel_button'),
+          onPressed: () => _cancel(context),
           child: Text(
-            S.of(context).ok,
-            key: const Key('reset_settings_alert_dialog_ok_button_text'),
+            S.of(context).cancel,
+            key: const Key('reset_settings_alert_dialog_cancel_button_text'),
             style: TextStyle(
               fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
             ),
           ),
         ),
         TextButton(
-          key: const Key('reset_settings_alert_dialog_cancel_button'),
-          onPressed: () => _cancel(context),
+          key: const Key('reset_settings_alert_dialog_restore_button'),
+          style: TextButton.styleFrom(
+            foregroundColor: Theme.of(context).colorScheme.error,
+          ),
+          onPressed: () => _restore(context),
           child: Text(
-            S.of(context).cancel,
-            key: const Key('reset_settings_alert_dialog_cancel_button_text'),
+            S.of(context).restore,
+            key: const Key('reset_settings_alert_dialog_restore_button_text'),
             style: TextStyle(
               fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
             ),

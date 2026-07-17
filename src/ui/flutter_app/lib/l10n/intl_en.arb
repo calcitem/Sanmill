@@ -5632,5 +5632,9 @@
                 "example": "6"
             }
         }
+    },
+    "restoreDefaultSettingsConfirmation": "This will replace all current settings with their defaults. This cannot be undone.",
+    "@restoreDefaultSettingsConfirmation": {
+        "description": "Confirmation warning before all app settings are reset"
     }
 }
