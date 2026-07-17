@@ -3619,11 +3619,11 @@
     "@logs": {
         "description": "Label for the logs setting"
     },
-    "downloadLogs": "Download Logs",
+    "downloadLogs": "Download logs",
     "@downloadLogs": {
         "description": "Tooltip for the download logs button"
     },
-    "noLogsAvailable": "No Logs Available",
+    "noLogsAvailable": "No logs available",
     "@noLogsAvailable": {
         "description": "Title shown when there are no logs to display"
     },
@@ -3643,7 +3643,7 @@
     "@refresh": {
         "description": "Label for refresh action"
     },
-    "shareLogs": "Share Logs",
+    "shareLogs": "Share logs",
     "@shareLogs": {
         "description": "Tooltip for the share logs button"
     },
@@ -3656,11 +3656,11 @@
             }
         }
     },
-    "selectMode": "Select Mode",
+    "selectMode": "Select log range",
     "@selectMode": {
         "description": "Label for selection mode"
     },
-    "copySelected": "Copy Selected",
+    "copySelected": "Copy selected logs",
     "@copySelected": {
         "description": "Label for copy selected action"
     },
@@ -3712,7 +3712,7 @@
             }
         }
     },
-    "clearLogs": "Clear Logs",
+    "clearLogs": "Clear logs",
     "@clearLogs": {
         "description": "Label for clear logs action"
     },
