@@ -236,6 +236,19 @@ void main() {
     expect(english.analysisDepthSemantics(24), 'Depth 24');
   });
 
+  test('explains the English PVS algorithm without search jargon', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(
+      english.whatIsPvs,
+      'PVS (Principal Variation Search) examines the most promising '
+      'sequence of moves first, then quickly checks whether other moves '
+      'need a deeper search. This often makes it more efficient than basic '
+      'alpha-beta search.',
+    );
+    expect(english.whatIsPvs, isNot(contains('null or zero window')));
+  });
+
   test('states English human database game counts without ambiguity', () {
     final S english = lookupS(const Locale('en'));
 

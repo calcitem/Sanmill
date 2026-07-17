@@ -1443,8 +1443,10 @@
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "This thinking-time limit may prevent the computer from reaching the selected difficulty on this device.",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsPvs": "PVS (Principal Variation Search) is a search algorithm to find the best move in a given position. It is an enhancement of the alpha-beta algorithm and uses null or zero window searches to confirm that a move is worse or not worse than an already safe score from the principal variation. PVS focuses on the most promising moves and avoids unnecessary searches of suboptimal branches, which helps improve the efficiency of the search.",
-    "@whatIsPvs": {},
+    "whatIsPvs": "PVS (Principal Variation Search) examines the most promising sequence of moves first, then quickly checks whether other moves need a deeper search. This often makes it more efficient than basic alpha-beta search.",
+    "@whatIsPvs": {
+        "description": "Plain-language explanation shown after selecting the PVS engine algorithm"
+    },
     "whatIsAlphaBeta": "The alpha-beta algorithm is a search algorithm for finding the best move. It uses the minimax principle and two values, alpha and beta, to prune the search tree and improve efficiency. Alpha represents the minimum score the engine is sure it can achieve, while beta represents the maximum score its opponent can achieve. This helps the engine search efficiently.",
     "@whatIsAlphaBeta": {},
     "drawOnTheHumanExperienceDetail": "Adjust search depth by the number of pieces already placed. Turn this off to use the selected difficulty level as the depth throughout the placement phase.",
