@@ -1653,6 +1653,8 @@ void main() {
       find.byKey(const Key('mill_coordinate_training_time_bar')),
       findsNothing,
     );
+    expect(find.byTooltip('Settings'), findsOneWidget);
+    expect(find.text('Board orientation'), findsOneWidget);
 
     await tester.tap(
       find.byKey(const Key('mill_coordinate_training_settings_button')),
@@ -1691,6 +1693,7 @@ void main() {
       find.byKey(const Key('mill_coordinate_training_orientation_board')),
       findsOneWidget,
     );
+    expect(find.text('Standard'), findsOneWidget);
     expect(
       find.descendant(
         of: find.byKey(

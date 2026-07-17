@@ -5504,5 +5504,9 @@
     "viewContributionGuide": "View guide",
     "@viewContributionGuide": {
         "description": "Snackbar action that opens the puzzle contribution guide"
+    },
+    "coordinateTrainingStandardOrientation": "Standard",
+    "@coordinateTrainingStandardOrientation": {
+        "description": "Fixed, untransformed board orientation used in coordinate training"
     }
 }

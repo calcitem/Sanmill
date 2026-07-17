@@ -79,7 +79,10 @@ class _MillCoordinateTrainingPageState
           IconButton(
             key: const Key('mill_coordinate_training_settings_button'),
             tooltip: strings.settings,
-            icon: const Icon(Icons.settings_outlined),
+            icon: Icon(
+              Icons.settings_outlined,
+              semanticLabel: strings.settings,
+            ),
             onPressed: _showDisplaySettingsSheet,
           ),
         ],
@@ -128,7 +131,7 @@ class _MillCoordinateTrainingPageState
                   LichessBottomBarButton(
                     key: const Key('mill_coordinate_training_menu_button'),
                     icon: Icons.tune_rounded,
-                    label: strings.menu,
+                    label: strings.boardOrientation,
                     showLabel: true,
                     onTap: _showTrainingMenuSheet,
                   ),
@@ -206,7 +209,8 @@ class _MillCoordinateTrainingPageState
     _CoordinateTrainingOrientationChoice choice,
   ) {
     return switch (choice) {
-      _CoordinateTrainingOrientationChoice.board => strings.board,
+      _CoordinateTrainingOrientationChoice.board =>
+        strings.coordinateTrainingStandardOrientation,
       _CoordinateTrainingOrientationChoice.random => strings.randomColor,
     };
   }
