@@ -9,6 +9,13 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 
 void main() {
+  test('distinguishes GIF sharing setup from the share action', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.enableGifSharing, 'Enable GIF sharing');
+    expect(english.shareGIF, 'Share GIF');
+  });
+
   test('separates computer-play and generative AI terminology', () {
     final S english = lookupS(const Locale('en'));
     final S chinese = lookupS(const Locale('zh'));

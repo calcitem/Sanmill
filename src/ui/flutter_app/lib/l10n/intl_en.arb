@@ -6347,5 +6347,9 @@
     "resetAppData": "Reset app data",
     "@resetAppData": {
         "description": "Action and dialog title for resetting settings and deleting locally stored app progress"
+    },
+    "enableGifSharing": "Enable GIF sharing",
+    "@enableGifSharing": {
+        "description": "Setting that adds the Share GIF action to the in-game options menu"
     }
 }

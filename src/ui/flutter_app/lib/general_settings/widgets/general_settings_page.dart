@@ -1073,7 +1073,7 @@ class GeneralSettingsPage extends StatelessWidget {
                     );
                   }
                 },
-                titleString: S.of(context).shareGIF,
+                titleString: S.of(context).enableGifSharing,
               ),
               SettingsListTile(
                 key: const Key(
