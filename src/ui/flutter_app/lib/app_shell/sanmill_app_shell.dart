@@ -2908,9 +2908,8 @@ class _MenuEntries extends StatelessWidget {
               _buildPlayModeToolTile(tool),
           ],
         ),
-        _MoreSection(
-          title: strings.settings,
-          headerKey: const Key('drawer_item_settings_group'),
+        LichessListSection(
+          cardKey: const Key('drawer_item_settings_card'),
           children: <Widget>[
             _MoreTile(
               key: const Key('drawer_item_settings'),

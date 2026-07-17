@@ -1323,20 +1323,12 @@ void main() {
         ListTileTheme.of(settingsTileContext).iconColor,
         Theme.of(settingsTileContext).colorScheme.primary,
       );
+      expect(find.byKey(const Key('drawer_item_settings_group')), findsNothing);
       expect(
-        find.ancestor(
-          of: find.byKey(const Key('drawer_item_settings_group')),
-          matching: find.byType(Card),
-        ),
-        findsNothing,
-      );
-      expect(
-        find.ancestor(
-          of: find.byKey(const Key('drawer_item_settings')),
-          matching: find.byType(Card),
-        ),
+        find.byKey(const Key('drawer_item_settings_card')),
         findsOneWidget,
       );
+      expect(find.text('Settings'), findsOneWidget);
       expect(
         find.descendant(
           of: find.byKey(const Key('drawer_item_settings')),
