@@ -137,8 +137,16 @@ Future<T?> _showMaterialActionSheet<T>({
                         action: actions[index],
                         textStyle: actionTextStyle,
                         isFirst: index == 0,
-                        isLast: index == actions.length - 1,
+                        isLast: false,
                       ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
+                      child: TextButton(
+                        key: const Key('lichess_action_sheet_cancel_button'),
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(S.of(context).cancel),
+                      ),
+                    ),
                   ],
                 ),
               ),
