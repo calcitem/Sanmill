@@ -55,6 +55,14 @@ void main() {
     expect(english.reviewStructureCounts(12, 15, 1), isNot(contains('atomic')));
   });
 
+  test('uses player-facing wording for deeper move analysis', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.deepAnalysis, 'Analyze this move more deeply');
+    expect(english.deepAnalysis, isNot(contains('turn')));
+    expect(english.deepAnalysis, isNot(contains('deepen')));
+  });
+
   test('separates computer-play and generative AI terminology', () {
     final S english = lookupS(const Locale('en'));
     final S chinese = lookupS(const Locale('zh'));

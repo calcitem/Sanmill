@@ -5184,7 +5184,7 @@
     "qualityAnnotation": "Move quality annotation",
     "reviewBestLine": "Best line: {line}",
     "@reviewBestLine": {"placeholders": {"line": {"type": "String"}}},
-    "deepAnalysis": "Deepen this turn",
+    "deepAnalysis": "Analyze this move more deeply",
     "exportReviewAnnotations": "Include review annotations in future exports",
     "exportReviewAnnotationsDescription": "Merges annotations into an exported copy without changing the original game.",
     "noHumanMistakesToCorrect": "No mistakes by a human player to correct.",
