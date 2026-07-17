@@ -40,7 +40,10 @@ add_definitions(-DUNICODE -D_UNICODE)
 # Compilation settings that should be applied to most targets.
 function(APPLY_STANDARD_SETTINGS TARGET)
   target_compile_features(${TARGET} PUBLIC cxx_std_20)
-  target_compile_options(${TARGET} PRIVATE /MP /W4 /WX /wd"4100")
+  # Force UTF-8 source and execution character sets for the runner and all
+  # plugins. This prevents MSVC warning C4819 on systems whose active code
+  # page cannot represent UTF-8 characters in generated plugin sources.
+  target_compile_options(${TARGET} PRIVATE /MP /W4 /WX /wd"4100" /utf-8)
   target_compile_options(${TARGET} PRIVATE /EHsc)
 
   # MSVC 14.50+ (VS 2026) flips /permissive to off by default under
