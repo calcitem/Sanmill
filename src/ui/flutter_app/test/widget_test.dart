@@ -3140,6 +3140,25 @@ void main() {
       expect(find.text('Developer options'), findsOneWidget);
       expect(find.text('Tools'), findsOneWidget);
       expect(find.text('Diagnostics'), findsOneWidget);
+      await tester.tap(
+        find.byKey(
+          const Key(
+            'developer_options_page_settings_card_llm_assisted_development',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(
+        find.text(
+          'Describe the task to generate a ready-to-share prompt. If your '
+          'clipboard contains a Sanmill log, a relevant excerpt will be '
+          'included.',
+        ),
+        findsOneWidget,
+      );
+      expect(find.text('Copy prompt'), findsOneWidget);
+      await tester.tap(find.text('Close'));
+      await tester.pumpAndSettle();
       await tester.scrollUntilVisible(find.text('Experience recording'), 300);
       expect(find.text('Experience recording'), findsOneWidget);
       expect(find.text('Record user interactions'), findsOneWidget);

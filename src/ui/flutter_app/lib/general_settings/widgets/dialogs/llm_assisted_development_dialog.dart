@@ -102,6 +102,11 @@ class _LlmAssistedDevelopmentDialogState
                 fontWeight: FontWeight.bold,
               ),
             ),
+            const SizedBox(height: 8.0),
+            Text(
+              S.of(context).llmAssistedDevelopmentDescription,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
             const SizedBox(height: 12.0),
             Expanded(
               child: TextField(
@@ -152,7 +157,7 @@ class _LlmAssistedDevelopmentDialogState
                             ),
                           ),
                         )
-                      : Text(S.of(context).copy),
+                      : Text(S.of(context).copyPrompt),
                 ),
               ],
             ),

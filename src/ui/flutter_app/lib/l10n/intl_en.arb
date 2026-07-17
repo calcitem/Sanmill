@@ -5644,5 +5644,13 @@
     "recordUserInteractions": "Record user interactions",
     "@recordUserInteractions": {
         "description": "Toggle for recording in-app interactions for later reproduction"
+    },
+    "llmAssistedDevelopmentDescription": "Describe the task to generate a ready-to-share prompt. If your clipboard contains a Sanmill log, a relevant excerpt will be included.",
+    "@llmAssistedDevelopmentDescription": {
+        "description": "Explains prompt generation and clipboard log inclusion"
+    },
+    "copyPrompt": "Copy prompt",
+    "@copyPrompt": {
+        "description": "Button that builds and copies an LLM development prompt"
     }
 }
