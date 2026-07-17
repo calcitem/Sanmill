@@ -231,12 +231,15 @@ void main() {
 
   test('uses consistent English cat-fishing terminology', () {
     final S english = lookupS(const Locale('en'));
+    final S chinese = lookupS(const Locale('zh'));
 
     expect(english.catFishingGameDeveloper, 'Cat fishing game (developer)');
     expect(
       english.catFishingDebugStats(4, '0.13'),
       'Fish caught: 4\nDifficulty: 0.13',
     );
+    expect(chinese.catFishingGameDeveloper, '猫钓鱼（开发者）');
+    expect(chinese.catFishingDebugStats(4, '0.13'), '已钓到：4\n难度：0.13');
   });
 
   test('describes analysis board markers accurately in English', () {

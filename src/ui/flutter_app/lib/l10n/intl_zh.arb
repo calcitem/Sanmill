@@ -6240,5 +6240,21 @@
     "recordUserInteractions": "记录用户操作",
     "@recordUserInteractions": {
         "description": "Toggle for recording in-app interactions for later reproduction"
+    },
+    "catFishingGameDeveloper": "猫钓鱼（开发者）",
+    "@catFishingGameDeveloper": {
+        "description": "Name of the developer-only cat fishing mini-game"
+    },
+    "catFishingDebugStats": "已钓到：{fishCount}\n难度：{difficulty}",
+    "@catFishingDebugStats": {
+        "description": "Developer statistics shown over the cat fishing mini-game",
+        "placeholders": {
+            "fishCount": {
+                "type": "int"
+            },
+            "difficulty": {
+                "type": "String"
+            }
+        }
     }
 }
