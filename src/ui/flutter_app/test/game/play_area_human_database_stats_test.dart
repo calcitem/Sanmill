@@ -525,6 +525,20 @@ void main() {
       find.byKey(const Key('play_area_regular_game_menu_flip_board')),
       findsOne,
     );
+    final Finder gameTipsAction = find.byKey(
+      const Key('play_area_regular_game_menu_game_tips'),
+    );
+    expect(gameTipsAction, findsOneWidget);
+    expect(find.text('Show game tips'), findsOneWidget);
+    expect(db.generalSettings.showGameTips, isFalse);
+    await tester.ensureVisible(gameTipsAction);
+    await tester.tap(gameTipsAction);
+    await tester.pumpAndSettle();
+    expect(db.generalSettings.showGameTips, isTrue);
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_sheet')),
+      findsOneWidget,
+    );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_board_orientation')),
       findsNothing,
@@ -1240,6 +1254,10 @@ void main() {
     );
     expect(find.byKey(const Key('play_area_game_menu_analysis')), findsNothing);
     expect(find.byKey(const Key('play_area_game_menu_move_list')), findsOne);
+    expect(
+      find.byKey(const Key('play_area_game_menu_game_tips')),
+      findsOneWidget,
+    );
     expect(find.byKey(const Key('play_area_game_menu_move_now')), findsOne);
     expect(find.byKey(const Key('play_area_game_menu_resign')), findsNothing);
     expect(find.byKey(const Key('play_area_game_menu_new_game')), findsOne);

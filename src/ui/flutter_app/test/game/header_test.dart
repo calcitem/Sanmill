@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
+import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/generated/intl/l10n_en.dart';
 import 'package:sanmill/shared/database/database.dart';
 
@@ -23,7 +24,9 @@ void main() {
     testWidgets("GameHeader updates tip", (WidgetTester tester) async {
       const String testString = "Test";
 
-      DB.instance = MockDB();
+      final MockDB db = MockDB();
+      db.generalSettings = const GeneralSettings(showGameTips: true);
+      DB.instance = db;
       final GameController controller = GameController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
       const HeaderTip screen = HeaderTip();
@@ -47,7 +50,9 @@ void main() {
     testWidgets("HeaderTip scrolls overflowing tip", (
       WidgetTester tester,
     ) async {
-      DB.instance = MockDB();
+      final MockDB db = MockDB();
+      db.generalSettings = const GeneralSettings(showGameTips: true);
+      DB.instance = db;
       final GameController controller = GameController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
       controller.headerTipNotifier.showTip('', snackBar: false);

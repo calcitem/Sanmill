@@ -439,6 +439,11 @@ void main() {
     );
     expect(find.text('New game'), findsOne);
     expect(find.text('Flip board'), findsOne);
+    expect(find.text('Show game tips'), findsOne);
+    expect(
+      find.byKey(const Key('play_area_offline_board_menu_game_tips')),
+      findsOneWidget,
+    );
     expect(find.text('Move list'), findsNothing);
     expect(find.text('Options'), findsNothing);
     await tester.tap(

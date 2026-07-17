@@ -278,14 +278,6 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag useOpeningBook: $value");
   }
 
-  void _setShowOpeningInfo(GeneralSettings generalSettings, bool value) {
-    _settingsRepository.generalSettings = generalSettings.copyWith(
-      showOpeningInfo: value,
-    );
-
-    logger.t("$_logTag showOpeningInfo: $value");
-  }
-
   void _setPreferFavoredOpenings(GeneralSettings generalSettings, bool value) {
     _settingsRepository.generalSettings = generalSettings.copyWith(
       preferFavoredOpenings: value,

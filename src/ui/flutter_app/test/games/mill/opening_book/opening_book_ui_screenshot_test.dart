@@ -73,11 +73,10 @@ void main() {
     await tester.pumpAndSettle();
 
     final Finder useOpeningBook = find.text('Use opening book');
-    final Finder showOpeningInfo = find.text('Show opening information');
     final Finder preferFavoredOpenings = find.text('Prefer favorable openings');
     final Finder settingsList = find.byKey(const Key('settings_list'));
     expect(useOpeningBook, findsOneWidget);
-    expect(showOpeningInfo, findsOneWidget);
+    expect(find.text('Show opening information'), findsNothing);
     await tester.drag(settingsList, const Offset(0, -240));
     await tester.pumpAndSettle();
     expect(preferFavoredOpenings, findsOneWidget);
@@ -122,9 +121,7 @@ void main() {
     WidgetTester tester,
   ) async {
     final _OpeningBookUiDb db = DB.instance! as _OpeningBookUiDb;
-    db.updateGeneralSettings(
-      db.generalSettings.copyWith(showOpeningInfo: true),
-    );
+    db.updateGeneralSettings(db.generalSettings.copyWith(showGameTips: true));
 
     // Take a long-enough prefix from any opening so the recognizer fires.
     final OpeningEntry opening = OpeningBookRepository.instance

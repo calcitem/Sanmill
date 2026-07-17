@@ -2394,6 +2394,67 @@ class PlayAreaState extends State<PlayArea> {
     return _analysisEngineDepth();
   }
 
+  bool get _supportsGameTips {
+    return switch (GameController().gameInstance.gameMode) {
+      GameMode.humanVsAi ||
+      GameMode.humanVsHuman ||
+      GameMode.aiVsAi ||
+      GameMode.humanVsCloud ||
+      GameMode.humanVsLAN ||
+      GameMode.humanVsBluetooth ||
+      GameMode.testViaLAN => true,
+      GameMode.setupPosition || GameMode.puzzle || GameMode.analysis => false,
+    };
+  }
+
+  bool _toggleGameTips({required String toolbar}) {
+    assert(_supportsGameTips, 'Game tips require a playable game mode.');
+    final GeneralSettings current = DB().generalSettings;
+    final bool enabled = !current.showGameTips;
+    DB().generalSettings = current.copyWith(showGameTips: enabled);
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{
+        'toolbar': toolbar,
+        'action': 'toggleGameTips',
+        'enabled': enabled,
+      },
+    );
+
+    if (!enabled) {
+      final HeaderTipNotifier notifier = GameController().headerTipNotifier;
+      notifier.showTip(notifier.message, snackBar: false, kind: notifier.kind);
+      return enabled;
+    }
+    if (!mounted) {
+      return enabled;
+    }
+    final NativeMillGameSession? session =
+        GameController().activeNativeMillSession;
+    if (session != null) {
+      GameController().refreshNativeSessionHeader(context, session);
+    }
+    return enabled;
+  }
+
+  LichessActionSheetAction _gameTipsMenuAction({
+    required Key key,
+    required String toolbar,
+  }) {
+    assert(_supportsGameTips, 'Game tips require a playable game mode.');
+    final ValueNotifier<bool> enabled = ValueNotifier<bool>(
+      DB().generalSettings.showGameTips,
+    );
+    return LichessActionSheetAction(
+      key: key,
+      dismissOnPress: false,
+      makeLabel: (BuildContext context) => _GameTipsActionLabel(enabled),
+      onPressed: () {
+        enabled.value = _toggleGameTips(toolbar: toolbar);
+      },
+    );
+  }
+
   void _showOfflineBoardGameMenu() {
     assert(_isOfflineBoardMode);
     final BuildContext hostContext = context;
@@ -2435,6 +2496,10 @@ class PlayAreaState extends State<PlayArea> {
                 currentBoardLayout: boardTransformLayout,
                 session: hostSession,
               ),
+        ),
+        _gameTipsMenuAction(
+          key: const Key('play_area_offline_board_menu_game_tips'),
+          toolbar: 'offlineBoardMenu',
         ),
         if (_isRegularGameOver)
           LichessActionSheetAction(
@@ -2579,6 +2644,11 @@ class PlayAreaState extends State<PlayArea> {
                 session: hostSession,
               ),
         ),
+        if (!_isAnalysisMode && _supportsGameTips)
+          _gameTipsMenuAction(
+            key: const Key('play_area_regular_game_menu_game_tips'),
+            toolbar: 'regularGameMenu',
+          ),
         if (!_isAnalysisMode)
           LichessActionSheetAction(
             key: const Key('play_area_toolbar_item_game'),
@@ -2743,6 +2813,10 @@ class PlayAreaState extends State<PlayArea> {
           leading: const Icon(Icons.format_list_numbered),
           makeLabel: (BuildContext context) => Text(S.of(context).moveList),
           onPressed: () => _openMovesWithNavigator(hostNavigator),
+        ),
+        _gameTipsMenuAction(
+          key: const Key('play_area_game_menu_game_tips'),
+          toolbar: 'humanAiGameMenu',
         ),
         if (_shouldShowMoveNowMenuAction)
           LichessActionSheetAction(
@@ -4529,6 +4603,44 @@ class PlayAreaState extends State<PlayArea> {
 
                 if (!usesLichessHumanAiToolbar)
                   const SizedBox(height: AppTheme.boardMargin),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _GameTipsActionLabel extends StatelessWidget {
+  const _GameTipsActionLabel(this.enabled);
+
+  final ValueNotifier<bool> enabled;
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<bool>(
+      valueListenable: enabled,
+      builder: (BuildContext context, bool isEnabled, _) {
+        final String label = S.of(context).showGameTips;
+        return Semantics(
+          label: label,
+          button: true,
+          toggled: isEnabled,
+          child: ExcludeSemantics(
+            child: Row(
+              children: <Widget>[
+                const Icon(Icons.tips_and_updates_outlined),
+                const SizedBox(width: 15),
+                Expanded(child: Text(label, textAlign: TextAlign.start)),
+                const SizedBox(width: 10),
+                IgnorePointer(
+                  child: Switch.adaptive(
+                    key: const Key('play_area_game_tips_switch'),
+                    value: isEnabled,
+                    onChanged: (_) {},
+                  ),
+                ),
               ],
             ),
           ),

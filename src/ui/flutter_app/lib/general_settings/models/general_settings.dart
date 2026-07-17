@@ -171,6 +171,7 @@ class GeneralSettings {
     this.humanDatabaseEnabled = false,
     this.humanDatabaseFilePath = '',
     this.showHumanDatabaseStats = false,
+    @Deprecated('Use showGameTips; retained for Hive backward compatibility.')
     this.showOpeningInfo = false,
     this.preferFavoredOpenings = false,
     this.openingRandomness = 60,
@@ -181,6 +182,7 @@ class GeneralSettings {
     this.offlineBoardTimeSeconds = 300,
     this.offlineBoardIncrementSeconds = 3,
     this.offlineBoardFlipAfterMove = false,
+    this.showGameTips = false,
 
     /// Deprecated: always true. Retained to preserve the Hive `@HiveField(46)`
     /// slot for existing saved data. The field will be removed in a future
@@ -375,8 +377,9 @@ class GeneralSettings {
   @HiveField(49, defaultValue: false)
   final bool showHumanDatabaseStats;
 
-  // Show recognised opening name / source / notes in the game header.
+  // Deprecated opening-only preference retained for saved-data compatibility.
   @HiveField(50, defaultValue: false)
+  @Deprecated('Use showGameTips; retained for Hive backward compatibility.')
   final bool showOpeningInfo;
 
   // Let the AI follow a named opening line whose favoured side matches its own
@@ -431,6 +434,10 @@ class GeneralSettings {
   // Keep a short, semantic and sanitized diagnostic action trail locally.
   @HiveField(60, defaultValue: true)
   final bool diagnosticActionTrailEnabled;
+
+  // Show turn guidance and opening information beside the player to move.
+  @HiveField(61, defaultValue: false)
+  final bool showGameTips;
 
   /// Deprecated field retained for Hive backward compatibility.
   ///

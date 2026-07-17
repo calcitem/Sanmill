@@ -261,8 +261,13 @@ class HeaderTipState extends State<HeaderTip> {
       );
     }
 
+    final bool messageUnchanged =
+        _messageNotifier.value == headerTipNotifier.message;
     // Sync _messageNotifier with the new tip.
     _messageNotifier.value = headerTipNotifier.message;
+    if (messageUnchanged && mounted) {
+      setState(() {});
+    }
     // If currently editing, also update the editing controller text.
     if (_isEditing) {
       _editingController.text = headerTipNotifier.message;
@@ -304,6 +309,9 @@ class HeaderTipState extends State<HeaderTip> {
       key: const Key('header_tip_value_listenable_builder'),
       valueListenable: _messageNotifier,
       builder: (BuildContext context, String currentDisplay, Widget? child) {
+        if (!DB().generalSettings.showGameTips) {
+          return const SizedBox.shrink(key: Key('header_tip_hidden'));
+        }
         // Retrieve the active node's comment, if any.
         final PgnNode<ExtMove>? activeNode =
             GameController().gameRecorder.activeNode;

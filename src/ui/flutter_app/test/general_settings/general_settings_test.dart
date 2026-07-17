@@ -53,6 +53,7 @@ void main() {
       expect(s.offlineBoardTimeSeconds, 300);
       expect(s.offlineBoardIncrementSeconds, 3);
       expect(s.offlineBoardFlipAfterMove, isFalse);
+      expect(s.showGameTips, isFalse);
     });
 
     test('supports a legacy no-increment Offline Board control', () {

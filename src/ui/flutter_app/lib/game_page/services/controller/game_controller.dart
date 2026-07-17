@@ -383,7 +383,8 @@ class GameController {
   /// null when the feature is off, the variant is unsupported, or no named
   /// opening is currently recognised.
   String? _openingInfoTip(BuildContext context, NativeMillGameSession session) {
-    if (!DB().generalSettings.showOpeningInfo) {
+    final GeneralSettings settings = DB().generalSettings;
+    if (!settings.showGameTips || !settings.useOpeningBook) {
       return null;
     }
     final RuleSettings rules = ruleSettingsForActiveBoard;

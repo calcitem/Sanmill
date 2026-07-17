@@ -43,17 +43,6 @@ class _AiKnowledgeSourcesPage extends StatelessWidget {
           ),
         SettingsListTile.switchTile(
           key: const Key(
-            'general_settings_page_settings_card_ais_play_style_show_opening_info',
-          ),
-          value: generalSettings.showOpeningInfo,
-          onChanged: (bool val) {
-            parent._setShowOpeningInfo(generalSettings, val);
-          },
-          titleString: S.of(context).showOpeningInfo,
-          subtitleString: S.of(context).showOpeningInfo_Detail,
-        ),
-        SettingsListTile.switchTile(
-          key: const Key(
             'general_settings_page_settings_card_ais_play_style_prefer_favored_openings',
           ),
           value: generalSettings.preferFavoredOpenings,

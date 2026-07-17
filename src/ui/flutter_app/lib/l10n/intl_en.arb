@@ -6351,5 +6351,13 @@
                 "type": "int"
             }
         }
+    },
+    "showGameTips": "Show game tips",
+    "@showGameTips": {
+        "description": "Persistent in-game switch for turn guidance and opening information"
+    },
+    "showGameTips_Detail": "Show turn guidance and opening information beside the player to move.",
+    "@showGameTips_Detail": {
+        "description": "Explanation of the game tips preference"
     }
 }
