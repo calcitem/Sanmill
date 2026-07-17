@@ -159,6 +159,16 @@ void main() {
     );
   });
 
+  test('describes analysis board markers accurately in English', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.analysisBestMoveArrow, 'Engine line markers');
+    expect(
+      english.analysisBestMoveArrowDescription,
+      'Show the first move of each visible engine line on the board',
+    );
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =

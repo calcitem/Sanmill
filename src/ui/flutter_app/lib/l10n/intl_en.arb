@@ -5589,11 +5589,11 @@
     "@analysisEngineLinesDescription": {
         "description": "Description of the analysis engine-line toggle"
     },
-    "analysisBestMoveArrow": "Best move arrow",
+    "analysisBestMoveArrow": "Engine line markers",
     "@analysisBestMoveArrow": {
         "description": "Toggle for marking engine suggestions on the analysis board"
     },
-    "analysisBestMoveArrowDescription": "Mark visible engine lines on the board",
+    "analysisBestMoveArrowDescription": "Show the first move of each visible engine line on the board",
     "@analysisBestMoveArrowDescription": {
         "description": "Description of the best-move arrow toggle"
     },
