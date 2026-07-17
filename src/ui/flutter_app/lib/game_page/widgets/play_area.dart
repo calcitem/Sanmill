@@ -6345,7 +6345,6 @@ class _AnalysisSummaryPanel extends StatelessWidget {
     final int? depth = _analysisEngineDepth();
     final int? nodesPerSecond = _analysisEngineNodesPerSecond();
     final List<String> parts = <String>[
-      if (result.rank != null) _analysisPvRankLabel(result.rank!),
       _analysisEvalLabel(result.outcome),
       if (depth != null) 'd$depth',
       if (AnalysisMode.isEngineAnalysisDeep)
@@ -8049,15 +8048,8 @@ class _AnalysisEngineLine extends StatelessWidget {
         ? Colors.white
         : Colors.black;
     final String? depthLabel = _depthLabel(result);
-    final String rankLabel = _rankLabel(lineRank);
     final String lineText = _lineText(result);
-    final String lineLabel = _lineLabel(
-      strings,
-      result,
-      rankLabel,
-      depthLabel,
-      lineText,
-    );
+    final String lineLabel = _lineLabel(strings, result, lineText);
 
     return Tooltip(
       message: lineLabel,
@@ -8075,23 +8067,6 @@ class _AnalysisEngineLine extends StatelessWidget {
               padding: const EdgeInsets.all(2),
               child: Row(
                 children: <Widget>[
-                  SizedBox(
-                    width: 30,
-                    child: Text(
-                      rankLabel,
-                      key: Key('play_area_analysis_engine_line_rank_$lineRank'),
-                      maxLines: 1,
-                      softWrap: false,
-                      overflow: TextOverflow.fade,
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: lineColor,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 4),
                   Container(
                     constraints: const BoxConstraints(minWidth: 34),
                     padding: const EdgeInsets.symmetric(
@@ -8160,26 +8135,14 @@ class _AnalysisEngineLine extends StatelessWidget {
     return _analysisEvalLabel(outcome);
   }
 
-  String _rankLabel(int rank) {
-    return _analysisPvRankLabel(rank);
-  }
-
-  String _lineLabel(
-    S strings,
-    MoveAnalysisResult result,
-    String rankLabel,
-    String? depthLabel,
-    String lineText,
-  ) {
+  String _lineLabel(S strings, MoveAnalysisResult result, String lineText) {
+    final int? depth = result.depth;
     final List<String> parts = <String>[
-      if (AnalysisMode.isThreatMode)
-        _analysisThreatLabel(strings)
-      else
-        strings.engine,
+      if (AnalysisMode.isThreatMode) _analysisThreatLabel(strings),
+      strings.analysisEngineLineSemantics(lineRank),
       if (AnalysisMode.isAnalyzing) strings.thinking,
-      rankLabel,
-      _evalLabel(result.outcome),
-      ?depthLabel,
+      strings.analysisEvaluationSemantics(_evalLabel(result.outcome)),
+      if (depth != null && depth > 0) strings.analysisDepthSemantics(depth),
       lineText,
     ];
     return parts.join(' · ');
@@ -8269,7 +8232,6 @@ String _analysisEvalLabel(AnalysisOutcome outcome) {
 
 String _analysisSummaryBestLineText(MoveAnalysisResult result) {
   final List<String> parts = <String>[
-    if (result.rank != null) _analysisPvRankLabel(result.rank!),
     if (result.depth != null && result.depth! > 0) 'd${result.depth}',
     if (result.nodes != null && result.nodes! > 0)
       _compactAnalysisCount(result.nodes!),
@@ -8282,11 +8244,6 @@ String _analysisSummaryBestLineText(MoveAnalysisResult result) {
 
 String _analysisResultLabel(MoveAnalysisResult result) {
   return '${_analysisEvalLabel(result.outcome)} ${_analysisLineText(result)}';
-}
-
-String _analysisPvRankLabel(int rank) {
-  assert(rank > 0, 'Principal variation rank must be one-based.');
-  return 'PV $rank';
 }
 
 String _analysisApplyResultLabel(S strings, MoveAnalysisResult result) {

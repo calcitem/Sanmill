@@ -2932,9 +2932,9 @@ void main() {
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_summary_engine')),
-        matching: find.textContaining('PV 1'),
+        matching: find.textContaining('PV'),
       ),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
       find.descendant(
@@ -2972,8 +2972,8 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.descendant(of: bestMove, matching: find.textContaining('PV 1')),
-      findsOneWidget,
+      find.descendant(of: bestMove, matching: find.textContaining('PV')),
+      findsNothing,
     );
     expect(
       find.descendant(of: bestMove, matching: find.textContaining('d12')),
@@ -4104,16 +4104,16 @@ void main() {
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_engine_line_0')),
-        matching: find.text('PV 1'),
+        matching: find.textContaining('PV'),
       ),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_engine_line_1')),
-        matching: find.text('PV 2'),
+        matching: find.textContaining('PV'),
       ),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
       find.descendant(
@@ -4631,10 +4631,7 @@ void main() {
     expect(find.text('Use perfect database'), findsOneWidget);
     expect(find.text('Search threads'), findsOneWidget);
     expect(find.text('Multiple lines'), findsOneWidget);
-    expect(
-      find.text('Show principal variations below the board'),
-      findsOneWidget,
-    );
+    expect(find.text('Show engine lines below the board'), findsOneWidget);
     expect(
       find.text('Show the first move of each visible engine line on the board'),
       findsOneWidget,
@@ -4946,7 +4943,10 @@ void main() {
 
     await _pumpSessionPlayArea(tester, session);
 
-    expect(find.byTooltip('Engine · PV 1 · = · d1 · 1. a7'), findsOneWidget);
+    expect(
+      find.byTooltip('Engine line 1 · Evaluation = · Depth 1 · 1. a7'),
+      findsOneWidget,
+    );
 
     await tester.tap(find.byKey(const Key('play_area_analysis_engine_line_0')));
     await tester.pumpAndSettle();
@@ -4980,7 +4980,9 @@ void main() {
         }
         final String? message = widget.message;
         return message != null &&
-            message.startsWith('Threat · PV 1 · + · d2 · ') &&
+            message.startsWith(
+              'Threat · Engine line 1 · Evaluation + · Depth 2 · ',
+            ) &&
             message.contains('f4');
       }),
       findsOneWidget,
@@ -5022,7 +5024,10 @@ void main() {
     await tester.pump();
 
     expect(
-      find.byTooltip('Engine · Thinking… · PV 1 · = · d1 · 1. a7'),
+      find.byTooltip(
+        'Engine line 1 · Thinking… · Evaluation = · '
+        'Depth 1 · 1. a7',
+      ),
       findsOneWidget,
     );
 

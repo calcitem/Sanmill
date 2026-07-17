@@ -212,6 +212,14 @@ void main() {
     );
   });
 
+  test('labels English engine-line values for assistive technology', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.analysisEngineLineSemantics(2), 'Engine line 2');
+    expect(english.analysisEvaluationSemantics('+3'), 'Evaluation +3');
+    expect(english.analysisDepthSemantics(24), 'Depth 24');
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =

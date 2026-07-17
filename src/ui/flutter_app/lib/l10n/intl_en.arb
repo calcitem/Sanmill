@@ -5585,7 +5585,7 @@
     "@analysisShowMoveComments": {
         "description": "Toggle for comments attached to moves in analysis mode"
     },
-    "analysisEngineLinesDescription": "Show principal variations below the board",
+    "analysisEngineLinesDescription": "Show engine lines below the board",
     "@analysisEngineLinesDescription": {
         "description": "Description of the analysis engine-line toggle"
     },
@@ -6317,5 +6317,32 @@
     "puzzleStatsCurrentRating": "Current rating",
     "@puzzleStatsCurrentRating": {
         "description": "Label below the current puzzle-rating value"
+    },
+    "analysisEngineLineSemantics": "Engine line {rank}",
+    "@analysisEngineLineSemantics": {
+        "description": "Accessible label for a ranked engine line",
+        "placeholders": {
+            "rank": {
+                "type": "int"
+            }
+        }
+    },
+    "analysisEvaluationSemantics": "Evaluation {value}",
+    "@analysisEvaluationSemantics": {
+        "description": "Accessible label for an engine line's evaluation",
+        "placeholders": {
+            "value": {
+                "type": "String"
+            }
+        }
+    },
+    "analysisDepthSemantics": "Depth {depth}",
+    "@analysisDepthSemantics": {
+        "description": "Accessible label for an engine line's search depth",
+        "placeholders": {
+            "depth": {
+                "type": "int"
+            }
+        }
     }
 }
