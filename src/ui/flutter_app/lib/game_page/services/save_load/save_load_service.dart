@@ -319,6 +319,7 @@ class LoadService {
     bool shouldPop = true,
     bool showSuccessMessage = true,
   }) async {
+    final String gameOpenFailed = S.of(context).savedGameOpenFailed;
     filePath ??= await pickFileIfNeeded(context);
 
     if (filePath == null) {
@@ -333,9 +334,8 @@ class LoadService {
           Uri.parse(filePath),
         );
         if (fileContent == null) {
-          final Directory? dir = await getExternalStorageDirectory();
           rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-            "You should put files in the right place: $dir",
+            gameOpenFailed,
           );
           return;
         }
