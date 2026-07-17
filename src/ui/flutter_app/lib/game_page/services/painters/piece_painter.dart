@@ -543,7 +543,8 @@ class PiecePainter extends CustomPainter {
 
       // Numbers-on-pieces overlay is disabled: it depended on
       // `Position.sqAttrList` which was a setup-position-only
-      // metadata field, both gone with the rule-machine cleanup.
+      // metadata field, both gone with the rule-machine cleanup. The stored
+      // preference remains for compatibility, but the toggle is hidden.
     }
 
     // Draw moving pieces on top of normal pieces.
@@ -646,9 +647,9 @@ class PiecePainter extends CustomPainter {
 
     // Capturable-piece highlight relied on the legacy
     // `Position.getCapturablePieces()` which is gone; the native
-    // session does not yet expose an equivalent.  Settings still
-    // expose the toggle for forward compatibility but no overlay
-    // is drawn until a Rust-backed replacement lands.
+    // session does not yet expose an equivalent. The stored preference
+    // remains for compatibility, but the toggle is hidden until a
+    // Rust-backed replacement lands.
 
     // Draw focus and blur positions.
     if (focusIndex != null) {

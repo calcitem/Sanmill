@@ -1669,6 +1669,28 @@ void main() {
         scrollable: appearanceScrollable,
       );
       await tester.pumpAndSettle();
+      await tester.scrollUntilVisible(
+        find.byKey(const Key('appearance_settings_page_piece_display_card')),
+        320,
+        scrollable: appearanceScrollable,
+      );
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(
+          const Key(
+            'display_settings_card_numbers_on_pieces_shown_switch_tile',
+          ),
+        ),
+        findsNothing,
+      );
+      expect(
+        find.byKey(
+          const Key(
+            'display_settings_card_capturable_pieces_highlight_shown_switch_tile',
+          ),
+        ),
+        findsNothing,
+      );
       final double displaySettingsOffset = tester
           .state<ScrollableState>(appearanceScrollable)
           .position

@@ -978,24 +978,6 @@ class AppearanceSettingsPage extends StatelessWidget {
           key: const Key('appearance_settings_page_piece_display_card'),
           title: Text(strings.pieces),
           children: <Widget>[
-            SettingsListTile.switchTile(
-              key: const Key(
-                'display_settings_card_numbers_on_pieces_shown_switch_tile',
-              ),
-              value: displaySettings.isNumbersOnPiecesShown,
-              onChanged: (bool val) => DB().displaySettings = displaySettings
-                  .copyWith(isNumbersOnPiecesShown: val),
-              titleString: strings.showNumbersOnPieces,
-            ),
-            SettingsListTile.switchTile(
-              key: const Key(
-                'display_settings_card_capturable_pieces_highlight_shown_switch_tile',
-              ),
-              value: displaySettings.isCapturablePiecesHighlightShown,
-              onChanged: (bool val) => DB().displaySettings = displaySettings
-                  .copyWith(isCapturablePiecesHighlightShown: val),
-              titleString: strings.highlightCapturablePieces,
-            ),
             SettingsListTile(
               key: const Key(
                 'display_settings_card_piece_width_settings_list_tile',
