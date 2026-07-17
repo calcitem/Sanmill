@@ -5618,5 +5618,9 @@
     "statisticsOverallRecord": "Overall",
     "@statisticsOverallRecord": {
         "description": "Label for the combined win/draw/loss record at one AI difficulty"
+    },
+    "humanMovesFirst": "Human moves first",
+    "@humanMovesFirst": {
+        "description": "Switch controlling whether the human or AI makes the first move"
     }
 }

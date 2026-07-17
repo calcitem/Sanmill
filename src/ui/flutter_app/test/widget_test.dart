@@ -1395,6 +1395,7 @@ void main() {
         shellState.debugCurrentRouteId,
         ShellRouteIds.appSettingsGroup.value,
       );
+      expect(find.text('Human moves first'), findsOneWidget);
       expect(
         find.byKey(
           const Key('general_settings_page_settings_card_config_import_export'),

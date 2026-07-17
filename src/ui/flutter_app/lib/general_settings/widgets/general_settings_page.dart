@@ -891,16 +891,8 @@ class GeneralSettingsPage extends StatelessWidget {
               value: !generalSettings.aiMovesFirst,
               onChanged: (bool val) {
                 _setWhoMovesFirst(generalSettings, !val);
-                if (val == false &&
-                    DB().ruleSettings.isLikelyNineMensMorris()) {
-                  SnackBarService.showRootSnackBar(
-                    S.of(context).firstMoveDetail,
-                  );
-                }
               },
-              titleString: generalSettings.aiMovesFirst
-                  ? S.of(context).ai
-                  : S.of(context).human,
+              titleString: S.of(context).humanMovesFirst,
             ),
           ],
         ),
