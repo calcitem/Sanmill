@@ -21,6 +21,7 @@ import '../../game_page/widgets/qr_scanner_page.dart';
 import '../../generated/intl/l10n.dart';
 import '../models/puzzle_models.dart';
 import '../services/puzzle_export_service.dart';
+import '../services/puzzle_import_localization.dart';
 import '../services/puzzle_manager.dart';
 import '../widgets/puzzle_card.dart';
 import 'puzzle_creation_page.dart';
@@ -455,7 +456,7 @@ class _CustomPuzzlesPageState extends State<CustomPuzzlesPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            result.errorMessage ?? S.of(context).puzzleImportFailed,
+            result.localizedError(S.of(context)),
             style: TextStyle(color: colorScheme.onErrorContainer),
           ),
           backgroundColor: colorScheme.errorContainer,

@@ -2478,7 +2478,7 @@
             }
         }
     },
-    "puzzleImportFailed": "Failed to import puzzles",
+    "puzzleImportFailed": "Could not import puzzles. Choose a valid Sanmill puzzle file and try again.",
     "@puzzleImportFailed": {
         "description": "Puzzle import failure message"
     },
@@ -2486,7 +2486,7 @@
     "@puzzleImportNoFileSelected": {
         "description": "Error when no file is selected for import"
     },
-    "puzzleImportInvalidFilePath": "Invalid file path",
+    "puzzleImportInvalidFilePath": "Could not access the selected file. Choose another file and try again.",
     "@puzzleImportInvalidFilePath": {
         "description": "Error when file path is invalid"
     },
@@ -2499,15 +2499,15 @@
             }
         }
     },
-    "puzzleImportFileNotExist": "File does not exist",
+    "puzzleImportFileNotExist": "The selected file no longer exists. Choose another file and try again.",
     "@puzzleImportFileNotExist": {
         "description": "Error when file does not exist"
     },
-    "puzzleImportInvalidFormat": "Invalid file format: missing puzzles field",
+    "puzzleImportInvalidFormat": "This is not a valid Sanmill puzzle file.",
     "@puzzleImportInvalidFormat": {
         "description": "Error when file format is invalid"
     },
-    "puzzleImportIncompatibleVersion": "Incompatible file format version: {version} (expected {expected})",
+    "puzzleImportIncompatibleVersion": "This puzzle file uses format version {version}; this app supports {expected}.",
     "@puzzleImportIncompatibleVersion": {
         "description": "Error when file format version is incompatible",
         "placeholders": {
