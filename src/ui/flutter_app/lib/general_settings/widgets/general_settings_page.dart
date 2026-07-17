@@ -1145,7 +1145,7 @@ class GeneralSettingsPage extends StatelessWidget {
         SettingsCard(
           key: const Key('general_settings_page_settings_card_developer'),
           title: Text(
-            S.of(context).developerOptions,
+            S.of(context).advanced,
             key: const Key(
               'general_settings_page_settings_card_developer_title',
             ),

@@ -92,7 +92,7 @@ class DeveloperOptionsPage extends StatelessWidget {
         SettingsCard(
           key: const Key('developer_options_page_settings_card_options'),
           title: Text(
-            S.of(context).developerOptions,
+            S.of(context).tools,
             key: const Key(
               'developer_options_page_settings_card_options_title',
             ),
@@ -140,7 +140,7 @@ class DeveloperOptionsPage extends StatelessWidget {
         ),
         SettingsCard(
           key: const Key('developer_options_page_diagnostic_action_trail'),
-          title: Text(S.of(context).diagnosticActionTrail),
+          title: Text(S.of(context).diagnostics),
           children: <Widget>[
             SettingsListTile.switchTile(
               key: const Key('diagnostic_action_trail_enabled'),
@@ -205,7 +205,7 @@ class DeveloperOptionsPage extends StatelessWidget {
                   SnackBarService.showRootSnackBar(S.of(context).experimental);
                 }
               },
-              titleString: S.of(context).experienceRecording,
+              titleString: S.of(context).recordUserInteractions,
               subtitleString: S.of(context).experienceRecordingDescription,
             ),
             SettingsListTile(

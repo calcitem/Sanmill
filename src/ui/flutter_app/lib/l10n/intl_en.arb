@@ -5636,5 +5636,13 @@
     "restoreDefaultSettingsConfirmation": "This will replace all current settings with their defaults. This cannot be undone.",
     "@restoreDefaultSettingsConfirmation": {
         "description": "Confirmation warning before all app settings are reset"
+    },
+    "diagnostics": "Diagnostics",
+    "@diagnostics": {
+        "description": "Section heading for diagnostic developer tools"
+    },
+    "recordUserInteractions": "Record user interactions",
+    "@recordUserInteractions": {
+        "description": "Toggle for recording in-app interactions for later reproduction"
     }
 }

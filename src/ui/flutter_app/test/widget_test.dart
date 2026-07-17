@@ -3137,6 +3137,12 @@ void main() {
         developerOptionsScaffold.backgroundColor,
         Theme.of(developerOptionsContext).colorScheme.surface,
       );
+      expect(find.text('Developer options'), findsOneWidget);
+      expect(find.text('Tools'), findsOneWidget);
+      expect(find.text('Diagnostics'), findsOneWidget);
+      await tester.scrollUntilVisible(find.text('Experience Recording'), 300);
+      expect(find.text('Experience Recording'), findsOneWidget);
+      expect(find.text('Record user interactions'), findsOneWidget);
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));
