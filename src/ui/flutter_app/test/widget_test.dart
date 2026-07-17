@@ -1170,6 +1170,14 @@ void main() {
         findsOneWidget,
       );
       expect(
+        find.byKey(const Key('game_page_analysis_recording_indicator')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('game_page_recording_indicator')),
+        findsNothing,
+      );
+      expect(
         find.byKey(const Key('game_page_top_left_button_align')),
         findsNothing,
       );

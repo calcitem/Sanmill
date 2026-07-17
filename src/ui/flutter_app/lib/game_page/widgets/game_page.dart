@@ -269,18 +269,22 @@ class _GamePageInnerState extends State<_GamePageInner> {
                   child: SafeArea(child: _buildTopLeftButton(context)),
                 ),
               // Experience recording indicator and replay controls.
-              const Align(
-                key: Key('game_page_recording_indicator_align'),
+              Align(
+                key: const Key('game_page_recording_indicator_align'),
                 alignment: Alignment.topCenter,
                 child: SafeArea(
                   child: Padding(
-                    padding: EdgeInsets.only(top: 8),
+                    padding: const EdgeInsets.only(top: 8),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        RecordingIndicator(),
-                        SizedBox(height: 4),
-                        ReplayControls(),
+                        if (!_isAnalysisPage) ...<Widget>[
+                          const RecordingIndicator(
+                            key: Key('game_page_recording_indicator'),
+                          ),
+                          const SizedBox(height: 4),
+                        ],
+                        const ReplayControls(),
                       ],
                     ),
                   ),
@@ -536,6 +540,10 @@ class _GamePageInnerState extends State<_GamePageInner> {
         ],
       ),
       actions: <Widget>[
+        const Center(
+          key: Key('game_page_analysis_recording_indicator'),
+          child: RecordingIndicator(),
+        ),
         ValueListenableBuilder<bool>(
           valueListenable: AnalysisMode.stateNotifier,
           builder: (BuildContext context, _, _) {
