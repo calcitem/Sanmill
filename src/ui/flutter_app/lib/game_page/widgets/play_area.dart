@@ -664,6 +664,7 @@ class PlayAreaState extends State<PlayArea> {
   static const double _kOfflineBoardPlayerPanelHeight = 72;
   static const double _kOfflineBoardLayoutSafetyMargin = 4;
   static const double _kAnalysisEngineLinesReserveHeight = 90;
+  static const double _kAnalysisPositionStatusHeight = 48;
   static const double _kAnalysisSmallBoardScale = 0.8;
   static const Duration _kAnalysisRefreshDebounceDelay = Duration(
     milliseconds: 250,
@@ -3465,6 +3466,7 @@ class PlayAreaState extends State<PlayArea> {
                   engineLinesReserve -
                   tabPanelMinHeight -
                   pieceRowsHeight -
+                  _kAnalysisPositionStatusHeight -
                   _kBalancedLayoutSafetyMargin;
               final double boardWidthBudget = math.max(
                 0,
@@ -3496,6 +3498,7 @@ class PlayAreaState extends State<PlayArea> {
                         : _buildRemovedPieceCountRow()
                   else
                     const SizedBox(height: AppTheme.boardMargin),
+                  _buildAnalysisPositionStatus(context),
                   Expanded(child: _buildAnalysisTabs(context)),
                 ],
               );
@@ -3553,6 +3556,48 @@ class PlayAreaState extends State<PlayArea> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildAnalysisPositionStatus(BuildContext context) {
+    final GameSession? session =
+        GameSessionScope.sessionOf(context) ??
+        GameController().activeNativeMillSession;
+    if (session == null) {
+      return const SizedBox.shrink(
+        key: Key('play_area_analysis_position_status_unavailable'),
+      );
+    }
+
+    return AnimatedBuilder(
+      animation: session.state,
+      builder: (BuildContext context, Widget? child) {
+        final S strings = S.of(context);
+        final GameController controller = GameController();
+        final MillBoardView view = controller.activeBoardView;
+        final PieceColor side =
+            controller.activeSessionSideToMove ?? view.sideToMove;
+        final String sideName = side.playerName(context);
+        final String status = view.phase == Phase.gameOver
+            ? strings.gameOver
+            : view.action == Act.remove
+            ? strings.tipToRemove(sideName)
+            : strings.tipToMove(sideName);
+        final String? opening = controller.activeOpeningDisplayName();
+        final String contextLabel = opening == null
+            ? switch (view.phase) {
+                Phase.moving => strings.movingPhase,
+                Phase.gameOver => strings.results,
+                Phase.ready || Phase.placing => strings.placingPhase,
+              }
+            : '${strings.openingLabel}: $opening';
+
+        return _AnalysisPositionStatus(
+          side: side,
+          status: status,
+          contextLabel: contextLabel,
+        );
+      },
     );
   }
 
@@ -3949,7 +3994,9 @@ class PlayAreaState extends State<PlayArea> {
     );
     final double boardHeightAllowance = math.max(
       0,
-      availableHeight - (showPieceCountRows ? pieceRowHeight * 2 : 0),
+      availableHeight -
+          (showPieceCountRows ? pieceRowHeight * 2 : 0) -
+          _kAnalysisPositionStatusHeight,
     );
     final double evaluationGaugeReserve = AnalysisMode.showEvaluationGauge
         ? _kAdvantageIndicatorWidth + _kAdvantageIndicatorGap
@@ -4010,6 +4057,7 @@ class PlayAreaState extends State<PlayArea> {
                                   ? _buildPieceCountRow()
                                   : _buildRemovedPieceCountRow(),
                             ),
+                          _buildAnalysisPositionStatus(context),
                         ],
                       ),
                     ),
@@ -6194,6 +6242,108 @@ class _HumanAiPlayerPanel extends StatelessWidget {
                 : playerDetails,
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _AnalysisPositionStatus extends StatelessWidget {
+  const _AnalysisPositionStatus({
+    required this.side,
+    required this.status,
+    required this.contextLabel,
+  });
+
+  final PieceColor side;
+  final String status;
+  final String contextLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colors = theme.colorScheme;
+    final Color pieceColor = switch (side) {
+      PieceColor.white => DB().colorSettings.whitePieceColor,
+      PieceColor.black => DB().colorSettings.blackPieceColor,
+      _ => colors.outline,
+    };
+
+    return Semantics(
+      key: const Key('play_area_analysis_position_status'),
+      container: true,
+      liveRegion: true,
+      label: '$status $contextLabel',
+      child: ExcludeSemantics(
+        child: SizedBox(
+          height: PlayAreaState._kAnalysisPositionStatusHeight,
+          child: Material(
+            color: colors.surfaceContainer,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    key: const Key('play_area_analysis_position_status_piece'),
+                    width: 28,
+                    height: 28,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      color: colors.surfaceContainerHighest,
+                    ),
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: 17,
+                      height: 17,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: pieceColor,
+                        border: Border.all(color: colors.outline, width: 1.5),
+                        boxShadow: const <BoxShadow>[
+                          BoxShadow(
+                            color: Color(0x33000000),
+                            blurRadius: 2,
+                            offset: Offset(0, 1),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          status,
+                          key: const Key(
+                            'play_area_analysis_position_status_turn',
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          contextLabel,
+                          key: const Key(
+                            'play_area_analysis_position_status_context',
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: colors.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

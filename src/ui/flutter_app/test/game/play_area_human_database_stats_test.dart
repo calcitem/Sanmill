@@ -2984,6 +2984,56 @@ void main() {
     expect(find.text('Options'), findsNothing);
   });
 
+  testWidgets('analysis position status identifies the side and phase', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    db.generalSettings = db.generalSettings.copyWith(useOpeningBook: false);
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    expect(
+      find.byKey(const Key('play_area_analysis_position_status')),
+      findsOneWidget,
+    );
+    expect(find.text('Player 1 to move.'), findsOneWidget);
+    expect(find.text('Placing phase'), findsOneWidget);
+  });
+
+  testWidgets('analysis position status names an unfinished removal', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    db.generalSettings = db.generalSettings.copyWith(useOpeningBook: false);
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    expect(
+      await session.replayMainline(<ExtMove>[
+        ExtMove('a1', side: PieceColor.white),
+        ExtMove('d1', side: PieceColor.black),
+        ExtMove('a4', side: PieceColor.white),
+        ExtMove('d2', side: PieceColor.black),
+        ExtMove('a7', side: PieceColor.white),
+      ]),
+      isTrue,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    expect(find.text('Player 1 to remove.'), findsOneWidget);
+    expect(find.text('Placing phase'), findsOneWidget);
+  });
+
   testWidgets('analysis move list toggles annotations and comments', (
     WidgetTester tester,
   ) async {

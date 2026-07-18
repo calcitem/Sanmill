@@ -458,6 +458,47 @@ class GameController {
     return buffer.toString();
   }
 
+  /// Returns a compact opening name for persistent game-surface context.
+  ///
+  /// The optional conversational tip includes provenance and strategy notes;
+  /// this summary deliberately stays short enough to sit beside the board.
+  String? activeOpeningDisplayName() {
+    if (!DB().generalSettings.useOpeningBook) {
+      return null;
+    }
+    final String? variantId = RuleVariant.openingBookVariantIdFor(
+      ruleSettingsForActiveBoard,
+    );
+    if (variantId == null) {
+      return null;
+    }
+    final List<String> placements = openingBookPlacementHistory();
+    if (placements.isEmpty) {
+      return null;
+    }
+    final MillOpeningRecognition recognition = MillOpeningRecognizer.recognize(
+      placements,
+      OpeningBookRepository.instance.openingsFor(
+        isElFilja: variantId == 'el_filja',
+      ),
+    );
+    if (!recognition.isNamed) {
+      return null;
+    }
+    if (recognition.status != MillOpeningStatus.deviation &&
+        recognition.candidateFamilies.length > 1) {
+      const int maxShown = 3;
+      final List<String> families = recognition.candidateFamilies;
+      final String suffix = families.length > maxShown ? ' …' : '';
+      return '${families.take(maxShown).join(' / ')}$suffix';
+    }
+    if (recognition.status == MillOpeningStatus.deviation &&
+        (recognition.branchName?.isNotEmpty ?? false)) {
+      return recognition.branchName;
+    }
+    return recognition.name;
+  }
+
   /// Recommended replies for the side currently to move, if the recognised
   /// opening lists any.
   List<String> _openingResponsesForSide(

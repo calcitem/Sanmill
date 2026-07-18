@@ -6577,5 +6577,15 @@
     "advantageGraph": "Advantage graph",
     "@advantageGraph": {
         "description": "Title and accessibility name for an advantage graph that is already visible"
+    },
+    "tipToRemove": "{player} to remove.",
+    "@tipToRemove": {
+        "description": "The player who must complete the current turn by removing a piece.",
+        "placeholders": {
+            "player": {
+                "type": "String",
+                "example": "Player 1"
+            }
+        }
     }
 }
