@@ -431,6 +431,7 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
   late int _skillLevel;
   late int _moveTime;
   late _HumanAiSideChoice _sideChoice;
+  late bool _showGameTips;
 
   @override
   void initState() {
@@ -441,6 +442,7 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
     _sideChoice = settings.aiMovesFirst
         ? _HumanAiSideChoice.black
         : _HumanAiSideChoice.white;
+    _showGameTips = settings.showGameTips;
   }
 
   void _startNewGame(BuildContext context) {
@@ -459,6 +461,7 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
       skillLevel: _skillLevel,
       moveTime: _moveTime,
       aiMovesFirst: aiMovesFirst,
+      showGameTips: _showGameTips,
     );
     if (_skillLevel > 15 && _moveTime < 10) {
       rootScaffoldMessengerKey.currentState!.showSnackBarClear(
@@ -609,6 +612,18 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
                   value: _sideChoiceLabel(context, _sideChoice),
                   leadingIcon: _sideChoiceIcon(_sideChoice),
                   onTap: () => _showSidePicker(context),
+                ),
+                SwitchListTile.adaptive(
+                  key: const Key('human_ai_new_game_sheet_game_tips'),
+                  secondary: const Icon(Icons.chat_bubble_outline_rounded),
+                  title: Text(S.of(context).showGameTips),
+                  subtitle: Text(S.of(context).showGameTips_Detail),
+                  value: _showGameTips,
+                  onChanged: (bool value) {
+                    setState(() {
+                      _showGameTips = value;
+                    });
+                  },
                 ),
               ],
             ),

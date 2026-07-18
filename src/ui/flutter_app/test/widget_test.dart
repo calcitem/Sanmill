@@ -633,6 +633,21 @@ void main() {
         ),
         findsOneWidget,
       );
+      final Finder gameTipsSwitch = find.byKey(
+        const Key('human_ai_new_game_sheet_game_tips'),
+      );
+      expect(gameTipsSwitch, findsOneWidget);
+      expect(
+        find.descendant(
+          of: gameTipsSwitch,
+          matching: find.text('Show game tips'),
+        ),
+        findsOneWidget,
+      );
+      await tester.ensureVisible(gameTipsSwitch);
+      await tester.tap(gameTipsSwitch);
+      await tester.pumpAndSettle();
+      expect(DB().generalSettings.showGameTips, isFalse);
       expect(
         find.byKey(const Key('sanmill_bottom_navigation_bar')),
         findsOneWidget,
@@ -659,10 +674,17 @@ void main() {
         find.byKey(const Key('sanmill_home_play_sheet_mill.play.humanVsAi')),
       );
       await tester.pumpAndSettle();
+      final Finder confirmedGameTipsSwitch = find.byKey(
+        const Key('human_ai_new_game_sheet_game_tips'),
+      );
+      await tester.ensureVisible(confirmedGameTipsSwitch);
+      await tester.tap(confirmedGameTipsSwitch);
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('human_ai_new_game_sheet_start')));
       await tester.pumpAndSettle();
 
       expect(shellState.debugCurrentRouteId, shellState.debugPlayRouteId);
+      expect(DB().generalSettings.showGameTips, isTrue);
       expect(find.byKey(const Key('human_ai')), findsOneWidget);
       expect(find.byKey(const Key('human_ai_new_game_sheet')), findsNothing);
       expect(
