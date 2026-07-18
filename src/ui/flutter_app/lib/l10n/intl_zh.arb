@@ -6452,5 +6452,29 @@
     "backgroundImageDescription": "选择用于对局区域背景的图片。",
     "@backgroundImageDescription": {
         "description": "Explains that Background image appears behind the game area"
+    },
+    "humanDatabaseSetupTitle": "设置人类对局数据库",
+    "@humanDatabaseSetupTitle": {
+        "description": "Title of the first-use setup guide for the human game database"
+    },
+    "humanDatabaseSetupDescription": "完成以下两步，即可启用来自人类实战的着法。",
+    "@humanDatabaseSetupDescription": {
+        "description": "Introduction to the human game database setup guide"
+    },
+    "humanDatabaseSetupDownload": "1. 下载数据库",
+    "@humanDatabaseSetupDownload": {
+        "description": "First step in the human game database setup guide"
+    },
+    "humanDatabaseSetupDownloadDescription": "在浏览器中打开数据库下载页面。",
+    "@humanDatabaseSetupDownloadDescription": {
+        "description": "Description of the database download step"
+    },
+    "humanDatabaseSetupSelectFile": "2. 选择已下载的文件",
+    "@humanDatabaseSetupSelectFile": {
+        "description": "Second step in the human game database setup guide"
+    },
+    "humanDatabaseSetupSelectFileDescription": "选择 SQLite 文件。Sanmill 会先复制并验证，再启用数据库。",
+    "@humanDatabaseSetupSelectFileDescription": {
+        "description": "Description of selecting and importing the downloaded human game database file"
     }
 }
