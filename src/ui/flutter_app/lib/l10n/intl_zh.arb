@@ -5030,7 +5030,7 @@
     "reviewGradeDubious": "可疑",
     "reviewGradeMistake": "失误",
     "reviewGradeBlunder": "严重失误",
-    "todayProgress": "今日进度",
+    "todayProgress": "今天",
     "todayProgressSummary": "完成 {games} 局 · 复盘 {reviews} 份",
     "privateHistory": "对局历史",
     "noPrivateGames": "完成的对局会显示在这里。",

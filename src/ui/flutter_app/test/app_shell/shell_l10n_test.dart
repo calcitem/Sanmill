@@ -12,6 +12,8 @@ void main() {
     expect(strings.tools, '工具');
     expect(strings.home, '首页');
     expect(strings.learn, '学习');
+    expect(strings.todayProgress, '今天');
+    expect(strings.todayProgressSummary(2, 1), '完成 2 局 · 复盘 1 份');
     expect(strings.recentGames, '最近保存的棋局');
   });
 
