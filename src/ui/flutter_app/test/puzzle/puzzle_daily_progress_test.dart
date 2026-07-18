@@ -119,6 +119,7 @@ void main() {
 
     await pumpPage();
 
+    expect(find.text('Daily puzzle'), findsOneWidget);
     expect(find.byKey(const Key('daily_puzzle_progress_section')), findsOne);
     expect(find.byKey(const Key('daily_puzzle_today_tile')), findsOne);
     expect(find.byKey(const Key('daily_puzzle_total_tile')), findsOne);

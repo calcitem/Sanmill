@@ -173,7 +173,6 @@ class _DailyPuzzleContent extends StatelessWidget {
     final Color difficultyColor = difficultyColorFor(puzzle.difficulty);
 
     return LichessListSection(
-      header: Text(s.dailyPuzzle),
       cardKey: const Key('daily_puzzle_card'),
       children: <Widget>[
         ListTile(
