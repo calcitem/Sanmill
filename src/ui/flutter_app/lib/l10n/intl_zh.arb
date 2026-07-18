@@ -2898,11 +2898,11 @@
     "@dailyPuzzleStreakInfo": {
         "description": "Streak info message"
     },
-    "allPuzzles": "所有谜题",
+    "allPuzzles": "解谜",
     "@allPuzzles": {
         "description": "All puzzles mode name"
     },
-    "allPuzzlesDesc": "浏览所有可用的谜题",
+    "allPuzzlesDesc": "从所有可用谜题中选择",
     "@allPuzzlesDesc": {
         "description": "All puzzles mode description"
     },
