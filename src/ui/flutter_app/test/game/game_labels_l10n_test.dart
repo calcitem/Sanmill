@@ -19,7 +19,7 @@ void main() {
     expect(strings.moveListLayoutMediumBoards, '中棋盘');
     expect(strings.moveListLayoutSmallBoards, '小棋盘');
     expect(strings.moveListLayoutTable, '着法表');
-    expect(strings.remoteHistoryNavigationUnavailable, '联网对局仅可申请悔回自己最近的一步。');
+    expect(strings.remoteHistoryNavigationUnavailable, '联网对局只能针对自己最近的一手棋申请悔棋。');
     expect(
       strings.restoreDefaultSettingsConfirmation,
       '这会重置设置和等级分，并永久删除谜题进度、对局历史、已保存的复盘和自定义主题。此操作无法撤销。',

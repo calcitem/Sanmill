@@ -1709,7 +1709,7 @@
     "@llmPrompt": {},
     "gameRestarted": "游戏已重启",
     "@gameRestarted": {},
-    "takeBackRejected": "悔棋请求被拒绝",
+    "takeBackRejected": "悔棋请求已被拒绝。",
     "@takeBackRejected": {},
     "areYouSureYouWantToResignThisGame": "您确定要认输吗？",
     "@areYouSureYouWantToResignThisGame": {},
@@ -1721,7 +1721,7 @@
     "@connectedWaitingForOpponentSMove": {},
     "networkStatusDisconnected": "网络状态：断开",
     "@networkStatusDisconnected": {},
-    "takeBackRequestSentToTheOpponent": "已向对手发送悔棋请求。",
+    "takeBackRequestSentToTheOpponent": "悔棋请求已发送。",
     "@takeBackRequestSentToTheOpponent": {},
     "theOpponentMayHaveLeftTheGame": "对手可能已离开游戏",
     "@theOpponentMayHaveLeftTheGame": {},
@@ -1749,7 +1749,7 @@
     "@opponentSTurn": {},
     "waitingAClientConnection": "等待客户端连接...",
     "@waitingAClientConnection": {},
-    "takeBackRequestWasRejectedOrFailed": "悔棋请求被拒绝或失败。",
+    "takeBackRequestWasRejectedOrFailed": "悔棋请求被拒绝或无法完成。",
     "@takeBackRequestWasRejectedOrFailed": {},
     "addText": "添加文本",
     "@addText": {},
@@ -1765,9 +1765,9 @@
     "@serverIsStopped": {},
     "restartRequest": "重启请求",
     "@restartRequest": {},
-    "cannotRequestATakeBackWhenItSNotYourTurn": "并非轮到你行棋，故无法请求悔棋。",
+    "cannotRequestATakeBackWhenItSNotYourTurn": "仅能在轮到您行棋时请求悔棋。",
     "@cannotRequestATakeBackWhenItSNotYourTurn": {},
-    "takeBackAccepted": "悔棋请求已被接受",
+    "takeBackAccepted": "悔棋请求已被接受。",
     "@takeBackAccepted": {},
     "localNetworkSettings": "本地网络设置",
     "@localNetworkSettings": {},
@@ -2089,7 +2089,7 @@
     "@aiStatistics": {},
     "enableStatistics": "启用统计",
     "@enableStatistics": {},
-    "enableStatistics_Detail": "启用后，对局结果将记录到统计数据中。但是，有悔棋的对局结果除外。如禁用，统计数据收集将暂停。",
+    "enableStatistics_Detail": "记录已完成对局的统计数据。有悔棋的对局不计入统计；关闭后暂停记录。",
     "@enableStatistics_Detail": {},
     "thisWillResetAllGameStatistics": "所有等级分和对局结果都将重置。此操作无法撤销。",
     "@thisWillResetAllGameStatistics": {},
@@ -4100,7 +4100,7 @@
     "@resign": {},
     "failedToSendResignation": "无法认输。请检查网络连接后重试。",
     "@failedToSendResignation": {},
-    "opponentRequestsTakeBackAccept": "对手请求悔棋 {steps} 步。接受吗？",
+    "opponentRequestsTakeBackAccept": "对手请求悔棋 {steps} 手，是否接受？",
     "@opponentRequestsTakeBackAccept": {
         "placeholders": {
             "steps": {
@@ -5722,7 +5722,7 @@
     "@moveListLayoutTable": {
         "description": "Move-list layout option that displays a compact table"
     },
-    "remoteHistoryNavigationUnavailable": "联网对局仅可申请悔回自己最近的一步。",
+    "remoteHistoryNavigationUnavailable": "联网对局只能针对自己最近的一手棋申请悔棋。",
     "@remoteHistoryNavigationUnavailable": {
         "description": "Explains why full history navigation is unavailable in a remote game"
     },

@@ -412,6 +412,18 @@ void main() {
     );
   });
 
+  test('uses clear Chinese take-back terminology', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.takeBackRejected, '悔棋请求已被拒绝。');
+    expect(chinese.takeBackAccepted, '悔棋请求已被接受。');
+    expect(chinese.takeBackRequestSentToTheOpponent, '悔棋请求已发送。');
+    expect(chinese.takeBackRequestWasRejectedOrFailed, '悔棋请求被拒绝或无法完成。');
+    expect(chinese.cannotRequestATakeBackWhenItSNotYourTurn, '仅能在轮到您行棋时请求悔棋。');
+    expect(chinese.opponentRequestsTakeBackAccept('2'), '对手请求悔棋 2 手，是否接受？');
+    expect(chinese.remoteHistoryNavigationUnavailable, '联网对局只能针对自己最近的一手棋申请悔棋。');
+  });
+
   test('uses action-specific English annotation clearing copy', () {
     final S english = lookupS(const Locale('en'));
 
