@@ -896,6 +896,12 @@ void main() {
     expect(english.puzzleStatsDeviation, 'Rating uncertainty');
   });
 
+  test('names Chinese puzzle rating uncertainty explicitly', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.puzzleStatsDeviation, '等级分不确定性');
+  });
+
   test('uses a direct English import-field hint', () {
     final S english = lookupS(const Locale('en'));
 

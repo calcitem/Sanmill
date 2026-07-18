@@ -3139,7 +3139,7 @@
     "@puzzleStatsGamesPlayed": {
         "description": "Games played label"
     },
-    "puzzleStatsDeviation": "偏差",
+    "puzzleStatsDeviation": "等级分不确定性",
     "@puzzleStatsDeviation": {
         "description": "Rating deviation label"
     },
