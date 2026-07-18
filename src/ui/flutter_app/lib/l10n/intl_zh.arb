@@ -5014,7 +5014,7 @@
     "analysisCancelled": "分析已取消",
     "qualityAnnotation": "着法质量标注",
     "reviewBestLine": "最佳变化：{line}",
-    "deepAnalysis": "深化此着",
+    "deepAnalysis": "深入分析这手棋",
     "exportReviewAnnotations": "后续导出包含复盘标注",
     "exportReviewAnnotationsDescription": "仅合并到导出的副本，不修改原始棋谱。",
     "noHumanMistakesToCorrect": "没有需要纠错练习的真人失误。",

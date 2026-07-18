@@ -123,6 +123,12 @@ void main() {
     expect(english.deepAnalysis, isNot(contains('deepen')));
   });
 
+  test('uses player-facing Chinese wording for deeper move analysis', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.deepAnalysis, '深入分析这手棋');
+  });
+
   test('labels English review navigation as moves rather than pages', () {
     final S english = lookupS(const Locale('en'));
 
