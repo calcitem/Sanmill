@@ -5006,7 +5006,7 @@
     "cancelAnalysis": "取消分析",
     "reanalyze": "重新分析",
     "structuralSummary": "棋局结构",
-    "reviewStructureCounts": "{turns} 着 · {actions} 个原子动作 · {variations} 个变着",
+    "reviewStructureCounts": "{turns} 手 · {actions} 个动作 · {variations} 条变化",
     "quickAnalysis": "本地快速分析",
     "reviewProgress": "{current}/{total}",
     "reviewUnsupportedPosition": "此规则局面有 {count} 个合法动作，超过搜索容量 {capacity}。",

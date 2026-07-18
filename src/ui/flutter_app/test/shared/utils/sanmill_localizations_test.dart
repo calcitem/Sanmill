@@ -108,6 +108,13 @@ void main() {
     expect(english.reviewStructureCounts(12, 15, 1), isNot(contains('atomic')));
   });
 
+  test('keeps internal review terminology out of the Chinese UI', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.reviewStructureCounts(3, 4, 1), '3 手 · 4 个动作 · 1 条变化');
+    expect(chinese.reviewStructureCounts(3, 4, 1), isNot(contains('原子')));
+  });
+
   test('uses player-facing wording for deeper move analysis', () {
     final S english = lookupS(const Locale('en'));
 
