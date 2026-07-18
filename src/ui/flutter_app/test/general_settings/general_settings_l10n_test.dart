@@ -14,6 +14,16 @@ void main() {
   });
 
   test(
+    'Simplified Chinese localizes diagnostic log selection counts',
+    () async {
+      final S strings = await S.delegate.load(const Locale('zh'));
+
+      expect(strings.logsSelectionSummary(1, 1), '已选 1 条日志 · 1 个区间');
+      expect(strings.logsSelectionSummary(3, 2), '已选 3 条日志 · 2 个区间');
+    },
+  );
+
+  test(
     'Simplified Chinese localizes first move, tips, and thinking-time values',
     () async {
       final S strings = await S.delegate.load(const Locale('zh'));

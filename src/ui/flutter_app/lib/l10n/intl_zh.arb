@@ -6270,5 +6270,19 @@
                 "example": "先手方"
             }
         }
+    },
+    "logsSelectionSummary": "已选 {logCount} 条日志 · {rangeCount} 个区间",
+    "@logsSelectionSummary": {
+        "description": "Summary shown while selecting one or more ranges of diagnostic logs",
+        "placeholders": {
+            "logCount": {
+                "type": "int",
+                "example": "3"
+            },
+            "rangeCount": {
+                "type": "int",
+                "example": "2"
+            }
+        }
     }
 }
