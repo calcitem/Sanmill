@@ -2487,13 +2487,10 @@ class PlayAreaState extends State<PlayArea> {
   bool _toggleGameTips({required String toolbar}) {
     assert(_supportsGameTips, 'Game tips require a playable game mode.');
     final GeneralSettings current = DB().generalSettings;
-    if (!mounted) {
-      return current.showGameTips;
-    }
     final bool enabled = !current.showGameTips;
-    setState(() {
-      DB().generalSettings = current.copyWith(showGameTips: enabled);
-    });
+    DB().generalSettings = current.copyWith(showGameTips: enabled);
+    final GameController controller = GameController();
+    controller.headerIconsNotifier.showIcons();
     RecordingService().recordEvent(
       RecordingEventType.toolbarAction,
       <String, dynamic>{
@@ -2504,17 +2501,16 @@ class PlayAreaState extends State<PlayArea> {
     );
 
     if (!enabled) {
-      final HeaderTipNotifier notifier = GameController().headerTipNotifier;
+      final HeaderTipNotifier notifier = controller.headerTipNotifier;
       notifier.showTip(notifier.message, snackBar: false, kind: notifier.kind);
       return enabled;
     }
-    if (!mounted) {
-      return enabled;
-    }
-    final NativeMillGameSession? session =
-        GameController().activeNativeMillSession;
-    if (session != null) {
-      GameController().refreshNativeSessionHeader(context, session);
+    final NativeMillGameSession? session = controller.activeNativeMillSession;
+    final BuildContext? refreshContext = mounted
+        ? context
+        : rootScaffoldMessengerKey.currentContext;
+    if (session != null && refreshContext != null && refreshContext.mounted) {
+      controller.refreshNativeSessionHeader(refreshContext, session);
     }
     return enabled;
   }
@@ -2531,12 +2527,7 @@ class PlayAreaState extends State<PlayArea> {
       key: key,
       dismissOnPress: false,
       makeLabel: (BuildContext context) => _GameTipsActionLabel(enabled),
-      onPressed: () {},
-      onPressedWithContext: (BuildContext menuContext) {
-        if (!mounted) {
-          Navigator.of(menuContext).pop();
-          return;
-        }
+      onPressed: () {
         enabled.value = _toggleGameTips(toolbar: toolbar);
       },
     );

@@ -7670,7 +7670,7 @@ void main() {
     expect(find.byKey(const Key('game_page_scaffold')), findsNothing);
   });
 
-  testWidgets('stale game tips menu closes without changing the preference', (
+  testWidgets('game tips menu survives its original play area rebuilding', (
     WidgetTester tester,
   ) async {
     db.generalSettings = const GeneralSettings();
@@ -7733,9 +7733,12 @@ void main() {
     await tester.tap(find.byKey(actionKey));
     await tester.pumpAndSettle();
 
-    expect(find.byKey(sheetKey), findsNothing);
-    expect(db.generalSettings.showGameTips, isFalse);
+    expect(find.byKey(sheetKey), findsOneWidget);
+    expect(db.generalSettings.showGameTips, isTrue);
     expect(tester.takeException(), isNull);
+
+    Navigator.of(tester.element(find.byKey(sheetKey))).pop();
+    await tester.pumpAndSettle();
   });
 
   testWidgets('human vs human route asks before leaving an active game', (
