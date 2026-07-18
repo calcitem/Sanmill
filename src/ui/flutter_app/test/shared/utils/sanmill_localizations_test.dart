@@ -438,6 +438,17 @@ void main() {
     );
   });
 
+  test('uses consistent Chinese prompt-template terms and consequences', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.llmPromptTemplateHeader, '大模型提示词模板开头');
+    expect(chinese.llmPromptTemplateFooter, '大模型提示词模板结尾');
+    expect(
+      chinese.areYouSureYouWantToResetThePromptTemplatesToDefaultValues,
+      '提示词模板的开头和结尾将恢复为默认内容。',
+    );
+  });
+
   test('uses consequence-focused English game confirmations', () {
     final S english = lookupS(const Locale('en'));
 
