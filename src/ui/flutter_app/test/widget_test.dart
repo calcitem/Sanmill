@@ -2063,7 +2063,7 @@ void main() {
     expect(
       find.text(
         'When flying is enabled and a player reaches the configured piece '
-        'limit, any piece may move to any empty point.',
+        'threshold, any piece may move to any empty point.',
       ),
       findsOneWidget,
     );

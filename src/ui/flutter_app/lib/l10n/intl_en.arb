@@ -5446,7 +5446,7 @@
     "@tutorialMillCaptureRule": {
         "description": "Tutorial explanation of the standard rule that usually protects pieces inside mills"
     },
-    "tutorialFlyingRule": "When flying is enabled and a player reaches the configured piece limit, any piece may move to any empty point.",
+    "tutorialFlyingRule": "When flying is enabled and a player reaches the configured piece threshold, any piece may move to any empty point.",
     "@tutorialFlyingRule": {
         "description": "Tutorial explanation of the configurable flying rule"
     },
