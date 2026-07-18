@@ -383,6 +383,14 @@ void main() {
     );
   });
 
+  test('uses consequence-focused Chinese leave-game confirmation', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.leaveCurrentGame, '离开当前对局？');
+    expect(chinese.currentGameWillBeKept, '当前对局会保留。');
+    expect(chinese.leave, '离开');
+  });
+
   test('gives actionable English resignation failure feedback', () {
     final S english = lookupS(const Locale('en'));
 

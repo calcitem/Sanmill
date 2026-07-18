@@ -4672,7 +4672,7 @@
     },
     "leaveCurrentGame": "离开当前对局？",
     "@leaveCurrentGame": {},
-    "currentGameWillBeKept": "不用担心，这局棋会保留。",
+    "currentGameWillBeKept": "当前对局会保留。",
     "@currentGameWillBeKept": {},
     "engine": "引擎",
     "@engine": {},
@@ -6432,5 +6432,9 @@
     "shareLogsFailed": "无法分享日志，请重试。",
     "@shareLogsFailed": {
         "description": "Error shown when sharing diagnostic logs fails"
+    },
+    "leave": "离开",
+    "@leave": {
+        "description": "Confirmation action for leaving an ongoing game while keeping it available to resume"
     }
 }
