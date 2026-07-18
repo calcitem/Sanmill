@@ -72,10 +72,7 @@ void main() {
 
   setUp(() {
     db = MockDB();
-    db.generalSettings = const GeneralSettings(
-      humanDatabaseEnabled: true,
-      showHumanDatabaseStats: true,
-    );
+    db.generalSettings = const GeneralSettings(humanDatabaseEnabled: true);
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
@@ -124,123 +121,6 @@ void main() {
     PlayerTimer().reset();
     OfflineBoardClock().reset();
     DB.instance = null;
-  });
-
-  testWidgets('human database stats strip sits near the bottom bar', (
-    WidgetTester tester,
-  ) async {
-    await tester.binding.setSurfaceSize(const Size(390, 844));
-    addTearDown(() => tester.binding.setSurfaceSize(null));
-
-    await tester.pumpWidget(
-      _localizedApp(
-        const Scaffold(
-          body: PlayArea(
-            boardImage: null,
-            child: SizedBox.square(
-              key: Key('test_board_square'),
-              dimension: 390,
-            ),
-          ),
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    final Finder strip = find.byKey(
-      const Key('play_area_human_database_stats_strip'),
-    );
-    final Finder board = find.byKey(const Key('play_area_native_screenshot'));
-    final Finder bottomBar = find.byKey(
-      const Key('play_area_main_toolbar_bottom'),
-    );
-    expect(strip, findsOneWidget);
-    expect(board, findsOneWidget);
-    expect(bottomBar, findsOneWidget);
-    expect(tester.getSize(strip).height, greaterThan(0));
-    final DecoratedBox statsBox = tester.widget<DecoratedBox>(
-      find.byKey(const Key('play_area_human_database_stats')),
-    );
-    final BoxDecoration statsDecoration = statsBox.decoration as BoxDecoration;
-    expect(statsDecoration.color, Colors.transparent);
-    expect(find.text('No human database move played yet'), findsOneWidget);
-    expect(find.text('Human game database'), findsNothing);
-    expect(
-      find.byKey(const Key('play_area_human_database_stats_empty')),
-      findsNothing,
-    );
-    expect(
-      tester.getTopLeft(strip).dy,
-      greaterThanOrEqualTo(tester.getBottomLeft(board).dy),
-    );
-    expect(
-      tester.getBottomLeft(strip).dy,
-      lessThanOrEqualTo(tester.getTopLeft(bottomBar).dy),
-    );
-    expect(
-      find.byKey(const Key('play_area_human_database_stats_overlay')),
-      findsNothing,
-    );
-  });
-
-  testWidgets('human database stats strip stays hidden while disabled', (
-    WidgetTester tester,
-  ) async {
-    db.generalSettings = const GeneralSettings(
-      humanDatabaseEnabled: false,
-      showHumanDatabaseStats: true,
-    );
-
-    await tester.pumpWidget(
-      _localizedApp(
-        const Scaffold(
-          body: PlayArea(
-            boardImage: null,
-            child: SizedBox.square(dimension: 390),
-          ),
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    expect(
-      find.byKey(const Key('play_area_human_database_stats_strip')),
-      findsNothing,
-    );
-  });
-
-  testWidgets('human database stats strip uses compact sample text', (
-    WidgetTester tester,
-  ) async {
-    final NativeMillGameSession session = await _bindNativeGame(
-      GameMode.humanVsHuman,
-    );
-    session.lastHumanDatabaseMoveStats = const HumanDatabaseMoveStats(
-      notation: 'd6',
-      wins: 50,
-      draws: 30,
-      losses: 20,
-      total: 100,
-      scoreDelta: 0,
-    );
-
-    await _pumpSessionPlayArea(tester, session);
-
-    expect(find.textContaining('Human Database'), findsNothing);
-    expect(find.textContaining('Human game database'), findsNothing);
-    expect(
-      find.text('d6  W 50.0%  D 30.0%  L 20.0%  Games 100'),
-      findsOneWidget,
-    );
-    final Semantics statsSemantics = tester.widget<Semantics>(
-      find.byKey(const Key('play_area_human_database_stats_semantics')),
-    );
-    expect(
-      statsSemantics.properties.label,
-      "Human game database move d6. From the moving player's perspective: "
-      '50.0 percent wins, 30.0 percent draws, and 20.0 percent losses. '
-      'Recorded games: 100.',
-    );
   });
 
   testWidgets('strength gauge uses Human Database WDL segments', (
@@ -2109,7 +1989,7 @@ void main() {
     expect(find.byKey(const Key('play_area_advantage_graph')), findsOneWidget);
     expect(
       find.byKey(const Key('play_area_human_database_stats_strip')),
-      findsOneWidget,
+      findsNothing,
     );
   });
 
@@ -2168,7 +2048,7 @@ void main() {
   testWidgets('human vs ai dense portrait layout handles insets', (
     WidgetTester tester,
   ) async {
-    db.generalSettings = const GeneralSettings(showHumanDatabaseStats: true);
+    db.generalSettings = const GeneralSettings();
     db.displaySettings = const DisplaySettings(
       isAdvantageGraphShown: true,
       isHistoryNavigationToolbarShown: false,
@@ -2511,7 +2391,7 @@ void main() {
     WidgetTester tester,
   ) async {
     db = _GamePageDb(
-      generalSettings: const GeneralSettings(showHumanDatabaseStats: true),
+      generalSettings: const GeneralSettings(),
       displaySettings: const DisplaySettings(
         isHistoryNavigationToolbarShown: false,
       ),

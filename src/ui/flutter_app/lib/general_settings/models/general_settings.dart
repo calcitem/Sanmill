@@ -373,7 +373,8 @@ class GeneralSettings {
   @HiveField(48, defaultValue: "")
   final String humanDatabaseFilePath;
 
-  // Show the latest Human Database move statistics below the board.
+  // Retained only so existing Hive records keep their field layout. Human
+  // Database statistics now appear automatically in the strength gauge.
   @HiveField(49, defaultValue: false)
   final bool showHumanDatabaseStats;
 

@@ -876,9 +876,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
       GameMode.setupPosition =>
         kLichessBottomBarHeight * 3 + AppTheme.boardMargin,
       GameMode.puzzle => AppTheme.boardMargin,
-      GameMode.humanVsAi =>
-        kLichessBottomBarHeight +
-            (DB().generalSettings.showHumanDatabaseStats ? 40 : 0),
+      GameMode.humanVsAi => kLichessBottomBarHeight,
       GameMode.analysis => kLichessBottomBarHeight + AppTheme.boardMargin,
       _ => kLichessBottomBarHeight + AppTheme.boardMargin,
     };

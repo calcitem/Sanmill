@@ -672,7 +672,6 @@ class PlayAreaState extends State<PlayArea> {
 
   static const double _kBalancedLayoutSafetyMargin = 24;
   static const double _kBalancedLayoutMinWidth = 240;
-  static const double _kHumanDatabaseStatsStripHeight = 40;
   static const double _kAdvantageIndicatorWidth = 16;
   static const double _kAdvantageIndicatorGap = 6;
   static const double _kAdvantageIndicatorReserve =
@@ -822,94 +821,6 @@ class PlayAreaState extends State<PlayArea> {
     if (changed) {
       setState(() {});
     }
-  }
-
-  Widget? _buildHumanDatabaseStatsStrip(BuildContext context) {
-    final GeneralSettings settings = DB().generalSettings;
-    if (!settings.humanDatabaseEnabled || !settings.showHumanDatabaseStats) {
-      return null;
-    }
-    final HumanDatabaseMoveStats? stats =
-        GameController().activeNativeMillSession?.lastHumanDatabaseMoveStats;
-
-    final Color contentColor = DB().colorSettings.messageColor.withValues(
-      alpha: stats == null ? 0.58 : 0.78,
-    );
-    final Color borderColor = DB().colorSettings.messageColor.withValues(
-      alpha: 0.16,
-    );
-    final String statsText = stats == null
-        ? S.of(context).humanGameDatabaseStatsUnavailable
-        : S
-              .of(context)
-              .humanGameDatabaseStatsLine(
-                stats.notation,
-                stats.winPercent.toStringAsFixed(1),
-                stats.drawPercent.toStringAsFixed(1),
-                stats.lossPercent.toStringAsFixed(1),
-                stats.total,
-              );
-    final String statsSemanticsLabel = stats == null
-        ? statsText
-        : S
-              .of(context)
-              .humanGameDatabaseStatsSemantics(
-                stats.notation,
-                stats.winPercent.toStringAsFixed(1),
-                stats.drawPercent.toStringAsFixed(1),
-                stats.lossPercent.toStringAsFixed(1),
-                stats.total,
-              );
-
-    return Padding(
-      key: const Key('play_area_human_database_stats_strip'),
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppTheme.boardMargin,
-        vertical: 4,
-      ),
-      child: Semantics(
-        key: const Key('play_area_human_database_stats_semantics'),
-        label: statsSemanticsLabel,
-        excludeSemantics: true,
-        liveRegion: stats != null,
-        child: DecoratedBox(
-          key: const Key('play_area_human_database_stats'),
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: borderColor),
-          ),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 32),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              child: Row(
-                children: <Widget>[
-                  Icon(Icons.storage_rounded, size: 16, color: contentColor),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 160),
-                      switchInCurve: Curves.easeOutCubic,
-                      switchOutCurve: Curves.easeInCubic,
-                      child: Text(
-                        statsText,
-                        key: ValueKey<String>(statsText),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodySmall?.copyWith(color: contentColor),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 
   double _moveListRouteTopInset(BuildContext context) {
@@ -3904,12 +3815,22 @@ class PlayAreaState extends State<PlayArea> {
 
           final double estimatedRequiredHeight =
               constraints.maxWidth + nonBoardHeight;
+          final double balancedSidePanelHeight = math.max(
+            topPanelHeight,
+            advantageGraphHeight + AppTheme.boardMargin,
+          );
+          final double balancedFixedHeight =
+              moveListReserve + pieceRowsHeight + boardSize;
+          final double balancedFlexibleHeight = constraints.hasBoundedHeight
+              ? math.max(0, constraints.maxHeight - balancedFixedHeight)
+              : 0;
           final bool canBalance =
               isPlayableGame &&
               constraints.maxWidth >= _kBalancedLayoutMinWidth &&
               constraints.hasBoundedHeight &&
               constraints.maxHeight >=
-                  estimatedRequiredHeight + _kBalancedLayoutSafetyMargin;
+                  estimatedRequiredHeight + _kBalancedLayoutSafetyMargin &&
+              balancedFlexibleHeight >= balancedSidePanelHeight * 2;
 
           if (canBalance) {
             return SizedBox(
@@ -4092,7 +4013,6 @@ class PlayAreaState extends State<PlayArea> {
   Widget _buildHumanAiLandscapeContent({
     required BuildContext context,
     required BoxConstraints constraints,
-    required Widget? humanDatabaseStatsStrip,
     required bool showPieceCountRows,
     required bool showGameChrome,
   }) {
@@ -4109,9 +4029,9 @@ class PlayAreaState extends State<PlayArea> {
       0,
       viewport.width - horizontalPadding * 2,
     );
-    final double bottomReservedHeight =
-        (showGameChrome ? kLichessBottomBarHeight : 0) +
-        (humanDatabaseStatsStrip == null ? 0 : _kHumanDatabaseStatsStripHeight);
+    final double bottomReservedHeight = showGameChrome
+        ? kLichessBottomBarHeight
+        : 0;
     final double availableHeight = math.max(
       0,
       viewport.height - bottomReservedHeight - verticalPadding * 2,
@@ -4238,7 +4158,6 @@ class PlayAreaState extends State<PlayArea> {
                 ),
               ),
             ),
-            ?humanDatabaseStatsStrip,
             if (showGameChrome) _buildHumanAiBottomBar(context),
           ],
         ),
@@ -4249,7 +4168,6 @@ class PlayAreaState extends State<PlayArea> {
   Widget _buildRegularLandscapeContent({
     required BuildContext context,
     required BoxConstraints constraints,
-    required Widget? humanDatabaseStatsStrip,
     required bool showPieceCountRows,
   }) {
     assert(
@@ -4266,9 +4184,7 @@ class PlayAreaState extends State<PlayArea> {
       0,
       viewport.width - horizontalPadding * 2,
     );
-    final double bottomReservedHeight =
-        kLichessBottomBarHeight +
-        (humanDatabaseStatsStrip == null ? 0 : _kHumanDatabaseStatsStripHeight);
+    const double bottomReservedHeight = kLichessBottomBarHeight;
     final double availableHeight = math.max(
       0,
       viewport.height - bottomReservedHeight - verticalPadding * 2,
@@ -4394,7 +4310,6 @@ class PlayAreaState extends State<PlayArea> {
                 ),
               ),
             ),
-            ?humanDatabaseStatsStrip,
             _buildRegularBottomBar(context),
           ],
         ),
@@ -4605,13 +4520,6 @@ class PlayAreaState extends State<PlayArea> {
         // Human vs AI mirrors the Lichess offline-computer screen: one
         // bottom bar with menu, takeback, resign, and hint. Other game modes
         // also keep their toolbars at the bottom for a consistent shell.
-        final Widget? humanDatabaseStatsStrip = _buildHumanDatabaseStatsStrip(
-          context,
-        );
-        final Widget? bottomHumanDatabaseStatsStrip =
-            !isSetupPosition && !isPuzzle && !isAnalysisMode
-            ? humanDatabaseStatsStrip
-            : null;
         final bool useHumanAiLandscapeLayout =
             usesHumanAiBoardLayout &&
             constraints.hasBoundedHeight &&
@@ -4621,7 +4529,6 @@ class PlayAreaState extends State<PlayArea> {
           return _buildHumanAiLandscapeContent(
             context: context,
             constraints: constraints,
-            humanDatabaseStatsStrip: bottomHumanDatabaseStatsStrip,
             showPieceCountRows: showPieceCountRows,
             showGameChrome: !isPuzzle,
           );
@@ -4657,7 +4564,6 @@ class PlayAreaState extends State<PlayArea> {
           return _buildRegularLandscapeContent(
             context: context,
             constraints: constraints,
-            humanDatabaseStatsStrip: bottomHumanDatabaseStatsStrip,
             showPieceCountRows: showPieceCountRows,
           );
         }
@@ -4705,8 +4611,6 @@ class PlayAreaState extends State<PlayArea> {
               key: const Key('play_area_column_toolbar_bottom'),
               children: <Widget>[
                 Expanded(child: mainContent),
-
-                ?bottomHumanDatabaseStatsStrip,
 
                 // Main toolbar (or setup-position toolbar)
                 if (usesLichessHumanAiToolbar)

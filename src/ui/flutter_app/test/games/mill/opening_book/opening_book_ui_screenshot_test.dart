@@ -61,6 +61,7 @@ void main() {
     final _OpeningBookUiDb db = DB.instance! as _OpeningBookUiDb;
     db.updateGeneralSettings(
       const GeneralSettings(
+        humanDatabaseEnabled: true,
         humanDatabaseFilePath: '/tmp/human.sqlite',
         useOpeningBook: true,
         shufflingEnabled: true,
@@ -100,6 +101,14 @@ void main() {
     await tester.pumpAndSettle();
     expect(humanDatabaseCard, findsOneWidget);
     expect(find.text('human.sqlite'), findsOneWidget);
+    expect(
+      find.byKey(
+        const Key(
+          'general_settings_page_settings_card_ais_play_style_show_human_database_stats',
+        ),
+      ),
+      findsNothing,
+    );
     expect(
       find.byKey(
         const Key(

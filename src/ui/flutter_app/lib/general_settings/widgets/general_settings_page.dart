@@ -586,14 +586,6 @@ class GeneralSettingsPage extends StatelessWidget {
     await launchURL(context, Constants.humanDatabaseDownloadUrl);
   }
 
-  void _setShowHumanDatabaseStats(GeneralSettings generalSettings, bool value) {
-    _settingsRepository.generalSettings = generalSettings.copyWith(
-      showHumanDatabaseStats: value,
-    );
-
-    logger.t("$_logTag showHumanDatabaseStats: $value");
-  }
-
   void _setTone(GeneralSettings generalSettings, bool value) {
     _settingsRepository.generalSettings = generalSettings.copyWith(
       toneEnabled: value,
