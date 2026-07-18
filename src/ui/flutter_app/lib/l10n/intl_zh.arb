@@ -1991,7 +1991,7 @@
     "@boardDetectionFailed": {},
     "noBoardPointDetectedCannotIdentifyPiece": "未检测到棋盘点，无法识别棋子！",
     "@noBoardPointDetectedCannotIdentifyPiece": {},
-    "copyFen": "复制 FEN",
+    "copyFen": "复制局面（FEN）",
     "@copyFen": {},
     "commonlyUsedModels": "常用模型",
     "@commonlyUsedModels": {},
@@ -6384,5 +6384,13 @@
                 "example": "14"
             }
         }
+    },
+    "sharePgn": "分享 PGN",
+    "@sharePgn": {
+        "description": "Action that opens the platform share sheet for the current game in PGN format"
+    },
+    "shareFen": "分享局面（FEN）",
+    "@shareFen": {
+        "description": "Action that opens the platform share sheet for the current position in FEN format"
     }
 }

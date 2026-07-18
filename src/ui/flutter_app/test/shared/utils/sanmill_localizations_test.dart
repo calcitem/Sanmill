@@ -193,6 +193,15 @@ void main() {
     expect(english.shareFen, 'Share position as FEN');
   });
 
+  test('uses complete Chinese labels for analysis sharing actions', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.copyPgn, '复制 PGN');
+    expect(chinese.sharePgn, '分享 PGN');
+    expect(chinese.copyFen, '复制局面（FEN）');
+    expect(chinese.shareFen, '分享局面（FEN）');
+  });
+
   test(
     'distinguishes the English saved-games library from loading actions',
     () {
