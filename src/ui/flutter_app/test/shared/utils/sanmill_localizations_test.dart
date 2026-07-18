@@ -470,6 +470,12 @@ void main() {
     );
   });
 
+  test('gives actionable Chinese resignation failure feedback', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.failedToSendResignation, '无法认输。请检查网络连接后重试。');
+  });
+
   test('accurately describes the English statistics reset scope', () {
     final S english = lookupS(const Locale('en'));
 

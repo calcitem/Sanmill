@@ -4098,7 +4098,7 @@
     "@variations": {},
     "resign": "认输",
     "@resign": {},
-    "failedToSendResignation": "发送认输信息失败",
+    "failedToSendResignation": "无法认输。请检查网络连接后重试。",
     "@failedToSendResignation": {},
     "opponentRequestsTakeBackAccept": "对手请求悔棋 {steps} 步。接受吗？",
     "@opponentRequestsTakeBackAccept": {
