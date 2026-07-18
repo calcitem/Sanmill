@@ -481,7 +481,7 @@
     "@flyPieceCount_Detail": {
         "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
     },
-    "piecesAtLeastCount": "少于几个子则输棋",
+    "piecesAtLeastCount": "继续对局的最少棋子数",
     "@piecesAtLeastCount": {
         "description": "Pieces At Least"
     },

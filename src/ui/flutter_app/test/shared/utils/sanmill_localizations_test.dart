@@ -21,6 +21,12 @@ void main() {
     expect(english.piecesAtLeastCount, 'Minimum pieces to continue');
   });
 
+  test('names the minimum-piece rule naturally in Chinese', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.piecesAtLeastCount, '继续对局的最少棋子数');
+  });
+
   test('distinguishes GIF sharing setup from the share action', () {
     final S english = lookupS(const Locale('en'));
 
