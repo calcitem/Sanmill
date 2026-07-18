@@ -9,6 +9,7 @@ import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../shared/widgets/lichess_list_section.dart';
@@ -59,26 +60,8 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
 
   /// Format date for display
   String _formatDate(DateTime date) {
-    assert(
-      date.month >= DateTime.january && date.month <= DateTime.december,
-      'Daily puzzle date must have a valid month.',
-    );
-    final S s = S.of(context);
-    final List<String> months = <String>[
-      s.monthJanuary,
-      s.monthFebruary,
-      s.monthMarch,
-      s.monthApril,
-      s.monthMay,
-      s.monthJune,
-      s.monthJuly,
-      s.monthAugust,
-      s.monthSeptember,
-      s.monthOctober,
-      s.monthNovember,
-      s.monthDecember,
-    ];
-    return '${months[date.month - 1]} ${date.day}, ${date.year}';
+    final String locale = Localizations.localeOf(context).toLanguageTag();
+    return DateFormat.yMMMMd(locale).format(date);
   }
 
   /// Get color for difficulty level

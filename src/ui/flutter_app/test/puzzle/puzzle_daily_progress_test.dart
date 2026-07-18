@@ -104,10 +104,10 @@ void main() {
       allPuzzles: <PuzzleInfo>[_dailyPuzzle()],
     );
 
-    Future<void> pumpPage() async {
+    Future<void> pumpPage({Locale locale = const Locale('en')}) async {
       await tester.pumpWidget(
         MaterialApp(
-          locale: const Locale('en'),
+          locale: locale,
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
           home: DailyPuzzlePage(key: UniqueKey()),
@@ -137,6 +137,10 @@ void main() {
 
     expect(find.text('Completed'), findsOne);
     expect(find.text('1'), findsOne);
+
+    await pumpPage(locale: const Locale('zh'));
+
+    expect(find.text('2026年7月16日'), findsOne);
   });
 }
 
