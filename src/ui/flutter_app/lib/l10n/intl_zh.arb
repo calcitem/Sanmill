@@ -6436,5 +6436,13 @@
     "leave": "离开",
     "@leave": {
         "description": "Confirmation action for leaving an ongoing game while keeping it available to resume"
+    },
+    "millBasicsDescription": "逐步学习基础玩法",
+    "@millBasicsDescription": {
+        "description": "Short description for the step-by-step Mill basics guide"
+    },
+    "howToPlayDescription": "阅读完整规则",
+    "@howToPlayDescription": {
+        "description": "Short description for the complete written rules guide"
     }
 }
