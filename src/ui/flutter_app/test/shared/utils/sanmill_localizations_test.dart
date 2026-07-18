@@ -753,6 +753,13 @@ void main() {
     expect(chinese.advantageGraph, '优势图');
   });
 
+  test('uses natural Chinese turn guidance for the removal step', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.tipToMove(chinese.white), '轮到先手方行棋');
+    expect(chinese.tipToRemove(chinese.white), '轮到先手方吃子');
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =

@@ -6260,5 +6260,15 @@
     "advantageGraph": "优势图",
     "@advantageGraph": {
         "description": "Title and accessibility name for an advantage graph that is already visible"
+    },
+    "tipToRemove": "轮到{player}吃子",
+    "@tipToRemove": {
+        "description": "The player who must complete the current turn by removing a piece.",
+        "placeholders": {
+            "player": {
+                "type": "String",
+                "example": "先手方"
+            }
+        }
     }
 }
