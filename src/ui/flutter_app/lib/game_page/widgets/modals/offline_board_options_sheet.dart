@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 
 import '../../../games/mill/mill_variant_localization.dart';
@@ -166,19 +164,21 @@ class _OfflineBoardNewGameSheetState extends State<_OfflineBoardNewGameSheet> {
             children: <Widget>[
               ListTile(
                 key: const Key('offline_board_variant_picker'),
-                title: Text(S.of(context).variant),
-                trailing: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: math.min(
-                      160,
-                      MediaQuery.sizeOf(context).width * 0.4,
+                title: Row(
+                  children: <Widget>[
+                    Text(S.of(context).variant),
+                    const SizedBox(width: AppStyles.bodyPadding),
+                    Expanded(
+                      child: Text(
+                        key: const Key('offline_board_variant_value'),
+                        localizedMillVariantNameById(S.of(context), _variantId),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                        textAlign: TextAlign.end,
+                        style: valueStyle,
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    localizedMillVariantNameById(S.of(context), _variantId),
-                    overflow: TextOverflow.ellipsis,
-                    style: valueStyle,
-                  ),
+                  ],
                 ),
                 onTap: _showVariantPicker,
               ),

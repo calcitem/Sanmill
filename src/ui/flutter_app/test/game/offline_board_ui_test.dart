@@ -3,6 +3,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:sanmill/appearance_settings/models/display_settings.dart';
@@ -95,6 +96,14 @@ void main() {
     );
     expect(find.text("Nine Men's Morris"), findsOne);
     expect(find.text('Play'), findsOne);
+    expect(
+      tester
+          .renderObject<RenderParagraph>(
+            find.byKey(const Key('offline_board_variant_value')),
+          )
+          .didExceedMaxLines,
+      isFalse,
+    );
 
     await tester.tap(find.byKey(const Key('offline_board_start_button')));
     await tester.pumpAndSettle();
