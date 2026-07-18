@@ -2632,7 +2632,7 @@
     "@puzzleSetupPosition": {
         "description": "Setup the board position section"
     },
-    "puzzlePositionSnapshotted2": "局面已快照",
+    "puzzlePositionSnapshotted2": "局面已保存",
     "@puzzlePositionSnapshotted2": {
         "description": "Header showing position has been snapshotted (title case)"
     },
@@ -2644,11 +2644,11 @@
     "@puzzleFinalPosition": {
         "description": "Label for final puzzle position after solution"
     },
-    "puzzleNoPositionSnapshotted": "尚未快照局面",
+    "puzzleNoPositionSnapshotted": "尚未保存局面",
     "@puzzleNoPositionSnapshotted": {
         "description": "No position snapshotted message"
     },
-    "puzzleSnapshotPositionFirst": "请先快照局面",
+    "puzzleSnapshotPositionFirst": "请先保存起始局面",
     "@puzzleSnapshotPositionFirst": {
         "description": "Error when trying to record without position"
     },
@@ -2664,11 +2664,11 @@
     "@puzzleStopRecording": {
         "description": "Stop recording solution moves"
     },
-    "puzzleRecording": "正在录制...",
+    "puzzleRecording": "正在录制…",
     "@puzzleRecording": {
         "description": "Currently recording moves"
     },
-    "puzzleRecordingStarted": "开始录制解答步骤",
+    "puzzleRecordingStarted": "已开始录制",
     "@puzzleRecordingStarted": {
         "description": "Recording started message"
     },
@@ -2772,7 +2772,7 @@
     "@puzzleTags": {
         "description": "Puzzle tags field"
     },
-    "puzzleTagsHint": "逗号分隔",
+    "puzzleTagsHint": "用逗号分隔标签",
     "@puzzleTagsHint": {
         "description": "Hint for tags input"
     },
@@ -3203,15 +3203,15 @@
     "@puzzleInvalidPosition": {
         "description": "Error message when puzzle position is invalid"
     },
-    "puzzleOpenBoardSetup": "打开棋盘（摆局）",
+    "puzzleOpenBoardSetup": "打开棋盘（设置局面）",
     "@puzzleOpenBoardSetup": {
         "description": "Open the game board in Setup Position mode to arrange the starting position."
     },
-    "puzzleOpenBoardPlay": "打开棋盘（走子）",
+    "puzzleOpenBoardPlay": "打开棋盘（行棋）",
     "@puzzleOpenBoardPlay": {
         "description": "Open the game board to play the solution moves while recording."
     },
-    "puzzleRecordingHintUseButton": "请点击下方按钮打开棋盘，走完解答后按返回回到本页。",
+    "puzzleRecordingHintUseButton": "使用下方按钮打开棋盘，再用“返回”回到本页。",
     "@puzzleRecordingHintUseButton": {
         "description": "Hint telling users to use the provided button to navigate to the board and return."
     },
@@ -3219,11 +3219,11 @@
     "@puzzleInvalidPositionFormat": {
         "description": "Error message when position format is invalid"
     },
-    "puzzleFailedLoadPosition": "加载局面失败。请重新快照。",
+    "puzzleFailedLoadPosition": "无法加载此局面，请重新保存。",
     "@puzzleFailedLoadPosition": {
         "description": "Error message when failed to load position"
     },
-    "puzzleInvalidPositionFormatRecapture": "无效的局面格式。请重新快照局面。",
+    "puzzleInvalidPositionFormatRecapture": "局面格式无效，请重新保存。",
     "@puzzleInvalidPositionFormatRecapture": {
         "description": "Error message when position format is invalid and needs to be re-snapshotted"
     },
@@ -3239,7 +3239,7 @@
     "@puzzleWorkflowStepSetup": {
         "description": "Workflow step: setup position"
     },
-    "puzzleWorkflowStepSetupDesc": "打开棋盘，摆局面，快照",
+    "puzzleWorkflowStepSetupDesc": "打开棋盘，设置并保存局面。",
     "@puzzleWorkflowStepSetupDesc": {
         "description": "Description for setup position workflow step"
     },
@@ -3247,7 +3247,7 @@
     "@puzzleWorkflowStepRecord": {
         "description": "Workflow step: record solution"
     },
-    "puzzleWorkflowStepRecordDesc": "开始录制，走子，停止",
+    "puzzleWorkflowStepRecordDesc": "开始录制，完成着法后停止录制。",
     "@puzzleWorkflowStepRecordDesc": {
         "description": "Description for record solution workflow step"
     },
@@ -3255,7 +3255,7 @@
     "@puzzleWorkflowStepDetails": {
         "description": "Workflow step: add details"
     },
-    "puzzleWorkflowStepDetailsDesc": "填标题、类别、难度",
+    "puzzleWorkflowStepDetailsDesc": "填写标题、类别和难度。",
     "@puzzleWorkflowStepDetailsDesc": {
         "description": "Description for add details workflow step"
     },
@@ -3263,19 +3263,19 @@
     "@puzzleWorkflowStepSave": {
         "description": "Workflow step: save puzzle"
     },
-    "puzzleWorkflowStepSaveDesc": "点击保存按钮",
+    "puzzleWorkflowStepSaveDesc": "点按“保存”。",
     "@puzzleWorkflowStepSaveDesc": {
         "description": "Description for save puzzle workflow step"
     },
-    "puzzleWorkflowTip": "提示：您将在本页和棋盘之间切换。您的进度会被保存！",
+    "puzzleWorkflowTip": "提示：创建时会在本页与棋盘之间切换，进度会自动保存。",
     "@puzzleWorkflowTip": {
         "description": "Tip message for puzzle creation workflow"
     },
-    "puzzlePositionSnapshotHelp": "局面快照帮助",
+    "puzzlePositionSnapshotHelp": "起始局面帮助",
     "@puzzlePositionSnapshotHelp": {
         "description": "Title for position snapshot help dialog"
     },
-    "puzzlePositionSnapshotHelpContent": "如何快照谜题起始局面：\n\n1. 点击\"打开棋盘（摆局）\"手动摆放棋子，或点击\"打开棋盘（走子）\"通过走子到达局面\n\n2. 将棋盘调整到您想要的谜题起始局面\n\n3. 按返回按钮回到本页\n\n4. 局面将自动快照并保存\n\n快照的局面将作为您谜题的起始点。",
+    "puzzlePositionSnapshotHelpContent": "如何保存谜题的起始局面：\n\n1. 点按“打开棋盘（设置局面）”手动摆子，或点按“打开棋盘（行棋）”通过行棋到达目标局面。\n\n2. 将棋盘调整为谜题的起始局面。\n\n3. 使用“返回”回到本页。\n\n4. 局面会自动保存。\n\n保存的局面将作为谜题的起点。",
     "@puzzlePositionSnapshotHelpContent": {
         "description": "Help content for snapshotting puzzle starting position"
     },
@@ -3283,31 +3283,31 @@
     "@puzzleSolutionRecordingHelp": {
         "description": "Title for solution recording help dialog"
     },
-    "puzzleSolutionRecordingHelpContent": "如何录制解答走子：",
+    "puzzleSolutionRecordingHelpContent": "如何录制解答着法：",
     "@puzzleSolutionRecordingHelpContent": {
         "description": "Header text for solution recording help"
     },
-    "puzzleSolutionStep1": "首先快照起始局面",
+    "puzzleSolutionStep1": "先保存起始局面",
     "@puzzleSolutionStep1": {
         "description": "Step 1 for recording solution"
     },
-    "puzzleSolutionStep2": "点击\"开始录制\"按钮（这会将棋盘重置到您快照的局面）",
+    "puzzleSolutionStep2": "点按“开始录制”，棋盘会重置到已保存的局面。",
     "@puzzleSolutionStep2": {
         "description": "Step 2 for recording solution"
     },
-    "puzzleSolutionStep4": "返回本页并点击\"停止录制\"",
+    "puzzleSolutionStep4": "返回本页并点按“停止录制”。",
     "@puzzleSolutionStep4": {
         "description": "Step 4 for recording solution"
     },
-    "puzzleSolutionRecordingTip": "提示：开始录制时，棋盘会自动重置到您快照的局面。",
+    "puzzleSolutionRecordingTip": "提示：开始录制时，棋盘会自动重置到已保存的局面。",
     "@puzzleSolutionRecordingTip": {
         "description": "Tip message for solution recording"
     },
-    "puzzleMultipleSolutionsSupported": "可以添加多个解答（无数量限制）。请将最短/最佳的标记为最优。",
+    "puzzleMultipleSolutionsSupported": "可添加任意数量的解答，并将最短或最佳解答标记为最优。",
     "@puzzleMultipleSolutionsSupported": {
         "description": "Information about multiple solutions support"
     },
-    "puzzleShowPositionSnapshotHelp": "显示局面快照帮助",
+    "puzzleShowPositionSnapshotHelp": "显示起始局面帮助",
     "@puzzleShowPositionSnapshotHelp": {
         "description": "Tooltip for position snapshot help button"
     },

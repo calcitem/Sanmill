@@ -26,4 +26,25 @@ void main() {
     expect(strings.puzzlesExportedForContribution(3), '已导出 3 个谜题以供贡献');
     expect(strings.viewContributionGuide, '查看指南');
   });
+
+  test('Simplified Chinese describes the puzzle creation workflow', () async {
+    final S strings = await S.delegate.load(const Locale('zh'));
+
+    expect(strings.puzzlePositionSnapshotted2, '局面已保存');
+    expect(strings.puzzleNoPositionSnapshotted, '尚未保存局面');
+    expect(strings.puzzleSnapshotPositionFirst, '请先保存起始局面');
+    expect(strings.puzzleOpenBoardSetup, '打开棋盘（设置局面）');
+    expect(strings.puzzleOpenBoardPlay, '打开棋盘（行棋）');
+    expect(strings.puzzleFailedLoadPosition, '无法加载此局面，请重新保存。');
+    expect(strings.puzzleInvalidPositionFormatRecapture, '局面格式无效，请重新保存。');
+    expect(strings.puzzleWorkflowStepSetupDesc, '打开棋盘，设置并保存局面。');
+    expect(strings.puzzleWorkflowStepRecordDesc, '开始录制，完成着法后停止录制。');
+    expect(strings.puzzleWorkflowStepDetailsDesc, '填写标题、类别和难度。');
+    expect(strings.puzzleWorkflowStepSaveDesc, '点按“保存”。');
+    expect(strings.puzzlePositionSnapshotHelp, '起始局面帮助');
+    expect(strings.puzzleSolutionStep1, '先保存起始局面');
+    expect(strings.puzzleSolutionStep2, '点按“开始录制”，棋盘会重置到已保存的局面。');
+    expect(strings.puzzleSolutionStep4, '返回本页并点按“停止录制”。');
+    expect(strings.puzzleShowPositionSnapshotHelp, '显示起始局面帮助');
+  });
 }
