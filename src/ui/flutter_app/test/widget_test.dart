@@ -397,9 +397,18 @@ void main() {
       expect(find.byKey(const Key('drawer_item_clock')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_variants')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_import_game')), findsOneWidget);
+      expect(find.byKey(const Key('drawer_item_saved_games')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_analysis')), findsOneWidget);
       expect(
         tester.getTopLeft(find.byKey(const Key('drawer_item_import_game'))).dy,
+        lessThan(
+          tester
+              .getTopLeft(find.byKey(const Key('drawer_item_saved_games')))
+              .dy,
+        ),
+      );
+      expect(
+        tester.getTopLeft(find.byKey(const Key('drawer_item_saved_games'))).dy,
         lessThan(
           tester.getTopLeft(find.byKey(const Key('drawer_item_analysis'))).dy,
         ),
@@ -442,6 +451,18 @@ void main() {
           tester.getTopLeft(find.byKey(const Key('drawer_item_clock'))).dy,
         ),
       );
+
+      await tester.tap(find.byKey(const Key('drawer_item_saved_games')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      expect(
+        find.byKey(const Key('saved_games_page_scaffold')),
+        findsOneWidget,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
 
       await tester.tap(find.byKey(const Key('drawer_item_clock')));
       await tester.pumpAndSettle();
@@ -1246,6 +1267,8 @@ void main() {
       expect(find.byKey(const Key('more_human_vs_ai')), findsNothing);
       expect(find.byKey(const Key('drawer_item_tools_group')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_import_game')), findsOneWidget);
+      expect(find.byKey(const Key('drawer_item_saved_games')), findsOneWidget);
+      expect(find.text('Saved games'), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_analysis')), findsOneWidget);
       expect(
         find.byKey(const Key('drawer_item_opening_explorer')),

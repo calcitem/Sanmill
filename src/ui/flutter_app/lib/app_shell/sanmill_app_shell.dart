@@ -565,6 +565,14 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     );
   }
 
+  Future<void> _openSavedGamesFromMore() async {
+    await _navigatorKeys[SanmillShellTab.more]?.currentState?.push(
+      MaterialPageRoute<void>(
+        builder: (_) => SavedGamesPage(onGameLoaded: _continueCurrentGame),
+      ),
+    );
+  }
+
   Future<void> _pushAppRoute(String routeId) async {
     final Widget? screen =
         buildModuleScreenForGame(
@@ -801,6 +809,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
         return _MoreTabRoot(
           scrollController: _scrollControllers[SanmillShellTab.more]!,
           onAppRouteSelected: _pushAppRoute,
+          onOpenSavedGames: _openSavedGamesFromMore,
           onFeedback: _showFeedback,
           onExit: _exitApp,
         );
@@ -2840,12 +2849,14 @@ class _MoreTabRoot extends StatelessWidget {
   const _MoreTabRoot({
     required this.scrollController,
     required this.onAppRouteSelected,
+    required this.onOpenSavedGames,
     required this.onFeedback,
     required this.onExit,
   });
 
   final ScrollController scrollController;
   final ValueChanged<String> onAppRouteSelected;
+  final VoidCallback onOpenSavedGames;
   final VoidCallback onFeedback;
   final VoidCallback onExit;
 
@@ -2866,6 +2877,7 @@ class _MoreTabRoot extends StatelessWidget {
           children: <Widget>[
             _MenuEntries(
               onAppRouteSelected: onAppRouteSelected,
+              onOpenSavedGames: onOpenSavedGames,
               onFeedback: onFeedback,
               onExit: onExit,
             ),
@@ -2879,11 +2891,13 @@ class _MoreTabRoot extends StatelessWidget {
 class _MenuEntries extends StatelessWidget {
   const _MenuEntries({
     required this.onAppRouteSelected,
+    required this.onOpenSavedGames,
     required this.onFeedback,
     required this.onExit,
   });
 
   final ValueChanged<String> onAppRouteSelected;
+  final VoidCallback onOpenSavedGames;
   final VoidCallback onFeedback;
   final VoidCallback onExit;
 
@@ -2938,6 +2952,12 @@ class _MenuEntries extends StatelessWidget {
           headerKey: const Key('drawer_item_tools_group'),
           children: <Widget>[
             if (importGame != null) _buildContributionToolTile(importGame),
+            _MoreTile(
+              key: const Key('drawer_item_saved_games'),
+              icon: Icons.folder_open_rounded,
+              title: strings.savedGames,
+              onTap: onOpenSavedGames,
+            ),
             if (analysis != null) _buildContributionToolTile(analysis),
             if (openingExplorer != null)
               _buildContributionToolTile(openingExplorer),
