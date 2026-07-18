@@ -2431,14 +2431,19 @@ void main() {
     expect(DB().ruleSettings.nMoveRule, 100);
   });
 
-  testWidgets('Variants page explains the minimum-piece rule', (
+  testWidgets('Variants page explains custom rule labels', (
     WidgetTester tester,
   ) async {
     final RuleSettings previousRuleSettings = DB().ruleSettings;
     addTearDown(() {
       DB().ruleSettings = previousRuleSettings;
     });
-    DB().ruleSettings = const RuleSettings(piecesAtLeastCount: 4);
+    DB().ruleSettings = const RuleSettings(
+      piecesCount: 12,
+      piecesAtLeastCount: 4,
+      hasDiagonalLines: true,
+      oneTimeUseMill: true,
+    );
 
     await tester.pumpWidget(
       MaterialApp(
@@ -2456,7 +2461,10 @@ void main() {
 
     expect(find.text('Minimum pieces to continue'), findsOneWidget);
     expect(find.text('Current: 4'), findsOneWidget);
-    expect(find.text("Nine Men's Morris: 3"), findsOneWidget);
+    expect(find.text("Twelve Men's Morris: 3"), findsOneWidget);
+    expect(find.text('Limit each mill to one removal'), findsOneWidget);
+    expect(find.text('Current: Yes'), findsOneWidget);
+    expect(find.text("Twelve Men's Morris: No"), findsOneWidget);
   });
 
   testWidgets('Appearance board settings follow Lichess primary order', (

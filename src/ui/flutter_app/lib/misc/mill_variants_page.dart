@@ -361,7 +361,7 @@ class _CustomMillVariantDetailsPage extends StatelessWidget {
         strings.whenFormingMillsDuringPlacingPhase,
       'RestrictRepeatedMillsFormation' =>
         strings.restrictRepeatedMillsFormation,
-      'OneTimeUseMill' => strings.oneTimeMill,
+      'OneTimeUseMill' => strings.oneTimeUseMill,
       'EnableCustodianCapture' => strings.custodianCaptureEnable,
       'CustodianCaptureOnSquareEdges' => _captureOptionLabel(
         strings,
