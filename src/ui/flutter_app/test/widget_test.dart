@@ -874,6 +874,8 @@ void main() {
       );
       expect(find.byKey(const Key('puzzles_home_daily')), findsOneWidget);
       expect(find.byKey(const Key('puzzles_home_all')), findsOneWidget);
+      expect(find.text('Solve puzzles'), findsOneWidget);
+      expect(find.text('Choose from all available puzzles'), findsOneWidget);
       expect(find.text('0.0% complete'), findsOneWidget);
       expect(find.byKey(const Key('puzzles_home_rush')), findsNothing);
       expect(find.byKey(const Key('puzzles_home_streak')), findsOneWidget);

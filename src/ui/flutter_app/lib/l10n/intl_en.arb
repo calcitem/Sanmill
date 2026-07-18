@@ -2918,11 +2918,11 @@
     "@dailyPuzzleStreakInfo": {
         "description": "Streak info message"
     },
-    "allPuzzles": "All puzzles",
+    "allPuzzles": "Solve puzzles",
     "@allPuzzles": {
         "description": "All puzzles mode name"
     },
-    "allPuzzlesDesc": "Browse all available puzzles",
+    "allPuzzlesDesc": "Choose from all available puzzles",
     "@allPuzzlesDesc": {
         "description": "All puzzles mode description"
     },
