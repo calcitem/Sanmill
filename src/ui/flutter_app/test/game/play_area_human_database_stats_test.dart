@@ -3856,11 +3856,18 @@ void main() {
 
     expect(_summaryAdvantagePainter(tester).currentIndex, 3);
     expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_summary_graph_header')),
+        matching: find.text('Advantage graph'),
+      ),
+      findsOneWidget,
+    );
+    expect(
       find.byWidgetPredicate(
         (Widget widget) =>
             widget is Semantics &&
             widget.properties.label ==
-                'Continue from here · Show advantage graph · Move 3 · +36',
+                'Continue from here · Advantage graph · Move 3 · +36',
       ),
       findsOneWidget,
     );
@@ -3959,9 +3966,7 @@ void main() {
     expect(_currentPathMoves(), <String>['d6', 'f4']);
     expect(_summaryAdvantagePainter(tester).currentIndex, 2);
     expect(
-      find.byTooltip(
-        'Continue from here · Show advantage graph · Move 2 · -12',
-      ),
+      find.byTooltip('Continue from here · Advantage graph · Move 2 · -12'),
       findsOneWidget,
     );
     expect(
@@ -3969,7 +3974,7 @@ void main() {
         (Widget widget) =>
             widget is Semantics &&
             widget.properties.label ==
-                'Continue from here · Show advantage graph · Move 2 · -12',
+                'Continue from here · Advantage graph · Move 2 · -12',
       ),
       findsOneWidget,
     );

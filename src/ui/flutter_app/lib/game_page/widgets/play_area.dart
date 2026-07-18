@@ -6436,7 +6436,7 @@ class _AnalysisSummaryPanel extends StatelessWidget {
                             'play_area_analysis_summary_graph_header',
                           ),
                           leading: const Icon(Icons.show_chart_outlined),
-                          title: Text(strings.showAdvantageGraph),
+                          title: Text(strings.advantageGraph),
                         ),
                       if (keyMoments.isNotEmpty)
                         ListTile(
@@ -7775,7 +7775,7 @@ class _AnalysisSummaryAdvantageGraphState
     );
     return <String>[
       strings.continueFromHere,
-      strings.showAdvantageGraph,
+      strings.advantageGraph,
       '${strings.move} $effectiveIndex',
       _signedAnalysisValue(widget.data[effectiveIndex]),
     ].join(' · ');

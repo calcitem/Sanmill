@@ -6573,5 +6573,9 @@
                 "example": "0"
             }
         }
+    },
+    "advantageGraph": "Advantage graph",
+    "@advantageGraph": {
+        "description": "Title and accessibility name for an advantage graph that is already visible"
     }
 }
