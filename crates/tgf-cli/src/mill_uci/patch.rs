@@ -309,41 +309,26 @@ mod tests {
         let path = dir.join("empty.mill_patch");
         std::fs::write(&path, empty_patch_bytes()).unwrap();
 
-        {
-            let mut state = PATCH.lock().expect("patch mutex");
-            *state = PatchState::default();
-        }
+        let mut state = PatchState {
+            patch_path: Some(path.to_string_lossy().into_owned()),
+            ..PatchState::default()
+        };
+        reload_if_needed(&mut state);
+        assert!(state.patch_lookup.is_some());
+        assert!(state.trap_lookup.is_none());
+        assert!(!state.avoid_traps);
+        assert!(!state.make_traps);
 
-        sync_runtime(
-            &Some(path.to_string_lossy().into_owned()),
-            &None,
-            false,
-            false,
+        state.avoid_traps = true;
+        state.make_traps = true;
+        reload_if_needed(&mut state);
+        assert!(state.patch_lookup.is_some());
+        assert!(
+            state.trap_lookup.is_none(),
+            "PatchPath must not implicitly provide make-traps signals"
         );
-        {
-            let state = PATCH.lock().expect("patch mutex");
-            assert!(state.patch_lookup.is_some());
-            assert!(state.trap_lookup.is_none());
-            assert!(!state.avoid_traps);
-            assert!(!state.make_traps);
-        }
-
-        sync_runtime(
-            &Some(path.to_string_lossy().into_owned()),
-            &None,
-            true,
-            true,
-        );
-        {
-            let state = PATCH.lock().expect("patch mutex");
-            assert!(state.patch_lookup.is_some());
-            assert!(
-                state.trap_lookup.is_none(),
-                "PatchPath must not implicitly provide make-traps signals"
-            );
-            assert!(state.avoid_traps);
-            assert!(state.make_traps);
-        }
+        assert!(state.avoid_traps);
+        assert!(state.make_traps);
     }
 
     #[test]
@@ -354,23 +339,15 @@ mod tests {
         let path = dir.join("empty.mill_traps");
         std::fs::write(&path, empty_patch_bytes()).unwrap();
 
-        {
-            let mut state = PATCH.lock().expect("patch mutex");
-            *state = PatchState::default();
-        }
-
-        sync_runtime(
-            &None,
-            &Some(path.to_string_lossy().into_owned()),
-            false,
-            true,
-        );
-        {
-            let state = PATCH.lock().expect("patch mutex");
-            assert!(state.patch_lookup.is_none());
-            assert!(state.trap_lookup.is_some());
-            assert!(!state.avoid_traps);
-            assert!(state.make_traps);
-        }
+        let mut state = PatchState {
+            trap_path: Some(path.to_string_lossy().into_owned()),
+            make_traps: true,
+            ..PatchState::default()
+        };
+        reload_if_needed(&mut state);
+        assert!(state.patch_lookup.is_none());
+        assert!(state.trap_lookup.is_some());
+        assert!(!state.avoid_traps);
+        assert!(state.make_traps);
     }
 }
