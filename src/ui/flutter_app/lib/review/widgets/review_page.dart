@@ -794,7 +794,8 @@ class _ReviewPageState extends State<ReviewPage> {
                   ),
               ],
             ),
-            if (_correctionChoice != null) ...<Widget>[
+            if (_correctionChoice != null &&
+                !_showCorrectionAnswer) ...<Widget>[
               const SizedBox(height: 12),
               Text(
                 _correctionPassed
@@ -829,6 +830,7 @@ class _ReviewPageState extends State<ReviewPage> {
                   child: Text(strings.retry),
                 ),
                 TextButton(
+                  key: const Key('review_correction_show_answer'),
                   onPressed: () => setState(() {
                     _showCorrectionAnswer = true;
                     _correctionChoice = correction.candidates.first.move;

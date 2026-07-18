@@ -184,6 +184,31 @@ void main() {
     },
   );
 
+  testWidgets('revealing a correction answer does not claim user success', (
+    WidgetTester tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1024, 768));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(_reviewApp());
+    await tester.pump();
+
+    final Finder showAnswer = find.byKey(
+      const Key('review_correction_show_answer'),
+    );
+    await tester.drag(
+      find.byKey(const Key('review_analysis_panel')),
+      const Offset(0, -180),
+    );
+    await tester.pump();
+    tester.widget<TextButton>(showAnswer).onPressed!();
+    await tester.pump();
+
+    expect(find.text('Best move: d6xf4'), findsOneWidget);
+    expect(find.text('Good move!'), findsNothing);
+    expect(find.text('You can do better. Try another move.'), findsNothing);
+    expect(find.text('Done'), findsOneWidget);
+  });
+
   testWidgets('uses side-by-side layout in phone landscape', (
     WidgetTester tester,
   ) async {
