@@ -556,6 +556,13 @@ void main() {
     );
   });
 
+  test('explains Chinese recording deletion consequences', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.confirmDeleteSession, '此录制会话将被永久删除。');
+    expect(chinese.confirmDeleteAllSessions, '所有录制会话都将被永久删除。');
+  });
+
   test('gives actionable English recording import feedback', () {
     final S english = lookupS(const Locale('en'));
 
