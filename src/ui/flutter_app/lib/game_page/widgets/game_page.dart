@@ -13,7 +13,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
-import 'package:marquee/marquee.dart';
 
 import '../../appearance_settings/models/display_settings.dart';
 import '../../appearance_settings/widgets/appearance_settings_page.dart';
@@ -45,7 +44,6 @@ import '../../shared/services/url.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/themes/ui_colors.dart';
 import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
-import '../../shared/utils/helpers/text_helpers/safe_text_editing_controller.dart';
 import '../../shared/widgets/custom_spacer.dart';
 import '../../shared/widgets/lichess_bottom_bar.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
