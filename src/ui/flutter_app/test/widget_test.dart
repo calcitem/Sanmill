@@ -2255,12 +2255,17 @@ void main() {
     await tester.tap(find.byKey(const Key('mill_variant_standard_9mm')));
     await tester.pumpAndSettle();
 
+    final Finder applyButtonFinder = find.byKey(
+      const Key('mill_variant_detail_apply_button'),
+    );
+    await tester.ensureVisible(applyButtonFinder);
+    await tester.pumpAndSettle();
     final FilledButton applyButton = tester.widget<FilledButton>(
-      find.byKey(const Key('mill_variant_detail_apply_button')),
+      applyButtonFinder,
     );
     expect(applyButton.onPressed, isNotNull);
 
-    await tester.tap(find.byKey(const Key('mill_variant_detail_apply_button')));
+    await tester.tap(applyButtonFinder);
     await tester.pumpAndSettle();
 
     expect(RuleVariant.exactCanonicalIdFor(DB().ruleSettings), 'standard_9mm');
