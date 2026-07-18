@@ -5083,7 +5083,7 @@
     "@humanDatabaseUnavailable": {"description": "Opening explorer state when the human database cannot be used."},
     "humanDatabaseUnavailableHint": "Select Manage to review or replace the database file.",
     "@humanDatabaseUnavailableHint": {"description": "Hint for configuring the human game database."},
-    "humanDatabaseNoPositionRecords": "Not enough recorded human games for this position",
+    "humanDatabaseNoPositionRecords": "No recorded human games for this position",
     "@humanDatabaseNoPositionRecords": {"description": "Opening explorer state when a loaded human database has no current-position records."},
     "manageKnowledgeSources": "Manage",
     "@manageKnowledgeSources": {"description": "Button opening computer move source management."},

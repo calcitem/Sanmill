@@ -6170,7 +6170,7 @@ void main() {
         findsOneWidget,
       );
       expect(
-        find.text('Not enough recorded human games for this position'),
+        find.text('No recorded human games for this position'),
         findsOneWidget,
       );
       expect(

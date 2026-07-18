@@ -693,7 +693,7 @@ void main() {
     );
     expect(
       english.humanDatabaseNoPositionRecords,
-      'Not enough recorded human games for this position',
+      'No recorded human games for this position',
     );
     expect(
       english.humanDatabaseUnavailableHint,
