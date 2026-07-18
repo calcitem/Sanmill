@@ -6444,5 +6444,13 @@
     "howToPlayDescription": "阅读完整规则",
     "@howToPlayDescription": {
         "description": "Short description for the complete written rules guide"
+    },
+    "boardImageDescription": "选择用于棋盘表面的图片。",
+    "@boardImageDescription": {
+        "description": "Explains that Board image affects the board surface"
+    },
+    "backgroundImageDescription": "选择用于对局区域背景的图片。",
+    "@backgroundImageDescription": {
+        "description": "Explains that Background image appears behind the game area"
     }
 }

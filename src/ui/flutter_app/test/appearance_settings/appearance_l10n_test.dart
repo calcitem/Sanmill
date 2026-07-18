@@ -17,6 +17,8 @@ void main() {
     expect(strings.animationDurationValue(1.5), '1.5 秒');
     expect(strings.backgroundImageOption(2), '背景图片 2');
     expect(strings.boardImageOption(3), '棋盘图片 3');
+    expect(strings.boardImageDescription, '选择用于棋盘表面的图片。');
+    expect(strings.backgroundImageDescription, '选择用于对局区域背景的图片。');
     expect(strings.customBackgroundImage, '自定义背景图片');
     expect(strings.customBoardImage, '自定义棋盘图片');
     expect(strings.transparentToolbars, '透明工具栏');
