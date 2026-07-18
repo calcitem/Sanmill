@@ -1759,7 +1759,7 @@
     "@noLlmPromptAvailable": {},
     "youResignedGameOver": "You resigned. Game over.",
     "@youResignedGameOver": {},
-    "serverIp": "Server IP",
+    "serverIp": "Host address",
     "@serverIp": {},
     "confirmClear": "Clear annotations?",
     "@confirmClear": {},
@@ -6599,6 +6599,20 @@
             "rangeCount": {
                 "type": "int",
                 "example": "2"
+            }
+        }
+    },
+    "lanLocalAddress": "Local address",
+    "@lanLocalAddress": {
+        "description": "Label for the local network address used to host or discover a LAN game"
+    },
+    "lanPlayAs": "Play as {player}",
+    "@lanPlayAs": {
+        "description": "Label for choosing which side the LAN host controls",
+        "placeholders": {
+            "player": {
+                "type": "String",
+                "example": "Player 1"
             }
         }
     }

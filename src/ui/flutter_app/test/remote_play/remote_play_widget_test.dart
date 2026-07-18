@@ -100,12 +100,16 @@ void main() {
       320,
     );
     final Size hostSize = tester.getSize(find.byType(AlertDialog));
+    expect(find.text('Local address'), findsOneWidget);
+    expect(find.text('Play as Player 1'), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.wifi_find));
     await tester.pumpAndSettle();
     final Size joinSize = tester.getSize(find.byType(AlertDialog));
 
     expect(joinSize, hostSize);
+    expect(find.text('Local address'), findsOneWidget);
+    expect(find.text('Host address'), findsOneWidget);
 
     await tester.enterText(
       find.byKey(const Key('lan_address_field')),

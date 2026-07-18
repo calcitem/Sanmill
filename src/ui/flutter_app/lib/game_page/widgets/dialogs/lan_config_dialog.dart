@@ -393,7 +393,7 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
                 DropdownButtonFormField<String>(
                   key: ValueKey<String?>(_selectedBindAddress),
                   initialValue: _selectedBindAddress,
-                  decoration: InputDecoration(labelText: s.serverIp),
+                  decoration: InputDecoration(labelText: s.lanLocalAddress),
                   items: _localAddresses
                       .map(
                         (String address) => DropdownMenuItem<String>(
@@ -417,7 +417,9 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
                       width: double.infinity,
                       child: SwitchListTile(
                         contentPadding: EdgeInsets.zero,
-                        title: Text(_hostPlaysWhite ? s.white : s.black),
+                        title: Text(
+                          s.lanPlayAs(_hostPlaysWhite ? s.white : s.black),
+                        ),
                         value: _hostPlaysWhite,
                         onChanged: controlsLocked
                             ? null
