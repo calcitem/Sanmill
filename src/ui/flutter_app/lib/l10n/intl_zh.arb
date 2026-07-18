@@ -5726,7 +5726,7 @@
     "@remoteHistoryNavigationUnavailable": {
         "description": "Explains why full history navigation is unavailable in a remote game"
     },
-    "restoreDefaultSettingsConfirmation": "这会用默认值替换所有当前设置，且无法撤销。",
+    "restoreDefaultSettingsConfirmation": "这会重置设置和等级分，并永久删除谜题进度、对局历史、已保存的复盘和自定义主题。此操作无法撤销。",
     "@restoreDefaultSettingsConfirmation": {
         "description": "Confirmation warning before all app settings are reset"
     },
@@ -6320,5 +6320,9 @@
     "tutorialMillCaptureRule": "形成三连后，可以吃掉对方一枚棋子。只要对方还有不在三连中的棋子，三连中的棋子通常不能被吃。",
     "@tutorialMillCaptureRule": {
         "description": "Tutorial explanation of forming a mill and the standard protected-mill removal rule"
+    },
+    "resetAppData": "重置应用数据",
+    "@resetAppData": {
+        "description": "Action and dialog title for resetting settings and deleting locally stored app progress"
     }
 }

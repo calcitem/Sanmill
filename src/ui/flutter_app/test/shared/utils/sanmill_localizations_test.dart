@@ -347,6 +347,16 @@ void main() {
     );
   });
 
+  test('accurately describes the Chinese app-data reset scope', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.resetAppData, '重置应用数据');
+    expect(
+      chinese.restoreDefaultSettingsConfirmation,
+      '这会重置设置和等级分，并永久删除谜题进度、对局历史、已保存的复盘和自定义主题。此操作无法撤销。',
+    );
+  });
+
   test('explains English recording deletion consequences', () {
     final S english = lookupS(const Locale('en'));
 
