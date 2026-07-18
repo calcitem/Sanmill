@@ -1377,6 +1377,26 @@ void main() {
       );
       expect(find.byKey(const Key('clock_tool_close_button')), findsOneWidget);
       expect(find.byKey(const Key('clock_tool_reset_button')), findsOneWidget);
+      final Icon closeClockIcon = tester.widget<Icon>(
+        find.descendant(
+          of: find.byKey(const Key('clock_tool_close_button')),
+          matching: find.byIcon(Icons.home_rounded),
+        ),
+      );
+      final Icon resetClockIcon = tester.widget<Icon>(
+        find.descendant(
+          of: find.byKey(const Key('clock_tool_reset_button')),
+          matching: find.byIcon(Icons.restart_alt_rounded),
+        ),
+      );
+      expect(closeClockIcon.semanticLabel, 'Exit clock');
+      expect(resetClockIcon.semanticLabel, 'Reset clock');
+      expect(find.byTooltip('Exit clock'), findsOneWidget);
+      expect(find.byTooltip('Reset clock'), findsOneWidget);
+      expect(
+        tester.widget<Text>(find.text('5+0')).semanticsLabel,
+        '5 minutes, no increment',
+      );
 
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();

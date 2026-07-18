@@ -256,7 +256,10 @@ class _ClockControls extends StatelessWidget {
                   for (final _ClockPreset preset in presets)
                     ButtonSegment<_ClockPreset>(
                       value: preset,
-                      label: Text(preset.label),
+                      label: Text(
+                        preset.label,
+                        semanticsLabel: preset.semanticsLabel(strings),
+                      ),
                     ),
                 ],
                 selected: <_ClockPreset>{selectedPreset},
@@ -277,16 +280,22 @@ class _ClockControls extends StatelessWidget {
               children: <Widget>[
                 IconButton.filledTonal(
                   key: const Key('clock_tool_close_button'),
-                  tooltip: strings.close,
+                  tooltip: strings.exitClock,
                   onPressed: controlsEnabled ? onClose : null,
-                  icon: const Icon(Icons.home_rounded),
+                  icon: Icon(
+                    Icons.home_rounded,
+                    semanticLabel: strings.exitClock,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 IconButton.filledTonal(
                   key: const Key('clock_tool_reset_button'),
-                  tooltip: strings.reset,
+                  tooltip: strings.resetClock,
                   onPressed: controlsEnabled ? onReset : null,
-                  icon: const Icon(Icons.restart_alt_rounded),
+                  icon: Icon(
+                    Icons.restart_alt_rounded,
+                    semanticLabel: strings.resetClock,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 FilledButton.icon(
@@ -390,6 +399,8 @@ class _ClockPreset {
   Duration get initialTime => Duration(minutes: minutes);
   Duration get increment => Duration(seconds: incrementSeconds);
   String get label => '$minutes+$incrementSeconds';
+  String semanticsLabel(S strings) =>
+      strings.clockPresetSemantics(minutes, incrementSeconds);
 }
 
 String _formatClock(Duration duration) {

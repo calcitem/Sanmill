@@ -6551,5 +6551,27 @@
     "openMoveListWithSmallBoard": "Open move list with small board",
     "@openMoveListWithSmallBoard": {
         "description": "Tooltip and accessibility action for opening the full move list alongside its position preview"
+    },
+    "exitClock": "Exit clock",
+    "@exitClock": {
+        "description": "Tooltip and accessibility label for leaving the immersive Clock tool"
+    },
+    "resetClock": "Reset clock",
+    "@resetClock": {
+        "description": "Tooltip and accessibility label for restoring both sides of the Clock tool to the selected time control"
+    },
+    "clockPresetSemantics": "{minutes, plural, =1{1 minute} other{{minutes} minutes}}, {increment, plural, =0{no increment} =1{1-second increment} other{{increment}-second increment}}",
+    "@clockPresetSemantics": {
+        "description": "Screen-reader expansion of a compact chess-clock preset such as 5+0",
+        "placeholders": {
+            "minutes": {
+                "type": "int",
+                "example": "5"
+            },
+            "increment": {
+                "type": "int",
+                "example": "0"
+            }
+        }
     }
 }

@@ -87,6 +87,19 @@ void main() {
     );
   });
 
+  test('expands English clock controls for assistive technology', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.exitClock, 'Exit clock');
+    expect(english.resetClock, 'Reset clock');
+    expect(english.clockPresetSemantics(1, 0), '1 minute, no increment');
+    expect(english.clockPresetSemantics(5, 1), '5 minutes, 1-second increment');
+    expect(
+      english.clockPresetSemantics(10, 3),
+      '10 minutes, 3-second increment',
+    );
+  });
+
   test('uses concise chess-style feedback in English mistake review', () {
     final S english = lookupS(const Locale('en'));
 
