@@ -2721,6 +2721,7 @@ class _LearnTabRoot extends StatelessWidget {
         key: const Key('sanmill_learn_tutorial'),
         icon: Icons.tips_and_updates_rounded,
         title: strings.tutorial,
+        subtitle: strings.millBasicsDescription,
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute<void>(
             fullscreenDialog: true,
@@ -2732,6 +2733,7 @@ class _LearnTabRoot extends StatelessWidget {
         key: const Key('sanmill_learn_how_to_play'),
         icon: Icons.school_rounded,
         title: strings.howToPlay,
+        subtitle: strings.howToPlayDescription,
         onTap: () => onLearnRouteSelected(ShellRouteIds.appHowToPlay.value),
       ),
     ];

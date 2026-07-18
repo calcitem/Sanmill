@@ -1099,9 +1099,9 @@
     "@helpImproveTranslate": {
         "description": "Help improve translate"
     },
-    "tutorial": "Tutorial",
+    "tutorial": "Mill basics",
     "@tutorial": {
-        "description": "Tutorial"
+        "description": "Title of the guided Mill basics tutorial"
     },
     "classicMill": "Classic Mill",
     "@classicMill": {
@@ -6457,5 +6457,13 @@
     "leave": "Leave",
     "@leave": {
         "description": "Confirmation action for leaving an ongoing game while keeping it available to resume"
+    },
+    "millBasicsDescription": "Learn the basics step by step",
+    "@millBasicsDescription": {
+        "description": "Description of the guided Mill basics tutorial on the Learn tab"
+    },
+    "howToPlayDescription": "Read the complete rules",
+    "@howToPlayDescription": {
+        "description": "Description of the full written rules on the Learn tab"
     }
 }

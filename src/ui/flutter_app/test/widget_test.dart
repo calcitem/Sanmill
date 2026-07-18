@@ -715,10 +715,13 @@ void main() {
         findsOneWidget,
       );
       expect(find.byKey(const Key('sanmill_learn_tutorial')), findsOneWidget);
+      expect(find.text('Mill basics'), findsOneWidget);
+      expect(find.text('Learn the basics step by step'), findsOneWidget);
       expect(
         find.byKey(const Key('sanmill_learn_how_to_play')),
         findsOneWidget,
       );
+      expect(find.text('Read the complete rules'), findsOneWidget);
       expect(
         find.byKey(const Key('sanmill_learn_mill.tools.analysis')),
         findsNothing,
