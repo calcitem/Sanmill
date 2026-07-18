@@ -6336,5 +6336,23 @@
     "gifImageScaleDescription": "导出分辨率相对于屏幕棋盘尺寸的比例。",
     "@gifImageScaleDescription": {
         "description": "Explanation for the GIF image-scale setting"
+    },
+    "backgroundMusicFormatUnsupported": "此设备不支持 {extension} 格式。请选择以下格式之一：{supportedFormats}。",
+    "@backgroundMusicFormatUnsupported": {
+        "description": "Error shown when a selected background-music file format is unsupported on the current platform",
+        "placeholders": {
+            "extension": {
+                "type": "String",
+                "example": ".ogg"
+            },
+            "supportedFormats": {
+                "type": "String",
+                "example": ".mp3、.wav"
+            }
+        }
+    },
+    "backgroundMusicImportFailed": "无法导入此音频文件。请选择其他文件后重试。",
+    "@backgroundMusicImportFailed": {
+        "description": "Actionable error shown after copying or validating an imported background-music file fails"
     }
 }

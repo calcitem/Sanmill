@@ -77,6 +77,16 @@ void main() {
     );
   });
 
+  test('gives actionable Chinese background-music import errors', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(
+      chinese.backgroundMusicFormatUnsupported('.ogg', '.mp3、.wav'),
+      '此设备不支持 .ogg 格式。请选择以下格式之一：.mp3、.wav。',
+    );
+    expect(chinese.backgroundMusicImportFailed, '无法导入此音频文件。请选择其他文件后重试。');
+  });
+
   test('keeps internal review terminology out of the English UI', () {
     final S english = lookupS(const Locale('en'));
 
