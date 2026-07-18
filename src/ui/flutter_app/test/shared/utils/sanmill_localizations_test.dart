@@ -9,6 +9,12 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 
 void main() {
+  test('names the minimum-piece rule in player-facing language', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.piecesAtLeastCount, 'Minimum pieces to continue');
+  });
+
   test('distinguishes GIF sharing setup from the share action', () {
     final S english = lookupS(const Locale('en'));
 

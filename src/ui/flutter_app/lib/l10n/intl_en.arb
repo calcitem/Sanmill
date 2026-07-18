@@ -485,9 +485,9 @@
     "@flyPieceCount_Detail": {
         "description": "If Flying is enabled, when a player's piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
     },
-    "piecesAtLeastCount": "Pieces At Least",
+    "piecesAtLeastCount": "Minimum pieces to continue",
     "@piecesAtLeastCount": {
-        "description": "Pieces At Least"
+        "description": "Minimum number of pieces a player must have to continue the game"
     },
     "hasDiagonalLines": "Diagonal lines",
     "@hasDiagonalLines": {
