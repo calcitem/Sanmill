@@ -479,6 +479,12 @@ void main() {
     );
   });
 
+  test('accurately describes the Chinese statistics reset scope', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.thisWillResetAllGameStatistics, '所有等级分和对局结果都将重置。此操作无法撤销。');
+  });
+
   test('accurately describes the English app-data reset scope', () {
     final S english = lookupS(const Locale('en'));
 
