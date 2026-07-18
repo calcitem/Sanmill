@@ -5,6 +5,55 @@
 
 part of '../game_toolbar.dart';
 
+/// Positions the annotation controls without covering the board in wide
+/// layouts or the primary bottom bar while the controls are collapsed.
+class AnnotationToolbarLayer extends StatelessWidget {
+  const AnnotationToolbarLayer({
+    super.key,
+    required this.annotationManager,
+    required this.isAnnotationMode,
+    required this.onToggleAnnotationMode,
+  });
+
+  final AnnotationManager annotationManager;
+  final bool isAnnotationMode;
+  final VoidCallback onToggleAnnotationMode;
+
+  static double landscapeWidth(Size viewport) {
+    assert(viewport.width > viewport.height);
+    return (viewport.width - viewport.height).clamp(280.0, 480.0);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final AnnotationToolbar toolbar = AnnotationToolbar(
+      annotationManager: annotationManager,
+      isAnnotationMode: isAnnotationMode,
+      onToggleAnnotationMode: onToggleAnnotationMode,
+    );
+
+    if (!isAnnotationMode) {
+      return PositionedDirectional(
+        key: const Key('annotation_toolbar_collapsed_position'),
+        top: 8,
+        end: 8,
+        child: toolbar,
+      );
+    }
+
+    final Size viewport = MediaQuery.sizeOf(context);
+    final bool isLandscape = viewport.width > viewport.height;
+    return PositionedDirectional(
+      key: const Key('annotation_toolbar_expanded_position'),
+      end: 0,
+      bottom: 0,
+      start: isLandscape ? null : 0,
+      width: isLandscape ? landscapeWidth(viewport) : null,
+      child: toolbar,
+    );
+  }
+}
+
 /// AnnotationToolbar allows users to select tools, colors, and actions
 /// for annotating directly on the game board.
 class AnnotationToolbar extends StatefulWidget {
@@ -68,6 +117,7 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: const Key('annotation_toolbar_surface'),
       color: Colors.grey[850],
       padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: widget.isAnnotationMode

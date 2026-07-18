@@ -43,4 +43,75 @@ void main() {
     expect(find.bySemanticsLabel('选择红色'), findsOneWidget);
     semantics.dispose();
   });
+
+  testWidgets('keeps collapsed annotation entry clear of the bottom bar', (
+    WidgetTester tester,
+  ) async {
+    final AnnotationManager manager = AnnotationManager();
+    addTearDown(manager.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: sanmillLocalizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        home: Scaffold(
+          body: Stack(
+            children: <Widget>[
+              AnnotationToolbarLayer(
+                annotationManager: manager,
+                isAnnotationMode: false,
+                onToggleAnnotationMode: () {},
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    final Rect rect = tester.getRect(
+      find.byKey(const Key('annotation_toolbar_surface')),
+    );
+    expect(rect.width, lessThan(100));
+    expect(rect.top, 8);
+    expect(rect.right, 792);
+    expect(rect.bottom, lessThan(544));
+  });
+
+  testWidgets('keeps expanded annotation palette beside a landscape board', (
+    WidgetTester tester,
+  ) async {
+    tester.view
+      ..physicalSize = const Size(844, 390)
+      ..devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final AnnotationManager manager = AnnotationManager();
+    addTearDown(manager.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: sanmillLocalizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        home: Scaffold(
+          body: Stack(
+            children: <Widget>[
+              AnnotationToolbarLayer(
+                annotationManager: manager,
+                isAnnotationMode: true,
+                onToggleAnnotationMode: () {},
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    final Rect rect = tester.getRect(
+      find.byKey(const Key('annotation_toolbar_surface')),
+    );
+    expect(rect.width, 454);
+    expect(rect.left, 390);
+    expect(rect.right, 844);
+    expect(rect.bottom, 390);
+  });
 }

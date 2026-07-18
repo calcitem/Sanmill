@@ -363,20 +363,15 @@ class _GamePageInnerState extends State<_GamePageInner> {
       ),
     );
 
-    // Build annotation toolbar if enabled in display settings.
-    Widget toolbar = Container();
-    if (DB().displaySettings.isAnnotationToolbarShown) {
-      toolbar = Positioned(
-        left: 0,
-        right: 0,
-        bottom: 0,
-        child: AnnotationToolbar(
-          annotationManager: _annotationManager,
-          isAnnotationMode: _isAnnotationMode,
-          onToggleAnnotationMode: _toggleAnnotationMode,
-        ),
-      );
-    }
+    // Keep the annotation entry clear of the primary game controls. In
+    // annotation mode the expanded palette becomes a dedicated editing panel.
+    final Widget toolbar = DB().displaySettings.isAnnotationToolbarShown
+        ? AnnotationToolbarLayer(
+            annotationManager: _annotationManager,
+            isAnnotationMode: _isAnnotationMode,
+            onToggleAnnotationMode: _toggleAnnotationMode,
+          )
+        : const SizedBox.shrink();
 
     final Color gameTextColor = DB().colorSettings.messageColor;
 
@@ -830,7 +825,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
       _ => kLichessBottomBarHeight + AppTheme.boardMargin,
     };
 
-    if (displaySettings.isAnnotationToolbarShown) {
+    if (displaySettings.isAnnotationToolbarShown &&
+        _isAnnotationMode &&
+        MediaQuery.orientationOf(context) == Orientation.portrait) {
       toolbarHeight += legacyToolbarHeight * 3;
     }
 
