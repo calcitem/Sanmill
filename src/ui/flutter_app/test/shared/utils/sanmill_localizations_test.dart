@@ -9,6 +9,12 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 
 void main() {
+  test('describes special-capture phases in player-facing language', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.captureExecutionPhases, 'Available during');
+  });
+
   test('names the minimum-piece rule in player-facing language', () {
     final S english = lookupS(const Locale('en'));
 

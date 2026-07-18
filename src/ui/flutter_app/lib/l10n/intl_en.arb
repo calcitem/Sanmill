@@ -2155,7 +2155,7 @@
     "@captureCrossLines": {},
     "captureDiagonalLines": "Along diagonal lines crossing the square",
     "@captureDiagonalLines": {},
-    "captureExecutionPhases": "Execution phases",
+    "captureExecutionPhases": "Available during",
     "@captureExecutionPhases": {},
     "capturePiecesCondition": "Availability during the moving phase",
     "@capturePiecesCondition": {},
