@@ -690,6 +690,20 @@ void main() {
     expect(chinese.reverseMoveOrder, '反转着法顺序');
   });
 
+  test('uses consistent Chinese variation terms across move-tree actions', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.variationsDetected, '检测到变化');
+    expect(chinese.moveListContainsVariations, '棋谱包含变化。');
+    expect(chinese.includeVariationsAll, '所有变化');
+    expect(chinese.includeVariationsCurrentLine, '仅当前变化');
+    expect(chinese.variationNotation('d6'), '变化：d6');
+    expect(chinese.makeThisPrimaryVariation, '将此变化提升为主线');
+    expect(chinese.removeVariationPermanently, '永久删除此变化');
+    expect(chinese.alreadyMainVariation, '已经是主线');
+    expect(chinese.variations, '变化');
+  });
+
   test('uses actionable English board-recognition feedback', () {
     final S english = lookupS(const Locale('en'));
 
