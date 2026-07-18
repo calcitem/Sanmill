@@ -636,6 +636,30 @@ void main() {
       final Finder gameTipsSwitch = find.byKey(
         const Key('human_ai_new_game_sheet_game_tips'),
       );
+      final Finder variantPicker = find.byKey(
+        const Key('human_ai_new_game_sheet_variant_picker'),
+      );
+      expect(variantPicker, findsOneWidget);
+      expect(
+        find.descendant(
+          of: variantPicker,
+          matching: find.text("Nine Men's Morris"),
+        ),
+        findsOneWidget,
+      );
+      await tester.ensureVisible(variantPicker);
+      await tester.tap(variantPicker);
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.byKey(
+          const Key('human_ai_new_game_sheet_variant_twelve_mens_morris'),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(
+        RuleVariant.exactCanonicalIdFor(DB().ruleSettings),
+        'standard_9mm',
+      );
       expect(gameTipsSwitch, findsOneWidget);
       expect(
         find.descendant(
@@ -677,6 +701,18 @@ void main() {
       final Finder confirmedGameTipsSwitch = find.byKey(
         const Key('human_ai_new_game_sheet_game_tips'),
       );
+      final Finder confirmedVariantPicker = find.byKey(
+        const Key('human_ai_new_game_sheet_variant_picker'),
+      );
+      await tester.ensureVisible(confirmedVariantPicker);
+      await tester.tap(confirmedVariantPicker);
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.byKey(
+          const Key('human_ai_new_game_sheet_variant_twelve_mens_morris'),
+        ),
+      );
+      await tester.pumpAndSettle();
       await tester.ensureVisible(confirmedGameTipsSwitch);
       await tester.tap(confirmedGameTipsSwitch);
       await tester.pumpAndSettle();
@@ -685,6 +721,10 @@ void main() {
 
       expect(shellState.debugCurrentRouteId, shellState.debugPlayRouteId);
       expect(DB().generalSettings.showGameTips, isTrue);
+      expect(
+        RuleVariant.exactCanonicalIdFor(DB().ruleSettings),
+        'twelve_mens_morris',
+      );
       expect(find.byKey(const Key('human_ai')), findsOneWidget);
       expect(find.byKey(const Key('human_ai_new_game_sheet')), findsNothing);
       expect(
@@ -706,6 +746,7 @@ void main() {
         shellState.debugCurrentRouteId,
         SanmillShellRouteIds.homeRoot.value,
       );
+      DB().ruleSettings = const NineMensMorrisRuleSettings();
       expect(find.byKey(const Key('sanmill_home_list')), findsOneWidget);
       expect(
         find.byKey(const Key('sanmill_bottom_navigation_bar')),

@@ -11,8 +11,10 @@ import 'package:flutter/material.dart';
 import '../../../appearance_settings/models/color_settings.dart';
 import '../../../experience_recording/models/recording_models.dart';
 import '../../../experience_recording/services/recording_service.dart';
+import '../../../games/mill/mill_variant_localization.dart';
 import '../../../general_settings/models/general_settings.dart';
 import '../../../generated/intl/l10n.dart';
+import '../../../puzzle/models/rule_variant.dart';
 import '../../../shared/config/constants.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/logger.dart';
@@ -432,6 +434,7 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
   late int _moveTime;
   late _HumanAiSideChoice _sideChoice;
   late bool _showGameTips;
+  late String? _variantId;
 
   @override
   void initState() {
@@ -443,6 +446,7 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
         ? _HumanAiSideChoice.black
         : _HumanAiSideChoice.white;
     _showGameTips = settings.showGameTips;
+    _variantId = RuleVariant.exactCanonicalIdFor(DB().ruleSettings);
   }
 
   void _startNewGame(BuildContext context) {
@@ -463,6 +467,10 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
       aiMovesFirst: aiMovesFirst,
       showGameTips: _showGameTips,
     );
+    final String? variantId = _variantId;
+    if (variantId != null) {
+      DB().ruleSettings = RuleVariant.canonicalSettings[variantId]!;
+    }
     if (_skillLevel > 15 && _moveTime < 10) {
       rootScaffoldMessengerKey.currentState!.showSnackBarClear(
         S.of(context).noteActualDifficultyLevelMayBeLimited,
@@ -532,6 +540,48 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
 
     setState(() {
       _sideChoice = selected;
+    });
+  }
+
+  Future<void> _showVariantPicker(BuildContext context) async {
+    final String? selected = await showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (BuildContext context) {
+        return SafeArea(
+          top: false,
+          child: ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24, 12, 24, 8),
+                child: Text(
+                  S.of(context).chooseRulePreset,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              for (final String id in RuleVariant.canonicalSettings.keys)
+                RadioListTile<String>(
+                  key: Key('human_ai_new_game_sheet_variant_$id'),
+                  title: Text(localizedMillVariantNameById(S.of(context), id)),
+                  value: id,
+                  groupValue: _variantId,
+                  onChanged: (String? value) =>
+                      Navigator.of(context).pop(value),
+                ),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (!mounted || selected == null) {
+      return;
+    }
+
+    setState(() {
+      _variantId = selected;
     });
   }
 
@@ -605,6 +655,18 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
                       _skillLevel = value.round();
                     });
                   },
+                ),
+                _SheetOptionTile(
+                  key: const Key('human_ai_new_game_sheet_variant_picker'),
+                  title: S.of(context).ruleSet,
+                  value: _variantId == null
+                      ? S.of(context).custom
+                      : localizedMillVariantNameById(
+                          S.of(context),
+                          _variantId!,
+                        ),
+                  leadingIcon: Icons.category_outlined,
+                  onTap: () => _showVariantPicker(context),
                 ),
                 _SheetOptionTile(
                   key: const Key('human_ai_new_game_sheet_side_picker'),
