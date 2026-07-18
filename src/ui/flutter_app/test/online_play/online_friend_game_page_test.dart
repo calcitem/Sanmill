@@ -68,6 +68,43 @@ void main() {
     expect(tester.getSemantics(find.textContaining('Cloudflare')), isNotNull);
   });
 
+  testWidgets('pushed friend page gives its back button a spoken label', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: S.localizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        home: Builder(
+          builder: (BuildContext context) => FilledButton(
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => OnlineFriendGamePage(
+                  registration: _TestRegistration(),
+                  service: OnlineServiceConfig(
+                    Uri.parse('https://online.example'),
+                  ),
+                  roomApi: _UnusedApi(),
+                  sessionStore: _EmptyStore(),
+                ),
+              ),
+            ),
+            child: const Text('Open friend page'),
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('Open friend page'));
+    await tester.pumpAndSettle();
+
+    final Finder back = find.byKey(const Key('online_friend_back'));
+    expect(tester.getSemantics(back).label, 'Back');
+    await tester.tap(back);
+    await tester.pumpAndSettle();
+    expect(find.text('Open friend page'), findsOneWidget);
+  });
+
   testWidgets(
     'create sheet exposes fixed unlimited settings and stable errors',
     (WidgetTester tester) async {

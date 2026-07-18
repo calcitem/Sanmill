@@ -392,8 +392,20 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
       return _buildBoard();
     }
     final S s = S.of(context);
+    final bool canPop = Navigator.of(context).canPop();
     return Scaffold(
-      appBar: AppBar(title: Text(s.onlineFriendGame)),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: canPop
+            ? IconButton(
+                key: const Key('online_friend_back'),
+                tooltip: s.back,
+                onPressed: () => Navigator.of(context).maybePop(),
+                icon: const BackButtonIcon(),
+              )
+            : null,
+        title: Text(s.onlineFriendGame),
+      ),
       body: SafeArea(
         child: switch (_stage) {
           _OnlinePageStage.busy => _ProgressBody(label: s.onlineCreatingGame),
