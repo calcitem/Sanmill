@@ -6116,7 +6116,7 @@
     "@diagnosticLocalOnly": {
         "description": "Shown when no complete GlitchTip configuration exists or reporting is disabled."
     },
-    "diagnosticIncludeConfiguration": "包含可复现的非敏感设置",
+    "diagnosticIncludeConfiguration": "包含用于复现问题的非敏感设置",
     "@diagnosticIncludeConfiguration": {
         "description": "Report data category checkbox."
     },
@@ -6143,7 +6143,7 @@
     "@diagnosticNoActionEvents": {
         "description": "Empty diagnostic timeline message."
     },
-    "diagnosticExactPreview": "复制/发送内容预览",
+    "diagnosticExactPreview": "诊断包实际内容预览",
     "@diagnosticExactPreview": {
         "description": "Heading above the immutable diagnostic bundle preview."
     },
