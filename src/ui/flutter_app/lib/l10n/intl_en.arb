@@ -6453,5 +6453,9 @@
     "shareLogsFailed": "Could not share logs. Try again.",
     "@shareLogsFailed": {
         "description": "Error shown when creating or opening the diagnostic log share sheet fails"
+    },
+    "leave": "Leave",
+    "@leave": {
+        "description": "Confirmation action for leaving an ongoing game while keeping it available to resume"
     }
 }

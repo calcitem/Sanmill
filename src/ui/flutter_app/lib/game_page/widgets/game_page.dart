@@ -504,7 +504,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
             TextButton(
               key: const Key('game_page_leave_confirm_button'),
               onPressed: () => Navigator.of(dialogContext).pop(true),
-              child: Text(strings.ok),
+              child: Text(strings.leave),
             ),
           ],
         );

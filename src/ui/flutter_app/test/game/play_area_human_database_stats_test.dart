@@ -7647,7 +7647,14 @@ void main() {
 
     expect(find.byKey(const Key('game_page_leave_dialog')), findsOneWidget);
     expect(find.text('Leave current game?'), findsOneWidget);
-    expect(find.text('No worries, your game will be kept.'), findsOneWidget);
+    expect(find.text('Your game will be kept.'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('game_page_leave_confirm_button')),
+        matching: find.text('Leave'),
+      ),
+      findsOneWidget,
+    );
 
     await tester.tap(find.byKey(const Key('game_page_leave_cancel_button')));
     await tester.pump();
@@ -7795,7 +7802,14 @@ void main() {
 
     expect(find.byKey(const Key('game_page_leave_dialog')), findsOneWidget);
     expect(find.text('Leave current game?'), findsOneWidget);
-    expect(find.text('No worries, your game will be kept.'), findsOneWidget);
+    expect(find.text('Your game will be kept.'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('game_page_leave_confirm_button')),
+        matching: find.text('Leave'),
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets('human vs ai hint is disabled while AI is to move', (
