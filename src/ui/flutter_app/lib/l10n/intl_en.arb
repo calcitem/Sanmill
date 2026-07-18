@@ -5205,7 +5205,7 @@
     "todayProgress": "Today",
     "todayProgressSummary": "{games, plural, =1{1 completed game} other{{games} completed games}} · {reviews, plural, =1{1 review} other{{reviews} reviews}}",
     "@todayProgressSummary": {"placeholders": {"games": {"type": "int"}, "reviews": {"type": "int"}}},
-    "privateHistory": "Private game history",
+    "privateHistory": "Game history",
     "noPrivateGames": "Completed games will appear here.",
     "privateHistoryDescription": "Stored only on this device; up to 100 unique games.",
     "dailyTraining": "Puzzles and training",

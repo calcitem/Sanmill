@@ -35,6 +35,7 @@ void main() {
       ),
     );
 
+    expect(find.text('Game history'), findsOneWidget);
     expect(find.text('Jan 27, 2024 · 0-1'), findsOneWidget);
     expect(find.text('0-1 · Jan 27, 2024'), findsNothing);
   });
