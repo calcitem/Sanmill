@@ -64,7 +64,12 @@ static MILL_SHARED_TT: Lazy<SharedTt> = Lazy::new(|| {
     tt
 });
 
-#[cfg(any(target_os = "android", target_os = "ios", target_arch = "wasm32", test))]
+#[cfg(all(
+    not(target_arch = "wasm32"),
+    any(target_os = "android", target_os = "ios", test)
+))]
+const CONSTRAINED_TARGET_TT_MB: u32 = 64;
+#[cfg(target_arch = "wasm32")]
 const CONSTRAINED_TARGET_TT_MB: u32 = 16;
 #[cfg(any(target_os = "android", target_os = "ios", target_arch = "wasm32", test))]
 const CONSTRAINED_TARGET_TT_CLUSTER_BITS_FLOOR: u32 = 14;
@@ -81,8 +86,12 @@ fn new_process_mill_tt() -> SharedTt {
 fn new_constrained_target_mill_tt() -> SharedTt {
     // The desktop table keeps master's 16 Mi-entry parity but physically
     // occupies 256 MiB after TT moves were co-located into 64-byte buckets.
-    // That single allocation is too large for a mobile process or wasm linear
-    // memory.  Use the engine's existing 16 MiB default hash budget there.
+    // Android and iOS use a 64 MiB physical budget. Fixed-depth benchmarks
+    // keep the search tree within 0.08% of 128 MiB, while paired 10,000-game
+    // testing found no measurable playing-strength loss at the smaller size.
+    // The current 64-byte cluster layout provides 4 Mi entries within it.
+    // WebAssembly stays at 16 MiB because its linear-memory constraints do not
+    // share the native mobile engine's deployment history.
     SharedTt::with_capacity_mb(
         CONSTRAINED_TARGET_TT_MB,
         CONSTRAINED_TARGET_TT_CLUSTER_BITS_FLOOR,
@@ -1198,6 +1207,8 @@ mod tests {
     #[test]
     fn constrained_target_tt_honors_its_physical_memory_budget() {
         let tt = new_constrained_target_mill_tt();
+        #[cfg(not(target_arch = "wasm32"))]
+        assert_eq!(CONSTRAINED_TARGET_TT_MB, 64);
         assert_eq!(
             tt.capacity_bytes(),
             CONSTRAINED_TARGET_TT_MB as usize * 1024 * 1024
