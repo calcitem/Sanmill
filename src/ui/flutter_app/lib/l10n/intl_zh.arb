@@ -1381,13 +1381,13 @@
     "@desktopImage": {},
     "invalidPosition": "局面是不合法的",
     "@invalidPosition": {},
-    "shareGIF": "动图分享",
+    "shareGIF": "分享 GIF",
     "@shareGIF": {},
-    "pixelRatio": "像素比",
+    "pixelRatio": "图像缩放比例",
     "@pixelRatio": {},
-    "duration": "持续时间",
+    "duration": "重复次数",
     "@duration": {},
-    "gameScreenRecorder": "游戏录屏",
+    "gameScreenRecorder": "GIF 分享",
     "@gameScreenRecorder": {},
     "previous": "上一步",
     "@previous": {},
@@ -6324,5 +6324,17 @@
     "resetAppData": "重置应用数据",
     "@resetAppData": {
         "description": "Action and dialog title for resetting settings and deleting locally stored app progress"
+    },
+    "enableGifSharing": "启用 GIF 分享",
+    "@enableGifSharing": {
+        "description": "Toggle that enables recording and exporting a game as an animated GIF"
+    },
+    "gifRepeatCountDescription": "导出的 GIF 重复播放次数。",
+    "@gifRepeatCountDescription": {
+        "description": "Explanation for the GIF repeat-count setting"
+    },
+    "gifImageScaleDescription": "导出分辨率相对于屏幕棋盘尺寸的比例。",
+    "@gifImageScaleDescription": {
+        "description": "Explanation for the GIF image-scale setting"
     }
 }

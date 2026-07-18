@@ -51,6 +51,18 @@ void main() {
     );
   });
 
+  test('distinguishes Chinese GIF sharing from video recording', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.gameScreenRecorder, 'GIF 分享');
+    expect(chinese.enableGifSharing, '启用 GIF 分享');
+    expect(chinese.shareGIF, '分享 GIF');
+    expect(chinese.duration, '重复次数');
+    expect(chinese.gifRepeatCountDescription, '导出的 GIF 重复播放次数。');
+    expect(chinese.pixelRatio, '图像缩放比例');
+    expect(chinese.gifImageScaleDescription, '导出分辨率相对于屏幕棋盘尺寸的比例。');
+  });
+
   test('gives actionable English background-music import errors', () {
     final S english = lookupS(const Locale('en'));
 
