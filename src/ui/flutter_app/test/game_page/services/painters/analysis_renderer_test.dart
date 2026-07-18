@@ -105,6 +105,136 @@ void main() {
     );
   });
 
+  testWidgets('renders a move Hint as a solid cyan arrow', (
+    WidgetTester tester,
+  ) async {
+    const Size size = Size.square(350);
+    final double squareSize = (size.width - boardMargin * 2) / 6;
+    final Offset startPoint = pointFromSquare(notationToSquare('a1'), size);
+    final Color hintColor = const Color(0xFF0099C8).withValues(alpha: 0.88);
+
+    AnalysisMode.enable(
+      const <MoveAnalysisResult>[
+        MoveAnalysisResult(
+          move: 'a1-d1',
+          outcome: AnalysisOutcome.disadvantage,
+        ),
+      ],
+      mode: AnalysisOverlayMode.hint,
+      source: AnalysisSource.engine,
+    );
+
+    void paint(Canvas canvas) {
+      AnalysisRenderer.render(canvas, size, squareSize);
+    }
+
+    expect(
+      paint,
+      paints
+        ..line(
+          p1: startPoint,
+          color: hintColor,
+          strokeWidth: 5.0,
+          style: PaintingStyle.stroke,
+        )
+        ..circle(color: hintColor, style: PaintingStyle.fill)
+        ..path(color: hintColor, style: PaintingStyle.fill),
+    );
+  });
+
+  testWidgets('renders a placement Hint as a cyan bullseye', (
+    WidgetTester tester,
+  ) async {
+    const Size size = Size.square(350);
+    final double squareSize = (size.width - boardMargin * 2) / 6;
+    final Offset target = pointFromSquare(notationToSquare('d6'), size);
+    final Color hintColor = const Color(0xFF0099C8).withValues(alpha: 0.88);
+
+    AnalysisMode.enable(
+      const <MoveAnalysisResult>[
+        MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.loss),
+      ],
+      mode: AnalysisOverlayMode.hint,
+      source: AnalysisSource.engine,
+    );
+
+    void paint(Canvas canvas) {
+      AnalysisRenderer.render(canvas, size, squareSize);
+    }
+
+    expect(
+      paint,
+      paints
+        ..circle(
+          x: target.dx,
+          y: target.dy,
+          radius: squareSize * 0.48,
+          style: PaintingStyle.fill,
+        )
+        ..circle(
+          x: target.dx,
+          y: target.dy,
+          radius: squareSize * 0.48,
+          color: hintColor,
+          strokeWidth: 5.0,
+          style: PaintingStyle.stroke,
+        )
+        ..circle(
+          x: target.dx,
+          y: target.dy,
+          radius: squareSize * 0.48 * 0.48,
+          color: hintColor,
+          strokeWidth: 2.0,
+          style: PaintingStyle.stroke,
+        )
+        ..circle(
+          x: target.dx,
+          y: target.dy,
+          radius: 3.5,
+          color: hintColor,
+          style: PaintingStyle.fill,
+        ),
+    );
+  });
+
+  testWidgets('renders a removal Hint as a larger cyan bullseye', (
+    WidgetTester tester,
+  ) async {
+    const Size size = Size.square(350);
+    final double squareSize = (size.width - boardMargin * 2) / 6;
+    final Offset target = pointFromSquare(notationToSquare('d6'), size);
+
+    AnalysisMode.enable(
+      const <MoveAnalysisResult>[
+        MoveAnalysisResult(move: 'xd6', outcome: AnalysisOutcome.win),
+      ],
+      mode: AnalysisOverlayMode.hint,
+      source: AnalysisSource.engine,
+    );
+
+    void paint(Canvas canvas) {
+      AnalysisRenderer.render(canvas, size, squareSize);
+    }
+
+    expect(
+      paint,
+      paints
+        ..circle(
+          x: target.dx,
+          y: target.dy,
+          radius: squareSize * 0.58,
+          style: PaintingStyle.fill,
+        )
+        ..circle(
+          x: target.dx,
+          y: target.dy,
+          radius: squareSize * 0.58,
+          strokeWidth: 5.0,
+          style: PaintingStyle.stroke,
+        ),
+    );
+  });
+
   testWidgets('limits focused engine candidates to MultiPV 1 through 3', (
     WidgetTester tester,
   ) async {

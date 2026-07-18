@@ -33,6 +33,7 @@ class AnalysisRenderer {
   static const Color _engineBestMoveColor = Color(0xFF1E88E5);
   static const Color _engineSecondaryMoveColor = Color(0xFF546E7A);
   static const Color _engineThreatMoveColor = Color(0xFFD32F2F);
+  static const Color _hintColor = Color(0xFF0099C8);
   static final RegExp _standardSquarePattern = RegExp(r'^[a-g][1-7]$');
   static final RegExp _standardMovePattern = RegExp(r'^[a-g][1-7]-[a-g][1-7]$');
 
@@ -87,13 +88,7 @@ class AnalysisRenderer {
     }
 
     if (AnalysisMode.isHint) {
-      _renderResults(
-        canvas,
-        size,
-        squareSize,
-        AnalysisMode.analysisResults,
-        useThreatColors: false,
-      );
+      _renderHint(canvas, size, squareSize, AnalysisMode.analysisResults);
       return;
     }
 
@@ -111,6 +106,85 @@ class AnalysisRenderer {
     }
 
     _renderFocusedCandidates(canvas, size, squareSize);
+  }
+
+  static void _renderHint(
+    Canvas canvas,
+    Size size,
+    double squareSize,
+    List<MoveAnalysisResult> results,
+  ) {
+    if (results.isEmpty) {
+      return;
+    }
+
+    final MoveAnalysisResult result = _getSortedResults(results).first;
+    final String move = _rootMoveForLine(result);
+    final Color color = _hintColor.withValues(alpha: 0.88);
+
+    switch (_determineResultType(move)) {
+      case AnalysisResultType.move:
+        _drawEngineMoveArrow(
+          canvas,
+          move,
+          color,
+          size,
+          strokeWidth: _engineBestMoveStrokeWidth,
+        );
+        break;
+      case AnalysisResultType.place:
+        _drawHintTarget(canvas, move, color, size, squareSize * 0.48);
+        break;
+      case AnalysisResultType.remove:
+        _drawHintTarget(
+          canvas,
+          move.substring(1),
+          color,
+          size,
+          squareSize * 0.58,
+        );
+        break;
+    }
+  }
+
+  static void _drawHintTarget(
+    Canvas canvas,
+    String squareNotation,
+    Color color,
+    Size size,
+    double radius,
+  ) {
+    assert(
+      _standardSquarePattern.hasMatch(squareNotation),
+      'Hint target must use standard square notation.',
+    );
+    if (!_standardSquarePattern.hasMatch(squareNotation)) {
+      return;
+    }
+
+    final Offset position = _getPositionFromStandardNotation(
+      squareNotation,
+      size,
+    );
+    final Paint fillPaint = Paint()
+      ..color = color.withValues(alpha: 0.18)
+      ..style = PaintingStyle.fill;
+    final Paint outerPaint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = _engineBestMoveStrokeWidth;
+    final Paint innerPaint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0;
+    final Paint centerPaint = Paint()
+      ..color = color
+      ..style = PaintingStyle.fill;
+
+    canvas.drawCircle(position, radius, fillPaint);
+    canvas.drawCircle(position, radius, outerPaint);
+    canvas.drawCircle(position, radius * 0.48, innerPaint);
+    canvas.drawCircle(position, 3.5, centerPaint);
   }
 
   static void _renderResults(

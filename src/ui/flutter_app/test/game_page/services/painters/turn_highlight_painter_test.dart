@@ -132,7 +132,7 @@ void main() {
           x: point.dx,
           y: point.dy,
           style: PaintingStyle.stroke,
-          strokeWidth: 3.5,
+          strokeWidth: 3.0,
         ),
       );
       expect(activePainter.shouldRepaint(painter), isTrue);
@@ -145,6 +145,42 @@ void main() {
           ),
         ),
         isFalse,
+      );
+    });
+
+    testWidgets('paints a completed movement as an arrowless trail', (
+      WidgetTester tester,
+    ) async {
+      const Size size = Size.square(350);
+      final MillTurnHighlight highlight = MillTurnHighlight.fromPath(<ExtMove>[
+        ExtMove('a7-d7', side: PieceColor.white),
+      ], isRemovalPending: false)!;
+      final TurnHighlightPainter painter = TurnHighlightPainter(
+        highlight: highlight,
+        color: Colors.blue,
+        pieceWidth: 1,
+      );
+      final Offset start = pointFromSquare(notationToSquare('a7'), size);
+      final Offset end = pointFromSquare(notationToSquare('d7'), size);
+
+      void paint(Canvas canvas) => painter.paint(canvas, size);
+
+      expect(
+        paint,
+        paints
+          ..line(strokeWidth: 3.0)
+          ..circle(
+            x: start.dx,
+            y: start.dy,
+            style: PaintingStyle.stroke,
+            strokeWidth: 3.0,
+          )
+          ..circle(
+            x: end.dx,
+            y: end.dy,
+            style: PaintingStyle.stroke,
+            strokeWidth: 3.0,
+          ),
       );
     });
 
@@ -167,9 +203,9 @@ void main() {
       expect(
         paint,
         paints
-          ..circle(style: PaintingStyle.stroke, strokeWidth: 3.5)
-          ..line(strokeWidth: 3.5)
-          ..line(strokeWidth: 3.5),
+          ..circle(style: PaintingStyle.stroke, strokeWidth: 3.0)
+          ..line(strokeWidth: 3.0)
+          ..line(strokeWidth: 3.0),
       );
     });
   });

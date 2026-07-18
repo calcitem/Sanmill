@@ -137,9 +137,9 @@ class TurnHighlightPainter extends CustomPainter {
     final double boardInnerWidth = size.width - AppTheme.boardPadding * 2;
     final double pieceDiameter = boardInnerWidth * pieceWidth / 6 - 1;
     final double radius = max(8, pieceDiameter * 0.57);
-    final double strokeWidth = provisional ? 2.0 : 3.5;
+    final double strokeWidth = provisional ? 2.0 : 3.0;
     final Paint paint = Paint()
-      ..color = color.withValues(alpha: provisional ? 0.78 : 0.92)
+      ..color = color.withValues(alpha: provisional ? 0.55 : 0.72)
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round
@@ -162,7 +162,7 @@ class TurnHighlightPainter extends CustomPainter {
         final int? from = turn.fromSquare;
         final int? to = turn.toSquare;
         if (from != null && to != null) {
-          _drawArrow(
+          _drawTrail(
             canvas,
             pointFromSquare(from, size),
             pointFromSquare(to, size),
@@ -216,7 +216,7 @@ class TurnHighlightPainter extends CustomPainter {
     }
   }
 
-  static void _drawArrow(
+  static void _drawTrail(
     Canvas canvas,
     Offset rawStart,
     Offset rawEnd,
@@ -232,22 +232,8 @@ class TurnHighlightPainter extends CustomPainter {
     final Offset start = rawStart + unit * inset;
     final Offset end = rawEnd - unit * inset;
     _drawLine(canvas, start, end, paint, dashed: dashed);
-
-    final double headLength = max(9, inset * 0.45);
-    final double headAngle = pi / 6;
-    final Offset left = end - _rotate(unit, headAngle) * headLength;
-    final Offset right = end - _rotate(unit, -headAngle) * headLength;
-    _drawLine(canvas, end, left, paint, dashed: dashed);
-    _drawLine(canvas, end, right, paint, dashed: dashed);
-  }
-
-  static Offset _rotate(Offset vector, double angle) {
-    final double cosine = cos(angle);
-    final double sine = sin(angle);
-    return Offset(
-      vector.dx * cosine - vector.dy * sine,
-      vector.dx * sine + vector.dy * cosine,
-    );
+    _drawRing(canvas, rawStart, inset, paint, dashed: dashed);
+    _drawRing(canvas, rawEnd, inset, paint, dashed: dashed);
   }
 
   static void _drawRemoval(
