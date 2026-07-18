@@ -1651,6 +1651,20 @@ void main() {
       expect(boardImageTile, findsOneWidget);
       expect(backgroundImageTile, findsOneWidget);
       expect(
+        find.descendant(
+          of: boardImageTile,
+          matching: find.text('Choose an image for the board surface.'),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: backgroundImageTile,
+          matching: find.text('Choose an image behind the game area.'),
+        ),
+        findsOneWidget,
+      );
+      expect(
         tester.getTopLeft(pieceSetTile).dy,
         greaterThan(tester.getTopLeft(boardThemeTile).dy),
       );

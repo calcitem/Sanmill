@@ -570,6 +570,7 @@ class AppearanceSettingsPage extends StatelessWidget {
               ),
               leading: const Icon(Icons.image_outlined),
               titleString: S.of(context).boardImage,
+              subtitleString: S.of(context).boardImageDescription,
               onTap: () => setBoardImage(context),
             ),
             SettingsListTile(
@@ -578,6 +579,7 @@ class AppearanceSettingsPage extends StatelessWidget {
               ),
               leading: const Icon(Icons.wallpaper_outlined),
               titleString: S.of(context).backgroundImage,
+              subtitleString: S.of(context).backgroundImageDescription,
               onTap: () => setBackgroundImage(context),
             ),
           ],

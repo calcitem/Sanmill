@@ -6465,5 +6465,13 @@
     "howToPlayDescription": "Read the complete rules",
     "@howToPlayDescription": {
         "description": "Description of the full written rules on the Learn tab"
+    },
+    "boardImageDescription": "Choose an image for the board surface.",
+    "@boardImageDescription": {
+        "description": "Explanation of the board image setting in Appearance"
+    },
+    "backgroundImageDescription": "Choose an image behind the game area.",
+    "@backgroundImageDescription": {
+        "description": "Explanation of the background image setting in Appearance"
     }
 }
