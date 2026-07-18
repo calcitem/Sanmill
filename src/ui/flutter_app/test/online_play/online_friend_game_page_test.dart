@@ -61,7 +61,7 @@ void main() {
     );
     await tester.pump();
 
-    expect(find.text('Online friend game'), findsOneWidget);
+    expect(find.text('Play with a friend'), findsOneWidget);
     expect(find.textContaining('Cloudflare'), findsOneWidget);
     expect(find.byKey(const Key('online_create_game')), findsOneWidget);
     expect(find.byKey(const Key('online_join_game')), findsOneWidget);

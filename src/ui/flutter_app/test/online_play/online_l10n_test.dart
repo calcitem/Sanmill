@@ -81,7 +81,7 @@ void main() {
       }
       expect(entity.readAsStringSync(), isNot(contains('"onlineFriendGame"')));
     }
-    expect(lookupS(const Locale('fr')).onlineFriendGame, 'Online friend game');
+    expect(lookupS(const Locale('fr')).onlineFriendGame, 'Play with a friend');
   });
 }
 
