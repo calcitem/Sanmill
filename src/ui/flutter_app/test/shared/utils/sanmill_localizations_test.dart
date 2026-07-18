@@ -285,6 +285,13 @@ void main() {
     },
   );
 
+  test('names Chinese automatic game history without privacy jargon', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.privateHistory, '对局历史');
+    expect(chinese.privateHistoryDescription, '仅保存在本机，最多保留 100 条不重复的对局记录。');
+  });
+
   test('separates computer-play and generative AI terminology', () {
     final S english = lookupS(const Locale('en'));
     final S chinese = lookupS(const Locale('zh'));
