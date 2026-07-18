@@ -83,6 +83,10 @@ void main() {
     }
     expect(lookupS(const Locale('fr')).onlineFriendGame, 'Play with a friend');
   });
+
+  test('Simplified Chinese uses an action label for friend play', () {
+    expect(lookupS(const Locale('zh')).onlineFriendGame, '与好友对战');
+  });
 }
 
 Map<String, Object?> _readArb(String name) {

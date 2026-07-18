@@ -4854,7 +4854,7 @@
     },
     "remoteNotConnected": "尚未连接远程对手。",
     "@remoteNotConnected": {},
-    "onlineFriendGame": "好友在线对战",
+    "onlineFriendGame": "与好友对战",
     "@onlineFriendGame": {"description": "服务器好友对战标题。"},
     "onlineFriendGameDescription": "通过链接或二维码邀请好友对战。",
     "@onlineFriendGameDescription": {"description": "好友在线对战入口副标题。"},
