@@ -6562,5 +6562,9 @@
                 "example": "7"
             }
         }
+    },
+    "resumeAnalysis": "继续上次分析",
+    "@resumeAnalysis": {
+        "description": "Menu action that restores the most recently saved analysis session"
     }
 }
