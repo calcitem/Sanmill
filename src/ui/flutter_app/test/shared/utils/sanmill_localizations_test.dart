@@ -767,6 +767,12 @@ void main() {
     expect(chinese.analysisMovesCleared, '已清空分析着法。');
   });
 
+  test('lists Chinese computer move sources in lookup order', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.aiKnowledgeSources_Detail, '开局库、人类对局数据库、完美数据库和陷阱库。');
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =
