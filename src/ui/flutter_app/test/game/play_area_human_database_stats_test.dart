@@ -1433,7 +1433,7 @@ void main() {
   testWidgets('human vs ai move now plays from a human turn', (
     WidgetTester tester,
   ) async {
-    db.generalSettings = const GeneralSettings();
+    db.generalSettings = const GeneralSettings(useOpeningBook: false);
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
@@ -1462,7 +1462,7 @@ void main() {
   testWidgets('move now waits for an active hint search to stop', (
     WidgetTester tester,
   ) async {
-    db.generalSettings = const GeneralSettings();
+    db.generalSettings = const GeneralSettings(useOpeningBook: false);
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
       isHistoryNavigationToolbarShown: false,
@@ -1504,7 +1504,7 @@ void main() {
     WidgetTester tester,
   ) async {
     db = _GamePageDb(
-      generalSettings: const GeneralSettings(),
+      generalSettings: const GeneralSettings(useOpeningBook: false),
       displaySettings: const DisplaySettings(
         animationDuration: 0,
         isUnplacedAndRemovedPiecesShown: false,
@@ -1576,7 +1576,7 @@ void main() {
   testWidgets('move now skips the AI vs AI animation delay', (
     WidgetTester tester,
   ) async {
-    db.generalSettings = const GeneralSettings();
+    db.generalSettings = const GeneralSettings(useOpeningBook: false);
     db.displaySettings = const DisplaySettings(
       animationDuration: 20,
       isUnplacedAndRemovedPiecesShown: false,
