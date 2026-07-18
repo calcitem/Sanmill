@@ -6316,5 +6316,9 @@
                 "example": "2"
             }
         }
+    },
+    "tutorialMillCaptureRule": "形成三连后，可以吃掉对方一枚棋子。只要对方还有不在三连中的棋子，三连中的棋子通常不能被吃。",
+    "@tutorialMillCaptureRule": {
+        "description": "Tutorial explanation of forming a mill and the standard protected-mill removal rule"
     }
 }
