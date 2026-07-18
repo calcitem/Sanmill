@@ -80,6 +80,25 @@ void main() {
       expect(events.single.type, MillEventTypes.moveRejected);
     });
 
+    test(
+      'clears an applied database evaluation on the next position',
+      () async {
+        final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort();
+        final NativeMillGameSession session = NativeMillGameSession(
+          rulesPort: rulesPort,
+        );
+        addTearDown(session.dispose);
+        session.lastAppliedAiMoveEvaluation = const AppliedAiMoveEvaluation(
+          source: AiMoveType.perfect,
+          whiteScore: 100,
+        );
+
+        await session.apply(rulesPort.placeA7);
+
+        expect(session.lastAppliedAiMoveEvaluation, isNull);
+      },
+    );
+
     test('undo and redo forward to the rules port', () async {
       final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort();
       final NativeMillGameSession session = NativeMillGameSession(

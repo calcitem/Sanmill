@@ -175,6 +175,62 @@ void main() {
     expect(LiveEvaluationService.state.isSearching, isFalse);
   });
 
+  test('keeps Human Database WDL without starting heuristic search', () async {
+    bool searched = false;
+    const HumanDatabaseMoveStats stats = HumanDatabaseMoveStats(
+      notation: 'd6',
+      wins: 7,
+      draws: 1,
+      losses: 2,
+      total: 10,
+      scoreDelta: 0.25,
+    );
+    const AppliedAiMoveEvaluation applied = AppliedAiMoveEvaluation(
+      source: AiMoveType.humanDatabase,
+      whiteScore: -50,
+      humanDatabaseStats: stats,
+      humanDatabaseMoverWasWhite: false,
+    );
+    LiveEvaluationService.debugEnableForMode(GameMode.humanVsAi);
+    LiveEvaluationService.debugSearchOverride =
+        (position, engineSettings, onUpdate) async {
+          searched = true;
+          return <NativeMillPrincipalVariation>[];
+        };
+
+    await LiveEvaluationService.debugRequestPosition(
+      _position(fen: 'human-db'),
+      appliedAiMoveEvaluation: applied,
+    );
+
+    expect(searched, isFalse);
+    expect(LiveEvaluationService.state.whiteScore, -50);
+    expect(LiveEvaluationService.state.appliedAiMoveEvaluation, same(applied));
+  });
+
+  test('keeps a Perfect Database result without heuristic search', () async {
+    bool searched = false;
+    const AppliedAiMoveEvaluation applied = AppliedAiMoveEvaluation(
+      source: AiMoveType.perfect,
+      whiteScore: 100,
+    );
+    LiveEvaluationService.debugEnableForMode(GameMode.humanVsAi);
+    LiveEvaluationService.debugSearchOverride =
+        (position, engineSettings, onUpdate) async {
+          searched = true;
+          return <NativeMillPrincipalVariation>[];
+        };
+
+    await LiveEvaluationService.debugRequestPosition(
+      _position(fen: 'perfect-db'),
+      appliedAiMoveEvaluation: applied,
+    );
+
+    expect(searched, isFalse);
+    expect(LiveEvaluationService.state.whiteScore, 100);
+    expect(LiveEvaluationService.state.appliedAiMoveEvaluation, same(applied));
+  });
+
   test('detects either side owing a removal', () {
     final Uint8List payload = Uint8List(30)..[29] = 1;
     final GameStateSnapshot snapshot = GameStateSnapshot(

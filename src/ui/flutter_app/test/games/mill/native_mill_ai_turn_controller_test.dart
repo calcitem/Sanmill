@@ -131,6 +131,8 @@ void main() {
         expect(session.lastAiMoveType, AiMoveType.perfect);
         expect(session.lastAiBestValue, 100);
         expect(session.lastHumanDatabaseMoveStats, isNull);
+        expect(session.lastAppliedAiMoveEvaluation?.source, AiMoveType.perfect);
+        expect(session.lastAppliedAiMoveEvaluation?.whiteScore, 100);
         expect(humanDatabase.discarded, isTrue);
         expect(rootEvaluations, <(PlayerSeat, int)>[(PlayerSeat.first, 100)]);
       },
@@ -161,6 +163,18 @@ void main() {
       expect(session.lastAiMoveType, AiMoveType.humanDatabase);
       expect(session.lastAiBestValue, 50);
       expect(session.lastHumanDatabaseMoveStats, isNotNull);
+      expect(
+        session.lastAppliedAiMoveEvaluation?.source,
+        AiMoveType.humanDatabase,
+      );
+      expect(
+        session.lastAppliedAiMoveEvaluation?.humanDatabaseStats,
+        same(session.lastHumanDatabaseMoveStats),
+      );
+      expect(
+        session.lastAppliedAiMoveEvaluation?.humanDatabaseMoverWasWhite,
+        isTrue,
+      );
     });
 
     test(
@@ -193,6 +207,10 @@ void main() {
         expect(applied, humanAction);
         expect(session.lastAiMoveType, AiMoveType.humanDatabase);
         expect(session.lastAiBestValue, -50);
+        expect(
+          session.lastAppliedAiMoveEvaluation?.humanDatabaseMoverWasWhite,
+          isFalse,
+        );
         expect(rootEvaluations, <int>[-50]);
       },
     );
@@ -234,6 +252,7 @@ void main() {
       expect(session.lastAiMoveType, AiMoveType.openingBook);
       expect(session.lastAiBestValue, 0);
       expect(session.lastHumanDatabaseMoveStats, isNull);
+      expect(session.lastAppliedAiMoveEvaluation, isNull);
       expect(openingBook.lookupCount, 1);
       expect(humanDatabase.lookupCount, 0);
       expect(rootEvaluations, <int>[0]);

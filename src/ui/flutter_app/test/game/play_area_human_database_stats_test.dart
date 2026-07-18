@@ -243,6 +243,153 @@ void main() {
     );
   });
 
+  testWidgets('strength gauge uses Human Database WDL segments', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(humanDatabaseEnabled: true);
+    db.displaySettings = const DisplaySettings(
+      isPositionalAdvantageIndicatorShown: true,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.humanVsAi,
+    );
+    const HumanDatabaseMoveStats stats = HumanDatabaseMoveStats(
+      notation: 'd6',
+      wins: 50,
+      draws: 30,
+      losses: 20,
+      total: 100,
+      scoreDelta: 0.15,
+    );
+    LiveEvaluationService.stateNotifier.value = const LiveEvaluationState(
+      enabled: true,
+      isSearching: false,
+      whiteScore: 30,
+      positionKey: 'human-db-position',
+      isRemovalPending: false,
+      appliedAiMoveEvaluation: AppliedAiMoveEvaluation(
+        source: AiMoveType.humanDatabase,
+        whiteScore: 30,
+        humanDatabaseStats: stats,
+        humanDatabaseMoverWasWhite: true,
+      ),
+    );
+    addTearDown(LiveEvaluationService.debugReset);
+
+    await _pumpSessionPlayArea(tester, session);
+
+    final Finder white = find.byKey(
+      const Key('play_area_advantage_white_section'),
+    );
+    final Finder draw = find.byKey(
+      const Key('play_area_advantage_draw_section'),
+    );
+    final Finder black = find.byKey(
+      const Key('play_area_advantage_black_section'),
+    );
+    expect(white, findsOneWidget);
+    expect(draw, findsOneWidget);
+    expect(black, findsOneWidget);
+    final double contentHeight =
+        tester.getSize(white).height +
+        tester.getSize(draw).height +
+        tester.getSize(black).height;
+    expect(tester.getSize(white).height / contentHeight, closeTo(0.50, 0.01));
+    expect(tester.getSize(draw).height / contentHeight, closeTo(0.30, 0.01));
+    expect(tester.getSize(black).height / contentHeight, closeTo(0.20, 0.01));
+    final Semantics gauge = tester.widget<Semantics>(
+      find.byKey(const Key('play_area_advantage_indicator')),
+    );
+    expect(
+      gauge.properties.value,
+      "Human game database move d6. From the moving player's perspective: "
+      '50.0 percent wins, 30.0 percent draws, and 20.0 percent losses. '
+      'Recorded games: 100.',
+    );
+
+    LiveEvaluationService.stateNotifier.value = const LiveEvaluationState(
+      enabled: true,
+      isSearching: false,
+      whiteScore: -30,
+      positionKey: 'black-human-db-position',
+      isRemovalPending: false,
+      appliedAiMoveEvaluation: AppliedAiMoveEvaluation(
+        source: AiMoveType.humanDatabase,
+        whiteScore: -30,
+        humanDatabaseStats: stats,
+        humanDatabaseMoverWasWhite: false,
+      ),
+    );
+    await tester.pump();
+
+    final double blackMoverContentHeight =
+        tester.getSize(white).height +
+        tester.getSize(draw).height +
+        tester.getSize(black).height;
+    expect(
+      tester.getSize(white).height / blackMoverContentHeight,
+      closeTo(0.20, 0.01),
+    );
+    expect(
+      tester.getSize(black).height / blackMoverContentHeight,
+      closeTo(0.50, 0.01),
+    );
+  });
+
+  testWidgets('strength gauge keeps heuristic and Perfect results two-part', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isPositionalAdvantageIndicatorShown: true,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.humanVsAi,
+    );
+    LiveEvaluationService.stateNotifier.value = const LiveEvaluationState(
+      enabled: true,
+      isSearching: false,
+      whiteScore: 20,
+      positionKey: 'heuristic-position',
+      isRemovalPending: false,
+    );
+    addTearDown(LiveEvaluationService.debugReset);
+
+    await _pumpSessionPlayArea(tester, session);
+
+    expect(
+      find.byKey(const Key('play_area_advantage_draw_section')),
+      findsNothing,
+    );
+
+    LiveEvaluationService.stateNotifier.value = const LiveEvaluationState(
+      enabled: true,
+      isSearching: false,
+      whiteScore: 0,
+      positionKey: 'perfect-draw-position',
+      isRemovalPending: false,
+      appliedAiMoveEvaluation: AppliedAiMoveEvaluation(
+        source: AiMoveType.perfect,
+        whiteScore: 0,
+      ),
+    );
+    await tester.pump();
+
+    final Finder white = find.byKey(
+      const Key('play_area_advantage_white_section'),
+    );
+    final Finder black = find.byKey(
+      const Key('play_area_advantage_black_section'),
+    );
+    expect(
+      find.byKey(const Key('play_area_advantage_draw_section')),
+      findsNothing,
+    );
+    expect(
+      tester.getSize(white).height,
+      closeTo(tester.getSize(black).height, 0.01),
+    );
+  });
+
   testWidgets('screen reader board uses a stable semantics grid', (
     WidgetTester tester,
   ) async {

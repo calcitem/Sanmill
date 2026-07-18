@@ -182,6 +182,7 @@ class NativeMillGameSession implements GameSessionHandle {
   AiMoveType lastAiMoveType = AiMoveType.unknown;
   int? lastAiBestValue;
   HumanDatabaseMoveStats? lastHumanDatabaseMoveStats;
+  AppliedAiMoveEvaluation? lastAppliedAiMoveEvaluation;
 
   static final RegExp _aimovetypePattern = RegExp(
     r'(?:^|\s)aimovetype=(\w+)(?:\s|$)',
@@ -1013,6 +1014,7 @@ class NativeMillGameSession implements GameSessionHandle {
     // Any real kernel transition supersedes a prior forced terminal; only
     // forceTerminal sets the flag.
     _forcedTerminal = forcedTerminal;
+    lastAppliedAiMoveEvaluation = null;
     _state.value = next;
     _emit(MillEventTypes.stateChanged, <String, Object?>{
       'phase': next.phase,

@@ -3119,6 +3119,8 @@ class PlayAreaState extends State<PlayArea> {
                     child: _PositionalAdvantageIndicator(
                       value: advantageValue,
                       whiteAtBottom: !_isBoardFlipped,
+                      appliedAiMoveEvaluation:
+                          LiveEvaluationService.state.appliedAiMoveEvaluation,
                     ),
                   ),
                   const SizedBox(width: _kAdvantageIndicatorGap),
@@ -5757,21 +5759,40 @@ class _PositionalAdvantageIndicator extends StatelessWidget {
   const _PositionalAdvantageIndicator({
     required this.value,
     required this.whiteAtBottom,
+    this.appliedAiMoveEvaluation,
   }) : assert(value >= -100 && value <= 100);
 
   final int value;
   final bool whiteAtBottom;
+  final AppliedAiMoveEvaluation? appliedAiMoveEvaluation;
 
   @override
   Widget build(BuildContext context) {
     final Color whiteColor = DB().colorSettings.whitePieceColor;
     final Color blackColor = DB().colorSettings.blackPieceColor;
     final double whiteFraction = ((value + 100) / 200).clamp(0.0, 1.0);
+    final HumanDatabaseMoveStats? humanStats =
+        appliedAiMoveEvaluation?.source == AiMoveType.humanDatabase
+        ? appliedAiMoveEvaluation!.humanDatabaseStats
+        : null;
+    final bool? moverWasWhite =
+        appliedAiMoveEvaluation?.humanDatabaseMoverWasWhite;
+    final String semanticsValue = humanStats == null
+        ? value.toString()
+        : S
+              .of(context)
+              .humanGameDatabaseStatsSemantics(
+                humanStats.notation,
+                humanStats.winPercent.toStringAsFixed(1),
+                humanStats.drawPercent.toStringAsFixed(1),
+                humanStats.lossPercent.toStringAsFixed(1),
+                humanStats.total,
+              );
 
     return Semantics(
       key: const Key('play_area_advantage_indicator'),
       label: S.of(context).showPositionalAdvantageIndicator,
-      value: value.toString(),
+      value: semanticsValue,
       child: IgnorePointer(
         child: DecoratedBox(
           decoration: BoxDecoration(
@@ -5795,19 +5816,59 @@ class _PositionalAdvantageIndicator extends StatelessWidget {
             child: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
                 final double height = constraints.maxHeight;
-                final double whiteHeight = height * whiteFraction;
-                final double blackHeight = height - whiteHeight;
                 final bool firstIsWhite = !whiteAtBottom;
-                final double firstHeight = firstIsWhite
-                    ? whiteHeight
-                    : blackHeight;
-                final double secondHeight = math.max(
+                final double humanWhiteFraction = humanStats == null
+                    ? whiteFraction
+                    : (moverWasWhite! ? humanStats.wins : humanStats.losses) /
+                          humanStats.total;
+                final double humanBlackFraction = humanStats == null
+                    ? 1 - whiteFraction
+                    : (moverWasWhite! ? humanStats.losses : humanStats.wins) /
+                          humanStats.total;
+                final double drawFraction = humanStats == null
+                    ? 0
+                    : humanStats.draws / humanStats.total;
+                final List<({Key key, double fraction, Color color})> sections =
+                    <({Key key, double fraction, Color color})>[
+                      (
+                        key: firstIsWhite
+                            ? const Key('play_area_advantage_white_section')
+                            : const Key('play_area_advantage_black_section'),
+                        fraction: firstIsWhite
+                            ? humanWhiteFraction
+                            : humanBlackFraction,
+                        color: firstIsWhite ? whiteColor : blackColor,
+                      ),
+                      if (humanStats != null)
+                        (
+                          key: const Key('play_area_advantage_draw_section'),
+                          fraction: drawFraction,
+                          color: Theme.of(context).colorScheme.outlineVariant,
+                        ),
+                      (
+                        key: firstIsWhite
+                            ? const Key('play_area_advantage_black_section')
+                            : const Key('play_area_advantage_white_section'),
+                        fraction: firstIsWhite
+                            ? humanBlackFraction
+                            : humanWhiteFraction,
+                        color: firstIsWhite ? blackColor : whiteColor,
+                      ),
+                    ];
+                final double separatorHeight = sections.length - 1;
+                final double contentHeight = math.max(
                   0,
-                  height - firstHeight - 1,
+                  height - separatorHeight,
                 );
-                Widget section({required double height, required Color color}) {
+                double usedHeight = 0;
+                Widget section({
+                  required Key key,
+                  required double sectionHeight,
+                  required Color color,
+                }) {
                   return SizedBox(
-                    height: height,
+                    key: key,
+                    height: sectionHeight,
                     width: double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
@@ -5817,29 +5878,39 @@ class _PositionalAdvantageIndicator extends StatelessWidget {
                   );
                 }
 
-                return Column(
-                  children: <Widget>[
-                    section(
-                      height: firstHeight,
-                      color: firstIsWhite ? whiteColor : blackColor,
-                    ),
-                    SizedBox(
-                      height: 1,
-                      width: double.infinity,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: DB().colorSettings.messageColor.withValues(
-                            alpha: 0.65,
-                          ),
-                        ),
+                Widget separator() => SizedBox(
+                  height: 1,
+                  width: double.infinity,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: DB().colorSettings.messageColor.withValues(
+                        alpha: 0.65,
                       ),
                     ),
-                    section(
-                      height: secondHeight,
-                      color: firstIsWhite ? blackColor : whiteColor,
-                    ),
-                  ],
+                  ),
                 );
+
+                final List<Widget> children = <Widget>[];
+                for (int index = 0; index < sections.length; index++) {
+                  final ({Key key, double fraction, Color color}) item =
+                      sections[index];
+                  final double sectionHeight = index == sections.length - 1
+                      ? math.max(0, contentHeight - usedHeight)
+                      : contentHeight * item.fraction.clamp(0.0, 1.0);
+                  usedHeight += sectionHeight;
+                  children.add(
+                    section(
+                      key: item.key,
+                      sectionHeight: sectionHeight,
+                      color: item.color,
+                    ),
+                  );
+                  if (index != sections.length - 1) {
+                    children.add(separator());
+                  }
+                }
+
+                return Column(children: children);
               },
             ),
           ),

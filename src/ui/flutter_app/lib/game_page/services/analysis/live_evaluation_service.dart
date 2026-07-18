@@ -41,6 +41,7 @@ class LiveEvaluationState {
     required this.whiteScore,
     required this.positionKey,
     required this.isRemovalPending,
+    this.appliedAiMoveEvaluation,
   });
 
   static const LiveEvaluationState disabled = LiveEvaluationState(
@@ -62,6 +63,11 @@ class LiveEvaluationState {
 
   /// Whether the mover still owes one or more removals in this position.
   final bool isRemovalPending;
+
+  /// Database source information for the AI move that produced this exact
+  /// position. Human Database entries carry real W/D/L statistics; Perfect
+  /// Database entries use [whiteScore] as a deterministic result.
+  final AppliedAiMoveEvaluation? appliedAiMoveEvaluation;
 }
 
 /// Reduces progressive live evaluations into one graph point per complete
@@ -258,6 +264,7 @@ class LiveEvaluationService {
       whiteScore: current.whiteScore,
       positionKey: current.positionKey,
       isRemovalPending: current.isRemovalPending,
+      appliedAiMoveEvaluation: current.appliedAiMoveEvaluation,
     );
   }
 
@@ -274,7 +281,10 @@ class LiveEvaluationService {
     if (session == null) {
       return;
     }
-    await _requestPosition(LiveEvaluationPosition.fromSession(session));
+    await _requestPosition(
+      LiveEvaluationPosition.fromSession(session),
+      appliedAiMoveEvaluation: session.lastAppliedAiMoveEvaluation,
+    );
   }
 
   /// Publish evaluation work that an AI move source has already performed.
@@ -313,8 +323,13 @@ class LiveEvaluationService {
   }
 
   @visibleForTesting
-  static Future<void> debugRequestPosition(LiveEvaluationPosition position) =>
-      _requestPosition(position);
+  static Future<void> debugRequestPosition(
+    LiveEvaluationPosition position, {
+    AppliedAiMoveEvaluation? appliedAiMoveEvaluation,
+  }) => _requestPosition(
+    position,
+    appliedAiMoveEvaluation: appliedAiMoveEvaluation,
+  );
 
   @visibleForTesting
   static void debugEnableForMode(GameMode mode) {
@@ -371,7 +386,10 @@ class LiveEvaluationService {
   static GameMode get _currentMode =>
       debugGameMode ?? GameController().gameInstance.gameMode;
 
-  static Future<void> _requestPosition(LiveEvaluationPosition position) async {
+  static Future<void> _requestPosition(
+    LiveEvaluationPosition position, {
+    AppliedAiMoveEvaluation? appliedAiMoveEvaluation,
+  }) async {
     if (!state.enabled || !supportsMode(_currentMode)) {
       return;
     }
@@ -395,6 +413,15 @@ class LiveEvaluationService {
       return;
     }
     if (position.activeSeat == PlayerSeat.none) {
+      return;
+    }
+    if (appliedAiMoveEvaluation != null) {
+      _publishScore(
+        position,
+        appliedAiMoveEvaluation.whiteScore,
+        isSearching: false,
+        appliedAiMoveEvaluation: appliedAiMoveEvaluation,
+      );
       return;
     }
 
@@ -501,6 +528,7 @@ class LiveEvaluationService {
     LiveEvaluationPosition position,
     int whiteScore, {
     required bool isSearching,
+    AppliedAiMoveEvaluation? appliedAiMoveEvaluation,
   }) {
     stateNotifier.value = LiveEvaluationState(
       enabled: true,
@@ -508,6 +536,7 @@ class LiveEvaluationService {
       whiteScore: whiteScore.clamp(-100, 100),
       positionKey: position.fen,
       isRemovalPending: position.isRemovalPending,
+      appliedAiMoveEvaluation: appliedAiMoveEvaluation,
     );
   }
 

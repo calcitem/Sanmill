@@ -245,6 +245,8 @@ class NativeMillAiTurnController {
 
       final GameAction? humanDatabaseAction = humanDatabase?.lookup(session);
       if (humanDatabaseAction != null) {
+        final bool moverWasWhite =
+            session.state.value.activeSeat == PlayerSeat.first;
         final HumanDatabaseMoveStats? stats = humanDatabase?.lastStats;
         final GameAction? perfectAction = session.perfectDatabaseBestAction(
           engineSettings: generalSettings,
@@ -273,6 +275,19 @@ class NativeMillAiTurnController {
             : AiMoveType.humanDatabase;
         session.lastAiBestValue = graphScore;
         session.lastHumanDatabaseMoveStats = correctedByPerfect ? null : stats;
+        if (correctedByPerfect) {
+          session.lastAppliedAiMoveEvaluation = AppliedAiMoveEvaluation(
+            source: AiMoveType.perfect,
+            whiteScore: graphScore,
+          );
+        } else if (stats != null) {
+          session.lastAppliedAiMoveEvaluation = AppliedAiMoveEvaluation(
+            source: AiMoveType.humanDatabase,
+            whiteScore: graphScore,
+            humanDatabaseStats: stats,
+            humanDatabaseMoverWasWhite: moverWasWhite,
+          );
+        }
         lastApplied = action;
         if (EnvironmentConfig.devMode) {
           logger.i(
@@ -316,8 +331,10 @@ class NativeMillAiTurnController {
         session.lastAiBestValue = _perfectDatabaseGraphScore(session, action);
       }
       final int? rootScore = session.lastAiBestValue;
+      final AiMoveType searchedMoveType = session.lastAiMoveType;
+      int? whiteScore;
       if (rootScore != null) {
-        final int whiteScore =
+        whiteScore =
             session.lastAiMoveType == AiMoveType.perfect ||
                 session.lastAiMoveType == AiMoveType.consensus
             ? rootScore
@@ -341,6 +358,14 @@ class NativeMillAiTurnController {
       );
       // #endregion
       await session.apply(action);
+      if (whiteScore != null &&
+          (searchedMoveType == AiMoveType.perfect ||
+              searchedMoveType == AiMoveType.consensus)) {
+        session.lastAppliedAiMoveEvaluation = AppliedAiMoveEvaluation(
+          source: searchedMoveType,
+          whiteScore: whiteScore,
+        );
+      }
       sw.stop();
       if (EnvironmentConfig.devMode) {
         logger.i(

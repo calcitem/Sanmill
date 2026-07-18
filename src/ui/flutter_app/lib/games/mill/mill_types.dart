@@ -89,6 +89,44 @@ class HumanDatabaseMoveStats {
   }
 }
 
+/// Evaluation supplied by the database source that played the latest AI move.
+///
+/// The session clears this snapshot on every subsequent position change. This
+/// keeps source-aware displays tied to the exact position produced by the
+/// database move instead of leaking an old source into a later turn.
+class AppliedAiMoveEvaluation {
+  const AppliedAiMoveEvaluation({
+    required this.source,
+    required this.whiteScore,
+    this.humanDatabaseStats,
+    this.humanDatabaseMoverWasWhite,
+  }) : assert(
+         source == AiMoveType.humanDatabase ||
+             source == AiMoveType.perfect ||
+             source == AiMoveType.consensus,
+         'Only database-backed AI moves have applied source evaluations.',
+       ),
+       assert(
+         source != AiMoveType.humanDatabase || humanDatabaseStats != null,
+         'Human Database evaluations must carry real move statistics.',
+       ),
+       assert(
+         humanDatabaseStats == null || humanDatabaseMoverWasWhite != null,
+         'Human Database statistics must identify the moving side.',
+       );
+
+  final AiMoveType source;
+
+  /// Evaluation from White's perspective, clamped to -100 through 100.
+  final int whiteScore;
+
+  /// Real W/D/L sample for a Human Database move, from the mover's perspective.
+  final HumanDatabaseMoveStats? humanDatabaseStats;
+
+  /// Whether [humanDatabaseStats] describes a move made by White.
+  final bool? humanDatabaseMoverWasWhite;
+}
+
 /// Mill game phases.
 enum Phase { ready, placing, moving, gameOver }
 
