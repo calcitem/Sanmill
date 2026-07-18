@@ -6354,5 +6354,35 @@
     "backgroundMusicImportFailed": "无法导入此音频文件。请选择其他文件后重试。",
     "@backgroundMusicImportFailed": {
         "description": "Actionable error shown after copying or validating an imported background-music file fails"
+    },
+    "reviewFirstMove": "第一手",
+    "@reviewFirstMove": {
+        "description": "Tooltip and screen-reader label for jumping to the first reviewed move"
+    },
+    "reviewPreviousMove": "上一手",
+    "@reviewPreviousMove": {
+        "description": "Tooltip and screen-reader label for stepping to the previous reviewed move"
+    },
+    "reviewNextMove": "下一手",
+    "@reviewNextMove": {
+        "description": "Tooltip and screen-reader label for stepping to the next reviewed move"
+    },
+    "reviewLastMove": "最后一手",
+    "@reviewLastMove": {
+        "description": "Tooltip and screen-reader label for jumping to the last reviewed move"
+    },
+    "reviewMoveProgress": "第 {current} 手，共 {total} 手",
+    "@reviewMoveProgress": {
+        "description": "Screen-reader label for the current move in review navigation",
+        "placeholders": {
+            "current": {
+                "type": "int",
+                "example": "2"
+            },
+            "total": {
+                "type": "int",
+                "example": "14"
+            }
+        }
     }
 }

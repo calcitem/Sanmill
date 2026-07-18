@@ -119,6 +119,16 @@ void main() {
     expect(english.reviewMoveProgress(2, 14), 'Move 2 of 14');
   });
 
+  test('labels Chinese review navigation as moves rather than steps', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.reviewFirstMove, '第一手');
+    expect(chinese.reviewPreviousMove, '上一手');
+    expect(chinese.reviewNextMove, '下一手');
+    expect(chinese.reviewLastMove, '最后一手');
+    expect(chinese.reviewMoveProgress(2, 14), '第 2 手，共 14 手');
+  });
+
   test('labels English analysis move counts without export jargon', () {
     final S english = lookupS(const Locale('en'));
 
