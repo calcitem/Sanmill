@@ -6473,5 +6473,29 @@
     "backgroundImageDescription": "Choose an image behind the game area.",
     "@backgroundImageDescription": {
         "description": "Explanation of the background image setting in Appearance"
+    },
+    "humanDatabaseSetupTitle": "Set up human game database",
+    "@humanDatabaseSetupTitle": {
+        "description": "Title of the first-use guide for the optional human game database"
+    },
+    "humanDatabaseSetupDescription": "Complete these two steps to enable moves from recorded human games.",
+    "@humanDatabaseSetupDescription": {
+        "description": "Introduction to the first-use human game database setup guide"
+    },
+    "humanDatabaseSetupDownload": "1. Download the database",
+    "@humanDatabaseSetupDownload": {
+        "description": "First step in the human game database setup guide"
+    },
+    "humanDatabaseSetupDownloadDescription": "Open the database download in your browser.",
+    "@humanDatabaseSetupDownloadDescription": {
+        "description": "Explanation below the database download step"
+    },
+    "humanDatabaseSetupSelectFile": "2. Select the downloaded file",
+    "@humanDatabaseSetupSelectFile": {
+        "description": "Second step in the human game database setup guide"
+    },
+    "humanDatabaseSetupSelectFileDescription": "Choose the SQLite file. Sanmill will copy and validate it before enabling the database.",
+    "@humanDatabaseSetupSelectFileDescription": {
+        "description": "Explanation below the database file-selection step"
     }
 }

@@ -129,6 +129,58 @@ void main() {
     expect(find.text('Prefer favorable openings'), findsNothing);
   });
 
+  testWidgets('first human database enablement shows the setup guide', (
+    WidgetTester tester,
+  ) async {
+    final _OpeningBookUiDb db = DB.instance! as _OpeningBookUiDb;
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(_localizedApp(const GeneralSettingsPage()));
+    await tester.pump();
+    await tester.tap(find.text('Computer move sources'));
+    await tester.pumpAndSettle();
+
+    final Finder humanDatabaseSwitch = find.byKey(
+      const Key(
+        'general_settings_page_settings_card_ais_play_style_use_human_database',
+      ),
+    );
+    await tester.scrollUntilVisible(
+      humanDatabaseSwitch,
+      300,
+      scrollable: find.descendant(
+        of: find.byKey(const Key('settings_list')),
+        matching: find.byType(Scrollable),
+      ),
+    );
+    await tester.tap(
+      find.descendant(of: humanDatabaseSwitch, matching: find.byType(Switch)),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('human_database_setup_guide')), findsOneWidget);
+    expect(find.text('Set up human game database'), findsOneWidget);
+    expect(
+      find.text(
+        'Complete these two steps to enable moves from recorded human games.',
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('1. Download the database'), findsOneWidget);
+    expect(find.text('2. Select the downloaded file'), findsOneWidget);
+    expect(db.generalSettings.humanDatabaseEnabled, isFalse);
+
+    await tester.tap(
+      find.byKey(const Key('human_database_setup_cancel_button')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('human_database_setup_guide')), findsNothing);
+    expect(db.generalSettings.humanDatabaseEnabled, isFalse);
+  });
+
   testWidgets('settings page hides the unfinished set-traps control', (
     WidgetTester tester,
   ) async {

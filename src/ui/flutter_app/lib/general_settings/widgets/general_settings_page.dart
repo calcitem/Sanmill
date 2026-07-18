@@ -336,10 +336,9 @@ class GeneralSettingsPage extends StatelessWidget {
     }
 
     if (generalSettings.humanDatabaseFilePath.trim().isEmpty) {
-      await _pickHumanDatabaseFile(
-        context,
-        generalSettings,
-        enableAfterPick: true,
+      await _showHumanDatabaseSetupGuide(
+        context: context,
+        generalSettings: generalSettings,
       );
       return;
     }
@@ -379,6 +378,94 @@ class GeneralSettingsPage extends StatelessWidget {
       ),
     );
     logger.t("$_logTag humanDatabaseEnabled: true");
+  }
+
+  Future<void> _showHumanDatabaseSetupGuide({
+    required BuildContext context,
+    required GeneralSettings generalSettings,
+  }) {
+    return showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      builder: (BuildContext sheetContext) {
+        final S strings = S.of(sheetContext);
+        final ColorScheme colorScheme = Theme.of(sheetContext).colorScheme;
+        return SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            child: Column(
+              key: const Key('human_database_setup_guide'),
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  strings.humanDatabaseSetupTitle,
+                  style: Theme.of(sheetContext).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  strings.humanDatabaseSetupDescription,
+                  style: Theme.of(sheetContext).textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Card(
+                  margin: EdgeInsets.zero,
+                  clipBehavior: Clip.antiAlias,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      ListTile(
+                        key: const Key('human_database_setup_download_button'),
+                        leading: const Icon(Icons.download_rounded),
+                        title: Text(strings.humanDatabaseSetupDownload),
+                        subtitle: Text(
+                          strings.humanDatabaseSetupDownloadDescription,
+                        ),
+                        onTap: () {
+                          unawaited(_downloadHumanDatabase(context));
+                        },
+                      ),
+                      const Divider(height: 1),
+                      ListTile(
+                        key: const Key(
+                          'human_database_setup_select_file_button',
+                        ),
+                        leading: const Icon(Icons.folder_open_rounded),
+                        title: Text(strings.humanDatabaseSetupSelectFile),
+                        subtitle: Text(
+                          strings.humanDatabaseSetupSelectFileDescription,
+                        ),
+                        onTap: () {
+                          Navigator.of(sheetContext).pop();
+                          unawaited(
+                            _pickHumanDatabaseFile(
+                              context,
+                              generalSettings,
+                              enableAfterPick: true,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: TextButton(
+                    key: const Key('human_database_setup_cancel_button'),
+                    onPressed: () => Navigator.of(sheetContext).pop(),
+                    child: Text(strings.cancel),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Future<void> _pickHumanDatabaseFile(
