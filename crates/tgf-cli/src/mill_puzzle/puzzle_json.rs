@@ -244,8 +244,8 @@ fn select_theme(traits: &PuzzleTraits, line: &LineTraits) -> ThemeProse {
         return ThemeProse {
             tag: "trap:greedy-mill",
             headline: "resist the tempting mill",
-            hint: "The capture that jumps out at you does not win. Look for the move that \
-                   sets up an unstoppable threat instead.",
+            hint: "The obvious mill is a trap. Look for the move that sets up an \
+                   unstoppable threat instead.",
             completion: "The tempting mill would have thrown the win away — the quiet move \
                          was the only path.",
         };
@@ -253,11 +253,11 @@ fn select_theme(traits: &PuzzleTraits, line: &LineTraits) -> ThemeProse {
     if traits.tempting_mill_mistake {
         return ThemeProse {
             tag: "trap:wrong-mill",
-            headline: "pick the right capture",
-            hint: "More than one capture is available, but only one keeps the win. \
-                   Compare the positions each removal leaves behind.",
-            completion: "Only one of the tempting captures kept the forced win; the others \
-                         handed the game back.",
+            headline: "choose the right removal",
+            hint: "Several removals look promising, but only one preserves the win. \
+                   Compare the resulting positions.",
+            completion: "Only one of the tempting removals preserved the forced win; the \
+                         others handed the game back.",
         };
     }
     if line.double_mill {
@@ -266,14 +266,14 @@ fn select_theme(traits: &PuzzleTraits, line: &LineTraits) -> ThemeProse {
             headline: "set up the swing mill",
             hint: "Arrange your pieces so one of them can close a mill on every move.",
             completion: "The swing mill ground the defense down: every solver move closed a \
-                         mill and took a piece.",
+                         mill and removed a piece.",
         };
     }
     if line.immobilization_win {
         return ThemeProse {
             tag: "immobilization",
             headline: "immobilize the opponent",
-            hint: "You do not need to capture everything. Herd the opponent's pieces until \
+            hint: "You do not need to remove every piece. Herd the opponent's pieces until \
                    none of them can move.",
             completion: "The win came by immobilization: the opponent still had material but \
                          no legal move left.",
@@ -283,8 +283,8 @@ fn select_theme(traits: &PuzzleTraits, line: &LineTraits) -> ThemeProse {
         return ThemeProse {
             tag: "sacrifice",
             headline: "give up a piece to win",
-            hint: "Letting the opponent capture is part of the plan. Count the resulting \
-                   threats, not the material.",
+            hint: "Letting the opponent remove a piece is part of the plan. Count the \
+                   resulting threats, not the material.",
             completion: "The sacrifice bought a decisive attack — material handed over, game \
                          taken back.",
         };
@@ -293,8 +293,8 @@ fn select_theme(traits: &PuzzleTraits, line: &LineTraits) -> ThemeProse {
         return ThemeProse {
             tag: "quiet-move",
             headline: "a quiet move wins",
-            hint: "No capture starts this win. Improve a piece and the threats appear by \
-                   themselves.",
+            hint: "Do not look for an immediate removal. Improve a piece, and the threats \
+                   will follow.",
             completion: "The winning idea started with a quiet move — the kind that is \
                          easiest to overlook over the board.",
         };
@@ -752,6 +752,30 @@ mod tests {
         assert_eq!(theme.headline, "immobilize the opponent");
         assert_eq!(theme.tag, "immobilization");
         assert!(theme.completion.contains("immobilization"));
+    }
+
+    #[test]
+    fn generated_theme_copy_uses_removal_terminology() {
+        let wrong_mill = select_theme(
+            &PuzzleTraits {
+                tempting_mill_mistake: true,
+                ..plain_traits()
+            },
+            &LineTraits::default(),
+        );
+        let quiet_move = select_theme(
+            &PuzzleTraits {
+                quiet_first_move: true,
+                ..plain_traits()
+            },
+            &LineTraits::default(),
+        );
+
+        for theme in [wrong_mill, quiet_move] {
+            assert!(!theme.headline.contains("capture"));
+            assert!(!theme.hint.contains("capture"));
+            assert!(!theme.completion.contains("capture"));
+        }
     }
 
     #[test]

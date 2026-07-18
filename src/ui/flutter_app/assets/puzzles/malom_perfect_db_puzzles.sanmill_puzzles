@@ -51,7 +51,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board. At 1 of the 2 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -123,7 +123,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board.",
       "tags": [
         "generated",
@@ -195,7 +195,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board.",
       "tags": [
         "generated",
@@ -267,7 +267,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board.",
       "tags": [
         "generated",
@@ -386,7 +386,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path.",
       "tags": [
         "generated",
@@ -436,7 +436,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board.",
       "tags": [
         "generated",
@@ -486,7 +486,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board.",
       "tags": [
         "generated",
@@ -536,7 +536,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board.",
       "tags": [
         "generated",
@@ -586,7 +586,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board.",
       "tags": [
         "generated",
@@ -636,7 +636,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board.",
       "tags": [
         "generated",
@@ -686,7 +686,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board.",
       "tags": [
         "generated",
@@ -736,7 +736,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board.",
       "tags": [
         "generated",
@@ -786,7 +786,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board.",
       "tags": [
         "generated",
@@ -836,7 +836,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board.",
       "tags": [
         "generated",
@@ -886,7 +886,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board.",
       "tags": [
         "generated",
@@ -936,7 +936,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board. At 1 of the 2 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -986,7 +986,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board. At 1 of the 2 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -1036,7 +1036,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board. At 1 of the 2 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -1086,7 +1086,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board. At 1 of the 2 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -1206,7 +1206,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board.",
       "tags": [
         "generated",
@@ -1268,7 +1268,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path.",
       "tags": [
         "generated",
@@ -1289,7 +1289,7 @@
     },
     {
       "id": "malom_movement_black_5_213e23e7",
-      "title": "Win in 5: pick the right capture",
+      "title": "Win in 5: choose the right removal",
       "description": "Black to move and win in 5 moves against the opponent's best practical defense. Only 1 of the 14 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "medium",
@@ -1330,8 +1330,8 @@
           "isOptimal": true
         }
       ],
-      "hint": "More than one capture is available, but only one keeps the win. Compare the positions each removal leaves behind.",
-      "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back.",
+      "hint": "Several removals look promising, but only one preserves the win. Compare the resulting positions.",
+      "completionMessage": "Only one of the tempting removals preserved the forced win; the others handed the game back.",
       "tags": [
         "generated",
         "malom-db",
@@ -1400,7 +1400,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "You do not need to capture everything. Herd the opponent's pieces until none of them can move.",
+      "hint": "You do not need to remove every piece. Herd the opponent's pieces until none of them can move.",
       "completionMessage": "The win came by immobilization: the opponent still had material but no legal move left.",
       "tags": [
         "generated",
@@ -1465,7 +1465,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path.",
       "tags": [
         "generated",
@@ -1531,7 +1531,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path.",
       "tags": [
         "generated",
@@ -1643,7 +1643,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path.",
       "tags": [
         "generated",
@@ -1714,7 +1714,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path.",
       "tags": [
         "generated",
@@ -1788,7 +1788,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path.",
       "tags": [
         "generated",
@@ -1866,7 +1866,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. At 1 of the 5 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -1944,7 +1944,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path.",
       "tags": [
         "generated",
@@ -2022,7 +2022,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path.",
       "tags": [
         "generated",
@@ -2134,7 +2134,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. At 2 of the 5 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -2214,7 +2214,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path.",
       "tags": [
         "generated",
@@ -2288,7 +2288,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. At 2 of the 5 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -2362,7 +2362,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. At 2 of the 5 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -2440,7 +2440,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. At 1 of the 6 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -2518,7 +2518,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. At 1 of the 6 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -2585,7 +2585,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path.",
       "tags": [
         "generated",
@@ -2606,7 +2606,7 @@
     },
     {
       "id": "malom_movement_white_7_a4d5d883",
-      "title": "Win in 7: pick the right capture",
+      "title": "Win in 7: choose the right removal",
       "description": "White to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 11 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "medium",
@@ -2663,8 +2663,8 @@
           "isOptimal": true
         }
       ],
-      "hint": "More than one capture is available, but only one keeps the win. Compare the positions each removal leaves behind.",
-      "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back. At 2 of the 6 later decision points, only one move preserved the win.",
+      "hint": "Several removals look promising, but only one preserves the win. Compare the resulting positions.",
+      "completionMessage": "Only one of the tempting removals preserved the forced win; the others handed the game back. At 2 of the 6 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
         "malom-db",
@@ -2783,7 +2783,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board.",
       "tags": [
         "generated",
@@ -2849,7 +2849,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. At 1 of the 4 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -2927,7 +2927,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "You do not need to capture everything. Herd the opponent's pieces until none of them can move.",
+      "hint": "You do not need to remove every piece. Herd the opponent's pieces until none of them can move.",
       "completionMessage": "The win came by immobilization: the opponent still had material but no legal move left. At 1 of the 5 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -3000,7 +3000,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path.",
       "tags": [
         "generated",
@@ -3132,7 +3132,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. At 3 of the 5 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -3154,7 +3154,7 @@
     },
     {
       "id": "malom_movement_white_7_b4d3fb85",
-      "title": "Win in 7: pick the right capture",
+      "title": "Win in 7: choose the right removal",
       "description": "White to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 51 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "hard",
@@ -3211,8 +3211,8 @@
           "isOptimal": true
         }
       ],
-      "hint": "More than one capture is available, but only one keeps the win. Compare the positions each removal leaves behind.",
-      "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back. At 1 of the 6 later decision points, only one move preserved the win.",
+      "hint": "Several removals look promising, but only one preserves the win. Compare the resulting positions.",
+      "completionMessage": "Only one of the tempting removals preserved the forced win; the others handed the game back. At 1 of the 6 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
         "malom-db",
@@ -3285,7 +3285,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. At 1 of the 5 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -3359,7 +3359,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. At 1 of the 5 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -3445,7 +3445,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path.",
       "tags": [
         "generated",
@@ -3527,7 +3527,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path.",
       "tags": [
         "generated",
@@ -3609,7 +3609,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board.",
       "tags": [
         "generated",
@@ -3729,7 +3729,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "No capture starts this win. Improve a piece and the threats appear by themselves.",
+      "hint": "Do not look for an immediate removal. Improve a piece, and the threats will follow.",
       "completionMessage": "The winning idea started with a quiet move — the kind that is easiest to overlook over the board.",
       "tags": [
         "generated",
@@ -3750,7 +3750,7 @@
     },
     {
       "id": "malom_movement_white_7_7d907ee0",
-      "title": "Win in 7: pick the right capture",
+      "title": "Win in 7: choose the right removal",
       "description": "White to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 12 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "hard",
@@ -3803,8 +3803,8 @@
           "isOptimal": true
         }
       ],
-      "hint": "More than one capture is available, but only one keeps the win. Compare the positions each removal leaves behind.",
-      "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back. At 4 of the 6 later decision points, only one move preserved the win.",
+      "hint": "Several removals look promising, but only one preserves the win. Compare the resulting positions.",
+      "completionMessage": "Only one of the tempting removals preserved the forced win; the others handed the game back. At 4 of the 6 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
         "malom-db",
@@ -3890,7 +3890,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. At 1 of the 6 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -3969,7 +3969,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. At 1 of the 6 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -4097,7 +4097,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. At 1 of the 5 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -4118,7 +4118,7 @@
     },
     {
       "id": "malom_movement_black_7_8a12282f",
-      "title": "Win in 7: pick the right capture",
+      "title": "Win in 7: choose the right removal",
       "description": "Black to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 51 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "expert",
@@ -4175,8 +4175,8 @@
           "isOptimal": true
         }
       ],
-      "hint": "More than one capture is available, but only one keeps the win. Compare the positions each removal leaves behind.",
-      "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back.",
+      "hint": "Several removals look promising, but only one preserves the win. Compare the resulting positions.",
+      "completionMessage": "Only one of the tempting removals preserved the forced win; the others handed the game back.",
       "tags": [
         "generated",
         "malom-db",
@@ -4265,7 +4265,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. At 3 of the 6 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
@@ -4287,7 +4287,7 @@
     },
     {
       "id": "malom_movement_black_7_40eadef4",
-      "title": "Win in 7: pick the right capture",
+      "title": "Win in 7: choose the right removal",
       "description": "Black to move and win in 7 moves against the opponent's best practical defense. Only 1 of the 12 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "expert",
@@ -4340,8 +4340,8 @@
           "isOptimal": true
         }
       ],
-      "hint": "More than one capture is available, but only one keeps the win. Compare the positions each removal leaves behind.",
-      "completionMessage": "Only one of the tempting captures kept the forced win; the others handed the game back. At 1 of the 6 later decision points, only one move preserved the win.",
+      "hint": "Several removals look promising, but only one preserves the win. Compare the resulting positions.",
+      "completionMessage": "Only one of the tempting removals preserved the forced win; the others handed the game back. At 1 of the 6 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
         "malom-db",
@@ -4423,7 +4423,7 @@
           "isOptimal": true
         }
       ],
-      "hint": "The capture that jumps out at you does not win. Look for the move that sets up an unstoppable threat instead.",
+      "hint": "The obvious mill is a trap. Look for the move that sets up an unstoppable threat instead.",
       "completionMessage": "The tempting mill would have thrown the win away — the quiet move was the only path. At 1 of the 5 later decision points, only one move preserved the win.",
       "tags": [
         "generated",
