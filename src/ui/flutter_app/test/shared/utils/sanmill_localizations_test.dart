@@ -910,6 +910,15 @@ void main() {
     );
   });
 
+  test('describes untimed Chinese coordinate training directly', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(
+      chinese.coordinateTrainingDescription,
+      '每次会显示一个坐标，请点按棋盘上的对应交点。训练不限时，可随时结束。',
+    );
+  });
+
   test('describes English puzzle streaks naturally', () {
     final S english = lookupS(const Locale('en'));
 
