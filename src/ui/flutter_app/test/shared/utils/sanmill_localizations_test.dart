@@ -524,6 +524,7 @@ void main() {
   });
 
   test('localizes diagnostic privacy controls in Chinese', () {
+    final S english = lookupS(const Locale('en'));
     final S chinese = lookupS(const Locale('zh'));
 
     expect(chinese.diagnostics, '诊断');
@@ -533,6 +534,11 @@ void main() {
       '要将预览中显示的全部数据发送给 Sanmill diagnostics，用于诊断故障并核验应用的分发来源吗？不包含截图；发送失败不会自动重试。',
     );
     expect(chinese.diagnosticIncludeConfiguration, '包含可复现的非敏感设置');
+    expect(
+      english.diagnosticIncludeConfiguration,
+      'Include safe settings for reproduction',
+    );
+    expect(english.diagnosticExactPreview, 'Exact diagnostic bundle preview');
     expect(chinese.diagnosticIncludeLogs, '包含已脱敏日志');
     expect(
       chinese.diagnosticActionTrailDescription,
