@@ -142,7 +142,7 @@ void main() {
     await tester.drag(find.byType(ListView), const Offset(0, -800));
     await tester.pumpAndSettle();
 
-    expect(find.text('复制并打开 Gitee issue'), findsOneWidget);
+    expect(find.text('复制并打开 Gitee 问题页'), findsOneWidget);
     expect(find.textContaining('GitHub'), findsNothing);
   });
 }

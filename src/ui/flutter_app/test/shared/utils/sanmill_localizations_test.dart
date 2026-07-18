@@ -1171,6 +1171,13 @@ void main() {
     expect(chinese.smallBoard, '小棋盘');
   });
 
+  test('uses natural Chinese copy for local diagnostic reports', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.diagnosticCopyAndOpenIssue, '复制并打开 Gitee 问题页');
+    expect(chinese.diagnosticLocalOnly, '此构建不支持远程报告，但仍可复制完整诊断包。');
+  });
+
   test('describes Chinese rule settings in player-facing language', () {
     final S chinese = lookupS(const Locale('zh'));
 
