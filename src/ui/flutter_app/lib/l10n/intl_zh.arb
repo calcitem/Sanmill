@@ -2499,7 +2499,7 @@
             }
         }
     },
-    "puzzleImportInvalidFen": "谜题 {index}（\"{title}\"）的 FEN 格式无效",
+    "puzzleImportInvalidFen": "谜题 {index}（“{title}”）的 FEN 无效",
     "@puzzleImportInvalidFen": {
         "description": "Error when puzzle has invalid FEN",
         "placeholders": {
@@ -2570,7 +2570,7 @@
     "@puzzleValidationPositionRequired": {
         "description": "Validation error: position required"
     },
-    "puzzleValidationInvalidFen": "谜题的 FEN 格式无效。请检查局面。",
+    "puzzleValidationInvalidFen": "谜题的 FEN 无效，请检查局面。",
     "@puzzleValidationInvalidFen": {
         "description": "Validation error: invalid FEN"
     },

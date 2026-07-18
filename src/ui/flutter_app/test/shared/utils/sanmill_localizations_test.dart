@@ -764,6 +764,16 @@ void main() {
     );
   });
 
+  test('uses concise Chinese FEN wording for puzzle errors', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(
+      chinese.puzzleImportInvalidFen(3, '双重攻击练习'),
+      '谜题 3（“双重攻击练习”）的 FEN 无效',
+    );
+    expect(chinese.puzzleValidationInvalidFen, '谜题的 FEN 无效，请检查局面。');
+  });
+
   test('uses the established Chinese advantage-graph term', () {
     final S chinese = lookupS(const Locale('zh'));
 
