@@ -4576,7 +4576,7 @@
     "@engineThreads_Detail": {},
     "aiKnowledgeSources": "Computer move sources",
     "@aiKnowledgeSources": {},
-    "aiKnowledgeSources_Detail": "Opening book, perfect database, human game database, and trap library.",
+    "aiKnowledgeSources_Detail": "Opening book, human game database, perfect database, and trap library.",
     "@aiKnowledgeSources_Detail": {},
     "advancedAiSearch": "Advanced engine search",
     "@advancedAiSearch": {},

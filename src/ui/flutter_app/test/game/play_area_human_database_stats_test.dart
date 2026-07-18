@@ -5596,7 +5596,7 @@ void main() {
       find.descendant(
         of: explorerSourcesTile,
         matching: find.text(
-          'Opening book, perfect database, human game database, and trap '
+          'Opening book, human game database, perfect database, and trap '
           'library.',
         ),
       ),
