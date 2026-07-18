@@ -882,6 +882,12 @@ void main() {
     expect(english.puzzleStreakDesc, 'Solve puzzles in a row without mistakes');
   });
 
+  test('describes Chinese puzzle streaks precisely', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.puzzleStreakDesc, '连续解对谜题，不能出错');
+  });
+
   test('names the Chinese daily puzzle total explicitly', () {
     final S chinese = lookupS(const Locale('zh'));
 

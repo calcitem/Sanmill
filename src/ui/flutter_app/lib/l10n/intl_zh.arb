@@ -3026,7 +3026,7 @@
     "@puzzleStreak": {
         "description": "Puzzle streak mode name"
     },
-    "puzzleStreakDesc": "连续解谜，不能犯错",
+    "puzzleStreakDesc": "连续解对谜题，不能出错",
     "@puzzleStreakDesc": {
         "description": "Puzzle streak mode description"
     },
