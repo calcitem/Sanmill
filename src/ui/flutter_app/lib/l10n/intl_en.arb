@@ -6629,5 +6629,9 @@
                 "example": "7"
             }
         }
+    },
+    "resumeAnalysis": "Resume analysis",
+    "@resumeAnalysis": {
+        "description": "Menu action that restores the most recently saved analysis session"
     }
 }
