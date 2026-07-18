@@ -123,7 +123,10 @@ void main() {
       "GameHeader clamps positional advantage divider on narrow width",
       (WidgetTester tester) async {
         final MockDB db = MockDB();
-        db.displaySettings = const DisplaySettings(boardTop: 0);
+        db.displaySettings = const DisplaySettings(
+          boardTop: 0,
+          isPositionalAdvantageIndicatorShown: true,
+        );
         DB.instance = db;
         final GameController controller = GameController();
         controller.gameInstance.gameMode = GameMode.humanVsHuman;
