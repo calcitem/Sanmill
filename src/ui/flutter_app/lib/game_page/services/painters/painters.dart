@@ -34,3 +34,4 @@ part 'analysis_renderer.dart';
 part 'board_painter.dart';
 part 'board_utils.dart';
 part 'piece_painter.dart';
+part 'turn_highlight_painter.dart';

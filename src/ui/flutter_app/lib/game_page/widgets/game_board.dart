@@ -461,6 +461,34 @@ class _GameBoardState extends State<GameBoard>
                       ),
                     ),
                   ),
+                  if (GameController().gameInstance.gameMode ==
+                      GameMode.analysis)
+                    RepaintBoundary(
+                      key: const Key('repaint_boundary_turn_highlight'),
+                      child: AnimatedBuilder(
+                        animation: Listenable.merge(<Listenable>[
+                          GameController().gameRecorder.moveCountNotifier,
+                          if (scopedSession != null) scopedSession.state,
+                        ]),
+                        builder: (_, Widget? child) {
+                          final MillBoardView view =
+                              GameController().activeBoardView;
+                          final MillTurnHighlight? highlight =
+                              MillTurnHighlight.fromPath(
+                                GameController().gameRecorder.currentPath,
+                                isRemovalPending: view.action == Act.remove,
+                              );
+                          return CustomPaint(
+                            key: const Key('custom_paint_turn_highlight'),
+                            painter: TurnHighlightPainter(
+                              highlight: highlight,
+                              color: DB().colorSettings.pieceHighlightColor,
+                              pieceWidth: DB().displaySettings.pieceWidth,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   RepaintBoundary(
                     key: const Key('repaint_boundary_piece_painter'),
                     child: AnimatedBuilder(
