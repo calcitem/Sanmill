@@ -83,7 +83,7 @@ void main() {
     expect(english.analysisVariationCount(2), '2 variations');
     expect(
       english.openMoveListWithSmallBoard,
-      'Open move list with small board',
+      'Open move list with board previews',
     );
   });
 

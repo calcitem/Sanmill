@@ -7851,7 +7851,7 @@ class _AnalysisMovesHeader extends StatelessWidget {
                     tooltip: labels.fullMoveListAction,
                     visualDensity: VisualDensity.compact,
                     icon: Icon(
-                      Icons.format_list_numbered,
+                      Icons.grid_view_rounded,
                       color: colorScheme.onSurfaceVariant,
                     ),
                     onPressed: onOpenFullMoveList,

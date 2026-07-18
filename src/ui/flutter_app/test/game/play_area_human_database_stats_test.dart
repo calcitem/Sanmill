@@ -6733,7 +6733,14 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.byTooltip('Open move list with small board · 1 move'),
+      find.byTooltip('Open move list with board previews · 1 move'),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_open_full_move_list')),
+        matching: find.byIcon(Icons.grid_view_rounded),
+      ),
       findsOneWidget,
     );
 

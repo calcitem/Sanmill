@@ -6548,7 +6548,7 @@
             }
         }
     },
-    "openMoveListWithSmallBoard": "Open move list with small board",
+    "openMoveListWithSmallBoard": "Open move list with board previews",
     "@openMoveListWithSmallBoard": {
         "description": "Tooltip and accessibility action for opening the full move list alongside its position preview"
     },
