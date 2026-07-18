@@ -345,6 +345,7 @@ void main() {
         find.byKey(const Key('sanmill_home_empty_recent_group')),
         findsOneWidget,
       );
+      expect(find.text('Recent saved games'), findsOneWidget);
       expect(
         find.byKey(const Key('sanmill_home_empty_recent_card')),
         findsOneWidget,
