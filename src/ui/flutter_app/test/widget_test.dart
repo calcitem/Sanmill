@@ -2424,6 +2424,10 @@ void main() {
     );
     expect(applyButton.onPressed, isNotNull);
 
+    await tester.ensureVisible(
+      find.byKey(const Key('mill_variant_detail_apply_button')),
+    );
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('mill_variant_detail_apply_button')));
     await tester.pumpAndSettle();
 
