@@ -16,6 +16,7 @@ import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/config/constants.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/themes/app_theme.dart';
@@ -146,6 +147,39 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(db.ruleSettings.piecesCount, 12);
+    expect(OfflineBoardClock().state.isEnabled, isFalse);
+  });
+
+  testWidgets('new game sheet preserves custom rules until preset selection', (
+    WidgetTester tester,
+  ) async {
+    db.ruleSettings = RuleSettings.fromJson(
+      Map<String, dynamic>.from(db.ruleSettings.toJson())..['PiecesCount'] = 11,
+    );
+    final Map<String, dynamic> customRules = db.ruleSettings.toJson();
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(
+      _localizedApp(
+        Builder(
+          builder: (BuildContext context) => FilledButton(
+            key: const Key('open_offline_board_setup'),
+            onPressed: () => showOfflineBoardNewGameSheet(context),
+            child: const Text('Open'),
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.byKey(const Key('open_offline_board_setup')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Custom'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('offline_board_start_button')));
+    await tester.pumpAndSettle();
+
+    expect(db.ruleSettings.toJson(), customRules);
     expect(OfflineBoardClock().state.isEnabled, isFalse);
   });
 

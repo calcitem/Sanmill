@@ -91,15 +91,12 @@ class _OfflineBoardNewGameSheet extends StatefulWidget {
 }
 
 class _OfflineBoardNewGameSheetState extends State<_OfflineBoardNewGameSheet> {
-  late String _variantId;
+  late String? _variantId;
 
   @override
   void initState() {
     super.initState();
-    final String currentId = RuleVariant.fromRuleSettings(DB().ruleSettings).id;
-    _variantId = RuleVariant.canonicalSettings.containsKey(currentId)
-        ? currentId
-        : 'standard_9mm';
+    _variantId = RuleVariant.exactCanonicalIdFor(DB().ruleSettings);
   }
 
   Future<void> _showVariantPicker() async {
@@ -133,9 +130,11 @@ class _OfflineBoardNewGameSheetState extends State<_OfflineBoardNewGameSheet> {
   }
 
   void _startGame() {
-    final RuleSettings rules = RuleVariant.canonicalSettings[_variantId]!;
-
-    DB().ruleSettings = rules;
+    final String? variantId = _variantId;
+    if (variantId != null) {
+      final RuleSettings rules = RuleVariant.canonicalSettings[variantId]!;
+      DB().ruleSettings = rules;
+    }
     GameOptionsModal.startNewGame(context);
     OfflineBoardClock().reset();
     Navigator.of(context).pop();
@@ -171,7 +170,12 @@ class _OfflineBoardNewGameSheetState extends State<_OfflineBoardNewGameSheet> {
                     Expanded(
                       child: Text(
                         key: const Key('offline_board_variant_value'),
-                        localizedMillVariantNameById(S.of(context), _variantId),
+                        _variantId == null
+                            ? S.of(context).custom
+                            : localizedMillVariantNameById(
+                                S.of(context),
+                                _variantId!,
+                              ),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 3,
                         textAlign: TextAlign.end,
