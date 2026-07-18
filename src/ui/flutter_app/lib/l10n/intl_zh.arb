@@ -473,11 +473,11 @@
     "@piecesCount_Detail": {
         "description": "How many pieces does each player have?"
     },
-    "flyPieceCount": "剩余多少子可飞子",
+    "flyPieceCount": "飞子阈值",
     "@flyPieceCount": {
         "description": "The number of the flying piece"
     },
-    "flyPieceCount_Detail": "如允许飞子，则当一方剩余多少枚棋子时可以飞棋。",
+    "flyPieceCount_Detail": "启用飞子后，当一方棋子数不多于此值时，可将棋子移动到任意空点，不再限于相邻点。",
     "@flyPieceCount_Detail": {
         "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
     },
@@ -537,7 +537,7 @@
     "@mayFly": {
         "description": "Flying"
     },
-    "mayFly_Detail": "当一方剩余三或四枚(可配置)棋子时，此方可将棋子移动到棋盘任意空位上。",
+    "mayFly_Detail": "允许棋子数不多于设定阈值的一方，将棋子移动到任意空点。",
     "@mayFly_Detail": {
         "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
     },
@@ -5738,7 +5738,7 @@
     "@statisticsOverallRecord": {
         "description": "Label for the combined win/draw/loss record at one computer difficulty"
     },
-    "tutorialFlyingRule": "启用飞子后，当一方棋子达到设定数量时，其任一棋子均可移动到任意空点。",
+    "tutorialFlyingRule": "启用飞子后，当一方棋子数降至设定阈值时，其任一棋子均可移动到任意空点。",
     "@tutorialFlyingRule": {
         "description": "Tutorial explanation of the flying rule"
     },

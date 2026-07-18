@@ -30,7 +30,7 @@ void main() {
       strings.tutorialMillCaptureRule,
       '形成三连后，可以吃掉对方一枚棋子。只要对方还有不在三连中的棋子，三连中的棋子通常不能被吃。',
     );
-    expect(strings.tutorialFlyingRule, '启用飞子后，当一方棋子达到设定数量时，其任一棋子均可移动到任意空点。');
+    expect(strings.tutorialFlyingRule, '启用飞子后，当一方棋子数降至设定阈值时，其任一棋子均可移动到任意空点。');
     expect(strings.tutorialUnplacedPieceCounter, '棋盘中央显示还可摆放的棋子数量。');
   });
 }

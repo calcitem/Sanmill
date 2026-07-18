@@ -12,6 +12,12 @@ void main() {
     expect(strings.rulePreset, '预设');
     expect(strings.chooseRulePreset, '选择预设');
     expect(strings.allowFlying, '允许飞子');
+    expect(strings.flyPieceCount, '飞子阈值');
+    expect(
+      strings.flyPieceCount_Detail,
+      '启用飞子后，当一方棋子数不多于此值时，可将棋子移动到任意空点，不再限于相邻点。',
+    );
+    expect(strings.mayFly_Detail, '允许棋子数不多于设定阈值的一方，将棋子移动到任意空点。');
   });
 
   test('Simplified Chinese uses capture wording for opposing pieces', () async {
