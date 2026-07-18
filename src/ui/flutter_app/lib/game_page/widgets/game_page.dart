@@ -91,10 +91,15 @@ class GamePage extends StatelessWidget {
     this.gameMode, {
     super.key,
     this.showInitialHumanAiNewGameSheet = true,
-  });
+    this.resumeAnalysis = false,
+  }) : assert(
+         !resumeAnalysis || gameMode == GameMode.analysis,
+         'Only an Analysis page can resume an Analysis session.',
+       );
 
   final GameMode gameMode;
   final bool showInitialHumanAiNewGameSheet;
+  final bool resumeAnalysis;
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +109,7 @@ class GamePage extends StatelessWidget {
     return _GamePageInner(
       controller: controller,
       showInitialHumanAiNewGameSheet: showInitialHumanAiNewGameSheet,
+      resumeAnalysis: resumeAnalysis,
     );
   }
 }
@@ -113,16 +119,19 @@ class _GamePageInner extends StatefulWidget {
   const _GamePageInner({
     required this.controller,
     required this.showInitialHumanAiNewGameSheet,
+    required this.resumeAnalysis,
   });
 
   final GameController controller;
   final bool showInitialHumanAiNewGameSheet;
+  final bool resumeAnalysis;
 
   @override
   State<_GamePageInner> createState() => _GamePageInnerState();
 }
 
-class _GamePageInnerState extends State<_GamePageInner> {
+class _GamePageInnerState extends State<_GamePageInner>
+    with WidgetsBindingObserver {
   // GlobalKey to reference the real board's RenderBox
   final GlobalKey _gameBoardKey = GlobalKey();
 
@@ -130,10 +139,19 @@ class _GamePageInnerState extends State<_GamePageInner> {
   bool _didShowInitialHumanAiNewGameSheet = false;
   bool _didShowInitialOfflineBoardNewGameSheet = false;
   late final AnnotationManager _annotationManager;
+  late final bool _ownsAnalysisSession;
+  GameRecorder? _analysisRecorder;
+  bool _analysisSaveScheduled = false;
 
   @override
   void initState() {
     super.initState();
+    _ownsAnalysisSession =
+        widget.controller.gameInstance.gameMode == GameMode.analysis;
+    if (_ownsAnalysisSession) {
+      _initializeAnalysisSession();
+      WidgetsBinding.instance.addObserver(this);
+    }
     // Reset the cumulative win/draw/loss tally when entering the game page,
     // mirroring the legacy `Position.resetScore()` call that lived in the
     // old GamePage constructor. The score then accumulates across in-page
@@ -174,6 +192,78 @@ class _GamePageInnerState extends State<_GamePageInner> {
     }
   }
 
+  void _initializeAnalysisSession() {
+    final GameController controller = widget.controller;
+    controller.reset(force: true);
+
+    if (widget.resumeAnalysis) {
+      try {
+        final bool restored = AnalysisSessionStorage.instance.restoreCurrent(
+          controller,
+        );
+        if (!restored) {
+          throw const FormatException('No saved Analysis session exists.');
+        }
+      } catch (error, stackTrace) {
+        logger.e(
+          '[AnalysisSession] Failed to restore the saved session.',
+          error: error,
+          stackTrace: stackTrace,
+        );
+        unawaited(AnalysisSessionStorage.instance.clear());
+        controller.reset(force: true);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) {
+            return;
+          }
+          rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+            S.of(context).gameImportFailed,
+          );
+        });
+      }
+    }
+
+    _analysisRecorder = controller.gameRecorder;
+    _analysisRecorder!.moveCountNotifier.addListener(
+      _scheduleAnalysisSessionSave,
+    );
+  }
+
+  void _scheduleAnalysisSessionSave() {
+    if (_analysisSaveScheduled) {
+      return;
+    }
+    _analysisSaveScheduled = true;
+    scheduleMicrotask(() {
+      _analysisSaveScheduled = false;
+      unawaited(_saveAnalysisSession());
+    });
+  }
+
+  Future<void> _saveAnalysisSession() async {
+    if (!_ownsAnalysisSession ||
+        widget.controller.gameInstance.gameMode != GameMode.analysis) {
+      return;
+    }
+    try {
+      await AnalysisSessionStorage.instance.saveCurrent(widget.controller);
+    } catch (error, stackTrace) {
+      logger.e(
+        '[AnalysisSession] Failed to save the current session.',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (!_ownsAnalysisSession || state == AppLifecycleState.resumed) {
+      return;
+    }
+    unawaited(_saveAnalysisSession());
+  }
+
   /// Starts experience recording automatically when the feature is enabled.
   ///
   /// Skips if recording is suppressed (e.g. during replay) or already active.
@@ -189,6 +279,13 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
   @override
   void dispose() {
+    if (_ownsAnalysisSession) {
+      _analysisRecorder?.moveCountNotifier.removeListener(
+        _scheduleAnalysisSessionSave,
+      );
+      WidgetsBinding.instance.removeObserver(this);
+      unawaited(_saveAnalysisSession());
+    }
     if (_isOfflineBoardGame) {
       OfflineBoardClock().reset();
     }

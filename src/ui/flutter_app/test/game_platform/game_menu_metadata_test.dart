@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/game_page/widgets/game_page.dart';
 import 'package:sanmill/game_platform/game_feature_flags.dart';
 import 'package:sanmill/game_platform/game_menu.dart';
 import 'package:sanmill/game_platform/game_module.dart';
@@ -95,6 +96,10 @@ void main() {
         (GameMenuContribution contribution) =>
             contribution.id == MillRouteIds.analysis,
       );
+      final GameMenuContribution resumeAnalysis = contributions.singleWhere(
+        (GameMenuContribution contribution) =>
+            contribution.id == MillRouteIds.resumeAnalysis,
+      );
       final GameMenuContribution statistics = contributions.singleWhere(
         (GameMenuContribution contribution) =>
             contribution.id == MillRouteIds.statistics,
@@ -108,6 +113,15 @@ void main() {
       expect(analysis.contentKey, const Key('analysis'));
       expect(analysis.section, GameMenuSection.tools);
       expect(analysis.icon, isNotNull);
+      expect(resumeAnalysis.menuKey, const Key('drawer_item_resume_analysis'));
+      expect(resumeAnalysis.contentKey, const Key('resume_analysis'));
+      expect(resumeAnalysis.section, GameMenuSection.tools);
+      expect(resumeAnalysis.icon, isNotNull);
+      expect((analysis.builder(context) as GamePage).resumeAnalysis, isFalse);
+      expect(
+        (resumeAnalysis.builder(context) as GamePage).resumeAnalysis,
+        isTrue,
+      );
       expect(statistics.menuKey, const Key('drawer_item_statistics'));
       expect(statistics.contentKey, const Key('statistics'));
       expect(statistics.section, GameMenuSection.tools);

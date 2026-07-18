@@ -403,6 +403,41 @@ class NativeMillGameSession implements GameSessionHandle {
     return false;
   }
 
+  /// Replays a saved move path without emitting per-move UI events.
+  ///
+  /// Analysis-session restoration needs the native undo stack to match the
+  /// saved recorder path, but replaying through [applyMoveString] would animate
+  /// and sound every historical move. This method validates and applies the
+  /// same legal actions directly, then publishes only the final position.
+  bool restoreMoveStrings(Iterable<String> moves) {
+    if (_disposed) {
+      return false;
+    }
+
+    GameStateSnapshot restored = rulesPort.snapshot;
+    for (final String move in moves) {
+      GameAction? matchingAction;
+      for (final GameAction action in rulesPort.legalActions) {
+        if (MillActionCodec.moveStringFrom(action) == move) {
+          matchingAction = action;
+          break;
+        }
+      }
+      if (matchingAction == null) {
+        return false;
+      }
+      restored = rulesPort.apply(matchingAction);
+      _recordPieceNumbersAfter(matchingAction);
+    }
+
+    _lastSearchLegalAction = null;
+    lastAiMoveType = AiMoveType.unknown;
+    lastAiBestValue = null;
+    lastHumanDatabaseMoveStats = null;
+    _setState(restored);
+    return true;
+  }
+
   @override
   Future<void> apply(GameAction action) async {
     _applyNow(action);

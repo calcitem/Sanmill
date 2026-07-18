@@ -612,6 +612,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
       return false;
     }
     return routeId == MillRouteIds.analysis.value ||
+        routeId == MillRouteIds.resumeAnalysis.value ||
         routeId == MillRouteIds.openingExplorer.value ||
         routeId == MillRouteIds.setupPosition.value;
   }
@@ -2937,6 +2938,9 @@ class _MenuEntries extends StatelessWidget {
     final GameMenuContribution? analysis = contributionToolsById.remove(
       MillRouteIds.analysis.value,
     );
+    final GameMenuContribution? resumeAnalysis = contributionToolsById.remove(
+      MillRouteIds.resumeAnalysis.value,
+    );
     final GameModeEntry? boardEditor = playModeToolsById.remove(
       MillRouteIds.setupPosition.value,
     );
@@ -2959,6 +2963,8 @@ class _MenuEntries extends StatelessWidget {
               onTap: onOpenSavedGames,
             ),
             if (analysis != null) _buildContributionToolTile(analysis),
+            if (resumeAnalysis != null)
+              _buildContributionToolTile(resumeAnalysis),
             if (openingExplorer != null)
               _buildContributionToolTile(openingExplorer),
             if (boardEditor != null) _buildPlayModeToolTile(boardEditor),

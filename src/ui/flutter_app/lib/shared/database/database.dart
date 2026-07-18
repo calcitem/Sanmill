@@ -121,7 +121,7 @@ class Database {
   /// Getter for puzzle analytics box (for DailyPuzzleService, PuzzleStreakPage, etc.)
   Box<dynamic> get puzzleAnalyticsBox => _puzzleAnalyticsBox;
 
-  /// Local-only private game history and review-report cache.
+  /// Local-only game history, review cache, and latest Analysis session.
   static late final Box<dynamic> _reviewDataBox;
   static const String _reviewDataBoxName = 'reviewData';
 

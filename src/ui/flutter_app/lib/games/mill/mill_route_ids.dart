@@ -24,6 +24,9 @@ abstract final class MillRouteIds {
   // Non-play module screens
   static const GameRouteId importGame = GameRouteId('mill.tools.importGame');
   static const GameRouteId analysis = GameRouteId('mill.tools.analysis');
+  static const GameRouteId resumeAnalysis = GameRouteId(
+    'mill.tools.resumeAnalysis',
+  );
   static const GameRouteId openingExplorer = GameRouteId(
     'mill.tools.openingExplorer',
   );
