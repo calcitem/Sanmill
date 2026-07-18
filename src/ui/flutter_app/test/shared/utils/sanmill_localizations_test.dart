@@ -407,6 +407,13 @@ void main() {
     );
   });
 
+  test('uses action-specific Chinese annotation clearing copy', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.confirmClear, '清除棋盘标注？');
+    expect(chinese.areYouSureYouWantToClearAllAnnotations, '所有棋盘标注都将被清除。');
+  });
+
   test('explains the English diagnostic log clearing consequence', () {
     final S english = lookupS(const Locale('en'));
 
