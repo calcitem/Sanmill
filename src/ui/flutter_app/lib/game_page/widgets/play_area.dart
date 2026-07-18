@@ -1273,7 +1273,7 @@ class PlayAreaState extends State<PlayArea> {
           onPressed: () => unawaited(
             _shareAnalysisText(
               text: sharePgn,
-              subject: 'Sanmill PGN',
+              subject: 'Game PGN',
               eventAction: 'sharePgn',
             ),
           ),
@@ -1286,7 +1286,7 @@ class PlayAreaState extends State<PlayArea> {
           onPressed: () => unawaited(
             _shareAnalysisText(
               text: fen,
-              subject: 'Sanmill FEN',
+              subject: 'Position FEN',
               eventAction: 'shareFen',
             ),
           ),

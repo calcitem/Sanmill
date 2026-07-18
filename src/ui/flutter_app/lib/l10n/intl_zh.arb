@@ -3336,7 +3336,7 @@
     "@validationErrors": {
         "description": "Title for validation errors dialog"
     },
-    "contributePuzzlesToSanmill": "向Sanmill贡献谜题",
+    "contributePuzzlesToSanmill": "贡献谜题",
     "@contributePuzzlesToSanmill": {
         "description": "Title for contribute puzzles dialog"
     },
@@ -3755,7 +3755,7 @@
     "@puzzleValidationErrorsMessage": {
         "description": "Message for validation errors dialog"
     },
-    "puzzleContributeDialogTitle": "向 Sanmill 贡献谜题",
+    "puzzleContributeDialogTitle": "贡献谜题",
     "@puzzleContributeDialogTitle": {
         "description": "Title for contribute puzzles dialog"
     },
@@ -4120,7 +4120,7 @@
     },
     "errorDetectingNetworkInterfaces": "检测网络接口出错",
     "@errorDetectingNetworkInterfaces": {},
-    "contributeToSanmill": "贡献给 Sanmill",
+    "contributeToSanmill": "贡献谜题",
     "@contributeToSanmill": {},
     "howToContribute": "如何贡献",
     "@howToContribute": {},
@@ -4330,7 +4330,7 @@
     "@useHumanGameDatabase_Detail": {},
     "humanGameDatabaseFile": "人类对局数据库文件",
     "@humanGameDatabaseFile": {},
-    "humanGameDatabaseFile_Detail": "选择兼容的 SQLite 数据库。Sanmill 会将其复制到应用私有存储中。",
+    "humanGameDatabaseFile_Detail": "选择兼容的 SQLite 数据库。文件会复制到应用私有存储中。",
     "@humanGameDatabaseFile_Detail": {},
     "clearHumanGameDatabaseFile": "清除人类对局数据库文件",
     "@clearHumanGameDatabaseFile": {},
@@ -4409,13 +4409,13 @@
     "@preferFavoredOpenings_Detail": {},
     "openingBookStudio": "开局库工作室",
     "@openingBookStudio": {},
-    "openingBookStudioDescription": "创建、编辑、验证、导入和导出 Sanmill 开局库源文件。",
+    "openingBookStudioDescription": "创建、编辑、验证、导入和导出开局库源文件。",
     "@openingBookStudioDescription": {},
     "openingBookStudioLoadFailed": "开局库工作室无法加载源文件。",
     "@openingBookStudioLoadFailed": {},
     "openingBookStudioAssetSaved": "开局库源资源已保存。",
     "@openingBookStudioAssetSaved": {},
-    "openingBookStudioExportDialogTitle": "导出 Sanmill 开局库",
+    "openingBookStudioExportDialogTitle": "导出开局库",
     "@openingBookStudioExportDialogTitle": {},
     "openingBookStudioExported": "开局库已导出。",
     "@openingBookStudioExported": {},
@@ -4810,7 +4810,7 @@
     "@bluetoothScan": {},
     "bluetoothScanning": "正在扫描蓝牙对局…",
     "@bluetoothScanning": {},
-    "bluetoothNoDevices": "未发现 Sanmill 蓝牙对局。",
+    "bluetoothNoDevices": "未发现兼容的蓝牙对局。",
     "@bluetoothNoDevices": {},
     "bluetoothHostNotSupported": "此平台不支持创建蓝牙对局，但仍可加入对局。",
     "@bluetoothHostNotSupported": {},
@@ -4832,7 +4832,7 @@
     },
     "remotePeerRejected": "主机拒绝了连接。",
     "@remotePeerRejected": {},
-    "remoteProtocolUpgradeRequired": "对方版本不兼容。双方都需要将 Sanmill 升级到最新版本。",
+    "remoteProtocolUpgradeRequired": "对方版本不兼容。双方都需要将应用升级到最新版本。",
     "@remoteProtocolUpgradeRequired": {},
     "remoteHostBusy": "此主机已有对手。",
     "@remoteHostBusy": {},
@@ -4900,7 +4900,7 @@
     "@onlineRoomUnavailable": {"description": "房间已取消或删除的错误信息。"},
     "onlineRoomFull": "此对局已有两名玩家。",
     "@onlineRoomFull": {"description": "房间已有两名玩家的错误信息。"},
-    "onlineVersionMismatch": "此对局需要兼容版本的 Sanmill。",
+    "onlineVersionMismatch": "此对局需要兼容的应用版本。",
     "@onlineVersionMismatch": {"description": "协议或规则版本不兼容的错误信息。"},
     "onlineServiceUnavailable": "在线对战暂时不可用，仍可使用 WLAN 或离线对战。",
     "@onlineServiceUnavailable": {"description": "在线服务不可用时的错误信息。"},
@@ -5049,7 +5049,7 @@
     "recordingSessionEventCountValue": "{count} 个操作",
     "recordingSessionImportedWithEventCount": "已导入会话（{count} 个操作）。",
     "recordingStatusWithEventCount": "正在记录 · {count} 个操作",
-    "recordingSessionShareSubject": "Sanmill 体验记录 {shortId}",
+    "recordingSessionShareSubject": "体验记录 {shortId}",
     "openingExplorerTotal": "合计",
     "removeCount": "吃子数（{count}）",
     "buildBranch": "分支：{branch}",
@@ -5532,7 +5532,7 @@
     "@savedGameFolderUnavailable": {
         "description": "Error shown when the saved-game directory cannot be opened"
     },
-    "savedGamesShareText": "Sanmill 已保存棋局",
+    "savedGamesShareText": "已保存棋局",
     "@savedGamesShareText": {
         "description": "Share-sheet title for a saved-game archive"
     },
@@ -5766,7 +5766,7 @@
     "@rename": {
         "description": "Action that changes the name of a saved file"
     },
-    "llmAssistedDevelopmentDescription": "描述要完成的任务，以生成可直接分享的提示词。若剪贴板中含有 Sanmill 日志，将附上相关片段。",
+    "llmAssistedDevelopmentDescription": "描述要完成的任务，以生成可直接分享的提示词。若剪贴板中含有应用日志，将附上相关片段。",
     "@llmAssistedDevelopmentDescription": {
         "description": "Explains prompt generation and clipboard log inclusion"
     },
@@ -6473,7 +6473,7 @@
     "@humanDatabaseSetupSelectFile": {
         "description": "Second step in the human game database setup guide"
     },
-    "humanDatabaseSetupSelectFileDescription": "选择 SQLite 文件。Sanmill 会先复制并验证，再启用数据库。",
+    "humanDatabaseSetupSelectFileDescription": "选择 SQLite 文件。应用会先复制并验证，再启用数据库。",
     "@humanDatabaseSetupSelectFileDescription": {
         "description": "Description of selecting and importing the downloaded human game database file"
     },

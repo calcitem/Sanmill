@@ -148,7 +148,7 @@ abstract final class RecordingSessionNotes {
   static const String diagnosticReplayStarted =
       'Auto-stopped: diagnostic replay started';
   static const String diagnosticReplayValidated =
-      'Validated SanmillDiagnosticBundle v1 replay';
+      'Validated diagnostic bundle v1 replay';
 }
 
 /// A complete recording session capturing an initial configuration snapshot

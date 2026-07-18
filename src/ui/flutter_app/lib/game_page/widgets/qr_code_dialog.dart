@@ -161,7 +161,7 @@ class _QrCodeDialogState extends State<QrCodeDialog> {
     await SharePlus.instance.share(
       ShareParams(
         files: <XFile>[XFile(filePath)],
-        subject: 'Sanmill Move List QR Code',
+        subject: 'Move List QR Code',
       ),
     );
   }

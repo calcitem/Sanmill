@@ -124,7 +124,7 @@ class _BluetoothConfigDialogState extends State<BluetoothConfigDialog> {
         await GameController().startRemoteHost(
           coordinator: coordinator,
           hostPlaysWhite: _hostPlaysWhite,
-          advertisedLabel: 'Sanmill ${coordinator.localPeer.label}',
+          advertisedLabel: 'Mill ${coordinator.localPeer.label}',
         );
       } on Object {
         await _disposeCoordinator();

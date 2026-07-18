@@ -313,7 +313,7 @@ class DiagnosticBundleCodec {
     if (embedded is Map<String, dynamic>) {
       return embedded;
     }
-    throw const FormatException('No Sanmill diagnostic bundle was found.');
+    throw const FormatException('No diagnostic bundle was found.');
   }
 
   static Object? _tryJsonDecode(String value) {

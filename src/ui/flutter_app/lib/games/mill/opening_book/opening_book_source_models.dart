@@ -179,17 +179,17 @@ class SanmillOpeningNotation {
 class SanmillOpeningBookMetadata {
   const SanmillOpeningBookMetadata({
     this.id = 'sanmill-nmm-core',
-    this.name = 'Sanmill NMM Opening Book',
+    this.name = "Nine Men's Morris Opening Book",
     this.source = 'manual',
-    this.createdBy = 'Sanmill Opening Book Studio',
+    this.createdBy = 'Opening Book Studio',
   });
 
   factory SanmillOpeningBookMetadata.fromJson(Map<String, dynamic> json) {
     return SanmillOpeningBookMetadata(
       id: (json['id'] ?? 'sanmill-nmm-core') as String,
-      name: (json['name'] ?? 'Sanmill NMM Opening Book') as String,
+      name: (json['name'] ?? "Nine Men's Morris Opening Book") as String,
       source: (json['source'] ?? 'manual') as String,
-      createdBy: (json['createdBy'] ?? 'Sanmill Opening Book Studio') as String,
+      createdBy: (json['createdBy'] ?? 'Opening Book Studio') as String,
     );
   }
 

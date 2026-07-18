@@ -1043,7 +1043,7 @@ class GameController {
     required bool hostPlaysWhite,
     String? bindAddress,
     int port = 33333,
-    String advertisedLabel = 'Sanmill',
+    String advertisedLabel = 'Mill',
   }) async {
     assert(identical(remoteCoordinator, coordinator));
     final RuleSettings rules = DB().ruleSettings;

@@ -29,7 +29,7 @@ class RemoteHostOptions {
   const RemoteHostOptions({
     this.bindAddress,
     this.port = 33333,
-    this.advertisedLabel = 'Sanmill',
+    this.advertisedLabel = 'Mill',
   });
 
   final String? bindAddress;

@@ -17,8 +17,7 @@ void main() {
         errorKey: 'puzzleImportErrorReading',
         errorMessage: 'Error reading file: secret path',
       ).localizedError(strings),
-      'Could not import puzzles. Choose a valid Sanmill puzzle file and try '
-      'again.',
+      'Could not import puzzles. Choose a valid puzzle file and try again.',
     );
     expect(
       ImportResult(

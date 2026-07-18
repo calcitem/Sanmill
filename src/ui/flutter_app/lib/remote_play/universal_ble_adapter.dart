@@ -116,13 +116,13 @@ class UniversalBluetoothAdapter implements BluetoothAdapter {
     );
     final BleService service = services.firstWhere(
       (BleService value) => value.uuid.toLowerCase() == serviceId.toLowerCase(),
-      orElse: () => throw StateError('Sanmill BLE service was not found.'),
+      orElse: () => throw StateError('Bluetooth game service was not found.'),
     );
     service.characteristics.firstWhere(
       (BleCharacteristic value) =>
           value.uuid.toLowerCase() == characteristicId.toLowerCase(),
       orElse: () => throw StateError(
-        'Sanmill BLE notification characteristic was not found.',
+        'Bluetooth game notification characteristic was not found.',
       ),
     );
     await UniversalBle.subscribeNotifications(

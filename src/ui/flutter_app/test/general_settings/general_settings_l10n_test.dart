@@ -36,7 +36,7 @@ void main() {
       expect(strings.showGameTips_Detail, '在当前行棋方旁显示行棋提示和开局信息。');
       expect(
         strings.llmAssistedDevelopmentDescription,
-        '描述要完成的任务，以生成可直接分享的提示词。若剪贴板中含有 Sanmill 日志，将附上相关片段。',
+        '描述要完成的任务，以生成可直接分享的提示词。若剪贴板中含有应用日志，将附上相关片段。',
       );
       expect(strings.copyPrompt, '复制提示词');
       expect(strings.rename, '重命名');
@@ -53,7 +53,7 @@ void main() {
     expect(strings.humanDatabaseSetupSelectFile, '2. 选择已下载的文件');
     expect(
       strings.humanDatabaseSetupSelectFileDescription,
-      '选择 SQLite 文件。Sanmill 会先复制并验证，再启用数据库。',
+      '选择 SQLite 文件。应用会先复制并验证，再启用数据库。',
     );
   });
 }

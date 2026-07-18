@@ -29,7 +29,7 @@ abstract final class RemotePeerIdentity {
     ]);
     return RemotePeerInfo(
       peerId: _uuid.v4(),
-      label: model.isEmpty ? 'Sanmill' : model,
+      label: model.isEmpty ? 'Mill' : model,
       platform: defaultTargetPlatform.name,
       appVersion: package.version,
       appBuild: package.buildNumber,

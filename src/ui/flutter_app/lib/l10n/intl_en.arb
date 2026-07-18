@@ -2478,7 +2478,7 @@
             }
         }
     },
-    "puzzleImportFailed": "Could not import puzzles. Choose a valid Sanmill puzzle file and try again.",
+    "puzzleImportFailed": "Could not import puzzles. Choose a valid puzzle file and try again.",
     "@puzzleImportFailed": {
         "description": "Puzzle import failure message"
     },
@@ -2503,7 +2503,7 @@
     "@puzzleImportFileNotExist": {
         "description": "Error when file does not exist"
     },
-    "puzzleImportInvalidFormat": "This is not a valid Sanmill puzzle file.",
+    "puzzleImportInvalidFormat": "This is not a valid puzzle file.",
     "@puzzleImportInvalidFormat": {
         "description": "Error when file format is invalid"
     },
@@ -3288,7 +3288,7 @@
     "@validationErrors": {
         "description": "Title for validation errors dialog"
     },
-    "contributePuzzlesToSanmill": "Contribute Puzzles to Sanmill",
+    "contributePuzzlesToSanmill": "Contribute puzzles",
     "@contributePuzzlesToSanmill": {
         "description": "Title for contribute puzzles dialog"
     },
@@ -3707,7 +3707,7 @@
     "@puzzleValidationErrorsMessage": {
         "description": "Message for validation errors dialog"
     },
-    "puzzleContributeDialogTitle": "Contribute puzzles to Sanmill",
+    "puzzleContributeDialogTitle": "Contribute puzzles",
     "@puzzleContributeDialogTitle": {
         "description": "Title for contribute puzzles dialog"
     },
@@ -3736,11 +3736,11 @@
     "@puzzleContributeStep3": {
         "description": "Contribution step 3"
     },
-    "puzzleContributeStep4": "4. Sanmill maintainers review the puzzles.",
+    "puzzleContributeStep4": "4. Project maintainers review the puzzles.",
     "@puzzleContributeStep4": {
         "description": "Contribution step 4"
     },
-    "puzzleContributeStep5": "5. Approved puzzles can be included with Sanmill.",
+    "puzzleContributeStep5": "5. Approved puzzles can be included with the app.",
     "@puzzleContributeStep5": {
         "description": "Contribution step 5"
     },
@@ -3778,7 +3778,7 @@
             }
         }
     },
-    "puzzleContributionShareText": "Puzzle contribution for Sanmill.\n\nSee PUZZLE_CONTRIBUTION_GUIDE.md in the Sanmill repository for submission instructions.",
+    "puzzleContributionShareText": "Puzzle contribution.\n\nSee PUZZLE_CONTRIBUTION_GUIDE.md in the repository for submission instructions.",
     "@puzzleContributionShareText": {
         "description": "Message when sharing puzzle for contribution"
     },
@@ -3791,7 +3791,7 @@
             }
         }
     },
-    "puzzleContributionsShareText": "Puzzle contributions for Sanmill.\n\nSee PUZZLE_CONTRIBUTION_GUIDE.md in the Sanmill repository for submission instructions.",
+    "puzzleContributionsShareText": "Puzzle contributions.\n\nSee PUZZLE_CONTRIBUTION_GUIDE.md in the repository for submission instructions.",
     "@puzzleContributionsShareText": {
         "description": "Message when sharing multiple puzzles for contribution"
     },
@@ -3804,7 +3804,7 @@
             }
         }
     },
-    "puzzleContributeHelp": "Help improve Sanmill by contributing your puzzles.",
+    "puzzleContributeHelp": "Help improve the puzzle collection by contributing your puzzles.",
     "@puzzleContributeHelp": {
         "description": "Header text for contribution help dialog"
     },
@@ -3848,7 +3848,7 @@
     "@puzzleContributeFullDocs": {
         "description": "Full documentation label"
     },
-    "puzzleContributeDocsDesc": "Read PUZZLE_CONTRIBUTION_GUIDE.md in the Sanmill repository for submission options and quality guidelines.",
+    "puzzleContributeDocsDesc": "Read PUZZLE_CONTRIBUTION_GUIDE.md in the repository for submission options and quality guidelines.",
     "@puzzleContributeDocsDesc": {
         "description": "Description for full documentation"
     },
@@ -4072,7 +4072,7 @@
     },
     "errorDetectingNetworkInterfaces": "Error detecting network interfaces",
     "@errorDetectingNetworkInterfaces": {},
-    "contributeToSanmill": "Contribute to Sanmill",
+    "contributeToSanmill": "Contribute puzzles",
     "@contributeToSanmill": {},
     "howToContribute": "How to contribute",
     "@howToContribute": {},
@@ -4332,7 +4332,7 @@
     "@configExportFailed": {},
     "configImportSuccess": "Settings imported.",
     "@configImportSuccess": {},
-    "configImportShareSubject": "Sanmill settings",
+    "configImportShareSubject": "Game settings",
     "@configImportShareSubject": {},
     "configImportErrorFileNotFound": "The selected file could not be found.",
     "@configImportErrorFileNotFound": {},
@@ -4398,7 +4398,7 @@
     "@useHumanGameDatabase_Detail": {},
     "humanGameDatabaseFile": "Human game database file",
     "@humanGameDatabaseFile": {},
-    "humanGameDatabaseFile_Detail": "Choose a compatible SQLite database. Sanmill copies it to the app's private storage.",
+    "humanGameDatabaseFile_Detail": "Choose a compatible SQLite database. It is copied to the app's private storage.",
     "@humanGameDatabaseFile_Detail": {},
     "showHumanGameDatabaseStats": "Show human database move statistics during games",
     "@showHumanGameDatabaseStats": {},
@@ -4467,13 +4467,13 @@
     "@preferFavoredOpenings_Detail": {},
     "openingBookStudio": "Opening Book Studio",
     "@openingBookStudio": {},
-    "openingBookStudioDescription": "Create, edit, validate, import, and export Sanmill opening book source files.",
+    "openingBookStudioDescription": "Create, edit, validate, import, and export opening book source files.",
     "@openingBookStudioDescription": {},
     "openingBookStudioLoadFailed": "Opening Book Studio could not load the source file.",
     "@openingBookStudioLoadFailed": {},
     "openingBookStudioAssetSaved": "Opening book source asset saved.",
     "@openingBookStudioAssetSaved": {},
-    "openingBookStudioExportDialogTitle": "Export Sanmill opening book",
+    "openingBookStudioExportDialogTitle": "Export opening book",
     "@openingBookStudioExportDialogTitle": {},
     "openingBookStudioExported": "Opening book exported.",
     "@openingBookStudioExported": {},
@@ -4870,7 +4870,7 @@
     "@bluetoothScan": {},
     "bluetoothScanning": "Scanning for Bluetooth games…",
     "@bluetoothScanning": {},
-    "bluetoothNoDevices": "No Sanmill Bluetooth games found.",
+    "bluetoothNoDevices": "No compatible Bluetooth games found.",
     "@bluetoothNoDevices": {},
     "bluetoothHostNotSupported": "Bluetooth hosting is not supported on this platform. You can still join a game.",
     "@bluetoothHostNotSupported": {},
@@ -4892,7 +4892,7 @@
     },
     "remotePeerRejected": "The host declined the connection.",
     "@remotePeerRejected": {},
-    "remoteProtocolUpgradeRequired": "This opponent uses an incompatible version. Both players must upgrade Sanmill to the latest version.",
+    "remoteProtocolUpgradeRequired": "This opponent uses an incompatible version. Both players must update the app to the latest version.",
     "@remoteProtocolUpgradeRequired": {},
     "remoteHostBusy": "This host already has an opponent.",
     "@remoteHostBusy": {},
@@ -4960,7 +4960,7 @@
     "@onlineRoomUnavailable": {"description": "Error for a canceled or deleted room."},
     "onlineRoomFull": "This game already has two players.",
     "@onlineRoomFull": {"description": "Error for a room that already has two players."},
-    "onlineVersionMismatch": "This game requires a compatible Sanmill version.",
+    "onlineVersionMismatch": "This game requires a compatible app version.",
     "@onlineVersionMismatch": {"description": "Error for incompatible protocol or rules."},
     "onlineServiceUnavailable": "Online play is temporarily unavailable. You can still play over a local network or offline.",
     "@onlineServiceUnavailable": {"description": "Error when the online service cannot be used."},
@@ -5362,7 +5362,7 @@
     "@noSavedGamesToExport": {
         "description": "Feedback shown when exporting an archive with no saved PGN files"
     },
-    "savedGamesShareText": "Sanmill saved games",
+    "savedGamesShareText": "Saved games",
     "@savedGamesShareText": {
         "description": "Message attached when sharing an archive of saved games"
     },
@@ -5548,7 +5548,7 @@
     "@recordUserInteractions": {
         "description": "Toggle for recording in-app interactions for later reproduction"
     },
-    "llmAssistedDevelopmentDescription": "Describe the task to generate a ready-to-share prompt. If your clipboard contains a Sanmill log, a relevant excerpt will be included.",
+    "llmAssistedDevelopmentDescription": "Describe the task to generate a ready-to-share prompt. If your clipboard contains an app log, a relevant excerpt will be included.",
     "@llmAssistedDevelopmentDescription": {
         "description": "Explains prompt generation and clipboard log inclusion"
     },
@@ -5688,7 +5688,7 @@
             }
         }
     },
-    "recordingSessionShareSubject": "Sanmill recording {shortId}",
+    "recordingSessionShareSubject": "Game recording {shortId}",
     "@recordingSessionShareSubject": {
         "description": "Subject used when sharing an experience recording file",
         "placeholders": {
@@ -6494,7 +6494,7 @@
     "@humanDatabaseSetupSelectFile": {
         "description": "Second step in the human game database setup guide"
     },
-    "humanDatabaseSetupSelectFileDescription": "Choose the SQLite file. Sanmill will copy and validate it before enabling the database.",
+    "humanDatabaseSetupSelectFileDescription": "Choose the SQLite file. The app will copy and validate it before enabling the database.",
     "@humanDatabaseSetupSelectFileDescription": {
         "description": "Explanation below the database file-selection step"
     },

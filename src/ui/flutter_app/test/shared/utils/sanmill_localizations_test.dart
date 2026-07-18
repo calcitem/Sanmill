@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,6 +12,25 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 
 void main() {
+  test('keeps the product name out of visible English and Chinese copy', () {
+    for (final String name in <String>['intl_en.arb', 'intl_zh.arb']) {
+      final Map<String, dynamic> arb =
+          jsonDecode(File('lib/l10n/$name').readAsStringSync())
+              as Map<String, dynamic>;
+      final List<String> brandedKeys = arb.entries
+          .where(
+            (MapEntry<String, dynamic> entry) =>
+                !entry.key.startsWith('@') &&
+                entry.value is String &&
+                (entry.value as String).toLowerCase().contains('sanmill'),
+          )
+          .map((MapEntry<String, dynamic> entry) => entry.key)
+          .toList();
+
+      expect(brandedKeys, isEmpty, reason: name);
+    }
+  });
+
   test('distinguishes Chinese ring-swap semantics from its compact label', () {
     final S chinese = lookupS(const Locale('zh'));
 

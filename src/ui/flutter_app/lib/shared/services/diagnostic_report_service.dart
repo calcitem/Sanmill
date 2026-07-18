@@ -466,7 +466,7 @@ class GlitchTipDiagnosticTransport {
       'platform': 'dart',
       'level': bundle.kind == DiagnosticReportKind.feedback ? 'info' : 'error',
       'message': <String, dynamic>{
-        'formatted': bundle.errorMessage ?? 'Sanmill user feedback',
+        'formatted': bundle.errorMessage ?? 'User feedback',
       },
       'tags': <String, String>{
         'application_id': bundle.application['applicationId'] as String,
