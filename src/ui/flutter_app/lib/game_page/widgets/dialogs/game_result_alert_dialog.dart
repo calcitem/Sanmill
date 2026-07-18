@@ -316,7 +316,7 @@ class GameResultAlertDialog extends StatelessWidget {
         TextButton(
           key: const Key('ai_vs_ai_game_result_dialog_restart_button'),
           child: Text(
-            S.of(context).restart,
+            S.of(context).newGame,
             style: TextStyle(
               fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
             ),
