@@ -152,6 +152,7 @@ void main() {
 
     expect(english.humanVsAi, 'Human vs computer');
     expect(english.aiVsAi, 'Computer vs computer');
+    expect(english.skillLevel, 'Computer level');
     expect(english.humanAiRobotLevel(7), 'Computer level 7');
     expect(english.advancedAiSearch, 'Advanced engine search');
     expect(english.aiChatTitle, 'AI Assistant');

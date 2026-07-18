@@ -381,9 +381,9 @@
     "@generalSettings": {
         "description": "General Settings"
     },
-    "skillLevel": "Difficulty level",
+    "skillLevel": "Computer level",
     "@skillLevel": {
-        "description": "Difficulty level"
+        "description": "Computer level"
     },
     "moveTime": "Computer thinking time",
     "@moveTime": {
