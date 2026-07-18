@@ -573,6 +573,12 @@ void main() {
     );
   });
 
+  test('gives actionable Chinese recording import feedback', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.importSessionFailed, '无法导入此录制会话。请检查文件格式后重试。');
+  });
+
   test('uses consistent English variation-deletion terminology', () {
     final S english = lookupS(const Locale('en'));
 

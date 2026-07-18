@@ -4182,7 +4182,7 @@
     "@importFromClipboard": {},
     "importSessionSuccess": "会话导入成功",
     "@importSessionSuccess": {},
-    "importSessionFailed": "会话导入失败，请检查文件格式。",
+    "importSessionFailed": "无法导入此录制会话。请检查文件格式后重试。",
     "@importSessionFailed": {},
     "clipboardEmpty": "剪贴板为空",
     "@clipboardEmpty": {},
