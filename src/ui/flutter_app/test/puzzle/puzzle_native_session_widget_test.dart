@@ -224,8 +224,9 @@ void main() {
     WidgetTester tester,
     PuzzleInfo puzzle, {
     ThemeData? theme,
+    Size viewSize = const Size(1024, 768),
   }) async {
-    tester.view.physicalSize = const Size(1024, 768);
+    tester.view.physicalSize = viewSize;
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
@@ -344,6 +345,14 @@ void main() {
           find.byKey(const Key('puzzle_page_bottom_bar_hint')),
           findsOneWidget,
         );
+        expect(
+          find.byKey(const Key('play_area_human_ai_landscape_side_panel')),
+          findsNothing,
+        );
+        expect(
+          find.byKey(const Key('play_area_lichess_bottom_bar_builder')),
+          findsNothing,
+        );
 
         await tester.tap(find.byKey(const Key('puzzle_page_bottom_bar_menu')));
         await tester.pump();
@@ -370,6 +379,38 @@ void main() {
         await tester.tap(find.byKey(const Key('puzzle_page_action_reset')));
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 250));
+        await teardownPuzzlePage(tester);
+      },
+      skip: nativeLibrarySkipReason() != null,
+    );
+
+    testWidgets(
+      'hides ordinary game player panels in portrait puzzles',
+      (WidgetTester tester) async {
+        final PuzzleInfo puzzle = buildPuzzle(
+          solutions: const <List<String>>[
+            <String>['a1', 'd7'],
+          ],
+        );
+        await pumpPuzzlePage(tester, puzzle, viewSize: const Size(390, 844));
+
+        expect(
+          find.byKey(const Key('play_area_human_ai_robot_panel')),
+          findsNothing,
+        );
+        expect(
+          find.byKey(const Key('play_area_human_ai_player_panel')),
+          findsNothing,
+        );
+        expect(
+          find.byKey(const Key('play_area_human_ai_move_list_hidden')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('puzzle_page_lichess_bottom_bar')),
+          findsOneWidget,
+        );
+
         await teardownPuzzlePage(tester);
       },
       skip: nativeLibrarySkipReason() != null,

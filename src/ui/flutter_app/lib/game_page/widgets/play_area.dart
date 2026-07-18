@@ -3225,10 +3225,10 @@ class PlayAreaState extends State<PlayArea> {
     required BuildContext context,
     required bool showPieceCountRows,
     bool showMoveList = true,
+    bool showPlayerPanels = true,
   }) {
-    final bool showAdvantageGraph = _shouldShowAdvantageGraph(
-      isGameSurface: true,
-    );
+    final bool showAdvantageGraph =
+        showPlayerPanels && _shouldShowAdvantageGraph(isGameSurface: true);
 
     return SizedBox(
       key: const Key('play_area_human_ai_main_content'),
@@ -3244,10 +3244,14 @@ class PlayAreaState extends State<PlayArea> {
                 : const SizedBox.shrink(
                     key: Key('play_area_human_ai_move_list_hidden'),
                   );
-            const Widget topTable = _HumanAiPlayerPanel(
-              key: Key('play_area_human_ai_robot_panel'),
-              isRobot: true,
-            );
+            final Widget topTable = showPlayerPanels
+                ? const _HumanAiPlayerPanel(
+                    key: Key('play_area_human_ai_robot_panel'),
+                    isRobot: true,
+                  )
+                : const SizedBox.shrink(
+                    key: Key('play_area_puzzle_top_player_hidden'),
+                  );
 
             final double moveListHeight = showMoveList
                 ? _wrappedMoveListReservedHeightForRoute(context)
@@ -3255,11 +3259,13 @@ class PlayAreaState extends State<PlayArea> {
             final double boardRowsHeight = showPieceCountRows
                 ? _pieceRowsHeightForLayout(context)
                 : 0;
-            final double topPanelHeight = _humanAiPlayerPanelHeightForLayout(
-              context,
-            );
+            final double topPanelHeight = showPlayerPanels
+                ? _humanAiPlayerPanelHeightForLayout(context)
+                : 0;
             final double bottomPanelHeight =
-                _humanAiPlayerPanelHeightForLayout(context) +
+                (showPlayerPanels
+                    ? _humanAiPlayerPanelHeightForLayout(context)
+                    : 0) +
                 (showAdvantageGraph ? 112 : 0);
             final double nonBoardHeight =
                 moveListHeight +
@@ -3289,10 +3295,11 @@ class PlayAreaState extends State<PlayArea> {
                     : _buildRemovedPieceCountRow(),
             ];
             final List<Widget> bottomChildren = <Widget>[
-              const _HumanAiPlayerPanel(
-                key: Key('play_area_human_ai_player_panel'),
-                isRobot: false,
-              ),
+              if (showPlayerPanels)
+                const _HumanAiPlayerPanel(
+                  key: Key('play_area_human_ai_player_panel'),
+                  isRobot: false,
+                ),
               if (showAdvantageGraph)
                 SizedBox(
                   key: const Key('play_area_advantage_graph'),
@@ -3333,8 +3340,8 @@ class PlayAreaState extends State<PlayArea> {
                     moveList,
                     SizedBox(
                       height: topPanelHeight + topSpacerHeight,
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: topTable,
@@ -4092,6 +4099,7 @@ class PlayAreaState extends State<PlayArea> {
     required BoxConstraints constraints,
     required Widget? humanDatabaseStatsStrip,
     required bool showPieceCountRows,
+    required bool showGameChrome,
   }) {
     assert(
       constraints.hasBoundedHeight,
@@ -4107,20 +4115,20 @@ class PlayAreaState extends State<PlayArea> {
       viewport.width - horizontalPadding * 2,
     );
     final double bottomReservedHeight =
-        kLichessBottomBarHeight +
+        (showGameChrome ? kLichessBottomBarHeight : 0) +
         (humanDatabaseStatsStrip == null ? 0 : _kHumanDatabaseStatsStripHeight);
     final double availableHeight = math.max(
       0,
       viewport.height - bottomReservedHeight - verticalPadding * 2,
     );
-    const double targetSidePanelWidth = 280;
+    final double targetSidePanelWidth = showGameChrome ? 280 : 0;
     final double boardHeightAllowance = math.max(
       0,
       availableHeight - (showPieceCountRows ? pieceRowHeight * 2 : 0),
     );
     final double boardWidthWithPanel = math.max(
       0,
-      availableWidth - targetSidePanelWidth - gap,
+      availableWidth - targetSidePanelWidth - (showGameChrome ? gap : 0),
     );
     final double boardSize = math.min(
       boardHeightAllowance,
@@ -4175,66 +4183,68 @@ class PlayAreaState extends State<PlayArea> {
                         ],
                       ),
                     ),
-                    const SizedBox(width: gap),
-                    Expanded(
-                      child: Column(
-                        key: const Key(
-                          'play_area_human_ai_landscape_side_panel',
-                        ),
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          const _HumanAiPlayerPanel(
-                            key: Key(
-                              'play_area_human_ai_landscape_robot_panel',
-                            ),
-                            isRobot: true,
+                    if (showGameChrome) ...<Widget>[
+                      const SizedBox(width: gap),
+                      Expanded(
+                        child: Column(
+                          key: const Key(
+                            'play_area_human_ai_landscape_side_panel',
                           ),
-                          const Expanded(
-                            child: _InlineMoveList(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            const _HumanAiPlayerPanel(
                               key: Key(
-                                'play_area_human_ai_landscape_move_list',
+                                'play_area_human_ai_landscape_robot_panel',
                               ),
-                              wrapKey: Key(
-                                'play_area_human_ai_landscape_move_list_wrap',
-                              ),
-                              roundKeyPrefix:
-                                  'play_area_human_ai_landscape_round_',
-                              moveKeyPrefix:
-                                  'play_area_human_ai_landscape_move_',
-                              layout: _InlineMoveListLayout.stacked,
-                              groupByRound: true,
+                              isRobot: true,
                             ),
-                          ),
-                          const SizedBox(height: verticalPadding),
-                          const _HumanAiPlayerPanel(
-                            key: Key(
-                              'play_area_human_ai_landscape_player_panel',
-                            ),
-                            isRobot: false,
-                          ),
-                          if (_shouldShowAdvantageGraph(isGameSurface: true))
-                            SizedBox(
-                              key: const Key(
-                                'play_area_human_ai_landscape_advantage_graph',
-                              ),
-                              height: 80,
-                              width: double.infinity,
-                              child: CustomPaint(
-                                key: const Key(
-                                  'play_area_human_ai_landscape_advantage_paint',
+                            const Expanded(
+                              child: _InlineMoveList(
+                                key: Key(
+                                  'play_area_human_ai_landscape_move_list',
                                 ),
-                                painter: AdvantageGraphPainter(advantageData),
+                                wrapKey: Key(
+                                  'play_area_human_ai_landscape_move_list_wrap',
+                                ),
+                                roundKeyPrefix:
+                                    'play_area_human_ai_landscape_round_',
+                                moveKeyPrefix:
+                                    'play_area_human_ai_landscape_move_',
+                                layout: _InlineMoveListLayout.stacked,
+                                groupByRound: true,
                               ),
                             ),
-                        ],
+                            const SizedBox(height: verticalPadding),
+                            const _HumanAiPlayerPanel(
+                              key: Key(
+                                'play_area_human_ai_landscape_player_panel',
+                              ),
+                              isRobot: false,
+                            ),
+                            if (_shouldShowAdvantageGraph(isGameSurface: true))
+                              SizedBox(
+                                key: const Key(
+                                  'play_area_human_ai_landscape_advantage_graph',
+                                ),
+                                height: 80,
+                                width: double.infinity,
+                                child: CustomPaint(
+                                  key: const Key(
+                                    'play_area_human_ai_landscape_advantage_paint',
+                                  ),
+                                  painter: AdvantageGraphPainter(advantageData),
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
+                    ],
                   ],
                 ),
               ),
             ),
             ?humanDatabaseStatsStrip,
-            _buildHumanAiBottomBar(context),
+            if (showGameChrome) _buildHumanAiBottomBar(context),
           ],
         ),
       ),
@@ -4618,6 +4628,7 @@ class PlayAreaState extends State<PlayArea> {
             constraints: constraints,
             humanDatabaseStatsStrip: bottomHumanDatabaseStatsStrip,
             showPieceCountRows: showPieceCountRows,
+            showGameChrome: !isPuzzle,
           );
         }
         final bool useAnalysisLandscapeLayout =
@@ -4670,6 +4681,7 @@ class PlayAreaState extends State<PlayArea> {
                   context: context,
                   showPieceCountRows: showPieceCountRows,
                   showMoveList: !isPuzzle,
+                  showPlayerPanels: !isPuzzle,
                 )
               : isAnalysisMode
               ? _buildAnalysisMainContent(
