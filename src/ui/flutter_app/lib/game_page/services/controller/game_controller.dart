@@ -30,6 +30,8 @@ class MoveNowMessages {
   final String timeout;
 }
 
+enum AiVsAiPlaybackState { playing, pausePending, paused }
+
 /// Game Controller
 ///
 /// A singleton class that holds all objects and methods needed to play Mill.
@@ -70,8 +72,13 @@ class GameController {
   Completer<void>? _engineDelaySkipCompleter;
 
   final ValueNotifier<bool> engineActivityNotifier = ValueNotifier<bool>(false);
+  final ValueNotifier<AiVsAiPlaybackState> aiVsAiPlaybackStateNotifier =
+      ValueNotifier<AiVsAiPlaybackState>(AiVsAiPlaybackState.playing);
 
   bool get isEngineRunning => _isEngineRunning;
+
+  AiVsAiPlaybackState get aiVsAiPlaybackState =>
+      aiVsAiPlaybackStateNotifier.value;
 
   set isEngineRunning(bool value) {
     if (_isEngineRunning == value) {
@@ -118,6 +125,76 @@ class GameController {
     if (engineActivityNotifier.value != isEngineActive) {
       engineActivityNotifier.value = isEngineActive;
     }
+  }
+
+  void _setAiVsAiPlaybackState(AiVsAiPlaybackState value) {
+    if (aiVsAiPlaybackStateNotifier.value != value) {
+      aiVsAiPlaybackStateNotifier.value = value;
+    }
+  }
+
+  /// Pauses computer self-play after the current complete Mill turn.
+  ///
+  /// A turn can contain a placement or move followed by one or more removals,
+  /// so an in-flight search is allowed to finish instead of leaving the board
+  /// in the middle of a capture obligation.
+  void pauseAiVsAiPlayback() {
+    assert(
+      gameInstance.gameMode == GameMode.aiVsAi,
+      'Only computer self-play can be paused.',
+    );
+    if (activeBoardView.phase == Phase.gameOver ||
+        aiVsAiPlaybackState != AiVsAiPlaybackState.playing) {
+      return;
+    }
+
+    _setAiVsAiPlaybackState(
+      isEngineRunning
+          ? AiVsAiPlaybackState.pausePending
+          : AiVsAiPlaybackState.paused,
+    );
+    if (isEngineInDelay) {
+      _skipEngineDelayIfActive();
+    }
+  }
+
+  /// Resumes continuous computer self-play from the current position.
+  Future<EngineResponse> resumeAiVsAiPlayback(
+    BuildContext context, {
+    GameSession? session,
+  }) async {
+    assert(
+      gameInstance.gameMode == GameMode.aiVsAi,
+      'Only computer self-play can be resumed.',
+    );
+    if (activeBoardView.phase == Phase.gameOver) {
+      return const EngineGameIsOver();
+    }
+
+    _setAiVsAiPlaybackState(AiVsAiPlaybackState.playing);
+    if (isEngineRunning) {
+      // Cancels a pending pause while the current turn is still finishing.
+      return const EngineResponseSkip();
+    }
+    return engineToGo(context, isMoveNow: false, session: session);
+  }
+
+  /// Advances paused computer self-play by exactly one complete Mill turn.
+  Future<EngineResponse> stepAiVsAiPlayback(
+    BuildContext context, {
+    GameSession? session,
+  }) async {
+    assert(
+      gameInstance.gameMode == GameMode.aiVsAi,
+      'Only computer self-play can be stepped.',
+    );
+    if (activeBoardView.phase == Phase.gameOver) {
+      return const EngineGameIsOver();
+    }
+    if (aiVsAiPlaybackState != AiVsAiPlaybackState.paused || isEngineRunning) {
+      return const EngineResponseSkip();
+    }
+    return engineToGo(context, isMoveNow: true, session: session);
   }
 
   /// Monotonic counter incremented on every reset() so any in-flight
@@ -1440,6 +1517,7 @@ class GameController {
 
     // Puzzle mode: reset any transient auto-move lock.
     isPuzzleAutoMoveInProgress = false;
+    _setAiVsAiPlaybackState(AiVsAiPlaybackState.playing);
 
     value = "0";
     aiMoveType = AiMoveType.unknown;
@@ -2046,6 +2124,9 @@ class GameController {
     int iteration = 0;
     try {
       while (isControllerActive) {
+        if (!isMoveNow && aiVsAiPlaybackState != AiVsAiPlaybackState.playing) {
+          break;
+        }
         iteration++;
         if (EnvironmentConfig.devMode) {
           logger.i(
@@ -2141,6 +2222,10 @@ class GameController {
           break;
         }
 
+        if (aiVsAiPlaybackState != AiVsAiPlaybackState.playing) {
+          break;
+        }
+
         // Yield to the Flutter event loop so the UI repaints between AI
         // moves; this also gives `isControllerActive = false` (e.g. user
         // navigated away or pressed New Game) a chance to break the loop.
@@ -2169,6 +2254,9 @@ class GameController {
           aiLoopEpoch == loopEpoch && identical(_activeSession, loopSession);
       if (stillCurrent) {
         isEngineRunning = false;
+        if (aiVsAiPlaybackState == AiVsAiPlaybackState.pausePending) {
+          _setAiVsAiPlaybackState(AiVsAiPlaybackState.paused);
+        }
       }
       if (context.mounted) {
         refreshNativeSessionHeader(context, loopSession);

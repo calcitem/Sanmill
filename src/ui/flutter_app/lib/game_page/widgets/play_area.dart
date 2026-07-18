@@ -987,6 +987,61 @@ class PlayAreaState extends State<PlayArea> {
     _openGameOptions(navigator.context);
   }
 
+  void _requestAiVsAiNewGame(NavigatorState navigator) {
+    assert(_isAiVsAiMode, 'Computer self-play controls require AI vs AI mode.');
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'aiVsAiBottom', 'action': 'newGame'},
+    );
+    _requestRegularNewGame(navigator);
+  }
+
+  void _openAiVsAiMoves(NavigatorState navigator) {
+    assert(_isAiVsAiMode, 'Computer self-play controls require AI vs AI mode.');
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'aiVsAiBottom', 'action': 'moveList'},
+    );
+    _openMovesWithNavigator(navigator);
+  }
+
+  void _pauseAiVsAiPlayback() {
+    assert(_isAiVsAiMode, 'Computer self-play controls require AI vs AI mode.');
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'aiVsAiBottom', 'action': 'pause'},
+    );
+    GameController().pauseAiVsAiPlayback();
+  }
+
+  Future<void> _resumeAiVsAiPlayback(BuildContext context) async {
+    assert(_isAiVsAiMode, 'Computer self-play controls require AI vs AI mode.');
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'aiVsAiBottom', 'action': 'resume'},
+    );
+    await GameController().resumeAiVsAiPlayback(
+      context,
+      session:
+          GameSessionScope.sessionOf(context) ??
+          GameController().activeNativeMillSession,
+    );
+  }
+
+  Future<void> _stepAiVsAiPlayback(BuildContext context) async {
+    assert(_isAiVsAiMode, 'Computer self-play controls require AI vs AI mode.');
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'aiVsAiBottom', 'action': 'stepForward'},
+    );
+    await GameController().stepAiVsAiPlayback(
+      context,
+      session:
+          GameSessionScope.sessionOf(context) ??
+          GameController().activeNativeMillSession,
+    );
+  }
+
   void _openMovesWithNavigator(
     NavigatorState navigator, {
     bool? initialShowBranchTree,
@@ -1387,6 +1442,9 @@ class PlayAreaState extends State<PlayArea> {
   bool get _isOfflineBoardMode =>
       GameController().gameInstance.gameMode == GameMode.humanVsHuman;
 
+  bool get _isAiVsAiMode =>
+      GameController().gameInstance.gameMode == GameMode.aiVsAi;
+
   bool get _isAnalysisMode =>
       GameController().gameInstance.gameMode == GameMode.analysis;
 
@@ -1644,6 +1702,7 @@ class PlayAreaState extends State<PlayArea> {
 
   bool get _canResignFromRegularBottomBar {
     return !_usesLichessHumanAiToolbar &&
+        !_isAiVsAiMode &&
         !_isAnalysisMode &&
         GameController().gameRecorder.currentPath.length >= 2 &&
         _activePhase != Phase.ready &&
@@ -3288,6 +3347,42 @@ class PlayAreaState extends State<PlayArea> {
         return ValueListenableBuilder<bool>(
           valueListenable: AnalysisMode.stateNotifier,
           builder: (BuildContext context, _, _) {
+            if (_isAiVsAiMode) {
+              final GameController controller = GameController();
+              return ValueListenableBuilder<AiVsAiPlaybackState>(
+                valueListenable: controller.aiVsAiPlaybackStateNotifier,
+                builder: (BuildContext context, playbackState, _) {
+                  return ValueListenableBuilder<bool>(
+                    valueListenable: controller.engineActivityNotifier,
+                    builder: (BuildContext context, isEngineActive, _) {
+                      return _AiVsAiBottomBar(
+                        playbackState: playbackState,
+                        isEngineActive: isEngineActive,
+                        isShowingResult: _isRegularGameOver,
+                        onMenuPressed: _showRegularGameMenu,
+                        onNewGamePressed: () =>
+                            _requestAiVsAiNewGame(Navigator.of(context)),
+                        onPlaybackPressed: _isRegularGameOver
+                            ? _showRegularGameResult
+                            : playbackState == AiVsAiPlaybackState.playing
+                            ? _pauseAiVsAiPlayback
+                            : playbackState == AiVsAiPlaybackState.paused
+                            ? () => unawaited(_resumeAiVsAiPlayback(context))
+                            : null,
+                        onStepPressed:
+                            !_isRegularGameOver &&
+                                playbackState == AiVsAiPlaybackState.paused &&
+                                !isEngineActive
+                            ? () => unawaited(_stepAiVsAiPlayback(context))
+                            : null,
+                        onMoveListPressed: () =>
+                            _openAiVsAiMoves(Navigator.of(context)),
+                      );
+                    },
+                  );
+                },
+              );
+            }
             if (_isOfflineBoardMode) {
               return _OfflineBoardBottomBar(
                 onMenuPressed: _showRegularGameMenu,
@@ -8934,6 +9029,89 @@ class _RegularGameBottomBar extends StatelessWidget {
             showTooltip: false,
             withShadow: true,
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class _AiVsAiBottomBar extends StatelessWidget {
+  const _AiVsAiBottomBar({
+    required this.playbackState,
+    required this.isEngineActive,
+    required this.isShowingResult,
+    required this.onMenuPressed,
+    required this.onNewGamePressed,
+    required this.onPlaybackPressed,
+    required this.onStepPressed,
+    required this.onMoveListPressed,
+  });
+
+  final AiVsAiPlaybackState playbackState;
+  final bool isEngineActive;
+  final bool isShowingResult;
+  final VoidCallback onMenuPressed;
+  final VoidCallback onNewGamePressed;
+  final VoidCallback? onPlaybackPressed;
+  final VoidCallback? onStepPressed;
+  final VoidCallback onMoveListPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color messageColor = DB().colorSettings.messageColor;
+    final bool isPaused = playbackState == AiVsAiPlaybackState.paused;
+    final bool isPausePending =
+        playbackState == AiVsAiPlaybackState.pausePending;
+
+    return LichessBottomBar(
+      key: const Key('play_area_main_toolbar_bottom'),
+      backgroundColor: Colors.transparent,
+      foregroundColor: messageColor,
+      children: <Widget>[
+        LichessBottomBarButton(
+          key: const Key('play_area_ai_vs_ai_bottom_bar_menu'),
+          icon: Icons.menu,
+          label: S.of(context).menu,
+          onTap: onMenuPressed,
+          withShadow: true,
+        ),
+        LichessBottomBarButton(
+          key: const Key('play_area_ai_vs_ai_bottom_bar_new_game'),
+          icon: Icons.add_circle_outline,
+          label: S.of(context).newGame,
+          onTap: onNewGamePressed,
+          withShadow: true,
+        ),
+        LichessBottomBarButton(
+          key: const Key('play_area_ai_vs_ai_bottom_bar_playback'),
+          icon: isShowingResult
+              ? Icons.info_outline
+              : isPaused
+              ? Icons.play_arrow
+              : Icons.pause,
+          label: isShowingResult
+              ? S.of(context).results
+              : isPaused
+              ? S.of(context).resume
+              : S.of(context).pause,
+          onTap: onPlaybackPressed,
+          highlighted: isShowingResult || isPaused || isPausePending,
+          blink: isPausePending && isEngineActive,
+          withShadow: true,
+        ),
+        LichessBottomBarButton(
+          key: const Key('play_area_ai_vs_ai_bottom_bar_step'),
+          icon: Icons.skip_next,
+          label: S.of(context).stepForward,
+          onTap: onStepPressed,
+          withShadow: true,
+        ),
+        LichessBottomBarButton(
+          key: const Key('play_area_ai_vs_ai_bottom_bar_move_list'),
+          icon: Icons.format_list_numbered,
+          label: S.of(context).moveList,
+          onTap: onMoveListPressed,
+          withShadow: true,
         ),
       ],
     );

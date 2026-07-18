@@ -580,15 +580,23 @@ void main() {
       findsNothing,
     );
     expect(
-      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_menu')),
       findsOneWidget,
     );
     expect(
-      find.byKey(const Key('play_area_regular_bottom_bar_resign_result')),
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_new_game')),
       findsOneWidget,
     );
     expect(
-      find.byKey(const Key('play_area_regular_bottom_bar_take_back')),
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_playback')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_step')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_move_list')),
       findsOneWidget,
     );
     expect(
@@ -597,58 +605,20 @@ void main() {
     );
     expect(find.byKey(const Key('play_area_game_header')), findsNothing);
 
-    expect(
-      tester
-          .widget<LichessBottomBarButton>(
-            find.byKey(const Key('play_area_regular_bottom_bar_take_back')),
-          )
-          .label,
-      'Take back',
+    final LichessBottomBarButton playbackButton = tester.widget(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_playback')),
     );
-    expect(
-      find.byKey(const Key('play_area_regular_bottom_bar_previous')),
-      findsOneWidget,
+    expect(playbackButton.label, 'Pause');
+    expect(playbackButton.enabled, isTrue);
+    final LichessBottomBarButton stepButton = tester.widget(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_step')),
     );
-    expect(
-      find.byKey(const Key('play_area_regular_bottom_bar_next')),
-      findsOneWidget,
-    );
-    expect(
-      tester
-          .widget<LichessBottomBarButton>(
-            find.byKey(const Key('play_area_regular_bottom_bar_previous')),
-          )
-          .label,
-      'Previous',
-    );
-    expect(
-      tester
-          .widget<LichessBottomBarButton>(
-            find.byKey(const Key('play_area_regular_bottom_bar_previous')),
-          )
-          .enabled,
-      isTrue,
-    );
-    expect(
-      tester
-          .widget<LichessBottomBarButton>(
-            find.byKey(const Key('play_area_regular_bottom_bar_next')),
-          )
-          .label,
-      'Next',
-    );
-    expect(
-      tester
-          .widget<LichessBottomBarButton>(
-            find.byKey(const Key('play_area_regular_bottom_bar_next')),
-          )
-          .enabled,
-      isFalse,
-    );
+    expect(stepButton.label, 'Step forward');
+    expect(stepButton.enabled, isFalse);
     expect(find.byKey(const Key('play_area_toolbar_item_info')), findsNothing);
 
     await tester.tap(
-      find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_menu')),
     );
     await tester.pumpAndSettle();
 
@@ -1887,7 +1857,7 @@ void main() {
   testWidgets('move now skips the AI vs AI animation delay', (
     WidgetTester tester,
   ) async {
-    db.generalSettings = const GeneralSettings();
+    db.generalSettings = const GeneralSettings(useOpeningBook: false);
     db.displaySettings = const DisplaySettings(
       animationDuration: 20,
       isUnplacedAndRemovedPiecesShown: false,
@@ -1931,6 +1901,99 @@ void main() {
     expect(session.searchCalls, 2);
     expect(GameController().isEngineInDelay, isFalse);
     expect(await engineLoop, const EngineResponseOK());
+  });
+
+  testWidgets('computer self-play can pause, step once, and resume', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(useOpeningBook: false);
+    db.displaySettings = const DisplaySettings(
+      animationDuration: 20,
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final _MoveNowFakeSearchSession session = _MoveNowFakeSearchSession(
+      actionLimit: 3,
+    );
+    _bindExistingNativeGame(GameMode.aiVsAi, session);
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    await _pumpSessionPlayArea(tester, session);
+    final BuildContext context = tester.element(find.byType(PlayArea));
+    final GameController controller = GameController();
+    final Future<EngineResponse> initialLoop = controller.engineToGo(
+      context,
+      isMoveNow: false,
+      session: session,
+    );
+
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 20));
+    expect(session.searchCalls, 1);
+    expect(controller.isEngineInDelay, isTrue);
+    expect(
+      tester
+          .widget<LichessBottomBarButton>(
+            find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_playback')),
+          )
+          .label,
+      'Pause',
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_playback')),
+    );
+    await tester.pump();
+    expect(await initialLoop, const EngineResponseOK());
+    await tester.pump();
+
+    expect(controller.aiVsAiPlaybackState, AiVsAiPlaybackState.paused);
+    expect(controller.isEngineRunning, isFalse);
+    final LichessBottomBarButton pausedButton = tester.widget(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_playback')),
+    );
+    expect(pausedButton.label, 'Resume');
+    expect(pausedButton.enabled, isTrue);
+    expect(
+      tester
+          .widget<LichessBottomBarButton>(
+            find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_step')),
+          )
+          .enabled,
+      isTrue,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_step')),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 20));
+
+    expect(session.searchCalls, 2);
+    expect(controller.aiVsAiPlaybackState, AiVsAiPlaybackState.paused);
+    expect(controller.isEngineRunning, isFalse);
+
+    await tester.tap(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_playback')),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 20));
+
+    expect(session.searchCalls, 3);
+    expect(controller.aiVsAiPlaybackState, AiVsAiPlaybackState.playing);
+    expect(controller.isEngineInDelay, isTrue);
+
+    await tester.tap(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_playback')),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 20));
+
+    expect(controller.aiVsAiPlaybackState, AiVsAiPlaybackState.paused);
+    expect(controller.isEngineRunning, isFalse);
+    expect(session.searchCalls, 3);
   });
 
   testWidgets('human vs ai balanced layout fits with advantage graph', (
