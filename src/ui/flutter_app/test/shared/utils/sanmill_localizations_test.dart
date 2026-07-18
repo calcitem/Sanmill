@@ -682,6 +682,14 @@ void main() {
     expect(chinese.noNextBranchPoint, '没有下一个变化点。');
   });
 
+  test('describes Chinese move-tree view controls precisely', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.switchToActiveLineView, '切换到当前变化视图');
+    expect(chinese.switchToFullTreeView, '切换到完整着法树视图');
+    expect(chinese.reverseMoveOrder, '反转着法顺序');
+  });
+
   test('uses actionable English board-recognition feedback', () {
     final S english = lookupS(const Locale('en'));
 
