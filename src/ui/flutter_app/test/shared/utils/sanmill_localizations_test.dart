@@ -1063,6 +1063,16 @@ void main() {
     expect(chinese.puzzleValidationInvalidFen, '谜题的 FEN 无效，请检查局面。');
   });
 
+  test('gives complete Chinese puzzle validation guidance', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(
+      chinese.puzzleRuleMismatchWarning('Nine Men\'s Morris', 'Custom'),
+      "此谜题使用 Nine Men's Morris；当前规则为 Custom。",
+    );
+    expect(chinese.puzzleValidationAuthorRequired, '贡献前，请将您的姓名填写为作者。');
+  });
+
   test('uses the established Chinese advantage-graph term', () {
     final S chinese = lookupS(const Locale('zh'));
 

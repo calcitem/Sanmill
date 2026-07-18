@@ -2389,7 +2389,7 @@
     "@puzzleRuleMismatch": {
         "description": "Badge shown when puzzle rules don't match current settings"
     },
-    "puzzleRuleMismatchWarning": "为 {puzzleRules} 设计，当前为 {currentRules}",
+    "puzzleRuleMismatchWarning": "此谜题使用 {puzzleRules}；当前规则为 {currentRules}。",
     "@puzzleRuleMismatchWarning": {
         "description": "Warning message when opening a puzzle with mismatched rules",
         "placeholders": {
@@ -2594,7 +2594,7 @@
     "@puzzleValidationDescriptionTooLong": {
         "description": "Validation error: description too long"
     },
-    "puzzleValidationAuthorRequired": "贡献前请添加您的姓名作为作者",
+    "puzzleValidationAuthorRequired": "贡献前，请将您的姓名填写为作者。",
     "@puzzleValidationAuthorRequired": {
         "description": "Validation error: author required for contribution"
     },
