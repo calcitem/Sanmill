@@ -536,6 +536,7 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
+    final String moveTimeLabel = S.of(context).aiThinkingTimeValue(_moveTime);
     final TextStyle valueStyle =
         theme.textTheme.titleMedium?.copyWith(
           color: colorScheme.onSurface,
@@ -619,7 +620,7 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
                   padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
                   child: _SheetValueHeader(
                     title: S.of(context).moveTime,
-                    value: _moveTime.toString(),
+                    value: moveTimeLabel,
                     valueStyle: valueStyle,
                   ),
                 ),
@@ -628,7 +629,9 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
                   max: 60,
                   divisions: 60,
                   value: _moveTime.toDouble(),
-                  label: _moveTime.toString(),
+                  label: moveTimeLabel,
+                  semanticFormatterCallback: (double value) =>
+                      S.of(context).aiThinkingTimeValue(value.round()),
                   onChanged: (double value) {
                     setState(() {
                       _moveTime = value.round();

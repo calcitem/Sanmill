@@ -478,7 +478,8 @@ void main() {
       final RuleSettings originalRuleSettings = DB().ruleSettings;
       DB().generalSettings = GeneralSettings.fromJson(
         Map<String, dynamic>.from(originalGeneralSettings.toJson())
-          ..['aiChatEnabled'] = true,
+          ..['aiChatEnabled'] = true
+          ..['moveTime'] = 1,
       );
       DB().ruleSettings = const NineMensMorrisRuleSettings();
       addTearDown(() {
@@ -608,6 +609,19 @@ void main() {
       );
       expect(find.byKey(const Key('human_ai')), findsNothing);
       expect(find.byKey(const Key('human_ai_new_game_sheet')), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('human_ai_new_game_sheet')),
+          matching: find.text('1 second'),
+        ),
+        findsOneWidget,
+      );
+      final Slider moveTimeSlider = tester.widget<Slider>(
+        find.byKey(const Key('human_ai_new_game_sheet_move_time_slider')),
+      );
+      expect(moveTimeSlider.label, '1 second');
+      expect(moveTimeSlider.semanticFormatterCallback?.call(0), 'No limit');
+      expect(moveTimeSlider.semanticFormatterCallback?.call(6), '6 seconds');
       expect(
         find.descendant(
           of: find.byKey(const Key('human_ai_new_game_sheet')),
