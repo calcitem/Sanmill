@@ -1466,9 +1466,15 @@ void main() {
         findsOneWidget,
       );
 
-      await tester.tap(
+      expect(
         find.byKey(const Key('play_area_analysis_settings_close')),
+        findsNothing,
       );
+      expect(
+        find.byKey(const Key('play_area_analysis_settings_cancel')),
+        findsNothing,
+      );
+      await tester.sendKeyEvent(LogicalKeyboardKey.escape);
       await tester.pumpAndSettle();
 
       await tester.binding.handlePopRoute();

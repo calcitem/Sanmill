@@ -100,12 +100,16 @@ Future<void> showAnalysisSettingsSheet(
                           ),
                         ),
                       ),
-                      IconButton(
-                        key: const Key('play_area_analysis_settings_close'),
-                        tooltip: strings.close,
-                        onPressed: () => Navigator.of(dialogContext).pop(),
-                        icon: const Icon(Icons.close),
-                      ),
+                      if (theme.platform == TargetPlatform.iOS)
+                        CupertinoButton(
+                          key: const Key('play_area_analysis_settings_cancel'),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 6,
+                          ),
+                          onPressed: () => Navigator.of(dialogContext).pop(),
+                          child: Text(strings.cancel),
+                        ),
                     ],
                   ),
                 ),
