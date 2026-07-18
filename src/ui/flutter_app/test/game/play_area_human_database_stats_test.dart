@@ -5473,6 +5473,23 @@ void main() {
       const Key('play_area_analysis_settings_opening_explorer_sources'),
     );
     expect(explorerSourcesTile, findsOneWidget);
+    expect(
+      find.descendant(
+        of: explorerSourcesTile,
+        matching: find.text('Computer move sources'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: explorerSourcesTile,
+        matching: find.text(
+          'Opening book, perfect database, human game database, and trap '
+          'library.',
+        ),
+      ),
+      findsOneWidget,
+    );
     await tester.ensureVisible(explorerSourcesTile);
     await tester.tap(explorerSourcesTile);
     await tester.pumpAndSettle();

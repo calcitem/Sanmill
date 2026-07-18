@@ -224,8 +224,8 @@ Future<void> showAnalysisSettingsSheet(
                         'play_area_analysis_settings_opening_explorer_sources',
                       ),
                       leading: const Icon(Icons.travel_explore_outlined),
-                      title: Text(strings.openingExplorer),
-                      subtitle: Text(strings.aiKnowledgeSources),
+                      title: Text(strings.aiKnowledgeSources),
+                      subtitle: Text(strings.aiKnowledgeSources_Detail),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () async {
                         RecordingService().recordEvent(
