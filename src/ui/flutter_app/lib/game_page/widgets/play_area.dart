@@ -2680,7 +2680,8 @@ class PlayAreaState extends State<PlayArea> {
             key: const Key('play_area_regular_game_menu_analysis_settings'),
             leading: const Icon(Icons.tune_outlined),
             trailing: const Icon(Icons.chevron_right),
-            makeLabel: (BuildContext context) => Text(strings.settings),
+            makeLabel: (BuildContext context) =>
+                Text(strings.analysisSettingsTitle),
             onPressed: () =>
                 _showAnalysisSettingsSheet(actionContext, strings: strings),
           ),
@@ -2837,7 +2838,9 @@ class PlayAreaState extends State<PlayArea> {
         LichessActionSheetAction(
           key: const Key('play_area_toolbar_item_options'),
           leading: const Icon(Icons.settings_outlined),
-          makeLabel: (BuildContext context) => Text(S.of(context).options),
+          makeLabel: (BuildContext context) => Text(
+            _isAnalysisMode ? S.of(context).settings : S.of(context).options,
+          ),
           onPressed: () => _navigateToSettings(actionContext),
         ),
         LichessActionSheetAction(

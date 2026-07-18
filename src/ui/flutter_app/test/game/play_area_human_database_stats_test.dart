@@ -2987,6 +2987,42 @@ void main() {
     expect(db.generalSettings.toneEnabled, isFalse);
   });
 
+  testWidgets('analysis menu distinguishes analysis and app settings', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.descendant(
+        of: find.byKey(
+          const Key('play_area_regular_game_menu_analysis_settings'),
+        ),
+        matching: find.text('Analysis settings'),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_toolbar_item_options')),
+        matching: find.text('Settings'),
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('Options'), findsNothing);
+  });
+
   testWidgets('analysis move list toggles annotations and comments', (
     WidgetTester tester,
   ) async {
