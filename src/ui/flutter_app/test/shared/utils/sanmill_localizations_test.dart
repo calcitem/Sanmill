@@ -746,6 +746,13 @@ void main() {
     );
   });
 
+  test('uses the established Chinese advantage-graph term', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.showAdvantageGraph, '显示优势图');
+    expect(chinese.advantageGraph, '优势图');
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =

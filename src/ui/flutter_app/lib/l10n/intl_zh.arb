@@ -6256,5 +6256,9 @@
                 "type": "String"
             }
         }
+    },
+    "advantageGraph": "优势图",
+    "@advantageGraph": {
+        "description": "Title and accessibility name for an advantage graph that is already visible"
     }
 }
