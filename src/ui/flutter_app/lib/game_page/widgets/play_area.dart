@@ -2487,6 +2487,9 @@ class PlayAreaState extends State<PlayArea> {
   bool _toggleGameTips({required String toolbar}) {
     assert(_supportsGameTips, 'Game tips require a playable game mode.');
     final GeneralSettings current = DB().generalSettings;
+    if (!mounted) {
+      return current.showGameTips;
+    }
     final bool enabled = !current.showGameTips;
     setState(() {
       DB().generalSettings = current.copyWith(showGameTips: enabled);
@@ -2528,7 +2531,12 @@ class PlayAreaState extends State<PlayArea> {
       key: key,
       dismissOnPress: false,
       makeLabel: (BuildContext context) => _GameTipsActionLabel(enabled),
-      onPressed: () {
+      onPressed: () {},
+      onPressedWithContext: (BuildContext menuContext) {
+        if (!mounted) {
+          Navigator.of(menuContext).pop();
+          return;
+        }
         enabled.value = _toggleGameTips(toolbar: toolbar);
       },
     );

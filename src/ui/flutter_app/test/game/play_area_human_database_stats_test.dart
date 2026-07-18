@@ -7670,6 +7670,74 @@ void main() {
     expect(find.byKey(const Key('game_page_scaffold')), findsNothing);
   });
 
+  testWidgets('stale game tips menu closes without changing the preference', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    GameController().gameInstance.gameMode = GameMode.humanVsAi;
+    final GlobalKey<NavigatorState> nestedNavigatorKey =
+        GlobalKey<NavigatorState>();
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        Navigator(
+          key: nestedNavigatorKey,
+          onGenerateRoute: (RouteSettings settings) {
+            if (settings.name == '/game') {
+              return MaterialPageRoute<void>(
+                builder: (_) => const Scaffold(
+                  body: PlayArea(
+                    boardImage: null,
+                    child: SizedBox.square(dimension: 390),
+                  ),
+                ),
+              );
+            }
+            return MaterialPageRoute<void>(
+              builder: (BuildContext context) => Scaffold(
+                body: Center(
+                  child: TextButton(
+                    key: const Key('open_game_tips_lifecycle_test'),
+                    onPressed: () => Navigator.of(context).pushNamed('/game'),
+                    child: const Text('Open game'),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+    await tester.tap(find.byKey(const Key('open_game_tips_lifecycle_test')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
+    await tester.pumpAndSettle();
+
+    const Key sheetKey = Key('play_area_game_menu_sheet');
+    const Key actionKey = Key('play_area_game_menu_game_tips');
+    expect(find.byKey(sheetKey), findsOneWidget);
+    expect(find.byKey(actionKey), findsOneWidget);
+
+    nestedNavigatorKey.currentState!.pop();
+    await tester.pumpAndSettle();
+    expect(find.byType(PlayArea), findsNothing);
+    expect(find.byKey(sheetKey), findsOneWidget);
+
+    await tester.tap(find.byKey(actionKey));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(sheetKey), findsNothing);
+    expect(db.generalSettings.showGameTips, isFalse);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('human vs human route asks before leaving an active game', (
     WidgetTester tester,
   ) async {
