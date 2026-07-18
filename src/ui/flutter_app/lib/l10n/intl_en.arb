@@ -6527,5 +6527,29 @@
     "openingExplorerSourceOff": "Off",
     "@openingExplorerSourceOff": {
         "description": "Opening Explorer source state when that source is disabled in settings"
+    },
+    "analysisMoveCount": "{count, plural, =0{No moves} =1{1 move} other{{count} moves}}",
+    "@analysisMoveCount": {
+        "description": "Number of moves in the current line shown below the Analysis move-list heading",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "12"
+            }
+        }
+    },
+    "analysisVariationCount": "{count, plural, =1{1 variation} other{{count} variations}}",
+    "@analysisVariationCount": {
+        "description": "Number of alternative variations shown below the Analysis move-list heading",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "2"
+            }
+        }
+    },
+    "openMoveListWithSmallBoard": "Open move list with small board",
+    "@openMoveListWithSmallBoard": {
+        "description": "Tooltip and accessibility action for opening the full move list alongside its position preview"
     }
 }

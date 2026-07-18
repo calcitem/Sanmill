@@ -6700,7 +6700,7 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.byTooltip('Move list · Small board · Current line only · 1'),
+      find.byTooltip('Open move list with small board · 1 move'),
       findsOneWidget,
     );
 
@@ -6911,10 +6911,7 @@ void main() {
     final Text movesHeaderSubtitle = tester.widget<Text>(
       find.byKey(const Key('play_area_analysis_moves_header_subtitle')),
     );
-    expect(
-      movesHeaderSubtitle.data,
-      contains('Current line only · 1 · Variations 1'),
-    );
+    expect(movesHeaderSubtitle.data, '1 move · 1 variation');
     expect(
       find.byKey(const Key('play_area_analysis_variations_bar_content')),
       findsOneWidget,

@@ -7871,17 +7871,15 @@ class _AnalysisMovesHeader extends StatelessWidget {
     ).length;
     final int variationCount = _recorderVariationBranchCount(recorder);
     final List<String> parts = <String>[
-      strings.includeVariationsCurrentLine,
-      '$moveCount',
-      if (variationCount > 0) '${strings.variations} $variationCount',
+      strings.analysisMoveCount(moveCount),
+      if (variationCount > 0) strings.analysisVariationCount(variationCount),
     ];
     final String subtitle = parts.join(' · ');
 
     return _AnalysisMovesHeaderLabels(
       subtitle: subtitle,
       fullMoveListAction: <String>[
-        strings.moveList,
-        strings.smallBoard,
+        strings.openMoveListWithSmallBoard,
         subtitle,
       ].join(' · '),
     );

@@ -73,6 +73,20 @@ void main() {
     expect(english.reviewMoveProgress(2, 14), 'Move 2 of 14');
   });
 
+  test('labels English analysis move counts without export jargon', () {
+    final S english = lookupS(const Locale('en'));
+
+    expect(english.analysisMoveCount(0), 'No moves');
+    expect(english.analysisMoveCount(1), '1 move');
+    expect(english.analysisMoveCount(12), '12 moves');
+    expect(english.analysisVariationCount(1), '1 variation');
+    expect(english.analysisVariationCount(2), '2 variations');
+    expect(
+      english.openMoveListWithSmallBoard,
+      'Open move list with small board',
+    );
+  });
+
   test('uses concise chess-style feedback in English mistake review', () {
     final S english = lookupS(const Locale('en'));
 
