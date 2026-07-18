@@ -159,6 +159,7 @@ void main() {
     expect(chinese.analysisMoveCount(12), '12 手');
     expect(chinese.analysisVariationCount(1), '1 条变化');
     expect(chinese.analysisVariationCount(2), '2 条变化');
+    expect(chinese.openMoveListWithSmallBoard, '打开带棋盘预览的着法列表');
   });
 
   test('expands English clock controls for assistive technology', () {
