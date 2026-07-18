@@ -9033,68 +9033,81 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
           onLongPress: onLongPress,
           child: Opacity(
             opacity: _enabled ? 1 : 0.4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Stack(
+              clipBehavior: Clip.none,
+              fit: StackFit.expand,
+              alignment: Alignment.center,
               children: <Widget>[
-                SizedBox.square(
-                  dimension: 28,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: <Widget>[
-                      CustomPaint(
-                        size: const Size.square(28),
-                        painter: _AnalysisEngineChipPainter(chipColor),
-                      ),
-                      if (isAnalyzing)
-                        SizedBox.square(
-                          key: const Key(
-                            'play_area_analysis_bottom_bar_engine_progress',
-                          ),
-                          dimension: 12,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            semanticsLabel: strings.analyzing,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              textColor.withValues(alpha: 0.82),
+                Center(
+                  child: SizedBox.square(
+                    key: const Key('play_area_analysis_bottom_bar_engine_chip'),
+                    dimension: 28,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        CustomPaint(
+                          size: const Size.square(28),
+                          painter: _AnalysisEngineChipPainter(chipColor),
+                        ),
+                        if (isAnalyzing)
+                          SizedBox.square(
+                            key: const Key(
+                              'play_area_analysis_bottom_bar_engine_progress',
+                            ),
+                            dimension: 12,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              semanticsLabel: strings.analyzing,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                textColor.withValues(alpha: 0.82),
+                              ),
+                            ),
+                          )
+                        else
+                          Text(
+                            chipText,
+                            key: const Key(
+                              'play_area_analysis_bottom_bar_engine_value',
+                            ),
+                            style: TextStyle(
+                              color: textColor,
+                              fontSize: chipText.length > 2 ? 9 : 11,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0,
+                              shadows: <Shadow>[
+                                Shadow(
+                                  color: textColor.computeLuminance() < 0.5
+                                      ? Colors.white.withValues(alpha: 0.48)
+                                      : Colors.black.withValues(alpha: 0.48),
+                                  blurRadius: 2,
+                                  offset: const Offset(0, 1),
+                                ),
+                              ],
                             ),
                           ),
-                        )
-                      else
-                        Text(
-                          chipText,
-                          key: const Key(
-                            'play_area_analysis_bottom_bar_engine_value',
-                          ),
-                          style: TextStyle(
-                            color: textColor,
-                            fontSize: chipText.length > 2 ? 9 : 11,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 0,
-                            shadows: <Shadow>[
-                              Shadow(
-                                color: textColor.computeLuminance() < 0.5
-                                    ? Colors.white.withValues(alpha: 0.48)
-                                    : Colors.black.withValues(alpha: 0.48),
-                                blurRadius: 2,
-                                offset: const Offset(0, 1),
-                              ),
-                            ],
-                          ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-                Text(
-                  sourceLabel,
-                  key: const Key('play_area_analysis_bottom_bar_engine_label'),
-                  maxLines: 1,
-                  overflow: TextOverflow.fade,
-                  softWrap: false,
-                  style: TextStyle(
-                    color: textColor.withValues(alpha: 0.82),
-                    fontSize: 10,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0,
+                Positioned(
+                  left: 4,
+                  right: 4,
+                  bottom: -2,
+                  child: Text(
+                    sourceLabel,
+                    key: const Key(
+                      'play_area_analysis_bottom_bar_engine_label',
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
+                    softWrap: false,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: textColor.withValues(alpha: 0.82),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0,
+                    ),
                   ),
                 ),
               ],

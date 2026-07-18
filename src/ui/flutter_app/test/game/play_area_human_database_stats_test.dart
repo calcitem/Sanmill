@@ -4331,6 +4331,39 @@ void main() {
     expect(find.text('Analysis moves cleared.'), findsOneWidget);
   });
 
+  testWidgets('analysis engine chip aligns with unlabeled bottom bar icons', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+      isHistoryNavigationToolbarShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    final Offset engineChipCenter = tester.getCenter(
+      find.byKey(const Key('play_area_analysis_bottom_bar_engine_chip')),
+    );
+    final Offset menuIconCenter = tester.getCenter(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
+        matching: find.byIcon(Icons.menu),
+      ),
+    );
+    expect(engineChipCenter.dy, closeTo(menuIconCenter.dy, 0.01));
+    expect(
+      tester
+          .getCenter(
+            find.byKey(const Key('play_area_analysis_bottom_bar_engine_label')),
+          )
+          .dy,
+      greaterThan(engineChipCenter.dy),
+    );
+  });
+
   testWidgets('analysis engine button shows source and opens settings', (
     WidgetTester tester,
   ) async {
