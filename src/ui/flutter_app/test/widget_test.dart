@@ -983,6 +983,12 @@ void main() {
       await tester.tap(find.byKey(const Key('puzzles_home_custom')));
       await tester.pumpAndSettle();
 
+      expect(find.text('Puzzle editor'), findsOneWidget);
+      expect(find.text('No puzzles yet'), findsOneWidget);
+      expect(
+        find.text('Create or import puzzles to practice specific positions'),
+        findsOneWidget,
+      );
       final BuildContext customPuzzlesContext = tester.element(
         find.byKey(const Key('custom_puzzles_page_scaffold')),
       );

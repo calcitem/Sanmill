@@ -2958,13 +2958,13 @@
     "@puzzleBattleFeature4": {
         "description": "Puzzle battle feature 4"
     },
-    "customPuzzles": "Custom puzzles",
+    "customPuzzles": "Puzzle editor",
     "@customPuzzles": {
-        "description": "Custom puzzles mode name"
+        "description": "Puzzle editor entry and page title"
     },
-    "customPuzzlesDesc": "Create and manage your puzzles",
+    "customPuzzlesDesc": "Create, import, and manage puzzles",
     "@customPuzzlesDesc": {
-        "description": "Custom puzzles mode description"
+        "description": "Puzzle editor description"
     },
     "puzzleMultiSelectMode": "Multi-Select Mode",
     "@puzzleMultiSelectMode": {
@@ -3139,13 +3139,13 @@
     "@save": {
         "description": "Save button"
     },
-    "noCustomPuzzles": "No custom puzzles",
+    "noCustomPuzzles": "No puzzles yet",
     "@noCustomPuzzles": {
-        "description": "Message when there are no custom puzzles"
+        "description": "Empty puzzle editor message"
     },
-    "noCustomPuzzlesHint": "Create your own puzzles to practice specific positions",
+    "noCustomPuzzlesHint": "Create or import puzzles to practice specific positions",
     "@noCustomPuzzlesHint": {
-        "description": "Hint message for creating custom puzzles"
+        "description": "Empty puzzle editor hint"
     },
     "plannedFeatures": "This feature is planned for a future release",
     "@plannedFeatures": {
