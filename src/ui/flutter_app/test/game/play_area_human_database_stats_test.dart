@@ -4362,7 +4362,7 @@ void main() {
     expect(db.displaySettings.showBranchTree, isFalse);
   });
 
-  testWidgets('analysis menu clears saved moves back to the start position', (
+  testWidgets('analysis menu clears moves back to the start position', (
     WidgetTester tester,
   ) async {
     db.displaySettings = const DisplaySettings(
@@ -4398,7 +4398,7 @@ void main() {
       find.byKey(const Key('play_area_regular_game_menu_clear_saved_moves')),
       findsOne,
     );
-    expect(find.text('Clear saved moves'), findsOneWidget);
+    expect(find.text('Clear moves'), findsOneWidget);
 
     await tester.tap(
       find.byKey(const Key('play_area_regular_game_menu_clear_saved_moves')),
