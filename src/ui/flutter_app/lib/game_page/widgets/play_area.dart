@@ -9292,6 +9292,8 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
       button: true,
       enabled: _enabled,
       label: accessibleLabel,
+      onTap: onTap,
+      onLongPress: onLongPress,
       excludeSemantics: true,
       child: Tooltip(
         excludeFromSemantics: true,

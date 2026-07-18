@@ -4553,6 +4553,19 @@ void main() {
     );
     expect(sourceLabel.data, 'Database');
     expect(find.byTooltip('Engine · Database · 1'), findsOneWidget);
+    expect(
+      tester.getSemantics(
+        find.byKey(const Key('play_area_analysis_bottom_bar_engine')),
+      ),
+      matchesSemantics(
+        label: 'Engine · Database · 1',
+        isButton: true,
+        hasEnabledState: true,
+        isEnabled: true,
+        hasTapAction: true,
+        hasLongPressAction: true,
+      ),
+    );
 
     AnalysisMode.enable(<MoveAnalysisResult>[
       const MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.advantage),
