@@ -2447,26 +2447,6 @@ class PlayAreaState extends State<PlayArea> {
     AnalysisMode.toggleEngineLines(persist: true);
   }
 
-  void _toggleAnalysisSoundFromMenu() {
-    assert(_isAnalysisMode, 'Analysis sound toggle is analysis-mode only.');
-    final GeneralSettings current = DB().generalSettings;
-    final bool enabled = !current.toneEnabled;
-    RecordingService().recordEvent(
-      RecordingEventType.toolbarAction,
-      <String, dynamic>{
-        'toolbar': 'analysisMenu',
-        'action': 'toggleSound',
-        'enabled': enabled,
-      },
-    );
-    DB().generalSettings = current.copyWith(toneEnabled: enabled);
-    if (enabled) {
-      unawaited(SoundManager().startBackgroundMusic());
-    } else {
-      unawaited(SoundManager().stopBackgroundMusic());
-    }
-  }
-
   int? _currentAnalysisEngineDepth() {
     return _analysisEngineDepth();
   }
@@ -2637,17 +2617,6 @@ class PlayAreaState extends State<PlayArea> {
       backgroundColor: _actionSheetBackground(hostContext),
       foregroundColor: _actionSheetForeground(hostContext),
       actions: <LichessActionSheetAction>[
-        if (_isAnalysisMode)
-          LichessActionSheetAction(
-            key: const Key('play_area_regular_game_menu_toggle_sound'),
-            leading: Icon(
-              DB().generalSettings.toneEnabled
-                  ? Icons.volume_up_outlined
-                  : Icons.volume_off_outlined,
-            ),
-            makeLabel: (BuildContext context) => Text(S.of(context).playSounds),
-            onPressed: _toggleAnalysisSoundFromMenu,
-          ),
         if (_isAnalysisMode && nativeHostSession != null)
           LichessActionSheetAction(
             key: const Key('play_area_regular_game_menu_clear_saved_moves'),
@@ -2658,32 +2627,6 @@ class PlayAreaState extends State<PlayArea> {
               session: nativeHostSession,
               strings: strings,
             ),
-          ),
-        if (_isAnalysisMode)
-          LichessActionSheetAction(
-            key: const Key('play_area_regular_game_menu_toggle_engine_lines'),
-            leading: Icon(
-              AnalysisMode.showEngineLines
-                  ? Icons.subtitles_outlined
-                  : Icons.subtitles_off_outlined,
-            ),
-            makeLabel: (BuildContext context) => Text(
-              AnalysisMode.showEngineLines
-                  ? strings.hideEngineLines
-                  : strings.showEngineLines,
-            ),
-            onPressed: () =>
-                _toggleEngineLinesFromAnalysis(toolbar: 'analysisMenu'),
-          ),
-        if (_isAnalysisMode)
-          LichessActionSheetAction(
-            key: const Key('play_area_regular_game_menu_analysis_settings'),
-            leading: const Icon(Icons.tune_outlined),
-            trailing: const Icon(Icons.chevron_right),
-            makeLabel: (BuildContext context) =>
-                Text(strings.analysisSettingsTitle),
-            onPressed: () =>
-                _showAnalysisSettingsSheet(actionContext, strings: strings),
           ),
         if (_isAnalysisMode &&
             nativeHostSession != null &&
@@ -2836,18 +2779,18 @@ class PlayAreaState extends State<PlayArea> {
             ),
         ],
         LichessActionSheetAction(
+          key: const Key('play_area_toolbar_item_info'),
+          leading: const Icon(Icons.info_outline),
+          makeLabel: (BuildContext context) => Text(S.of(context).info),
+          onPressed: () => _openDialog(actionContext, const InfoDialog()),
+        ),
+        LichessActionSheetAction(
           key: const Key('play_area_toolbar_item_options'),
           leading: const Icon(Icons.settings_outlined),
           makeLabel: (BuildContext context) => Text(
             _isAnalysisMode ? S.of(context).settings : S.of(context).options,
           ),
           onPressed: () => _navigateToSettings(actionContext),
-        ),
-        LichessActionSheetAction(
-          key: const Key('play_area_toolbar_item_info'),
-          leading: const Icon(Icons.info_outline),
-          makeLabel: (BuildContext context) => Text(S.of(context).info),
-          onPressed: () => _openDialog(actionContext, const InfoDialog()),
         ),
       ],
     );

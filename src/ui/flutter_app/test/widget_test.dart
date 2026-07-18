@@ -1331,9 +1331,15 @@ void main() {
       expect(S.of(analysisMenuContext).engineLineCount(1), '1 line');
       expect(S.of(analysisMenuContext).engineLineCount(2), '2 lines');
       expect(
+        find.byKey(const Key('game_page_analysis_menu_sound')),
+        findsOneWidget,
+      );
+      expect(find.text('Sound'), findsOneWidget);
+      expect(
         find.byKey(const Key('game_page_analysis_menu_settings')),
         findsOneWidget,
       );
+      expect(find.text('Analysis settings'), findsOneWidget);
       expect(
         find.byKey(const Key('game_page_analysis_menu_engine_lines')),
         findsOneWidget,
@@ -1341,6 +1347,14 @@ void main() {
       expect(find.text('Hide engine lines'), findsOneWidget);
       expect(find.text('Engine · 2 lines'), findsOneWidget);
       expect(AnalysisMode.showEngineLines, isTrue);
+
+      final bool soundWasEnabled = DB().generalSettings.toneEnabled;
+      await tester.tap(find.byKey(const Key('game_page_analysis_menu_sound')));
+      await tester.pumpAndSettle();
+      expect(DB().generalSettings.toneEnabled, isNot(soundWasEnabled));
+
+      await tester.tap(find.byKey(const Key('game_page_analysis_menu_button')));
+      await tester.pumpAndSettle();
 
       await tester.tap(
         find.byKey(const Key('game_page_analysis_menu_engine_lines')),

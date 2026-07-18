@@ -2954,40 +2954,7 @@ void main() {
     );
   });
 
-  testWidgets('analysis menu toggles game sounds', (WidgetTester tester) async {
-    db.displaySettings = const DisplaySettings(
-      isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
-    );
-    db.generalSettings = db.generalSettings.copyWith(toneEnabled: true);
-    final NativeMillGameSession session = await _bindNativeGame(
-      GameMode.analysis,
-    );
-
-    await _pumpSessionPlayArea(tester, session);
-
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
-    );
-    await tester.pumpAndSettle();
-
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_toggle_sound')),
-      findsOneWidget,
-    );
-    expect(find.text('Sound'), findsOneWidget);
-    expect(find.text('Play game sounds'), findsNothing);
-    expect(db.generalSettings.toneEnabled, isTrue);
-
-    await tester.tap(
-      find.byKey(const Key('play_area_regular_game_menu_toggle_sound')),
-    );
-    await tester.pumpAndSettle();
-
-    expect(db.generalSettings.toneEnabled, isFalse);
-  });
-
-  testWidgets('analysis menu distinguishes analysis and app settings', (
+  testWidgets('analysis position menu keeps only app settings', (
     WidgetTester tester,
   ) async {
     db.displaySettings = const DisplaySettings(
@@ -3004,15 +2971,9 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(
-      find.descendant(
-        of: find.byKey(
-          const Key('play_area_regular_game_menu_analysis_settings'),
-        ),
-        matching: find.text('Analysis settings'),
-      ),
-      findsOneWidget,
-    );
+    expect(find.text('Analysis settings'), findsNothing);
+    expect(find.text('Sound'), findsNothing);
+    expect(find.text('Hide engine lines'), findsNothing);
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_toolbar_item_options')),

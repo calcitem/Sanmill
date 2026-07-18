@@ -82,7 +82,7 @@ part 'game_header.dart';
 part 'game_page_action_sheet.dart';
 part 'modals/move_options_modal.dart';
 
-enum _AnalysisAppBarAction { settings, toggleEngineLines }
+enum _AnalysisAppBarAction { toggleSound, settings, toggleEngineLines }
 
 /// Main GamePage widget that initializes the game controller and passes it
 /// to a stateful inner widget managing annotation mode.
@@ -225,6 +225,26 @@ class _GamePageInnerState extends State<_GamePageInner> {
       <String, dynamic>{'action': _isAnnotationMode ? 'exit' : 'enter'},
     );
     _toggleAnnotationMode();
+  }
+
+  void _toggleAnalysisSound() {
+    assert(_isAnalysisPage, 'The AppBar sound toggle is analysis-only.');
+    final GeneralSettings current = DB().generalSettings;
+    final bool enabled = !current.toneEnabled;
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{
+        'toolbar': 'analysisAppBar',
+        'action': 'toggleSound',
+        'enabled': enabled,
+      },
+    );
+    DB().generalSettings = current.copyWith(toneEnabled: enabled);
+    if (enabled) {
+      unawaited(SoundManager().startBackgroundMusic());
+    } else {
+      unawaited(SoundManager().stopBackgroundMusic());
+    }
   }
 
   @override
@@ -570,6 +590,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
               icon: Icon(Icons.more_horiz, semanticLabel: strings.menu),
               onSelected: (_AnalysisAppBarAction action) {
                 switch (action) {
+                  case _AnalysisAppBarAction.toggleSound:
+                    _toggleAnalysisSound();
                   case _AnalysisAppBarAction.settings:
                     RecordingService().recordEvent(
                       RecordingEventType.toolbarAction,
@@ -596,11 +618,24 @@ class _GamePageInnerState extends State<_GamePageInner> {
               itemBuilder: (BuildContext context) {
                 return <PopupMenuEntry<_AnalysisAppBarAction>>[
                   PopupMenuItem<_AnalysisAppBarAction>(
+                    key: const Key('game_page_analysis_menu_sound'),
+                    value: _AnalysisAppBarAction.toggleSound,
+                    child: ListTile(
+                      leading: Icon(
+                        DB().generalSettings.toneEnabled
+                            ? Icons.volume_up_outlined
+                            : Icons.volume_off_outlined,
+                      ),
+                      title: Text(strings.playSounds),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                  PopupMenuItem<_AnalysisAppBarAction>(
                     key: const Key('game_page_analysis_menu_settings'),
                     value: _AnalysisAppBarAction.settings,
                     child: ListTile(
                       leading: const Icon(Icons.settings_outlined),
-                      title: Text(strings.settings),
+                      title: Text(strings.analysisSettingsTitle),
                       contentPadding: EdgeInsets.zero,
                     ),
                   ),
