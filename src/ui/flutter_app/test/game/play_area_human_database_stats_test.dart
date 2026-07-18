@@ -294,6 +294,51 @@ void main() {
     expect(_boardSquareSemanticsFinder(), findsNWidgets(49));
   });
 
+  testWidgets('resuming a game does not show the raw PGN in a snackbar', (
+    WidgetTester tester,
+  ) async {
+    db = _GamePageDb(
+      generalSettings: const GeneralSettings(),
+      displaySettings: const DisplaySettings(
+        isUnplacedAndRemovedPiecesShown: false,
+        isHistoryNavigationToolbarShown: false,
+      ),
+    );
+    DB.instance = db;
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.humanVsAi,
+    );
+    const String pgn =
+        '[Event "Resume fixture"]\n'
+        '[White "Human"]\n'
+        '[Black "Computer"]\n'
+        '[Result "*"]\n\n'
+        '1. d6 f4 *';
+    GameController().initialSharingMoveList = pgn;
+
+    await tester.pumpWidget(
+      _localizedApp(
+        GameSessionScope(
+          session: session,
+          child: const Scaffold(
+            body: SizedBox.square(
+              dimension: 390,
+              child: GameBoard(boardImage: null),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.runAsync(
+      () => Future<void>.delayed(const Duration(milliseconds: 300)),
+    );
+    await tester.pump();
+
+    expect(GameController().initialSharingMoveList, isNull);
+    expect(find.text(pgn), findsNothing);
+  });
+
   testWidgets('piece animation leaves the static board layer unchanged', (
     WidgetTester tester,
   ) async {

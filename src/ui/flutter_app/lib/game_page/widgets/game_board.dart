@@ -295,12 +295,6 @@ class _GameBoardState extends State<GameBoard>
       });
     }
 
-    if (mounted) {
-      rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-        GameController().initialSharingMoveList!,
-      );
-    }
-
     GameController().initialSharingMoveList = null;
   }
 
