@@ -4360,7 +4360,7 @@
             }
         }
     },
-    "humanGameDatabaseStatsLine": "{move}  胜 {winPct}%  和 {drawPct}%  负 {lossPct}%  样本 {total}",
+    "humanGameDatabaseStatsLine": "{move}  胜 {winPct}%  和 {drawPct}%  负 {lossPct}%  对局 {total}",
     "@humanGameDatabaseStatsLine": {
         "placeholders": {
             "move": {

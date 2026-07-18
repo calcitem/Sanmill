@@ -1012,6 +1012,15 @@ void main() {
     expect(chinese.humanDatabaseNoPositionRecords, '当前局面没有人类实战记录');
   });
 
+  test('states Chinese human database game counts without ambiguity', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(
+      chinese.humanGameDatabaseStatsLine('d6', '50', '30', '20', 100),
+      'd6  胜 50%  和 30%  负 20%  对局 100',
+    );
+  });
+
   test('uses standard FEN wording for puzzle validation errors', () {
     final S strings = lookupS(const Locale('en'));
 
