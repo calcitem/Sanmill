@@ -1351,7 +1351,7 @@
     },
     {
       "id": "malom_movement_white_5_eb653ee3",
-      "title": "Win in 5: leave them no move",
+      "title": "Win in 5: immobilize the opponent",
       "description": "White to move and win in 5 moves against the opponent's best practical defense. Only 1 of the 10 legal first moves keeps the win alive.",
       "category": "winGame",
       "difficulty": "medium",
@@ -2870,7 +2870,7 @@
     },
     {
       "id": "malom_placement_white_6_dc5d4d04",
-      "title": "Win in 6: leave them no move",
+      "title": "Win in 6: immobilize the opponent",
       "description": "White to move and win in 6 moves against the opponent's best practical defense. Only 1 of the 15 legal first moves keeps the win alive.",
       "category": "opening",
       "difficulty": "medium",

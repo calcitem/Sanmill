@@ -272,7 +272,7 @@ fn select_theme(traits: &PuzzleTraits, line: &LineTraits) -> ThemeProse {
     if line.immobilization_win {
         return ThemeProse {
             tag: "immobilization",
-            headline: "leave them no move",
+            headline: "immobilize the opponent",
             hint: "You do not need to capture everything. Herd the opponent's pieces until \
                    none of them can move.",
             completion: "The win came by immobilization: the opponent still had material but \
@@ -737,6 +737,21 @@ mod tests {
             theme.completion,
             "Even the flying defense could not escape: the winning net closed first."
         );
+    }
+
+    #[test]
+    fn immobilization_theme_uses_standard_mill_language() {
+        let theme = select_theme(
+            &plain_traits(),
+            &LineTraits {
+                immobilization_win: true,
+                ..LineTraits::default()
+            },
+        );
+
+        assert_eq!(theme.headline, "immobilize the opponent");
+        assert_eq!(theme.tag, "immobilization");
+        assert!(theme.completion.contains("immobilization"));
     }
 
     #[test]

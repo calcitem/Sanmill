@@ -32,6 +32,19 @@ void main() {
       final List<PuzzleInfo> puzzles = await getBuiltInPuzzles();
 
       expect(puzzles, isNotEmpty);
+      expect(
+        puzzles.any(
+          (PuzzleInfo puzzle) =>
+              puzzle.title == 'Win in 5: immobilize the opponent',
+        ),
+        isTrue,
+      );
+      expect(
+        puzzles.any(
+          (PuzzleInfo puzzle) => puzzle.title.contains('leave them no move'),
+        ),
+        isFalse,
+      );
       for (final PuzzleInfo puzzle in puzzles) {
         expect(puzzle.id, isNotEmpty);
         expect(puzzle.solutions, isNotEmpty);
