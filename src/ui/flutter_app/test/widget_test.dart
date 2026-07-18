@@ -1385,6 +1385,20 @@ void main() {
         find.byKey(const Key('settings_hub_rule_settings')),
         findsOneWidget,
       );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('settings_hub_general_settings')),
+          matching: find.text('General'),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('settings_hub_rule_settings')),
+          matching: find.text('Rules'),
+        ),
+        findsOneWidget,
+      );
       expect(find.byKey(const Key('settings_hub_appearance')), findsOneWidget);
       expect(
         find.byKey(const Key('settings_hub_config_import_export_card')),

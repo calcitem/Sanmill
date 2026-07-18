@@ -151,14 +151,14 @@ class SettingsHubPage extends StatelessWidget {
                 _SettingsHubTile(
                   key: const Key('settings_hub_general_settings'),
                   icon: Icons.tune_rounded,
-                  title: strings.generalSettings,
+                  title: strings.general,
                   pageBuilder: (_) => const GeneralSettingsPage(),
                 ),
                 if (hasRuleSettings)
                   _SettingsHubTile(
                     key: const Key('settings_hub_rule_settings'),
                     icon: Icons.rule_rounded,
-                    title: strings.ruleSettings,
+                    title: strings.rules,
                     pageBuilder: (BuildContext context) {
                       final Widget? page = GameRegistry.instance.current
                           .buildRuleSettingsScreen(context);
