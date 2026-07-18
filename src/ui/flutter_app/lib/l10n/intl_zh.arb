@@ -6070,7 +6070,7 @@
     "@diagnosticBundleCopied": {
         "description": "Confirmation after copying a diagnostic bundle."
     },
-    "diagnosticCopyAndOpenIssue": "复制并打开 GitHub 问题",
+    "diagnosticCopyAndOpenIssue": "复制并打开 Gitee issue",
     "@diagnosticCopyAndOpenIssue": {
         "description": "Copies the exact diagnostic bundle and opens the source repository issue form."
     },

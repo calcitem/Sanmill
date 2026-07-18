@@ -8,8 +8,27 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../generated/intl/l10n.dart';
+import '../config/constants.dart';
 import '../services/diagnostic_report_service.dart';
 import '../services/environment_config.dart';
+
+@visibleForTesting
+Uri diagnosticIssueUrlForLocale(Locale locale, String sourceUrl) {
+  if (locale.languageCode == 'zh' && locale.scriptCode != 'Hant') {
+    return Uri.parse('${Constants.issuesURL.baseChinese}/new');
+  }
+
+  final Uri source = Uri.parse(sourceUrl);
+  return source.host == 'github.com'
+      ? Uri(
+          scheme: source.scheme,
+          userInfo: source.userInfo,
+          host: source.host,
+          port: source.hasPort ? source.port : null,
+          path: '${source.path.replaceFirst(RegExp(r'/$'), '')}/issues/new',
+        )
+      : Uri.parse('${Constants.issuesURL.base}/new');
+}
 
 /// First-party report editor. The generated text is both the visible preview
 /// and the exact payload copied or sent to GlitchTip.
@@ -107,14 +126,10 @@ class _DiagnosticReportPageState extends State<DiagnosticReportPage> {
 
   Future<void> _copyAndOpenIssue() async {
     await _copy();
-    final Uri source = Uri.parse(EnvironmentConfig.sourceUrl);
-    final Uri issueUrl = source.host == 'github.com'
-        ? source.replace(
-            path: '${source.path.replaceFirst(RegExp(r'/$'), '')}/issues/new',
-            query: '',
-            fragment: '',
-          )
-        : Uri.parse('https://github.com/calcitem/Sanmill/issues/new');
+    final Uri issueUrl = diagnosticIssueUrlForLocale(
+      Localizations.localeOf(context),
+      EnvironmentConfig.sourceUrl,
+    );
     await launchUrl(issueUrl, mode: LaunchMode.externalApplication);
   }
 

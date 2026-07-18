@@ -49,11 +49,14 @@ void main() {
     );
   }
 
-  Widget app(DiagnosticReportDraft report) {
+  Widget app(
+    DiagnosticReportDraft report, {
+    Locale locale = const Locale('en'),
+  }) {
     return MaterialApp(
       localizationsDelegates: sanmillLocalizationsDelegates,
       supportedLocales: S.supportedLocales,
-      locale: const Locale('en'),
+      locale: locale,
       home: DiagnosticReportPage(draft: report),
     );
   }
@@ -107,5 +110,39 @@ void main() {
 
     expect(preview(), isNot(contains('"logs":')));
     expect(find.byIcon(Icons.camera_alt), findsNothing);
+  });
+
+  test('uses Gitee only for the Simplified Chinese interface', () {
+    const String sourceUrl = 'https://github.com/example/fork';
+
+    expect(
+      diagnosticIssueUrlForLocale(const Locale('zh'), sourceUrl).toString(),
+      'https://gitee.com/calcitem/Sanmill/issues/new',
+    );
+    expect(
+      diagnosticIssueUrlForLocale(
+        const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'),
+        sourceUrl,
+      ).toString(),
+      'https://github.com/example/fork/issues/new',
+    );
+    expect(
+      diagnosticIssueUrlForLocale(const Locale('en'), sourceUrl).toString(),
+      'https://github.com/example/fork/issues/new',
+    );
+  });
+
+  testWidgets('names Gitee in the Simplified Chinese report action', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      app(draft(DiagnosticReportKind.crash), locale: const Locale('zh')),
+    );
+    await tester.pumpAndSettle();
+    await tester.drag(find.byType(ListView), const Offset(0, -800));
+    await tester.pumpAndSettle();
+
+    expect(find.text('复制并打开 Gitee issue'), findsOneWidget);
+    expect(find.textContaining('GitHub'), findsNothing);
   });
 }
