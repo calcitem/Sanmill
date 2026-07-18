@@ -1123,6 +1123,10 @@ void main() {
         findsOneWidget,
       );
       expect(
+        find.text('Format: W/D/L (Wins / Draws / Losses)'),
+        findsOneWidget,
+      );
+      expect(
         tester
             .getTopLeft(find.byKey(const Key('statistics_page_settings_card')))
             .dy,

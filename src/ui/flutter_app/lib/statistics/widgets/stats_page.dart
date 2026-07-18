@@ -226,7 +226,8 @@ class StatisticsPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 14, 16, 6),
           child: Text(
-            '${l10n.format} W/D/L (${l10n.wins}/${l10n.draws}/${l10n.losses})',
+            '${l10n.format} W/D/L '
+            '(${l10n.wins} / ${l10n.draws} / ${l10n.losses})',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
