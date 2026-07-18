@@ -210,6 +210,18 @@ void main() {
     expect(english.noHumanMistakesToCorrect, 'No human mistakes to review.');
   });
 
+  test('uses concise chess-style feedback in Chinese correction review', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.interactiveCorrection, '互动纠错');
+    expect(chinese.correctionPrompt('d6xf4'), '找出比 d6xf4 更好的着法。');
+    expect(chinese.correctionAccepted, '好棋！');
+    expect(chinese.correctionTryAgain, '还可以更好，请换一手。');
+    expect(chinese.correctionAnswer('b6'), '最佳着法：b6');
+    expect(chinese.correctionComplete, '互动纠错完成');
+    expect(chinese.noHumanMistakesToCorrect, '没有可供纠错的真人失误。');
+  });
+
   test('explains English opening randomness without implementation detail', () {
     final S english = lookupS(const Locale('en'));
 
