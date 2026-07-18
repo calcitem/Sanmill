@@ -19,6 +19,9 @@ void main() {
     expect(strings.boardImageOption(3), '棋盘图片 3');
     expect(strings.boardImageDescription, '选择用于棋盘表面的图片。');
     expect(strings.backgroundImageDescription, '选择用于对局区域背景的图片。');
+    expect(strings.boardColors, '棋盘颜色');
+    expect(strings.pieceColors, '棋子颜色');
+    expect(strings.interfaceColors, '界面颜色');
     expect(strings.customBackgroundImage, '自定义背景图片');
     expect(strings.customBoardImage, '自定义棋盘图片');
     expect(strings.transparentToolbars, '透明工具栏');

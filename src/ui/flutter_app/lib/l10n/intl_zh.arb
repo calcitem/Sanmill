@@ -6480,5 +6480,17 @@
     "innerOuterFlipShort": "内外环",
     "@innerOuterFlipShort": {
         "description": "Compact visual label for the inner-and-outer-ring swap in the board editor toolbar"
+    },
+    "boardColors": "棋盘颜色",
+    "@boardColors": {
+        "description": "Heading for board and background color controls in Appearance"
+    },
+    "pieceColors": "棋子颜色",
+    "@pieceColors": {
+        "description": "Heading for piece and piece-highlight color controls in Appearance"
+    },
+    "interfaceColors": "界面颜色",
+    "@interfaceColors": {
+        "description": "Heading for game text and toolbar color controls in Appearance"
     }
 }
