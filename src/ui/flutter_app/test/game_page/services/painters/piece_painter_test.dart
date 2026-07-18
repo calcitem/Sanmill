@@ -49,6 +49,53 @@ void main() {
       expect(indices, <int>{_legacyGridIndex('a7'), _legacyGridIndex('d7')});
     });
 
+    test('maps selected source moves to legal destination points', () {
+      final Set<int> indices =
+          PiecePainter.legalMoveDestinationGridIndicesFromLegalActions(
+            <GameAction>[
+              GameAction(
+                type: MillActionTypes.move,
+                payload: <String, Object?>{
+                  'fromNode': _nodeFor('a7'),
+                  'toNode': _nodeFor('d7'),
+                },
+              ),
+              GameAction(
+                type: MillActionTypes.move,
+                payload: <String, Object?>{
+                  'fromNode': _nodeFor('a7'),
+                  'toNode': _nodeFor('g7'),
+                },
+              ),
+              GameAction(
+                type: MillActionTypes.move,
+                payload: <String, Object?>{
+                  'fromNode': _nodeFor('d6'),
+                  'toNode': _nodeFor('d7'),
+                },
+              ),
+              GameAction(
+                type: MillActionTypes.place,
+                payload: <String, Object?>{'toNode': _nodeFor('a4')},
+              ),
+              GameAction(
+                type: MillActionTypes.remove,
+                payload: <String, Object?>{'toNode': _nodeFor('g4')},
+              ),
+            ],
+            selectedSourceGridIndex: _legacyGridIndex('a7'),
+          );
+
+      expect(indices, <int>{_legacyGridIndex('d7'), _legacyGridIndex('g7')});
+      expect(
+        PiecePainter.legalMoveDestinationGridIndicesFromLegalActions(
+          const <GameAction>[],
+          selectedSourceGridIndex: null,
+        ),
+        isEmpty,
+      );
+    });
+
     test('repaints when native board occupancy changes', () {
       final NativeMillSnapshotBoardView before = _viewWithBlackAtNode(23);
       final NativeMillSnapshotBoardView after = _viewWithBlackAtNode(22);
@@ -65,6 +112,17 @@ void main() {
       final PiecePainter newPainter = _painterFor(
         view,
         pieceNumbersByNode: const <int, int>{23: 1},
+      );
+
+      expect(newPainter.shouldRepaint(oldPainter), isTrue);
+    });
+
+    test('repaints when legal destination points change', () {
+      final NativeMillSnapshotBoardView view = _viewWithBlackAtNode(23);
+      final PiecePainter oldPainter = _painterFor(view);
+      final PiecePainter newPainter = _painterFor(
+        view,
+        legalMoveDestinationGridIndices: <int>{_legacyGridIndex('d7')},
       );
 
       expect(newPainter.shouldRepaint(oldPainter), isTrue);
@@ -197,6 +255,7 @@ NativeMillSnapshotBoardView _viewWithBlackAtNode(int node) {
 PiecePainter _painterFor(
   NativeMillSnapshotBoardView view, {
   Map<int, int> pieceNumbersByNode = const <int, int>{},
+  Set<int> legalMoveDestinationGridIndices = const <int>{},
 }) {
   return PiecePainter(
     placeAnimationValue: 1.0,
@@ -209,6 +268,7 @@ PiecePainter _painterFor(
     placeEffectAnimation: RadialPieceEffectAnimation(),
     removeEffectAnimation: ExplodePieceEffectAnimation(),
     nativeBoardView: view,
+    legalMoveDestinationGridIndices: legalMoveDestinationGridIndices,
     pieceNumbersByNode: pieceNumbersByNode,
   );
 }

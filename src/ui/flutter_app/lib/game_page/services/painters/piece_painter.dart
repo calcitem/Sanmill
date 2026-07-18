@@ -22,6 +22,7 @@ class PiecePainter extends CustomPainter {
     required this.removeEffectAnimation,
     this.nativeBoardView,
     this.capturableGridIndices = const <int>{},
+    this.legalMoveDestinationGridIndices = const <int>{},
     this.pieceNumbersByNode = const <int, int>{},
   });
 
@@ -35,6 +36,7 @@ class PiecePainter extends CustomPainter {
   final Map<PieceColor, ui.Image?>? pieceImages;
   final NativeMillSnapshotBoardView? nativeBoardView;
   final Set<int> capturableGridIndices;
+  final Set<int> legalMoveDestinationGridIndices;
   final Map<int, int> pieceNumbersByNode;
 
   // Animation instances for place and remove effects.
@@ -67,6 +69,59 @@ class PiecePainter extends CustomPainter {
       );
       if (gridIndex != null) {
         indices.add(gridIndex);
+      }
+    }
+    return indices;
+  }
+
+  static Set<int> legalMoveDestinationGridIndicesFromLegalActions(
+    Iterable<GameAction> legalActions, {
+    required int? selectedSourceGridIndex,
+  }) {
+    if (selectedSourceGridIndex == null) {
+      return const <int>{};
+    }
+
+    final int? sourceSquare =
+        MillBoardCoordinateMaps.gridIndexToSquare[selectedSourceGridIndex];
+    final int? sourceNode = sourceSquare == null
+        ? null
+        : MillBoardCoordinateMaps.legacySquareToNode[sourceSquare];
+    assert(
+      sourceNode != null,
+      'Selected Mill source must map to a native board node.',
+    );
+    if (sourceNode == null) {
+      return const <int>{};
+    }
+
+    final Set<int> indices = <int>{};
+    for (final GameAction action in legalActions) {
+      if (action.type != MillActionTypes.move) {
+        continue;
+      }
+      final Object? rawFromNode = action.payload['fromNode'];
+      final Object? rawToNode = action.payload['toNode'];
+      assert(
+        rawFromNode is int && rawToNode is int,
+        'Native Mill move actions must provide integer node indices.',
+      );
+      if (rawFromNode is! int ||
+          rawToNode is! int ||
+          rawFromNode != sourceNode) {
+        continue;
+      }
+      final int? destinationSquare =
+          MillBoardCoordinateMaps.nodeToLegacySquare[rawToNode];
+      final int? destinationGridIndex = destinationSquare == null
+          ? null
+          : MillBoardCoordinateMaps.squareToGridIndex[destinationSquare];
+      assert(
+        destinationGridIndex != null,
+        'Native Mill move node $rawToNode must map to a board point.',
+      );
+      if (destinationGridIndex != null) {
+        indices.add(destinationGridIndex);
       }
     }
     return indices;
@@ -726,6 +781,19 @@ class PiecePainter extends CustomPainter {
       }
     }
 
+    paint.color = DB().colorSettings.pieceHighlightColor.withValues(
+      alpha: 0.68,
+    );
+    paint.style = PaintingStyle.fill;
+    final double legalMoveMarkerRadius = max(4.0, pieceWidth * 0.12);
+    for (final int gridIndex in legalMoveDestinationGridIndices) {
+      canvas.drawCircle(
+        pointFromIndex(gridIndex, size),
+        legalMoveMarkerRadius,
+        paint,
+      );
+    }
+
     // Draw focus and blur positions.
     if (focusIndex != null) {
       paint.color = DB().colorSettings.pieceHighlightColor;
@@ -788,6 +856,10 @@ class PiecePainter extends CustomPainter {
       putDownAnimationValue != oldDelegate.putDownAnimationValue ||
       isPutDownAnimating != oldDelegate.isPutDownAnimating ||
       !setEquals(capturableGridIndices, oldDelegate.capturableGridIndices) ||
+      !setEquals(
+        legalMoveDestinationGridIndices,
+        oldDelegate.legalMoveDestinationGridIndices,
+      ) ||
       !mapEquals(pieceNumbersByNode, oldDelegate.pieceNumbersByNode) ||
       _nativeBoardVisibleStateChanged(oldDelegate);
 

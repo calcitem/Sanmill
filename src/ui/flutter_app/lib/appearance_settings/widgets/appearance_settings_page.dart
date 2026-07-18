@@ -537,6 +537,33 @@ class AppearanceSettingsPage extends StatelessWidget {
             ),
             ValueListenableBuilder<Box<DisplaySettings>>(
               key: const Key(
+                'display_settings_card_legal_moves_value_listenable_builder',
+              ),
+              valueListenable: DB().listenDisplaySettings,
+              builder:
+                  (
+                    BuildContext context,
+                    Box<DisplaySettings> box,
+                    Widget? child,
+                  ) {
+                    final DisplaySettings displaySettings = box.get(
+                      DB.displaySettingsKey,
+                      defaultValue: const DisplaySettings(),
+                    )!;
+                    return SettingsListTile.switchTile(
+                      key: const Key(
+                        'display_settings_card_legal_moves_switch_tile',
+                      ),
+                      leading: const Icon(Icons.radio_button_checked_outlined),
+                      value: displaySettings.showLegalMoves,
+                      onChanged: (bool val) => DB().displaySettings =
+                          displaySettings.copyWith(showLegalMoves: val),
+                      titleString: S.of(context).showLegalMoves,
+                    );
+                  },
+            ),
+            ValueListenableBuilder<Box<DisplaySettings>>(
+              key: const Key(
                 'display_settings_card_piece_animation_value_listenable_builder',
               ),
               valueListenable: DB().listenDisplaySettings,

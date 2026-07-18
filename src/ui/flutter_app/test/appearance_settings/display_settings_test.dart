@@ -65,6 +65,7 @@ void main() {
       expect(d.analysisShowBestMoveArrow, isTrue);
       expect(d.analysisShowEvaluationGauge, isTrue);
       expect(d.analysisShowAllBoardResults, isFalse);
+      expect(d.showLegalMoves, isTrue);
       expect(
         d.analysisEngineLineCount,
         DisplaySettings.defaultAnalysisEngineLineCount,
@@ -85,6 +86,15 @@ void main() {
       DisplaySettings.fromJson(changed.toJson()).analysisShowAllBoardResults,
       isTrue,
     );
+  });
+
+  test('legal-move preference copies and serializes', () {
+    final DisplaySettings changed = const DisplaySettings().copyWith(
+      showLegalMoves: false,
+    );
+
+    expect(changed.showLegalMoves, isFalse);
+    expect(DisplaySettings.fromJson(changed.toJson()).showLegalMoves, isFalse);
   });
 
   // ---------------------------------------------------------------------------

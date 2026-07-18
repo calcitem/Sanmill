@@ -499,6 +499,7 @@ class _GameBoardState extends State<GameBoard>
                         animationManager.removeAnimationController,
                         animationManager.pickUpAnimationController,
                         animationManager.putDownAnimationController,
+                        DB().listenDisplaySettings,
                         if (scopedSession != null) scopedSession.state,
                       ]),
                       builder: (_, Widget? child) {
@@ -537,6 +538,22 @@ class _GameBoardState extends State<GameBoard>
                                   scopedSession?.legalActions ??
                                       const <GameAction>[],
                                 ),
+                            legalMoveDestinationGridIndices:
+                                DB().displaySettings.showLegalMoves
+                                ? PiecePainter.legalMoveDestinationGridIndicesFromLegalActions(
+                                    scopedSession?.legalActions ??
+                                        const <GameAction>[],
+                                    selectedSourceGridIndex:
+                                        GameController()
+                                                .gameInstance
+                                                .focusIndex ==
+                                            null
+                                        ? GameController()
+                                              .gameInstance
+                                              .blurIndex
+                                        : null,
+                                  )
+                                : const <int>{},
                             pieceNumbersByNode:
                                 scopedSession is NativeMillGameSession
                                 ? scopedSession.pieceNumbersByNode

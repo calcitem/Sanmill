@@ -129,6 +129,7 @@ class DisplaySettings {
     this.analysisShowBestMoveArrow = true,
     this.analysisShowEvaluationGauge = true,
     this.analysisShowAllBoardResults = false,
+    this.showLegalMoves = true,
     this.analysisEngineLineCount = kDefaultAnalysisEngineLineCount,
     this.analysisEngineSearchTimeMs = kDefaultAnalysisEngineSearchTimeMs,
   });
@@ -339,6 +340,10 @@ class DisplaySettings {
   @HiveField(56, defaultValue: false)
   final bool analysisShowAllBoardResults;
 
+  /// Whether selecting a piece shows its legal destination points.
+  @HiveField(57, defaultValue: true)
+  final bool showLegalMoves;
+
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);
 
@@ -417,6 +422,7 @@ class DisplaySettings {
           analysisShowEvaluationGauge ?? this.analysisShowEvaluationGauge,
       analysisShowAllBoardResults:
           analysisShowAllBoardResults ?? this.analysisShowAllBoardResults,
+      showLegalMoves: showLegalMoves,
       analysisEngineLineCount:
           analysisEngineLineCount ?? this.analysisEngineLineCount,
       analysisEngineSearchTimeMs:
