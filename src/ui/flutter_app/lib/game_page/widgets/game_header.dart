@@ -39,8 +39,13 @@ class _GameHeaderState extends State<GameHeader> {
           PieceColor.black => S.of(context).black,
           _ => S.of(context).none,
         };
+        final NativeMillGameSession? session =
+            controller.activeNativeMillSession;
         final String message = controller.headerTipNotifier.message.isEmpty
-            ? S.of(context).welcome
+            ? session == null
+                  ? S.of(context).welcome
+                  : controller.nativeSessionTurnTip(context, session) ??
+                        S.of(context).welcome
             : controller.headerTipNotifier.message;
         return SizedBox(
           key: const Key('game_header_contextual_row'),

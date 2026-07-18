@@ -357,7 +357,7 @@ class GameController {
     final String? openingTip = _openingInfoTip(effectiveContext, session);
     final String? turnTip = showThinking
         ? S.of(effectiveContext).thinking
-        : _nativeSessionTurnTip(effectiveContext, session);
+        : nativeSessionTurnTip(effectiveContext, session);
     if (openingTip != null) {
       headerTipNotifier.showTip(
         _joinHeaderTips(openingTip, turnTip),
@@ -513,7 +513,11 @@ class GameController {
     return recognition.recommendedResponses[key] ?? const <String>[];
   }
 
-  String? _nativeSessionTurnTip(
+  /// Returns the action prompt for the current native Mill position.
+  ///
+  /// Game surfaces also use this when a new game has deliberately cleared a
+  /// message that belonged to the preceding position.
+  String? nativeSessionTurnTip(
     BuildContext context,
     NativeMillGameSession session,
   ) {
@@ -1439,6 +1443,7 @@ class GameController {
 
     value = "0";
     aiMoveType = AiMoveType.unknown;
+    headerTipNotifier.clear();
     // Ask the Rust searcher to abort if one is in flight.  Gated on
     // `isEngineRunning` so unit-test environments that do not load
     // the FRB native library do not panic on the call (the FRB

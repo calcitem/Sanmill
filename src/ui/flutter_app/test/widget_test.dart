@@ -3740,7 +3740,9 @@ void main() {
       addTearDown(tester.view.resetDevicePixelRatio);
 
       final GameController controller = GameController();
+      final GeneralSettings originalSettings = DB().generalSettings;
       addTearDown(() {
+        DB().generalSettings = originalSettings;
         controller.activeSessionSnapshot = null;
         controller.gameRecorder.reset();
       });
@@ -3748,12 +3750,15 @@ void main() {
       await tester.pumpWidget(const SanmillApp());
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
+      DB().generalSettings = DB().generalSettings.copyWith(showGameTips: true);
+      await tester.pump();
 
       // Simulate an unfinished Human vs AI game still held by the
       // controller, as if the user had played a few moves earlier and
       // then navigated back to the home tab without finishing it.
       controller.gameInstance.gameMode = GameMode.humanVsAi;
       controller.gameRecorder.appendMove(ExtMove('d2', side: PieceColor.white));
+      controller.headerTipNotifier.showTip('Last move: a4-a1', snackBar: false);
       controller.activeSessionSnapshot = const platform.GameStateSnapshot(
         gameId: GameId.mill,
         activeSeat: platform.PlayerSeat.second,
@@ -3794,8 +3799,11 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(controller.gameRecorder.mainlineMoves, isEmpty);
+      expect(controller.headerTipNotifier.message, isEmpty);
+      expect(DB().generalSettings.showGameTips, isTrue);
       expect(find.byKey(const Key('human_ai')), findsOneWidget);
       expect(find.byKey(const Key('human_ai_new_game_sheet')), findsNothing);
+      expect(find.text('Last move: a4-a1'), findsNothing);
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));

@@ -6139,8 +6139,12 @@ class _HumanAiPlayerPanel extends StatelessWidget {
         isRobot && !isThinking && !isActivePlayer
         ? _computerMoveSourceFor(context, controller.aiMoveType)
         : null;
+    final NativeMillGameSession? session = controller.activeNativeMillSession;
     final String tip = controller.headerTipNotifier.message.isEmpty
-        ? S.of(context).welcome
+        ? session == null
+              ? S.of(context).welcome
+              : controller.nativeSessionTurnTip(context, session) ??
+                    S.of(context).welcome
         : controller.headerTipNotifier.message;
     final Widget playerDetails = Column(
       crossAxisAlignment: CrossAxisAlignment.start,

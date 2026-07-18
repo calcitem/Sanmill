@@ -1544,6 +1544,31 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('human vs computer derives a turn tip after a message reset', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(showGameTips: true);
+    final NativeMillGameSession session = await _bindNativeHumanAiGame();
+    await _pumpSessionPlayArea(tester, session);
+
+    final GameController controller = GameController();
+    controller.headerTipNotifier.showTip('Last move: a4-a1', snackBar: false);
+    await tester.pump(const Duration(milliseconds: 1));
+    expect(find.text('Last move: a4-a1'), findsOneWidget);
+
+    controller.headerTipNotifier.clear();
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.pump(const Duration(milliseconds: 1));
+
+    expect(find.text('Last move: a4-a1'), findsNothing);
+    expect(find.text('Place a piece.'), findsOneWidget);
+    expect(
+      find.byKey(const Key('play_area_human_ai_player_tip')),
+      findsOneWidget,
+    );
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('human vs computer identifies completed move sources', (
     WidgetTester tester,
   ) async {

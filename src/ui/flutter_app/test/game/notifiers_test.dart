@@ -81,6 +81,17 @@ void main() {
 
       expect(notifier.message, 'Third');
     });
+
+    test('clear should discard the previous game message and kind', () {
+      final HeaderTipNotifier notifier = HeaderTipNotifier();
+      notifier.showTip('Last move: a4-a1', kind: HeaderTipKind.openingInfo);
+
+      notifier.clear();
+
+      expect(notifier.message, isEmpty);
+      expect(notifier.kind, HeaderTipKind.general);
+      expect(notifier.showSnackBar, isFalse);
+    });
   });
 
   // ---------------------------------------------------------------------------

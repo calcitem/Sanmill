@@ -18,6 +18,19 @@ class HeaderTipNotifier with ChangeNotifier {
 
   HeaderTipKind get kind => _kind;
 
+  /// Discards a message that belongs to the previous game state.
+  void clear() {
+    if (_message.isEmpty &&
+        _kind == HeaderTipKind.general &&
+        showSnackBar == false) {
+      return;
+    }
+    _message = '';
+    _kind = HeaderTipKind.general;
+    showSnackBar = false;
+    Future<void>.delayed(Duration.zero, notifyListeners);
+  }
+
   void showTip(
     String tip, {
     bool snackBar = true,
