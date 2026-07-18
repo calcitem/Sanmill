@@ -6905,6 +6905,16 @@ void main() {
       find.byTooltip('Open move list with board previews · 1 move'),
       findsOneWidget,
     );
+    expect(find.text('Board previews'), findsOneWidget);
+    expect(
+      find.byWidgetPredicate(
+        (Widget widget) =>
+            widget is Semantics &&
+            widget.properties.label ==
+                'Open move list with board previews · 1 move',
+      ),
+      findsOneWidget,
+    );
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_open_full_move_list')),

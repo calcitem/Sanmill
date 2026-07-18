@@ -6615,5 +6615,9 @@
                 "example": "Player 1"
             }
         }
+    },
+    "boardPreviews": "Board previews",
+    "@boardPreviews": {
+        "description": "Visible label for opening a move list that includes a position preview for each move"
     }
 }

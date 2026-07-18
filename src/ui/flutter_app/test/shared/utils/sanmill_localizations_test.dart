@@ -85,6 +85,7 @@ void main() {
       english.openMoveListWithSmallBoard,
       'Open move list with board previews',
     );
+    expect(english.boardPreviews, 'Board previews');
   });
 
   test('expands English clock controls for assistive technology', () {

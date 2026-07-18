@@ -8015,15 +8015,33 @@ class _AnalysisMovesHeader extends StatelessWidget {
                       ],
                     ),
                   ),
-                  IconButton(
-                    key: const Key('play_area_analysis_open_full_move_list'),
-                    tooltip: labels.fullMoveListAction,
-                    visualDensity: VisualDensity.compact,
-                    icon: Icon(
-                      Icons.grid_view_rounded,
-                      color: colorScheme.onSurfaceVariant,
+                  Semantics(
+                    button: true,
+                    label: labels.fullMoveListAction,
+                    excludeSemantics: true,
+                    child: Tooltip(
+                      message: labels.fullMoveListAction,
+                      child: TextButton.icon(
+                        key: const Key(
+                          'play_area_analysis_open_full_move_list',
+                        ),
+                        onPressed: onOpenFullMoveList,
+                        style: TextButton.styleFrom(
+                          foregroundColor: colorScheme.onSurfaceVariant,
+                          visualDensity: VisualDensity.compact,
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          textStyle: theme.textTheme.labelSmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        icon: const Icon(Icons.grid_view_rounded, size: 18),
+                        label: Text(
+                          strings.boardPreviews,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ),
-                    onPressed: onOpenFullMoveList,
                   ),
                 ],
               ),
