@@ -418,7 +418,7 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
                       child: SwitchListTile(
                         contentPadding: EdgeInsets.zero,
                         title: Text(
-                          s.lanPlayAs(_hostPlaysWhite ? s.white : s.black),
+                          s.remotePlayAs(_hostPlaysWhite ? s.white : s.black),
                         ),
                         value: _hostPlaysWhite,
                         onChanged: controlsLocked

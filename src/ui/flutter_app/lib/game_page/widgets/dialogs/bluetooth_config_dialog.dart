@@ -352,7 +352,11 @@ class _BluetoothConfigDialogState extends State<BluetoothConfigDialog> {
                       child: _supportsHost
                           ? SwitchListTile(
                               contentPadding: EdgeInsets.zero,
-                              title: Text(_hostPlaysWhite ? s.white : s.black),
+                              title: Text(
+                                s.remotePlayAs(
+                                  _hostPlaysWhite ? s.white : s.black,
+                                ),
+                              ),
                               value: _hostPlaysWhite,
                               onChanged: controlsLocked
                                   ? null

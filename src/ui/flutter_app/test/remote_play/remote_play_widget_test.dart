@@ -81,6 +81,7 @@ void main() {
       320,
     );
     final Size hostSize = tester.getSize(find.byType(AlertDialog));
+    expect(find.text('Play as Player 1'), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.bluetooth_searching));
     await tester.pumpAndSettle();

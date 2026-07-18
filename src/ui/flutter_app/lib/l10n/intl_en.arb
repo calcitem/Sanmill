@@ -6606,9 +6606,9 @@
     "@lanLocalAddress": {
         "description": "Label for the local network address used to host or discover a LAN game"
     },
-    "lanPlayAs": "Play as {player}",
-    "@lanPlayAs": {
-        "description": "Label for choosing which side the LAN host controls",
+    "remotePlayAs": "Play as {player}",
+    "@remotePlayAs": {
+        "description": "Label for choosing which side a LAN or Bluetooth host controls",
         "placeholders": {
             "player": {
                 "type": "String",
