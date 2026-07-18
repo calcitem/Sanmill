@@ -2645,8 +2645,7 @@ class PlayAreaState extends State<PlayArea> {
                   ? Icons.volume_up_outlined
                   : Icons.volume_off_outlined,
             ),
-            makeLabel: (BuildContext context) =>
-                Text(S.of(context).playSoundsInTheGame),
+            makeLabel: (BuildContext context) => Text(S.of(context).playSounds),
             onPressed: _toggleAnalysisSoundFromMenu,
           ),
         if (_isAnalysisMode && nativeHostSession != null)

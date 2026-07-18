@@ -2975,6 +2975,8 @@ void main() {
       find.byKey(const Key('play_area_regular_game_menu_toggle_sound')),
       findsOneWidget,
     );
+    expect(find.text('Sound'), findsOneWidget);
+    expect(find.text('Play game sounds'), findsNothing);
     expect(db.generalSettings.toneEnabled, isTrue);
 
     await tester.tap(
