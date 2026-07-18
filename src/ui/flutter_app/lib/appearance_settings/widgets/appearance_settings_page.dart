@@ -605,7 +605,7 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsCard(
           key: const Key('appearance_settings_page_board_color_settings_card'),
           title: Text(
-            S.of(context).board,
+            S.of(context).boardColors,
             key: const Key('board_color_settings_card_title'),
           ),
           children: <Widget>[
@@ -641,7 +641,7 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsCard(
           key: const Key('appearance_settings_page_piece_settings_card'),
           title: Text(
-            S.of(context).pieces,
+            S.of(context).pieceColors,
             key: const Key('piece_settings_card_title'),
           ),
           children: <Widget>[
@@ -688,7 +688,7 @@ class AppearanceSettingsPage extends StatelessWidget {
             'appearance_settings_page_advanced_color_settings_card',
           ),
           title: Text(
-            S.of(context).advanced,
+            S.of(context).interfaceColors,
             key: const Key('advanced_color_settings_card_title'),
           ),
           children: <Widget>[

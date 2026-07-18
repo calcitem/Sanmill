@@ -6501,5 +6501,17 @@
     "innerOuterFlipShort": "Swap rings",
     "@innerOuterFlipShort": {
         "description": "Compact visual label for the inner-and-outer-ring swap in the board editor toolbar"
+    },
+    "boardColors": "Board colors",
+    "@boardColors": {
+        "description": "Heading for board and background color controls in Appearance"
+    },
+    "pieceColors": "Piece colors",
+    "@pieceColors": {
+        "description": "Heading for piece and piece-highlight color controls in Appearance"
+    },
+    "interfaceColors": "Interface colors",
+    "@interfaceColors": {
+        "description": "Heading for game text and toolbar color controls in Appearance"
     }
 }

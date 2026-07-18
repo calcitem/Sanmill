@@ -1763,6 +1763,9 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(colorTuning, findsOneWidget);
+      expect(find.text('Board colors'), findsOneWidget);
+      expect(find.text('Piece colors'), findsOneWidget);
+      expect(find.text('Interface colors'), findsOneWidget);
       final double colorTuningOffset = tester
           .state<ScrollableState>(appearanceScrollable)
           .position
