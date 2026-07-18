@@ -6288,5 +6288,15 @@
     "lanLocalAddress": "本机地址",
     "@lanLocalAddress": {
         "description": "Label for the local network address used to host or discover a LAN game"
+    },
+    "remotePlayAs": "主机控制{player}",
+    "@remotePlayAs": {
+        "description": "Label for choosing which side a LAN or Bluetooth host controls",
+        "placeholders": {
+            "player": {
+                "type": "String",
+                "example": "先手方"
+            }
+        }
     }
 }

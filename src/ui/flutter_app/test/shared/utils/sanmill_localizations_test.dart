@@ -780,6 +780,13 @@ void main() {
     expect(chinese.serverIp, '主机地址');
   });
 
+  test('identifies the host-controlled side in Chinese remote setup', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.remotePlayAs(chinese.white), '主机控制先手方');
+    expect(chinese.remotePlayAs(chinese.black), '主机控制后手方');
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =
