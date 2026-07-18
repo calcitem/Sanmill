@@ -773,6 +773,13 @@ void main() {
     expect(chinese.aiKnowledgeSources_Detail, '开局库、人类对局数据库、完美数据库和陷阱库。');
   });
 
+  test('distinguishes local and host addresses in Chinese LAN setup', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.lanLocalAddress, '本机地址');
+    expect(chinese.serverIp, '主机地址');
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =

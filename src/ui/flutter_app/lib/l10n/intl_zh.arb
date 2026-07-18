@@ -1741,7 +1741,7 @@
     "@noLlmPromptAvailable": {},
     "youResignedGameOver": "你已认输。游戏结束",
     "@youResignedGameOver": {},
-    "serverIp": "服务器 IP",
+    "serverIp": "主机地址",
     "@serverIp": {},
     "confirmClear": "确认清除",
     "@confirmClear": {},
@@ -6284,5 +6284,9 @@
                 "example": "2"
             }
         }
+    },
+    "lanLocalAddress": "本机地址",
+    "@lanLocalAddress": {
+        "description": "Label for the local network address used to host or discover a LAN game"
     }
 }
