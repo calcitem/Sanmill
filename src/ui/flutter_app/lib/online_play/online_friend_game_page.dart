@@ -681,7 +681,7 @@ class _CreateGameSheetState extends State<_CreateGameSheet> {
             ListTile(
               contentPadding: EdgeInsets.zero,
               leading: const Icon(Icons.grid_3x3),
-              title: Text(s.variant),
+              title: Text(s.ruleSet),
               subtitle: Text(
                 widget.registration.variantLabel(context, ruleOptions),
               ),

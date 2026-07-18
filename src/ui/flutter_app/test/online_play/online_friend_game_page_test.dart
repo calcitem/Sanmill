@@ -80,6 +80,8 @@ void main() {
       await tester.tap(find.byKey(const Key('online_create_game')));
       await tester.pumpAndSettle();
       expect(find.text('Friend game settings'), findsOneWidget);
+      expect(find.text('Rule set'), findsOneWidget);
+      expect(find.text('Variant'), findsNothing);
       expect(find.text('Unlimited'), findsOneWidget);
       expect(find.text('Play first'), findsOneWidget);
       expect(find.text('Play second'), findsOneWidget);
