@@ -6497,5 +6497,9 @@
     "humanDatabaseSetupSelectFileDescription": "Choose the SQLite file. Sanmill will copy and validate it before enabling the database.",
     "@humanDatabaseSetupSelectFileDescription": {
         "description": "Explanation below the database file-selection step"
+    },
+    "innerOuterFlipShort": "Swap rings",
+    "@innerOuterFlipShort": {
+        "description": "Compact visual label for the inner-and-outer-ring swap in the board editor toolbar"
     }
 }

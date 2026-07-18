@@ -13,12 +13,14 @@ class MillBoardTransformAction {
     required this.type,
     required this.icon,
     required this.label,
+    this.compactLabel,
   });
 
   final String id;
   final TransformationType type;
   final IconData icon;
   final String Function(S strings) label;
+  final String Function(S strings)? compactLabel;
 }
 
 const List<MillBoardTransformAction> millBoardTransformActions =
@@ -46,6 +48,7 @@ const List<MillBoardTransformAction> millBoardTransformActions =
         type: TransformationType.swap,
         icon: FluentIcons.arrow_expand_24_regular,
         label: _innerOuterFlipLabel,
+        compactLabel: _innerOuterFlipShortLabel,
       ),
     ];
 
@@ -164,6 +167,8 @@ String _horizontalFlipLabel(S strings) => strings.horizontalFlip;
 String _verticalFlipLabel(S strings) => strings.verticalFlip;
 
 String _innerOuterFlipLabel(S strings) => strings.innerOuterFlip;
+
+String _innerOuterFlipShortLabel(S strings) => strings.innerOuterFlipShort;
 
 String _backslashFlipLabel(S strings) => strings.boardTransformBackslashMirror;
 

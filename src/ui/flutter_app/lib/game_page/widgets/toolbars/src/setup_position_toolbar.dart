@@ -358,12 +358,18 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     final List<Widget> row2 = <Widget>[
       for (final MillBoardTransformAction action in millBoardTransformActions)
         Expanded(
-          child: _toolbarButton(
-            key: Key('${action.id}_button'),
-            icon: action.icon,
+          child: Semantics(
+            button: true,
             label: action.label(strings),
-            onPressed: () =>
-                _transform(action.type, _transformRecordingValue(action.id)),
+            excludeSemantics: true,
+            child: _toolbarButton(
+              key: Key('${action.id}_button'),
+              icon: action.icon,
+              label:
+                  action.compactLabel?.call(strings) ?? action.label(strings),
+              onPressed: () =>
+                  _transform(action.type, _transformRecordingValue(action.id)),
+            ),
           ),
         ),
     ];

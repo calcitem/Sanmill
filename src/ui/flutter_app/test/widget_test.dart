@@ -3139,6 +3139,11 @@ void main() {
       expect(find.byKey(const Key('horizontal_flip_button')), findsOneWidget);
       expect(find.byKey(const Key('vertical_flip_button')), findsOneWidget);
       expect(find.byKey(const Key('inner_outer_flip_button')), findsOneWidget);
+      expect(find.text('Swap rings'), findsOneWidget);
+      expect(
+        find.bySemanticsLabel('Swap inner and outer rings'),
+        findsOneWidget,
+      );
 
       expect(find.byKey(const Key('copy_button')), findsOneWidget);
       expect(find.byKey(const Key('paste_button')), findsOneWidget);
