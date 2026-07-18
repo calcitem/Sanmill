@@ -61,11 +61,18 @@ void main() {
     expect(strings.humanDatabaseSetupTitle, '设置人类对局数据库');
     expect(strings.humanDatabaseSetupDescription, '完成以下两步，即可启用来自人类实战的着法。');
     expect(strings.humanDatabaseSetupDownload, '1. 下载数据库');
-    expect(strings.humanDatabaseSetupDownloadDescription, '在浏览器中打开数据库下载页面。');
+    expect(
+      strings.humanDatabaseSetupDownloadDescription,
+      '在浏览器中打开人类对局数据库下载页面。',
+    );
     expect(strings.humanDatabaseSetupSelectFile, '2. 选择已下载的文件');
     expect(
       strings.humanDatabaseSetupSelectFileDescription,
       '选择 SQLite 文件。应用会先复制并验证，再启用数据库。',
+    );
+    expect(
+      strings.downloadHumanGameDatabase_Detail,
+      '在浏览器中下载人类对局数据库文件，然后返回此处选择文件。',
     );
   });
 }

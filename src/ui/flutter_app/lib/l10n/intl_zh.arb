@@ -4504,7 +4504,7 @@
     "@openingRandomness_Detail": {},
     "downloadHumanGameDatabase": "下载人类对局数据库",
     "@downloadHumanGameDatabase": {},
-    "downloadHumanGameDatabase_Detail": "在浏览器中下载大型数据库文件，然后返回此处选择下载的文件。",
+    "downloadHumanGameDatabase_Detail": "在浏览器中下载人类对局数据库文件，然后返回此处选择文件。",
     "@downloadHumanGameDatabase_Detail": {},
     "downloadHumanGameDatabaseConfirmation": "是否打开浏览器下载大型人类对局数据库？下载完成后，请返回此处选择下载的文件。",
     "@downloadHumanGameDatabaseConfirmation": {},
@@ -6465,7 +6465,7 @@
     "@humanDatabaseSetupDownload": {
         "description": "First step in the human game database setup guide"
     },
-    "humanDatabaseSetupDownloadDescription": "在浏览器中打开数据库下载页面。",
+    "humanDatabaseSetupDownloadDescription": "在浏览器中打开人类对局数据库下载页面。",
     "@humanDatabaseSetupDownloadDescription": {
         "description": "Description of the database download step"
     },

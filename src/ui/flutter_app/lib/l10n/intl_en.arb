@@ -4562,7 +4562,7 @@
     "@openingRandomness_Detail": {},
     "downloadHumanGameDatabase": "Download human game database",
     "@downloadHumanGameDatabase": {},
-    "downloadHumanGameDatabase_Detail": "Open the large database download in your browser, then return and select the downloaded file.",
+    "downloadHumanGameDatabase_Detail": "Download the human game database file in your browser, then return and select it.",
     "@downloadHumanGameDatabase_Detail": {},
     "downloadHumanGameDatabaseConfirmation": "Open your browser to download the large human game database? When it finishes, return here and select the downloaded file.",
     "@downloadHumanGameDatabaseConfirmation": {},
@@ -6486,7 +6486,7 @@
     "@humanDatabaseSetupDownload": {
         "description": "First step in the human game database setup guide"
     },
-    "humanDatabaseSetupDownloadDescription": "Open the database download in your browser.",
+    "humanDatabaseSetupDownloadDescription": "Open the human game database download page in your browser.",
     "@humanDatabaseSetupDownloadDescription": {
         "description": "Explanation below the database download step"
     },
