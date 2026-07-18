@@ -409,7 +409,7 @@
     "@backgroundMusicFile": {
         "description": "Background music file"
     },
-    "clearBackgroundMusic": "清除背景音乐",
+    "clearBackgroundMusic": "移除背景音乐文件",
     "@clearBackgroundMusic": {
         "description": "Clear background music"
     },

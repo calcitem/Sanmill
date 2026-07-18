@@ -248,6 +248,12 @@ void main() {
     expect(english.clearBackgroundMusic, 'Remove background music file');
   });
 
+  test('describes Chinese removal of the imported background-music file', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.clearBackgroundMusic, '移除背景音乐文件');
+  });
+
   test('uses complete English labels for analysis sharing actions', () {
     final S english = lookupS(const Locale('en'));
 
