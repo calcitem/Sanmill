@@ -787,6 +787,13 @@ void main() {
     expect(chinese.remotePlayAs(chinese.black), '主机控制后手方');
   });
 
+  test('distinguishes Chinese board previews from a small main board', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.boardPreviews, '棋盘预览');
+    expect(chinese.smallBoard, '小棋盘');
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =

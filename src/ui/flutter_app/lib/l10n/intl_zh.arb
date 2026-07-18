@@ -6298,5 +6298,9 @@
                 "example": "先手方"
             }
         }
+    },
+    "boardPreviews": "棋盘预览",
+    "@boardPreviews": {
+        "description": "Visible label for opening a move list that includes a position preview for each move"
     }
 }
