@@ -6302,5 +6302,19 @@
     "boardPreviews": "棋盘预览",
     "@boardPreviews": {
         "description": "Visible label for opening a move list that includes a position preview for each move"
+    },
+    "piecesRemoved": "{player}：被吃掉 {count} 枚棋子",
+    "@piecesRemoved": {
+        "description": "Accessibility label for a player's removed-piece count",
+        "placeholders": {
+            "player": {
+                "type": "String",
+                "example": "先手方"
+            },
+            "count": {
+                "type": "int",
+                "example": "2"
+            }
+        }
     }
 }

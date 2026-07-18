@@ -788,6 +788,13 @@ void main() {
     expect(chinese.tipToRemove(chinese.white), '轮到先手方吃子');
   });
 
+  test('describes Chinese removed-piece counts from the owning side', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.piecesRemoved(chinese.white, 0), '先手方：被吃掉 0 枚棋子');
+    expect(chinese.piecesRemoved(chinese.black, 2), '后手方：被吃掉 2 枚棋子');
+  });
+
   test('names the Chinese Analysis clear action by its actual scope', () {
     final S chinese = lookupS(const Locale('zh'));
 
