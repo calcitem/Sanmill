@@ -1178,6 +1178,16 @@ void main() {
     expect(chinese.diagnosticLocalOnly, '此构建不支持远程报告，但仍可复制完整诊断包。');
   });
 
+  test('formats home game metadata without field-label punctuation', () {
+    final S english = lookupS(const Locale('en'));
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(english.homeMoveCount(1), '1 move');
+    expect(english.homeMoveCount(7), '7 moves');
+    expect(chinese.quickStart, '快速开始');
+    expect(chinese.homeMoveCount(7), '7 手');
+  });
+
   test('describes Chinese rule settings in player-facing language', () {
     final S chinese = lookupS(const Locale('zh'));
 

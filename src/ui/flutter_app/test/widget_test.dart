@@ -3573,6 +3573,7 @@ void main() {
         find.byKey(const Key('sanmill_home_ongoing_game')),
         findsOneWidget,
       );
+      expect(find.textContaining('1 move'), findsOneWidget);
       final Size carouselFrameSize = tester.getSize(
         find.byKey(const Key('sanmill_home_game_carousel_frame')),
       );

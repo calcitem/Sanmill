@@ -6619,5 +6619,15 @@
     "boardPreviews": "Board previews",
     "@boardPreviews": {
         "description": "Visible label for opening a move list that includes a position preview for each move"
+    },
+    "homeMoveCount": "{count, plural, =1{1 move} other{{count} moves}}",
+    "@homeMoveCount": {
+        "description": "Compact move count shown in home-page game preview metadata",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "7"
+            }
+        }
     }
 }

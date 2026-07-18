@@ -3368,7 +3368,7 @@
     "@startContributing": {
         "description": "Button text to start contributing puzzles"
     },
-    "quickStart": "快速开始：",
+    "quickStart": "快速开始",
     "@quickStart": {
         "description": "Label for quick start section"
     },
@@ -6550,6 +6550,16 @@
             "increment": {
                 "type": "int",
                 "example": "0"
+            }
+        }
+    },
+    "homeMoveCount": "{count} 手",
+    "@homeMoveCount": {
+        "description": "Compact move count shown in home-page game preview metadata",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "7"
             }
         }
     }

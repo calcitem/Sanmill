@@ -1873,7 +1873,7 @@ class _ActiveGamePreview {
     GameStateSnapshot? snapshot,
     int moveCount,
   ) {
-    final List<String> parts = <String>['${strings.moves}: $moveCount'];
+    final List<String> parts = <String>[strings.homeMoveCount(moveCount)];
     final String? sideToMove = _sideToMove(strings, snapshot);
     if (sideToMove != null) {
       parts.add(strings.sideToMove(sideToMove));
@@ -2097,7 +2097,7 @@ class _SavedGamePreviewSection extends StatelessWidget {
     final List<String> parts = <String>[modifiedAt];
     final SavedGamePreview? preview = game.preview;
     if (preview != null && preview.moveCount > 0) {
-      parts.add('${strings.moves}: ${preview.moveCount}');
+      parts.add(strings.homeMoveCount(preview.moveCount));
     }
     final String? sideToMove = _sideToMove(strings, preview);
     if (sideToMove != null) {
