@@ -6506,5 +6506,25 @@
     "openingExplorerSourceOff": "已关闭",
     "@openingExplorerSourceOff": {
         "description": "Opening Explorer source state when that source is disabled in settings"
+    },
+    "analysisMoveCount": "{count, plural, =0{暂无着法} other{{count} 手}}",
+    "@analysisMoveCount": {
+        "description": "Number of moves in the current line shown below the Analysis move-list heading",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "12"
+            }
+        }
+    },
+    "analysisVariationCount": "{count} 条变化",
+    "@analysisVariationCount": {
+        "description": "Number of alternative variations shown below the Analysis move-list heading",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "2"
+            }
+        }
     }
 }

@@ -151,6 +151,16 @@ void main() {
     expect(english.boardPreviews, 'Board previews');
   });
 
+  test('labels Chinese analysis move and variation counts naturally', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.analysisMoveCount(0), '暂无着法');
+    expect(chinese.analysisMoveCount(1), '1 手');
+    expect(chinese.analysisMoveCount(12), '12 手');
+    expect(chinese.analysisVariationCount(1), '1 条变化');
+    expect(chinese.analysisVariationCount(2), '2 条变化');
+  });
+
   test('expands English clock controls for assistive technology', () {
     final S english = lookupS(const Locale('en'));
 
