@@ -13,6 +13,18 @@ void main() {
     expect(strings.logsSelectionSummary(3, 2), '3 logs selected · 2 ranges');
   });
 
+  test('Opening-book descriptions focus on the feature itself', () async {
+    final S english = await S.delegate.load(const Locale('en'));
+    final S chinese = await S.delegate.load(const Locale('zh'));
+
+    expect(
+      english.useOpeningBook_Detail,
+      'Choose early-game moves from the built-in opening book before using '
+      'other sources or engine search.',
+    );
+    expect(chinese.useOpeningBook_Detail, '让电脑在开局阶段采用人类专业棋手惯用的着法。');
+  });
+
   test(
     'Simplified Chinese localizes diagnostic log selection counts',
     () async {

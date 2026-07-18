@@ -1651,7 +1651,7 @@
     "@oneTimeMill": {},
     "daSanQi": "打三棋",
     "@daSanQi": {},
-    "useOpeningBook_Detail": "让电脑在开局阶段采用人类专业棋手惯用的着法。注意：此功能目前仅适用于特定棋规。",
+    "useOpeningBook_Detail": "让电脑在开局阶段采用人类专业棋手惯用的着法。",
     "@useOpeningBook_Detail": {},
     "showAdvantageGraph": "显示优势图",
     "@showAdvantageGraph": {},

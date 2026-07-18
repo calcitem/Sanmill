@@ -1669,7 +1669,7 @@
     "@oneTimeMill": {},
     "daSanQi": "Da San Qi",
     "@daSanQi": {},
-    "useOpeningBook_Detail": "Choose early-game moves from the built-in opening book before using other sources or engine search. Available only for supported rule sets.",
+    "useOpeningBook_Detail": "Choose early-game moves from the built-in opening book before using other sources or engine search.",
     "@useOpeningBook_Detail": {},
     "showAdvantageGraph": "Show advantage graph",
     "@showAdvantageGraph": {},
