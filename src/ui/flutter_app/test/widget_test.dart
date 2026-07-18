@@ -1209,18 +1209,69 @@ void main() {
       );
       expect(
         find.byKey(const Key('import_game_from_clipboard_button')),
-        findsOneWidget,
+        findsNothing,
       );
-      expect(find.text('Import from file'), findsOneWidget);
-      expect(find.text('Scan QR code'), findsOneWidget);
-      expect(find.text('Import from clipboard'), findsOneWidget);
+      expect(find.byKey(const Key('import_game_load_button')), findsOneWidget);
+      expect(find.text('Import from file'), findsNothing);
+      expect(find.text('Scan QR code'), findsNothing);
+      expect(find.byTooltip('Import from file'), findsOneWidget);
+      expect(find.byTooltip('Scan QR code'), findsOneWidget);
+      expect(find.text('Import from clipboard'), findsNothing);
+      expect(find.text('Load game'), findsOneWidget);
       expect(find.byTooltip('Paste'), findsOneWidget);
       final TextField importPasteField = tester.widget<TextField>(
         find.byKey(const Key('import_game_paste_field')),
       );
+      expect(importPasteField.readOnly, isFalse);
+      expect(importPasteField.decoration?.hintText, 'Enter or paste PGN');
+      expect(importPasteField.decoration?.border, isA<OutlineInputBorder>());
       expect(
-        importPasteField.decoration?.hintText,
-        'Tap to paste and import a game',
+        tester
+            .widget<FilledButton>(
+              find.byKey(const Key('import_game_load_button')),
+            )
+            .onPressed,
+        isNull,
+      );
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(SystemChannels.platform, (
+            MethodCall methodCall,
+          ) async {
+            if (methodCall.method == 'Clipboard.getData') {
+              return <String, dynamic>{
+                'text': '[Event "Pasted without loading"]\n\n*',
+              };
+            }
+            return null;
+          });
+      addTearDown(
+        () => TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(SystemChannels.platform, null),
+      );
+      await tester.tap(find.byKey(const Key('import_game_paste_icon_button')));
+      await tester.pump();
+      expect(
+        importPasteField.controller?.text,
+        '[Event "Pasted without loading"]\n\n*',
+      );
+      expect(
+        find.byKey(const Key('import_game_page_scaffold')),
+        findsOneWidget,
+      );
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(SystemChannels.platform, null);
+      await tester.enterText(
+        find.byKey(const Key('import_game_paste_field')),
+        '[Event "Editable import"]',
+      );
+      await tester.pump();
+      expect(
+        tester
+            .widget<FilledButton>(
+              find.byKey(const Key('import_game_load_button')),
+            )
+            .onPressed,
+        isNotNull,
       );
 
       await tester.binding.handlePopRoute();

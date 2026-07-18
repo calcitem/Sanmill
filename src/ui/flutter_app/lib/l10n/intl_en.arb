@@ -5458,9 +5458,9 @@
     "@guides": {
         "description": "Learn-tab section containing the tutorial and how-to-play guide"
     },
-    "pasteAndImportGameHint": "Tap to paste and import a game",
+    "pasteAndImportGameHint": "Enter or paste PGN",
     "@pasteAndImportGameHint": {
-        "description": "Hint in the read-only PGN field that imports clipboard text when tapped"
+        "description": "Hint in the editable PGN field on the Import game page"
     },
     "engineLineCount": "{count, plural, =1{1 line} other{{count} lines}}",
     "@engineLineCount": {

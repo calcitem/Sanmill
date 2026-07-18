@@ -34,7 +34,7 @@ class _ImportGamePageState extends State<ImportGamePage> {
     super.dispose();
   }
 
-  Future<void> _pasteAndImport() async {
+  Future<void> _pasteFromClipboard() async {
     if (_isImporting) {
       return;
     }
@@ -52,9 +52,21 @@ class _ImportGamePageState extends State<ImportGamePage> {
       return;
     }
 
-    setState(() {
-      _controller.text = text;
-    });
+    _controller.value = TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
+    );
+  }
+
+  Future<void> _loadEditedGame() async {
+    if (_isImporting) {
+      return;
+    }
+
+    final String text = _controller.text.trim();
+    if (text.isEmpty) {
+      return;
+    }
 
     await _importText(text, recordAsLoad: false);
   }
@@ -184,7 +196,29 @@ class _ImportGamePageState extends State<ImportGamePage> {
 
     return Scaffold(
       key: const Key('import_game_page_scaffold'),
-      appBar: AppBar(title: Text(strings.importGame)),
+      appBar: AppBar(
+        title: Text(strings.importGame),
+        actions: <Widget>[
+          IconButton(
+            key: const Key('import_game_from_file_button'),
+            onPressed: _isImporting ? null : _pickFileAndImport,
+            icon: Icon(
+              FluentIcons.folder_open_24_regular,
+              semanticLabel: strings.importFromFile,
+            ),
+            tooltip: strings.importFromFile,
+          ),
+          IconButton(
+            key: const Key('import_game_scan_qr_button'),
+            onPressed: _isImporting ? null : _scanQrCodeAndImport,
+            icon: Icon(
+              FluentIcons.scan_camera_24_regular,
+              semanticLabel: strings.scanQrCode,
+            ),
+            tooltip: strings.scanQrCode,
+          ),
+        ],
+      ),
       backgroundColor: theme.colorScheme.surface,
       body: SafeArea(
         child: Column(
@@ -193,62 +227,76 @@ class _ImportGamePageState extends State<ImportGamePage> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                child: TextField(
-                  key: const Key('import_game_paste_field'),
-                  controller: _controller,
-                  readOnly: true,
-                  expands: true,
-                  maxLines: null,
-                  textAlignVertical: TextAlignVertical.top,
-                  onTap: _pasteAndImport,
-                  decoration: InputDecoration(
-                    hintText: strings.pasteAndImportGameHint,
-                    alignLabelWithHint: true,
-                    suffixIcon: IconButton(
-                      key: const Key('import_game_paste_icon_button'),
-                      icon: Icon(
-                        FluentIcons.clipboard_paste_24_regular,
-                        semanticLabel: strings.paste,
+                child: Stack(
+                  children: <Widget>[
+                    TextField(
+                      key: const Key('import_game_paste_field'),
+                      controller: _controller,
+                      enabled: !_isImporting,
+                      expands: true,
+                      maxLines: null,
+                      autocorrect: false,
+                      enableSuggestions: false,
+                      keyboardType: TextInputType.multiline,
+                      textAlignVertical: TextAlignVertical.top,
+                      decoration: InputDecoration(
+                        hintText: strings.pasteAndImportGameHint,
+                        alignLabelWithHint: true,
+                        border: const OutlineInputBorder(),
+                        contentPadding: const EdgeInsets.fromLTRB(
+                          16,
+                          16,
+                          56,
+                          16,
+                        ),
                       ),
-                      tooltip: strings.paste,
-                      onPressed: _isImporting ? null : _pasteAndImport,
                     ),
-                  ),
+                    PositionedDirectional(
+                      top: 8,
+                      end: 8,
+                      child: IconButton(
+                        key: const Key('import_game_paste_icon_button'),
+                        icon: Icon(
+                          FluentIcons.clipboard_paste_24_regular,
+                          semanticLabel: strings.paste,
+                        ),
+                        tooltip: strings.paste,
+                        onPressed: _isImporting ? null : _pasteFromClipboard,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-              child: OutlinedButton.icon(
-                key: const Key('import_game_from_file_button'),
-                onPressed: _isImporting ? null : _pickFileAndImport,
-                icon: const Icon(FluentIcons.folder_open_24_regular),
-                label: Text(strings.importFromFile),
+              child: ValueListenableBuilder<TextEditingValue>(
+                valueListenable: _controller,
+                builder:
+                    (
+                      BuildContext context,
+                      TextEditingValue value,
+                      Widget? child,
+                    ) {
+                      final bool canLoad =
+                          !_isImporting && value.text.trim().isNotEmpty;
+                      return FilledButton.icon(
+                        key: const Key('import_game_load_button'),
+                        onPressed: canLoad ? _loadEditedGame : null,
+                        icon: _isImporting
+                            ? const SizedBox.square(
+                                dimension: 18,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Icon(FluentIcons.play_24_regular),
+                        label: Text(strings.loadGame),
+                      );
+                    },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-              child: OutlinedButton.icon(
-                key: const Key('import_game_scan_qr_button'),
-                onPressed: _isImporting ? null : _scanQrCodeAndImport,
-                icon: const Icon(FluentIcons.scan_camera_24_regular),
-                label: Text(strings.scanQrCode),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: FilledButton.icon(
-                key: const Key('import_game_from_clipboard_button'),
-                onPressed: _isImporting ? null : _pasteAndImport,
-                icon: _isImporting
-                    ? const SizedBox.square(
-                        dimension: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Icon(FluentIcons.clipboard_paste_24_regular),
-                label: Text(strings.importFromClipboard),
-              ),
-            ),
+            const SizedBox(height: 8),
           ],
         ),
       ),

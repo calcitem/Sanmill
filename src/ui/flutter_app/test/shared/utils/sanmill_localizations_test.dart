@@ -583,7 +583,7 @@ void main() {
   test('uses a direct English import-field hint', () {
     final S english = lookupS(const Locale('en'));
 
-    expect(english.pasteAndImportGameHint, 'Tap to paste and import a game');
+    expect(english.pasteAndImportGameHint, 'Enter or paste PGN');
   });
 
   test('explains what the English FEN copy action copies', () {
