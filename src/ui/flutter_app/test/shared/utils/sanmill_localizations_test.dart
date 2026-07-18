@@ -239,6 +239,24 @@ void main() {
     },
   );
 
+  test(
+    'distinguishes the Chinese saved-games library from loading actions',
+    () {
+      final S chinese = lookupS(const Locale('zh'));
+
+      expect(chinese.saveGame, '保存棋局');
+      expect(chinese.loadGame, '载入棋局');
+      expect(chinese.savedGames, '已保存棋局');
+      expect(chinese.noSavedGames, '暂无已保存棋局。');
+      expect(chinese.savedGamesExportFailed, '无法导出已保存棋局，请重试。');
+      expect(chinese.savedGameDeleteFailed, '无法删除这局棋，请重试。');
+      expect(chinese.savedGameRenameFailed, '无法重命名这局棋。请检查文件名后重试。');
+      expect(chinese.savedGameOpenFailed, '无法打开此 PGN 文件。请选择其他文件后重试。');
+      expect(chinese.gameArchiveImportFailed, '无法导入棋局归档。请选择有效的 ZIP 文件后重试。');
+      expect(chinese.gameImportFailed, '无法导入此棋局。请检查 PGN 和当前规则后重试。');
+    },
+  );
+
   test('separates computer-play and generative AI terminology', () {
     final S english = lookupS(const Locale('en'));
     final S chinese = lookupS(const Locale('zh'));

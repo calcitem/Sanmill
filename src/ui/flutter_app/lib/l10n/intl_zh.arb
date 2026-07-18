@@ -1047,11 +1047,11 @@
     "@analysis": {
         "description": "Analysis"
     },
-    "saveGame": "保存游戏",
+    "saveGame": "保存棋局",
     "@saveGame": {
         "description": "Save game"
     },
-    "loadGame": "加载游戏",
+    "loadGame": "载入棋局",
     "@loadGame": {
         "description": "Load game"
     },
@@ -6392,5 +6392,37 @@
     "shareFen": "分享局面（FEN）",
     "@shareFen": {
         "description": "Action that opens the platform share sheet for the current position in FEN format"
+    },
+    "savedGames": "已保存棋局",
+    "@savedGames": {
+        "description": "Title and list heading for the page that manages saved PGN game files"
+    },
+    "noSavedGames": "暂无已保存棋局。",
+    "@noSavedGames": {
+        "description": "Empty-state message on the saved-games page"
+    },
+    "savedGamesExportFailed": "无法导出已保存棋局，请重试。",
+    "@savedGamesExportFailed": {
+        "description": "Error shown when creating or sharing the saved-games archive fails"
+    },
+    "savedGameDeleteFailed": "无法删除这局棋，请重试。",
+    "@savedGameDeleteFailed": {
+        "description": "Error shown when deleting a saved PGN game file fails"
+    },
+    "savedGameRenameFailed": "无法重命名这局棋。请检查文件名后重试。",
+    "@savedGameRenameFailed": {
+        "description": "Error shown when renaming a saved PGN game file fails"
+    },
+    "savedGameOpenFailed": "无法打开此 PGN 文件。请选择其他文件后重试。",
+    "@savedGameOpenFailed": {
+        "description": "Error shown when selecting, reading, or previewing a PGN game file fails"
+    },
+    "gameArchiveImportFailed": "无法导入棋局归档。请选择有效的 ZIP 文件后重试。",
+    "@gameArchiveImportFailed": {
+        "description": "Error shown when selecting, reading, or extracting a saved-games ZIP archive fails"
+    },
+    "gameImportFailed": "无法导入此棋局。请检查 PGN 和当前规则后重试。",
+    "@gameImportFailed": {
+        "description": "Generic error shown when a PGN game import fails without a specific invalid move"
     }
 }
