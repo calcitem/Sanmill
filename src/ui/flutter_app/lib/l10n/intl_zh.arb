@@ -2890,7 +2890,7 @@
     "@dailyPuzzleLongestStreak": {
         "description": "Longest streak label"
     },
-    "dailyPuzzleTotalCompleted": "已完成总数",
+    "dailyPuzzleTotalCompleted": "已完成的每日谜题",
     "@dailyPuzzleTotalCompleted": {
         "description": "Total completed puzzles label"
     },

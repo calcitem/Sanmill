@@ -882,6 +882,12 @@ void main() {
     expect(english.puzzleStreakDesc, 'Solve puzzles in a row without mistakes');
   });
 
+  test('names the Chinese daily puzzle total explicitly', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.dailyPuzzleTotalCompleted, '已完成的每日谜题');
+  });
+
   test('distinguishes the current English puzzle rating label', () {
     final S english = lookupS(const Locale('en'));
 
