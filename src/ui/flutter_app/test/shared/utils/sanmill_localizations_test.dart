@@ -1171,6 +1171,22 @@ void main() {
     expect(chinese.smallBoard, '小棋盘');
   });
 
+  test('describes Chinese rule settings in player-facing language', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.piecesCount, '每方棋子数');
+    expect(chinese.nMoveRule, 'N 步和棋规则');
+    expect(chinese.endgameNMoveRule, '终局 N 步和棋规则');
+    expect(chinese.isDefenderMoveFirst, '后摆子方先走');
+    expect(chinese.mayMoveInPlacingPhase, '摆子阶段允许走子');
+    expect(chinese.oneTimeUseMill, '每个三连限吃一次');
+    expect(chinese.stopPlacingWhenTwoEmptySquares, '棋盘只剩两个空点时停止摆子');
+    expect(
+      chinese.stopPlacingWhenTwoEmptySquares_Detail,
+      '棋盘只剩两个空点时结束摆子阶段并进入走子阶段，即使手中仍有棋子。仅适用于十二子棋。',
+    );
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =

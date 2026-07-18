@@ -465,11 +465,11 @@
     "@rules": {
         "description": "Rules"
     },
-    "piecesCount": "棋子数",
+    "piecesCount": "每方棋子数",
     "@piecesCount": {
         "description": "The number of pieces each player has"
     },
-    "piecesCount_Detail": "对弈双方分别拥有的棋子数为？",
+    "piecesCount_Detail": "设置每方开局拥有的棋子数。",
     "@piecesCount_Detail": {
         "description": "How many pieces does each player have?"
     },
@@ -493,11 +493,11 @@
     "@hasDiagonalLines_Detail": {
         "description": "Add four diagonal lines to the board."
     },
-    "isDefenderMoveFirst": "后摆子的先走子",
+    "isDefenderMoveFirst": "后摆子方先走",
     "@isDefenderMoveFirst": {
         "description": "The second player moves first"
     },
-    "isDefenderMoveFirst_Detail": "在摆子阶段后摆子的一方，在走子阶段先走子。",
+    "isDefenderMoveFirst_Detail": "摆子阶段后摆子的一方，在走子阶段首先行棋。",
     "@isDefenderMoveFirst_Detail": {
         "description": "The player who moves second in the placing phase moves first in the moving phase."
     },
@@ -505,7 +505,7 @@
     "@mayRemoveMultiple": {
         "description": "Multi-remove"
     },
-    "mayRemoveMultiple_Detail": "若同时形成多个三连，则形成几个三连就能吃对方几个子。",
+    "mayRemoveMultiple_Detail": "一次着法同时形成多个三连时，每形成一个三连可吃一枚对方棋子。",
     "@mayRemoveMultiple_Detail": {
         "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
     },
@@ -513,7 +513,7 @@
     "@mayRemoveFromMillsAlways": {
         "description": "Destroy mills"
     },
-    "mayRemoveFromMillsAlways_Detail": "默认情况下，不能吃三连中的子，除非对方所有子都在三连中。打开此选项可解除此限制。",
+    "mayRemoveFromMillsAlways_Detail": "即使对方还有不在三连中的棋子，也允许吃三连中的棋子。",
     "@mayRemoveFromMillsAlways_Detail": {
         "description": "mayRemoveFromMillsAlways_Detail"
     },
@@ -541,11 +541,11 @@
     "@mayFly_Detail": {
         "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
     },
-    "nMoveRule": "N步规则",
+    "nMoveRule": "N 步和棋规则",
     "@nMoveRule": {
         "description": "N-move rule"
     },
-    "nMoveRule_Detail": "指定当连续多少步中没有吃子时判为和局。",
+    "nMoveRule_Detail": "连续达到设定步数未吃子时，判为和棋。",
     "@nMoveRule_Detail": {
         "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
     },
@@ -951,11 +951,11 @@
     "@defaultLanguage": {
         "description": "Default language"
     },
-    "mayMoveInPlacingPhase": "可以在摆子阶段走子",
+    "mayMoveInPlacingPhase": "摆子阶段允许走子",
     "@mayMoveInPlacingPhase": {
         "description": "The pieces can move in the placing phase"
     },
-    "mayMoveInPlacingPhase_Detail": "摆子阶段和走子阶段无严格界限。即，玩家可以在每一步棋中决定是要摆子还是走子 (只要还有剩余的棋子可以摆子)。",
+    "mayMoveInPlacingPhase_Detail": "每回合可选择摆一枚手中棋子，或移动一枚盘上棋子。",
     "@mayMoveInPlacingPhase_Detail": {
         "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
     },
@@ -1207,11 +1207,11 @@
     "@algorithm": {
         "description": "Algorithm"
     },
-    "endgameNMoveRule": "终盘N步规则",
+    "endgameNMoveRule": "终局 N 步和棋规则",
     "@endgameNMoveRule": {
         "description": "Endgame N-Move rule"
     },
-    "endgameNMoveRule_Detail": "指定当至少一方只剩下三枚棋子时，双方连续多少步均未吃子时，判为和局。",
+    "endgameNMoveRule_Detail": "任一方只剩三枚棋子后，连续达到设定步数未吃子时，判为和棋。",
     "@endgameNMoveRule_Detail": {
         "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
     },
@@ -1567,9 +1567,9 @@
     "@restrictRepeatedMillsFormation": {},
     "restrictRepeatedMillsFormation_Detail": "从一个三连移动到另一个三连的棋子不能在下一回合立即返回原点再次形成三连。需要先走其他着法。",
     "@restrictRepeatedMillsFormation_Detail": {},
-    "oneTimeUseMill": "一次性三连",
+    "oneTimeUseMill": "每个三连限吃一次",
     "@oneTimeUseMill": {},
-    "oneTimeUseMill_Detail": "每个三连只能吃掉一次对手的棋子。您可以再次重组它，但不能用于额外的吃子。",
+    "oneTimeUseMill_Detail": "同一三连只能用于吃子一次；重新组成后也不能再次吃子。",
     "@oneTimeUseMill_Detail": {},
     "currentRulesNoPerfectDatabase": "您设置的当前规则没有相应的完美数据库。有关完美数据库的更多信息，请点击此处。",
     "@currentRulesNoPerfectDatabase": {},
@@ -2143,9 +2143,9 @@
     "@capturePiecesConditionUnlimited": {},
     "capturePiecesConditionSelfLeqThree": "己方剩余棋子≤3枚时可用",
     "@capturePiecesConditionSelfLeqThree": {},
-    "stopPlacingWhenTwoEmptySquares": "棋盘只剩两个空位时停止放子",
+    "stopPlacingWhenTwoEmptySquares": "棋盘只剩两个空点时停止摆子",
     "@stopPlacingWhenTwoEmptySquares": {},
-    "stopPlacingWhenTwoEmptySquares_Detail": "启用后，当棋盘只剩2个空位时，无论手中是否还有棋子，放子阶段都会结束并进入走子阶段。此规则仅适用于12子棋。",
+    "stopPlacingWhenTwoEmptySquares_Detail": "棋盘只剩两个空点时结束摆子阶段并进入走子阶段，即使手中仍有棋子。仅适用于十二子棋。",
     "@stopPlacingWhenTwoEmptySquares_Detail": {},
     "canOnlyRequestTakeBackRightAfterYourMove": "你只能在刚走完棋后立即请求悔棋。",
     "@canOnlyRequestTakeBackRightAfterYourMove": {},
