@@ -5009,7 +5009,7 @@
     "reviewStructureCounts": "{turns} 手 · {actions} 个动作 · {variations} 条变化",
     "quickAnalysis": "本地快速分析",
     "reviewProgress": "{current}/{total}",
-    "reviewUnsupportedPosition": "此规则局面有 {count} 个合法动作，超过搜索容量 {capacity}。",
+    "reviewUnsupportedPosition": "当前规则下，此局面有 {count} 个合法动作，超过支持的搜索容量 {capacity}。",
     "reviewAnalysisFailed": "本地复盘无法分析这盘棋。",
     "analysisCancelled": "分析已取消",
     "qualityAnnotation": "着法质量标注",

@@ -129,6 +129,15 @@ void main() {
     expect(chinese.deepAnalysis, '深入分析这手棋');
   });
 
+  test('explains Chinese review search-capacity limits precisely', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(
+      chinese.reviewUnsupportedPosition(73, 72),
+      '当前规则下，此局面有 73 个合法动作，超过支持的搜索容量 72。',
+    );
+  });
+
   test('labels English review navigation as moves rather than pages', () {
     final S english = lookupS(const Locale('en'));
 
