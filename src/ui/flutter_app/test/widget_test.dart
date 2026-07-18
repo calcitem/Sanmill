@@ -1138,6 +1138,13 @@ void main() {
       expect(
         find.descendant(
           of: find.byKey(const Key('statistics_page_ai_level_1')),
+          matching: find.text('Computer level 1'),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('statistics_page_ai_level_1')),
           matching: find.textContaining('Overall: 0/0/0'),
         ),
         findsOneWidget,

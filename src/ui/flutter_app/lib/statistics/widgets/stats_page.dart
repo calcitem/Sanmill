@@ -378,7 +378,7 @@ class _AiDifficultyStatsTile extends StatelessWidget {
         );
 
     return ListTile(
-      title: Text('${l10n.difficulty} $level'),
+      title: Text('${l10n.skillLevel} $level'),
       subtitle: Text(
         '${l10n.statisticsOverallRecord}: ${_score(stats.losses, stats.draws, stats.wins)}\n'
         '${l10n.white}: ${_score(stats.blackLosses, stats.blackDraws, stats.blackWins)} · '
