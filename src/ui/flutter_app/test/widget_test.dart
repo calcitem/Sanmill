@@ -3105,6 +3105,22 @@ void main() {
         findsOneWidget,
       );
       expect(
+        find.byKey(const Key('opening_explorer_sources_summary')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_source_opening_book')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_source_human_database')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_source_perfect_database')),
+        findsOneWidget,
+      );
+      expect(
         find.byKey(const Key('opening_explorer_sources_copy_fen')),
         findsOneWidget,
       );
@@ -3379,6 +3395,22 @@ void main() {
         find.byKey(const Key('opening_explorer_sources_button')),
       );
       await tester.pumpAndSettle();
+      expect(
+        find.byKey(const Key('opening_explorer_source_opening_book')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_source_human_database')),
+        findsOneWidget,
+      );
+      final Finder perfectDatabaseSource = find.byKey(
+        const Key('opening_explorer_source_perfect_database'),
+      );
+      expect(perfectDatabaseSource, findsOneWidget);
+      expect(
+        find.descendant(of: perfectDatabaseSource, matching: find.text('Off')),
+        findsOneWidget,
+      );
       expect(
         find.byKey(const Key('opening_explorer_sources_copy_fen')),
         findsOneWidget,

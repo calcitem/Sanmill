@@ -1175,15 +1175,8 @@ class _OpeningExplorerBottomBar extends StatelessWidget {
       context: context,
       sheetKey: const Key('opening_explorer_sources_sheet'),
       title: Text(strings.openingExplorerSources),
+      content: _OpeningExplorerSourcesSummary(snapshot: snapshot),
       actions: <LichessActionSheetAction>[
-        LichessActionSheetAction(
-          key: const Key('opening_explorer_sources_summary'),
-          makeLabel: (BuildContext context) => Text(
-            snapshot.sourceSummary(strings),
-            textAlign: TextAlign.center,
-          ),
-          onPressed: () {},
-        ),
         LichessActionSheetAction(
           key: const Key('opening_explorer_sources_copy_fen'),
           leading: const Icon(Icons.location_searching_rounded),
@@ -1265,6 +1258,92 @@ class _OpeningExplorerBottomBar extends StatelessWidget {
           onTap: !isLinePlaybackActive && canGoNext ? onNext : null,
         ),
       ],
+    );
+  }
+}
+
+class _OpeningExplorerSourcesSummary extends StatelessWidget {
+  const _OpeningExplorerSourcesSummary({required this.snapshot});
+
+  final _OpeningExplorerSnapshot snapshot;
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final TextStyle? subtitleStyle = Theme.of(
+      context,
+    ).textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant);
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+      child: Column(
+        children: <Widget>[
+          _OpeningExplorerSourceRow(
+            key: const Key('opening_explorer_source_opening_book'),
+            icon: Icons.menu_book_outlined,
+            title: strings.openingBookSettings,
+            status: snapshot.openingBookStatus(strings),
+            subtitleStyle: subtitleStyle,
+          ),
+          _OpeningExplorerSourceRow(
+            key: const Key('opening_explorer_source_human_database'),
+            icon: Icons.people_alt_outlined,
+            title: strings.humanGameDatabaseSettings,
+            status: snapshot.humanDatabaseStatus(strings),
+            subtitleStyle: subtitleStyle,
+          ),
+          _OpeningExplorerSourceRow(
+            key: const Key('opening_explorer_source_perfect_database'),
+            icon: Icons.verified_outlined,
+            title: strings.perfectDatabaseSettings,
+            status: snapshot.perfectDatabaseStatus(strings),
+            subtitleStyle: subtitleStyle,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _OpeningExplorerSourceRow extends StatelessWidget {
+  const _OpeningExplorerSourceRow({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.status,
+    required this.subtitleStyle,
+  });
+
+  final IconData icon;
+  final String title;
+  final String status;
+  final TextStyle? subtitleStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: Icon(icon, size: 22),
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(title, style: Theme.of(context).textTheme.titleSmall),
+                const SizedBox(height: 2),
+                Text(status, style: subtitleStyle),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -2712,6 +2791,7 @@ class _OpeningExplorerSnapshot {
     required this.openingBookMoveCount,
     required this.humanDatabaseMoveCount,
     required this.perfectMoveAvailable,
+    required this.perfectDatabaseEnabled,
     required this.humanDatabaseState,
     required this.openingRecognition,
     required this.aggregateHumanStats,
@@ -2907,6 +2987,7 @@ class _OpeningExplorerSnapshot {
       openingBookMoveCount: openingBookMoveCount,
       humanDatabaseMoveCount: humanDatabaseMoveCount,
       perfectMoveAvailable: perfectMoveAvailable,
+      perfectDatabaseEnabled: generalSettings.usePerfectDatabase,
       humanDatabaseState: humanDatabaseState,
       openingRecognition: openingRecognition,
       aggregateHumanStats: aggregateHumanStats,
@@ -2919,6 +3000,7 @@ class _OpeningExplorerSnapshot {
   final int openingBookMoveCount;
   final int humanDatabaseMoveCount;
   final bool perfectMoveAvailable;
+  final bool perfectDatabaseEnabled;
   final _HumanDatabaseState humanDatabaseState;
   final MillOpeningRecognition openingRecognition;
   final _HumanMoveStats? aggregateHumanStats;
@@ -2942,13 +3024,47 @@ class _OpeningExplorerSnapshot {
       )
       .toList(growable: false);
 
-  String sourceSummary(S strings) {
-    final List<String> parts = <String>[
-      '${strings.openingBookSettings}: $openingBookMoveCount',
-      '${strings.humanGameDatabaseSettings}: $humanDatabaseMoveCount',
-      '${strings.perfectDatabaseSettings}: ${perfectMoveAvailable ? strings.openingExplorerAvailable : strings.openingExplorerNoDataShort}',
-    ];
-    return parts.join(' · ');
+  String openingBookStatus(S strings) {
+    if (!isRuleSupported) {
+      return strings.openingExplorerRuleUnsupported;
+    }
+    return openingBookMoveCount == 0
+        ? strings.openingExplorerNoDataShort
+        : strings.openingExplorerSourceMoveCount(openingBookMoveCount);
+  }
+
+  String humanDatabaseStatus(S strings) {
+    if (humanDatabaseState == _HumanDatabaseState.hasRecords) {
+      assert(
+        humanDatabaseMoveCount > 0,
+        'Human Database records must include at least one move.',
+      );
+      return strings.openingExplorerSourceMoveCount(humanDatabaseMoveCount);
+    }
+    return switch (humanDatabaseState) {
+      _HumanDatabaseState.disabled => strings.humanDatabaseDisabled,
+      _HumanDatabaseState.notSelected => strings.humanDatabaseNotSelected,
+      _HumanDatabaseState.rulesUnsupported =>
+        strings.humanDatabaseRulesUnsupported,
+      _HumanDatabaseState.captureStep =>
+        strings.humanDatabaseCaptureStepUnavailable,
+      _HumanDatabaseState.gameOver => strings.humanDatabaseGameOverUnavailable,
+      _HumanDatabaseState.unavailable => strings.humanDatabaseUnavailable,
+      _HumanDatabaseState.readyNoRecords =>
+        strings.humanDatabaseNoPositionRecords,
+      _HumanDatabaseState.hasRecords => throw StateError(
+        'Human Database record count must be handled before status lookup.',
+      ),
+    };
+  }
+
+  String perfectDatabaseStatus(S strings) {
+    if (!perfectDatabaseEnabled) {
+      return strings.openingExplorerSourceOff;
+    }
+    return perfectMoveAvailable
+        ? strings.openingExplorerAvailable
+        : strings.openingExplorerNoDataShort;
   }
 
   static bool _supportsHumanDatabaseRules(RuleSettings ruleSettings) {

@@ -6513,5 +6513,19 @@
     "interfaceColors": "Interface colors",
     "@interfaceColors": {
         "description": "Heading for game text and toolbar color controls in Appearance"
+    },
+    "openingExplorerSourceMoveCount": "{count, plural, =1{1 move} other{{count} moves}}",
+    "@openingExplorerSourceMoveCount": {
+        "description": "Number of legal candidate moves supplied by one Opening Explorer data source for the current position",
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "8"
+            }
+        }
+    },
+    "openingExplorerSourceOff": "Off",
+    "@openingExplorerSourceOff": {
+        "description": "Opening Explorer source state when that source is disabled in settings"
     }
 }
