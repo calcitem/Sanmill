@@ -114,4 +114,37 @@ void main() {
     expect(rect.right, 844);
     expect(rect.bottom, 390);
   });
+
+  testWidgets('provides a material surface for the expanded controls', (
+    WidgetTester tester,
+  ) async {
+    tester.view
+      ..physicalSize = const Size(390, 844)
+      ..devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final AnnotationManager manager = AnnotationManager();
+    addTearDown(manager.dispose);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: sanmillLocalizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        home: Stack(
+          children: <Widget>[
+            AnnotationToolbarLayer(
+              annotationManager: manager,
+              isAnnotationMode: true,
+              onToggleAnnotationMode: () {},
+            ),
+          ],
+        ),
+      ),
+    );
+
+    await tester.tap(find.bySemanticsLabel('Line tool'));
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+  });
 }

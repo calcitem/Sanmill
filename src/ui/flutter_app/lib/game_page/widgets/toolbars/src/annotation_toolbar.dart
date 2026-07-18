@@ -116,13 +116,15 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Material(
       key: const Key('annotation_toolbar_surface'),
       color: Colors.grey[850],
-      padding: const EdgeInsets.symmetric(vertical: 6.0),
-      child: widget.isAnnotationMode
-          ? _buildExpandedToolbar(context)
-          : _buildCollapsedToolbar(context),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6.0),
+        child: widget.isAnnotationMode
+            ? _buildExpandedToolbar(context)
+            : _buildCollapsedToolbar(context),
+      ),
     );
   }
 
