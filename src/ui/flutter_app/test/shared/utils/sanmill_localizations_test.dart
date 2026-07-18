@@ -645,6 +645,22 @@ void main() {
     expect(english.noNextBranchPoint, 'No next variation point.');
   });
 
+  test('uses consistent Chinese variation-navigation terminology', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.jumpToMainLine, '前往主线');
+    expect(chinese.jumpToVariation, '打开变化');
+    expect(chinese.jumpToThisVariation, '打开此变化');
+    expect(chinese.switchToThisBranch, '前往此变化的第一手');
+    expect(chinese.previousBranchPoint, '上一个变化点');
+    expect(chinese.nextBranchPoint, '下一个变化点');
+    expect(chinese.noBranchPointsFound, '未找到变化点。');
+    expect(chinese.jumpedToPreviousBranchPoint, '已前往上一个变化点。');
+    expect(chinese.jumpedToNextBranchPoint, '已前往下一个变化点。');
+    expect(chinese.noPreviousBranchPoint, '没有上一个变化点。');
+    expect(chinese.noNextBranchPoint, '没有下一个变化点。');
+  });
+
   test('uses actionable English board-recognition feedback', () {
     final S english = lookupS(const Locale('en'));
 

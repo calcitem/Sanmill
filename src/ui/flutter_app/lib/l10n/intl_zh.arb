@@ -3972,7 +3972,7 @@
     "@monthDecember": {
         "description": "December month name"
     },
-    "jumpToMainLine": "跳转到主线",
+    "jumpToMainLine": "前往主线",
     "@jumpToMainLine": {
         "description": "Jump to main line action"
     },
@@ -4000,11 +4000,11 @@
     "@reverseMoveOrder": {
         "description": "Reverse the order of moves in the list"
     },
-    "previousBranchPoint": "上一个分支点",
+    "previousBranchPoint": "上一个变化点",
     "@previousBranchPoint": {
         "description": "Navigate to previous branch point"
     },
-    "nextBranchPoint": "下一个分支点",
+    "nextBranchPoint": "下一个变化点",
     "@nextBranchPoint": {
         "description": "Navigate to next branch point"
     },
@@ -4016,23 +4016,23 @@
     "@noActivePosition": {
         "description": "Message when there is no active position"
     },
-    "noBranchPointsFound": "未找到分支点",
+    "noBranchPointsFound": "未找到变化点。",
     "@noBranchPointsFound": {
         "description": "Message when no branch points are found"
     },
-    "jumpedToPreviousBranchPoint": "已跳转到上一个分支点",
+    "jumpedToPreviousBranchPoint": "已前往上一个变化点。",
     "@jumpedToPreviousBranchPoint": {
         "description": "Message when jumped to previous branch point"
     },
-    "noPreviousBranchPoint": "没有上一个分支点",
+    "noPreviousBranchPoint": "没有上一个变化点。",
     "@noPreviousBranchPoint": {
         "description": "Message when there is no previous branch point"
     },
-    "jumpedToNextBranchPoint": "已跳转到下一个分支点",
+    "jumpedToNextBranchPoint": "已前往下一个变化点。",
     "@jumpedToNextBranchPoint": {
         "description": "Message when jumped to next branch point"
     },
-    "noNextBranchPoint": "没有下一个分支点",
+    "noNextBranchPoint": "没有下一个变化点。",
     "@noNextBranchPoint": {
         "description": "Message when there is no next branch point"
     },
@@ -4048,7 +4048,7 @@
     "@includeVariationsCurrentLine": {},
     "includeVariationsMainline": "仅主线",
     "@includeVariationsMainline": {},
-    "jumpToVariation": "跳转到变着",
+    "jumpToVariation": "打开变化",
     "@jumpToVariation": {},
     "variationNotation": "变着：{notation}",
     "@variationNotation": {
@@ -4058,9 +4058,9 @@
             }
         }
     },
-    "jumpToThisVariation": "跳转到此变着",
+    "jumpToThisVariation": "打开此变化",
     "@jumpToThisVariation": {},
-    "switchToThisBranch": "切换到此分支",
+    "switchToThisBranch": "前往此变化的第一手",
     "@switchToThisBranch": {},
     "setAsMainLine": "设为主线",
     "@setAsMainLine": {},
