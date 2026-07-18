@@ -218,6 +218,15 @@ class _GamePageInnerState extends State<_GamePageInner> {
     debugPrint('Annotation mode is now: $_isAnnotationMode');
   }
 
+  void _toggleAnalysisAnnotationMode() {
+    assert(_isAnalysisPage, 'The AppBar annotation action is analysis-only.');
+    RecordingService().recordEvent(
+      RecordingEventType.annotationAction,
+      <String, dynamic>{'action': _isAnnotationMode ? 'exit' : 'enter'},
+    );
+    _toggleAnnotationMode();
+  }
+
   @override
   Widget build(BuildContext context) {
     // Build base content (game board, background, etc.)
@@ -365,7 +374,10 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
     // Keep the annotation entry clear of the primary game controls. In
     // annotation mode the expanded palette becomes a dedicated editing panel.
-    final Widget toolbar = DB().displaySettings.isAnnotationToolbarShown
+    final bool annotationToolbarEnabled =
+        DB().displaySettings.isAnnotationToolbarShown;
+    final Widget toolbar =
+        annotationToolbarEnabled && (!_isAnalysisPage || _isAnnotationMode)
         ? AnnotationToolbarLayer(
             annotationManager: _annotationManager,
             isAnnotationMode: _isAnnotationMode,
@@ -538,6 +550,17 @@ class _GamePageInnerState extends State<_GamePageInner> {
           key: Key('game_page_analysis_recording_indicator'),
           child: RecordingIndicator(),
         ),
+        if (DB().displaySettings.isAnnotationToolbarShown)
+          IconButton(
+            key: const Key('game_page_analysis_annotation_button'),
+            tooltip: _isAnnotationMode
+                ? strings.exitAnnotationMode
+                : strings.enterAnnotationMode,
+            isSelected: _isAnnotationMode,
+            selectedIcon: const Icon(FluentIcons.draw_image_24_filled),
+            icon: const Icon(FluentIcons.draw_image_24_regular),
+            onPressed: _toggleAnalysisAnnotationMode,
+          ),
         ValueListenableBuilder<bool>(
           valueListenable: AnalysisMode.stateNotifier,
           builder: (BuildContext context, _, _) {

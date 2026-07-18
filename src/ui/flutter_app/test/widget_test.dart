@@ -482,6 +482,9 @@ void main() {
           ..['aiChatEnabled'] = true
           ..['moveTime'] = 1,
       );
+      DB().displaySettings = originalDisplaySettings.copyWith(
+        isAnnotationToolbarShown: true,
+      );
       DB().ruleSettings = const NineMensMorrisRuleSettings();
       addTearDown(() {
         DB().generalSettings = originalGeneralSettings;
@@ -1289,6 +1292,14 @@ void main() {
       expect(
         find.byKey(const Key('game_page_analysis_appbar_title')),
         findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('game_page_analysis_annotation_button')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('annotation_toolbar_collapsed_position')),
+        findsNothing,
       );
       expect(
         find.byKey(const Key('game_page_analysis_menu_button')),
