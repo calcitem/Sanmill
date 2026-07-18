@@ -2135,7 +2135,7 @@
     "@captureCrossLines": {},
     "captureDiagonalLines": "穿过正方形边线的斜线上",
     "@captureDiagonalLines": {},
-    "captureExecutionPhases": "执行阶段",
+    "captureExecutionPhases": "可用阶段",
     "@captureExecutionPhases": {},
     "capturePiecesCondition": "走子阶段按剩余棋子数量决定适用性",
     "@capturePiecesCondition": {},

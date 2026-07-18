@@ -15,6 +15,12 @@ void main() {
     expect(english.captureExecutionPhases, 'Available during');
   });
 
+  test('describes special-capture phases naturally in Chinese', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.captureExecutionPhases, '可用阶段');
+  });
+
   test('names the minimum-piece rule in player-facing language', () {
     final S english = lookupS(const Locale('en'));
 
