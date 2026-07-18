@@ -760,6 +760,13 @@ void main() {
     expect(chinese.tipToRemove(chinese.white), '轮到先手方吃子');
   });
 
+  test('names the Chinese Analysis clear action by its actual scope', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.clearAnalysisMoves, '清空着法');
+    expect(chinese.analysisMovesCleared, '已清空分析着法。');
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =
