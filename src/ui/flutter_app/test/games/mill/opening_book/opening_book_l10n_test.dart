@@ -14,4 +14,11 @@ void main() {
     expect(strings.openingBookStudioBothSides, '双方');
     expect(strings.openingBookStudioEqual, '均势');
   });
+
+  test('Simplified Chinese localizes Opening Explorer source states', () async {
+    final S strings = await S.delegate.load(const Locale('zh'));
+
+    expect(strings.openingExplorerSourceMoveCount(8), '8 种着法');
+    expect(strings.openingExplorerSourceOff, '已关闭');
+  });
 }
