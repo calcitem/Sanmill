@@ -2494,6 +2494,8 @@ class PlayAreaState extends State<PlayArea> {
     final GameSession? hostSession =
         GameSessionScope.sessionOf(hostContext) ??
         GameController().activeNativeMillSession;
+    final bool hasMoveHistory =
+        GameController().gameRecorder.moveCountNotifier.value > 0;
     final String boardTransformLayout = _activeBoardLayoutForTransformPreview();
     showLichessActionSheet<void>(
       context: hostContext,
@@ -2527,6 +2529,17 @@ class PlayAreaState extends State<PlayArea> {
                 session: hostSession,
               ),
         ),
+        if (hasMoveHistory)
+          LichessActionSheetAction(
+            key: const Key('play_area_offline_board_menu_share_export'),
+            leading: const Icon(Icons.ios_share_outlined),
+            trailing: const Icon(Icons.chevron_right),
+            makeLabel: (BuildContext context) => Text(strings.shareAndExport),
+            onPressed: () => _showCurrentGameShareExportMenu(
+              actionContext,
+              toolbar: 'offlineBoardMenu',
+            ),
+          ),
         _gameTipsMenuAction(
           key: const Key('play_area_offline_board_menu_game_tips'),
           toolbar: 'offlineBoardMenu',
@@ -2835,7 +2848,10 @@ class PlayAreaState extends State<PlayArea> {
             trailing: const Icon(Icons.chevron_right),
             makeLabel: (BuildContext context) =>
                 Text(S.of(context).shareAndExport),
-            onPressed: () => _showCurrentGameShareExportMenu(actionContext),
+            onPressed: () => _showCurrentGameShareExportMenu(
+              actionContext,
+              toolbar: 'humanAiGameMenu',
+            ),
           ),
         _gameTipsMenuAction(
           key: const Key('play_area_game_menu_game_tips'),
@@ -2939,7 +2955,10 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
-  void _showCurrentGameShareExportMenu(BuildContext context) {
+  void _showCurrentGameShareExportMenu(
+    BuildContext context, {
+    required String toolbar,
+  }) {
     assert(!_isAnalysisMode, 'Live-game sharing is unavailable in analysis.');
     final BuildContext actionContext = _stableActionContext(context);
     final S strings = S.of(actionContext);
@@ -2978,13 +2997,13 @@ class PlayAreaState extends State<PlayArea> {
           key: const Key('play_area_game_share_export_share'),
           leading: const Icon(Icons.ios_share_outlined),
           makeLabel: (BuildContext context) => Text(strings.sharePgn),
-          onPressed: () => unawaited(_shareCurrentGamePgn()),
+          onPressed: () => unawaited(_shareCurrentGamePgn(toolbar: toolbar)),
         ),
       ],
     );
   }
 
-  Future<void> _shareCurrentGamePgn() async {
+  Future<void> _shareCurrentGamePgn({required String toolbar}) async {
     assert(!_isAnalysisMode, 'Live-game sharing is unavailable in analysis.');
     final GameRecorder recorder = GameController().gameRecorder;
     final String moveText = recorder.hasVariations()
@@ -3001,7 +3020,7 @@ class PlayAreaState extends State<PlayArea> {
     DiagnosticReplayGuard.requireAllowed('Game sharing');
     RecordingService().recordEvent(
       RecordingEventType.toolbarAction,
-      <String, dynamic>{'toolbar': 'humanAiGameMenu', 'action': 'sharePgn'},
+      <String, dynamic>{'toolbar': toolbar, 'action': 'sharePgn'},
     );
     final String originalPgn = ImportService.addTagPairs(moveText);
     final String pgn =
