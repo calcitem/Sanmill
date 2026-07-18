@@ -3006,11 +3006,11 @@
     "@puzzleBattleFeature4": {
         "description": "Puzzle battle feature 4"
     },
-    "customPuzzles": "自定义谜题",
+    "customPuzzles": "谜题编辑器",
     "@customPuzzles": {
         "description": "Custom puzzles mode name"
     },
-    "customPuzzlesDesc": "创建和管理您的谜题",
+    "customPuzzlesDesc": "创建、导入和管理谜题",
     "@customPuzzlesDesc": {
         "description": "Custom puzzles mode description"
     },
@@ -3187,11 +3187,11 @@
     "@save": {
         "description": "Save button"
     },
-    "noCustomPuzzles": "无自定义谜题",
+    "noCustomPuzzles": "暂无谜题",
     "@noCustomPuzzles": {
         "description": "Message when there are no custom puzzles"
     },
-    "noCustomPuzzlesHint": "创建您自己的谜题来练习特定局面",
+    "noCustomPuzzlesHint": "创建或导入谜题，练习特定局面",
     "@noCustomPuzzlesHint": {
         "description": "Hint message for creating custom puzzles"
     },

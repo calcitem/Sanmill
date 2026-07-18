@@ -12,6 +12,10 @@ void main() {
     expect(strings.puzzleCompletionProgress('0.0'), '已完成 0.0%');
     expect(strings.puzzleCompletionProgress('42.5'), '已完成 42.5%');
     expect(strings.cancelPuzzleSelection, '取消选择');
+    expect(strings.customPuzzles, '谜题编辑器');
+    expect(strings.customPuzzlesDesc, '创建、导入和管理谜题');
+    expect(strings.noCustomPuzzles, '暂无谜题');
+    expect(strings.noCustomPuzzlesHint, '创建或导入谜题，练习特定局面');
     expect(strings.puzzleSolutionActionCount(1), '1 个原子动作');
     expect(strings.puzzleSolutionActionCount(3), '3 个原子动作');
     expect(strings.puzzleStatsCurrentRating, '当前等级分');
