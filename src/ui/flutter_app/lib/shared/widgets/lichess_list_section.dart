@@ -92,7 +92,7 @@ class LichessListSection extends StatelessWidget {
       if (i != children.length - 1) {
         divided.add(
           Divider(
-            key: const Key('lichess_list_section_divider'),
+            key: Key('lichess_list_section_divider_$i'),
             height: 0,
             thickness: 0,
             indent: hasLeading
