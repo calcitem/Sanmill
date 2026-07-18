@@ -208,6 +208,15 @@ void main() {
     expect(english.openingRandomness_Detail, isNot(contains('bias')));
   });
 
+  test('explains Chinese opening randomness concisely', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(
+      chinese.openingRandomness_Detail,
+      '控制电脑采用开局库着法时的变化程度：0% 始终选择最强着法，100% 则同等对待所有候选着法。',
+    );
+  });
+
   test('describes removal of the imported background-music file', () {
     final S english = lookupS(const Locale('en'));
 
