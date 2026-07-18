@@ -79,24 +79,55 @@ class _MoveTimeSliderBodyState extends State<_MoveTimeSliderBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      key: const Key('move_time_slider_center'),
-      child: SizedBox(
-        key: const Key('move_time_slider_sized_box'),
-        width: MediaQuery.of(context).size.width * 0.8,
-        child: Slider(
-          key: const Key('move_time_slider_slider'),
-          value: _value,
-          max: 60,
-          divisions: 60,
-          label: S.of(context).aiThinkingTimeValue(_value.toInt()),
-          onChanged: (double value) {
-            setState(() {
-              _value = value;
-            });
-          },
-          onChangeEnd: _commit,
-        ),
+    final S strings = S.of(context);
+
+    return SafeArea(
+      key: const Key('move_time_slider_sheet'),
+      minimum: const EdgeInsets.fromLTRB(24, 20, 24, 16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 16,
+            runSpacing: 4,
+            children: <Widget>[
+              Text(
+                strings.moveTime,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              Text(
+                strings.aiThinkingTimeValue(_value.toInt()),
+                key: const Key('move_time_slider_current_value'),
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Slider(
+            key: const Key('move_time_slider_slider'),
+            value: _value,
+            max: 60,
+            divisions: 60,
+            label: strings.aiThinkingTimeValue(_value.toInt()),
+            onChanged: (double value) {
+              setState(() {
+                _value = value;
+              });
+            },
+            onChangeEnd: _commit,
+          ),
+          Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: TextButton(
+              key: const Key('move_time_slider_done'),
+              onPressed: () => Navigator.pop(context),
+              child: Text(strings.done),
+            ),
+          ),
+        ],
       ),
     );
   }

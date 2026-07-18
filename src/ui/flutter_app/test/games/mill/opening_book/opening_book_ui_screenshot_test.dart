@@ -110,6 +110,28 @@ void main() {
     );
   });
 
+  testWidgets('computer thinking time uses a compact labeled sheet', (
+    WidgetTester tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(_localizedApp(const GeneralSettingsPage()));
+    await tester.pump();
+    await tester.tap(find.text('Computer thinking time'));
+    await tester.pumpAndSettle();
+
+    final Finder sheet = find.byKey(const Key('move_time_slider_sheet'));
+    expect(sheet, findsOneWidget);
+    expect(
+      find.byKey(const Key('move_time_slider_current_value')),
+      findsOneWidget,
+    );
+    expect(find.text('1 second'), findsNWidgets(2));
+    expect(find.byKey(const Key('move_time_slider_done')), findsOneWidget);
+    expect(tester.getSize(sheet).height, lessThan(260));
+  });
+
   testWidgets('settings page hides opening-book controls for custom rules', (
     WidgetTester tester,
   ) async {
