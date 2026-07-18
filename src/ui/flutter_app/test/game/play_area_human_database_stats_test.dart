@@ -2012,13 +2012,14 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        final Text rank = tester.widget<Text>(
-          find.byKey(const Key('play_area_analysis_engine_line_rank_1')),
+        final Text depth = tester.widget<Text>(
+          find.byKey(const Key('play_area_analysis_engine_line_depth')),
         );
         final Text title = tester.widget<Text>(
           find.byKey(const Key('play_area_analysis_moves_header_title')),
         );
-        expect(rank.style?.color, Colors.white);
+        expect(depth.data, 'd8');
+        expect(depth.style?.color, Colors.white);
         expect(title.style?.color, theme.colorScheme.onSurface);
       }
     },
