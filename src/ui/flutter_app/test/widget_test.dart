@@ -864,6 +864,13 @@ void main() {
         find.byKey(const Key('puzzles_home_modes_section')),
         findsOneWidget,
       );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('puzzles_home_modes_section')),
+          matching: find.text('Puzzles'),
+        ),
+        findsNothing,
+      );
       expect(find.byKey(const Key('puzzles_home_daily')), findsOneWidget);
       expect(find.byKey(const Key('puzzles_home_all')), findsOneWidget);
       expect(find.text('0.0% complete'), findsOneWidget);

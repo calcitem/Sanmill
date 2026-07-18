@@ -127,7 +127,6 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
 
   Widget _buildPuzzleSection(BuildContext context, S s) {
     return LichessListSection(
-      header: Text(s.puzzles),
       cardKey: const Key('puzzles_home_modes_section'),
       children: <Widget>[
         _PuzzleHomeTile(
