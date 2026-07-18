@@ -12,6 +12,7 @@ void main() {
     expect(strings.tools, '工具');
     expect(strings.home, '首页');
     expect(strings.learn, '学习');
+    expect(strings.recentGames, '最近保存的棋局');
   });
 
   test('Simplified Chinese uses step-based navigation labels', () async {
