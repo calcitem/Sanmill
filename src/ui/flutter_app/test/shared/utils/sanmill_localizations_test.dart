@@ -422,6 +422,12 @@ void main() {
     expect(english.shareLogsFailed, 'Could not share logs. Try again.');
   });
 
+  test('explains the Chinese diagnostic log clearing consequence', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.clearLogsConfirmation, '所有诊断日志都将被永久删除。');
+  });
+
   test('gives actionable Chinese diagnostic log export errors', () {
     final S chinese = lookupS(const Locale('zh'));
 

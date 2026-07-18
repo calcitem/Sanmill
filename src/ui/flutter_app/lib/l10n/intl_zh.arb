@@ -3678,7 +3678,7 @@
     "@clearLogs": {
         "description": "Label for clear logs action"
     },
-    "clearLogsConfirmation": "确定要清空所有日志吗？此操作无法撤销。",
+    "clearLogsConfirmation": "所有诊断日志都将被永久删除。",
     "@clearLogsConfirmation": {
         "description": "Confirmation message for clearing logs"
     },
