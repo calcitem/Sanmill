@@ -1559,7 +1559,7 @@
     "@horizontalFlip": {},
     "verticalFlip": "上下",
     "@verticalFlip": {},
-    "innerOuterFlip": "内外",
+    "innerOuterFlip": "交换内外环",
     "@innerOuterFlip": {},
     "transparentCanvas": "透明",
     "@transparentCanvas": {},
@@ -6476,5 +6476,9 @@
     "humanDatabaseSetupSelectFileDescription": "选择 SQLite 文件。Sanmill 会先复制并验证，再启用数据库。",
     "@humanDatabaseSetupSelectFileDescription": {
         "description": "Description of selecting and importing the downloaded human game database file"
+    },
+    "innerOuterFlipShort": "内外环",
+    "@innerOuterFlipShort": {
+        "description": "Compact visual label for the inner-and-outer-ring swap in the board editor toolbar"
     }
 }

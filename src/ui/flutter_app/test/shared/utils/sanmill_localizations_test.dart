@@ -9,6 +9,13 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 
 void main() {
+  test('distinguishes Chinese ring-swap semantics from its compact label', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.innerOuterFlip, '交换内外环');
+    expect(chinese.innerOuterFlipShort, '内外环');
+  });
+
   test('describes special-capture phases in player-facing language', () {
     final S english = lookupS(const Locale('en'));
 
