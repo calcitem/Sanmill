@@ -3976,15 +3976,15 @@
     "@jumpToMainLine": {
         "description": "Jump to main line action"
     },
-    "deleteCurrentBranch": "删除这条线",
+    "deleteCurrentBranch": "删除当前变化",
     "@deleteCurrentBranch": {
         "description": "Delete current variation branch"
     },
-    "deleteCurrentBranchConfirm": "您确定要删除当前变着线及其所有后续着法吗？",
+    "deleteCurrentBranchConfirm": "删除当前变化及其所有后续着法？",
     "@deleteCurrentBranchConfirm": {
         "description": "Confirmation message for deleting current branch"
     },
-    "deleteCurrentBranchWarning": "警告：这将删除您的当前位置。您将移动到父位置。",
+    "deleteCurrentBranchWarning": "当前局面位于此变化中。删除后将返回上一局面。",
     "@deleteCurrentBranchWarning": {
         "description": "Warning message when deleting branch containing current position"
     },
@@ -4066,7 +4066,7 @@
     "@setAsMainLine": {},
     "makeThisPrimaryVariation": "将此变着设为主要变着",
     "@makeThisPrimaryVariation": {},
-    "deleteBranch": "删除分支",
+    "deleteBranch": "删除变化",
     "@deleteBranch": {},
     "removeVariationPermanently": "永久删除此变着",
     "@removeVariationPermanently": {},
@@ -4074,9 +4074,9 @@
     "@cannotPromoteNoParent": {},
     "alreadyMainVariation": "已经是主要变着",
     "@alreadyMainVariation": {},
-    "deleteBranchTitle": "删除分支",
+    "deleteBranchTitle": "删除变化",
     "@deleteBranchTitle": {},
-    "deleteBranchConfirmWithNotation": "确定要删除变着 \"{notation}\" 及其所有后续内容吗？",
+    "deleteBranchConfirmWithNotation": "删除变化“{notation}”及其所有后续着法？",
     "@deleteBranchConfirmWithNotation": {
         "placeholders": {
             "notation": {
@@ -4084,15 +4084,15 @@
             }
         }
     },
-    "deleteBranchContainsPosition": "警告：此分支包含您当前的位置。您将被移动到父级位置。",
+    "deleteBranchContainsPosition": "当前局面位于此变化中。删除后将返回上一局面。",
     "@deleteBranchContainsPosition": {},
     "cannotDeleteNoParent": "无法删除：没有父节点",
     "@cannotDeleteNoParent": {},
-    "branchDeleted": "分支已删除",
+    "branchDeleted": "变化已删除。",
     "@branchDeleted": {},
     "cannotDeleteAlreadyMainLine": "无法删除：已经在主线上",
     "@cannotDeleteAlreadyMainLine": {},
-    "branchMoves": "分支走法",
+    "branchMoves": "此变化中的着法",
     "@branchMoves": {},
     "variations": "变着",
     "@variations": {},

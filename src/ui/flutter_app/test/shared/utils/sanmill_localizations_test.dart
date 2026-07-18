@@ -606,6 +606,23 @@ void main() {
     expect(english.branchMoves, 'Moves in this variation');
   });
 
+  test('uses consistent Chinese variation-deletion terminology', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.deleteCurrentBranch, '删除当前变化');
+    expect(chinese.deleteCurrentBranchConfirm, '删除当前变化及其所有后续着法？');
+    expect(chinese.deleteCurrentBranchWarning, '当前局面位于此变化中。删除后将返回上一局面。');
+    expect(chinese.deleteBranchTitle, '删除变化');
+    expect(chinese.deleteBranchConfirmWithNotation('d6'), '删除变化“d6”及其所有后续着法？');
+    expect(
+      chinese.deleteBranchContainsPosition,
+      chinese.deleteCurrentBranchWarning,
+    );
+    expect(chinese.deleteBranch, '删除变化');
+    expect(chinese.branchDeleted, '变化已删除。');
+    expect(chinese.branchMoves, '此变化中的着法');
+  });
+
   test('uses plain English variation-navigation terminology', () {
     final S english = lookupS(const Locale('en'));
 
