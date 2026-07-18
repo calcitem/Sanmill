@@ -32,6 +32,7 @@ import '../../games/mill/opening_explorer/opening_explorer_page.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../general_settings/widgets/general_settings_page.dart';
 import '../../generated/intl/l10n.dart';
+import '../../puzzle/models/rule_variant.dart';
 import '../../shared/config/ai_compliance_config.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
@@ -2777,6 +2778,12 @@ class PlayAreaState extends State<PlayArea> {
     final GameSession? hostSession =
         GameSessionScope.sessionOf(hostContext) ??
         GameController().activeNativeMillSession;
+    final bool canOpenCurrentPositionInExplorer =
+        hostSession is NativeMillGameSession &&
+        RuleVariant.openingBookVariantIdFor(
+              GameController().ruleSettingsForActiveBoard,
+            ) !=
+            null;
     final bool hasMoveHistory =
         GameController().gameRecorder.moveCountNotifier.value > 0;
     final String boardTransformLayout = _activeBoardLayoutForTransformPreview();
@@ -2810,6 +2817,17 @@ class PlayAreaState extends State<PlayArea> {
           makeLabel: (BuildContext context) => Text(S.of(context).moveList),
           onPressed: () => _openMovesWithNavigator(hostNavigator),
         ),
+        if (canOpenCurrentPositionInExplorer)
+          LichessActionSheetAction(
+            key: const Key('play_area_game_menu_opening_explorer'),
+            leading: const Icon(Icons.explore_outlined),
+            makeLabel: (BuildContext context) =>
+                Text(S.of(context).openingExplorer),
+            onPressed: () => _openCurrentPositionInExplorer(
+              navigator: hostNavigator,
+              session: hostSession,
+            ),
+          ),
         if (hasMoveHistory)
           LichessActionSheetAction(
             key: const Key('play_area_game_menu_share_export'),
@@ -2887,6 +2905,37 @@ class PlayAreaState extends State<PlayArea> {
               unawaited(_requestNewGameFromBottomBar(hostNavigator)),
         ),
       ],
+    );
+  }
+
+  void _openCurrentPositionInExplorer({
+    required NavigatorState navigator,
+    required GameSession session,
+  }) {
+    assert(
+      session is NativeMillGameSession,
+      'Opening explorer requires a native Mill game session.',
+    );
+    assert(
+      RuleVariant.openingBookVariantIdFor(
+            GameController().ruleSettingsForActiveBoard,
+          ) !=
+          null,
+      'Opening explorer requires a supported canonical rule set.',
+    );
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{
+        'toolbar': 'humanAiGameMenu',
+        'action': 'openingExplorer',
+      },
+    );
+    navigator.push(
+      MaterialPageRoute<void>(
+        settings: const RouteSettings(name: '/currentPositionExplorer'),
+        builder: (BuildContext context) =>
+            OpeningExplorerPage(session: session, startFromSession: true),
+      ),
     );
   }
 

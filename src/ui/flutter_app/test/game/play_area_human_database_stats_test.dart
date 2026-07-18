@@ -6106,6 +6106,61 @@ void main() {
     );
   });
 
+  testWidgets('human vs ai menu opens the current position explorer', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings();
+    db.ruleSettings = const NineMensMorrisRuleSettings();
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.humanVsAi,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_game_menu_opening_explorer')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_game_menu_opening_explorer')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Opening explorer'), findsOneWidget);
+    expect(
+      find.byKey(const Key('opening_explorer_bottom_bar')),
+      findsOneWidget,
+    );
+    expect(find.byKey(const Key('opening_explorer_board')), findsOneWidget);
+  });
+
+  testWidgets('human vs ai menu hides explorer for custom rules', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings();
+    final RuleSettings customRules = const NineMensMorrisRuleSettings()
+        .copyWith(oneTimeUseMill: true);
+    db.ruleSettings = customRules;
+    final NativeMillGameSession session = NativeMillGameSession(
+      rules: customRules,
+    );
+    _bindExistingNativeGame(GameMode.humanVsAi, session);
+
+    await _pumpSessionPlayArea(tester, session);
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_game_menu_opening_explorer')),
+      findsNothing,
+    );
+  });
+
   testWidgets('screen reader move menu keeps every history action reachable', (
     WidgetTester tester,
   ) async {
