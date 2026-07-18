@@ -6049,6 +6049,63 @@ void main() {
     );
   });
 
+  testWidgets('human vs ai menu exposes live game sharing after a move', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings();
+    GameController().gameInstance.gameMode = GameMode.humanVsAi;
+    GameController().gameRecorder.appendMove(
+      ExtMove('d6', side: PieceColor.white),
+    );
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        const Scaffold(
+          body: PlayArea(
+            boardImage: null,
+            child: SizedBox.square(
+              key: Key('test_board_square'),
+              dimension: 390,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('play_area_bottom_bar_menu')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_game_menu_share_export')),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.byKey(const Key('play_area_game_menu_share_export')));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('play_area_game_share_export_sheet')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_game_share_export_save')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_game_share_export_copy')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_game_share_export_share')),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('screen reader move menu keeps every history action reachable', (
     WidgetTester tester,
   ) async {

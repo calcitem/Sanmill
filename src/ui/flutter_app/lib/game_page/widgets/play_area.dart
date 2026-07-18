@@ -2777,6 +2777,8 @@ class PlayAreaState extends State<PlayArea> {
     final GameSession? hostSession =
         GameSessionScope.sessionOf(hostContext) ??
         GameController().activeNativeMillSession;
+    final bool hasMoveHistory =
+        GameController().gameRecorder.moveCountNotifier.value > 0;
     final String boardTransformLayout = _activeBoardLayoutForTransformPreview();
     showLichessActionSheet<void>(
       context: hostContext,
@@ -2808,6 +2810,15 @@ class PlayAreaState extends State<PlayArea> {
           makeLabel: (BuildContext context) => Text(S.of(context).moveList),
           onPressed: () => _openMovesWithNavigator(hostNavigator),
         ),
+        if (hasMoveHistory)
+          LichessActionSheetAction(
+            key: const Key('play_area_game_menu_share_export'),
+            leading: const Icon(Icons.ios_share_outlined),
+            trailing: const Icon(Icons.chevron_right),
+            makeLabel: (BuildContext context) =>
+                Text(S.of(context).shareAndExport),
+            onPressed: () => _showCurrentGameShareExportMenu(actionContext),
+          ),
         _gameTipsMenuAction(
           key: const Key('play_area_game_menu_game_tips'),
           toolbar: 'humanAiGameMenu',
@@ -2877,6 +2888,76 @@ class PlayAreaState extends State<PlayArea> {
         ),
       ],
     );
+  }
+
+  void _showCurrentGameShareExportMenu(BuildContext context) {
+    assert(!_isAnalysisMode, 'Live-game sharing is unavailable in analysis.');
+    final BuildContext actionContext = _stableActionContext(context);
+    final S strings = S.of(actionContext);
+    final GameRecorder recorder = GameController().gameRecorder;
+    assert(
+      recorder.moveCountNotifier.value > 0,
+      'Live-game sharing requires at least one recorded move.',
+    );
+    if (recorder.moveCountNotifier.value <= 0) {
+      return;
+    }
+
+    showLichessActionSheet<void>(
+      context: actionContext,
+      sheetKey: const Key('play_area_game_share_export_sheet'),
+      title: Text(strings.shareAndExport),
+      backgroundColor: _actionSheetBackground(actionContext),
+      foregroundColor: _actionSheetForeground(actionContext),
+      actions: <LichessActionSheetAction>[
+        LichessActionSheetAction(
+          key: const Key('play_area_game_share_export_save'),
+          leading: const Icon(FluentIcons.save_24_regular),
+          makeLabel: (BuildContext context) => Text(strings.saveGame),
+          onPressed: () =>
+              unawaited(GameController.save(actionContext, shouldPop: false)),
+        ),
+        LichessActionSheetAction(
+          key: const Key('play_area_game_share_export_copy'),
+          leading: const Icon(Icons.content_copy_outlined),
+          makeLabel: (BuildContext context) =>
+              Text(strings.copyGameToClipboard),
+          onPressed: () =>
+              unawaited(GameController.export(actionContext, shouldPop: false)),
+        ),
+        LichessActionSheetAction(
+          key: const Key('play_area_game_share_export_share'),
+          leading: const Icon(Icons.ios_share_outlined),
+          makeLabel: (BuildContext context) => Text(strings.sharePgn),
+          onPressed: () => unawaited(_shareCurrentGamePgn()),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _shareCurrentGamePgn() async {
+    assert(!_isAnalysisMode, 'Live-game sharing is unavailable in analysis.');
+    final GameRecorder recorder = GameController().gameRecorder;
+    final String moveText = recorder.hasVariations()
+        ? recorder.moveHistoryText
+        : recorder.moveHistoryTextWithoutVariations;
+    assert(
+      moveText.trim().isNotEmpty,
+      'Live-game sharing requires at least one recorded move.',
+    );
+    if (moveText.trim().isEmpty) {
+      return;
+    }
+
+    DiagnosticReplayGuard.requireAllowed('Game sharing');
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'humanAiGameMenu', 'action': 'sharePgn'},
+    );
+    final String originalPgn = ImportService.addTagPairs(moveText);
+    final String pgn =
+        ExportService.reviewedPgnForExport(originalPgn) ?? originalPgn;
+    await SharePlus.instance.share(ShareParams(text: pgn, subject: 'Game PGN'));
   }
 
   /// Builds the move modal bottom sheet.
