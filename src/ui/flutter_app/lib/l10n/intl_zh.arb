@@ -6530,5 +6530,27 @@
     "openMoveListWithSmallBoard": "打开带棋盘预览的着法列表",
     "@openMoveListWithSmallBoard": {
         "description": "Tooltip and accessibility action for opening the full move list alongside its position preview"
+    },
+    "exitClock": "退出棋钟",
+    "@exitClock": {
+        "description": "Tooltip and accessibility label for leaving the immersive Clock tool"
+    },
+    "resetClock": "重置棋钟",
+    "@resetClock": {
+        "description": "Tooltip and accessibility label for restoring both sides of the Clock tool to the selected time control"
+    },
+    "clockPresetSemantics": "{minutes} 分钟，{increment, plural, =0{每步不加时} other{每步加 {increment} 秒}}",
+    "@clockPresetSemantics": {
+        "description": "Screen-reader expansion of a compact chess-clock preset such as 5+0",
+        "placeholders": {
+            "minutes": {
+                "type": "int",
+                "example": "5"
+            },
+            "increment": {
+                "type": "int",
+                "example": "0"
+            }
+        }
     }
 }

@@ -175,6 +175,16 @@ void main() {
     );
   });
 
+  test('expands Chinese clock controls for assistive technology', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.exitClock, '退出棋钟');
+    expect(chinese.resetClock, '重置棋钟');
+    expect(chinese.clockPresetSemantics(1, 0), '1 分钟，每步不加时');
+    expect(chinese.clockPresetSemantics(5, 1), '5 分钟，每步加 1 秒');
+    expect(chinese.clockPresetSemantics(10, 3), '10 分钟，每步加 3 秒');
+  });
+
   test('uses concise chess-style feedback in English mistake review', () {
     final S english = lookupS(const Locale('en'));
 
