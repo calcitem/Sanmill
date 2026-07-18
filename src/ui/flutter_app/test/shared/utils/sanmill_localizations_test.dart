@@ -306,6 +306,7 @@ void main() {
 
     expect(chinese.humanVsAi, '人机对弈');
     expect(chinese.aiVsAi, '电脑自弈');
+    expect(chinese.skillLevel, '电脑等级');
     expect(chinese.humanAiRobotLevel(7), '电脑等级 7');
     expect(chinese.advancedAiSearch, '高级引擎搜索');
     expect(chinese.aiChatTitle, 'AI 助手');

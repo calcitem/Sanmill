@@ -377,7 +377,7 @@
     "@generalSettings": {
         "description": "General Settings"
     },
-    "skillLevel": "难度等级",
+    "skillLevel": "电脑等级",
     "@skillLevel": {
         "description": "Difficulty level"
     },
