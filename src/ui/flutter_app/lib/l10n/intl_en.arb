@@ -6587,5 +6587,19 @@
                 "example": "Player 1"
             }
         }
+    },
+    "logsSelectionSummary": "{logCount, plural, =1{1 log selected} other{{logCount} logs selected}} · {rangeCount, plural, =1{1 range} other{{rangeCount} ranges}}",
+    "@logsSelectionSummary": {
+        "description": "Summary shown while selecting one or more ranges of diagnostic logs",
+        "placeholders": {
+            "logCount": {
+                "type": "int",
+                "example": "3"
+            },
+            "rangeCount": {
+                "type": "int",
+                "example": "2"
+            }
+        }
     }
 }

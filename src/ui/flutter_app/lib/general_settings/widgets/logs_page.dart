@@ -363,8 +363,7 @@ class _LogsPageState extends State<LogsPage> {
       for (final (int start, int end) in _selectedRanges) {
         totalSelected += end - start + 1;
       }
-      hintText =
-          '$totalSelected logs selected (${_selectedRanges.length} ranges)';
+      hintText = s.logsSelectionSummary(totalSelected, _selectedRanges.length);
     }
 
     return Container(

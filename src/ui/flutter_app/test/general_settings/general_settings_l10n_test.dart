@@ -6,6 +6,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 
 void main() {
+  test('English localizes diagnostic log selection counts', () async {
+    final S strings = await S.delegate.load(const Locale('en'));
+
+    expect(strings.logsSelectionSummary(1, 1), '1 log selected · 1 range');
+    expect(strings.logsSelectionSummary(3, 2), '3 logs selected · 2 ranges');
+  });
+
   test(
     'Simplified Chinese localizes first move, tips, and thinking-time values',
     () async {
