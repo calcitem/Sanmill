@@ -6424,5 +6424,13 @@
     "gameImportFailed": "无法导入此棋局。请检查 PGN 和当前规则后重试。",
     "@gameImportFailed": {
         "description": "Generic error shown when a PGN game import fails without a specific invalid move"
+    },
+    "logStoragePermissionRequired": "保存日志需要存储权限。",
+    "@logStoragePermissionRequired": {
+        "description": "Error shown when saving diagnostic logs requires storage permission"
+    },
+    "shareLogsFailed": "无法分享日志，请重试。",
+    "@shareLogsFailed": {
+        "description": "Error shown when sharing diagnostic logs fails"
     }
 }

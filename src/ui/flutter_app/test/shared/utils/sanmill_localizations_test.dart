@@ -352,6 +352,13 @@ void main() {
     expect(english.shareLogsFailed, 'Could not share logs. Try again.');
   });
 
+  test('gives actionable Chinese diagnostic log export errors', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.logStoragePermissionRequired, '保存日志需要存储权限。');
+    expect(chinese.shareLogsFailed, '无法分享日志，请重试。');
+  });
+
   test('explains the English prompt-template restore consequence', () {
     final S english = lookupS(const Locale('en'));
 
