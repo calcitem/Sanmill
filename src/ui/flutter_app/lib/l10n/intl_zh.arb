@@ -4931,7 +4931,7 @@
     "showAllBoardResultsDescription": "展开完美数据库中的全部合法着法结论",
     "humanDatabaseUnavailable": "人类对局数据库不可用",
     "humanDatabaseUnavailableHint": "点按“管理”以检查已选择的文件。",
-    "humanDatabaseNoPositionRecords": "当前局面的人类实战数据不足",
+    "humanDatabaseNoPositionRecords": "当前局面没有人类实战记录",
     "manageKnowledgeSources": "管理",
     "localOpeningKnowledge": "本地开局知识",
     "perfectDatabaseSuggestion": "推荐着法（无可用的人类实战数据）",

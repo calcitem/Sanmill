@@ -733,6 +733,12 @@ void main() {
     );
   });
 
+  test('distinguishes an empty Chinese human database result', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.humanDatabaseNoPositionRecords, '当前局面没有人类实战记录');
+  });
+
   test('uses standard FEN wording for puzzle validation errors', () {
     final S strings = lookupS(const Locale('en'));
 
