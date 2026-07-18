@@ -130,6 +130,7 @@ class DisplaySettings {
     this.analysisShowEvaluationGauge = true,
     this.analysisShowAllBoardResults = false,
     this.showLegalMoves = true,
+    this.showLastMove = true,
     this.analysisEngineLineCount = kDefaultAnalysisEngineLineCount,
     this.analysisEngineSearchTimeMs = kDefaultAnalysisEngineSearchTimeMs,
   });
@@ -344,6 +345,10 @@ class DisplaySettings {
   @HiveField(57, defaultValue: true)
   final bool showLegalMoves;
 
+  /// Whether game boards show the most recent turn trajectory.
+  @HiveField(58, defaultValue: true)
+  final bool showLastMove;
+
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);
 
@@ -423,6 +428,7 @@ class DisplaySettings {
       analysisShowAllBoardResults:
           analysisShowAllBoardResults ?? this.analysisShowAllBoardResults,
       showLegalMoves: showLegalMoves,
+      showLastMove: showLastMove,
       analysisEngineLineCount:
           analysisEngineLineCount ?? this.analysisEngineLineCount,
       analysisEngineSearchTimeMs:

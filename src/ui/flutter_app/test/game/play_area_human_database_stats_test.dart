@@ -428,6 +428,68 @@ void main() {
     expect(tester.widget<CustomPaint>(pieceFinder), isNot(same(piecesBefore)));
   });
 
+  testWidgets('regular game board shows the last turn when enabled', (
+    WidgetTester tester,
+  ) async {
+    db = _GamePageDb(
+      generalSettings: const GeneralSettings(),
+      displaySettings: const DisplaySettings(
+        animationDuration: 0,
+        isUnplacedAndRemovedPiecesShown: false,
+        isHistoryNavigationToolbarShown: false,
+      ),
+    );
+    DB.instance = db;
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.humanVsAi,
+    );
+    GameController().gameRecorder.appendMove(
+      ExtMove('a7-d7', side: PieceColor.white),
+    );
+
+    await tester.pumpWidget(
+      _localizedApp(
+        GameSessionScope(
+          session: session,
+          child: const Scaffold(
+            body: SizedBox.square(
+              dimension: 390,
+              child: GameBoard(boardImage: null),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.runAsync(() async {
+      await Future<void>.delayed(const Duration(milliseconds: 300));
+    });
+    await tester.pump();
+
+    final Finder highlightFinder = find.byKey(
+      const Key('custom_paint_turn_highlight'),
+    );
+    expect(highlightFinder, findsOneWidget);
+    final TurnHighlightPainter enabledPainter =
+        tester.widget<CustomPaint>(highlightFinder).painter!
+            as TurnHighlightPainter;
+    expect(enabledPainter.highlight, isNotNull);
+
+    final DisplaySettings disabledSettings = db.displaySettings.copyWith(
+      showLastMove: false,
+    );
+    db.displaySettings = disabledSettings;
+    (db as _GamePageDb)._displaySettingsListenable.value =
+        _SettingsBox<DisplaySettings>(DB.displaySettingsKey, disabledSettings);
+    await tester.pump();
+
+    final TurnHighlightPainter disabledPainter =
+        tester.widget<CustomPaint>(highlightFinder).painter!
+            as TurnHighlightPainter;
+    expect(disabledPainter.highlight, isNull);
+  });
+
   testWidgets('hint results and clearing redraw the board overlay', (
     WidgetTester tester,
   ) async {

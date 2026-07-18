@@ -461,23 +461,26 @@ class _GameBoardState extends State<GameBoard>
                       ),
                     ),
                   ),
-                  if (GameController().gameInstance.gameMode ==
-                      GameMode.analysis)
+                  if (GameController().gameInstance.gameMode !=
+                      GameMode.setupPosition)
                     RepaintBoundary(
                       key: const Key('repaint_boundary_turn_highlight'),
                       child: AnimatedBuilder(
                         animation: Listenable.merge(<Listenable>[
                           GameController().gameRecorder.moveCountNotifier,
+                          DB().listenDisplaySettings,
                           if (scopedSession != null) scopedSession.state,
                         ]),
                         builder: (_, Widget? child) {
                           final MillBoardView view =
                               GameController().activeBoardView;
                           final MillTurnHighlight? highlight =
-                              MillTurnHighlight.fromPath(
-                                GameController().gameRecorder.currentPath,
-                                isRemovalPending: view.action == Act.remove,
-                              );
+                              DB().displaySettings.showLastMove
+                              ? MillTurnHighlight.fromPath(
+                                  GameController().gameRecorder.currentPath,
+                                  isRemovalPending: view.action == Act.remove,
+                                )
+                              : null;
                           return CustomPaint(
                             key: const Key('custom_paint_turn_highlight'),
                             painter: TurnHighlightPainter(

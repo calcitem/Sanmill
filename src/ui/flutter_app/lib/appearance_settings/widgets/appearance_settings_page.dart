@@ -564,6 +564,33 @@ class AppearanceSettingsPage extends StatelessWidget {
             ),
             ValueListenableBuilder<Box<DisplaySettings>>(
               key: const Key(
+                'display_settings_card_last_move_value_listenable_builder',
+              ),
+              valueListenable: DB().listenDisplaySettings,
+              builder:
+                  (
+                    BuildContext context,
+                    Box<DisplaySettings> box,
+                    Widget? child,
+                  ) {
+                    final DisplaySettings displaySettings = box.get(
+                      DB.displaySettingsKey,
+                      defaultValue: const DisplaySettings(),
+                    )!;
+                    return SettingsListTile.switchTile(
+                      key: const Key(
+                        'display_settings_card_last_move_switch_tile',
+                      ),
+                      leading: const Icon(Icons.route_outlined),
+                      value: displaySettings.showLastMove,
+                      onChanged: (bool val) => DB().displaySettings =
+                          displaySettings.copyWith(showLastMove: val),
+                      titleString: S.of(context).showLastMove,
+                    );
+                  },
+            ),
+            ValueListenableBuilder<Box<DisplaySettings>>(
+              key: const Key(
                 'display_settings_card_piece_animation_value_listenable_builder',
               ),
               valueListenable: DB().listenDisplaySettings,

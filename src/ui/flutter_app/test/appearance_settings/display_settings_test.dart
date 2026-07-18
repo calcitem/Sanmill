@@ -66,6 +66,7 @@ void main() {
       expect(d.analysisShowEvaluationGauge, isTrue);
       expect(d.analysisShowAllBoardResults, isFalse);
       expect(d.showLegalMoves, isTrue);
+      expect(d.showLastMove, isTrue);
       expect(
         d.analysisEngineLineCount,
         DisplaySettings.defaultAnalysisEngineLineCount,
@@ -95,6 +96,15 @@ void main() {
 
     expect(changed.showLegalMoves, isFalse);
     expect(DisplaySettings.fromJson(changed.toJson()).showLegalMoves, isFalse);
+  });
+
+  test('last-move preference copies and serializes', () {
+    final DisplaySettings changed = const DisplaySettings().copyWith(
+      showLastMove: false,
+    );
+
+    expect(changed.showLastMove, isFalse);
+    expect(DisplaySettings.fromJson(changed.toJson()).showLastMove, isFalse);
   });
 
   // ---------------------------------------------------------------------------

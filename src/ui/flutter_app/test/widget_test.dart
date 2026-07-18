@@ -1853,6 +1853,9 @@ void main() {
       final Finder legalMovesTile = find.byKey(
         const Key('display_settings_card_legal_moves_switch_tile'),
       );
+      final Finder lastMoveTile = find.byKey(
+        const Key('display_settings_card_last_move_switch_tile'),
+      );
       final Finder pieceAnimationTile = find.byKey(
         const Key(
           'display_settings_card_piece_pick_up_animation_enabled_switch_tile',
@@ -1867,6 +1870,7 @@ void main() {
       expect(pieceSetTile, findsOneWidget);
       expect(boardCoordinatesTile, findsOneWidget);
       expect(legalMovesTile, findsOneWidget);
+      expect(lastMoveTile, findsOneWidget);
       expect(pieceAnimationTile, findsOneWidget);
       expect(boardImageTile, findsOneWidget);
       expect(backgroundImageTile, findsOneWidget);
@@ -1897,8 +1901,12 @@ void main() {
         greaterThan(tester.getTopLeft(boardCoordinatesTile).dy),
       );
       expect(
-        tester.getTopLeft(pieceAnimationTile).dy,
+        tester.getTopLeft(lastMoveTile).dy,
         greaterThan(tester.getTopLeft(legalMovesTile).dy),
+      );
+      expect(
+        tester.getTopLeft(pieceAnimationTile).dy,
+        greaterThan(tester.getTopLeft(lastMoveTile).dy),
       );
       expect(
         tester.getTopLeft(boardImageTile).dy,
