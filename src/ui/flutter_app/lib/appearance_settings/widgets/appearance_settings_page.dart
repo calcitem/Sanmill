@@ -701,60 +701,6 @@ class AppearanceSettingsPage extends StatelessWidget {
               onChanged: (Color val) => DB().colorSettings = colorSettings
                   .copyWith(messageColor: val),
             ),
-            SettingsListTile.color(
-              key: const Key(
-                'color_settings_card_main_toolbar_background_color_settings_list_tile',
-              ),
-              titleString: S.of(context).mainToolbarBackgroundColor,
-              value: DB().colorSettings.mainToolbarBackgroundColor,
-              onChanged: (Color val) => DB().colorSettings = colorSettings
-                  .copyWith(mainToolbarBackgroundColor: val),
-            ),
-            SettingsListTile.color(
-              key: const Key(
-                'color_settings_card_main_toolbar_icon_color_settings_list_tile',
-              ),
-              titleString: S.of(context).mainToolbarIconColor,
-              value: DB().colorSettings.mainToolbarIconColor,
-              onChanged: (Color val) => DB().colorSettings = colorSettings
-                  .copyWith(mainToolbarIconColor: val),
-            ),
-            SettingsListTile.color(
-              key: const Key(
-                'color_settings_card_navigation_toolbar_background_color_settings_list_tile',
-              ),
-              titleString: S.of(context).navigationToolbarBackgroundColor,
-              value: DB().colorSettings.navigationToolbarBackgroundColor,
-              onChanged: (Color val) => DB().colorSettings = colorSettings
-                  .copyWith(navigationToolbarBackgroundColor: val),
-            ),
-            SettingsListTile.color(
-              key: const Key(
-                'color_settings_card_navigation_toolbar_icon_color_settings_list_tile',
-              ),
-              titleString: S.of(context).navigationToolbarIconColor,
-              value: DB().colorSettings.navigationToolbarIconColor,
-              onChanged: (Color val) => DB().colorSettings = colorSettings
-                  .copyWith(navigationToolbarIconColor: val),
-            ),
-            SettingsListTile.color(
-              key: const Key(
-                'color_settings_card_annotation_toolbar_background_color_settings_list_tile',
-              ),
-              titleString: S.of(context).annotationToolbarBackgroundColor,
-              value: DB().colorSettings.annotationToolbarBackgroundColor,
-              onChanged: (Color val) => DB().colorSettings = colorSettings
-                  .copyWith(annotationToolbarBackgroundColor: val),
-            ),
-            SettingsListTile.color(
-              key: const Key(
-                'color_settings_card_annotation_toolbar_icon_color_settings_list_tile',
-              ),
-              titleString: S.of(context).annotationToolbarIconColor,
-              value: DB().colorSettings.annotationToolbarIconColor,
-              onChanged: (Color val) => DB().colorSettings = colorSettings
-                  .copyWith(annotationToolbarIconColor: val),
-            ),
             SettingsListTile(
               key: const Key(
                 'color_settings_card_import_color_settings_list_tile',

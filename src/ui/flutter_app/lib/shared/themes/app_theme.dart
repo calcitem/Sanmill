@@ -515,10 +515,6 @@ class AppTheme {
     color: _switchListTileTitleColor,
   );
 
-  static final TextStyle mainToolbarTextStyle = TextStyle(
-    color: DB().colorSettings.mainToolbarIconColor,
-  );
-
   static const TextStyle helpTextStyle = TextStyle(
     color: helpTextColor,
     fontSize: 20,

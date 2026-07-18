@@ -71,8 +71,7 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
                       ? S.of(context).solidColor
                       : S.of(context).boardImageOption(index),
                   isSelect: isSelected,
-                  onTap: () =>
-                      _handleSelectImage(asset, displaySettings.boardImagePath),
+                  onTap: () => _handleSelectImage(asset),
                 );
               } else {
                 // Last item: Custom Image Picker
@@ -83,10 +82,8 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
                       displaySettings.boardImagePath ==
                       displaySettings.customBoardImagePath,
                   customImagePath: displaySettings.customBoardImagePath,
-                  onSelect: () => _handleSelectImage(
-                    displaySettings.customBoardImagePath,
-                    displaySettings.boardImagePath,
-                  ),
+                  onSelect: () =>
+                      _handleSelectImage(displaySettings.customBoardImagePath),
                   onPickImage: () => _pickImage(
                     context,
                     boardImageText: boardImageText,
@@ -165,17 +162,13 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
             final File imageFile = File(filePath);
             await imageFile.writeAsBytes(croppedData);
 
-            // Capture the previous boardImagePath before updating
-            final String previousPath = displaySettings.boardImagePath;
-
             // Update displaySettings with the new custom image path
             DB().displaySettings = displaySettings.copyWith(
               customBoardImagePath: filePath,
               boardImagePath: filePath,
             );
 
-            // Handle the selection and prompt
-            await _handleSelectImage(filePath, previousPath);
+            _handleSelectImage(filePath);
           }
         }
       }
@@ -192,101 +185,10 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
     }
   }
 
-  /// Handles the image selection logic, including prompting the user to set toolbars as transparent
-  Future<void> _handleSelectImage(String? asset, String previousPath) async {
-    final bool isSettingNewImage = asset != null && asset.isNotEmpty;
-
-    // Check if no image was previously set, and a new image is now being selected
-    if (previousPath.isEmpty && isSettingNewImage) {
-      final bool shouldMakeTransparent = await _promptMakeToolbarsTransparent(
-        context,
-        DB().displaySettings,
-      );
-      if (shouldMakeTransparent) {
-        _makeToolbarsTransparent();
-      }
-    }
-
-    // Update boardImagePath
+  /// Selects the image used behind the board.
+  void _handleSelectImage(String? asset) {
     DB().displaySettings = DB().displaySettings.copyWith(
       boardImagePath: asset ?? '',
-    );
-  }
-
-  /// Displays a dialog prompting the user to set toolbars as transparent
-  Future<bool> _promptMakeToolbarsTransparent(
-    BuildContext context,
-    DisplaySettings displaySettings,
-  ) async {
-    final bool isNavigationToolbarOpaque =
-        DB().colorSettings.navigationToolbarBackgroundColor.a != 0x00;
-    final bool isMainToolbarOpaque =
-        DB().colorSettings.mainToolbarBackgroundColor.a != 0x00;
-    final bool isAnalysisToolbarOpaque =
-        DB().colorSettings.analysisToolbarBackgroundColor.a != 0x00;
-
-    if (isNavigationToolbarOpaque ||
-        isMainToolbarOpaque ||
-        isAnalysisToolbarOpaque) {
-      final bool? result = await showDialog<bool>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            key: const Key('make_toolbars_transparent_alert_dialog'),
-            title: Text(S.of(context).transparentToolbars),
-            content: Text(S.of(context).promptMakeToolbarTransparent),
-            actions: <Widget>[
-              TextButton(
-                key: const Key('make_toolbars_no_button'),
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text(
-                  S.of(context).no,
-                  style: TextStyle(
-                    fontSize: AppTheme.textScaler.scale(
-                      AppTheme.defaultFontSize,
-                    ),
-                  ),
-                ),
-              ),
-              TextButton(
-                key: const Key('make_toolbars_yes_button'),
-                onPressed: () => Navigator.of(context).pop(true),
-                child: Text(
-                  S.of(context).yes,
-                  style: TextStyle(
-                    fontSize: AppTheme.textScaler.scale(
-                      AppTheme.defaultFontSize,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
-      );
-
-      if (result ?? false) {
-        // Make toolbars transparent
-        _makeToolbarsTransparent();
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  /// Sets all toolbars to be transparent
-  void _makeToolbarsTransparent() {
-    final ColorSettings colorSettings = DB().colorSettings;
-    DB().colorSettings = colorSettings.copyWith(
-      mainToolbarBackgroundColor: colorSettings.mainToolbarBackgroundColor
-          .withAlpha(0x00),
-      navigationToolbarBackgroundColor: colorSettings
-          .navigationToolbarBackgroundColor
-          .withAlpha(0x00),
-      analysisToolbarBackgroundColor: colorSettings
-          .analysisToolbarBackgroundColor
-          .withAlpha(0x00),
     );
   }
 }

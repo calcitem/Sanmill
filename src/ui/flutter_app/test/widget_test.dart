@@ -1766,6 +1766,12 @@ void main() {
       expect(find.text('Board colors'), findsOneWidget);
       expect(find.text('Piece colors'), findsOneWidget);
       expect(find.text('Interface colors'), findsOneWidget);
+      expect(find.text('Main toolbar background color'), findsNothing);
+      expect(find.text('Main toolbar icon color'), findsNothing);
+      expect(find.text('Navigation toolbar background color'), findsNothing);
+      expect(find.text('Navigation toolbar icon color'), findsNothing);
+      expect(find.text('Annotation toolbar background color'), findsNothing);
+      expect(find.text('Annotation toolbar icon color'), findsNothing);
       final double colorTuningOffset = tester
           .state<ScrollableState>(appearanceScrollable)
           .position
