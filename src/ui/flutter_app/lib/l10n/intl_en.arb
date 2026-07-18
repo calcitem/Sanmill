@@ -5536,7 +5536,7 @@
             }
         }
     },
-    "restoreDefaultSettingsConfirmation": "This resets settings and ratings, and permanently deletes puzzle progress, private game history, saved reviews, and custom themes. This cannot be undone.",
+    "restoreDefaultSettingsConfirmation": "This resets settings and ratings, and permanently deletes puzzle progress, game history, saved reviews, and custom themes. This cannot be undone.",
     "@restoreDefaultSettingsConfirmation": {
         "description": "Confirmation warning before all app settings are reset"
     },

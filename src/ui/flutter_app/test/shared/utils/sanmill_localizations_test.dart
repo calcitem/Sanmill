@@ -289,7 +289,7 @@ void main() {
     expect(
       english.restoreDefaultSettingsConfirmation,
       'This resets settings and ratings, and permanently deletes puzzle '
-      'progress, private game history, saved reviews, and custom themes. '
+      'progress, game history, saved reviews, and custom themes. '
       'This cannot be undone.',
     );
   });
