@@ -733,6 +733,19 @@ void main() {
     );
   });
 
+  test('uses standard FEN wording for puzzle validation errors', () {
+    final S strings = lookupS(const Locale('en'));
+
+    expect(
+      strings.puzzleImportInvalidFen(3, 'Fork practice'),
+      'Puzzle 3 ("Fork practice") has an invalid FEN',
+    );
+    expect(
+      strings.puzzleValidationInvalidFen,
+      'The puzzle has an invalid FEN. Check the position.',
+    );
+  });
+
   test('provides framework localizations for every Sanmill locale', () async {
     for (final Locale locale in S.supportedLocales) {
       final WidgetsLocalizations widgetsLocalizations =

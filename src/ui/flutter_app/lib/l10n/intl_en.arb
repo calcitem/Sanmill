@@ -2519,7 +2519,7 @@
             }
         }
     },
-    "puzzleImportInvalidFen": "Puzzle {index} (\"{title}\") has invalid FEN format",
+    "puzzleImportInvalidFen": "Puzzle {index} (\"{title}\") has an invalid FEN",
     "@puzzleImportInvalidFen": {
         "description": "Error when puzzle has invalid FEN",
         "placeholders": {
@@ -2590,7 +2590,7 @@
     "@puzzleValidationPositionRequired": {
         "description": "Validation error: position required"
     },
-    "puzzleValidationInvalidFen": "Puzzle has invalid FEN format. Please check the position.",
+    "puzzleValidationInvalidFen": "The puzzle has an invalid FEN. Check the position.",
     "@puzzleValidationInvalidFen": {
         "description": "Validation error: invalid FEN"
     },
