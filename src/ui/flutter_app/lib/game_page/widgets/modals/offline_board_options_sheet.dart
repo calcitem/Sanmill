@@ -186,6 +186,18 @@ class _OfflineBoardNewGameSheetState extends State<_OfflineBoardNewGameSheet> {
                 ),
                 onTap: _showVariantPicker,
               ),
+              SwitchListTile.adaptive(
+                key: const Key('offline_board_new_game_flip_after_move'),
+                secondary: const Icon(Icons.flip_camera_android_outlined),
+                title: Text(S.of(context).flipBoardAfterMove),
+                value: DB().generalSettings.offlineBoardFlipAfterMove,
+                onChanged: (bool value) {
+                  DB().generalSettings = DB().generalSettings.copyWith(
+                    offlineBoardFlipAfterMove: value,
+                  );
+                  setState(() {});
+                },
+              ),
             ],
           ),
           Padding(

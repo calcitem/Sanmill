@@ -150,6 +150,37 @@ void main() {
     expect(OfflineBoardClock().state.isEnabled, isFalse);
   });
 
+  testWidgets('new game sheet configures automatic board flipping', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      _localizedApp(
+        Builder(
+          builder: (BuildContext context) => FilledButton(
+            key: const Key('open_offline_board_setup'),
+            onPressed: () => showOfflineBoardNewGameSheet(context),
+            child: const Text('Open'),
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.byKey(const Key('open_offline_board_setup')));
+    await tester.pumpAndSettle();
+
+    final Finder toggle = find.byKey(
+      const Key('offline_board_new_game_flip_after_move'),
+    );
+    expect(toggle, findsOneWidget);
+    expect(find.text('Flip pieces and opponent info after move'), findsOne);
+    expect(db.generalSettings.offlineBoardFlipAfterMove, isFalse);
+
+    await tester.tap(toggle);
+    await tester.pumpAndSettle();
+
+    expect(db.generalSettings.offlineBoardFlipAfterMove, isTrue);
+  });
+
   testWidgets('new game sheet preserves custom rules until preset selection', (
     WidgetTester tester,
   ) async {
