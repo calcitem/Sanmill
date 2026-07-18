@@ -45,6 +45,8 @@ void main() {
     expect(find.text('Player 1 wins!'), findsOneWidget);
     expect(find.textContaining('Game duration:'), findsOneWidget);
     expect(find.text('Review game'), findsOneWidget);
+    expect(find.text('Close'), findsOneWidget);
+    expect(find.text('Cancel'), findsNothing);
   });
 
   testWidgets(

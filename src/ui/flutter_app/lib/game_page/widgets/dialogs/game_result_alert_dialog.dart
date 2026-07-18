@@ -333,7 +333,7 @@ class GameResultAlertDialog extends StatelessWidget {
         TextButton(
           key: const Key('ai_vs_ai_game_result_dialog_close_button'),
           child: Text(
-            S.of(context).cancel,
+            S.of(context).close,
             style: TextStyle(
               fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
             ),
