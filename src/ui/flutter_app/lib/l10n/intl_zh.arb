@@ -1409,7 +1409,7 @@
     "@noteAiThinkingTimeMayNotBePrecise": {},
     "noteActualDifficultyLevelMayBeLimited": "此思考时间限制可能导致电脑在当前设备上无法达到所选难度。",
     "@noteActualDifficultyLevelMayBeLimited": {},
-    "whatIsPvs": "PVS 是一种搜索算法，用于在给定局面找到最佳着法。它是对 Alpha-Beta 算法的增强，并使用空或零窗口搜索来确认着法是否比主要变例的安全分数更差或不差。 PVS 关注最有前途的着法，避免不必要的次优分支搜索，有助于提高搜索效率。",
+    "whatIsPvs": "PVS（主要变化搜索）会先检查最有希望的一系列着法，再快速判断其他着法是否需要深入搜索。与基本的 Alpha-Beta 搜索相比，这通常更高效。",
     "@whatIsPvs": {},
     "whatIsAlphaBeta": "Alpha-beta 算法是一种寻找最佳着法的搜索算法。它依据 minimax 原理，使用 alpha 和 beta 两个值剪枝搜索树以提高效率。Alpha 表示引擎确定能够达到的最低分，beta 表示对手能够达到的最高分，从而帮助引擎高效搜索。",
     "@whatIsAlphaBeta": {},

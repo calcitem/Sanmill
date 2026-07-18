@@ -996,6 +996,16 @@ void main() {
     );
   });
 
+  test('explains the Chinese PVS algorithm without search jargon', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(
+      chinese.whatIsPvs,
+      'PVS（主要变化搜索）会先检查最有希望的一系列着法，再快速判断其他着法是否需要深入搜索。'
+      '与基本的 Alpha-Beta 搜索相比，这通常更高效。',
+    );
+  });
+
   test('distinguishes an empty Chinese human database result', () {
     final S chinese = lookupS(const Locale('zh'));
 
