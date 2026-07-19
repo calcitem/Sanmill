@@ -1275,6 +1275,7 @@ class _HomeTabRoot extends StatefulWidget {
 class _HomeTabRootState extends State<_HomeTabRoot> {
   static const int _recentGamesLimit = 5;
   static const int _savedGamesQueryLimit = (_recentGamesLimit + 1) * 4;
+  static const double _floatingPlayButtonClearance = 104;
 
   late Future<List<SavedGameSummary>> _recentGamesFuture;
   List<PrivateGameRecord> _privateGames = const <PrivateGameRecord>[];
@@ -1396,7 +1397,10 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
             key: const Key('sanmill_home_list'),
             controller: widget.scrollController,
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.only(top: 16, bottom: 24),
+            padding: const EdgeInsets.only(
+              top: 16,
+              bottom: _floatingPlayButtonClearance,
+            ),
             children: _buildHomeContent(context, playModes, useWideHomeLayout),
           ),
         ),

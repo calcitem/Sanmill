@@ -428,10 +428,20 @@ void main() {
         find.byKey(const Key('sanmill_home_list')),
         const Offset(0, -800),
       );
-      await tester.pump();
+      await tester.pumpAndSettle();
       expect(
         find.byKey(const Key('sanmill_home_training_group')),
         findsOneWidget,
+      );
+      final Rect floatingPlayButtonRect = tester.getRect(
+        find.byKey(const Key('sanmill_home_play_fab')),
+      );
+      final Rect lastTrainingActionRect = tester.getRect(
+        find.byKey(const Key('sanmill_home_coordinate_training')),
+      );
+      expect(
+        lastTrainingActionRect.bottom,
+        lessThan(floatingPlayButtonRect.top),
       );
 
       // Drain any settings-save debounce timer (see the smoke test above).
