@@ -712,6 +712,7 @@ void main() {
     expect(roundText.style?.fontFamily, 'monospace');
     expect(whiteMoveText.style?.fontFamily, 'monospace');
     expect(blackMoveText.style?.fontFamily, 'monospace');
+    expect(whiteMoveText.style?.fontSize, 16);
     expect(roundText.style?.fontSize, whiteMoveText.style?.fontSize);
     expect(whiteMoveText.style?.fontSize, blackMoveText.style?.fontSize);
     expect(roundText.style?.color, Colors.white);

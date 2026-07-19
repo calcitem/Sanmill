@@ -6217,7 +6217,7 @@ class _InlineMoveCount extends StatelessWidget {
 
 TextStyle _inlineMoveListTextStyle(BuildContext context) {
   final TextStyle baseStyle =
-      Theme.of(context).textTheme.bodySmall ?? const TextStyle(fontSize: 12);
+      Theme.of(context).textTheme.bodyMedium ?? const TextStyle(fontSize: 14);
   return baseStyle.copyWith(fontFamily: 'monospace', letterSpacing: 0);
 }
 
