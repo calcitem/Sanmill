@@ -6570,5 +6570,13 @@
     "noMatchingGames": "没有匹配的对局",
     "@noMatchingGames": {
         "description": "Empty state shown when Game history search has no matches"
+    },
+    "openingExplorerPracticeThisLine": "练习当前路线",
+    "@openingExplorerPracticeThisLine": {
+        "description": "Action that continues the currently browsed opening line from its final position against the computer"
+    },
+    "openingExplorerWatchThisLine": "观看当前路线",
+    "@openingExplorerWatchThisLine": {
+        "description": "Action that replays an opening line on the explorer board"
     }
 }
