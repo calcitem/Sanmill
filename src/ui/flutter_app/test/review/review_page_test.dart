@@ -99,7 +99,7 @@ void main() {
         findsOneWidget,
       );
       expect(find.textContaining('%'), findsNothing);
-      expect(find.text('Best line: d6xf4'), findsOneWidget);
+      expect(find.text('Best line: 1. d6xf4 1... b4 2. a1'), findsOneWidget);
 
       final SemanticsNode board = tester.getSemantics(
         find.byKey(const Key('review_board')),
@@ -130,6 +130,7 @@ void main() {
         tester.widget<Text>(find.byKey(const Key('review_turn_progress'))).data,
         '2/2',
       );
+      expect(find.text('Best line: 1... d6xf4 2. b4 2... a1'), findsOneWidget);
 
       final IconButton firstButton = tester.widget<IconButton>(
         find.byKey(const Key('review_first_turn')),
@@ -579,7 +580,7 @@ ReviewActionEvaluation _action({
       move: 'd6',
       score: 20,
       depth: 24,
-      line: <String>['d6', 'xf4'],
+      line: <String>['d6', 'xf4', 'b4', 'a1'],
     ),
     const ReviewCandidate(
       rank: 2,

@@ -682,7 +682,11 @@ class _ReviewPageState extends State<ReviewPage> {
             const SizedBox(height: 8),
             Text(
               strings.reviewBestLine(
-                _formatPrincipalVariation(actions.first.candidates.first.line),
+                _formatPrincipalVariation(
+                  actions.first.candidates.first.line,
+                  startingSide: turn.side,
+                  startingMoveNumber: _moveNumberForTurn(report, turn),
+                ),
               ),
               textDirection: TextDirection.ltr,
             ),
@@ -1022,7 +1026,11 @@ class _ReviewPageState extends State<ReviewPage> {
     }
   }
 
-  static String _formatPrincipalVariation(List<String> actions) {
+  static String _formatPrincipalVariation(
+    List<String> actions, {
+    required ReviewSide startingSide,
+    required int startingMoveNumber,
+  }) {
     final List<String> turns = <String>[];
     for (final String action in actions) {
       if (action.startsWith('x') && turns.isNotEmpty) {
@@ -1031,7 +1039,37 @@ class _ReviewPageState extends State<ReviewPage> {
         turns.add(action);
       }
     }
-    return turns.join(' ');
+
+    ReviewSide side = startingSide;
+    int moveNumber = startingMoveNumber;
+    final List<String> numberedTurns = <String>[];
+    for (final String turn in turns) {
+      final String prefix = side == ReviewSide.white
+          ? '$moveNumber.'
+          : '$moveNumber...';
+      numberedTurns.add('$prefix $turn');
+      if (side == ReviewSide.black) {
+        moveNumber++;
+      }
+      side = side == ReviewSide.white ? ReviewSide.black : ReviewSide.white;
+    }
+    return numberedTurns.join(' ');
+  }
+
+  static int _moveNumberForTurn(
+    ReviewReport report,
+    ReviewTurnBoundary selectedTurn,
+  ) {
+    int moveNumber = 1;
+    for (final ReviewTurnBoundary turn in report.turns) {
+      if (turn.groupIndex == selectedTurn.groupIndex) {
+        break;
+      }
+      if (turn.side == ReviewSide.black) {
+        moveNumber++;
+      }
+    }
+    return moveNumber;
   }
 
   int _firstKeyGroup(ReviewReport report) {
