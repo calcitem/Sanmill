@@ -429,24 +429,14 @@ void main() {
         find.byKey(const Key('sanmill_home_empty_recent_games')),
         findsOneWidget,
       );
-      await tester.drag(
-        find.byKey(const Key('sanmill_home_list')),
-        const Offset(0, -800),
-      );
-      await tester.pumpAndSettle();
       expect(
         find.byKey(const Key('sanmill_home_training_group')),
-        findsOneWidget,
+        findsNothing,
       );
-      final Rect floatingPlayButtonRect = tester.getRect(
-        find.byKey(const Key('sanmill_home_play_fab')),
-      );
-      final Rect lastTrainingActionRect = tester.getRect(
-        find.byKey(const Key('sanmill_home_coordinate_training')),
-      );
+      expect(find.byKey(const Key('sanmill_home_daily_puzzle')), findsNothing);
       expect(
-        lastTrainingActionRect.bottom,
-        lessThan(floatingPlayButtonRect.top),
+        find.byKey(const Key('sanmill_home_coordinate_training')),
+        findsNothing,
       );
 
       // Drain any settings-save debounce timer (see the smoke test above).

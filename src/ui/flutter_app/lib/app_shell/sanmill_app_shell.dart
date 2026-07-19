@@ -859,7 +859,6 @@ class SanmillAppShellState extends State<SanmillAppShell>
           currentPlayRouteId: _playRouteId,
           onContinueGame: _continueCurrentGame,
           onPlayRouteSelected: _startNewGameOnRoute,
-          onAppRouteSelected: _pushAppRoute,
           onSavedGameSelected: _openSavedGame,
         );
       case SanmillShellTab.puzzles:
@@ -1331,7 +1330,6 @@ class _HomeTabRoot extends StatefulWidget {
     required this.currentPlayRouteId,
     required this.onContinueGame,
     required this.onPlayRouteSelected,
-    required this.onAppRouteSelected,
     required this.onSavedGameSelected,
   });
 
@@ -1341,7 +1339,6 @@ class _HomeTabRoot extends StatefulWidget {
   final String currentPlayRouteId;
   final VoidCallback onContinueGame;
   final ValueChanged<String> onPlayRouteSelected;
-  final ValueChanged<String> onAppRouteSelected;
   final ValueChanged<String> onSavedGameSelected;
 
   @override
@@ -1520,7 +1517,6 @@ class _HomeTabRootState extends State<_HomeTabRoot> {
         onShowAll: _openPrivateHistoryPage,
         onReview: _openReview,
       ),
-      _HomeTrainingSection(onAppRouteSelected: widget.onAppRouteSelected),
     ];
   }
 
@@ -1668,38 +1664,6 @@ class _PrivateHistorySection extends StatelessWidget {
             onReview: () => onReview(record),
             hasDiagonalLines: record.rules.hasDiagonalLines,
           ),
-      ],
-    );
-  }
-}
-
-class _HomeTrainingSection extends StatelessWidget {
-  const _HomeTrainingSection({required this.onAppRouteSelected});
-
-  final ValueChanged<String> onAppRouteSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    final S strings = S.of(context);
-    return LichessListSection(
-      key: const Key('sanmill_home_training_section'),
-      header: Text(strings.dailyTraining),
-      headerKey: const Key('sanmill_home_training_group'),
-      cardKey: const Key('sanmill_home_training_card'),
-      children: <Widget>[
-        _MoreTile(
-          key: const Key('sanmill_home_daily_puzzle'),
-          icon: Icons.extension_rounded,
-          title: strings.puzzles,
-          onTap: () => onAppRouteSelected(MillRouteIds.puzzles.value),
-        ),
-        _MoreTile(
-          key: const Key('sanmill_home_coordinate_training'),
-          icon: Icons.location_searching_rounded,
-          title: strings.coordinateTraining,
-          onTap: () =>
-              onAppRouteSelected(ShellRouteIds.appCoordinateTraining.value),
-        ),
       ],
     );
   }
