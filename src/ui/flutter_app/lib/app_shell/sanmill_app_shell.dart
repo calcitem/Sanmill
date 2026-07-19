@@ -15,7 +15,12 @@ import '../experience_recording/models/recording_models.dart';
 import '../experience_recording/services/recording_navigator_observer.dart';
 import '../experience_recording/services/recording_service.dart';
 import '../game_page/services/mill.dart'
-    show GameController, GameMode, LoadService, PieceColor;
+    show
+        GameController,
+        GameMode,
+        LoadService,
+        LocalGameSessionStorage,
+        PieceColor;
 import '../game_page/services/save_load/saved_game_catalog.dart';
 import '../game_page/widgets/mini_board.dart';
 import '../game_page/widgets/saved_games_page.dart';
@@ -166,7 +171,8 @@ class SanmillAppShell extends StatefulWidget {
   State<SanmillAppShell> createState() => SanmillAppShellState();
 }
 
-class SanmillAppShellState extends State<SanmillAppShell> {
+class SanmillAppShellState extends State<SanmillAppShell>
+    with WidgetsBindingObserver {
   final Map<SanmillShellTab, GlobalKey<NavigatorState>> _navigatorKeys =
       <SanmillShellTab, GlobalKey<NavigatorState>>{
         for (final SanmillShellTab tab in SanmillShellTab.values)
@@ -197,6 +203,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   late String _routeId;
   late String _playRouteId;
   bool _initialized = false;
+  bool _localGameSaveScheduled = false;
 
   GameSessionHandle? _activeSession;
   GameId? _activeSessionGameId;
@@ -219,6 +226,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     for (final SanmillShellTab tab in SanmillShellTab.values) {
       final _SanmillTabRouteObserver? observer = _routeObservers[tab];
       assert(observer != null, 'Missing route observer for $tab.');
@@ -255,7 +263,15 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     _initialized = true;
     _ensureSessionForCurrentGame();
     final GameModule module = GameRegistry.instance.current;
-    _playRouteId = module.defaultShellRoute(context);
+    final String defaultPlayRouteId = module.defaultShellRoute(context);
+    final bool restoredLocalGame = _restoreLocalGameIfAvailable();
+    _playRouteId = restoredLocalGame
+        ? sanmillPlayRouteIdForGameMode(
+            gameId: GameRegistry.instance.currentId,
+            gameMode: GameController().gameInstance.gameMode,
+            fallbackRouteId: defaultPlayRouteId,
+          )
+        : defaultPlayRouteId;
     _routeId = SanmillShellRouteIds.homeRoot.value;
     module.didNavigateShellRoute(
       context,
@@ -267,6 +283,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     GameRegistry.instance.removeListener(_onRegistryChanged);
     for (final ScrollController controller in _scrollControllers.values) {
       controller.dispose();
@@ -278,6 +295,53 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     _activeSession?.dispose();
     _activeSession = null;
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state != AppLifecycleState.resumed) {
+      _scheduleLocalGameSessionSave();
+    }
+  }
+
+  bool _restoreLocalGameIfAvailable() {
+    if (GameRegistry.instance.currentId != GameId.mill) {
+      return false;
+    }
+    try {
+      return LocalGameSessionStorage.instance.restoreCurrent(GameController());
+    } catch (error, stackTrace) {
+      logger.e(
+        '[LocalGameSession] Failed to restore the unfinished game.',
+        error: error,
+        stackTrace: stackTrace,
+      );
+      unawaited(LocalGameSessionStorage.instance.clear());
+      return false;
+    }
+  }
+
+  void _scheduleLocalGameSessionSave() {
+    if (_localGameSaveScheduled) {
+      return;
+    }
+    _localGameSaveScheduled = true;
+    scheduleMicrotask(() {
+      _localGameSaveScheduled = false;
+      unawaited(_persistLocalGameSession());
+    });
+  }
+
+  Future<void> _persistLocalGameSession() async {
+    try {
+      await LocalGameSessionStorage.instance.persistCurrent(GameController());
+    } catch (error, stackTrace) {
+      logger.e(
+        '[LocalGameSession] Failed to save the unfinished game.',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
 
   void _ensureSessionForCurrentGame() {
@@ -306,6 +370,7 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     GameController().bindActiveSession(session);
     void listener() {
       _publishActiveSessionSnapshot(session);
+      _scheduleLocalGameSessionSave();
     }
 
     session.state.addListener(listener);
@@ -510,13 +575,30 @@ class SanmillAppShellState extends State<SanmillAppShell> {
         return;
       }
     }
+    await LocalGameSessionStorage.instance.clear();
     GameController().loadedGameFilenamePrefix = null;
     GameController().reset(force: true);
     await _selectPlayRoute(routeId);
   }
 
-  Future<void> _continueCurrentGame() async {
+  Future<void> _continueCurrentGame({bool resumeAiTurn = true}) async {
     await _selectPlayRoute(_currentGamePlayRouteId());
+    if (!resumeAiTurn || !mounted) {
+      return;
+    }
+    _resumeAiTurnAfterNavigation(LocalGameSessionStorage.storageKey);
+  }
+
+  void _resumeAiTurnAfterNavigation(String sourceIdentity) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      final GameController controller = GameController();
+      if (controller.claimLoadedAiTurnResume(sourceIdentity)) {
+        unawaited(controller.engineToGo(context, isMoveNow: false));
+      }
+    });
   }
 
   String _currentGamePlayRouteId() {
@@ -542,19 +624,12 @@ class SanmillAppShellState extends State<SanmillAppShell> {
     if (GameController().loadedGameSourcePath != expectedSourcePath) {
       return;
     }
-    await _continueCurrentGame();
+    await LocalGameSessionStorage.instance.clear();
+    await _continueCurrentGame(resumeAiTurn: false);
     if (!mounted) {
       return;
     }
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) {
-        return;
-      }
-      final GameController controller = GameController();
-      if (controller.claimLoadedAiTurnResume(expectedSourcePath)) {
-        unawaited(controller.engineToGo(context, isMoveNow: false));
-      }
-    });
+    _resumeAiTurnAfterNavigation(expectedSourcePath);
   }
 
   Future<void> _openSavedGamesFromWatch() async {
@@ -1753,7 +1828,7 @@ class _HomeGamesOverview extends StatelessWidget {
     final GameStateSnapshot? snapshot = GameController().activeSessionSnapshot;
     if (!_ActiveGamePreview.shouldShow(
       snapshot,
-      hasPlayableHistory: moveCount > 0,
+      hasPlayableHistory: moveCount > 0 || GameController().isPositionSetup,
     )) {
       return null;
     }

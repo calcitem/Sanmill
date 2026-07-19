@@ -28,6 +28,7 @@ import 'package:sanmill/game_shell/shell_route_ids.dart';
 import 'package:sanmill/games/built_in_game_modules.dart';
 import 'package:sanmill/games/mill/mill_board_geometry.dart';
 import 'package:sanmill/games/mill/mill_route_ids.dart';
+import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/opening_book/opening_book_repository.dart';
 import 'package:sanmill/games/mill/opening_explorer/opening_explorer_page.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
@@ -138,6 +139,10 @@ void main() {
   tearDownAll(() {
     OpeningBookRepository.instance.resetForTest();
     disposeRustLibForTests();
+  });
+
+  setUp(() async {
+    await LocalGameSessionStorage.instance.clear();
   });
 
   testWidgets('SanmillApp smoke test', (WidgetTester tester) async {
@@ -3985,6 +3990,72 @@ void main() {
   );
 
   testWidgets(
+    'Home restores an unfinished local game from internal storage',
+    (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(390, 844)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final GameController controller = GameController();
+      addTearDown(() {
+        controller.activeSessionSnapshot = null;
+        controller.loadedGameFilenamePrefix = null;
+        controller.loadedGameSourcePath = null;
+        controller.gameRecorder.reset();
+      });
+
+      const RuleSettings rules = RuleSettings(
+        hasDiagonalLines: true,
+        nMoveRule: 42,
+      );
+      final NativeMillGameSession source = NativeMillGameSession(rules: rules);
+      addTearDown(source.dispose);
+      expect(source.applyMoveString('d6'), isTrue);
+      final GameRecorder recorder = GameRecorder(recordedRuleSettings: rules)
+        ..appendMove(ExtMove('d6', side: PieceColor.white));
+      final LocalGameSessionRecord record = LocalGameSessionRecord(
+        mode: GameMode.humanVsAi,
+        aiMovesFirst: true,
+        position: AnalysisSessionRecord.capture(
+          rules: rules,
+          recorder: recorder,
+          currentFen: source.getFen(),
+        ),
+        savedAt: DateTime.utc(2026, 7, 19, 10),
+      );
+      await LocalGameSessionStorage.instance.clear();
+      await tester.runAsync(
+        () => DB().reviewDataBox.put(
+          LocalGameSessionStorage.storageKey,
+          record.toJson(),
+        ),
+      );
+
+      await tester.pumpWidget(const SanmillApp());
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      expect(
+        find.byKey(const Key('sanmill_home_ongoing_game')),
+        findsOneWidget,
+      );
+      expect(controller.gameInstance.gameMode, GameMode.humanVsAi);
+      expect(controller.activeFen, source.getFen());
+      expect(
+        controller.gameInstance.getPlayerByColor(PieceColor.white).isAi,
+        isTrue,
+      );
+      expect(
+        controller.gameRecorder.currentPath.map((ExtMove move) => move.move),
+        <String>['d6'],
+      );
+      expect(controller.ruleSettingsForActiveBoard.toJson(), rules.toJson());
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Home carousel crops the next game instead of narrowing it',
     (WidgetTester tester) async {
       tester.view
@@ -4346,7 +4417,12 @@ void main() {
         find.byKey(const Key('sanmill_home_play_sheet_mill.play.humanVsAi')),
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('human_ai_new_game_sheet_start')));
+      final Finder startButton = find.byKey(
+        const Key('human_ai_new_game_sheet_start'),
+      );
+      await tester.ensureVisible(startButton);
+      await tester.pumpAndSettle();
+      await tester.tap(startButton);
       await tester.pumpAndSettle();
 
       expect(controller.gameRecorder.mainlineMoves, isEmpty);

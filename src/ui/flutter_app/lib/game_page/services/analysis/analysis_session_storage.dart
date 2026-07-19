@@ -218,64 +218,74 @@ class AnalysisSessionStorage {
     if (record == null) {
       return false;
     }
-    final NativeMillGameSession? session = controller.activeNativeMillSession;
-    if (session == null) {
-      throw StateError(
-        'Cannot resume Analysis without an active Mill session.',
-      );
-    }
-
-    controller.gameInstance.gameMode = GameMode.analysis;
+    _restoreRecordedSessionPosition(
+      controller,
+      record,
+      mode: GameMode.analysis,
+      generalSettings: generalSettings,
+    );
     controller.disableStats = true;
-    session.resetGame(
-      rules: record.rules,
-      generalSettings: generalSettings ?? DB().generalSettings,
-    );
-    final String? setupPosition = record.recorder.setupPosition?.trim();
-    if (setupPosition != null && setupPosition.isNotEmpty) {
-      final bool loaded = session.loadFen(setupPosition);
-      if (!loaded) {
-        throw const FormatException(
-          'Saved Analysis setup position is invalid.',
-        );
-      }
-    }
-
-    final List<PgnNode<ExtMove>> activeNodes = record.activePathNodes;
-    record.recorder.activeNode = record.recorder.pgnRoot;
-    record.recorder.moveCountNotifier.value = 0;
-    controller.gameRecorder = record.recorder;
-
-    final bool restored = session.restoreMoveStrings(
-      activeNodes.map((PgnNode<ExtMove> node) => node.data!.move),
-    );
-    if (!restored) {
-      throw const FormatException(
-        'Saved Analysis path is illegal under its recorded rules.',
-      );
-    }
-    controller.gameRecorder.activeNode = activeNodes.isEmpty
-        ? controller.gameRecorder.pgnRoot
-        : activeNodes.last;
-    controller.gameRecorder.moveCountNotifier.value = activeNodes.length;
-    controller.gameRecorder.lastPositionWithRemove =
-        record.recorder.lastPositionWithRemove;
-
-    final String restoredFen = session.getFen();
-    if (restoredFen != record.currentFen) {
-      throw FormatException(
-        'Saved Analysis position mismatch: expected ${record.currentFen}, '
-        'restored $restoredFen.',
-      );
-    }
-
-    controller.activeSessionSnapshot = session.state.value;
-    controller.headerIconsNotifier.showIcons();
-    controller.boardSemanticsNotifier.updateSemantics();
     return true;
   }
 
   Future<void> clear() => _dataBox.delete(storageKey);
+}
+
+void _restoreRecordedSessionPosition(
+  GameController controller,
+  AnalysisSessionRecord record, {
+  required GameMode mode,
+  GeneralSettings? generalSettings,
+}) {
+  final NativeMillGameSession? session = controller.activeNativeMillSession;
+  if (session == null) {
+    throw StateError('Cannot restore a game without an active Mill session.');
+  }
+
+  controller.gameInstance.gameMode = mode;
+  session.resetGame(
+    rules: record.rules,
+    generalSettings: generalSettings ?? DB().generalSettings,
+  );
+  final String? setupPosition = record.recorder.setupPosition?.trim();
+  if (setupPosition != null && setupPosition.isNotEmpty) {
+    final bool loaded = session.loadFen(setupPosition);
+    if (!loaded) {
+      throw const FormatException('Saved setup position is invalid.');
+    }
+  }
+
+  final List<PgnNode<ExtMove>> activeNodes = record.activePathNodes;
+  record.recorder.activeNode = record.recorder.pgnRoot;
+  record.recorder.moveCountNotifier.value = 0;
+  controller.gameRecorder = record.recorder;
+
+  final bool restored = session.restoreMoveStrings(
+    activeNodes.map((PgnNode<ExtMove> node) => node.data!.move),
+  );
+  if (!restored) {
+    throw const FormatException(
+      'Saved game path is illegal under its recorded rules.',
+    );
+  }
+  controller.gameRecorder.activeNode = activeNodes.isEmpty
+      ? controller.gameRecorder.pgnRoot
+      : activeNodes.last;
+  controller.gameRecorder.moveCountNotifier.value = activeNodes.length;
+  controller.gameRecorder.lastPositionWithRemove =
+      record.recorder.lastPositionWithRemove;
+
+  final String restoredFen = session.getFen();
+  if (restoredFen != record.currentFen) {
+    throw FormatException(
+      'Saved position mismatch: expected ${record.currentFen}, '
+      'restored $restoredFen.',
+    );
+  }
+
+  controller.activeSessionSnapshot = session.state.value;
+  controller.headerIconsNotifier.showIcons();
+  controller.boardSemanticsNotifier.updateSemantics();
 }
 
 Map<String, dynamic> _encodeAnalysisNode(PgnNode<ExtMove> node) {
@@ -424,6 +434,13 @@ String? _analysisNullableString(dynamic raw, String field) {
 int _analysisInt(dynamic raw, String field) {
   if (raw is! int) {
     throw FormatException('Analysis $field must be an integer.');
+  }
+  return raw;
+}
+
+bool _analysisBool(dynamic raw, String field) {
+  if (raw is! bool) {
+    throw FormatException('Analysis $field must be a boolean.');
   }
   return raw;
 }
