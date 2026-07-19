@@ -5,6 +5,8 @@
 
 import 'dart:async';
 
+import 'package:camera/camera.dart'
+    show CameraDescription, CameraImage, CameraPreview, availableCameras;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zxing/flutter_zxing.dart';
@@ -18,9 +20,10 @@ import 'qr_selection_page.dart';
 
 enum _CameraState { checking, available, unavailable }
 
-/// Android / iOS: live camera via [ReaderWidget]. Desktop and web: no camera
-/// plugin — pick an image file; on Windows, optional full-screen or region
-/// capture ([just_screenshot]) then decode.
+/// Android and iOS use [ReaderWidget]. macOS uses a direct [CameraController]
+/// so its AVFoundation backend does not depend on a mobile-only widget path.
+/// Other desktop platforms and web pick an image file; Windows can also
+/// capture the full screen or a region ([just_screenshot]).
 ///
 /// Returns the decoded QR string via [Navigator.pop] on successful scan.
 /// When multiple QR codes are detected via the camera, freezes the frame,
@@ -35,16 +38,27 @@ class QrScannerPage extends StatefulWidget {
 }
 
 bool get _usesLiveCameraScanner {
-  if (kIsWeb) {
+  return qrScannerUsesLiveCamera(
+    platform: defaultTargetPlatform,
+    isWeb: kIsWeb,
+  );
+}
+
+@visibleForTesting
+bool qrScannerUsesLiveCamera({
+  required TargetPlatform platform,
+  required bool isWeb,
+}) {
+  if (isWeb) {
     return false;
   }
-  switch (defaultTargetPlatform) {
+  switch (platform) {
     case TargetPlatform.android:
     case TargetPlatform.iOS:
+    case TargetPlatform.macOS:
       return true;
     case TargetPlatform.fuchsia:
     case TargetPlatform.linux:
-    case TargetPlatform.macOS:
     case TargetPlatform.windows:
       return false;
   }
@@ -52,6 +66,10 @@ bool get _usesLiveCameraScanner {
 
 bool get _supportsWindowsScreenCapture {
   return !kIsWeb && defaultTargetPlatform == TargetPlatform.windows;
+}
+
+bool get _usesMacOsCameraScanner {
+  return !kIsWeb && defaultTargetPlatform == TargetPlatform.macOS;
 }
 
 class _QrScannerPageState extends State<QrScannerPage>
@@ -69,6 +87,10 @@ class _QrScannerPageState extends State<QrScannerPage>
   /// Camera controller provided by [ReaderWidget.onControllerCreated].
   CameraController? _cameraController;
 
+  bool _isInitializingMacOsCamera = false;
+  bool _isProcessingMacOsFrame = false;
+  bool _disposeMacOsCameraWhenReady = false;
+
   bool get _isBusy => _isCapturing || _isDecoding || _hasPopped;
 
   /// Incremented to force-recreate the [ReaderWidget] when the camera becomes
@@ -81,10 +103,6 @@ class _QrScannerPageState extends State<QrScannerPage>
   /// [CameraController] can finish its asynchronous disposal before a new one
   /// is created.
   bool _isReinitializing = false;
-
-  /// Tracks whether at least one scan callback has been received, so the
-  /// watchdog does not trigger during initial camera warm-up.
-  bool _hasReceivedFirstCallback = false;
 
   /// Timestamp of the most recent scan callback (success or failure).
   DateTime _lastScanActivity = DateTime.now();
@@ -119,6 +137,9 @@ class _QrScannerPageState extends State<QrScannerPage>
     if (_usesLiveCameraScanner) {
       WidgetsBinding.instance.addObserver(this);
       _startWatchdog();
+      if (_usesMacOsCameraScanner) {
+        unawaited(_initializeMacOsCamera());
+      }
     } else {
       _cameraState = _CameraState.unavailable;
     }
@@ -130,12 +151,35 @@ class _QrScannerPageState extends State<QrScannerPage>
     if (_usesLiveCameraScanner) {
       WidgetsBinding.instance.removeObserver(this);
     }
+    if (_usesMacOsCameraScanner) {
+      unawaited(_disposeMacOsCamera().whenComplete(zx.stopCameraProcessing));
+    }
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (!_usesLiveCameraScanner) {
+      return;
+    }
+    if (_usesMacOsCameraScanner) {
+      switch (state) {
+        case AppLifecycleState.resumed:
+          if (!_hasPopped && !_isReinitializing) {
+            unawaited(_initializeMacOsCamera());
+          }
+          break;
+        case AppLifecycleState.inactive:
+          // A system permission dialog makes a macOS app inactive while the
+          // camera controller is still initializing. Keep it alive until the
+          // user answers instead of disposing an in-flight initialization.
+          break;
+        case AppLifecycleState.paused:
+        case AppLifecycleState.hidden:
+        case AppLifecycleState.detached:
+          unawaited(_disposeMacOsCamera());
+          break;
+      }
       return;
     }
     if (state == AppLifecycleState.resumed &&
@@ -148,7 +192,6 @@ class _QrScannerPageState extends State<QrScannerPage>
   // ── Camera health / watchdog ───────────────────────────────────────
 
   void _onScanActivity() {
-    _hasReceivedFirstCallback = true;
     _lastScanActivity = DateTime.now();
   }
 
@@ -156,7 +199,6 @@ class _QrScannerPageState extends State<QrScannerPage>
     _watchdogTimer = Timer.periodic(_watchdogInterval, (_) {
       if (_hasPopped ||
           _isBusy ||
-          !_hasReceivedFirstCallback ||
           _cameraState != _CameraState.available ||
           _isReinitializing) {
         return;
@@ -175,25 +217,153 @@ class _QrScannerPageState extends State<QrScannerPage>
       return;
     }
 
-    _hasReceivedFirstCallback = false;
     _lastScanActivity = DateTime.now();
 
     setState(() {
       _isReinitializing = true;
     });
 
+    if (_usesMacOsCameraScanner) {
+      await _disposeMacOsCamera();
+    }
+
     await Future<void>.delayed(_cameraReleaseDelay);
 
     if (mounted && !_hasPopped) {
       setState(() {
         _cameraState = _CameraState.checking;
-        _readerKey++;
+        if (!_usesMacOsCameraScanner) {
+          _readerKey++;
+        }
         _isReinitializing = false;
       });
+      if (_usesMacOsCameraScanner) {
+        await _initializeMacOsCamera();
+      }
     }
   }
 
   // ── Camera multi-scan callback ──────────────────────────────────────
+
+  Future<void> _initializeMacOsCamera() async {
+    if (!_usesMacOsCameraScanner ||
+        _isInitializingMacOsCamera ||
+        _cameraController != null ||
+        !mounted ||
+        _hasPopped) {
+      return;
+    }
+
+    _isInitializingMacOsCamera = true;
+    _disposeMacOsCameraWhenReady = false;
+    _lastScanActivity = DateTime.now();
+
+    try {
+      await zx.startCameraProcessing();
+      final List<CameraDescription> cameras = await availableCameras();
+      if (cameras.isEmpty) {
+        if (mounted) {
+          setState(() => _cameraState = _CameraState.unavailable);
+        }
+        return;
+      }
+
+      final CameraDescription camera = cameras.firstWhere(
+        (CameraDescription candidate) =>
+            candidate.lensDirection == CameraLensDirection.front,
+        orElse: () => cameras.first,
+      );
+      final CameraController controller = CameraController(
+        camera,
+        ResolutionPreset.high,
+        enableAudio: false,
+      );
+      _cameraController = controller;
+      await controller.initialize();
+
+      if (!mounted || _hasPopped || _disposeMacOsCameraWhenReady) {
+        await controller.dispose();
+        _cameraController = null;
+        return;
+      }
+
+      await controller.startImageStream(_processMacOsCameraFrame);
+      if (mounted) {
+        setState(() => _cameraState = _CameraState.available);
+      }
+    } catch (error) {
+      debugPrint('Failed to initialize the macOS QR camera: $error');
+      await _disposeMacOsCamera();
+      if (mounted && !_hasPopped) {
+        setState(() => _cameraState = _CameraState.unavailable);
+      }
+    } finally {
+      _isInitializingMacOsCamera = false;
+      if (_disposeMacOsCameraWhenReady) {
+        await _disposeMacOsCamera();
+      }
+    }
+  }
+
+  Future<void> _disposeMacOsCamera() async {
+    if (_isInitializingMacOsCamera) {
+      _disposeMacOsCameraWhenReady = true;
+      return;
+    }
+
+    _disposeMacOsCameraWhenReady = false;
+    final CameraController? controller = _cameraController;
+    _cameraController = null;
+    _isProcessingMacOsFrame = false;
+    if (controller == null) {
+      return;
+    }
+    if (controller.value.isStreamingImages) {
+      try {
+        await controller.stopImageStream();
+      } catch (_) {
+        // The controller may already be shutting down with the app lifecycle.
+      }
+    }
+    try {
+      await controller.dispose();
+    } catch (_) {
+      // Native camera disposal is best effort during route/app teardown.
+    }
+  }
+
+  void _processMacOsCameraFrame(CameraImage image) {
+    _onScanActivity();
+    if (_isBusy || _isProcessingMacOsFrame) {
+      return;
+    }
+    _isProcessingMacOsFrame = true;
+    unawaited(_decodeMacOsCameraFrame(image));
+  }
+
+  Future<void> _decodeMacOsCameraFrame(CameraImage image) async {
+    try {
+      final Codes codes = await zx.processCameraImageMulti(
+        image,
+        DecodeParams(
+          imageFormat: ImageFormat.bgrx,
+          format: Format.qrCode,
+          width: image.width,
+          height: image.height,
+          isMultiScan: true,
+          tryHarder: true,
+          maxNumberOfSymbols: 10,
+        ),
+      );
+      if (mounted) {
+        _onMultiScan(codes);
+      }
+    } catch (error) {
+      debugPrint('Failed to decode a macOS QR camera frame: $error');
+    } finally {
+      _isProcessingMacOsFrame = false;
+    }
+  }
 
   /// Called by [ReaderWidget] every frame where at least one code is found.
   void _onMultiScan(Codes codes) {
@@ -223,8 +393,7 @@ class _QrScannerPageState extends State<QrScannerPage>
 
   /// Stops the image stream, takes a still picture, re-analyses it and opens
   /// [QrSelectionPage]. Stopping the stream before [takePicture] is required
-  /// on Android; the stream is not restarted because the page pops after
-  /// selection (or the ReaderWidget reinitialises on resume if cancelled).
+  /// on Android. The macOS stream is restarted if selection is cancelled.
   Future<void> _captureAndSelect() async {
     if (_cameraController == null || _isBusy) {
       return;
@@ -291,6 +460,16 @@ class _QrScannerPageState extends State<QrScannerPage>
         Navigator.of(context).pop(selected);
       }
     } finally {
+      if (_usesMacOsCameraScanner &&
+          !_hasPopped &&
+          (_cameraController?.value.isInitialized ?? false) &&
+          !(_cameraController?.value.isStreamingImages ?? false)) {
+        try {
+          await _cameraController!.startImageStream(_processMacOsCameraFrame);
+        } catch (_) {
+          unawaited(_reinitializeCamera());
+        }
+      }
       if (mounted) {
         setState(() => _isCapturing = false);
       }
@@ -432,7 +611,7 @@ class _QrScannerPageState extends State<QrScannerPage>
     }
   }
 
-  // ── Desktop / web UI (no [ReaderWidget], no camera channel) ────────
+  // ── Desktop / web UI without a live-camera backend ────────────────
 
   Widget _buildDesktopScannerBody(S s) {
     return Center(
@@ -571,6 +750,59 @@ class _QrScannerPageState extends State<QrScannerPage>
           ],
         ),
         body: _buildDesktopScannerBody(s),
+      );
+    }
+
+    if (_usesMacOsCameraScanner) {
+      final CameraController? controller = _cameraController;
+      final Widget body;
+      if (_isReinitializing || _cameraState == _CameraState.checking) {
+        body = const Center(child: CircularProgressIndicator());
+      } else if (_cameraState == _CameraState.unavailable ||
+          controller == null ||
+          !controller.value.isInitialized) {
+        body = _isDecoding
+            ? const Center(child: CircularProgressIndicator())
+            : _buildNoCameraBody(s);
+      } else {
+        final Size previewSize = controller.value.previewSize!;
+        body = ColoredBox(
+          color: Colors.black,
+          child: ClipRect(
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: SizedBox(
+                width: previewSize.width,
+                height: previewSize.height,
+                child: CameraPreview(controller),
+              ),
+            ),
+          ),
+        );
+      }
+
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(s.scanQrCode),
+          actions: <Widget>[
+            if (_isDecoding || _isCapturing)
+              const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              )
+            else
+              IconButton(
+                icon: const Icon(Icons.photo_library_outlined),
+                tooltip: s.qrCodeFromGallery,
+                onPressed: _pickFromGallery,
+              ),
+          ],
+        ),
+        body: body,
       );
     }
 

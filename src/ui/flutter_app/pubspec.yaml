@@ -12,6 +12,8 @@ dependencies:
   archive: ^4.0.9
   audioplayers: ^6.8.1
   camera: ^0.12.0+1
+  camera_desktop:
+    path: third_party/camera_desktop
   catcher_2: ^2.1.9
   collection: ^1.19.1
   confetti: ^0.8.0

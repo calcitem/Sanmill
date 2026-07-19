@@ -249,6 +249,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.10.1"
+  camera_desktop:
+    dependency: "direct main"
+    description:
+      path: "third_party/camera_desktop"
+      relative: true
+    source: path
+    version: "1.2.1+sanmill.1"
   camera_platform_interface:
     dependency: transitive
     description:

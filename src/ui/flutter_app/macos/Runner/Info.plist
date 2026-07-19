@@ -34,6 +34,8 @@
 	<string>Sanmill uses Bluetooth to find, join, and host nearby multiplayer games.</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Sanmill uses Bluetooth to advertise multiplayer games to nearby players.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera access is used to scan QR codes for importing games.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>

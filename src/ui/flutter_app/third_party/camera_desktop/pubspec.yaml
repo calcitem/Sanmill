@@ -1,0 +1,32 @@
+name: camera_desktop
+description: >-
+  Sanmill's macOS-only vendoring of camera_desktop. Implements
+  camera_platform_interface through AVFoundation.
+version: 1.2.1+sanmill.1
+homepage: https://github.com/hugocornellier/camera_desktop
+repository: https://github.com/hugocornellier/camera_desktop
+issue_tracker: https://github.com/hugocornellier/camera_desktop/issues
+
+environment:
+  sdk: ^3.11.0
+  flutter: '>=3.3.0'
+
+dependencies:
+  camera_platform_interface: ^2.7.0
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.0.2
+  stream_transform: ^2.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  plugin:
+    implements: camera
+    platforms:
+      macos:
+        dartPluginClass: CameraDesktopPlugin
+        pluginClass: CameraDesktopPlugin
