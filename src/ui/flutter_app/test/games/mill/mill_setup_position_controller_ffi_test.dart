@@ -168,4 +168,78 @@ void main() {
       expect(view.occupiedNodes(), isEmpty);
     }, skip: _nativeLibrarySkipReason);
   });
+
+  group('MillSetupPositionController completion validation', () {
+    test(
+      'empty placing position remains a valid new-game setup',
+      () {
+        final NativeMillGameSession session = NativeMillGameSession();
+        addTearDown(session.dispose);
+        final MillSetupPositionController controller = _newController(session);
+
+        controller.clear();
+
+        expect(controller.commit(), isNotNull);
+      },
+      skip: _nativeLibrarySkipReason,
+    );
+
+    test(
+      'moving position rejects a side below the rule threshold',
+      () {
+        final NativeMillGameSession session = NativeMillGameSession();
+        addTearDown(session.dispose);
+        final MillSetupPositionController controller = _newController(session);
+
+        controller.clear();
+        controller.setPaintColor(PieceColor.white);
+        <int>[0, 1].forEach(controller.tapNode);
+        controller.setPaintColor(PieceColor.black);
+        <int>[8, 9, 10].forEach(controller.tapNode);
+        controller.setPhase(Phase.moving);
+
+        expect(controller.commit(), isNull);
+      },
+      skip: _nativeLibrarySkipReason,
+    );
+
+    test(
+      'moving position accepts both sides at the rule threshold',
+      () {
+        final NativeMillGameSession session = NativeMillGameSession();
+        addTearDown(session.dispose);
+        final MillSetupPositionController controller = _newController(session);
+
+        controller.clear();
+        controller.setPaintColor(PieceColor.white);
+        <int>[0, 1, 2].forEach(controller.tapNode);
+        controller.setPaintColor(PieceColor.black);
+        <int>[8, 9, 10].forEach(controller.tapNode);
+        controller.setPhase(Phase.moving);
+
+        expect(controller.commit(), isNotNull);
+      },
+      skip: _nativeLibrarySkipReason,
+    );
+
+    test(
+      'placing position rejects an active side with no piece in hand',
+      () {
+        final NativeMillGameSession session = NativeMillGameSession();
+        addTearDown(session.dispose);
+        final MillSetupPositionController controller = _newController(session);
+
+        controller.clear();
+        controller.setPaintColor(PieceColor.white);
+        <int>[0, 1, 2].forEach(controller.tapNode);
+        controller.setPaintColor(PieceColor.black);
+        <int>[8, 9, 10].forEach(controller.tapNode);
+        controller.setPaintColor(PieceColor.white);
+        controller.setPlacedCount(controller.piecesCount);
+
+        expect(controller.commit(), isNull);
+      },
+      skip: _nativeLibrarySkipReason,
+    );
+  });
 }

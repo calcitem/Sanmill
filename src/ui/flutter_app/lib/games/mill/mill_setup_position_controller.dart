@@ -297,7 +297,7 @@ class MillSetupPositionController {
   /// Finalise editing: push the model and return the committed FEN, or
   /// null when the position is not a legal Mill FEN.
   String? commit() {
-    if (!_sync() || !_lastSyncValid) {
+    if (!_isCompletablePosition() || !_sync() || !_lastSyncValid) {
       return null;
     }
     return session.getFen();
@@ -341,22 +341,7 @@ class MillSetupPositionController {
 
     final int onWhite = countOnBoard(PieceColor.white);
     final int onBlack = countOnBoard(PieceColor.black);
-
-    final int inHandWhite;
-    final int inHandBlack;
-    if (phase == Phase.moving) {
-      // Missing pieces are captured/gone, not in hand.
-      inHandWhite = 0;
-      inHandBlack = 0;
-    } else {
-      final ({int white, int black}) inHand = placingInHandCounts(
-        piecesCount: piecesCount,
-        placedCount: placedCount,
-        sideToMove: sideToMove,
-      );
-      inHandWhite = inHand.white;
-      inHandBlack = inHand.black;
-    }
+    final ({int white, int black}) inHand = _inHandCounts();
 
     final int removeWhite = needRemove[PieceColor.white] ?? 0;
     final int removeBlack = needRemove[PieceColor.black] ?? 0;
@@ -374,8 +359,48 @@ class MillSetupPositionController {
     // Fields: board side phase act w_on w_hand b_on b_hand w_remove
     //         b_remove w_from w_to b_from b_to mills_mask rule50 fullmove
     return '$board $side $phaseToken $actionToken '
-        '$onWhite $inHandWhite $onBlack $inHandBlack '
+        '$onWhite ${inHand.white} $onBlack ${inHand.black} '
         '$removeWhite $removeBlack -1 -1 -1 -1 0 0 1 ids:nodes';
+  }
+
+  bool _isCompletablePosition() {
+    final int onWhite = countOnBoard(PieceColor.white);
+    final int onBlack = countOnBoard(PieceColor.black);
+    final ({int white, int black}) inHand = _inHandCounts();
+
+    if (onWhite + inHand.white + onBlack + inHand.black == 0) {
+      return false;
+    }
+
+    if (phase == Phase.moving) {
+      final int minimum = ruleSettings.piecesAtLeastCount;
+      if (onWhite + inHand.white < minimum ||
+          onBlack + inHand.black < minimum) {
+        return false;
+      }
+    }
+
+    final int activeInHand = sideToMove == PieceColor.black
+        ? inHand.black
+        : inHand.white;
+    final int activeRemove = needRemove[sideToMove] ?? 0;
+    if (phase == Phase.placing && activeRemove == 0 && activeInHand == 0) {
+      return false;
+    }
+
+    return true;
+  }
+
+  ({int white, int black}) _inHandCounts() {
+    if (phase == Phase.moving) {
+      // Missing pieces are captured/gone, not in hand.
+      return (white: 0, black: 0);
+    }
+    return placingInHandCounts(
+      piecesCount: piecesCount,
+      placedCount: placedCount,
+      sideToMove: sideToMove,
+    );
   }
 
   /// Build the 26-character FEN board field (three 8-char ranks joined by
