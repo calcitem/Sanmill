@@ -721,6 +721,11 @@ void main() {
       expect(find.byKey(const Key('human_ai')), findsNothing);
       expect(find.byKey(const Key('human_ai_new_game_sheet')), findsOneWidget);
       expect(
+        find.byKey(const Key('human_ai_new_game_sheet_start')).hitTestable(),
+        findsOneWidget,
+        reason: 'Play should be reachable without scrolling on a phone.',
+      );
+      expect(
         find.descendant(
           of: find.byKey(const Key('human_ai_new_game_sheet')),
           matching: find.text('1 second'),

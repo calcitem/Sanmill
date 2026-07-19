@@ -8,7 +8,6 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../appearance_settings/models/color_settings.dart';
 import '../../../experience_recording/models/recording_models.dart';
 import '../../../experience_recording/services/recording_service.dart';
 import '../../../games/mill/mill_variant_localization.dart';
@@ -27,7 +26,6 @@ import '../../../shared/widgets/lichess_list_section.dart';
 import '../../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../services/gif_share/gif_share.dart';
 import '../../services/mill.dart';
-import '../../services/painters/painters.dart';
 import '../game_page.dart';
 import '../saved_games_page.dart';
 
@@ -639,11 +637,10 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            const _HumanAiNewGamePreview(),
             Padding(
               padding: const EdgeInsets.fromLTRB(
                 AppStyles.bodyPadding,
-                AppStyles.bodyPadding,
+                0,
                 AppStyles.bodyPadding,
                 AppStyles.bodyPadding,
               ),
@@ -757,162 +754,6 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
         ),
       ),
     );
-  }
-}
-
-class _HumanAiNewGamePreview extends StatelessWidget {
-  const _HumanAiNewGamePreview();
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colorScheme = theme.colorScheme;
-    final ColorSettings colors = DB().colorSettings;
-
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(
-        AppStyles.bodyPadding,
-        0,
-        AppStyles.bodyPadding,
-        8,
-      ),
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 220),
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: colorScheme.surfaceContainerLow,
-                borderRadius: BorderRadius.circular(AppStyles.cardRadius),
-                border: Border.all(
-                  color: colorScheme.outlineVariant.withValues(alpha: 0.7),
-                ),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    color: colorScheme.shadow.withValues(alpha: 0.08),
-                    blurRadius: 16,
-                    offset: const Offset(0, 6),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(AppStyles.compactRadius),
-                  child: ColoredBox(
-                    color: colors.boardBackgroundColor,
-                    child: CustomPaint(
-                      key: const Key('human_ai_new_game_sheet_preview'),
-                      painter: BoardPainter(
-                        context,
-                        null,
-                        shouldDrawBackground: false,
-                        shouldDrawOptionalElements: false,
-                        shouldDrawMillLines: false,
-                        shouldDrawAnalysisOverlay: false,
-                        boardMarginOverride: AppTheme.boardMargin,
-                      ),
-                      foregroundPainter: _HumanAiNewGamePreviewPiecesPainter(
-                        colors,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _HumanAiNewGamePreviewPiecesPainter extends CustomPainter {
-  const _HumanAiNewGamePreviewPiecesPainter(this.colors);
-
-  final ColorSettings colors;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final double side = size.shortestSide;
-    final Offset origin = Offset(
-      (size.width - side) / 2,
-      (size.height - side) / 2,
-    );
-    final double pieceRadius = side * 0.045;
-    final Size boardSize = Size.square(side);
-    final List<Offset> previewPoints = points
-        .map((Offset point) => origin + _offsetFromPoint(point, boardSize))
-        .toList();
-
-    void drawPiece(Offset center, Color color, {bool highlighted = false}) {
-      canvas.drawCircle(
-        center.translate(1.4, 2),
-        pieceRadius,
-        Paint()..color = Colors.black.withValues(alpha: 0.16),
-      );
-      canvas.drawCircle(center, pieceRadius, Paint()..color = color);
-      canvas.drawCircle(
-        center,
-        pieceRadius,
-        Paint()
-          ..color = colors.boardLineColor.withValues(alpha: 0.32)
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = math.max(1, side * 0.006),
-      );
-      if (highlighted) {
-        canvas.drawCircle(
-          center,
-          pieceRadius * 1.55,
-          Paint()
-            ..color = colors.pieceHighlightColor
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = math.max(2, side * 0.01),
-        );
-      }
-    }
-
-    drawPiece(previewPoints[0], colors.whitePieceColor);
-    drawPiece(previewPoints[23], colors.blackPieceColor);
-    drawPiece(previewPoints[10], colors.whitePieceColor, highlighted: true);
-    drawPiece(previewPoints[4], colors.blackPieceColor);
-    drawPiece(previewPoints[12], colors.whitePieceColor);
-  }
-
-  @override
-  bool shouldRepaint(
-    covariant _HumanAiNewGamePreviewPiecesPainter oldDelegate,
-  ) {
-    return oldDelegate.colors != colors;
-  }
-
-  Offset _offsetFromPoint(Offset point, Size size) {
-    const double margin = AppTheme.boardMargin;
-    final double innerRingSize = DB().displaySettings.boardInnerRingSize;
-    final Offset center = Offset(size.width / 2, size.height / 2);
-    final double unitDistance = (size.width - margin * 2) / 6;
-    final Offset originalPos =
-        (point * unitDistance) + const Offset(margin, margin);
-    final Offset vectorFromCenter = originalPos - center;
-    final int ringOriginal = math.max(
-      (point.dx - 3).abs().toInt().clamp(0, 3),
-      (point.dy - 3).abs().toInt().clamp(0, 3),
-    );
-    if (ringOriginal == 0) {
-      return originalPos;
-    }
-
-    const double targetOuter = 3.0;
-    final double targetInner = innerRingSize;
-    final double targetMiddle = (targetOuter + targetInner) / 2.0;
-    final double targetLen = switch (ringOriginal) {
-      1 => targetInner,
-      2 => targetMiddle,
-      _ => targetOuter,
-    };
-
-    return center + vectorFromCenter * (targetLen / ringOriginal);
   }
 }
 
