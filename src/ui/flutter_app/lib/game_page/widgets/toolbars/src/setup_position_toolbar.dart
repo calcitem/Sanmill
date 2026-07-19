@@ -245,19 +245,33 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     GameController().headerTipNotifier.showTip(S.of(context).gameStarted);
   }
 
-  IconData _paintColorIcon() {
+  Widget _paintColorIndicator(BuildContext context) {
     final PieceColor color = _controller?.paintColor ?? PieceColor.white;
     switch (color) {
       case PieceColor.white:
-        return FluentIcons.circle_24_regular;
       case PieceColor.black:
-        return FluentIcons.circle_24_filled;
+        final Color fill = color == PieceColor.white
+            ? DB().colorSettings.whitePieceColor
+            : DB().colorSettings.blackPieceColor;
+        return Container(
+          key: const Key('paint_color_piece_indicator'),
+          width: 20,
+          height: 20,
+          decoration: BoxDecoration(
+            color: fill,
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: Theme.of(context).colorScheme.outline,
+              width: 1.5,
+            ),
+          ),
+        );
       case PieceColor.marked:
-        return FluentIcons.prohibited_24_regular;
+        return const Icon(FluentIcons.prohibited_24_regular);
       case PieceColor.none:
       case PieceColor.nobody:
       case PieceColor.draw:
-        return FluentIcons.add_24_regular;
+        return const Icon(FluentIcons.add_24_regular);
     }
   }
 
@@ -318,15 +332,20 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
   ToolbarItem _toolbarButton({
     required Key key,
-    required IconData icon,
+    IconData? icon,
+    Widget? iconWidget,
     required String label,
     required VoidCallback? onPressed,
     Color? iconColor,
   }) {
+    assert(
+      (icon == null) != (iconWidget == null),
+      'A toolbar button needs exactly one icon representation.',
+    );
     return ToolbarItem.icon(
       key: key,
       onPressed: onPressed,
-      icon: Icon(icon, color: iconColor),
+      icon: iconWidget ?? Icon(icon, color: iconColor),
       label: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
     );
   }
@@ -343,7 +362,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       Expanded(
         child: _toolbarButton(
           key: const Key('paint_color_button'),
-          icon: _paintColorIcon(),
+          iconWidget: _paintColorIndicator(context),
           label: _paintColorLabel(context),
           onPressed: _cyclePaintColor,
         ),

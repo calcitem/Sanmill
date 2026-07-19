@@ -5,19 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/toolbars/game_toolbar.dart';
-import 'package:sanmill/games/mill/mill_setup_position_controller.dart';
 import 'package:sanmill/games/mill/mill_route_ids.dart';
+import 'package:sanmill/games/mill/mill_setup_position_controller.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/themes/app_theme.dart';
-import 'package:sanmill/shared/utils/screen_insets.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
+import 'package:sanmill/shared/utils/screen_insets.dart';
 import 'package:sanmill/shared/widgets/snackbars/scaffold_messenger.dart';
 
-import '../helpers/test_native_library.dart';
 import '../helpers/mocks/mock_database.dart';
+import '../helpers/test_native_library.dart';
 
 final String? _nativeLibrarySkipReason = nativeLibrarySkipReason();
 
@@ -81,6 +81,60 @@ void main() {
     expect(find.byKey(const Key('open_board_editor')), findsOneWidget);
     expect(find.byKey(const Key('cancel_button')), findsNothing);
   });
+
+  testWidgets(
+    'paint selector uses solid white and black piece indicators',
+    (WidgetTester tester) async {
+      final NativeMillGameSession session = NativeMillGameSession();
+      addTearDown(session.dispose);
+      final MillSetupPositionController controller =
+          MillSetupPositionController(
+            session: session,
+            ruleSettings: const RuleSettings(),
+          )..initFromSession();
+      GameController().setupPositionController = controller;
+      GameController().gameInstance.gameMode = GameMode.setupPosition;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightThemeData,
+          darkTheme: AppTheme.darkThemeData,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: const Locale('en'),
+          home: const Scaffold(
+            body: Align(
+              alignment: Alignment.bottomCenter,
+              child: SetupPositionToolbar(),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      BoxDecoration indicatorDecoration() {
+        return tester
+                .widget<Container>(
+                  find.byKey(const Key('paint_color_piece_indicator')),
+                )
+                .decoration!
+            as BoxDecoration;
+      }
+
+      expect(indicatorDecoration().color, DB().colorSettings.whitePieceColor);
+      expect(indicatorDecoration().shape, BoxShape.circle);
+      expect(indicatorDecoration().border, isNotNull);
+
+      await tester.tap(find.byKey(const Key('paint_color_button')));
+      await tester.pumpAndSettle();
+
+      expect(controller.paintColor, PieceColor.black);
+      expect(indicatorDecoration().color, DB().colorSettings.blackPieceColor);
+      expect(indicatorDecoration().shape, BoxShape.circle);
+      expect(indicatorDecoration().border, isNotNull);
+    },
+    skip: _nativeLibrarySkipReason != null,
+  );
 
   testWidgets(
     'invalid-position message stays above the editor actions',
