@@ -80,37 +80,34 @@ class PiecePainter extends CustomPainter {
     Iterable<GameAction> legalActions, {
     required int? selectedSourceGridIndex,
   }) {
-    if (selectedSourceGridIndex == null) {
-      return const <int>{};
-    }
-
-    final int? sourceSquare =
-        MillBoardCoordinateMaps.gridIndexToSquare[selectedSourceGridIndex];
+    final int? sourceSquare = selectedSourceGridIndex == null
+        ? null
+        : MillBoardCoordinateMaps.gridIndexToSquare[selectedSourceGridIndex];
     final int? sourceNode = sourceSquare == null
         ? null
         : MillBoardCoordinateMaps.legacySquareToNode[sourceSquare];
     assert(
-      sourceNode != null,
+      selectedSourceGridIndex == null || sourceNode != null,
       'Selected Mill source must map to a native board node.',
     );
-    if (sourceNode == null) {
-      return const <int>{};
-    }
 
     final Set<int> indices = <int>{};
     for (final GameAction action in legalActions) {
-      if (action.type != MillActionTypes.move) {
+      if (action.type != MillActionTypes.place &&
+          action.type != MillActionTypes.move) {
         continue;
       }
       final Object? rawFromNode = action.payload['fromNode'];
       final Object? rawToNode = action.payload['toNode'];
-      assert(
-        rawFromNode is int && rawToNode is int,
-        'Native Mill move actions must provide integer node indices.',
-      );
-      if (rawFromNode is! int ||
-          rawToNode is! int ||
-          rawFromNode != sourceNode) {
+      assert(rawToNode is int, 'Native Mill actions must provide a toNode.');
+      if (rawToNode is! int) {
+        continue;
+      }
+      if (action.type == MillActionTypes.move &&
+          (sourceNode == null || rawFromNode != sourceNode)) {
+        continue;
+      }
+      if (action.type == MillActionTypes.place && sourceNode != null) {
         continue;
       }
       final int? destinationSquare =
@@ -309,6 +306,9 @@ class PiecePainter extends CustomPainter {
     final int? removeIndex = GameController().gameInstance.removeIndex;
 
     final Paint paint = Paint();
+    final BoardMarkerPalette markerPalette = BoardMarkerPalette.fromBackground(
+      DB().colorSettings.boardBackgroundColor,
+    );
     final Path shadowPath = Path();
 
     // Separate lists for normal and moving pieces.
@@ -320,9 +320,6 @@ class PiecePainter extends CustomPainter {
             DB().displaySettings.pieceWidth /
             6 -
         1;
-
-    // Variable to hold the current position of the moving piece.
-    Offset? movingPos;
 
     // Draw pieces on board.
     for (int row = 0; row < 7; row++) {
@@ -361,9 +358,6 @@ class PiecePainter extends CustomPainter {
           final Offset toPos = pointFromIndex(focusIndex, size);
 
           pos = Offset.lerp(fromPos, toPos, moveAnimationValue)!;
-
-          // Store the moving piece's current position for highlight.
-          movingPos = pos;
         } else if (isRemovingPiece &&
             DB().displaySettings.isPiecePickUpAnimationEnabled &&
             pieceColor == PieceColor.none) {
@@ -436,9 +430,6 @@ class PiecePainter extends CustomPainter {
             removeAnimationValue,
           );
           pos = Offset.lerp(fromPos, toPos, t)!;
-
-          // Store the moving piece's current position for highlight.
-          movingPos = pos;
         } else if (isPlacingPiece &&
             DB().displaySettings.isPiecePickUpAnimationEnabled) {
           // Calculate interpolated position from bottom right to focusIndex.
@@ -488,9 +479,6 @@ class PiecePainter extends CustomPainter {
           }
 
           pos = Offset.lerp(fromPos, toPos, placeAnimationValue)!;
-
-          // Store the moving piece's current position for highlight.
-          movingPos = pos;
         } else {
           // Use the normal position.
           pos = pointFromIndex(index, size);
@@ -618,12 +606,8 @@ class PiecePainter extends CustomPainter {
 
     paint.style = PaintingStyle.fill;
 
-    Color blurPositionColor = Colors.transparent;
-
     // Draw normal pieces first.
     for (final Piece piece in normalPiecesToDraw) {
-      blurPositionColor = piece.pieceColor.blurPositionColor;
-
       const double opacity = 1.0;
 
       // Calculate animation effects for this piece
@@ -683,8 +667,6 @@ class PiecePainter extends CustomPainter {
 
     // Draw moving pieces on top of normal pieces.
     for (final Piece piece in movingPiecesToDraw) {
-      blurPositionColor = piece.pieceColor.blurPositionColor;
-
       double opacity = 1.0;
 
       // Check if this specific piece is the one being removed
@@ -792,7 +774,7 @@ class PiecePainter extends CustomPainter {
 
     if (DB().displaySettings.isCapturablePiecesHighlightShown &&
         GameController().gameInstance.gameMode != GameMode.setupPosition) {
-      paint.color = DB().colorSettings.capturablePieceHighlightColor;
+      paint.color = markerPalette.contrast.withValues(alpha: 0.82);
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 3;
 
@@ -805,9 +787,7 @@ class PiecePainter extends CustomPainter {
       }
     }
 
-    paint.color = DB().colorSettings.pieceHighlightColor.withValues(
-      alpha: 0.68,
-    );
+    paint.color = markerPalette.contrast.withValues(alpha: 0.62);
     paint.style = PaintingStyle.fill;
     final double legalMoveMarkerRadius = max(4.0, pieceWidth * 0.12);
     for (final int gridIndex in legalMoveDestinationGridIndices) {
@@ -818,15 +798,19 @@ class PiecePainter extends CustomPainter {
       );
     }
 
-    // Draw focus and blur positions.
-    if (focusIndex != null) {
-      paint.color = DB().colorSettings.pieceHighlightColor;
+    // A source selected by the player is a high-contrast solid ring. A focus
+    // index represents an animation destination and must not appear before the
+    // piece has landed.
+    if (blurIndex != null &&
+        focusIndex == null &&
+        GameController().gameInstance.gameMode != GameMode.setupPosition) {
+      paint.color = markerPalette.contrast;
       paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 2;
+      paint.strokeWidth = 3;
 
-      // Calculate lift and scale for the focus piece to ensure the ring follows the piece and matches size
+      // Follow the lifted selected piece.
       final Map<String, double> effects = _calculatePieceEffects(
-        focusIndex,
+        blurIndex,
         focusIndex,
         blurIndex,
         removeIndex,
@@ -834,38 +818,9 @@ class PiecePainter extends CustomPainter {
       final double lift = effects['lift']!;
       final double scale = effects['scale']!;
 
-      // If the piece is moving, use the interpolated position for highlight.
-      final Offset focusPos =
-          (movingPos ?? pointFromIndex(focusIndex, size)) - Offset(0, lift);
-
-      // Scale the highlight circle radius to match the piece scale
-      canvas.drawCircle(focusPos, (pieceWidth / 2) * scale, paint);
-    }
-
-    if (blurIndex != null &&
-        GameController().gameInstance.gameMode != GameMode.setupPosition) {
-      // Calculate lift for the blur piece
-      final Map<String, double> effects = _calculatePieceEffects(
-        blurIndex,
-        focusIndex,
-        blurIndex,
-        removeIndex,
-      );
-      final double lift = effects['lift']!;
-
-      // If color is transparent, use a fallback color to avoid crashing
-      if (blurPositionColor == Colors.transparent) {
-        paint.color = Colors.grey.withValues(alpha: 0.5); // Fallback color
-      } else {
-        paint.color = blurPositionColor;
-      }
-
-      paint.style = PaintingStyle.fill;
-
-      // Blur remains at the original position but follows lift
       canvas.drawCircle(
         pointFromIndex(blurIndex, size) - Offset(0, lift),
-        pieceWidth / 2 * 0.8,
+        (pieceWidth / 2) * scale,
         paint,
       );
     }

@@ -13,6 +13,7 @@ import '../../../generated/intl/l10n.dart';
 import '../../../rule_settings/models/rule_settings.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/themes/app_theme.dart';
+import '../../../shared/themes/board_marker_palette.dart';
 import '../mill_action_codec.dart';
 import '../mill_board_coordinate_maps.dart';
 import '../mill_board_geometry.dart';
@@ -131,6 +132,9 @@ class _MillSessionBoardState extends State<MillSessionBoard> {
   Widget build(BuildContext context) {
     final ColorSettings colors = DB().colorSettings;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final BoardMarkerPalette markerPalette = BoardMarkerPalette.fromBackground(
+      colors.boardBackgroundColor,
+    );
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -182,9 +186,7 @@ class _MillSessionBoardState extends State<MillSessionBoard> {
                               boardLineColor: colors.boardLineColor,
                               whitePieceColor: colors.whitePieceColor,
                               blackPieceColor: colors.blackPieceColor,
-                              pieceHighlightColor: colors.pieceHighlightColor,
-                              hintColor: colorScheme.primary,
-                              removeHintColor: colorScheme.error,
+                              markerPalette: markerPalette,
                               shadowColor: colorScheme.shadow,
                               highlightActions: widget.highlightActions,
                             ),
@@ -349,9 +351,7 @@ class _MillSessionBoardPainter extends CustomPainter {
     required this.boardLineColor,
     required this.whitePieceColor,
     required this.blackPieceColor,
-    required this.pieceHighlightColor,
-    required this.hintColor,
-    required this.removeHintColor,
+    required this.markerPalette,
     required this.shadowColor,
     required this.highlightActions,
   });
@@ -364,9 +364,7 @@ class _MillSessionBoardPainter extends CustomPainter {
   final Color boardLineColor;
   final Color whitePieceColor;
   final Color blackPieceColor;
-  final Color pieceHighlightColor;
-  final Color hintColor;
-  final Color removeHintColor;
+  final BoardMarkerPalette markerPalette;
   final Color shadowColor;
   final List<String> highlightActions;
 
@@ -384,14 +382,23 @@ class _MillSessionBoardPainter extends CustomPainter {
     _drawCoordinates(canvas, size);
     _drawLines(canvas, size);
     _drawPoints(canvas, size);
-    _drawHints(canvas, size, legalHints.sources, hintColor, filled: false);
-    _drawHints(canvas, size, legalHints.targets, hintColor, filled: true);
+    _drawHints(
+      canvas,
+      size,
+      legalHints.targets,
+      markerPalette.contrast,
+      filled: true,
+      opacity: 0.62,
+      radiusFactor: 0.018,
+    );
     _drawHints(
       canvas,
       size,
       legalHints.removals,
-      removeHintColor,
-      filled: true,
+      markerPalette.contrast,
+      filled: false,
+      opacity: 0.82,
+      radiusFactor: 0.06,
     );
 
     if (board != null) {
@@ -494,15 +501,17 @@ class _MillSessionBoardPainter extends CustomPainter {
     Set<int> nodes,
     Color color, {
     required bool filled,
+    required double opacity,
+    required double radiusFactor,
   }) {
     if (nodes.isEmpty) {
       return;
     }
     final Paint paint = Paint()
-      ..color = color.withValues(alpha: filled ? 0.24 : 0.82)
+      ..color = color.withValues(alpha: opacity)
       ..strokeWidth = math.max(2, size.shortestSide * 0.006)
       ..style = filled ? PaintingStyle.fill : PaintingStyle.stroke;
-    final double radius = size.shortestSide * (filled ? 0.035 : 0.052);
+    final double radius = size.shortestSide * radiusFactor;
     for (final int node in nodes) {
       canvas.drawCircle(
         MillBoardGeometry.nodeOffset(node, size),
@@ -541,7 +550,7 @@ class _MillSessionBoardPainter extends CustomPainter {
       canvas.drawCircle(center, radius, outlinePaint);
       if (board.markedNodes.contains(node)) {
         final Paint markedPaint = Paint()
-          ..color = pieceHighlightColor
+          ..color = markerPalette.contrast
           ..strokeWidth = math.max(2, size.shortestSide * 0.007)
           ..style = PaintingStyle.stroke;
         canvas.drawCircle(center, radius * 1.22, markedPaint);
@@ -559,7 +568,7 @@ class _MillSessionBoardPainter extends CustomPainter {
       return;
     }
     final Paint paint = Paint()
-      ..color = hintColor
+      ..color = markerPalette.contrast
       ..strokeWidth = math.max(2, size.shortestSide * 0.009)
       ..style = PaintingStyle.stroke;
     canvas.drawCircle(
@@ -575,7 +584,7 @@ class _MillSessionBoardPainter extends CustomPainter {
     }
     final double side = size.shortestSide;
     final Paint paint = Paint()
-      ..color = pieceHighlightColor
+      ..color = markerPalette.completedMove
       ..strokeWidth = math.max(2.5, side * 0.009)
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
@@ -641,9 +650,7 @@ class _MillSessionBoardPainter extends CustomPainter {
         oldDelegate.boardLineColor != boardLineColor ||
         oldDelegate.whitePieceColor != whitePieceColor ||
         oldDelegate.blackPieceColor != blackPieceColor ||
-        oldDelegate.pieceHighlightColor != pieceHighlightColor ||
-        oldDelegate.hintColor != hintColor ||
-        oldDelegate.removeHintColor != removeHintColor ||
+        oldDelegate.markerPalette != markerPalette ||
         !listEquals(oldDelegate.highlightActions, highlightActions);
   }
 }

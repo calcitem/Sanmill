@@ -9,6 +9,11 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 import '../../../../shared/database/database.dart';
+import '../../../../shared/themes/board_marker_palette.dart';
+
+ui.Color get _systemPieceEffectColor => BoardMarkerPalette.fromBackground(
+  DB().colorSettings.boardBackgroundColor,
+).completedMove;
 
 /// Abstract class for PlaceEffect animations.
 abstract class PieceEffectAnimation {
@@ -98,7 +103,7 @@ class AuraPieceEffectAnimation implements PieceEffectAnimation {
     final double radius =
         diameter / 2 + (maxRadius - diameter / 2) * easedAnimation;
     final double opacity = 0.1 * easedAnimation + 0.1;
-    final ui.Color pieceHighlightColor = DB().colorSettings.pieceHighlightColor;
+    final ui.Color pieceHighlightColor = _systemPieceEffectColor;
 
     final Paint paint = Paint()
       ..color = pieceHighlightColor.withValues(alpha: opacity)
@@ -340,7 +345,7 @@ class GlowPieceEffectAnimation extends PieceEffectAnimation {
   ) {
     // Draw a glowing effect by drawing multiple circles with increasing radius and decreasing opacity.
     const int numCircles = 5;
-    final ui.Color pieceHighlightColor = DB().colorSettings.pieceHighlightColor;
+    final ui.Color pieceHighlightColor = _systemPieceEffectColor;
 
     for (int i = 0; i < numCircles; i++) {
       final double fraction = i / numCircles;
@@ -548,7 +553,7 @@ class SparklePieceEffectAnimation extends PieceEffectAnimation {
   ) {
     // Draw multiple small circles (sparkles) around the piece.
     const int numSparkles = 10;
-    final ui.Color pieceHighlightColor = DB().colorSettings.pieceHighlightColor;
+    final ui.Color pieceHighlightColor = _systemPieceEffectColor;
 
     for (int i = 0; i < numSparkles; i++) {
       final double angle = (i / numSparkles) * pi * 2 + animationValue * pi * 2;
@@ -816,7 +821,7 @@ class RippleGradientPieceEffectAnimation implements PieceEffectAnimation {
     final double maxRadius = diameter * 2.0;
 
     // Get colors from settings for the gradient
-    final ui.Color primaryColor = DB().colorSettings.pieceHighlightColor;
+    final ui.Color primaryColor = _systemPieceEffectColor;
     final ui.Color secondaryColor = DB().colorSettings.boardLineColor;
 
     for (int i = 0; i < numWaves; i++) {
@@ -964,7 +969,7 @@ class StarburstPieceEffectAnimation implements PieceEffectAnimation {
     final double innerRadius = outerRadius * 0.4;
 
     // Get highlight color from settings
-    final ui.Color highlightColor = DB().colorSettings.pieceHighlightColor;
+    final ui.Color highlightColor = _systemPieceEffectColor;
 
     // Calculate opacity based on animation progress
     final double opacity = (1.0 - easedAnimation).clamp(0.1, 0.8);
@@ -1146,7 +1151,7 @@ class PulseRingPieceEffectAnimation implements PieceEffectAnimation {
     }
     final double progress = Curves.easeOut.transform(animationValue);
     final double maxRadius = diameter * 1.5;
-    final ui.Color baseColor = DB().colorSettings.pieceHighlightColor;
+    final ui.Color baseColor = _systemPieceEffectColor;
     final double radius = maxRadius * progress;
     final double opacity = (1.0 - progress).clamp(0.0, 1.0);
     final Paint paint = Paint()
@@ -1449,9 +1454,7 @@ class BubblePopPieceEffectAnimation implements PieceEffectAnimation {
       final double alpha = (1.0 - t).clamp(0.0, 1.0);
       final Paint paint = Paint()
         ..style = PaintingStyle.fill
-        ..color = DB().colorSettings.pieceHighlightColor.withValues(
-          alpha: alpha * 0.5,
-        );
+        ..color = _systemPieceEffectColor.withValues(alpha: alpha * 0.5);
       canvas.drawCircle(center, radius, paint);
     }
   }

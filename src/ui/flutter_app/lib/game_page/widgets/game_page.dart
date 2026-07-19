@@ -44,6 +44,7 @@ import '../../shared/services/logger.dart';
 import '../../shared/services/system_ui_service.dart';
 import '../../shared/services/url.dart';
 import '../../shared/themes/app_theme.dart';
+import '../../shared/themes/board_marker_palette.dart';
 import '../../shared/themes/ui_colors.dart';
 import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/widgets/custom_spacer.dart';

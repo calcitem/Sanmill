@@ -27,6 +27,7 @@ import '../../../shared/services/human_database_service.dart';
 import '../../../shared/services/snackbar_service.dart';
 import '../../../shared/themes/app_styles.dart';
 import '../../../shared/themes/app_theme.dart';
+import '../../../shared/themes/board_marker_palette.dart';
 import '../../../shared/widgets/lichess_action_sheet.dart';
 import '../../../shared/widgets/lichess_bottom_bar.dart';
 import '../../../shared/widgets/lichess_list_section.dart';
@@ -1721,6 +1722,9 @@ class _OpeningExplorerBoardState extends State<_OpeningExplorerBoard> {
     final DisplaySettings display = DB().displaySettings;
     final RuleSettings rules = DB().ruleSettings;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final BoardMarkerPalette markerPalette = BoardMarkerPalette.fromBackground(
+      colors.boardBackgroundColor,
+    );
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -1761,9 +1765,7 @@ class _OpeningExplorerBoardState extends State<_OpeningExplorerBoard> {
                           boardLineColor: colors.boardLineColor,
                           whitePieceColor: colors.whitePieceColor,
                           blackPieceColor: colors.blackPieceColor,
-                          pieceHighlightColor: colors.pieceHighlightColor,
-                          hintColor: colorScheme.primary,
-                          removeHintColor: colorScheme.error,
+                          markerPalette: markerPalette,
                           shadowColor: colorScheme.shadow,
                           boardBorderLineWidth: display.boardBorderLineWidth,
                           boardInnerLineWidth: display.boardInnerLineWidth,
@@ -1861,9 +1863,7 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
     required this.boardLineColor,
     required this.whitePieceColor,
     required this.blackPieceColor,
-    required this.pieceHighlightColor,
-    required this.hintColor,
-    required this.removeHintColor,
+    required this.markerPalette,
     required this.shadowColor,
     required this.boardBorderLineWidth,
     required this.boardInnerLineWidth,
@@ -1883,9 +1883,7 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
   final Color boardLineColor;
   final Color whitePieceColor;
   final Color blackPieceColor;
-  final Color pieceHighlightColor;
-  final Color hintColor;
-  final Color removeHintColor;
+  final BoardMarkerPalette markerPalette;
   final Color shadowColor;
   final double boardBorderLineWidth;
   final double boardInnerLineWidth;
@@ -1920,14 +1918,23 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
     }
     _drawLines(canvas, size);
     _drawPoints(canvas, size);
-    _drawHints(canvas, size, legalHints.sources, hintColor, filled: false);
-    _drawHints(canvas, size, legalHints.targets, hintColor, filled: true);
+    _drawHints(
+      canvas,
+      size,
+      legalHints.targets,
+      markerPalette.contrast,
+      filled: true,
+      opacity: 0.62,
+      radiusFactor: 0.018,
+    );
     _drawHints(
       canvas,
       size,
       legalHints.removals,
-      removeHintColor,
-      filled: true,
+      markerPalette.contrast,
+      filled: false,
+      opacity: 0.82,
+      radiusFactor: 0.06,
     );
 
     if (board != null) {
@@ -2053,15 +2060,17 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
     Set<int> nodes,
     Color color, {
     required bool filled,
+    required double opacity,
+    required double radiusFactor,
   }) {
     if (nodes.isEmpty) {
       return;
     }
     final Paint paint = Paint()
-      ..color = color.withValues(alpha: filled ? 0.24 : 0.82)
+      ..color = color.withValues(alpha: opacity)
       ..strokeWidth = math.max(2, size.shortestSide * 0.006)
       ..style = filled ? PaintingStyle.fill : PaintingStyle.stroke;
-    final double radius = size.shortestSide * (filled ? 0.035 : 0.052);
+    final double radius = size.shortestSide * radiusFactor;
     for (final int node in nodes) {
       canvas.drawCircle(
         MillBoardGeometry.nodeOffset(node, size),
@@ -2105,7 +2114,7 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
       canvas.drawCircle(center, radius, outlinePaint);
       if (board.markedNodes.contains(node)) {
         final Paint markedPaint = Paint()
-          ..color = pieceHighlightColor
+          ..color = markerPalette.contrast
           ..strokeWidth = math.max(2, size.shortestSide * 0.007)
           ..style = PaintingStyle.stroke;
         canvas.drawCircle(center, radius * 1.22, markedPaint);
@@ -2123,7 +2132,7 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
       return;
     }
     final Paint paint = Paint()
-      ..color = hintColor
+      ..color = markerPalette.contrast
       ..strokeWidth = math.max(2, size.shortestSide * 0.009)
       ..style = PaintingStyle.stroke;
     canvas.drawCircle(
@@ -2143,9 +2152,7 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
         oldDelegate.boardLineColor != boardLineColor ||
         oldDelegate.whitePieceColor != whitePieceColor ||
         oldDelegate.blackPieceColor != blackPieceColor ||
-        oldDelegate.pieceHighlightColor != pieceHighlightColor ||
-        oldDelegate.hintColor != hintColor ||
-        oldDelegate.removeHintColor != removeHintColor ||
+        oldDelegate.markerPalette != markerPalette ||
         oldDelegate.shadowColor != shadowColor ||
         oldDelegate.boardBorderLineWidth != boardBorderLineWidth ||
         oldDelegate.boardInnerLineWidth != boardInnerLineWidth ||

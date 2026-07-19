@@ -97,6 +97,29 @@ void main() {
       );
     });
 
+    test('maps placing actions to legal empty points without a source', () {
+      final Set<int> indices =
+          PiecePainter.legalMoveDestinationGridIndicesFromLegalActions(
+            <GameAction>[
+              GameAction(
+                type: MillActionTypes.place,
+                payload: <String, Object?>{'toNode': _nodeFor('a7')},
+              ),
+              GameAction(
+                type: MillActionTypes.place,
+                payload: <String, Object?>{'toNode': _nodeFor('d7')},
+              ),
+              GameAction(
+                type: MillActionTypes.remove,
+                payload: <String, Object?>{'toNode': _nodeFor('g7')},
+              ),
+            ],
+            selectedSourceGridIndex: null,
+          );
+
+      expect(indices, <int>{_legacyGridIndex('a7'), _legacyGridIndex('d7')});
+    });
+
     test('repaints when native board occupancy changes', () {
       final NativeMillSnapshotBoardView before = _viewWithBlackAtNode(23);
       final NativeMillSnapshotBoardView after = _viewWithBlackAtNode(22);

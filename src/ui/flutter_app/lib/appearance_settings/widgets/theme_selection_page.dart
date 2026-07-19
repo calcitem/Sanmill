@@ -17,6 +17,7 @@ import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_styles.dart';
 import '../../shared/themes/app_theme.dart';
+import '../../shared/themes/board_marker_palette.dart';
 import '../models/color_settings.dart';
 
 String colorThemeLabel(BuildContext context, ColorTheme theme) {
@@ -529,8 +530,11 @@ class ThemePreviewPainter extends CustomPainter {
     );
 
     // Highlighted piece in top-right
+    final BoardMarkerPalette markerPalette = BoardMarkerPalette.fromBackground(
+      colors.boardBackgroundColor,
+    );
     final Paint highlightPaint = Paint()
-      ..color = colors.pieceHighlightColor
+      ..color = markerPalette.contrast
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0;
 

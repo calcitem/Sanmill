@@ -437,9 +437,6 @@ class AppearanceSettingsPage extends StatelessWidget {
       boardBackgroundColor: selectedColors.boardBackgroundColor,
       whitePieceColor: selectedColors.whitePieceColor,
       blackPieceColor: selectedColors.blackPieceColor,
-      pieceHighlightColor: selectedColors.pieceHighlightColor,
-      capturablePieceHighlightColor:
-          selectedColors.capturablePieceHighlightColor,
       messageColor: selectedColors.messageColor,
     );
   }
@@ -453,9 +450,6 @@ class AppearanceSettingsPage extends StatelessWidget {
         themeColors.boardBackgroundColor == activeColors.boardBackgroundColor &&
         themeColors.whitePieceColor == activeColors.whitePieceColor &&
         themeColors.blackPieceColor == activeColors.blackPieceColor &&
-        themeColors.pieceHighlightColor == activeColors.pieceHighlightColor &&
-        themeColors.capturablePieceHighlightColor ==
-            activeColors.capturablePieceHighlightColor &&
         themeColors.messageColor == activeColors.messageColor;
   }
 
@@ -733,24 +727,6 @@ class AppearanceSettingsPage extends StatelessWidget {
               value: DB().colorSettings.blackPieceColor,
               onChanged: (Color val) => DB().colorSettings = colorSettings
                   .copyWith(blackPieceColor: val),
-            ),
-            SettingsListTile.color(
-              key: const Key(
-                'color_settings_card_piece_highlight_color_settings_list_tile',
-              ),
-              titleString: S.of(context).pieceHighlightColor,
-              value: DB().colorSettings.pieceHighlightColor,
-              onChanged: (Color val) => DB().colorSettings = colorSettings
-                  .copyWith(pieceHighlightColor: val),
-            ),
-            SettingsListTile.color(
-              key: const Key(
-                'color_settings_card_capturable_piece_highlight_color_settings_list_tile',
-              ),
-              titleString: S.of(context).capturablePieceHighlightColor,
-              value: DB().colorSettings.capturablePieceHighlightColor,
-              onChanged: (Color val) => DB().colorSettings = colorSettings
-                  .copyWith(capturablePieceHighlightColor: val),
             ),
           ],
         ),

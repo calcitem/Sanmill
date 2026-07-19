@@ -576,11 +576,15 @@ class _GameBoardState extends State<GameBoard>
                                   isRemovalPending: view.action == Act.remove,
                                 )
                               : null;
+                          final BoardMarkerPalette markerPalette =
+                              BoardMarkerPalette.fromBackground(
+                                DB().colorSettings.boardBackgroundColor,
+                              );
                           return CustomPaint(
                             key: const Key('custom_paint_turn_highlight'),
                             painter: TurnHighlightPainter(
                               highlight: highlight,
-                              color: DB().colorSettings.pieceHighlightColor,
+                              color: markerPalette.completedMove,
                               pieceWidth: DB().displaySettings.pieceWidth,
                             ),
                           );

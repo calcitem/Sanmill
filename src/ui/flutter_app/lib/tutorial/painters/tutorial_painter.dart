@@ -9,6 +9,7 @@ import '../../../game_page/services/mill.dart';
 import '../../game_page/services/painters/painters.dart';
 import '../../game_page/services/painters/piece.dart';
 import '../../shared/database/database.dart';
+import '../../shared/themes/board_marker_palette.dart';
 
 /// Preview Piece Painter
 class TutorialPainter extends CustomPainter {
@@ -23,6 +24,9 @@ class TutorialPainter extends CustomPainter {
     assert(size.width == size.height);
 
     final Paint paint = Paint();
+    final BoardMarkerPalette markerPalette = BoardMarkerPalette.fromBackground(
+      DB().colorSettings.boardBackgroundColor,
+    );
     final Path shadowPath = Path();
     final List<Piece> piecesToDraw = <Piece>[];
 
@@ -58,15 +62,12 @@ class TutorialPainter extends CustomPainter {
     canvas.drawShadow(shadowPath, Colors.black, 2, true);
     paint.style = PaintingStyle.fill;
 
-    late Color blurPositionColor;
     for (final Piece piece in piecesToDraw) {
       assert(
         piece.pieceColor == PieceColor.black ||
             piece.pieceColor == PieceColor.white ||
             piece.pieceColor == PieceColor.marked,
       );
-      blurPositionColor = piece.pieceColor.blurPositionColor;
-
       final double pieceRadius = pieceWidth / 2;
       final double pieceInnerRadius = pieceRadius * 0.99;
 
@@ -81,7 +82,7 @@ class TutorialPainter extends CustomPainter {
     // Draw focus and blur position
     if (focusIndex != null &&
         GameController().gameInstance.gameMode != GameMode.setupPosition) {
-      paint.color = DB().colorSettings.pieceHighlightColor;
+      paint.color = markerPalette.completedMove;
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 2;
 
@@ -94,12 +95,13 @@ class TutorialPainter extends CustomPainter {
 
     if (blurIndex != null &&
         GameController().gameInstance.gameMode != GameMode.setupPosition) {
-      paint.color = blurPositionColor;
-      paint.style = PaintingStyle.fill;
+      paint.color = markerPalette.completedMove;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2;
 
       canvas.drawCircle(
         pointFromIndex(blurIndex!, size),
-        pieceWidth / 2 * 0.8,
+        pieceWidth / 2,
         paint,
       );
     }

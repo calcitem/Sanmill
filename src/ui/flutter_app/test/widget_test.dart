@@ -3147,6 +3147,8 @@ void main() {
     DB().colorSettings = lightTheme.copyWith(
       drawerColor: Colors.pink,
       drawerTextColor: Colors.orange,
+      pieceHighlightColor: Colors.purple,
+      capturablePieceHighlightColor: Colors.teal,
     );
 
     await tester.pumpWidget(
@@ -3178,6 +3180,8 @@ void main() {
     final ColorSettings lightTheme = AppTheme.colorThemes[ColorTheme.light]!;
     final ColorSettings darkTheme = AppTheme.colorThemes[ColorTheme.dark]!;
     DB().colorSettings = lightTheme.copyWith(
+      pieceHighlightColor: Colors.purple,
+      capturablePieceHighlightColor: Colors.teal,
       drawerColor: Colors.pink,
       drawerTextColor: Colors.orange,
     );
@@ -3205,11 +3209,8 @@ void main() {
     expect(updated.boardBackgroundColor, darkTheme.boardBackgroundColor);
     expect(updated.whitePieceColor, darkTheme.whitePieceColor);
     expect(updated.blackPieceColor, darkTheme.blackPieceColor);
-    expect(updated.pieceHighlightColor, darkTheme.pieceHighlightColor);
-    expect(
-      updated.capturablePieceHighlightColor,
-      darkTheme.capturablePieceHighlightColor,
-    );
+    expect(updated.pieceHighlightColor, Colors.purple);
+    expect(updated.capturablePieceHighlightColor, Colors.teal);
     expect(updated.messageColor, darkTheme.messageColor);
     expect(updated.drawerColor, Colors.pink);
     expect(updated.drawerTextColor, Colors.orange);
@@ -3221,6 +3222,22 @@ void main() {
         matching: find.text('Dark'),
       ),
       findsOneWidget,
+    );
+    expect(
+      find.byKey(
+        const Key(
+          'color_settings_card_piece_highlight_color_settings_list_tile',
+        ),
+      ),
+      findsNothing,
+    );
+    expect(
+      find.byKey(
+        const Key(
+          'color_settings_card_capturable_piece_highlight_color_settings_list_tile',
+        ),
+      ),
+      findsNothing,
     );
   });
 

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import '../../games/mill/mill_board_coordinate_maps.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
+import '../../shared/themes/board_marker_palette.dart';
 import '../../shared/utils/helpers/color_helpers/color_helper.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
@@ -476,8 +477,12 @@ class MiniBoardPainter extends CustomPainter {
 
       // Draw all marked cells as an "X" like the large board does during placing phase.
       if (pc == PieceColor.marked) {
+        final BoardMarkerPalette markerPalette =
+            BoardMarkerPalette.fromBackground(
+              DB().colorSettings.boardBackgroundColor,
+            );
         final Paint xPaint = Paint()
-          ..color = DB().colorSettings.pieceHighlightColor
+          ..color = markerPalette.contrast
           ..strokeWidth = 2
           ..style = PaintingStyle.stroke;
         _drawHighlightX(canvas, pos, pieceRadius * 2.0, xPaint);
@@ -719,6 +724,9 @@ class MiniBoardPainter extends CustomPainter {
     List<Offset> outerPoints,
     double pieceRadius,
   ) {
+    final BoardMarkerPalette markerPalette = BoardMarkerPalette.fromBackground(
+      DB().colorSettings.boardBackgroundColor,
+    );
     if (extMove == null) {
       return;
     }
@@ -742,49 +750,22 @@ class MiniBoardPainter extends CustomPainter {
       outerPoints,
     );
 
-    // 1) If fromPos is valid, draw a blur circle (filled) in half-transparent color
-    if (fromPos != null && extMove!.from >= 8) {
-      // Attempt to get the piece color for the 'from' square
-      final int? fromIndex = _convertSquareToBoardIndex(extMove!.from);
-      if (fromIndex != null && fromIndex >= 0 && fromIndex < 24) {
-        final PieceColor fromPc = boardState[fromIndex];
-        if (fromPc != PieceColor.none) {
-          // Mimic big board's blur approach: fill color with some opacity
-          final Paint blurPaint = Paint()..style = PaintingStyle.fill;
-          // Approximate the "blurPositionColor" from big board
-          final Color c = (fromPc == PieceColor.white)
-              ? DB().colorSettings.whitePieceColor.withValues(alpha: 0.3)
-              : (fromPc == PieceColor.black)
-              ? DB().colorSettings.blackPieceColor.withValues(alpha: 0.3)
-              : DB().colorSettings.pieceHighlightColor.withValues(alpha: 0.3);
-          blurPaint.color = c;
-
-          // radius ~ pieceRadius * 0.8
-          canvas.drawCircle(fromPos, pieceRadius * 0.8, blurPaint);
-        }
-      }
-    }
-
-    // 2) If it's not a remove move, draw a focus ring on toPos
+    // Completed moves use a yellow-green trail without an arrow.
     if (type != MoveType.remove && toPos != null && extMove!.to >= 8) {
       final Paint focusPaint = Paint()
-        ..color = DB().colorSettings.pieceHighlightColor
+        ..color = markerPalette.completedMove.withValues(alpha: 0.82)
         ..style = PaintingStyle.stroke
         ..strokeWidth = 2;
-      // radius ~ pieceRadius
       canvas.drawCircle(toPos, pieceRadius, focusPaint);
     }
 
-    // Then do the arrow/X logic (remove original large circle on place).
     final Paint highlightPaint = Paint()
-      ..color = DB().colorSettings.pieceHighlightColor
+      ..color = markerPalette.completedMove.withValues(alpha: 0.82)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
     switch (type) {
       case MoveType.place:
-        // **Removed** the original "canvas.drawCircle(toPos, pieceRadius*1.4, highlightPaint);"
-        // so that there is no second highlight circle on a newly placed piece.
         break;
 
       case MoveType.move:
@@ -797,42 +778,17 @@ class MiniBoardPainter extends CustomPainter {
           final Offset normalizedV = Offset(v.dx / magnitude, v.dy / magnitude);
           final Offset newFromPos = fromPos + normalizedV * pieceRadius;
           final Offset newToPos = toPos - normalizedV * pieceRadius;
-          final double arrowSize = pieceRadius * 0.8; // Need to adjust
 
           canvas.drawLine(newFromPos, newToPos, highlightPaint);
-          _drawArrowHead(
-            canvas,
-            newFromPos,
-            newToPos,
-            highlightPaint,
-            arrowSize,
-          );
+          canvas.drawCircle(fromPos, pieceRadius, highlightPaint);
         }
         break;
 
       case MoveType.remove:
         // Only draw X at the removed location, no ring highlight.
         if (toPos != null) {
-          PieceColor removedPieceColor;
-          if (extMove!.side == PieceColor.white) {
-            removedPieceColor = PieceColor.black;
-          } else if (extMove!.side == PieceColor.black) {
-            removedPieceColor = PieceColor.white;
-          } else {
-            removedPieceColor = PieceColor.none;
-          }
-
-          Color xColor;
-          if (removedPieceColor == PieceColor.white) {
-            xColor = DB().colorSettings.whitePieceColor;
-          } else if (removedPieceColor == PieceColor.black) {
-            xColor = DB().colorSettings.blackPieceColor;
-          } else {
-            xColor = DB().colorSettings.pieceHighlightColor;
-          }
-
           final Paint xPaint = Paint()
-            ..color = xColor
+            ..color = markerPalette.completedMove.withValues(alpha: 0.82)
             ..strokeWidth = 2
             ..style = PaintingStyle.stroke;
 
@@ -880,53 +836,6 @@ class MiniBoardPainter extends CustomPainter {
       final int index = (sq - 24 + 1) % 8;
       return outerPoints[index];
     }
-  }
-
-  /// Convert square [sq] to boardState index (0..23).
-  /// This helps retrieve the piece color from boardState.
-  int? _convertSquareToBoardIndex(int sq) {
-    if (sq < 8 || sq > 31) {
-      return null;
-    }
-    // 0..7 = inner, 8..15 = middle, 16..23 = outer in boardState
-    if (sq < 16) {
-      // inner ring
-      return sq - 8; // 8..15 => 0..7
-    } else if (sq < 24) {
-      // middle ring
-      return (sq - 16) + 8; // 16..23 => 8..15
-    } else {
-      // outer ring
-      return (sq - 24) + 16; // 24..31 => 16..23
-    }
-  }
-
-  /// Draw a small arrowhead at the "end" of the move line.
-  void _drawArrowHead(
-    Canvas canvas,
-    Offset from,
-    Offset to,
-    Paint paint,
-    double arrowSize,
-  ) {
-    final double angle = math.atan2(to.dy - from.dy, to.dx - from.dx);
-
-    final Offset arrowP1 = Offset(
-      to.dx - arrowSize * math.cos(angle - math.pi / 6),
-      to.dy - arrowSize * math.sin(angle - math.pi / 6),
-    );
-    final Offset arrowP2 = Offset(
-      to.dx - arrowSize * math.cos(angle + math.pi / 6),
-      to.dy - arrowSize * math.sin(angle + math.pi / 6),
-    );
-
-    final Path path = Path()
-      ..moveTo(to.dx, to.dy)
-      ..lineTo(arrowP1.dx, arrowP1.dy)
-      ..moveTo(to.dx, to.dy)
-      ..lineTo(arrowP2.dx, arrowP2.dy);
-
-    canvas.drawPath(path, paint);
   }
 
   /// Draw a highlight X at the given position, with size given by [xSize].

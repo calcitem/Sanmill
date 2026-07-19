@@ -29,11 +29,7 @@ class AnalysisRenderer {
   static const double valueTolerance = 0.001;
 
   static const double _engineBestMoveStrokeWidth = 5.0;
-  static const double _engineSecondaryMoveStrokeWidth = 3.25;
-  static const Color _engineBestMoveColor = Color(0xFF1E88E5);
-  static const Color _engineSecondaryMoveColor = Color(0xFF546E7A);
-  static const Color _engineThreatMoveColor = Color(0xFFD32F2F);
-  static const Color _hintColor = Color(0xFF0099C8);
+  static const double _engineSecondaryMoveStrokeWidth = 2.5;
   static final RegExp _standardSquarePattern = RegExp(r'^[a-g][1-7]$');
   static final RegExp _standardMovePattern = RegExp(r'^[a-g][1-7]-[a-g][1-7]$');
 
@@ -120,7 +116,7 @@ class AnalysisRenderer {
 
     final MoveAnalysisResult result = _getSortedResults(results).first;
     final String move = _rootMoveForLine(result);
-    final Color color = _hintColor.withValues(alpha: 0.88);
+    final Color color = _markerPalette.bestMove.withValues(alpha: 0.88);
 
     switch (_determineResultType(move)) {
       case AnalysisResultType.move:
@@ -298,7 +294,7 @@ class AnalysisRenderer {
           normalResults.first,
           size,
           squareSize,
-          color: _engineBestMoveColor,
+          color: _markerPalette.bestMove,
           isPrimary: true,
         );
       }
@@ -313,8 +309,9 @@ class AnalysisRenderer {
           threatResults[i],
           size,
           squareSize,
-          color: _engineThreatMoveColor,
+          color: _markerPalette.threat,
           isPrimary: i == 0,
+          isThreat: true,
         );
       }
       return;
@@ -334,7 +331,7 @@ class AnalysisRenderer {
         resultsToRender[i],
         size,
         squareSize,
-        color: i == 0 ? _engineBestMoveColor : _engineSecondaryMoveColor,
+        color: i == 0 ? _markerPalette.bestMove : _markerPalette.secondaryMove,
         isPrimary: i == 0,
       );
     }
@@ -368,6 +365,7 @@ class AnalysisRenderer {
     double squareSize, {
     required Color color,
     required bool isPrimary,
+    bool isThreat = false,
   }) {
     final String move = _rootMoveForLine(result);
     final Color highlightColor = color.withValues(
@@ -385,6 +383,8 @@ class AnalysisRenderer {
           highlightColor,
           size,
           strokeWidth: strokeWidth,
+          dashed: isThreat,
+          hollow: isThreat,
         );
         break;
       case AnalysisResultType.place:
@@ -395,6 +395,7 @@ class AnalysisRenderer {
           size,
           squareSize * 0.48,
           strokeWidth: strokeWidth,
+          dashed: isThreat,
         );
         break;
       case AnalysisResultType.remove:
@@ -405,6 +406,7 @@ class AnalysisRenderer {
           size,
           squareSize * 0.58,
           strokeWidth: strokeWidth,
+          dashed: isThreat,
         );
         break;
     }
@@ -424,6 +426,8 @@ class AnalysisRenderer {
     Color color,
     Size size, {
     required double strokeWidth,
+    bool dashed = false,
+    bool hollow = false,
   }) {
     assert(
       _standardMovePattern.hasMatch(moveStr),
@@ -436,7 +440,15 @@ class AnalysisRenderer {
     final List<String> squares = moveStr.split('-');
     final Offset startPos = _getPositionFromStandardNotation(squares[0], size);
     final Offset endPos = _getPositionFromStandardNotation(squares[1], size);
-    _drawArrow(canvas, startPos, endPos, color, strokeWidth: strokeWidth);
+    _drawArrow(
+      canvas,
+      startPos,
+      endPos,
+      color,
+      useDashPattern: dashed,
+      hollow: hollow,
+      strokeWidth: strokeWidth,
+    );
   }
 
   static void _drawEngineTargetMark(
@@ -446,6 +458,7 @@ class AnalysisRenderer {
     Size size,
     double radius, {
     required double strokeWidth,
+    bool dashed = false,
   }) {
     assert(
       _standardSquarePattern.hasMatch(squareNotation),
@@ -459,15 +472,28 @@ class AnalysisRenderer {
       squareNotation,
       size,
     );
-    final Paint fillPaint = Paint()
-      ..color = color.withValues(alpha: 0.16)
-      ..style = PaintingStyle.fill;
     final Paint strokePaint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
-    canvas.drawCircle(position, radius, fillPaint);
-    canvas.drawCircle(position, radius, strokePaint);
+    if (dashed) {
+      _drawDashedCircle(
+        canvas,
+        position,
+        radius,
+        color,
+        strokeWidth: strokeWidth,
+      );
+    } else {
+      canvas.drawCircle(
+        position,
+        radius,
+        Paint()
+          ..color = color.withValues(alpha: 0.16)
+          ..style = PaintingStyle.fill,
+      );
+      canvas.drawCircle(position, radius, strokePaint);
+    }
   }
 
   /// Best (highest) evaluation value among the sorted results, if any.
@@ -533,7 +559,7 @@ class AnalysisRenderer {
     required bool useThreatColors,
   }) {
     if (useThreatColors) {
-      return Colors.red.shade600;
+      return _markerPalette.threat;
     }
     return AnalysisMode.getColorForOutcome(outcome);
   }
@@ -836,6 +862,7 @@ class AnalysisRenderer {
     Offset end,
     Color color, {
     bool useDashPattern = false,
+    bool hollow = false,
     double strokeWidth = 2.5,
   }) {
     const double arrowLength = 15.0;
@@ -856,10 +883,11 @@ class AnalysisRenderer {
       canvas.drawLine(start, adjustedEnd, paint);
     }
 
-    final Paint fillPaint = Paint()
+    final Paint headPaint = Paint()
       ..color = color
-      ..style = PaintingStyle.fill;
-    canvas.drawCircle(start, arrowWidth / 4, fillPaint);
+      ..strokeWidth = strokeWidth
+      ..style = hollow ? PaintingStyle.stroke : PaintingStyle.fill;
+    canvas.drawCircle(start, arrowWidth / 4, headPaint);
 
     final Offset perpendicular = Offset(-sin(angle), cos(angle));
     final Offset arrowBaseLeft =
@@ -869,10 +897,17 @@ class AnalysisRenderer {
     final Path arrowPath = Path()
       ..moveTo(end.dx, end.dy)
       ..lineTo(arrowBaseLeft.dx, arrowBaseLeft.dy)
-      ..lineTo(arrowBaseRight.dx, arrowBaseRight.dy)
-      ..close();
-    canvas.drawPath(arrowPath, fillPaint);
+      ..lineTo(arrowBaseRight.dx, arrowBaseRight.dy);
+    if (!hollow) {
+      arrowPath.close();
+    }
+    canvas.drawPath(arrowPath, headPaint);
   }
+
+  static BoardMarkerPalette get _markerPalette =>
+      BoardMarkerPalette.fromBackground(
+        DB().colorSettings.boardBackgroundColor,
+      );
 
   /// Draw a dashed line between [start] and [end].
   static void _drawDashedLine(

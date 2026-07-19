@@ -1033,8 +1033,9 @@ class MovesListPageState extends State<MovesListPage> {
                               Navigator.of(context).pop();
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  DB().colorSettings.pieceHighlightColor,
+                              backgroundColor: Theme.of(
+                                context,
+                              ).colorScheme.primary,
                               foregroundColor: Colors.white,
                             ),
                             child: Text(S.of(context).copy),
@@ -1160,7 +1161,7 @@ class MovesListPageState extends State<MovesListPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      funLoadingDots(DB().colorSettings.pieceHighlightColor),
+                      funLoadingDots(Theme.of(context).colorScheme.primary),
                       const SizedBox(
                         height: 8,
                       ), // Vertical spacing between dots and text
@@ -1197,17 +1198,19 @@ class MovesListPageState extends State<MovesListPage> {
                           foreground: Paint()
                             ..shader = LinearGradient(
                               colors: <Color>[
-                                DB().colorSettings.pieceHighlightColor
-                                    .withValues(alpha: 0.7),
-                                DB().colorSettings.pieceHighlightColor,
+                                Theme.of(
+                                  context,
+                                ).colorScheme.primary.withValues(alpha: 0.7),
+                                Theme.of(context).colorScheme.primary,
                               ],
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                             ).createShader(const Rect.fromLTWH(0, 0, 60, 24)),
                           shadows: <Shadow>[
                             Shadow(
-                              color: DB().colorSettings.pieceHighlightColor
-                                  .withValues(alpha: 0.8),
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(alpha: 0.8),
                               blurRadius: 5,
                             ),
                           ],

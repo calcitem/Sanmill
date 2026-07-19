@@ -8,6 +8,7 @@ import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/painters/painters.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/themes/app_theme.dart';
+import 'package:sanmill/shared/themes/board_marker_palette.dart';
 
 import '../../../helpers/mocks/mock_database.dart';
 
@@ -105,13 +106,15 @@ void main() {
     );
   });
 
-  testWidgets('renders a move Hint as a solid cyan arrow', (
+  testWidgets('renders a move Hint as a solid blue arrow', (
     WidgetTester tester,
   ) async {
     const Size size = Size.square(350);
     final double squareSize = (size.width - boardMargin * 2) / 6;
     final Offset startPoint = pointFromSquare(notationToSquare('a1'), size);
-    final Color hintColor = const Color(0xFF0099C8).withValues(alpha: 0.88);
+    final Color hintColor = BoardMarkerPalette.fromBackground(
+      DB().colorSettings.boardBackgroundColor,
+    ).bestMove.withValues(alpha: 0.88);
 
     AnalysisMode.enable(
       const <MoveAnalysisResult>[
@@ -142,13 +145,15 @@ void main() {
     );
   });
 
-  testWidgets('renders a placement Hint as a cyan bullseye', (
+  testWidgets('renders a placement Hint as a blue bullseye', (
     WidgetTester tester,
   ) async {
     const Size size = Size.square(350);
     final double squareSize = (size.width - boardMargin * 2) / 6;
     final Offset target = pointFromSquare(notationToSquare('d6'), size);
-    final Color hintColor = const Color(0xFF0099C8).withValues(alpha: 0.88);
+    final Color hintColor = BoardMarkerPalette.fromBackground(
+      DB().colorSettings.boardBackgroundColor,
+    ).bestMove.withValues(alpha: 0.88);
 
     AnalysisMode.enable(
       const <MoveAnalysisResult>[
@@ -197,7 +202,7 @@ void main() {
     );
   });
 
-  testWidgets('renders a removal Hint as a larger cyan bullseye', (
+  testWidgets('renders a removal Hint as a larger blue bullseye', (
     WidgetTester tester,
   ) async {
     const Size size = Size.square(350);

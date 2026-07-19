@@ -889,7 +889,7 @@ class _SavedGamePreview extends StatelessWidget {
     }
 
     final Color boardBackgroundColor = DB().colorSettings.boardBackgroundColor;
-    final Color pieceHighlightColor = DB().colorSettings.pieceHighlightColor;
+    final Color errorColor = Theme.of(context).colorScheme.error;
     return Container(
       width: 72,
       height: 72,
@@ -908,7 +908,7 @@ class _SavedGamePreview extends StatelessWidget {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 : const SizedBox(width: 18, height: 18)
-          : Icon(Icons.error_outline, color: pieceHighlightColor),
+          : Icon(Icons.error_outline, color: errorColor),
     );
   }
 }
