@@ -581,6 +581,7 @@ void main() {
       DB().generalSettings = GeneralSettings.fromJson(
         Map<String, dynamic>.from(originalGeneralSettings.toJson())
           ..['aiChatEnabled'] = true
+          ..['skillLevel'] = 1
           ..['moveTime'] = 1,
       );
       DB().displaySettings = originalDisplaySettings.copyWith(
@@ -723,6 +724,16 @@ void main() {
       );
       final Slider moveTimeSlider = tester.widget<Slider>(
         find.byKey(const Key('human_ai_new_game_sheet_move_time_slider')),
+      );
+      final Slider skillLevelSlider = tester.widget<Slider>(
+        find.byKey(const Key('human_ai_new_game_sheet_skill_slider')),
+      );
+      expect(skillLevelSlider.value, closeTo(1 / 30, 0.0001));
+      expect(skillLevelSlider.divisions, 30);
+      expect(skillLevelSlider.label, '1');
+      expect(
+        skillLevelSlider.semanticFormatterCallback?.call(1 / 30),
+        'Computer level 1',
       );
       expect(moveTimeSlider.label, '1 second');
       expect(moveTimeSlider.semanticFormatterCallback?.call(0), 'No limit');

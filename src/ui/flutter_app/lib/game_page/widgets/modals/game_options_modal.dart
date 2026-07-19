@@ -30,6 +30,28 @@ import '../../services/painters/painters.dart';
 import '../game_page.dart';
 import '../saved_games_page.dart';
 
+double _skillLevelSliderProgress(int level) {
+  assert(
+    level >= 1 && level <= Constants.highestSkillLevel,
+    'Computer level must be within the supported range.',
+  );
+  return level / Constants.highestSkillLevel;
+}
+
+int _skillLevelFromSliderProgress(double progress) {
+  assert(
+    progress >= 0 && progress <= 1,
+    'Computer level slider progress must be between zero and one.',
+  );
+  return math.max(
+    1,
+    math.min(
+      Constants.highestSkillLevel,
+      (progress * Constants.highestSkillLevel).round(),
+    ),
+  );
+}
+
 class GameOptionsModal extends StatelessWidget {
   const GameOptionsModal({super.key, required this.onTriggerScreenshot});
 
@@ -645,14 +667,17 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
                 ),
                 Slider(
                   key: const Key('human_ai_new_game_sheet_skill_slider'),
-                  min: 1,
-                  max: Constants.highestSkillLevel.toDouble(),
-                  divisions: Constants.highestSkillLevel - 1,
-                  value: _skillLevel.toDouble(),
+                  divisions: Constants.highestSkillLevel,
+                  value: _skillLevelSliderProgress(_skillLevel),
                   label: _skillLevel.toString(),
-                  onChanged: (double value) {
+                  semanticFormatterCallback: (double progress) => S
+                      .of(context)
+                      .humanAiRobotLevel(
+                        _skillLevelFromSliderProgress(progress),
+                      ),
+                  onChanged: (double progress) {
                     setState(() {
-                      _skillLevel = value.round();
+                      _skillLevel = _skillLevelFromSliderProgress(progress);
                     });
                   },
                 ),
