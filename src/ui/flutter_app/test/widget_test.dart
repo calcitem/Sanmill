@@ -1063,26 +1063,32 @@ void main() {
       );
       expect(
         find.byKey(const Key('mill_coordinate_training_time_bar')),
-        findsNothing,
+        findsOneWidget,
       );
       expect(find.text('0 correct · 0 attempts'), findsOneWidget);
 
-      await tester.pump(const Duration(minutes: 3));
+      await tester.pump(const Duration(seconds: 31));
       expect(
         find.byKey(const Key('mill_coordinate_training_current_coordinate')),
-        findsOneWidget,
+        findsNothing,
       );
-
-      await tester.tap(
+      expect(
         find.byKey(const Key('mill_coordinate_training_action_button')),
+        findsNothing,
       );
-      await tester.pumpAndSettle();
-
       expect(
         find.byKey(const Key('mill_coordinate_training_score')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const Key('mill_coordinate_training_start_button')),
         findsOneWidget,
       );
-      expect(find.text('0 correct · 0 attempts'), findsOneWidget);
+      expect(
+        find.byKey(const Key('mill_coordinate_training_bottom_bar')),
+        findsOneWidget,
+      );
+      expect(find.text('0 correct · 0 attempts · 0% accuracy'), findsOneWidget);
 
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
