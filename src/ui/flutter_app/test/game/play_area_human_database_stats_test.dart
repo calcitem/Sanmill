@@ -1326,6 +1326,32 @@ void main() {
     );
     expect(pieceCountRow, findsOneWidget);
     expect(removedPieceCountRow, findsOneWidget);
+    final Finder blackReserve = find.byKey(
+      const Key('play_area_piece_count_text_hand'),
+    );
+    final Finder capturedWhitePieces = find.byKey(
+      const Key('play_area_piece_count_text_remaining'),
+    );
+    final Finder capturedBlackPieces = find.byKey(
+      const Key('play_area_removed_piece_count_text_remaining'),
+    );
+    final Finder whiteReserve = find.byKey(
+      const Key('play_area_removed_piece_count_text_hand'),
+    );
+    expect(tester.widget<Text>(blackReserve).style?.color, Colors.black);
+    expect(tester.widget<Text>(whiteReserve).style?.color, Colors.white);
+    expect(
+      tester.getCenter(blackReserve).dx,
+      lessThan(tester.getCenter(capturedWhitePieces).dx),
+    );
+    expect(
+      tester.getCenter(capturedBlackPieces).dx,
+      lessThan(tester.getCenter(whiteReserve).dx),
+    );
+    expect(
+      tester.getCenter(blackReserve).dy,
+      lessThan(tester.getCenter(whiteReserve).dy),
+    );
     expect(
       find.byWidgetPredicate(
         (Widget widget) =>

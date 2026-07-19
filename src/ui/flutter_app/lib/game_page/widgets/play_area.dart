@@ -3042,56 +3042,39 @@ class PlayAreaState extends State<PlayArea> {
     return "●" * count;
   }
 
-  ({PieceColor human, PieceColor ai}) _humanAiSideColors() {
-    final GameMode mode = GameController().gameInstance.gameMode;
-    if (mode == GameMode.puzzle) {
-      final PieceColor? human = GameController().puzzleHumanColor;
-      if (human != null) {
-        return (human: human, ai: human.opponent);
-      }
-    }
-    final bool aiMovesFirst = DB().generalSettings.aiMovesFirst;
-    final PieceColor human = aiMovesFirst ? PieceColor.black : PieceColor.white;
-    return (human: human, ai: human.opponent);
-  }
-
   Color _boardPieceColor(PieceColor side) {
     return side == PieceColor.white
         ? DB().colorSettings.whitePieceColor
         : DB().colorSettings.blackPieceColor;
   }
 
-  /// Builds the row displaying the piece count in hand (if enabled).
+  /// Builds Black's piece-status row for the unflipped board.
+  ///
+  /// The layouts swap the two fixed-color rows when the board is flipped. This
+  /// keeps every reserve and captured-piece group next to its matching player
+  /// instead of tying the display to human/computer preferences that do not
+  /// apply to over-the-board, network, analysis, or puzzle positions.
   Widget _buildPieceCountRow() {
     final MillBoardView view = GameController().activeBoardView;
-    final ({PieceColor human, PieceColor ai}) sides = _humanAiSideColors();
-    final PieceColor humanColor = sides.human;
-    final PieceColor aiColor = sides.ai;
-    final int humanInHand = view.pieceInHandCountFor(humanColor);
-    final int aiOnBoard = view.pieceOnBoardCountFor(aiColor);
-    final int aiInHand = view.pieceInHandCountFor(aiColor);
-    final int aiRemoved =
+    final int blackInHand = view.pieceInHandCountFor(PieceColor.black);
+    final int whiteOnBoard = view.pieceOnBoardCountFor(PieceColor.white);
+    final int whiteInHand = view.pieceInHandCountFor(PieceColor.white);
+    final int whiteRemoved =
         GameController().ruleSettingsForActiveBoard.piecesCount -
-        aiInHand -
-        aiOnBoard;
-    final String humanLabel = humanColor == PieceColor.white
-        ? S.of(context).player1
-        : S.of(context).player2;
-    final String aiLabel = aiColor == PieceColor.white
-        ? S.of(context).player1
-        : S.of(context).player2;
+        whiteInHand -
+        whiteOnBoard;
     return Row(
       key: const Key('play_area_piece_count_row'),
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Semantics(
-          label: S.of(context).inHand(humanLabel, humanInHand),
+          label: S.of(context).inHand(S.of(context).player2, blackInHand),
           excludeSemantics: true,
           child: Text(
-            _getPiecesText(humanInHand),
+            _getPiecesText(blackInHand),
             key: const Key('play_area_piece_count_text_hand'),
             style: TextStyle(
-              color: _boardPieceColor(humanColor),
+              color: _boardPieceColor(PieceColor.black),
               shadows: const <Shadow>[
                 Shadow(
                   offset: Offset(1.0, 1.0),
@@ -3103,13 +3086,15 @@ class PlayAreaState extends State<PlayArea> {
           ),
         ),
         Semantics(
-          label: S.of(context).piecesRemoved(aiLabel, aiRemoved),
+          label: S
+              .of(context)
+              .piecesRemoved(S.of(context).player1, whiteRemoved),
           excludeSemantics: true,
           child: Text(
-            _getPiecesText(aiRemoved),
+            _getPiecesText(whiteRemoved),
             key: const Key('play_area_piece_count_text_remaining'),
             style: TextStyle(
-              color: _boardPieceColor(aiColor).withValues(alpha: 0.8),
+              color: _boardPieceColor(PieceColor.white).withValues(alpha: 0.8),
               shadows: const <Shadow>[
                 Shadow(
                   offset: Offset(1.0, 1.0),
@@ -3127,34 +3112,27 @@ class PlayAreaState extends State<PlayArea> {
   /// Builds the row displaying the removed piece count (if enabled).
   Widget _buildRemovedPieceCountRow() {
     final MillBoardView view = GameController().activeBoardView;
-    final ({PieceColor human, PieceColor ai}) sides = _humanAiSideColors();
-    final PieceColor humanColor = sides.human;
-    final PieceColor aiColor = sides.ai;
-    final int humanOnBoard = view.pieceOnBoardCountFor(humanColor);
-    final int humanInHand = view.pieceInHandCountFor(humanColor);
-    final int aiInHand = view.pieceInHandCountFor(aiColor);
-    final int humanRemoved =
+    final int blackOnBoard = view.pieceOnBoardCountFor(PieceColor.black);
+    final int blackInHand = view.pieceInHandCountFor(PieceColor.black);
+    final int whiteInHand = view.pieceInHandCountFor(PieceColor.white);
+    final int blackRemoved =
         GameController().ruleSettingsForActiveBoard.piecesCount -
-        humanInHand -
-        humanOnBoard;
-    final String humanLabel = humanColor == PieceColor.white
-        ? S.of(context).player1
-        : S.of(context).player2;
-    final String aiLabel = aiColor == PieceColor.white
-        ? S.of(context).player1
-        : S.of(context).player2;
+        blackInHand -
+        blackOnBoard;
     return Row(
       key: const Key('play_area_removed_piece_count_row'),
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Semantics(
-          label: S.of(context).piecesRemoved(humanLabel, humanRemoved),
+          label: S
+              .of(context)
+              .piecesRemoved(S.of(context).player2, blackRemoved),
           excludeSemantics: true,
           child: Text(
-            _getPiecesText(humanRemoved),
+            _getPiecesText(blackRemoved),
             key: const Key('play_area_removed_piece_count_text_remaining'),
             style: TextStyle(
-              color: _boardPieceColor(humanColor).withValues(alpha: 0.8),
+              color: _boardPieceColor(PieceColor.black).withValues(alpha: 0.8),
               shadows: const <Shadow>[
                 Shadow(
                   offset: Offset(1.0, 1.0),
@@ -3166,13 +3144,13 @@ class PlayAreaState extends State<PlayArea> {
           ),
         ),
         Semantics(
-          label: S.of(context).inHand(aiLabel, aiInHand),
+          label: S.of(context).inHand(S.of(context).player1, whiteInHand),
           excludeSemantics: true,
           child: Text(
-            _getPiecesText(aiInHand),
+            _getPiecesText(whiteInHand),
             key: const Key('play_area_removed_piece_count_text_hand'),
             style: TextStyle(
-              color: _boardPieceColor(aiColor),
+              color: _boardPieceColor(PieceColor.white),
               shadows: const <Shadow>[
                 Shadow(
                   offset: Offset(1.0, 1.0),
