@@ -117,6 +117,7 @@ class Database {
   static late final Box<dynamic> _puzzleAnalyticsBox;
   static const String _puzzleAnalyticsBoxName = "puzzleAnalytics";
   static const String puzzleAttemptHistoryKey = "attemptHistory";
+  static const String coordinateTrainingStatsKey = "coordinateTrainingStats";
 
   /// Getter for puzzle analytics box (for DailyPuzzleService, PuzzleStreakPage, etc.)
   Box<dynamic> get puzzleAnalyticsBox => _puzzleAnalyticsBox;
@@ -179,6 +180,7 @@ class Database {
     await _statsSettingsBox.delete(statsSettingsKey);
     await _puzzleSettingsBox.delete(puzzleSettingsKey);
     await _puzzleAnalyticsBox.delete(puzzleAttemptHistoryKey);
+    await _puzzleAnalyticsBox.delete(coordinateTrainingStatsKey);
     await _reviewDataBox.clear();
     // Voice assistant functionality disabled
     // await _voiceAssistantSettingsBox.delete(voiceAssistantSettingsKey);

@@ -4704,7 +4704,7 @@
     "@coordinateTrainingAbort": {},
     "coordinateTrainingShowCoordinates": "Show coordinates",
     "@coordinateTrainingShowCoordinates": {},
-    "coordinateTrainingDescription": "For each coordinate, tap the matching point on the board. There is no time limit; finish whenever you like.",
+    "coordinateTrainingDescription": "For each coordinate, tap the matching point on the board. Choose a 30-second session or untimed practice.",
     "@coordinateTrainingDescription": {},
     "board": "Board",
     "@board": {},
@@ -6673,5 +6673,27 @@
     "turnOffHint": "Turn off hint",
     "@turnOffHint": {
         "description": "Tooltip and accessibility action for disabling continuous in-game hint analysis"
-    }
+    },
+    "coordinateTrainingFlippedOrientation": "Flipped",
+    "@coordinateTrainingFlippedOrientation": {},
+    "coordinateTrainingThirtySeconds": "30 seconds",
+    "@coordinateTrainingThirtySeconds": {},
+    "coordinateTrainingUntimed": "Untimed",
+    "@coordinateTrainingUntimed": {},
+    "coordinateTrainingTimeRemaining": "{seconds}s remaining",
+    "@coordinateTrainingTimeRemaining": {},
+    "coordinateTrainingResultWithAccuracy": "{correct} correct · {attempts} attempts · {accuracy}% accuracy",
+    "@coordinateTrainingResultWithAccuracy": {},
+    "coordinateTrainingStatistics": "Statistics",
+    "@coordinateTrainingStatistics": {},
+    "coordinateTrainingSessions": "Training sessions",
+    "@coordinateTrainingSessions": {},
+    "coordinateTrainingThirtySecondBest": "30-second best",
+    "@coordinateTrainingThirtySecondBest": {},
+    "coordinateTrainingThirtySecondAverage": "30-second average",
+    "@coordinateTrainingThirtySecondAverage": {},
+    "coordinateTrainingTotalCorrect": "Total correct",
+    "@coordinateTrainingTotalCorrect": {},
+    "coordinateTrainingOverallAccuracy": "Overall accuracy",
+    "@coordinateTrainingOverallAccuracy": {}
 }

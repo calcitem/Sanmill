@@ -4646,7 +4646,7 @@
     "@coordinateTrainingAbort": {},
     "coordinateTrainingShowCoordinates": "显示坐标",
     "@coordinateTrainingShowCoordinates": {},
-    "coordinateTrainingDescription": "每次会显示一个坐标，请点按棋盘上的对应交点。训练不限时，可随时结束。",
+    "coordinateTrainingDescription": "每次会显示一个坐标，请点按棋盘上的对应交点。可选择 30 秒或不限时训练。",
     "@coordinateTrainingDescription": {},
     "board": "棋盘",
     "@board": {},
@@ -6606,5 +6606,27 @@
     "turnOffHint": "关闭提示",
     "@turnOffHint": {
         "description": "Tooltip and accessibility action for disabling continuous in-game hint analysis"
-    }
+    },
+    "coordinateTrainingFlippedOrientation": "翻转",
+    "@coordinateTrainingFlippedOrientation": {},
+    "coordinateTrainingThirtySeconds": "30 秒",
+    "@coordinateTrainingThirtySeconds": {},
+    "coordinateTrainingUntimed": "不限时",
+    "@coordinateTrainingUntimed": {},
+    "coordinateTrainingTimeRemaining": "剩余 {seconds} 秒",
+    "@coordinateTrainingTimeRemaining": {},
+    "coordinateTrainingResultWithAccuracy": "答对 {correct} 个 · 尝试 {attempts} 次 · 正确率 {accuracy}%",
+    "@coordinateTrainingResultWithAccuracy": {},
+    "coordinateTrainingStatistics": "统计",
+    "@coordinateTrainingStatistics": {},
+    "coordinateTrainingSessions": "训练次数",
+    "@coordinateTrainingSessions": {},
+    "coordinateTrainingThirtySecondBest": "30 秒最高答对数",
+    "@coordinateTrainingThirtySecondBest": {},
+    "coordinateTrainingThirtySecondAverage": "30 秒平均答对数",
+    "@coordinateTrainingThirtySecondAverage": {},
+    "coordinateTrainingTotalCorrect": "总答对数",
+    "@coordinateTrainingTotalCorrect": {},
+    "coordinateTrainingOverallAccuracy": "总体正确率",
+    "@coordinateTrainingOverallAccuracy": {}
 }

@@ -2144,9 +2144,16 @@ void main() {
     skip: nativeLibrarySkipReason() != null,
   );
 
-  testWidgets('Coordinate training mirrors Lichess default toggles', (
+  testWidgets('Coordinate training supports timed and untimed practice', (
     WidgetTester tester,
   ) async {
+    tester.view
+      ..physicalSize = const Size(390, 844)
+      ..devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await DB().puzzleAnalyticsBox.delete(DB.coordinateTrainingStatsKey);
+
     await tester.pumpWidget(
       MaterialApp(
         theme: AppTheme.lightThemeData,
@@ -2157,18 +2164,6 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-
-    final BuildContext trainingContext = tester.element(
-      find.byKey(const Key('mill_coordinate_training_page_scaffold')),
-    );
-    expect(
-      S.of(trainingContext).coordinateTrainingResult(1, 1),
-      '1 correct · 1 attempt',
-    );
-    expect(
-      S.of(trainingContext).coordinateTrainingResult(2, 2),
-      '2 correct · 2 attempts',
-    );
 
     expect(
       find.byKey(const Key('mill_coordinate_training_board')),
@@ -2189,20 +2184,15 @@ void main() {
     final SwitchListTile showCoordinatesTile = tester.widget<SwitchListTile>(
       find.byKey(const Key('mill_coordinate_training_show_coordinates')),
     );
-    final SwitchListTile showPiecesTile = tester.widget<SwitchListTile>(
-      find.byKey(const Key('mill_coordinate_training_show_pieces')),
-    );
     expect(showCoordinatesTile.value, isFalse);
-    expect(showPiecesTile.value, isTrue);
-
     expect(
-      find.byKey(const Key('mill_coordinate_training_duration_30')),
+      find.byKey(const Key('mill_coordinate_training_show_pieces')),
       findsNothing,
     );
 
-    Navigator.of(
-      tester.element(find.byKey(const Key('mill_coordinate_training_board'))),
-    ).pop();
+    await tester.tap(
+      find.byKey(const Key('mill_coordinate_training_show_coordinates')),
+    );
     await tester.pumpAndSettle();
 
     await tester.tap(
@@ -2215,10 +2205,23 @@ void main() {
       findsOneWidget,
     );
     expect(
-      find.byKey(const Key('mill_coordinate_training_orientation_board')),
+      find.byKey(const Key('mill_coordinate_training_orientation_standard')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('mill_coordinate_training_orientation_flipped')),
       findsOneWidget,
     );
     expect(find.text('Standard'), findsOneWidget);
+    expect(find.text('Flipped'), findsOneWidget);
+    expect(
+      find.byKey(const Key('mill_coordinate_training_duration_30')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('mill_coordinate_training_duration_untimed')),
+      findsOneWidget,
+    );
     expect(
       find.descendant(
         of: find.byKey(
@@ -2228,42 +2231,58 @@ void main() {
       ),
       findsOneWidget,
     );
-
-    await tester.tap(
-      find.byKey(const Key('mill_coordinate_training_orientation_board')),
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(
-      find.byKey(const Key('mill_coordinate_training_menu_button')),
-    );
-    await tester.pumpAndSettle();
-
     expect(
       find.descendant(
-        of: find.byKey(const Key('mill_coordinate_training_orientation_board')),
+        of: find.byKey(const Key('mill_coordinate_training_duration_30')),
         matching: find.byIcon(Icons.check_rounded),
       ),
       findsOneWidget,
     );
-    expect(
-      find.byKey(const Key('mill_coordinate_training_duration_30')),
-      findsNothing,
-    );
-    expect(
-      find.byKey(const Key('mill_coordinate_training_show_coordinates')),
-      findsNothing,
-    );
 
-    Navigator.of(
-      tester.element(find.byKey(const Key('mill_coordinate_training_board'))),
-    ).pop();
+    await tester.tap(
+      find.byKey(const Key('mill_coordinate_training_orientation_standard')),
+    );
     await tester.pumpAndSettle();
+    String axisLabel(String key) {
+      return tester
+          .widget<Text>(
+            find.descendant(
+              of: find.byKey(Key(key)),
+              matching: find.byType(Text),
+            ),
+          )
+          .data!;
+    }
+
+    expect(axisLabel('mill_coordinate_training_file_0'), 'a');
+    expect(axisLabel('mill_coordinate_training_file_6'), 'g');
+    expect(axisLabel('mill_coordinate_training_rank_0'), '7');
+    expect(axisLabel('mill_coordinate_training_rank_6'), '1');
+
+    await tester.tap(
+      find.byKey(const Key('mill_coordinate_training_menu_button')),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(const Key('mill_coordinate_training_orientation_flipped')),
+    );
+    await tester.pumpAndSettle();
+    expect(axisLabel('mill_coordinate_training_file_0'), 'g');
+    expect(axisLabel('mill_coordinate_training_file_6'), 'a');
+    expect(axisLabel('mill_coordinate_training_rank_0'), '1');
+    expect(axisLabel('mill_coordinate_training_rank_6'), '7');
+
     await tester.tap(
       find.byKey(const Key('mill_coordinate_training_start_button')),
     );
     await tester.pump();
 
     expect(find.text('0 correct · 0 attempts'), findsOneWidget);
+    expect(
+      find.byKey(const Key('mill_coordinate_training_time_bar')),
+      findsOneWidget,
+    );
+    expect(find.text('30s remaining'), findsOneWidget);
     final String currentTarget = tester
         .widget<Text>(
           find.byKey(const Key('mill_coordinate_training_current_coordinate')),
@@ -2290,17 +2309,56 @@ void main() {
       ),
       findsOneWidget,
     );
+    await tester.pump(const Duration(seconds: 15));
+    expect(find.text('15s remaining'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 15));
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const Key('mill_coordinate_training_time_bar')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('mill_coordinate_training_last_result')),
+      findsOneWidget,
+    );
+    expect(find.text('0 correct · 0 attempts · 0% accuracy'), findsOneWidget);
+
+    await tester.tap(
+      find.byKey(const Key('mill_coordinate_training_menu_button')),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(const Key('mill_coordinate_training_duration_untimed')),
+    );
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(
+      find.byKey(const Key('mill_coordinate_training_start_button')),
+    );
+    await tester.tap(
+      find.byKey(const Key('mill_coordinate_training_start_button')),
+    );
+    await tester.pump();
+
+    expect(
+      find.byKey(const Key('mill_coordinate_training_time_bar')),
+      findsNothing,
+    );
     await tester.pump(const Duration(minutes: 3));
     expect(
       find.byKey(const Key('mill_coordinate_training_current_coordinate')),
       findsOneWidget,
     );
-
     await tester.tap(
       find.byKey(const Key('mill_coordinate_training_action_button')),
     );
     await tester.pumpAndSettle();
-    expect(find.text('0 correct · 0 attempts'), findsOneWidget);
+
+    final Map<dynamic, dynamic> storedStats =
+        DB().puzzleAnalyticsBox.get(DB.coordinateTrainingStatsKey)
+            as Map<dynamic, dynamic>;
+    expect(storedStats['trainingSessions'], 2);
+    expect(storedStats['thirtySecondSessions'], 1);
+    expect(storedStats['thirtySecondBestCorrect'], 0);
   });
 
   testWidgets('Tutorial explains configurable Mill rules clearly', (

@@ -936,23 +936,27 @@ void main() {
     expect(chinese.puzzles, '谜题');
   });
 
-  test('describes untimed English coordinate training directly', () {
+  test('describes English coordinate training modes directly', () {
     final S english = lookupS(const Locale('en'));
 
     expect(
       english.coordinateTrainingDescription,
-      'For each coordinate, tap the matching point on the board. There is no '
-      'time limit; finish whenever you like.',
+      'For each coordinate, tap the matching point on the board. Choose a '
+      '30-second session or untimed practice.',
     );
+    expect(english.coordinateTrainingThirtySeconds, '30 seconds');
+    expect(english.coordinateTrainingUntimed, 'Untimed');
   });
 
-  test('describes untimed Chinese coordinate training directly', () {
+  test('describes Chinese coordinate training modes directly', () {
     final S chinese = lookupS(const Locale('zh'));
 
     expect(
       chinese.coordinateTrainingDescription,
-      '每次会显示一个坐标，请点按棋盘上的对应交点。训练不限时，可随时结束。',
+      '每次会显示一个坐标，请点按棋盘上的对应交点。可选择 30 秒或不限时训练。',
     );
+    expect(chinese.coordinateTrainingThirtySeconds, '30 秒');
+    expect(chinese.coordinateTrainingUntimed, '不限时');
   });
 
   test('describes English puzzle streaks naturally', () {

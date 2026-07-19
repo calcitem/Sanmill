@@ -8,16 +8,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
-import '../appearance_settings/models/color_settings.dart';
 import '../game_page/services/transform/transform.dart';
 import '../games/mill/mill_board_coordinate_maps.dart';
 import '../games/mill/mill_board_geometry.dart';
 import '../generated/intl/l10n.dart';
 import '../rule_settings/models/rule_settings.dart';
 import '../shared/database/database.dart';
-import '../shared/themes/app_styles.dart';
 import '../shared/widgets/lichess_bottom_bar.dart';
 import '../shared/widgets/lichess_list_section.dart';
+import 'coordinate_training_stats.dart';
 
 const Duration _kGuessHighlightDuration = Duration(milliseconds: 220);
 const Duration _kCoordinateTransitionDuration = Duration(milliseconds: 150);
@@ -26,8 +25,11 @@ const double _kNextCoordinateScale = 0.42;
 const double _kCurrentCoordinateOpacity = 0.9;
 const double _kNextCoordinateOpacity = 0.68;
 const double _kTrainingPanelMinHeight = 96;
+const Duration _kTimedTrainingDuration = Duration(seconds: 30);
 
-enum _CoordinateTrainingOrientationChoice { board, random }
+enum _CoordinateTrainingOrientationChoice { standard, flipped, random }
+
+enum _CoordinateTrainingDurationChoice { thirtySeconds, untimed }
 
 class MillCoordinateTrainingPage extends StatefulWidget {
   const MillCoordinateTrainingPage({super.key});
@@ -37,11 +39,16 @@ class MillCoordinateTrainingPage extends StatefulWidget {
       _MillCoordinateTrainingPageState();
 }
 
-class _MillCoordinateTrainingPageState
-    extends State<MillCoordinateTrainingPage> {
+class _MillCoordinateTrainingPageState extends State<MillCoordinateTrainingPage>
+    with SingleTickerProviderStateMixin {
   final math.Random _random = math.Random();
 
   Timer? _highlightTimer;
+  late final AnimationController _trainingTimerController = AnimationController(
+    vsync: this,
+    duration: _kTimedTrainingDuration,
+  )..addStatusListener(_handleTrainingTimerStatus);
+  late CoordinateTrainingStats _statistics;
 
   int? _currentNode;
   int? _nextNode;
@@ -54,15 +61,23 @@ class _MillCoordinateTrainingPageState
   bool _trainingActive = false;
   _CoordinateTrainingOrientationChoice _orientationChoice =
       _CoordinateTrainingOrientationChoice.random;
+  _CoordinateTrainingDurationChoice _durationChoice =
+      _CoordinateTrainingDurationChoice.thirtySeconds;
   late TransformationType _currentTransform = _newTransformForChoice(
     _orientationChoice,
   );
   bool _showCoordinates = false;
-  bool _showPieces = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _statistics = CoordinateTrainingStatsStore.load();
+  }
 
   @override
   void dispose() {
     _highlightTimer?.cancel();
+    _trainingTimerController.dispose();
     super.dispose();
   }
 
@@ -105,14 +120,17 @@ class _MillCoordinateTrainingPageState
                       return _TrainingLayout(
                         hasDiagonalLines: hasDiagonalLines,
                         showCoordinates: _showCoordinates,
-                        showPieces: _showPieces,
-                        colorSettings: DB().colorSettings,
                         transform: _currentTransform,
                         trainingActive: _trainingActive,
+                        isTimed:
+                            _durationChoice ==
+                            _CoordinateTrainingDurationChoice.thirtySeconds,
+                        trainingTimer: _trainingTimerController,
                         score: _score,
                         attempts: _attempts,
                         lastScore: _lastScore,
                         lastAttempts: _lastAttempts,
+                        statistics: _statistics,
                         currentNode: _currentNode,
                         nextNode: _nextNode,
                         lastGuessNode: _lastGuessNode,
@@ -162,10 +180,27 @@ class _MillCoordinateTrainingPageState
       _attempts = 0;
       _trainingActive = true;
     });
+    if (_durationChoice == _CoordinateTrainingDurationChoice.thirtySeconds) {
+      _trainingTimerController.forward(from: 0);
+    } else {
+      _trainingTimerController.reset();
+    }
   }
 
   void _finishTraining() {
+    if (!_trainingActive) {
+      return;
+    }
+    _trainingTimerController.stop();
+    final CoordinateTrainingStats statistics = _statistics.recordSession(
+      isThirtySeconds:
+          _durationChoice == _CoordinateTrainingDurationChoice.thirtySeconds,
+      correct: _score,
+      attempts: _attempts,
+    );
+    unawaited(CoordinateTrainingStatsStore.save(statistics));
     setState(() {
+      _statistics = statistics;
       _lastScore = _score;
       _lastAttempts = _attempts;
       _currentNode = null;
@@ -174,6 +209,12 @@ class _MillCoordinateTrainingPageState
       _lastGuessCorrect = null;
       _trainingActive = false;
     });
+  }
+
+  void _handleTrainingTimerStatus(AnimationStatus status) {
+    if (status == AnimationStatus.completed && _trainingActive) {
+      _finishTraining();
+    }
   }
 
   int _randomNode({int? previous}) {
@@ -188,19 +229,14 @@ class _MillCoordinateTrainingPageState
     _CoordinateTrainingOrientationChoice choice,
   ) {
     return switch (choice) {
-      _CoordinateTrainingOrientationChoice.board => TransformationType.identity,
-      // Only sample the 8 physically-realizable rotations/reflections.
-      // The other 8 `TransformationType` values additionally swap the
-      // inner and outer ring, which has no physical board manipulation
-      // counterpart: the rendered board still looks valid, but the quiz
-      // target's stated coordinate (e.g. "d5", conventionally an inner-ring
-      // point) would be drawn on the *outer* ring instead, so a correct tap
-      // on the visually-obvious matching point is scored as wrong. See
-      // `spatialTransformationTypes` for the full explanation.
+      _CoordinateTrainingOrientationChoice.standard =>
+        TransformationType.identity,
+      _CoordinateTrainingOrientationChoice.flipped =>
+        TransformationType.rotate180,
       _CoordinateTrainingOrientationChoice.random =>
-        spatialTransformationTypes[_random.nextInt(
-          spatialTransformationTypes.length,
-        )],
+        _random.nextBool()
+            ? TransformationType.identity
+            : TransformationType.rotate180,
     };
   }
 
@@ -209,9 +245,23 @@ class _MillCoordinateTrainingPageState
     _CoordinateTrainingOrientationChoice choice,
   ) {
     return switch (choice) {
-      _CoordinateTrainingOrientationChoice.board =>
+      _CoordinateTrainingOrientationChoice.standard =>
         strings.coordinateTrainingStandardOrientation,
+      _CoordinateTrainingOrientationChoice.flipped =>
+        strings.coordinateTrainingFlippedOrientation,
       _CoordinateTrainingOrientationChoice.random => strings.randomColor,
+    };
+  }
+
+  String _durationChoiceLabel(
+    S strings,
+    _CoordinateTrainingDurationChoice choice,
+  ) {
+    return switch (choice) {
+      _CoordinateTrainingDurationChoice.thirtySeconds =>
+        strings.coordinateTrainingThirtySeconds,
+      _CoordinateTrainingDurationChoice.untimed =>
+        strings.coordinateTrainingUntimed,
     };
   }
 
@@ -271,17 +321,6 @@ class _MillCoordinateTrainingPageState
                       Navigator.of(context).pop();
                     },
                   ),
-                  SwitchListTile(
-                    key: const Key('mill_coordinate_training_show_pieces'),
-                    title: Text(strings.coordinateTrainingShowPieces),
-                    value: _showPieces,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _showPieces = value;
-                      });
-                      Navigator.of(context).pop();
-                    },
-                  ),
                 ],
               ),
             ],
@@ -330,6 +369,31 @@ class _MillCoordinateTrainingPageState
                     ),
                 ],
               ),
+              LichessListSection(
+                header: Text(strings.timeControl),
+                children: <Widget>[
+                  for (final _CoordinateTrainingDurationChoice choice
+                      in _CoordinateTrainingDurationChoice.values)
+                    ListTile(
+                      key: Key(
+                        'mill_coordinate_training_duration_${choice == _CoordinateTrainingDurationChoice.thirtySeconds ? '30' : 'untimed'}',
+                      ),
+                      title: Text(_durationChoiceLabel(strings, choice)),
+                      trailing: choice == _durationChoice
+                          ? Icon(
+                              Icons.check_rounded,
+                              color: Theme.of(context).colorScheme.primary,
+                            )
+                          : null,
+                      onTap: () {
+                        setState(() {
+                          _durationChoice = choice;
+                        });
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                ],
+              ),
             ],
           ),
         );
@@ -361,14 +425,15 @@ class _TrainingLayout extends StatelessWidget {
   const _TrainingLayout({
     required this.hasDiagonalLines,
     required this.showCoordinates,
-    required this.showPieces,
-    required this.colorSettings,
     required this.transform,
     required this.trainingActive,
+    required this.isTimed,
+    required this.trainingTimer,
     required this.score,
     required this.attempts,
     required this.lastScore,
     required this.lastAttempts,
+    required this.statistics,
     required this.currentNode,
     required this.nextNode,
     required this.lastGuessNode,
@@ -380,14 +445,15 @@ class _TrainingLayout extends StatelessWidget {
 
   final bool hasDiagonalLines;
   final bool showCoordinates;
-  final bool showPieces;
-  final ColorSettings colorSettings;
   final TransformationType transform;
   final bool trainingActive;
+  final bool isTimed;
+  final Animation<double> trainingTimer;
   final int score;
   final int attempts;
   final int? lastScore;
   final int? lastAttempts;
+  final CoordinateTrainingStats statistics;
   final int? currentNode;
   final int? nextNode;
   final int? lastGuessNode;
@@ -417,8 +483,6 @@ class _TrainingLayout extends StatelessWidget {
           child: _MillTrainingBoard(
             hasDiagonalLines: hasDiagonalLines,
             showCoordinates: showCoordinates,
-            showPieces: showPieces,
-            colorSettings: colorSettings,
             transform: transform,
             trainingActive: trainingActive,
             currentNode: currentNode,
@@ -435,6 +499,9 @@ class _TrainingLayout extends StatelessWidget {
           lastScore: lastScore,
           lastAttempts: lastAttempts,
           trainingActive: trainingActive,
+          isTimed: isTimed,
+          trainingTimer: trainingTimer,
+          statistics: statistics,
           onStart: onStart,
           onFinish: onFinish,
         );
@@ -461,6 +528,9 @@ class _TrainingPanel extends StatelessWidget {
     required this.lastScore,
     required this.lastAttempts,
     required this.trainingActive,
+    required this.isTimed,
+    required this.trainingTimer,
+    required this.statistics,
     required this.onStart,
     required this.onFinish,
   });
@@ -470,6 +540,9 @@ class _TrainingPanel extends StatelessWidget {
   final int? lastScore;
   final int? lastAttempts;
   final bool trainingActive;
+  final bool isTimed;
+  final Animation<double> trainingTimer;
+  final CoordinateTrainingStats statistics;
   final VoidCallback onStart;
   final VoidCallback onFinish;
 
@@ -478,33 +551,112 @@ class _TrainingPanel extends StatelessWidget {
     final S strings = S.of(context);
 
     if (trainingActive) {
-      return _ScoreAndButton(
+      return _ActiveTrainingPanel(
         score: score,
         attempts: attempts,
-        buttonLabel: strings.coordinateTrainingFinish,
-        onPressed: onFinish,
+        isTimed: isTimed,
+        trainingTimer: trainingTimer,
+        onFinish: onFinish,
       );
     }
 
-    final int? last = lastScore;
-    if (last != null) {
-      return _ScoreAndButton(
-        score: last,
-        attempts: lastAttempts ?? 0,
-        buttonLabel: strings.coordinateTrainingStart,
-        onPressed: onStart,
-      );
-    }
-
-    return Center(
-      child: FilledButton(
-        key: const Key('mill_coordinate_training_start_button'),
-        onPressed: onStart,
-        child: Text(
-          strings.coordinateTrainingStart,
-          style: const TextStyle(fontWeight: FontWeight.w700),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            if (lastScore != null) ...<Widget>[
+              const SizedBox(height: 8),
+              Text(
+                strings.coordinateTrainingResultWithAccuracy(
+                  lastScore!,
+                  lastAttempts ?? 0,
+                  _accuracyPercent(lastScore!, lastAttempts ?? 0),
+                ),
+                key: const Key('mill_coordinate_training_last_result'),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+            ],
+            const SizedBox(height: 12),
+            FilledButton(
+              key: const Key('mill_coordinate_training_start_button'),
+              onPressed: onStart,
+              child: Text(
+                strings.coordinateTrainingStart,
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              ),
+            ),
+            const SizedBox(height: 12),
+            _CoordinateTrainingStatistics(statistics: statistics),
+            const SizedBox(height: 8),
+          ],
         ),
       ),
+    );
+  }
+}
+
+class _ActiveTrainingPanel extends StatelessWidget {
+  const _ActiveTrainingPanel({
+    required this.score,
+    required this.attempts,
+    required this.isTimed,
+    required this.trainingTimer,
+    required this.onFinish,
+  });
+
+  final int score;
+  final int attempts;
+  final bool isTimed;
+  final Animation<double> trainingTimer;
+  final VoidCallback onFinish;
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        if (isTimed)
+          AnimatedBuilder(
+            animation: trainingTimer,
+            builder: (BuildContext context, Widget? child) {
+              final double remaining = 1 - trainingTimer.value;
+              final int seconds = math.max(
+                0,
+                (_kTimedTrainingDuration.inSeconds * remaining).ceil(),
+              );
+              return Padding(
+                key: const Key('mill_coordinate_training_time_bar'),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      strings.coordinateTrainingTimeRemaining(seconds),
+                      key: const Key('mill_coordinate_training_time_remaining'),
+                      style: const TextStyle(
+                        fontFeatures: <FontFeature>[
+                          FontFeature.tabularFigures(),
+                        ],
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    LinearProgressIndicator(value: remaining),
+                  ],
+                ),
+              );
+            },
+          ),
+        _ScoreAndButton(
+          score: score,
+          attempts: attempts,
+          buttonLabel: strings.coordinateTrainingFinish,
+          onPressed: onFinish,
+        ),
+      ],
     );
   }
 }
@@ -559,12 +711,99 @@ class _ScoreAndButton extends StatelessWidget {
   }
 }
 
+class _CoordinateTrainingStatistics extends StatelessWidget {
+  const _CoordinateTrainingStatistics({required this.statistics});
+
+  final CoordinateTrainingStats statistics;
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+    final List<(String, String)> items = <(String, String)>[
+      (
+        strings.coordinateTrainingSessions,
+        statistics.trainingSessions.toString(),
+      ),
+      (
+        strings.coordinateTrainingThirtySecondBest,
+        statistics.thirtySecondBestCorrect.toString(),
+      ),
+      (
+        strings.coordinateTrainingThirtySecondAverage,
+        statistics.thirtySecondAverageCorrect.toStringAsFixed(1),
+      ),
+      (
+        strings.coordinateTrainingTotalCorrect,
+        statistics.totalCorrect.toString(),
+      ),
+      (
+        strings.coordinateTrainingOverallAccuracy,
+        '${(statistics.overallAccuracy * 100).toStringAsFixed(0)}%',
+      ),
+    ];
+
+    return Column(
+      key: const Key('mill_coordinate_training_statistics'),
+      children: <Widget>[
+        Text(
+          strings.coordinateTrainingStatistics,
+          style: Theme.of(
+            context,
+          ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+        ),
+        const SizedBox(height: 6),
+        LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            final double itemWidth = math.max(
+              112,
+              (constraints.maxWidth - 8) / 2,
+            );
+            return Wrap(
+              spacing: 8,
+              runSpacing: 6,
+              alignment: WrapAlignment.center,
+              children: <Widget>[
+                for (int index = 0; index < items.length; index++)
+                  SizedBox(
+                    key: Key('mill_coordinate_training_stat_$index'),
+                    width: itemWidth,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Flexible(
+                          child: Text(
+                            items[index].$1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          items[index].$2,
+                          style: const TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+int _accuracyPercent(int correct, int attempts) {
+  if (attempts == 0) {
+    return 0;
+  }
+  return (correct * 100 / attempts).round();
+}
+
 class _MillTrainingBoard extends StatelessWidget {
   const _MillTrainingBoard({
     required this.hasDiagonalLines,
     required this.showCoordinates,
-    required this.showPieces,
-    required this.colorSettings,
     required this.transform,
     required this.trainingActive,
     required this.currentNode,
@@ -576,8 +815,6 @@ class _MillTrainingBoard extends StatelessWidget {
 
   final bool hasDiagonalLines;
   final bool showCoordinates;
-  final bool showPieces;
-  final ColorSettings colorSettings;
   final TransformationType transform;
   final bool trainingActive;
   final int? currentNode;
@@ -592,6 +829,7 @@ class _MillTrainingBoard extends StatelessWidget {
     final int? next = nextNode;
     final List<int> transformMap = getTransformMap(transform);
     final List<int> inverseTransform = inverseTransformMap(transformMap);
+    final bool isFlipped = transform == TransformationType.rotate180;
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -618,15 +856,14 @@ class _MillTrainingBoard extends StatelessWidget {
                 size: size,
                 painter: _MillCoordinateTrainingPainter(
                   colorScheme: Theme.of(context).colorScheme,
-                  colorSettings: colorSettings,
                   hasDiagonalLines: hasDiagonalLines,
-                  showCoordinates: showCoordinates,
-                  showPieces: showPieces,
                   transformMap: transformMap,
                   lastGuessNode: lastGuessNode,
                   lastGuessCorrect: lastGuessCorrect,
                 ),
               ),
+              if (showCoordinates)
+                ..._buildCoordinateAxisLabels(context, size, isFlipped),
               if (trainingActive && current != null && next != null)
                 IgnorePointer(
                   child: _CoordinateDisplay(
@@ -638,6 +875,78 @@ class _MillTrainingBoard extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  List<Widget> _buildCoordinateAxisLabels(
+    BuildContext context,
+    Size size,
+    bool isFlipped,
+  ) {
+    final double side = size.shortestSide;
+    final double originX = (size.width - side) / 2;
+    final double originY = (size.height - side) / 2;
+    final double padding = side * MillBoardGeometry.defaultPaddingFraction;
+    final double cell = (side - padding * 2) / 6;
+    final TextStyle style = Theme.of(context).textTheme.labelSmall!.copyWith(
+      color: Theme.of(context).colorScheme.onSurface,
+      fontWeight: FontWeight.w700,
+    );
+    final List<Widget> labels = <Widget>[];
+
+    for (int index = 0; index < 7; index++) {
+      final String file = String.fromCharCode(
+        'a'.codeUnitAt(0) + (isFlipped ? 6 - index : index),
+      );
+      labels.add(
+        _CoordinateAxisLabel(
+          key: Key('mill_coordinate_training_file_$index'),
+          center: Offset(
+            originX + padding + index * cell,
+            originY + side - padding * 0.34,
+          ),
+          label: file,
+          style: style,
+        ),
+      );
+
+      final int rank = isFlipped ? index + 1 : 7 - index;
+      labels.add(
+        _CoordinateAxisLabel(
+          key: Key('mill_coordinate_training_rank_$index'),
+          center: Offset(
+            originX + padding * 0.34,
+            originY + padding + index * cell,
+          ),
+          label: rank.toString(),
+          style: style,
+        ),
+      );
+    }
+    return labels;
+  }
+}
+
+class _CoordinateAxisLabel extends StatelessWidget {
+  const _CoordinateAxisLabel({
+    super.key,
+    required this.center,
+    required this.label,
+    required this.style,
+  });
+
+  final Offset center;
+  final String label;
+  final TextStyle style;
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      left: center.dx - 10,
+      top: center.dy - 10,
+      width: 20,
+      height: 20,
+      child: Center(child: Text(label, style: style)),
     );
   }
 }
@@ -782,26 +1091,17 @@ class _CoordinateDisplayState extends State<_CoordinateDisplay>
 class _MillCoordinateTrainingPainter extends CustomPainter {
   _MillCoordinateTrainingPainter({
     required this.colorScheme,
-    required this.colorSettings,
     required this.hasDiagonalLines,
-    required this.showCoordinates,
-    required this.showPieces,
     required this.transformMap,
     required this.lastGuessNode,
     required this.lastGuessCorrect,
   });
 
   final ColorScheme colorScheme;
-  final ColorSettings colorSettings;
   final bool hasDiagonalLines;
-  final bool showCoordinates;
-  final bool showPieces;
   final List<int> transformMap;
   final int? lastGuessNode;
   final bool? lastGuessCorrect;
-
-  static const List<int> _playerOneSampleNodes = <int>[23, 16, 8, 0, 1, 9];
-  static const List<int> _playerTwoSampleNodes = <int>[5, 13, 21, 20, 12, 4];
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -817,13 +1117,7 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
 
     _drawLines(canvas, size);
     _drawPoints(canvas, size);
-    if (showPieces) {
-      _drawSamplePieces(canvas, size);
-    }
     _drawGuessHighlight(canvas, size);
-    if (showCoordinates) {
-      _drawCoordinateLabels(canvas, size);
-    }
   }
 
   void _drawLines(Canvas canvas, Size size) {
@@ -891,49 +1185,6 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
     }
   }
 
-  void _drawSamplePieces(Canvas canvas, Size size) {
-    final double side = size.shortestSide;
-    final double radius = side * 0.043;
-    final Paint shadowPaint = Paint()
-      ..color = colorScheme.shadow.withValues(alpha: 0.24);
-    final Paint outlinePaint = Paint()
-      ..color = colorScheme.outline.withValues(alpha: 0.46)
-      ..strokeWidth = math.max(1.2, side * 0.004)
-      ..style = PaintingStyle.stroke;
-
-    void drawPiece(int node, Color color) {
-      final Offset center = _transformedNodeOffset(node, size);
-      canvas.drawCircle(center.translate(1.2, 1.8), radius, shadowPaint);
-      canvas.drawCircle(center, radius, Paint()..color = color);
-      canvas.drawCircle(center, radius, outlinePaint);
-    }
-
-    for (final int node in _playerOneSampleNodes) {
-      drawPiece(node, colorSettings.whitePieceColor);
-    }
-    for (final int node in _playerTwoSampleNodes) {
-      drawPiece(node, colorSettings.blackPieceColor);
-    }
-  }
-
-  void _drawCoordinateLabels(Canvas canvas, Size size) {
-    final Offset boardCenter = Offset(size.width / 2, size.height / 2);
-    final double side = size.shortestSide;
-    final double fontSize = math.max(9, side * 0.032);
-
-    for (int node = 0; node < MillBoardGeometry.nodeCount; node++) {
-      final String notation = MillBoardCoordinateMaps.nodeToNotation(node);
-      assert(notation.isNotEmpty, 'Mill node $node must have notation.');
-      final Offset nodeCenter = _transformedNodeOffset(node, size);
-      final Offset labelCenter = _labelCenterFor(
-        nodeCenter: nodeCenter,
-        boardCenter: boardCenter,
-        side: side,
-      );
-      _drawLabel(canvas, labelCenter, notation, fontSize);
-    }
-  }
-
   Offset _transformedNodeOffset(int logicalNode, Size size) {
     assert(
       transformMap.length == MillBoardGeometry.nodeCount,
@@ -946,58 +1197,10 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
     return MillBoardGeometry.nodeOffset(transformMap[logicalNode], size);
   }
 
-  Offset _labelCenterFor({
-    required Offset nodeCenter,
-    required Offset boardCenter,
-    required double side,
-  }) {
-    final Offset vector = nodeCenter - boardCenter;
-    final double distance = vector.distance;
-    assert(distance > 0, 'Mill coordinate label cannot be at board center.');
-    final Offset direction = vector / distance;
-    return nodeCenter + direction * (side * 0.044);
-  }
-
-  void _drawLabel(
-    Canvas canvas,
-    Offset center,
-    String notation,
-    double fontSize,
-  ) {
-    final TextPainter painter = TextPainter(
-      text: TextSpan(
-        text: notation,
-        style: AppStyles.tileSubtitle.copyWith(
-          fontSize: fontSize,
-          fontWeight: FontWeight.w700,
-          color: colorScheme.onSurface,
-        ),
-      ),
-      textDirection: TextDirection.ltr,
-    )..layout();
-
-    final Rect textRect = Rect.fromCenter(
-      center: center,
-      width: painter.width + 8,
-      height: painter.height + 3,
-    );
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(textRect, const Radius.circular(4)),
-      Paint()..color = colorScheme.surface.withValues(alpha: 0.84),
-    );
-    painter.paint(
-      canvas,
-      Offset(center.dx - painter.width / 2, center.dy - painter.height / 2),
-    );
-  }
-
   @override
   bool shouldRepaint(covariant _MillCoordinateTrainingPainter oldDelegate) {
     return oldDelegate.colorScheme != colorScheme ||
-        oldDelegate.colorSettings != colorSettings ||
         oldDelegate.hasDiagonalLines != hasDiagonalLines ||
-        oldDelegate.showCoordinates != showCoordinates ||
-        oldDelegate.showPieces != showPieces ||
         !listEquals(oldDelegate.transformMap, transformMap) ||
         oldDelegate.lastGuessNode != lastGuessNode ||
         oldDelegate.lastGuessCorrect != lastGuessCorrect;
