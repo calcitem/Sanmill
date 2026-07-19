@@ -3008,12 +3008,6 @@ class _MenuEntries extends StatelessWidget {
           title: strings.help,
           headerKey: const Key('drawer_item_help_group'),
           children: <Widget>[
-            _MoreTile(
-              key: const Key('drawer_item_how_to_play'),
-              icon: Icons.school_rounded,
-              title: strings.howToPlay,
-              onTap: () => onAppRouteSelected(ShellRouteIds.appHowToPlay.value),
-            ),
             if (!kIsWeb && Platform.isAndroid)
               _MoreTile(
                 key: const Key('drawer_item_feedback'),
