@@ -6669,5 +6669,9 @@
     "soundEventIllegal": "Illegal move",
     "@soundEventIllegal": {
         "description": "Sound preview event for attempting an illegal move"
+    },
+    "turnOffHint": "Turn off hint",
+    "@turnOffHint": {
+        "description": "Tooltip and accessibility action for disabling continuous in-game hint analysis"
     }
 }

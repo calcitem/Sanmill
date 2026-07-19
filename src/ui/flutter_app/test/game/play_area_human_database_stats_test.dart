@@ -8285,6 +8285,34 @@ void main() {
       tester.widget<LichessBottomBarButton>(hintButton).highlighted,
       isTrue,
     );
+    expect(
+      find.descendant(
+        of: hintButton,
+        matching: find.byIcon(CupertinoIcons.lightbulb_fill),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: hintButton,
+        matching: find.byIcon(CupertinoIcons.lightbulb),
+      ),
+      findsNothing,
+    );
+    expect(
+      tester.widget<LichessBottomBarButton>(hintButton).label,
+      'Turn off hint',
+    );
+    final Finder hintSemantics = find.descendant(
+      of: hintButton,
+      matching: find.byType(Semantics),
+    );
+    expect(
+      tester
+          .widgetList<Semantics>(hintSemantics)
+          .any((Semantics widget) => widget.properties.toggled ?? false),
+      isTrue,
+    );
     expect(tester.widget<LichessBottomBarButton>(hintButton).onTap, isNotNull);
 
     await tester.tap(hintButton);
@@ -8296,6 +8324,17 @@ void main() {
     expect(
       tester.widget<LichessBottomBarButton>(hintButton).highlighted,
       isFalse,
+    );
+    expect(
+      find.descendant(
+        of: hintButton,
+        matching: find.byIcon(CupertinoIcons.lightbulb),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      tester.widget<LichessBottomBarButton>(hintButton).label,
+      'Get a hint',
     );
 
     session.completePendingSearch();

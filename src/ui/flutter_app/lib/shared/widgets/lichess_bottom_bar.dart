@@ -101,8 +101,11 @@ class LichessBottomBarButton extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.onTap,
+    this.highlightedIcon,
     this.badgeLabel,
     this.highlighted = false,
+    this.highlightedContainer = false,
+    this.isToggleButton = false,
     this.showLabel = false,
     this.showTooltip = true,
     this.blink = false,
@@ -111,10 +114,13 @@ class LichessBottomBarButton extends StatelessWidget {
   });
 
   final IconData icon;
+  final IconData? highlightedIcon;
   final String label;
   final String? badgeLabel;
   final VoidCallback? onTap;
   final bool highlighted;
+  final bool highlightedContainer;
+  final bool isToggleButton;
   final bool showLabel;
   final bool showTooltip;
   final bool blink;
@@ -147,6 +153,36 @@ class LichessBottomBarButton extends StatelessWidget {
           ]
         : null;
 
+    final bool showSelectedContainer = highlighted && highlightedContainer;
+    final Widget iconWidget = SizedBox.square(
+      dimension: highlightedContainer ? 32 : null,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: showSelectedContainer
+              ? baseForeground.withValues(alpha: 0.2)
+              : Colors.transparent,
+          shape: BoxShape.circle,
+          border: showSelectedContainer
+              ? Border.all(
+                  color: baseForeground.withValues(alpha: 0.7),
+                  width: 1.5,
+                )
+              : null,
+        ),
+        child: Center(
+          child: Icon(
+            highlighted ? highlightedIcon ?? icon : icon,
+            color: showSelectedContainer
+                ? baseForeground
+                : highlighted
+                ? primary
+                : null,
+            shadows: shadows,
+          ),
+        ),
+      ),
+    );
+
     final Widget child = Opacity(
       opacity: enabled ? 1 : 0.4,
       child: Column(
@@ -160,11 +196,7 @@ class LichessBottomBarButton extends StatelessWidget {
             ),
             isLabelVisible: badgeLabel != null,
             label: badgeLabel != null ? Text(badgeLabel!) : null,
-            child: Icon(
-              icon,
-              color: highlighted ? primary : null,
-              shadows: shadows,
-            ),
+            child: iconWidget,
           ),
           if (showLabel)
             Padding(
@@ -188,6 +220,7 @@ class LichessBottomBarButton extends StatelessWidget {
       container: true,
       enabled: enabled,
       button: true,
+      toggled: isToggleButton ? highlighted : null,
       label: label,
       excludeSemantics: true,
       child: Tooltip(

@@ -9883,9 +9883,14 @@ class _LichessGameBottomBar extends StatelessWidget {
         LichessBottomBarButton(
           key: const Key('play_area_bottom_bar_hint'),
           icon: CupertinoIcons.lightbulb,
-          label: S.of(context).getAHint,
+          highlightedIcon: CupertinoIcons.lightbulb_fill,
+          label: isHintHighlighted
+              ? S.of(context).turnOffHint
+              : S.of(context).getAHint,
           onTap: onHintPressed,
           highlighted: isHintHighlighted,
+          highlightedContainer: true,
+          isToggleButton: true,
           withShadow: true,
         ),
       ],
