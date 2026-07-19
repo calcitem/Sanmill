@@ -102,24 +102,56 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byTooltip('Preview sound'), findsNWidgets(3));
+    expect(
+      find.byKey(const Key('sound_theme_modal_preview_event')),
+      findsOneWidget,
+    );
     expect(find.byKey(const Key('sound_theme_modal_preview_ball')), findsOne);
     expect(find.byKey(const Key('sound_theme_modal_preview_liquid')), findsOne);
     expect(find.byKey(const Key('sound_theme_modal_preview_wood')), findsOne);
+
+    await tester.tap(find.byKey(const Key('sound_theme_modal_preview_event')));
+    await tester.pumpAndSettle();
+    for (final String event in <String>[
+      'place',
+      'select',
+      'mill',
+      'remove',
+      'illegal',
+    ]) {
+      expect(
+        find.byKey(Key('sound_theme_modal_preview_event_$event')),
+        findsWidgets,
+      );
+    }
+    final Finder millEvent = find.ancestor(
+      of: find.byKey(const Key('sound_theme_modal_preview_event_mill')),
+      matching: find.byType(InkWell),
+    );
+    expect(millEvent, findsWidgets);
+    await tester.tap(millEvent.last);
+    await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(const Key('sound_theme_modal_preview_liquid')));
     await tester.pump();
 
     expect(previewTrackingAudios.previewedTheme, SoundTheme.liquid);
+    expect(previewTrackingAudios.previewedSound, Sound.mill);
     expect(DB().generalSettings.soundTheme, SoundTheme.ball);
   });
 }
 
 class _PreviewTrackingAudios extends MockAudios {
   SoundTheme? previewedTheme;
+  Sound? previewedSound;
 
   @override
-  Future<void> playSoundThemePreview(SoundTheme theme) async {
+  Future<void> playSoundThemePreview(
+    SoundTheme theme, {
+    Sound sound = Sound.place,
+  }) async {
     previewedTheme = theme;
+    previewedSound = sound;
   }
 }
 

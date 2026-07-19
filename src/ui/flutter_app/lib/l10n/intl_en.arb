@@ -6649,5 +6649,25 @@
     "previewSound": "Preview sound",
     "@previewSound": {
         "description": "Tooltip for playing a sample from a sound theme without selecting it"
+    },
+    "soundEventMill": "Mill",
+    "@soundEventMill": {
+        "description": "Sound preview event for forming a mill"
+    },
+    "soundEventMove": "Move",
+    "@soundEventMove": {
+        "description": "Sound preview event for placing or moving a piece"
+    },
+    "soundEventSelect": "Select piece",
+    "@soundEventSelect": {
+        "description": "Sound preview event for selecting a piece to move"
+    },
+    "soundEventRemove": "Remove piece",
+    "@soundEventRemove": {
+        "description": "Sound preview event for removing an opponent piece"
+    },
+    "soundEventIllegal": "Illegal move",
+    "@soundEventIllegal": {
+        "description": "Sound preview event for attempting an illegal move"
     }
 }

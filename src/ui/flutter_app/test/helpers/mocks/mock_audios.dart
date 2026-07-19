@@ -24,7 +24,10 @@ class MockAudios extends Mock implements SoundManager {
   }) async {}
 
   @override
-  Future<void> playSoundThemePreview(SoundTheme theme) async {}
+  Future<void> playSoundThemePreview(
+    SoundTheme theme, {
+    Sound sound = Sound.place,
+  }) async {}
 
   @override
   Future<void> startBackgroundMusic() async {}
