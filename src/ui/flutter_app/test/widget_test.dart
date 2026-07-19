@@ -2049,6 +2049,17 @@ void main() {
         findsNothing,
       );
       expect(
+        find.byKey(const Key('appearance_settings_page_display_settings_card')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(
+          const Key('appearance_settings_page_advanced_display_card'),
+          skipOffstage: false,
+        ),
+        findsOneWidget,
+      );
+      expect(
         find.descendant(
           of: find.byKey(const Key('appearance_settings_page_appbar')),
           matching: find.byType(BackButton),

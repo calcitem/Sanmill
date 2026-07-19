@@ -865,29 +865,6 @@ class AppearanceSettingsPage extends StatelessWidget {
       key: const Key('appearance_settings_page_display_settings_column'),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
-          SettingsCard(
-            key: const Key('appearance_settings_page_display_settings_card'),
-            title: Text(
-              strings.general,
-              key: const Key('display_settings_card_title'),
-            ),
-            children: <Widget>[
-              SettingsListTile.switchTile(
-                key: const Key('display_settings_card_full_screen_switch_tile'),
-                value: displaySettings.isFullScreen,
-                onChanged: (bool val) {
-                  DB().displaySettings = displaySettings.copyWith(
-                    isFullScreen: val,
-                  );
-                  rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                    strings.reopenToTakeEffect,
-                  );
-                },
-                titleString: strings.fullScreen,
-              ),
-            ],
-          ),
         SettingsCard(
           key: const Key('appearance_settings_page_board_display_card'),
           title: Text(strings.board),
@@ -1019,6 +996,20 @@ class AppearanceSettingsPage extends StatelessWidget {
           key: const Key('appearance_settings_page_advanced_display_card'),
           title: Text(strings.advanced),
           children: <Widget>[
+            if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
+              SettingsListTile.switchTile(
+                key: const Key('display_settings_card_full_screen_switch_tile'),
+                value: displaySettings.isFullScreen,
+                onChanged: (bool val) {
+                  DB().displaySettings = displaySettings.copyWith(
+                    isFullScreen: val,
+                  );
+                  rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                    strings.reopenToTakeEffect,
+                  );
+                },
+                titleString: strings.fullScreen,
+              ),
             SettingsListTile.switchTile(
               key: const Key(
                 'display_settings_card_annotation_toolbar_shown_switch_tile',
