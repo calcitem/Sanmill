@@ -6633,5 +6633,9 @@
     "resumeAnalysis": "Resume analysis",
     "@resumeAnalysis": {
         "description": "Menu action that restores the most recently saved analysis session"
+    },
+    "noMatchingGames": "No matching games",
+    "@noMatchingGames": {
+        "description": "Empty state shown when Game history search has no matches"
     }
 }
