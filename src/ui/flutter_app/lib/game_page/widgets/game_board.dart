@@ -347,6 +347,78 @@ class _GameBoardState extends State<GameBoard>
     }
   }
 
+  Future<void> _handleSquareTap(int square, TapHandler tapHandler) async {
+    final String strNotYourTurn = S.of(context).notYourTurn;
+    final String strRemoteNotConnected = S.of(context).remoteNotConnected;
+    final String strTimeout = S.of(context).timeout;
+
+    logger.t("${GameBoard._logTag} Tap on square <$square>");
+
+    if (GameController().isRemoteGameMode) {
+      if (GameController().isRemoteOpponentTurn) {
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+          strNotYourTurn,
+        );
+        return;
+      }
+      if (!GameController().isRemoteConnected) {
+        GameController().headerTipNotifier.showTip(strRemoteNotConnected);
+        return;
+      }
+    }
+
+    if (AnalysisService.isBestMoveHintSearching || AnalysisMode.isHint) {
+      await AnalysisService.stopBestMoveHintAndWait();
+      if (!mounted) {
+        return;
+      }
+    }
+
+    await LiveEvaluationService.stopAndWait();
+    if (!mounted) {
+      return;
+    }
+
+    final EngineResponse response = await tapHandler.onBoardTap(square);
+
+    switch (response) {
+      case EngineResponseOK():
+        GameController().gameResultNotifier.showResult(force: true);
+        break;
+      case EngineResponseHumanOK():
+        GameController().gameResultNotifier.showResult();
+        break;
+      case EngineTimeOut():
+        GameController().headerTipNotifier.showTip(strTimeout);
+        if (GameController().gameInstance.gameMode != GameMode.aiVsAi &&
+            mounted) {
+          await PerformanceWarningDialog.showIfNeeded(context);
+        }
+        break;
+      case EngineNoBestMove():
+        if (mounted) {
+          final List<ExtMove> moves =
+              GameController().gameRecorder.mainlineMoves;
+          await EngineFailureDialog.show(
+            context,
+            diagnosticContext: GameController()
+                .buildEngineFailureDiagnosticContext(
+                  context,
+                  lastMove: moves.isNotEmpty ? moves.last.notation : null,
+                ),
+          );
+        }
+        break;
+      case EngineGameIsOver():
+        GameController().gameResultNotifier.showResult(force: true);
+        break;
+      default:
+        break;
+    }
+
+    GameController().isDisposed = false;
+  }
+
   // Loading images and creating PiecePainter
   Future<GameImages> loadGameImages() async {
     final DisplaySettings displaySettings = DB().displaySettings;
@@ -564,7 +636,10 @@ class _GameBoardState extends State<GameBoard>
                                             PieceColor.black)),
                           ),
                           child: DB().generalSettings.screenReaderSupport
-                              ? const _BoardSemantics()
+                              ? _BoardSemantics(
+                                  onSquareTap: (int square) =>
+                                      _handleSquareTap(square, tapHandler),
+                                )
                               : Semantics(
                                   key: const Key('semantics_screen_reader'),
                                   label: S
@@ -602,12 +677,6 @@ class _GameBoardState extends State<GameBoard>
                 key: const Key('gesture_detector_game_board'),
                 child: customPaint,
                 onTapUp: (TapUpDetails d) async {
-                  final String strNotYourTurn = S.of(context).notYourTurn;
-                  final String strRemoteNotConnected = S
-                      .of(context)
-                      .remoteNotConnected;
-                  final String strTimeout = S.of(context).timeout;
-
                   final int? square = squareFromPoint(
                     pointFromOffset(d.localPosition, dimension),
                   );
@@ -617,84 +686,7 @@ class _GameBoardState extends State<GameBoard>
                       "${GameBoard._logTag} Tap not on a square, ignored.",
                     );
                   }
-
-                  logger.t("${GameBoard._logTag} Tap on square <$square>");
-
-                  if (GameController().isRemoteGameMode) {
-                    if (GameController().isRemoteOpponentTurn) {
-                      rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                        strNotYourTurn,
-                      );
-                      return;
-                    }
-                    if (!GameController().isRemoteConnected) {
-                      GameController().headerTipNotifier.showTip(
-                        strRemoteNotConnected,
-                      );
-                      return;
-                    }
-                  }
-
-                  if (AnalysisService.isBestMoveHintSearching ||
-                      AnalysisMode.isHint) {
-                    await AnalysisService.stopBestMoveHintAndWait();
-                    if (!mounted) {
-                      return;
-                    }
-                  }
-
-                  await LiveEvaluationService.stopAndWait();
-                  if (!mounted) {
-                    return;
-                  }
-
-                  final EngineResponse response = await tapHandler.onBoardTap(
-                    square,
-                  );
-
-                  switch (response) {
-                    case EngineResponseOK():
-                      GameController().gameResultNotifier.showResult(
-                        force: true,
-                      );
-                      break;
-                    case EngineResponseHumanOK():
-                      GameController().gameResultNotifier.showResult();
-                      break;
-                    case EngineTimeOut():
-                      GameController().headerTipNotifier.showTip(strTimeout);
-                      if (GameController().gameInstance.gameMode !=
-                              GameMode.aiVsAi &&
-                          context.mounted) {
-                        await PerformanceWarningDialog.showIfNeeded(context);
-                      }
-                      break;
-                    case EngineNoBestMove():
-                      if (context.mounted) {
-                        final List<ExtMove> moves =
-                            GameController().gameRecorder.mainlineMoves;
-                        await EngineFailureDialog.show(
-                          context,
-                          diagnosticContext: GameController()
-                              .buildEngineFailureDiagnosticContext(
-                                context,
-                                lastMove: moves.isNotEmpty
-                                    ? moves.last.notation
-                                    : null,
-                              ),
-                        );
-                      }
-                      break;
-                    case EngineGameIsOver():
-                      GameController().gameResultNotifier.showResult(
-                        force: true,
-                      );
-                      break;
-                    default:
-                      break;
-                  }
-
-                  GameController().isDisposed = false;
+                  await _handleSquareTap(square, tapHandler);
                 },
               ),
             );

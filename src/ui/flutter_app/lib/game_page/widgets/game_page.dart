@@ -23,6 +23,7 @@ import '../../experience_recording/widgets/replay_controls.dart';
 import '../../game_page/services/mill.dart';
 import '../../game_platform/game_session.dart';
 import '../../game_shell/game_session_scope.dart';
+import '../../games/mill/mill_board_coordinate_maps.dart';
 import '../../games/mill/native_mill_game_session.dart';
 import '../../games/mill/native_mill_snapshot_board_view.dart';
 import '../../general_settings/models/general_settings.dart';

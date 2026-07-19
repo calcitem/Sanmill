@@ -269,9 +269,10 @@ void main() {
     );
   });
 
-  testWidgets('screen reader board uses a stable semantics grid', (
+  testWidgets('screen reader board exposes tappable Mill points', (
     WidgetTester tester,
   ) async {
+    final SemanticsHandle semantics = tester.ensureSemantics();
     db = _GamePageDb(
       generalSettings: const GeneralSettings(screenReaderSupport: true),
       displaySettings: const DisplaySettings(
@@ -307,16 +308,36 @@ void main() {
     });
     await tester.pump();
 
-    expect(find.byKey(const Key('board_semantics_grid')), findsOneWidget);
-    expect(find.byKey(const Key('board_grid_view')), findsNothing);
-    expect(find.byType(GridView), findsNothing);
+    expect(find.byKey(const Key('board_grid_view')), findsOneWidget);
     expect(_boardSquareSemanticsFinder(), findsNWidgets(49));
+
+    final Finder a7 = find.byKey(const Key('board_square_0'));
+    expect(
+      tester.getSemantics(a7),
+      matchesSemantics(
+        label: 'A7: Empty point',
+        isButton: true,
+        hasEnabledState: true,
+        isEnabled: true,
+        hasTapAction: true,
+      ),
+    );
+    final Semantics a7Widget = tester.widget<Semantics>(a7);
+    a7Widget.properties.onTap!();
+    await tester.pumpAndSettle();
+
+    expect(tester.getSemantics(a7).label, contains('White piece'));
+
+    final Finder a6 = find.byKey(const Key('board_square_1'));
+    expect(tester.getSemantics(a6).label, 'No point: A6');
+    expect(tester.widget<Semantics>(a6).properties.onTap, isNull);
 
     GameController().boardSemanticsNotifier.updateSemantics();
     await tester.pump();
 
-    expect(find.byKey(const Key('board_semantics_grid')), findsOneWidget);
+    expect(find.byKey(const Key('board_grid_view')), findsOneWidget);
     expect(_boardSquareSemanticsFinder(), findsNWidgets(49));
+    semantics.dispose();
   });
 
   testWidgets('resuming a game does not show the raw PGN in a snackbar', (
