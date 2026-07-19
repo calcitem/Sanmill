@@ -25,8 +25,6 @@ part 'modals/piece_count_modal.dart';
 part 'modals/rule_set_modal.dart';
 part 'modals/stalemate_action_modal.dart';
 
-bool visitedRuleSettingsPage = false;
-
 class RuleSettingsPage extends StatefulWidget {
   const RuleSettingsPage({super.key});
 
@@ -78,7 +76,6 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
   @override
   void initState() {
     super.initState();
-    visitedRuleSettingsPage = true;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) {
         return;

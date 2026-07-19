@@ -116,19 +116,6 @@ class _GameBoardState extends State<GameBoard>
 
     GameController().gameResultNotifier.addListener(_showResult);
 
-    if (visitedRuleSettingsPage == true) {
-      visitedRuleSettingsPage = false;
-      // Reset dialog flag when game is reset
-      _isDialogShowing = false;
-      // Defer reset to avoid triggering ValueNotifier updates during build,
-      // which would cause setState/markNeedsBuild during build errors.
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) {
-          GameController().reset();
-        }
-      });
-    }
-
     // Engine startup used to bootstrap the C++ UCI thread; the
     // Rust/FRB native session is created lazily by
     // `GameRegistry`, so no startup call is needed here.
