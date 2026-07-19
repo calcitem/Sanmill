@@ -322,8 +322,11 @@ class _GamePageInnerState extends State<_GamePageInner>
     debugPrint('Annotation mode is now: $_isAnnotationMode');
   }
 
-  void _toggleAnalysisAnnotationMode() {
-    assert(_isAnalysisPage, 'The AppBar annotation action is analysis-only.');
+  void _toggleAppBarAnnotationMode() {
+    assert(
+      _isAnalysisPage || _isOfflineBoardGame,
+      'The AppBar annotation action requires a game AppBar.',
+    );
     RecordingService().recordEvent(
       RecordingEventType.annotationAction,
       <String, dynamic>{'action': _isAnnotationMode ? 'exit' : 'enter'},
@@ -500,8 +503,11 @@ class _GamePageInnerState extends State<_GamePageInner>
     // annotation mode the expanded palette becomes a dedicated editing panel.
     final bool annotationToolbarEnabled =
         DB().displaySettings.isAnnotationToolbarShown;
+    final bool hasAnnotationAppBarAction =
+        _isAnalysisPage || _isOfflineBoardGame;
     final Widget toolbar =
-        annotationToolbarEnabled && (!_isAnalysisPage || _isAnnotationMode)
+        annotationToolbarEnabled &&
+            (!hasAnnotationAppBarAction || _isAnnotationMode)
         ? AnnotationToolbarLayer(
             annotationManager: _annotationManager,
             isAnnotationMode: _isAnnotationMode,
@@ -675,15 +681,9 @@ class _GamePageInnerState extends State<_GamePageInner>
           child: RecordingIndicator(),
         ),
         if (DB().displaySettings.isAnnotationToolbarShown)
-          IconButton(
+          _buildAnnotationAppBarButton(
+            strings,
             key: const Key('game_page_analysis_annotation_button'),
-            tooltip: _isAnnotationMode
-                ? strings.exitAnnotationMode
-                : strings.enterAnnotationMode,
-            isSelected: _isAnnotationMode,
-            selectedIcon: const Icon(FluentIcons.draw_image_24_filled),
-            icon: const Icon(FluentIcons.draw_image_24_regular),
-            onPressed: _toggleAnalysisAnnotationMode,
           ),
         ValueListenableBuilder<bool>(
           valueListenable: AnalysisMode.stateNotifier,
@@ -790,6 +790,11 @@ class _GamePageInnerState extends State<_GamePageInner>
         key: const Key('game_page_offline_board_appbar_title'),
       ),
       actions: <Widget>[
+        if (DB().displaySettings.isAnnotationToolbarShown)
+          _buildAnnotationAppBarButton(
+            strings,
+            key: const Key('game_page_offline_board_annotation_button'),
+          ),
         IconButton(
           key: const Key('game_page_offline_board_settings_button'),
           icon: const Icon(Icons.settings),
@@ -797,6 +802,19 @@ class _GamePageInnerState extends State<_GamePageInner>
           onPressed: () => unawaited(showOfflineBoardDisplaySettings(context)),
         ),
       ],
+    );
+  }
+
+  Widget _buildAnnotationAppBarButton(S strings, {required Key key}) {
+    return IconButton(
+      key: key,
+      tooltip: _isAnnotationMode
+          ? strings.exitAnnotationMode
+          : strings.enterAnnotationMode,
+      isSelected: _isAnnotationMode,
+      selectedIcon: const Icon(FluentIcons.draw_image_24_filled),
+      icon: const Icon(FluentIcons.draw_image_24_regular),
+      onPressed: _toggleAppBarAnnotationMode,
     );
   }
 

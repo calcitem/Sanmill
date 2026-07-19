@@ -312,6 +312,9 @@ void main() {
   testWidgets('game page uses a left title and mandatory initial setup', (
     WidgetTester tester,
   ) async {
+    db.displaySettings = db.displaySettings.copyWith(
+      isAnnotationToolbarShown: true,
+    );
     await tester.binding.setSurfaceSize(const Size(390, 844));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(
@@ -329,6 +332,14 @@ void main() {
       find.byKey(const Key('game_page_offline_board_settings_button')),
       findsOneWidget,
     );
+    expect(
+      find.byKey(const Key('game_page_offline_board_annotation_button')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('annotation_toolbar_collapsed_position')),
+      findsNothing,
+    );
     expect(find.byKey(const Key('offline_board_new_game_sheet')), findsOne);
     expect(
       find.byWidgetPredicate(
@@ -343,6 +354,14 @@ void main() {
 
     expect(find.byKey(const Key('offline_board_new_game_sheet')), findsNothing);
     expect(OfflineBoardClock().state.isEnabled, isFalse);
+    expect(
+      tester
+          .widget<IconButton>(
+            find.byKey(const Key('game_page_offline_board_annotation_button')),
+          )
+          .isSelected,
+      isFalse,
+    );
 
     await tester.tap(
       find.byKey(const Key('game_page_offline_board_settings_button')),
