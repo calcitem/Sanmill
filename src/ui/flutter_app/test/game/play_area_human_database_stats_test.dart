@@ -2448,13 +2448,13 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        final Text rank = tester.widget<Text>(
-          find.byKey(const Key('play_area_analysis_engine_line_rank_1')),
+        final Text depth = tester.widget<Text>(
+          find.byKey(const Key('play_area_analysis_engine_line_depth')),
         );
         final Text title = tester.widget<Text>(
           find.byKey(const Key('play_area_analysis_moves_header_title')),
         );
-        expect(rank.style?.color, Colors.white);
+        expect(depth.style?.color, Colors.white);
         expect(title.style?.color, theme.colorScheme.onSurface);
       }
     },
@@ -2812,7 +2812,7 @@ void main() {
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_summary_best_move')),
-        matching: find.text('Best Move'),
+        matching: find.text('Best move'),
       ),
       findsOne,
     );
@@ -2856,7 +2856,7 @@ void main() {
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_summary_best_move')),
-        matching: find.text('Best Move'),
+        matching: find.text('Best move'),
       ),
       findsNothing,
     );
@@ -2936,11 +2936,11 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_toggle_engine_lines')),
-      findsOne,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_analysis_settings')),
-      findsOne,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_show_threat')),
@@ -2972,55 +2972,6 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
     await tester.pump();
-
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
-    );
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 300));
-    await tester.pump();
-
-    await tester.tap(
-      find.byKey(const Key('play_area_regular_game_menu_analysis_settings')),
-    );
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 300));
-    await tester.pump();
-
-    expect(
-      find.byKey(const Key('play_area_analysis_settings_sheet')),
-      findsOne,
-    );
-
-    Navigator.of(
-      tester.element(
-        find.byKey(const Key('play_area_analysis_settings_sheet')),
-      ),
-    ).pop();
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 300));
-    await tester.pump();
-
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
-    );
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 300));
-    await tester.pump();
-
-    await tester.tap(
-      find.byKey(const Key('play_area_regular_game_menu_toggle_engine_lines')),
-    );
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 300));
-    await tester.pump();
-
-    expect(AnalysisMode.showEngineLines, isFalse);
-    expect(
-      find.byKey(const Key('play_area_analysis_engine_lines_hidden')),
-      findsOneWidget,
-    );
-    expect(db.displaySettings.analysisShowEngineLines, isFalse);
 
     await tester.tap(
       find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
@@ -3709,16 +3660,12 @@ void main() {
       find.descendant(of: bestMove, matching: find.textContaining('d6 f4')),
       findsOneWidget,
     );
-    expect(
-      find.byTooltip('Apply this result to board · + 1. d6 f4'),
-      findsOneWidget,
-    );
+    expect(find.byTooltip('Apply to board · + 1. d6 f4'), findsOneWidget);
     expect(
       find.byWidgetPredicate(
         (Widget widget) =>
             widget is Semantics &&
-            widget.properties.label ==
-                'Apply this result to board · + 1. d6 f4',
+            widget.properties.label == 'Apply to board · + 1. d6 f4',
       ),
       findsOneWidget,
     );
@@ -3866,15 +3813,12 @@ void main() {
       find.descendant(of: candidate, matching: find.text('W')),
       findsOneWidget,
     );
-    expect(
-      find.byTooltip('Apply this result to board · W 1. d6'),
-      findsOneWidget,
-    );
+    expect(find.byTooltip('Apply to board · W 1. d6'), findsOneWidget);
     expect(
       find.byWidgetPredicate(
         (Widget widget) =>
             widget is Semantics &&
-            widget.properties.label == 'Apply this result to board · W 1. d6',
+            widget.properties.label == 'Apply to board · W 1. d6',
       ),
       findsOneWidget,
     );
@@ -4477,13 +4421,14 @@ void main() {
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_summary_variations')),
-        matching: find.textContaining('2 · Branch moves: f4, g7'),
+        matching: find.textContaining('2 · Moves in this variation: f4, g7'),
       ),
       findsOneWidget,
     );
     expect(
       find.byTooltip(
-        'Variations · Switch to Full Tree View · 2 · Branch moves: f4, g7',
+        'Variations · Switch to full tree view · '
+        '2 · Moves in this variation: f4, g7',
       ),
       findsOneWidget,
     );
@@ -4492,7 +4437,8 @@ void main() {
         (Widget widget) =>
             widget is Semantics &&
             widget.properties.label ==
-                'Variations · Switch to Full Tree View · 2 · Branch moves: f4, g7',
+                'Variations · Switch to full tree view · '
+                    '2 · Moves in this variation: f4, g7',
       ),
       findsOneWidget,
     );
@@ -4509,7 +4455,7 @@ void main() {
     await tester.pump();
 
     expect(find.byKey(const Key('moves_list_page_scaffold')), findsOneWidget);
-    expect(find.byTooltip('Switch to Active Line View'), findsOneWidget);
+    expect(find.byTooltip('Switch to active line view'), findsOneWidget);
     expect(find.text('1. f4'), findsOneWidget);
     expect(db.displaySettings.showBranchTree, isFalse);
   });
