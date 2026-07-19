@@ -8,6 +8,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
@@ -7921,6 +7922,46 @@ void main() {
     expect(find.text('a7 xd1 xf4'), findsNothing);
     expect(find.byKey(const Key('play_area_human_ai_move_8')), findsOneWidget);
     expect(find.text('g7'), findsOneWidget);
+  });
+
+  testWidgets('move announcement waits for the complete capture turn', (
+    WidgetTester tester,
+  ) async {
+    final SemanticsHandle semantics = tester.ensureSemantics();
+    db.generalSettings = const GeneralSettings();
+    db.displaySettings = const DisplaySettings();
+    final NativeMillGameSession session = await _bindNativeHumanAiGame();
+    final GameController controller = GameController();
+
+    final List<ExtMove> formingMoves = <ExtMove>[
+      ExtMove('a1', side: PieceColor.white),
+      ExtMove('d1', side: PieceColor.black),
+      ExtMove('a4', side: PieceColor.white),
+      ExtMove('d2', side: PieceColor.black),
+      ExtMove('a7', side: PieceColor.white),
+    ];
+    for (final ExtMove move in formingMoves) {
+      await session.apply(MillActionCodec.fromExtMove(move));
+      controller.gameRecorder.appendMove(move);
+    }
+    expect(controller.activeBoardView.action, Act.remove);
+
+    await _pumpSessionPlayArea(tester, session);
+    SemanticsNode announcement = tester.getSemantics(
+      find.byKey(const Key('play_area_completed_move_announcement')),
+    );
+    expect(announcement.label, 'Player 2. Last move: D2');
+
+    final ExtMove capture = ExtMove('xd1', side: PieceColor.white);
+    await session.apply(MillActionCodec.fromExtMove(capture));
+    controller.gameRecorder.appendMove(capture);
+    await tester.pump();
+
+    announcement = tester.getSemantics(
+      find.byKey(const Key('play_area_completed_move_announcement')),
+    );
+    expect(announcement.label, 'Player 1. Last move: A7XD1');
+    semantics.dispose();
   });
 
   testWidgets('human vs ai robot panel follows engine activity', (

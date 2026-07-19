@@ -3245,6 +3245,7 @@ class PlayAreaState extends State<PlayArea> {
         moveKeyPrefix: 'play_area_human_ai_move_',
         layout: _InlineMoveListLayout.stacked,
         groupByRound: true,
+        announceCompletedMove: true,
         fixedHeight: _kWrappedMoveListMaxHeight,
       ),
     );
@@ -3263,6 +3264,7 @@ class PlayAreaState extends State<PlayArea> {
       showMovePreview: true,
       layout: _InlineMoveListLayout.stacked,
       groupByRound: true,
+      announceCompletedMove: true,
       fixedHeight: _kWrappedMoveListMaxHeight,
     );
     return _isOfflineBoardMode
@@ -4356,6 +4358,7 @@ class PlayAreaState extends State<PlayArea> {
                                     'play_area_human_ai_landscape_move_',
                                 layout: _InlineMoveListLayout.stacked,
                                 groupByRound: true,
+                                announceCompletedMove: true,
                               ),
                             ),
                             const SizedBox(height: verticalPadding),
@@ -4516,6 +4519,7 @@ class PlayAreaState extends State<PlayArea> {
                               showMovePreview: true,
                               layout: _InlineMoveListLayout.stacked,
                               groupByRound: true,
+                              announceCompletedMove: true,
                             ),
                           ),
                           if (_shouldShowAdvantageGraph(isGameSurface: true))
@@ -4673,6 +4677,7 @@ class PlayAreaState extends State<PlayArea> {
                               showMovePreview: true,
                               layout: _InlineMoveListLayout.stacked,
                               groupByRound: true,
+                              announceCompletedMove: true,
                             ),
                           ),
                           SizedBox(
@@ -4916,6 +4921,7 @@ class _InlineMoveList extends StatefulWidget {
     this.usesGameSurfaceColors = true,
     this.layout = _InlineMoveListLayout.wrap,
     this.groupByRound = false,
+    this.announceCompletedMove = false,
     this.maxHeight,
     this.fixedHeight,
   }) : assert(
@@ -4945,6 +4951,7 @@ class _InlineMoveList extends StatefulWidget {
   final bool usesGameSurfaceColors;
   final _InlineMoveListLayout layout;
   final bool groupByRound;
+  final bool announceCompletedMove;
   final double? maxHeight;
   final double? fixedHeight;
 
@@ -5077,20 +5084,71 @@ class _InlineMoveListState extends State<_InlineMoveList> {
         _scheduleCurrentMoveAutoScroll(activeNode);
 
         final bool hasRootComments = _hasRootComments();
+        final String completedMoveAnnouncement = _completedMoveAnnouncement(
+          context,
+          _currentPathNodes(),
+        );
 
-        return Container(
-          key: widget.wrapKey,
-          width: double.infinity,
-          constraints: _containerConstraints(),
-          padding: widget.layout == _InlineMoveListLayout.horizontal
-              ? const EdgeInsets.only(left: 5)
-              : const EdgeInsets.fromLTRB(12, 6, 12, 4),
-          child: nodes.isEmpty && !hasRootComments
-              ? const SizedBox(height: 30)
-              : _buildMoves(context: context, nodes: nodes),
+        return Semantics(
+          key: widget.announceCompletedMove
+              ? const Key('play_area_completed_move_announcement')
+              : null,
+          container: true,
+          explicitChildNodes: true,
+          liveRegion: completedMoveAnnouncement.isNotEmpty,
+          label: completedMoveAnnouncement,
+          child: Container(
+            key: widget.wrapKey,
+            width: double.infinity,
+            constraints: _containerConstraints(),
+            padding: widget.layout == _InlineMoveListLayout.horizontal
+                ? const EdgeInsets.only(left: 5)
+                : const EdgeInsets.fromLTRB(12, 6, 12, 4),
+            child: nodes.isEmpty && !hasRootComments
+                ? const SizedBox(height: 30)
+                : _buildMoves(context: context, nodes: nodes),
+          ),
         );
       },
     );
+  }
+
+  String _completedMoveAnnouncement(
+    BuildContext context,
+    List<PgnNode<ExtMove>> nodes,
+  ) {
+    if (!widget.announceCompletedMove || nodes.isEmpty) {
+      return '';
+    }
+
+    int end = nodes.length;
+    if (GameController().activeBoardView.action == Act.remove) {
+      final PieceColor pendingSide = nodes.last.data!.side;
+      while (end > 0 && nodes[end - 1].data!.side == pendingSide) {
+        end--;
+      }
+    }
+    if (end == 0) {
+      return '';
+    }
+
+    final PieceColor side = nodes[end - 1].data!.side;
+    int start = end - 1;
+    while (start > 0 && nodes[start - 1].data!.side == side) {
+      start--;
+    }
+
+    final StringBuffer notation = StringBuffer();
+    for (int i = start; i < end; i++) {
+      final String part = _moveLabel(nodes[i].data!, includeComments: false);
+      if (notation.isNotEmpty && !part.startsWith('x')) {
+        notation.write(' ');
+      }
+      notation.write(part);
+    }
+
+    return '${side.playerName(context)}. '
+        '${S.of(context).lastMove(notation.toString().toUpperCase())}';
   }
 
   BoxConstraints _containerConstraints() {
