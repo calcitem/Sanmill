@@ -83,9 +83,10 @@ class GameResultAlertDialog extends StatelessWidget {
         !isTopLevel &&
         gameMode == GameMode.humanVsAi;
 
-    final List<Widget> actions;
-    final Widget reviewButton = TextButton.icon(
+    final List<Widget> secondaryActions;
+    final Widget reviewButton = FilledButton.icon(
       key: const Key('game_result_alert_dialog_review_button'),
+      style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48)),
       icon: const Icon(Icons.analytics_outlined),
       label: Text(S.of(context).reviewGame),
       onPressed: () async {
@@ -107,8 +108,7 @@ class GameResultAlertDialog extends StatelessWidget {
         S.of(context).challengeHarderLevel(DB().generalSettings.skillLevel + 1),
       );
 
-      actions = <Widget>[
-        reviewButton,
+      secondaryActions = <Widget>[
         TextButton(
           key: const Key('game_result_alert_dialog_yes_button'),
           child: Text(
@@ -175,8 +175,7 @@ class GameResultAlertDialog extends StatelessWidget {
         ),
       ];
     } else {
-      actions = <Widget>[
-        reviewButton,
+      secondaryActions = <Widget>[
         TextButton(
           key: const Key('game_result_alert_dialog_restart_button'),
           child: Text(
@@ -250,7 +249,39 @@ class GameResultAlertDialog extends StatelessWidget {
             ),
         ],
       ),
-      actions: actions,
+      actions: <Widget>[
+        _buildPrioritizedActions(
+          key: const Key('game_result_alert_dialog_actions'),
+          reviewButton: reviewButton,
+          secondaryActions: secondaryActions,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPrioritizedActions({
+    required Key key,
+    required Widget reviewButton,
+    required List<Widget> secondaryActions,
+  }) {
+    return SizedBox(
+      key: key,
+      width: double.infinity,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          reviewButton,
+          const SizedBox(height: 8),
+          OverflowBar(
+            alignment: MainAxisAlignment.end,
+            overflowAlignment: OverflowBarAlignment.end,
+            spacing: 8,
+            overflowSpacing: 4,
+            children: secondaryActions,
+          ),
+        ],
+      ),
     );
   }
 
@@ -296,49 +327,57 @@ class GameResultAlertDialog extends StatelessWidget {
         ),
       ),
       actions: <Widget>[
-        TextButton.icon(
-          key: const Key('ai_vs_ai_game_result_dialog_review_button'),
-          icon: const Icon(Icons.analytics_outlined),
-          label: Text(S.of(context).reviewGame),
-          onPressed: () async {
-            final NavigatorState navigator = Navigator.of(context);
-            final PrivateGameRecord record =
-                ReviewRecordFactory.fromCurrentGame();
-            await ReviewStorage.instance.saveGame(record);
-            navigator.pop();
-            await navigator.push<void>(
-              MaterialPageRoute<void>(
-                builder: (BuildContext context) => ReviewPage(record: record),
+        _buildPrioritizedActions(
+          key: const Key('ai_vs_ai_game_result_dialog_actions'),
+          reviewButton: FilledButton.icon(
+            key: const Key('ai_vs_ai_game_result_dialog_review_button'),
+            style: FilledButton.styleFrom(
+              minimumSize: const Size.fromHeight(48),
+            ),
+            icon: const Icon(Icons.analytics_outlined),
+            label: Text(S.of(context).reviewGame),
+            onPressed: () async {
+              final NavigatorState navigator = Navigator.of(context);
+              final PrivateGameRecord record =
+                  ReviewRecordFactory.fromCurrentGame();
+              await ReviewStorage.instance.saveGame(record);
+              navigator.pop();
+              await navigator.push<void>(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => ReviewPage(record: record),
+                ),
+              );
+            },
+          ),
+          secondaryActions: <Widget>[
+            TextButton(
+              key: const Key('ai_vs_ai_game_result_dialog_restart_button'),
+              child: Text(
+                S.of(context).newGame,
+                style: TextStyle(
+                  fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                ),
               ),
-            );
-          },
-        ),
-        TextButton(
-          key: const Key('ai_vs_ai_game_result_dialog_restart_button'),
-          child: Text(
-            S.of(context).newGame,
-            style: TextStyle(
-              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+              onPressed: () {
+                GameController().reset(force: true);
+                GameController().headerTipNotifier.showTip(
+                  S.of(context).gameStarted,
+                );
+                GameController().headerIconsNotifier.showIcons();
+                Navigator.pop(context);
+              },
             ),
-          ),
-          onPressed: () {
-            GameController().reset(force: true);
-            GameController().headerTipNotifier.showTip(
-              S.of(context).gameStarted,
-            );
-            GameController().headerIconsNotifier.showIcons();
-            Navigator.pop(context);
-          },
-        ),
-        TextButton(
-          key: const Key('ai_vs_ai_game_result_dialog_close_button'),
-          child: Text(
-            S.of(context).close,
-            style: TextStyle(
-              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            TextButton(
+              key: const Key('ai_vs_ai_game_result_dialog_close_button'),
+              child: Text(
+                S.of(context).close,
+                style: TextStyle(
+                  fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                ),
+              ),
+              onPressed: () => Navigator.pop(context),
             ),
-          ),
-          onPressed: () => Navigator.pop(context),
+          ],
         ),
       ],
     );

@@ -42,6 +42,16 @@ void main() {
       find.byKey(const Key('ai_vs_ai_game_result_dialog_review_button')),
       findsOneWidget,
     );
+    expect(
+      tester.widget(
+        find.byKey(const Key('ai_vs_ai_game_result_dialog_review_button')),
+      ),
+      isA<FilledButton>(),
+    );
+    expect(
+      find.byKey(const Key('ai_vs_ai_game_result_dialog_actions')),
+      findsOneWidget,
+    );
     expect(find.text('Player 1 wins!'), findsOneWidget);
     expect(find.textContaining('Game duration:'), findsOneWidget);
     expect(find.text('Review game'), findsOneWidget);
@@ -49,6 +59,14 @@ void main() {
     expect(find.text('Restart'), findsNothing);
     expect(find.text('Close'), findsOneWidget);
     expect(find.text('Cancel'), findsNothing);
+    final Rect reviewRect = tester.getRect(
+      find.byKey(const Key('ai_vs_ai_game_result_dialog_review_button')),
+    );
+    final Rect newGameRect = tester.getRect(
+      find.byKey(const Key('ai_vs_ai_game_result_dialog_restart_button')),
+    );
+    expect(reviewRect.width, greaterThan(newGameRect.width));
+    expect(reviewRect.bottom, lessThan(newGameRect.top));
   });
 
   testWidgets(
