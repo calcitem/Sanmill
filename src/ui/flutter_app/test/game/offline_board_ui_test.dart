@@ -407,7 +407,7 @@ void main() {
             find.byKey(const Key('play_area_offline_board_bottom_take_back')),
           )
           .label,
-      'Takeback',
+      'Take back',
     );
   });
 
