@@ -60,7 +60,7 @@ void main() {
       expect(humanVsHuman.contentKey, const Key('human_human'));
       expect(humanVsHuman.section, GameMenuSection.play);
       expect(humanVsHuman.icon, isNotNull);
-      expect(humanVsHuman.prepareLaunch, isNull);
+      expect(humanVsHuman.prepareLaunch, isNotNull);
       expect(setupPosition.menuKey, const Key('drawer_item_setup_position'));
       expect(setupPosition.contentKey, const Key('setup_position'));
       expect(setupPosition.section, GameMenuSection.tools);
