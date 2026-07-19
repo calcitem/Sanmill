@@ -2283,12 +2283,13 @@ void main() {
           widget is Semantics && widget.properties.label == label,
     );
 
-    expect(semanticsWithLabel('Previous'), findsOneWidget);
+    expect(semanticsWithLabel('Back'), findsOneWidget);
     expect(semanticsWithLabel('Skip'), findsOneWidget);
     expect(semanticsWithLabel('Next'), findsOneWidget);
     expect(find.text('Mill\nHow to play'), findsOneWidget);
 
     await nextStep();
+    expect(semanticsWithLabel('Previous'), findsOneWidget);
     expect(
       find.text('Placing phase\nTap an empty point to place a piece.'),
       findsOneWidget,
@@ -2334,6 +2335,68 @@ void main() {
       findsOneWidget,
     );
     expect(semanticsWithLabel('Got it'), findsOneWidget);
+  });
+
+  testWidgets('Tutorial back exits first step and rewinds later steps', (
+    WidgetTester tester,
+  ) async {
+    tester.view
+      ..physicalSize = const Size(390, 844)
+      ..devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final GeneralSettings previousGeneralSettings = DB().generalSettings;
+    addTearDown(() => DB().generalSettings = previousGeneralSettings);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightThemeData,
+        localizationsDelegates: sanmillLocalizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        locale: const Locale('en'),
+        home: Builder(
+          builder: (BuildContext context) => Scaffold(
+            body: TextButton(
+              key: const Key('open_tutorial'),
+              onPressed: () => Navigator.of(context).push<void>(
+                MaterialPageRoute<void>(
+                  fullscreenDialog: true,
+                  builder: (_) => const TutorialDialog(),
+                ),
+              ),
+              child: const Text('Open tutorial'),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Future<void> openTutorial() async {
+      await tester.tap(find.byKey(const Key('open_tutorial')));
+      await tester.pumpAndSettle();
+      expect(find.text('Mill\nHow to play'), findsOneWidget);
+    }
+
+    await openTutorial();
+    await tester.tap(find.byKey(const Key('portrait_previous_button')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('open_tutorial')), findsOneWidget);
+
+    await openTutorial();
+    await tester.tap(find.byKey(const Key('portrait_next_button')));
+    await tester.pumpAndSettle();
+    expect(
+      find.text('Placing phase\nTap an empty point to place a piece.'),
+      findsOneWidget,
+    );
+
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.text('Mill\nHow to play'), findsOneWidget);
+
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('open_tutorial')), findsOneWidget);
   });
 
   testWidgets('Variants page opens detail before applying a rule set', (

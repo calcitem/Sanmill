@@ -69,7 +69,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
         if (didPop) {
           return;
         }
-        prevStep();
+        _handleBackNavigation();
         return;
       },
       child: OrientationBuilder(
@@ -189,6 +189,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
     required Key nextButtonKey,
   }) {
     final S strings = S.of(context);
+    final String previousLabel = isStart ? strings.back : strings.previous;
     final String finishLabel = isFinally ? strings.gotIt : strings.skip;
 
     return Container(
@@ -197,18 +198,14 @@ class _TutorialDialogState extends State<TutorialDialog> {
       child: Row(
         children: <Widget>[
           Semantics(
-            label: strings.previous,
+            label: previousLabel,
             button: true,
-            enabled: !isStart,
             child: ExcludeSemantics(
               child: IconButton(
                 key: previousButtonKey,
-                tooltip: strings.previous,
-                onPressed: isStart ? null : prevStep,
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: isStart ? Colors.grey : Colors.black,
-                ),
+                tooltip: previousLabel,
+                onPressed: _handleBackNavigation,
+                icon: const Icon(Icons.arrow_back, color: Colors.black),
               ),
             ),
           ),
@@ -277,6 +274,14 @@ class _TutorialDialogState extends State<TutorialDialog> {
   void _finishTutorial(BuildContext context) {
     Navigator.of(context).pop();
     DB().generalSettings = DB().generalSettings.copyWith(showTutorial: false);
+  }
+
+  void _handleBackNavigation() {
+    if (isStart) {
+      _finishTutorial(context);
+      return;
+    }
+    prevStep();
   }
 
   void prevStep() => _changeStep(-1);
