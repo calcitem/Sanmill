@@ -21,7 +21,6 @@ void main() {
         ShellRouteIds.appCoordinateTraining,
         ShellRouteIds.appClock,
         ShellRouteIds.appVariants,
-        ShellRouteIds.appExit,
       ];
       for (final GameRouteId routeId in appRoutes) {
         expect(routeId.value, startsWith('app.'));
@@ -42,7 +41,6 @@ void main() {
         ShellRouteIds.appCoordinateTraining,
         ShellRouteIds.appClock,
         ShellRouteIds.appVariants,
-        ShellRouteIds.appExit,
       ];
       final Set<String> values = all.map((GameRouteId r) => r.value).toSet();
       expect(values.length, all.length);

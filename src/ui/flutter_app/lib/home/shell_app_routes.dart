@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
-import 'dart:io' show IOException;
-
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter/services.dart' show SystemNavigator;
 import 'package:flutter/widgets.dart';
 
 import '../appearance_settings/widgets/appearance_settings_page.dart';
@@ -16,7 +12,6 @@ import '../misc/about_page.dart';
 import '../misc/clock_tool_page.dart';
 import '../misc/how_to_play_screen.dart';
 import '../misc/mill_variants_page.dart';
-import '../shared/services/environment_config.dart';
 import 'settings_hub_page.dart';
 
 /// Resolves [ShellRouteIds] for app-level (`app.*`) routes.
@@ -47,22 +42,6 @@ Widget? buildAppRouteScreen(BuildContext context, String routeId) {
   }
   if (routeId == ShellRouteIds.appVariants.value) {
     return const MillVariantsPage();
-  }
-  if (routeId == ShellRouteIds.appExit.value) {
-    if (EnvironmentConfig.test == false) {
-      if (!kIsWeb) {
-        try {
-          // ignore: avoid_slow_async
-          SystemNavigator.pop();
-        } on Object catch (e) {
-          // Windows/web may not support SystemNavigator; ignore in tests
-          if (e is! IOException) {
-            rethrow;
-          }
-        }
-      }
-    }
-    return null;
   }
   return null;
 }

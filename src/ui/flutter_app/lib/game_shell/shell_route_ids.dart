@@ -5,7 +5,7 @@ import '../game_platform/game_route_id.dart';
 
 /// Stable route ids for the shared app shell.
 ///
-/// `app.*` is cross-game UI (settings, help, exit, game switch).
+/// `app.*` is cross-game UI (settings, help, and game switching).
 abstract final class ShellRouteIds {
   // App-level shell (not tied to a single [GameId])
   /// Switches [GameRegistry] back to its primary game from another module.
@@ -30,5 +30,4 @@ abstract final class ShellRouteIds {
   );
   static const GameRouteId appClock = GameRouteId('app.tools.clock');
   static const GameRouteId appVariants = GameRouteId('app.tools.variants');
-  static const GameRouteId appExit = GameRouteId('app.exit');
 }

@@ -566,6 +566,7 @@ void main() {
       expect(find.byKey(const Key('drawer_item_import_game')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_saved_games')), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_analysis')), findsOneWidget);
+      expect(find.byKey(const Key('drawer_item_exit')), findsNothing);
       expect(
         tester.getTopLeft(find.byKey(const Key('drawer_item_import_game'))).dy,
         lessThan(

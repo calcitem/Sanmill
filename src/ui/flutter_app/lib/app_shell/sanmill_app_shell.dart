@@ -887,7 +887,6 @@ class SanmillAppShellState extends State<SanmillAppShell>
           onAppRouteSelected: _pushAppRoute,
           onOpenSavedGames: _openSavedGamesFromMore,
           onFeedback: _showFeedback,
-          onExit: _exitApp,
         );
     }
   }
@@ -1161,12 +1160,6 @@ class SanmillAppShellState extends State<SanmillAppShell>
         builder: (BuildContext context) => DiagnosticReportPage(draft: draft),
       ),
     );
-  }
-
-  void _exitApp() {
-    if (EnvironmentConfig.test == false && !kIsWeb) {
-      SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
-    }
   }
 }
 
@@ -2832,14 +2825,12 @@ class _MoreTabRoot extends StatelessWidget {
     required this.onAppRouteSelected,
     required this.onOpenSavedGames,
     required this.onFeedback,
-    required this.onExit,
   });
 
   final ScrollController scrollController;
   final ValueChanged<String> onAppRouteSelected;
   final VoidCallback onOpenSavedGames;
   final VoidCallback onFeedback;
-  final VoidCallback onExit;
 
   @override
   Widget build(BuildContext context) {
@@ -2860,7 +2851,6 @@ class _MoreTabRoot extends StatelessWidget {
               onAppRouteSelected: onAppRouteSelected,
               onOpenSavedGames: onOpenSavedGames,
               onFeedback: onFeedback,
-              onExit: onExit,
             ),
           ],
         ),
@@ -2874,13 +2864,11 @@ class _MenuEntries extends StatelessWidget {
     required this.onAppRouteSelected,
     required this.onOpenSavedGames,
     required this.onFeedback,
-    required this.onExit,
   });
 
   final ValueChanged<String> onAppRouteSelected;
   final VoidCallback onOpenSavedGames;
   final VoidCallback onFeedback;
-  final VoidCallback onExit;
 
   @override
   Widget build(BuildContext context) {
@@ -3041,18 +3029,6 @@ class _MenuEntries extends StatelessWidget {
             ),
           ],
         ),
-        if (!kIsWeb && Platform.isAndroid)
-          _MoreSection(
-            title: strings.appName,
-            children: <Widget>[
-              _MoreTile(
-                key: const Key('drawer_item_exit'),
-                icon: Icons.power_settings_new_rounded,
-                title: strings.exit,
-                onTap: onExit,
-              ),
-            ],
-          ),
       ],
     );
   }
