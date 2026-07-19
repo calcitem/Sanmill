@@ -3203,6 +3203,13 @@ void main() {
         ..devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
+      final GeneralSettings previousGeneralSettings = DB().generalSettings;
+      addTearDown(() {
+        DB().generalSettings = previousGeneralSettings;
+      });
+      DB().generalSettings = previousGeneralSettings.copyWith(
+        aiMovesFirst: false,
+      );
 
       await tester.pumpWidget(const SanmillApp());
 
@@ -3228,6 +3235,13 @@ void main() {
       expect(
         find.byKey(const Key('opening_explorer_bottom_bar')),
         findsOneWidget,
+      );
+      final Finder practiceButtonFinder = find.byKey(
+        const Key('opening_explorer_practice_button'),
+      );
+      expect(
+        tester.widget<LichessBottomBarButton>(practiceButtonFinder).label,
+        'Practice',
       );
       final Finder previousButtonFinder = find.byKey(
         const Key('opening_explorer_previous_button'),
@@ -3349,6 +3363,49 @@ void main() {
         find.byKey(const Key('opening_explorer_history_1')),
         findsOneWidget,
       );
+      expect(
+        tester.widget<LichessBottomBarButton>(practiceButtonFinder).label,
+        'Practice',
+      );
+
+      await tester.tap(practiceButtonFinder);
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('opening_explorer_practice_sheet')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_practice_current_line')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_practice_current_line_button')),
+        findsOneWidget,
+      );
+      final Finder watchCurrentLineButton = find.byKey(
+        const Key('opening_explorer_watch_current_line_button'),
+      );
+      expect(watchCurrentLineButton, findsOneWidget);
+      expect(
+        find.byKey(
+          const Key('opening_explorer_practice_over_the_board_button'),
+        ),
+        findsOneWidget,
+      );
+
+      await tester.tap(watchCurrentLineButton);
+      await tester.pump();
+      expect(
+        tester.widget<LichessBottomBarButton>(practiceButtonFinder).label,
+        'Stop',
+      );
+      await tester.pump(const Duration(milliseconds: 700));
+      await tester.pumpAndSettle();
+      expect(
+        tester.widget<LichessBottomBarButton>(practiceButtonFinder).label,
+        'Practice',
+      );
 
       await tester.tap(previousButtonFinder);
       await tester.pumpAndSettle();
@@ -3370,8 +3427,75 @@ void main() {
         isNotNull,
       );
 
+      await tester.tapAt(
+        boardTopLeft + MillBoardGeometry.nodeOffset(1, boardSize),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(practiceButtonFinder);
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.byKey(const Key('opening_explorer_practice_current_line_button')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('game_page_scaffold')), findsOneWidget);
+
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
+    'Opening explorer line actions fit phone portrait layout',
+    (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(390, 844)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(const SanmillApp());
+      await tester.tap(find.byKey(const Key('sanmill_tab_more')));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(
+        find.byKey(const Key('drawer_item_opening_explorer')),
+      );
+      await tester.tap(find.byKey(const Key('drawer_item_opening_explorer')));
+      await tester.pumpAndSettle();
+
+      final Finder boardFinder = find.byKey(
+        const Key('opening_explorer_board'),
+      );
+      final Offset boardTopLeft = tester.getTopLeft(boardFinder);
+      final Size boardSize = tester.getSize(boardFinder);
+      await tester.tapAt(
+        boardTopLeft + MillBoardGeometry.nodeOffset(0, boardSize),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(
+        find.byKey(const Key('opening_explorer_practice_button')),
+      );
+      await tester.pumpAndSettle();
+
+      final Finder practiceLineButton = find.byKey(
+        const Key('opening_explorer_practice_current_line_button'),
+      );
+      final Finder watchLineButton = find.byKey(
+        const Key('opening_explorer_watch_current_line_button'),
+      );
+      expect(practiceLineButton, findsOneWidget);
+      expect(watchLineButton, findsOneWidget);
+      expect(
+        find.byKey(
+          const Key('opening_explorer_practice_over_the_board_button'),
+        ),
+        findsOneWidget,
+      );
+      expect(tester.getRect(practiceLineButton).left, greaterThanOrEqualTo(0));
+      expect(tester.getRect(watchLineButton).right, lessThanOrEqualTo(390));
+      expect(tester.takeException(), isNull);
     },
     skip: nativeLibrarySkipReason() != null,
   );

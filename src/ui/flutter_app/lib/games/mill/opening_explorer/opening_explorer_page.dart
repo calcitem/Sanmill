@@ -395,6 +395,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
     final List<OpeningEntry> openings = OpeningBookRepository.instance
         .openingsFor(isElFilja: isElFilja);
     final List<String> currentLine = <String>[
+      ..._initialPlacementMoves,
       for (final _OpeningExplorerHistoryEntry entry in _explorerHistory.take(
         _explorerCursor,
       ))
@@ -1457,7 +1458,9 @@ class _OpeningExplorerPracticeSheetState
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
               child: Text(
-                strings.openingExplorerPractice,
+                widget.currentLine.isEmpty
+                    ? strings.openingExplorerPractice
+                    : strings.openingExplorerPracticeThisLine,
                 style: Theme.of(
                   context,
                 ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
@@ -1465,39 +1468,102 @@ class _OpeningExplorerPracticeSheetState
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: FilledButton.tonalIcon(
-                      key: const Key(
-                        'opening_explorer_practice_vs_computer_button',
-                      ),
-                      onPressed: () =>
-                          widget.onContinueVsAi(GameMode.humanVsAi),
-                      icon: const Icon(Icons.smart_toy_outlined),
-                      label: Text(
-                        strings.playAgainstComputer,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+              child: widget.currentLine.isEmpty
+                  ? Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: FilledButton.tonalIcon(
+                            key: const Key(
+                              'opening_explorer_practice_vs_computer_button',
+                            ),
+                            onPressed: () =>
+                                widget.onContinueVsAi(GameMode.humanVsAi),
+                            icon: const Icon(Icons.smart_toy_outlined),
+                            label: Text(
+                              strings.playAgainstComputer,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            key: const Key(
+                              'opening_explorer_practice_over_the_board_button',
+                            ),
+                            onPressed: () =>
+                                widget.onContinueVsAi(GameMode.humanVsHuman),
+                            icon: const Icon(Icons.groups_2_outlined),
+                            label: Text(
+                              strings.offlineBoard,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        ListTile(
+                          key: const Key(
+                            'opening_explorer_practice_current_line',
+                          ),
+                          contentPadding: EdgeInsets.zero,
+                          leading: const Icon(Icons.route_outlined),
+                          title: Text(strings.openingExplorerCurrentLine),
+                          subtitle: Text(
+                            widget.currentLine.join(' '),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: FilledButton.tonalIcon(
+                                key: const Key(
+                                  'opening_explorer_practice_current_line_button',
+                                ),
+                                onPressed: () =>
+                                    widget.onContinueVsAi(GameMode.humanVsAi),
+                                icon: const Icon(Icons.school_outlined),
+                                label: Text(
+                                  strings.openingExplorerPracticeThisLine,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: OutlinedButton.icon(
+                                key: const Key(
+                                  'opening_explorer_watch_current_line_button',
+                                ),
+                                onPressed: () =>
+                                    widget.onSelectLine(widget.currentLine),
+                                icon: const Icon(Icons.play_arrow_rounded),
+                                label: Text(
+                                  strings.openingExplorerWatchThisLine,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        OutlinedButton.icon(
+                          key: const Key(
+                            'opening_explorer_practice_over_the_board_button',
+                          ),
+                          onPressed: () =>
+                              widget.onContinueVsAi(GameMode.humanVsHuman),
+                          icon: const Icon(Icons.groups_2_outlined),
+                          label: Text(strings.offlineBoard),
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      key: const Key(
-                        'opening_explorer_practice_over_the_board_button',
-                      ),
-                      onPressed: () =>
-                          widget.onContinueVsAi(GameMode.humanVsHuman),
-                      icon: const Icon(Icons.groups_2_outlined),
-                      label: Text(
-                        strings.offlineBoard,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
             const Divider(height: 1),
             Padding(
@@ -1533,18 +1599,6 @@ class _OpeningExplorerPracticeSheetState
                 controller: scrollController,
                 padding: const EdgeInsets.only(bottom: 16),
                 children: <Widget>[
-                  if (widget.currentLine.isNotEmpty)
-                    ListTile(
-                      key: const Key('opening_explorer_practice_current_line'),
-                      leading: const Icon(Icons.route_outlined),
-                      title: Text(strings.openingExplorerCurrentLine),
-                      subtitle: Text(
-                        widget.currentLine.join(' '),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      onTap: () => widget.onSelectLine(widget.currentLine),
-                    ),
                   if (openings.isEmpty)
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -1570,6 +1624,10 @@ class _OpeningExplorerPracticeSheetState
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
+                        trailing: Icon(
+                          Icons.play_arrow_rounded,
+                          semanticLabel: strings.openingExplorerWatchThisLine,
+                        ),
                         onTap: entry.lineMoves.isEmpty
                             ? null
                             : () => widget.onSelectLine(entry.lineMoves),

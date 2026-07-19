@@ -6640,7 +6640,7 @@
     },
     "openingExplorerPracticeThisLine": "Practice this line",
     "@openingExplorerPracticeThisLine": {
-        "description": "Action that loads an opening line and continues from its final position against the computer"
+        "description": "Action that continues the currently browsed opening line from its final position against the computer"
     },
     "openingExplorerWatchThisLine": "Watch this line",
     "@openingExplorerWatchThisLine": {
