@@ -6637,5 +6637,13 @@
     "noMatchingGames": "No matching games",
     "@noMatchingGames": {
         "description": "Empty state shown when Game history search has no matches"
+    },
+    "openingExplorerPracticeThisLine": "Practice this line",
+    "@openingExplorerPracticeThisLine": {
+        "description": "Action that loads an opening line and continues from its final position against the computer"
+    },
+    "openingExplorerWatchThisLine": "Watch this line",
+    "@openingExplorerWatchThisLine": {
+        "description": "Action that plays an opening line move by move on the explorer board"
     }
 }
