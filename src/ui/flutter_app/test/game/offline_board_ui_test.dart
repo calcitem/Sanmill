@@ -575,6 +575,10 @@ void main() {
       find.byKey(const Key('play_area_offline_board_menu_game_tips')),
       findsOneWidget,
     );
+    expect(
+      find.byKey(const Key('play_area_offline_board_menu_marker_guide')),
+      findsOneWidget,
+    );
     expect(find.text('Move list'), findsNothing);
     expect(find.text('Options'), findsNothing);
     await tester.tap(

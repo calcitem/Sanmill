@@ -56,6 +56,7 @@ import '../services/offline_board_history.dart';
 import '../services/painters/advantage_graph_painter.dart';
 import '../services/transform/transform.dart';
 import 'ai_chat_dialog.dart';
+import 'board_marker_guide_sheet.dart';
 import 'game_page.dart';
 import 'mini_board.dart';
 import 'modals/game_options_modal.dart';
@@ -2533,6 +2534,12 @@ class PlayAreaState extends State<PlayArea> {
           key: const Key('play_area_offline_board_menu_game_tips'),
           toolbar: 'offlineBoardMenu',
         ),
+        LichessActionSheetAction(
+          key: const Key('play_area_offline_board_menu_marker_guide'),
+          leading: const Icon(Icons.help_outline),
+          makeLabel: (BuildContext context) => Text(strings.boardMarkerGuide),
+          onPressed: () => showBoardMarkerGuide(actionContext),
+        ),
         if (_isRegularGameOver)
           LichessActionSheetAction(
             key: const Key('play_area_offline_board_menu_result'),
@@ -2685,6 +2692,12 @@ class PlayAreaState extends State<PlayArea> {
             onPressed: () =>
                 _showAnalysisShareExportMenu(actionContext, strings: strings),
           ),
+        LichessActionSheetAction(
+          key: const Key('play_area_regular_game_menu_marker_guide'),
+          leading: const Icon(Icons.help_outline),
+          makeLabel: (BuildContext context) => Text(strings.boardMarkerGuide),
+          onPressed: () => showBoardMarkerGuide(actionContext),
+        ),
         if (_shouldShowMoveNowMenuAction)
           LichessActionSheetAction(
             key: const Key('play_area_regular_game_menu_move_now'),
@@ -2834,6 +2847,12 @@ class PlayAreaState extends State<PlayArea> {
         _gameTipsMenuAction(
           key: const Key('play_area_game_menu_game_tips'),
           toolbar: 'humanAiGameMenu',
+        ),
+        LichessActionSheetAction(
+          key: const Key('play_area_game_menu_marker_guide'),
+          leading: const Icon(Icons.help_outline),
+          makeLabel: (BuildContext context) => Text(strings.boardMarkerGuide),
+          onPressed: () => showBoardMarkerGuide(actionContext),
         ),
         if (_shouldShowMoveNowMenuAction)
           LichessActionSheetAction(

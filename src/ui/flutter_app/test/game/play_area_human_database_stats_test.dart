@@ -785,6 +785,10 @@ void main() {
       findsOne,
     );
     expect(
+      find.byKey(const Key('play_area_regular_game_menu_marker_guide')),
+      findsOneWidget,
+    );
+    expect(
       find.byKey(const Key('play_area_regular_game_menu_flip_board')),
       findsOne,
     );
@@ -1564,6 +1568,10 @@ void main() {
     expect(find.byKey(const Key('play_area_game_menu_move_list')), findsOne);
     expect(
       find.byKey(const Key('play_area_game_menu_game_tips')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_game_menu_marker_guide')),
       findsOneWidget,
     );
     expect(find.byKey(const Key('play_area_game_menu_move_now')), findsOne);
