@@ -379,6 +379,7 @@ void main() {
     expect(english.skillLevel, 'Computer level');
     expect(english.humanAiRobotLevel(7), 'Computer level 7');
     expect(english.advancedAiSearch, 'Advanced engine search');
+    expect(english.forceAiRedo, 'Make computer play another move');
     expect(english.aiChatTitle, 'AI Assistant');
     expect(english.aiAnalysisTitle, 'AI Game Analysis');
 
@@ -388,6 +389,7 @@ void main() {
     expect(chinese.skillLevel, '电脑等级');
     expect(chinese.humanAiRobotLevel(7), '电脑等级 7');
     expect(chinese.advancedAiSearch, '高级引擎搜索');
+    expect(chinese.forceAiRedo, '让电脑改走一步');
     expect(chinese.aiChatTitle, 'AI 助手');
     expect(chinese.aiAnalysisTitle, 'AI 棋局分析');
   });

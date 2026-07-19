@@ -1874,10 +1874,11 @@ class PlayAreaState extends State<PlayArea> {
     return mode == GameMode.humanVsAi || mode == GameMode.aiVsAi;
   }
 
-  /// Whether "Let AI reconsider" can currently act: humanVsAi, no search in
-  /// flight, and the most recent ply was actually played by the AI (i.e. it
-  /// is now the human's turn, mirroring the precondition of the take-back
-  /// button so both features stay consistent about "whose turn is it").
+  /// Whether "Make computer play another move" can currently act:
+  /// humanVsAi, no search in flight, and the most recent ply was actually
+  /// played by the computer (i.e. it is now the human's turn, mirroring the
+  /// precondition of the take-back button so both features stay consistent
+  /// about "whose turn is it").
   bool get _canForceAiRedo {
     if (GameController().gameInstance.gameMode != GameMode.humanVsAi) {
       return false;

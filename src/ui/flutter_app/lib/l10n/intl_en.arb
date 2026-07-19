@@ -4780,7 +4780,7 @@
     "@openingExplorerSelectLine": {},
     "openingExplorerCurrentLine": "Current line",
     "@openingExplorerCurrentLine": {},
-    "forceAiRedo": "Let computer recalculate",
+    "forceAiRedo": "Make computer play another move",
     "@forceAiRedo": {},
     "aiNoAlternativeMove": "No alternative move available; the computer restored its original move.",
     "@aiNoAlternativeMove": {},

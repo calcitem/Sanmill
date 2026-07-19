@@ -4722,7 +4722,7 @@
     "@openingExplorerSelectLine": {},
     "openingExplorerCurrentLine": "当前路线",
     "@openingExplorerCurrentLine": {},
-    "forceAiRedo": "让电脑重新计算",
+    "forceAiRedo": "让电脑改走一步",
     "@forceAiRedo": {},
     "aiNoAlternativeMove": "没有其他可选着法，电脑已恢复原着。",
     "@aiNoAlternativeMove": {},
