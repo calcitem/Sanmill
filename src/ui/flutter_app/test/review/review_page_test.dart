@@ -152,57 +152,7 @@ void main() {
     },
   );
 
-  testWidgets(
-    'uses side-by-side layout on tablet and exposes correction flow',
-    (WidgetTester tester) async {
-      await tester.binding.setSurfaceSize(const Size(1024, 768));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
-      await tester.pumpWidget(_reviewApp());
-      await tester.pump();
-
-      expect(find.byKey(const Key('review_wide_layout')), findsOneWidget);
-      expect(find.byKey(const Key('review_phone_layout')), findsNothing);
-      expect(find.byKey(const Key('review_correction')), findsOneWidget);
-      expect(find.text('Review mistakes'), findsOneWidget);
-      expect(find.text('Find a better move than a7.'), findsOneWidget);
-      expect(find.text('1/1'), findsOneWidget);
-      expect(find.text('d6xf4'), findsOneWidget);
-      final Rect boardRect = tester.getRect(
-        find.byKey(const Key('review_board')),
-      );
-      final Rect navigationRect = tester.getRect(
-        find.byKey(const Key('review_turn_navigation')),
-      );
-      expect(navigationRect.top - boardRect.bottom, inInclusiveRange(0, 24));
-
-      final Finder goodChoice = find.byKey(
-        const Key('review_correction_choice_b6'),
-      );
-      await tester.drag(
-        find.byKey(const Key('review_analysis_panel')),
-        const Offset(0, -180),
-      );
-      await tester.pump();
-      await tester.tap(goodChoice);
-      await tester.pump();
-      expect(find.text('Good move!'), findsOneWidget);
-      expect(find.text('Done'), findsOneWidget);
-      expect(find.text('Skip'), findsOneWidget);
-      expect(find.text('Show answer'), findsOneWidget);
-
-      await tester.ensureVisible(find.text('Done'));
-      await tester.pump();
-      await tester.tap(find.text('Done'));
-      await tester.pump();
-      expect(
-        find.byKey(const Key('review_correction_complete')),
-        findsOneWidget,
-      );
-      expect(find.text('Mistake review complete'), findsOneWidget);
-    },
-  );
-
-  testWidgets('revealing a correction answer does not claim user success', (
+  testWidgets('uses side-by-side layout and exposes correction entry', (
     WidgetTester tester,
   ) async {
     await tester.binding.setSurfaceSize(const Size(1024, 768));
@@ -210,21 +160,51 @@ void main() {
     await tester.pumpWidget(_reviewApp());
     await tester.pump();
 
-    final Finder showAnswer = find.byKey(
-      const Key('review_correction_show_answer'),
+    expect(find.byKey(const Key('review_wide_layout')), findsOneWidget);
+    expect(find.byKey(const Key('review_phone_layout')), findsNothing);
+    expect(find.byKey(const Key('review_correction')), findsOneWidget);
+    expect(find.text('Review mistakes'), findsOneWidget);
+    expect(find.text('Find a better move than a7.'), findsOneWidget);
+    final Rect boardRect = tester.getRect(
+      find.byKey(const Key('review_board')),
     );
+    final Rect navigationRect = tester.getRect(
+      find.byKey(const Key('review_turn_navigation')),
+    );
+    expect(navigationRect.top - boardRect.bottom, inInclusiveRange(0, 24));
+
     await tester.drag(
       find.byKey(const Key('review_analysis_panel')),
       const Offset(0, -180),
     );
     await tester.pump();
-    tester.widget<TextButton>(showAnswer).onPressed!();
+    expect(find.byKey(const Key('review_correction_choice_b6')), findsNothing);
+    expect(find.text('Show answer'), findsNothing);
+    expect(find.byIcon(Icons.chevron_right_rounded), findsWidgets);
+  });
+
+  testWidgets('correction entry exposes one accessible navigation action', (
+    WidgetTester tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1024, 768));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(_reviewApp());
     await tester.pump();
 
-    expect(find.text('Best move: d6xf4'), findsOneWidget);
-    expect(find.text('Good move!'), findsNothing);
-    expect(find.text('You can do better. Try another move.'), findsNothing);
-    expect(find.text('Done'), findsOneWidget);
+    await tester.drag(
+      find.byKey(const Key('review_analysis_panel')),
+      const Offset(0, -180),
+    );
+    await tester.pump();
+    final Finder correction = find.byKey(const Key('review_correction'));
+    expect(
+      tester
+          .getSemantics(correction)
+          .getSemanticsData()
+          .hasAction(SemanticsAction.tap),
+      isTrue,
+    );
+    expect(find.byKey(const Key('review_correction_choice_b6')), findsNothing);
   });
 
   testWidgets('uses side-by-side layout in phone landscape', (

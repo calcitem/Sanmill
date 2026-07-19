@@ -4,6 +4,7 @@
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../appearance_settings/models/color_settings.dart';
@@ -40,6 +41,8 @@ class MillSessionBoard extends StatefulWidget {
     required this.onPositionChanged,
     this.boardKey,
     this.semanticLabel,
+    this.enabled = true,
+    this.highlightActions = const <String>[],
   });
 
   final NativeMillGameSession session;
@@ -49,6 +52,8 @@ class MillSessionBoard extends StatefulWidget {
   final MillSessionPositionChanged onPositionChanged;
   final Key? boardKey;
   final String? semanticLabel;
+  final bool enabled;
+  final List<String> highlightActions;
 
   @override
   State<MillSessionBoard> createState() => _MillSessionBoardState();
@@ -56,6 +61,9 @@ class MillSessionBoard extends StatefulWidget {
 
 class _MillSessionBoardState extends State<MillSessionBoard> {
   Future<void> _handleTap(Offset localPosition, Size size) async {
+    if (!widget.enabled) {
+      return;
+    }
     final int node = MillBoardGeometry.nodeFromPosition(localPosition, size);
     if (node < 0) {
       widget.tapController.clearSelection();
@@ -64,6 +72,35 @@ class _MillSessionBoardState extends State<MillSessionBoard> {
     }
     final String notation = MillBoardCoordinateMaps.nodeToNotation(node);
     assert(notation.isNotEmpty, 'Interactive Mill node must have notation.');
+    final String previousFen = widget.session.getFen();
+    final MillSessionTapResult result = await widget.tapController.tap(
+      session: widget.session,
+      tappedLabel: notation,
+    );
+    if (!mounted) {
+      return;
+    }
+    if (result.status == MillSessionTapStatus.applied) {
+      final GameAction? action = result.action;
+      assert(action != null, 'Applied board tap must include its action.');
+      if (action == null) {
+        throw StateError('Applied board tap must include its action.');
+      }
+      widget.onPositionChanged(
+        previousFen: previousFen,
+        currentFen: widget.session.getFen(),
+        action: action,
+      );
+    }
+    if (result.status != MillSessionTapStatus.ignored) {
+      setState(() {});
+    }
+  }
+
+  Future<void> _handleNotationTap(String notation) async {
+    if (!widget.enabled) {
+      return;
+    }
     final String previousFen = widget.session.getFen();
     final MillSessionTapResult result = await widget.tapController.tap(
       session: widget.session,
@@ -113,31 +150,56 @@ class _MillSessionBoardState extends State<MillSessionBoard> {
                     GameStateSnapshot snapshot,
                     Widget? child,
                   ) {
-                    final Widget updatedBoard = GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      excludeFromSemantics: widget.semanticLabel != null,
-                      onTapUp: (TapUpDetails details) =>
-                          _handleTap(details.localPosition, Size.square(side)),
-                      child: CustomPaint(
-                        painter: _MillSessionBoardPainter(
-                          snapshot: snapshot,
+                    final _MillSessionLegalHints legalHints =
+                        _MillSessionLegalHints.fromActions(
+                          legalActions: widget.enabled
+                              ? widget.session.legalActions
+                              : const <GameAction>[],
                           selectedFrom: widget.tapController.selectedFrom,
-                          legalHints: _MillSessionLegalHints.fromActions(
-                            legalActions: widget.session.legalActions,
-                            selectedFrom: widget.tapController.selectedFrom,
+                        );
+                    final Widget updatedBoard = Stack(
+                      fit: StackFit.expand,
+                      children: <Widget>[
+                        GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          excludeFromSemantics: true,
+                          onTapUp: widget.enabled
+                              ? (TapUpDetails details) => _handleTap(
+                                  details.localPosition,
+                                  Size.square(side),
+                                )
+                              : null,
+                          child: CustomPaint(
+                            painter: _MillSessionBoardPainter(
+                              snapshot: snapshot,
+                              selectedFrom: widget.tapController.selectedFrom,
+                              legalHints: legalHints,
+                              hasDiagonalLines: widget.rules.hasDiagonalLines,
+                              boardBackgroundColor: colors.boardBackgroundColor,
+                              boardLineColor: colors.boardLineColor,
+                              whitePieceColor: colors.whitePieceColor,
+                              blackPieceColor: colors.blackPieceColor,
+                              pieceHighlightColor: colors.pieceHighlightColor,
+                              hintColor: colorScheme.primary,
+                              removeHintColor: colorScheme.error,
+                              shadowColor: colorScheme.shadow,
+                              highlightActions: widget.highlightActions,
+                            ),
+                            child: child,
                           ),
-                          hasDiagonalLines: widget.rules.hasDiagonalLines,
-                          boardBackgroundColor: colors.boardBackgroundColor,
-                          boardLineColor: colors.boardLineColor,
-                          whitePieceColor: colors.whitePieceColor,
-                          blackPieceColor: colors.blackPieceColor,
-                          pieceHighlightColor: colors.pieceHighlightColor,
-                          hintColor: colorScheme.primary,
-                          removeHintColor: colorScheme.error,
-                          shadowColor: colorScheme.shadow,
                         ),
-                        child: child,
-                      ),
+                        if (widget.enabled)
+                          for (
+                            int node = 0;
+                            node < MillBoardGeometry.nodeCount;
+                            node++
+                          )
+                            _BoardNodeSemantics(
+                              node: node,
+                              side: side,
+                              onTap: _handleNotationTap,
+                            ),
+                      ],
                     );
                     final String? label = widget.semanticLabel;
                     return label == null
@@ -145,6 +207,7 @@ class _MillSessionBoardState extends State<MillSessionBoard> {
                         : Semantics(
                             label: label,
                             container: true,
+                            explicitChildNodes: true,
                             child: updatedBoard,
                           );
                   },
@@ -153,6 +216,38 @@ class _MillSessionBoardState extends State<MillSessionBoard> {
           ),
         );
       },
+    );
+  }
+}
+
+class _BoardNodeSemantics extends StatelessWidget {
+  const _BoardNodeSemantics({
+    required this.node,
+    required this.side,
+    required this.onTap,
+  });
+
+  final int node;
+  final double side;
+  final Future<void> Function(String notation) onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final String notation = MillBoardCoordinateMaps.nodeToNotation(node);
+    final Offset center = MillBoardGeometry.nodeOffset(node, Size.square(side));
+    final double target = math.max(44, side * 0.12);
+    return Positioned(
+      left: center.dx - target / 2,
+      top: center.dy - target / 2,
+      width: target,
+      height: target,
+      child: Semantics(
+        key: Key('mill_session_board_node_$notation'),
+        button: true,
+        label: notation,
+        onTap: () => onTap(notation),
+        child: const SizedBox.expand(),
+      ),
     );
   }
 }
@@ -235,6 +330,7 @@ class _MillSessionBoardPainter extends CustomPainter {
     required this.hintColor,
     required this.removeHintColor,
     required this.shadowColor,
+    required this.highlightActions,
   });
 
   final GameStateSnapshot snapshot;
@@ -249,6 +345,7 @@ class _MillSessionBoardPainter extends CustomPainter {
   final Color hintColor;
   final Color removeHintColor;
   final Color shadowColor;
+  final List<String> highlightActions;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -278,6 +375,7 @@ class _MillSessionBoardPainter extends CustomPainter {
       _drawPieces(canvas, size, board);
     }
     _drawSelectedNode(canvas, size);
+    _drawActionHighlights(canvas, size);
   }
 
   void _drawCoordinates(Canvas canvas, Size size) {
@@ -451,6 +549,68 @@ class _MillSessionBoardPainter extends CustomPainter {
     );
   }
 
+  void _drawActionHighlights(Canvas canvas, Size size) {
+    if (highlightActions.isEmpty) {
+      return;
+    }
+    final double side = size.shortestSide;
+    final Paint paint = Paint()
+      ..color = pieceHighlightColor
+      ..strokeWidth = math.max(2.5, side * 0.009)
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
+    final double radius = side * 0.067;
+
+    for (final String action in highlightActions) {
+      if (action.startsWith('x')) {
+        final int node = MillBoardCoordinateMaps.notationToNode(
+          action.substring(1),
+        );
+        if (node < 0) {
+          continue;
+        }
+        final Offset center = MillBoardGeometry.nodeOffset(node, size);
+        final double arm = radius * 0.65;
+        canvas.drawLine(
+          center.translate(-arm, -arm),
+          center.translate(arm, arm),
+          paint,
+        );
+        canvas.drawLine(
+          center.translate(-arm, arm),
+          center.translate(arm, -arm),
+          paint,
+        );
+        continue;
+      }
+      if (action.contains('-')) {
+        final List<String> parts = action.split('-');
+        if (parts.length != 2) {
+          continue;
+        }
+        final int from = MillBoardCoordinateMaps.notationToNode(parts[0]);
+        final int to = MillBoardCoordinateMaps.notationToNode(parts[1]);
+        if (from < 0 || to < 0) {
+          continue;
+        }
+        final Offset fromCenter = MillBoardGeometry.nodeOffset(from, size);
+        final Offset toCenter = MillBoardGeometry.nodeOffset(to, size);
+        canvas.drawLine(fromCenter, toCenter, paint);
+        canvas.drawCircle(fromCenter, radius * 0.72, paint);
+        canvas.drawCircle(toCenter, radius, paint);
+        continue;
+      }
+      final int node = MillBoardCoordinateMaps.notationToNode(action);
+      if (node >= 0) {
+        canvas.drawCircle(
+          MillBoardGeometry.nodeOffset(node, size),
+          radius,
+          paint,
+        );
+      }
+    }
+  }
+
   @override
   bool shouldRepaint(covariant _MillSessionBoardPainter oldDelegate) {
     return oldDelegate.snapshot != snapshot ||
@@ -463,7 +623,8 @@ class _MillSessionBoardPainter extends CustomPainter {
         oldDelegate.blackPieceColor != blackPieceColor ||
         oldDelegate.pieceHighlightColor != pieceHighlightColor ||
         oldDelegate.hintColor != hintColor ||
-        oldDelegate.removeHintColor != removeHintColor;
+        oldDelegate.removeHintColor != removeHintColor ||
+        !listEquals(oldDelegate.highlightActions, highlightActions);
   }
 }
 

@@ -412,6 +412,21 @@ class ReviewReport {
             action.grade == ReviewGrade.blunder),
   );
 
+  List<ReviewActionEvaluation> get correctionActions {
+    final Map<int, ReviewActionEvaluation> worstByGroup =
+        <int, ReviewActionEvaluation>{};
+    for (final ReviewActionEvaluation action in humanMistakes) {
+      final ReviewActionEvaluation? current = worstByGroup[action.groupIndex];
+      if (current == null || action.grade.index > current.grade.index) {
+        worstByGroup[action.groupIndex] = action;
+      }
+    }
+    return worstByGroup.values.toList(growable: false)..sort(
+      (ReviewActionEvaluation a, ReviewActionEvaluation b) =>
+          a.groupIndex.compareTo(b.groupIndex),
+    );
+  }
+
   ReviewGrade gradeForTurn(int groupIndex) {
     final Iterable<ReviewActionEvaluation> grouped = actions.where(
       (ReviewActionEvaluation action) => action.groupIndex == groupIndex,

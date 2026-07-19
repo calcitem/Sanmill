@@ -15,6 +15,7 @@ import '../models/review_models.dart';
 import '../services/review_analysis_service.dart';
 import '../services/review_nag_merge.dart';
 import '../services/review_storage.dart';
+import 'review_correction_page.dart';
 
 class ReviewPage extends StatefulWidget {
   const ReviewPage({
@@ -54,10 +55,6 @@ class _ReviewPageState extends State<ReviewPage> {
   bool _analyzing = true;
   bool _deepening = false;
   bool _analysisCancelled = false;
-  int _correctionIndex = 0;
-  String? _correctionChoice;
-  bool _correctionPassed = false;
-  bool _showCorrectionAnswer = false;
 
   @override
   void initState() {
@@ -723,7 +720,7 @@ class _ReviewPageState extends State<ReviewPage> {
 
   Widget _buildCorrection(BuildContext context, ReviewReport report) {
     final S strings = S.of(context);
-    final List<ReviewActionEvaluation> corrections = _correctionActions(report);
+    final List<ReviewActionEvaluation> corrections = report.correctionActions;
     if (corrections.isEmpty) {
       return Card(
         key: const Key('review_correction_empty'),
@@ -733,127 +730,32 @@ class _ReviewPageState extends State<ReviewPage> {
         ),
       );
     }
-    if (_correctionIndex >= corrections.length) {
-      return Card(
-        key: const Key('review_correction_complete'),
-        child: ListTile(
-          leading: const Icon(Icons.task_alt_rounded),
-          title: Text(strings.correctionComplete),
-          trailing: TextButton(
-            onPressed: () => setState(() => _correctionIndex = 0),
-            child: Text(strings.retry),
-          ),
-        ),
-      );
-    }
-    final ReviewActionEvaluation correction = corrections[_correctionIndex];
+    final ReviewActionEvaluation correction = corrections.first;
     final ReviewTurnBoundary turn = report.turns.firstWhere(
       (ReviewTurnBoundary value) => value.groupIndex == correction.groupIndex,
     );
-    final List<ReviewCandidate> visibleCandidates = correction.candidates
-        .take(6)
-        .toList(growable: false);
     return Card(
       key: const Key('review_correction'),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListTile(
+        leading: const Icon(Icons.school_outlined),
+        title: Text(strings.interactiveCorrection),
+        subtitle: Text(strings.correctionPrompt(turn.san)),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    strings.interactiveCorrection,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ),
-                Text(
-                  strings.reviewProgress(
-                    _correctionIndex + 1,
-                    corrections.length,
-                  ),
-                ),
-              ],
+            Text(
+              '${corrections.length}',
+              style: Theme.of(context).textTheme.labelLarge,
             ),
-            const SizedBox(height: 8),
-            Text(strings.correctionPrompt(turn.san)),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: <Widget>[
-                for (final ReviewCandidate candidate in visibleCandidates)
-                  ChoiceChip(
-                    key: Key('review_correction_choice_${candidate.move}'),
-                    label: Text(
-                      _correctionCandidateNotation(correction, turn, candidate),
-                    ),
-                    selected: _correctionChoice == candidate.move,
-                    onSelected: (_) => _chooseCorrection(correction, candidate),
-                  ),
-              ],
-            ),
-            if (_correctionChoice != null &&
-                !_showCorrectionAnswer) ...<Widget>[
-              const SizedBox(height: 12),
-              Text(
-                _correctionPassed
-                    ? strings.correctionAccepted
-                    : strings.correctionTryAgain,
-              ),
-            ],
-            if (_showCorrectionAnswer) ...<Widget>[
-              const SizedBox(height: 8),
-              Text(
-                strings.correctionAnswer(
-                  _correctionCandidateNotation(
-                    correction,
-                    turn,
-                    correction.candidates.first,
-                  ),
-                ),
-              ),
-            ],
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 8,
-              children: <Widget>[
-                TextButton(
-                  onPressed: _correctionChoice == null
-                      ? null
-                      : () => setState(() {
-                          _correctionChoice = null;
-                          _correctionPassed = false;
-                          _showCorrectionAnswer = false;
-                        }),
-                  child: Text(strings.retry),
-                ),
-                TextButton(
-                  key: const Key('review_correction_show_answer'),
-                  onPressed: () => setState(() {
-                    _showCorrectionAnswer = true;
-                    _correctionChoice = correction.candidates.first.move;
-                    _correctionPassed = true;
-                  }),
-                  child: Text(strings.showAnswer),
-                ),
-                TextButton(
-                  onPressed: _nextCorrection,
-                  child: Text(strings.skip),
-                ),
-                if (_correctionPassed)
-                  FilledButton(
-                    onPressed: _nextCorrection,
-                    child: Text(
-                      _correctionIndex == corrections.length - 1
-                          ? strings.done
-                          : strings.next,
-                    ),
-                  ),
-              ],
-            ),
+            const SizedBox(width: 4),
+            const Icon(Icons.chevron_right_rounded),
           ],
+        ),
+        onTap: () => Navigator.of(context).push<void>(
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) =>
+                ReviewCorrectionPage(record: widget.record, report: report),
+          ),
         ),
       ),
     );
@@ -1118,68 +1020,6 @@ class _ReviewPageState extends State<ReviewPage> {
     if (mounted) {
       setState(() => _report = updated);
     }
-  }
-
-  void _chooseCorrection(
-    ReviewActionEvaluation correction,
-    ReviewCandidate candidate,
-  ) {
-    final ReviewGrade grade = ReviewGrading.grade(
-      bestScore: correction.candidates.first.score,
-      playedScore: candidate.score,
-    );
-    setState(() {
-      _correctionChoice = candidate.move;
-      _correctionPassed =
-          grade == ReviewGrade.best || grade == ReviewGrade.good;
-      _showCorrectionAnswer = false;
-    });
-  }
-
-  void _nextCorrection() {
-    setState(() {
-      _correctionIndex++;
-      _correctionChoice = null;
-      _correctionPassed = false;
-      _showCorrectionAnswer = false;
-    });
-  }
-
-  static List<ReviewActionEvaluation> _correctionActions(ReviewReport report) {
-    final Map<int, ReviewActionEvaluation> worstByGroup =
-        <int, ReviewActionEvaluation>{};
-    for (final ReviewActionEvaluation action in report.humanMistakes) {
-      final ReviewActionEvaluation? current = worstByGroup[action.groupIndex];
-      if (current == null || action.grade.index > current.grade.index) {
-        worstByGroup[action.groupIndex] = action;
-      }
-    }
-    final List<ReviewActionEvaluation> result = worstByGroup.values.toList()
-      ..sort(
-        (ReviewActionEvaluation a, ReviewActionEvaluation b) =>
-            a.groupIndex.compareTo(b.groupIndex),
-      );
-    return result;
-  }
-
-  static String _correctionCandidateNotation(
-    ReviewActionEvaluation correction,
-    ReviewTurnBoundary turn,
-    ReviewCandidate candidate,
-  ) {
-    final List<String> originalSegments = splitMillSan(turn.san);
-    final int relativeIndex = correction.atomicIndex - turn.startAtomicIndex;
-    assert(relativeIndex >= 0 && relativeIndex < originalSegments.length);
-    final StringBuffer notation = StringBuffer(
-      originalSegments.take(relativeIndex).join(),
-    )..write(candidate.move);
-    for (final String continuation in candidate.line.skip(1)) {
-      if (!continuation.startsWith('x')) {
-        break;
-      }
-      notation.write(continuation);
-    }
-    return notation.toString();
   }
 
   static String _formatPrincipalVariation(List<String> actions) {
