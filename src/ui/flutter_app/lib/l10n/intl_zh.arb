@@ -6578,5 +6578,9 @@
     "openingExplorerWatchThisLine": "观看当前路线",
     "@openingExplorerWatchThisLine": {
         "description": "Action that replays an opening line on the explorer board"
+    },
+    "previewSound": "试听声音",
+    "@previewSound": {
+        "description": "Tooltip for playing a sample from a sound theme without selecting it"
     }
 }
