@@ -789,6 +789,7 @@ mod tests {
     #[test]
     fn trap_aware_best_action_stays_within_the_tied_best_set() {
         let _guard = perfect_db_test_lock();
+        let _patch_guard = crate::games::mill::patch::patch_test_lock();
         deinit_database();
         assert!(perfect_db::init(db_path()));
         crate::games::mill::patch::deinit_patch();

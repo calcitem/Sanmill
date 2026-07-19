@@ -2452,6 +2452,7 @@ void main() {
         final Text title = tester.widget<Text>(
           find.byKey(const Key('play_area_analysis_moves_header_title')),
         );
+        expect(depth.data, 'd8');
         expect(depth.style?.color, Colors.white);
         expect(title.style?.color, theme.colorScheme.onSurface);
       }

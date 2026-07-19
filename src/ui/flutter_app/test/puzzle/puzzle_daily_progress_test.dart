@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/puzzle/models/puzzle_models.dart';
@@ -57,6 +58,7 @@ void main() {
         .setMockMethodCallHandler(engineChannel, null);
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(pathProviderChannel, null);
+    await Hive.close();
     appDocDir.deleteSync(recursive: true);
   });
 

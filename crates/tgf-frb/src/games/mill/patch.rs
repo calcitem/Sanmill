@@ -25,6 +25,16 @@ static PATCH: Lazy<Mutex<Option<perfect_db::patch::PatchLookup>>> = Lazy::new(||
 #[cfg(not(target_arch = "wasm32"))]
 static TRAPS: Lazy<Mutex<Option<perfect_db::patch::PatchLookup>>> = Lazy::new(|| Mutex::new(None));
 
+#[cfg(all(test, not(target_arch = "wasm32")))]
+static PATCH_TEST_LOCK: Lazy<Mutex<()>> = Lazy::new(|| Mutex::new(()));
+
+#[cfg(all(test, not(target_arch = "wasm32")))]
+pub(super) fn patch_test_lock() -> std::sync::MutexGuard<'static, ()> {
+    PATCH_TEST_LOCK
+        .lock()
+        .expect("FRB patch test lock must not be poisoned")
+}
+
 pub(crate) struct PatchStatus {
     pub loaded: bool,
     pub entry_count: u32,
@@ -231,6 +241,7 @@ mod tests {
 
     #[test]
     fn init_status_deinit_round_trip() {
+        let _guard = patch_test_lock();
         deinit_patch();
         deinit_traps();
         assert!(!patch_status().loaded);
@@ -254,6 +265,7 @@ mod tests {
 
     #[test]
     fn correction_and_trap_score_are_none_without_a_loaded_patch() {
+        let _guard = patch_test_lock();
         deinit_patch();
         deinit_traps();
         let options = MillVariantOptions::default();
@@ -269,6 +281,7 @@ mod tests {
 
     #[test]
     fn correction_patch_does_not_load_the_trap_lookup() {
+        let _guard = patch_test_lock();
         deinit_patch();
         deinit_traps();
 
@@ -300,6 +313,7 @@ mod tests {
 
     #[test]
     fn trap_library_does_not_load_the_correction_lookup() {
+        let _guard = patch_test_lock();
         deinit_patch();
         deinit_traps();
 

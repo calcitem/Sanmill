@@ -18,6 +18,7 @@ import 'package:sanmill/appearance_settings/widgets/piece_effect_selection_page.
 import 'package:sanmill/appearance_settings/widgets/theme_selection_page.dart';
 import 'package:sanmill/game_page/services/analysis_mode.dart';
 import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/game_page/services/save_load/saved_game_catalog.dart';
 import 'package:sanmill/game_page/widgets/mini_board.dart';
 import 'package:sanmill/game_page/widgets/toolbars/game_toolbar.dart';
 import 'package:sanmill/game_platform/game_id.dart';
@@ -101,6 +102,19 @@ void main() {
             return directory.path;
           }
           return null;
+        });
+
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(uiMethodChannel, (
+          MethodCall methodCall,
+        ) async {
+          if (methodCall.method == 'setWindowTitle') {
+            return null;
+          }
+          throw MissingPluginException(
+            'No test implementation for ${methodCall.method} on '
+            '${uiMethodChannel.name}.',
+          );
         });
 
     // Initialize the Rust/FRB bridge: Home starts a NativeMillGameSession
@@ -2527,16 +2541,17 @@ void main() {
     await tester.tap(find.byKey(const Key('mill_variant_standard_9mm')));
     await tester.pumpAndSettle();
 
+    final Finder applyButtonFinder = find.byKey(
+      const Key('mill_variant_detail_apply_button'),
+    );
+    await tester.ensureVisible(applyButtonFinder);
+    await tester.pumpAndSettle();
     final FilledButton applyButton = tester.widget<FilledButton>(
-      find.byKey(const Key('mill_variant_detail_apply_button')),
+      applyButtonFinder,
     );
     expect(applyButton.onPressed, isNotNull);
 
-    await tester.ensureVisible(
-      find.byKey(const Key('mill_variant_detail_apply_button')),
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('mill_variant_detail_apply_button')));
+    await tester.tap(applyButtonFinder);
     await tester.pumpAndSettle();
 
     expect(RuleVariant.exactCanonicalIdFor(DB().ruleSettings), 'standard_9mm');
@@ -3838,7 +3853,7 @@ void main() {
       DB().generalSettings = previousGeneralSettings.copyWith(
         lastPgnSaveDirectory: recordsDirectory.path,
       );
-      await File('${recordsDirectory.path}/saved-ongoing.pgn').writeAsString('''
+      File('${recordsDirectory.path}/saved-ongoing.pgn').writeAsStringSync('''
 [Event "Saved game"]
 [White "Alice"]
 [Black "Bob"]
@@ -3847,7 +3862,22 @@ void main() {
 1. d6 f4 *
 ''');
 
-      await tester.pumpWidget(const SanmillApp());
+      // Home reads saved-game previews through dart:io. Start that work in
+      // the real async zone so its OS-backed future can complete.
+      await tester.runAsync(() async {
+        await tester.pumpWidget(const SanmillApp());
+        final Finder recentGamesFutureBuilder = find.byWidgetPredicate(
+          (Widget widget) => widget is FutureBuilder<List<SavedGameSummary>>,
+          description: 'home recent games FutureBuilder',
+        );
+        expect(recentGamesFutureBuilder, findsOneWidget);
+        final Future<List<SavedGameSummary>> recentGames = tester
+            .widget<FutureBuilder<List<SavedGameSummary>>>(
+              recentGamesFutureBuilder,
+            )
+            .future!;
+        await recentGames;
+      });
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
 
