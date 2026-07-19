@@ -2226,6 +2226,48 @@ void main() {
       expect(find.text('Navigation toolbar icon color'), findsNothing);
       expect(find.text('Annotation toolbar background color'), findsNothing);
       expect(find.text('Annotation toolbar icon color'), findsNothing);
+      expect(find.text('Import color settings'), findsNothing);
+      expect(find.text('Export color settings'), findsNothing);
+      final Finder colorSettingsImportExportTile = find.byKey(
+        const Key('color_settings_card_import_export_list_tile'),
+      );
+      expect(colorSettingsImportExportTile, findsOneWidget);
+      expect(
+        find.descendant(
+          of: colorSettingsImportExportTile,
+          matching: find.text('Import/export color settings'),
+        ),
+        findsOneWidget,
+      );
+      await tester.ensureVisible(colorSettingsImportExportTile);
+      await tester.pumpAndSettle();
+      await tester.tap(colorSettingsImportExportTile);
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('color_settings_import_export_page')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('color_settings_import_export_appbar_title')),
+        findsOneWidget,
+      );
+      expect(find.text('Import color settings'), findsOneWidget);
+      expect(find.text('Export color settings'), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('color_settings_import_export_appbar')),
+          matching: find.byType(BackButton),
+        ),
+        findsOneWidget,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const Key('appearance_settings_page_scaffold')),
+        findsOneWidget,
+      );
       final double colorTuningOffset = tester
           .state<ScrollableState>(appearanceScrollable)
           .position

@@ -6704,5 +6704,7 @@
     "newAnalysis": "New analysis",
     "@newAnalysis": {},
     "newAnalysisStarted": "New analysis started.",
-    "@newAnalysisStarted": {}
+    "@newAnalysisStarted": {},
+    "colorSettingsImportExport": "Import/export color settings",
+    "@colorSettingsImportExport": {}
 }

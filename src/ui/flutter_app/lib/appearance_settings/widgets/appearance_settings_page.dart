@@ -24,6 +24,7 @@ import '../../shared/database/database.dart';
 import '../../shared/services/language_locale_mapping.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
+import '../../shared/widgets/lichess_list_section.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../models/color_settings.dart';
 import '../models/display_settings.dart';
@@ -397,6 +398,17 @@ class AppearanceSettingsPage extends StatelessWidget {
     );
   }
 
+  void openColorSettingsImportExport(BuildContext context) {
+    Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => _ColorSettingsImportExportPage(
+          onImport: importColorSettings,
+          onExport: exportColorSettings,
+        ),
+      ),
+    );
+  }
+
   Future<void> _setTheme(
     BuildContext context,
     ColorSettings colorSettings,
@@ -761,18 +773,10 @@ class AppearanceSettingsPage extends StatelessWidget {
                   .copyWith(messageColor: val),
             ),
             SettingsListTile(
-              key: const Key(
-                'color_settings_card_import_color_settings_list_tile',
-              ),
-              titleString: S.of(context).importColorSettings,
-              onTap: () => importColorSettings(context),
-            ),
-            SettingsListTile(
-              key: const Key(
-                'color_settings_card_export_color_settings_list_tile',
-              ),
-              titleString: S.of(context).exportColorSettings,
-              onTap: () => exportColorSettings(context),
+              key: const Key('color_settings_card_import_export_list_tile'),
+              leading: const Icon(Icons.import_export_rounded),
+              titleString: S.of(context).colorSettingsImportExport,
+              onTap: () => openColorSettingsImportExport(context),
             ),
           ],
         ),
@@ -1122,6 +1126,55 @@ class AppearanceSettingsPage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ColorSettingsImportExportPage extends StatelessWidget {
+  const _ColorSettingsImportExportPage({
+    required this.onImport,
+    required this.onExport,
+  });
+
+  final Future<void> Function(BuildContext context) onImport;
+  final void Function(BuildContext context) onExport;
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+
+    return Scaffold(
+      key: const Key('color_settings_import_export_page'),
+      appBar: AppBar(
+        key: const Key('color_settings_import_export_appbar'),
+        title: Text(
+          strings.colorSettingsImportExport,
+          key: const Key('color_settings_import_export_appbar_title'),
+        ),
+      ),
+      body: ListView(
+        key: const Key('color_settings_import_export_list'),
+        padding: const EdgeInsets.only(top: 16, bottom: 24),
+        children: <Widget>[
+          LichessListSection(
+            cardKey: const Key('color_settings_import_export_card'),
+            children: <Widget>[
+              SettingsListTile(
+                key: const Key('color_settings_import_export_import_list_tile'),
+                leading: const Icon(Icons.file_download_outlined),
+                titleString: strings.importColorSettings,
+                onTap: () => onImport(context),
+              ),
+              SettingsListTile(
+                key: const Key('color_settings_import_export_export_list_tile'),
+                leading: const Icon(Icons.ios_share_rounded),
+                titleString: strings.exportColorSettings,
+                onTap: () => onExport(context),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

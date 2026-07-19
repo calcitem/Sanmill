@@ -6637,5 +6637,7 @@
     "newAnalysis": "新建分析",
     "@newAnalysis": {},
     "newAnalysisStarted": "已新建分析。",
-    "@newAnalysisStarted": {}
+    "@newAnalysisStarted": {},
+    "colorSettingsImportExport": "颜色设置导入/导出",
+    "@colorSettingsImportExport": {}
 }
