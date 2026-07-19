@@ -6634,5 +6634,9 @@
     "humanAiYouMoveFirst": "玩家先行",
     "@humanAiYouMoveFirst": {},
     "humanAiComputerMovesFirst": "电脑先行",
-    "@humanAiComputerMovesFirst": {}
+    "@humanAiComputerMovesFirst": {},
+    "newAnalysis": "新建分析",
+    "@newAnalysis": {},
+    "newAnalysisStarted": "已新建分析。",
+    "@newAnalysisStarted": {}
 }

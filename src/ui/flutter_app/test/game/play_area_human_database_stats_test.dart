@@ -4502,53 +4502,6 @@ void main() {
     expect(db.displaySettings.showBranchTree, isFalse);
   });
 
-  testWidgets('analysis menu clears moves back to the start position', (
-    WidgetTester tester,
-  ) async {
-    db.displaySettings = const DisplaySettings(
-      isUnplacedAndRemovedPiecesShown: false,
-    );
-    final NativeMillGameSession session = await _bindNativeGame(
-      GameMode.analysis,
-    );
-    final MillSessionRecorderBridge recorderBridge =
-        MillSessionRecorderBridge.forGameController(session: session);
-    addTearDown(recorderBridge.dispose);
-    final String initialFen = session.getFen();
-
-    expect(
-      await session.replayMainline(<ExtMove>[
-        ExtMove('d6', side: PieceColor.white),
-        ExtMove('f4', side: PieceColor.black),
-      ]),
-      isTrue,
-    );
-    await tester.pump();
-    expect(_currentPathMoves(), <String>['d6', 'f4']);
-    expect(session.getFen(), isNot(initialFen));
-
-    await _pumpSessionPlayArea(tester, session);
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
-    );
-    await tester.pumpAndSettle();
-
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_clear_saved_moves')),
-      findsOne,
-    );
-    expect(find.text('Clear moves'), findsOneWidget);
-
-    await tester.tap(
-      find.byKey(const Key('play_area_regular_game_menu_clear_saved_moves')),
-    );
-    await tester.pumpAndSettle();
-
-    expect(_currentPathMoves(), isEmpty);
-    expect(session.getFen(), initialFen);
-    expect(find.text('Analysis moves cleared.'), findsOneWidget);
-  });
-
   testWidgets('analysis engine chip aligns with unlabeled bottom bar icons', (
     WidgetTester tester,
   ) async {

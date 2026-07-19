@@ -96,10 +96,6 @@ void main() {
         (GameMenuContribution contribution) =>
             contribution.id == MillRouteIds.analysis,
       );
-      final GameMenuContribution resumeAnalysis = contributions.singleWhere(
-        (GameMenuContribution contribution) =>
-            contribution.id == MillRouteIds.resumeAnalysis,
-      );
       final GameMenuContribution statistics = contributions.singleWhere(
         (GameMenuContribution contribution) =>
             contribution.id == MillRouteIds.statistics,
@@ -113,14 +109,13 @@ void main() {
       expect(analysis.contentKey, const Key('analysis'));
       expect(analysis.section, GameMenuSection.tools);
       expect(analysis.icon, isNotNull);
-      expect(resumeAnalysis.menuKey, const Key('drawer_item_resume_analysis'));
-      expect(resumeAnalysis.contentKey, const Key('resume_analysis'));
-      expect(resumeAnalysis.section, GameMenuSection.tools);
-      expect(resumeAnalysis.icon, isNotNull);
-      expect((analysis.builder(context) as GamePage).resumeAnalysis, isFalse);
+      expect((analysis.builder(context) as GamePage).resumeAnalysis, isTrue);
       expect(
-        (resumeAnalysis.builder(context) as GamePage).resumeAnalysis,
-        isTrue,
+        contributions.where(
+          (GameMenuContribution contribution) =>
+              contribution.id == MillRouteIds.resumeAnalysis,
+        ),
+        isEmpty,
       );
       expect(statistics.menuKey, const Key('drawer_item_statistics'));
       expect(statistics.contentKey, const Key('statistics'));

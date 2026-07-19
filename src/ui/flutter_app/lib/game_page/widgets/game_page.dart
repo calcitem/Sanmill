@@ -84,7 +84,12 @@ part 'game_header.dart';
 part 'game_page_action_sheet.dart';
 part 'modals/move_options_modal.dart';
 
-enum _AnalysisAppBarAction { toggleSound, settings, toggleEngineLines }
+enum _AnalysisAppBarAction {
+  newAnalysis,
+  toggleSound,
+  settings,
+  toggleEngineLines,
+}
 
 /// Main GamePage widget that initializes the game controller and passes it
 /// to a stateful inner widget managing annotation mode.
@@ -215,12 +220,7 @@ class _GamePageInnerState extends State<_GamePageInner>
 
     if (widget.resumeAnalysis) {
       try {
-        final bool restored = AnalysisSessionStorage.instance.restoreCurrent(
-          controller,
-        );
-        if (!restored) {
-          throw const FormatException('No saved Analysis session exists.');
-        }
+        AnalysisSessionStorage.instance.restoreCurrent(controller);
       } catch (error, stackTrace) {
         logger.e(
           '[AnalysisSession] Failed to restore the saved session.',
@@ -364,6 +364,43 @@ class _GamePageInnerState extends State<_GamePageInner>
     } else {
       unawaited(SoundManager().stopBackgroundMusic());
     }
+  }
+
+  Future<void> _startNewAnalysis() async {
+    assert(_isAnalysisPage, 'New analysis is analysis-only.');
+    final NativeMillGameSession? session =
+        widget.controller.activeNativeMillSession;
+    assert(session != null, 'New analysis requires an active Mill session.');
+    if (session == null) {
+      return;
+    }
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'analysisAppBar', 'action': 'newAnalysis'},
+    );
+    if (_isAnnotationMode) {
+      _annotationManager.clear();
+      _isAnnotationMode = false;
+      widget.controller.isAnnotationMode = false;
+    }
+    _analysisRecorder?.moveCountNotifier.removeListener(
+      _scheduleAnalysisSessionSave,
+    );
+    widget.controller.startNewAnalysis(session: session);
+    _analysisRecorder = widget.controller.gameRecorder;
+    _analysisRecorder!.moveCountNotifier.addListener(
+      _scheduleAnalysisSessionSave,
+    );
+    if (mounted) {
+      setState(() {});
+    }
+    await _saveAnalysisSession();
+    if (!mounted) {
+      return;
+    }
+    rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+      S.of(context).newAnalysisStarted,
+    );
   }
 
   @override
@@ -711,9 +748,12 @@ class _GamePageInnerState extends State<_GamePageInner>
             return PopupMenuButton<_AnalysisAppBarAction>(
               key: const Key('game_page_analysis_menu_button'),
               tooltip: strings.menu,
+              position: PopupMenuPosition.under,
               icon: Icon(Icons.more_horiz, semanticLabel: strings.menu),
               onSelected: (_AnalysisAppBarAction action) {
                 switch (action) {
+                  case _AnalysisAppBarAction.newAnalysis:
+                    unawaited(_startNewAnalysis());
                   case _AnalysisAppBarAction.toggleSound:
                     _toggleAnalysisSound();
                   case _AnalysisAppBarAction.settings:
@@ -741,6 +781,15 @@ class _GamePageInnerState extends State<_GamePageInner>
               },
               itemBuilder: (BuildContext context) {
                 return <PopupMenuEntry<_AnalysisAppBarAction>>[
+                  PopupMenuItem<_AnalysisAppBarAction>(
+                    key: const Key('game_page_analysis_menu_new_analysis'),
+                    value: _AnalysisAppBarAction.newAnalysis,
+                    child: ListTile(
+                      leading: const Icon(Icons.add_circle_outline_rounded),
+                      title: Text(strings.newAnalysis),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
                   PopupMenuItem<_AnalysisAppBarAction>(
                     key: const Key('game_page_analysis_menu_sound'),
                     value: _AnalysisAppBarAction.toggleSound,

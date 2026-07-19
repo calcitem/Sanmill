@@ -242,7 +242,7 @@ void main() {
   });
 
   testWidgets(
-    'Resume analysis restores after the page mounts',
+    'Analysis entry resumes after the page mounts',
     (WidgetTester tester) async {
       tester.view
         ..physicalSize = const Size(390, 844)
@@ -253,16 +253,18 @@ void main() {
       addTearDown(AnalysisSessionStorage.instance.clear);
 
       const RuleSettings rules = NineMensMorrisRuleSettings();
-      const String initialFen =
-          '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 '
-          'ids:nodes';
+      final NativeMillGameSession source = NativeMillGameSession(rules: rules);
+      expect(source.applyMoveString('d6'), isTrue);
       final GameRecorder recorder = GameRecorder(recordedRuleSettings: rules);
+      recorder.appendMove(ExtMove('d6', side: PieceColor.white));
+      final String savedFen = source.getFen();
       final AnalysisSessionRecord record = AnalysisSessionRecord.capture(
         rules: rules,
         recorder: recorder,
-        currentFen: initialFen,
+        currentFen: savedFen,
       );
       final Map<String, dynamic> encodedRecord = record.toJson();
+      source.dispose();
       await tester.runAsync(
         () => DB().reviewDataBox.put(
           AnalysisSessionStorage.storageKey,
@@ -274,13 +276,15 @@ void main() {
       await tester.pump(const Duration(milliseconds: 350));
       await tester.tap(find.byKey(const Key('sanmill_tab_more')));
       await tester.pump(const Duration(milliseconds: 350));
-      final Finder resumeAnalysis = find.byKey(
-        const Key('drawer_item_resume_analysis'),
+      final Finder analysis = find.byKey(const Key('drawer_item_analysis'));
+      expect(analysis, findsOneWidget);
+      expect(
+        find.byKey(const Key('drawer_item_resume_analysis')),
+        findsNothing,
       );
-      expect(resumeAnalysis, findsOneWidget);
-      await tester.ensureVisible(resumeAnalysis);
+      await tester.ensureVisible(analysis);
       await tester.pump(const Duration(milliseconds: 350));
-      await tester.tap(resumeAnalysis);
+      await tester.tap(analysis);
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 350));
 
@@ -289,7 +293,13 @@ void main() {
         find.byKey(const Key('game_page_analysis_appbar')),
         findsOneWidget,
       );
-      expect(GameController().activeFen, initialFen);
+      expect(GameController().activeFen, savedFen);
+      expect(
+        GameController().gameRecorder.currentPath.map(
+          (ExtMove move) => move.move,
+        ),
+        <String>['d6'],
+      );
 
       await tester.binding.handlePopRoute();
       await tester.pump(const Duration(milliseconds: 350));

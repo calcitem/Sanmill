@@ -153,6 +153,45 @@ void main() {
     },
   );
 
+  test('starts a new analysis with the current rules and an empty tree', () {
+    const RuleSettings previousRules = RuleSettings(hasDiagonalLines: true);
+    const RuleSettings currentRules = RuleSettings(
+      nMoveRule: 42,
+      mayRemoveFromMillsAlways: true,
+    );
+    DB().ruleSettings = currentRules;
+
+    final NativeMillGameSession session = NativeMillGameSession(
+      rules: previousRules,
+    );
+    addTearDown(session.dispose);
+    expect(session.applyMoveString('d6'), isTrue);
+
+    final GameRecorder recorder = GameRecorder(
+      setupPosition: session.getFen(),
+      recordedRuleSettings: previousRules,
+    )..appendMove(ExtMove('d6', side: PieceColor.white));
+    final GameController controller = GameController();
+    controller.gameInstance.gameMode = GameMode.analysis;
+    controller.gameRecorder = recorder;
+    controller.bindActiveSession(session);
+    addTearDown(() => controller.unbindActiveSession(session));
+
+    controller.startNewAnalysis(session: session);
+
+    expect(identical(controller.gameRecorder, recorder), isTrue);
+    expect(controller.gameRecorder.currentPath, isEmpty);
+    expect(controller.gameRecorder.setupPosition, isNull);
+    expect(session.undoDepth, 0);
+    expect(session.activeRuleSettings.toJson(), currentRules.toJson());
+
+    final NativeMillGameSession expected = NativeMillGameSession(
+      rules: currentRules,
+    );
+    addTearDown(expected.dispose);
+    expect(session.getFen(), expected.getFen());
+  });
+
   test('rejects a detached current-position path', () async {
     const RuleSettings rules = RuleSettings();
     final GameRecorder recorder = _branchedRecorder(rules);

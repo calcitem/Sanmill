@@ -6701,5 +6701,9 @@
     "humanAiYouMoveFirst": "You move first",
     "@humanAiYouMoveFirst": {},
     "humanAiComputerMovesFirst": "Computer moves first",
-    "@humanAiComputerMovesFirst": {}
+    "@humanAiComputerMovesFirst": {},
+    "newAnalysis": "New analysis",
+    "@newAnalysis": {},
+    "newAnalysisStarted": "New analysis started.",
+    "@newAnalysisStarted": {}
 }

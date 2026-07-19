@@ -1183,11 +1183,11 @@ void main() {
     expect(chinese.piecesRemoved(chinese.black, 2), '后手方：被吃掉 2 枚棋子');
   });
 
-  test('names the Chinese Analysis clear action by its actual scope', () {
+  test('names the Chinese new Analysis action', () {
     final S chinese = lookupS(const Locale('zh'));
 
-    expect(chinese.clearAnalysisMoves, '清空着法');
-    expect(chinese.analysisMovesCleared, '已清空分析着法。');
+    expect(chinese.newAnalysis, '新建分析');
+    expect(chinese.newAnalysisStarted, '已新建分析。');
   });
 
   test('lists Chinese computer move sources in lookup order', () {

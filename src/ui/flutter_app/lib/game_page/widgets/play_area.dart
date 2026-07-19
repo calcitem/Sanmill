@@ -1139,30 +1139,6 @@ class PlayAreaState extends State<PlayArea> {
     }
   }
 
-  void _clearAnalysisMovesFromMenu({
-    required NativeMillGameSession session,
-    required S strings,
-  }) {
-    assert(_isAnalysisMode, 'Clear analysis moves is analysis-mode only.');
-    RecordingService().recordEvent(
-      RecordingEventType.toolbarAction,
-      <String, dynamic>{'toolbar': 'analysisMenu', 'action': 'clearSavedMoves'},
-    );
-
-    GameController().clearAnalysisMoves(session: session);
-    if (mounted) {
-      setState(() {});
-    }
-
-    assert(
-      rootScaffoldMessengerKey.currentState != null,
-      'Analysis clear feedback requires the root scaffold messenger.',
-    );
-    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-      strings.analysisMovesCleared,
-    );
-  }
-
   Future<void> _toggleAnalysisThreatFromAnalysis(
     BuildContext context, {
     required String toolbar,
@@ -2614,17 +2590,6 @@ class PlayAreaState extends State<PlayArea> {
       backgroundColor: _actionSheetBackground(hostContext),
       foregroundColor: _actionSheetForeground(hostContext),
       actions: <LichessActionSheetAction>[
-        if (_isAnalysisMode && nativeHostSession != null)
-          LichessActionSheetAction(
-            key: const Key('play_area_regular_game_menu_clear_saved_moves'),
-            leading: const Icon(Icons.clear_all_outlined),
-            makeLabel: (BuildContext context) =>
-                Text(strings.clearAnalysisMoves),
-            onPressed: () => _clearAnalysisMovesFromMenu(
-              session: nativeHostSession,
-              strings: strings,
-            ),
-          ),
         if (_isAnalysisMode &&
             nativeHostSession != null &&
             AnalysisService.canShowThreat(nativeHostSession))

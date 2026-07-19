@@ -6,8 +6,7 @@ import 'dart:async';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
-import '../../game_page/services/mill.dart'
-    show AnalysisSessionStorage, GameController, GameMode;
+import '../../game_page/services/mill.dart' show GameController, GameMode;
 import '../../game_page/services/painters/painters.dart' show deviceWidth;
 import '../../game_page/widgets/dialogs/bluetooth_config_dialog.dart';
 import '../../game_page/widgets/dialogs/lan_config_dialog.dart';
@@ -494,17 +493,6 @@ class MillGameModule extends GameModule {
         icon: Icons.biotech_outlined,
         menuKey: const Key('drawer_item_analysis'),
         contentKey: const Key('analysis'),
-        builder: (BuildContext context, {Key? key, GameSession? session}) =>
-            GamePage(GameMode.analysis, key: key),
-      ),
-      GameMenuContribution(
-        id: MillRouteIds.resumeAnalysis,
-        label: s.resumeAnalysis,
-        section: GameMenuSection.tools,
-        icon: Icons.history_rounded,
-        menuKey: const Key('drawer_item_resume_analysis'),
-        contentKey: const Key('resume_analysis'),
-        isAvailable: (_) => AnalysisSessionStorage.instance.hasSession,
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
             GamePage(GameMode.analysis, key: key, resumeAnalysis: true),
       ),
