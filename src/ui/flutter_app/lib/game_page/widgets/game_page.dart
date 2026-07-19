@@ -322,10 +322,10 @@ class _GamePageInnerState extends State<_GamePageInner>
     debugPrint('Annotation mode is now: $_isAnnotationMode');
   }
 
-  void _toggleAppBarAnnotationMode() {
+  void _toggleTopAnnotationMode() {
     assert(
-      _isAnalysisPage || _isOfflineBoardGame,
-      'The AppBar annotation action requires a game AppBar.',
+      _isAnalysisPage || _isOfflineBoardGame || _isSetupPositionGame,
+      'The annotation action requires a dedicated top action.',
     );
     RecordingService().recordEvent(
       RecordingEventType.annotationAction,
@@ -427,8 +427,7 @@ class _GamePageInnerState extends State<_GamePageInner>
               ),
               // Setup Position keeps editor-specific tools in the top corner;
               // regular play actions live in the Lichess-style bottom menu.
-              if (GameController().gameInstance.gameMode ==
-                  GameMode.setupPosition)
+              if (_isSetupPositionGame)
                 Align(
                   key: const Key('game_page_top_right_buttons_align'),
                   alignment: AlignmentDirectional.topEnd,
@@ -440,6 +439,8 @@ class _GamePageInnerState extends State<_GamePageInner>
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
+                            if (DB().displaySettings.isAnnotationToolbarShown)
+                              _buildSetupPositionAnnotationButton(context),
                             if (EnvironmentConfig.devMode)
                               IconButton(
                                 key: const Key(
@@ -503,11 +504,11 @@ class _GamePageInnerState extends State<_GamePageInner>
     // annotation mode the expanded palette becomes a dedicated editing panel.
     final bool annotationToolbarEnabled =
         DB().displaySettings.isAnnotationToolbarShown;
-    final bool hasAnnotationAppBarAction =
-        _isAnalysisPage || _isOfflineBoardGame;
+    final bool hasAnnotationTopAction =
+        _isAnalysisPage || _isOfflineBoardGame || _isSetupPositionGame;
     final Widget toolbar =
         annotationToolbarEnabled &&
-            (!hasAnnotationAppBarAction || _isAnnotationMode)
+            (!hasAnnotationTopAction || _isAnnotationMode)
         ? AnnotationToolbarLayer(
             annotationManager: _annotationManager,
             isAnnotationMode: _isAnnotationMode,
@@ -543,6 +544,9 @@ class _GamePageInnerState extends State<_GamePageInner>
 
   bool get _isAnalysisPage =>
       widget.controller.gameInstance.gameMode == GameMode.analysis;
+
+  bool get _isSetupPositionGame =>
+      widget.controller.gameInstance.gameMode == GameMode.setupPosition;
 
   bool get _isPuzzleGame =>
       widget.controller.gameInstance.gameMode == GameMode.puzzle;
@@ -814,7 +818,24 @@ class _GamePageInnerState extends State<_GamePageInner>
       isSelected: _isAnnotationMode,
       selectedIcon: const Icon(FluentIcons.draw_image_24_filled),
       icon: const Icon(FluentIcons.draw_image_24_regular),
-      onPressed: _toggleAppBarAnnotationMode,
+      onPressed: _toggleTopAnnotationMode,
+    );
+  }
+
+  Widget _buildSetupPositionAnnotationButton(BuildContext context) {
+    final S strings = S.of(context);
+    return IconButton(
+      key: const Key('game_page_setup_position_annotation_button'),
+      tooltip: _isAnnotationMode
+          ? strings.exitAnnotationMode
+          : strings.enterAnnotationMode,
+      isSelected: _isAnnotationMode,
+      selectedIcon: const Icon(
+        FluentIcons.draw_image_24_filled,
+        color: Colors.white,
+      ),
+      icon: const Icon(FluentIcons.draw_image_24_regular, color: Colors.white),
+      onPressed: _toggleTopAnnotationMode,
     );
   }
 

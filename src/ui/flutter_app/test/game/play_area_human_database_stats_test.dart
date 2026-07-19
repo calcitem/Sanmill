@@ -2515,7 +2515,7 @@ void main() {
   ) async {
     db = _GamePageDb(
       generalSettings: const GeneralSettings(),
-      displaySettings: const DisplaySettings(),
+      displaySettings: const DisplaySettings(isAnnotationToolbarShown: true),
     );
     DB.instance = db;
     final NativeMillGameSession session = await _bindNativeGame(
@@ -2549,6 +2549,30 @@ void main() {
       findsOne,
     );
     expect(find.byKey(const Key('setup_position_three_row_toolbar')), findsOne);
+    final Finder annotationButton = find.byKey(
+      const Key('game_page_setup_position_annotation_button'),
+    );
+    final Finder imageRecognitionButton = find.byKey(
+      const Key('game_page_image_recognition_button'),
+    );
+    expect(annotationButton, findsOneWidget);
+    expect(imageRecognitionButton, findsOneWidget);
+    expect(
+      find.byKey(const Key('annotation_toolbar_collapsed_position')),
+      findsNothing,
+    );
+    expect(
+      tester.getRect(annotationButton).right,
+      lessThanOrEqualTo(tester.getRect(imageRecognitionButton).left),
+    );
+
+    await tester.tap(annotationButton);
+    await tester.pump();
+    expect(
+      find.byKey(const Key('annotation_toolbar_expanded_position')),
+      findsOneWidget,
+    );
+    expect(tester.widget<IconButton>(annotationButton).isSelected, isTrue);
     expect(GameController().headerTipNotifier.message, 'Board editor');
   });
 
