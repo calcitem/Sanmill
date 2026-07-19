@@ -6566,5 +6566,9 @@
     "resumeAnalysis": "继续上次分析",
     "@resumeAnalysis": {
         "description": "Menu action that restores the most recently saved analysis session"
+    },
+    "noMatchingGames": "没有匹配的对局",
+    "@noMatchingGames": {
+        "description": "Empty state shown when Game history search has no matches"
     }
 }
