@@ -33,7 +33,6 @@ import '../../review/services/review_record_factory.dart';
 import '../../review/services/review_storage.dart';
 import '../../review/widgets/review_page.dart';
 import '../../rule_settings/models/rule_settings.dart';
-import '../../rule_settings/widgets/rule_settings_page.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/catcher_service.dart';

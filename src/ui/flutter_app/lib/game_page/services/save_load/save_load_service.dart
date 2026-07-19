@@ -312,7 +312,9 @@ class LoadService {
   }
 
   /// Main function to load game from a file.
-  static Future<void> loadGame(
+  ///
+  /// Returns whether the file was read and imported successfully.
+  static Future<bool> loadGame(
     BuildContext context,
     String? filePath, {
     required bool isRunning,
@@ -324,9 +326,10 @@ class LoadService {
 
     if (filePath == null) {
       logger.e('$_logTag File path is null');
-      return;
+      return false;
     }
 
+    bool loadSucceeded = false;
     try {
       // Check for 'content' and 'file' prefix in the filePath
       if (filePath.startsWith('content') || filePath.startsWith('file://')) {
@@ -337,9 +340,10 @@ class LoadService {
           rootScaffoldMessengerKey.currentState!.showSnackBarClear(
             gameOpenFailed,
           );
-          return;
+          return false;
         }
         GameController().initialSharingMoveList = fileContent;
+        loadSucceeded = true;
         if (isRunning == true) {
           // Delay 1s and refresh Game Board
           Future<void>.delayed(const Duration(seconds: 1), () {
@@ -352,14 +356,14 @@ class LoadService {
         final String fileContent = await readFileContent(filePath);
         logger.t('$_logTag File Content: $fileContent');
         if (!context.mounted) {
-          return;
+          return false;
         }
         final ({bool success, bool includedVariations, String? errorMessage})
         importResult = await importGameData(context, fileContent);
         if (importResult.success) {
           GameController().loadedGameSourcePath = File(filePath).absolute.path;
           if (!context.mounted) {
-            return;
+            return false;
           }
 
           // Record the load event BEFORE the history-navigation events so that
@@ -376,9 +380,10 @@ class LoadService {
             includedVariations: importResult.includedVariations,
             showSuccessMessage: showSuccessMessage,
           );
+          loadSucceeded = true;
         }
         if (!context.mounted) {
-          return;
+          return false;
         }
         if (shouldPop) {
           Navigator.pop(context); // Only pop if used in a dialog context.
@@ -393,16 +398,19 @@ class LoadService {
         '$_logTag loadGame failed for "$filePath": $exception\n$stackTrace',
       );
       if (!context.mounted) {
-        return;
+        return false;
       }
       GameController().headerTipNotifier.showTip(S.of(context).loadFailed);
       if (!context.mounted) {
-        return;
+        return false;
       }
       if (shouldPop) {
         Navigator.pop(context); // Only pop if used in a dialog context.
       }
-      return;
+      return false;
+    }
+    if (!loadSucceeded) {
+      return false;
     }
     GameController().loadedGameFilenamePrefix = extractPgnFilenamePrefix(
       filePath,
@@ -419,6 +427,7 @@ class LoadService {
         GameController().headerTipNotifier.showTip(loadedGameFilenamePrefix);
       });
     }
+    return true;
   }
 
   /// Saves the directory path of the given file path.

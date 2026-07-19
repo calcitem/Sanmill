@@ -2452,7 +2452,7 @@ class GameController {
     BuildContext context, {
     bool shouldPop = true,
   }) async {
-    return LoadService.loadGame(
+    await LoadService.loadGame(
       context,
       null,
       isRunning: true,

@@ -551,12 +551,18 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
   }
 
   Future<void> _openGame(SavedGameEntry e) async {
-    await LoadService.loadGame(context, e.path, isRunning: true);
+    final bool loaded = await LoadService.loadGame(
+      context,
+      e.path,
+      isRunning: true,
+      shouldPop: false,
+    );
+    if (!loaded || !mounted) {
+      return;
+    }
     final VoidCallback? onGameLoaded = widget.onGameLoaded;
     // Close the SavedGamesPage after loading the game.
-    if (mounted) {
-      Navigator.of(context).pop();
-    }
+    Navigator.of(context).pop();
     if (onGameLoaded != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) => onGameLoaded());
     }
