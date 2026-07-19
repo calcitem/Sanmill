@@ -207,6 +207,10 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     _record('cancel');
     GameController().headerTipNotifier.showTip(S.of(context).restoredPosition);
     GameController().cancelSetupPosition();
+    if (ModalRoute.of(context)?.settings.name ==
+        MillRouteIds.setupPosition.value) {
+      Navigator.of(context).pop();
+    }
   }
 
   void _done() {
