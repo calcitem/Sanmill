@@ -143,6 +143,44 @@ void main() {
       ]);
     });
 
+    test('history replay events never mutate the recorder', () async {
+      final _EventOnlySession session = _EventOnlySession();
+      final mill.GameRecorder recorder = mill.GameRecorder();
+      final MillSessionRecorderBridge bridge = MillSessionRecorderBridge(
+        session: session,
+        recorder: recorder,
+      );
+      addTearDown(bridge.dispose);
+
+      recorder.appendMove(mill.ExtMove('a7', side: mill.PieceColor.white));
+      final List<mill.ExtMove> before = recorder.currentPath;
+
+      for (final GameSessionEvent event in const <GameSessionEvent>[
+        GameSessionEvent(
+          MillEventTypes.moveApplied,
+          payload: <String, Object?>{
+            MillEventPayloadKeys.historyReplay: true,
+            'move': 'd7',
+            'mover': 'second',
+          },
+        ),
+        GameSessionEvent(
+          MillEventTypes.undoApplied,
+          payload: <String, Object?>{MillEventPayloadKeys.historyReplay: true},
+        ),
+        GameSessionEvent(
+          MillEventTypes.redoApplied,
+          payload: <String, Object?>{MillEventPayloadKeys.historyReplay: true},
+        ),
+      ]) {
+        session.emit(event);
+      }
+      await Future<void>.delayed(Duration.zero);
+
+      expect(recorder.currentPath, before);
+      expect(recorder.mainlineMoves, hasLength(1));
+    });
+
     test('redo resumes the variation selected before undo', () async {
       final _EventOnlySession session = _EventOnlySession();
       final mill.GameRecorder recorder = mill.GameRecorder();

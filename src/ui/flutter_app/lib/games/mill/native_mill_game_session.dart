@@ -145,6 +145,7 @@ class NativeMillGameSession implements GameSessionHandle {
   final StreamController<GameSessionEvent> _events =
       StreamController<GameSessionEvent>.broadcast(sync: true);
   bool _disposed = false;
+  bool _isReplayingMainline = false;
   GameAction? _lastSearchLegalAction;
   final List<_MillPieceNumberState> _pieceNumberHistory =
       <_MillPieceNumberState>[_MillPieceNumberState.empty];
@@ -980,58 +981,67 @@ class NativeMillGameSession implements GameSessionHandle {
       hypothesisId: 'RACE,STALE,NOTATION',
     );
     // #endregion
-    while (undoDepth > 0) {
-      await undo();
-    }
-    // #region agent log
-    if (undoDepth != 0) {
-      agentDbg(
-        'native_mill_game_session.dart:replayMainline:undoLoopExit',
-        'undoDepth not zero after undo loop',
-        <String, Object?>{
-          'session': identityHashCode(this),
-          'undoDepthAfterLoop': undoDepth,
-        },
-        hypothesisId: 'RACE',
-      );
-    }
-    // #endregion
-    int ply = 0;
-    for (final ExtMove move in movesList) {
-      final String moveString = move.move;
-      GameAction? action;
-      for (final GameAction legal in legalActions) {
-        if (MillActionCodec.moveStringFrom(legal) == moveString) {
-          action = legal;
-          break;
-        }
+    assert(
+      !_isReplayingMainline,
+      'Native mainline replay must not be entered recursively.',
+    );
+    _isReplayingMainline = true;
+    try {
+      while (undoDepth > 0) {
+        await undo();
       }
-      if (action == null) {
-        // #region agent log
+      // #region agent log
+      if (undoDepth != 0) {
         agentDbg(
-          'native_mill_game_session.dart:replayMainline:mismatch',
-          'replayMainline notation mismatch',
+          'native_mill_game_session.dart:replayMainline:undoLoopExit',
+          'undoDepth not zero after undo loop',
           <String, Object?>{
             'session': identityHashCode(this),
-            'ply': ply,
-            'wantedMove': moveString,
-            'legalActionNotations': legalActions
-                .map((GameAction a) => MillActionCodec.moveStringFrom(a))
-                .toList(),
-            'phase': state.value.phase,
-            'activeSeat': state.value.activeSeat.toString(),
-            'undoDepth': undoDepth,
-            'fen': getFen(),
+            'undoDepthAfterLoop': undoDepth,
           },
-          hypothesisId: 'RACE,STALE,NOTATION',
+          hypothesisId: 'RACE',
         );
-        // #endregion
-        return false;
       }
-      await apply(action);
-      ply++;
+      // #endregion
+      int ply = 0;
+      for (final ExtMove move in movesList) {
+        final String moveString = move.move;
+        GameAction? action;
+        for (final GameAction legal in legalActions) {
+          if (MillActionCodec.moveStringFrom(legal) == moveString) {
+            action = legal;
+            break;
+          }
+        }
+        if (action == null) {
+          // #region agent log
+          agentDbg(
+            'native_mill_game_session.dart:replayMainline:mismatch',
+            'replayMainline notation mismatch',
+            <String, Object?>{
+              'session': identityHashCode(this),
+              'ply': ply,
+              'wantedMove': moveString,
+              'legalActionNotations': legalActions
+                  .map((GameAction a) => MillActionCodec.moveStringFrom(a))
+                  .toList(),
+              'phase': state.value.phase,
+              'activeSeat': state.value.activeSeat.toString(),
+              'undoDepth': undoDepth,
+              'fen': getFen(),
+            },
+            hypothesisId: 'RACE,STALE,NOTATION',
+          );
+          // #endregion
+          return false;
+        }
+        await apply(action);
+        ply++;
+      }
+      return true;
+    } finally {
+      _isReplayingMainline = false;
     }
-    return true;
   }
 
   @override
@@ -1094,7 +1104,17 @@ class NativeMillGameSession implements GameSessionHandle {
 
   void _emit(String type, Map<String, Object?> payload) {
     if (!_events.isClosed) {
-      _events.add(GameSessionEvent(type, payload: payload));
+      _events.add(
+        GameSessionEvent(
+          type,
+          payload: _isReplayingMainline
+              ? <String, Object?>{
+                  ...payload,
+                  MillEventPayloadKeys.historyReplay: true,
+                }
+              : payload,
+        ),
+      );
     }
   }
 

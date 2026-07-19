@@ -9,6 +9,7 @@
 // Nine Men's Morris rules.
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/game_page/services/import_export/pgn.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
@@ -94,6 +95,36 @@ void main() {
         startsWith('{Imported study note} 1. a7 d7'),
       );
     }, skip: nativeLibrarySkipReason());
+  });
+
+  group("ImportService PGN mainline", () {
+    test(
+      "Tag-paired movetext is imported exactly once",
+      () {
+        const String pgnText = '''
+[Event "Import test"]
+[Variant "Nine Men's Morris"]
+[Result "*"]
+
+1. d6 f4 2. d2 b4 *''';
+
+        ImportService.import(pgnText);
+
+        final GameRecorder recorder = GameController().newGameRecorder!;
+        expect(
+          recorder.mainlineMoves.map((ExtMove move) => move.move),
+          <String>['d6', 'f4', 'd2', 'b4'],
+        );
+        expect(recorder.pgnRoot.children, hasLength(1));
+
+        int nodeCount(PgnNode<ExtMove> node) => node.children.fold<int>(
+          node.data == null ? 0 : 1,
+          (int count, PgnNode<ExtMove> child) => count + nodeCount(child),
+        );
+        expect(nodeCount(recorder.pgnRoot), 4);
+      },
+      skip: nativeLibrarySkipReason(),
+    );
   });
 
   group("ImportService rule variants", () {

@@ -35,6 +35,15 @@ abstract final class MillEventTypes {
   static const String actionIgnored = 'millActionIgnored';
 }
 
+/// Stable payload keys shared by Mill session event producers and listeners.
+abstract final class MillEventPayloadKeys {
+  /// True when an event was emitted while reconstructing historical state.
+  ///
+  /// State and animation listeners may still observe these events, but the
+  /// recorder bridge must not write them back into the existing move tree.
+  static const String historyReplay = 'historyReplay';
+}
+
 /// Phase name constants used in [GameStateSnapshot.phase] for Mill sessions.
 ///
 /// [legacy] is reserved for compatibility snapshots emitted by deprecated

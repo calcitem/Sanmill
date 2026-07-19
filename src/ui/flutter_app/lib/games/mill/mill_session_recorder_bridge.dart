@@ -40,6 +40,9 @@ class MillSessionRecorderBridge {
   Future<void> dispose() => _subscription.cancel();
 
   void _onEvent(GameSessionEvent event) {
+    if (event.payload[MillEventPayloadKeys.historyReplay] == true) {
+      return;
+    }
     if (event.type != MillEventTypes.moveApplied) {
       if (event.type == MillEventTypes.undoApplied) {
         _moveRecorderBack();
