@@ -421,6 +421,22 @@ class AnimationManager {
         _putDownAnimationController.isAnimating;
   }
 
+  /// Whether an applied turn is still moving a piece into its settled state.
+  ///
+  /// Pick-up is deliberately excluded: selecting the next piece should not
+  /// hide the previous turn's highlight. Place, move, remove, and put-down
+  /// animations all delay that highlight until the board has visually caught
+  /// up with the already-applied game state.
+  bool get isTurnTransitionInProgress {
+    if (_isDisposed || !allowAnimations) {
+      return false;
+    }
+    return _placeAnimationController.isAnimating ||
+        _moveAnimationController.isAnimating ||
+        _removeAnimationController.isAnimating ||
+        _putDownAnimationController.isAnimating;
+  }
+
   /// Waits until [isBoardAnimationInProgress] is false.
   ///
   /// Puzzle auto-play uses this so opponent replies do not reset a human move

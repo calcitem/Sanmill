@@ -558,6 +558,10 @@ class _GameBoardState extends State<GameBoard>
                       child: AnimatedBuilder(
                         animation: Listenable.merge(<Listenable>[
                           GameController().gameRecorder.moveCountNotifier,
+                          animationManager.placeAnimationController,
+                          animationManager.moveAnimationController,
+                          animationManager.removeAnimationController,
+                          animationManager.putDownAnimationController,
                           DB().listenDisplaySettings,
                           if (scopedSession != null) scopedSession.state,
                         ]),
@@ -565,7 +569,8 @@ class _GameBoardState extends State<GameBoard>
                           final MillBoardView view =
                               GameController().activeBoardView;
                           final MillTurnHighlight? highlight =
-                              DB().displaySettings.showLastMove
+                              DB().displaySettings.showLastMove &&
+                                  !animationManager.isTurnTransitionInProgress
                               ? MillTurnHighlight.fromPath(
                                   GameController().gameRecorder.currentPath,
                                   isRemovalPending: view.action == Act.remove,

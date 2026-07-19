@@ -510,6 +510,83 @@ void main() {
     expect(disabledPainter.highlight, isNull);
   });
 
+  testWidgets('last-turn highlight waits for the piece to settle', (
+    WidgetTester tester,
+  ) async {
+    db = _GamePageDb(
+      generalSettings: const GeneralSettings(),
+      displaySettings: const DisplaySettings(
+        animationDuration: 0.4,
+        isUnplacedAndRemovedPiecesShown: false,
+      ),
+    );
+    DB.instance = db;
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.humanVsAi,
+    );
+    GameController().gameRecorder.appendMove(
+      ExtMove('d6', side: PieceColor.white),
+    );
+
+    await tester.pumpWidget(
+      _localizedApp(
+        GameSessionScope(
+          session: session,
+          child: const Scaffold(
+            body: SizedBox.square(
+              dimension: 390,
+              child: GameBoard(boardImage: null),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 1));
+    await tester.runAsync(() async {
+      await Future<void>.delayed(const Duration(milliseconds: 300));
+    });
+    await tester.pump();
+
+    final Finder highlightFinder = find.byKey(
+      const Key('custom_paint_turn_highlight'),
+    );
+    TurnHighlightPainter painter() =>
+        tester.widget<CustomPaint>(highlightFinder).painter!
+            as TurnHighlightPainter;
+
+    expect(painter().highlight, isNotNull);
+
+    GameController().animationManager.animatePlace();
+    await tester.pump();
+    expect(painter().highlight, isNull);
+
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(
+      GameController().animationManager.placeAnimationController.isAnimating,
+      isTrue,
+    );
+    expect(painter().highlight, isNull);
+
+    await tester.pumpAndSettle();
+    expect(
+      GameController().animationManager.isTurnTransitionInProgress,
+      isFalse,
+    );
+    expect(painter().highlight, isNotNull);
+
+    GameController().animationManager.animatePutDown();
+    await tester.pump();
+    expect(painter().highlight, isNull);
+
+    await tester.pumpAndSettle();
+    expect(
+      GameController().animationManager.isTurnTransitionInProgress,
+      isFalse,
+    );
+    expect(painter().highlight, isNotNull);
+  });
+
   testWidgets('hint results and clearing redraw the board overlay', (
     WidgetTester tester,
   ) async {
