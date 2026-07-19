@@ -4981,6 +4981,28 @@ void main() {
         );
     expect(bottomBarProgress.semanticsLabel, 'Analyzing…');
     expect(
+      tester
+          .widget<Opacity>(
+            find.byKey(
+              const Key('play_area_analysis_bottom_bar_engine_opacity'),
+            ),
+          )
+          .opacity,
+      1,
+    );
+    final Color expectedForeground = db.colorSettings.messageColor;
+    expect(
+      bottomBarProgress.valueColor?.value,
+      expectedForeground.withValues(alpha: 0.82),
+    );
+    final Text engineLabel = tester.widget<Text>(
+      find.byKey(const Key('play_area_analysis_bottom_bar_engine_label')),
+    );
+    expect(
+      engineLabel.style?.color,
+      expectedForeground.withValues(alpha: 0.82),
+    );
+    expect(
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
       findsNothing,
     );

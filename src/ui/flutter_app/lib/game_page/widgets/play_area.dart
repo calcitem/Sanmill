@@ -9527,14 +9527,12 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
         IconTheme.of(context).color ??
         DefaultTextStyle.of(context).style.color ??
         colorScheme.onSurface;
-    final Color activeColor = colorScheme.primary;
-    final Color chipColor = highlighted || AnalysisMode.isAnalyzing
-        ? activeColor
-        : foreground.withValues(alpha: 0.72);
-    final Color textColor = highlighted || AnalysisMode.isAnalyzing
-        ? activeColor
-        : foreground;
     final bool isAnalyzing = AnalysisMode.isAnalyzing;
+    final bool isActive = highlighted || isAnalyzing;
+    final Color chipColor = isActive
+        ? foreground
+        : foreground.withValues(alpha: 0.72);
+    final Color textColor = foreground;
     final String chipText = _chipText;
     final S strings = S.of(context);
     final String statusLabel = _statusLabel(strings);
@@ -9557,7 +9555,8 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
           onTap: onTap,
           onLongPress: onLongPress,
           child: Opacity(
-            opacity: _enabled ? 1 : 0.4,
+            key: const Key('play_area_analysis_bottom_bar_engine_opacity'),
+            opacity: _enabled || isAnalyzing ? 1 : 0.4,
             child: Stack(
               clipBehavior: Clip.none,
               fit: StackFit.expand,
