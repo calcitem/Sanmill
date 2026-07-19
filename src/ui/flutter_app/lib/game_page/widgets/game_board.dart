@@ -503,6 +503,7 @@ class _GameBoardState extends State<GameBoard>
                         animationManager.pickUpAnimationController,
                         animationManager.putDownAnimationController,
                         DB().listenDisplaySettings,
+                        DB().listenGeneralSettings,
                         if (scopedSession != null) scopedSession.state,
                       ]),
                       builder: (_, Widget? child) {
@@ -561,6 +562,19 @@ class _GameBoardState extends State<GameBoard>
                                 scopedSession is NativeMillGameSession
                                 ? scopedSession.pieceNumbersByNode
                                 : const <int, int>{},
+                            rotatePiecesForOfflineBoard:
+                                GameController().gameInstance.gameMode ==
+                                    GameMode.humanVsHuman &&
+                                DB()
+                                    .generalSettings
+                                    .offlineBoardFlipAfterMove &&
+                                (scopedSession?.state.value.activeSeat ==
+                                        PlayerSeat.second ||
+                                    (scopedSession == null &&
+                                        GameController()
+                                                .activeBoardView
+                                                .sideToMove ==
+                                            PieceColor.black)),
                           ),
                           child: DB().generalSettings.screenReaderSupport
                               ? const _BoardSemantics()

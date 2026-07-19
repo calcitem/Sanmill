@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
+import 'dart:math' show pi;
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -146,6 +147,40 @@ void main() {
       expect(paint, paints..paragraph());
     });
 
+    testWidgets('rotates offline-board pieces for the player facing from top', (
+      WidgetTester tester,
+    ) async {
+      DB().displaySettings = DB().displaySettings.copyWith(
+        isNumbersOnPiecesShown: true,
+      );
+      final NativeMillSnapshotBoardView view = _viewWithBlackAtNode(23);
+      final PiecePainter upright = _painterFor(
+        view,
+        pieceNumbersByNode: const <int, int>{23: 2},
+      );
+      final PiecePainter rotated = _painterFor(
+        view,
+        pieceNumbersByNode: const <int, int>{23: 2},
+        rotatePiecesForOfflineBoard: true,
+      );
+
+      void paintUpright(Canvas canvas) =>
+          upright.paint(canvas, const Size.square(350));
+      void paintRotated(Canvas canvas) =>
+          rotated.paint(canvas, const Size.square(350));
+
+      expect(paintUpright, isNot(paints..rotate()));
+      expect(
+        paintRotated,
+        paints
+          ..save()
+          ..rotate(angle: pi)
+          ..paragraph()
+          ..restore(),
+      );
+      expect(rotated.shouldRepaint(upright), isTrue);
+    });
+
     testWidgets('paints completed native move at destination', (
       WidgetTester tester,
     ) async {
@@ -256,6 +291,7 @@ PiecePainter _painterFor(
   NativeMillSnapshotBoardView view, {
   Map<int, int> pieceNumbersByNode = const <int, int>{},
   Set<int> legalMoveDestinationGridIndices = const <int>{},
+  bool rotatePiecesForOfflineBoard = false,
 }) {
   return PiecePainter(
     placeAnimationValue: 1.0,
@@ -270,6 +306,7 @@ PiecePainter _painterFor(
     nativeBoardView: view,
     legalMoveDestinationGridIndices: legalMoveDestinationGridIndices,
     pieceNumbersByNode: pieceNumbersByNode,
+    rotatePiecesForOfflineBoard: rotatePiecesForOfflineBoard,
   );
 }
 

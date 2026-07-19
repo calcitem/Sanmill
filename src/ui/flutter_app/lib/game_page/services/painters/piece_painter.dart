@@ -24,6 +24,7 @@ class PiecePainter extends CustomPainter {
     this.capturableGridIndices = const <int>{},
     this.legalMoveDestinationGridIndices = const <int>{},
     this.pieceNumbersByNode = const <int, int>{},
+    this.rotatePiecesForOfflineBoard = false,
   });
 
   final double placeAnimationValue;
@@ -38,6 +39,7 @@ class PiecePainter extends CustomPainter {
   final Set<int> capturableGridIndices;
   final Set<int> legalMoveDestinationGridIndices;
   final Map<int, int> pieceNumbersByNode;
+  final bool rotatePiecesForOfflineBoard;
 
   // Animation instances for place and remove effects.
   final PieceEffectAnimation placeEffectAnimation;
@@ -639,6 +641,13 @@ class PiecePainter extends CustomPainter {
 
       final Offset drawPos = piece.pos - Offset(0, lift);
 
+      if (rotatePiecesForOfflineBoard) {
+        canvas.save();
+        canvas.translate(drawPos.dx, drawPos.dy);
+        canvas.rotate(pi);
+        canvas.translate(-drawPos.dx, -drawPos.dy);
+      }
+
       if (piece.image != null) {
         paintImage(
           canvas: canvas,
@@ -666,6 +675,10 @@ class PiecePainter extends CustomPainter {
       }
 
       _paintPieceNumber(canvas, piece, drawPos);
+
+      if (rotatePiecesForOfflineBoard) {
+        canvas.restore();
+      }
     }
 
     // Draw moving pieces on top of normal pieces.
@@ -713,6 +726,13 @@ class PiecePainter extends CustomPainter {
       final double pieceInnerRadius = pieceRadius * 0.99;
 
       final Offset drawPos = piece.pos - Offset(0, lift);
+
+      if (rotatePiecesForOfflineBoard) {
+        canvas.save();
+        canvas.translate(drawPos.dx, drawPos.dy);
+        canvas.rotate(pi);
+        canvas.translate(-drawPos.dx, -drawPos.dy);
+      }
 
       // For removed pieces, add a subtle rotation synchronized with the throw arc
       // to simulate a natural tossing motion.
@@ -762,6 +782,10 @@ class PiecePainter extends CustomPainter {
       // Restore canvas if we applied rotation
       if (isRemovingThisPiece &&
           DB().displaySettings.isPiecePickUpAnimationEnabled) {
+        canvas.restore();
+      }
+
+      if (rotatePiecesForOfflineBoard) {
         canvas.restore();
       }
     }
@@ -861,6 +885,7 @@ class PiecePainter extends CustomPainter {
         oldDelegate.legalMoveDestinationGridIndices,
       ) ||
       !mapEquals(pieceNumbersByNode, oldDelegate.pieceNumbersByNode) ||
+      rotatePiecesForOfflineBoard != oldDelegate.rotatePiecesForOfflineBoard ||
       _nativeBoardVisibleStateChanged(oldDelegate);
 
   bool _nativeBoardVisibleStateChanged(PiecePainter oldDelegate) {
