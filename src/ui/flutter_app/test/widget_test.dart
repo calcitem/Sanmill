@@ -3978,14 +3978,56 @@ void main() {
           matching: find.byType(Text),
         ),
       );
-      expect(firstInHandText.data, '●●● 9');
-      expect(secondInHandText.data, '●●● 9');
+      expect(firstInHandText.data, '●●●●●●●●●');
+      expect(secondInHandText.data, '●●●●●●●●●');
       expect(firstRemovedText.data, isEmpty);
       expect(secondRemovedText.data, isEmpty);
       expect(firstInHandText.semanticsLabel, 'Player 1: 9 pieces in hand');
       expect(secondInHandText.semanticsLabel, 'Player 2: 9 pieces in hand');
       expect(firstRemovedText.semanticsLabel, 'Player 1: 0 pieces removed');
       expect(secondRemovedText.semanticsLabel, 'Player 2: 0 pieces removed');
+      expect(
+        tester
+            .getTopLeft(
+              find.byKey(const Key('opening_explorer_second_in_hand_count')),
+            )
+            .dx,
+        lessThan(
+          tester
+              .getTopLeft(
+                find.byKey(const Key('opening_explorer_first_removed_count')),
+              )
+              .dx,
+        ),
+      );
+      expect(
+        tester
+            .getTopLeft(
+              find.byKey(const Key('opening_explorer_second_removed_count')),
+            )
+            .dx,
+        lessThan(
+          tester
+              .getTopLeft(
+                find.byKey(const Key('opening_explorer_first_in_hand_count')),
+              )
+              .dx,
+        ),
+      );
+      expect(
+        tester
+            .getTopLeft(
+              find.byKey(const Key('opening_explorer_second_in_hand_count')),
+            )
+            .dy,
+        lessThan(
+          tester
+              .getTopLeft(
+                find.byKey(const Key('opening_explorer_second_removed_count')),
+              )
+              .dy,
+        ),
+      );
       expect(
         find.byKey(const Key('opening_explorer_bottom_bar')),
         findsOneWidget,

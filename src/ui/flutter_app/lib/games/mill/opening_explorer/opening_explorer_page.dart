@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import '../../../appearance_settings/models/color_settings.dart';
+import '../../../appearance_settings/models/display_settings.dart';
 import '../../../game_page/services/mill.dart'
     show ExtMove, GameController, GameMode, MoveType;
 import '../../../game_page/services/transform/transform.dart';
@@ -946,6 +947,8 @@ class _ExplorerBoardSection extends StatelessWidget {
         ValueListenableBuilder<GameStateSnapshot>(
           valueListenable: session.state,
           builder: (BuildContext context, GameStateSnapshot snapshot, _) {
+            final S strings = S.of(context);
+            final ColorSettings colors = DB().colorSettings;
             final _OpeningExplorerPieceCounts counts =
                 _OpeningExplorerPieceCounts.fromSnapshot(
                   snapshot: snapshot,
@@ -958,15 +961,26 @@ class _ExplorerBoardSection extends StatelessWidget {
                   if (showPieceRows) ...<Widget>[
                     _ExplorerPieceCountRow(
                       key: const Key('opening_explorer_in_hand_row'),
-                      firstKey: const Key(
-                        'opening_explorer_first_in_hand_count',
-                      ),
-                      secondKey: const Key(
+                      leftKey: const Key(
                         'opening_explorer_second_in_hand_count',
                       ),
-                      firstCount: counts.firstInHand,
-                      secondCount: counts.secondInHand,
-                      muted: false,
+                      rightKey: const Key(
+                        'opening_explorer_first_removed_count',
+                      ),
+                      leftCount: counts.secondInHand,
+                      rightCount: counts.firstRemoved,
+                      leftColor: colors.blackPieceColor,
+                      rightColor: colors.whitePieceColor,
+                      leftMuted: false,
+                      rightMuted: true,
+                      leftSemanticLabel: strings.inHand(
+                        strings.player2,
+                        counts.secondInHand,
+                      ),
+                      rightSemanticLabel: strings.piecesRemoved(
+                        strings.player1,
+                        counts.firstRemoved,
+                      ),
                     ),
                     const SizedBox(height: 4),
                   ],
@@ -980,15 +994,26 @@ class _ExplorerBoardSection extends StatelessWidget {
                     const SizedBox(height: 4),
                     _ExplorerPieceCountRow(
                       key: const Key('opening_explorer_removed_row'),
-                      firstKey: const Key(
-                        'opening_explorer_first_removed_count',
-                      ),
-                      secondKey: const Key(
+                      leftKey: const Key(
                         'opening_explorer_second_removed_count',
                       ),
-                      firstCount: counts.firstRemoved,
-                      secondCount: counts.secondRemoved,
-                      muted: true,
+                      rightKey: const Key(
+                        'opening_explorer_first_in_hand_count',
+                      ),
+                      leftCount: counts.secondRemoved,
+                      rightCount: counts.firstInHand,
+                      leftColor: colors.blackPieceColor,
+                      rightColor: colors.whitePieceColor,
+                      leftMuted: true,
+                      rightMuted: false,
+                      leftSemanticLabel: strings.piecesRemoved(
+                        strings.player2,
+                        counts.secondRemoved,
+                      ),
+                      rightSemanticLabel: strings.inHand(
+                        strings.player1,
+                        counts.firstInHand,
+                      ),
                     ),
                   ],
                 ],
@@ -1058,43 +1083,47 @@ class _OpeningExplorerPieceCounts {
 class _ExplorerPieceCountRow extends StatelessWidget {
   const _ExplorerPieceCountRow({
     super.key,
-    required this.firstKey,
-    required this.secondKey,
-    required this.firstCount,
-    required this.secondCount,
-    required this.muted,
+    required this.leftKey,
+    required this.rightKey,
+    required this.leftCount,
+    required this.rightCount,
+    required this.leftColor,
+    required this.rightColor,
+    required this.leftMuted,
+    required this.rightMuted,
+    required this.leftSemanticLabel,
+    required this.rightSemanticLabel,
   });
 
-  final Key firstKey;
-  final Key secondKey;
-  final int firstCount;
-  final int secondCount;
-  final bool muted;
+  final Key leftKey;
+  final Key rightKey;
+  final int leftCount;
+  final int rightCount;
+  final Color leftColor;
+  final Color rightColor;
+  final bool leftMuted;
+  final bool rightMuted;
+  final String leftSemanticLabel;
+  final String rightSemanticLabel;
 
   @override
   Widget build(BuildContext context) {
-    final ColorSettings colors = DB().colorSettings;
-    final S strings = S.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         _ExplorerPieceCountText(
-          key: firstKey,
-          count: firstCount,
-          color: colors.whitePieceColor,
-          muted: muted,
-          semanticLabel: muted
-              ? strings.piecesRemoved(strings.white, firstCount)
-              : strings.inHand(strings.white, firstCount),
+          key: leftKey,
+          count: leftCount,
+          color: leftColor,
+          muted: leftMuted,
+          semanticLabel: leftSemanticLabel,
         ),
         _ExplorerPieceCountText(
-          key: secondKey,
-          count: secondCount,
-          color: colors.blackPieceColor,
-          muted: muted,
-          semanticLabel: muted
-              ? strings.piecesRemoved(strings.black, secondCount)
-              : strings.inHand(strings.black, secondCount),
+          key: rightKey,
+          count: rightCount,
+          color: rightColor,
+          muted: rightMuted,
+          semanticLabel: rightSemanticLabel,
         ),
       ],
     );
@@ -1117,17 +1146,8 @@ class _ExplorerPieceCountText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int visibleDots = math.min(count, 3);
-    final String dots = '●' * visibleDots;
-    final String label = count <= 3 ? dots : '$dots $count';
-    final Color textColor = muted ? color.withValues(alpha: 0.55) : color;
-    final Color outlineColor =
-        ThemeData.estimateBrightnessForColor(color) == Brightness.light
-        ? Colors.black
-        : Colors.white;
-    final Color visibleOutlineColor = outlineColor.withValues(
-      alpha: muted ? 0.45 : 0.8,
-    );
+    final String label = '●' * count;
+    final Color textColor = muted ? color.withValues(alpha: 0.8) : color;
 
     return Text(
       label,
@@ -1136,11 +1156,12 @@ class _ExplorerPieceCountText extends StatelessWidget {
         color: textColor,
         fontWeight: FontWeight.w700,
         letterSpacing: 0,
-        shadows: <Shadow>[
-          Shadow(offset: const Offset(-1, 0), color: visibleOutlineColor),
-          Shadow(offset: const Offset(1, 0), color: visibleOutlineColor),
-          Shadow(offset: const Offset(0, -1), color: visibleOutlineColor),
-          Shadow(offset: const Offset(0, 1), color: visibleOutlineColor),
+        shadows: const <Shadow>[
+          Shadow(
+            offset: Offset(1, 1),
+            blurRadius: 3,
+            color: Color.fromARGB(255, 128, 128, 128),
+          ),
         ],
       ),
     );
@@ -1697,6 +1718,7 @@ class _OpeningExplorerBoardState extends State<_OpeningExplorerBoard> {
   @override
   Widget build(BuildContext context) {
     final ColorSettings colors = DB().colorSettings;
+    final DisplaySettings display = DB().displaySettings;
     final RuleSettings rules = DB().ruleSettings;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
@@ -1743,6 +1765,14 @@ class _OpeningExplorerBoardState extends State<_OpeningExplorerBoard> {
                           hintColor: colorScheme.primary,
                           removeHintColor: colorScheme.error,
                           shadowColor: colorScheme.shadow,
+                          boardBorderLineWidth: display.boardBorderLineWidth,
+                          boardInnerLineWidth: display.boardInnerLineWidth,
+                          boardCornerRadius: display.boardCornerRadius,
+                          boardShadowEnabled: display.boardShadowEnabled,
+                          pointPaintingStyle: display.pointPaintingStyle,
+                          pointWidth: display.pointWidth,
+                          pieceWidth: display.pieceWidth,
+                          showNotations: display.isNotationsShown,
                         ),
                         child: child,
                       ),
@@ -1835,6 +1865,14 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
     required this.hintColor,
     required this.removeHintColor,
     required this.shadowColor,
+    required this.boardBorderLineWidth,
+    required this.boardInnerLineWidth,
+    required this.boardCornerRadius,
+    required this.boardShadowEnabled,
+    required this.pointPaintingStyle,
+    required this.pointWidth,
+    required this.pieceWidth,
+    required this.showNotations,
   });
 
   final GameStateSnapshot snapshot;
@@ -1849,6 +1887,14 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
   final Color hintColor;
   final Color removeHintColor;
   final Color shadowColor;
+  final double boardBorderLineWidth;
+  final double boardInnerLineWidth;
+  final double boardCornerRadius;
+  final bool boardShadowEnabled;
+  final PointPaintingStyle pointPaintingStyle;
+  final double pointWidth;
+  final double pieceWidth;
+  final bool showNotations;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -1857,11 +1903,21 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
 
     final RRect background = RRect.fromRectAndRadius(
       Offset.zero & size,
-      Radius.circular(size.shortestSide * 0.035),
+      Radius.circular(boardCornerRadius),
     );
+    if (boardShadowEnabled) {
+      canvas.drawRRect(
+        background.shift(const Offset(5, 5)),
+        Paint()
+          ..color = shadowColor.withValues(alpha: 0.25)
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10),
+      );
+    }
     canvas.drawRRect(background, Paint()..color = boardBackgroundColor);
 
-    _drawCoordinates(canvas, size);
+    if (showNotations) {
+      _drawCoordinates(canvas, size);
+    }
     _drawLines(canvas, size);
     _drawPoints(canvas, size);
     _drawHints(canvas, size, legalHints.sources, hintColor, filled: false);
@@ -1943,13 +1999,16 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
   void _drawLines(Canvas canvas, Size size) {
     final Paint linePaint = Paint()
       ..color = boardLineColor
-      ..strokeWidth = math.max(2, size.shortestSide * 0.007)
       ..strokeCap = StrokeCap.round
       ..style = PaintingStyle.stroke;
     final List<List<int>> lines = hasDiagonalLines
         ? MillBoardCoordinateMaps.diagonalMillNodeLines
         : MillBoardCoordinateMaps.standardMillNodeLines;
-    for (final List<int> line in lines) {
+    for (int lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+      linePaint.strokeWidth = lineIndex < 4
+          ? boardBorderLineWidth
+          : boardInnerLineWidth;
+      final List<int> line = lines[lineIndex];
       final Path path = Path();
       for (int i = 0; i < line.length; i++) {
         final Offset p = MillBoardGeometry.nodeOffset(line[i], size);
@@ -1964,14 +2023,27 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
   }
 
   void _drawPoints(Canvas canvas, Size size) {
-    final Paint pointPaint = Paint()..color = boardLineColor;
-    final double radius = size.shortestSide * 0.013;
+    if (pointPaintingStyle == PointPaintingStyle.none) {
+      return;
+    }
+    final Paint pointPaint = Paint()
+      ..color = boardLineColor
+      ..strokeWidth = boardInnerLineWidth
+      ..style = pointPaintingStyle == PointPaintingStyle.fill
+          ? PaintingStyle.fill
+          : PaintingStyle.stroke;
     for (int node = 0; node < MillBoardGeometry.nodeCount; node++) {
-      canvas.drawCircle(
-        MillBoardGeometry.nodeOffset(node, size),
-        radius,
-        pointPaint,
-      );
+      final Offset center = MillBoardGeometry.nodeOffset(node, size);
+      if (pointPaintingStyle == PointPaintingStyle.stroke) {
+        canvas.drawCircle(
+          center,
+          pointWidth,
+          Paint()
+            ..color = boardBackgroundColor
+            ..style = PaintingStyle.fill,
+        );
+      }
+      canvas.drawCircle(center, pointWidth, pointPaint);
     }
   }
 
@@ -2004,7 +2076,12 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
     Size size,
     NativeMillSnapshotBoardView board,
   ) {
-    final double radius = size.shortestSide * 0.052;
+    final double boardFieldSide =
+        size.shortestSide * (1 - 2 * MillBoardGeometry.defaultPaddingFraction);
+    final double radius = math.max(
+      1,
+      (boardFieldSide * pieceWidth / 6 - 1) / 2,
+    );
     final Paint shadowPaint = Paint()
       ..color = shadowColor.withValues(alpha: 0.25)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2);
@@ -2068,7 +2145,16 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
         oldDelegate.blackPieceColor != blackPieceColor ||
         oldDelegate.pieceHighlightColor != pieceHighlightColor ||
         oldDelegate.hintColor != hintColor ||
-        oldDelegate.removeHintColor != removeHintColor;
+        oldDelegate.removeHintColor != removeHintColor ||
+        oldDelegate.shadowColor != shadowColor ||
+        oldDelegate.boardBorderLineWidth != boardBorderLineWidth ||
+        oldDelegate.boardInnerLineWidth != boardInnerLineWidth ||
+        oldDelegate.boardCornerRadius != boardCornerRadius ||
+        oldDelegate.boardShadowEnabled != boardShadowEnabled ||
+        oldDelegate.pointPaintingStyle != pointPaintingStyle ||
+        oldDelegate.pointWidth != pointWidth ||
+        oldDelegate.pieceWidth != pieceWidth ||
+        oldDelegate.showNotations != showNotations;
   }
 }
 
