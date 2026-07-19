@@ -4054,6 +4054,118 @@ void main() {
   );
 
   testWidgets(
+    'Home carousel review button opens review instead of the saved game',
+    (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(390, 844)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      final GeneralSettings previousGeneralSettings = DB().generalSettings;
+      final dynamic previousPrivateGameHistory = DB().reviewDataBox.get(
+        'privateGameHistory',
+      );
+      final dynamic previousReviewReports = DB().reviewDataBox.get(
+        'reviewReports',
+      );
+      final Directory recordsDirectory = Directory.systemTemp.createTempSync(
+        'sanmill-home-review-carousel-',
+      );
+      addTearDown(() {
+        DB().generalSettings = previousGeneralSettings;
+        if (previousPrivateGameHistory == null) {
+          unawaited(DB().reviewDataBox.delete('privateGameHistory'));
+        } else {
+          unawaited(
+            DB().reviewDataBox.put(
+              'privateGameHistory',
+              previousPrivateGameHistory,
+            ),
+          );
+        }
+        if (previousReviewReports == null) {
+          unawaited(DB().reviewDataBox.delete('reviewReports'));
+        } else {
+          unawaited(
+            DB().reviewDataBox.put('reviewReports', previousReviewReports),
+          );
+        }
+        if (recordsDirectory.existsSync()) {
+          recordsDirectory.deleteSync(recursive: true);
+        }
+      });
+      DB().generalSettings = previousGeneralSettings.copyWith(
+        lastPgnSaveDirectory: recordsDirectory.path,
+      );
+      File('${recordsDirectory.path}/completed.pgn').writeAsStringSync('''
+[Event "Completed game"]
+[White "Alice"]
+[Black "Bob"]
+[Result "1-0"]
+[Variant "Nine Men's Morris"]
+
+1. d2 f4
+2. f2 d6 1-0
+''');
+
+      await tester.runAsync(() async {
+        await tester.pumpWidget(const SanmillApp());
+        final Finder recentGamesFutureBuilder = find.byWidgetPredicate(
+          (Widget widget) => widget is FutureBuilder<List<SavedGameSummary>>,
+          description: 'home recent games FutureBuilder',
+        );
+        final Future<List<SavedGameSummary>> recentGames = tester
+            .widget<FutureBuilder<List<SavedGameSummary>>>(
+              recentGamesFutureBuilder,
+            )
+            .future!;
+        await recentGames;
+      });
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      final Finder completedGame = find.byKey(
+        const Key('sanmill_home_recent_game_0'),
+      );
+      final Finder reviewButton = find.descendant(
+        of: completedGame,
+        matching: find.byIcon(Icons.analytics_outlined),
+      );
+      expect(completedGame, findsOneWidget);
+      expect(reviewButton, findsOneWidget);
+
+      await tester.tap(reviewButton);
+      for (
+        int i = 0;
+        i < 20 && find.byKey(const Key('review_back')).evaluate().isEmpty;
+        i++
+      ) {
+        await tester.pump(const Duration(milliseconds: 50));
+        await tester.runAsync(
+          () => Future<void>.delayed(const Duration(milliseconds: 25)),
+        );
+      }
+      expect(find.byKey(const Key('review_back')), findsOneWidget);
+      expect(find.byKey(const Key('game_page_scaffold')), findsNothing);
+
+      tester
+          .widget<IconButton>(find.byKey(const Key('review_cancel_analysis')))
+          .onPressed!();
+      await tester.pump();
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 250)),
+      );
+      tester
+          .widget<IconButton>(find.byKey(const Key('review_back')))
+          .onPressed!();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Home tab keeps bottom navigation after leaving an active game',
     (WidgetTester tester) async {
       final GameController controller = GameController();
