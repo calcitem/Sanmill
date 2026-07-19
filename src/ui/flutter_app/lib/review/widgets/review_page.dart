@@ -906,51 +906,56 @@ class _ReviewPageState extends State<ReviewPage> {
     await showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
-      builder: (BuildContext sheetContext) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Text(
-                  strings.shareAndExport,
-                  style: Theme.of(sheetContext).textTheme.titleLarge,
+      builder: (BuildContext sheetContext) {
+        final bool showSystemCancel =
+            Theme.of(sheetContext).platform == TargetPlatform.iOS;
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    strings.shareAndExport,
+                    style: Theme.of(sheetContext).textTheme.titleLarge,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 8),
-              ListTile(
-                key: const Key('review_export_copy'),
-                leading: const Icon(Icons.copy_all_rounded),
-                title: Text(strings.copyPgn),
-                onTap: () {
-                  Navigator.pop(sheetContext);
-                  unawaited(_copyReviewPgn(pgn));
-                },
-              ),
-              ListTile(
-                key: const Key('review_export_share'),
-                leading: const Icon(Icons.ios_share_rounded),
-                title: Text(strings.shareQrCode),
-                onTap: () {
-                  Navigator.pop(sheetContext);
-                  unawaited(_shareReviewPgn(pgn));
-                },
-              ),
-              Align(
-                alignment: AlignmentDirectional.centerEnd,
-                child: TextButton(
-                  key: const Key('review_export_cancel'),
-                  onPressed: () => Navigator.pop(sheetContext),
-                  child: Text(strings.cancel),
+                const SizedBox(height: 8),
+                ListTile(
+                  key: const Key('review_export_copy'),
+                  leading: const Icon(Icons.copy_all_rounded),
+                  title: Text(strings.copyPgn),
+                  onTap: () {
+                    Navigator.pop(sheetContext);
+                    unawaited(_copyReviewPgn(pgn));
+                  },
                 ),
-              ),
-            ],
+                ListTile(
+                  key: const Key('review_export_share'),
+                  leading: const Icon(Icons.ios_share_rounded),
+                  title: Text(strings.shareQrCode),
+                  onTap: () {
+                    Navigator.pop(sheetContext);
+                    unawaited(_shareReviewPgn(pgn));
+                  },
+                ),
+                if (showSystemCancel)
+                  Align(
+                    alignment: AlignmentDirectional.centerEnd,
+                    child: TextButton(
+                      key: const Key('review_export_cancel'),
+                      onPressed: () => Navigator.pop(sheetContext),
+                      child: Text(strings.cancel),
+                    ),
+                  ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -987,6 +992,8 @@ class _ReviewPageState extends State<ReviewPage> {
       context: context,
       showDragHandle: true,
       builder: (BuildContext context) {
+        final bool showSystemDismiss =
+            Theme.of(context).platform == TargetPlatform.iOS;
         return SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -1002,12 +1009,12 @@ class _ReviewPageState extends State<ReviewPage> {
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ),
-                    IconButton(
-                      key: const Key('review_nag_cancel'),
-                      tooltip: strings.cancel,
-                      onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.close_rounded),
-                    ),
+                    if (showSystemDismiss)
+                      TextButton(
+                        key: const Key('review_nag_cancel'),
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(strings.cancel),
+                      ),
                   ],
                 ),
                 Text(
@@ -1060,14 +1067,16 @@ class _ReviewPageState extends State<ReviewPage> {
                       icon: const Icon(Icons.clear_rounded),
                       label: Text(strings.clearAnnotation),
                     ),
-                    const SizedBox(width: 8),
-                    FilledButton.tonal(
-                      key: const Key('review_nag_done'),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text(strings.done),
-                    ),
+                    if (showSystemDismiss) ...<Widget>[
+                      const SizedBox(width: 8),
+                      FilledButton.tonal(
+                        key: const Key('review_nag_done'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(strings.done),
+                      ),
+                    ],
                   ],
                 ),
               ],

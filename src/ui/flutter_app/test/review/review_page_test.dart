@@ -284,7 +284,8 @@ void main() {
     expect(find.text('Move quality annotation'), findsOneWidget);
     expect(find.text('Current: ? Mistake'), findsOneWidget);
     expect(find.byKey(const Key('review_nag_clear')), findsOneWidget);
-    expect(find.byKey(const Key('review_nag_cancel')), findsOneWidget);
+    expect(find.byKey(const Key('review_nag_cancel')), findsNothing);
+    expect(find.byKey(const Key('review_nag_done')), findsNothing);
     expect(
       tester
           .getSemantics(find.byKey(const Key('review_nag_3')))
@@ -322,13 +323,34 @@ void main() {
     expect(find.text('Share and export'), findsOneWidget);
     expect(find.byKey(const Key('review_export_copy')), findsOneWidget);
     expect(find.byKey(const Key('review_export_share')), findsOneWidget);
-    expect(find.byKey(const Key('review_export_cancel')), findsOneWidget);
+    expect(find.byKey(const Key('review_export_cancel')), findsNothing);
 
     await tester.tap(find.byKey(const Key('review_export_copy')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
     expect(copiedPgn, '1. a7 b6 *');
     expect(find.text('Move history copied to clipboard.'), findsOneWidget);
+  });
+
+  testWidgets('review sheets retain explicit dismissal controls on iOS', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(_reviewApp(platform: TargetPlatform.iOS));
+    await tester.pump();
+
+    await tester.tap(find.byKey(const Key('review_export')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(find.byKey(const Key('review_export_cancel')), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('review_export_cancel')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.tap(find.byKey(const Key('review_choose_nag')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(find.byKey(const Key('review_nag_cancel')), findsOneWidget);
+    expect(find.byKey(const Key('review_nag_done')), findsOneWidget);
   });
 
   testWidgets('cancelling deep analysis keeps the completed report visible', (
@@ -401,15 +423,19 @@ void main() {
 Widget _reviewApp({
   ReviewStorage storage = ReviewStorage.instance,
   Future<void> Function(String pgn)? onCopyPgn,
+  TargetPlatform? platform,
 }) {
   final PrivateGameRecord record = _record();
   return makeTestableWidget(
-    ReviewPage(
-      record: record,
-      initialReport: _report(record),
-      autoAnalyze: false,
-      storage: storage,
-      onCopyPgn: onCopyPgn,
+    Theme(
+      data: ThemeData(platform: platform),
+      child: ReviewPage(
+        record: record,
+        initialReport: _report(record),
+        autoAnalyze: false,
+        storage: storage,
+        onCopyPgn: onCopyPgn,
+      ),
     ),
   );
 }
