@@ -91,6 +91,7 @@ class GamePage extends StatelessWidget {
     this.gameMode, {
     super.key,
     this.showInitialHumanAiNewGameSheet = true,
+    this.showInitialOfflineBoardNewGameSheet = true,
     this.resumeAnalysis = false,
   }) : assert(
          !resumeAnalysis || gameMode == GameMode.analysis,
@@ -99,6 +100,7 @@ class GamePage extends StatelessWidget {
 
   final GameMode gameMode;
   final bool showInitialHumanAiNewGameSheet;
+  final bool showInitialOfflineBoardNewGameSheet;
   final bool resumeAnalysis;
 
   @override
@@ -109,6 +111,7 @@ class GamePage extends StatelessWidget {
     return _GamePageInner(
       controller: controller,
       showInitialHumanAiNewGameSheet: showInitialHumanAiNewGameSheet,
+      showInitialOfflineBoardNewGameSheet: showInitialOfflineBoardNewGameSheet,
       resumeAnalysis: resumeAnalysis,
     );
   }
@@ -119,11 +122,13 @@ class _GamePageInner extends StatefulWidget {
   const _GamePageInner({
     required this.controller,
     required this.showInitialHumanAiNewGameSheet,
+    required this.showInitialOfflineBoardNewGameSheet,
     required this.resumeAnalysis,
   });
 
   final GameController controller;
   final bool showInitialHumanAiNewGameSheet;
+  final bool showInitialOfflineBoardNewGameSheet;
   final bool resumeAnalysis;
 
   @override
@@ -186,9 +191,11 @@ class _GamePageInnerState extends State<_GamePageInner>
     }
     if (widget.controller.gameInstance.gameMode == GameMode.humanVsHuman) {
       OfflineBoardClock().reset();
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _showInitialOfflineBoardNewGameSheet(),
-      );
+      if (widget.showInitialOfflineBoardNewGameSheet) {
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => _showInitialOfflineBoardNewGameSheet(),
+        );
+      }
     }
   }
 

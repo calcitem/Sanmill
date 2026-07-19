@@ -16,24 +16,36 @@ import '../../services/mill.dart';
 import '../../services/offline_board_clock.dart';
 import 'game_options_modal.dart';
 
-Future<void> showOfflineBoardNewGameSheet(
+Future<bool> prepareOfflineBoardNewGame(BuildContext context) async {
+  final bool? confirmed = await Navigator.of(context, rootNavigator: true)
+      .push<bool>(
+        MaterialPageRoute<bool>(
+          builder: (BuildContext context) => const _OfflineBoardNewGamePage(),
+        ),
+      );
+  return confirmed ?? false;
+}
+
+Future<bool> showOfflineBoardNewGameSheet(
   BuildContext context, {
   bool isDismissible = true,
-}) {
+}) async {
   assert(
     GameController().gameInstance.gameMode == GameMode.humanVsHuman,
     'Offline Board setup is only valid for same-device games.',
   );
   final double screenHeight = MediaQuery.heightOf(context);
-  return showModalBottomSheet<void>(
+  final bool? confirmed = await showModalBottomSheet<bool>(
     context: context,
     isScrollControlled: true,
     isDismissible: isDismissible,
     enableDrag: isDismissible,
     showDragHandle: true,
     constraints: BoxConstraints(maxHeight: screenHeight * 0.9),
-    builder: (BuildContext context) => const _OfflineBoardNewGameSheet(),
+    builder: (BuildContext context) =>
+        const _OfflineBoardNewGameSetup(startGameOnConfirm: true),
   );
+  return confirmed ?? false;
 }
 
 Future<void> showOfflineBoardDisplaySettings(BuildContext context) {
@@ -82,15 +94,30 @@ Future<void> showOfflineBoardDisplaySettings(BuildContext context) {
   );
 }
 
-class _OfflineBoardNewGameSheet extends StatefulWidget {
-  const _OfflineBoardNewGameSheet();
+class _OfflineBoardNewGamePage extends StatelessWidget {
+  const _OfflineBoardNewGamePage();
 
   @override
-  State<_OfflineBoardNewGameSheet> createState() =>
-      _OfflineBoardNewGameSheetState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: const Key('offline_board_new_game_page'),
+      appBar: AppBar(title: Text(S.of(context).offlineBoard)),
+      body: const _OfflineBoardNewGameSetup(startGameOnConfirm: false),
+    );
+  }
 }
 
-class _OfflineBoardNewGameSheetState extends State<_OfflineBoardNewGameSheet> {
+class _OfflineBoardNewGameSetup extends StatefulWidget {
+  const _OfflineBoardNewGameSetup({required this.startGameOnConfirm});
+
+  final bool startGameOnConfirm;
+
+  @override
+  State<_OfflineBoardNewGameSetup> createState() =>
+      _OfflineBoardNewGameSetupState();
+}
+
+class _OfflineBoardNewGameSetupState extends State<_OfflineBoardNewGameSetup> {
   late String? _variantId;
 
   @override
@@ -135,9 +162,15 @@ class _OfflineBoardNewGameSheetState extends State<_OfflineBoardNewGameSheet> {
       final RuleSettings rules = RuleVariant.canonicalSettings[variantId]!;
       DB().ruleSettings = rules;
     }
-    GameOptionsModal.startNewGame(context);
-    OfflineBoardClock().reset();
-    Navigator.of(context).pop();
+    if (widget.startGameOnConfirm) {
+      assert(
+        GameController().gameInstance.gameMode == GameMode.humanVsHuman,
+        'Offline Board settings cannot start a different game mode.',
+      );
+      GameOptionsModal.startNewGame(context);
+      OfflineBoardClock().reset();
+    }
+    Navigator.of(context).pop(true);
   }
 
   @override

@@ -112,6 +112,45 @@ void main() {
     expect(OfflineBoardClock().state.isEnabled, isFalse);
   });
 
+  testWidgets('launch setup has a back button before opening the board', (
+    WidgetTester tester,
+  ) async {
+    bool? confirmed;
+    await tester.pumpWidget(
+      _localizedApp(
+        Builder(
+          builder: (BuildContext context) => FilledButton(
+            key: const Key('prepare_offline_board'),
+            onPressed: () async {
+              confirmed = await prepareOfflineBoardNewGame(context);
+            },
+            child: const Text('Open'),
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.byKey(const Key('prepare_offline_board')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('offline_board_new_game_page')), findsOne);
+    expect(find.byType(BackButton), findsOne);
+    expect(find.byKey(const Key('game_page_scaffold')), findsNothing);
+
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(confirmed, isFalse);
+    expect(find.byKey(const Key('offline_board_new_game_page')), findsNothing);
+
+    await tester.tap(find.byKey(const Key('prepare_offline_board')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('offline_board_start_button')));
+    await tester.pumpAndSettle();
+
+    expect(confirmed, isTrue);
+    expect(find.byKey(const Key('offline_board_new_game_page')), findsNothing);
+  });
+
   testWidgets('variant picker exposes Mill variants using Sanmill names', (
     WidgetTester tester,
   ) async {

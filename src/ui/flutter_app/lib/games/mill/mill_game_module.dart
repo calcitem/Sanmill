@@ -14,6 +14,7 @@ import '../../game_page/widgets/dialogs/lan_config_dialog.dart';
 import '../../game_page/widgets/game_page.dart' show GamePage;
 import '../../game_page/widgets/import_game_page.dart';
 import '../../game_page/widgets/modals/game_options_modal.dart';
+import '../../game_page/widgets/modals/offline_board_options_sheet.dart';
 import '../../game_platform/board_geometry.dart';
 import '../../game_platform/engine/engine_port.dart';
 import '../../game_platform/engine/native_topology.dart';
@@ -385,8 +386,18 @@ class MillGameModule extends GameModule {
         icon: Icons.table_restaurant_outlined,
         menuKey: const Key('drawer_item_human_vs_human'),
         contentKey: const Key('human_human'),
+        prepareLaunch: (BuildContext context) async {
+          final bool confirmed = await prepareOfflineBoardNewGame(context);
+          return confirmed
+              ? GameModeLaunchDecision.confirmed
+              : GameModeLaunchDecision.cancelled;
+        },
         builder: (BuildContext context, {Key? key, GameSession? session}) =>
-            GamePage(GameMode.humanVsHuman, key: key),
+            GamePage(
+              GameMode.humanVsHuman,
+              key: key,
+              showInitialOfflineBoardNewGameSheet: false,
+            ),
       ),
       GameModeEntry(
         id: MillRouteIds.aiVsAi,
