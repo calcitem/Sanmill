@@ -26,6 +26,7 @@ void main() {
     );
     expect(strings.shellBackToMainGame, '返回主对局');
     expect(strings.statisticsOverallRecord, '总计');
+    expect(strings.turnOffHint, '关闭提示');
     expect(
       strings.tutorialMillCaptureRule,
       '形成三连后，可以吃掉对方一枚棋子。只要对方还有不在三连中的棋子，三连中的棋子通常不能被吃。',

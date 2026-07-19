@@ -6602,5 +6602,9 @@
     "soundEventIllegal": "非法着法",
     "@soundEventIllegal": {
         "description": "Sound preview event for attempting an illegal move"
+    },
+    "turnOffHint": "关闭提示",
+    "@turnOffHint": {
+        "description": "Tooltip and accessibility action for disabling continuous in-game hint analysis"
     }
 }
