@@ -261,7 +261,11 @@ class UserActionCatalog {
           actionId: 'setup.position.action',
           fields: <String, UserActionValueType>{
             ..._commonFields,
-            'value': UserActionValueType.string,
+            // Setup actions use symbolic values for phase, piece, and
+            // transforms, but count controls carry integers. Keep this a
+            // reviewed JSON scalar so both forms survive diagnostics without
+            // accepting nested or user-authored data.
+            'value': UserActionValueType.jsonScalar,
             'type': UserActionValueType.string,
             'piece': UserActionValueType.string,
             'side': UserActionValueType.string,

@@ -137,6 +137,52 @@ void main() {
   );
 
   testWidgets(
+    'count controls record integer values without opening diagnostics',
+    (WidgetTester tester) async {
+      final NativeMillGameSession session = NativeMillGameSession();
+      addTearDown(session.dispose);
+      final MillSetupPositionController controller =
+          MillSetupPositionController(
+              session: session,
+              ruleSettings: const RuleSettings(),
+            )
+            ..initFromSession()
+            ..setPaintColor(PieceColor.black)
+            ..tapNode(0)
+            ..setPaintColor(PieceColor.white);
+      GameController().setupPositionController = controller;
+      GameController().gameInstance.gameMode = GameMode.setupPosition;
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: Locale('en'),
+          home: Scaffold(
+            body: Align(
+              alignment: Alignment.bottomCenter,
+              child: SetupPositionToolbar(),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const Key('remove_button')));
+      await tester.pumpAndSettle();
+      expect(controller.needRemove[PieceColor.white], 1);
+
+      await tester.tap(find.byKey(const Key('placed_button')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('placed_option_2')));
+      await tester.pumpAndSettle();
+      expect(controller.placedCount, 2);
+      expect(find.text('Diagnostic report'), findsNothing);
+    },
+    skip: _nativeLibrarySkipReason != null,
+  );
+
+  testWidgets(
     'invalid-position message stays above the editor actions',
     (WidgetTester tester) async {
       final NativeMillGameSession session = NativeMillGameSession();

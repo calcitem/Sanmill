@@ -2,6 +2,7 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/experience_recording/models/recording_models.dart';
 import 'package:sanmill/experience_recording/models/user_action_event.dart';
 import 'package:sanmill/experience_recording/services/diagnostic_action_trail_service.dart';
 import 'package:sanmill/shared/database/database.dart';
@@ -61,6 +62,25 @@ void main() {
         },
       ),
       throwsA(isA<FormatException>()),
+    );
+  });
+
+  test('setup-position actions preserve symbolic and count values', () {
+    final DiagnosticActionTrailService service = DiagnosticActionTrailService();
+
+    expect(
+      service.reviewLegacyPayload(
+        RecordingEventType.setupPositionAction,
+        <String, dynamic>{'action': 'selectPhase', 'value': 'moving'},
+      ),
+      <String, Object?>{'action': 'selectPhase', 'value': 'moving'},
+    );
+    expect(
+      service.reviewLegacyPayload(
+        RecordingEventType.setupPositionAction,
+        <String, dynamic>{'action': 'setNeedRemove', 'value': 2},
+      ),
+      <String, Object?>{'action': 'setNeedRemove', 'value': 2},
     );
   });
 
