@@ -6582,5 +6582,25 @@
     "previewSound": "试听声音",
     "@previewSound": {
         "description": "Tooltip for playing a sample from a sound theme without selecting it"
+    },
+    "soundEventMill": "成三",
+    "@soundEventMill": {
+        "description": "Sound preview event for forming a mill"
+    },
+    "soundEventMove": "行棋",
+    "@soundEventMove": {
+        "description": "Sound preview event for placing or moving a piece"
+    },
+    "soundEventSelect": "选中棋子",
+    "@soundEventSelect": {
+        "description": "Sound preview event for selecting a piece to move"
+    },
+    "soundEventRemove": "移除棋子",
+    "@soundEventRemove": {
+        "description": "Sound preview event for removing an opponent piece"
+    },
+    "soundEventIllegal": "非法着法",
+    "@soundEventIllegal": {
+        "description": "Sound preview event for attempting an illegal move"
     }
 }
