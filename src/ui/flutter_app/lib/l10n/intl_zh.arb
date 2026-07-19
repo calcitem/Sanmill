@@ -1655,7 +1655,7 @@
     "@useOpeningBook_Detail": {},
     "showAdvantageGraph": "显示优势图",
     "@showAdvantageGraph": {},
-    "advantageGraphHint": "优势图仅在电脑行棋后更新；真人着法不会被评估。",
+    "advantageGraphHint": "在本地对局中，显示力量条或优势图会持续在后台评估；无论哪一方行棋，结果都会实时更新。",
     "@advantageGraphHint": {},
     "removalBasedOnMillCounts": "在所有棋子摆完之前，不能吃掉对方棋子。摆完后，根据三连数量来吃子。",
     "@removalBasedOnMillCounts": {},
