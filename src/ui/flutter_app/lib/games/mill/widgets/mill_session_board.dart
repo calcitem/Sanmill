@@ -1,0 +1,487 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+// Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
+
+import 'dart:math' as math;
+import 'dart:ui' as ui;
+
+import 'package:flutter/material.dart';
+
+import '../../../appearance_settings/models/color_settings.dart';
+import '../../../game_platform/game_session.dart';
+import '../../../rule_settings/models/rule_settings.dart';
+import '../../../shared/database/database.dart';
+import '../../../shared/themes/app_theme.dart';
+import '../mill_action_codec.dart';
+import '../mill_board_coordinate_maps.dart';
+import '../mill_board_geometry.dart';
+import '../mill_session_tap_controller.dart';
+import '../native_mill_game_session.dart';
+import '../native_mill_snapshot_board_view.dart';
+
+typedef MillSessionPositionChanged =
+    void Function({
+      required String previousFen,
+      required String currentFen,
+      required GameAction action,
+    });
+
+/// A self-contained interactive Mill board backed by a native game session.
+///
+/// The widget applies only legal actions exposed by [session]. It owns no game
+/// history or global controller state, so callers can safely use it for
+/// secondary experiences such as opening exploration and mistake correction.
+class MillSessionBoard extends StatefulWidget {
+  const MillSessionBoard({
+    super.key,
+    required this.session,
+    required this.tapController,
+    required this.rules,
+    required this.heightFactor,
+    required this.onPositionChanged,
+    this.boardKey,
+    this.semanticLabel,
+  });
+
+  final NativeMillGameSession session;
+  final MillSessionTapController tapController;
+  final RuleSettings rules;
+  final double heightFactor;
+  final MillSessionPositionChanged onPositionChanged;
+  final Key? boardKey;
+  final String? semanticLabel;
+
+  @override
+  State<MillSessionBoard> createState() => _MillSessionBoardState();
+}
+
+class _MillSessionBoardState extends State<MillSessionBoard> {
+  Future<void> _handleTap(Offset localPosition, Size size) async {
+    final int node = MillBoardGeometry.nodeFromPosition(localPosition, size);
+    if (node < 0) {
+      widget.tapController.clearSelection();
+      setState(() {});
+      return;
+    }
+    final String notation = MillBoardCoordinateMaps.nodeToNotation(node);
+    assert(notation.isNotEmpty, 'Interactive Mill node must have notation.');
+    final String previousFen = widget.session.getFen();
+    final MillSessionTapResult result = await widget.tapController.tap(
+      session: widget.session,
+      tappedLabel: notation,
+    );
+    if (!mounted) {
+      return;
+    }
+    if (result.status == MillSessionTapStatus.applied) {
+      final GameAction? action = result.action;
+      assert(action != null, 'Applied board tap must include its action.');
+      if (action == null) {
+        throw StateError('Applied board tap must include its action.');
+      }
+      widget.onPositionChanged(
+        previousFen: previousFen,
+        currentFen: widget.session.getFen(),
+        action: action,
+      );
+    }
+    if (result.status != MillSessionTapStatus.ignored) {
+      setState(() {});
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorSettings colors = DB().colorSettings;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final double available = math.min(
+          constraints.maxWidth,
+          MediaQuery.sizeOf(context).height * widget.heightFactor,
+        );
+        final double side = available.isFinite ? available : 320;
+        return Center(
+          child: SizedBox.square(
+            key: widget.boardKey,
+            dimension: side,
+            child: ValueListenableBuilder<GameStateSnapshot>(
+              valueListenable: widget.session.state,
+              builder:
+                  (
+                    BuildContext context,
+                    GameStateSnapshot snapshot,
+                    Widget? child,
+                  ) {
+                    final Widget updatedBoard = GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      excludeFromSemantics: widget.semanticLabel != null,
+                      onTapUp: (TapUpDetails details) =>
+                          _handleTap(details.localPosition, Size.square(side)),
+                      child: CustomPaint(
+                        painter: _MillSessionBoardPainter(
+                          snapshot: snapshot,
+                          selectedFrom: widget.tapController.selectedFrom,
+                          legalHints: _MillSessionLegalHints.fromActions(
+                            legalActions: widget.session.legalActions,
+                            selectedFrom: widget.tapController.selectedFrom,
+                          ),
+                          hasDiagonalLines: widget.rules.hasDiagonalLines,
+                          boardBackgroundColor: colors.boardBackgroundColor,
+                          boardLineColor: colors.boardLineColor,
+                          whitePieceColor: colors.whitePieceColor,
+                          blackPieceColor: colors.blackPieceColor,
+                          pieceHighlightColor: colors.pieceHighlightColor,
+                          hintColor: colorScheme.primary,
+                          removeHintColor: colorScheme.error,
+                          shadowColor: colorScheme.shadow,
+                        ),
+                        child: child,
+                      ),
+                    );
+                    final String? label = widget.semanticLabel;
+                    return label == null
+                        ? updatedBoard
+                        : Semantics(
+                            label: label,
+                            container: true,
+                            child: updatedBoard,
+                          );
+                  },
+              child: const SizedBox.expand(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _MillSessionLegalHints {
+  const _MillSessionLegalHints({
+    required this.sources,
+    required this.targets,
+    required this.removals,
+  });
+
+  factory _MillSessionLegalHints.fromActions({
+    required Iterable<GameAction> legalActions,
+    required String? selectedFrom,
+  }) {
+    final Set<int> sources = <int>{};
+    final Set<int> targets = <int>{};
+    final Set<int> removals = <int>{};
+    final String? selected = selectedFrom?.toLowerCase();
+
+    for (final GameAction action in legalActions) {
+      final String? move = MillActionCodec.moveStringFrom(action);
+      if (move == null || move.isEmpty) {
+        continue;
+      }
+      if (action.type == MillActionTypes.remove && move.startsWith('x')) {
+        _addNotationNode(removals, move.substring(1));
+        continue;
+      }
+      if (action.type == MillActionTypes.place) {
+        continue;
+      }
+      if (action.type != MillActionTypes.move || !move.contains('-')) {
+        continue;
+      }
+
+      final List<String> parts = move.split('-');
+      if (parts.length != 2) {
+        continue;
+      }
+      final String from = parts[0].toLowerCase();
+      final String to = parts[1].toLowerCase();
+      if (selected == null || selected.isEmpty) {
+        _addNotationNode(sources, from);
+      } else if (from == selected) {
+        _addNotationNode(targets, to);
+      }
+    }
+
+    return _MillSessionLegalHints(
+      sources: sources,
+      targets: targets,
+      removals: removals,
+    );
+  }
+
+  final Set<int> sources;
+  final Set<int> targets;
+  final Set<int> removals;
+
+  static void _addNotationNode(Set<int> nodes, String notation) {
+    final int node = MillBoardCoordinateMaps.notationToNode(notation);
+    if (node >= 0) {
+      nodes.add(node);
+    }
+  }
+}
+
+class _MillSessionBoardPainter extends CustomPainter {
+  const _MillSessionBoardPainter({
+    required this.snapshot,
+    required this.selectedFrom,
+    required this.legalHints,
+    required this.hasDiagonalLines,
+    required this.boardBackgroundColor,
+    required this.boardLineColor,
+    required this.whitePieceColor,
+    required this.blackPieceColor,
+    required this.pieceHighlightColor,
+    required this.hintColor,
+    required this.removeHintColor,
+    required this.shadowColor,
+  });
+
+  final GameStateSnapshot snapshot;
+  final String? selectedFrom;
+  final _MillSessionLegalHints legalHints;
+  final bool hasDiagonalLines;
+  final Color boardBackgroundColor;
+  final Color boardLineColor;
+  final Color whitePieceColor;
+  final Color blackPieceColor;
+  final Color pieceHighlightColor;
+  final Color hintColor;
+  final Color removeHintColor;
+  final Color shadowColor;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final NativeMillSnapshotBoardView? board =
+        NativeMillSnapshotBoardView.fromSnapshot(snapshot);
+
+    final RRect background = RRect.fromRectAndRadius(
+      Offset.zero & size,
+      Radius.circular(size.shortestSide * 0.035),
+    );
+    canvas.drawRRect(background, Paint()..color = boardBackgroundColor);
+
+    _drawCoordinates(canvas, size);
+    _drawLines(canvas, size);
+    _drawPoints(canvas, size);
+    _drawHints(canvas, size, legalHints.sources, hintColor, filled: false);
+    _drawHints(canvas, size, legalHints.targets, hintColor, filled: true);
+    _drawHints(
+      canvas,
+      size,
+      legalHints.removals,
+      removeHintColor,
+      filled: true,
+    );
+
+    if (board != null) {
+      _drawPieces(canvas, size, board);
+    }
+    _drawSelectedNode(canvas, size);
+  }
+
+  void _drawCoordinates(Canvas canvas, Size size) {
+    final double side = size.shortestSide;
+    final double padding = side * MillBoardGeometry.defaultPaddingFraction;
+    final double cell = (side - padding * 2) / 6;
+    final double originX = (size.width - side) / 2 + padding;
+    final double originY = (size.height - side) / 2 + padding;
+    final TextStyle textStyle = TextStyle(
+      color: boardLineColor.withValues(alpha: 1.0),
+      fontSize: AppTheme.textScaler.scale(math.max(10, side * 0.045)),
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0,
+    );
+
+    for (int index = 0; index < _verticalCoordinates.length; index++) {
+      _paintCoordinate(
+        canvas,
+        text: _verticalCoordinates[index],
+        style: textStyle,
+        center: Offset(originX - padding / 2, originY + index * cell),
+      );
+    }
+
+    for (int index = 0; index < _horizontalCoordinates.length; index++) {
+      final String label = DB().generalSettings.screenReaderSupport
+          ? _horizontalCoordinates[index].toUpperCase()
+          : _horizontalCoordinates[index];
+      _paintCoordinate(
+        canvas,
+        text: label,
+        style: textStyle,
+        center: Offset(
+          originX + index * cell,
+          originY + cell * 6 + padding / 2,
+        ),
+      );
+    }
+  }
+
+  void _paintCoordinate(
+    Canvas canvas, {
+    required String text,
+    required TextStyle style,
+    required Offset center,
+  }) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(style: style, text: text),
+      textAlign: TextAlign.center,
+      textDirection: ui.TextDirection.ltr,
+    )..layout();
+    textPainter.paint(
+      canvas,
+      center - Offset(textPainter.width / 2, textPainter.height / 2),
+    );
+  }
+
+  void _drawLines(Canvas canvas, Size size) {
+    final Paint linePaint = Paint()
+      ..color = boardLineColor
+      ..strokeWidth = math.max(2, size.shortestSide * 0.007)
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
+    final List<List<int>> lines = hasDiagonalLines
+        ? MillBoardCoordinateMaps.diagonalMillNodeLines
+        : MillBoardCoordinateMaps.standardMillNodeLines;
+    for (final List<int> line in lines) {
+      final Path path = Path();
+      for (int i = 0; i < line.length; i++) {
+        final Offset point = MillBoardGeometry.nodeOffset(line[i], size);
+        if (i == 0) {
+          path.moveTo(point.dx, point.dy);
+        } else {
+          path.lineTo(point.dx, point.dy);
+        }
+      }
+      canvas.drawPath(path, linePaint);
+    }
+  }
+
+  void _drawPoints(Canvas canvas, Size size) {
+    final Paint pointPaint = Paint()..color = boardLineColor;
+    final double radius = size.shortestSide * 0.013;
+    for (int node = 0; node < MillBoardGeometry.nodeCount; node++) {
+      canvas.drawCircle(
+        MillBoardGeometry.nodeOffset(node, size),
+        radius,
+        pointPaint,
+      );
+    }
+  }
+
+  void _drawHints(
+    Canvas canvas,
+    Size size,
+    Set<int> nodes,
+    Color color, {
+    required bool filled,
+  }) {
+    if (nodes.isEmpty) {
+      return;
+    }
+    final Paint paint = Paint()
+      ..color = color.withValues(alpha: filled ? 0.24 : 0.82)
+      ..strokeWidth = math.max(2, size.shortestSide * 0.006)
+      ..style = filled ? PaintingStyle.fill : PaintingStyle.stroke;
+    final double radius = size.shortestSide * (filled ? 0.035 : 0.052);
+    for (final int node in nodes) {
+      canvas.drawCircle(
+        MillBoardGeometry.nodeOffset(node, size),
+        radius,
+        paint,
+      );
+    }
+  }
+
+  void _drawPieces(
+    Canvas canvas,
+    Size size,
+    NativeMillSnapshotBoardView board,
+  ) {
+    final double radius = size.shortestSide * 0.052;
+    final Paint shadowPaint = Paint()
+      ..color = shadowColor.withValues(alpha: 0.25)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2);
+    final Paint outlinePaint = Paint()
+      ..color = boardLineColor.withValues(alpha: 0.55)
+      ..strokeWidth = math.max(1, size.shortestSide * 0.004)
+      ..style = PaintingStyle.stroke;
+
+    for (int node = 0; node < MillBoardGeometry.nodeCount; node++) {
+      final PlayerSeat? seat = board.pieceAtNode(node);
+      if (seat == null) {
+        continue;
+      }
+      final Offset center = MillBoardGeometry.nodeOffset(node, size);
+      final Color pieceColor = seat == PlayerSeat.first
+          ? whitePieceColor
+          : blackPieceColor;
+      final Paint piecePaint = Paint()..color = pieceColor;
+      canvas.drawCircle(center.translate(1.5, 2), radius, shadowPaint);
+      canvas.drawCircle(center, radius, piecePaint);
+      canvas.drawCircle(center, radius, outlinePaint);
+      if (board.markedNodes.contains(node)) {
+        final Paint markedPaint = Paint()
+          ..color = pieceHighlightColor
+          ..strokeWidth = math.max(2, size.shortestSide * 0.007)
+          ..style = PaintingStyle.stroke;
+        canvas.drawCircle(center, radius * 1.22, markedPaint);
+      }
+    }
+  }
+
+  void _drawSelectedNode(Canvas canvas, Size size) {
+    final String? selected = selectedFrom;
+    if (selected == null || selected.isEmpty) {
+      return;
+    }
+    final int node = MillBoardCoordinateMaps.notationToNode(selected);
+    if (node < 0) {
+      return;
+    }
+    final Paint paint = Paint()
+      ..color = hintColor
+      ..strokeWidth = math.max(2, size.shortestSide * 0.009)
+      ..style = PaintingStyle.stroke;
+    canvas.drawCircle(
+      MillBoardGeometry.nodeOffset(node, size),
+      size.shortestSide * 0.068,
+      paint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _MillSessionBoardPainter oldDelegate) {
+    return oldDelegate.snapshot != snapshot ||
+        oldDelegate.selectedFrom != selectedFrom ||
+        oldDelegate.legalHints != legalHints ||
+        oldDelegate.hasDiagonalLines != hasDiagonalLines ||
+        oldDelegate.boardBackgroundColor != boardBackgroundColor ||
+        oldDelegate.boardLineColor != boardLineColor ||
+        oldDelegate.whitePieceColor != whitePieceColor ||
+        oldDelegate.blackPieceColor != blackPieceColor ||
+        oldDelegate.pieceHighlightColor != pieceHighlightColor ||
+        oldDelegate.hintColor != hintColor ||
+        oldDelegate.removeHintColor != removeHintColor;
+  }
+}
+
+const List<String> _verticalCoordinates = <String>[
+  '7',
+  '6',
+  '5',
+  '4',
+  '3',
+  '2',
+  '1',
+];
+const List<String> _horizontalCoordinates = <String>[
+  'a',
+  'b',
+  'c',
+  'd',
+  'e',
+  'f',
+  'g',
+];
