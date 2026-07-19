@@ -4546,7 +4546,7 @@
     "@recentGames": {},
     "play": "开始下棋",
     "@play": {},
-    "playAgainstComputer": "与电脑对弈",
+    "playAgainstComputer": "人机对弈",
     "@playAgainstComputer": {},
     "overTheBoard": "面对面下棋",
     "@overTheBoard": {},
