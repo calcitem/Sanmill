@@ -1013,6 +1013,21 @@ class SanmillAppShellState extends State<SanmillAppShell>
   Widget _buildResponsiveShell(BuildContext context) {
     final S strings = S.of(context);
     final bool showBottomNavigationBar = _shouldShowBottomNavigation(context);
+    final NavigationBarThemeData navigationBarTheme = NavigationBarTheme.of(
+      context,
+    );
+    final WidgetStateProperty<TextStyle?> navigationLabelStyles =
+        navigationBarTheme.labelTextStyle!;
+    final TextStyle navigationLabelStyle = navigationLabelStyles.resolve(
+      const <WidgetState>{},
+    )!;
+    final double navigationLabelFontSize = MediaQuery.textScalerOf(
+      context,
+    ).scale(navigationLabelStyle.fontSize!);
+    final double navigationBarHeight =
+        navigationBarTheme.height! +
+        navigationLabelFontSize -
+        navigationLabelStyle.fontSize!;
     final Widget content = DoubleBackToCloseApp(
       snackBar: CustomSnackBar(strings.tapBackAgainToLeave),
       willBack: _handleBack,
@@ -1027,6 +1042,12 @@ class SanmillAppShellState extends State<SanmillAppShell>
         bottomNavigationBar: showBottomNavigationBar
             ? NavigationBar(
                 key: const Key('sanmill_bottom_navigation_bar'),
+                height: navigationBarHeight,
+                labelTextStyle: WidgetStateProperty.resolveWith<TextStyle?>(
+                  (Set<WidgetState> states) => navigationLabelStyles
+                      .resolve(states)!
+                      .copyWith(fontSize: navigationLabelFontSize),
+                ),
                 selectedIndex: sanmillPrimaryShellTabs.indexOf(_currentTab),
                 destinations: <NavigationDestination>[
                   for (final SanmillShellTab tab in sanmillPrimaryShellTabs)

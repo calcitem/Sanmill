@@ -683,6 +683,7 @@ void main() {
       );
       DB().displaySettings = originalDisplaySettings.copyWith(
         isAnnotationToolbarShown: true,
+        fontScale: 1.0,
       );
       DB().ruleSettings = const NineMensMorrisRuleSettings();
       addTearDown(() {
@@ -717,6 +718,31 @@ void main() {
             find.byKey(const Key('sanmill_tab_learn')),
           );
       expect(learnDestination.label, 'Learn');
+
+      NavigationBar navigationBar = tester.widget<NavigationBar>(
+        find.byKey(const Key('sanmill_bottom_navigation_bar')),
+      );
+      expect(navigationBar.height, 64);
+      expect(
+        navigationBar.labelTextStyle!.resolve(const <WidgetState>{})!.fontSize,
+        12,
+      );
+
+      DB().displaySettings = DB().displaySettings.copyWith(fontScale: 2.0);
+      await tester.pumpAndSettle();
+
+      navigationBar = tester.widget<NavigationBar>(
+        find.byKey(const Key('sanmill_bottom_navigation_bar')),
+      );
+      expect(navigationBar.height, 76);
+      expect(
+        navigationBar.labelTextStyle!.resolve(const <WidgetState>{})!.fontSize,
+        24,
+      );
+      expect(tester.takeException(), isNull);
+
+      DB().displaySettings = DB().displaySettings.copyWith(fontScale: 1.0);
+      await tester.pumpAndSettle();
 
       expect(
         find.byKey(const Key('sanmill_navigation_drawer_button')),
