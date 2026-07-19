@@ -892,6 +892,13 @@ class PlayAreaState extends State<PlayArea> {
     return math.max(_kPlayerPanelHeight, scaledTextHeight + 18);
   }
 
+  double _gameTipPanelHeightForLayout(BuildContext context) {
+    final double scaledTwoLineHeight = MediaQuery.textScalerOf(
+      context,
+    ).scale(28);
+    return math.max(GameHeader.contextualHeight, scaledTwoLineHeight + 20);
+  }
+
   /// Shrinks the board to fit the height left over after [nonBoardHeight] is
   /// reserved for the move list, player panels, and similar fixed-height
   /// chrome. Without this, a full-width board can overflow the available
@@ -3304,9 +3311,21 @@ class PlayAreaState extends State<PlayArea> {
                 : const SizedBox.shrink(
                     key: Key('play_area_puzzle_top_player_hidden'),
                   );
+            final bool showGameTip =
+                showPlayerPanels && DB().generalSettings.showGameTips;
+            final Widget gameTip = showGameTip
+                ? const _HumanAiGameTipPanel(
+                    key: Key('play_area_human_ai_tip_panel'),
+                  )
+                : const SizedBox.shrink(
+                    key: Key('play_area_human_ai_tip_panel_hidden'),
+                  );
 
             final double moveListHeight = showMoveList
                 ? _wrappedMoveListReservedHeightForRoute(context)
+                : 0;
+            final double gameTipHeight = showGameTip
+                ? _gameTipPanelHeightForLayout(context)
                 : 0;
             final double boardRowsHeight = showPieceCountRows
                 ? _pieceRowsHeightForLayout(context)
@@ -3321,6 +3340,7 @@ class PlayAreaState extends State<PlayArea> {
                 (showAdvantageGraph ? 112 : 0);
             final double nonBoardHeight =
                 moveListHeight +
+                gameTipHeight +
                 boardRowsHeight +
                 topPanelHeight +
                 bottomPanelHeight;
@@ -3368,6 +3388,7 @@ class PlayAreaState extends State<PlayArea> {
                 constraints.maxWidth + boardRowsHeight;
             final double estimatedRequiredHeight =
                 moveListHeight +
+                gameTipHeight +
                 boardBlockHeight +
                 topPanelHeight +
                 bottomPanelHeight;
@@ -3390,6 +3411,7 @@ class PlayAreaState extends State<PlayArea> {
                   key: const Key('play_area_human_ai_column'),
                   children: <Widget>[
                     moveList,
+                    SizedBox(height: gameTipHeight, child: gameTip),
                     SizedBox(
                       height: topPanelHeight + topSpacerHeight,
                       child: Padding(
@@ -3427,6 +3449,7 @@ class PlayAreaState extends State<PlayArea> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 moveList,
+                SizedBox(height: gameTipHeight, child: gameTip),
                 topTable,
                 ...boardChildren,
                 ...bottomChildren,
@@ -3902,11 +3925,14 @@ class PlayAreaState extends State<PlayArea> {
       left: false,
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
+          final bool showContextualTip =
+              _supportsGameTips && DB().generalSettings.showGameTips;
           final double pieceRowsHeight = showPieceCountRows
               ? _pieceRowsHeightForLayout(context)
               : AppTheme.boardMargin * 2;
           final double nonBoardHeight =
               _kWrappedMoveListMaxHeight +
+              (showContextualTip ? GameHeader.contextualHeight : 0) +
               _kOfflineBoardPlayerPanelHeight * 2 +
               pieceRowsHeight +
               _kOfflineBoardLayoutSafetyMargin;
@@ -3919,6 +3945,10 @@ class PlayAreaState extends State<PlayArea> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               _buildMoveListForRegularGame(context),
+              if (showContextualTip)
+                const GameHeader(
+                  key: Key('play_area_offline_board_game_header'),
+                ),
               SizedBox(
                 height: _kOfflineBoardPlayerPanelHeight,
                 child: _OfflineBoardPlayerPanel(
@@ -4339,12 +4369,6 @@ class PlayAreaState extends State<PlayArea> {
                           ),
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
-                            const _HumanAiPlayerPanel(
-                              key: Key(
-                                'play_area_human_ai_landscape_robot_panel',
-                              ),
-                              isRobot: true,
-                            ),
                             const Expanded(
                               child: _InlineMoveList(
                                 key: Key(
@@ -4362,7 +4386,21 @@ class PlayAreaState extends State<PlayArea> {
                                 announceCompletedMove: true,
                               ),
                             ),
-                            const SizedBox(height: verticalPadding),
+                            if (DB().generalSettings.showGameTips)
+                              SizedBox(
+                                height: _gameTipPanelHeightForLayout(context),
+                                child: const _HumanAiGameTipPanel(
+                                  key: Key(
+                                    'play_area_human_ai_landscape_tip_panel',
+                                  ),
+                                ),
+                              ),
+                            const _HumanAiPlayerPanel(
+                              key: Key(
+                                'play_area_human_ai_landscape_robot_panel',
+                              ),
+                              isRobot: true,
+                            ),
                             const _HumanAiPlayerPanel(
                               key: Key(
                                 'play_area_human_ai_landscape_player_panel',
@@ -4489,11 +4527,6 @@ class PlayAreaState extends State<PlayArea> {
                         ),
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          if (_supportsGameTips &&
-                              DB().generalSettings.showGameTips)
-                            const GameHeader(
-                              key: Key('play_area_regular_landscape_header'),
-                            ),
                           Expanded(
                             child: _InlineMoveList(
                               key: const Key(
@@ -4523,6 +4556,11 @@ class PlayAreaState extends State<PlayArea> {
                               announceCompletedMove: true,
                             ),
                           ),
+                          if (_supportsGameTips &&
+                              DB().generalSettings.showGameTips)
+                            const GameHeader(
+                              key: Key('play_area_regular_landscape_header'),
+                            ),
                           if (_shouldShowAdvantageGraph(isGameSurface: true))
                             SizedBox(
                               key: const Key(
@@ -4644,13 +4682,6 @@ class PlayAreaState extends State<PlayArea> {
                           'play_area_offline_board_landscape_side_panel',
                         ),
                         children: <Widget>[
-                          SizedBox(
-                            height: _kOfflineBoardPlayerPanelHeight,
-                            child: _OfflineBoardPlayerPanel(
-                              side: topSide,
-                              upsideDown: playerOrientation.topUpsideDown,
-                            ),
-                          ),
                           Expanded(
                             child: _InlineMoveList(
                               key: const Key(
@@ -4681,9 +4712,29 @@ class PlayAreaState extends State<PlayArea> {
                               announceCompletedMove: true,
                             ),
                           ),
+                          if (_supportsGameTips &&
+                              DB().generalSettings.showGameTips)
+                            const GameHeader(
+                              key: Key(
+                                'play_area_offline_board_landscape_header',
+                              ),
+                            ),
                           SizedBox(
                             height: _kOfflineBoardPlayerPanelHeight,
                             child: _OfflineBoardPlayerPanel(
+                              key: const Key(
+                                'play_area_offline_board_landscape_top_player',
+                              ),
+                              side: topSide,
+                              upsideDown: playerOrientation.topUpsideDown,
+                            ),
+                          ),
+                          SizedBox(
+                            height: _kOfflineBoardPlayerPanelHeight,
+                            child: _OfflineBoardPlayerPanel(
+                              key: const Key(
+                                'play_area_offline_board_landscape_bottom_player',
+                              ),
                               side: bottomSide,
                               upsideDown: playerOrientation.bottomUpsideDown,
                             ),
@@ -6367,7 +6418,6 @@ class _HumanAiPlayerPanel extends StatelessWidget {
     final GameController controller = GameController();
     return AnimatedBuilder(
       animation: Listenable.merge(<Listenable>[
-        controller.headerTipNotifier,
         controller.headerIconsNotifier,
         if (isRobot) controller.engineActivityNotifier,
       ]),
@@ -6395,20 +6445,12 @@ class _HumanAiPlayerPanel extends StatelessWidget {
     final bool isActivePlayer =
         (sideToMove == PieceColor.white || sideToMove == PieceColor.black) &&
         controller.gameInstance.getPlayerByColor(sideToMove).isAi == isRobot;
-    final bool showTip = DB().generalSettings.showGameTips && isActivePlayer;
     // A source is known only after the computer has completed its turn. Do
     // not show the previous source while it is thinking about a new move.
     final _ComputerMoveSource? completedMoveSource =
         isRobot && !isThinking && !isActivePlayer
         ? _computerMoveSourceFor(context, controller.aiMoveType)
         : null;
-    final NativeMillGameSession? session = controller.activeNativeMillSession;
-    final String tip = controller.headerTipNotifier.message.isEmpty
-        ? session == null
-              ? S.of(context).welcome
-              : controller.nativeSessionTurnTip(context, session) ??
-                    S.of(context).welcome
-        : controller.headerTipNotifier.message;
     final Widget playerDetails = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -6487,29 +6529,47 @@ class _HumanAiPlayerPanel extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          Expanded(
-            child: showTip
-                ? Row(
-                    children: <Widget>[
-                      Expanded(flex: 4, child: playerDetails),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        flex: 6,
-                        child: GameTipBubble(
-                          key: Key(
-                            isRobot
-                                ? 'play_area_human_ai_robot_tip'
-                                : 'play_area_human_ai_player_tip',
-                          ),
-                          message: tip,
-                        ),
-                      ),
-                    ],
-                  )
-                : playerDetails,
-          ),
+          Expanded(child: playerDetails),
         ],
       ),
+    );
+  }
+}
+
+class _HumanAiGameTipPanel extends StatelessWidget {
+  const _HumanAiGameTipPanel({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final GameController controller = GameController();
+    return AnimatedBuilder(
+      animation: Listenable.merge(<Listenable>[
+        controller.headerTipNotifier,
+        controller.headerIconsNotifier,
+      ]),
+      builder: (BuildContext context, Widget? child) {
+        if (!DB().generalSettings.showGameTips) {
+          return const SizedBox.shrink(
+            key: Key('play_area_human_ai_tip_hidden'),
+          );
+        }
+
+        final NativeMillGameSession? session =
+            controller.activeNativeMillSession;
+        final String message = controller.headerTipNotifier.message.isEmpty
+            ? session == null
+                  ? S.of(context).welcome
+                  : controller.nativeSessionTurnTip(context, session) ??
+                        S.of(context).welcome
+            : controller.headerTipNotifier.message;
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          child: GameTipBubble(
+            key: const Key('play_area_human_ai_tip'),
+            message: message,
+          ),
+        );
+      },
     );
   }
 }

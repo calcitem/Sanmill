@@ -1567,7 +1567,7 @@ void main() {
     expect(find.byKey(const Key('play_area_human_ai_player_panel')), findsOne);
   });
 
-  testWidgets('human vs computer tips follow the player to move', (
+  testWidgets('human vs computer keeps tips above the computer panel', (
     WidgetTester tester,
   ) async {
     db.generalSettings = const GeneralSettings(showGameTips: true);
@@ -1582,28 +1582,27 @@ void main() {
     final Finder robotPanel = find.byKey(
       const Key('play_area_human_ai_robot_panel'),
     );
+    final Finder moveList = find.byKey(
+      const Key('play_area_human_ai_move_list'),
+    );
+    final Finder tipPanel = find.byKey(
+      const Key('play_area_human_ai_tip_panel'),
+    );
+    final Finder tip = find.byKey(const Key('play_area_human_ai_tip'));
     final Finder playerPanel = find.byKey(
       const Key('play_area_human_ai_player_panel'),
     );
+    expect(tip, findsOneWidget);
+    expect(find.descendant(of: playerPanel, matching: tip), findsNothing);
+    expect(find.descendant(of: robotPanel, matching: tip), findsNothing);
+    expect(tester.getSize(tip).width, greaterThanOrEqualTo(48));
     expect(
-      find.descendant(
-        of: playerPanel,
-        matching: find.byKey(const Key('play_area_human_ai_player_tip')),
-      ),
-      findsOneWidget,
+      tester.getBottomLeft(moveList).dy,
+      lessThanOrEqualTo(tester.getTopLeft(tipPanel).dy),
     );
     expect(
-      find.descendant(
-        of: robotPanel,
-        matching: find.byKey(const Key('play_area_human_ai_robot_tip')),
-      ),
-      findsNothing,
-    );
-    expect(
-      tester
-          .getSize(find.byKey(const Key('play_area_human_ai_player_tip')))
-          .width,
-      greaterThanOrEqualTo(48),
+      tester.getBottomLeft(tipPanel).dy,
+      lessThanOrEqualTo(tester.getTopLeft(robotPanel).dy),
     );
 
     await session.apply(
@@ -1621,26 +1620,10 @@ void main() {
     await tester.pump(const Duration(milliseconds: 1));
     await tester.pump(const Duration(milliseconds: 1));
 
-    expect(
-      find.descendant(
-        of: robotPanel,
-        matching: find.byKey(const Key('play_area_human_ai_robot_tip')),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(
-        of: playerPanel,
-        matching: find.byKey(const Key('play_area_human_ai_player_tip')),
-      ),
-      findsNothing,
-    );
-    expect(
-      tester
-          .getSize(find.byKey(const Key('play_area_human_ai_robot_tip')))
-          .width,
-      greaterThanOrEqualTo(48),
-    );
+    expect(tip, findsOneWidget);
+    expect(find.text('Computer is thinking'), findsOneWidget);
+    expect(find.descendant(of: playerPanel, matching: tip), findsNothing);
+    expect(find.descendant(of: robotPanel, matching: tip), findsNothing);
     expect(tester.takeException(), isNull);
   });
 
@@ -1662,9 +1645,47 @@ void main() {
 
     expect(find.text('Last move: a4-a1'), findsNothing);
     expect(find.text('Place a piece.'), findsOneWidget);
+    expect(find.byKey(const Key('play_area_human_ai_tip')), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('offline board renders tips between moves and the top player', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(showGameTips: true);
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.humanVsHuman,
+    );
+    GameController().headerTipNotifier.showTip(
+      'Player 1 to move',
+      snackBar: false,
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+
+    final Finder moveList = find.byKey(
+      const Key('play_area_regular_move_list'),
+    );
+    final Finder tip = find.byKey(
+      const Key('play_area_offline_board_game_header'),
+    );
+    final Finder topPlayer = find.byKey(
+      const Key('play_area_offline_board_top_player'),
+    );
+    expect(moveList, findsOneWidget);
+    expect(tip, findsOneWidget);
+    expect(find.text('Player 1 to move'), findsOneWidget);
+    expect(topPlayer, findsOneWidget);
     expect(
-      find.byKey(const Key('play_area_human_ai_player_tip')),
-      findsOneWidget,
+      tester.getBottomLeft(moveList).dy,
+      lessThanOrEqualTo(tester.getTopLeft(tip).dy),
+    );
+    expect(
+      tester.getBottomLeft(tip).dy,
+      lessThanOrEqualTo(tester.getTopLeft(topPlayer).dy),
     );
     expect(tester.takeException(), isNull);
   });
@@ -2095,6 +2116,7 @@ void main() {
   testWidgets('human vs ai balanced layout fits with advantage graph', (
     WidgetTester tester,
   ) async {
+    db.generalSettings = const GeneralSettings(showGameTips: true);
     db.displaySettings = const DisplaySettings(isAdvantageGraphShown: true);
     GameController().gameInstance.gameMode = GameMode.humanVsAi;
 
@@ -2123,6 +2145,7 @@ void main() {
   testWidgets('regular board page avoids overflow when dense', (
     WidgetTester tester,
   ) async {
+    db.generalSettings = const GeneralSettings(showGameTips: true);
     db.displaySettings = const DisplaySettings(isAdvantageGraphShown: true);
     GameController().gameInstance.gameMode = GameMode.aiVsAi;
 
@@ -2155,6 +2178,7 @@ void main() {
   testWidgets('offline board dense portrait layout handles insets', (
     WidgetTester tester,
   ) async {
+    db.generalSettings = const GeneralSettings(showGameTips: true);
     db.displaySettings = const DisplaySettings(isAdvantageGraphShown: true);
     GameController().gameInstance.gameMode = GameMode.humanVsHuman;
 
@@ -2204,7 +2228,7 @@ void main() {
   testWidgets('human vs ai dense portrait layout handles insets', (
     WidgetTester tester,
   ) async {
-    db.generalSettings = const GeneralSettings();
+    db.generalSettings = const GeneralSettings(showGameTips: true);
     db.displaySettings = const DisplaySettings(isAdvantageGraphShown: true);
     GameController().gameInstance.gameMode = GameMode.humanVsAi;
 
@@ -7720,6 +7744,9 @@ void main() {
     final Finder contextualHeader = find.byKey(
       const Key('play_area_regular_landscape_header'),
     );
+    final Finder moveList = find.byKey(
+      const Key('play_area_regular_landscape_move_list'),
+    );
 
     expect(sidePanel, findsOneWidget);
     expect(contextualHeader, findsOneWidget);
@@ -7730,13 +7757,17 @@ void main() {
       ),
       findsOneWidget,
     );
+    expect(
+      tester.getBottomLeft(moveList).dy,
+      lessThanOrEqualTo(tester.getTopLeft(contextualHeader).dy),
+    );
     expect(tester.takeException(), isNull);
   });
 
   testWidgets('human vs ai uses landscape side panel layout', (
     WidgetTester tester,
   ) async {
-    db.generalSettings = const GeneralSettings();
+    db.generalSettings = const GeneralSettings(showGameTips: true);
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
     );
@@ -7775,6 +7806,15 @@ void main() {
     final Finder sidePanel = find.byKey(
       const Key('play_area_human_ai_landscape_side_panel'),
     );
+    final Finder moveList = find.byKey(
+      const Key('play_area_human_ai_landscape_move_list'),
+    );
+    final Finder tipPanel = find.byKey(
+      const Key('play_area_human_ai_landscape_tip_panel'),
+    );
+    final Finder robotPanel = find.byKey(
+      const Key('play_area_human_ai_landscape_robot_panel'),
+    );
 
     expect(landscapeContent, findsOneWidget);
     expect(boardPane, findsOneWidget);
@@ -7790,6 +7830,16 @@ void main() {
     expect(
       find.byKey(const Key('play_area_human_ai_landscape_move_3')),
       findsOneWidget,
+    );
+    expect(tipPanel, findsOneWidget);
+    expect(find.byKey(const Key('play_area_human_ai_tip')), findsOneWidget);
+    expect(
+      tester.getBottomLeft(moveList).dy,
+      lessThanOrEqualTo(tester.getTopLeft(tipPanel).dy),
+    );
+    expect(
+      tester.getBottomLeft(tipPanel).dy,
+      lessThanOrEqualTo(tester.getTopLeft(robotPanel).dy),
     );
     expect(
       tester.getTopLeft(boardPane).dx,
@@ -7812,6 +7862,7 @@ void main() {
   testWidgets('offline board uses landscape side panel layout', (
     WidgetTester tester,
   ) async {
+    db.generalSettings = const GeneralSettings(showGameTips: true);
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
     );
@@ -7850,6 +7901,15 @@ void main() {
     final Finder sidePanel = find.byKey(
       const Key('play_area_offline_board_landscape_side_panel'),
     );
+    final Finder moveList = find.byKey(
+      const Key('play_area_offline_board_landscape_move_list'),
+    );
+    final Finder contextualHeader = find.byKey(
+      const Key('play_area_offline_board_landscape_header'),
+    );
+    final Finder topPlayer = find.byKey(
+      const Key('play_area_offline_board_landscape_top_player'),
+    );
 
     expect(landscapeContent, findsOneWidget);
     expect(boardPane, findsOneWidget);
@@ -7865,6 +7925,15 @@ void main() {
     expect(
       find.byKey(const Key('play_area_offline_board_landscape_move_3')),
       findsOneWidget,
+    );
+    expect(contextualHeader, findsOneWidget);
+    expect(
+      tester.getBottomLeft(moveList).dy,
+      lessThanOrEqualTo(tester.getTopLeft(contextualHeader).dy),
+    );
+    expect(
+      tester.getBottomLeft(contextualHeader).dy,
+      lessThanOrEqualTo(tester.getTopLeft(topPlayer).dy),
     );
     expect(
       tester.getTopLeft(boardPane).dx,
