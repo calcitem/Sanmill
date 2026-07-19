@@ -155,6 +155,62 @@ void main() {
   }, skip: nativeLibrarySkipReason() != null);
 
   testWidgets(
+    'Resume analysis restores after the page mounts',
+    (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(390, 844)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await AnalysisSessionStorage.instance.clear();
+      addTearDown(AnalysisSessionStorage.instance.clear);
+
+      const RuleSettings rules = NineMensMorrisRuleSettings();
+      const String initialFen =
+          '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 '
+          'ids:nodes';
+      final GameRecorder recorder = GameRecorder(recordedRuleSettings: rules);
+      final AnalysisSessionRecord record = AnalysisSessionRecord.capture(
+        rules: rules,
+        recorder: recorder,
+        currentFen: initialFen,
+      );
+      final Map<String, dynamic> encodedRecord = record.toJson();
+      await tester.runAsync(
+        () => DB().reviewDataBox.put(
+          AnalysisSessionStorage.storageKey,
+          encodedRecord,
+        ),
+      );
+
+      await tester.pumpWidget(const SanmillApp());
+      await tester.pump(const Duration(milliseconds: 350));
+      await tester.tap(find.byKey(const Key('sanmill_tab_more')));
+      await tester.pump(const Duration(milliseconds: 350));
+      final Finder resumeAnalysis = find.byKey(
+        const Key('drawer_item_resume_analysis'),
+      );
+      expect(resumeAnalysis, findsOneWidget);
+      await tester.ensureVisible(resumeAnalysis);
+      await tester.pump(const Duration(milliseconds: 350));
+      await tester.tap(resumeAnalysis);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 350));
+
+      expect(tester.takeException(), isNull);
+      expect(
+        find.byKey(const Key('game_page_analysis_appbar')),
+        findsOneWidget,
+      );
+      expect(GameController().activeFen, initialFen);
+
+      await tester.binding.handlePopRoute();
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Verify app navigation and localization',
     (WidgetTester tester) async {
       // Build the app and trigger a frame

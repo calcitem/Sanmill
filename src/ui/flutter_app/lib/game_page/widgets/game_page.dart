@@ -154,8 +154,16 @@ class _GamePageInnerState extends State<_GamePageInner>
     _ownsAnalysisSession =
         widget.controller.gameInstance.gameMode == GameMode.analysis;
     if (_ownsAnalysisSession) {
-      _initializeAnalysisSession();
       WidgetsBinding.instance.addObserver(this);
+      // Restoring a saved Analysis session publishes a new active-session
+      // snapshot. Defer that notification until the shell has finished the
+      // frame which mounts this page, otherwise an ancestor ListenableBuilder
+      // is asked to rebuild while it is already building the GamePage.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _initializeAnalysisSession();
+        }
+      });
     }
     // Reset the cumulative win/draw/loss tally when entering the game page,
     // mirroring the legacy `Position.resetScore()` call that lived in the
@@ -249,7 +257,9 @@ class _GamePageInnerState extends State<_GamePageInner>
 
   Future<void> _saveAnalysisSession() async {
     if (!_ownsAnalysisSession ||
-        widget.controller.gameInstance.gameMode != GameMode.analysis) {
+        _analysisRecorder == null ||
+        widget.controller.gameInstance.gameMode != GameMode.analysis ||
+        widget.controller.activeNativeMillSession == null) {
       return;
     }
     try {
