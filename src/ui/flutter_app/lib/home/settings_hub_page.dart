@@ -148,6 +148,12 @@ class SettingsHubPage extends StatelessWidget {
             LichessListSection(
               cardKey: const Key('settings_hub_settings_card'),
               children: <Widget>[
+                _SettingsHubActionTile(
+                  key: const Key('settings_hub_language'),
+                  icon: Icons.translate_rounded,
+                  title: strings.language,
+                  onTap: () => showLanguagePickerDialog(context),
+                ),
                 _SettingsHubTile(
                   key: const Key('settings_hub_general_settings'),
                   icon: Icons.tune_rounded,

@@ -47,6 +47,21 @@ part 'package:sanmill/appearance_settings/widgets/sliders/piece_width_slider.dar
 part 'package:sanmill/appearance_settings/widgets/sliders/point_width_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/settings_slider_sheet.dart';
 
+Future<void> showLanguagePickerDialog(BuildContext context) async {
+  final DisplaySettings displaySettings = DB().displaySettings;
+  final Locale? newLocale = await showDialog<Locale?>(
+    context: context,
+    builder: (BuildContext context) =>
+        _LanguagePicker(currentLanguageLocale: displaySettings.locale),
+  );
+  if (!context.mounted || displaySettings.locale == newLocale) {
+    return;
+  }
+
+  DB().displaySettings = displaySettings.copyWith(locale: newLocale);
+  logger.t('[config] locale = $newLocale');
+}
+
 class _BoardStylePreview extends StatelessWidget {
   const _BoardStylePreview({required this.colors});
 
@@ -380,16 +395,6 @@ class AppearanceSettingsPage extends StatelessWidget {
         return alert;
       },
     );
-  }
-
-  void langCallback(
-    BuildContext context,
-    DisplaySettings displaySettings, [
-    Locale? locale,
-  ]) {
-    DB().displaySettings = displaySettings.copyWith(locale: locale);
-
-    logger.t("[config] locale = $locale");
   }
 
   Future<void> _setTheme(
@@ -775,21 +780,6 @@ class AppearanceSettingsPage extends StatelessWidget {
     );
   }
 
-  void _selectLanguage(BuildContext context, DisplaySettings displaySettings) {
-    showDialog<Locale?>(
-      context: context,
-      builder: (BuildContext context) =>
-          _LanguagePicker(currentLanguageLocale: displaySettings.locale),
-    ).then((Locale? newLocale) {
-      if (!context.mounted) {
-        return;
-      }
-      if (displaySettings.locale != newLocale) {
-        langCallback(context, displaySettings, newLocale);
-      }
-    });
-  }
-
   String _themeModeLabel(BuildContext context, AppThemeMode themeMode) {
     final S strings = S.of(context);
     return switch (themeMode) {
@@ -875,24 +865,14 @@ class AppearanceSettingsPage extends StatelessWidget {
       key: const Key('appearance_settings_page_display_settings_column'),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        SettingsCard(
-          key: const Key('appearance_settings_page_display_settings_card'),
-          title: Text(
-            strings.general,
-            key: const Key('display_settings_card_title'),
-          ),
-          children: <Widget>[
-            SettingsListTile(
-              key: const Key(
-                'display_settings_card_language_settings_list_tile',
-              ),
-              titleString: strings.language,
-              trailingString: DB().displaySettings.locale != null
-                  ? localeToLanguageName[displaySettings.locale]
-                  : null,
-              onTap: () => _selectLanguage(context, displaySettings),
+        if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
+          SettingsCard(
+            key: const Key('appearance_settings_page_display_settings_card'),
+            title: Text(
+              strings.general,
+              key: const Key('display_settings_card_title'),
             ),
-            if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
+            children: <Widget>[
               SettingsListTile.switchTile(
                 key: const Key('display_settings_card_full_screen_switch_tile'),
                 value: displaySettings.isFullScreen,
@@ -906,8 +886,8 @@ class AppearanceSettingsPage extends StatelessWidget {
                 },
                 titleString: strings.fullScreen,
               ),
-          ],
-        ),
+            ],
+          ),
         SettingsCard(
           key: const Key('appearance_settings_page_board_display_card'),
           title: Text(strings.board),

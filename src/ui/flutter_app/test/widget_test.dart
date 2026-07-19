@@ -1764,6 +1764,7 @@ void main() {
       );
       expect(find.text('Settings'), findsOneWidget);
       expect(find.byKey(const Key('drawer_item_settings')), findsNothing);
+      expect(find.byKey(const Key('drawer_item_language')), findsOneWidget);
       expect(
         find.byKey(const Key('drawer_item_general_settings')),
         findsOneWidget,
@@ -1783,6 +1784,20 @@ void main() {
       );
       expect(
         find.byKey(const Key('drawer_item_reset_app_data')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('drawer_item_language')),
+          matching: find.text('Language'),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const Key('drawer_item_language')),
+          matching: find.text('System language'),
+        ),
         findsOneWidget,
       );
       expect(
@@ -1813,6 +1828,15 @@ void main() {
         ),
         findsNothing,
       );
+
+      await tester.tap(find.byKey(const Key('drawer_item_language')));
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const Key('language_picker_alert_dialog')),
+        findsOneWidget,
+      );
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
 
       await tester.ensureVisible(
         find.byKey(const Key('drawer_item_reset_app_data')),
@@ -2019,6 +2043,12 @@ void main() {
       );
       expect(appearanceTitle.data, 'Appearance');
       expect(
+        find.byKey(
+          const Key('display_settings_card_language_settings_list_tile'),
+        ),
+        findsNothing,
+      );
+      expect(
         find.descendant(
           of: find.byKey(const Key('appearance_settings_page_appbar')),
           matching: find.byType(BackButton),
@@ -2110,9 +2140,6 @@ void main() {
         tester.getTopLeft(backgroundImageTile).dy,
         greaterThan(tester.getTopLeft(boardImageTile).dy),
       );
-      final Finder displaySettings = find.byKey(
-        const Key('appearance_settings_page_display_settings_card'),
-      );
       final Finder colorTuning = find.byKey(
         const Key('appearance_settings_page_board_color_settings_card'),
       );
@@ -2120,12 +2147,6 @@ void main() {
         of: find.byKey(const Key('settings_list')),
         matching: find.byType(Scrollable),
       );
-      await tester.scrollUntilVisible(
-        displaySettings,
-        320,
-        scrollable: appearanceScrollable,
-      );
-      await tester.pumpAndSettle();
       await tester.scrollUntilVisible(
         find.byKey(const Key('appearance_settings_page_piece_display_card')),
         320,

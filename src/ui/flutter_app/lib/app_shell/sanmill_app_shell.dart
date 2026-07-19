@@ -11,6 +11,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
+import '../appearance_settings/widgets/appearance_settings_page.dart';
 import '../experience_recording/models/recording_models.dart';
 import '../experience_recording/services/recording_navigator_observer.dart';
 import '../experience_recording/services/recording_service.dart';
@@ -53,6 +54,7 @@ import '../shared/dialogs/privacy_policy_dialog.dart';
 import '../shared/pages/diagnostic_report_page.dart';
 import '../shared/services/diagnostic_report_service.dart';
 import '../shared/services/environment_config.dart';
+import '../shared/services/language_locale_mapping.dart';
 import '../shared/services/logger.dart';
 import '../shared/themes/app_styles.dart';
 import '../shared/utils/localizations/sanmill_localizations.dart';
@@ -2958,6 +2960,15 @@ class _MenuEntries extends StatelessWidget {
           headerKey: const Key('drawer_item_settings_group'),
           cardKey: const Key('drawer_item_settings_card'),
           children: <Widget>[
+            _MoreTile(
+              key: const Key('drawer_item_language'),
+              icon: Icons.translate_rounded,
+              title: strings.language,
+              subtitle: DB().displaySettings.locale == null
+                  ? strings.defaultLanguage
+                  : localeToLanguageName[DB().displaySettings.locale],
+              onTap: () => unawaited(showLanguagePickerDialog(context)),
+            ),
             _MoreTile(
               key: const Key('drawer_item_general_settings'),
               icon: Icons.tune_rounded,
