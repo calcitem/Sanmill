@@ -59,6 +59,13 @@ class _SoundThemeModal extends StatelessWidget {
           title,
           key: Key('sound_theme_modal_radio_list_tile_${keySuffix}_title'),
         ),
+        secondary: IconButton(
+          key: Key('sound_theme_modal_preview_$keySuffix'),
+          tooltip: S.of(context).previewSound,
+          icon: const Icon(Icons.volume_up_outlined),
+          onPressed: () =>
+              unawaited(SoundManager().playSoundThemePreview(value)),
+        ),
         groupValue: soundTheme,
         value: value,
         onChanged: onChanged,

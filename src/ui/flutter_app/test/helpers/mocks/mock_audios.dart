@@ -5,6 +5,7 @@
 
 import 'package:mockito/mockito.dart';
 import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/general_settings/models/general_settings.dart';
 
 class MockAudios extends Mock implements SoundManager {
   @override
@@ -21,6 +22,9 @@ class MockAudios extends Mock implements SoundManager {
     Sound sound, {
     Duration timeout = const Duration(seconds: 10),
   }) async {}
+
+  @override
+  Future<void> playSoundThemePreview(SoundTheme theme) async {}
 
   @override
   Future<void> startBackgroundMusic() async {}

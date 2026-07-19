@@ -65,6 +65,7 @@ class SoundManager {
 
   AudioPlayer? _backgroundMusicPlayer;
   String? _backgroundMusicPath;
+  AudioPlayer? _soundThemePreviewPlayer;
 
   bool _isTemporaryMute = false;
 
@@ -233,6 +234,35 @@ class SoundManager {
     }
   }
 
+  /// Preview the placement sound for [theme] without changing the saved theme.
+  ///
+  /// This is an explicit settings action, so it remains available when normal
+  /// in-game sounds are disabled. Screen-reader mode and temporary muting still
+  /// suppress the preview to avoid interfering with spoken feedback.
+  Future<void> playSoundThemePreview(SoundTheme theme) async {
+    if (_isTemporaryMute || DB().generalSettings.screenReaderSupport) {
+      return;
+    }
+
+    final String? assetPath = _soundFiles[theme.name]?[Sound.place];
+    assert(assetPath != null, 'Every sound theme must provide a place sound.');
+    if (assetPath == null) {
+      logger.e("$_logTag No placement sound found for theme ${theme.name}.");
+      return;
+    }
+
+    try {
+      await _ensureGlobalAudioContextConfigured();
+      final AudioPlayer player = _soundThemePreviewPlayer ??= AudioPlayer();
+      await player.setAudioContext(_mixWithOthersAudioContext);
+      await player.setReleaseMode(ReleaseMode.stop);
+      await player.stop();
+      await player.play(AssetSource(assetPath.replaceFirst('assets/', '')));
+    } catch (e) {
+      logger.e("$_logTag Error previewing sound theme ${theme.name}: $e");
+    }
+  }
+
   /// Play the given sound and wait until playback completes.
   ///
   /// This is intended for sequencing (e.g. ensure a "mill" sound finishes
@@ -319,6 +349,10 @@ class SoundManager {
       _backgroundMusicPlayer = null;
       _backgroundMusicPath = null;
       await backgroundMusicPlayer?.dispose();
+
+      final AudioPlayer? soundThemePreviewPlayer = _soundThemePreviewPlayer;
+      _soundThemePreviewPlayer = null;
+      await soundThemePreviewPlayer?.dispose();
     }));
   }
 }

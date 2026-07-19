@@ -6645,5 +6645,9 @@
     "openingExplorerWatchThisLine": "Watch this line",
     "@openingExplorerWatchThisLine": {
         "description": "Action that plays an opening line move by move on the explorer board"
+    },
+    "previewSound": "Preview sound",
+    "@previewSound": {
+        "description": "Tooltip for playing a sample from a sound theme without selecting it"
     }
 }
