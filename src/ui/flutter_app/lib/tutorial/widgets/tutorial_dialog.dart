@@ -200,6 +200,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
           Semantics(
             label: previousLabel,
             button: true,
+            onTap: _handleBackNavigation,
             child: ExcludeSemantics(
               child: IconButton(
                 key: previousButtonKey,
@@ -213,6 +214,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
           Semantics(
             label: finishLabel,
             button: true,
+            onTap: () => _finishTutorial(context),
             child: ExcludeSemantics(
               child: IconButton(
                 key: finishButtonKey,
@@ -232,6 +234,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
             label: strings.next,
             button: true,
             enabled: !isFinally,
+            onTap: isFinally ? null : nextStep,
             child: ExcludeSemantics(
               child: IconButton(
                 key: nextButtonKey,

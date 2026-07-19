@@ -2311,6 +2311,7 @@ void main() {
   testWidgets('Tutorial explains configurable Mill rules clearly', (
     WidgetTester tester,
   ) async {
+    final SemanticsHandle semantics = tester.ensureSemantics();
     tester.view
       ..physicalSize = const Size(390, 844)
       ..devicePixelRatio = 1.0;
@@ -2339,13 +2340,25 @@ void main() {
           widget is Semantics && widget.properties.label == label,
     );
 
+    void expectTapAction(String label, {required bool enabled}) {
+      final SemanticsData data = tester
+          .getSemantics(find.bySemanticsLabel(label))
+          .getSemanticsData();
+      expect(data.hasFlag(SemanticsFlag.isButton), isTrue);
+      expect(data.hasAction(SemanticsAction.tap), enabled);
+    }
+
     expect(semanticsWithLabel('Back'), findsOneWidget);
     expect(semanticsWithLabel('Skip'), findsOneWidget);
     expect(semanticsWithLabel('Next'), findsOneWidget);
+    expectTapAction('Back', enabled: true);
+    expectTapAction('Skip', enabled: true);
+    expectTapAction('Next', enabled: true);
     expect(find.text('Mill\nHow to play'), findsOneWidget);
 
     await nextStep();
     expect(semanticsWithLabel('Previous'), findsOneWidget);
+    expectTapAction('Previous', enabled: true);
     expect(
       find.text('Placing phase\nTap an empty point to place a piece.'),
       findsOneWidget,
@@ -2391,6 +2404,9 @@ void main() {
       findsOneWidget,
     );
     expect(semanticsWithLabel('Got it'), findsOneWidget);
+    expectTapAction('Got it', enabled: true);
+    expectTapAction('Next', enabled: false);
+    semantics.dispose();
   });
 
   testWidgets('Tutorial back exits first step and rewinds later steps', (
