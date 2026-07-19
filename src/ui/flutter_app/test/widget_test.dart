@@ -1650,106 +1650,77 @@ void main() {
       await tester.pumpAndSettle();
 
       final BuildContext settingsTileContext = tester.element(
-        find.byKey(const Key('drawer_item_settings')),
+        find.byKey(const Key('drawer_item_general_settings')),
       );
       expect(
         ListTileTheme.of(settingsTileContext).iconColor,
         Theme.of(settingsTileContext).colorScheme.primary,
       );
-      expect(find.byKey(const Key('drawer_item_settings_group')), findsNothing);
+      expect(
+        find.byKey(const Key('drawer_item_settings_group')),
+        findsOneWidget,
+      );
       expect(
         find.byKey(const Key('drawer_item_settings_card')),
         findsOneWidget,
       );
       expect(find.text('Settings'), findsOneWidget);
+      expect(find.byKey(const Key('drawer_item_settings')), findsNothing);
       expect(
-        find.descendant(
-          of: find.byKey(const Key('drawer_item_settings')),
-          matching: find.byIcon(Icons.chevron_right_rounded),
-        ),
-        findsNothing,
-      );
-
-      expect(shellState.debugCurrentTab, SanmillShellTab.more);
-      expect(
-        shellState.debugCurrentRouteId,
-        SanmillShellRouteIds.moreRoot.value,
-      );
-
-      await tester.tap(find.byKey(const Key('drawer_item_settings')));
-      await tester.pumpAndSettle();
-
-      expect(find.byKey(const Key('settings_hub_list')), findsOneWidget);
-      expect(find.text('Settings'), findsOneWidget);
-      expect(
-        shellState.debugCurrentRouteId,
-        ShellRouteIds.appSettingsGroup.value,
-      );
-      expect(
-        find.byKey(const Key('settings_hub_general_settings')),
+        find.byKey(const Key('drawer_item_general_settings')),
         findsOneWidget,
       );
       expect(
-        find.byKey(const Key('settings_hub_rule_settings')),
+        find.byKey(const Key('drawer_item_rule_settings')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('drawer_item_appearance')), findsOneWidget);
+      expect(
+        find.byKey(const Key('drawer_item_export_all_settings')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('drawer_item_import_all_settings')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('drawer_item_reset_app_data')),
         findsOneWidget,
       );
       expect(
         find.descendant(
-          of: find.byKey(const Key('settings_hub_general_settings')),
+          of: find.byKey(const Key('drawer_item_general_settings')),
           matching: find.text('General'),
         ),
         findsOneWidget,
       );
       expect(
         find.descendant(
-          of: find.byKey(const Key('settings_hub_rule_settings')),
+          of: find.byKey(const Key('drawer_item_rule_settings')),
           matching: find.text('Rules'),
         ),
         findsOneWidget,
       );
-      expect(find.byKey(const Key('settings_hub_appearance')), findsOneWidget);
-      expect(
-        find.byKey(const Key('settings_hub_config_import_export_card')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const Key('settings_hub_export_all_settings')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const Key('settings_hub_import_all_settings')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const Key('settings_hub_restore_card')),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const Key('settings_hub_restore_default_settings')),
-        findsOneWidget,
-      );
       expect(
         find.descendant(
-          of: find.byKey(const Key('settings_hub_appearance')),
+          of: find.byKey(const Key('drawer_item_appearance')),
           matching: find.text('Appearance'),
         ),
         findsOneWidget,
       );
       expect(
         find.descendant(
-          of: find.byKey(const Key('settings_hub_appearance')),
+          of: find.byKey(const Key('drawer_item_appearance')),
           matching: find.text('Board'),
         ),
         findsNothing,
       );
 
       await tester.ensureVisible(
-        find.byKey(const Key('settings_hub_restore_default_settings')),
+        find.byKey(const Key('drawer_item_reset_app_data')),
       );
       await tester.pumpAndSettle();
-      await tester.tap(
-        find.byKey(const Key('settings_hub_restore_default_settings')),
-      );
+      await tester.tap(find.byKey(const Key('drawer_item_reset_app_data')));
       await tester.pumpAndSettle();
 
       expect(
@@ -1775,10 +1746,10 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.ensureVisible(
-        find.byKey(const Key('settings_hub_general_settings')),
+        find.byKey(const Key('drawer_item_general_settings')),
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(const Key('settings_hub_general_settings')));
+      await tester.tap(find.byKey(const Key('drawer_item_general_settings')));
       await tester.pumpAndSettle();
 
       final BuildContext generalSettingsContext = tester.element(
@@ -1793,7 +1764,7 @@ void main() {
       );
       expect(
         shellState.debugCurrentRouteId,
-        ShellRouteIds.appSettingsGroup.value,
+        ShellRouteIds.appGeneralSettings.value,
       );
       expect(find.text('Human moves first'), findsOneWidget);
       expect(find.text('Computer thinking time'), findsOneWidget);
@@ -1858,13 +1829,17 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(shellState.debugCurrentTab, SanmillShellTab.more);
-      expect(find.byKey(const Key('settings_hub_list')), findsOneWidget);
+      expect(find.byKey(const Key('sanmill_more_list')), findsOneWidget);
       expect(
         shellState.debugCurrentRouteId,
         SanmillShellRouteIds.moreRoot.value,
       );
 
-      await tester.tap(find.byKey(const Key('settings_hub_rule_settings')));
+      await tester.ensureVisible(
+        find.byKey(const Key('drawer_item_rule_settings')),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('drawer_item_rule_settings')));
       await tester.pumpAndSettle();
 
       final BuildContext ruleSettingsContext = tester.element(
@@ -1913,13 +1888,17 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(shellState.debugCurrentTab, SanmillShellTab.more);
-      expect(find.byKey(const Key('settings_hub_list')), findsOneWidget);
+      expect(find.byKey(const Key('sanmill_more_list')), findsOneWidget);
       expect(
         shellState.debugCurrentRouteId,
         SanmillShellRouteIds.moreRoot.value,
       );
 
-      await tester.tap(find.byKey(const Key('settings_hub_appearance')));
+      await tester.ensureVisible(
+        find.byKey(const Key('drawer_item_appearance')),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('drawer_item_appearance')));
       await tester.pumpAndSettle();
 
       final BuildContext appearanceSettingsContext = tester.element(
@@ -2145,16 +2124,6 @@ void main() {
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
 
-      expect(
-        shellState.debugCurrentRouteId,
-        SanmillShellRouteIds.moreRoot.value,
-      );
-
-      await tester.binding.handlePopRoute();
-      await tester.pumpAndSettle();
-
-      expect(shellState.debugCurrentTab, SanmillShellTab.more);
-      expect(find.byKey(const Key('settings_hub_list')), findsOneWidget);
       expect(
         shellState.debugCurrentRouteId,
         SanmillShellRouteIds.moreRoot.value,

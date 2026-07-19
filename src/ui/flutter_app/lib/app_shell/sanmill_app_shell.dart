@@ -40,6 +40,7 @@ import '../games/mill/native_mill_snapshot_board_view.dart';
 import '../general_settings/models/general_settings.dart';
 import '../generated/intl/l10n.dart';
 import '../home/module_route_screens.dart';
+import '../home/settings_hub_page.dart';
 import '../review/models/review_models.dart';
 import '../review/services/review_record_factory.dart';
 import '../review/services/review_storage.dart';
@@ -2921,6 +2922,8 @@ class _MenuEntries extends StatelessWidget {
   Widget build(BuildContext context) {
     final S strings = S.of(context);
     final GameModule module = GameRegistry.instance.current;
+    final bool hasRuleSettings =
+        module.buildRuleSettingsScreen(context) != null;
     final List<GameMenuContribution> contributionTools = module
         .menuContributions(context)
         .where(
@@ -3004,15 +3007,53 @@ class _MenuEntries extends StatelessWidget {
               _buildPlayModeToolTile(tool),
           ],
         ),
-        LichessListSection(
+        _MoreSection(
+          title: strings.settings,
+          headerKey: const Key('drawer_item_settings_group'),
           cardKey: const Key('drawer_item_settings_card'),
           children: <Widget>[
             _MoreTile(
-              key: const Key('drawer_item_settings'),
-              icon: Icons.settings_outlined,
-              title: strings.settings,
+              key: const Key('drawer_item_general_settings'),
+              icon: Icons.tune_rounded,
+              title: strings.general,
               onTap: () =>
-                  onAppRouteSelected(ShellRouteIds.appSettingsGroup.value),
+                  onAppRouteSelected(ShellRouteIds.appGeneralSettings.value),
+            ),
+            if (hasRuleSettings)
+              _MoreTile(
+                key: const Key('drawer_item_rule_settings'),
+                icon: Icons.rule_rounded,
+                title: strings.rules,
+                onTap: () =>
+                    onAppRouteSelected(ShellRouteIds.appRuleSettings.value),
+              ),
+            _MoreTile(
+              key: const Key('drawer_item_appearance'),
+              icon: Icons.grid_view_rounded,
+              title: strings.appearance,
+              onTap: () =>
+                  onAppRouteSelected(ShellRouteIds.appAppearance.value),
+            ),
+            if (!kIsWeb)
+              _MoreTile(
+                key: const Key('drawer_item_export_all_settings'),
+                icon: Icons.ios_share_rounded,
+                title: strings.exportAllSettings,
+                onTap: () => unawaited(SettingsHubPage.exportSettings(context)),
+              ),
+            if (!kIsWeb)
+              _MoreTile(
+                key: const Key('drawer_item_import_all_settings'),
+                icon: Icons.file_download_outlined,
+                title: strings.importAllSettings,
+                onTap: () => unawaited(SettingsHubPage.importSettings(context)),
+              ),
+            _MoreTile(
+              key: const Key('drawer_item_reset_app_data'),
+              icon: Icons.restore_rounded,
+              title: strings.resetAppData,
+              onTap: () =>
+                  SettingsHubPage.restoreFactoryDefaultSettings(context),
             ),
           ],
         ),
@@ -3081,12 +3122,14 @@ class _MoreSection extends StatelessWidget {
     required this.title,
     required this.children,
     this.headerKey,
+    this.cardKey,
     this.onHeaderTap,
   });
 
   final String title;
   final List<Widget> children;
   final Key? headerKey;
+  final Key? cardKey;
   final VoidCallback? onHeaderTap;
 
   @override
@@ -3096,6 +3139,7 @@ class _MoreSection extends StatelessWidget {
     }
     return LichessListSection(
       headerKey: headerKey,
+      cardKey: cardKey,
       header: onHeaderTap == null
           ? Text(title)
           : _MoreSectionHeaderLink(title: title, onTap: onHeaderTap!),

@@ -23,7 +23,7 @@ class SettingsHubPage extends StatelessWidget {
 
   static const String _logTag = '[settings_hub_page]';
 
-  Future<void> _exportSettings(BuildContext context) async {
+  static Future<void> exportSettings(BuildContext context) async {
     final S strings = S.of(context);
     final bool? success = await ConfigImportExportService.shareConfig(
       shareSubject: strings.configImportShareSubject,
@@ -41,7 +41,7 @@ class SettingsHubPage extends StatelessWidget {
     );
   }
 
-  Future<void> _importSettings(BuildContext context) async {
+  static Future<void> importSettings(BuildContext context) async {
     FilePickerResult? pickResult;
     try {
       pickResult = await FilePicker.pickFiles(
@@ -124,7 +124,7 @@ class SettingsHubPage extends StatelessWidget {
     }
   }
 
-  void _restoreFactoryDefaultSettings(BuildContext context) {
+  static void restoreFactoryDefaultSettings(BuildContext context) {
     showDialog<void>(
       context: context,
       builder: (_) => const _SettingsHubResetSettingsDialog(),
@@ -187,13 +187,13 @@ class SettingsHubPage extends StatelessWidget {
                     key: const Key('settings_hub_export_all_settings'),
                     icon: Icons.ios_share_rounded,
                     title: strings.exportAllSettings,
-                    onTap: () => _exportSettings(context),
+                    onTap: () => exportSettings(context),
                   ),
                   _SettingsHubActionTile(
                     key: const Key('settings_hub_import_all_settings'),
                     icon: Icons.file_download_outlined,
                     title: strings.importAllSettings,
-                    onTap: () => _importSettings(context),
+                    onTap: () => importSettings(context),
                   ),
                 ],
               ),
@@ -206,7 +206,7 @@ class SettingsHubPage extends StatelessWidget {
                   key: const Key('settings_hub_restore_default_settings'),
                   icon: Icons.restore_rounded,
                   title: strings.resetAppData,
-                  onTap: () => _restoreFactoryDefaultSettings(context),
+                  onTap: () => restoreFactoryDefaultSettings(context),
                 ),
               ],
             ),
