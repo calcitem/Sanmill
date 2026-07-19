@@ -90,7 +90,6 @@ import '../widgets/qr_scan_result_dialog.dart';
 import 'analysis_mode.dart';
 import 'animation/animation_manager.dart';
 import 'annotation/annotation_manager.dart';
-import "gif_share/gif_share.dart";
 import 'import_export/import_helpers.dart';
 import 'import_export/pgn.dart';
 import 'offline_board_clock.dart';

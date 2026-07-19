@@ -146,8 +146,11 @@ class GeneralSettings {
     @Deprecated("Use [EnvironmentConfig.devMode] instead")
     this.experimentsEnabled = false,
     this.firstRun = true,
+    @Deprecated('GIF sharing is available automatically on supported devices.')
     this.gameScreenRecorderSupport = false,
+    @Deprecated('GIF exports now loop continuously.')
     this.gameScreenRecorderDuration = 2,
+    @Deprecated('GIF export resolution is selected automatically.')
     this.gameScreenRecorderPixelRatio = 50,
     this.showTutorial = true,
     this.remindedOpponentMayFly = false,
@@ -287,12 +290,18 @@ class GeneralSettings {
   @HiveField(21, defaultValue: true)
   final bool firstRun;
 
+  /// Legacy persisted value retained only for Hive/JSON compatibility.
+  @Deprecated('GIF sharing is available automatically on supported devices.')
   @HiveField(22, defaultValue: false)
   final bool gameScreenRecorderSupport;
 
+  /// Legacy persisted value retained only for Hive/JSON compatibility.
+  @Deprecated('GIF exports now loop continuously.')
   @HiveField(23, defaultValue: 2)
   final int gameScreenRecorderDuration;
 
+  /// Legacy persisted value retained only for Hive/JSON compatibility.
+  @Deprecated('GIF export resolution is selected automatically.')
   @HiveField(24, defaultValue: 50)
   final int gameScreenRecorderPixelRatio;
 

@@ -1589,8 +1589,6 @@ class GameController {
     }
 
     gameInstance.gameMode = gameModeBak;
-    GifShare().captureView(first: true);
-
     // Record game reset event for experience recording.
     RecordingService().recordEvent(
       RecordingEventType.gameReset,
@@ -2414,15 +2412,6 @@ class GameController {
       return;
     }
     skipCompleter.complete();
-  }
-
-  Future<void> gifShare(BuildContext context) async {
-    headerTipNotifier.showTip(S.of(context).pleaseWait);
-    final String done = S.of(context).done;
-    await GifShare().captureView();
-    headerTipNotifier.showTip(done);
-
-    GifShare().shareGif();
   }
 
   /// S.of(context).starts a game save.

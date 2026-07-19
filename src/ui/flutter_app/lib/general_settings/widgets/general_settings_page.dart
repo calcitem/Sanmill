@@ -15,7 +15,6 @@ import 'package:intl/intl.dart' show NumberFormat;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-import '../../game_page/services/gif_share/gif_share.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
 import '../../puzzle/models/rule_variant.dart';
@@ -44,8 +43,6 @@ part 'pages/settings_sub_page.dart';
 part 'pages/advanced_ai_search_page.dart';
 part 'pages/ai_knowledge_sources_page.dart';
 part 'modals/algorithm_modal.dart';
-part 'modals/duration_modal.dart';
-part 'modals/ratio_modal.dart';
 part 'modals/sound_theme_modal.dart';
 part 'pickers/skill_level_picker.dart';
 part 'pickers/search_threads_picker.dart';
@@ -859,70 +856,6 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag vibrationEnabled: $value");
   }
 
-  void _setGameScreenRecorderSupport(
-    GeneralSettings generalSettings,
-    bool value,
-  ) {
-    _settingsRepository.generalSettings = generalSettings.copyWith(
-      gameScreenRecorderSupport: value,
-    );
-
-    logger.t("$_logTag gameScreenRecorderSupport: $value");
-
-    // Free captured frames immediately when the feature is disabled.
-    if (value == false) {
-      GifShare().releaseData();
-    }
-  }
-
-  void _setGameScreenRecorderDuration(
-    BuildContext context,
-    GeneralSettings generalSettings,
-  ) {
-    void callback(int? duration) {
-      Navigator.pop(context);
-
-      _settingsRepository.generalSettings = generalSettings.copyWith(
-        gameScreenRecorderDuration: duration ?? 2,
-      );
-
-      logger.t("[config] gameScreenRecorderDuration = ${duration ?? 2}");
-    }
-
-    showModalBottomSheet(
-      context: context,
-      builder: (_) => _DurationModal(
-        duration: generalSettings.gameScreenRecorderDuration,
-        onChanged: callback,
-      ),
-    );
-  }
-
-  void _setGameScreenRecorderPixelRatio(
-    BuildContext context,
-    GeneralSettings generalSettings,
-  ) {
-    void callback(int? ratio) {
-      SnackBarService.showRootSnackBar(S.of(context).reopenToTakeEffect);
-
-      Navigator.pop(context);
-
-      _settingsRepository.generalSettings = generalSettings.copyWith(
-        gameScreenRecorderPixelRatio: ratio ?? 50,
-      );
-
-      logger.t("[config] gameScreenRecorderPixelRatio = ${ratio ?? 50}");
-    }
-
-    showModalBottomSheet(
-      context: context,
-      builder: (_) => _RatioModal(
-        ratio: generalSettings.gameScreenRecorderPixelRatio,
-        onChanged: callback,
-      ),
-    );
-  }
-
   SettingsList _buildGeneralSettingsList(
     BuildContext context,
     Box<GeneralSettings> box,
@@ -1097,57 +1030,6 @@ class GeneralSettingsPage extends StatelessWidget {
               ),
           ],
         ),
-        if (supportsGameScreenRecorder)
-          SettingsCard(
-            key: const Key(
-              'general_settings_page_settings_card_game_screen_recorder',
-            ),
-            title: Text(
-              S.of(context).gameScreenRecorder,
-              key: const Key(
-                'general_settings_page_settings_card_game_screen_recorder_title',
-              ),
-            ),
-            children: <Widget>[
-              SettingsListTile.switchTile(
-                key: const Key(
-                  'general_settings_page_settings_card_game_screen_recorder_support',
-                ),
-                value: generalSettings.gameScreenRecorderSupport,
-                onChanged: (bool val) {
-                  _setGameScreenRecorderSupport(generalSettings, val);
-                  if (val == true) {
-                    SnackBarService.showRootSnackBar(
-                      S.of(context).experimental,
-                    );
-                  }
-                },
-                titleString: S.of(context).enableGifSharing,
-              ),
-              SettingsListTile(
-                key: const Key(
-                  'general_settings_page_settings_card_game_screen_recorder_duration',
-                ),
-                titleString: S.of(context).duration,
-                subtitleString: S.of(context).gifRepeatCountDescription,
-                trailingString: generalSettings.gameScreenRecorderDuration
-                    .toString(),
-                onTap: () =>
-                    _setGameScreenRecorderDuration(context, generalSettings),
-              ),
-              SettingsListTile(
-                key: const Key(
-                  'general_settings_page_settings_card_game_screen_recorder_pixel_ratio',
-                ),
-                titleString: S.of(context).pixelRatio,
-                subtitleString: S.of(context).gifImageScaleDescription,
-                trailingString:
-                    "${generalSettings.gameScreenRecorderPixelRatio}%",
-                onTap: () =>
-                    _setGameScreenRecorderPixelRatio(context, generalSettings),
-              ),
-            ],
-          ),
         if (AiComplianceConfig.releaseGateSatisfied &&
             DB().ruleSettings.isLikelyNineMensMorris())
           SettingsCard(

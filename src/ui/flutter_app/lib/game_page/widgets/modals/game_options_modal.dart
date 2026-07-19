@@ -3,6 +3,7 @@
 
 // game_options_modal.dart
 
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
@@ -35,6 +36,19 @@ double _skillLevelSliderProgress(int level) {
     'Computer level must be within the supported range.',
   );
   return level / Constants.highestSkillLevel;
+}
+
+Future<void> _shareCurrentGameGif(S strings) async {
+  final GameController controller = GameController();
+  controller.headerTipNotifier.showTip(strings.pleaseWait);
+  final bool shared = await GifShare().shareGame(
+    moves: controller.gameRecorder.currentPath,
+    initialFen: controller.gameRecorder.setupPosition,
+    hasDiagonalLines: DB().ruleSettings.hasDiagonalLines,
+  );
+  if (shared) {
+    controller.headerTipNotifier.showTip(strings.done);
+  }
 }
 
 int _skillLevelFromSliderProgress(double progress) {
@@ -312,11 +326,13 @@ class GameOptionsModal extends StatelessWidget {
               child: Text(S.of(context).copyGameToClipboard),
             ),
           ),
-        if (supportsGameScreenRecorder &&
-            DB().generalSettings.gameScreenRecorderSupport)
+        if (supportsGifSharing &&
+            (GameController().gameRecorder.currentPath.isNotEmpty ||
+                GameController().isPositionSetup))
           const CustomSpacer(),
-        if (supportsGameScreenRecorder &&
-            DB().generalSettings.gameScreenRecorderSupport)
+        if (supportsGifSharing &&
+            (GameController().gameRecorder.currentPath.isNotEmpty ||
+                GameController().isPositionSetup))
           SimpleDialogOption(
             key: const Key('share_gif_option'),
             onPressed: () {
@@ -328,8 +344,9 @@ class GameOptionsModal extends StatelessWidget {
                   'selection': 'shareGif',
                 },
               );
-              GameController().gifShare(context);
+              final S strings = S.of(context);
               Navigator.pop(context);
+              unawaited(_shareCurrentGameGif(strings));
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),

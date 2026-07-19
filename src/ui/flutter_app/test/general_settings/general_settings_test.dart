@@ -33,9 +33,6 @@ void main() {
       expect(s.considerMobility, isTrue);
       expect(s.focusOnBlockingPaths, isFalse);
       expect(s.firstRun, isTrue);
-      expect(s.gameScreenRecorderSupport, isFalse);
-      expect(s.gameScreenRecorderDuration, 2);
-      expect(s.gameScreenRecorderPixelRatio, 50);
       expect(s.showTutorial, isTrue);
       expect(s.remindedOpponentMayFly, isFalse);
       expect(s.vibrationEnabled, isFalse);
