@@ -27,6 +27,7 @@ class ImportGamePage extends StatefulWidget {
 class _ImportGamePageState extends State<ImportGamePage> {
   final TextEditingController _controller = TextEditingController();
   bool _isImporting = false;
+  String? _importErrorMessage;
 
   @override
   void dispose() {
@@ -111,10 +112,15 @@ class _ImportGamePageState extends State<ImportGamePage> {
   Future<bool> _importText(String text, {required bool recordAsLoad}) async {
     setState(() {
       _isImporting = true;
+      _importErrorMessage = null;
     });
 
-    final ({bool success, bool includedVariations}) importResult =
-        await LoadService.importGameData(context, text);
+    final ({bool success, bool includedVariations, String? errorMessage})
+    importResult = await LoadService.importGameData(
+      context,
+      text,
+      showFailureSnackBar: false,
+    );
     if (!mounted) {
       return false;
     }
@@ -122,6 +128,7 @@ class _ImportGamePageState extends State<ImportGamePage> {
     if (!importResult.success) {
       setState(() {
         _isImporting = false;
+        _importErrorMessage = importResult.errorMessage;
       });
       return false;
     }
@@ -239,6 +246,13 @@ class _ImportGamePageState extends State<ImportGamePage> {
                       enableSuggestions: false,
                       keyboardType: TextInputType.multiline,
                       textAlignVertical: TextAlignVertical.top,
+                      onChanged: (_) {
+                        if (_importErrorMessage != null) {
+                          setState(() {
+                            _importErrorMessage = null;
+                          });
+                        }
+                      },
                       decoration: InputDecoration(
                         hintText: strings.pasteAndImportGameHint,
                         alignLabelWithHint: true,
@@ -268,9 +282,33 @@ class _ImportGamePageState extends State<ImportGamePage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-              child: ValueListenableBuilder<TextEditingValue>(
+          ],
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        key: const Key('import_game_bottom_actions'),
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              if (_importErrorMessage case final String errorMessage)
+                Semantics(
+                  key: const Key('import_game_error_message'),
+                  liveRegion: true,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Text(
+                      errorMessage,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.error,
+                      ),
+                    ),
+                  ),
+                ),
+              ValueListenableBuilder<TextEditingValue>(
                 valueListenable: _controller,
                 builder:
                     (
@@ -295,9 +333,8 @@ class _ImportGamePageState extends State<ImportGamePage> {
                       );
                     },
               ),
-            ),
-            const SizedBox(height: 8),
-          ],
+            ],
+          ),
         ),
       ),
     );

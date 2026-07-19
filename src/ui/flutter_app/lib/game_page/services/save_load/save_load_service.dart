@@ -354,8 +354,8 @@ class LoadService {
         if (!context.mounted) {
           return;
         }
-        final ({bool success, bool includedVariations}) importResult =
-            await importGameData(context, fileContent);
+        final ({bool success, bool includedVariations, String? errorMessage})
+        importResult = await importGameData(context, fileContent);
         if (importResult.success) {
           GameController().loadedGameSourcePath = File(filePath).absolute.path;
           if (!context.mounted) {
@@ -511,11 +511,13 @@ class LoadService {
 
   /// Import game data from file content.
   /// If the file contains variations, asks the user whether to include them.
-  /// Returns a record with (success, includedVariations).
-  static Future<({bool success, bool includedVariations})> importGameData(
+  /// Returns a record with (success, includedVariations, errorMessage).
+  static Future<({bool success, bool includedVariations, String? errorMessage})>
+  importGameData(
     BuildContext context,
-    String fileContent,
-  ) async {
+    String fileContent, {
+    bool showFailureSnackBar = true,
+  }) async {
     // Check if the file contains variations before importing
     bool includeVariations = true;
     bool includedVariations = false;
@@ -532,7 +534,7 @@ class LoadService {
       }
 
       if (!context.mounted) {
-        return (success: false, includedVariations: false);
+        return (success: false, includedVariations: false, errorMessage: null);
       }
 
       ImportService.import(fileContent, includeVariations: includeVariations);
@@ -545,7 +547,11 @@ class LoadService {
         );
       }
 
-      return (success: true, includedVariations: includedVariations);
+      return (
+        success: true,
+        includedVariations: includedVariations,
+        errorMessage: null,
+      );
     } catch (exception) {
       logger.w('$_logTag Game import failed: ${exception.runtimeType}');
       final String errorMsg = S.of(context).gameImportFailed;
@@ -553,10 +559,12 @@ class LoadService {
       final String tip = includedVariations
           ? '$errorMsg ${S.of(context).experimental}'
           : errorMsg;
-      rootScaffoldMessengerKey.currentState?.showSnackBarClear(tip);
+      if (showFailureSnackBar) {
+        rootScaffoldMessengerKey.currentState?.showSnackBarClear(tip);
+      }
       GameController().headerTipNotifier.showTip(tip);
 
-      return (success: false, includedVariations: false);
+      return (success: false, includedVariations: false, errorMessage: tip);
     }
   }
 
