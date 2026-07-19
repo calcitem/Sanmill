@@ -5207,7 +5207,6 @@
     "@todayProgressSummary": {"placeholders": {"games": {"type": "int"}, "reviews": {"type": "int"}}},
     "privateHistory": "Game history",
     "noPrivateGames": "Completed games will appear here.",
-    "privateHistoryDescription": "Stored only on this device; up to 100 unique games.",
     "dailyTraining": "Puzzles and training",
     "retry": "Retry",
     "showAnswer": "Show answer",

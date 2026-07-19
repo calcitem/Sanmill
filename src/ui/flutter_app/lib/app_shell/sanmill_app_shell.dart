@@ -1625,7 +1625,6 @@ class _PrivateHistorySection extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.lock_outline_rounded),
             title: Text(strings.noPrivateGames),
-            subtitle: Text(strings.privateHistoryDescription),
           ),
         ],
       );

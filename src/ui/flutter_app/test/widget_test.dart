@@ -508,6 +508,14 @@ void main() {
         find.byKey(const Key('sanmill_home_private_history_group')),
         findsOneWidget,
       );
+      final ListTile emptyHistoryTile = tester.widget<ListTile>(
+        find.descendant(
+          of: find.byKey(const Key('sanmill_home_private_history_card')),
+          matching: find.byType(ListTile),
+        ),
+      );
+      expect(emptyHistoryTile.title, isA<Text>());
+      expect(emptyHistoryTile.subtitle, isNull);
       expect(
         find.byKey(const Key('sanmill_home_empty_recent_group')),
         findsOneWidget,

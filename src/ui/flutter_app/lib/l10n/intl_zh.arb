@@ -5034,7 +5034,6 @@
     "todayProgressSummary": "完成 {games} 局 · 复盘 {reviews} 份",
     "privateHistory": "对局历史",
     "noPrivateGames": "完成的对局会显示在这里。",
-    "privateHistoryDescription": "仅保存在本机，最多保留 100 条不重复的对局记录。",
     "dailyTraining": "谜题与训练",
     "retry": "重试",
     "showAnswer": "显示答案",
