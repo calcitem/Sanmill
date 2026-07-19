@@ -2416,20 +2416,6 @@ class GameController {
     skipCompleter.complete();
   }
 
-  void showSnakeBarHumanNotation(String humanStr) {
-    final List<ExtMove> moves = gameRecorder.mainlineMoves;
-    final ExtMove? lastMove = moves.isNotEmpty ? moves.last : null;
-    final String? n = lastMove?.notation;
-
-    if (DB().generalSettings.screenReaderSupport &&
-        activeBoardView.action != Act.remove &&
-        n != null) {
-      rootScaffoldMessengerKey.currentState!.showSnackBar(
-        CustomSnackBar("$humanStr: $n"),
-      );
-    }
-  }
-
   Future<void> gifShare(BuildContext context) async {
     headerTipNotifier.showTip(S.of(context).pleaseWait);
     final String done = S.of(context).done;

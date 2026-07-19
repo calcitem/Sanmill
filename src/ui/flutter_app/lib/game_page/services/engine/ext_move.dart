@@ -295,22 +295,18 @@ class ExtMove extends PgnNodeData {
   /// The standard notation for the move,
   /// e.g. "d6", "d6??", "d5-c5", "xg4", etc.
   String get notation {
-    final bool useUpperCase = DB().generalSettings.screenReaderSupport;
     final int f = from;
     final String fromStr = sqToNotation(f);
     final String toStr = sqToNotation(to);
     switch (type) {
       case MoveType.remove:
-        return useUpperCase ? "x${toStr.toUpperCase()}" : "x$toStr";
+        return "x$toStr";
       case MoveType.move:
-        final String sep = useUpperCase ? "-" : "-";
-        return useUpperCase
-            ? "${fromStr.toUpperCase()}$sep${toStr.toUpperCase()}"
-            : "$fromStr$sep$toStr";
+        return "$fromStr-$toStr";
       case MoveType.place:
       case MoveType.draw:
       case MoveType.none:
-        return useUpperCase ? toStr.toUpperCase() : toStr;
+        return toStr;
     }
   }
 }

@@ -1911,12 +1911,9 @@ class _OpeningExplorerBoardPainter extends CustomPainter {
       index < _openingExplorerHorizontalCoordinates.length;
       index++
     ) {
-      final String label = DB().generalSettings.screenReaderSupport
-          ? _openingExplorerHorizontalCoordinates[index].toUpperCase()
-          : _openingExplorerHorizontalCoordinates[index];
       _paintCoordinate(
         canvas,
-        text: label,
+        text: _openingExplorerHorizontalCoordinates[index],
         style: textStyle,
         center: Offset(
           originX + index * cell,

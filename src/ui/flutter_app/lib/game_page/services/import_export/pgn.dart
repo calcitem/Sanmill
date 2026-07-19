@@ -1044,7 +1044,7 @@ class _PgnParser {
             }
             // Adapted Nine Men's Morris token regex.
             // Case-insensitive so that uppercase notation (e.g. from
-            // screenReaderSupport or external sources) is also accepted.
+            // accessibility presentation or external sources) is also accepted.
             final RegExp tokenRegex = RegExp(
               r'(?:p|(?:[a-g][1-7](?:[-x][a-g][1-7])*)|(?:x[a-g][1-7](?:[-x][a-g][1-7])*))'
               r'|{|;|\$\d{1,4}|[?!]{1,2}|\(|\)|\*|1-0|0-1|1\/2-1\/2',

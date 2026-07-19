@@ -141,7 +141,7 @@ class SoundManager {
 
   Future<void> startBackgroundMusic() async {
     await _ensureGlobalAudioContextConfigured();
-    if (_isTemporaryMute || DB().generalSettings.screenReaderSupport) {
+    if (_isTemporaryMute || AccessibilityStatus.isScreenReaderActive) {
       return;
     }
 
@@ -201,12 +201,16 @@ class SoundManager {
 
   /// Play the given sound.
   Future<void> playTone(Sound sound) async {
-    if (_isTemporaryMute || DB().generalSettings.screenReaderSupport) {
+    if (_isTemporaryMute) {
       return;
     }
 
     if (DB().generalSettings.vibrationEnabled) {
       await VibrationManager().vibrate(sound);
+    }
+
+    if (AccessibilityStatus.isScreenReaderActive) {
+      return;
     }
 
     if (!DB().generalSettings.toneEnabled) {
@@ -243,7 +247,7 @@ class SoundManager {
     SoundTheme theme, {
     Sound sound = Sound.place,
   }) async {
-    if (_isTemporaryMute || DB().generalSettings.screenReaderSupport) {
+    if (_isTemporaryMute || AccessibilityStatus.isScreenReaderActive) {
       return;
     }
 
@@ -278,12 +282,16 @@ class SoundManager {
     Sound sound, {
     Duration timeout = const Duration(seconds: 10),
   }) async {
-    if (_isTemporaryMute || DB().generalSettings.screenReaderSupport) {
+    if (_isTemporaryMute) {
       return;
     }
 
     if (DB().generalSettings.vibrationEnabled) {
       await VibrationManager().vibrate(sound);
+    }
+
+    if (AccessibilityStatus.isScreenReaderActive) {
+      return;
     }
 
     if (!DB().generalSettings.toneEnabled) {

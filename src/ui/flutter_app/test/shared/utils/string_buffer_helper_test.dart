@@ -4,19 +4,18 @@
 // string_buffer_helper_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sanmill/general_settings/models/general_settings.dart';
-import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 
-import '../../helpers/mocks/mock_database.dart';
-
 void main() {
-  late MockDB mockDB;
+  final TestWidgetsFlutterBinding binding =
+      TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() {
-    mockDB = MockDB();
-    DB.instance = mockDB;
+    binding.platformDispatcher.accessibilityFeaturesTestValue =
+        const FakeAccessibilityFeatures();
   });
+
+  tearDown(binding.platformDispatcher.clearAccessibilityFeaturesTestValue);
 
   // ---------------------------------------------------------------------------
   // writeSpace
@@ -80,13 +79,9 @@ void main() {
   });
 
   // ---------------------------------------------------------------------------
-  // writeComma - screen reader support OFF
+  // writeComma - screen reader OFF
   // ---------------------------------------------------------------------------
-  group('CustomStringBuffer.writeComma (screenReaderSupport off)', () {
-    setUp(() {
-      mockDB.generalSettings = const GeneralSettings();
-    });
-
+  group('CustomStringBuffer.writeComma (screen reader off)', () {
     test('should write content + newline without comma', () {
       final StringBuffer buffer = StringBuffer();
       buffer.writeComma('hello');
@@ -103,11 +98,12 @@ void main() {
   });
 
   // ---------------------------------------------------------------------------
-  // writeComma - screen reader support ON
+  // writeComma - screen reader ON
   // ---------------------------------------------------------------------------
-  group('CustomStringBuffer.writeComma (screenReaderSupport on)', () {
+  group('CustomStringBuffer.writeComma (screen reader on)', () {
     setUp(() {
-      mockDB.generalSettings = const GeneralSettings(screenReaderSupport: true);
+      binding.platformDispatcher.accessibilityFeaturesTestValue =
+          const FakeAccessibilityFeatures(accessibleNavigation: true);
     });
 
     test('should write content with comma + newline', () {
@@ -126,13 +122,9 @@ void main() {
   });
 
   // ---------------------------------------------------------------------------
-  // writePeriod - screen reader support OFF
+  // writePeriod - screen reader OFF
   // ---------------------------------------------------------------------------
-  group('CustomStringBuffer.writePeriod (screenReaderSupport off)', () {
-    setUp(() {
-      mockDB.generalSettings = const GeneralSettings();
-    });
-
+  group('CustomStringBuffer.writePeriod (screen reader off)', () {
     test('should write content + newline without period', () {
       final StringBuffer buffer = StringBuffer();
       buffer.writePeriod('hello');
@@ -149,11 +141,12 @@ void main() {
   });
 
   // ---------------------------------------------------------------------------
-  // writePeriod - screen reader support ON
+  // writePeriod - screen reader ON
   // ---------------------------------------------------------------------------
-  group('CustomStringBuffer.writePeriod (screenReaderSupport on)', () {
+  group('CustomStringBuffer.writePeriod (screen reader on)', () {
     setUp(() {
-      mockDB.generalSettings = const GeneralSettings(screenReaderSupport: true);
+      binding.platformDispatcher.accessibilityFeaturesTestValue =
+          const FakeAccessibilityFeatures(accessibleNavigation: true);
     });
 
     test('should write content with period + newline', () {
@@ -176,7 +169,8 @@ void main() {
   // ---------------------------------------------------------------------------
   group('Combined usage', () {
     test('should build a complete numbered list with screen reader', () {
-      mockDB.generalSettings = const GeneralSettings(screenReaderSupport: true);
+      binding.platformDispatcher.accessibilityFeaturesTestValue =
+          const FakeAccessibilityFeatures(accessibleNavigation: true);
 
       final StringBuffer buffer = StringBuffer();
       buffer.writeNumber(1);

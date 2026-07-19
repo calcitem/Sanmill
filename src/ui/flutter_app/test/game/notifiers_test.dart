@@ -16,13 +16,16 @@ import '../helpers/mocks/mock_audios.dart';
 import '../helpers/mocks/mock_database.dart';
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
+  final TestWidgetsFlutterBinding binding =
+      TestWidgetsFlutterBinding.ensureInitialized();
 
   const MethodChannel engineChannel = MethodChannel(
     "com.calcitem.sanmill/engine",
   );
 
   setUp(() {
+    binding.platformDispatcher.accessibilityFeaturesTestValue =
+        const FakeAccessibilityFeatures();
     DB.instance = MockDB();
     SoundManager.instance = MockAudios();
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
@@ -43,6 +46,7 @@ void main() {
   });
 
   tearDown(() {
+    binding.platformDispatcher.clearAllTestValues();
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(engineChannel, null);
   });
@@ -63,14 +67,30 @@ void main() {
       expect(notifier.message, 'Hello');
     });
 
-    test('showTip should set showSnackBar based on screenReaderSupport', () {
-      // Default: screenReaderSupport = false
+    test('showTip should not request a Snackbar without a screen reader', () {
       final HeaderTipNotifier notifier = HeaderTipNotifier();
       notifier.showTip('Test');
 
-      // screenReaderSupport is false by default in MockDB,
-      // so showSnackBar should be false
       expect(notifier.showSnackBar, isFalse);
+    });
+
+    test('showTip follows the system screen-reader state', () {
+      binding.platformDispatcher.accessibilityFeaturesTestValue =
+          const FakeAccessibilityFeatures(accessibleNavigation: true);
+      final HeaderTipNotifier notifier = HeaderTipNotifier();
+
+      notifier.showTip('Test');
+
+      expect(notifier.showSnackBar, isTrue);
+    });
+
+    test('showTip recognizes a desktop semantics request', () {
+      binding.platformDispatcher.semanticsEnabledTestValue = true;
+      final HeaderTipNotifier notifier = HeaderTipNotifier();
+
+      notifier.showTip('Test');
+
+      expect(notifier.showSnackBar, isTrue);
     });
 
     test('multiple showTip calls should update to latest', () {

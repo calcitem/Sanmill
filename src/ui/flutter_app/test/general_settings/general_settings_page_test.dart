@@ -33,7 +33,7 @@ void main() {
     DB.instance = null;
   });
 
-  testWidgets('desktop settings expose screen-reader support', (
+  testWidgets('desktop settings do not require a screen-reader switch', (
     WidgetTester tester,
   ) async {
     await tester.binding.setSurfaceSize(const Size(1100, 900));
@@ -59,7 +59,7 @@ void main() {
       find.byKey(
         const Key('general_settings_page_settings_card_accessibility'),
       ),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
       find.byKey(
@@ -67,7 +67,7 @@ void main() {
           'general_settings_page_settings_card_accessibility_screen_reader_support',
         ),
       ),
-      findsOneWidget,
+      findsNothing,
     );
   });
 

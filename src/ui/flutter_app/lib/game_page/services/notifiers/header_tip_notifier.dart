@@ -38,7 +38,7 @@ class HeaderTipNotifier with ChangeNotifier {
   }) {
     final String normalizedTip = _normalizeHeaderTipPunctuation(tip);
     logger.i("[tip] $normalizedTip");
-    showSnackBar = DB().generalSettings.screenReaderSupport && snackBar;
+    showSnackBar = AccessibilityStatus.isScreenReaderActive && snackBar;
     _message = normalizedTip;
     _kind = kind;
     Future<void>.delayed(Duration.zero, () {

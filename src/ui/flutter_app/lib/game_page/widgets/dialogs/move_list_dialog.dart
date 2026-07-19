@@ -38,7 +38,7 @@ class MoveListDialog extends StatelessWidget {
       (String move) => move.contains('{'),
     );
 
-    if (DB().generalSettings.screenReaderSupport) {
+    if (AccessibilityStatus.isScreenReaderActive) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (rootScaffoldMessengerKey.currentState != null) {
           rootScaffoldMessengerKey.currentState!.clearSnackBars();

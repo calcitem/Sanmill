@@ -424,12 +424,9 @@ class _MillSessionBoardPainter extends CustomPainter {
     }
 
     for (int index = 0; index < _horizontalCoordinates.length; index++) {
-      final String label = DB().generalSettings.screenReaderSupport
-          ? _horizontalCoordinates[index].toUpperCase()
-          : _horizontalCoordinates[index];
       _paintCoordinate(
         canvas,
-        text: label,
+        text: _horizontalCoordinates[index],
         style: textStyle,
         center: Offset(
           originX + index * cell,

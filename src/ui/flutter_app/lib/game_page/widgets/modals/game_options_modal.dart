@@ -17,6 +17,7 @@ import '../../../generated/intl/l10n.dart';
 import '../../../puzzle/models/rule_variant.dart';
 import '../../../shared/config/constants.dart';
 import '../../../shared/database/database.dart';
+import '../../../shared/services/accessibility_status.dart';
 import '../../../shared/services/logger.dart';
 import '../../../shared/themes/app_styles.dart';
 import '../../../shared/themes/app_theme.dart';
@@ -364,8 +365,8 @@ class GameOptionsModal extends StatelessWidget {
               child: Text(S.of(context).saveImage),
             ),
           ),
-        if (DB().generalSettings.screenReaderSupport) const CustomSpacer(),
-        if (DB().generalSettings.screenReaderSupport)
+        if (AccessibilityStatus.isScreenReaderActive) const CustomSpacer(),
+        if (AccessibilityStatus.isScreenReaderActive)
           SimpleDialogOption(
             key: const Key('game_options_modal_close_option'),
             onPressed: () => Navigator.pop(context),

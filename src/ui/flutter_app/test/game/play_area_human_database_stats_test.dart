@@ -8,7 +8,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
@@ -273,9 +273,8 @@ void main() {
   testWidgets('screen reader board exposes tappable Mill points', (
     WidgetTester tester,
   ) async {
-    final SemanticsHandle semantics = tester.ensureSemantics();
     db = _GamePageDb(
-      generalSettings: const GeneralSettings(screenReaderSupport: true),
+      generalSettings: const GeneralSettings(),
       displaySettings: const DisplaySettings(
         isUnplacedAndRemovedPiecesShown: false,
       ),
@@ -309,6 +308,10 @@ void main() {
     });
     await tester.pump();
 
+    expect(find.byKey(const Key('board_grid_view')), findsNothing);
+    final SemanticsHandle semantics = tester.ensureSemantics();
+    await tester.pump();
+
     expect(find.byKey(const Key('board_grid_view')), findsOneWidget);
     expect(_boardSquareSemanticsFinder(), findsNWidgets(49));
 
@@ -339,7 +342,7 @@ void main() {
     expect(find.byKey(const Key('board_grid_view')), findsOneWidget);
     expect(_boardSquareSemanticsFinder(), findsNWidgets(49));
     semantics.dispose();
-  });
+  }, semanticsEnabled: false);
 
   testWidgets('resuming a game does not show the raw PGN in a snackbar', (
     WidgetTester tester,
@@ -6234,7 +6237,10 @@ void main() {
   testWidgets('screen reader move menu keeps every history action reachable', (
     WidgetTester tester,
   ) async {
-    db.generalSettings = const GeneralSettings(screenReaderSupport: true);
+    tester.platformDispatcher.accessibilityFeaturesTestValue =
+        const FakeAccessibilityFeatures(accessibleNavigation: true);
+    addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
+    db.generalSettings = const GeneralSettings();
     db.displaySettings = const DisplaySettings();
     GameController().gameInstance.gameMode = GameMode.humanVsAi;
 

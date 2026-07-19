@@ -3,17 +3,17 @@
 
 // string_buffer_helper.dart
 
-import '../../../database/database.dart';
+import '../../../services/accessibility_status.dart';
 
 /// StringBuffer Extension
 ///
 /// Extends the StringBuffer Object with some convenience methods used through the app.
 extension CustomStringBuffer on StringBuffer {
   void writeComma([Object? content = ""]) =>
-      writeln(DB().generalSettings.screenReaderSupport ? "$content," : content);
+      writeln(AccessibilityStatus.isScreenReaderActive ? "$content," : content);
 
   void writePeriod([Object? content = ""]) =>
-      writeln(DB().generalSettings.screenReaderSupport ? "$content." : content);
+      writeln(AccessibilityStatus.isScreenReaderActive ? "$content." : content);
 
   void writeSpace([Object? content = ""]) => write("$content ");
 

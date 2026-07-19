@@ -216,6 +216,9 @@ class GeneralSettings {
   @HiveField(2, defaultValue: true)
   final bool keepMuteWhenTakingBack;
 
+  /// Legacy persisted value retained only for Hive/JSON compatibility.
+  /// Screen-reader behavior now follows the operating-system accessibility
+  /// state automatically.
   @HiveField(3, defaultValue: false)
   final bool screenReaderSupport;
 

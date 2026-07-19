@@ -53,6 +53,7 @@ class _GameBoardState extends State<GameBoard>
   // Flag to prevent duplicate dialog display in AI vs AI mode
   bool _isDialogShowing = false;
   String? _archivedRecordId;
+  late bool _screenReaderWasActive;
 
   // Track if app is in background to handle lifecycle changes
   bool _isAppInBackground = false;
@@ -101,6 +102,7 @@ class _GameBoardState extends State<GameBoard>
   @override
   void initState() {
     super.initState();
+    _screenReaderWasActive = AccessibilityStatus.isScreenReaderActive;
     gameImagesFuture = _loadImages();
     animationManager = DB().displaySettings.animationDuration == 0.0
         ? HeadlessAnimationManager()
@@ -108,6 +110,9 @@ class _GameBoardState extends State<GameBoard>
 
     // Register lifecycle observer to handle app background/foreground transitions
     WidgetsBinding.instance.addObserver(this);
+    SemanticsBinding.instance.addSemanticsEnabledListener(
+      _handleSemanticsEnabledChanged,
+    );
 
     // Ensure controller is marked as active when a new board is mounted
     // so engine waits for responses instead of early-returning as disposed.
@@ -128,6 +133,32 @@ class _GameBoardState extends State<GameBoard>
     });
 
     GameController().animationManager = animationManager;
+  }
+
+  void _handleSemanticsEnabledChanged() {
+    if (mounted) {
+      setState(() {});
+    }
+    _syncAudioWithScreenReader();
+  }
+
+  @override
+  void didChangeAccessibilityFeatures() {
+    super.didChangeAccessibilityFeatures();
+    _syncAudioWithScreenReader();
+  }
+
+  void _syncAudioWithScreenReader() {
+    final bool isActive = AccessibilityStatus.isScreenReaderActive;
+    if (isActive == _screenReaderWasActive) {
+      return;
+    }
+    _screenReaderWasActive = isActive;
+    if (isActive) {
+      unawaited(SoundManager().stopBackgroundMusic());
+    } else {
+      unawaited(SoundManager().startBackgroundMusic());
+    }
   }
 
   @override
@@ -635,18 +666,12 @@ class _GameBoardState extends State<GameBoard>
                                                 .sideToMove ==
                                             PieceColor.black)),
                           ),
-                          child: DB().generalSettings.screenReaderSupport
+                          child: AccessibilityStatus.semanticsEnabled
                               ? _BoardSemantics(
                                   onSquareTap: (int square) =>
                                       _handleSquareTap(square, tapHandler),
                                 )
-                              : Semantics(
-                                  key: const Key('semantics_screen_reader'),
-                                  label: S
-                                      .of(context)
-                                      .youCanEnableScreenReaderSupport,
-                                  container: true,
-                                ),
+                              : const SizedBox.expand(),
                         );
                       },
                     ),
@@ -855,6 +880,9 @@ class _GameBoardState extends State<GameBoard>
   void dispose() {
     // Remove lifecycle observer
     WidgetsBinding.instance.removeObserver(this);
+    SemanticsBinding.instance.removeSemanticsEnabledListener(
+      _handleSemanticsEnabledChanged,
+    );
 
     // Mark controller as disposed to cancel any pending engine responses
     GameController().isDisposed = true;

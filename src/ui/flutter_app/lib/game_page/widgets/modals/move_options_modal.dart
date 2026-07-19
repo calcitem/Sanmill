@@ -73,7 +73,7 @@ class MoveOptionsModal extends StatelessWidget {
               // pieces are in their final positions and game state is consistent
               GameController().animationManager.completeAllAnimations();
 
-              if (DB().generalSettings.screenReaderSupport) {
+              if (AccessibilityStatus.isScreenReaderActive) {
                 _showMoveList(context);
               } else {
                 Navigator.pop(context);
@@ -108,7 +108,7 @@ class MoveOptionsModal extends StatelessWidget {
           ),
           const CustomSpacer(),
         ],
-        if (DB().generalSettings.screenReaderSupport)
+        if (AccessibilityStatus.isScreenReaderActive)
           SimpleDialogOption(
             key: const Key('move_options_modal_close_option'),
             child: Padding(

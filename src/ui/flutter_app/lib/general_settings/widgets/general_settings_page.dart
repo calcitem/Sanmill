@@ -859,14 +859,6 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag vibrationEnabled: $value");
   }
 
-  void _setScreenReaderSupport(GeneralSettings generalSettings, bool value) {
-    _settingsRepository.generalSettings = generalSettings.copyWith(
-      screenReaderSupport: value,
-    );
-
-    logger.t("$_logTag screenReaderSupport: $value");
-  }
-
   void _setGameScreenRecorderSupport(
     GeneralSettings generalSettings,
     bool value,
@@ -1103,30 +1095,6 @@ class GeneralSettingsPage extends StatelessWidget {
                 onChanged: (bool val) => _setVibration(generalSettings, val),
                 titleString: S.of(context).vibration,
               ),
-          ],
-        ),
-        SettingsCard(
-          key: const Key('general_settings_page_settings_card_accessibility'),
-          title: Text(
-            S.of(context).accessibility,
-            key: const Key(
-              'general_settings_page_settings_card_accessibility_title',
-            ),
-          ),
-          children: <Widget>[
-            SettingsListTile.switchTile(
-              key: const Key(
-                'general_settings_page_settings_card_accessibility_screen_reader_support',
-              ),
-              value: generalSettings.screenReaderSupport,
-              onChanged: (bool val) {
-                _setScreenReaderSupport(generalSettings, val);
-                SnackBarService.showRootSnackBar(
-                  S.of(context).reopenToTakeEffect,
-                );
-              },
-              titleString: S.of(context).screenReaderSupport,
-            ),
           ],
         ),
         if (supportsGameScreenRecorder)

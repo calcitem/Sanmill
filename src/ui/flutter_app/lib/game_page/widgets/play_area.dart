@@ -36,6 +36,7 @@ import '../../puzzle/models/rule_variant.dart';
 import '../../shared/config/ai_compliance_config.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
+import '../../shared/services/accessibility_status.dart';
 import '../../shared/services/screenshot_service.dart';
 import '../../shared/themes/app_styles.dart';
 import '../../shared/themes/app_theme.dart';
@@ -1051,7 +1052,7 @@ class PlayAreaState extends State<PlayArea> {
     NavigatorState navigator, {
     bool? initialShowBranchTree,
   }) {
-    if (DB().generalSettings.screenReaderSupport) {
+    if (AccessibilityStatus.isScreenReaderActive) {
       // On screen readers, use a bottom sheet.
       final BuildContext navigatorContext = navigator.context;
       _openModal(navigatorContext, _buildMoveModal(navigatorContext));

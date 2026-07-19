@@ -11,6 +11,7 @@ import 'dart:ui' as ui;
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
@@ -36,6 +37,7 @@ import '../../review/widgets/review_page.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
+import '../../shared/services/accessibility_status.dart';
 import '../../shared/services/catcher_service.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';

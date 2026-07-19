@@ -12,6 +12,7 @@ class InfoDialog extends StatelessWidget {
     final GameController controller = GameController();
     final StringBuffer buffer = StringBuffer();
     final MillBoardView view = controller.activeBoardView;
+    final bool screenReaderActive = AccessibilityStatus.isScreenReaderActive;
 
     late final String us;
     late final String them;
@@ -33,7 +34,7 @@ class InfoDialog extends StatelessWidget {
 
     buffer.write(view.phase.getName(context));
 
-    if (DB().generalSettings.screenReaderSupport) {
+    if (screenReaderActive) {
       buffer.writeln(":");
     } else {
       buffer.writeln();
@@ -43,19 +44,13 @@ class InfoDialog extends StatelessWidget {
 
     // Last Move information
     if (n1 != null) {
-      final String formattedNotation = DB().generalSettings.screenReaderSupport
+      final String formattedNotation = screenReaderActive
           ? n1.toUpperCase()
           : n1.toLowerCase();
 
-      // $them is only shown with the screen reader. It is convenient for
-      // the disabled to recognize whether the opponent has finished the moving.
-      buffer.write(
-        S
-            .of(context)
-            .lastMove(
-              DB().generalSettings.screenReaderSupport ? "$them, " : "",
-            ),
-      );
+      // $them is only shown with a screen reader so the listener can tell
+      // which side completed the previous turn.
+      buffer.write(S.of(context).lastMove(screenReaderActive ? "$them, " : ""));
 
       if (n1.startsWith("x")) {
         String moveNotation = "";
@@ -72,8 +67,8 @@ class InfoDialog extends StatelessWidget {
               .mainlineMoves[controller.gameRecorder.mainlineMoves.length - 2]
               .notation;
         }
-        // Apply correct case based on screen reader setting
-        moveNotation = DB().generalSettings.screenReaderSupport
+        // Use uppercase coordinates only at the spoken presentation boundary.
+        moveNotation = screenReaderActive
             ? moveNotation.toUpperCase()
             : moveNotation.toLowerCase();
         buffer.writeln(moveNotation);
@@ -86,11 +81,12 @@ class InfoDialog extends StatelessWidget {
 
     final String msg = GameController().headerTipNotifier.message;
 
-    // the tip
-    if (DB().generalSettings.screenReaderSupport &&
-        msg.endsWith(".") &&
-        msg.endsWith("!")) {
-      buffer.writePeriod(msg);
+    if (screenReaderActive && msg.isNotEmpty) {
+      if (RegExp(r'[.!?。！？]$').hasMatch(msg)) {
+        buffer.writeln(msg);
+      } else {
+        buffer.writePeriod(msg);
+      }
     }
 
     buffer.writeln();

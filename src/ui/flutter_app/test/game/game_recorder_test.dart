@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/import_export/pgn.dart';
 import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
 
 import '../helpers/mocks/mock_animation_manager.dart';
@@ -673,17 +674,15 @@ void main() {
       ); // Out of range
     });
 
-    test('ExtMove notation respects screen reader setting', () {
-      // This test documents the behavior, actual implementation
-      // may depend on DB().generalSettings.screenReaderSupport
+    test('ExtMove notation stays canonical with a legacy preference', () {
+      DB().generalSettings = const GeneralSettings(screenReaderSupport: true);
 
       final ExtMove move1 = ExtMove('d6', side: PieceColor.white);
       final ExtMove move2 = ExtMove('d6-f4', side: PieceColor.white);
       final ExtMove move3 = ExtMove('xa1', side: PieceColor.white);
 
-      // Default should be lowercase
       expect(move1.notation, 'd6');
-      expect(move2.notation, contains('d6'));
+      expect(move2.notation, 'd6-f4');
       expect(move3.notation, 'xa1');
     });
   });

@@ -9,7 +9,7 @@ class BoardSemanticsNotifier with ChangeNotifier {
   BoardSemanticsNotifier();
 
   void updateSemantics() {
-    if (DB().generalSettings.screenReaderSupport) {
+    if (AccessibilityStatus.semanticsEnabled) {
       notifyListeners();
     }
   }
