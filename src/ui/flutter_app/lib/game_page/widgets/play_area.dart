@@ -3738,12 +3738,15 @@ class PlayAreaState extends State<PlayArea> {
         final MillBoardView view = controller.activeBoardView;
         final PieceColor side =
             controller.activeSessionSideToMove ?? view.sideToMove;
-        final String sideName = side.playerName(context);
-        final String status = view.phase == Phase.gameOver
-            ? strings.gameOver
-            : view.action == Act.remove
-            ? strings.tipToRemove(sideName)
-            : strings.tipToMove(sideName);
+        final String status;
+        if (view.phase == Phase.gameOver) {
+          status = strings.gameOver;
+        } else {
+          final String sideName = side.playerName(context);
+          status = view.action == Act.remove
+              ? strings.tipToRemove(sideName)
+              : strings.tipToMove(sideName);
+        }
         final String? opening = controller.activeOpeningDisplayName();
         final String contextLabel = opening == null
             ? switch (view.phase) {
