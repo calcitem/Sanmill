@@ -2,6 +2,7 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_action_codec.dart';
@@ -77,6 +78,7 @@ void main() {
 
       MillSessionBoard board = tester.widget(find.byType(MillSessionBoard));
       expect(_legalMoves(board), contains('a1'));
+      expect(_nodeSemantics(tester, 'a1').label, contains('Empty point'));
       expect(
         _legalMoves(board).where((String move) => move.startsWith('x')),
         isEmpty,
@@ -86,6 +88,7 @@ void main() {
 
       expect(find.byKey(const Key('review_correction_accepted')), findsNothing);
       expect(_legalMoves(board), containsAll(<String>['xd7', 'xd6']));
+      expect(_nodeSemantics(tester, 'a1').label, contains('White piece'));
 
       await _activateNode(tester, 'd6');
 
@@ -98,6 +101,11 @@ void main() {
       board = tester.widget(find.byType(MillSessionBoard));
       expect(board.session.state.value.activeSeat, PlayerSeat.second);
       expect(board.highlightActions, <String>['a1', 'xd6']);
+      expect(_nodeSemantics(tester, 'd6').label, contains('Empty point'));
+      expect(
+        _nodeSemantics(tester, 'd6').hasAction(SemanticsAction.tap),
+        isFalse,
+      );
     },
     skip: _nativeLibrarySkipReason != null,
   );
@@ -209,6 +217,8 @@ void main() {
       expect(_legalMoves(board), contains('g1-d1'));
 
       await _activateNode(tester, 'g1');
+      expect(_nodeSemantics(tester, 'g1').label, contains('Black piece'));
+      expect(_nodeSemantics(tester, 'g1').label, contains('Selected'));
       await _activateNode(tester, 'd1');
 
       board = tester.widget(find.byType(MillSessionBoard));
@@ -327,8 +337,12 @@ Future<void> _activateNode(WidgetTester tester, String notation) async {
     find.byKey(Key('mill_session_board_node_$notation')),
   );
   semantics.properties.onTap!();
-  await tester.pump();
+  await tester.pumpAndSettle();
 }
+
+SemanticsData _nodeSemantics(WidgetTester tester, String notation) => tester
+    .getSemantics(find.byKey(Key('mill_session_board_node_$notation')))
+    .getSemanticsData();
 
 PrivateGameRecord _record(String sourcePgn) {
   final DateTime now = DateTime.utc(2026, 7, 19);

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 
 import '../../../appearance_settings/models/color_settings.dart';
 import '../../../game_platform/game_session.dart';
+import '../../../generated/intl/l10n.dart';
 import '../../../rule_settings/models/rule_settings.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/themes/app_theme.dart';
@@ -157,6 +158,8 @@ class _MillSessionBoardState extends State<MillSessionBoard> {
                               : const <GameAction>[],
                           selectedFrom: widget.tapController.selectedFrom,
                         );
+                    final NativeMillSnapshotBoardView? boardView =
+                        NativeMillSnapshotBoardView.fromSnapshot(snapshot);
                     final Widget updatedBoard = Stack(
                       fit: StackFit.expand,
                       children: <Widget>[
@@ -188,17 +191,21 @@ class _MillSessionBoardState extends State<MillSessionBoard> {
                             child: child,
                           ),
                         ),
-                        if (widget.enabled)
-                          for (
-                            int node = 0;
-                            node < MillBoardGeometry.nodeCount;
-                            node++
-                          )
-                            _BoardNodeSemantics(
-                              node: node,
-                              side: side,
-                              onTap: _handleNotationTap,
-                            ),
+                        for (
+                          int node = 0;
+                          node < MillBoardGeometry.nodeCount;
+                          node++
+                        )
+                          _BoardNodeSemantics(
+                            node: node,
+                            side: side,
+                            occupant: boardView?.pieceAtNode(node),
+                            selected:
+                                widget.tapController.selectedFrom ==
+                                MillBoardCoordinateMaps.nodeToNotation(node),
+                            enabled: widget.enabled,
+                            onTap: _handleNotationTap,
+                          ),
                       ],
                     );
                     final String? label = widget.semanticLabel;
@@ -224,16 +231,31 @@ class _BoardNodeSemantics extends StatelessWidget {
   const _BoardNodeSemantics({
     required this.node,
     required this.side,
+    required this.occupant,
+    required this.selected,
+    required this.enabled,
     required this.onTap,
   });
 
   final int node;
   final double side;
+  final PlayerSeat? occupant;
+  final bool selected;
+  final bool enabled;
   final Future<void> Function(String notation) onTap;
 
   @override
   Widget build(BuildContext context) {
     final String notation = MillBoardCoordinateMaps.nodeToNotation(node);
+    final S strings = S.of(context);
+    final String pointLabel = switch (occupant) {
+      PlayerSeat.first => '${strings.whitePiece}: $notation',
+      PlayerSeat.second => '${strings.blackPiece}: $notation',
+      PlayerSeat.none || null => '$notation: ${strings.emptyPoint}',
+    };
+    final String label = selected
+        ? '$pointLabel, ${strings.selected}'
+        : pointLabel;
     final Offset center = MillBoardGeometry.nodeOffset(node, Size.square(side));
     final double target = math.max(44, side * 0.12);
     return Positioned(
@@ -243,9 +265,10 @@ class _BoardNodeSemantics extends StatelessWidget {
       height: target,
       child: Semantics(
         key: Key('mill_session_board_node_$notation'),
-        button: true,
-        label: notation,
-        onTap: () => onTap(notation),
+        button: enabled,
+        enabled: enabled,
+        label: label,
+        onTap: enabled ? () => onTap(notation) : null,
         child: const SizedBox.expand(),
       ),
     );
