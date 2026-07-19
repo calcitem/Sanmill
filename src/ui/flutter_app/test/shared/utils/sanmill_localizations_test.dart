@@ -922,6 +922,12 @@ void main() {
     expect(english.dailyTraining, 'Puzzles and training');
   });
 
+  test('uses the concise Chinese puzzles destination label', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.puzzles, '谜题');
+  });
+
   test('describes untimed English coordinate training directly', () {
     final S english = lookupS(const Locale('en'));
 

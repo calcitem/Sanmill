@@ -2229,7 +2229,7 @@
     "@enablePiecePickUpAnimation": {
         "description": "Enable piece pick-up and drop animation when moving"
     },
-    "puzzles": "谜题练习",
+    "puzzles": "谜题",
     "@puzzles": {
         "description": "Puzzles menu item"
     },
