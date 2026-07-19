@@ -221,8 +221,23 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     _record('done');
     final String? fen = controller.commit();
     if (fen == null) {
-      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
-        S.of(context).invalidPosition,
+      final ScaffoldMessengerState? messenger =
+          rootScaffoldMessengerKey.currentState;
+      messenger?.clearSnackBars();
+      messenger?.showSnackBar(
+        SnackBar(
+          content: Text(S.of(context).invalidPosition),
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.fromLTRB(
+            16,
+            16,
+            16,
+            height +
+                AppTheme.boardMargin +
+                ScreenInsets.navigationBarInset(context) +
+                12,
+          ),
+        ),
       );
       return;
     }
