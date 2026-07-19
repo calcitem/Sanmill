@@ -1105,31 +1105,30 @@ class GeneralSettingsPage extends StatelessWidget {
               ),
           ],
         ),
-        if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
-          SettingsCard(
-            key: const Key('general_settings_page_settings_card_accessibility'),
-            title: Text(
-              S.of(context).accessibility,
-              key: const Key(
-                'general_settings_page_settings_card_accessibility_title',
-              ),
+        SettingsCard(
+          key: const Key('general_settings_page_settings_card_accessibility'),
+          title: Text(
+            S.of(context).accessibility,
+            key: const Key(
+              'general_settings_page_settings_card_accessibility_title',
             ),
-            children: <Widget>[
-              SettingsListTile.switchTile(
-                key: const Key(
-                  'general_settings_page_settings_card_accessibility_screen_reader_support',
-                ),
-                value: generalSettings.screenReaderSupport,
-                onChanged: (bool val) {
-                  _setScreenReaderSupport(generalSettings, val);
-                  SnackBarService.showRootSnackBar(
-                    S.of(context).reopenToTakeEffect,
-                  );
-                },
-                titleString: S.of(context).screenReaderSupport,
-              ),
-            ],
           ),
+          children: <Widget>[
+            SettingsListTile.switchTile(
+              key: const Key(
+                'general_settings_page_settings_card_accessibility_screen_reader_support',
+              ),
+              value: generalSettings.screenReaderSupport,
+              onChanged: (bool val) {
+                _setScreenReaderSupport(generalSettings, val);
+                SnackBarService.showRootSnackBar(
+                  S.of(context).reopenToTakeEffect,
+                );
+              },
+              titleString: S.of(context).screenReaderSupport,
+            ),
+          ],
+        ),
         if (supportsGameScreenRecorder)
           SettingsCard(
             key: const Key(
