@@ -5500,9 +5500,9 @@
     "@openGameFile": {
         "description": "Action that opens a saved game file"
     },
-    "pasteAndImportGameHint": "点击以粘贴并导入棋局",
+    "pasteAndImportGameHint": "输入或粘贴 PGN",
     "@pasteAndImportGameHint": {
-        "description": "Hint on a button that imports a pasted game"
+        "description": "Hint in the editable PGN field on the Import game page"
     },
     "pgnFilesImported": "{count, plural, =1{已导入 1 个 PGN 文件} other{已导入 {count} 个 PGN 文件}}",
     "@pgnFilesImported": {

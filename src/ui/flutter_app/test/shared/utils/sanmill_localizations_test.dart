@@ -979,6 +979,12 @@ void main() {
     expect(english.pasteAndImportGameHint, 'Enter or paste PGN');
   });
 
+  test('describes the editable Chinese import field accurately', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.pasteAndImportGameHint, '输入或粘贴 PGN');
+  });
+
   test('explains what the English FEN copy action copies', () {
     final S english = lookupS(const Locale('en'));
 
