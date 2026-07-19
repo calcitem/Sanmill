@@ -324,11 +324,17 @@ class _OpeningBookStudioPageState extends State<OpeningBookStudioPage> {
           onAdd: _addOpening,
         );
         final Widget editor = _selectedOpening == null
-            ? Center(child: Text(l10n.openingBookStudioNoOpeningSelected))
+            ? Padding(
+                padding: const EdgeInsets.all(24),
+                child: Center(
+                  child: Text(l10n.openingBookStudioNoOpeningSelected),
+                ),
+              )
             : _OpeningEditorPanel(
                 opening: _selectedOpening!,
                 package: package,
                 validation: validation,
+                scrollable: wide,
                 onChanged: _replaceOpening,
                 onDelete: _deleteSelectedOpening,
                 onAddVariation: _addVariation,
@@ -338,6 +344,7 @@ class _OpeningBookStudioPageState extends State<OpeningBookStudioPage> {
         final Widget validationPanel = _ValidationPanel(
           package: package,
           validation: validation,
+          scrollable: wide,
         );
 
         final Widget content = wide
@@ -352,12 +359,16 @@ class _OpeningBookStudioPageState extends State<OpeningBookStudioPage> {
                 ],
               )
             : ListView(
+                key: const Key('opening_book_studio_narrow_scroll'),
+                padding: EdgeInsets.only(
+                  bottom: 16 + MediaQuery.paddingOf(context).bottom,
+                ),
                 children: <Widget>[
                   SizedBox(height: 280, child: openingList),
                   const Divider(height: 1),
-                  SizedBox(height: 640, child: editor),
+                  editor,
                   const Divider(height: 1),
-                  SizedBox(height: 320, child: validationPanel),
+                  validationPanel,
                 ],
               );
 
@@ -446,6 +457,7 @@ class _OpeningEditorPanel extends StatelessWidget {
     required this.opening,
     required this.package,
     required this.validation,
+    required this.scrollable,
     required this.onChanged,
     required this.onDelete,
     required this.onAddVariation,
@@ -456,6 +468,7 @@ class _OpeningEditorPanel extends StatelessWidget {
   final SanmillOpeningSourceEntry opening;
   final SanmillOpeningBookSourcePackage package;
   final OpeningBookSourceValidationResult validation;
+  final bool scrollable;
   final ValueChanged<SanmillOpeningSourceEntry> onChanged;
   final VoidCallback onDelete;
   final ValueChanged<SanmillOpeningSourceEntry> onAddVariation;
@@ -471,8 +484,7 @@ class _OpeningEditorPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final S l10n = S.of(context);
-    return SingleChildScrollView(
-      key: const Key('opening_book_studio_editor'),
+    final Widget content = Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -715,14 +727,28 @@ class _OpeningEditorPanel extends StatelessWidget {
         ],
       ),
     );
+    return scrollable
+        ? SingleChildScrollView(
+            key: const Key('opening_book_studio_editor'),
+            child: content,
+          )
+        : KeyedSubtree(
+            key: const Key('opening_book_studio_editor'),
+            child: content,
+          );
   }
 }
 
 class _ValidationPanel extends StatelessWidget {
-  const _ValidationPanel({required this.package, required this.validation});
+  const _ValidationPanel({
+    required this.package,
+    required this.validation,
+    required this.scrollable,
+  });
 
   final SanmillOpeningBookSourcePackage package;
   final OpeningBookSourceValidationResult validation;
+  final bool scrollable;
 
   @override
   Widget build(BuildContext context) {
@@ -733,36 +759,51 @@ class _ValidationPanel extends StatelessWidget {
       ...validation.errors,
       ...validation.warnings,
     ];
-    return ListView(
-      key: const Key('opening_book_studio_validation_panel'),
+    final Widget content = Padding(
       padding: const EdgeInsets.all(16),
-      children: <Widget>[
-        Text(l10n.openingBookStudioValidation, style: textTheme.titleLarge),
-        const SizedBox(height: 12),
-        Text('${package.format} v${package.schemaVersion}'),
-        Text('${package.game}/${package.variant} | ${package.book.id}'),
-        const SizedBox(height: 12),
-        for (final String line in lines)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Icon(
-                  validation.isValid && line == lines.first
-                      ? Icons.check_circle_outline
-                      : validation.errors.contains(line)
-                      ? Icons.error_outline
-                      : Icons.info_outline,
-                  size: 18,
-                ),
-                const SizedBox(width: 8),
-                Expanded(child: Text(line)),
-              ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Text(l10n.openingBookStudioValidation, style: textTheme.titleLarge),
+          const SizedBox(height: 12),
+          Text('${package.format} v${package.schemaVersion}'),
+          Text('${package.game}/${package.variant} | ${package.book.id}'),
+          const SizedBox(height: 12),
+          for (final String line in lines)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Icon(
+                    validation.isValid && line == lines.first
+                        ? Icons.check_circle_outline
+                        : validation.errors.contains(line)
+                        ? Icons.error_outline
+                        : Icons.info_outline,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(child: Text(line)),
+                ],
+              ),
             ),
+          const SizedBox(
+            key: Key('opening_book_studio_validation_end'),
+            height: 1,
           ),
-      ],
+        ],
+      ),
     );
+    return scrollable
+        ? ListView(
+            key: const Key('opening_book_studio_validation_panel'),
+            children: <Widget>[content],
+          )
+        : KeyedSubtree(
+            key: const Key('opening_book_studio_validation_panel'),
+            child: content,
+          );
   }
 }
 

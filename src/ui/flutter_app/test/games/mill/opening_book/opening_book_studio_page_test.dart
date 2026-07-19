@@ -112,6 +112,56 @@ void main() {
     expect(find.text('Imported Line'), findsWidgets);
     expect(repository.importCalled, isTrue);
   });
+
+  testWidgets('narrow studio scrolls editor and validation as one page', (
+    WidgetTester tester,
+  ) async {
+    final _FakeOpeningBookStudioRepository repository =
+        _FakeOpeningBookStudioRepository(_samplePackage());
+    await tester.binding.setSurfaceSize(const Size(540, 1000));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      _localizedApp(
+        OpeningBookStudioPage(repository: repository, showSnackBars: false),
+      ),
+    );
+    await _pumpStudioFrame(tester);
+
+    expect(
+      tester.widget(find.byKey(const Key('opening_book_studio_editor'))),
+      isNot(isA<SingleChildScrollView>()),
+    );
+    final Finder narrowScrollable = find
+        .descendant(
+          of: find.byKey(const Key('opening_book_studio_narrow_scroll')),
+          matching: find.byType(Scrollable),
+        )
+        .first;
+    final Finder validationPanel = find.byKey(
+      const Key('opening_book_studio_validation_panel'),
+    );
+    await tester.scrollUntilVisible(
+      validationPanel,
+      600,
+      scrollable: narrowScrollable,
+    );
+    expect(tester.widget(validationPanel), isNot(isA<ListView>()));
+
+    final Finder validationEnd = find.byKey(
+      const Key('opening_book_studio_validation_end'),
+    );
+    await tester.scrollUntilVisible(
+      validationEnd,
+      600,
+      scrollable: narrowScrollable,
+    );
+    await tester.pumpAndSettle();
+
+    final Rect validationEndRect = tester.getRect(validationEnd);
+    expect(validationEndRect.top, greaterThanOrEqualTo(0));
+    expect(validationEndRect.bottom, lessThanOrEqualTo(1000));
+  });
 }
 
 Widget _localizedApp(Widget child) {
