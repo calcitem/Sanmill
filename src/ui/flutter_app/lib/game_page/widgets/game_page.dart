@@ -453,7 +453,10 @@ class _GamePageInnerState extends State<_GamePageInner>
                           children: <Widget>[
                             if (DB().displaySettings.isAnnotationToolbarShown)
                               _buildSetupPositionAnnotationButton(context),
-                            if (EnvironmentConfig.devMode)
+                            // Board-image recognition remains available to
+                            // developers while its accuracy is improved, but
+                            // it is not exposed as a user-facing editor action.
+                            if (EnvironmentConfig.devMode) ...<Widget>[
                               IconButton(
                                 key: const Key(
                                   'game_page_recognition_params_button',
@@ -468,20 +471,21 @@ class _GamePageInnerState extends State<_GamePageInner>
                                       context,
                                     ),
                               ),
-                            IconButton(
-                              key: const Key(
-                                'game_page_image_recognition_button',
+                              IconButton(
+                                key: const Key(
+                                  'game_page_image_recognition_button',
+                                ),
+                                icon: const Icon(
+                                  FluentIcons.camera_24_regular,
+                                  color: Colors.white,
+                                ),
+                                tooltip: S.of(context).recognizeBoardFromImage,
+                                onPressed: () =>
+                                    BoardRecognitionImport.recognizeFromGallery(
+                                      context,
+                                    ),
                               ),
-                              icon: const Icon(
-                                FluentIcons.camera_24_regular,
-                                color: Colors.white,
-                              ),
-                              tooltip: S.of(context).recognizeBoardFromImage,
-                              onPressed: () =>
-                                  BoardRecognitionImport.recognizeFromGallery(
-                                    context,
-                                  ),
-                            ),
+                            ],
                           ],
                         ),
                       ),

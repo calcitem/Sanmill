@@ -2605,14 +2605,10 @@ void main() {
       const Key('game_page_image_recognition_button'),
     );
     expect(annotationButton, findsOneWidget);
-    expect(imageRecognitionButton, findsOneWidget);
+    expect(imageRecognitionButton, findsNothing);
     expect(
       find.byKey(const Key('annotation_toolbar_collapsed_position')),
       findsNothing,
-    );
-    expect(
-      tester.getRect(annotationButton).right,
-      lessThanOrEqualTo(tester.getRect(imageRecognitionButton).left),
     );
 
     await tester.tap(annotationButton);
