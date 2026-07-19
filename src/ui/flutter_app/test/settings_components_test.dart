@@ -66,6 +66,8 @@ void main() {
       addTearDown(tester.view.resetDevicePixelRatio);
 
       const String value = 'A deliberately long value for layout testing';
+      const String singleLineValue =
+          'A deliberately long value that must remain on one line';
 
       await tester.pumpWidget(
         MaterialApp(
@@ -76,6 +78,12 @@ void main() {
                 SettingsListTile(
                   titleString: 'Theme',
                   trailingString: value,
+                  onTap: () {},
+                ),
+                SettingsListTile(
+                  titleString: 'Preset',
+                  trailingString: singleLineValue,
+                  trailingMaxLines: 1,
                   onTap: () {},
                 ),
                 SettingsListTile.switchTile(
@@ -96,6 +104,12 @@ void main() {
       final Text trailingText = tester.widget<Text>(find.text(value));
       expect(trailingText.maxLines, kSettingsTileTitleMaxLines);
       expect(trailingText.textAlign, TextAlign.end);
+
+      final Text singleLineTrailingText = tester.widget<Text>(
+        find.text(singleLineValue),
+      );
+      expect(singleLineTrailingText.maxLines, 1);
+      expect(singleLineTrailingText.overflow, TextOverflow.ellipsis);
 
       final Finder trailingBoxFinder = find.ancestor(
         of: find.text(value),

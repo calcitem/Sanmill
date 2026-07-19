@@ -18,6 +18,7 @@ class SettingsListTile extends StatelessWidget {
     required VoidCallback onTap,
     this.subtitleString,
     this.trailingString,
+    this.trailingMaxLines = kSettingsTileTitleMaxLines,
     this.leading,
   }) : _type = _SettingsTileType.standard,
        _switchValue = null,
@@ -39,7 +40,8 @@ class SettingsListTile extends StatelessWidget {
        _switchCallback = null,
        _colorCallback = onChanged,
        _standardCallback = null,
-       trailingString = null;
+       trailingString = null,
+       trailingMaxLines = kSettingsTileTitleMaxLines;
 
   const SettingsListTile.switchTile({
     super.key,
@@ -54,11 +56,13 @@ class SettingsListTile extends StatelessWidget {
        _switchCallback = onChanged,
        _colorCallback = null,
        _standardCallback = null,
-       trailingString = null;
+       trailingString = null,
+       trailingMaxLines = kSettingsTileTitleMaxLines;
 
   final String titleString;
   final String? subtitleString;
   final String? trailingString;
+  final int trailingMaxLines;
   final Widget? leading;
 
   final _SettingsTileType _type;
@@ -121,7 +125,7 @@ class SettingsListTile extends StatelessWidget {
               style: subtitleStyle,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.end,
-              maxLines: kSettingsTileTitleMaxLines,
+              maxLines: trailingMaxLines,
             ),
           );
         } else if (theme.platform == TargetPlatform.iOS) {

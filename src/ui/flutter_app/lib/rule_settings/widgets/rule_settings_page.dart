@@ -945,6 +945,7 @@ class _RuleSettingsPageState extends State<RuleSettingsPage> {
               key: const Key('rule_settings_tile_rule_set'),
               titleString: S.of(context).rulePreset,
               trailingString: _ruleSetName(context, activeRuleSet),
+              trailingMaxLines: 1,
               onTap: () => _setRuleSet(context, ruleSettings),
             ),
           ],

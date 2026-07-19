@@ -1879,6 +1879,11 @@ void main() {
       );
       expect(find.text('Preset'), findsOneWidget);
       expect(find.text("Nine Men's Morris"), findsOneWidget);
+      final Text activeRulePreset = tester.widget<Text>(
+        find.text("Nine Men's Morris"),
+      );
+      expect(activeRulePreset.maxLines, 1);
+      expect(activeRulePreset.overflow, TextOverflow.ellipsis);
       await tester.tap(find.byKey(const Key('rule_settings_tile_rule_set')));
       await tester.pumpAndSettle();
       expect(find.text('Choose a preset'), findsOneWidget);
