@@ -6628,5 +6628,11 @@
     "coordinateTrainingTotalCorrect": "总答对数",
     "@coordinateTrainingTotalCorrect": {},
     "coordinateTrainingOverallAccuracy": "总体正确率",
-    "@coordinateTrainingOverallAccuracy": {}
+    "@coordinateTrainingOverallAccuracy": {},
+    "humanAiWhoMovesFirst": "谁先行？",
+    "@humanAiWhoMovesFirst": {},
+    "humanAiYouMoveFirst": "玩家先行",
+    "@humanAiYouMoveFirst": {},
+    "humanAiComputerMovesFirst": "电脑先行",
+    "@humanAiComputerMovesFirst": {}
 }

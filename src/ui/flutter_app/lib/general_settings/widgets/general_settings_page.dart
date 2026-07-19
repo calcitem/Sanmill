@@ -108,14 +108,6 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag AI game analysis disabled and consent revoked");
   }
 
-  void _setWhoMovesFirst(GeneralSettings generalSettings, bool value) {
-    _settingsRepository.generalSettings = generalSettings.copyWith(
-      aiMovesFirst: value,
-    );
-
-    logger.t("$_logTag aiMovesFirst: $value");
-  }
-
   void _setAiIsLazy(GeneralSettings generalSettings, bool value) {
     _settingsRepository.generalSettings = generalSettings.copyWith(
       aiIsLazy: value,
@@ -869,27 +861,6 @@ class GeneralSettingsPage extends StatelessWidget {
     return SettingsList(
       key: const Key('general_settings_page_settings_list'),
       children: <Widget>[
-        SettingsCard(
-          key: const Key('general_settings_page_settings_card_who_moves_first'),
-          title: Text(
-            S.of(context).whoMovesFirst,
-            key: const Key(
-              'general_settings_page_settings_card_who_moves_first_title',
-            ),
-          ),
-          children: <Widget>[
-            SettingsListTile.switchTile(
-              key: const Key(
-                'general_settings_page_settings_card_who_moves_first_switch_tile',
-              ),
-              value: !generalSettings.aiMovesFirst,
-              onChanged: (bool val) {
-                _setWhoMovesFirst(generalSettings, !val);
-              },
-              titleString: S.of(context).humanMovesFirst,
-            ),
-          ],
-        ),
         SettingsCard(
           key: const Key('general_settings_page_settings_card_difficulty'),
           title: Text(

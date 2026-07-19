@@ -6695,5 +6695,11 @@
     "coordinateTrainingTotalCorrect": "Total correct",
     "@coordinateTrainingTotalCorrect": {},
     "coordinateTrainingOverallAccuracy": "Overall accuracy",
-    "@coordinateTrainingOverallAccuracy": {}
+    "@coordinateTrainingOverallAccuracy": {},
+    "humanAiWhoMovesFirst": "Who moves first?",
+    "@humanAiWhoMovesFirst": {},
+    "humanAiYouMoveFirst": "You move first",
+    "@humanAiYouMoveFirst": {},
+    "humanAiComputerMovesFirst": "Computer moves first",
+    "@humanAiComputerMovesFirst": {}
 }

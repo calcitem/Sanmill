@@ -20,6 +20,7 @@ import 'package:sanmill/game_page/services/analysis_mode.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/save_load/saved_game_catalog.dart';
 import 'package:sanmill/game_page/widgets/mini_board.dart';
+import 'package:sanmill/game_page/widgets/modals/game_options_modal.dart';
 import 'package:sanmill/game_page/widgets/toolbars/game_toolbar.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_registry.dart';
@@ -158,6 +159,87 @@ void main() {
     // pending-timer invariant check at test teardown.
     await tester.pump(const Duration(milliseconds: 350));
   }, skip: nativeLibrarySkipReason() != null);
+
+  testWidgets('Human-computer first-move choice stays semantically stable', (
+    WidgetTester tester,
+  ) async {
+    tester.view
+      ..physicalSize = const Size(390, 844)
+      ..devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final GeneralSettings originalSettings = DB().generalSettings;
+    addTearDown(() => DB().generalSettings = originalSettings);
+    DB().generalSettings = const GeneralSettings(
+      humanAiFirstMovePreference: HumanAiFirstMovePreference.humanFirst,
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightThemeData,
+        localizationsDelegates: sanmillLocalizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        locale: const Locale('en'),
+        home: Builder(
+          builder: (BuildContext context) => Scaffold(
+            body: FilledButton(
+              key: const Key('open_human_ai_new_game_sheet'),
+              onPressed: () {
+                unawaited(GameOptionsModal.prepareHumanAiNewGame(context));
+              },
+              child: const Text('Open'),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Future<void> openSheet() async {
+      await tester.tap(find.byKey(const Key('open_human_ai_new_game_sheet')));
+      await tester.pumpAndSettle();
+    }
+
+    Future<void> choose(HumanAiFirstMovePreference preference) async {
+      final Finder picker = find.byKey(
+        const Key('human_ai_new_game_sheet_first_move_picker'),
+      );
+      await tester.ensureVisible(picker);
+      await tester.tap(picker);
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.byKey(
+          Key('human_ai_new_game_sheet_first_move_${preference.name}'),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('human_ai_new_game_sheet_start')));
+      await tester.pumpAndSettle();
+    }
+
+    await openSheet();
+    expect(find.text('Who moves first?'), findsOneWidget);
+    expect(find.text('You move first'), findsOneWidget);
+    await choose(HumanAiFirstMovePreference.random);
+    expect(
+      DB().generalSettings.humanAiFirstMovePreference,
+      HumanAiFirstMovePreference.random,
+    );
+
+    await openSheet();
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('human_ai_new_game_sheet_first_move_picker')),
+        matching: find.text('Random'),
+      ),
+      findsOneWidget,
+    );
+    await choose(HumanAiFirstMovePreference.computerFirst);
+    expect(DB().generalSettings.aiMovesFirst, isTrue);
+
+    await openSheet();
+    await choose(HumanAiFirstMovePreference.humanFirst);
+    expect(DB().generalSettings.aiMovesFirst, isFalse);
+  });
 
   testWidgets(
     'Resume analysis restores after the page mounts',
@@ -1756,7 +1838,12 @@ void main() {
         shellState.debugCurrentRouteId,
         ShellRouteIds.appGeneralSettings.value,
       );
-      expect(find.text('Human moves first'), findsOneWidget);
+      expect(
+        find.byKey(
+          const Key('general_settings_page_settings_card_who_moves_first'),
+        ),
+        findsNothing,
+      );
       expect(find.text('Computer thinking time'), findsOneWidget);
       expect(find.text('1 second'), findsOneWidget);
       expect(

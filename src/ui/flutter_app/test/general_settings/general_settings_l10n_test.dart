@@ -41,6 +41,9 @@ void main() {
       final S strings = await S.delegate.load(const Locale('zh'));
 
       expect(strings.humanMovesFirst, '真人先手');
+      expect(strings.humanAiWhoMovesFirst, '谁先行？');
+      expect(strings.humanAiYouMoveFirst, '玩家先行');
+      expect(strings.humanAiComputerMovesFirst, '电脑先行');
       expect(strings.aiThinkingTimeValue(0), '不限时');
       expect(strings.aiThinkingTimeValue(1), '1 秒');
       expect(strings.aiThinkingTimeValue(6), '6 秒');
@@ -54,6 +57,14 @@ void main() {
       expect(strings.rename, '重命名');
     },
   );
+
+  test('English describes the human-computer first mover', () async {
+    final S strings = await S.delegate.load(const Locale('en'));
+
+    expect(strings.humanAiWhoMovesFirst, 'Who moves first?');
+    expect(strings.humanAiYouMoveFirst, 'You move first');
+    expect(strings.humanAiComputerMovesFirst, 'Computer moves first');
+  });
 
   test('Simplified Chinese explains human database setup in order', () async {
     final S strings = await S.delegate.load(const Locale('zh'));

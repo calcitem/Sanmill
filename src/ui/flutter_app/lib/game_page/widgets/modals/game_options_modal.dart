@@ -465,12 +465,10 @@ class _HumanAiNewGameSheet extends StatefulWidget {
   State<_HumanAiNewGameSheet> createState() => _HumanAiNewGameSheetState();
 }
 
-enum _HumanAiSideChoice { white, random, black }
-
 class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
   late int _skillLevel;
   late int _moveTime;
-  late _HumanAiSideChoice _sideChoice;
+  late HumanAiFirstMovePreference _firstMovePreference;
   late bool _showGameTips;
   late String? _variantId;
 
@@ -480,9 +478,7 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
     final GeneralSettings settings = DB().generalSettings;
     _skillLevel = settings.skillLevel.clamp(1, Constants.highestSkillLevel);
     _moveTime = settings.moveTime.clamp(0, 60);
-    _sideChoice = settings.aiMovesFirst
-        ? _HumanAiSideChoice.black
-        : _HumanAiSideChoice.white;
+    _firstMovePreference = settings.effectiveHumanAiFirstMovePreference;
     _showGameTips = settings.showGameTips;
     _variantId = RuleVariant.exactCanonicalIdFor(DB().ruleSettings);
   }
@@ -494,15 +490,16 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
         'Human vs AI settings cannot start a different game mode.',
       );
     }
-    final bool aiMovesFirst = switch (_sideChoice) {
-      _HumanAiSideChoice.white => false,
-      _HumanAiSideChoice.black => true,
-      _HumanAiSideChoice.random => math.Random().nextBool(),
+    final bool aiMovesFirst = switch (_firstMovePreference) {
+      HumanAiFirstMovePreference.humanFirst => false,
+      HumanAiFirstMovePreference.random => math.Random().nextBool(),
+      HumanAiFirstMovePreference.computerFirst => true,
     };
     DB().generalSettings = DB().generalSettings.copyWith(
       skillLevel: _skillLevel,
       moveTime: _moveTime,
       aiMovesFirst: aiMovesFirst,
+      humanAiFirstMovePreference: _firstMovePreference,
       showGameTips: _showGameTips,
     );
     final String? variantId = _variantId;
@@ -520,25 +517,30 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
     Navigator.of(context).pop(true);
   }
 
-  String _sideChoiceLabel(BuildContext context, _HumanAiSideChoice choice) {
+  String _firstMoveLabel(
+    BuildContext context,
+    HumanAiFirstMovePreference choice,
+  ) {
     return switch (choice) {
-      _HumanAiSideChoice.white => S.of(context).white,
-      _HumanAiSideChoice.random => S.of(context).randomColor,
-      _HumanAiSideChoice.black => S.of(context).black,
+      HumanAiFirstMovePreference.humanFirst =>
+        S.of(context).humanAiYouMoveFirst,
+      HumanAiFirstMovePreference.random => S.of(context).randomColor,
+      HumanAiFirstMovePreference.computerFirst =>
+        S.of(context).humanAiComputerMovesFirst,
     };
   }
 
-  IconData _sideChoiceIcon(_HumanAiSideChoice choice) {
+  IconData _firstMoveIcon(HumanAiFirstMovePreference choice) {
     return switch (choice) {
-      _HumanAiSideChoice.white => Icons.person_outline_rounded,
-      _HumanAiSideChoice.random => Icons.shuffle_rounded,
-      _HumanAiSideChoice.black => Icons.smart_toy_outlined,
+      HumanAiFirstMovePreference.humanFirst => Icons.person_outline_rounded,
+      HumanAiFirstMovePreference.random => Icons.shuffle_rounded,
+      HumanAiFirstMovePreference.computerFirst => Icons.smart_toy_outlined,
     };
   }
 
-  Future<void> _showSidePicker(BuildContext context) async {
-    final _HumanAiSideChoice?
-    selected = await showModalBottomSheet<_HumanAiSideChoice>(
+  Future<void> _showFirstMovePicker(BuildContext context) async {
+    final HumanAiFirstMovePreference?
+    selected = await showModalBottomSheet<HumanAiFirstMovePreference>(
       context: context,
       showDragHandle: true,
       builder: (BuildContext context) {
@@ -552,17 +554,18 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
             ),
           ),
           child: LichessListSection(
-            header: Text(S.of(context).side),
+            header: Text(S.of(context).humanAiWhoMovesFirst),
             children: <Widget>[
-              for (final _HumanAiSideChoice choice in _HumanAiSideChoice.values)
+              for (final HumanAiFirstMovePreference choice
+                  in HumanAiFirstMovePreference.values)
                 ListTile(
-                  key: Key('human_ai_new_game_sheet_side_${choice.name}'),
-                  leading: Icon(_sideChoiceIcon(choice)),
-                  title: Text(_sideChoiceLabel(context, choice)),
-                  trailing: choice == _sideChoice
+                  key: Key('human_ai_new_game_sheet_first_move_${choice.name}'),
+                  leading: Icon(_firstMoveIcon(choice)),
+                  title: Text(_firstMoveLabel(context, choice)),
+                  trailing: choice == _firstMovePreference
                       ? Icon(Icons.check_rounded, color: colorScheme.primary)
                       : null,
-                  selected: choice == _sideChoice,
+                  selected: choice == _firstMovePreference,
                   selectedColor: colorScheme.primary,
                   onTap: () => Navigator.of(context).pop(choice),
                 ),
@@ -577,7 +580,7 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
     }
 
     setState(() {
-      _sideChoice = selected;
+      _firstMovePreference = selected;
     });
   }
 
@@ -709,11 +712,11 @@ class _HumanAiNewGameSheetState extends State<_HumanAiNewGameSheet> {
                   onTap: () => _showVariantPicker(context),
                 ),
                 _SheetOptionTile(
-                  key: const Key('human_ai_new_game_sheet_side_picker'),
-                  title: S.of(context).side,
-                  value: _sideChoiceLabel(context, _sideChoice),
-                  leadingIcon: _sideChoiceIcon(_sideChoice),
-                  onTap: () => _showSidePicker(context),
+                  key: const Key('human_ai_new_game_sheet_first_move_picker'),
+                  title: S.of(context).humanAiWhoMovesFirst,
+                  value: _firstMoveLabel(context, _firstMovePreference),
+                  leadingIcon: _firstMoveIcon(_firstMovePreference),
+                  onTap: () => _showFirstMovePicker(context),
                 ),
                 SwitchListTile.adaptive(
                   key: const Key('human_ai_new_game_sheet_game_tips'),

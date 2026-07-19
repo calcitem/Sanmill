@@ -64,7 +64,10 @@ void main() {
       controller.gameRecorder
         ..appendMove(ExtMove('d6', side: PieceColor.white))
         ..appendMove(ExtMove('f4', side: PieceColor.black));
-      DB().generalSettings = const GeneralSettings(aiMovesFirst: true);
+      DB().generalSettings = const GeneralSettings(
+        aiMovesFirst: true,
+        humanAiFirstMovePreference: HumanAiFirstMovePreference.random,
+      );
       final String expectedFen = source.getFen();
 
       await storage.persistCurrent(controller);
@@ -103,6 +106,11 @@ void main() {
       expect(
         controller.gameInstance.getPlayerByColor(PieceColor.black).isAi,
         isFalse,
+      );
+      expect(DB().generalSettings.aiMovesFirst, isTrue);
+      expect(
+        DB().generalSettings.effectiveHumanAiFirstMovePreference,
+        HumanAiFirstMovePreference.random,
       );
     },
   );

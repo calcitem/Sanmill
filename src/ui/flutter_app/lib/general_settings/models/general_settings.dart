@@ -47,6 +47,21 @@ enum LlmProvider {
   ollama,
 }
 
+/// The user's preferred first mover when starting a human-computer game.
+///
+/// [GeneralSettings.aiMovesFirst] remains the resolved seat for the current
+/// game. Keeping the preference separate means that choosing [random] does
+/// not turn into a fixed choice the next time the new-game sheet opens.
+@HiveType(typeId: 15)
+enum HumanAiFirstMovePreference {
+  @HiveField(0)
+  humanFirst,
+  @HiveField(1)
+  random,
+  @HiveField(2)
+  computerFirst,
+}
+
 extension SearchAlgorithmName on SearchAlgorithm {
   String get name {
     switch (this) {
@@ -186,6 +201,7 @@ class GeneralSettings {
     this.offlineBoardIncrementSeconds = 3,
     this.offlineBoardFlipAfterMove = false,
     this.showGameTips = false,
+    this.humanAiFirstMovePreference,
 
     /// Deprecated: always true. Retained to preserve the Hive `@HiveField(46)`
     /// slot for existing saved data. The field will be removed in a future
@@ -451,6 +467,19 @@ class GeneralSettings {
   // Show turn guidance and opening information beside the player to move.
   @HiveField(61, defaultValue: false)
   final bool showGameTips;
+
+  /// The choice shown in the human-computer new-game sheet.
+  ///
+  /// A null value identifies records written before this preference was
+  /// introduced. Those records inherit their old [aiMovesFirst] value.
+  @HiveField(62)
+  final HumanAiFirstMovePreference? humanAiFirstMovePreference;
+
+  HumanAiFirstMovePreference get effectiveHumanAiFirstMovePreference =>
+      humanAiFirstMovePreference ??
+      (aiMovesFirst
+          ? HumanAiFirstMovePreference.computerFirst
+          : HumanAiFirstMovePreference.humanFirst);
 
   /// Deprecated field retained for Hive backward compatibility.
   ///

@@ -193,6 +193,9 @@ class Database {
     Hive.registerAdapter<SearchAlgorithm>(SearchAlgorithmAdapter());
     Hive.registerAdapter<SoundTheme>(SoundThemeAdapter());
     Hive.registerAdapter<LlmProvider>(LlmProviderAdapter());
+    Hive.registerAdapter<HumanAiFirstMovePreference>(
+      HumanAiFirstMovePreferenceAdapter(),
+    );
     Hive.registerAdapter<GeneralSettings>(GeneralSettingsAdapter());
     _generalSettingsBox = await Hive.openBox<GeneralSettings>(
       _generalSettingsBoxName,

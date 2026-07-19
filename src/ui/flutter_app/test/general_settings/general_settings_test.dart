@@ -19,6 +19,11 @@ void main() {
       expect(s.keepMuteWhenTakingBack, isTrue);
       expect(s.screenReaderSupport, isFalse);
       expect(s.aiMovesFirst, isFalse);
+      expect(s.humanAiFirstMovePreference, isNull);
+      expect(
+        s.effectiveHumanAiFirstMovePreference,
+        HumanAiFirstMovePreference.humanFirst,
+      );
       expect(s.aiIsLazy, isFalse);
       expect(s.skillLevel, 1);
       expect(s.moveTime, 1);
@@ -61,6 +66,29 @@ void main() {
 
       expect(legacy.offlineBoardTimeSeconds, 30);
       expect(legacy.offlineBoardIncrementSeconds, 0);
+    });
+  });
+
+  group('Human-computer first-move preference', () {
+    test('migrates legacy computer-first settings', () {
+      const GeneralSettings settings = GeneralSettings(aiMovesFirst: true);
+
+      expect(
+        settings.effectiveHumanAiFirstMovePreference,
+        HumanAiFirstMovePreference.computerFirst,
+      );
+    });
+
+    test('keeps a random preference independent of the resolved seat', () {
+      const GeneralSettings settings = GeneralSettings(
+        aiMovesFirst: true,
+        humanAiFirstMovePreference: HumanAiFirstMovePreference.random,
+      );
+
+      expect(
+        settings.effectiveHumanAiFirstMovePreference,
+        HumanAiFirstMovePreference.random,
+      );
     });
   });
 

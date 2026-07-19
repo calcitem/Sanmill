@@ -1537,7 +1537,7 @@ void main() {
       findsOne,
     );
     expect(
-      find.byKey(const Key('human_ai_new_game_sheet_side_picker')),
+      find.byKey(const Key('human_ai_new_game_sheet_first_move_picker')),
       findsOne,
     );
 
