@@ -4600,7 +4600,7 @@
     },
     "humanAiPlayer": "玩家",
     "@humanAiPlayer": {},
-    "variants": "棋种",
+    "variants": "变体",
     "@variants": {},
     "millGame": "Mill 棋",
     "@millGame": {},

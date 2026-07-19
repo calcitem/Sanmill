@@ -229,6 +229,13 @@ void main() {
     expect(chinese.clockPresetSemantics(10, 3), '10 分钟，每步加 3 秒');
   });
 
+  test('distinguishes Chinese variants from the clock tool', () {
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(chinese.clock, '棋钟');
+    expect(chinese.variants, '变体');
+  });
+
   test('uses concise chess-style feedback in English mistake review', () {
     final S english = lookupS(const Locale('en'));
 
