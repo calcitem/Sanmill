@@ -26,14 +26,6 @@ void main() {
       expect(c.drawerColor, Colors.white);
       expect(c.drawerTextColor, UIColors.mediumJungleGreen);
       expect(c.drawerHighlightItemColor, UIColors.highlighterGreen20);
-      expect(c.mainToolbarBackgroundColor, UIColors.burlyWood);
-      expect(c.mainToolbarIconColor, UIColors.cocoaBean60);
-      expect(c.navigationToolbarBackgroundColor, UIColors.burlyWood);
-      expect(c.navigationToolbarIconColor, UIColors.cocoaBean60);
-      expect(c.analysisToolbarBackgroundColor, UIColors.burlyWood);
-      expect(c.analysisToolbarIconColor, UIColors.cocoaBean60);
-      expect(c.annotationToolbarBackgroundColor, UIColors.burlyWood);
-      expect(c.annotationToolbarIconColor, UIColors.cocoaBean60);
       expect(c.capturablePieceHighlightColor, Colors.orange);
     });
   });
@@ -54,14 +46,6 @@ void main() {
         drawerColor: Colors.teal,
         drawerTextColor: Colors.pink,
         drawerHighlightItemColor: Colors.lime,
-        mainToolbarBackgroundColor: Colors.indigo,
-        mainToolbarIconColor: Colors.amber,
-        navigationToolbarBackgroundColor: Colors.brown,
-        navigationToolbarIconColor: Colors.grey,
-        analysisToolbarBackgroundColor: Colors.deepPurple,
-        analysisToolbarIconColor: Colors.lightBlue,
-        annotationToolbarBackgroundColor: Colors.deepOrange,
-        annotationToolbarIconColor: Colors.lightGreen,
         capturablePieceHighlightColor: Colors.redAccent,
       );
 
@@ -71,6 +55,37 @@ void main() {
       expect(c.whitePieceColor, Colors.yellow);
       expect(c.blackPieceColor, Colors.purple);
       expect(c.capturablePieceHighlightColor, Colors.redAccent);
+    });
+
+    test('should discard obsolete toolbar colors from legacy JSON', () {
+      final Map<String, dynamic> legacyJson = const ColorSettings().toJson()
+        ..addAll(<String, dynamic>{
+          'MainToolbarBackgroundColor': 0,
+          'MainToolbarIconColor': 0,
+          'NavigationToolbarBackgroundColor': 0,
+          'NavigationToolbarIconColor': 0,
+          'AnalysisToolbarBackgroundColor': 0,
+          'AnalysisToolbarIconColor': 0,
+          'AnnotationToolbarBackgroundColor': 0,
+          'AnnotationToolbarIconColor': 0,
+        });
+
+      final Map<String, dynamic> migrated = ColorSettings.fromJson(
+        legacyJson,
+      ).toJson();
+
+      for (final String obsoleteKey in <String>[
+        'MainToolbarBackgroundColor',
+        'MainToolbarIconColor',
+        'NavigationToolbarBackgroundColor',
+        'NavigationToolbarIconColor',
+        'AnalysisToolbarBackgroundColor',
+        'AnalysisToolbarIconColor',
+        'AnnotationToolbarBackgroundColor',
+        'AnnotationToolbarIconColor',
+      ]) {
+        expect(migrated, isNot(contains(obsoleteKey)));
+      }
     });
   });
 

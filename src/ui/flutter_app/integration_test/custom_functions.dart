@@ -44,24 +44,6 @@ customFunctionMap =
             await tester.pumpAndSettle();
           },
 
-      // Enables the history navigation toolbar in display settings.
-      'enableHistoryNavigationToolbar':
-          (WidgetTester tester, Map<String, String> stepData) async {
-            DB().displaySettings = DB().displaySettings.copyWith(
-              isHistoryNavigationToolbarShown: true,
-            );
-            await tester.pumpAndSettle();
-          },
-
-      // Disables the history navigation toolbar in display settings.
-      'disableHistoryNavigationToolbar':
-          (WidgetTester tester, Map<String, String> stepData) async {
-            DB().displaySettings = DB().displaySettings.copyWith(
-              isHistoryNavigationToolbarShown: false,
-            );
-            await tester.pumpAndSettle();
-          },
-
       // Configures fast AI settings for quick test execution.
       'configureFastAi':
           (WidgetTester tester, Map<String, String> stepData) async {

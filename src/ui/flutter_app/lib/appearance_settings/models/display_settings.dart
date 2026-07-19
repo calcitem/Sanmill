@@ -79,7 +79,6 @@ class DisplaySettings {
     this.isPieceCountInHandShown = true,
     this.isUnplacedAndRemovedPiecesShown = true,
     this.isNotationsShown = true,
-    this.isHistoryNavigationToolbarShown = true,
     this.boardBorderLineWidth = 2.0,
     this.boardInnerLineWidth = 2.0,
     @Deprecated("Use [pointPaintingStyle] instead.") this.pointStyle = 0,
@@ -96,7 +95,6 @@ class DisplaySettings {
     this.isPositionalAdvantageIndicatorShown = false,
     this.backgroundImagePath = '',
     this.isNumbersOnPiecesShown = false,
-    this.isAnalysisToolbarShown = false,
     this.whitePieceImagePath = '',
     this.blackPieceImagePath = '',
     this.markedPieceImagePath = '',
@@ -104,7 +102,6 @@ class DisplaySettings {
     this.vignetteEffectEnabled = false,
     this.placeEffectAnimation = 'Default',
     this.removeEffectAnimation = 'Default',
-    this.isToolbarAtBottom = false,
     this.customBackgroundImagePath,
     this.customBoardImagePath,
     this.customWhitePieceImagePath,
@@ -159,9 +156,6 @@ class DisplaySettings {
 
   @HiveField(3, defaultValue: true)
   final bool isNotationsShown;
-
-  @HiveField(4, defaultValue: true)
-  final bool isHistoryNavigationToolbarShown;
 
   @HiveField(5, defaultValue: 2.0)
   final double boardBorderLineWidth;
@@ -222,9 +216,6 @@ class DisplaySettings {
   @HiveField(21, defaultValue: false)
   final bool isNumbersOnPiecesShown;
 
-  @HiveField(22, defaultValue: false)
-  final bool isAnalysisToolbarShown;
-
   @HiveField(23, defaultValue: '')
   final String whitePieceImagePath;
 
@@ -245,9 +236,6 @@ class DisplaySettings {
 
   @HiveField(29, defaultValue: 'Default')
   final String removeEffectAnimation;
-
-  @HiveField(30, defaultValue: false)
-  final bool isToolbarAtBottom;
 
   @HiveField(31)
   final String? customBackgroundImagePath;
@@ -372,7 +360,6 @@ class DisplaySettings {
       isPieceCountInHandShown: isPieceCountInHandShown,
       isUnplacedAndRemovedPiecesShown: isUnplacedAndRemovedPiecesShown,
       isNotationsShown: isNotationsShown,
-      isHistoryNavigationToolbarShown: isHistoryNavigationToolbarShown,
       boardBorderLineWidth: boardBorderLineWidth,
       boardInnerLineWidth: boardInnerLineWidth,
       pointStyle: pointStyle,
@@ -387,7 +374,6 @@ class DisplaySettings {
       isPositionalAdvantageIndicatorShown: isPositionalAdvantageIndicatorShown,
       backgroundImagePath: backgroundImagePath,
       isNumbersOnPiecesShown: isNumbersOnPiecesShown,
-      isAnalysisToolbarShown: isAnalysisToolbarShown,
       whitePieceImagePath: whitePieceImagePath,
       blackPieceImagePath: blackPieceImagePath,
       markedPieceImagePath: markedPieceImagePath,
@@ -395,7 +381,6 @@ class DisplaySettings {
       vignetteEffectEnabled: vignetteEffectEnabled,
       placeEffectAnimation: placeEffectAnimation,
       removeEffectAnimation: removeEffectAnimation,
-      isToolbarAtBottom: isToolbarAtBottom,
       customBackgroundImagePath: customBackgroundImagePath,
       customBoardImagePath: customBoardImagePath,
       customWhitePieceImagePath: customWhitePieceImagePath,

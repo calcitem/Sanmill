@@ -35,14 +35,6 @@ class ColorSettings {
     this.drawerBackgroundColor = Colors.white,
     this.drawerTextColor = UIColors.mediumJungleGreen,
     this.drawerHighlightItemColor = UIColors.highlighterGreen20,
-    this.mainToolbarBackgroundColor = UIColors.burlyWood,
-    this.mainToolbarIconColor = UIColors.cocoaBean60,
-    this.navigationToolbarBackgroundColor = UIColors.burlyWood,
-    this.navigationToolbarIconColor = UIColors.cocoaBean60,
-    this.analysisToolbarBackgroundColor = UIColors.burlyWood,
-    this.analysisToolbarIconColor = UIColors.cocoaBean60,
-    this.annotationToolbarBackgroundColor = UIColors.burlyWood,
-    this.annotationToolbarIconColor = UIColors.cocoaBean60,
     this.capturablePieceHighlightColor = Colors.orange,
   });
 
@@ -127,62 +119,6 @@ class ColorSettings {
   )
   @HiveField(10)
   final Color drawerHighlightItemColor;
-
-  @JsonKey(
-    fromJson: ColorAdapter.colorFromJson,
-    toJson: ColorAdapter.colorToJson,
-  )
-  @HiveField(11)
-  final Color mainToolbarBackgroundColor;
-
-  @JsonKey(
-    fromJson: ColorAdapter.colorFromJson,
-    toJson: ColorAdapter.colorToJson,
-  )
-  @HiveField(12)
-  final Color mainToolbarIconColor;
-
-  @JsonKey(
-    fromJson: ColorAdapter.colorFromJson,
-    toJson: ColorAdapter.colorToJson,
-  )
-  @HiveField(13)
-  final Color navigationToolbarBackgroundColor;
-
-  @JsonKey(
-    fromJson: ColorAdapter.colorFromJson,
-    toJson: ColorAdapter.colorToJson,
-  )
-  @HiveField(14)
-  final Color navigationToolbarIconColor;
-
-  @JsonKey(
-    fromJson: ColorAdapter.colorFromJson,
-    toJson: ColorAdapter.colorToJson,
-  )
-  @HiveField(15, defaultValue: UIColors.burlyWood)
-  final Color analysisToolbarBackgroundColor;
-
-  @JsonKey(
-    fromJson: ColorAdapter.colorFromJson,
-    toJson: ColorAdapter.colorToJson,
-  )
-  @HiveField(16, defaultValue: UIColors.cocoaBean60)
-  final Color analysisToolbarIconColor;
-
-  @JsonKey(
-    fromJson: ColorAdapter.colorFromJson,
-    toJson: ColorAdapter.colorToJson,
-  )
-  @HiveField(17, defaultValue: UIColors.burlyWood)
-  final Color annotationToolbarBackgroundColor;
-
-  @JsonKey(
-    fromJson: ColorAdapter.colorFromJson,
-    toJson: ColorAdapter.colorToJson,
-  )
-  @HiveField(18, defaultValue: UIColors.cocoaBean60)
-  final Color annotationToolbarIconColor;
 
   /// Color for highlighting capturable pieces
   @JsonKey(

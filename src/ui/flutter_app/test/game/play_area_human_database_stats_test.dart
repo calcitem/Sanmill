@@ -75,7 +75,6 @@ void main() {
     db.generalSettings = const GeneralSettings(humanDatabaseEnabled: true);
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     DB.instance = db;
     SoundManager.instance = MockAudios();
@@ -277,7 +276,6 @@ void main() {
       generalSettings: const GeneralSettings(screenReaderSupport: true),
       displaySettings: const DisplaySettings(
         isUnplacedAndRemovedPiecesShown: false,
-        isHistoryNavigationToolbarShown: false,
       ),
     );
     DB.instance = db;
@@ -328,7 +326,6 @@ void main() {
       generalSettings: const GeneralSettings(),
       displaySettings: const DisplaySettings(
         isUnplacedAndRemovedPiecesShown: false,
-        isHistoryNavigationToolbarShown: false,
       ),
     );
     DB.instance = db;
@@ -373,7 +370,6 @@ void main() {
       generalSettings: const GeneralSettings(),
       displaySettings: const DisplaySettings(
         isUnplacedAndRemovedPiecesShown: false,
-        isHistoryNavigationToolbarShown: false,
       ),
     );
     DB.instance = db;
@@ -436,7 +432,6 @@ void main() {
       displaySettings: const DisplaySettings(
         animationDuration: 0,
         isUnplacedAndRemovedPiecesShown: false,
-        isHistoryNavigationToolbarShown: false,
       ),
     );
     DB.instance = db;
@@ -497,7 +492,6 @@ void main() {
       generalSettings: const GeneralSettings(),
       displaySettings: const DisplaySettings(
         isUnplacedAndRemovedPiecesShown: false,
-        isHistoryNavigationToolbarShown: false,
       ),
     );
     DB.instance = db;
@@ -562,7 +556,6 @@ void main() {
     );
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: true,
     );
     GameController().gameInstance.gameMode = GameMode.aiVsAi;
     GameController().gameRecorder.reset();
@@ -813,7 +806,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final GameController controller = GameController();
     controller.gameInstance.gameMode = GameMode.humanVsHuman;
@@ -1001,7 +993,6 @@ void main() {
     );
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final GameController controller = GameController();
     controller.gameInstance.gameMode = GameMode.humanVsHuman;
@@ -1047,7 +1038,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     GameController().gameInstance.gameMode = GameMode.aiVsAi;
     GameController().gameRecorder.reset();
@@ -1707,7 +1697,6 @@ void main() {
     db.generalSettings = const GeneralSettings();
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     GameController().gameInstance.gameMode = GameMode.humanVsAi;
 
@@ -1742,7 +1731,6 @@ void main() {
     db.generalSettings = const GeneralSettings();
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     GameController().gameInstance.gameMode = GameMode.humanVsAi;
 
@@ -1779,7 +1767,6 @@ void main() {
     db.generalSettings = const GeneralSettings(useOpeningBook: false);
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final _MoveNowFakeSearchSession session = _MoveNowFakeSearchSession();
     _bindExistingNativeGame(GameMode.humanVsAi, session);
@@ -1808,7 +1795,6 @@ void main() {
     db.generalSettings = const GeneralSettings(useOpeningBook: false);
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final _MoveNowFakeSearchSession session = _MoveNowFakeSearchSession(
       holdHintSearch: true,
@@ -1851,7 +1837,6 @@ void main() {
       displaySettings: const DisplaySettings(
         animationDuration: 0,
         isUnplacedAndRemovedPiecesShown: false,
-        isHistoryNavigationToolbarShown: false,
       ),
     );
     DB.instance = db;
@@ -1923,7 +1908,6 @@ void main() {
     db.displaySettings = const DisplaySettings(
       animationDuration: 20,
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final _MoveNowFakeSearchSession session = _MoveNowFakeSearchSession(
       actionLimit: 1,
@@ -1972,7 +1956,6 @@ void main() {
     db.displaySettings = const DisplaySettings(
       animationDuration: 20,
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final _MoveNowFakeSearchSession session = _MoveNowFakeSearchSession(
       actionLimit: 3,
@@ -2121,10 +2104,7 @@ void main() {
   testWidgets('offline board dense portrait layout handles insets', (
     WidgetTester tester,
   ) async {
-    db.displaySettings = const DisplaySettings(
-      isAdvantageGraphShown: true,
-      isHistoryNavigationToolbarShown: false,
-    );
+    db.displaySettings = const DisplaySettings(isAdvantageGraphShown: true);
     GameController().gameInstance.gameMode = GameMode.humanVsHuman;
 
     await tester.binding.setSurfaceSize(const Size(390, 720));
@@ -2174,10 +2154,7 @@ void main() {
     WidgetTester tester,
   ) async {
     db.generalSettings = const GeneralSettings();
-    db.displaySettings = const DisplaySettings(
-      isAdvantageGraphShown: true,
-      isHistoryNavigationToolbarShown: false,
-    );
+    db.displaySettings = const DisplaySettings(isAdvantageGraphShown: true);
     GameController().gameInstance.gameMode = GameMode.humanVsAi;
 
     await tester.binding.setSurfaceSize(const Size(390, 720));
@@ -2227,9 +2204,7 @@ void main() {
   testWidgets('analysis dense portrait layout handles engine lines', (
     WidgetTester tester,
   ) async {
-    db.displaySettings = const DisplaySettings(
-      isHistoryNavigationToolbarShown: false,
-    );
+    db.displaySettings = const DisplaySettings();
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
     );
@@ -2279,7 +2254,6 @@ void main() {
     db.colorSettings = const ColorSettings(messageColor: Colors.white);
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -2363,7 +2337,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -2413,7 +2386,6 @@ void main() {
       db.colorSettings = const ColorSettings(messageColor: Colors.white);
       db.displaySettings = const DisplaySettings(
         isUnplacedAndRemovedPiecesShown: false,
-        isHistoryNavigationToolbarShown: false,
       );
       final NativeMillGameSession session = await _bindNativeGame(
         GameMode.analysis,
@@ -2465,7 +2437,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -2517,9 +2488,7 @@ void main() {
   ) async {
     db = _GamePageDb(
       generalSettings: const GeneralSettings(),
-      displaySettings: const DisplaySettings(
-        isHistoryNavigationToolbarShown: false,
-      ),
+      displaySettings: const DisplaySettings(),
     );
     DB.instance = db;
     final NativeMillGameSession session = await _bindNativeGame(
@@ -2561,9 +2530,7 @@ void main() {
   ) async {
     db = _GamePageDb(
       generalSettings: const GeneralSettings(),
-      displaySettings: const DisplaySettings(
-        isHistoryNavigationToolbarShown: false,
-      ),
+      displaySettings: const DisplaySettings(),
     );
     DB.instance = db;
     final GameController controller = GameController();
@@ -2629,7 +2596,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -3036,7 +3002,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -3087,7 +3052,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -3117,7 +3081,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     db.generalSettings = db.generalSettings.copyWith(useOpeningBook: false);
     final NativeMillGameSession session = await _bindNativeGame(
@@ -3139,7 +3102,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     db.generalSettings = db.generalSettings.copyWith(useOpeningBook: false);
     final NativeMillGameSession session = await _bindNativeGame(
@@ -3167,7 +3129,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -3256,7 +3217,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -3298,7 +3258,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -3357,7 +3316,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -3616,7 +3574,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final _RecordingAnalysisSession session = _RecordingAnalysisSession();
     _bindExistingNativeGame(GameMode.analysis, session);
@@ -3683,7 +3640,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -3772,7 +3728,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final _RecordingAnalysisSession session = _RecordingAnalysisSession();
     _bindExistingNativeGame(GameMode.analysis, session);
@@ -3838,7 +3793,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -3902,7 +3856,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
       isAdvantageGraphShown: true,
     );
     final NativeMillGameSession session = await _bindNativeGame(
@@ -3936,7 +3889,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
       isAdvantageGraphShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
@@ -4001,7 +3953,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
       isAdvantageGraphShown: true,
     );
     final NativeMillGameSession session = await _bindNativeGame(
@@ -4171,7 +4122,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
       isAdvantageGraphShown: true,
     );
     final NativeMillGameSession session = await _bindNativeGame(
@@ -4230,7 +4180,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final _RecordingAnalysisSession session = _RecordingAnalysisSession();
     _bindExistingNativeGame(GameMode.analysis, session);
@@ -4278,7 +4227,6 @@ void main() {
     (WidgetTester tester) async {
       db.displaySettings = const DisplaySettings(
         isUnplacedAndRemovedPiecesShown: false,
-        isHistoryNavigationToolbarShown: false,
       );
       final NativeMillGameSession session = await _bindNativeGame(
         GameMode.analysis,
@@ -4341,7 +4289,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -4377,7 +4324,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -4465,7 +4411,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -4513,7 +4458,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -4546,7 +4490,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -4820,7 +4763,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -4865,7 +4807,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -4910,7 +4851,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -5050,7 +4990,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
       isPositionalAdvantageIndicatorShown: false,
     );
     final _RecordingAnalysisSession session = _RecordingAnalysisSession();
@@ -5106,7 +5045,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -5283,7 +5221,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -5353,7 +5290,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final _RecordingAnalysisSession session = _RecordingAnalysisSession();
     _bindExistingNativeGame(GameMode.analysis, session);
@@ -5389,7 +5325,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final _RecordingAnalysisSession session = _RecordingAnalysisSession();
     _bindExistingNativeGame(GameMode.analysis, session);
@@ -5413,7 +5348,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final _RecordingAnalysisSession session = _RecordingAnalysisSession();
     _bindExistingNativeGame(GameMode.analysis, session);
@@ -5455,7 +5389,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final _RecordingAnalysisSession session = _RecordingAnalysisSession();
     _bindExistingNativeGame(GameMode.analysis, session);
@@ -5533,7 +5466,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final _RecordingAnalysisSession session = _RecordingAnalysisSession();
     _bindExistingNativeGame(GameMode.analysis, session);
@@ -5579,7 +5511,6 @@ void main() {
       isPositionalAdvantageIndicatorShown: false,
       analysisShowEvaluationGauge: false,
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     AnalysisMode.setShowEvaluationGauge(false);
     final NativeMillGameSession session = await _bindNativeGame(
@@ -5643,7 +5574,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -5681,7 +5611,6 @@ void main() {
       generalSettings: const GeneralSettings(),
       displaySettings: const DisplaySettings(
         isUnplacedAndRemovedPiecesShown: false,
-        isHistoryNavigationToolbarShown: false,
       ),
     );
     DB.instance = db;
@@ -5733,7 +5662,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -6234,9 +6162,7 @@ void main() {
     WidgetTester tester,
   ) async {
     db.generalSettings = const GeneralSettings(screenReaderSupport: true);
-    db.displaySettings = const DisplaySettings(
-      isHistoryNavigationToolbarShown: true,
-    );
+    db.displaySettings = const DisplaySettings();
     GameController().gameInstance.gameMode = GameMode.humanVsAi;
 
     await tester.binding.setSurfaceSize(const Size(390, 844));
@@ -6275,7 +6201,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -6389,7 +6314,6 @@ void main() {
       generalSettings: const GeneralSettings(),
       displaySettings: const DisplaySettings(
         isUnplacedAndRemovedPiecesShown: false,
-        isHistoryNavigationToolbarShown: false,
       ),
     );
     DB.instance = db;
@@ -6965,7 +6889,6 @@ void main() {
     );
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     debugOpeningExplorerHumanDatabaseReady = (_) =>
         const HumanDatabaseReadyResult(
@@ -7074,7 +6997,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
       movesViewLayout: MovesViewLayout.list,
     );
     final NativeMillGameSession session = await _bindNativeGame(
@@ -7142,7 +7064,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
       movesViewLayout: MovesViewLayout.medium,
     );
     final NativeMillGameSession session = await _bindNativeGame(
@@ -7193,7 +7114,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
       movesViewLayout: MovesViewLayout.medium,
     );
     final NativeMillGameSession session = await _bindNativeGame(
@@ -7298,7 +7218,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -7429,7 +7348,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -7498,7 +7416,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -7544,7 +7461,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -7593,7 +7509,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -7634,7 +7549,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
@@ -7691,7 +7605,6 @@ void main() {
     db.generalSettings = const GeneralSettings(showGameTips: true);
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final GameController controller = GameController();
     controller.gameInstance.gameMode = GameMode.aiVsAi;
@@ -7747,7 +7660,6 @@ void main() {
     db.generalSettings = const GeneralSettings();
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final GameController controller = GameController();
     controller.gameInstance.gameMode = GameMode.humanVsAi;
@@ -7823,7 +7735,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final GameController controller = GameController();
     controller.gameInstance.gameMode = GameMode.humanVsHuman;
@@ -8007,7 +7918,6 @@ void main() {
       generalSettings: const GeneralSettings(),
       displaySettings: const DisplaySettings(
         isUnplacedAndRemovedPiecesShown: false,
-        isHistoryNavigationToolbarShown: false,
       ),
     );
     DB.instance = db;
@@ -8110,7 +8020,6 @@ void main() {
     db.generalSettings = const GeneralSettings();
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     GameController().gameInstance.gameMode = GameMode.humanVsAi;
     final GlobalKey<NavigatorState> nestedNavigatorKey =
@@ -8182,7 +8091,6 @@ void main() {
       generalSettings: const GeneralSettings(),
       displaySettings: const DisplaySettings(
         isUnplacedAndRemovedPiecesShown: false,
-        isHistoryNavigationToolbarShown: false,
       ),
     );
     DB.instance = db;
@@ -8817,7 +8725,6 @@ void main() {
   ) async {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
-      isHistoryNavigationToolbarShown: false,
     );
     final _RecordingAnalysisSession session = _RecordingAnalysisSession();
     _bindExistingNativeGame(GameMode.analysis, session);

@@ -20,7 +20,6 @@ void main() {
       expect(d.isPieceCountInHandShown, isTrue);
       expect(d.isUnplacedAndRemovedPiecesShown, isTrue);
       expect(d.isNotationsShown, isTrue);
-      expect(d.isHistoryNavigationToolbarShown, isTrue);
       expect(d.boardBorderLineWidth, 2.0);
       expect(d.boardInnerLineWidth, 2.0);
       expect(d.pointPaintingStyle, PointPaintingStyle.none);
@@ -32,7 +31,6 @@ void main() {
       expect(d.isPositionalAdvantageIndicatorShown, isFalse);
       expect(d.backgroundImagePath, '');
       expect(d.isNumbersOnPiecesShown, isFalse);
-      expect(d.isAnalysisToolbarShown, isFalse);
       expect(d.whitePieceImagePath, '');
       expect(d.blackPieceImagePath, '');
       expect(d.markedPieceImagePath, '');
@@ -40,7 +38,6 @@ void main() {
       expect(d.vignetteEffectEnabled, isFalse);
       expect(d.placeEffectAnimation, 'Default');
       expect(d.removeEffectAnimation, 'Default');
-      expect(d.isToolbarAtBottom, isFalse);
       expect(d.customBackgroundImagePath, isNull);
       expect(d.customBoardImagePath, isNull);
       expect(d.customWhitePieceImagePath, isNull);
@@ -105,6 +102,27 @@ void main() {
 
     expect(changed.showLastMove, isFalse);
     expect(DisplaySettings.fromJson(changed.toJson()).showLastMove, isFalse);
+  });
+
+  test('obsolete toolbar preferences are discarded from legacy JSON', () {
+    final Map<String, dynamic> legacyJson = const DisplaySettings().toJson()
+      ..addAll(<String, dynamic>{
+        'IsHistoryNavigationToolbarShown': true,
+        'IsAnalysisToolbarShown': true,
+        'IsToolbarAtBottom': true,
+      });
+
+    final Map<String, dynamic> migrated = DisplaySettings.fromJson(
+      legacyJson,
+    ).toJson();
+
+    for (final String obsoleteKey in <String>[
+      'IsHistoryNavigationToolbarShown',
+      'IsAnalysisToolbarShown',
+      'IsToolbarAtBottom',
+    ]) {
+      expect(migrated, isNot(contains(obsoleteKey)));
+    }
   });
 
   // ---------------------------------------------------------------------------

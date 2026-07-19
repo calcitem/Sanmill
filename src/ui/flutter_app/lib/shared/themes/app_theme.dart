@@ -588,14 +588,6 @@ class AppTheme {
       drawerColor: Colors.black,
       drawerTextColor: Colors.white,
       drawerHighlightItemColor: UIColors.highlighterGreen20,
-      mainToolbarBackgroundColor: Colors.black,
-      mainToolbarIconColor: UIColors.tahitiGold60,
-      navigationToolbarBackgroundColor: Colors.black,
-      navigationToolbarIconColor: UIColors.tahitiGold60,
-      analysisToolbarBackgroundColor: Colors.black,
-      analysisToolbarIconColor: UIColors.tahitiGold60,
-      annotationToolbarBackgroundColor: Colors.black,
-      annotationToolbarIconColor: UIColors.tahitiGold60,
     ),
     ColorTheme.monochrome: const ColorSettings(
       boardLineColor: Colors.black,
@@ -609,14 +601,6 @@ class AppTheme {
       drawerColor: Colors.black,
       drawerTextColor: Colors.white,
       drawerHighlightItemColor: Color(0xFFA4A293),
-      mainToolbarBackgroundColor: Colors.white,
-      mainToolbarIconColor: Colors.black,
-      navigationToolbarBackgroundColor: Colors.white,
-      navigationToolbarIconColor: Colors.black,
-      analysisToolbarBackgroundColor: Colors.white,
-      analysisToolbarIconColor: Colors.black,
-      annotationToolbarBackgroundColor: Colors.white,
-      annotationToolbarIconColor: Colors.black,
     ),
     ColorTheme.transparentCanvas: const ColorSettings(
       boardLineColor: Colors.black,
@@ -625,14 +609,6 @@ class AppTheme {
       darkBackgroundColor: Color.fromARGB(1, 255, 255, 255),
       boardBackgroundColor: Color.fromARGB(1, 255, 255, 255),
       messageColor: Colors.black,
-      mainToolbarBackgroundColor: Color.fromARGB(0, 255, 255, 255),
-      mainToolbarIconColor: Colors.black,
-      navigationToolbarBackgroundColor: Color.fromARGB(0, 255, 255, 255),
-      navigationToolbarIconColor: Colors.black,
-      analysisToolbarBackgroundColor: Color.fromARGB(0, 255, 255, 255),
-      analysisToolbarIconColor: Colors.black,
-      annotationToolbarBackgroundColor: Color.fromARGB(0, 255, 255, 255),
-      annotationToolbarIconColor: Colors.black,
     ),
     ColorTheme.autumnLeaves: const ColorSettings(
       boardLineColor: Color(0xFF000000),
@@ -655,20 +631,6 @@ class AppTheme {
       // White
       drawerHighlightItemColor: Color(0x33FFB6C1),
       // Semi-transparent Light Pink
-      mainToolbarBackgroundColor: Color(0xD88B5A3C),
-      // Semi-transparent Burnt Sienna
-      mainToolbarIconColor: Color(0xFF000000),
-      // Black
-      navigationToolbarBackgroundColor: Color(0xD58B5A3C),
-      // Semi-transparent Burnt Sienna
-      navigationToolbarIconColor: Color(0xFF000000),
-      // Black
-      analysisToolbarBackgroundColor: Color(0xFF8B5A2B),
-      // Russet Brown
-      analysisToolbarIconColor: Color(0xFFA4A293),
-      // Pale Taupe
-      annotationToolbarBackgroundColor: Color(0xFF8B5A2B),
-      annotationToolbarIconColor: Color(0xFFA4A293),
     ),
     ColorTheme.legendaryLand: const ColorSettings(
       boardLineColor: Color(0xFF8FBC8F),
@@ -691,20 +653,6 @@ class AppTheme {
       // Nyanza
       drawerHighlightItemColor: Color(0x88355E3B),
       // Semi-transparent Olive Drab
-      mainToolbarBackgroundColor: Color(0xFF8B7355),
-      // Cinnamon
-      mainToolbarIconColor: Color(0xFFF0FFF0),
-      // Honeydew
-      navigationToolbarBackgroundColor: Color(0xFF8B7355),
-      // Cinnamon
-      navigationToolbarIconColor: Color(0xFFF0FFF0),
-      // Honeydew
-      analysisToolbarBackgroundColor: Color(0xFF8B7355),
-      // Cinnamon
-      analysisToolbarIconColor: Color(0xFFF0FFF0),
-      // Honeydew
-      annotationToolbarBackgroundColor: Color(0xFF8B7355),
-      annotationToolbarIconColor: Color(0xFFF0FFF0),
     ),
     ColorTheme.goldenJade: const ColorSettings(
       boardBackgroundColor: Color(0xFFC89B42),
@@ -727,20 +675,6 @@ class AppTheme {
       // white
       drawerHighlightItemColor: Color(0x331BFC06),
       // semi-transparent bright green
-      mainToolbarBackgroundColor: Color(0xFFE9E7D7),
-      // light beige
-      mainToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      navigationToolbarBackgroundColor: Color(0xFFE9E7D7),
-      // light beige
-      navigationToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      analysisToolbarBackgroundColor: Color(0xFFE9E7D7),
-      // light beige
-      analysisToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      annotationToolbarBackgroundColor: Color(0xFFE9E7D7),
-      annotationToolbarIconColor: Color(0xFFA4A293),
     ),
     ColorTheme.forestWood: const ColorSettings(
       boardBackgroundColor: Color(0xFFC19A6B),
@@ -763,20 +697,6 @@ class AppTheme {
       // white
       drawerHighlightItemColor: Color(0x33FFB6C1),
       // semi-transparent light pink
-      mainToolbarBackgroundColor: Color(0xFF8B5A2B),
-      // dark wood brown
-      mainToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      navigationToolbarBackgroundColor: Color(0xFF8B5A2B),
-      // dark wood brown
-      navigationToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      analysisToolbarBackgroundColor: Color(0xFF8B5A2B),
-      // dark wood brown
-      analysisToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      annotationToolbarBackgroundColor: Color(0xFF8B5A2B),
-      annotationToolbarIconColor: Color(0xFFA4A293),
     ),
     ColorTheme.greenMeadow: const ColorSettings(
       boardBackgroundColor: Color(0xFF9ACD32),
@@ -799,20 +719,6 @@ class AppTheme {
       // white
       drawerHighlightItemColor: Color(0x33B0C4DE),
       // semi-transparent light steel blue
-      mainToolbarBackgroundColor: Color(0xFF006400),
-      // dark green
-      mainToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      navigationToolbarBackgroundColor: Color(0xFF006400),
-      // dark green
-      navigationToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      analysisToolbarBackgroundColor: Color(0xFF006400),
-      // dark green
-      analysisToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      annotationToolbarBackgroundColor: Color(0xFF006400),
-      annotationToolbarIconColor: Color(0xFFA4A293),
     ),
     ColorTheme.stonyPath: const ColorSettings(
       boardBackgroundColor: Color(0xFFC0C0C0),
@@ -835,20 +741,6 @@ class AppTheme {
       // white
       drawerHighlightItemColor: Color(0x3399CCFF),
       // semi-transparent sky blue
-      mainToolbarBackgroundColor: Color(0xFF808080),
-      // gray
-      mainToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      navigationToolbarBackgroundColor: Color(0xFF808080),
-      // gray
-      navigationToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      analysisToolbarBackgroundColor: Color(0xFF808080),
-      // gray
-      analysisToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      annotationToolbarBackgroundColor: Color(0xFF808080),
-      annotationToolbarIconColor: Color(0xFFA4A293),
     ),
     ColorTheme.midnightBlue: const ColorSettings(
       boardBackgroundColor: Color(0xFF162447),
@@ -871,20 +763,6 @@ class AppTheme {
       // white
       drawerHighlightItemColor: Color(0x33D3FF00),
       // semi-transparent bright green
-      mainToolbarBackgroundColor: Color(0xFF1f4068),
-      // deep blue
-      mainToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      navigationToolbarBackgroundColor: Color(0xFF1f4068),
-      // deep blue
-      navigationToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      analysisToolbarBackgroundColor: Color(0xFF1f4068),
-      // deep blue
-      analysisToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      annotationToolbarBackgroundColor: Color(0xFF1f4068),
-      annotationToolbarIconColor: Color(0xFFA4A293),
     ),
     ColorTheme.greenForest: const ColorSettings(
       boardBackgroundColor: Color(0xFFa9eec2),
@@ -907,20 +785,6 @@ class AppTheme {
       // white
       drawerHighlightItemColor: Color(0x33FFB800),
       // semi-transparent orange
-      mainToolbarBackgroundColor: Color(0xFF4DAA4C),
-      // forest green
-      mainToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      navigationToolbarBackgroundColor: Color(0xFF4DAA4C),
-      // forest green
-      navigationToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      analysisToolbarBackgroundColor: Color(0xFF4DAA4C),
-      // forest green
-      analysisToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      annotationToolbarBackgroundColor: Color(0xFF4DAA4C),
-      annotationToolbarIconColor: Color(0xFFA4A293),
     ),
     ColorTheme.pastelPink: const ColorSettings(
       boardBackgroundColor: Color(0xFFf7bacf),
@@ -942,20 +806,6 @@ class AppTheme {
       // white
       drawerHighlightItemColor: Color(0x33FFA500),
       // semi-transparent orange
-      mainToolbarBackgroundColor: Color(0xFFefc3e6),
-      // light pink
-      mainToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      navigationToolbarBackgroundColor: Color(0xFFefc3e6),
-      // light pink
-      navigationToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      analysisToolbarBackgroundColor: Color(0xFFefc3e6),
-      // light pink
-      analysisToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      annotationToolbarBackgroundColor: Color(0xFFefc3e6),
-      annotationToolbarIconColor: Color(0xFFA4A293),
     ),
     ColorTheme.turquoiseSea: const ColorSettings(
       boardBackgroundColor: Color(0xFFc9ada1),
@@ -978,20 +828,6 @@ class AppTheme {
       // white
       drawerHighlightItemColor: Color(0x66DC143C),
       // semi-transparent crimson
-      mainToolbarBackgroundColor: Color(0xFF1f7a8c),
-      // dark turquoise
-      mainToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      navigationToolbarBackgroundColor: Color(0xFF1f7a8c),
-      // dark turquoise
-      navigationToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      analysisToolbarBackgroundColor: Color(0xFF1f7a8c),
-      // dark turquoise
-      analysisToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      annotationToolbarBackgroundColor: Color(0xFF1f7a8c),
-      annotationToolbarIconColor: Color(0xFFA4A293),
     ),
     ColorTheme.violetDream: const ColorSettings(
       boardBackgroundColor: Color(0xFF8b77a9),
@@ -1014,20 +850,6 @@ class AppTheme {
       // white
       drawerHighlightItemColor: Color(0x3393C47D),
       // semi-transparent dark sea green
-      mainToolbarBackgroundColor: Color(0xFF583d72),
-      // dark violet
-      mainToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      navigationToolbarBackgroundColor: Color(0xFF583d72),
-      // dark violet
-      navigationToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      analysisToolbarBackgroundColor: Color(0xFF583d72),
-      // dark violet
-      analysisToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      annotationToolbarBackgroundColor: Color(0xFF583d72),
-      annotationToolbarIconColor: Color(0xFFA4A293),
     ),
     ColorTheme.mintChocolate: const ColorSettings(
       boardBackgroundColor: Color(0xFFA1E8AF),
@@ -1050,21 +872,6 @@ class AppTheme {
       // white
       drawerHighlightItemColor: Color(0x33F08080),
       // semi-transparent light coral
-      mainToolbarBackgroundColor: Color(0xFF0B3D0B),
-      // dark green
-      mainToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      navigationToolbarBackgroundColor: Color(0xFF0B3D0B),
-      // dark green
-      navigationToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      analysisToolbarBackgroundColor: Color(0xFF0B3D0B),
-      // dark green
-      analysisToolbarIconColor: Color(0xFFA4A293),
-
-      // warm gray
-      annotationToolbarBackgroundColor: Color(0xFF0B3D0B),
-      annotationToolbarIconColor: Color(0xFFA4A293),
     ),
     ColorTheme.skyBlue: const ColorSettings(
       boardBackgroundColor: Color(0xFFD0E1F9),
@@ -1087,20 +894,6 @@ class AppTheme {
       // white
       drawerHighlightItemColor: Color(0x33FFC0CB),
       // semi-transparent pink
-      mainToolbarBackgroundColor: Color(0xFF4B89AC),
-      // steel blue
-      mainToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      navigationToolbarBackgroundColor: Color(0xFF4B89AC),
-      // steel blue
-      navigationToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      analysisToolbarBackgroundColor: Color(0xFF4B89AC),
-      // steel blue
-      analysisToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      annotationToolbarBackgroundColor: Color(0xFF4B89AC),
-      annotationToolbarIconColor: Color(0xFFA4A293),
     ),
     ColorTheme.playfulGarden: const ColorSettings(
       boardBackgroundColor: Color(0xFFFBE9A6),
@@ -1123,20 +916,6 @@ class AppTheme {
       // white
       drawerHighlightItemColor: Color(0x33FFD700),
       // semi-transparent gold
-      mainToolbarBackgroundColor: Color(0xFFB8DCAC),
-      // light green
-      mainToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      navigationToolbarBackgroundColor: Color(0xFFB8DCAC),
-      // light green
-      navigationToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      analysisToolbarBackgroundColor: Color(0xFFB8DCAC),
-      // light green
-      analysisToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      annotationToolbarBackgroundColor: Color(0xFFB8DCAC),
-      annotationToolbarIconColor: Color(0xFFA4A293),
     ),
     ColorTheme.darkMystery: const ColorSettings(
       boardBackgroundColor: Color(0xFF5C5C5C),
@@ -1159,20 +938,6 @@ class AppTheme {
       // white
       drawerHighlightItemColor: Color(0x33F08080),
       // semi-transparent light coral
-      mainToolbarBackgroundColor: Color(0xFF0F0F0F),
-      // almost black
-      mainToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      navigationToolbarBackgroundColor: Color(0xFF0F0F0F),
-      // almost black
-      navigationToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      analysisToolbarBackgroundColor: Color(0xFF0F0F0F),
-      // almost black
-      analysisToolbarIconColor: Color(0xFFA4A293),
-      // warm gray
-      annotationToolbarBackgroundColor: Color(0xFF0F0F0F),
-      annotationToolbarIconColor: Color(0xFFA4A293),
     ),
     ColorTheme.ancientEgypt: const ColorSettings(
       boardBackgroundColor: Color(0xFFE8D0AA),
@@ -1195,20 +960,6 @@ class AppTheme {
       // Match whitePieceColor
       drawerHighlightItemColor: Color(0x33D4AF37),
       // Semi-transparent gold
-      mainToolbarBackgroundColor: Color(0xFF7E5C31),
-      // Match dark background
-      mainToolbarIconColor: Color(0xFFFCF4D9),
-      // Match white piece color
-      navigationToolbarBackgroundColor: Color(0xFF7E5C31),
-      // Match dark background
-      navigationToolbarIconColor: Color(0xFFFCF4D9),
-      // Match white piece color
-      analysisToolbarBackgroundColor: Color(0xFF7E5C31),
-      // Match dark background
-      analysisToolbarIconColor: Color(0xFFFCF4D9),
-      // Match white piece color
-      annotationToolbarBackgroundColor: Color(0xFF7E5C31),
-      annotationToolbarIconColor: Color(0xFFFCF4D9),
     ),
     ColorTheme.gothicIce: const ColorSettings(
       boardBackgroundColor: Color(0xFFE8F4FC),
@@ -1231,20 +982,6 @@ class AppTheme {
       // Match white piece
       drawerHighlightItemColor: Color(0x33A1D6E6),
       // Semi-transparent highlight
-      mainToolbarBackgroundColor: Color(0xFF1A2C42),
-      // Match dark background
-      mainToolbarIconColor: Color(0xFFA1D6E6),
-      // Cyan icons
-      navigationToolbarBackgroundColor: Color(0xFF1A2C42),
-      // Match dark background
-      navigationToolbarIconColor: Color(0xFFA1D6E6),
-      // Cyan icons
-      analysisToolbarBackgroundColor: Color(0xFF1A2C42),
-      // Match dark background
-      analysisToolbarIconColor: Color(0xFFA1D6E6),
-      // Cyan icons
-      annotationToolbarBackgroundColor: Color(0xFF1A2C42),
-      annotationToolbarIconColor: Color(0xFFA1D6E6),
     ),
     ColorTheme.riceField: const ColorSettings(
       boardBackgroundColor: Color(0xFFF0E9D2),
@@ -1267,20 +1004,6 @@ class AppTheme {
       // Match white piece
       drawerHighlightItemColor: Color(0x33EACC62),
       // Semi-transparent gold
-      mainToolbarBackgroundColor: Color(0xFF678D58),
-      // Match dark background
-      mainToolbarIconColor: Color(0xFFF7F3E8),
-      // White icons
-      navigationToolbarBackgroundColor: Color(0xFF678D58),
-      // Match dark background
-      navigationToolbarIconColor: Color(0xFFF7F3E8),
-      // White icons
-      analysisToolbarBackgroundColor: Color(0xFF678D58),
-      // Match dark background
-      analysisToolbarIconColor: Color(0xFFF7F3E8),
-      // White icons
-      annotationToolbarBackgroundColor: Color(0xFF678D58),
-      annotationToolbarIconColor: Color(0xFFF7F3E8),
     ),
     ColorTheme.chinesePorcelain: const ColorSettings(
       boardBackgroundColor: Color(0xFFF6FEFF),
@@ -1303,20 +1026,6 @@ class AppTheme {
       // Match white piece
       drawerHighlightItemColor: Color(0x3352B2BF),
       // Semi-transparent turquoise
-      mainToolbarBackgroundColor: Color(0xFF0F5E87),
-      // Match dark background
-      mainToolbarIconColor: Color(0xFFFCFCFC),
-      // White icons
-      navigationToolbarBackgroundColor: Color(0xFF0F5E87),
-      // Match dark background
-      navigationToolbarIconColor: Color(0xFFFCFCFC),
-      // White icons
-      analysisToolbarBackgroundColor: Color(0xFF0F5E87),
-      // Match dark background
-      analysisToolbarIconColor: Color(0xFFFCFCFC),
-      // White icons
-      annotationToolbarBackgroundColor: Color(0xFF0F5E87),
-      annotationToolbarIconColor: Color(0xFFFCFCFC),
     ),
     ColorTheme.desertDusk: const ColorSettings(
       boardBackgroundColor: Color(0xFFF0C18B),
@@ -1339,20 +1048,6 @@ class AppTheme {
       // Match white piece
       drawerHighlightItemColor: Color(0x33E36161),
       // Semi-transparent sunset
-      mainToolbarBackgroundColor: Color(0xFF6A3E35),
-      // Match dark background
-      mainToolbarIconColor: Color(0xFFFEEBC1),
-      // Light sand colored icons
-      navigationToolbarBackgroundColor: Color(0xFF6A3E35),
-      // Match dark background
-      navigationToolbarIconColor: Color(0xFFFEEBC1),
-      // Light sand colored icons
-      analysisToolbarBackgroundColor: Color(0xFF6A3E35),
-      // Match dark background
-      analysisToolbarIconColor: Color(0xFFFEEBC1),
-      // Light sand colored icons
-      annotationToolbarBackgroundColor: Color(0xFF6A3E35),
-      annotationToolbarIconColor: Color(0xFFFEEBC1),
     ),
     ColorTheme.precisionCraft: const ColorSettings(
       boardBackgroundColor: Color(0xFFEEEEEE),
@@ -1375,20 +1070,6 @@ class AppTheme {
       // Match white piece
       drawerHighlightItemColor: Color(0x33FFCC00),
       // Semi-transparent gold (from German flag)
-      mainToolbarBackgroundColor: Color(0xFF333333),
-      // Match dark background
-      mainToolbarIconColor: Color(0xFFF8F8F8),
-      // Light icons on dark background
-      navigationToolbarBackgroundColor: Color(0xFF333333),
-      // Match dark background
-      navigationToolbarIconColor: Color(0xFFF8F8F8),
-      // Light icons
-      analysisToolbarBackgroundColor: Color(0xFF333333),
-      // Match dark background
-      analysisToolbarIconColor: Color(0xFFF8F8F8),
-      // Light icons
-      annotationToolbarBackgroundColor: Color(0xFF333333),
-      annotationToolbarIconColor: Color(0xFFF8F8F8),
     ),
     ColorTheme.folkEmbroidery: const ColorSettings(
       boardBackgroundColor: Color(0xFFF5F2E9),
@@ -1411,20 +1092,6 @@ class AppTheme {
       // Match white piece
       drawerHighlightItemColor: Color(0x3345A145),
       // Semi-transparent green (from Hungarian folklore)
-      mainToolbarBackgroundColor: Color(0xFF7E4E3B),
-      // Match dark background
-      mainToolbarIconColor: Color(0xFFFFFCF0),
-      // Light icons for contrast
-      navigationToolbarBackgroundColor: Color(0xFF7E4E3B),
-      // Match dark background
-      navigationToolbarIconColor: Color(0xFFFFFCF0),
-      // Light icons for contrast
-      analysisToolbarBackgroundColor: Color(0xFF7E4E3B),
-      // Match dark background
-      analysisToolbarIconColor: Color(0xFFFFFCF0),
-      // Light icons for contrast
-      annotationToolbarBackgroundColor: Color(0xFF7E4E3B),
-      annotationToolbarIconColor: Color(0xFFFFFCF0),
     ),
     ColorTheme.carpathianHeritage: const ColorSettings(
       boardBackgroundColor: Color(0xFFF2E8D5),
@@ -1447,20 +1114,6 @@ class AppTheme {
       // Match white piece
       drawerHighlightItemColor: Color(0x33FCD116),
       // Semi-transparent yellow (from Romanian flag)
-      mainToolbarBackgroundColor: Color(0xFF2C4770),
-      // Match dark background
-      mainToolbarIconColor: Color(0xFFF9F0DD),
-      // Light colored icons
-      navigationToolbarBackgroundColor: Color(0xFF2C4770),
-      // Match dark background
-      navigationToolbarIconColor: Color(0xFFF9F0DD),
-      // Light colored icons
-      analysisToolbarBackgroundColor: Color(0xFF2C4770),
-      // Match dark background
-      analysisToolbarIconColor: Color(0xFFF9F0DD),
-      // Light colored icons
-      annotationToolbarBackgroundColor: Color(0xFF2C4770),
-      annotationToolbarIconColor: Color(0xFFF9F0DD),
     ),
     ColorTheme.imperialGrandeur: const ColorSettings(
       boardBackgroundColor: Color(0xFFF5E7C1),
@@ -1483,20 +1136,6 @@ class AppTheme {
       // Match white piece
       drawerHighlightItemColor: Color(0x33CC0000),
       // Semi-transparent red
-      mainToolbarBackgroundColor: Color(0xFF2A1E5C),
-      // Match dark background
-      mainToolbarIconColor: Color(0xFFD4AF37),
-      // Gold icons for imperial feel
-      navigationToolbarBackgroundColor: Color(0xFF2A1E5C),
-      // Match dark background
-      navigationToolbarIconColor: Color(0xFFD4AF37),
-      // Gold icons
-      analysisToolbarBackgroundColor: Color(0xFF2A1E5C),
-      // Match dark background
-      analysisToolbarIconColor: Color(0xFFD4AF37),
-      // Gold icons
-      annotationToolbarBackgroundColor: Color(0xFF2A1E5C),
-      annotationToolbarIconColor: Color(0xFFD4AF37),
     ),
     ColorTheme.bohemianCrystal: const ColorSettings(
       boardBackgroundColor: Color(0xFFE6F2FF),
@@ -1519,20 +1158,6 @@ class AppTheme {
       // Match white piece
       drawerHighlightItemColor: Color(0x3311457E),
       // Semi-transparent blue
-      mainToolbarBackgroundColor: Color(0xFF16456D),
-      // Match dark background
-      mainToolbarIconColor: Color(0xFFF7FBFF),
-      // Light icons
-      navigationToolbarBackgroundColor: Color(0xFF16456D),
-      // Match dark background
-      navigationToolbarIconColor: Color(0xFFF7FBFF),
-      // Light icons
-      analysisToolbarBackgroundColor: Color(0xFF16456D),
-      // Match dark background
-      analysisToolbarIconColor: Color(0xFFF7FBFF),
-      // Light icons
-      annotationToolbarBackgroundColor: Color(0xFF16456D),
-      annotationToolbarIconColor: Color(0xFFF7FBFF),
     ),
     ColorTheme.savannaSunrise: const ColorSettings(
       boardBackgroundColor: Color(0xFFF2E4C0),
@@ -1555,20 +1180,6 @@ class AppTheme {
       // Match white piece
       drawerHighlightItemColor: Color(0x33F1C40F),
       // Semi-transparent yellow like African sun
-      mainToolbarBackgroundColor: Color(0xFF4A5E2F),
-      // Match dark background
-      mainToolbarIconColor: Color(0xFFFFF8E1),
-      // Light icons
-      navigationToolbarBackgroundColor: Color(0xFF4A5E2F),
-      // Match dark background
-      navigationToolbarIconColor: Color(0xFFFFF8E1),
-      // Light icons
-      analysisToolbarBackgroundColor: Color(0xFF4A5E2F),
-      // Match dark background
-      analysisToolbarIconColor: Color(0xFFFFF8E1),
-      // Light icons
-      annotationToolbarBackgroundColor: Color(0xFF4A5E2F),
-      annotationToolbarIconColor: Color(0xFFFFF8E1),
     ),
     ColorTheme.harmonyBalance: const ColorSettings(
       boardBackgroundColor: Color(0xFFF3F0E9),
@@ -1591,20 +1202,6 @@ class AppTheme {
       // Match white piece
       drawerHighlightItemColor: Color(0x33F9B42D),
       // Semi-transparent gold
-      mainToolbarBackgroundColor: Color(0xFF263959),
-      // Match dark background
-      mainToolbarIconColor: Color(0xFFFAF9F5),
-      // Light icons
-      navigationToolbarBackgroundColor: Color(0xFF263959),
-      // Match dark background
-      navigationToolbarIconColor: Color(0xFFFAF9F5),
-      // Light icons
-      analysisToolbarBackgroundColor: Color(0xFF263959),
-      // Match dark background
-      analysisToolbarIconColor: Color(0xFFFAF9F5),
-      // Light icons
-      annotationToolbarBackgroundColor: Color(0xFF263959),
-      annotationToolbarIconColor: Color(0xFFFAF9F5),
     ),
     ColorTheme.cinnamonSpice: const ColorSettings(
       boardBackgroundColor: Color(0xFFE8D0B8),
@@ -1627,20 +1224,6 @@ class AppTheme {
       // Match white piece
       drawerHighlightItemColor: Color(0x33FF9800),
       // Semi-transparent saffron orange
-      mainToolbarBackgroundColor: Color(0xFF5B4B3B),
-      // Match dark background
-      mainToolbarIconColor: Color(0xFFFBF5EB),
-      // Light icons
-      navigationToolbarBackgroundColor: Color(0xFF5B4B3B),
-      // Match dark background
-      navigationToolbarIconColor: Color(0xFFFBF5EB),
-      // Light icons
-      analysisToolbarBackgroundColor: Color(0xFF5B4B3B),
-      // Match dark background
-      analysisToolbarIconColor: Color(0xFFFBF5EB),
-      // Light icons
-      annotationToolbarBackgroundColor: Color(0xFF5B4B3B),
-      annotationToolbarIconColor: Color(0xFFFBF5EB),
     ),
     ColorTheme.anatolianMosaic: const ColorSettings(
       boardBackgroundColor: Color(0xFFF1EEEA),
@@ -1663,20 +1246,6 @@ class AppTheme {
       // Match white piece
       drawerHighlightItemColor: Color(0x33E5A836),
       // Semi-transparent gold like mosaic inlays
-      mainToolbarBackgroundColor: Color(0xFF1E5F8C),
-      // Match dark background
-      mainToolbarIconColor: Color(0xFFFAF6F0),
-      // Light icons
-      navigationToolbarBackgroundColor: Color(0xFF1E5F8C),
-      // Match dark background
-      navigationToolbarIconColor: Color(0xFFFAF6F0),
-      // Light icons
-      analysisToolbarBackgroundColor: Color(0xFF1E5F8C),
-      // Match dark background
-      analysisToolbarIconColor: Color(0xFFFAF6F0),
-      // Light icons
-      annotationToolbarBackgroundColor: Color(0xFF1E5F8C),
-      annotationToolbarIconColor: Color(0xFFFAF6F0),
     ),
     ColorTheme.carnivalSpirit: const ColorSettings(
       boardBackgroundColor: Color(0xFFFFF59B),
@@ -1699,20 +1268,6 @@ class AppTheme {
       // Match white piece
       drawerHighlightItemColor: Color(0x3376FF03),
       // Semi-transparent lime green
-      mainToolbarBackgroundColor: Color(0xFF026873),
-      // Match dark background
-      mainToolbarIconColor: Color(0xFFFFFDEC),
-      // Light icons
-      navigationToolbarBackgroundColor: Color(0xFF026873),
-      // Match dark background
-      navigationToolbarIconColor: Color(0xFFFFFDEC),
-      // Light icons
-      analysisToolbarBackgroundColor: Color(0xFF026873),
-      // Match dark background
-      analysisToolbarIconColor: Color(0xFFFFFDEC),
-      // Light icons
-      annotationToolbarBackgroundColor: Color(0xFF026873),
-      annotationToolbarIconColor: Color(0xFFFFFDEC),
     ),
     ColorTheme.spiceMarket: const ColorSettings(
       boardBackgroundColor: Color(0xFFF9E2B8),
@@ -1735,20 +1290,6 @@ class AppTheme {
       // Match message color
       drawerHighlightItemColor: Color(0x33F9B529),
       // Semi-transparent saffron gold
-      mainToolbarBackgroundColor: Color(0xFF9B2335),
-      // Match dark background
-      mainToolbarIconColor: Color(0xFFFFEDBD),
-      // Light icons
-      navigationToolbarBackgroundColor: Color(0xFF9B2335),
-      // Match dark background
-      navigationToolbarIconColor: Color(0xFFFFEDBD),
-      // Light icons
-      analysisToolbarBackgroundColor: Color(0xFF9B2335),
-      // Match dark background
-      analysisToolbarIconColor: Color(0xFFFFEDBD),
-      // Light icons
-      annotationToolbarBackgroundColor: Color(0xFF9B2335),
-      annotationToolbarIconColor: Color(0xFFFFEDBD),
     ),
     ColorTheme.custom: const ColorSettings(),
   };

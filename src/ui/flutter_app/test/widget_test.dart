@@ -2731,14 +2731,6 @@ void main() {
     DB().colorSettings = lightTheme.copyWith(
       drawerColor: Colors.pink,
       drawerTextColor: Colors.orange,
-      mainToolbarBackgroundColor: Colors.red,
-      mainToolbarIconColor: Colors.green,
-      navigationToolbarBackgroundColor: Colors.yellow,
-      navigationToolbarIconColor: Colors.blue,
-      analysisToolbarBackgroundColor: Colors.purple,
-      analysisToolbarIconColor: Colors.cyan,
-      annotationToolbarBackgroundColor: Colors.brown,
-      annotationToolbarIconColor: Colors.teal,
     );
 
     await tester.pumpWidget(
@@ -2772,14 +2764,6 @@ void main() {
     DB().colorSettings = lightTheme.copyWith(
       drawerColor: Colors.pink,
       drawerTextColor: Colors.orange,
-      mainToolbarBackgroundColor: Colors.red,
-      mainToolbarIconColor: Colors.green,
-      navigationToolbarBackgroundColor: Colors.yellow,
-      navigationToolbarIconColor: Colors.blue,
-      analysisToolbarBackgroundColor: Colors.purple,
-      analysisToolbarIconColor: Colors.cyan,
-      annotationToolbarBackgroundColor: Colors.brown,
-      annotationToolbarIconColor: Colors.teal,
     );
 
     await tester.pumpWidget(
@@ -2813,14 +2797,6 @@ void main() {
     expect(updated.messageColor, darkTheme.messageColor);
     expect(updated.drawerColor, Colors.pink);
     expect(updated.drawerTextColor, Colors.orange);
-    expect(updated.mainToolbarBackgroundColor, Colors.red);
-    expect(updated.mainToolbarIconColor, Colors.green);
-    expect(updated.navigationToolbarBackgroundColor, Colors.yellow);
-    expect(updated.navigationToolbarIconColor, Colors.blue);
-    expect(updated.analysisToolbarBackgroundColor, Colors.purple);
-    expect(updated.analysisToolbarIconColor, Colors.cyan);
-    expect(updated.annotationToolbarBackgroundColor, Colors.brown);
-    expect(updated.annotationToolbarIconColor, Colors.teal);
     expect(
       find.descendant(
         of: find.byKey(

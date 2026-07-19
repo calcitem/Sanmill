@@ -37,7 +37,6 @@ void main() {
     db = _OfflineBoardTestDb(
       displaySettings: const DisplaySettings(
         isUnplacedAndRemovedPiecesShown: false,
-        isHistoryNavigationToolbarShown: false,
       ),
     );
     db.generalSettings = const GeneralSettings();
