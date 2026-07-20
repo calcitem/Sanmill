@@ -188,6 +188,31 @@ void main() {
       expect(notificationCount, 2);
     });
 
+    test('quality annotation preserves positional NAGs and notifies', () {
+      final GameRecorder recorder = GameRecorder();
+      final ExtMove move = ExtMove(
+        'd6',
+        side: PieceColor.white,
+        nags: <int>[1, 16],
+      )..quality = MoveQuality.minorGoodMove;
+      recorder.appendMove(move);
+      final PgnNode<ExtMove> node = recorder.pgnRoot.children.single;
+      int notificationCount = 0;
+      recorder.moveCountNotifier.addListener(() => notificationCount++);
+
+      recorder.setMoveQualityNag(node, 3);
+
+      expect(move.nags, <int>[3, 16]);
+      expect(move.quality, isNull);
+      expect(notificationCount, 1);
+
+      recorder.setMoveQualityNag(node, null);
+
+      expect(move.nags, <int>[16]);
+      expect(move.getAllNags(), <int>[16]);
+      expect(notificationCount, 2);
+    });
+
     test('branch operations notify move listeners', () {
       final GameRecorder recorder = GameRecorder();
 

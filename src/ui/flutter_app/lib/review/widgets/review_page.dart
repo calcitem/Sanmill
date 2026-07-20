@@ -11,6 +11,7 @@ import '../../game_page/services/import_export/pgn.dart';
 import '../../game_page/widgets/mini_board.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/services/logger.dart';
+import '../../shared/widgets/quality_annotation_sheet.dart';
 import '../models/review_models.dart';
 import '../services/review_analysis_service.dart';
 import '../services/review_nag_merge.dart';
@@ -1049,103 +1050,13 @@ class _ReviewPageState extends State<ReviewPage> {
   }
 
   Future<void> _showNagChooser(ReviewReport report, int groupIndex) async {
-    final S strings = S.of(context);
     final int? selectedNag = report.effectiveQualityNagForTurn(groupIndex);
-    await showModalBottomSheet<void>(
+    await showQualityAnnotationSheet(
       context: context,
-      showDragHandle: true,
-      builder: (BuildContext context) {
-        final bool showSystemDismiss =
-            Theme.of(context).platform == TargetPlatform.iOS;
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        strings.qualityAnnotation,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                    ),
-                    if (showSystemDismiss)
-                      TextButton(
-                        key: const Key('review_nag_cancel'),
-                        onPressed: () => Navigator.pop(context),
-                        child: Text(strings.cancel),
-                      ),
-                  ],
-                ),
-                Text(
-                  selectedNag == null
-                      ? strings.reviewNoAnnotation
-                      : strings.reviewCurrentAnnotation(
-                          '${_nagSymbol(selectedNag)} ${_nagLabel(context, selectedNag)}',
-                        ),
-                ),
-                const SizedBox(height: 16),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: <Widget>[
-                    for (int nag = 1; nag <= 6; nag++)
-                      Semantics(
-                        key: Key('review_nag_$nag'),
-                        label: '${_nagSymbol(nag)} ${_nagLabel(context, nag)}',
-                        button: true,
-                        selected: selectedNag == nag,
-                        excludeSemantics: true,
-                        child: ChoiceChip(
-                          label: Text(
-                            '${_nagSymbol(nag)} ${_nagLabel(context, nag)}',
-                          ),
-                          selected: selectedNag == nag,
-                          showCheckmark: true,
-                          onSelected: (_) {
-                            Navigator.pop(context);
-                            unawaited(_setNagOverride(report, groupIndex, nag));
-                          },
-                        ),
-                      ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    TextButton.icon(
-                      key: const Key('review_nag_clear'),
-                      onPressed: selectedNag == null
-                          ? null
-                          : () {
-                              Navigator.pop(context);
-                              unawaited(
-                                _setNagOverride(report, groupIndex, null),
-                              );
-                            },
-                      icon: const Icon(Icons.clear_rounded),
-                      label: Text(strings.clearAnnotation),
-                    ),
-                    if (showSystemDismiss) ...<Widget>[
-                      const SizedBox(width: 8),
-                      FilledButton.tonal(
-                        key: const Key('review_nag_done'),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text(strings.done),
-                      ),
-                    ],
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
+      selectedNag: selectedNag,
+      keyPrefix: 'review_nag',
+      onChanged: (int? nag) {
+        unawaited(_setNagOverride(report, groupIndex, nag));
       },
     );
   }

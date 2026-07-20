@@ -3284,6 +3284,64 @@ void main() {
     );
   });
 
+  testWidgets('analysis move actions edit and clear quality annotations', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    final GameRecorder recorder = GameController().gameRecorder;
+    recorder.appendMove(
+      ExtMove('d6', side: PieceColor.white, roundIndex: 1, nags: <int>[16]),
+    );
+
+    await _pumpSessionPlayArea(tester, session);
+    expect(find.text('d6±'), findsOneWidget);
+
+    await tester.longPress(find.byKey(const Key('play_area_analysis_move_1')));
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(
+        const Key('play_area_analysis_move_action_quality_annotation'),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Move quality annotation'), findsOneWidget);
+    expect(find.byKey(const Key('analysis_nag_3')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('analysis_nag_3')));
+    await tester.pumpAndSettle();
+
+    final ExtMove move = recorder.pgnRoot.children.single.data!;
+    expect(move.nags, <int>[3, 16]);
+    expect(find.text('d6!!±'), findsOneWidget);
+
+    await tester.longPress(find.byKey(const Key('play_area_analysis_move_1')));
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(
+        const Key('play_area_analysis_move_action_quality_annotation'),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final ChoiceChip selectedChip = tester.widget<ChoiceChip>(
+      find.descendant(
+        of: find.byKey(const Key('analysis_nag_3')),
+        matching: find.byType(ChoiceChip),
+      ),
+    );
+    expect(selectedChip.selected, isTrue);
+    await tester.tap(find.byKey(const Key('analysis_nag_clear')));
+    await tester.pumpAndSettle();
+
+    expect(move.nags, <int>[16]);
+    expect(find.text('d6±'), findsOneWidget);
+  });
+
   testWidgets('analysis move list toggles inline notation layout', (
     WidgetTester tester,
   ) async {

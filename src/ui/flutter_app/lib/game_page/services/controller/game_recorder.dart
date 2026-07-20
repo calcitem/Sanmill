@@ -80,6 +80,33 @@ class GameRecorder {
   /// Getter to expose the root node.
   PgnNode<ExtMove> get pgnRoot => _pgnRoot;
 
+  /// Replaces the conventional move-quality NAG on [node].
+  ///
+  /// Positional and other non-quality NAGs are preserved. The legacy
+  /// [ExtMove.quality] value is cleared so removing an explicit annotation
+  /// does not immediately recreate the same symbol through [ExtMove.getAllNags].
+  void setMoveQualityNag(PgnNode<ExtMove> node, int? nag) {
+    assert(node.data != null, 'Move quality annotations require node data.');
+    assert(
+      nag == null || (nag >= 1 && nag <= 6),
+      'Move quality annotations must use a NAG from 1 to 6.',
+    );
+
+    final ExtMove move = node.data!;
+    final List<int> updatedNags = List<int>.from(move.nags ?? const <int>[])
+      ..removeWhere((int value) => value >= 1 && value <= 6);
+    if (nag != null) {
+      updatedNags.insert(0, nag);
+    }
+    move
+      ..nags = updatedNags.isEmpty ? null : updatedNags
+      ..quality = null;
+
+    // The custom notifier intentionally emits even when the path length is
+    // unchanged. This refreshes the move list and schedules session storage.
+    moveCountNotifier.value = currentPath.length;
+  }
+
   /// Whether replacing this free-analysis tree would discard user content.
   ///
   /// Every move node can carry variations, comments, and NAG annotations, so

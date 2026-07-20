@@ -45,6 +45,7 @@ import '../../shared/utils/screen_insets.dart';
 import '../../shared/widgets/lichess_action_sheet.dart';
 import '../../shared/widgets/lichess_bottom_bar.dart';
 import '../../shared/widgets/lichess_list_section.dart';
+import '../../shared/widgets/quality_annotation_sheet.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../statistics/services/stats_service.dart';
 import '../services/analysis/analysis_service.dart';
@@ -5598,11 +5599,12 @@ class _InlineMoveListState extends State<_InlineMoveList> {
     final ExtMove? move = node.data;
     assert(move != null, 'Move actions require node data.');
     final bool canPromote = _isNodeOnVariationBranch(node);
+    final int? selectedQualityNag = _qualityNagForMove(move!);
     showLichessActionSheet<void>(
       context: context,
       sheetKey: const Key('play_area_analysis_move_actions_sheet'),
       title: Text(
-        '$moveNumber. ${_moveLabel(move!, includeComments: false)}',
+        '$moveNumber. ${_moveLabel(move, includeComments: false)}',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
         textDirection: TextDirection.ltr,
@@ -5610,6 +5612,21 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       foregroundColor: Theme.of(context).colorScheme.onSurface,
       actions: <LichessActionSheetAction>[
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_move_action_quality_annotation'),
+          leading: const Icon(Icons.new_label_outlined),
+          trailing: selectedQualityNag == null
+              ? null
+              : Text(
+                  qualityNagSymbol(selectedQualityNag),
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+          makeLabel: (BuildContext context) =>
+              Text(S.of(context).qualityAnnotation),
+          onPressed: () => unawaited(
+            _showMoveQualityAnnotation(context, node, selectedQualityNag),
+          ),
+        ),
         if (_hasPreviewBoard(node))
           LichessActionSheetAction(
             key: const Key('play_area_analysis_move_action_preview_board'),
@@ -5647,6 +5664,30 @@ class _InlineMoveListState extends State<_InlineMoveList> {
         ),
       ],
     );
+  }
+
+  Future<void> _showMoveQualityAnnotation(
+    BuildContext context,
+    PgnNode<ExtMove> node,
+    int? selectedNag,
+  ) {
+    return showQualityAnnotationSheet(
+      context: context,
+      selectedNag: selectedNag,
+      keyPrefix: 'analysis_nag',
+      onChanged: (int? nag) {
+        GameController().gameRecorder.setMoveQualityNag(node, nag);
+      },
+    );
+  }
+
+  int? _qualityNagForMove(ExtMove move) {
+    for (final int nag in move.getAllNags()) {
+      if (nag >= 1 && nag <= 6) {
+        return nag;
+      }
+    }
+    return null;
   }
 
   Future<void> _promoteNearestVariation(
