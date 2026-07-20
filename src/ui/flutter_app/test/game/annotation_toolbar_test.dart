@@ -35,12 +35,22 @@ void main() {
     }
 
     await pumpToolbar(const Locale('en'));
+    expect(find.text('Drawing colors'), findsOneWidget);
+    expect(find.bySemanticsLabel('Select green'), findsOneWidget);
     expect(find.bySemanticsLabel('Line tool'), findsOneWidget);
     expect(find.bySemanticsLabel('Select red'), findsOneWidget);
+    expect(find.bySemanticsLabel('Select blue'), findsOneWidget);
+    expect(find.bySemanticsLabel('Select yellow'), findsOneWidget);
+    expect(find.bySemanticsLabel('Select white'), findsNothing);
+    expect(find.bySemanticsLabel('Select black'), findsNothing);
 
     await pumpToolbar(const Locale('zh'));
+    expect(find.text('绘图颜色'), findsOneWidget);
+    expect(find.bySemanticsLabel('选择绿色'), findsOneWidget);
     expect(find.bySemanticsLabel('直线工具'), findsOneWidget);
     expect(find.bySemanticsLabel('选择红色'), findsOneWidget);
+    expect(find.bySemanticsLabel('选择蓝色'), findsOneWidget);
+    expect(find.bySemanticsLabel('选择黄色'), findsOneWidget);
     semantics.dispose();
   });
 

@@ -74,16 +74,10 @@ class AnnotationToolbar extends StatefulWidget {
 
 class _AnnotationToolbarState extends State<AnnotationToolbar> {
   final List<Color> _colorOptions = const <Color>[
-    Colors.white,
-    Colors.black,
-    Colors.grey,
-    Colors.red,
-    Colors.yellow,
-    Colors.blue,
     Colors.green,
-    Colors.pink,
-    Colors.purple,
-    Colors.indigo,
+    Colors.red,
+    Colors.blue,
+    Colors.yellow,
   ];
 
   Future<void> _takeScreenshot(
@@ -260,56 +254,68 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
       scrollDirection: Axis.horizontal,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: _colorOptions.map((Color color) {
-          final bool isSelected = (color == activeColor);
-          return Semantics(
-            // Provide a semantic label for each color circle.
-            label: S
-                .of(context)
-                .selectAnnotationColor(_colorName(context, color)),
-            button: true,
-            child: GestureDetector(
-              onTap: () {
-                RecordingService().recordEvent(
-                  RecordingEventType.annotationAction,
-                  <String, dynamic>{
-                    'action': 'selectColor',
-                    'color': color.toARGB32(),
-                  },
-                );
-                setState(() {
-                  if (selectedShape != null) {
-                    widget.annotationManager.changeColor(selectedShape, color);
-                  } else {
-                    widget.annotationManager.currentColor = color;
-                  }
-                });
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                curve: Curves.easeInOut,
-                margin: const EdgeInsets.symmetric(horizontal: 6),
-                padding: const EdgeInsets.all(3),
-                decoration: BoxDecoration(
-                  // Always set a border with a fixed width.
-                  border: Border.all(
-                    color: isSelected ? Colors.yellow : Colors.transparent,
-                    width: 2,
-                  ),
-                  shape: BoxShape.circle,
-                ),
-                child: Container(
-                  width: 24,
-                  height: 24,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsetsDirectional.only(start: 8, end: 4),
+            child: Text(
+              S.of(context).drawingColors,
+              style: TextStyle(color: Colors.grey[300]),
+            ),
+          ),
+          ..._colorOptions.map((Color color) {
+            final bool isSelected = (color == activeColor);
+            return Semantics(
+              // Provide a semantic label for each color circle.
+              label: S
+                  .of(context)
+                  .selectAnnotationColor(_colorName(context, color)),
+              button: true,
+              child: GestureDetector(
+                onTap: () {
+                  RecordingService().recordEvent(
+                    RecordingEventType.annotationAction,
+                    <String, dynamic>{
+                      'action': 'selectColor',
+                      'color': color.toARGB32(),
+                    },
+                  );
+                  setState(() {
+                    if (selectedShape != null) {
+                      widget.annotationManager.changeColor(
+                        selectedShape,
+                        color,
+                      );
+                    } else {
+                      widget.annotationManager.currentColor = color;
+                    }
+                  });
+                },
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeInOut,
+                  margin: const EdgeInsets.symmetric(horizontal: 6),
+                  padding: const EdgeInsets.all(3),
                   decoration: BoxDecoration(
-                    color: color,
+                    // Always set a border with a fixed width.
+                    border: Border.all(
+                      color: isSelected ? Colors.yellow : Colors.transparent,
+                      width: 2,
+                    ),
                     shape: BoxShape.circle,
+                  ),
+                  child: Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      color: color,
+                      shape: BoxShape.circle,
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
-        }).toList(),
+            );
+          }),
+        ],
       ),
     );
   }
