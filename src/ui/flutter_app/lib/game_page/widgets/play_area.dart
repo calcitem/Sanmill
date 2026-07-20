@@ -150,9 +150,25 @@ Future<void> showAnalysisSettingsSheet(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 8, 8),
+                  padding: EdgeInsets.fromLTRB(
+                    useFullScreenPage ? 4 : 16,
+                    8,
+                    8,
+                    8,
+                  ),
                   child: Row(
                     children: <Widget>[
+                      if (useFullScreenPage)
+                        IconButton(
+                          key: const Key('play_area_analysis_settings_back'),
+                          tooltip: strings.back,
+                          onPressed: () => Navigator.of(dialogContext).pop(),
+                          icon: Icon(
+                            theme.platform == TargetPlatform.iOS
+                                ? CupertinoIcons.back
+                                : Icons.arrow_back,
+                          ),
+                        ),
                       Expanded(
                         child: Text(
                           strings.analysisSettingsTitle,
@@ -162,7 +178,8 @@ Future<void> showAnalysisSettingsSheet(
                           ),
                         ),
                       ),
-                      if (theme.platform == TargetPlatform.iOS)
+                      if (!useFullScreenPage &&
+                          theme.platform == TargetPlatform.iOS)
                         CupertinoButton(
                           key: const Key('play_area_analysis_settings_cancel'),
                           padding: const EdgeInsets.symmetric(
@@ -171,6 +188,13 @@ Future<void> showAnalysisSettingsSheet(
                           ),
                           onPressed: () => Navigator.of(dialogContext).pop(),
                           child: Text(strings.cancel),
+                        )
+                      else if (!useFullScreenPage)
+                        IconButton(
+                          key: const Key('play_area_analysis_settings_close'),
+                          tooltip: strings.close,
+                          onPressed: () => Navigator.of(dialogContext).pop(),
+                          icon: const Icon(Icons.close),
                         ),
                     ],
                   ),

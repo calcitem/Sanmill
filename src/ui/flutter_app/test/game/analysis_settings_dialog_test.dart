@@ -29,16 +29,23 @@ void main() {
     DB.instance = null;
   });
 
-  testWidgets('Material analysis settings use standard dismissal affordances', (
+  testWidgets('narrow Material analysis settings show a back button', (
     WidgetTester tester,
   ) async {
-    final SemanticsHandle semantics = tester.ensureSemantics();
-    await _pumpDialogHost(tester, platform: TargetPlatform.android);
+    await _pumpDialogHost(
+      tester,
+      platform: TargetPlatform.android,
+      size: const Size(400, 800),
+    );
 
     await _openDialog(tester);
 
     expect(
       find.byKey(const Key('play_area_analysis_settings_sheet')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_back')),
       findsOneWidget,
     );
     expect(
@@ -50,6 +57,53 @@ void main() {
       findsNothing,
     );
 
+    await tester.tap(find.byKey(const Key('play_area_analysis_settings_back')));
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_sheet')),
+      findsNothing,
+    );
+  });
+
+  testWidgets('wide Material analysis settings show a close button', (
+    WidgetTester tester,
+  ) async {
+    final SemanticsHandle semantics = tester.ensureSemantics();
+    await _pumpDialogHost(
+      tester,
+      platform: TargetPlatform.android,
+      size: const Size(800, 600),
+    );
+
+    await _openDialog(tester);
+
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_sheet')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_back')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_close')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_cancel')),
+      findsNothing,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_settings_close')),
+    );
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_sheet')),
+      findsNothing,
+    );
+
+    await _openDialog(tester);
     final Finder dismissBarrier = find.bySemanticsLabel('Dismiss');
     expect(dismissBarrier, findsOneWidget);
     final SemanticsNode dismissNode = tester.getSemantics(dismissBarrier);
@@ -80,12 +134,20 @@ void main() {
   testWidgets('iOS analysis settings keep a system Cancel action', (
     WidgetTester tester,
   ) async {
-    await _pumpDialogHost(tester, platform: TargetPlatform.iOS);
+    await _pumpDialogHost(
+      tester,
+      platform: TargetPlatform.iOS,
+      size: const Size(800, 600),
+    );
 
     await _openDialog(tester);
 
     expect(
       find.byKey(const Key('play_area_analysis_settings_close')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_back')),
       findsNothing,
     );
     expect(
@@ -103,12 +165,49 @@ void main() {
       findsNothing,
     );
   });
+
+  testWidgets('narrow iOS analysis settings show a back button', (
+    WidgetTester tester,
+  ) async {
+    await _pumpDialogHost(
+      tester,
+      platform: TargetPlatform.iOS,
+      size: const Size(400, 800),
+    );
+
+    await _openDialog(tester);
+
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_back')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_close')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_cancel')),
+      findsNothing,
+    );
+
+    await tester.tap(find.byKey(const Key('play_area_analysis_settings_back')));
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_sheet')),
+      findsNothing,
+    );
+  });
 }
 
 Future<void> _pumpDialogHost(
   WidgetTester tester, {
   required TargetPlatform platform,
+  required Size size,
 }) async {
+  tester.view.devicePixelRatio = 1;
+  tester.view.physicalSize = size;
+  addTearDown(tester.view.resetDevicePixelRatio);
+  addTearDown(tester.view.resetPhysicalSize);
   await tester.pumpWidget(
     MaterialApp(
       theme: ThemeData(platform: platform),
