@@ -570,6 +570,7 @@ class AppearanceSettingsPage extends StatelessWidget {
                       onChanged: (bool val) => DB().displaySettings =
                           displaySettings.copyWith(showLegalMoves: val),
                       titleString: S.of(context).showLegalMoves,
+                      subtitleString: S.of(context).showLegalMovesDescription,
                     );
                   },
             ),

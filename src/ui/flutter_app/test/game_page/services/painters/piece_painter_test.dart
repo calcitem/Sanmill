@@ -97,7 +97,7 @@ void main() {
       );
     });
 
-    test('maps placing actions to legal empty points without a source', () {
+    test('does not expose placing points without a selected source', () {
       final Set<int> indices =
           PiecePainter.legalMoveDestinationGridIndicesFromLegalActions(
             <GameAction>[
@@ -117,7 +117,7 @@ void main() {
             selectedSourceGridIndex: null,
           );
 
-      expect(indices, <int>{_legacyGridIndex('a7'), _legacyGridIndex('d7')});
+      expect(indices, isEmpty);
     });
 
     test('repaints when native board occupancy changes', () {

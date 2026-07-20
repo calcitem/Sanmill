@@ -80,34 +80,37 @@ class PiecePainter extends CustomPainter {
     Iterable<GameAction> legalActions, {
     required int? selectedSourceGridIndex,
   }) {
-    final int? sourceSquare = selectedSourceGridIndex == null
-        ? null
-        : MillBoardCoordinateMaps.gridIndexToSquare[selectedSourceGridIndex];
+    if (selectedSourceGridIndex == null) {
+      return const <int>{};
+    }
+
+    final int? sourceSquare =
+        MillBoardCoordinateMaps.gridIndexToSquare[selectedSourceGridIndex];
     final int? sourceNode = sourceSquare == null
         ? null
         : MillBoardCoordinateMaps.legacySquareToNode[sourceSquare];
     assert(
-      selectedSourceGridIndex == null || sourceNode != null,
+      sourceNode != null,
       'Selected Mill source must map to a native board node.',
     );
+    if (sourceNode == null) {
+      return const <int>{};
+    }
 
     final Set<int> indices = <int>{};
     for (final GameAction action in legalActions) {
-      if (action.type != MillActionTypes.place &&
-          action.type != MillActionTypes.move) {
+      if (action.type != MillActionTypes.move) {
         continue;
       }
       final Object? rawFromNode = action.payload['fromNode'];
       final Object? rawToNode = action.payload['toNode'];
-      assert(rawToNode is int, 'Native Mill actions must provide a toNode.');
-      if (rawToNode is! int) {
-        continue;
-      }
-      if (action.type == MillActionTypes.move &&
-          (sourceNode == null || rawFromNode != sourceNode)) {
-        continue;
-      }
-      if (action.type == MillActionTypes.place && sourceNode != null) {
+      assert(
+        rawFromNode is int && rawToNode is int,
+        'Native Mill move actions must provide integer node indices.',
+      );
+      if (rawFromNode is! int ||
+          rawToNode is! int ||
+          rawFromNode != sourceNode) {
         continue;
       }
       final int? destinationSquare =

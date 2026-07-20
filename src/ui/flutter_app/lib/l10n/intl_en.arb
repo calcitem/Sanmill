@@ -6728,5 +6728,7 @@
     "markerReviewQuality": "Move quality",
     "@markerReviewQuality": {},
     "drawingColors": "Drawing colors",
-    "@drawingColors": {}
+    "@drawingColors": {},
+    "showLegalMovesDescription": "Only shows legal destinations after you select a piece in the moving or flying phase.",
+    "@showLegalMovesDescription": {}
 }

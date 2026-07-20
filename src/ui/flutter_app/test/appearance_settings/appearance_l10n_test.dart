@@ -29,5 +29,6 @@ void main() {
     expect(strings.pieceEffectName('FireTrail'), '火焰拖尾');
     expect(strings.pieceEffectName('Unknown'), 'Unknown');
     expect(strings.fontSizePreview, '示例文字 123');
+    expect(strings.showLegalMovesDescription, '仅在走子或飞子阶段选中棋子后显示合法目的地。');
   });
 }

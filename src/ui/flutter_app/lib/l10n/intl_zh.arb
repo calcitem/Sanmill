@@ -6661,5 +6661,7 @@
     "markerReviewQuality": "着法质量",
     "@markerReviewQuality": {},
     "drawingColors": "绘图颜色",
-    "@drawingColors": {}
+    "@drawingColors": {},
+    "showLegalMovesDescription": "仅在走子或飞子阶段选中棋子后显示合法目的地。",
+    "@showLegalMovesDescription": {}
 }
