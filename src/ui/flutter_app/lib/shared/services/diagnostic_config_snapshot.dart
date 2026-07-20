@@ -195,6 +195,7 @@ class DiagnosticConfigSchema {
     'AnalysisShowMoveComments',
     'AnalysisShowBestMoveArrow',
     'AnalysisShowEvaluationGauge',
+    'AnalysisEvaluationGaugePosition',
     'AnalysisShowAllBoardResults',
   };
 

@@ -6698,5 +6698,15 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "evaluationGaugePosition": "力量条位置",
+    "@evaluationGaugePosition": {},
+    "evaluationGaugePositionLeft": "棋盘左侧",
+    "@evaluationGaugePositionLeft": {},
+    "evaluationGaugePositionTop": "棋盘上方",
+    "@evaluationGaugePositionTop": {},
+    "evaluationGaugePositionRight": "棋盘右侧",
+    "@evaluationGaugePositionRight": {},
+    "evaluationGaugePositionBottom": "棋盘下方",
+    "@evaluationGaugePositionBottom": {}
 }

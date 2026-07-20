@@ -430,6 +430,7 @@ class SanmillAppState extends State<SanmillApp> {
       showMoveComments: displaySettings.analysisShowMoveComments,
       showBestMoveArrow: displaySettings.analysisShowBestMoveArrow,
       showEvaluationGauge: displaySettings.analysisShowEvaluationGauge,
+      evaluationGaugePosition: displaySettings.analysisEvaluationGaugePosition,
       showAllBoardResults: displaySettings.analysisShowAllBoardResults,
       engineLineCount: displaySettings.analysisEngineLineCount,
       engineSearchTimeMs: displaySettings.analysisEngineSearchTimeMs,

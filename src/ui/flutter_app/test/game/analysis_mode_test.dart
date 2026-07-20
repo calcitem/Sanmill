@@ -4,6 +4,7 @@
 // analysis_mode_test.dart
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/analysis_mode.dart';
 
 void main() {
@@ -17,6 +18,7 @@ void main() {
     AnalysisMode.setShowMoveComments(true);
     AnalysisMode.setShowBestMoveArrow(true);
     AnalysisMode.setShowEvaluationGauge(true);
+    AnalysisMode.setEvaluationGaugePosition(EvaluationGaugePosition.left);
     AnalysisMode.setShowAllBoardResults(false);
   });
 
@@ -208,6 +210,7 @@ void main() {
       showMoveComments: false,
       showBestMoveArrow: false,
       showEvaluationGauge: false,
+      evaluationGaugePosition: EvaluationGaugePosition.top,
       showAllBoardResults: true,
       engineLineCount: AnalysisMode.defaultEngineLineCount,
       engineSearchTimeMs: AnalysisMode.defaultEngineSearchTimeMs,
@@ -218,6 +221,7 @@ void main() {
     expect(AnalysisMode.showMoveComments, isFalse);
     expect(AnalysisMode.showBestMoveArrow, isFalse);
     expect(AnalysisMode.showEvaluationGauge, isFalse);
+    expect(AnalysisMode.evaluationGaugePosition, EvaluationGaugePosition.top);
     expect(AnalysisMode.showAllBoardResults, isTrue);
 
     AnalysisMode.setInlineNotation(false);
@@ -225,6 +229,7 @@ void main() {
     AnalysisMode.setShowMoveComments(true);
     AnalysisMode.setShowBestMoveArrow(true);
     AnalysisMode.setShowEvaluationGauge(true);
+    AnalysisMode.setEvaluationGaugePosition(EvaluationGaugePosition.right);
     AnalysisMode.setShowAllBoardResults(false);
 
     expect(AnalysisMode.inlineNotation, isFalse);
@@ -232,6 +237,7 @@ void main() {
     expect(AnalysisMode.showMoveComments, isTrue);
     expect(AnalysisMode.showBestMoveArrow, isTrue);
     expect(AnalysisMode.showEvaluationGauge, isTrue);
+    expect(AnalysisMode.evaluationGaugePosition, EvaluationGaugePosition.right);
     expect(AnalysisMode.showAllBoardResults, isFalse);
   });
 

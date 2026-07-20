@@ -65,6 +65,65 @@ import 'modals/offline_board_options_sheet.dart';
 import 'moves_list_page.dart';
 import 'toolbars/game_toolbar.dart';
 
+String _evaluationGaugePositionLabel(
+  S strings,
+  EvaluationGaugePosition position,
+) {
+  return switch (position) {
+    EvaluationGaugePosition.left => strings.evaluationGaugePositionLeft,
+    EvaluationGaugePosition.top => strings.evaluationGaugePositionTop,
+    EvaluationGaugePosition.right => strings.evaluationGaugePositionRight,
+    EvaluationGaugePosition.bottom => strings.evaluationGaugePositionBottom,
+  };
+}
+
+IconData _evaluationGaugePositionIcon(EvaluationGaugePosition position) {
+  return switch (position) {
+    EvaluationGaugePosition.left => Icons.align_horizontal_left,
+    EvaluationGaugePosition.top => Icons.align_vertical_top,
+    EvaluationGaugePosition.right => Icons.align_horizontal_right,
+    EvaluationGaugePosition.bottom => Icons.align_vertical_bottom,
+  };
+}
+
+Future<void> _showEvaluationGaugePositionSheet(
+  BuildContext context, {
+  required S strings,
+}) async {
+  final EvaluationGaugePosition selected = AnalysisMode.evaluationGaugePosition;
+  await showLichessActionSheet<void>(
+    context: context,
+    sheetKey: const Key('play_area_analysis_evaluation_gauge_position_sheet'),
+    title: Text(strings.evaluationGaugePosition),
+    actions: <LichessActionSheetAction>[
+      for (final EvaluationGaugePosition position
+          in EvaluationGaugePosition.values)
+        LichessActionSheetAction(
+          key: Key(
+            'play_area_analysis_evaluation_gauge_position_${position.name}',
+          ),
+          leading: Icon(_evaluationGaugePositionIcon(position)),
+          trailing: selected == position
+              ? const Icon(Icons.check_rounded)
+              : null,
+          makeLabel: (BuildContext context) =>
+              Text(_evaluationGaugePositionLabel(strings, position)),
+          onPressed: () {
+            RecordingService().recordEvent(
+              RecordingEventType.toolbarAction,
+              <String, dynamic>{
+                'toolbar': 'analysisSettings',
+                'action': 'setEvaluationGaugePosition',
+                'position': position.name,
+              },
+            );
+            AnalysisMode.setEvaluationGaugePosition(position, persist: true);
+          },
+        ),
+    ],
+  );
+}
+
 Future<void> showAnalysisSettingsSheet(
   BuildContext context, {
   required S strings,
@@ -177,6 +236,33 @@ Future<void> showAnalysisSettingsSheet(
                           persist: true,
                         );
                       },
+                    ),
+                    ListTile(
+                      key: const Key(
+                        'play_area_analysis_settings_evaluation_gauge_position',
+                      ),
+                      enabled: AnalysisMode.showEvaluationGauge,
+                      leading: Icon(
+                        _evaluationGaugePositionIcon(
+                          AnalysisMode.evaluationGaugePosition,
+                        ),
+                      ),
+                      title: Text(strings.evaluationGaugePosition),
+                      subtitle: Text(
+                        _evaluationGaugePositionLabel(
+                          strings,
+                          AnalysisMode.evaluationGaugePosition,
+                        ),
+                      ),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: AnalysisMode.showEvaluationGauge
+                          ? () => unawaited(
+                              _showEvaluationGaugePositionSheet(
+                                context,
+                                strings: strings,
+                              ),
+                            )
+                          : null,
                     ),
                     SwitchListTile.adaptive(
                       key: const Key(
@@ -3605,9 +3691,16 @@ class PlayAreaState extends State<PlayArea> {
               final double engineLinesReserve = hasEngineLinesSlot
                   ? _kAnalysisEngineLinesReserveHeight
                   : 0;
-              final double evaluationGaugeReserve =
-                  AnalysisMode.showEvaluationGauge
-                  ? _kAdvantageIndicatorWidth + _kAdvantageIndicatorGap
+              final EvaluationGaugePosition gaugePosition =
+                  AnalysisMode.evaluationGaugePosition;
+              final double evaluationGaugeHorizontalReserve =
+                  AnalysisMode.showEvaluationGauge &&
+                      !gaugePosition.isHorizontal
+                  ? _kAdvantageIndicatorReserve
+                  : 0;
+              final double evaluationGaugeVerticalReserve =
+                  AnalysisMode.showEvaluationGauge && gaugePosition.isHorizontal
+                  ? _kAdvantageIndicatorReserve
                   : 0;
               const double tabPanelMinHeight = 174;
               final double pieceRowsHeight = showPieceCountRows
@@ -3619,6 +3712,7 @@ class PlayAreaState extends State<PlayArea> {
                   tabPanelMinHeight -
                   pieceRowsHeight -
                   _kAnalysisPositionStatusHeight -
+                  evaluationGaugeVerticalReserve -
                   _kBalancedLayoutSafetyMargin;
               final double boardWidthBudget = math.max(
                 0,
@@ -3626,7 +3720,7 @@ class PlayAreaState extends State<PlayArea> {
                         (AnalysisMode.smallBoard
                             ? _kAnalysisSmallBoardScale
                             : 1) -
-                    evaluationGaugeReserve,
+                    evaluationGaugeHorizontalReserve,
               );
               final double boardSize = math.max(
                 0,
@@ -3685,28 +3779,58 @@ class PlayAreaState extends State<PlayArea> {
     if (!AnalysisMode.showEvaluationGauge) {
       return Center(child: board);
     }
+    final EvaluationGaugePosition position =
+        AnalysisMode.evaluationGaugePosition;
+    final Axis gaugeAxis = position.isHorizontal
+        ? Axis.horizontal
+        : Axis.vertical;
+    final Widget gauge = SizedBox(
+      key: gaugeKey,
+      width: position.isHorizontal ? boardSize : _kAdvantageIndicatorWidth,
+      height: position.isHorizontal ? _kAdvantageIndicatorWidth : boardSize,
+      child: _PositionalAdvantageIndicator(
+        value: _analysisEvaluationGaugeValue(),
+        whiteAtBottom: !_isBoardFlipped,
+        axis: gaugeAxis,
+      ),
+    );
+    final Widget gap = position.isHorizontal
+        ? const SizedBox(height: _kAdvantageIndicatorGap)
+        : const SizedBox(width: _kAdvantageIndicatorGap);
+    final Widget content = switch (position) {
+      EvaluationGaugePosition.left => Row(
+        textDirection: TextDirection.ltr,
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[gauge, gap, board],
+      ),
+      EvaluationGaugePosition.top => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[gauge, gap, board],
+      ),
+      EvaluationGaugePosition.right => Row(
+        textDirection: TextDirection.ltr,
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[board, gap, gauge],
+      ),
+      EvaluationGaugePosition.bottom => Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[board, gap, gauge],
+      ),
+    };
     return Center(
       child: SizedBox(
         key: containerKey,
-        width: boardSize + _kAdvantageIndicatorGap + _kAdvantageIndicatorWidth,
-        height: boardSize,
-        child: Row(
-          textDirection: TextDirection.ltr,
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            SizedBox(
-              key: gaugeKey,
-              width: _kAdvantageIndicatorWidth,
-              child: _PositionalAdvantageIndicator(
-                value: _analysisEvaluationGaugeValue(),
-                whiteAtBottom: !_isBoardFlipped,
-              ),
-            ),
-            const SizedBox(width: _kAdvantageIndicatorGap),
-            board,
-          ],
-        ),
+        width:
+            boardSize +
+            (position.isHorizontal ? 0 : _kAdvantageIndicatorReserve),
+        height:
+            boardSize +
+            (position.isHorizontal ? _kAdvantageIndicatorReserve : 0),
+        child: content,
       ),
     );
   }
@@ -4109,20 +4233,28 @@ class PlayAreaState extends State<PlayArea> {
       0,
       viewport.height - kLichessBottomBarHeight - verticalPadding * 2,
     );
+    final EvaluationGaugePosition gaugePosition =
+        AnalysisMode.evaluationGaugePosition;
+    final double evaluationGaugeHorizontalReserve =
+        AnalysisMode.showEvaluationGauge && !gaugePosition.isHorizontal
+        ? _kAdvantageIndicatorReserve
+        : 0;
+    final double evaluationGaugeVerticalReserve =
+        AnalysisMode.showEvaluationGauge && gaugePosition.isHorizontal
+        ? _kAdvantageIndicatorReserve
+        : 0;
     final double boardHeightAllowance = math.max(
       0,
       availableHeight -
           (showPieceCountRows ? pieceRowHeight * 2 : 0) -
-          _kAnalysisPositionStatusHeight,
+          _kAnalysisPositionStatusHeight -
+          evaluationGaugeVerticalReserve,
     );
-    final double evaluationGaugeReserve = AnalysisMode.showEvaluationGauge
-        ? _kAdvantageIndicatorWidth + _kAdvantageIndicatorGap
-        : 0;
     final double boardSize = math.min(
       boardHeightAllowance,
-      math.max(0, availableWidth * 0.52 - evaluationGaugeReserve),
+      math.max(0, availableWidth * 0.52 - evaluationGaugeHorizontalReserve),
     );
-    final double boardPaneWidth = boardSize + evaluationGaugeReserve;
+    final double boardPaneWidth = boardSize + evaluationGaugeHorizontalReserve;
 
     return SizedBox(
       key: const Key('play_area_analysis_landscape_content'),
@@ -5924,11 +6056,13 @@ class _PositionalAdvantageIndicator extends StatelessWidget {
   const _PositionalAdvantageIndicator({
     required this.value,
     required this.whiteAtBottom,
+    this.axis = Axis.vertical,
     this.appliedAiMoveEvaluation,
   }) : assert(value >= -100 && value <= 100);
 
   final int value;
   final bool whiteAtBottom;
+  final Axis axis;
   final AppliedAiMoveEvaluation? appliedAiMoveEvaluation;
 
   @override
@@ -5980,8 +6114,12 @@ class _PositionalAdvantageIndicator extends StatelessWidget {
             borderRadius: BorderRadius.circular(999),
             child: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
-                final double height = constraints.maxHeight;
-                final bool firstIsWhite = !whiteAtBottom;
+                final double primaryExtent = axis == Axis.vertical
+                    ? constraints.maxHeight
+                    : constraints.maxWidth;
+                final bool firstIsWhite = axis == Axis.vertical
+                    ? !whiteAtBottom
+                    : whiteAtBottom;
                 final double humanWhiteFraction = humanStats == null
                     ? whiteFraction
                     : (moverWasWhite! ? humanStats.wins : humanStats.losses) /
@@ -6020,21 +6158,25 @@ class _PositionalAdvantageIndicator extends StatelessWidget {
                         color: firstIsWhite ? blackColor : whiteColor,
                       ),
                     ];
-                final double separatorHeight = sections.length - 1;
-                final double contentHeight = math.max(
+                final double separatorExtent = sections.length - 1;
+                final double contentExtent = math.max(
                   0,
-                  height - separatorHeight,
+                  primaryExtent - separatorExtent,
                 );
-                double usedHeight = 0;
+                double usedExtent = 0;
                 Widget section({
                   required Key key,
-                  required double sectionHeight,
+                  required double sectionExtent,
                   required Color color,
                 }) {
                   return SizedBox(
                     key: key,
-                    height: sectionHeight,
-                    width: double.infinity,
+                    width: axis == Axis.horizontal
+                        ? sectionExtent
+                        : double.infinity,
+                    height: axis == Axis.vertical
+                        ? sectionExtent
+                        : double.infinity,
                     child: DecoratedBox(
                       decoration: BoxDecoration(
                         color: color.withValues(alpha: 0.88),
@@ -6044,8 +6186,8 @@ class _PositionalAdvantageIndicator extends StatelessWidget {
                 }
 
                 Widget separator() => SizedBox(
-                  height: 1,
-                  width: double.infinity,
+                  width: axis == Axis.horizontal ? 1 : double.infinity,
+                  height: axis == Axis.vertical ? 1 : double.infinity,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       color: DB().colorSettings.messageColor.withValues(
@@ -6059,14 +6201,14 @@ class _PositionalAdvantageIndicator extends StatelessWidget {
                 for (int index = 0; index < sections.length; index++) {
                   final ({Key key, double fraction, Color color}) item =
                       sections[index];
-                  final double sectionHeight = index == sections.length - 1
-                      ? math.max(0, contentHeight - usedHeight)
-                      : contentHeight * item.fraction.clamp(0.0, 1.0);
-                  usedHeight += sectionHeight;
+                  final double sectionExtent = index == sections.length - 1
+                      ? math.max(0, contentExtent - usedExtent)
+                      : contentExtent * item.fraction.clamp(0.0, 1.0);
+                  usedExtent += sectionExtent;
                   children.add(
                     section(
                       key: item.key,
-                      sectionHeight: sectionHeight,
+                      sectionExtent: sectionExtent,
                       color: item.color,
                     ),
                   );
@@ -6075,7 +6217,9 @@ class _PositionalAdvantageIndicator extends StatelessWidget {
                   }
                 }
 
-                return Column(children: children);
+                return axis == Axis.vertical
+                    ? Column(children: children)
+                    : Row(textDirection: TextDirection.ltr, children: children);
               },
             ),
           ),

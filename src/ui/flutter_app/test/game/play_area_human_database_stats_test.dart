@@ -90,6 +90,7 @@ void main() {
     AnalysisMode.setShowMoveComments(true);
     AnalysisMode.setShowBestMoveArrow(true);
     AnalysisMode.setShowEvaluationGauge(true);
+    AnalysisMode.setEvaluationGaugePosition(EvaluationGaugePosition.left);
     AnalysisMode.setShowAllBoardResults(false);
     AnalysisMode.setInlineNotation(false);
     AnalysisMode.setSmallBoard(false);
@@ -109,6 +110,7 @@ void main() {
     AnalysisMode.setShowMoveComments(true);
     AnalysisMode.setShowBestMoveArrow(true);
     AnalysisMode.setShowEvaluationGauge(true);
+    AnalysisMode.setEvaluationGaugePosition(EvaluationGaugePosition.left);
     AnalysisMode.setShowAllBoardResults(false);
     AnalysisMode.setInlineNotation(false);
     AnalysisMode.setSmallBoard(false);
@@ -2539,6 +2541,110 @@ void main() {
 
     expect(gauge, findsNothing);
     expect(tester.getSize(board).width, greaterThan(boardWidthWithGauge));
+  });
+
+  testWidgets('analysis evaluation gauge supports every board edge', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+
+    await tester.binding.setSurfaceSize(const Size(540, 992));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await _pumpSessionPlayArea(tester, session);
+
+    final Finder board = find.byKey(const Key('play_area_analysis_board'));
+    final Finder gauge = find.byKey(
+      const Key('play_area_analysis_evaluation_gauge'),
+    );
+
+    for (final EvaluationGaugePosition position
+        in EvaluationGaugePosition.values) {
+      AnalysisMode.setEvaluationGaugePosition(position);
+      await tester.pumpAndSettle();
+
+      final Rect boardRect = tester.getRect(board);
+      final Rect gaugeRect = tester.getRect(gauge);
+      switch (position) {
+        case EvaluationGaugePosition.left:
+          expect(gaugeRect.right, lessThan(boardRect.left));
+          expect(gaugeRect.height, closeTo(boardRect.height, 0.01));
+          expect(gaugeRect.width, 16);
+          break;
+        case EvaluationGaugePosition.top:
+          expect(gaugeRect.bottom, lessThan(boardRect.top));
+          expect(gaugeRect.width, closeTo(boardRect.width, 0.01));
+          expect(gaugeRect.height, 16);
+          break;
+        case EvaluationGaugePosition.right:
+          expect(gaugeRect.left, greaterThan(boardRect.right));
+          expect(gaugeRect.height, closeTo(boardRect.height, 0.01));
+          expect(gaugeRect.width, 16);
+          break;
+        case EvaluationGaugePosition.bottom:
+          expect(gaugeRect.top, greaterThan(boardRect.bottom));
+          expect(gaugeRect.width, closeTo(boardRect.width, 0.01));
+          expect(gaugeRect.height, 16);
+          break;
+      }
+    }
+  });
+
+  testWidgets('analysis settings persist evaluation gauge position', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+    );
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.analysis,
+    );
+    AnalysisMode.enable(const <MoveAnalysisResult>[
+      MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.win),
+    ], source: AnalysisSource.engine);
+
+    await _pumpSessionPlayArea(tester, session);
+    await _openAnalysisSettingsFromEnginePopup(tester);
+
+    final Finder positionTile = find.byKey(
+      const Key('play_area_analysis_settings_evaluation_gauge_position'),
+    );
+    await tester.ensureVisible(positionTile);
+    expect(find.text('Left of board'), findsOneWidget);
+    await tester.tap(positionTile);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(
+        const Key('play_area_analysis_evaluation_gauge_position_sheet'),
+      ),
+      findsOneWidget,
+    );
+    for (final EvaluationGaugePosition position
+        in EvaluationGaugePosition.values) {
+      expect(
+        find.byKey(
+          Key('play_area_analysis_evaluation_gauge_position_${position.name}'),
+        ),
+        findsOneWidget,
+      );
+    }
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_evaluation_gauge_position_top')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(AnalysisMode.evaluationGaugePosition, EvaluationGaugePosition.top);
+    expect(
+      db.displaySettings.analysisEvaluationGaugePosition,
+      EvaluationGaugePosition.top,
+    );
+    expect(find.text('Above board'), findsOneWidget);
   });
 
   testWidgets(

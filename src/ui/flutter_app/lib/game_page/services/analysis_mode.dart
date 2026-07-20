@@ -168,6 +168,8 @@ class AnalysisMode {
   static bool _showMoveComments = true;
   static bool _showBestMoveArrow = true;
   static bool _showEvaluationGauge = true;
+  static EvaluationGaugePosition _evaluationGaugePosition =
+      EvaluationGaugePosition.left;
   static bool _showAllBoardResults = false;
   static bool _inlineNotation = false;
   static bool _smallBoard = false;
@@ -218,6 +220,10 @@ class AnalysisMode {
 
   /// Whether the analysis board shows the engine evaluation gauge.
   static bool get showEvaluationGauge => _showEvaluationGauge;
+
+  /// Where the evaluation gauge is placed around the analysis board.
+  static EvaluationGaugePosition get evaluationGaugePosition =>
+      _evaluationGaugePosition;
 
   /// Whether every perfect-database candidate is painted on the board.
   static bool get showAllBoardResults => _showAllBoardResults;
@@ -415,6 +421,24 @@ class AnalysisMode {
     _publishState();
   }
 
+  /// Set where the evaluation gauge is placed around the analysis board.
+  static void setEvaluationGaugePosition(
+    EvaluationGaugePosition value, {
+    bool persist = false,
+  }) {
+    if (_evaluationGaugePosition == value) {
+      if (persist) {
+        _saveDisplayPreferences(evaluationGaugePosition: value);
+      }
+      return;
+    }
+    _evaluationGaugePosition = value;
+    if (persist) {
+      _saveDisplayPreferences(evaluationGaugePosition: value);
+    }
+    _publishState();
+  }
+
   /// Set whether all perfect-database results are painted on the board.
   static void setShowAllBoardResults(bool value, {bool persist = false}) {
     if (_showAllBoardResults == value) {
@@ -533,6 +557,7 @@ class AnalysisMode {
     required bool showMoveComments,
     required bool showBestMoveArrow,
     required bool showEvaluationGauge,
+    required EvaluationGaugePosition evaluationGaugePosition,
     required bool showAllBoardResults,
     required int engineLineCount,
     required int engineSearchTimeMs,
@@ -549,6 +574,7 @@ class AnalysisMode {
         _showMoveComments == showMoveComments &&
         _showBestMoveArrow == showBestMoveArrow &&
         _showEvaluationGauge == showEvaluationGauge &&
+        _evaluationGaugePosition == evaluationGaugePosition &&
         _showAllBoardResults == showAllBoardResults &&
         _engineLineCount == nextLineCount &&
         _engineSearchTimeMs == nextSearchTimeMs) {
@@ -561,6 +587,7 @@ class AnalysisMode {
     _showMoveComments = showMoveComments;
     _showBestMoveArrow = showBestMoveArrow;
     _showEvaluationGauge = showEvaluationGauge;
+    _evaluationGaugePosition = evaluationGaugePosition;
     _showAllBoardResults = showAllBoardResults;
     _engineLineCount = nextLineCount;
     _engineSearchTimeMs = nextSearchTimeMs;
@@ -589,6 +616,7 @@ class AnalysisMode {
     bool? showMoveComments,
     bool? showBestMoveArrow,
     bool? showEvaluationGauge,
+    EvaluationGaugePosition? evaluationGaugePosition,
     bool? showAllBoardResults,
     int? engineLineCount,
     int? engineSearchTimeMs,
@@ -607,6 +635,8 @@ class AnalysisMode {
           showBestMoveArrow ?? settings.analysisShowBestMoveArrow,
       analysisShowEvaluationGauge:
           showEvaluationGauge ?? settings.analysisShowEvaluationGauge,
+      analysisEvaluationGaugePosition:
+          evaluationGaugePosition ?? settings.analysisEvaluationGaugePosition,
       analysisShowAllBoardResults:
           showAllBoardResults ?? settings.analysisShowAllBoardResults,
       analysisEngineLineCount:

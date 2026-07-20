@@ -60,6 +60,23 @@ enum AppThemeMode {
   }
 }
 
+/// Placement of the engine evaluation gauge around the analysis board.
+@HiveType(typeId: 16)
+enum EvaluationGaugePosition {
+  @HiveField(0)
+  left,
+  @HiveField(1)
+  top,
+  @HiveField(2)
+  right,
+  @HiveField(3)
+  bottom;
+
+  bool get isHorizontal =>
+      this == EvaluationGaugePosition.top ||
+      this == EvaluationGaugePosition.bottom;
+}
+
 /// Display Settings data model
 ///
 /// Holds the data needed for the Display Settings
@@ -125,6 +142,7 @@ class DisplaySettings {
     this.analysisShowMoveComments = true,
     this.analysisShowBestMoveArrow = true,
     this.analysisShowEvaluationGauge = true,
+    this.analysisEvaluationGaugePosition = EvaluationGaugePosition.left,
     this.analysisShowAllBoardResults = false,
     this.showLegalMoves = true,
     this.showLastMove = true,
@@ -337,6 +355,10 @@ class DisplaySettings {
   @HiveField(58, defaultValue: true)
   final bool showLastMove;
 
+  /// Where the evaluation gauge is placed around the analysis board.
+  @HiveField(59, defaultValue: EvaluationGaugePosition.left)
+  final EvaluationGaugePosition analysisEvaluationGaugePosition;
+
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);
 
@@ -348,6 +370,7 @@ class DisplaySettings {
     bool? analysisShowMoveComments,
     bool? analysisShowBestMoveArrow,
     bool? analysisShowEvaluationGauge,
+    EvaluationGaugePosition? analysisEvaluationGaugePosition,
     bool? analysisShowAllBoardResults,
     int? analysisEngineLineCount,
     int? analysisEngineSearchTimeMs,
@@ -410,6 +433,9 @@ class DisplaySettings {
           analysisShowBestMoveArrow ?? this.analysisShowBestMoveArrow,
       analysisShowEvaluationGauge:
           analysisShowEvaluationGauge ?? this.analysisShowEvaluationGauge,
+      analysisEvaluationGaugePosition:
+          analysisEvaluationGaugePosition ??
+          this.analysisEvaluationGaugePosition,
       analysisShowAllBoardResults:
           analysisShowAllBoardResults ?? this.analysisShowAllBoardResults,
       showLegalMoves: showLegalMoves,

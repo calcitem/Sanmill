@@ -334,6 +334,9 @@ class Database {
     Hive.registerAdapter<PointPaintingStyle>(PointPaintingStyleAdapter());
     Hive.registerAdapter<MovesViewLayout>(MovesViewLayoutAdapter());
     Hive.registerAdapter<AppThemeMode>(AppThemeModeAdapter());
+    Hive.registerAdapter<EvaluationGaugePosition>(
+      EvaluationGaugePositionAdapter(),
+    );
     Hive.registerAdapter<DisplaySettings>(DisplaySettingsAdapter());
     _displaySettingsBox = await Hive.openBox<DisplaySettings>(
       _displaySettingsBoxName,

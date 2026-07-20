@@ -6765,5 +6765,15 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "evaluationGaugePosition": "Evaluation gauge position",
+    "@evaluationGaugePosition": {},
+    "evaluationGaugePositionLeft": "Left of board",
+    "@evaluationGaugePositionLeft": {},
+    "evaluationGaugePositionTop": "Above board",
+    "@evaluationGaugePositionTop": {},
+    "evaluationGaugePositionRight": "Right of board",
+    "@evaluationGaugePositionRight": {},
+    "evaluationGaugePositionBottom": "Below board",
+    "@evaluationGaugePositionBottom": {}
 }

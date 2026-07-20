@@ -61,6 +61,7 @@ void main() {
       expect(d.analysisShowMoveComments, isTrue);
       expect(d.analysisShowBestMoveArrow, isTrue);
       expect(d.analysisShowEvaluationGauge, isTrue);
+      expect(d.analysisEvaluationGaugePosition, EvaluationGaugePosition.left);
       expect(d.analysisShowAllBoardResults, isFalse);
       expect(d.showLegalMoves, isTrue);
       expect(d.showLastMove, isTrue);
@@ -83,6 +84,24 @@ void main() {
     expect(
       DisplaySettings.fromJson(changed.toJson()).analysisShowAllBoardResults,
       isTrue,
+    );
+  });
+
+  test('analysis evaluation gauge position copies and serializes', () {
+    final DisplaySettings changed = const DisplaySettings()
+        .copyWithAnalysisPreferences(
+          analysisEvaluationGaugePosition: EvaluationGaugePosition.top,
+        );
+
+    expect(
+      changed.analysisEvaluationGaugePosition,
+      EvaluationGaugePosition.top,
+    );
+    expect(
+      DisplaySettings.fromJson(
+        changed.toJson(),
+      ).analysisEvaluationGaugePosition,
+      EvaluationGaugePosition.top,
     );
   });
 
