@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import '../../games/mill/mill_board_coordinate_maps.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
+import '../../shared/themes/app_theme.dart';
 import '../../shared/themes/board_marker_palette.dart';
 import '../../shared/utils/helpers/color_helpers/color_helper.dart';
 import '../services/import_export/pgn.dart';
@@ -501,11 +502,16 @@ class MiniBoardPainter extends CustomPainter {
 
       final Paint paint = Paint();
       final Color pieceColor = pc.mainColor;
+      final Color boardBackgroundColor =
+          DB().colorSettings.boardBackgroundColor;
       final double circleOuterRadius = pieceRadius;
-      final double outlineWidth = math.min(
-        circleOuterRadius * 0.35,
-        math.max(1.5, minSide * 0.004),
+      final bool needsOutline = pieceNeedsOutline(
+        pieceColor,
+        boardBackgroundColor,
       );
+      final double outlineWidth = needsOutline
+          ? math.min(circleOuterRadius * 0.35, math.max(1.5, minSide * 0.004))
+          : 0;
       final double circleInnerRadius = circleOuterRadius - outlineWidth;
 
       const ui.Image? pieceImage = null;
@@ -524,10 +530,13 @@ class MiniBoardPainter extends CustomPainter {
           2,
           true,
         );
-        paint
-          ..style = PaintingStyle.fill
-          ..color = pieceOutlineColor(pieceColor);
-        canvas.drawCircle(pos, circleOuterRadius, paint);
+        if (needsOutline) {
+          paint
+            ..style = PaintingStyle.fill
+            ..color = pieceOutlineColor(pieceColor, boardBackgroundColor);
+          canvas.drawCircle(pos, circleOuterRadius, paint);
+        }
+        paint.style = PaintingStyle.fill;
         paint.color = pieceColor;
         canvas.drawCircle(pos, circleInnerRadius, paint);
       }
@@ -617,8 +626,8 @@ class MiniBoardPainter extends CustomPainter {
     double outerMargin,
   ) {
     final TextStyle style = TextStyle(
-      color: DB().colorSettings.boardLineColor.withValues(alpha: 0.78),
-      fontSize: math.max(9, minSide * 0.028),
+      color: DB().colorSettings.boardLineColor.withValues(alpha: 0.92),
+      fontSize: AppTheme.textScaler.scale(coordinateFontSizeForBoard(minSide)),
       fontWeight: FontWeight.w600,
       height: 1,
     );
@@ -645,6 +654,9 @@ class MiniBoardPainter extends CustomPainter {
       );
     }
   }
+
+  static double coordinateFontSizeForBoard(double minSide) =>
+      math.max(12, minSide * 0.045);
 
   void _paintCenteredText(
     Canvas canvas,
@@ -689,15 +701,31 @@ class MiniBoardPainter extends CustomPainter {
     );
   }
 
-  static Color pieceOutlineColor(Color pieceColor) {
+  /// Pieces with at least this much contrast against the board keep their
+  /// natural edge. Lower ratios need a high-contrast outline in small previews.
+  static const double pieceBoardOutlineContrastThreshold = 1.5;
+
+  static bool pieceNeedsOutline(Color pieceColor, Color boardBackgroundColor) {
+    return colorContrastRatio(pieceColor, boardBackgroundColor) <
+        pieceBoardOutlineContrastThreshold;
+  }
+
+  static Color pieceOutlineColor(Color pieceColor, Color boardBackgroundColor) {
+    if (!pieceNeedsOutline(pieceColor, boardBackgroundColor)) {
+      return pieceColor;
+    }
     return readableForegroundColor(
       preferred: Colors.black,
       background: pieceColor,
     );
   }
 
-  static Color pieceNumberColor(Color pieceColor) =>
-      pieceOutlineColor(pieceColor);
+  static Color pieceNumberColor(Color pieceColor) {
+    return readableForegroundColor(
+      preferred: Colors.black,
+      background: pieceColor,
+    );
+  }
 
   static void _drawPieceNumber(
     Canvas canvas, {

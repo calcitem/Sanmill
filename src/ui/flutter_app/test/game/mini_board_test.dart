@@ -85,6 +85,8 @@ void main() {
       ),
     );
     expect((customPaint.painter! as MiniBoardPainter).showCoordinates, isTrue);
+    expect(MiniBoardPainter.coordinateFontSizeForBoard(240), 12);
+    expect(MiniBoardPainter.coordinateFontSizeForBoard(400), 18);
   });
 
   test('quality badge anchors to the initiating piece or removed point', () {
@@ -120,13 +122,46 @@ void main() {
     expect(MiniBoardPainter.qualityBadgeForegroundColor(6), Colors.black);
   });
 
-  test('piece outlines and numbers contrast with light and dark pieces', () {
-    expect(MiniBoardPainter.pieceOutlineColor(Colors.white), Colors.black);
-    expect(MiniBoardPainter.pieceOutlineColor(Colors.black), Colors.white);
+  test('piece outlines appear only when piece and board colors are close', () {
+    const Color defaultBoardColor = Color(0xFFDEB887);
+    expect(
+      MiniBoardPainter.pieceNeedsOutline(Colors.white, defaultBoardColor),
+      isFalse,
+    );
+    expect(
+      MiniBoardPainter.pieceNeedsOutline(Colors.black, defaultBoardColor),
+      isFalse,
+    );
+    expect(
+      MiniBoardPainter.pieceOutlineColor(Colors.white, defaultBoardColor),
+      Colors.white,
+    );
+    expect(
+      MiniBoardPainter.pieceOutlineColor(Colors.black, defaultBoardColor),
+      Colors.black,
+    );
+
+    expect(
+      MiniBoardPainter.pieceNeedsOutline(Colors.white, Colors.white),
+      isTrue,
+    );
+    expect(
+      MiniBoardPainter.pieceNeedsOutline(Colors.black, Colors.black),
+      isTrue,
+    );
+    expect(
+      MiniBoardPainter.pieceOutlineColor(Colors.white, Colors.white),
+      Colors.black,
+    );
+    expect(
+      MiniBoardPainter.pieceOutlineColor(Colors.black, Colors.black),
+      Colors.white,
+    );
+
     for (final Color pieceColor in <Color>[Colors.white, Colors.black]) {
       expect(
         colorContrastRatio(
-          MiniBoardPainter.pieceOutlineColor(pieceColor),
+          MiniBoardPainter.pieceOutlineColor(pieceColor, pieceColor),
           pieceColor,
         ),
         greaterThanOrEqualTo(normalTextMinimumContrastRatio),
@@ -140,6 +175,44 @@ void main() {
       );
     }
   });
+
+  test(
+    'default mini board pieces keep clean edges without contrast rings',
+    () async {
+      const Color defaultBoardColor = Color(0xFFDEB887);
+      DB().colorSettings = const ColorSettings(
+        boardLineColor: Colors.brown,
+        boardBackgroundColor: defaultBoardColor,
+        whitePieceColor: Colors.white,
+        blackPieceColor: Colors.black,
+      );
+      final ui.PictureRecorder recorder = ui.PictureRecorder();
+      final Canvas canvas = Canvas(recorder);
+      const Size size = Size.square(200);
+      canvas.drawColor(defaultBoardColor, BlendMode.src);
+      MiniBoardPainter(
+        boardLayout: 'O*******/@*******/********',
+      ).paint(canvas, size);
+      final ui.Image image = await recorder.endRecording().toImage(200, 200);
+      final ByteData data = (await image.toByteData(
+        format: ui.ImageByteFormat.rawRgba,
+      ))!;
+
+      Color pixelAt(int x, int y) {
+        final int offset = (y * 200 + x) * 4;
+        return Color.fromARGB(
+          data.getUint8(offset + 3),
+          data.getUint8(offset),
+          data.getUint8(offset + 1),
+          data.getUint8(offset + 2),
+        );
+      }
+
+      expect(pixelAt(100, 55).computeLuminance(), greaterThan(0.5));
+      expect(pixelAt(100, 29).computeLuminance(), lessThan(0.5));
+      image.dispose();
+    },
+  );
 
   test('a white piece is painted with a visible dark outline', () async {
     DB().colorSettings = const ColorSettings(
