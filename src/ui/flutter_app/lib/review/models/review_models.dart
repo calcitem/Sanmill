@@ -437,6 +437,20 @@ class ReviewReport {
         .reduce((ReviewGrade a, ReviewGrade b) => a.index >= b.index ? a : b);
   }
 
+  Map<ReviewGrade, int> gradeCountsForSide(ReviewSide side) {
+    final Map<ReviewGrade, int> counts = <ReviewGrade, int>{
+      for (final ReviewGrade grade in ReviewGrade.values) grade: 0,
+    };
+    for (final ReviewTurnBoundary turn in turns) {
+      if (turn.side != side) {
+        continue;
+      }
+      final ReviewGrade grade = gradeForTurn(turn.groupIndex);
+      counts[grade] = counts[grade]! + 1;
+    }
+    return Map<ReviewGrade, int>.unmodifiable(counts);
+  }
+
   int? effectiveQualityNagForTurn(int groupIndex) {
     if (userNagOverrides.containsKey(groupIndex)) {
       return userNagOverrides[groupIndex];

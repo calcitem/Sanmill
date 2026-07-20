@@ -6667,5 +6667,36 @@
     "replaceCurrentAnalysis": "替换当前分析？",
     "@replaceCurrentAnalysis": {},
     "currentAnalysisWillBeReplaced": "当前分析中的着法、变着、评论和标注将被替换，且无法撤销。",
-    "@currentAnalysisWillBeReplaced": {}
+    "@currentAnalysisWillBeReplaced": {},
+    "reviewQualityOverview": "着法质量概览",
+    "@reviewQualityOverview": {
+        "description": "Heading for the per-player move quality counts in game review"
+    },
+    "reviewPlayerName": "{seat}：{player}",
+    "@reviewPlayerName": {
+        "description": "Accessible player identity in the game review quality overview",
+        "placeholders": {
+            "seat": {
+                "type": "String"
+            },
+            "player": {
+                "type": "String"
+            }
+        }
+    },
+    "reviewPlayerGradeCount": "{player}，{grade}：{count}",
+    "@reviewPlayerGradeCount": {
+        "description": "Accessible move quality count for one player in game review",
+        "placeholders": {
+            "player": {
+                "type": "String"
+            },
+            "grade": {
+                "type": "String"
+            },
+            "count": {
+                "type": "int"
+            }
+        }
+    }
 }

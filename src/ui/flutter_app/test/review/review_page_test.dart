@@ -79,7 +79,9 @@ void main() {
 
       expect(find.byKey(const Key('review_phone_layout')), findsOneWidget);
       expect(find.byKey(const Key('review_wide_layout')), findsNothing);
-      expect(find.byKey(const Key('review_structure_summary')), findsOneWidget);
+      expect(find.byKey(const Key('review_quality_overview')), findsOneWidget);
+      expect(find.byKey(const Key('review_structure_summary')), findsNothing);
+      expect(find.text('Move quality overview'), findsOneWidget);
       expect(find.text('2 moves · 2 actions · 0 variations'), findsOneWidget);
       expect(find.byKey(const Key('review_board')), findsOneWidget);
       expect(find.byKey(const Key('review_turn_navigation')), findsOneWidget);
@@ -100,6 +102,19 @@ void main() {
       );
       expect(find.textContaining('%'), findsNothing);
       expect(find.text('Best line: 1. d6xf4 1... b4 2. a1'), findsOneWidget);
+
+      expect(
+        tester
+            .getSemantics(find.byKey(const Key('review_quality_white_mistake')))
+            .label,
+        contains('Player 1: Human, Mistake: 1'),
+      );
+      expect(
+        tester
+            .getSemantics(find.byKey(const Key('review_quality_black_good')))
+            .label,
+        contains('Player 2: Computer, Good: 1'),
+      );
 
       final SemanticsNode board = tester.getSemantics(
         find.byKey(const Key('review_board')),
@@ -163,9 +178,6 @@ void main() {
 
     expect(find.byKey(const Key('review_wide_layout')), findsOneWidget);
     expect(find.byKey(const Key('review_phone_layout')), findsNothing);
-    expect(find.byKey(const Key('review_correction')), findsOneWidget);
-    expect(find.text('Review mistakes'), findsOneWidget);
-    expect(find.text('Find a better move than a7.'), findsOneWidget);
     final Rect boardRect = tester.getRect(
       find.byKey(const Key('review_board')),
     );
@@ -174,11 +186,15 @@ void main() {
     );
     expect(navigationRect.top - boardRect.bottom, inInclusiveRange(0, 24));
 
-    await tester.drag(
+    await tester.dragUntilVisible(
+      find.byKey(const Key('review_correction')),
       find.byKey(const Key('review_analysis_panel')),
-      const Offset(0, -180),
+      const Offset(0, -240),
     );
     await tester.pump();
+    expect(find.byKey(const Key('review_correction')), findsOneWidget);
+    expect(find.text('Review mistakes'), findsOneWidget);
+    expect(find.text('Find a better move than a7.'), findsOneWidget);
     expect(find.byKey(const Key('review_correction_choice_b6')), findsNothing);
     expect(find.text('Show answer'), findsNothing);
     expect(find.byIcon(Icons.chevron_right_rounded), findsWidgets);
@@ -192,9 +208,10 @@ void main() {
     await tester.pumpWidget(_reviewApp());
     await tester.pump();
 
-    await tester.drag(
+    await tester.dragUntilVisible(
+      find.byKey(const Key('review_correction')),
       find.byKey(const Key('review_analysis_panel')),
-      const Offset(0, -180),
+      const Offset(0, -240),
     );
     await tester.pump();
     final Finder correction = find.byKey(const Key('review_correction'));
@@ -220,6 +237,21 @@ void main() {
     expect(find.byKey(const Key('review_phone_layout')), findsNothing);
     expect(find.byKey(const Key('review_board')), findsOneWidget);
     expect(find.byKey(const Key('review_analysis_panel')), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('quality overview fits a narrow phone in dark mode', (
+    WidgetTester tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(320, 700));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(_reviewApp(brightness: Brightness.dark));
+    await tester.pump();
+
+    expect(find.byKey(const Key('review_quality_overview')), findsOneWidget);
+    expect(find.text('Move quality overview'), findsOneWidget);
+    expect(find.text('Player 1'), findsOneWidget);
+    expect(find.text('Player 2'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
@@ -254,10 +286,21 @@ void main() {
   testWidgets('quality annotation choices expose symbol and spoken label', (
     WidgetTester tester,
   ) async {
+    await tester.binding.setSurfaceSize(const Size(1024, 768));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
     final ReviewStorage storage = ReviewStorage.forTesting(_MemoryBox());
     await tester.pumpWidget(_reviewApp(storage: storage));
     await tester.pump();
 
+    await tester.dragUntilVisible(
+      find.byKey(const Key('review_choose_nag')),
+      find.byKey(const Key('review_analysis_panel')),
+      const Offset(0, -180),
+    );
+    await tester.drag(
+      find.byKey(const Key('review_analysis_panel')),
+      const Offset(0, -80),
+    );
     await tester.tap(find.byKey(const Key('review_choose_nag')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
@@ -316,6 +359,8 @@ void main() {
   testWidgets('review sheets retain explicit dismissal controls on iOS', (
     WidgetTester tester,
   ) async {
+    await tester.binding.setSurfaceSize(const Size(1024, 768));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(_reviewApp(platform: TargetPlatform.iOS));
     await tester.pump();
 
@@ -327,6 +372,15 @@ void main() {
     await tester.tap(find.byKey(const Key('review_export_cancel')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
+    await tester.dragUntilVisible(
+      find.byKey(const Key('review_choose_nag')),
+      find.byKey(const Key('review_analysis_panel')),
+      const Offset(0, -180),
+    );
+    await tester.drag(
+      find.byKey(const Key('review_analysis_panel')),
+      const Offset(0, -80),
+    );
     await tester.tap(find.byKey(const Key('review_choose_nag')));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
@@ -337,6 +391,8 @@ void main() {
   testWidgets('cancelling deep analysis keeps the completed report visible', (
     WidgetTester tester,
   ) async {
+    await tester.binding.setSurfaceSize(const Size(1024, 768));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
     final PrivateGameRecord record = _record();
     final _PendingDeepReviewAnalysisService service =
         _PendingDeepReviewAnalysisService();
@@ -352,6 +408,15 @@ void main() {
     );
     await tester.pump();
 
+    await tester.dragUntilVisible(
+      find.byKey(const Key('review_deepen_turn')),
+      find.byKey(const Key('review_analysis_panel')),
+      const Offset(0, -180),
+    );
+    await tester.drag(
+      find.byKey(const Key('review_analysis_panel')),
+      const Offset(0, -80),
+    );
     await tester.tap(find.byKey(const Key('review_deepen_turn')));
     await tester.pump();
     expect(find.byKey(const Key('review_cancel_analysis')), findsOneWidget);
@@ -405,11 +470,12 @@ Widget _reviewApp({
   ReviewStorage storage = ReviewStorage.instance,
   Future<void> Function(String pgn)? onCopyPgn,
   TargetPlatform? platform,
+  Brightness brightness = Brightness.light,
 }) {
   final PrivateGameRecord record = _record();
   return makeTestableWidget(
     Theme(
-      data: ThemeData(platform: platform),
+      data: ThemeData(platform: platform, brightness: brightness),
       child: ReviewPage(
         record: record,
         initialReport: _report(record),

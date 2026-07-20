@@ -456,7 +456,13 @@ class _ReviewPageState extends State<ReviewPage> {
       physics: const ClampingScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
       children: <Widget>[
-        _buildStructureSummary(context),
+        if (_report case final ReviewReport report
+            when report.status == ReviewStatus.complete &&
+                report.turns.isNotEmpty &&
+                report.actions.isNotEmpty)
+          _buildQualityOverview(context, report)
+        else
+          _buildStructureSummary(context),
         const SizedBox(height: 12),
         if (_analyzing)
           _buildProgress(context)
@@ -510,6 +516,150 @@ class _ReviewPageState extends State<ReviewPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildQualityOverview(BuildContext context, ReviewReport report) {
+    final S strings = S.of(context);
+    final Map<ReviewGrade, int> whiteCounts = report.gradeCountsForSide(
+      ReviewSide.white,
+    );
+    final Map<ReviewGrade, int> blackCounts = report.gradeCountsForSide(
+      ReviewSide.black,
+    );
+    final String whiteName = _reviewPlayerName(strings, widget.record.white);
+    final String blackName = _reviewPlayerName(strings, widget.record.black);
+    final String whiteLabel = strings.reviewPlayerName(
+      strings.player1,
+      whiteName,
+    );
+    final String blackLabel = strings.reviewPlayerName(
+      strings.player2,
+      blackName,
+    );
+
+    return Card(
+      key: const Key('review_quality_overview'),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              strings.reviewQualityOverview,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              strings.reviewStructureCounts(
+                _structuralTurnCount,
+                _structuralAtomicCount,
+                _structuralVariationCount,
+              ),
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            const Divider(height: 24),
+            Row(
+              children: <Widget>[
+                const Expanded(flex: 5, child: SizedBox.shrink()),
+                Expanded(
+                  flex: 3,
+                  child: _ReviewPlayerHeader(
+                    seat: strings.player1,
+                    player: whiteName,
+                    pieceColor: Colors.white,
+                    semanticLabel: whiteLabel,
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: _ReviewPlayerHeader(
+                    seat: strings.player2,
+                    player: blackName,
+                    pieceColor: Colors.black,
+                    semanticLabel: blackLabel,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            for (final ReviewGrade grade in ReviewGrade.values)
+              _buildQualityRow(
+                context,
+                grade: grade,
+                whiteCount: whiteCounts[grade]!,
+                blackCount: blackCounts[grade]!,
+                whiteLabel: whiteLabel,
+                blackLabel: blackLabel,
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQualityRow(
+    BuildContext context, {
+    required ReviewGrade grade,
+    required int whiteCount,
+    required int blackCount,
+    required String whiteLabel,
+    required String blackLabel,
+  }) {
+    final S strings = S.of(context);
+    final String gradeLabel = _gradeLabel(context, grade);
+    return SizedBox(
+      height: 38,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 5,
+            child: Row(
+              children: <Widget>[
+                _ReviewGradeBadge(
+                  symbol: _gradeSymbol(grade),
+                  color: _gradeColor(grade),
+                  foregroundColor: _gradeForegroundColor(grade),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    gradeLabel,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Semantics(
+              key: Key('review_quality_white_${grade.name}'),
+              label: strings.reviewPlayerGradeCount(
+                whiteLabel,
+                gradeLabel,
+                whiteCount,
+              ),
+              excludeSemantics: true,
+              child: Text('$whiteCount', textAlign: TextAlign.center),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Semantics(
+              key: Key('review_quality_black_${grade.name}'),
+              label: strings.reviewPlayerGradeCount(
+                blackLabel,
+                gradeLabel,
+                blackCount,
+              ),
+              excludeSemantics: true,
+              child: Text('$blackCount', textAlign: TextAlign.center),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -1115,6 +1265,36 @@ class _ReviewPageState extends State<ReviewPage> {
     };
   }
 
+  static String _gradeSymbol(ReviewGrade grade) => switch (grade) {
+    ReviewGrade.best => '★',
+    ReviewGrade.good => '✓',
+    ReviewGrade.dubious => '?!',
+    ReviewGrade.mistake => '?',
+    ReviewGrade.blunder => '??',
+  };
+
+  static Color _gradeColor(ReviewGrade grade) =>
+      MiniBoardPainter.qualityBadgeBackgroundColor(_nagForGradeColor(grade));
+
+  static Color _gradeForegroundColor(ReviewGrade grade) =>
+      MiniBoardPainter.qualityBadgeForegroundColor(_nagForGradeColor(grade));
+
+  static int _nagForGradeColor(ReviewGrade grade) => switch (grade) {
+    ReviewGrade.best => 1,
+    ReviewGrade.good => 3,
+    ReviewGrade.dubious => 6,
+    ReviewGrade.mistake => 2,
+    ReviewGrade.blunder => 4,
+  };
+
+  static String _reviewPlayerName(S strings, String player) {
+    return switch (player.trim().toLowerCase()) {
+      'ai' || 'computer' => strings.ai,
+      'human' => strings.human,
+      _ => player,
+    };
+  }
+
   String _nagLabel(BuildContext context, int nag) {
     final S strings = S.of(context);
     return switch (nag) {
@@ -1134,5 +1314,87 @@ class _ReviewPageState extends State<ReviewPage> {
       count += _countVariations(child);
     }
     return count;
+  }
+}
+
+class _ReviewPlayerHeader extends StatelessWidget {
+  const _ReviewPlayerHeader({
+    required this.seat,
+    required this.player,
+    required this.pieceColor,
+    required this.semanticLabel,
+  });
+
+  final String seat;
+  final String player;
+  final Color pieceColor;
+  final String semanticLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      label: semanticLabel,
+      excludeSemantics: true,
+      child: Column(
+        children: <Widget>[
+          Container(
+            width: 18,
+            height: 18,
+            decoration: BoxDecoration(
+              color: pieceColor,
+              shape: BoxShape.circle,
+              border: Border.all(color: Theme.of(context).colorScheme.outline),
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            seat,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.labelSmall,
+          ),
+          Text(
+            player,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ReviewGradeBadge extends StatelessWidget {
+  const _ReviewGradeBadge({
+    required this.symbol,
+    required this.color,
+    required this.foregroundColor,
+  });
+
+  final String symbol;
+  final Color color;
+  final Color foregroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 30,
+      height: 22,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(11),
+      ),
+      child: Text(
+        symbol,
+        style: TextStyle(
+          color: foregroundColor,
+          fontSize: 12,
+          fontWeight: FontWeight.w800,
+          height: 1,
+        ),
+      ),
+    );
   }
 }

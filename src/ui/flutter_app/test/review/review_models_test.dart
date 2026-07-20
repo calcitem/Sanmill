@@ -121,6 +121,65 @@ void main() {
       expect(report.effectiveQualityNagForTurn(2), isNull);
     });
 
+    test('counts move quality once per complete turn for each side', () {
+      final ReviewReport base = _report(
+        grades: const <ReviewGrade>[
+          ReviewGrade.best,
+          ReviewGrade.good,
+          ReviewGrade.mistake,
+        ],
+      );
+      final ReviewReport report = base.copyWith(
+        actions: <ReviewActionEvaluation>[
+          ...base.actions,
+          const ReviewActionEvaluation(
+            atomicIndex: 3,
+            groupIndex: 0,
+            move: 'xd1',
+            side: ReviewSide.white,
+            isHumanMove: true,
+            legalRootActionCount: 2,
+            bestScore: 20,
+            playedScore: 5,
+            loss: 15,
+            grade: ReviewGrade.blunder,
+            profile: ReviewProfile.quick,
+            candidates: <ReviewCandidate>[
+              ReviewCandidate(
+                rank: 1,
+                move: 'xf1',
+                score: 20,
+                depth: 24,
+                line: <String>['xf1'],
+              ),
+              ReviewCandidate(
+                rank: 2,
+                move: 'xd1',
+                score: 5,
+                depth: 24,
+                line: <String>['xd1'],
+              ),
+            ],
+          ),
+        ],
+      );
+
+      expect(report.gradeCountsForSide(ReviewSide.white), <ReviewGrade, int>{
+        ReviewGrade.best: 0,
+        ReviewGrade.good: 0,
+        ReviewGrade.dubious: 0,
+        ReviewGrade.mistake: 1,
+        ReviewGrade.blunder: 1,
+      });
+      expect(report.gradeCountsForSide(ReviewSide.black), <ReviewGrade, int>{
+        ReviewGrade.best: 0,
+        ReviewGrade.good: 1,
+        ReviewGrade.dubious: 0,
+        ReviewGrade.mistake: 0,
+        ReviewGrade.blunder: 0,
+      });
+    });
+
     test(
       'round-trips versioned data and invalidates every cache dimension',
       () {

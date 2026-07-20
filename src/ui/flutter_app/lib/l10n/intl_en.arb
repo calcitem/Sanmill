@@ -6734,5 +6734,36 @@
     "replaceCurrentAnalysis": "Replace current analysis?",
     "@replaceCurrentAnalysis": {},
     "currentAnalysisWillBeReplaced": "Your current moves, variations, comments, and annotations will be replaced. This cannot be undone.",
-    "@currentAnalysisWillBeReplaced": {}
+    "@currentAnalysisWillBeReplaced": {},
+    "reviewQualityOverview": "Move quality overview",
+    "@reviewQualityOverview": {
+        "description": "Heading for the per-player move quality counts in game review"
+    },
+    "reviewPlayerName": "{seat}: {player}",
+    "@reviewPlayerName": {
+        "description": "Accessible player identity in the game review quality overview",
+        "placeholders": {
+            "seat": {
+                "type": "String"
+            },
+            "player": {
+                "type": "String"
+            }
+        }
+    },
+    "reviewPlayerGradeCount": "{player}, {grade}: {count}",
+    "@reviewPlayerGradeCount": {
+        "description": "Accessible move quality count for one player in game review",
+        "placeholders": {
+            "player": {
+                "type": "String"
+            },
+            "grade": {
+                "type": "String"
+            },
+            "count": {
+                "type": "int"
+            }
+        }
+    }
 }
