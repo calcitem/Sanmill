@@ -126,6 +126,9 @@ class _DiagnosticReportPageState extends State<DiagnosticReportPage> {
 
   Future<void> _copyAndOpenIssue() async {
     await _copy();
+    if (!mounted) {
+      return;
+    }
     final Uri issueUrl = diagnosticIssueUrlForLocale(
       Localizations.localeOf(context),
       EnvironmentConfig.sourceUrl,

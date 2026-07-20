@@ -8,7 +8,6 @@ import 'package:flutter/foundation.dart'
     show kDebugMode, kIsWeb, visibleForTesting;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 import '../appearance_settings/widgets/appearance_settings_page.dart';

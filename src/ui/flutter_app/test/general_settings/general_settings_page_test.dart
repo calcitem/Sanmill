@@ -40,11 +40,11 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
     await tester.pumpWidget(
-      MaterialApp(
+      const MaterialApp(
         localizationsDelegates: sanmillLocalizationsDelegates,
         supportedLocales: S.supportedLocales,
-        locale: const Locale('en'),
-        home: const GeneralSettingsPage(),
+        locale: Locale('en'),
+        home: GeneralSettingsPage(),
       ),
     );
     await tester.pump();
@@ -78,11 +78,11 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
     await tester.pumpWidget(
-      MaterialApp(
+      const MaterialApp(
         localizationsDelegates: sanmillLocalizationsDelegates,
         supportedLocales: S.supportedLocales,
-        locale: const Locale('en'),
-        home: const GeneralSettingsPage(),
+        locale: Locale('en'),
+        home: GeneralSettingsPage(),
       ),
     );
     await tester.pump();

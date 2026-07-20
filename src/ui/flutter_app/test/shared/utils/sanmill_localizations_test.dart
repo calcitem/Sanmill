@@ -1157,7 +1157,7 @@ void main() {
     final S chinese = lookupS(const Locale('zh'));
 
     expect(
-      chinese.puzzleRuleMismatchWarning('Nine Men\'s Morris', 'Custom'),
+      chinese.puzzleRuleMismatchWarning("Nine Men's Morris", 'Custom'),
       "此谜题使用 Nine Men's Morris；当前规则为 Custom。",
     );
     expect(chinese.puzzleValidationAuthorRequired, '贡献前，请将您的姓名填写为作者。');

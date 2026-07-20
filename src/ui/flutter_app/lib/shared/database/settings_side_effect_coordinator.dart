@@ -30,6 +30,9 @@ class SettingsSideEffectCoordinator {
     EngineOptionsUpdate? updateRuleEngineOptions,
     RecordingEventWriter? recordEvent,
     SettingsDebounceTimer createTimer = Timer.new,
+    // Keep the public injection names stable; private initializing formals
+    // would expose underscored named parameters to callers.
+    // ignore: prefer_initializing_formals
   }) : _engineOptionsDebounceDuration = engineOptionsDebounceDuration,
        _updateGeneralEngineOptions =
            updateGeneralEngineOptions ?? _engineOptionsNoOp,
@@ -39,6 +42,7 @@ class SettingsSideEffectCoordinator {
            ((RecordingEventType type, Map<String, dynamic> data) {
              RecordingService().recordEvent(type, data);
            }),
+       // ignore: prefer_initializing_formals
        _createTimer = createTimer;
 
   static FutureOr<void> _engineOptionsNoOp() {}

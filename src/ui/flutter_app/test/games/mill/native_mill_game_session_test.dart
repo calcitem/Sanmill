@@ -841,7 +841,7 @@ void main() {
 
     test('perfectDatabaseBestAction forwards the rules-port action', () {
       final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
-        perfectDatabaseBestAction: const GameAction(
+        perfectDatabaseBestActionResult: const GameAction(
           type: MillActionTypes.place,
           payload: <String, Object?>{'move': 'a4'},
         ),
@@ -914,13 +914,10 @@ void main() {
 class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   _FakeNativeMillRulesPort({
     GameStateSnapshot? initial,
-    List<GameAction>? legalActionsOverride,
-    Stream<tgf.EngineEvent>? searchEvents,
-    GameAction? perfectDatabaseBestAction,
-  }) : _snapshot = initial ?? _initialSnapshot,
-       _legalActionsOverride = legalActionsOverride,
-       _searchEvents = searchEvents,
-       _perfectDatabaseBestAction = perfectDatabaseBestAction;
+    this.legalActionsOverride,
+    this.searchEvents,
+    this.perfectDatabaseBestActionResult,
+  }) : _snapshot = initial ?? _initialSnapshot;
 
   static const GameStateSnapshot _initialSnapshot = GameStateSnapshot(
     gameId: GameId.mill,
@@ -935,9 +932,9 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   );
 
   GameStateSnapshot _snapshot;
-  final List<GameAction>? _legalActionsOverride;
-  final Stream<tgf.EngineEvent>? _searchEvents;
-  final GameAction? _perfectDatabaseBestAction;
+  final List<GameAction>? legalActionsOverride;
+  final Stream<tgf.EngineEvent>? searchEvents;
+  final GameAction? perfectDatabaseBestActionResult;
   int applyCount = 0;
   int isLegalCount = 0;
   int undoCount = 0;
@@ -961,7 +958,7 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   @override
   List<GameAction> get legalActions => _snapshot.outcome.isTerminal
       ? const <GameAction>[]
-      : _legalActionsOverride ?? <GameAction>[placeA7];
+      : legalActionsOverride ?? <GameAction>[placeA7];
 
   @override
   bool isLegal(GameAction action) {
@@ -1025,13 +1022,13 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
     GeneralSettings? engineSettings,
     int multiPv = 1,
   }) {
-    return _searchEvents ?? const Stream<tgf.EngineEvent>.empty();
+    return searchEvents ?? const Stream<tgf.EngineEvent>.empty();
   }
 
   @override
   GameAction? perfectDatabaseBestAction({GeneralSettings? engineSettings}) {
     perfectDatabaseBestActionCount++;
-    return _perfectDatabaseBestAction;
+    return perfectDatabaseBestActionResult;
   }
 
   @override

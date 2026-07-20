@@ -72,15 +72,14 @@ class _EngineModule extends GameModule {
   _EngineModule(
     this._id,
     this._engine, {
-    required int hiveTypeIdMin,
-    required int hiveTypeIdMax,
-  }) : _hiveTypeIdMin = hiveTypeIdMin,
-       _hiveTypeIdMax = hiveTypeIdMax;
+    required this.hiveTypeIdMin,
+    required this.hiveTypeIdMax,
+  });
 
   final GameId _id;
   final _CountingEnginePort _engine;
-  final int _hiveTypeIdMin;
-  final int _hiveTypeIdMax;
+  final int hiveTypeIdMin;
+  final int hiveTypeIdMax;
 
   @override
   BoardGeometry get boardGeometry =>
@@ -99,8 +98,8 @@ class _EngineModule extends GameModule {
   @override
   GamePersistenceScope get persistenceScope => GamePersistenceScope(
     gameId: _id,
-    hiveTypeIdMin: _hiveTypeIdMin,
-    hiveTypeIdMax: _hiveTypeIdMax,
+    hiveTypeIdMin: hiveTypeIdMin,
+    hiveTypeIdMax: hiveTypeIdMax,
   );
 
   @override

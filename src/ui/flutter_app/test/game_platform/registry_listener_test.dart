@@ -65,14 +65,13 @@ void main() {
 class _ListenerModule extends GameModule {
   _ListenerModule(
     this._id, {
-    required int hiveTypeIdMin,
-    required int hiveTypeIdMax,
-  }) : _hiveTypeIdMin = hiveTypeIdMin,
-       _hiveTypeIdMax = hiveTypeIdMax;
+    required this.hiveTypeIdMin,
+    required this.hiveTypeIdMax,
+  });
 
   final GameId _id;
-  final int _hiveTypeIdMin;
-  final int _hiveTypeIdMax;
+  final int hiveTypeIdMin;
+  final int hiveTypeIdMax;
 
   @override
   BoardGeometry get boardGeometry =>
@@ -88,8 +87,8 @@ class _ListenerModule extends GameModule {
   @override
   GamePersistenceScope get persistenceScope => GamePersistenceScope(
     gameId: _id,
-    hiveTypeIdMin: _hiveTypeIdMin,
-    hiveTypeIdMax: _hiveTypeIdMax,
+    hiveTypeIdMin: hiveTypeIdMin,
+    hiveTypeIdMax: hiveTypeIdMax,
   );
 
   @override
