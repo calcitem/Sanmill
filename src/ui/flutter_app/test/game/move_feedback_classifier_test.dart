@@ -173,6 +173,30 @@ void main() {
       );
       expect(result.symbol, MoveFeedbackSymbol.mistake);
     });
+
+    test('missing a faster win while still winning is only dubious', () {
+      final MoveFeedbackResult result = MoveFeedbackClassifier.classify(
+        input(
+          best: 2147483646,
+          loss: 2147483559,
+          evidence: const MoveFeedbackEvidence(
+            phaseTransitionImpact: true,
+            profile: standard,
+          ),
+        ),
+      );
+
+      expect(result.symbol, MoveFeedbackSymbol.dubious);
+      expect(result.reasons, contains(MoveFeedbackReason.preservesResult));
+      expect(
+        result.reasons,
+        contains(MoveFeedbackReason.requiresPreciseFollowUp),
+      );
+      expect(
+        result.reasons,
+        isNot(contains(MoveFeedbackReason.decisiveMaterialLoss)),
+      );
+    });
   });
 
   group('positive suppression and qualification', () {
@@ -447,6 +471,31 @@ void main() {
 
     expect(
       moveFeedbackExactScores(complete, playedMove: 'd6', legalActionCount: 3),
+      isNull,
+    );
+  });
+
+  test('heuristic perfect-database fallback is not treated as exact WDL', () {
+    const tgf.MillAnalysisReport fallback = tgf.MillAnalysisReport(
+      moves: <tgf.MillMoveAnalysis>[
+        tgf.MillMoveAnalysis(
+          mv: 'a7',
+          outcome: 'advantage',
+          value: 3,
+          steps: -1,
+        ),
+        tgf.MillMoveAnalysis(
+          mv: 'd6',
+          outcome: 'disadvantage',
+          value: -2,
+          steps: -1,
+        ),
+      ],
+      traps: <String>[],
+    );
+
+    expect(
+      moveFeedbackExactScores(fallback, playedMove: 'd6', legalActionCount: 2),
       isNull,
     );
   });

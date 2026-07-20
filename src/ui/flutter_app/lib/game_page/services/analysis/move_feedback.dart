@@ -310,6 +310,10 @@ abstract final class MoveFeedbackClassifier {
     final bool scoreEvidenceReliable = _scoreEvidenceReliable(input);
     final bool resultDrop =
         scoreEvidenceReliable && playedWdl.index < bestWdl.index;
+    final bool preservesDeterminedWin =
+        scoreEvidenceReliable &&
+        bestWdl == MoveFeedbackWdl.win &&
+        playedWdl == MoveFeedbackWdl.win;
     final List<MoveFeedbackReason> facts = <MoveFeedbackReason>[];
 
     if (resultDrop) {
@@ -321,7 +325,8 @@ abstract final class MoveFeedbackClassifier {
     }
 
     // Fixed negative priority: WDL drop, ??, ?, then ?!.
-    if (resultDrop || _isBlunder(input, classifiedLoss)) {
+    if (resultDrop ||
+        !preservesDeterminedWin && _isBlunder(input, classifiedLoss)) {
       if (input.evidence.phaseTransitionImpact) {
         facts.add(MoveFeedbackReason.phaseTransitionLoss);
       }
@@ -333,6 +338,20 @@ abstract final class MoveFeedbackClassifier {
         facts.add(MoveFeedbackReason.decisiveMaterialLoss);
       }
       return _result(input, MoveFeedbackSymbol.blunder, facts);
+    }
+
+    // A very large mate-distance or search-bound spread must not turn a move
+    // that still preserves a determined win into a material blunder. It made
+    // the win less direct and may demand precision, so cap it at `?!`.
+    if (preservesDeterminedWin &&
+        classifiedLoss >=
+            MoveQualityThresholds.dubiousMinimum(input.pieceValue)) {
+      facts.add(MoveFeedbackReason.preservesResult);
+      if (input.evidence.phaseTransitionImpact) {
+        facts.add(MoveFeedbackReason.phaseTransitionLoss);
+      }
+      facts.add(MoveFeedbackReason.requiresPreciseFollowUp);
+      return _result(input, MoveFeedbackSymbol.dubious, facts);
     }
 
     if (scoreEvidenceReliable && _isMistake(input, classifiedLoss)) {

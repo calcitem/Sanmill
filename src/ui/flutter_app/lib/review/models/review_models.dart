@@ -13,7 +13,7 @@ import '../../rule_settings/models/rule_settings.dart';
 const int reviewSchemaVersion = 1;
 // Increment whenever grading semantics change so stale annotations are not
 // reused after a classifier update.
-const String reviewEngineVersion = 'tgf-review-v3';
+const String reviewEngineVersion = 'tgf-review-v4';
 
 String _sha256Text(String value) =>
     sha256.convert(utf8.encode(value)).toString();

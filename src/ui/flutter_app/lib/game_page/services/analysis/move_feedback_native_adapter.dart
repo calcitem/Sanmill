@@ -22,6 +22,15 @@ MoveFeedbackExactScores? moveFeedbackExactScores(
   if (report.moves.length != legalActionCount || legalActionCount == 0) {
     return null;
   }
+  // The native API falls back to a shallow heuristic search when no perfect
+  // database row is available. Only canonical WDL rows are exact; treating a
+  // fallback score such as 3 as a database value would scale it to 240 below.
+  if (report.moves.any(
+    (tgf.MillMoveAnalysis move) =>
+        _perfectDatabaseValue(move.outcome) != move.value,
+  )) {
+    return null;
+  }
   final Map<String, int> values = <String, int>{
     for (final tgf.MillMoveAnalysis move in report.moves) move.mv: move.value,
   };
@@ -45,6 +54,13 @@ MoveFeedbackExactScores? moveFeedbackExactScores(
     allCandidatesLosing: bestValue < 0,
   );
 }
+
+int? _perfectDatabaseValue(String outcome) => switch (outcome) {
+  'win' => 1,
+  'draw' => 0,
+  'loss' => -1,
+  _ => null,
+};
 
 /// Converts generated FRB DTOs into the pure Dart classifier model.
 MoveFeedbackEvidence moveFeedbackEvidenceFromNative(

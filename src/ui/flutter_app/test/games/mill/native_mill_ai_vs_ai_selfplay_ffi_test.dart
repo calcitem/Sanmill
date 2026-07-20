@@ -243,6 +243,15 @@ void main() {
               'Ordinary AI self-play review should be at least 80% '
               'unannotated; distribution=$reviewDistribution',
         );
+        expect(
+          review.actions.expand(
+            (ReviewActionEvaluation action) => action.feedbackReasons,
+          ),
+          isNot(contains(MoveFeedbackReason.perfectDatabase)),
+          reason:
+              'A shallow fallback analysis must not masquerade as exact '
+              'perfect-database evidence.',
+        );
         for (final ReviewActionEvaluation action in review.actions.where(
           (ReviewActionEvaluation value) => value.automaticNag != null,
         )) {
