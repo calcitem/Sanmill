@@ -42,6 +42,55 @@ class ReviewAnalysisService {
   int _generation = 0;
   bool _searching = false;
 
+  List<ReviewTurnBoundary> buildTimeline(PrivateGameRecord record) {
+    final PgnGame<PgnNodeData> game = PgnGame.parsePgn(record.sourcePgn);
+    final List<PgnNodeData> groupedMoves = game.moves.mainline().toList();
+    final NativeMillGameSession session = NativeMillGameSession(
+      rules: record.rules,
+      generalSettings: _engineSettings(),
+    );
+    final String setupFen = game.headers['FEN']?.trim() ?? record.initialFen;
+    if (setupFen.isNotEmpty && !session.loadFen(setupFen)) {
+      session.dispose();
+      throw StateError('Review record carries an invalid initial FEN.');
+    }
+
+    final List<ReviewTurnBoundary> turns = <ReviewTurnBoundary>[];
+    int atomicIndex = 0;
+    try {
+      for (int groupIndex = 0; groupIndex < groupedMoves.length; groupIndex++) {
+        final PgnNodeData groupedMove = groupedMoves[groupIndex];
+        final List<String> segments = splitMillSan(groupedMove.san);
+        if (segments.isEmpty) {
+          continue;
+        }
+        final int startAtomicIndex = atomicIndex;
+        final ReviewSide turnSide = _reviewSide(session.state.value.activeSeat);
+        for (final String move in segments) {
+          _applyMove(session, move);
+          atomicIndex++;
+        }
+        turns.add(
+          ReviewTurnBoundary(
+            groupIndex: groupIndex,
+            startAtomicIndex: startAtomicIndex,
+            endAtomicIndex: atomicIndex - 1,
+            san: groupedMove.san,
+            anchorMove: segments.first,
+            side: turnSide,
+            sourceNags: List<int>.unmodifiable(
+              groupedMove.nags ?? const <int>[],
+            ),
+            boardLayout: _boardLayout(session.getFen()),
+          ),
+        );
+      }
+    } finally {
+      session.dispose();
+    }
+    return List<ReviewTurnBoundary>.unmodifiable(turns);
+  }
+
   Future<ReviewReport> analyze(
     PrivateGameRecord record, {
     ReviewProfile profile = ReviewProfile.quick,

@@ -48,6 +48,7 @@ class _ReviewPageState extends State<ReviewPage> {
   late final int _structuralTurnCount;
   late final int _structuralAtomicCount;
   late final int _structuralVariationCount;
+  late final List<ReviewTurnBoundary> _timeline;
 
   ReviewReport? _report;
   Object? _error;
@@ -71,9 +72,14 @@ class _ReviewPageState extends State<ReviewPage> {
     );
     _structuralVariationCount = _countVariations(game.moves);
     _report = widget.initialReport;
+    _timeline = _report != null && _report!.turns.isNotEmpty
+        ? List<ReviewTurnBoundary>.unmodifiable(_report!.turns)
+        : _analysisService.buildTimeline(widget.record);
     _analyzing = widget.autoAnalyze;
     if (_report != null && _report!.turns.isNotEmpty) {
       _selectedGroup = _firstKeyGroup(_report!);
+    } else if (_timeline.isNotEmpty) {
+      _selectedGroup = _timeline.first.groupIndex;
     }
     if (widget.autoAnalyze) {
       unawaited(_runAnalysis());
@@ -116,9 +122,6 @@ class _ReviewPageState extends State<ReviewPage> {
         _report = report;
         _analyzing = false;
         _analysisCancelled = report.status == ReviewStatus.cancelled;
-        if (report.turns.isNotEmpty) {
-          _selectedGroup = _firstKeyGroup(report);
-        }
       });
     } on Object catch (error, stackTrace) {
       if (!mounted || analysisRun != _analysisRun) {
@@ -276,19 +279,24 @@ class _ReviewPageState extends State<ReviewPage> {
                   ],
                 );
               }
-              return ListView(
+              return Column(
                 key: const Key('review_phone_layout'),
-                padding: const EdgeInsets.only(bottom: 24),
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxHeight: 560),
-                      child: board,
+                  Expanded(
+                    flex: 3,
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(
+                          maxWidth: 560,
+                          maxHeight: 560,
+                        ),
+                        child: board,
+                      ),
                     ),
                   ),
                   navigation,
-                  panel,
+                  const Divider(height: 1),
+                  Expanded(flex: 2, child: panel),
                 ],
               );
             },
@@ -300,50 +308,47 @@ class _ReviewPageState extends State<ReviewPage> {
 
   void _selectAdjacentTurn(int offset) {
     assert(offset == -1 || offset == 1);
-    final ReviewReport? report = _report;
-    if (report == null || report.turns.isEmpty) {
+    if (_timeline.isEmpty) {
       return;
     }
-    final int selectedIndex = report.turns.indexWhere(
+    final int selectedIndex = _timeline.indexWhere(
       (ReviewTurnBoundary turn) => turn.groupIndex == _selectedGroup,
     );
     final int currentIndex = selectedIndex < 0 ? 0 : selectedIndex;
     final int targetIndex = (currentIndex + offset).clamp(
       0,
-      report.turns.length - 1,
+      _timeline.length - 1,
     );
     if (targetIndex == currentIndex) {
       return;
     }
-    setState(() => _selectedGroup = report.turns[targetIndex].groupIndex);
+    setState(() => _selectedGroup = _timeline[targetIndex].groupIndex);
   }
 
   void _selectBoundaryTurn({required bool last}) {
-    final ReviewReport? report = _report;
-    if (report == null || report.turns.isEmpty) {
+    if (_timeline.isEmpty) {
       return;
     }
-    final int targetIndex = last ? report.turns.length - 1 : 0;
-    if (_selectedGroup == report.turns[targetIndex].groupIndex) {
+    final int targetIndex = last ? _timeline.length - 1 : 0;
+    if (_selectedGroup == _timeline[targetIndex].groupIndex) {
       return;
     }
-    setState(() => _selectedGroup = report.turns[targetIndex].groupIndex);
+    setState(() => _selectedGroup = _timeline[targetIndex].groupIndex);
   }
 
   Widget _buildTurnNavigation(BuildContext context) {
-    final ReviewReport? report = _report;
-    if (report == null || report.turns.isEmpty) {
+    if (_timeline.isEmpty) {
       return const SizedBox.shrink();
     }
-    final int selectedIndex = report.turns.indexWhere(
+    final int selectedIndex = _timeline.indexWhere(
       (ReviewTurnBoundary turn) => turn.groupIndex == _selectedGroup,
     );
     final int currentIndex = selectedIndex < 0 ? 0 : selectedIndex;
     final S strings = S.of(context);
 
     void selectIndex(int index) {
-      assert(index >= 0 && index < report.turns.length);
-      setState(() => _selectedGroup = report.turns[index].groupIndex);
+      assert(index >= 0 && index < _timeline.length);
+      setState(() => _selectedGroup = _timeline[index].groupIndex);
     }
 
     return Padding(
@@ -376,10 +381,10 @@ class _ReviewPageState extends State<ReviewPage> {
             Semantics(
               label: strings.reviewMoveProgress(
                 currentIndex + 1,
-                report.turns.length,
+                _timeline.length,
               ),
               child: Text(
-                '${currentIndex + 1}/${report.turns.length}',
+                '${currentIndex + 1}/${_timeline.length}',
                 key: const Key('review_turn_progress'),
                 style: Theme.of(context).textTheme.labelLarge,
               ),
@@ -387,7 +392,7 @@ class _ReviewPageState extends State<ReviewPage> {
             IconButton(
               key: const Key('review_next_turn'),
               tooltip: strings.reviewNextMove,
-              onPressed: currentIndex == report.turns.length - 1
+              onPressed: currentIndex == _timeline.length - 1
                   ? null
                   : () => selectIndex(currentIndex + 1),
               icon: Icon(
@@ -398,9 +403,9 @@ class _ReviewPageState extends State<ReviewPage> {
             IconButton(
               key: const Key('review_last_turn'),
               tooltip: strings.reviewLastMove,
-              onPressed: currentIndex == report.turns.length - 1
+              onPressed: currentIndex == _timeline.length - 1
                   ? null
-                  : () => selectIndex(report.turns.length - 1),
+                  : () => selectIndex(_timeline.length - 1),
               icon: Icon(
                 Icons.last_page_rounded,
                 semanticLabel: strings.reviewLastMove,
@@ -415,19 +420,22 @@ class _ReviewPageState extends State<ReviewPage> {
   Widget _buildBoard(BuildContext context) {
     final ReviewReport? report = _report;
     ReviewTurnBoundary? selectedTurn;
-    if (report != null && report.turns.isNotEmpty) {
-      selectedTurn = report.turns.firstWhere(
+    if (_timeline.isNotEmpty) {
+      selectedTurn = _timeline.firstWhere(
         (ReviewTurnBoundary turn) => turn.groupIndex == _selectedGroup,
-        orElse: () => report.turns.first,
+        orElse: () => _timeline.first,
       );
     }
     final String boardLayout =
         selectedTurn?.boardLayout ??
         widget.record.finalBoardLayout ??
         '********/********/********';
-    final int? nag = selectedTurn == null
+    final ReviewReport? completeReport = report?.status == ReviewStatus.complete
+        ? report
+        : null;
+    final int? nag = selectedTurn == null || completeReport == null
         ? null
-        : report!.effectiveQualityNagForTurn(selectedTurn.groupIndex);
+        : completeReport.effectiveQualityNagForTurn(selectedTurn.groupIndex);
     final String? qualityLabel = selectedTurn == null || nag == null
         ? null
         : '${_nagSymbol(nag)} ${_nagLabel(context, nag)}';
@@ -445,10 +453,7 @@ class _ReviewPageState extends State<ReviewPage> {
           showCoordinates: true,
           pieceNumbersByNode: selectedTurn == null
               ? const <int, int>{}
-              : ReviewPieceNumbers.forTurn(
-                  report!.turns,
-                  selectedTurn.groupIndex,
-                ),
+              : ReviewPieceNumbers.forTurn(_timeline, selectedTurn.groupIndex),
         ),
       ),
     );
@@ -458,46 +463,54 @@ class _ReviewPageState extends State<ReviewPage> {
     BuildContext context, {
     required bool useCollapsibleMoveList,
   }) {
-    return ListView(
+    final ReviewReport? completeReport =
+        _report?.status == ReviewStatus.complete ? _report : null;
+    return SingleChildScrollView(
       key: const Key('review_analysis_panel'),
-      shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
-      children: <Widget>[
-        if (_report case final ReviewReport report
-            when report.status == ReviewStatus.complete &&
-                report.turns.isNotEmpty &&
-                report.actions.isNotEmpty)
-          _buildQualityOverview(context, report)
-        else
-          _buildStructureSummary(context),
-        const SizedBox(height: 12),
-        if (_analyzing)
-          _buildProgress(context)
-        else if (_analysisCancelled)
-          _buildCancelled(context)
-        else if (_error != null)
-          _buildError(context)
-        else if (_report case final ReviewReport report) ...<Widget>[
-          if (report.status == ReviewStatus.cancelled)
-            _buildCancelled(context)
-          else if (report.turns.isEmpty || report.actions.isEmpty)
-            Card(child: ListTile(title: Text(S.of(context).noMove)))
-          else ...<Widget>[
-            if (!useCollapsibleMoveList) ...<Widget>[
-              _buildMoveList(context, report),
-              const SizedBox(height: 12),
-            ],
-            _buildSelectedTurnDetail(context, report),
+      child: Column(
+        children: <Widget>[
+          if (completeReport != null &&
+              completeReport.turns.isNotEmpty &&
+              completeReport.actions.isNotEmpty)
+            _buildQualityOverview(context, completeReport)
+          else
+            _buildStructureSummary(context),
+          if (_timeline.isNotEmpty) ...<Widget>[
             const SizedBox(height: 12),
-            _buildCorrection(context, report),
-            if (useCollapsibleMoveList) ...<Widget>[
-              const SizedBox(height: 12),
-              _buildCollapsibleMoveList(context, report),
-            ],
+            if (useCollapsibleMoveList)
+              _buildCollapsibleMoveList(context, completeReport)
+            else
+              _buildMoveList(context, completeReport),
+          ],
+          if (_analyzing) ...<Widget>[
+            const SizedBox(height: 12),
+            _buildProgress(context),
+          ] else if (_analysisCancelled) ...<Widget>[
+            const SizedBox(height: 12),
+            _buildCancelled(context),
+          ] else if (_error != null) ...<Widget>[
+            const SizedBox(height: 12),
+            _buildError(context),
+          ] else if (_report?.status == ReviewStatus.cancelled) ...<Widget>[
+            const SizedBox(height: 12),
+            _buildCancelled(context),
+          ],
+          if (_timeline.isEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: Card(child: ListTile(title: Text(S.of(context).noMove))),
+            )
+          else if (completeReport != null &&
+              completeReport.actions.isNotEmpty) ...<Widget>[
+            const SizedBox(height: 12),
+            _buildSelectedTurnDetail(context, completeReport),
+            const SizedBox(height: 12),
+            _buildCorrection(context, completeReport),
           ],
         ],
-      ],
+      ),
     );
   }
 
@@ -740,7 +753,7 @@ class _ReviewPageState extends State<ReviewPage> {
     );
   }
 
-  Widget _buildMoveList(BuildContext context, ReviewReport report) {
+  Widget _buildMoveList(BuildContext context, ReviewReport? report) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -749,8 +762,8 @@ class _ReviewPageState extends State<ReviewPage> {
     );
   }
 
-  Widget _buildCollapsibleMoveList(BuildContext context, ReviewReport report) {
-    final int selectedIndex = report.turns.indexWhere(
+  Widget _buildCollapsibleMoveList(BuildContext context, ReviewReport? report) {
+    final int selectedIndex = _timeline.indexWhere(
       (ReviewTurnBoundary turn) => turn.groupIndex == _selectedGroup,
     );
     return Card(
@@ -758,7 +771,7 @@ class _ReviewPageState extends State<ReviewPage> {
       child: ExpansionTile(
         title: Text(S.of(context).moves),
         subtitle: Text(
-          '${selectedIndex + 1}/${report.turns.length}',
+          '${selectedIndex + 1}/${_timeline.length}',
           textDirection: TextDirection.ltr,
         ),
         children: <Widget>[
@@ -771,13 +784,13 @@ class _ReviewPageState extends State<ReviewPage> {
     );
   }
 
-  Widget _buildMoveChips(ReviewReport report) {
+  Widget _buildMoveChips(ReviewReport? report) {
     return Wrap(
       key: const Key('review_move_list'),
       spacing: 6,
       runSpacing: 6,
       children: <Widget>[
-        for (final ReviewTurnBoundary turn in report.turns)
+        for (final ReviewTurnBoundary turn in _timeline)
           ChoiceChip(
             key: Key('review_move_${turn.groupIndex}'),
             selected: turn.groupIndex == _selectedGroup,
@@ -1151,7 +1164,10 @@ class _ReviewPageState extends State<ReviewPage> {
     return report.turns.isEmpty ? 0 : report.turns.last.groupIndex;
   }
 
-  String _nagTextForTurn(ReviewReport report, ReviewTurnBoundary turn) {
+  String _nagTextForTurn(ReviewReport? report, ReviewTurnBoundary turn) {
+    if (report == null) {
+      return turn.sourceNags.map(_nagSymbol).join(' ');
+    }
     final List<int> nags = turn.sourceNags
         .where((int nag) => nag < 1 || nag > 6)
         .toList();

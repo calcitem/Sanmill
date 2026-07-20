@@ -79,6 +79,10 @@ void main() {
       await tester.pump();
 
       expect(find.byKey(const Key('review_phone_layout')), findsOneWidget);
+      expect(
+        tester.widget(find.byKey(const Key('review_phone_layout'))),
+        isA<Column>(),
+      );
       expect(find.byKey(const Key('review_wide_layout')), findsNothing);
       expect(find.byKey(const Key('review_quality_overview')), findsOneWidget);
       expect(find.byKey(const Key('review_structure_summary')), findsNothing);
@@ -100,6 +104,37 @@ void main() {
       expect(
         find.byKey(const Key('review_collapsible_move_list')),
         findsOneWidget,
+      );
+      final Rect boardBeforeScroll = tester.getRect(
+        find.byKey(const Key('review_board')),
+      );
+      final Rect navigationBeforeScroll = tester.getRect(
+        find.byKey(const Key('review_turn_navigation')),
+      );
+      await tester.drag(
+        find.byKey(const Key('review_analysis_panel')),
+        const Offset(0, -180),
+      );
+      await tester.pump();
+      expect(
+        tester.getRect(find.byKey(const Key('review_board'))),
+        boardBeforeScroll,
+      );
+      expect(
+        tester.getRect(find.byKey(const Key('review_turn_navigation'))),
+        navigationBeforeScroll,
+      );
+      expect(
+        tester
+            .state<ScrollableState>(
+              find.descendant(
+                of: find.byKey(const Key('review_analysis_panel')),
+                matching: find.byType(Scrollable),
+              ),
+            )
+            .position
+            .pixels,
+        greaterThan(0),
       );
       expect(find.textContaining('%'), findsNothing);
       expect(find.text('Best line: 1. d6xf4 1... b4 2. a1'), findsOneWidget);
@@ -470,6 +505,28 @@ void main() {
     await tester.pump();
 
     expect(find.byKey(const Key('review_analysis_progress')), findsOneWidget);
+    expect(find.byKey(const Key('review_turn_navigation')), findsOneWidget);
+    expect(find.byKey(const Key('review_move_list')), findsOneWidget);
+    expect(
+      tester.widget<Text>(find.byKey(const Key('review_turn_progress'))).data,
+      '1/2',
+    );
+    await tester.tap(find.byKey(const Key('review_next_turn')));
+    await tester.pump();
+    expect(
+      tester.widget<Text>(find.byKey(const Key('review_turn_progress'))).data,
+      '2/2',
+    );
+    final CustomPaint boardPaint = tester.widget<CustomPaint>(
+      find.descendant(
+        of: find.byKey(const Key('review_board')),
+        matching: find.byType(CustomPaint),
+      ),
+    );
+    expect(
+      (boardPaint.painter! as MiniBoardPainter).boardLayout,
+      'O*******/********/@*******',
+    );
     expect(
       tester
           .getSemantics(find.byKey(const Key('review_back')))
@@ -610,6 +667,10 @@ class _PendingReviewAnalysisService extends ReviewAnalysisService {
   final Completer<ReviewReport> _completer = Completer<ReviewReport>();
   PrivateGameRecord? _record;
   int cancelCount = 0;
+
+  @override
+  List<ReviewTurnBoundary> buildTimeline(PrivateGameRecord record) =>
+      _report(record).turns;
 
   @override
   Future<ReviewReport> analyze(
