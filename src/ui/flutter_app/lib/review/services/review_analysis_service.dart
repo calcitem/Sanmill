@@ -3,6 +3,8 @@
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+
 import '../../game_page/services/analysis/move_feedback.dart';
 import '../../game_page/services/analysis/move_feedback_native_adapter.dart';
 import '../../game_page/services/import_export/pgn.dart';
@@ -38,7 +40,10 @@ class ReviewMoveException implements Exception {
 }
 
 class ReviewAnalysisService {
-  ReviewAnalysisService({this._storage = ReviewStorage.instance});
+  ReviewAnalysisService() : _storage = ReviewStorage.instance;
+
+  @visibleForTesting
+  ReviewAnalysisService.forTesting(this._storage);
 
   final ReviewStorage _storage;
   int _generation = 0;

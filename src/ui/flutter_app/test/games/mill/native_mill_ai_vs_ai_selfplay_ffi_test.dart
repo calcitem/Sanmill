@@ -4,6 +4,7 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:sanmill/game_page/services/analysis/move_feedback.dart';
 import 'package:sanmill/game_page/services/analysis/move_feedback_analysis_controller.dart';
 import 'package:sanmill/game_page/services/import_export/pgn.dart';
@@ -13,8 +14,13 @@ import 'package:sanmill/games/mill/mill_constants.dart';
 import 'package:sanmill/games/mill/native_mill_ai_turn_controller.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
+import 'package:sanmill/review/models/review_models.dart';
+import 'package:sanmill/review/services/review_analysis_service.dart';
+import 'package:sanmill/review/services/review_storage.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
+import 'package:sanmill/shared/database/database.dart';
 
+import '../../helpers/mocks/mock_database.dart';
 import '../../helpers/test_native_library.dart';
 
 const GeneralSettings _deterministicAiSettings = GeneralSettings(
@@ -65,10 +71,11 @@ void main() {
 
   setUpAll(initRustLibForTests);
   tearDownAll(disposeRustLibForTests);
+  setUp(() => DB.instance = MockDB());
 
   group('Native Mill AI vs AI self-play FFI', () {
     test(
-      'matches master parity and keeps analyzed feedback sparse',
+      'matches master parity and keeps analysis and review feedback sparse',
       () async {
         final NativeMillGameSession session = NativeMillGameSession(
           rules: _boundedSelfPlayRules,
@@ -183,14 +190,86 @@ void main() {
         );
         expect(
           unannotated * 10,
-          greaterThanOrEqualTo(feedback.length * 7),
+          greaterThanOrEqualTo(feedback.length * 8),
           reason:
-              'Ordinary AI self-play should be at least 70% unannotated; '
+              'Ordinary AI self-play should be at least 80% unannotated; '
               'distribution=$distribution',
         );
+
+        final PrivateGameRecord record = PrivateGameRecord.create(
+          sourcePgn: recorder.moveHistoryTextWithoutVariations,
+          initialFen: null,
+          result: '*',
+          rules: _boundedSelfPlayRules,
+          completedAt: DateTime.utc(2026, 7, 20),
+          white: 'AI 1',
+          black: 'AI 2',
+          humanSides: const <ReviewSide>{},
+          finalBoardLayout: session.getFen().split(RegExp(r'\s+')).first,
+          moveCount: completeTurnNodes.length,
+        );
+        final ReviewAnalysisService reviewService =
+            ReviewAnalysisService.forTesting(
+              ReviewStorage.forTesting(_MemoryBox()),
+            );
+        addTearDown(reviewService.cancel);
+        final ReviewReport review = await reviewService.analyze(
+          record,
+          ignoreCache: true,
+        );
+        final List<int> reviewNags = review.turns
+            .map(
+              (ReviewTurnBoundary turn) =>
+                  review.effectiveQualityNagForTurn(turn.groupIndex),
+            )
+            .whereType<int>()
+            .toList(growable: false);
+        final Map<int, int> reviewDistribution = <int, int>{
+          for (final int nag in <int>[1, 2, 3, 4, 5, 6])
+            nag: reviewNags.where((int value) => value == nag).length,
+        };
+        expect(review.engineVersion, startsWith('$reviewEngineVersion:'));
+        expect(
+          reviewDistribution[3],
+          0,
+          reason:
+              'Quick review has no supplemental brilliant verification; '
+              'distribution=$reviewDistribution',
+        );
+        expect(
+          reviewNags.length * 10,
+          lessThanOrEqualTo(review.turns.length * 2),
+          reason:
+              'Ordinary AI self-play review should be at least 80% '
+              'unannotated; distribution=$reviewDistribution',
+        );
+        for (final ReviewActionEvaluation action in review.actions.where(
+          (ReviewActionEvaluation value) => value.automaticNag != null,
+        )) {
+          expect(
+            action.feedbackReasons,
+            isNotEmpty,
+            reason:
+                'Every automatic review annotation must explain '
+                '${action.move}.',
+          );
+        }
       },
       skip: nativeLibrarySkipReason() != null,
       timeout: const Timeout(Duration(minutes: 2)),
     );
   });
+}
+
+class _MemoryBox extends Fake implements Box<dynamic> {
+  final Map<dynamic, dynamic> _values = <dynamic, dynamic>{};
+
+  @override
+  dynamic get(dynamic key, {dynamic defaultValue}) =>
+      _values[key] ?? defaultValue;
+
+  @override
+  Future<void> put(dynamic key, dynamic value) async {
+    _values[key] = value;
+  }
 }

@@ -45,6 +45,7 @@ import '../../shared/utils/screen_insets.dart';
 import '../../shared/widgets/lichess_action_sheet.dart';
 import '../../shared/widgets/lichess_bottom_bar.dart';
 import '../../shared/widgets/lichess_list_section.dart';
+import '../../shared/widgets/move_feedback_reasons.dart';
 import '../../shared/widgets/quality_annotation_sheet.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../statistics/services/stats_service.dart';
@@ -7102,7 +7103,10 @@ class AnalysisMoveFeedbackCard extends StatelessWidget {
         ? '•'
         : result.symbol.glyph;
     final List<String> reasonLabels = result.reasons
-        .map((MoveFeedbackReason reason) => _reasonLabel(strings, reason))
+        .map(
+          (MoveFeedbackReason reason) =>
+              moveFeedbackReasonLabel(strings, reason),
+        )
         .toList(growable: false);
     final List<String> visibleReasonLabels = reasonLabels.isEmpty
         ? <String>[_symbolLabel(strings, result)]
@@ -7186,11 +7190,16 @@ class AnalysisMoveFeedbackCard extends StatelessWidget {
                       IconButton(
                         key: const Key('play_area_move_feedback_show_reasons'),
                         tooltip: strings.moveFeedbackShowReasons,
-                        onPressed: () => _showReasons(
-                          context,
-                          strings,
-                          result,
-                          reasonLabels,
+                        onPressed: () => unawaited(
+                          showMoveFeedbackReasonsDialog(
+                            context: context,
+                            heading:
+                                '${result.symbol.glyph} '
+                                        '${_symbolLabel(strings, result)}'
+                                    .trim(),
+                            reasons: result.reasons,
+                            reasonKeyPrefix: 'play_area_move_feedback_reason_',
+                          ),
                         ),
                         icon: const Icon(Icons.info_outline),
                       ),
@@ -7232,65 +7241,6 @@ class AnalysisMoveFeedbackCard extends StatelessWidget {
     );
   }
 
-  static void _showReasons(
-    BuildContext context,
-    S strings,
-    MoveFeedbackResult result,
-    List<String> reasonLabels,
-  ) {
-    unawaited(
-      showDialog<void>(
-        context: context,
-        builder: (BuildContext dialogContext) => AlertDialog(
-          title: Text(strings.moveFeedbackReasonsTitle),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  '${result.symbol.glyph} ${_symbolLabel(strings, result)}'
-                      .trim(),
-                  style: Theme.of(dialogContext).textTheme.titleSmall,
-                ),
-                const SizedBox(height: 12),
-                for (int index = 0; index < result.reasons.length; index++)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        const Padding(
-                          padding: EdgeInsets.only(top: 2),
-                          child: Icon(Icons.check_circle_outline, size: 18),
-                        ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            reasonLabels[index],
-                            key: Key(
-                              'play_area_move_feedback_reason_'
-                              '${result.reasons[index].name}',
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text(strings.close),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   static String _symbolLabel(S strings, MoveFeedbackResult result) {
     return switch (result.symbol) {
       MoveFeedbackSymbol.brilliant => strings.moveFeedbackBrilliant,
@@ -7302,95 +7252,7 @@ class AnalysisMoveFeedbackCard extends StatelessWidget {
       MoveFeedbackSymbol.none =>
         result.reasons.isEmpty
             ? strings.moveFeedbackRegularBest
-            : _reasonLabel(strings, result.reasons.first),
-    };
-  }
-
-  static String _reasonLabel(S strings, MoveFeedbackReason reason) {
-    return switch (reason) {
-      MoveFeedbackReason.regularBest => strings.moveFeedbackRegularBest,
-      MoveFeedbackReason.forcedMove => strings.moveFeedbackForcedMove,
-      MoveFeedbackReason.onlyCorrectMove => strings.moveFeedbackOnlyCorrect,
-      MoveFeedbackReason.equivalentChoice =>
-        strings.moveFeedbackEquivalentChoice,
-      MoveFeedbackReason.insufficientEvidence =>
-        strings.moveFeedbackInsufficientEvidence,
-      MoveFeedbackReason.engineEstimate => strings.moveFeedbackEngineEstimate,
-      MoveFeedbackReason.perfectDatabase => strings.moveFeedbackPerfectDatabase,
-      MoveFeedbackReason.preservesResult => strings.moveFeedbackPreservesResult,
-      MoveFeedbackReason.losesWinningResult =>
-        strings.moveFeedbackLosesWinningResult,
-      MoveFeedbackReason.losesDrawingResult =>
-        strings.moveFeedbackLosesDrawingResult,
-      MoveFeedbackReason.decisiveMaterialLoss =>
-        strings.moveFeedbackDecisiveMaterialLoss,
-      MoveFeedbackReason.missesImmediateRuleReward =>
-        strings.moveFeedbackMissesImmediateReward,
-      MoveFeedbackReason.directRuleReward =>
-        strings.moveFeedbackDirectRuleReward,
-      MoveFeedbackReason.routineConversion =>
-        strings.moveFeedbackRoutineConversion,
-      MoveFeedbackReason.naturalConversion =>
-        strings.moveFeedbackNaturalConversion,
-      MoveFeedbackReason.selectsCriticalCaptureTarget =>
-        strings.moveFeedbackCriticalCapture,
-      MoveFeedbackReason.allowsOpponentRuleReward =>
-        strings.moveFeedbackAllowsOpponentReward,
-      MoveFeedbackReason.selfBlock => strings.moveFeedbackSelfBlock,
-      MoveFeedbackReason.preservesInitiative =>
-        strings.moveFeedbackPreservesInitiative,
-      MoveFeedbackReason.forcesResponses => strings.moveFeedbackForcesResponses,
-      MoveFeedbackReason.avoidsDeadPlacement =>
-        strings.moveFeedbackAvoidsDeadPlacement,
-      MoveFeedbackReason.improvesTopologyControl =>
-        strings.moveFeedbackImprovesTopologyControl,
-      MoveFeedbackReason.preservesMobility =>
-        strings.moveFeedbackPreservesMobility,
-      MoveFeedbackReason.createsHerdingNet =>
-        strings.moveFeedbackCreatesHerdingNet,
-      MoveFeedbackReason.escapesHerding => strings.moveFeedbackEscapesHerding,
-      MoveFeedbackReason.createsReusableMill =>
-        strings.moveFeedbackCreatesReusableMill,
-      MoveFeedbackReason.createsEntwinedMills =>
-        strings.moveFeedbackCreatesEntwinedMills,
-      MoveFeedbackReason.createsIndependentMills =>
-        strings.moveFeedbackCreatesIndependentMills,
-      MoveFeedbackReason.createsFeeder => strings.moveFeedbackCreatesFeeder,
-      MoveFeedbackReason.nullifiesOpponentMill =>
-        strings.moveFeedbackNullifiesOpponentMill,
-      MoveFeedbackReason.recognizesRedundantMill =>
-        strings.moveFeedbackRecognizesRedundantMill,
-      MoveFeedbackReason.allowsConstrainedMill =>
-        strings.moveFeedbackAllowsConstrainedMill,
-      MoveFeedbackReason.abandonsMillForMobility =>
-        strings.moveFeedbackAbandonsMillForMobility,
-      MoveFeedbackReason.sacrificesMillForHigherOrderThreat =>
-        strings.moveFeedbackSacrificesMill,
-      MoveFeedbackReason.avoidsPrematureFlyingTransition =>
-        strings.moveFeedbackAvoidsPrematureFlying,
-      MoveFeedbackReason.usesFlyingTransition => strings.moveFeedbackUsesFlying,
-      MoveFeedbackReason.createsZugzwang => strings.moveFeedbackCreatesZugzwang,
-      MoveFeedbackReason.preservesDrawCycle =>
-        strings.moveFeedbackPreservesDrawCycle,
-      MoveFeedbackReason.breaksOpponentDrawResource =>
-        strings.moveFeedbackBreaksDrawResource,
-      MoveFeedbackReason.createsPracticalChances =>
-        strings.moveFeedbackPracticalChances,
-      MoveFeedbackReason.requiresPreciseFollowUp =>
-        strings.moveFeedbackPreciseFollowUp,
-      MoveFeedbackReason.mobilityLoss => strings.moveFeedbackMobilityLoss,
-      MoveFeedbackReason.phaseTransitionLoss =>
-        strings.moveFeedbackPhaseTransitionLoss,
-      MoveFeedbackReason.terminalRuleLoss =>
-        strings.moveFeedbackTerminalRuleLoss,
-      MoveFeedbackReason.compensatedConcession =>
-        strings.moveFeedbackCompensatedConcession,
-      MoveFeedbackReason.defersOpportunity =>
-        strings.moveFeedbackDefersOpportunity,
-      MoveFeedbackReason.replacesOpportunity =>
-        strings.moveFeedbackReplacesOpportunity,
-      MoveFeedbackReason.ruleStrategyUnavailable =>
-        strings.moveFeedbackRuleStrategyUnavailable,
+            : moveFeedbackReasonLabel(strings, result.reasons.first),
     };
   }
 }

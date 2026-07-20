@@ -7,10 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../game_page/services/analysis/move_feedback.dart';
 import '../../game_page/services/import_export/pgn.dart';
 import '../../game_page/widgets/mini_board.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/services/logger.dart';
+import '../../shared/widgets/move_feedback_reasons.dart';
 import '../../shared/widgets/quality_annotation_sheet.dart';
 import '../models/review_models.dart';
 import '../services/review_analysis_service.dart';
@@ -814,9 +816,20 @@ class _ReviewPageState extends State<ReviewPage> {
     );
     final ReviewGrade grade = report.gradeForTurn(turn.groupIndex);
     final int? nag = report.effectiveQualityNagForTurn(turn.groupIndex);
-    final Iterable<ReviewActionEvaluation> actions = report.actions.where(
-      (ReviewActionEvaluation action) => action.groupIndex == turn.groupIndex,
-    );
+    final List<ReviewActionEvaluation> actions = report.actions
+        .where(
+          (ReviewActionEvaluation action) =>
+              action.groupIndex == turn.groupIndex,
+        )
+        .toList(growable: false);
+    final List<MoveFeedbackReason> feedbackReasons = report
+        .effectiveFeedbackReasonsForTurn(turn.groupIndex);
+    final List<String> feedbackReasonLabels = feedbackReasons
+        .map(
+          (MoveFeedbackReason reason) =>
+              moveFeedbackReasonLabel(strings, reason),
+        )
+        .toList(growable: false);
     final bool isDeep = actions.every(
       (ReviewActionEvaluation action) => action.profile == ReviewProfile.deep,
     );
@@ -850,6 +863,39 @@ class _ReviewPageState extends State<ReviewPage> {
                 ),
               ],
             ),
+            if (feedbackReasonLabels.isNotEmpty) ...<Widget>[
+              const SizedBox(height: 4),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      strings.moveFeedbackReasonsSummary(
+                        feedbackReasonLabels.take(2).join(' · '),
+                      ),
+                      key: const Key('review_move_feedback_reasons'),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  IconButton(
+                    key: const Key('review_move_feedback_show_reasons'),
+                    tooltip: strings.moveFeedbackShowReasons,
+                    onPressed: () => unawaited(
+                      showMoveFeedbackReasonsDialog(
+                        context: context,
+                        heading: nag == null
+                            ? _gradeLabel(context, grade)
+                            : '${_nagSymbol(nag)} ${_nagLabel(context, nag)}',
+                        reasons: feedbackReasons,
+                        reasonKeyPrefix: 'review_move_feedback_reason_',
+                      ),
+                    ),
+                    icon: const Icon(Icons.info_outline),
+                  ),
+                ],
+              ),
+            ],
             const SizedBox(height: 8),
             Text(
               strings.reviewBestLine(

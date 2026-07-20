@@ -122,6 +122,43 @@ void main() {
       expect(report.effectiveQualityNagForTurn(2), isNull);
     });
 
+    test('exposes reasons only for the effective automatic annotation', () {
+      final ReviewReport automatic = _report(
+        grades: const <ReviewGrade>[ReviewGrade.mistake],
+        automaticNags: const <int?>[2],
+        feedbackReasons: const <List<MoveFeedbackReason>>[
+          <MoveFeedbackReason>[
+            MoveFeedbackReason.losesWinningResult,
+            MoveFeedbackReason.decisiveMaterialLoss,
+          ],
+        ],
+      );
+
+      expect(automatic.effectiveFeedbackReasonsForTurn(0), <MoveFeedbackReason>[
+        MoveFeedbackReason.losesWinningResult,
+        MoveFeedbackReason.decisiveMaterialLoss,
+      ]);
+      expect(
+        automatic
+            .copyWith(userNagOverrides: const <int, int?>{0: 4})
+            .effectiveFeedbackReasonsForTurn(0),
+        isEmpty,
+      );
+      expect(
+        _report(
+          grades: const <ReviewGrade>[ReviewGrade.mistake],
+          sourceNags: const <List<int>>[
+            <int>[2],
+          ],
+          automaticNags: const <int?>[2],
+          feedbackReasons: const <List<MoveFeedbackReason>>[
+            <MoveFeedbackReason>[MoveFeedbackReason.losesWinningResult],
+          ],
+        ).effectiveFeedbackReasonsForTurn(0),
+        isEmpty,
+      );
+    });
+
     test('counts move quality once per complete turn for each side', () {
       final ReviewReport base = _report(
         grades: const <ReviewGrade>[
@@ -269,6 +306,8 @@ ReviewReport _report({
   required List<ReviewGrade> grades,
   List<bool>? human,
   List<List<int>>? sourceNags,
+  List<int?>? automaticNags,
+  List<List<MoveFeedbackReason>>? feedbackReasons,
   Map<int, int?> overrides = const <int, int?>{},
   bool includeAnnotationsOnExport = false,
 }) {
@@ -287,6 +326,9 @@ ReviewReport _report({
         loss: 10,
         grade: grades[index],
         profile: ReviewProfile.quick,
+        automaticNag: automaticNags?[index],
+        feedbackReasons:
+            feedbackReasons?[index] ?? const <MoveFeedbackReason>[],
         candidates: <ReviewCandidate>[
           ReviewCandidate(
             rank: 1,

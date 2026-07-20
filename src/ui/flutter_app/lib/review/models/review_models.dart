@@ -11,7 +11,9 @@ import '../../game_page/services/analysis/move_feedback.dart';
 import '../../rule_settings/models/rule_settings.dart';
 
 const int reviewSchemaVersion = 1;
-const String reviewEngineVersion = 'tgf-review-v2';
+// Increment whenever grading semantics change so stale annotations are not
+// reused after a classifier update.
+const String reviewEngineVersion = 'tgf-review-v3';
 
 String _sha256Text(String value) =>
     sha256.convert(utf8.encode(value)).toString();
@@ -493,6 +495,39 @@ class ReviewReport {
       return automaticNags.reduce(_moreSevereNag);
     }
     return automaticNagForGrade(gradeForTurn(groupIndex));
+  }
+
+  List<MoveFeedbackReason> effectiveFeedbackReasonsForTurn(int groupIndex) {
+    if (userNagOverrides.containsKey(groupIndex)) {
+      return const <MoveFeedbackReason>[];
+    }
+    final ReviewTurnBoundary turn = turns.firstWhere(
+      (ReviewTurnBoundary value) => value.groupIndex == groupIndex,
+    );
+    if (turn.sourceNags.any((int nag) => nag >= 1 && nag <= 6)) {
+      return const <MoveFeedbackReason>[];
+    }
+    final List<ReviewActionEvaluation> grouped = actions
+        .where(
+          (ReviewActionEvaluation action) => action.groupIndex == groupIndex,
+        )
+        .toList(growable: false);
+    final List<int> automaticNags = grouped
+        .map((ReviewActionEvaluation action) => action.automaticNag)
+        .whereType<int>()
+        .toList(growable: false);
+    if (automaticNags.isEmpty) {
+      return const <MoveFeedbackReason>[];
+    }
+    final int effectiveNag = automaticNags.reduce(_moreSevereNag);
+    final LinkedHashSet<MoveFeedbackReason> reasons =
+        LinkedHashSet<MoveFeedbackReason>();
+    for (final ReviewActionEvaluation action in grouped) {
+      if (action.automaticNag == effectiveNag) {
+        reasons.addAll(action.feedbackReasons);
+      }
+    }
+    return List<MoveFeedbackReason>.unmodifiable(reasons);
   }
 
   ReviewReport copyWith({

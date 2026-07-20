@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:sanmill/appearance_settings/models/display_settings.dart';
+import 'package:sanmill/game_page/services/analysis/move_feedback.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
 import 'package:sanmill/game_page/widgets/mini_board.dart';
@@ -393,6 +394,45 @@ void main() {
     expect(find.text('a7!! · Mistake'), findsOneWidget);
   });
 
+  testWidgets('selected review turn exposes every automatic feedback reason', (
+    WidgetTester tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1024, 768));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(_reviewApp());
+    await tester.pump();
+
+    await tester.dragUntilVisible(
+      find.byKey(const Key('review_move_feedback_show_reasons')),
+      find.byKey(const Key('review_analysis_panel')),
+      const Offset(0, -180),
+    );
+    expect(
+      find.byKey(const Key('review_move_feedback_reasons')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('review_move_feedback_show_reasons')),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+
+    expect(find.text('Why this move received this feedback'), findsOneWidget);
+    expect(
+      find.byKey(const Key('review_move_feedback_reason_losesWinningResult')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('review_move_feedback_reason_decisiveMaterialLoss')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('review_move_feedback_reason_terminalRuleLoss')),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('review export presents explicit copy and share actions', (
     WidgetTester tester,
   ) async {
@@ -621,6 +661,12 @@ ReviewReport _report(
               side: ReviewSide.white,
               human: true,
               grade: ReviewGrade.mistake,
+              automaticNag: 2,
+              feedbackReasons: const <MoveFeedbackReason>[
+                MoveFeedbackReason.losesWinningResult,
+                MoveFeedbackReason.decisiveMaterialLoss,
+                MoveFeedbackReason.terminalRuleLoss,
+              ],
             ),
             _action(
               index: 1,
@@ -716,6 +762,8 @@ ReviewActionEvaluation _action({
   required ReviewSide side,
   required bool human,
   required ReviewGrade grade,
+  int? automaticNag,
+  List<MoveFeedbackReason> feedbackReasons = const <MoveFeedbackReason>[],
 }) => ReviewActionEvaluation(
   atomicIndex: index,
   groupIndex: index,
@@ -728,6 +776,8 @@ ReviewActionEvaluation _action({
   loss: grade == ReviewGrade.mistake ? 10 : 2,
   grade: grade,
   profile: ReviewProfile.quick,
+  automaticNag: automaticNag,
+  feedbackReasons: feedbackReasons,
   candidates: <ReviewCandidate>[
     const ReviewCandidate(
       rank: 1,
