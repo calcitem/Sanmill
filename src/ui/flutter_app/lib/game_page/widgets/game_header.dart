@@ -111,12 +111,12 @@ class _GameHeaderState extends State<GameHeader> {
   }
 }
 
-/// A compact, accessible speech bubble for a contextual game tip.
+/// A compact, accessible contextual game tip.
 ///
-/// The surrounding player row supplies the avatar, so this widget deliberately
-/// focuses on the message. Long opening names and rule-specific guidance stay
-/// available through the standard long-press tooltip instead of forcing the
-/// board layout to grow.
+/// The surrounding player row supplies the avatar. The tip stays visually
+/// integrated with the board by using the same foreground as its player labels
+/// without adding a separate background strip. Long opening names and
+/// rule-specific guidance remain available through the standard tooltip.
 class GameTipBubble extends StatelessWidget {
   const GameTipBubble({super.key, required this.message, this.maxLines = 2})
     : assert(maxLines > 0, 'Game-tip bubbles need at least one line.');
@@ -126,13 +126,14 @@ class GameTipBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final Color contentColor = DB().colorSettings.messageColor.withValues(
+      alpha: 0.78,
+    );
     final TextStyle textStyle =
-        Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: colorScheme.onSecondaryContainer,
-          height: 1.15,
-        ) ??
-        TextStyle(color: colorScheme.onSecondaryContainer, height: 1.15);
+        Theme.of(
+          context,
+        ).textTheme.bodySmall?.copyWith(color: contentColor, height: 1.15) ??
+        TextStyle(color: contentColor, height: 1.15);
 
     return Semantics(
       container: true,
@@ -144,49 +145,42 @@ class GameTipBubble extends StatelessWidget {
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               // A very narrow side panel cannot show a meaningful tip. Hide
-              // the visual bubble rather than overflowing the board layout;
+              // the visual message rather than overflowing the board layout;
               // the live-region label remains available to assistive tech.
               if (constraints.hasBoundedWidth && constraints.maxWidth < 48) {
                 return const SizedBox.shrink();
               }
               final bool compact =
                   constraints.hasBoundedWidth && constraints.maxWidth < 84;
-              return DecoratedBox(
-                decoration: BoxDecoration(
-                  color: colorScheme.secondaryContainer,
-                  border: Border.all(color: colorScheme.outlineVariant),
-                  borderRadius: BorderRadius.circular(AppTheme.boardMargin),
+              return Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: compact ? 4 : 8,
+                  vertical: 5,
                 ),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: compact ? 4 : 8,
-                    vertical: 5,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      if (!compact) ...<Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(top: 1),
-                          child: Icon(
-                            Icons.chat_bubble_outline,
-                            size: 14,
-                            color: colorScheme.onSecondaryContainer,
-                          ),
-                        ),
-                        const SizedBox(width: 5),
-                      ],
-                      Flexible(
-                        child: Text(
-                          message,
-                          maxLines: maxLines,
-                          overflow: TextOverflow.ellipsis,
-                          style: textStyle,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    if (!compact) ...<Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 1),
+                        child: Icon(
+                          Icons.chat_bubble_outline,
+                          size: 14,
+                          color: contentColor,
                         ),
                       ),
+                      const SizedBox(width: 5),
                     ],
-                  ),
+                    Flexible(
+                      child: Text(
+                        message,
+                        maxLines: maxLines,
+                        overflow: TextOverflow.ellipsis,
+                        style: textStyle,
+                      ),
+                    ),
+                  ],
                 ),
               );
             },

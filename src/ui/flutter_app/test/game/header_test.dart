@@ -5,6 +5,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/appearance_settings/models/color_settings.dart';
 import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
@@ -68,6 +69,7 @@ void main() {
     testWidgets("GameTipBubble bounds a long tip on narrow widths", (
       WidgetTester tester,
     ) async {
+      DB.instance = MockDB();
       const String message =
           'Opening: Very long guidance that must remain inside the player row';
 
@@ -85,6 +87,37 @@ void main() {
         lessThanOrEqualTo(140),
       );
       expect(tester.takeException(), isNull);
+    });
+
+    testWidgets("GameTipBubble uses the transparent board-label style", (
+      WidgetTester tester,
+    ) async {
+      const Color messageColor = Color(0xFF2468AC);
+      final MockDB db = MockDB();
+      db.colorSettings = const ColorSettings(messageColor: messageColor);
+      DB.instance = db;
+
+      await tester.pumpWidget(
+        makeTestableWidget(
+          const Center(child: GameTipBubble(message: 'White to move')),
+        ),
+      );
+
+      final Finder tip = find.byType(GameTipBubble);
+      final Text text = tester.widget<Text>(find.text('White to move'));
+      final Icon icon = tester.widget<Icon>(
+        find.descendant(
+          of: tip,
+          matching: find.byIcon(Icons.chat_bubble_outline),
+        ),
+      );
+      final Color expectedColor = messageColor.withValues(alpha: 0.78);
+      expect(text.style?.color, expectedColor);
+      expect(icon.color, expectedColor);
+      expect(
+        find.descendant(of: tip, matching: find.byType(DecoratedBox)),
+        findsNothing,
+      );
     });
 
     testWidgets("HeaderTipNotifier normalizes unsafe punctuation", (
