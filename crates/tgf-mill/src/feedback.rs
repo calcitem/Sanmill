@@ -282,9 +282,16 @@ pub fn assess_move_feedback(
         .iter()
         .find(|candidate| candidate.actions == played_actions)
         .map(|candidate| candidate.score);
-    let near_best =
-        matches!((best_score, played_score), (Some(best), Some(played)) if best - played <= 3);
-    let missed_opportunity = best_reward > played_reward;
+    let score_loss = match (best_score, played_score) {
+        (Some(best), Some(played)) => best.saturating_sub(played).max(0),
+        _ => i32::MAX,
+    };
+    let near_best = score_loss <= 1;
+    let foregone_immediate_reward = best_reward > played_reward;
+    // Immediate reward is only a verified miss when the completed-turn score
+    // also loses about one piece. Recovery and higher-order compensation need
+    // deeper reply analysis and must not be inferred from a one-ply replay.
+    let missed_opportunity = foregone_immediate_reward && score_loss >= 5;
     let context = MoveContextAssessment {
         forced: root_legal == 1,
         equivalent,
@@ -293,21 +300,18 @@ pub fn assess_move_feedback(
         created_opportunity: played.evidence.removal_rights_created > 0
             || played.evidence.actual_special_capture,
         missed_opportunity,
-        deferred_opportunity: missed_opportunity && near_best,
-        replaced_opportunity: missed_opportunity
-            && matches!((best_score, played_score), (Some(best), Some(played)) if played >= best),
+        deferred_opportunity: false,
+        replaced_opportunity: foregone_immediate_reward && score_loss == 0,
         compensated_concession: (played.evidence.mover_board_loss > 0
             || played.evidence.mover_hand_loss > 0)
             && near_best,
-        initiative_swing: played.evidence.legal_replies_after > 0
-            && played.evidence.legal_replies_after <= 2
+        initiative_swing: played.evidence.legal_replies_after == 1
             && played.evidence.side_after != played.evidence.side_before,
-        mobility_swing: played.evidence.mobility_delta.abs() >= 2,
+        mobility_swing: played.evidence.mobility_delta.abs() >= 4,
         phase_transition_impact: played.evidence.phase_transition
             || played.evidence.entered_flying
             || played.evidence.opponent_entered_flying,
-        draw_resource_impact: played.evidence.outcome_after == "draw"
-            || played.evidence.draw_counter_delta != 1,
+        draw_resource_impact: is_verified_draw_resource(&played.evidence),
     };
 
     MillFeedbackReport {
@@ -315,6 +319,14 @@ pub fn assess_move_feedback(
         evidence: played.evidence,
         context,
     }
+}
+
+fn is_verified_draw_resource(evidence: &MillFeedbackEvidence) -> bool {
+    evidence.outcome_after == "draw"
+        && matches!(
+            evidence.outcome_reason_after.as_str(),
+            "drawThreefoldRepetition" | "drawFiftyMove" | "drawEndgameFiftyMove"
+        )
 }
 
 fn immediate_reward(evidence: &MillFeedbackEvidence) -> u16 {
@@ -622,6 +634,43 @@ mod tests {
         assert!(report.evidence.formed_mill_with_reward);
         assert_eq!(report.evidence.opponent_board_loss, 1);
         assert!(report.context.routine_gain);
+        assert!(
+            !report.context.draw_resource_impact,
+            "resetting the inactivity counter after a capture is not a draw resource"
+        );
         assert_eq!(report.evidence.action_kinds, ["place", "remove"]);
+    }
+
+    #[test]
+    fn near_best_move_is_not_a_missed_reward_without_material_scale_loss() {
+        let rules = MillRules::default();
+        let mut root = rules.initial_state(&[]);
+        for to in [7, 8, 0, 9] {
+            let action = legal_to(&rules, &root, to);
+            root = rules.apply(&root, action);
+        }
+
+        let mill = legal_to(&rules, &root, 1);
+        let pending = rules.apply(&root, mill);
+        let remove = legal_to(&rules, &pending, 8);
+        let quiet = legal_to(&rules, &root, 2);
+        let report = assess_move_feedback(
+            &rules,
+            root,
+            &[quiet],
+            &[
+                MillFeedbackCandidate {
+                    actions: vec![mill, remove],
+                    score: 5,
+                },
+                MillFeedbackCandidate {
+                    actions: vec![quiet],
+                    score: 4,
+                },
+            ],
+        );
+
+        assert!(!report.context.missed_opportunity);
+        assert!(!report.context.deferred_opportunity);
     }
 }

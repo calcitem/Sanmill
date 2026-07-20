@@ -6871,5 +6871,11 @@
     "moveFeedbackReplacesOpportunity": "以等价或更高收益替代眼前收益",
     "@moveFeedbackReplacesOpportunity": {},
     "moveFeedbackRuleStrategyUnavailable": "当前棋规缺少专属战略证据",
-    "@moveFeedbackRuleStrategyUnavailable": {}
+    "@moveFeedbackRuleStrategyUnavailable": {},
+    "moveFeedbackReasonsSummary": "原因：{reasons}",
+    "@moveFeedbackReasonsSummary": {},
+    "moveFeedbackShowReasons": "查看全部原因",
+    "@moveFeedbackShowReasons": {},
+    "moveFeedbackReasonsTitle": "这步棋为何得到此反馈",
+    "@moveFeedbackReasonsTitle": {}
 }

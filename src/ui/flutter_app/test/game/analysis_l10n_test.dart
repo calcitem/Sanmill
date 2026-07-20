@@ -26,6 +26,9 @@ void main() {
       expect(strings.moveFeedbackBrilliant, '妙着');
       expect(strings.moveFeedbackScoreDifference(8), '分差：8');
       expect(strings.moveFeedbackRuleStrategyUnavailable, '当前棋规缺少专属战略证据');
+      expect(strings.moveFeedbackReasonsSummary('保持当前结果'), '原因：保持当前结果');
+      expect(strings.moveFeedbackShowReasons, '查看全部原因');
+      expect(strings.moveFeedbackReasonsTitle, '这步棋为何得到此反馈');
     },
   );
 }

@@ -6938,5 +6938,11 @@
     "moveFeedbackReplacesOpportunity": "Replaces the immediate gain with an equal or greater one",
     "@moveFeedbackReplacesOpportunity": {},
     "moveFeedbackRuleStrategyUnavailable": "Strategy-specific evidence is unavailable for these rules",
-    "@moveFeedbackRuleStrategyUnavailable": {}
+    "@moveFeedbackRuleStrategyUnavailable": {},
+    "moveFeedbackReasonsSummary": "Reasons: {reasons}",
+    "@moveFeedbackReasonsSummary": {},
+    "moveFeedbackShowReasons": "Show all reasons",
+    "@moveFeedbackShowReasons": {},
+    "moveFeedbackReasonsTitle": "Why this move received this feedback",
+    "@moveFeedbackReasonsTitle": {}
 }

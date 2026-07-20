@@ -114,6 +114,11 @@ abstract final class MoveQualityThresholds {
 
   static int blunderMinimum([int pieceValue = defaultPieceValue]) =>
       pieceValue * 3;
+
+  /// Conservative allowance for short, time-bounded engine MultiPV noise.
+  /// Exact database scores continue to use the normalized bands directly.
+  static int engineNoiseAllowance([int pieceValue = defaultPieceValue]) =>
+      pieceValue * 2;
 }
 
 enum MoveFeedbackWdl { loss, draw, win }
@@ -221,6 +226,7 @@ class MoveFeedbackInput {
     this.naturalRepliesLosing,
     this.playedTrapScore,
     this.calmTrapScore,
+    this.brilliantVerificationComplete = false,
     this.strategicReasons = const <MoveFeedbackReason>{},
     this.pieceValue = MoveQualityThresholds.defaultPieceValue,
   });
@@ -240,6 +246,9 @@ class MoveFeedbackInput {
   final int? naturalRepliesLosing;
   final int? playedTrapScore;
   final int? calmTrapScore;
+
+  /// Whether a supplementary reply search verified the brilliant mechanism.
+  final bool brilliantVerificationComplete;
   final Set<MoveFeedbackReason> strategicReasons;
   final int pieceValue;
   final MoveFeedbackEvidence evidence;
@@ -294,10 +303,13 @@ class MoveFeedbackResult {
 
 abstract final class MoveFeedbackClassifier {
   static MoveFeedbackResult classify(MoveFeedbackInput input) {
-    final int loss = input.loss;
-    final MoveFeedbackWdl bestWdl = _wdl(input.bestScore, input.source);
-    final MoveFeedbackWdl playedWdl = _wdl(input.playedScore, input.source);
-    final bool resultDrop = playedWdl.index < bestWdl.index;
+    final int rawLoss = input.loss;
+    final int classifiedLoss = _classifiedLoss(input);
+    final MoveFeedbackWdl bestWdl = _wdl(input.bestScore);
+    final MoveFeedbackWdl playedWdl = _wdl(input.playedScore);
+    final bool scoreEvidenceReliable = _scoreEvidenceReliable(input);
+    final bool resultDrop =
+        scoreEvidenceReliable && playedWdl.index < bestWdl.index;
     final List<MoveFeedbackReason> facts = <MoveFeedbackReason>[];
 
     if (resultDrop) {
@@ -309,20 +321,21 @@ abstract final class MoveFeedbackClassifier {
     }
 
     // Fixed negative priority: WDL drop, ??, ?, then ?!.
-    if (resultDrop || _isBlunder(input, loss)) {
+    if (resultDrop || _isBlunder(input, classifiedLoss)) {
       if (input.evidence.phaseTransitionImpact) {
         facts.add(MoveFeedbackReason.phaseTransitionLoss);
       }
       if (input.evidence.outcomeReasonAfter != 'ongoing') {
         facts.add(MoveFeedbackReason.terminalRuleLoss);
       }
-      if (loss >= MoveQualityThresholds.blunderMinimum(input.pieceValue)) {
+      if (classifiedLoss >=
+          MoveQualityThresholds.blunderMinimum(input.pieceValue)) {
         facts.add(MoveFeedbackReason.decisiveMaterialLoss);
       }
       return _result(input, MoveFeedbackSymbol.blunder, facts);
     }
 
-    if (_isMistake(input, loss)) {
+    if (scoreEvidenceReliable && _isMistake(input, classifiedLoss)) {
       facts.add(
         input.evidence.missedOpportunity
             ? MoveFeedbackReason.missesImmediateRuleReward
@@ -333,7 +346,7 @@ abstract final class MoveFeedbackClassifier {
       return _result(input, MoveFeedbackSymbol.mistake, facts);
     }
 
-    if (_isDubious(input, loss)) {
+    if (scoreEvidenceReliable && _isDubious(input, classifiedLoss)) {
       facts.add(
         input.evidence.deferredOpportunity
             ? MoveFeedbackReason.defersOpportunity
@@ -350,7 +363,7 @@ abstract final class MoveFeedbackClassifier {
         !input.evidence.routineGain;
     final bool topCandidate =
         input.playedRank == 1 &&
-        loss <= MoveQualityThresholds.bestMaximum(input.pieceValue);
+        rawLoss <= MoveQualityThresholds.bestMaximum(input.pieceValue);
     final int? runnerUpScore = input.runnerUpScore;
     final int alternativeGap = runnerUpScore == null
         ? 0
@@ -450,6 +463,9 @@ abstract final class MoveFeedbackClassifier {
 
   static bool _isBlunder(MoveFeedbackInput input, int loss) {
     if (loss >= MoveQualityThresholds.blunderMinimum(input.pieceValue)) {
+      if (!_scoreEvidenceReliable(input)) {
+        return false;
+      }
       if (input.allCandidatesLosing) {
         return input.evidence.moverBoardLoss >= 2 ||
             input.evidence.outcomeReasonAfter != 'ongoing';
@@ -461,47 +477,34 @@ abstract final class MoveFeedbackClassifier {
   }
 
   static bool _isMistake(MoveFeedbackInput input, int loss) {
-    if (loss >= MoveQualityThresholds.mistakeMinimum(input.pieceValue)) {
-      return true;
-    }
-    return input.evidence.missedOpportunity &&
-        !input.evidence.deferredOpportunity &&
-        !input.evidence.replacedOpportunity &&
-        !input.evidence.compensatedConcession;
+    return loss >= MoveQualityThresholds.mistakeMinimum(input.pieceValue);
   }
 
   static bool _isDubious(MoveFeedbackInput input, int loss) {
-    return loss >= MoveQualityThresholds.dubiousMinimum(input.pieceValue) ||
-        input.evidence.deferredOpportunity;
+    return loss >= MoveQualityThresholds.dubiousMinimum(input.pieceValue);
   }
 
   static bool _hasBrilliantMechanism(MoveFeedbackInput input) {
+    if (!input.brilliantVerificationComplete) {
+      return false;
+    }
     final MoveFeedbackEvidence evidence = input.evidence;
-    return evidence.compensatedConcession ||
-        evidence.replacedOpportunity ||
-        evidence.initiativeSwing && evidence.mobilitySwing ||
-        evidence.drawResourceImpact &&
-            input.strategicReasons.contains(
-              MoveFeedbackReason.preservesDrawCycle,
+    final Set<MoveFeedbackReason> reasons = input.strategicReasons;
+    return reasons.contains(MoveFeedbackReason.createsZugzwang) ||
+        evidence.compensatedConcession &&
+            reasons.contains(
+              MoveFeedbackReason.sacrificesMillForHigherOrderThreat,
             ) ||
-        input.strategicReasons.contains(
-          MoveFeedbackReason.sacrificesMillForHigherOrderThreat,
-        ) ||
-        input.strategicReasons.contains(MoveFeedbackReason.createsZugzwang) ||
+        evidence.replacedOpportunity &&
+            reasons.any(_higherOrderThreatReasons.contains) ||
         evidence.profile.reusableMills &&
-            input.strategicReasons.contains(
-              MoveFeedbackReason.createsReusableMill,
-            );
+            reasons.contains(MoveFeedbackReason.createsReusableMill) ||
+        evidence.compensatedConcession &&
+            reasons.any(_verifiedDrawReasons.contains);
   }
 
   static bool _hasGoodMechanism(MoveFeedbackInput input) {
-    return input.strategicReasons.isNotEmpty ||
-        input.evidence.selectedCaptureTarget &&
-            input.evidence.createdOpportunity ||
-        input.evidence.initiativeSwing ||
-        input.evidence.mobilitySwing ||
-        input.evidence.phaseTransitionImpact ||
-        input.evidence.drawResourceImpact;
+    return input.strategicReasons.any(_verifiedGoodReasons.contains);
   }
 
   static bool _isInteresting(
@@ -533,7 +536,12 @@ abstract final class MoveFeedbackClassifier {
   }
 
   static List<MoveFeedbackReason> _positiveReasons(MoveFeedbackInput input) {
-    final List<MoveFeedbackReason> reasons = input.strategicReasons.toList();
+    final List<MoveFeedbackReason> reasons = input.strategicReasons
+        .where(
+          (MoveFeedbackReason reason) =>
+              reason != MoveFeedbackReason.ruleStrategyUnavailable,
+        )
+        .toList();
     if (input.evidence.compensatedConcession) {
       reasons.add(MoveFeedbackReason.compensatedConcession);
     }
@@ -576,7 +584,7 @@ abstract final class MoveFeedbackClassifier {
         : MoveFeedbackConfidence.low,
   );
 
-  static MoveFeedbackWdl _wdl(int score, MoveFeedbackSource source) {
+  static MoveFeedbackWdl _wdl(int score) {
     // Database values arrive on the same signed scale but are exact. Engine
     // estimates only claim a determined result at the established ±80 band.
     const int terminal = MoveQualityThresholds.engineTerminalScore;
@@ -588,6 +596,55 @@ abstract final class MoveFeedbackClassifier {
     }
     return MoveFeedbackWdl.draw;
   }
+
+  static bool _scoreEvidenceReliable(MoveFeedbackInput input) {
+    return input.source == MoveFeedbackSource.perfectDatabase ||
+        input.searchStable && input.candidateCoverageComplete;
+  }
+
+  static int _classifiedLoss(MoveFeedbackInput input) {
+    if (input.source == MoveFeedbackSource.perfectDatabase) {
+      return input.loss;
+    }
+    return (input.loss -
+            MoveQualityThresholds.engineNoiseAllowance(input.pieceValue))
+        .clamp(0, 1 << 30);
+  }
+
+  static const Set<MoveFeedbackReason> _verifiedGoodReasons =
+      <MoveFeedbackReason>{
+        MoveFeedbackReason.selectsCriticalCaptureTarget,
+        MoveFeedbackReason.createsHerdingNet,
+        MoveFeedbackReason.escapesHerding,
+        MoveFeedbackReason.createsReusableMill,
+        MoveFeedbackReason.createsEntwinedMills,
+        MoveFeedbackReason.createsIndependentMills,
+        MoveFeedbackReason.createsFeeder,
+        MoveFeedbackReason.nullifiesOpponentMill,
+        MoveFeedbackReason.recognizesRedundantMill,
+        MoveFeedbackReason.allowsConstrainedMill,
+        MoveFeedbackReason.abandonsMillForMobility,
+        MoveFeedbackReason.sacrificesMillForHigherOrderThreat,
+        MoveFeedbackReason.avoidsPrematureFlyingTransition,
+        MoveFeedbackReason.createsZugzwang,
+        MoveFeedbackReason.preservesDrawCycle,
+        MoveFeedbackReason.breaksOpponentDrawResource,
+      };
+
+  static const Set<MoveFeedbackReason> _higherOrderThreatReasons =
+      <MoveFeedbackReason>{
+        MoveFeedbackReason.createsHerdingNet,
+        MoveFeedbackReason.createsEntwinedMills,
+        MoveFeedbackReason.createsIndependentMills,
+        MoveFeedbackReason.createsZugzwang,
+        MoveFeedbackReason.sacrificesMillForHigherOrderThreat,
+      };
+
+  static const Set<MoveFeedbackReason> _verifiedDrawReasons =
+      <MoveFeedbackReason>{
+        MoveFeedbackReason.preservesDrawCycle,
+        MoveFeedbackReason.breaksOpponentDrawResource,
+      };
 
   static int _negativePriority(MoveFeedbackSymbol symbol) => switch (symbol) {
     MoveFeedbackSymbol.blunder => 3,

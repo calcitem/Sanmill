@@ -3999,7 +3999,7 @@ class PlayAreaState extends State<PlayArea> {
         state.selectedNode?.data == null) {
       return const SizedBox.shrink(key: Key('play_area_move_feedback_idle'));
     }
-    return _AnalysisMoveFeedbackCard(
+    return AnalysisMoveFeedbackCard(
       state: state,
       pvExpanded: _moveFeedbackPvExpanded,
       onTogglePv: () {
@@ -7025,8 +7025,9 @@ class _AnalysisPanel extends StatelessWidget {
   }
 }
 
-class _AnalysisMoveFeedbackCard extends StatelessWidget {
-  const _AnalysisMoveFeedbackCard({
+class AnalysisMoveFeedbackCard extends StatelessWidget {
+  const AnalysisMoveFeedbackCard({
+    super.key,
     required this.state,
     required this.pvExpanded,
     required this.onTogglePv,
@@ -7101,9 +7102,11 @@ class _AnalysisMoveFeedbackCard extends StatelessWidget {
         ? '•'
         : result.symbol.glyph;
     final List<String> reasonLabels = result.reasons
-        .take(2)
         .map((MoveFeedbackReason reason) => _reasonLabel(strings, reason))
         .toList(growable: false);
+    final List<String> visibleReasonLabels = reasonLabels.isEmpty
+        ? <String>[_symbolLabel(strings, result)]
+        : reasonLabels.take(2).toList(growable: false);
     final String bestMove = result.bestMove ?? strings.unknown;
     final String pv = result.principalVariation.join(' ');
     return Padding(
@@ -7152,7 +7155,9 @@ class _AnalysisMoveFeedbackCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  reasonLabels.join(' · '),
+                  strings.moveFeedbackReasonsSummary(
+                    visibleReasonLabels.join(' · '),
+                  ),
                   key: const Key('play_area_move_feedback_reasons'),
                   maxLines: pvExpanded ? 1 : 2,
                   overflow: TextOverflow.ellipsis,
@@ -7177,6 +7182,18 @@ class _AnalysisMoveFeedbackCard extends StatelessWidget {
                 const Spacer(),
                 Row(
                   children: <Widget>[
+                    if (reasonLabels.isNotEmpty)
+                      IconButton(
+                        key: const Key('play_area_move_feedback_show_reasons'),
+                        tooltip: strings.moveFeedbackShowReasons,
+                        onPressed: () => _showReasons(
+                          context,
+                          strings,
+                          result,
+                          reasonLabels,
+                        ),
+                        icon: const Icon(Icons.info_outline),
+                      ),
                     if (pv.isNotEmpty)
                       IconButton(
                         key: const Key('play_area_move_feedback_toggle_pv'),
@@ -7211,6 +7228,65 @@ class _AnalysisMoveFeedbackCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  static void _showReasons(
+    BuildContext context,
+    S strings,
+    MoveFeedbackResult result,
+    List<String> reasonLabels,
+  ) {
+    unawaited(
+      showDialog<void>(
+        context: context,
+        builder: (BuildContext dialogContext) => AlertDialog(
+          title: Text(strings.moveFeedbackReasonsTitle),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  '${result.symbol.glyph} ${_symbolLabel(strings, result)}'
+                      .trim(),
+                  style: Theme.of(dialogContext).textTheme.titleSmall,
+                ),
+                const SizedBox(height: 12),
+                for (int index = 0; index < result.reasons.length; index++)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const Padding(
+                          padding: EdgeInsets.only(top: 2),
+                          child: Icon(Icons.check_circle_outline, size: 18),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            reasonLabels[index],
+                            key: Key(
+                              'play_area_move_feedback_reason_'
+                              '${result.reasons[index].name}',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(strings.close),
+            ),
+          ],
+        ),
       ),
     );
   }

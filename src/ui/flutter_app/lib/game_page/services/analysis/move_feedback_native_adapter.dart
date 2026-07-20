@@ -93,9 +93,6 @@ Set<MoveFeedbackReason> moveFeedbackStrategicReasons(
   MoveFeedbackEvidence evidence,
 ) {
   final Set<MoveFeedbackReason> reasons = <MoveFeedbackReason>{};
-  if (evidence.selectedCaptureTarget && evidence.createdOpportunity) {
-    reasons.add(MoveFeedbackReason.selectsCriticalCaptureTarget);
-  }
   if (evidence.initiativeSwing) {
     reasons.add(MoveFeedbackReason.forcesResponses);
   }
@@ -105,14 +102,8 @@ Set<MoveFeedbackReason> moveFeedbackStrategicReasons(
   if (evidence.enteredFlying) {
     reasons.add(MoveFeedbackReason.usesFlyingTransition);
   }
-  if (evidence.opponentEnteredFlying) {
-    reasons.add(MoveFeedbackReason.avoidsPrematureFlyingTransition);
-  }
   if (evidence.drawResourceImpact) {
     reasons.add(MoveFeedbackReason.preservesDrawCycle);
-  }
-  if (evidence.createdOpportunity && evidence.profile.reusableMills) {
-    reasons.add(MoveFeedbackReason.createsReusableMill);
   }
   if (!evidence.profile.standardStrategyCompatible && reasons.isEmpty) {
     reasons.add(MoveFeedbackReason.ruleStrategyUnavailable);

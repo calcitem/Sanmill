@@ -28,6 +28,8 @@ void main() {
     int? calmTrapScore,
     int? opponentSafeReplies,
     int? naturalRepliesLosing,
+    MoveFeedbackSource source = MoveFeedbackSource.engine,
+    bool brilliantVerificationComplete = false,
     Set<MoveFeedbackReason> strategic = const <MoveFeedbackReason>{},
     MoveFeedbackEvidence evidence = const MoveFeedbackEvidence(
       profile: standard,
@@ -47,24 +49,82 @@ void main() {
     calmTrapScore: calmTrapScore,
     opponentSafeReplies: opponentSafeReplies,
     naturalRepliesLosing: naturalRepliesLosing,
+    source: source,
+    brilliantVerificationComplete: brilliantVerificationComplete,
     evidence: evidence,
     strategicReasons: strategic,
   );
 
   group('score thresholds', () {
-    test('maps normalized negative bands', () {
+    test('exact database scores map the normalized negative bands', () {
       expect(
-        MoveFeedbackClassifier.classify(input(loss: 4)).symbol,
+        MoveFeedbackClassifier.classify(
+          input(loss: 4, source: MoveFeedbackSource.perfectDatabase),
+        ).symbol,
         MoveFeedbackSymbol.dubious,
       );
       expect(
-        MoveFeedbackClassifier.classify(input(loss: 8)).symbol,
+        MoveFeedbackClassifier.classify(
+          input(loss: 8, source: MoveFeedbackSource.perfectDatabase),
+        ).symbol,
         MoveFeedbackSymbol.mistake,
       );
       expect(
-        MoveFeedbackClassifier.classify(input(loss: 15)).symbol,
+        MoveFeedbackClassifier.classify(
+          input(loss: 15, source: MoveFeedbackSource.perfectDatabase),
+        ).symbol,
         MoveFeedbackSymbol.blunder,
       );
+    });
+
+    test('short engine searches absorb ordinary MultiPV score noise', () {
+      for (final int loss in <int>[4, 8, 10]) {
+        expect(
+          MoveFeedbackClassifier.classify(input(loss: loss)).symbol,
+          MoveFeedbackSymbol.none,
+          reason: 'An engine loss of $loss is inside the noise allowance.',
+        );
+      }
+    });
+
+    test('stable engine losses cross widened negative bands', () {
+      for (final ({int loss, MoveFeedbackSymbol symbol}) sample
+          in <({int loss, MoveFeedbackSymbol symbol})>[
+            (loss: 14, symbol: MoveFeedbackSymbol.dubious),
+            (loss: 18, symbol: MoveFeedbackSymbol.mistake),
+            (loss: 25, symbol: MoveFeedbackSymbol.blunder),
+          ]) {
+        expect(
+          MoveFeedbackClassifier.classify(input(loss: sample.loss)).symbol,
+          sample.symbol,
+        );
+      }
+    });
+
+    test('unstable engine scores do not emit negative glyphs', () {
+      final MoveFeedbackResult result = MoveFeedbackClassifier.classify(
+        input(loss: 25, stable: false),
+      );
+      expect(result.symbol, MoveFeedbackSymbol.none);
+      expect(result.reasons, contains(MoveFeedbackReason.insufficientEvidence));
+    });
+
+    test('immediate-reward hints cannot grade a zero-loss move negatively', () {
+      for (final MoveFeedbackEvidence evidence in <MoveFeedbackEvidence>[
+        const MoveFeedbackEvidence(missedOpportunity: true, profile: standard),
+        const MoveFeedbackEvidence(
+          missedOpportunity: true,
+          deferredOpportunity: true,
+          profile: standard,
+        ),
+      ]) {
+        expect(
+          MoveFeedbackClassifier.classify(
+            input(loss: 0, evidence: evidence),
+          ).symbol,
+          MoveFeedbackSymbol.none,
+        );
+      }
     });
 
     test('WDL drop has priority over tactical appearance', () {
@@ -106,7 +166,7 @@ void main() {
       final MoveFeedbackResult result = MoveFeedbackClassifier.classify(
         input(
           best: -80,
-          loss: 15,
+          loss: 18,
           allCandidatesLosing: true,
           evidence: const MoveFeedbackEvidence(profile: standard),
         ),
@@ -143,6 +203,7 @@ void main() {
           loss: 0,
           playedRank: 1,
           runnerUp: 2,
+          brilliantVerificationComplete: true,
           strategic: const <MoveFeedbackReason>{
             MoveFeedbackReason.sacrificesMillForHigherOrderThreat,
           },
@@ -155,6 +216,27 @@ void main() {
       expect(result.symbol, MoveFeedbackSymbol.brilliant);
     });
 
+    test(
+      'brilliant is withheld until the expensive verification completes',
+      () {
+        final MoveFeedbackResult result = MoveFeedbackClassifier.classify(
+          input(
+            loss: 0,
+            playedRank: 1,
+            runnerUp: 2,
+            strategic: const <MoveFeedbackReason>{
+              MoveFeedbackReason.sacrificesMillForHigherOrderThreat,
+            },
+            evidence: const MoveFeedbackEvidence(
+              compensatedConcession: true,
+              profile: standard,
+            ),
+          ),
+        );
+        expect(result.symbol, MoveFeedbackSymbol.good);
+      },
+    );
+
     test('good requires a stable strategic contribution', () {
       final MoveFeedbackResult result = MoveFeedbackClassifier.classify(
         input(
@@ -162,11 +244,114 @@ void main() {
           playedRank: 1,
           runnerUp: 6,
           strategic: const <MoveFeedbackReason>{
-            MoveFeedbackReason.preservesInitiative,
+            MoveFeedbackReason.createsHerdingNet,
           },
         ),
       );
       expect(result.symbol, MoveFeedbackSymbol.good);
+    });
+
+    test('cheap position flags do not qualify a move for a positive glyph', () {
+      final List<MoveFeedbackInput> ordinaryMoves = <MoveFeedbackInput>[
+        input(
+          loss: 0,
+          playedRank: 1,
+          runnerUp: 0,
+          evidence: const MoveFeedbackEvidence(
+            initiativeSwing: true,
+            profile: standard,
+          ),
+        ),
+        input(
+          loss: 0,
+          playedRank: 1,
+          runnerUp: 0,
+          evidence: const MoveFeedbackEvidence(
+            mobilitySwing: true,
+            mobilityDelta: 3,
+            profile: standard,
+          ),
+        ),
+        input(
+          loss: 0,
+          playedRank: 1,
+          runnerUp: 0,
+          evidence: const MoveFeedbackEvidence(
+            drawResourceImpact: true,
+            profile: standard,
+          ),
+        ),
+        input(
+          loss: 0,
+          playedRank: 1,
+          runnerUp: 0,
+          strategic: const <MoveFeedbackReason>{
+            MoveFeedbackReason.ruleStrategyUnavailable,
+          },
+        ),
+        input(
+          loss: 0,
+          playedRank: 1,
+          runnerUp: 0,
+          evidence: const MoveFeedbackEvidence(
+            initiativeSwing: true,
+            mobilitySwing: true,
+            mobilityDelta: 3,
+            profile: standard,
+          ),
+        ),
+      ];
+
+      final List<MoveFeedbackSymbol> symbols = ordinaryMoves
+          .map(MoveFeedbackClassifier.classify)
+          .map((MoveFeedbackResult result) => result.symbol)
+          .toList(growable: false);
+      expect(symbols, everyElement(MoveFeedbackSymbol.none));
+    });
+
+    test('ordinary evidence samples keep no-symbol as the default', () {
+      final List<MoveFeedbackInput> samples = <MoveFeedbackInput>[
+        input(loss: 0, playedRank: 1, runnerUp: 7),
+        input(loss: 2),
+        input(loss: 4),
+        input(loss: 8),
+        input(loss: 10),
+        input(
+          loss: 0,
+          evidence: const MoveFeedbackEvidence(
+            missedOpportunity: true,
+            profile: standard,
+          ),
+        ),
+        input(
+          loss: 0,
+          playedRank: 1,
+          runnerUp: 1,
+          evidence: const MoveFeedbackEvidence(
+            initiativeSwing: true,
+            mobilitySwing: true,
+            mobilityDelta: 2,
+            profile: standard,
+          ),
+        ),
+        input(
+          loss: 0,
+          playedRank: 1,
+          runnerUp: 1,
+          strategic: const <MoveFeedbackReason>{
+            MoveFeedbackReason.ruleStrategyUnavailable,
+          },
+        ),
+      ];
+
+      final int unannotated = samples
+          .map(MoveFeedbackClassifier.classify)
+          .where(
+            (MoveFeedbackResult result) =>
+                result.symbol == MoveFeedbackSymbol.none,
+          )
+          .length;
+      expect(unannotated, samples.length);
     });
 
     test('interesting requires a sound practical-chances proof', () {
@@ -208,10 +393,10 @@ void main() {
 
   test('complete turn keeps the most severe negative atomic result', () {
     final MoveFeedbackResult dubious = MoveFeedbackClassifier.classify(
-      input(loss: 4),
+      input(loss: 4, source: MoveFeedbackSource.perfectDatabase),
     );
     final MoveFeedbackResult mistake = MoveFeedbackClassifier.classify(
-      input(loss: 8),
+      input(loss: 8, source: MoveFeedbackSource.perfectDatabase),
     );
     expect(
       MoveFeedbackClassifier.aggregateTurn(<MoveFeedbackResult>[
@@ -219,6 +404,27 @@ void main() {
         mistake,
       ]).symbol,
       MoveFeedbackSymbol.mistake,
+    );
+  });
+
+  test('native fact mapping does not invent advanced strategy reasons', () {
+    final Set<MoveFeedbackReason> reasons = moveFeedbackStrategicReasons(
+      const MoveFeedbackEvidence(
+        createdOpportunity: true,
+        selectedCaptureTarget: true,
+        opponentEnteredFlying: true,
+        profile: standard,
+      ),
+    );
+
+    expect(
+      reasons,
+      isNot(contains(MoveFeedbackReason.selectsCriticalCaptureTarget)),
+    );
+    expect(reasons, isNot(contains(MoveFeedbackReason.createsReusableMill)));
+    expect(
+      reasons,
+      isNot(contains(MoveFeedbackReason.avoidsPrematureFlyingTransition)),
     );
   });
 
