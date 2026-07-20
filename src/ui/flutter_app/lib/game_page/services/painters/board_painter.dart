@@ -17,6 +17,7 @@ class BoardPainter extends CustomPainter {
     this.shouldDrawOptionalElements = true,
     this.shouldDrawMillLines = true,
     this.shouldDrawAnalysisOverlay = true,
+    this.showOppositeNotations = false,
     this.boardMarginOverride,
   });
 
@@ -26,6 +27,7 @@ class BoardPainter extends CustomPainter {
   final bool shouldDrawOptionalElements;
   final bool shouldDrawMillLines;
   final bool shouldDrawAnalysisOverlay;
+  final bool showOppositeNotations;
   final double? boardMarginOverride;
 
   @override
@@ -407,10 +409,14 @@ class BoardPainter extends CustomPainter {
     }
   }
 
-  static void _drawNotations(Canvas canvas, Size size) {
+  void _drawNotations(Canvas canvas, Size size) {
     for (int i = 0; i < verticalNotations.length; i++) {
       _drawVerticalNotation(canvas, size, i);
       _drawHorizontalNotation(canvas, size, i);
+      if (showOppositeNotations) {
+        _drawOppositeVerticalNotation(canvas, size, i);
+        _drawOppositeHorizontalNotation(canvas, size, i);
+      }
     }
   }
 
@@ -463,6 +469,64 @@ class BoardPainter extends CustomPainter {
       canvas,
       Offset(offsetFromInt(index, size) - notationPainter.width / 2, offset),
     );
+  }
+
+  static void _drawOppositeVerticalNotation(
+    Canvas canvas,
+    Size size,
+    int index,
+  ) {
+    // Keep each absolute coordinate beside its board point; only rotate the
+    // glyph so the player seated opposite can read it.
+    final TextPainter notationPainter = _notationPainter(
+      verticalNotations[index],
+    );
+    final Offset center = Offset(
+      size.width - boardMargin / 2,
+      offsetFromInt(index, size),
+    );
+    _paintForOppositePlayer(canvas, notationPainter, center);
+  }
+
+  static void _drawOppositeHorizontalNotation(
+    Canvas canvas,
+    Size size,
+    int index,
+  ) {
+    final TextPainter notationPainter = _notationPainter(
+      horizontalNotations[index],
+    );
+    final Offset center = Offset(offsetFromInt(index, size), boardMargin / 2);
+    _paintForOppositePlayer(canvas, notationPainter, center);
+  }
+
+  static TextPainter _notationPainter(String notation) {
+    return TextPainter(
+      text: TextSpan(
+        style: TextStyle(
+          color: DB().colorSettings.boardLineColor.withValues(alpha: 1.0),
+          fontSize: AppTheme.textScaler.scale(20),
+        ),
+        text: notation,
+      ),
+      textAlign: TextAlign.center,
+      textDirection: TextDirection.ltr,
+    )..layout();
+  }
+
+  static void _paintForOppositePlayer(
+    Canvas canvas,
+    TextPainter notationPainter,
+    Offset center,
+  ) {
+    canvas.save();
+    canvas.translate(center.dx, center.dy);
+    canvas.rotate(pi);
+    notationPainter.paint(
+      canvas,
+      Offset(-notationPainter.width / 2, -notationPainter.height / 2),
+    );
+    canvas.restore();
   }
 
   static void _drawDashedRect(

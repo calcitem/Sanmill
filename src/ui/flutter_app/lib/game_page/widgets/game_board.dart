@@ -547,7 +547,13 @@ class _GameBoardState extends State<GameBoard>
                       ]),
                       builder: (_, Widget? child) => CustomPaint(
                         key: const Key('custom_paint_board_painter'),
-                        painter: BoardPainter(context, gameImages?.boardImage),
+                        painter: BoardPainter(
+                          context,
+                          gameImages?.boardImage,
+                          showOppositeNotations:
+                              GameController().gameInstance.gameMode ==
+                              GameMode.humanVsHuman,
+                        ),
                       ),
                     ),
                   ),

@@ -432,6 +432,10 @@ void main() {
     final CustomPaint piecesBefore = tester.widget<CustomPaint>(pieceFinder);
 
     expect(boardBefore.painter, isA<BoardPainter>());
+    expect(
+      (boardBefore.painter! as BoardPainter).showOppositeNotations,
+      isTrue,
+    );
     expect(piecesBefore.painter, isA<PiecePainter>());
     expect(
       find.byKey(const Key('repaint_boundary_board_painter')),
@@ -625,6 +629,10 @@ void main() {
       const Key('custom_paint_board_painter'),
     );
     final CustomPaint boardBeforeHint = tester.widget<CustomPaint>(boardFinder);
+    expect(
+      (boardBeforeHint.painter! as BoardPainter).showOppositeNotations,
+      isFalse,
+    );
 
     AnalysisMode.enable(
       const <MoveAnalysisResult>[
