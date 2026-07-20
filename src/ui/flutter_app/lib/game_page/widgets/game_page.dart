@@ -375,6 +375,12 @@ class _GamePageInnerState extends State<_GamePageInner>
     if (session == null) {
       return;
     }
+    final bool hasReplaceableContent =
+        widget.controller.gameRecorder.hasReplaceableAnalysisContent ||
+        _annotationManager.hasAnnotations;
+    if (hasReplaceableContent && !await _confirmReplacingAnalysis()) {
+      return;
+    }
     RecordingService().recordEvent(
       RecordingEventType.toolbarAction,
       <String, dynamic>{'toolbar': 'analysisAppBar', 'action': 'newAnalysis'},
@@ -402,6 +408,34 @@ class _GamePageInnerState extends State<_GamePageInner>
     rootScaffoldMessengerKey.currentState?.showSnackBarClear(
       S.of(context).newAnalysisStarted,
     );
+  }
+
+  Future<bool> _confirmReplacingAnalysis() async {
+    assert(_isAnalysisPage, 'Replace confirmation is analysis-only.');
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        final S strings = S.of(dialogContext);
+        return AlertDialog(
+          key: const Key('game_page_replace_analysis_dialog'),
+          title: Text(strings.replaceCurrentAnalysis),
+          content: Text(strings.currentAnalysisWillBeReplaced),
+          actions: <Widget>[
+            TextButton(
+              key: const Key('game_page_replace_analysis_cancel'),
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(strings.cancel),
+            ),
+            FilledButton(
+              key: const Key('game_page_replace_analysis_confirm'),
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text(strings.newAnalysis),
+            ),
+          ],
+        );
+      },
+    );
+    return confirmed ?? false;
   }
 
   @override

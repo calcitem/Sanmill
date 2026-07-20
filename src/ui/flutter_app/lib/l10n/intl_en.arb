@@ -6730,5 +6730,9 @@
     "drawingColors": "Drawing colors",
     "@drawingColors": {},
     "showLegalMovesDescription": "Only shows legal destinations after you select a piece in the moving or flying phase.",
-    "@showLegalMovesDescription": {}
+    "@showLegalMovesDescription": {},
+    "replaceCurrentAnalysis": "Replace current analysis?",
+    "@replaceCurrentAnalysis": {},
+    "currentAnalysisWillBeReplaced": "Your current moves, variations, comments, and annotations will be replaced. This cannot be undone.",
+    "@currentAnalysisWillBeReplaced": {}
 }

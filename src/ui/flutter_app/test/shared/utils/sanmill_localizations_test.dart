@@ -1189,6 +1189,11 @@ void main() {
 
     expect(chinese.newAnalysis, '新建分析');
     expect(chinese.newAnalysisStarted, '已新建分析。');
+    expect(chinese.replaceCurrentAnalysis, '替换当前分析？');
+    expect(
+      chinese.currentAnalysisWillBeReplaced,
+      '当前分析中的着法、变着、评论和标注将被替换，且无法撤销。',
+    );
   });
 
   test('lists Chinese computer move sources in lookup order', () {

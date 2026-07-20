@@ -80,6 +80,16 @@ class GameRecorder {
   /// Getter to expose the root node.
   PgnNode<ExtMove> get pgnRoot => _pgnRoot;
 
+  /// Whether replacing this free-analysis tree would discard user content.
+  ///
+  /// Every move node can carry variations, comments, and NAG annotations, so
+  /// any node makes the tree non-empty. Root comments must be checked
+  /// separately because they can exist before the first move.
+  bool get hasReplaceableAnalysisContent {
+    return _pgnRoot.children.isNotEmpty ||
+        rootComments.any((String comment) => comment.trim().isNotEmpty);
+  }
+
   /// Returns the PGN game termination marker matching the current game result.
   ///
   /// This ensures the movetext termination marker is consistent with the

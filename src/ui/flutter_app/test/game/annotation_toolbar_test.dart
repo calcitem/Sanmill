@@ -9,6 +9,24 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 
 void main() {
+  test('tracks whether committed board annotations would be discarded', () {
+    final AnnotationManager manager = AnnotationManager();
+    addTearDown(manager.dispose);
+
+    expect(manager.hasAnnotations, isFalse);
+    manager.addShape(
+      AnnotationLine(
+        start: Offset.zero,
+        end: const Offset(20, 20),
+        color: Colors.blue,
+      ),
+    );
+    expect(manager.hasAnnotations, isTrue);
+
+    manager.clear();
+    expect(manager.hasAnnotations, isFalse);
+  });
+
   testWidgets('localizes annotation toolbar semantics in English and Chinese', (
     WidgetTester tester,
   ) async {

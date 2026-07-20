@@ -192,6 +192,29 @@ void main() {
     expect(session.getFen(), expected.getFen());
   });
 
+  test('detects content that requires confirmation before replacement', () {
+    final GameRecorder recorder = GameRecorder();
+
+    expect(recorder.hasReplaceableAnalysisContent, isFalse);
+    recorder.rootComments.add('   ');
+    expect(recorder.hasReplaceableAnalysisContent, isFalse);
+
+    recorder.rootComments.add('Opening idea');
+    expect(recorder.hasReplaceableAnalysisContent, isTrue);
+
+    recorder.reset();
+    expect(recorder.hasReplaceableAnalysisContent, isFalse);
+    recorder.appendMove(
+      ExtMove(
+        'd6',
+        side: PieceColor.white,
+        nags: <int>[1],
+        comments: <String>['Candidate move'],
+      )..isVariation = true,
+    );
+    expect(recorder.hasReplaceableAnalysisContent, isTrue);
+  });
+
   test('rejects a detached current-position path', () async {
     const RuleSettings rules = RuleSettings();
     final GameRecorder recorder = _branchedRecorder(rules);

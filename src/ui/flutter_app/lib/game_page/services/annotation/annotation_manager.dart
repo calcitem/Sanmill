@@ -533,6 +533,8 @@ class AnnotationManager extends ChangeNotifier {
 
   final List<AnnotationShape> shapes = <AnnotationShape>[];
 
+  bool get hasAnnotations => shapes.isNotEmpty;
+
   AnnotationShape? _currentDrawingShape;
 
   AnnotationShape? get currentDrawingShape => _currentDrawingShape;
