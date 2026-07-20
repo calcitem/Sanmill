@@ -18,7 +18,6 @@ import 'package:sanmill/game_page/services/analysis/analysis_service.dart';
 import 'package:sanmill/game_page/services/analysis_mode.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/offline_board_clock.dart';
-import 'package:sanmill/game_page/services/painters/advantage_graph_painter.dart';
 import 'package:sanmill/game_page/services/painters/painters.dart';
 import 'package:sanmill/game_page/services/player_timer.dart';
 import 'package:sanmill/game_page/services/transform/transform.dart';
@@ -2459,6 +2458,7 @@ void main() {
       expect(tabBar.labelColor, theme.colorScheme.primary);
       expect(tabBar.unselectedLabelColor, theme.colorScheme.onSurfaceVariant);
       expect(tabBar.indicatorColor, theme.colorScheme.primary);
+      expect(tabBar.tabs, hasLength(2));
 
       final Finder explorerIcon = find.descendant(
         of: find.byKey(const Key('play_area_analysis_tab_explorer')),
@@ -2468,10 +2468,6 @@ void main() {
         of: find.byKey(const Key('play_area_analysis_tab_moves')),
         matching: find.byIcon(Icons.account_tree_outlined),
       );
-      final Finder summaryIcon = find.descendant(
-        of: find.byKey(const Key('play_area_analysis_tab_summary')),
-        matching: find.byIcon(Icons.area_chart_outlined),
-      );
       expect(
         IconTheme.of(tester.element(explorerIcon)).color,
         theme.colorScheme.onSurfaceVariant,
@@ -2479,10 +2475,6 @@ void main() {
       expect(
         IconTheme.of(tester.element(movesIcon)).color,
         theme.colorScheme.primary,
-      );
-      expect(
-        IconTheme.of(tester.element(summaryIcon)).color,
-        theme.colorScheme.onSurfaceVariant,
       );
 
       await tester.tap(
@@ -2550,7 +2542,7 @@ void main() {
   });
 
   testWidgets(
-    'analysis panel uses surface colors while board PV uses message color',
+    'analysis panel uses surface colors while candidate lines use message color',
     (WidgetTester tester) async {
       db.colorSettings = const ColorSettings(messageColor: Colors.white);
       db.displaySettings = const DisplaySettings(
@@ -2589,14 +2581,15 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        final Text depth = tester.widget<Text>(
-          find.byKey(const Key('play_area_analysis_engine_line_depth')),
-        );
+        final Text line = tester.widget<Text>(find.text('1. d6 f4'));
         final Text title = tester.widget<Text>(
           find.byKey(const Key('play_area_analysis_moves_header_title')),
         );
-        expect(depth.data, 'd8');
-        expect(depth.style?.color, Colors.white);
+        expect(
+          find.byKey(const Key('play_area_analysis_engine_line_depth')),
+          findsNothing,
+        );
+        expect(line.style?.color, Colors.white);
         expect(title.style?.color, theme.colorScheme.onSurface);
       }
     },
@@ -2826,12 +2819,6 @@ void main() {
           .height,
       26,
     );
-    expect(
-      tester
-          .getSize(find.byKey(const Key('play_area_analysis_tab_summary')))
-          .height,
-      26,
-    );
     final Icon explorerTabIcon = tester.widget<Icon>(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_tab_explorer')),
@@ -2844,15 +2831,12 @@ void main() {
         matching: find.byIcon(Icons.account_tree_outlined),
       ),
     );
-    final Icon summaryTabIcon = tester.widget<Icon>(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_tab_summary')),
-        matching: find.byIcon(Icons.area_chart_outlined),
-      ),
-    );
     expect(explorerTabIcon.size, 18);
     expect(movesTabIcon.size, 18);
-    expect(summaryTabIcon.size, 18);
+    expect(
+      find.byKey(const Key('play_area_analysis_tab_summary')),
+      findsNothing,
+    );
     expect(find.byKey(const Key('play_area_analysis_moves')), findsOne);
     expect(find.text('d6! {Good opening}'), findsOne);
     expect(find.text('f4? {Check this}'), findsOne);
@@ -2900,79 +2884,6 @@ void main() {
     await tester.pump(const Duration(milliseconds: 300));
     await tester.pump();
 
-    AnalysisMode.enable(<MoveAnalysisResult>[
-      MoveAnalysisResult(
-        move: 'd6',
-        outcome: AnalysisOutcome.withValue(AnalysisOutcome.advantage, '+42'),
-        depth: 1,
-        nodes: 12345,
-        nodesPerSecond: 32000,
-        line: const <String>['d6', 'f4'],
-      ),
-      const MoveAnalysisResult(
-        move: 'a1',
-        outcome: AnalysisOutcome.draw,
-        depth: 8,
-        nodes: 67890,
-        nodesPerSecond: 64000,
-        line: <String>['a1'],
-      ),
-    ], source: AnalysisSource.engine);
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
-    await tester.pumpAndSettle();
-
-    expect(find.byKey(const Key('play_area_analysis_summary')), findsOne);
-    expect(
-      find.byKey(const Key('play_area_analysis_summary_source')),
-      findsOne,
-    );
-    expect(
-      find.byKey(const Key('play_area_analysis_summary_engine')),
-      findsOne,
-    );
-    expect(find.byKey(const Key('play_area_analysis_summary_moves')), findsOne);
-    expect(
-      find.byKey(const Key('play_area_analysis_summary_variations')),
-      findsOne,
-    );
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_engine')),
-        matching: find.textContaining('d8'),
-      ),
-      findsOne,
-    );
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_engine')),
-        matching: find.textContaining('64k n/s'),
-      ),
-      findsOne,
-    );
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_engine')),
-        matching: find.textContaining('d6 f4'),
-      ),
-      findsOne,
-    );
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_source')),
-        matching: find.text('Engine'),
-      ),
-      findsOne,
-    );
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_best_move')),
-        matching: find.text('Best move'),
-      ),
-      findsOne,
-    );
-
     AnalysisMode.enable(
       <MoveAnalysisResult>[
         MoveAnalysisResult(
@@ -2987,35 +2898,6 @@ void main() {
       isThreatMode: true,
     );
     await tester.pumpAndSettle();
-
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_source')),
-        matching: find.text('Threat · Engine'),
-      ),
-      findsOne,
-    );
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_engine')),
-        matching: find.text('Threat'),
-      ),
-      findsOne,
-    );
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_best_move')),
-        matching: find.text('Threat'),
-      ),
-      findsOne,
-    );
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_best_move')),
-        matching: find.text('Best move'),
-      ),
-      findsNothing,
-    );
 
     expect(find.byKey(const Key('play_area_main_toolbar_bottom')), findsOne);
     expect(
@@ -3452,18 +3334,12 @@ void main() {
     final NativeMillGameSession session = await _bindNativeGame(
       GameMode.analysis,
     );
-    final MillSessionRecorderBridge recorderBridge =
-        MillSessionRecorderBridge.forGameController(session: session);
-    addTearDown(recorderBridge.dispose);
-
-    expect(
-      await session.replayMainline(<ExtMove>[
-        ExtMove('d6', side: PieceColor.white),
-        ExtMove('f4', side: PieceColor.black),
-      ]),
-      isTrue,
+    GameController().gameRecorder.appendMove(
+      ExtMove('d6', side: PieceColor.white, roundIndex: 1),
     );
-    await tester.pump();
+    GameController().gameRecorder.appendMove(
+      ExtMove('f4', side: PieceColor.black, roundIndex: 1),
+    );
     expect(_currentPathMoves(), <String>['d6', 'f4']);
 
     await _pumpSessionPlayArea(tester, session);
@@ -3483,1117 +3359,11 @@ void main() {
       findsOneWidget,
     );
 
-    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
-    await tester.pumpAndSettle();
-
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_moves')),
-        matching: find.textContaining('2 · d6 f4'),
-      ),
-      findsOneWidget,
-    );
-
     await _holdBottomBarButton(
       tester,
       const Key('play_area_analysis_bottom_bar_next'),
     );
     expect(_currentPathMoves(), <String>['d6', 'f4']);
-  });
-
-  testWidgets('analysis summary shows combined source details', (
-    WidgetTester tester,
-  ) async {
-    db.displaySettings = const DisplaySettings(
-      isUnplacedAndRemovedPiecesShown: false,
-    );
-    final NativeMillGameSession session = await _bindNativeGame(
-      GameMode.analysis,
-    );
-
-    AnalysisMode.enable(
-      <MoveAnalysisResult>[
-        const MoveAnalysisResult(move: 'a1', outcome: AnalysisOutcome.win),
-        const MoveAnalysisResult(move: 'd1', outcome: AnalysisOutcome.draw),
-        const MoveAnalysisResult(move: 'a4', outcome: AnalysisOutcome.loss),
-        const MoveAnalysisResult(
-          move: 'd2',
-          outcome: AnalysisOutcome.advantage,
-        ),
-        const MoveAnalysisResult(
-          move: 'a7',
-          outcome: AnalysisOutcome.disadvantage,
-        ),
-        const MoveAnalysisResult(move: 'd3', outcome: AnalysisOutcome.unknown),
-      ],
-      lineResults: <MoveAnalysisResult>[
-        MoveAnalysisResult(
-          move: 'g7',
-          outcome: AnalysisOutcome.withValue(AnalysisOutcome.advantage, '+32'),
-          rank: 1,
-          depth: 12,
-          nodes: 45678,
-          nodesPerSecond: 91000,
-          line: const <String>['g7', 'b2'],
-        ),
-      ],
-      trapMoves: const <String>['a1', 'd6'],
-      source: AnalysisSource.perfectDatabaseAndEngine,
-    );
-
-    await _pumpSessionPlayArea(tester, session);
-
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_bottom_bar_engine')),
-        matching: find.text('Database · Engine'),
-      ),
-      findsOneWidget,
-    );
-
-    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
-    await tester.pumpAndSettle();
-
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_source')),
-        matching: find.text('Perfect database · Engine'),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_engine')),
-        matching: find.textContaining('PV'),
-      ),
-      findsNothing,
-    );
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_engine')),
-        matching: find.textContaining('d12'),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_engine')),
-        matching: find.textContaining('g7 b2'),
-      ),
-      findsOneWidget,
-    );
-    final Finder bestMove = find.byKey(
-      const Key('play_area_analysis_summary_best_move'),
-    );
-    expect(bestMove, findsOneWidget);
-    expect(
-      find.descendant(of: bestMove, matching: find.text('Best move')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(
-        of: bestMove,
-        matching: find.byKey(
-          const Key('play_area_analysis_summary_best_move_eval'),
-        ),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: bestMove, matching: find.textContaining('+32')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: bestMove, matching: find.textContaining('PV')),
-      findsNothing,
-    );
-    expect(
-      find.descendant(of: bestMove, matching: find.textContaining('d12')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: bestMove, matching: find.textContaining('g7 b2')),
-      findsOneWidget,
-    );
-
-    final Finder results = find.byKey(
-      const Key('play_area_analysis_summary_results'),
-    );
-    expect(results, findsOneWidget);
-    expect(
-      find.descendant(
-        of: results,
-        matching: find.byKey(
-          const Key('play_area_analysis_summary_outcome_distribution'),
-        ),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(
-        of: results,
-        matching: find.byKey(
-          const Key('play_area_analysis_summary_outcome_meter'),
-        ),
-      ),
-      findsOneWidget,
-    );
-    for (final String label in <String>[
-      'Wins 1',
-      'Draws 1',
-      'Losses 1',
-      '+ 1',
-      '- 1',
-      'Unknown 1',
-    ]) {
-      expect(
-        find.descendant(of: results, matching: find.textContaining(label)),
-        findsWidgets,
-      );
-      expect(find.byTooltip(label), findsWidgets);
-    }
-    expect(
-      find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is Semantics &&
-            widget.properties.label ==
-                'Results · Wins 1 · Draws 1 · Losses 1 · + 1 · - 1 · Unknown 1',
-      ),
-      findsOneWidget,
-    );
-    for (final String outcome in <String>[
-      'win',
-      'draw',
-      'loss',
-      'advantage',
-      'disadvantage',
-      'unknown',
-    ]) {
-      expect(
-        find.descendant(
-          of: results,
-          matching: find.byKey(
-            Key('play_area_analysis_summary_outcome_segment_$outcome'),
-          ),
-        ),
-        findsOneWidget,
-      );
-      expect(
-        find.descendant(
-          of: results,
-          matching: find.byKey(
-            Key('play_area_analysis_summary_outcome_legend_$outcome'),
-          ),
-        ),
-        findsOneWidget,
-      );
-    }
-    final Finder candidateChips = find.descendant(
-      of: results,
-      matching: find.byKey(
-        const Key('play_area_analysis_summary_result_candidates'),
-      ),
-    );
-    expect(candidateChips, findsOneWidget);
-    expect(
-      find.descendant(
-        of: results,
-        matching: find.byKey(
-          const Key('play_area_analysis_summary_result_candidate_0'),
-        ),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: results, matching: find.text('a1')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: results, matching: find.text('d1')),
-      findsOneWidget,
-    );
-    final Finder drawLegend = find.descendant(
-      of: results,
-      matching: find.byKey(
-        const Key('play_area_analysis_summary_outcome_legend_draw'),
-      ),
-    );
-    await tester.ensureVisible(drawLegend);
-    await tester.pumpAndSettle();
-    await tester.tap(drawLegend);
-    await tester.pumpAndSettle();
-
-    expect(
-      find.descendant(of: candidateChips, matching: find.text('d1')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: candidateChips, matching: find.text('a1')),
-      findsNothing,
-    );
-    expect(
-      find.descendant(of: candidateChips, matching: find.text('a4')),
-      findsNothing,
-    );
-
-    await tester.ensureVisible(drawLegend);
-    await tester.pumpAndSettle();
-    await tester.tap(drawLegend);
-    await tester.pumpAndSettle();
-
-    expect(
-      find.descendant(of: candidateChips, matching: find.text('a1')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: candidateChips, matching: find.text('d1')),
-      findsOneWidget,
-    );
-
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_traps')),
-        matching: find.text('Trap exists. Trap moves: a1 d6'),
-      ),
-      findsOneWidget,
-    );
-  });
-
-  testWidgets('analysis summary best move applies the candidate', (
-    WidgetTester tester,
-  ) async {
-    db.displaySettings = const DisplaySettings(
-      isUnplacedAndRemovedPiecesShown: false,
-    );
-    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
-    _bindExistingNativeGame(GameMode.analysis, session);
-    final MillSessionRecorderBridge recorderBridge =
-        MillSessionRecorderBridge.forGameController(session: session);
-    addTearDown(recorderBridge.dispose);
-
-    AnalysisMode.enable(
-      <MoveAnalysisResult>[
-        const MoveAnalysisResult(
-          move: 'd6',
-          outcome: AnalysisOutcome.advantage,
-        ),
-      ],
-      lineResults: <MoveAnalysisResult>[
-        const MoveAnalysisResult(
-          move: 'd6',
-          outcome: AnalysisOutcome.advantage,
-          rank: 1,
-          depth: 8,
-          nodes: 128000,
-          line: <String>['d6', 'f4'],
-        ),
-      ],
-      source: AnalysisSource.engine,
-    );
-
-    await _pumpSessionPlayArea(tester, session);
-    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
-    await tester.pumpAndSettle();
-
-    final Finder bestMove = find.byKey(
-      const Key('play_area_analysis_summary_best_move'),
-    );
-    expect(bestMove, findsOneWidget);
-    expect(
-      find.descendant(of: bestMove, matching: find.textContaining('d8')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: bestMove, matching: find.textContaining('d6 f4')),
-      findsOneWidget,
-    );
-    expect(find.byTooltip('Apply to board · + 1. d6 f4'), findsOneWidget);
-    expect(
-      find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is Semantics &&
-            widget.properties.label == 'Apply to board · + 1. d6 f4',
-      ),
-      findsOneWidget,
-    );
-
-    await tester.tap(bestMove);
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 300));
-    await tester.pump();
-
-    expect(_currentPathMoves(), <String>['d6']);
-  });
-
-  testWidgets('analysis summary expands hidden result candidates', (
-    WidgetTester tester,
-  ) async {
-    db.displaySettings = const DisplaySettings(
-      isUnplacedAndRemovedPiecesShown: false,
-    );
-    final NativeMillGameSession session = await _bindNativeGame(
-      GameMode.analysis,
-    );
-
-    AnalysisMode.enable(<MoveAnalysisResult>[
-      const MoveAnalysisResult(move: 'a1', outcome: AnalysisOutcome.win),
-      const MoveAnalysisResult(move: 'd1', outcome: AnalysisOutcome.win),
-      const MoveAnalysisResult(move: 'a4', outcome: AnalysisOutcome.win),
-      const MoveAnalysisResult(move: 'd2', outcome: AnalysisOutcome.win),
-      const MoveAnalysisResult(move: 'a7', outcome: AnalysisOutcome.win),
-      const MoveAnalysisResult(move: 'd3', outcome: AnalysisOutcome.win),
-      const MoveAnalysisResult(move: 'g7', outcome: AnalysisOutcome.win),
-      const MoveAnalysisResult(move: 'b2', outcome: AnalysisOutcome.win),
-    ], source: AnalysisSource.perfectDatabase);
-
-    await _pumpSessionPlayArea(tester, session);
-
-    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
-    await tester.pumpAndSettle();
-
-    final Finder candidateList = find.byKey(
-      const Key('play_area_analysis_summary_result_candidates'),
-    );
-    expect(candidateList, findsOneWidget);
-    expect(
-      find.descendant(of: candidateList, matching: find.text('d3')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: candidateList, matching: find.text('g7')),
-      findsNothing,
-    );
-    expect(
-      find.descendant(of: candidateList, matching: find.text('b2')),
-      findsNothing,
-    );
-
-    final Finder moreCandidates = find.byKey(
-      const Key('play_area_analysis_summary_result_candidates_more'),
-    );
-    expect(moreCandidates, findsOneWidget);
-    expect(
-      find.descendant(of: moreCandidates, matching: find.text('+2 More')),
-      findsOneWidget,
-    );
-    expect(find.byTooltip('+2 More'), findsOneWidget);
-    expect(
-      find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is Semantics && widget.properties.label == '+2 More',
-      ),
-      findsOneWidget,
-    );
-
-    final Finder summaryScrollable = find.descendant(
-      of: find.byKey(const Key('play_area_analysis_summary')),
-      matching: find.byType(Scrollable),
-    );
-    await tester.scrollUntilVisible(
-      moreCandidates,
-      120,
-      scrollable: summaryScrollable,
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(moreCandidates);
-    await tester.pumpAndSettle();
-
-    expect(moreCandidates, findsNothing);
-    expect(
-      find.descendant(of: candidateList, matching: find.text('g7')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: candidateList, matching: find.text('b2')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const Key('play_area_analysis_summary_result_candidate_7')),
-      findsOneWidget,
-    );
-  });
-
-  testWidgets('analysis summary result candidate applies the move', (
-    WidgetTester tester,
-  ) async {
-    db.displaySettings = const DisplaySettings(
-      isUnplacedAndRemovedPiecesShown: false,
-    );
-    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
-    _bindExistingNativeGame(GameMode.analysis, session);
-    final MillSessionRecorderBridge recorderBridge =
-        MillSessionRecorderBridge.forGameController(session: session);
-    addTearDown(recorderBridge.dispose);
-
-    AnalysisMode.enable(
-      <MoveAnalysisResult>[
-        const MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.win),
-        const MoveAnalysisResult(move: 'a1', outcome: AnalysisOutcome.draw),
-      ],
-      lineResults: <MoveAnalysisResult>[
-        const MoveAnalysisResult(
-          move: 'd6',
-          outcome: AnalysisOutcome.win,
-          rank: 1,
-          depth: 8,
-          line: <String>['d6', 'f4'],
-        ),
-      ],
-      source: AnalysisSource.engine,
-    );
-
-    await _pumpSessionPlayArea(tester, session);
-    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
-    await tester.pumpAndSettle();
-
-    final Finder candidate = find.byKey(
-      const Key('play_area_analysis_summary_result_candidate_0'),
-    );
-    expect(candidate, findsOneWidget);
-    expect(
-      find.descendant(of: candidate, matching: find.text('d6')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: candidate, matching: find.text('W')),
-      findsOneWidget,
-    );
-    expect(find.byTooltip('Apply to board · W 1. d6'), findsOneWidget);
-    expect(
-      find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is Semantics &&
-            widget.properties.label == 'Apply to board · W 1. d6',
-      ),
-      findsOneWidget,
-    );
-
-    await tester.ensureVisible(candidate);
-    await tester.pumpAndSettle();
-    await tester.tap(candidate);
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 300));
-    await tester.pump();
-
-    expect(_currentPathMoves(), <String>['d6']);
-  });
-
-  testWidgets('analysis summary offers request and waiting states', (
-    WidgetTester tester,
-  ) async {
-    db.displaySettings = const DisplaySettings(
-      isUnplacedAndRemovedPiecesShown: false,
-    );
-    final NativeMillGameSession session = await _bindNativeGame(
-      GameMode.analysis,
-    );
-
-    await _pumpSessionPlayArea(tester, session);
-
-    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
-    await tester.pumpAndSettle();
-
-    expect(
-      find.byKey(const Key('play_area_analysis_summary_analyze')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const Key('play_area_analysis_summary_engine_progress')),
-      findsNothing,
-    );
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_engine')),
-        matching: find.text('Run analysis to review this position.'),
-      ),
-      findsOneWidget,
-    );
-
-    AnalysisMode.setAnalyzing(true);
-    await tester.pump();
-
-    expect(
-      find.byKey(const Key('play_area_analysis_summary_analyze')),
-      findsNothing,
-    );
-    expect(
-      find.byKey(const Key('play_area_analysis_summary_engine_progress')),
-      findsOneWidget,
-    );
-    final CircularProgressIndicator summaryProgress = tester
-        .widget<CircularProgressIndicator>(
-          find.descendant(
-            of: find.byKey(
-              const Key('play_area_analysis_summary_engine_progress'),
-            ),
-            matching: find.byType(CircularProgressIndicator),
-          ),
-        );
-    expect(summaryProgress.semanticsLabel, 'Analyzing…');
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_engine')),
-        matching: find.text('Analyzing…'),
-      ),
-      findsOneWidget,
-    );
-
-    AnalysisMode.setAnalyzing(false);
-  });
-
-  testWidgets('analysis summary shows the advantage graph', (
-    WidgetTester tester,
-  ) async {
-    db.displaySettings = const DisplaySettings(
-      isUnplacedAndRemovedPiecesShown: false,
-      isAdvantageGraphShown: true,
-    );
-    final NativeMillGameSession session = await _bindNativeGame(
-      GameMode.analysis,
-    );
-
-    await _pumpSessionPlayArea(tester, session);
-    final PlayAreaState playAreaState = tester.state<PlayAreaState>(
-      find.byType(PlayArea),
-    );
-    playAreaState.advantageData
-      ..clear()
-      ..addAll(<int>[0, 24, -12, 36]);
-
-    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
-    await tester.pumpAndSettle();
-
-    expect(
-      find.byKey(const Key('play_area_analysis_summary_advantage_graph')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const Key('play_area_analysis_summary_advantage_paint')),
-      findsOneWidget,
-    );
-    expect(_summaryAdvantagePainter(tester).fillWidth, isTrue);
-  });
-
-  testWidgets('analysis summary keeps key moments when graph is hidden', (
-    WidgetTester tester,
-  ) async {
-    db.displaySettings = const DisplaySettings(
-      isUnplacedAndRemovedPiecesShown: false,
-      isAdvantageGraphShown: false,
-    );
-    final NativeMillGameSession session = await _bindNativeGame(
-      GameMode.analysis,
-    );
-    final GameRecorder recorder = GameController().gameRecorder;
-    recorder.reset();
-    recorder.appendMove(ExtMove('d6', side: PieceColor.white));
-    recorder.appendMove(ExtMove('f4', side: PieceColor.black));
-    recorder.appendMove(ExtMove('a1', side: PieceColor.white));
-
-    await _pumpSessionPlayArea(tester, session);
-    final PlayAreaState playAreaState = tester.state<PlayAreaState>(
-      find.byType(PlayArea),
-    );
-    playAreaState.advantageData
-      ..clear()
-      ..addAll(<int>[0, 24, -12, 36]);
-
-    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
-    await tester.pumpAndSettle();
-
-    expect(
-      find.byKey(const Key('play_area_analysis_summary_advantage_graph')),
-      findsNothing,
-    );
-    expect(
-      find.byKey(const Key('play_area_analysis_summary_graph_header')),
-      findsNothing,
-    );
-    expect(
-      find.byKey(const Key('play_area_analysis_summary_key_moments_header')),
-      findsOneWidget,
-    );
-    expect(find.text('Key moments'), findsOneWidget);
-
-    final Finder topKeyMoment = find.byKey(
-      const Key('play_area_analysis_summary_key_moment'),
-    );
-    final Finder secondKeyMoment = find.byKey(
-      const Key('play_area_analysis_summary_key_moment_2'),
-    );
-    expect(topKeyMoment, findsOneWidget);
-    expect(secondKeyMoment, findsOneWidget);
-    expect(
-      find.descendant(of: topKeyMoment, matching: find.text('Gain · Move 3')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: topKeyMoment, matching: find.textContaining('+48')),
-      findsOneWidget,
-    );
-
-    await tester.tap(secondKeyMoment);
-    await tester.pumpAndSettle();
-
-    expect(_currentPathMoves(), <String>['d6', 'f4']);
-  });
-
-  testWidgets('analysis summary advantage graph jumps to tapped move', (
-    WidgetTester tester,
-  ) async {
-    db.displaySettings = const DisplaySettings(
-      isUnplacedAndRemovedPiecesShown: false,
-      isAdvantageGraphShown: true,
-    );
-    final NativeMillGameSession session = await _bindNativeGame(
-      GameMode.analysis,
-    );
-    final GameRecorder recorder = GameController().gameRecorder;
-    recorder.reset();
-    recorder.appendMove(ExtMove('d6', side: PieceColor.white));
-    recorder.appendMove(ExtMove('f4', side: PieceColor.black));
-    recorder.appendMove(ExtMove('a1', side: PieceColor.white));
-
-    await _pumpSessionPlayArea(tester, session);
-    final PlayAreaState playAreaState = tester.state<PlayAreaState>(
-      find.byType(PlayArea),
-    );
-    playAreaState.advantageData
-      ..clear()
-      ..addAll(<int>[0, 24, -12, 36]);
-
-    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
-    await tester.pumpAndSettle();
-
-    expect(_summaryAdvantagePainter(tester).currentIndex, 3);
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_graph_header')),
-        matching: find.text('Advantage graph'),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is Semantics &&
-            widget.properties.label ==
-                'Continue from here · Advantage graph · Move 3 · +36',
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const Key('play_area_analysis_summary_key_moments_header')),
-      findsOneWidget,
-    );
-    expect(find.text('Key moments'), findsOneWidget);
-    final Finder topKeyMoment = find.byKey(
-      const Key('play_area_analysis_summary_key_moment'),
-    );
-    final Finder secondKeyMoment = find.byKey(
-      const Key('play_area_analysis_summary_key_moment_2'),
-    );
-    final Finder thirdKeyMoment = find.byKey(
-      const Key('play_area_analysis_summary_key_moment_1'),
-    );
-    expect(topKeyMoment, findsOneWidget);
-    expect(secondKeyMoment, findsOneWidget);
-    expect(thirdKeyMoment, findsOneWidget);
-    expect(
-      find.descendant(of: topKeyMoment, matching: find.text('Gain · Move 3')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: topKeyMoment, matching: find.textContaining('+48')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: topKeyMoment, matching: find.textContaining('a1')),
-      findsOneWidget,
-    );
-    expect(
-      find.byTooltip('Continue from here · Gain · Move 3 · +48 · a1'),
-      findsOneWidget,
-    );
-    expect(
-      find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is Semantics &&
-            widget.properties.label ==
-                'Continue from here · Gain · Move 3 · +48 · a1',
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(
-        of: secondKeyMoment,
-        matching: find.text('Drop · Move 2'),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(
-        of: secondKeyMoment,
-        matching: find.textContaining('-36'),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: secondKeyMoment, matching: find.textContaining('f4')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: thirdKeyMoment, matching: find.text('Gain · Move 1')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: thirdKeyMoment, matching: find.textContaining('+24')),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(of: thirdKeyMoment, matching: find.textContaining('d6')),
-      findsOneWidget,
-    );
-
-    final Finder graph = find.byKey(
-      const Key('play_area_analysis_summary_advantage_graph'),
-    );
-    await tester.ensureVisible(graph);
-    await tester.pumpAndSettle();
-
-    final Size graphSize = tester.getSize(graph);
-    final Offset graphTopLeft = tester.getTopLeft(graph);
-    const double chartMargin = 10;
-    final double stepWidth = AdvantageGraphPainter.horizontalStepWidth(
-      chartWidth: graphSize.width - chartMargin * 2,
-      shownCount: 4,
-      fillWidth: true,
-    );
-    await tester.tapAt(
-      graphTopLeft + Offset(chartMargin + stepWidth * 2, graphSize.height / 2),
-    );
-    await tester.pumpAndSettle();
-
-    expect(_currentPathMoves(), <String>['d6', 'f4']);
-    expect(_summaryAdvantagePainter(tester).currentIndex, 2);
-    expect(
-      find.byTooltip('Continue from here · Advantage graph · Move 2 · -12'),
-      findsOneWidget,
-    );
-    expect(
-      find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is Semantics &&
-            widget.properties.label ==
-                'Continue from here · Advantage graph · Move 2 · -12',
-      ),
-      findsOneWidget,
-    );
-
-    await tester.ensureVisible(topKeyMoment);
-    await tester.pumpAndSettle();
-    await tester.tap(topKeyMoment);
-    await tester.pumpAndSettle();
-
-    expect(_currentPathMoves(), <String>['d6', 'f4', 'a1']);
-    expect(_summaryAdvantagePainter(tester).currentIndex, 3);
-
-    await tester.ensureVisible(secondKeyMoment);
-    await tester.pumpAndSettle();
-    await tester.tap(secondKeyMoment);
-    await tester.pumpAndSettle();
-
-    expect(_currentPathMoves(), <String>['d6', 'f4']);
-    expect(_summaryAdvantagePainter(tester).currentIndex, 2);
-  });
-
-  testWidgets('analysis summary advantage graph scrubs while dragging', (
-    WidgetTester tester,
-  ) async {
-    db.displaySettings = const DisplaySettings(
-      isUnplacedAndRemovedPiecesShown: false,
-      isAdvantageGraphShown: true,
-    );
-    final NativeMillGameSession session = await _bindNativeGame(
-      GameMode.analysis,
-    );
-    final GameRecorder recorder = GameController().gameRecorder;
-    recorder.reset();
-    recorder.appendMove(ExtMove('d6', side: PieceColor.white));
-    recorder.appendMove(ExtMove('f4', side: PieceColor.black));
-    recorder.appendMove(ExtMove('a1', side: PieceColor.white));
-
-    await _pumpSessionPlayArea(tester, session);
-    final PlayAreaState playAreaState = tester.state<PlayAreaState>(
-      find.byType(PlayArea),
-    );
-    playAreaState.advantageData
-      ..clear()
-      ..addAll(<int>[0, 24, -12, 36]);
-
-    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
-    await tester.pumpAndSettle();
-
-    final Finder graph = find.byKey(
-      const Key('play_area_analysis_summary_advantage_graph'),
-    );
-    await tester.ensureVisible(graph);
-    await tester.pumpAndSettle();
-
-    final Size graphSize = tester.getSize(graph);
-    final Offset graphTopLeft = tester.getTopLeft(graph);
-    const double chartMargin = 10;
-    final double stepWidth = AdvantageGraphPainter.horizontalStepWidth(
-      chartWidth: graphSize.width - chartMargin * 2,
-      shownCount: 4,
-      fillWidth: true,
-    );
-    final Offset firstMovePoint =
-        graphTopLeft + Offset(chartMargin + stepWidth, graphSize.height / 2);
-    final Offset thirdMovePoint =
-        graphTopLeft +
-        Offset(chartMargin + stepWidth * 3, graphSize.height / 2);
-
-    final TestGesture gesture = await tester.startGesture(firstMovePoint);
-    await tester.pump();
-    await gesture.moveTo(thirdMovePoint);
-    await tester.pumpAndSettle();
-    await gesture.up();
-    await tester.pumpAndSettle();
-
-    expect(_currentPathMoves(), <String>['d6', 'f4', 'a1']);
-    expect(_summaryAdvantagePainter(tester).currentIndex, 3);
-  });
-
-  testWidgets('analysis summary can request deeper engine analysis', (
-    WidgetTester tester,
-  ) async {
-    db.displaySettings = const DisplaySettings(
-      isUnplacedAndRemovedPiecesShown: false,
-    );
-    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
-    _bindExistingNativeGame(GameMode.analysis, session);
-
-    AnalysisMode.enable(<MoveAnalysisResult>[
-      const MoveAnalysisResult(
-        move: 'd6',
-        outcome: AnalysisOutcome.advantage,
-        rank: 1,
-        depth: 8,
-        nodes: 128000,
-        nodesPerSecond: 64000,
-        line: <String>['d6', 'f4', 'a1'],
-      ),
-    ], source: AnalysisSource.engine);
-
-    await _pumpSessionPlayArea(tester, session);
-
-    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
-    await tester.pumpAndSettle();
-
-    expect(
-      find.byKey(const Key('play_area_analysis_summary_go_deeper')),
-      findsOneWidget,
-    );
-    expect(find.byTooltip('Continue from here · ∞'), findsOneWidget);
-
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_summary_go_deeper')),
-    );
-    await tester.pumpAndSettle();
-
-    expect(
-      session.requestedMoveLimitValues.last,
-      AnalysisMode.maxEngineSearchTimeMs,
-    );
-    expect(
-      session.requestedMultiPvValues.last,
-      AnalysisMode.defaultEngineLineCount,
-    );
-  });
-
-  testWidgets(
-    'deep analysis marks max search time in summary and engine sheet',
-    (WidgetTester tester) async {
-      db.displaySettings = const DisplaySettings(
-        isUnplacedAndRemovedPiecesShown: false,
-      );
-      final NativeMillGameSession session = await _bindNativeGame(
-        GameMode.analysis,
-      );
-
-      AnalysisMode.enable(
-        <MoveAnalysisResult>[
-          const MoveAnalysisResult(
-            move: 'd6',
-            outcome: AnalysisOutcome.advantage,
-            rank: 1,
-            depth: 12,
-            nodes: 256000,
-            nodesPerSecond: 64000,
-            line: <String>['d6', 'f4', 'a1'],
-          ),
-        ],
-        source: AnalysisSource.engine,
-        isEngineAnalysisDeep: true,
-      );
-
-      await _pumpSessionPlayArea(tester, session);
-
-      await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
-      await tester.pumpAndSettle();
-
-      expect(
-        find.descendant(
-          of: find.byKey(const Key('play_area_analysis_summary_engine')),
-          matching: find.textContaining('∞'),
-        ),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const Key('play_area_analysis_summary_go_deeper')),
-        findsNothing,
-      );
-
-      await tester.longPress(
-        find.byKey(const Key('play_area_analysis_bottom_bar_engine')),
-      );
-      await tester.pumpAndSettle();
-
-      expect(
-        find.descendant(
-          of: find.byKey(const Key('play_area_analysis_engine_status')),
-          matching: find.textContaining('∞'),
-        ),
-        findsOneWidget,
-      );
-      expect(
-        find.byKey(const Key('play_area_analysis_engine_go_deeper')),
-        findsNothing,
-      );
-    },
-  );
-
-  testWidgets('analysis summary opens the full move list page', (
-    WidgetTester tester,
-  ) async {
-    db.displaySettings = const DisplaySettings(
-      isUnplacedAndRemovedPiecesShown: false,
-    );
-    final NativeMillGameSession session = await _bindNativeGame(
-      GameMode.analysis,
-    );
-    GameController().gameRecorder.reset();
-    GameController().gameRecorder.appendMove(
-      ExtMove(
-        'd6',
-        side: PieceColor.white,
-        boardLayout: '********/********/O*******',
-      ),
-    );
-
-    await _pumpSessionPlayArea(tester, session);
-
-    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
-    await tester.pumpAndSettle();
-    final Finder summaryMoves = find.byKey(
-      const Key('play_area_analysis_summary_moves'),
-    );
-    await tester.ensureVisible(summaryMoves);
-    await tester.pumpAndSettle();
-    await tester.tap(summaryMoves);
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 300));
-    await tester.pump();
-
-    expect(find.byKey(const Key('moves_list_page_scaffold')), findsOneWidget);
-  });
-
-  testWidgets('analysis summary counts the whole variation tree', (
-    WidgetTester tester,
-  ) async {
-    db.displaySettings = const DisplaySettings(
-      isUnplacedAndRemovedPiecesShown: false,
-    );
-    final NativeMillGameSession session = await _bindNativeGame(
-      GameMode.analysis,
-    );
-    final GameRecorder recorder = GameController().gameRecorder;
-    recorder.reset();
-    recorder.appendMove(ExtMove('d6', side: PieceColor.white));
-    recorder.appendMove(ExtMove('a1', side: PieceColor.black));
-    final a1Node = recorder.activeNode!;
-    recorder.appendMove(ExtMove('d1', side: PieceColor.white));
-    recorder.activeNode = recorder.pgnRoot;
-    recorder.appendMove(ExtMove('f4', side: PieceColor.white));
-    recorder.activeNode = a1Node;
-    recorder.appendMove(ExtMove('g7', side: PieceColor.white));
-
-    await _pumpSessionPlayArea(tester, session);
-
-    await tester.tap(find.byKey(const Key('play_area_analysis_tab_summary')));
-    await tester.pumpAndSettle();
-
-    expect(_currentPathMoves(), <String>['d6', 'a1', 'g7']);
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_moves')),
-        matching: find.textContaining('3 · d6 a1 g7'),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.byTooltip('Move list · Small board · 3 · d6 a1 g7'),
-      findsOneWidget,
-    );
-    expect(
-      find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is Semantics &&
-            widget.properties.label == 'Move list · Small board · 3 · d6 a1 g7',
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_summary_variations')),
-        matching: find.textContaining('2 · Moves in this variation: f4, g7'),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.byTooltip(
-        'Variations · Switch to full tree view · '
-        '2 · Moves in this variation: f4, g7',
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is Semantics &&
-            widget.properties.label ==
-                'Variations · Switch to full tree view · '
-                    '2 · Moves in this variation: f4, g7',
-      ),
-      findsOneWidget,
-    );
-    expect(db.displaySettings.showBranchTree, isFalse);
-
-    final Finder summaryVariations = find.byKey(
-      const Key('play_area_analysis_summary_variations'),
-    );
-    await tester.ensureVisible(summaryVariations);
-    await tester.pumpAndSettle();
-    await tester.tap(summaryVariations);
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 300));
-    await tester.pump();
-
-    expect(find.byKey(const Key('moves_list_page_scaffold')), findsOneWidget);
-    expect(find.byTooltip('Switch to active line view'), findsOneWidget);
-    expect(find.text('1. f4'), findsOneWidget);
-    expect(db.displaySettings.showBranchTree, isFalse);
   });
 
   testWidgets('analysis engine chip aligns with unlabeled bottom bar icons', (
@@ -4732,18 +3502,8 @@ void main() {
       findsNothing,
     );
     expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_engine_line_0')),
-        matching: find.text('d1'),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_engine_line_1')),
-        matching: find.text('d8'),
-      ),
-      findsOneWidget,
+      find.byKey(const Key('play_area_analysis_engine_line_depth')),
+      findsNothing,
     );
     final Text engineLineText = tester.widget<Text>(find.text('1. d6 f4 a1'));
     expect(engineLineText.style?.fontSize, 11);
@@ -4799,6 +3559,8 @@ void main() {
     ], source: AnalysisSource.engine);
     await tester.pump();
     expect(find.text('1... f4 a1'), findsOneWidget);
+    expect(find.textContaining('128k'), findsNothing);
+    expect(find.textContaining('32k n/s'), findsNothing);
 
     expect(
       tester.widgetList<Text>(find.byType(Text)).where((Text text) {
@@ -4842,6 +3604,14 @@ void main() {
     expect(
       find.byKey(const Key('play_area_analysis_engine_settings')),
       findsOneWidget,
+    );
+    expect(
+      tester
+          .widget<Text>(
+            find.byKey(const Key('play_area_analysis_engine_status_source')),
+          )
+          .data,
+      'Engine',
     );
     expect(
       find.descendant(
@@ -5572,7 +4342,7 @@ void main() {
     await _pumpSessionPlayArea(tester, session);
 
     expect(
-      find.byTooltip('Engine line 1 · Evaluation = · Depth 1 · 1. a7'),
+      find.byTooltip('Engine line 1 · Evaluation = · 1. a7'),
       findsOneWidget,
     );
 
@@ -5608,9 +4378,7 @@ void main() {
         }
         final String? message = widget.message;
         return message != null &&
-            message.startsWith(
-              'Threat · Engine line 1 · Evaluation + · Depth 2 · ',
-            ) &&
+            message.startsWith('Threat · Engine line 1 · Evaluation + · ') &&
             message.contains('f4');
       }),
       findsOneWidget,
@@ -5651,10 +4419,7 @@ void main() {
     await tester.pump();
 
     expect(
-      find.byTooltip(
-        'Engine line 1 · Thinking… · Evaluation = · '
-        'Depth 1 · 1. a7',
-      ),
+      find.byTooltip('Engine line 1 · Thinking… · Evaluation = · 1. a7'),
       findsOneWidget,
     );
 
@@ -9375,18 +8140,6 @@ List<String> _currentPathMoves() {
   return GameController().gameRecorder.currentPath
       .map((ExtMove move) => move.move)
       .toList();
-}
-
-AdvantageGraphPainter _summaryAdvantagePainter(WidgetTester tester) {
-  final CustomPaint paint = tester.widget<CustomPaint>(
-    find.byKey(const Key('play_area_analysis_summary_advantage_paint')),
-  );
-  final CustomPainter? painter = paint.painter;
-  assert(
-    painter is AdvantageGraphPainter,
-    'Analysis summary graph must use AdvantageGraphPainter.',
-  );
-  return painter! as AdvantageGraphPainter;
 }
 
 class _GamePageDb extends MockDB {
