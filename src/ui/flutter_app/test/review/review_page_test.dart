@@ -8,6 +8,7 @@ import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/game_page.dart';
 import 'package:sanmill/game_page/widgets/mini_board.dart';
@@ -129,7 +130,9 @@ void main() {
           matching: find.byType(CustomPaint),
         ),
       );
-      expect((boardPaint.painter! as MiniBoardPainter).showCoordinates, isTrue);
+      final MiniBoardPainter painter = boardPaint.painter! as MiniBoardPainter;
+      expect(painter.showCoordinates, isTrue);
+      expect(painter.showPieceNumbers, isFalse);
       expect(
         tester.getSemantics(find.byKey(const Key('review_next_turn'))).label,
         contains('Next move'),
@@ -198,6 +201,30 @@ void main() {
     expect(find.byKey(const Key('review_correction_choice_b6')), findsNothing);
     expect(find.text('Show answer'), findsNothing);
     expect(find.byIcon(Icons.chevron_right_rounded), findsWidgets);
+  });
+
+  testWidgets('review piece numbers follow the main board preference', (
+    WidgetTester tester,
+  ) async {
+    DB().displaySettings = const DisplaySettings(isNumbersOnPiecesShown: true);
+    await tester.pumpWidget(_reviewApp());
+    await tester.pump();
+
+    CustomPaint boardPaint() => tester.widget<CustomPaint>(
+      find.descendant(
+        of: find.byKey(const Key('review_board')),
+        matching: find.byType(CustomPaint),
+      ),
+    );
+
+    MiniBoardPainter painter = boardPaint().painter! as MiniBoardPainter;
+    expect(painter.showPieceNumbers, isTrue);
+    expect(painter.pieceNumbersByNode, <int, int>{23: 1});
+
+    await tester.tap(find.byKey(const Key('review_next_turn')));
+    await tester.pump();
+    painter = boardPaint().painter! as MiniBoardPainter;
+    expect(painter.pieceNumbersByNode, <int, int>{23: 1, 15: 2});
   });
 
   testWidgets('correction entry exposes one accessible navigation action', (

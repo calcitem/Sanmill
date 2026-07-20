@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/foundation.dart' show mapEquals;
 import 'package:flutter/material.dart';
 
 import '../../games/mill/mill_board_coordinate_maps.dart';
@@ -30,6 +31,7 @@ class MiniBoard extends StatefulWidget {
     this.badgeAnchorMove,
     this.hasDiagonalLines,
     this.showCoordinates = false,
+    this.pieceNumbersByNode = const <int, int>{},
   });
 
   final String boardLayout;
@@ -45,6 +47,7 @@ class MiniBoard extends StatefulWidget {
   final String? badgeAnchorMove;
   final bool? hasDiagonalLines;
   final bool showCoordinates;
+  final Map<int, int> pieceNumbersByNode;
 
   @override
   MiniBoardState createState() => MiniBoardState();
@@ -183,6 +186,9 @@ class MiniBoardState extends State<MiniBoard>
                             widget.badgeAnchorMove ?? _inferredBadgeAnchorMove,
                         hasDiagonalLines: widget.hasDiagonalLines,
                         showCoordinates: widget.showCoordinates,
+                        showPieceNumbers:
+                            DB().displaySettings.isNumbersOnPiecesShown,
+                        pieceNumbersByNode: widget.pieceNumbersByNode,
                       ),
                       child: const SizedBox.expand(),
                     ),
@@ -311,6 +317,8 @@ class MiniBoardPainter extends CustomPainter {
     this.badgeAnchorMove,
     this.hasDiagonalLines,
     this.showCoordinates = false,
+    this.showPieceNumbers = false,
+    this.pieceNumbersByNode = const <int, int>{},
   }) {
     boardState = _parseBoardLayout(boardLayout);
   }
@@ -323,6 +331,8 @@ class MiniBoardPainter extends CustomPainter {
   final String? badgeAnchorMove;
   final bool? hasDiagonalLines;
   final bool showCoordinates;
+  final bool showPieceNumbers;
+  final Map<int, int> pieceNumbersByNode;
 
   /// Holds the parsed board layout (24 squares).
   late final List<PieceColor> boardState;
@@ -489,24 +499,15 @@ class MiniBoardPainter extends CustomPainter {
         continue;
       }
 
-      // Example: We define the piece diameter by 2 * pieceRadius.
-      final double pieceDiameter = pieceRadius * 2;
-
-      // If you have piece images (ui.Image) for white/black, you can fetch them here:
-      // final ui.Image? pieceImage = myPieceImageMap[pc]; // Example only.
-      // For demonstration, we'll assume no images and just do border + fill.
-
-      // The code below mirrors the structure in piece_painter.dart:
-      // 1) If there's an image, use paintImage(...).
-      // 2) Else, draw the border circle, then the fill circle.
-      // 3) Optionally draw a number if needed.
-
       final Paint paint = Paint();
-      const double opacity = 1.0;
-      final double circleOuterRadius = pieceDiameter / 2.0;
-      final double circleInnerRadius = circleOuterRadius * 0.99;
+      final Color pieceColor = pc.mainColor;
+      final double circleOuterRadius = pieceRadius;
+      final double outlineWidth = math.min(
+        circleOuterRadius * 0.35,
+        math.max(1.5, minSide * 0.004),
+      );
+      final double circleInnerRadius = circleOuterRadius - outlineWidth;
 
-      // If you have an actual piece image, use paintImage(...). We'll skip here.
       const ui.Image? pieceImage = null;
       if (pieceImage != null) {
         paintImage(
@@ -516,7 +517,6 @@ class MiniBoardPainter extends CustomPainter {
           fit: BoxFit.cover,
         );
       } else {
-        // Draw shadow similar to large board when no piece image is used.
         canvas.drawShadow(
           Path()
             ..addOval(Rect.fromCircle(center: pos, radius: circleOuterRadius)),
@@ -524,36 +524,24 @@ class MiniBoardPainter extends CustomPainter {
           2,
           true,
         );
-
-        // Example color usage:
-        Color borderColor;
-        if (pc == PieceColor.white) {
-          borderColor = DB().colorSettings.whitePieceColor;
-        } else if (pc == PieceColor.black) {
-          borderColor = DB().colorSettings.blackPieceColor;
-        } else {
-          borderColor = DB().colorSettings.boardLineColor;
-        }
-
-        // Draw border circle:
-        paint.color = borderColor.withValues(alpha: opacity);
-
-        // If background is white, you might prefer stroke for the border:
-        if (DB().colorSettings.boardBackgroundColor == Colors.white) {
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 4.0;
-        } else {
-          paint.style = PaintingStyle.fill;
-        }
+        paint
+          ..style = PaintingStyle.fill
+          ..color = pieceOutlineColor(pieceColor);
         canvas.drawCircle(pos, circleOuterRadius, paint);
-
-        // Fill main color (could be the same or different from borderColor).
-        paint.style = PaintingStyle.fill;
-        paint.color = borderColor.withValues(alpha: opacity);
+        paint.color = pieceColor;
         canvas.drawCircle(pos, circleInnerRadius, paint);
       }
 
-      // --- End: piece painter style code. ---
+      final int? number = pieceNumbersByNode[i];
+      if (showPieceNumbers && number != null && number > 0) {
+        _drawPieceNumber(
+          canvas,
+          center: pos,
+          radius: circleInnerRadius,
+          number: number,
+          pieceColor: pieceColor,
+        );
+      }
     }
 
     // Highlight the last move if extMove != null
@@ -698,6 +686,42 @@ class MiniBoardPainter extends CustomPainter {
     return readableForegroundColor(
       preferred: Colors.white,
       background: qualityBadgeBackgroundColor(nag),
+    );
+  }
+
+  static Color pieceOutlineColor(Color pieceColor) {
+    return readableForegroundColor(
+      preferred: Colors.black,
+      background: pieceColor,
+    );
+  }
+
+  static Color pieceNumberColor(Color pieceColor) =>
+      pieceOutlineColor(pieceColor);
+
+  static void _drawPieceNumber(
+    Canvas canvas, {
+    required Offset center,
+    required double radius,
+    required int number,
+    required Color pieceColor,
+  }) {
+    final TextPainter painter = TextPainter(
+      text: TextSpan(
+        text: '$number',
+        style: TextStyle(
+          color: pieceNumberColor(pieceColor),
+          fontSize: radius,
+          fontWeight: FontWeight.w600,
+          height: 1,
+        ),
+      ),
+      textAlign: TextAlign.center,
+      textDirection: TextDirection.ltr,
+    )..layout();
+    painter.paint(
+      canvas,
+      center - Offset(painter.width / 2, painter.height / 2),
     );
   }
 
@@ -914,6 +938,8 @@ class MiniBoardPainter extends CustomPainter {
         oldDelegate.qualityNag != qualityNag ||
         oldDelegate.badgeAnchorMove != badgeAnchorMove ||
         oldDelegate.hasDiagonalLines != hasDiagonalLines ||
-        oldDelegate.showCoordinates != showCoordinates;
+        oldDelegate.showCoordinates != showCoordinates ||
+        oldDelegate.showPieceNumbers != showPieceNumbers ||
+        !mapEquals(oldDelegate.pieceNumbersByNode, pieceNumbersByNode);
   }
 }

@@ -14,6 +14,7 @@ import '../../shared/services/logger.dart';
 import '../models/review_models.dart';
 import '../services/review_analysis_service.dart';
 import '../services/review_nag_merge.dart';
+import '../services/review_piece_numbers.dart';
 import '../services/review_storage.dart';
 import 'review_correction_page.dart';
 
@@ -441,6 +442,12 @@ class _ReviewPageState extends State<ReviewPage> {
           badgeAnchorMove: selectedTurn?.anchorMove,
           hasDiagonalLines: widget.record.rules.hasDiagonalLines,
           showCoordinates: true,
+          pieceNumbersByNode: selectedTurn == null
+              ? const <int, int>{}
+              : ReviewPieceNumbers.forTurn(
+                  report!.turns,
+                  selectedTurn.groupIndex,
+                ),
         ),
       ),
     );

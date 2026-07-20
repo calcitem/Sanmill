@@ -3,8 +3,13 @@
 
 // mini_board_test.dart
 
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/appearance_settings/models/color_settings.dart';
+import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/import_export/pgn.dart';
 import 'package:sanmill/game_page/services/mill.dart' show ExtMove, PieceColor;
 import 'package:sanmill/game_page/widgets/mini_board.dart';
@@ -113,6 +118,93 @@ void main() {
     }
     expect(MiniBoardPainter.qualityBadgeForegroundColor(2), Colors.black);
     expect(MiniBoardPainter.qualityBadgeForegroundColor(6), Colors.black);
+  });
+
+  test('piece outlines and numbers contrast with light and dark pieces', () {
+    expect(MiniBoardPainter.pieceOutlineColor(Colors.white), Colors.black);
+    expect(MiniBoardPainter.pieceOutlineColor(Colors.black), Colors.white);
+    for (final Color pieceColor in <Color>[Colors.white, Colors.black]) {
+      expect(
+        colorContrastRatio(
+          MiniBoardPainter.pieceOutlineColor(pieceColor),
+          pieceColor,
+        ),
+        greaterThanOrEqualTo(normalTextMinimumContrastRatio),
+      );
+      expect(
+        colorContrastRatio(
+          MiniBoardPainter.pieceNumberColor(pieceColor),
+          pieceColor,
+        ),
+        greaterThanOrEqualTo(normalTextMinimumContrastRatio),
+      );
+    }
+  });
+
+  test('a white piece is painted with a visible dark outline', () async {
+    DB().colorSettings = const ColorSettings(
+      boardLineColor: Colors.black,
+      boardBackgroundColor: Colors.white,
+      whitePieceColor: Colors.white,
+      blackPieceColor: Colors.black,
+    );
+    final ui.PictureRecorder recorder = ui.PictureRecorder();
+    final Canvas canvas = Canvas(recorder);
+    const Size size = Size.square(200);
+    canvas.drawColor(Colors.white, BlendMode.src);
+    MiniBoardPainter(
+      boardLayout: 'O*******/********/********',
+    ).paint(canvas, size);
+    final ui.Image image = await recorder.endRecording().toImage(200, 200);
+    final ByteData data = (await image.toByteData(
+      format: ui.ImageByteFormat.rawRgba,
+    ))!;
+
+    Color pixelAt(int x, int y) {
+      final int offset = (y * 200 + x) * 4;
+      return Color.fromARGB(
+        data.getUint8(offset + 3),
+        data.getUint8(offset),
+        data.getUint8(offset + 1),
+        data.getUint8(offset + 2),
+      );
+    }
+
+    final Color pieceCenter = pixelAt(100, 64);
+    final Color pieceOutline = pixelAt(100, 55);
+    expect(pieceCenter.computeLuminance(), greaterThan(0.9));
+    expect(
+      colorContrastRatio(pieceOutline, pieceCenter),
+      greaterThanOrEqualTo(normalTextMinimumContrastRatio),
+    );
+    image.dispose();
+  });
+
+  testWidgets('piece numbers follow the main board display preference', (
+    WidgetTester tester,
+  ) async {
+    DB().displaySettings = const DisplaySettings(isNumbersOnPiecesShown: true);
+    await tester.pumpWidget(
+      makeTestableWidget(
+        const SizedBox.square(
+          dimension: 240,
+          child: MiniBoard(
+            boardLayout: 'O*******/********/@*******',
+            pieceNumbersByNode: <int, int>{0: 3, 16: 8},
+          ),
+        ),
+      ),
+    );
+
+    final CustomPaint customPaint = tester.widget<CustomPaint>(
+      find.descendant(
+        of: find.byType(MiniBoard),
+        matching: find.byType(CustomPaint),
+      ),
+    );
+    final MiniBoardPainter painter = customPaint.painter! as MiniBoardPainter;
+    expect(painter.showPieceNumbers, isTrue);
+    expect(painter.pieceNumbersByNode, <int, int>{0: 3, 16: 8});
   });
 
   testWidgets('replay reads an imported NAG and anchors a capture chain', (
