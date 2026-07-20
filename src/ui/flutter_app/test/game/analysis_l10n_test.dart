@@ -22,6 +22,10 @@ void main() {
       expect(strings.analysisDepthSemantics(24), '搜索深度 24');
       expect(strings.analysisEvaluationSemantics('+1.2'), '评估 +1.2');
       expect(strings.analysisPerfectDatabaseShortLabel, '完美数据库');
+      expect(strings.analysisMoveFeedback, '棋局着法反馈');
+      expect(strings.moveFeedbackBrilliant, '妙着');
+      expect(strings.moveFeedbackScoreDifference(8), '分差：8');
+      expect(strings.moveFeedbackRuleStrategyUnavailable, '当前棋规缺少专属战略证据');
     },
   );
 }

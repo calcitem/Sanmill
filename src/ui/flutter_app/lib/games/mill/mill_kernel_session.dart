@@ -29,6 +29,21 @@ class MillKernelSession {
   final TgfKernel kernel;
   int _lastRawBestValue = 0;
 
+  /// Replay rule evidence without mutating the live kernel or searching.
+  tgf_mill.MillFeedbackReport rawFeedbackEvidence({
+    required List<tgf.TgfAction> playedActions,
+    required List<tgf_mill.MillFeedbackCandidateInput> candidates,
+  }) {
+    if (kernel.isDisposed) {
+      throw KernelException('handle already disposed');
+    }
+    return tgf_mill.tgfKernelMillFeedbackEvidence(
+      handle: kernel.rawHandle,
+      playedActions: playedActions,
+      candidates: candidates,
+    );
+  }
+
   /// PVS search event stream backed by the Rust `tgfKernelMillSearchEvents*`
   /// FRB entry points.  Uses the variant options that were passed when the
   /// kernel was created (see `tgf_kernel_create_mill`).

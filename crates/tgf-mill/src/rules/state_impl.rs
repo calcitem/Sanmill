@@ -330,6 +330,21 @@ impl MillState {
         self.pending_removals
     }
 
+    /// Current atomic action-state tag for cold-path analysis.
+    pub fn action_tag(&self) -> i16 {
+        self.action as i16
+    }
+
+    /// Pieces marked for delayed removal by compatible variants.
+    pub fn delayed_marked_pieces(&self) -> u32 {
+        self.delayed_marked_pieces
+    }
+
+    /// Plies since the last capture, used by draw-resource feedback.
+    pub fn ply_since_capture(&self) -> u16 {
+        self.ply_since_capture
+    }
+
     pub fn mobility_diff(&self) -> i32 {
         self.mobility_diff
     }

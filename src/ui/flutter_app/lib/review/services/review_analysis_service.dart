@@ -3,6 +3,8 @@
 
 import 'dart:async';
 
+import '../../game_page/services/analysis/move_feedback.dart';
+import '../../game_page/services/analysis/move_feedback_native_adapter.dart';
 import '../../game_page/services/import_export/pgn.dart';
 import '../../game_page/services/mill.dart' show LiveEvaluationService;
 import '../../game_platform/game_session.dart';
@@ -355,12 +357,17 @@ class ReviewAnalysisService {
       orElse: () => throw ReviewMoveException(move),
     );
     final int perspective = side == ReviewSide.white ? 1 : -1;
-    final int bestScore = variations.first.score * perspective;
-    final int playedScore = played.score * perspective;
+    final MoveFeedbackExactScores? exact = moveFeedbackExactScores(
+      session.analyzePerfectDb(),
+      playedMove: move,
+      legalActionCount: legalActions.length,
+    );
+    final int bestScore =
+        exact?.bestScore ?? variations.first.score * perspective;
+    final int playedScore = exact?.playedScore ?? played.score * perspective;
     final int loss = bestScore > playedScore ? bestScore - playedScore : 0;
-    final ReviewGrade grade = ReviewGrading.grade(
-      bestScore: bestScore,
-      playedScore: playedScore,
+    final MoveFeedbackEvidence evidence = moveFeedbackEvidenceFromNative(
+      session.feedbackEvidenceForMove(move, variations),
     );
     final List<ReviewCandidate> candidates = variations
         .map(
@@ -373,6 +380,40 @@ class ReviewAnalysisService {
           ),
         )
         .toList(growable: false);
+    final ReviewCandidate? runnerUp = candidates
+        .where((ReviewCandidate candidate) => candidate.rank == 2)
+        .firstOrNull;
+    final Set<MoveFeedbackReason> strategicReasons =
+        moveFeedbackStrategicReasons(evidence);
+    final MoveFeedbackResult feedback = MoveFeedbackClassifier.classify(
+      MoveFeedbackInput(
+        bestScore: bestScore,
+        playedScore: playedScore,
+        playedRank: played.rank,
+        legalRootActionCount: legalActions.length,
+        depth: played.depth,
+        runnerUpScore: exact?.runnerUpScore ?? runnerUp?.score,
+        searchStable:
+            variations.every(
+              (NativeMillPrincipalVariation variation) =>
+                  variation.depth == played.depth,
+            ) &&
+            played.depth > 0,
+        candidateCoverageComplete: variations.length == legalActions.length,
+        allCandidatesLosing:
+            exact?.allCandidatesLosing ??
+            candidates.every(
+              (ReviewCandidate candidate) =>
+                  candidate.score <= -MoveQualityThresholds.engineTerminalScore,
+            ),
+        source: exact == null
+            ? MoveFeedbackSource.engine
+            : MoveFeedbackSource.perfectDatabase,
+        evidence: evidence,
+        strategicReasons: strategicReasons,
+      ),
+    );
+    final ReviewGrade grade = _reviewGrade(feedback.symbol, loss);
     _applyMove(session, move);
     return ReviewActionEvaluation(
       atomicIndex: atomicIndex,
@@ -387,7 +428,24 @@ class ReviewAnalysisService {
       grade: grade,
       profile: profile,
       candidates: candidates,
+      automaticNag: feedback.symbol.nag,
+      feedbackReasons: feedback.reasons,
     );
+  }
+
+  static ReviewGrade _reviewGrade(MoveFeedbackSymbol symbol, int loss) {
+    return switch (symbol) {
+      MoveFeedbackSymbol.blunder => ReviewGrade.blunder,
+      MoveFeedbackSymbol.mistake => ReviewGrade.mistake,
+      MoveFeedbackSymbol.dubious => ReviewGrade.dubious,
+      MoveFeedbackSymbol.interesting => ReviewGrade.good,
+      MoveFeedbackSymbol.brilliant ||
+      MoveFeedbackSymbol.good => ReviewGrade.best,
+      MoveFeedbackSymbol.none =>
+        loss <= MoveQualityThresholds.bestMaximum()
+            ? ReviewGrade.best
+            : ReviewGrade.good,
+    };
   }
 
   static void _applyMove(NativeMillGameSession session, String move) {

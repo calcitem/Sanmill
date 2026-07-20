@@ -8,6 +8,9 @@ import 'kernel.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'simple.dart';
 
+// These functions are ignored because they are not marked as `pub`: `to_i32_vec`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`
+
 /// Create a Mill kernel with explicit variant options.  Use this once
 /// the Flutter `RuleSettings` model is mapped through
 /// `MillVariantOptionsMapper`.
@@ -15,6 +18,22 @@ int tgfKernelCreateMill({required MillVariantOptions variant}) => RustLib
     .instance
     .api
     .crateApiMillKernelTgfKernelCreateMill(variant: variant);
+
+/// Extract rule facts for a played complete turn and searched candidates.
+///
+/// This synchronous call performs no search and never mutates the live
+/// kernel. It clones the root snapshot, replays the supplied short action
+/// sequences with the active variant rules, and returns stable fact fields
+/// for the Dart classifier and localized UI.
+MillFeedbackReport tgfKernelMillFeedbackEvidence({
+  required int handle,
+  required List<TgfAction> playedActions,
+  required List<MillFeedbackCandidateInput> candidates,
+}) => RustLib.instance.api.crateApiMillKernelTgfKernelMillFeedbackEvidence(
+  handle: handle,
+  playedActions: playedActions,
+  candidates: candidates,
+);
 
 /// PVS search over the kernel's **current** Mill position, using the
 /// same variant options as [tgf_kernel_create_mill].
@@ -200,3 +219,400 @@ TgfAction? tgfKernelMillPatchTrapAwareBestAction({
 /// Export the current Mill kernel state as a FEN string.
 String tgfKernelExportFen({required int handle}) =>
     RustLib.instance.api.crateApiMillKernelTgfKernelExportFen(handle: handle);
+
+/// One searched candidate supplied to the cold-path rule evidence extractor.
+class MillFeedbackCandidateInput {
+  final List<TgfAction> actions;
+  final int score;
+
+  const MillFeedbackCandidateInput({
+    required this.actions,
+    required this.score,
+  });
+
+  @override
+  int get hashCode => actions.hashCode ^ score.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MillFeedbackCandidateInput &&
+          runtimeType == other.runtimeType &&
+          actions == other.actions &&
+          score == other.score;
+}
+
+/// FRB projection of the facts extracted from a complete Mill turn.
+class MillFeedbackEvidence {
+  final bool completeTurnLegal;
+  final List<String> actionKinds;
+  final String phaseBefore;
+  final String phaseAfter;
+  final int sideBefore;
+  final int sideAfter;
+  final Int32List piecesOnBoardBefore;
+  final Int32List piecesOnBoardAfter;
+  final Int32List piecesInHandBefore;
+  final Int32List piecesInHandAfter;
+  final Int32List pendingRemovalsBefore;
+  final Int32List pendingRemovalsAfter;
+  final int delayedMarkedBefore;
+  final int delayedMarkedAfter;
+  final int legalActionsBefore;
+  final int legalRepliesAfter;
+  final int moverBoardLoss;
+  final int opponentBoardLoss;
+  final int moverHandLoss;
+  final int opponentHandLoss;
+  final int removalRightsCreated;
+  final bool formedMillWithReward;
+  final bool actualSpecialCapture;
+  final bool selectedCaptureTarget;
+  final bool phaseTransition;
+  final bool enteredFlying;
+  final bool opponentEnteredFlying;
+  final String outcomeBefore;
+  final String outcomeAfter;
+  final String outcomeReasonAfter;
+  final int mobilityDelta;
+  final int drawCounterDelta;
+
+  const MillFeedbackEvidence({
+    required this.completeTurnLegal,
+    required this.actionKinds,
+    required this.phaseBefore,
+    required this.phaseAfter,
+    required this.sideBefore,
+    required this.sideAfter,
+    required this.piecesOnBoardBefore,
+    required this.piecesOnBoardAfter,
+    required this.piecesInHandBefore,
+    required this.piecesInHandAfter,
+    required this.pendingRemovalsBefore,
+    required this.pendingRemovalsAfter,
+    required this.delayedMarkedBefore,
+    required this.delayedMarkedAfter,
+    required this.legalActionsBefore,
+    required this.legalRepliesAfter,
+    required this.moverBoardLoss,
+    required this.opponentBoardLoss,
+    required this.moverHandLoss,
+    required this.opponentHandLoss,
+    required this.removalRightsCreated,
+    required this.formedMillWithReward,
+    required this.actualSpecialCapture,
+    required this.selectedCaptureTarget,
+    required this.phaseTransition,
+    required this.enteredFlying,
+    required this.opponentEnteredFlying,
+    required this.outcomeBefore,
+    required this.outcomeAfter,
+    required this.outcomeReasonAfter,
+    required this.mobilityDelta,
+    required this.drawCounterDelta,
+  });
+
+  @override
+  int get hashCode =>
+      completeTurnLegal.hashCode ^
+      actionKinds.hashCode ^
+      phaseBefore.hashCode ^
+      phaseAfter.hashCode ^
+      sideBefore.hashCode ^
+      sideAfter.hashCode ^
+      piecesOnBoardBefore.hashCode ^
+      piecesOnBoardAfter.hashCode ^
+      piecesInHandBefore.hashCode ^
+      piecesInHandAfter.hashCode ^
+      pendingRemovalsBefore.hashCode ^
+      pendingRemovalsAfter.hashCode ^
+      delayedMarkedBefore.hashCode ^
+      delayedMarkedAfter.hashCode ^
+      legalActionsBefore.hashCode ^
+      legalRepliesAfter.hashCode ^
+      moverBoardLoss.hashCode ^
+      opponentBoardLoss.hashCode ^
+      moverHandLoss.hashCode ^
+      opponentHandLoss.hashCode ^
+      removalRightsCreated.hashCode ^
+      formedMillWithReward.hashCode ^
+      actualSpecialCapture.hashCode ^
+      selectedCaptureTarget.hashCode ^
+      phaseTransition.hashCode ^
+      enteredFlying.hashCode ^
+      opponentEnteredFlying.hashCode ^
+      outcomeBefore.hashCode ^
+      outcomeAfter.hashCode ^
+      outcomeReasonAfter.hashCode ^
+      mobilityDelta.hashCode ^
+      drawCounterDelta.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MillFeedbackEvidence &&
+          runtimeType == other.runtimeType &&
+          completeTurnLegal == other.completeTurnLegal &&
+          actionKinds == other.actionKinds &&
+          phaseBefore == other.phaseBefore &&
+          phaseAfter == other.phaseAfter &&
+          sideBefore == other.sideBefore &&
+          sideAfter == other.sideAfter &&
+          piecesOnBoardBefore == other.piecesOnBoardBefore &&
+          piecesOnBoardAfter == other.piecesOnBoardAfter &&
+          piecesInHandBefore == other.piecesInHandBefore &&
+          piecesInHandAfter == other.piecesInHandAfter &&
+          pendingRemovalsBefore == other.pendingRemovalsBefore &&
+          pendingRemovalsAfter == other.pendingRemovalsAfter &&
+          delayedMarkedBefore == other.delayedMarkedBefore &&
+          delayedMarkedAfter == other.delayedMarkedAfter &&
+          legalActionsBefore == other.legalActionsBefore &&
+          legalRepliesAfter == other.legalRepliesAfter &&
+          moverBoardLoss == other.moverBoardLoss &&
+          opponentBoardLoss == other.opponentBoardLoss &&
+          moverHandLoss == other.moverHandLoss &&
+          opponentHandLoss == other.opponentHandLoss &&
+          removalRightsCreated == other.removalRightsCreated &&
+          formedMillWithReward == other.formedMillWithReward &&
+          actualSpecialCapture == other.actualSpecialCapture &&
+          selectedCaptureTarget == other.selectedCaptureTarget &&
+          phaseTransition == other.phaseTransition &&
+          enteredFlying == other.enteredFlying &&
+          opponentEnteredFlying == other.opponentEnteredFlying &&
+          outcomeBefore == other.outcomeBefore &&
+          outcomeAfter == other.outcomeAfter &&
+          outcomeReasonAfter == other.outcomeReasonAfter &&
+          mobilityDelta == other.mobilityDelta &&
+          drawCounterDelta == other.drawCounterDelta;
+}
+
+/// Rule-aware evidence returned after MultiPV search has completed.
+class MillFeedbackReport {
+  final MillRuleStrategyProfile profile;
+  final MillFeedbackEvidence evidence;
+  final MillMoveContextAssessment context;
+
+  const MillFeedbackReport({
+    required this.profile,
+    required this.evidence,
+    required this.context,
+  });
+
+  @override
+  int get hashCode => profile.hashCode ^ evidence.hashCode ^ context.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MillFeedbackReport &&
+          runtimeType == other.runtimeType &&
+          profile == other.profile &&
+          evidence == other.evidence &&
+          context == other.context;
+}
+
+/// FRB projection of cross-candidate move context.
+class MillMoveContextAssessment {
+  final bool forced;
+  final bool equivalent;
+  final bool routineGain;
+  final bool createdOpportunity;
+  final bool missedOpportunity;
+  final bool deferredOpportunity;
+  final bool replacedOpportunity;
+  final bool compensatedConcession;
+  final bool initiativeSwing;
+  final bool mobilitySwing;
+  final bool phaseTransitionImpact;
+  final bool drawResourceImpact;
+
+  const MillMoveContextAssessment({
+    required this.forced,
+    required this.equivalent,
+    required this.routineGain,
+    required this.createdOpportunity,
+    required this.missedOpportunity,
+    required this.deferredOpportunity,
+    required this.replacedOpportunity,
+    required this.compensatedConcession,
+    required this.initiativeSwing,
+    required this.mobilitySwing,
+    required this.phaseTransitionImpact,
+    required this.drawResourceImpact,
+  });
+
+  @override
+  int get hashCode =>
+      forced.hashCode ^
+      equivalent.hashCode ^
+      routineGain.hashCode ^
+      createdOpportunity.hashCode ^
+      missedOpportunity.hashCode ^
+      deferredOpportunity.hashCode ^
+      replacedOpportunity.hashCode ^
+      compensatedConcession.hashCode ^
+      initiativeSwing.hashCode ^
+      mobilitySwing.hashCode ^
+      phaseTransitionImpact.hashCode ^
+      drawResourceImpact.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MillMoveContextAssessment &&
+          runtimeType == other.runtimeType &&
+          forced == other.forced &&
+          equivalent == other.equivalent &&
+          routineGain == other.routineGain &&
+          createdOpportunity == other.createdOpportunity &&
+          missedOpportunity == other.missedOpportunity &&
+          deferredOpportunity == other.deferredOpportunity &&
+          replacedOpportunity == other.replacedOpportunity &&
+          compensatedConcession == other.compensatedConcession &&
+          initiativeSwing == other.initiativeSwing &&
+          mobilitySwing == other.mobilitySwing &&
+          phaseTransitionImpact == other.phaseTransitionImpact &&
+          drawResourceImpact == other.drawResourceImpact;
+}
+
+/// FRB projection of `tgf_mill::RuleStrategyProfile`.
+class MillRuleStrategyProfile {
+  final String topologyName;
+  final bool standardTopology;
+  final Int32List nodeDegrees;
+  final Int32List highConnectionNodes;
+  final Int32List channelNodes;
+  final bool hasIndependentPlacingPhase;
+  final bool mayMoveInPlacingPhase;
+  final bool mayFly;
+  final int flyPieceCount;
+  final int piecesAtLeastCount;
+  final bool removesFromBoardOnPlacingMill;
+  final bool removesFromHandOnPlacingMill;
+  final bool delaysPlacingMillReward;
+  final bool rewardBasedOnMillCount;
+  final bool mayRemoveMultiple;
+  final bool mayRemoveFromMillsAlways;
+  final bool reusableMills;
+  final bool restrictedRepeatedMills;
+  final bool oneTimeMills;
+  final bool hasCustodianCapture;
+  final bool hasInterventionCapture;
+  final bool hasLeapCapture;
+  final bool stalemateIsLoss;
+  final bool stalemateIsDraw;
+  final bool stalemateChangesTurnOrRemoves;
+  final bool hasNMoveDraw;
+  final bool hasEndgameNMoveDraw;
+  final bool hasThreefoldDraw;
+  final bool standardStrategyCompatible;
+  final bool perfectDatabaseCompatible;
+  final bool trapPatchCompatible;
+
+  const MillRuleStrategyProfile({
+    required this.topologyName,
+    required this.standardTopology,
+    required this.nodeDegrees,
+    required this.highConnectionNodes,
+    required this.channelNodes,
+    required this.hasIndependentPlacingPhase,
+    required this.mayMoveInPlacingPhase,
+    required this.mayFly,
+    required this.flyPieceCount,
+    required this.piecesAtLeastCount,
+    required this.removesFromBoardOnPlacingMill,
+    required this.removesFromHandOnPlacingMill,
+    required this.delaysPlacingMillReward,
+    required this.rewardBasedOnMillCount,
+    required this.mayRemoveMultiple,
+    required this.mayRemoveFromMillsAlways,
+    required this.reusableMills,
+    required this.restrictedRepeatedMills,
+    required this.oneTimeMills,
+    required this.hasCustodianCapture,
+    required this.hasInterventionCapture,
+    required this.hasLeapCapture,
+    required this.stalemateIsLoss,
+    required this.stalemateIsDraw,
+    required this.stalemateChangesTurnOrRemoves,
+    required this.hasNMoveDraw,
+    required this.hasEndgameNMoveDraw,
+    required this.hasThreefoldDraw,
+    required this.standardStrategyCompatible,
+    required this.perfectDatabaseCompatible,
+    required this.trapPatchCompatible,
+  });
+
+  @override
+  int get hashCode =>
+      topologyName.hashCode ^
+      standardTopology.hashCode ^
+      nodeDegrees.hashCode ^
+      highConnectionNodes.hashCode ^
+      channelNodes.hashCode ^
+      hasIndependentPlacingPhase.hashCode ^
+      mayMoveInPlacingPhase.hashCode ^
+      mayFly.hashCode ^
+      flyPieceCount.hashCode ^
+      piecesAtLeastCount.hashCode ^
+      removesFromBoardOnPlacingMill.hashCode ^
+      removesFromHandOnPlacingMill.hashCode ^
+      delaysPlacingMillReward.hashCode ^
+      rewardBasedOnMillCount.hashCode ^
+      mayRemoveMultiple.hashCode ^
+      mayRemoveFromMillsAlways.hashCode ^
+      reusableMills.hashCode ^
+      restrictedRepeatedMills.hashCode ^
+      oneTimeMills.hashCode ^
+      hasCustodianCapture.hashCode ^
+      hasInterventionCapture.hashCode ^
+      hasLeapCapture.hashCode ^
+      stalemateIsLoss.hashCode ^
+      stalemateIsDraw.hashCode ^
+      stalemateChangesTurnOrRemoves.hashCode ^
+      hasNMoveDraw.hashCode ^
+      hasEndgameNMoveDraw.hashCode ^
+      hasThreefoldDraw.hashCode ^
+      standardStrategyCompatible.hashCode ^
+      perfectDatabaseCompatible.hashCode ^
+      trapPatchCompatible.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MillRuleStrategyProfile &&
+          runtimeType == other.runtimeType &&
+          topologyName == other.topologyName &&
+          standardTopology == other.standardTopology &&
+          nodeDegrees == other.nodeDegrees &&
+          highConnectionNodes == other.highConnectionNodes &&
+          channelNodes == other.channelNodes &&
+          hasIndependentPlacingPhase == other.hasIndependentPlacingPhase &&
+          mayMoveInPlacingPhase == other.mayMoveInPlacingPhase &&
+          mayFly == other.mayFly &&
+          flyPieceCount == other.flyPieceCount &&
+          piecesAtLeastCount == other.piecesAtLeastCount &&
+          removesFromBoardOnPlacingMill ==
+              other.removesFromBoardOnPlacingMill &&
+          removesFromHandOnPlacingMill == other.removesFromHandOnPlacingMill &&
+          delaysPlacingMillReward == other.delaysPlacingMillReward &&
+          rewardBasedOnMillCount == other.rewardBasedOnMillCount &&
+          mayRemoveMultiple == other.mayRemoveMultiple &&
+          mayRemoveFromMillsAlways == other.mayRemoveFromMillsAlways &&
+          reusableMills == other.reusableMills &&
+          restrictedRepeatedMills == other.restrictedRepeatedMills &&
+          oneTimeMills == other.oneTimeMills &&
+          hasCustodianCapture == other.hasCustodianCapture &&
+          hasInterventionCapture == other.hasInterventionCapture &&
+          hasLeapCapture == other.hasLeapCapture &&
+          stalemateIsLoss == other.stalemateIsLoss &&
+          stalemateIsDraw == other.stalemateIsDraw &&
+          stalemateChangesTurnOrRemoves ==
+              other.stalemateChangesTurnOrRemoves &&
+          hasNMoveDraw == other.hasNMoveDraw &&
+          hasEndgameNMoveDraw == other.hasEndgameNMoveDraw &&
+          hasThreefoldDraw == other.hasThreefoldDraw &&
+          standardStrategyCompatible == other.standardStrategyCompatible &&
+          perfectDatabaseCompatible == other.perfectDatabaseCompatible &&
+          trapPatchCompatible == other.trapPatchCompatible;
+}

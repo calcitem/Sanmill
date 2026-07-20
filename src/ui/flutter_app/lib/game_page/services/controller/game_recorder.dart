@@ -107,6 +107,40 @@ class GameRecorder {
     moveCountNotifier.value = currentPath.length;
   }
 
+  /// Add or extend a line below [parent] while preserving the active node.
+  /// Existing move tokens are reused, so repeated feedback actions never
+  /// create duplicate variations.
+  void addVariationLine(PgnNode<ExtMove> parent, List<ExtMove> moves) {
+    assert(
+      identical(parent, _pgnRoot) || parent.data != null,
+      'A variation line must attach to this recorder tree.',
+    );
+    if (moves.isEmpty) {
+      return;
+    }
+    PgnNode<ExtMove> current = parent;
+    bool changed = false;
+    for (final ExtMove move in moves) {
+      PgnNode<ExtMove>? next;
+      for (final PgnNode<ExtMove> child in current.children) {
+        if (child.data?.move == move.move) {
+          next = child;
+          break;
+        }
+      }
+      if (next == null) {
+        next = PgnNode<ExtMove>(move)..parent = current;
+        current.children.add(next);
+        changed = true;
+      }
+      current = next;
+    }
+    if (changed) {
+      _preferredChildIndex.clear();
+      moveCountNotifier.value = currentPath.length;
+    }
+  }
+
   /// Whether replacing this free-analysis tree would discard user content.
   ///
   /// Every move node can carry variations, comments, and NAG annotations, so

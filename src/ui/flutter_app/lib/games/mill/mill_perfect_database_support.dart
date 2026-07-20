@@ -29,8 +29,8 @@ bool _matchesPerfectDatabaseCommonRules(RuleSettings ruleSettings) {
 /// True when the active rule set matches one of the three variant shapes
 /// (Standard 9MM, Lasker 10MM, Morabaraba 12MM) that the full, downloadable
 /// Perfect Database supports.
-bool isRuleSupportingPerfectDatabase() {
-  final RuleSettings ruleSettings = DB().ruleSettings;
+bool isRuleSupportingPerfectDatabase([RuleSettings? settings]) {
+  final RuleSettings ruleSettings = settings ?? DB().ruleSettings;
 
   final bool matchesAVariantShape =
       (ruleSettings.piecesCount == 9 &&
@@ -60,8 +60,8 @@ bool isRuleSupportingPerfectDatabase() {
 /// their own, so a Lasker or Morabaraba position could otherwise decode to
 /// a key that collides with an unrelated std entry and get "corrected"
 /// with a move that is not even legal under the rules actually in play.
-bool isRuleSupportingErrorPatch() {
-  final RuleSettings ruleSettings = DB().ruleSettings;
+bool isRuleSupportingErrorPatch([RuleSettings? settings]) {
+  final RuleSettings ruleSettings = settings ?? DB().ruleSettings;
   return ruleSettings.piecesCount == 9 &&
       !ruleSettings.hasDiagonalLines &&
       ruleSettings.mayMoveInPlacingPhase == false &&

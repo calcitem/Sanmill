@@ -213,6 +213,30 @@ void main() {
       expect(notificationCount, 2);
     });
 
+    test('best-line insertion reuses nodes and preserves active move', () {
+      final GameRecorder recorder = GameRecorder();
+      recorder.appendMove(ExtMove('d6', side: PieceColor.white));
+      recorder.appendMove(ExtMove('f4', side: PieceColor.black));
+      final PgnNode<ExtMove> active = recorder.activeNode!;
+      final PgnNode<ExtMove> parent = recorder.pgnRoot.children.single;
+      int notificationCount = 0;
+      recorder.moveCountNotifier.addListener(() => notificationCount++);
+
+      final List<ExtMove> line = <ExtMove>[
+        ExtMove('a1', side: PieceColor.black),
+        ExtMove('g7', side: PieceColor.white),
+      ];
+      recorder.addVariationLine(parent, line);
+      recorder.addVariationLine(parent, line);
+
+      expect(recorder.activeNode, same(active));
+      expect(parent.children, hasLength(2));
+      final PgnNode<ExtMove> variation = parent.children.last;
+      expect(variation.data?.move, 'a1');
+      expect(variation.children.single.data?.move, 'g7');
+      expect(notificationCount, 1);
+    });
+
     test('branch operations notify move listeners', () {
       final GameRecorder recorder = GameRecorder();
 

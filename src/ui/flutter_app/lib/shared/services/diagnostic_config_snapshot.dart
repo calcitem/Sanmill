@@ -197,6 +197,7 @@ class DiagnosticConfigSchema {
     'AnalysisShowEvaluationGauge',
     'AnalysisEvaluationGaugePosition',
     'AnalysisShowAllBoardResults',
+    'AnalysisShowMoveFeedback',
   };
 
   static const Set<String> displaySensitiveLocal = <String>{

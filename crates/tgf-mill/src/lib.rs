@@ -2,6 +2,7 @@
 // Mill game crate.
 
 pub mod engine_config;
+pub mod feedback;
 pub mod human_db_codec;
 pub mod notation;
 pub mod presets;
@@ -11,6 +12,10 @@ pub mod text_format;
 pub mod topology;
 
 pub use engine_config::{MillEngineRuntime, MillSearchAlgorithmKind};
+pub use feedback::{
+    MillFeedbackCandidate, MillFeedbackEvidence, MillFeedbackReport, MoveContextAssessment,
+    RuleStrategyProfile, assess_move_feedback,
+};
 pub use notation::MillUciCodec;
 pub use presets::{MillRulePreset, N_PRESETS, preset_for, rules_for_preset};
 pub use rules::{

@@ -7,10 +7,11 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 
+import '../../game_page/services/analysis/move_feedback.dart';
 import '../../rule_settings/models/rule_settings.dart';
 
 const int reviewSchemaVersion = 1;
-const String reviewEngineVersion = 'tgf-review-v1';
+const String reviewEngineVersion = 'tgf-review-v2';
 
 String _sha256Text(String value) =>
     sha256.convert(utf8.encode(value)).toString();
@@ -211,6 +212,8 @@ class ReviewActionEvaluation {
     required this.grade,
     required this.profile,
     required this.candidates,
+    this.automaticNag,
+    this.feedbackReasons = const <MoveFeedbackReason>[],
   });
 
   factory ReviewActionEvaluation.fromJson(Map<dynamic, dynamic> json) {
@@ -232,6 +235,14 @@ class ReviewActionEvaluation {
                 ReviewCandidate.fromJson(value! as Map<dynamic, dynamic>),
           )
           .toList(growable: false),
+      automaticNag: json['automaticNag'] as int?,
+      feedbackReasons:
+          (json['feedbackReasons'] as List<dynamic>? ?? const <dynamic>[])
+              .map(
+                (dynamic value) =>
+                    MoveFeedbackReason.values.byName(value! as String),
+              )
+              .toList(growable: false),
     );
   }
 
@@ -247,6 +258,8 @@ class ReviewActionEvaluation {
   final ReviewGrade grade;
   final ReviewProfile profile;
   final List<ReviewCandidate> candidates;
+  final int? automaticNag;
+  final List<MoveFeedbackReason> feedbackReasons;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
     'atomicIndex': atomicIndex,
@@ -263,6 +276,11 @@ class ReviewActionEvaluation {
     'candidates': candidates
         .map((ReviewCandidate candidate) => candidate.toJson())
         .toList(),
+    if (automaticNag != null) 'automaticNag': automaticNag,
+    if (feedbackReasons.isNotEmpty)
+      'feedbackReasons': feedbackReasons
+          .map((MoveFeedbackReason reason) => reason.name)
+          .toList(),
   };
 }
 
@@ -463,6 +481,17 @@ class ReviewReport {
         return nag;
       }
     }
+    final List<ReviewActionEvaluation> grouped = actions
+        .where(
+          (ReviewActionEvaluation action) => action.groupIndex == groupIndex,
+        )
+        .toList(growable: false);
+    final Iterable<int> automaticNags = grouped
+        .map((ReviewActionEvaluation action) => action.automaticNag)
+        .whereType<int>();
+    if (automaticNags.isNotEmpty) {
+      return automaticNags.reduce(_moreSevereNag);
+    }
     return automaticNagForGrade(gradeForTurn(groupIndex));
   }
 
@@ -526,13 +555,11 @@ int? automaticNagForGrade(ReviewGrade grade) => switch (grade) {
 };
 
 abstract final class ReviewGrading {
-  static const int _terminalWinScore = 80;
-
   static ReviewWdlBand wdlBand(int score) {
-    if (score >= _terminalWinScore) {
+    if (score >= MoveQualityThresholds.engineTerminalScore) {
       return ReviewWdlBand.win;
     }
-    if (score <= -_terminalWinScore) {
+    if (score <= -MoveQualityThresholds.engineTerminalScore) {
       return ReviewWdlBand.loss;
     }
     return ReviewWdlBand.draw;
@@ -544,18 +571,31 @@ abstract final class ReviewGrading {
     if (wdlBand(playedScore).index < wdlBand(bestScore).index) {
       return ReviewGrade.blunder;
     }
-    if (loss <= 1) {
+    if (loss <= MoveQualityThresholds.bestMaximum()) {
       return ReviewGrade.best;
     }
-    if (loss <= 3) {
+    if (loss <= MoveQualityThresholds.acceptableMaximum()) {
       return ReviewGrade.good;
     }
-    if (loss <= 7) {
+    if (loss <= MoveQualityThresholds.dubiousMaximum()) {
       return ReviewGrade.dubious;
     }
-    if (loss <= 14) {
+    if (loss <= MoveQualityThresholds.mistakeMaximum()) {
       return ReviewGrade.mistake;
     }
     return ReviewGrade.blunder;
   }
+}
+
+int _moreSevereNag(int a, int b) {
+  int priority(int nag) => switch (nag) {
+    4 => 6,
+    2 => 5,
+    6 => 4,
+    3 => 3,
+    1 => 2,
+    5 => 1,
+    _ => 0,
+  };
+  return priority(a) >= priority(b) ? a : b;
 }

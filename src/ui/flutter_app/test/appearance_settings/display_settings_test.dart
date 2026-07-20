@@ -63,6 +63,7 @@ void main() {
       expect(d.analysisShowEvaluationGauge, isTrue);
       expect(d.analysisEvaluationGaugePosition, EvaluationGaugePosition.left);
       expect(d.analysisShowAllBoardResults, isFalse);
+      expect(d.analysisShowMoveFeedback, isTrue);
       expect(d.showLegalMoves, isTrue);
       expect(d.showLastMove, isTrue);
       expect(
@@ -83,6 +84,24 @@ void main() {
     expect(changed.analysisShowAllBoardResults, isTrue);
     expect(
       DisplaySettings.fromJson(changed.toJson()).analysisShowAllBoardResults,
+      isTrue,
+    );
+  });
+
+  test('analysis move-feedback preference copies and migrates safely', () {
+    final DisplaySettings changed = const DisplaySettings()
+        .copyWithAnalysisPreferences(analysisShowMoveFeedback: false);
+
+    expect(changed.analysisShowMoveFeedback, isFalse);
+    expect(
+      DisplaySettings.fromJson(changed.toJson()).analysisShowMoveFeedback,
+      isFalse,
+    );
+
+    final Map<String, dynamic> legacyJson = changed.toJson()
+      ..remove('AnalysisShowMoveFeedback');
+    expect(
+      DisplaySettings.fromJson(legacyJson).analysisShowMoveFeedback,
       isTrue,
     );
   });

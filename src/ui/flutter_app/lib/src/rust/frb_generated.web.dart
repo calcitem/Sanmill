@@ -70,6 +70,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   List<Uint16List> dco_decode_list_list_prim_u_16_strict(dynamic raw);
 
   @protected
+  List<MillFeedbackCandidateInput>
+  dco_decode_list_mill_feedback_candidate_input(dynamic raw);
+
+  @protected
   List<MillHumanDatabaseMove> dco_decode_list_mill_human_database_move(
     dynamic raw,
   );
@@ -80,6 +84,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   List<MillPerfectDatabaseVariantStatus>
   dco_decode_list_mill_perfect_database_variant_status(dynamic raw);
+
+  @protected
+  Int32List dco_decode_list_prim_i_32_strict(dynamic raw);
 
   @protected
   Uint16List dco_decode_list_prim_u_16_strict(dynamic raw);
@@ -106,6 +113,17 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MillEngineConfig dco_decode_mill_engine_config(dynamic raw);
 
   @protected
+  MillFeedbackCandidateInput dco_decode_mill_feedback_candidate_input(
+    dynamic raw,
+  );
+
+  @protected
+  MillFeedbackEvidence dco_decode_mill_feedback_evidence(dynamic raw);
+
+  @protected
+  MillFeedbackReport dco_decode_mill_feedback_report(dynamic raw);
+
+  @protected
   MillFormationActionInPlacingPhase
   dco_decode_mill_formation_action_in_placing_phase(dynamic raw);
 
@@ -122,6 +140,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MillMoveAnalysis dco_decode_mill_move_analysis(dynamic raw);
 
   @protected
+  MillMoveContextAssessment dco_decode_mill_move_context_assessment(
+    dynamic raw,
+  );
+
+  @protected
   MillPatchStatus dco_decode_mill_patch_status(dynamic raw);
 
   @protected
@@ -132,6 +155,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   MillPerfectDatabaseVariantStatus
   dco_decode_mill_perfect_database_variant_status(dynamic raw);
+
+  @protected
+  MillRuleStrategyProfile dco_decode_mill_rule_strategy_profile(dynamic raw);
 
   @protected
   MillSearchAlgorithm dco_decode_mill_search_algorithm(dynamic raw);
@@ -240,6 +266,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  List<MillFeedbackCandidateInput>
+  sse_decode_list_mill_feedback_candidate_input(SseDeserializer deserializer);
+
+  @protected
   List<MillHumanDatabaseMove> sse_decode_list_mill_human_database_move(
     SseDeserializer deserializer,
   );
@@ -254,6 +284,9 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   sse_decode_list_mill_perfect_database_variant_status(
     SseDeserializer deserializer,
   );
+
+  @protected
+  Int32List sse_decode_list_prim_i_32_strict(SseDeserializer deserializer);
 
   @protected
   Uint16List sse_decode_list_prim_u_16_strict(SseDeserializer deserializer);
@@ -288,6 +321,21 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MillEngineConfig sse_decode_mill_engine_config(SseDeserializer deserializer);
 
   @protected
+  MillFeedbackCandidateInput sse_decode_mill_feedback_candidate_input(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  MillFeedbackEvidence sse_decode_mill_feedback_evidence(
+    SseDeserializer deserializer,
+  );
+
+  @protected
+  MillFeedbackReport sse_decode_mill_feedback_report(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   MillFormationActionInPlacingPhase
   sse_decode_mill_formation_action_in_placing_phase(
     SseDeserializer deserializer,
@@ -312,6 +360,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   MillMoveAnalysis sse_decode_mill_move_analysis(SseDeserializer deserializer);
 
   @protected
+  MillMoveContextAssessment sse_decode_mill_move_context_assessment(
+    SseDeserializer deserializer,
+  );
+
+  @protected
   MillPatchStatus sse_decode_mill_patch_status(SseDeserializer deserializer);
 
   @protected
@@ -322,6 +375,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   MillPerfectDatabaseVariantStatus
   sse_decode_mill_perfect_database_variant_status(SseDeserializer deserializer);
+
+  @protected
+  MillRuleStrategyProfile sse_decode_mill_rule_strategy_profile(
+    SseDeserializer deserializer,
+  );
 
   @protected
   MillSearchAlgorithm sse_decode_mill_search_algorithm(
@@ -447,6 +505,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_list_mill_feedback_candidate_input(
+    List<MillFeedbackCandidateInput> self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_list_mill_human_database_move(
     List<MillHumanDatabaseMove> self,
     SseSerializer serializer,
@@ -461,6 +525,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_mill_perfect_database_variant_status(
     List<MillPerfectDatabaseVariantStatus> self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_list_prim_i_32_strict(
+    Int32List self,
     SseSerializer serializer,
   );
 
@@ -513,6 +583,24 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_mill_feedback_candidate_input(
+    MillFeedbackCandidateInput self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_mill_feedback_evidence(
+    MillFeedbackEvidence self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_mill_feedback_report(
+    MillFeedbackReport self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_mill_formation_action_in_placing_phase(
     MillFormationActionInPlacingPhase self,
     SseSerializer serializer,
@@ -543,6 +631,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   );
 
   @protected
+  void sse_encode_mill_move_context_assessment(
+    MillMoveContextAssessment self,
+    SseSerializer serializer,
+  );
+
+  @protected
   void sse_encode_mill_patch_status(
     MillPatchStatus self,
     SseSerializer serializer,
@@ -557,6 +651,12 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_mill_perfect_database_variant_status(
     MillPerfectDatabaseVariantStatus self,
+    SseSerializer serializer,
+  );
+
+  @protected
+  void sse_encode_mill_rule_strategy_profile(
+    MillRuleStrategyProfile self,
     SseSerializer serializer,
   );
 

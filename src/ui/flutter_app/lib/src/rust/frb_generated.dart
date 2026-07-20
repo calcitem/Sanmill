@@ -68,7 +68,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.12.0';
 
   @override
-  int get rustContentHash => 1999531277;
+  int get rustContentHash => 332608665;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -186,6 +186,12 @@ abstract class RustLibApi extends BaseApi {
   bool crateApiKernelTgfKernelIsTerminal({required int handle});
 
   List<TgfAction> crateApiKernelTgfKernelLegalActions({required int handle});
+
+  MillFeedbackReport crateApiMillKernelTgfKernelMillFeedbackEvidence({
+    required int handle,
+    required List<TgfAction> playedActions,
+    required List<MillFeedbackCandidateInput> candidates,
+  });
 
   TgfAction? crateApiMillKernelTgfKernelMillPatchCorrectAction({
     required int handle,
@@ -1369,6 +1375,38 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
+  MillFeedbackReport crateApiMillKernelTgfKernelMillFeedbackEvidence({
+    required int handle,
+    required List<TgfAction> playedActions,
+    required List<MillFeedbackCandidateInput> candidates,
+  }) {
+    return handler.executeSync(
+      SyncTask(
+        callFfi: () {
+          final serializer = SseSerializer(generalizedFrbRustBinding);
+          sse_encode_u_32(handle, serializer);
+          sse_encode_list_tgf_action(playedActions, serializer);
+          sse_encode_list_mill_feedback_candidate_input(candidates, serializer);
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 43)!;
+        },
+        codec: SseCodec(
+          decodeSuccessData: sse_decode_mill_feedback_report,
+          decodeErrorData: sse_decode_String,
+        ),
+        constMeta: kCrateApiMillKernelTgfKernelMillFeedbackEvidenceConstMeta,
+        argValues: [handle, playedActions, candidates],
+        apiImpl: this,
+      ),
+    );
+  }
+
+  TaskConstMeta get kCrateApiMillKernelTgfKernelMillFeedbackEvidenceConstMeta =>
+      const TaskConstMeta(
+        debugName: "tgf_kernel_mill_feedback_evidence",
+        argNames: ["handle", "playedActions", "candidates"],
+      );
+
+  @override
   TgfAction? crateApiMillKernelTgfKernelMillPatchCorrectAction({
     required int handle,
     required TgfAction chosen,
@@ -1379,7 +1417,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
           sse_encode_box_autoadd_tgf_action(chosen, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 43)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 44)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_opt_box_autoadd_tgf_action,
@@ -1410,7 +1448,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
           sse_encode_box_autoadd_tgf_action(chosen, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 44)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 45)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_opt_box_autoadd_tgf_action,
@@ -1444,7 +1482,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           sse_encode_u_32(handle, serializer);
           sse_encode_box_autoadd_mill_engine_config(config, serializer);
           sse_encode_bool(makeTraps, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 45)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 46)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_opt_box_autoadd_tgf_action,
@@ -1476,7 +1514,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
           sse_encode_box_autoadd_tgf_action(action, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 46)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 47)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_opt_box_autoadd_i_32,
@@ -1507,7 +1545,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
           sse_encode_bool(trapAwareness, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 47)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 48)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_mill_analysis_report,
@@ -1537,7 +1575,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
           sse_encode_box_autoadd_mill_engine_config(config, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 48)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 49)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_opt_box_autoadd_tgf_action,
@@ -1574,7 +1612,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             pdeCallFfi(
               generalizedFrbRustBinding,
               serializer,
-              funcId: 49,
+              funcId: 50,
               port: port_,
             );
           },
@@ -1614,7 +1652,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             pdeCallFfi(
               generalizedFrbRustBinding,
               serializer,
-              funcId: 50,
+              funcId: 51,
               port: port_,
             );
           },
@@ -1646,7 +1684,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 51)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 52)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_tgf_outcome,
@@ -1672,7 +1710,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 52)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 53)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_player_info_blob,
@@ -1698,7 +1736,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 53)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 54)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_tgf_snapshot,
@@ -1721,7 +1759,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 54)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 55)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_u_32,
@@ -1751,7 +1789,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
           sse_encode_String(fen, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 55)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 56)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_tgf_snapshot,
@@ -1777,7 +1815,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 56)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 57)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_tgf_snapshot,
@@ -1803,7 +1841,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 57)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 58)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_tgf_snapshot,
@@ -1835,7 +1873,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           sse_encode_u_32(handle, serializer);
           sse_encode_i_32(node, serializer);
           sse_encode_i_32(owner, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 58)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 59)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_tgf_snapshot,
@@ -1865,7 +1903,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
           sse_encode_i_32(side, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 59)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 60)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_tgf_snapshot,
@@ -1891,7 +1929,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 60)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 61)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_tgf_snapshot,
@@ -1917,7 +1955,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 61)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 62)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_topology_blob,
@@ -1943,7 +1981,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 62)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 63)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_tgf_snapshot,
@@ -1966,7 +2004,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
           sse_encode_u_32(handle, serializer);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 63)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 64)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_u_32,
@@ -1991,7 +2029,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SyncTask(
         callFfi: () {
           final serializer = SseSerializer(generalizedFrbRustBinding);
-          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 64)!;
+          return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 65)!;
         },
         codec: SseCodec(
           decodeSuccessData: sse_decode_String,
@@ -2123,6 +2161,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<MillFeedbackCandidateInput>
+  dco_decode_list_mill_feedback_candidate_input(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_mill_feedback_candidate_input)
+        .toList();
+  }
+
+  @protected
   List<MillHumanDatabaseMove> dco_decode_list_mill_human_database_move(
     dynamic raw,
   ) {
@@ -2145,6 +2192,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     return (raw as List<dynamic>)
         .map(dco_decode_mill_perfect_database_variant_status)
         .toList();
+  }
+
+  @protected
+  Int32List dco_decode_list_prim_i_32_strict(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return raw as Int32List;
   }
 
   @protected
@@ -2214,6 +2267,75 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       useLazySmp: dco_decode_bool(arr[9]),
       engineThreads: dco_decode_u_32(arr[10]),
       multiPv: dco_decode_u_8(arr[11]),
+    );
+  }
+
+  @protected
+  MillFeedbackCandidateInput dco_decode_mill_feedback_candidate_input(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return MillFeedbackCandidateInput(
+      actions: dco_decode_list_tgf_action(arr[0]),
+      score: dco_decode_i_32(arr[1]),
+    );
+  }
+
+  @protected
+  MillFeedbackEvidence dco_decode_mill_feedback_evidence(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 32)
+      throw Exception('unexpected arr length: expect 32 but see ${arr.length}');
+    return MillFeedbackEvidence(
+      completeTurnLegal: dco_decode_bool(arr[0]),
+      actionKinds: dco_decode_list_String(arr[1]),
+      phaseBefore: dco_decode_String(arr[2]),
+      phaseAfter: dco_decode_String(arr[3]),
+      sideBefore: dco_decode_i_32(arr[4]),
+      sideAfter: dco_decode_i_32(arr[5]),
+      piecesOnBoardBefore: dco_decode_list_prim_i_32_strict(arr[6]),
+      piecesOnBoardAfter: dco_decode_list_prim_i_32_strict(arr[7]),
+      piecesInHandBefore: dco_decode_list_prim_i_32_strict(arr[8]),
+      piecesInHandAfter: dco_decode_list_prim_i_32_strict(arr[9]),
+      pendingRemovalsBefore: dco_decode_list_prim_i_32_strict(arr[10]),
+      pendingRemovalsAfter: dco_decode_list_prim_i_32_strict(arr[11]),
+      delayedMarkedBefore: dco_decode_u_32(arr[12]),
+      delayedMarkedAfter: dco_decode_u_32(arr[13]),
+      legalActionsBefore: dco_decode_u_32(arr[14]),
+      legalRepliesAfter: dco_decode_u_32(arr[15]),
+      moverBoardLoss: dco_decode_i_32(arr[16]),
+      opponentBoardLoss: dco_decode_i_32(arr[17]),
+      moverHandLoss: dco_decode_i_32(arr[18]),
+      opponentHandLoss: dco_decode_i_32(arr[19]),
+      removalRightsCreated: dco_decode_i_32(arr[20]),
+      formedMillWithReward: dco_decode_bool(arr[21]),
+      actualSpecialCapture: dco_decode_bool(arr[22]),
+      selectedCaptureTarget: dco_decode_bool(arr[23]),
+      phaseTransition: dco_decode_bool(arr[24]),
+      enteredFlying: dco_decode_bool(arr[25]),
+      opponentEnteredFlying: dco_decode_bool(arr[26]),
+      outcomeBefore: dco_decode_String(arr[27]),
+      outcomeAfter: dco_decode_String(arr[28]),
+      outcomeReasonAfter: dco_decode_String(arr[29]),
+      mobilityDelta: dco_decode_i_32(arr[30]),
+      drawCounterDelta: dco_decode_i_32(arr[31]),
+    );
+  }
+
+  @protected
+  MillFeedbackReport dco_decode_mill_feedback_report(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
+    return MillFeedbackReport(
+      profile: dco_decode_mill_rule_strategy_profile(arr[0]),
+      evidence: dco_decode_mill_feedback_evidence(arr[1]),
+      context: dco_decode_mill_move_context_assessment(arr[2]),
     );
   }
 
@@ -2288,6 +2410,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MillMoveContextAssessment dco_decode_mill_move_context_assessment(
+    dynamic raw,
+  ) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 12)
+      throw Exception('unexpected arr length: expect 12 but see ${arr.length}');
+    return MillMoveContextAssessment(
+      forced: dco_decode_bool(arr[0]),
+      equivalent: dco_decode_bool(arr[1]),
+      routineGain: dco_decode_bool(arr[2]),
+      createdOpportunity: dco_decode_bool(arr[3]),
+      missedOpportunity: dco_decode_bool(arr[4]),
+      deferredOpportunity: dco_decode_bool(arr[5]),
+      replacedOpportunity: dco_decode_bool(arr[6]),
+      compensatedConcession: dco_decode_bool(arr[7]),
+      initiativeSwing: dco_decode_bool(arr[8]),
+      mobilitySwing: dco_decode_bool(arr[9]),
+      phaseTransitionImpact: dco_decode_bool(arr[10]),
+      drawResourceImpact: dco_decode_bool(arr[11]),
+    );
+  }
+
+  @protected
   MillPatchStatus dco_decode_mill_patch_status(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -2329,6 +2475,47 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       pieceCount: dco_decode_u_8(arr[1]),
       sectorCount: dco_decode_u_32(arr[2]),
       availableSectorCount: dco_decode_u_32(arr[3]),
+    );
+  }
+
+  @protected
+  MillRuleStrategyProfile dco_decode_mill_rule_strategy_profile(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 31)
+      throw Exception('unexpected arr length: expect 31 but see ${arr.length}');
+    return MillRuleStrategyProfile(
+      topologyName: dco_decode_String(arr[0]),
+      standardTopology: dco_decode_bool(arr[1]),
+      nodeDegrees: dco_decode_list_prim_i_32_strict(arr[2]),
+      highConnectionNodes: dco_decode_list_prim_i_32_strict(arr[3]),
+      channelNodes: dco_decode_list_prim_i_32_strict(arr[4]),
+      hasIndependentPlacingPhase: dco_decode_bool(arr[5]),
+      mayMoveInPlacingPhase: dco_decode_bool(arr[6]),
+      mayFly: dco_decode_bool(arr[7]),
+      flyPieceCount: dco_decode_i_32(arr[8]),
+      piecesAtLeastCount: dco_decode_i_32(arr[9]),
+      removesFromBoardOnPlacingMill: dco_decode_bool(arr[10]),
+      removesFromHandOnPlacingMill: dco_decode_bool(arr[11]),
+      delaysPlacingMillReward: dco_decode_bool(arr[12]),
+      rewardBasedOnMillCount: dco_decode_bool(arr[13]),
+      mayRemoveMultiple: dco_decode_bool(arr[14]),
+      mayRemoveFromMillsAlways: dco_decode_bool(arr[15]),
+      reusableMills: dco_decode_bool(arr[16]),
+      restrictedRepeatedMills: dco_decode_bool(arr[17]),
+      oneTimeMills: dco_decode_bool(arr[18]),
+      hasCustodianCapture: dco_decode_bool(arr[19]),
+      hasInterventionCapture: dco_decode_bool(arr[20]),
+      hasLeapCapture: dco_decode_bool(arr[21]),
+      stalemateIsLoss: dco_decode_bool(arr[22]),
+      stalemateIsDraw: dco_decode_bool(arr[23]),
+      stalemateChangesTurnOrRemoves: dco_decode_bool(arr[24]),
+      hasNMoveDraw: dco_decode_bool(arr[25]),
+      hasEndgameNMoveDraw: dco_decode_bool(arr[26]),
+      hasThreefoldDraw: dco_decode_bool(arr[27]),
+      standardStrategyCompatible: dco_decode_bool(arr[28]),
+      perfectDatabaseCompatible: dco_decode_bool(arr[29]),
+      trapPatchCompatible: dco_decode_bool(arr[30]),
     );
   }
 
@@ -2661,6 +2848,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<MillFeedbackCandidateInput>
+  sse_decode_list_mill_feedback_candidate_input(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <MillFeedbackCandidateInput>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_mill_feedback_candidate_input(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<MillHumanDatabaseMove> sse_decode_list_mill_human_database_move(
     SseDeserializer deserializer,
   ) {
@@ -2701,6 +2901,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       ans_.add(sse_decode_mill_perfect_database_variant_status(deserializer));
     }
     return ans_;
+  }
+
+  @protected
+  Int32List sse_decode_list_prim_i_32_strict(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var len_ = sse_decode_i_32(deserializer);
+    return deserializer.buffer.getInt32List(len_);
   }
 
   @protected
@@ -2808,6 +3015,110 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MillFeedbackCandidateInput sse_decode_mill_feedback_candidate_input(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_actions = sse_decode_list_tgf_action(deserializer);
+    var var_score = sse_decode_i_32(deserializer);
+    return MillFeedbackCandidateInput(actions: var_actions, score: var_score);
+  }
+
+  @protected
+  MillFeedbackEvidence sse_decode_mill_feedback_evidence(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_completeTurnLegal = sse_decode_bool(deserializer);
+    var var_actionKinds = sse_decode_list_String(deserializer);
+    var var_phaseBefore = sse_decode_String(deserializer);
+    var var_phaseAfter = sse_decode_String(deserializer);
+    var var_sideBefore = sse_decode_i_32(deserializer);
+    var var_sideAfter = sse_decode_i_32(deserializer);
+    var var_piecesOnBoardBefore = sse_decode_list_prim_i_32_strict(
+      deserializer,
+    );
+    var var_piecesOnBoardAfter = sse_decode_list_prim_i_32_strict(deserializer);
+    var var_piecesInHandBefore = sse_decode_list_prim_i_32_strict(deserializer);
+    var var_piecesInHandAfter = sse_decode_list_prim_i_32_strict(deserializer);
+    var var_pendingRemovalsBefore = sse_decode_list_prim_i_32_strict(
+      deserializer,
+    );
+    var var_pendingRemovalsAfter = sse_decode_list_prim_i_32_strict(
+      deserializer,
+    );
+    var var_delayedMarkedBefore = sse_decode_u_32(deserializer);
+    var var_delayedMarkedAfter = sse_decode_u_32(deserializer);
+    var var_legalActionsBefore = sse_decode_u_32(deserializer);
+    var var_legalRepliesAfter = sse_decode_u_32(deserializer);
+    var var_moverBoardLoss = sse_decode_i_32(deserializer);
+    var var_opponentBoardLoss = sse_decode_i_32(deserializer);
+    var var_moverHandLoss = sse_decode_i_32(deserializer);
+    var var_opponentHandLoss = sse_decode_i_32(deserializer);
+    var var_removalRightsCreated = sse_decode_i_32(deserializer);
+    var var_formedMillWithReward = sse_decode_bool(deserializer);
+    var var_actualSpecialCapture = sse_decode_bool(deserializer);
+    var var_selectedCaptureTarget = sse_decode_bool(deserializer);
+    var var_phaseTransition = sse_decode_bool(deserializer);
+    var var_enteredFlying = sse_decode_bool(deserializer);
+    var var_opponentEnteredFlying = sse_decode_bool(deserializer);
+    var var_outcomeBefore = sse_decode_String(deserializer);
+    var var_outcomeAfter = sse_decode_String(deserializer);
+    var var_outcomeReasonAfter = sse_decode_String(deserializer);
+    var var_mobilityDelta = sse_decode_i_32(deserializer);
+    var var_drawCounterDelta = sse_decode_i_32(deserializer);
+    return MillFeedbackEvidence(
+      completeTurnLegal: var_completeTurnLegal,
+      actionKinds: var_actionKinds,
+      phaseBefore: var_phaseBefore,
+      phaseAfter: var_phaseAfter,
+      sideBefore: var_sideBefore,
+      sideAfter: var_sideAfter,
+      piecesOnBoardBefore: var_piecesOnBoardBefore,
+      piecesOnBoardAfter: var_piecesOnBoardAfter,
+      piecesInHandBefore: var_piecesInHandBefore,
+      piecesInHandAfter: var_piecesInHandAfter,
+      pendingRemovalsBefore: var_pendingRemovalsBefore,
+      pendingRemovalsAfter: var_pendingRemovalsAfter,
+      delayedMarkedBefore: var_delayedMarkedBefore,
+      delayedMarkedAfter: var_delayedMarkedAfter,
+      legalActionsBefore: var_legalActionsBefore,
+      legalRepliesAfter: var_legalRepliesAfter,
+      moverBoardLoss: var_moverBoardLoss,
+      opponentBoardLoss: var_opponentBoardLoss,
+      moverHandLoss: var_moverHandLoss,
+      opponentHandLoss: var_opponentHandLoss,
+      removalRightsCreated: var_removalRightsCreated,
+      formedMillWithReward: var_formedMillWithReward,
+      actualSpecialCapture: var_actualSpecialCapture,
+      selectedCaptureTarget: var_selectedCaptureTarget,
+      phaseTransition: var_phaseTransition,
+      enteredFlying: var_enteredFlying,
+      opponentEnteredFlying: var_opponentEnteredFlying,
+      outcomeBefore: var_outcomeBefore,
+      outcomeAfter: var_outcomeAfter,
+      outcomeReasonAfter: var_outcomeReasonAfter,
+      mobilityDelta: var_mobilityDelta,
+      drawCounterDelta: var_drawCounterDelta,
+    );
+  }
+
+  @protected
+  MillFeedbackReport sse_decode_mill_feedback_report(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_profile = sse_decode_mill_rule_strategy_profile(deserializer);
+    var var_evidence = sse_decode_mill_feedback_evidence(deserializer);
+    var var_context = sse_decode_mill_move_context_assessment(deserializer);
+    return MillFeedbackReport(
+      profile: var_profile,
+      evidence: var_evidence,
+      context: var_context,
+    );
+  }
+
+  @protected
   MillFormationActionInPlacingPhase
   sse_decode_mill_formation_action_in_placing_phase(
     SseDeserializer deserializer,
@@ -2898,6 +3209,39 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  MillMoveContextAssessment sse_decode_mill_move_context_assessment(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_forced = sse_decode_bool(deserializer);
+    var var_equivalent = sse_decode_bool(deserializer);
+    var var_routineGain = sse_decode_bool(deserializer);
+    var var_createdOpportunity = sse_decode_bool(deserializer);
+    var var_missedOpportunity = sse_decode_bool(deserializer);
+    var var_deferredOpportunity = sse_decode_bool(deserializer);
+    var var_replacedOpportunity = sse_decode_bool(deserializer);
+    var var_compensatedConcession = sse_decode_bool(deserializer);
+    var var_initiativeSwing = sse_decode_bool(deserializer);
+    var var_mobilitySwing = sse_decode_bool(deserializer);
+    var var_phaseTransitionImpact = sse_decode_bool(deserializer);
+    var var_drawResourceImpact = sse_decode_bool(deserializer);
+    return MillMoveContextAssessment(
+      forced: var_forced,
+      equivalent: var_equivalent,
+      routineGain: var_routineGain,
+      createdOpportunity: var_createdOpportunity,
+      missedOpportunity: var_missedOpportunity,
+      deferredOpportunity: var_deferredOpportunity,
+      replacedOpportunity: var_replacedOpportunity,
+      compensatedConcession: var_compensatedConcession,
+      initiativeSwing: var_initiativeSwing,
+      mobilitySwing: var_mobilitySwing,
+      phaseTransitionImpact: var_phaseTransitionImpact,
+      drawResourceImpact: var_drawResourceImpact,
+    );
+  }
+
+  @protected
   MillPatchStatus sse_decode_mill_patch_status(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var var_loaded = sse_decode_bool(deserializer);
@@ -2946,6 +3290,79 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       pieceCount: var_pieceCount,
       sectorCount: var_sectorCount,
       availableSectorCount: var_availableSectorCount,
+    );
+  }
+
+  @protected
+  MillRuleStrategyProfile sse_decode_mill_rule_strategy_profile(
+    SseDeserializer deserializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_topologyName = sse_decode_String(deserializer);
+    var var_standardTopology = sse_decode_bool(deserializer);
+    var var_nodeDegrees = sse_decode_list_prim_i_32_strict(deserializer);
+    var var_highConnectionNodes = sse_decode_list_prim_i_32_strict(
+      deserializer,
+    );
+    var var_channelNodes = sse_decode_list_prim_i_32_strict(deserializer);
+    var var_hasIndependentPlacingPhase = sse_decode_bool(deserializer);
+    var var_mayMoveInPlacingPhase = sse_decode_bool(deserializer);
+    var var_mayFly = sse_decode_bool(deserializer);
+    var var_flyPieceCount = sse_decode_i_32(deserializer);
+    var var_piecesAtLeastCount = sse_decode_i_32(deserializer);
+    var var_removesFromBoardOnPlacingMill = sse_decode_bool(deserializer);
+    var var_removesFromHandOnPlacingMill = sse_decode_bool(deserializer);
+    var var_delaysPlacingMillReward = sse_decode_bool(deserializer);
+    var var_rewardBasedOnMillCount = sse_decode_bool(deserializer);
+    var var_mayRemoveMultiple = sse_decode_bool(deserializer);
+    var var_mayRemoveFromMillsAlways = sse_decode_bool(deserializer);
+    var var_reusableMills = sse_decode_bool(deserializer);
+    var var_restrictedRepeatedMills = sse_decode_bool(deserializer);
+    var var_oneTimeMills = sse_decode_bool(deserializer);
+    var var_hasCustodianCapture = sse_decode_bool(deserializer);
+    var var_hasInterventionCapture = sse_decode_bool(deserializer);
+    var var_hasLeapCapture = sse_decode_bool(deserializer);
+    var var_stalemateIsLoss = sse_decode_bool(deserializer);
+    var var_stalemateIsDraw = sse_decode_bool(deserializer);
+    var var_stalemateChangesTurnOrRemoves = sse_decode_bool(deserializer);
+    var var_hasNMoveDraw = sse_decode_bool(deserializer);
+    var var_hasEndgameNMoveDraw = sse_decode_bool(deserializer);
+    var var_hasThreefoldDraw = sse_decode_bool(deserializer);
+    var var_standardStrategyCompatible = sse_decode_bool(deserializer);
+    var var_perfectDatabaseCompatible = sse_decode_bool(deserializer);
+    var var_trapPatchCompatible = sse_decode_bool(deserializer);
+    return MillRuleStrategyProfile(
+      topologyName: var_topologyName,
+      standardTopology: var_standardTopology,
+      nodeDegrees: var_nodeDegrees,
+      highConnectionNodes: var_highConnectionNodes,
+      channelNodes: var_channelNodes,
+      hasIndependentPlacingPhase: var_hasIndependentPlacingPhase,
+      mayMoveInPlacingPhase: var_mayMoveInPlacingPhase,
+      mayFly: var_mayFly,
+      flyPieceCount: var_flyPieceCount,
+      piecesAtLeastCount: var_piecesAtLeastCount,
+      removesFromBoardOnPlacingMill: var_removesFromBoardOnPlacingMill,
+      removesFromHandOnPlacingMill: var_removesFromHandOnPlacingMill,
+      delaysPlacingMillReward: var_delaysPlacingMillReward,
+      rewardBasedOnMillCount: var_rewardBasedOnMillCount,
+      mayRemoveMultiple: var_mayRemoveMultiple,
+      mayRemoveFromMillsAlways: var_mayRemoveFromMillsAlways,
+      reusableMills: var_reusableMills,
+      restrictedRepeatedMills: var_restrictedRepeatedMills,
+      oneTimeMills: var_oneTimeMills,
+      hasCustodianCapture: var_hasCustodianCapture,
+      hasInterventionCapture: var_hasInterventionCapture,
+      hasLeapCapture: var_hasLeapCapture,
+      stalemateIsLoss: var_stalemateIsLoss,
+      stalemateIsDraw: var_stalemateIsDraw,
+      stalemateChangesTurnOrRemoves: var_stalemateChangesTurnOrRemoves,
+      hasNMoveDraw: var_hasNMoveDraw,
+      hasEndgameNMoveDraw: var_hasEndgameNMoveDraw,
+      hasThreefoldDraw: var_hasThreefoldDraw,
+      standardStrategyCompatible: var_standardStrategyCompatible,
+      perfectDatabaseCompatible: var_perfectDatabaseCompatible,
+      trapPatchCompatible: var_trapPatchCompatible,
     );
   }
 
@@ -3308,6 +3725,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_mill_feedback_candidate_input(
+    List<MillFeedbackCandidateInput> self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_mill_feedback_candidate_input(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_mill_human_database_move(
     List<MillHumanDatabaseMove> self,
     SseSerializer serializer,
@@ -3341,6 +3770,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     for (final item in self) {
       sse_encode_mill_perfect_database_variant_status(item, serializer);
     }
+  }
+
+  @protected
+  void sse_encode_list_prim_i_32_strict(
+    Int32List self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    serializer.buffer.putInt32List(self);
   }
 
   @protected
@@ -3439,6 +3878,67 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_mill_feedback_candidate_input(
+    MillFeedbackCandidateInput self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_list_tgf_action(self.actions, serializer);
+    sse_encode_i_32(self.score, serializer);
+  }
+
+  @protected
+  void sse_encode_mill_feedback_evidence(
+    MillFeedbackEvidence self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_bool(self.completeTurnLegal, serializer);
+    sse_encode_list_String(self.actionKinds, serializer);
+    sse_encode_String(self.phaseBefore, serializer);
+    sse_encode_String(self.phaseAfter, serializer);
+    sse_encode_i_32(self.sideBefore, serializer);
+    sse_encode_i_32(self.sideAfter, serializer);
+    sse_encode_list_prim_i_32_strict(self.piecesOnBoardBefore, serializer);
+    sse_encode_list_prim_i_32_strict(self.piecesOnBoardAfter, serializer);
+    sse_encode_list_prim_i_32_strict(self.piecesInHandBefore, serializer);
+    sse_encode_list_prim_i_32_strict(self.piecesInHandAfter, serializer);
+    sse_encode_list_prim_i_32_strict(self.pendingRemovalsBefore, serializer);
+    sse_encode_list_prim_i_32_strict(self.pendingRemovalsAfter, serializer);
+    sse_encode_u_32(self.delayedMarkedBefore, serializer);
+    sse_encode_u_32(self.delayedMarkedAfter, serializer);
+    sse_encode_u_32(self.legalActionsBefore, serializer);
+    sse_encode_u_32(self.legalRepliesAfter, serializer);
+    sse_encode_i_32(self.moverBoardLoss, serializer);
+    sse_encode_i_32(self.opponentBoardLoss, serializer);
+    sse_encode_i_32(self.moverHandLoss, serializer);
+    sse_encode_i_32(self.opponentHandLoss, serializer);
+    sse_encode_i_32(self.removalRightsCreated, serializer);
+    sse_encode_bool(self.formedMillWithReward, serializer);
+    sse_encode_bool(self.actualSpecialCapture, serializer);
+    sse_encode_bool(self.selectedCaptureTarget, serializer);
+    sse_encode_bool(self.phaseTransition, serializer);
+    sse_encode_bool(self.enteredFlying, serializer);
+    sse_encode_bool(self.opponentEnteredFlying, serializer);
+    sse_encode_String(self.outcomeBefore, serializer);
+    sse_encode_String(self.outcomeAfter, serializer);
+    sse_encode_String(self.outcomeReasonAfter, serializer);
+    sse_encode_i_32(self.mobilityDelta, serializer);
+    sse_encode_i_32(self.drawCounterDelta, serializer);
+  }
+
+  @protected
+  void sse_encode_mill_feedback_report(
+    MillFeedbackReport self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_mill_rule_strategy_profile(self.profile, serializer);
+    sse_encode_mill_feedback_evidence(self.evidence, serializer);
+    sse_encode_mill_move_context_assessment(self.context, serializer);
+  }
+
+  @protected
   void sse_encode_mill_formation_action_in_placing_phase(
     MillFormationActionInPlacingPhase self,
     SseSerializer serializer,
@@ -3503,6 +4003,26 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_mill_move_context_assessment(
+    MillMoveContextAssessment self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_bool(self.forced, serializer);
+    sse_encode_bool(self.equivalent, serializer);
+    sse_encode_bool(self.routineGain, serializer);
+    sse_encode_bool(self.createdOpportunity, serializer);
+    sse_encode_bool(self.missedOpportunity, serializer);
+    sse_encode_bool(self.deferredOpportunity, serializer);
+    sse_encode_bool(self.replacedOpportunity, serializer);
+    sse_encode_bool(self.compensatedConcession, serializer);
+    sse_encode_bool(self.initiativeSwing, serializer);
+    sse_encode_bool(self.mobilitySwing, serializer);
+    sse_encode_bool(self.phaseTransitionImpact, serializer);
+    sse_encode_bool(self.drawResourceImpact, serializer);
+  }
+
+  @protected
   void sse_encode_mill_patch_status(
     MillPatchStatus self,
     SseSerializer serializer,
@@ -3539,6 +4059,45 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_u_8(self.pieceCount, serializer);
     sse_encode_u_32(self.sectorCount, serializer);
     sse_encode_u_32(self.availableSectorCount, serializer);
+  }
+
+  @protected
+  void sse_encode_mill_rule_strategy_profile(
+    MillRuleStrategyProfile self,
+    SseSerializer serializer,
+  ) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.topologyName, serializer);
+    sse_encode_bool(self.standardTopology, serializer);
+    sse_encode_list_prim_i_32_strict(self.nodeDegrees, serializer);
+    sse_encode_list_prim_i_32_strict(self.highConnectionNodes, serializer);
+    sse_encode_list_prim_i_32_strict(self.channelNodes, serializer);
+    sse_encode_bool(self.hasIndependentPlacingPhase, serializer);
+    sse_encode_bool(self.mayMoveInPlacingPhase, serializer);
+    sse_encode_bool(self.mayFly, serializer);
+    sse_encode_i_32(self.flyPieceCount, serializer);
+    sse_encode_i_32(self.piecesAtLeastCount, serializer);
+    sse_encode_bool(self.removesFromBoardOnPlacingMill, serializer);
+    sse_encode_bool(self.removesFromHandOnPlacingMill, serializer);
+    sse_encode_bool(self.delaysPlacingMillReward, serializer);
+    sse_encode_bool(self.rewardBasedOnMillCount, serializer);
+    sse_encode_bool(self.mayRemoveMultiple, serializer);
+    sse_encode_bool(self.mayRemoveFromMillsAlways, serializer);
+    sse_encode_bool(self.reusableMills, serializer);
+    sse_encode_bool(self.restrictedRepeatedMills, serializer);
+    sse_encode_bool(self.oneTimeMills, serializer);
+    sse_encode_bool(self.hasCustodianCapture, serializer);
+    sse_encode_bool(self.hasInterventionCapture, serializer);
+    sse_encode_bool(self.hasLeapCapture, serializer);
+    sse_encode_bool(self.stalemateIsLoss, serializer);
+    sse_encode_bool(self.stalemateIsDraw, serializer);
+    sse_encode_bool(self.stalemateChangesTurnOrRemoves, serializer);
+    sse_encode_bool(self.hasNMoveDraw, serializer);
+    sse_encode_bool(self.hasEndgameNMoveDraw, serializer);
+    sse_encode_bool(self.hasThreefoldDraw, serializer);
+    sse_encode_bool(self.standardStrategyCompatible, serializer);
+    sse_encode_bool(self.perfectDatabaseCompatible, serializer);
+    sse_encode_bool(self.trapPatchCompatible, serializer);
   }
 
   @protected

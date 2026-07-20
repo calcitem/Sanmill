@@ -4767,6 +4767,9 @@ void main() {
     final Finder annotationsTile = find.byKey(
       const Key('play_area_analysis_settings_move_annotations'),
     );
+    final Finder moveFeedbackTile = find.byKey(
+      const Key('play_area_analysis_settings_move_feedback'),
+    );
     final Finder inlineNotationTile = find.byKey(
       const Key('play_area_analysis_settings_inline_notation'),
     );
@@ -4777,10 +4780,16 @@ void main() {
       const Key('play_area_analysis_settings_best_move_arrow'),
     );
 
+    await tester.ensureVisible(moveFeedbackTile);
+    await tester.tap(moveFeedbackTile);
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(inlineNotationTile);
     await tester.tap(inlineNotationTile);
     await tester.pumpAndSettle();
+    await tester.ensureVisible(annotationsTile);
     await tester.tap(annotationsTile);
     await tester.pumpAndSettle();
+    await tester.ensureVisible(commentsTile);
     await tester.tap(commentsTile);
     await tester.pumpAndSettle();
     await tester.ensureVisible(bestMoveArrowTile);
@@ -4788,10 +4797,12 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(AnalysisMode.inlineNotation, isTrue);
+    expect(AnalysisMode.showMoveFeedback, isFalse);
     expect(AnalysisMode.showMoveAnnotations, isFalse);
     expect(AnalysisMode.showMoveComments, isFalse);
     expect(AnalysisMode.showBestMoveArrow, isFalse);
     expect(db.displaySettings.analysisInlineNotation, isTrue);
+    expect(db.displaySettings.analysisShowMoveFeedback, isFalse);
     expect(db.displaySettings.analysisShowMoveAnnotations, isFalse);
     expect(db.displaySettings.analysisShowMoveComments, isFalse);
     expect(db.displaySettings.analysisShowBestMoveArrow, isFalse);

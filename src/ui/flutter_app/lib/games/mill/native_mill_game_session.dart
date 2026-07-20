@@ -21,6 +21,7 @@ import '../../shared/services/debug_instrumentation_bb5e74.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
 import '../../src/rust/api/kernel.dart' as tgf_kernel;
+import '../../src/rust/api/mill_kernel.dart' as tgf_mill;
 import '../../src/rust/api/simple.dart' as tgf;
 import 'lan_session_meta.dart';
 import 'mill_action_codec.dart';
@@ -198,6 +199,46 @@ class NativeMillGameSession implements GameSessionHandle {
       return const <GameAction>[];
     }
     return rulesPort.legalActions;
+  }
+
+  /// Rule-aware evidence for an atomic move at the current root position.
+  /// Search must finish before this cold-path replay is called.
+  tgf_mill.MillFeedbackReport feedbackEvidenceForMove(
+    String playedMove,
+    List<NativeMillPrincipalVariation> variations,
+  ) {
+    final int perspective = state.value.activeSeat == PlayerSeat.first ? 1 : -1;
+    final Map<String, GameAction> legalByNotation = <String, GameAction>{};
+    for (final GameAction action in legalActions) {
+      final String? notation = MillActionCodec.moveStringFrom(action);
+      if (notation != null) {
+        legalByNotation[notation] = action;
+      }
+    }
+    final GameAction? playedAction = legalByNotation[playedMove];
+    assert(playedAction != null, 'Played feedback move must be legal at root.');
+    if (playedAction == null) {
+      throw StateError(
+        'Played feedback move is not legal at root: $playedMove',
+      );
+    }
+    final List<NativeMillFeedbackCandidate> candidates = variations
+        .map((NativeMillPrincipalVariation variation) {
+          final GameAction? action = legalByNotation[variation.move];
+          assert(action != null, 'MultiPV candidate must be legal at root.');
+          return action == null
+              ? null
+              : NativeMillFeedbackCandidate(
+                  actions: <GameAction>[action],
+                  score: variation.score * perspective,
+                );
+        })
+        .whereType<NativeMillFeedbackCandidate>()
+        .toList(growable: false);
+    return rulesPort.feedbackEvidence(
+      playedActions: <GameAction>[playedAction],
+      candidates: candidates,
+    );
   }
 
   /// Precise diagnostics for the most recent engine-move rejection on this

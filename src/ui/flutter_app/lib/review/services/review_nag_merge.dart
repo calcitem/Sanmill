@@ -37,9 +37,7 @@ abstract final class ReviewNagMerge {
           original.insert(0, override);
         }
       } else if (!hasOriginalQuality) {
-        final int? automatic = automaticNagForGrade(
-          report.gradeForTurn(groupIndex),
-        );
+        final int? automatic = report.effectiveQualityNagForTurn(groupIndex);
         if (automatic != null) {
           original.insert(0, automatic);
         }

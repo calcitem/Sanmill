@@ -14,7 +14,10 @@
 use std::sync::Arc;
 
 use tgf_core::{Action, ActionList, GameKernel, GameRules};
-use tgf_mill::{MillPhase, MillRules, MillVariantOptions as NativeMillVariantOptions};
+use tgf_mill::{
+    MillFeedbackCandidate, MillFeedbackReport as NativeMillFeedbackReport, MillPhase, MillRules,
+    MillVariantOptions as NativeMillVariantOptions, assess_move_feedback,
+};
 
 use super::kernel::{TgfAction, TgfSnapshot};
 use crate::api::simple::{
@@ -24,6 +27,206 @@ use crate::api::simple::{
 use crate::frb_generated::StreamSink;
 use crate::games::mill::{perfect, search, variant_extras};
 use crate::session_registry::{insert_kernel, with_kernel};
+
+/// One searched candidate supplied to the cold-path rule evidence extractor.
+#[derive(Clone, Debug)]
+pub struct MillFeedbackCandidateInput {
+    pub actions: Vec<TgfAction>,
+    pub score: i32,
+}
+
+/// FRB projection of `tgf_mill::RuleStrategyProfile`.
+#[derive(Clone, Debug)]
+pub struct MillRuleStrategyProfile {
+    pub topology_name: String,
+    pub standard_topology: bool,
+    pub node_degrees: Vec<i32>,
+    pub high_connection_nodes: Vec<i32>,
+    pub channel_nodes: Vec<i32>,
+    pub has_independent_placing_phase: bool,
+    pub may_move_in_placing_phase: bool,
+    pub may_fly: bool,
+    pub fly_piece_count: i32,
+    pub pieces_at_least_count: i32,
+    pub removes_from_board_on_placing_mill: bool,
+    pub removes_from_hand_on_placing_mill: bool,
+    pub delays_placing_mill_reward: bool,
+    pub reward_based_on_mill_count: bool,
+    pub may_remove_multiple: bool,
+    pub may_remove_from_mills_always: bool,
+    pub reusable_mills: bool,
+    pub restricted_repeated_mills: bool,
+    pub one_time_mills: bool,
+    pub has_custodian_capture: bool,
+    pub has_intervention_capture: bool,
+    pub has_leap_capture: bool,
+    pub stalemate_is_loss: bool,
+    pub stalemate_is_draw: bool,
+    pub stalemate_changes_turn_or_removes: bool,
+    pub has_n_move_draw: bool,
+    pub has_endgame_n_move_draw: bool,
+    pub has_threefold_draw: bool,
+    pub standard_strategy_compatible: bool,
+    pub perfect_database_compatible: bool,
+    pub trap_patch_compatible: bool,
+}
+
+/// FRB projection of the facts extracted from a complete Mill turn.
+#[derive(Clone, Debug)]
+pub struct MillFeedbackEvidence {
+    pub complete_turn_legal: bool,
+    pub action_kinds: Vec<String>,
+    pub phase_before: String,
+    pub phase_after: String,
+    pub side_before: i32,
+    pub side_after: i32,
+    pub pieces_on_board_before: Vec<i32>,
+    pub pieces_on_board_after: Vec<i32>,
+    pub pieces_in_hand_before: Vec<i32>,
+    pub pieces_in_hand_after: Vec<i32>,
+    pub pending_removals_before: Vec<i32>,
+    pub pending_removals_after: Vec<i32>,
+    pub delayed_marked_before: u32,
+    pub delayed_marked_after: u32,
+    pub legal_actions_before: u32,
+    pub legal_replies_after: u32,
+    pub mover_board_loss: i32,
+    pub opponent_board_loss: i32,
+    pub mover_hand_loss: i32,
+    pub opponent_hand_loss: i32,
+    pub removal_rights_created: i32,
+    pub formed_mill_with_reward: bool,
+    pub actual_special_capture: bool,
+    pub selected_capture_target: bool,
+    pub phase_transition: bool,
+    pub entered_flying: bool,
+    pub opponent_entered_flying: bool,
+    pub outcome_before: String,
+    pub outcome_after: String,
+    pub outcome_reason_after: String,
+    pub mobility_delta: i32,
+    pub draw_counter_delta: i32,
+}
+
+/// FRB projection of cross-candidate move context.
+#[derive(Clone, Debug)]
+pub struct MillMoveContextAssessment {
+    pub forced: bool,
+    pub equivalent: bool,
+    pub routine_gain: bool,
+    pub created_opportunity: bool,
+    pub missed_opportunity: bool,
+    pub deferred_opportunity: bool,
+    pub replaced_opportunity: bool,
+    pub compensated_concession: bool,
+    pub initiative_swing: bool,
+    pub mobility_swing: bool,
+    pub phase_transition_impact: bool,
+    pub draw_resource_impact: bool,
+}
+
+/// Rule-aware evidence returned after MultiPV search has completed.
+#[derive(Clone, Debug)]
+pub struct MillFeedbackReport {
+    pub profile: MillRuleStrategyProfile,
+    pub evidence: MillFeedbackEvidence,
+    pub context: MillMoveContextAssessment,
+}
+
+impl From<NativeMillFeedbackReport> for MillFeedbackReport {
+    fn from(value: NativeMillFeedbackReport) -> Self {
+        let profile = value.profile;
+        let evidence = value.evidence;
+        let context = value.context;
+        Self {
+            profile: MillRuleStrategyProfile {
+                topology_name: profile.topology_name,
+                standard_topology: profile.standard_topology,
+                node_degrees: to_i32_vec(profile.node_degrees),
+                high_connection_nodes: to_i32_vec(profile.high_connection_nodes),
+                channel_nodes: to_i32_vec(profile.channel_nodes),
+                has_independent_placing_phase: profile.has_independent_placing_phase,
+                may_move_in_placing_phase: profile.may_move_in_placing_phase,
+                may_fly: profile.may_fly,
+                fly_piece_count: i32::from(profile.fly_piece_count),
+                pieces_at_least_count: i32::from(profile.pieces_at_least_count),
+                removes_from_board_on_placing_mill: profile.removes_from_board_on_placing_mill,
+                removes_from_hand_on_placing_mill: profile.removes_from_hand_on_placing_mill,
+                delays_placing_mill_reward: profile.delays_placing_mill_reward,
+                reward_based_on_mill_count: profile.reward_based_on_mill_count,
+                may_remove_multiple: profile.may_remove_multiple,
+                may_remove_from_mills_always: profile.may_remove_from_mills_always,
+                reusable_mills: profile.reusable_mills,
+                restricted_repeated_mills: profile.restricted_repeated_mills,
+                one_time_mills: profile.one_time_mills,
+                has_custodian_capture: profile.has_custodian_capture,
+                has_intervention_capture: profile.has_intervention_capture,
+                has_leap_capture: profile.has_leap_capture,
+                stalemate_is_loss: profile.stalemate_is_loss,
+                stalemate_is_draw: profile.stalemate_is_draw,
+                stalemate_changes_turn_or_removes: profile.stalemate_changes_turn_or_removes,
+                has_n_move_draw: profile.has_n_move_draw,
+                has_endgame_n_move_draw: profile.has_endgame_n_move_draw,
+                has_threefold_draw: profile.has_threefold_draw,
+                standard_strategy_compatible: profile.standard_strategy_compatible,
+                perfect_database_compatible: profile.perfect_database_compatible,
+                trap_patch_compatible: profile.trap_patch_compatible,
+            },
+            evidence: MillFeedbackEvidence {
+                complete_turn_legal: evidence.complete_turn_legal,
+                action_kinds: evidence.action_kinds,
+                phase_before: evidence.phase_before,
+                phase_after: evidence.phase_after,
+                side_before: i32::from(evidence.side_before),
+                side_after: i32::from(evidence.side_after),
+                pieces_on_board_before: to_i32_vec(evidence.pieces_on_board_before),
+                pieces_on_board_after: to_i32_vec(evidence.pieces_on_board_after),
+                pieces_in_hand_before: to_i32_vec(evidence.pieces_in_hand_before),
+                pieces_in_hand_after: to_i32_vec(evidence.pieces_in_hand_after),
+                pending_removals_before: to_i32_vec(evidence.pending_removals_before),
+                pending_removals_after: to_i32_vec(evidence.pending_removals_after),
+                delayed_marked_before: evidence.delayed_marked_before,
+                delayed_marked_after: evidence.delayed_marked_after,
+                legal_actions_before: evidence.legal_actions_before,
+                legal_replies_after: evidence.legal_replies_after,
+                mover_board_loss: i32::from(evidence.mover_board_loss),
+                opponent_board_loss: i32::from(evidence.opponent_board_loss),
+                mover_hand_loss: i32::from(evidence.mover_hand_loss),
+                opponent_hand_loss: i32::from(evidence.opponent_hand_loss),
+                removal_rights_created: i32::from(evidence.removal_rights_created),
+                formed_mill_with_reward: evidence.formed_mill_with_reward,
+                actual_special_capture: evidence.actual_special_capture,
+                selected_capture_target: evidence.selected_capture_target,
+                phase_transition: evidence.phase_transition,
+                entered_flying: evidence.entered_flying,
+                opponent_entered_flying: evidence.opponent_entered_flying,
+                outcome_before: evidence.outcome_before,
+                outcome_after: evidence.outcome_after,
+                outcome_reason_after: evidence.outcome_reason_after,
+                mobility_delta: evidence.mobility_delta,
+                draw_counter_delta: evidence.draw_counter_delta,
+            },
+            context: MillMoveContextAssessment {
+                forced: context.forced,
+                equivalent: context.equivalent,
+                routine_gain: context.routine_gain,
+                created_opportunity: context.created_opportunity,
+                missed_opportunity: context.missed_opportunity,
+                deferred_opportunity: context.deferred_opportunity,
+                replaced_opportunity: context.replaced_opportunity,
+                compensated_concession: context.compensated_concession,
+                initiative_swing: context.initiative_swing,
+                mobility_swing: context.mobility_swing,
+                phase_transition_impact: context.phase_transition_impact,
+                draw_resource_impact: context.draw_resource_impact,
+            },
+        }
+    }
+}
+
+fn to_i32_vec<T: Into<i32>>(values: impl IntoIterator<Item = T>) -> Vec<i32> {
+    values.into_iter().map(Into::into).collect()
+}
 
 /// Create a Mill kernel with explicit variant options.  Use this once
 /// the Flutter `RuleSettings` model is mapped through
@@ -36,6 +239,43 @@ pub fn tgf_kernel_create_mill(variant: MillVariantOptions) -> Result<u32, String
     let id = insert_kernel(kernel);
     variant_extras::attach(id, native);
     Ok(id)
+}
+
+/// Extract rule facts for a played complete turn and searched candidates.
+///
+/// This synchronous call performs no search and never mutates the live
+/// kernel. It clones the root snapshot, replays the supplied short action
+/// sequences with the active variant rules, and returns stable fact fields
+/// for the Dart classifier and localized UI.
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_mill_feedback_evidence(
+    handle: u32,
+    played_actions: Vec<TgfAction>,
+    candidates: Vec<MillFeedbackCandidateInput>,
+) -> Result<MillFeedbackReport, String> {
+    let (game_id, snapshot) = with_kernel(handle, |kernel| {
+        (kernel.game_id().to_owned(), kernel.snapshot())
+    })?;
+    if game_id != "mill" {
+        return Err(format!("kernel game_id is {game_id}, expected mill"));
+    }
+    let rules = MillRules::new(variant_extras::options_for(handle));
+    let played_actions = played_actions
+        .into_iter()
+        .map(TgfAction::into_action)
+        .collect::<Vec<_>>();
+    let candidates = candidates
+        .into_iter()
+        .map(|candidate| MillFeedbackCandidate {
+            actions: candidate
+                .actions
+                .into_iter()
+                .map(TgfAction::into_action)
+                .collect(),
+            score: candidate.score,
+        })
+        .collect::<Vec<_>>();
+    Ok(assess_move_feedback(&rules, snapshot, &played_actions, &candidates).into())
 }
 
 /// PVS search over the kernel's **current** Mill position, using the

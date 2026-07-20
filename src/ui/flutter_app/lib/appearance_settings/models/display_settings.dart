@@ -144,6 +144,7 @@ class DisplaySettings {
     this.analysisShowEvaluationGauge = true,
     this.analysisEvaluationGaugePosition = EvaluationGaugePosition.left,
     this.analysisShowAllBoardResults = false,
+    this.analysisShowMoveFeedback = true,
     this.showLegalMoves = true,
     this.showLastMove = true,
     this.analysisEngineLineCount = kDefaultAnalysisEngineLineCount,
@@ -359,6 +360,10 @@ class DisplaySettings {
   @HiveField(59, defaultValue: EvaluationGaugePosition.left)
   final EvaluationGaugePosition analysisEvaluationGaugePosition;
 
+  /// Whether selecting a played analysis move shows on-demand feedback.
+  @HiveField(60, defaultValue: true)
+  final bool analysisShowMoveFeedback;
+
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);
 
@@ -372,6 +377,7 @@ class DisplaySettings {
     bool? analysisShowEvaluationGauge,
     EvaluationGaugePosition? analysisEvaluationGaugePosition,
     bool? analysisShowAllBoardResults,
+    bool? analysisShowMoveFeedback,
     int? analysisEngineLineCount,
     int? analysisEngineSearchTimeMs,
   }) {
@@ -438,6 +444,8 @@ class DisplaySettings {
           this.analysisEvaluationGaugePosition,
       analysisShowAllBoardResults:
           analysisShowAllBoardResults ?? this.analysisShowAllBoardResults,
+      analysisShowMoveFeedback:
+          analysisShowMoveFeedback ?? this.analysisShowMoveFeedback,
       showLegalMoves: showLegalMoves,
       showLastMove: showLastMove,
       analysisEngineLineCount:

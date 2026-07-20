@@ -2,6 +2,7 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/game_page/services/analysis/move_feedback.dart';
 import 'package:sanmill/review/models/review_models.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
 
@@ -226,6 +227,38 @@ void main() {
         expect(keys, hasLength(5));
       },
     );
+
+    test('round-trips feedback metadata and accepts legacy action data', () {
+      final ReviewReport report = _report(
+        grades: const <ReviewGrade>[ReviewGrade.good],
+      );
+      final Map<String, dynamic> json = report.toJson();
+      final Map<String, dynamic> action =
+          (json['actions']! as List<dynamic>).single as Map<String, dynamic>;
+      action
+        ..['automaticNag'] = 3
+        ..['feedbackReasons'] = <String>[
+          MoveFeedbackReason.forcedMove.name,
+          MoveFeedbackReason.directRuleReward.name,
+        ];
+
+      final ReviewActionEvaluation restored = ReviewReport.fromJson(
+        json,
+      ).actions.single;
+      expect(restored.automaticNag, 3);
+      expect(restored.feedbackReasons, <MoveFeedbackReason>[
+        MoveFeedbackReason.forcedMove,
+        MoveFeedbackReason.directRuleReward,
+      ]);
+
+      action.remove('automaticNag');
+      action.remove('feedbackReasons');
+      final ReviewActionEvaluation legacy = ReviewReport.fromJson(
+        json,
+      ).actions.single;
+      expect(legacy.automaticNag, isNull);
+      expect(legacy.feedbackReasons, isEmpty);
+    });
   });
 }
 

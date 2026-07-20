@@ -38,7 +38,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1999531277;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 332608665;
 
 // Section: executor
 
@@ -1357,6 +1357,46 @@ fn wire__crate__api__kernel__tgf_kernel_legal_actions_impl(
         },
     )
 }
+fn wire__crate__api__mill_kernel__tgf_kernel_mill_feedback_evidence_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "tgf_kernel_mill_feedback_evidence",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_handle = <u32>::sse_decode(&mut deserializer);
+            let api_played_actions =
+                <Vec<crate::api::kernel::TgfAction>>::sse_decode(&mut deserializer);
+            let api_candidates =
+                <Vec<crate::api::mill_kernel::MillFeedbackCandidateInput>>::sse_decode(
+                    &mut deserializer,
+                );
+            deserializer.end();
+            transform_result_sse::<_, String>((move || {
+                let output_ok = crate::api::mill_kernel::tgf_kernel_mill_feedback_evidence(
+                    api_handle,
+                    api_played_actions,
+                    api_candidates,
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
 fn wire__crate__api__mill_kernel__tgf_kernel_mill_patch_correct_action_impl(
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
     rust_vec_len_: i32,
@@ -2194,6 +2234,20 @@ impl SseDecode for Vec<Vec<u16>> {
     }
 }
 
+impl SseDecode for Vec<crate::api::mill_kernel::MillFeedbackCandidateInput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(
+                <crate::api::mill_kernel::MillFeedbackCandidateInput>::sse_decode(deserializer),
+            );
+        }
+        return ans_;
+    }
+}
+
 impl SseDecode for Vec<crate::api::simple::MillHumanDatabaseMove> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2231,6 +2285,18 @@ impl SseDecode for Vec<crate::api::simple::MillPerfectDatabaseVariantStatus> {
             ans_.push(
                 <crate::api::simple::MillPerfectDatabaseVariantStatus>::sse_decode(deserializer),
             );
+        }
+        return ans_;
+    }
+}
+
+impl SseDecode for Vec<i32> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut len_ = <i32>::sse_decode(deserializer);
+        let mut ans_ = Vec::with_capacity(len_ as usize);
+        for idx_ in 0..len_ {
+            ans_.push(<i32>::sse_decode(deserializer));
         }
         return ans_;
     }
@@ -2357,6 +2423,107 @@ impl SseDecode for crate::api::simple::MillEngineConfig {
     }
 }
 
+impl SseDecode for crate::api::mill_kernel::MillFeedbackCandidateInput {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_actions = <Vec<crate::api::kernel::TgfAction>>::sse_decode(deserializer);
+        let mut var_score = <i32>::sse_decode(deserializer);
+        return crate::api::mill_kernel::MillFeedbackCandidateInput {
+            actions: var_actions,
+            score: var_score,
+        };
+    }
+}
+
+impl SseDecode for crate::api::mill_kernel::MillFeedbackEvidence {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_completeTurnLegal = <bool>::sse_decode(deserializer);
+        let mut var_actionKinds = <Vec<String>>::sse_decode(deserializer);
+        let mut var_phaseBefore = <String>::sse_decode(deserializer);
+        let mut var_phaseAfter = <String>::sse_decode(deserializer);
+        let mut var_sideBefore = <i32>::sse_decode(deserializer);
+        let mut var_sideAfter = <i32>::sse_decode(deserializer);
+        let mut var_piecesOnBoardBefore = <Vec<i32>>::sse_decode(deserializer);
+        let mut var_piecesOnBoardAfter = <Vec<i32>>::sse_decode(deserializer);
+        let mut var_piecesInHandBefore = <Vec<i32>>::sse_decode(deserializer);
+        let mut var_piecesInHandAfter = <Vec<i32>>::sse_decode(deserializer);
+        let mut var_pendingRemovalsBefore = <Vec<i32>>::sse_decode(deserializer);
+        let mut var_pendingRemovalsAfter = <Vec<i32>>::sse_decode(deserializer);
+        let mut var_delayedMarkedBefore = <u32>::sse_decode(deserializer);
+        let mut var_delayedMarkedAfter = <u32>::sse_decode(deserializer);
+        let mut var_legalActionsBefore = <u32>::sse_decode(deserializer);
+        let mut var_legalRepliesAfter = <u32>::sse_decode(deserializer);
+        let mut var_moverBoardLoss = <i32>::sse_decode(deserializer);
+        let mut var_opponentBoardLoss = <i32>::sse_decode(deserializer);
+        let mut var_moverHandLoss = <i32>::sse_decode(deserializer);
+        let mut var_opponentHandLoss = <i32>::sse_decode(deserializer);
+        let mut var_removalRightsCreated = <i32>::sse_decode(deserializer);
+        let mut var_formedMillWithReward = <bool>::sse_decode(deserializer);
+        let mut var_actualSpecialCapture = <bool>::sse_decode(deserializer);
+        let mut var_selectedCaptureTarget = <bool>::sse_decode(deserializer);
+        let mut var_phaseTransition = <bool>::sse_decode(deserializer);
+        let mut var_enteredFlying = <bool>::sse_decode(deserializer);
+        let mut var_opponentEnteredFlying = <bool>::sse_decode(deserializer);
+        let mut var_outcomeBefore = <String>::sse_decode(deserializer);
+        let mut var_outcomeAfter = <String>::sse_decode(deserializer);
+        let mut var_outcomeReasonAfter = <String>::sse_decode(deserializer);
+        let mut var_mobilityDelta = <i32>::sse_decode(deserializer);
+        let mut var_drawCounterDelta = <i32>::sse_decode(deserializer);
+        return crate::api::mill_kernel::MillFeedbackEvidence {
+            complete_turn_legal: var_completeTurnLegal,
+            action_kinds: var_actionKinds,
+            phase_before: var_phaseBefore,
+            phase_after: var_phaseAfter,
+            side_before: var_sideBefore,
+            side_after: var_sideAfter,
+            pieces_on_board_before: var_piecesOnBoardBefore,
+            pieces_on_board_after: var_piecesOnBoardAfter,
+            pieces_in_hand_before: var_piecesInHandBefore,
+            pieces_in_hand_after: var_piecesInHandAfter,
+            pending_removals_before: var_pendingRemovalsBefore,
+            pending_removals_after: var_pendingRemovalsAfter,
+            delayed_marked_before: var_delayedMarkedBefore,
+            delayed_marked_after: var_delayedMarkedAfter,
+            legal_actions_before: var_legalActionsBefore,
+            legal_replies_after: var_legalRepliesAfter,
+            mover_board_loss: var_moverBoardLoss,
+            opponent_board_loss: var_opponentBoardLoss,
+            mover_hand_loss: var_moverHandLoss,
+            opponent_hand_loss: var_opponentHandLoss,
+            removal_rights_created: var_removalRightsCreated,
+            formed_mill_with_reward: var_formedMillWithReward,
+            actual_special_capture: var_actualSpecialCapture,
+            selected_capture_target: var_selectedCaptureTarget,
+            phase_transition: var_phaseTransition,
+            entered_flying: var_enteredFlying,
+            opponent_entered_flying: var_opponentEnteredFlying,
+            outcome_before: var_outcomeBefore,
+            outcome_after: var_outcomeAfter,
+            outcome_reason_after: var_outcomeReasonAfter,
+            mobility_delta: var_mobilityDelta,
+            draw_counter_delta: var_drawCounterDelta,
+        };
+    }
+}
+
+impl SseDecode for crate::api::mill_kernel::MillFeedbackReport {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_profile =
+            <crate::api::mill_kernel::MillRuleStrategyProfile>::sse_decode(deserializer);
+        let mut var_evidence =
+            <crate::api::mill_kernel::MillFeedbackEvidence>::sse_decode(deserializer);
+        let mut var_context =
+            <crate::api::mill_kernel::MillMoveContextAssessment>::sse_decode(deserializer);
+        return crate::api::mill_kernel::MillFeedbackReport {
+            profile: var_profile,
+            evidence: var_evidence,
+            context: var_context,
+        };
+    }
+}
+
 impl SseDecode for crate::api::simple::MillFormationActionInPlacingPhase {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2452,6 +2619,38 @@ impl SseDecode for crate::api::simple::MillMoveAnalysis {
     }
 }
 
+impl SseDecode for crate::api::mill_kernel::MillMoveContextAssessment {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_forced = <bool>::sse_decode(deserializer);
+        let mut var_equivalent = <bool>::sse_decode(deserializer);
+        let mut var_routineGain = <bool>::sse_decode(deserializer);
+        let mut var_createdOpportunity = <bool>::sse_decode(deserializer);
+        let mut var_missedOpportunity = <bool>::sse_decode(deserializer);
+        let mut var_deferredOpportunity = <bool>::sse_decode(deserializer);
+        let mut var_replacedOpportunity = <bool>::sse_decode(deserializer);
+        let mut var_compensatedConcession = <bool>::sse_decode(deserializer);
+        let mut var_initiativeSwing = <bool>::sse_decode(deserializer);
+        let mut var_mobilitySwing = <bool>::sse_decode(deserializer);
+        let mut var_phaseTransitionImpact = <bool>::sse_decode(deserializer);
+        let mut var_drawResourceImpact = <bool>::sse_decode(deserializer);
+        return crate::api::mill_kernel::MillMoveContextAssessment {
+            forced: var_forced,
+            equivalent: var_equivalent,
+            routine_gain: var_routineGain,
+            created_opportunity: var_createdOpportunity,
+            missed_opportunity: var_missedOpportunity,
+            deferred_opportunity: var_deferredOpportunity,
+            replaced_opportunity: var_replacedOpportunity,
+            compensated_concession: var_compensatedConcession,
+            initiative_swing: var_initiativeSwing,
+            mobility_swing: var_mobilitySwing,
+            phase_transition_impact: var_phaseTransitionImpact,
+            draw_resource_impact: var_drawResourceImpact,
+        };
+    }
+}
+
 impl SseDecode for crate::api::simple::MillPatchStatus {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -2497,6 +2696,76 @@ impl SseDecode for crate::api::simple::MillPerfectDatabaseVariantStatus {
             piece_count: var_pieceCount,
             sector_count: var_sectorCount,
             available_sector_count: var_availableSectorCount,
+        };
+    }
+}
+
+impl SseDecode for crate::api::mill_kernel::MillRuleStrategyProfile {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_topologyName = <String>::sse_decode(deserializer);
+        let mut var_standardTopology = <bool>::sse_decode(deserializer);
+        let mut var_nodeDegrees = <Vec<i32>>::sse_decode(deserializer);
+        let mut var_highConnectionNodes = <Vec<i32>>::sse_decode(deserializer);
+        let mut var_channelNodes = <Vec<i32>>::sse_decode(deserializer);
+        let mut var_hasIndependentPlacingPhase = <bool>::sse_decode(deserializer);
+        let mut var_mayMoveInPlacingPhase = <bool>::sse_decode(deserializer);
+        let mut var_mayFly = <bool>::sse_decode(deserializer);
+        let mut var_flyPieceCount = <i32>::sse_decode(deserializer);
+        let mut var_piecesAtLeastCount = <i32>::sse_decode(deserializer);
+        let mut var_removesFromBoardOnPlacingMill = <bool>::sse_decode(deserializer);
+        let mut var_removesFromHandOnPlacingMill = <bool>::sse_decode(deserializer);
+        let mut var_delaysPlacingMillReward = <bool>::sse_decode(deserializer);
+        let mut var_rewardBasedOnMillCount = <bool>::sse_decode(deserializer);
+        let mut var_mayRemoveMultiple = <bool>::sse_decode(deserializer);
+        let mut var_mayRemoveFromMillsAlways = <bool>::sse_decode(deserializer);
+        let mut var_reusableMills = <bool>::sse_decode(deserializer);
+        let mut var_restrictedRepeatedMills = <bool>::sse_decode(deserializer);
+        let mut var_oneTimeMills = <bool>::sse_decode(deserializer);
+        let mut var_hasCustodianCapture = <bool>::sse_decode(deserializer);
+        let mut var_hasInterventionCapture = <bool>::sse_decode(deserializer);
+        let mut var_hasLeapCapture = <bool>::sse_decode(deserializer);
+        let mut var_stalemateIsLoss = <bool>::sse_decode(deserializer);
+        let mut var_stalemateIsDraw = <bool>::sse_decode(deserializer);
+        let mut var_stalemateChangesTurnOrRemoves = <bool>::sse_decode(deserializer);
+        let mut var_hasNMoveDraw = <bool>::sse_decode(deserializer);
+        let mut var_hasEndgameNMoveDraw = <bool>::sse_decode(deserializer);
+        let mut var_hasThreefoldDraw = <bool>::sse_decode(deserializer);
+        let mut var_standardStrategyCompatible = <bool>::sse_decode(deserializer);
+        let mut var_perfectDatabaseCompatible = <bool>::sse_decode(deserializer);
+        let mut var_trapPatchCompatible = <bool>::sse_decode(deserializer);
+        return crate::api::mill_kernel::MillRuleStrategyProfile {
+            topology_name: var_topologyName,
+            standard_topology: var_standardTopology,
+            node_degrees: var_nodeDegrees,
+            high_connection_nodes: var_highConnectionNodes,
+            channel_nodes: var_channelNodes,
+            has_independent_placing_phase: var_hasIndependentPlacingPhase,
+            may_move_in_placing_phase: var_mayMoveInPlacingPhase,
+            may_fly: var_mayFly,
+            fly_piece_count: var_flyPieceCount,
+            pieces_at_least_count: var_piecesAtLeastCount,
+            removes_from_board_on_placing_mill: var_removesFromBoardOnPlacingMill,
+            removes_from_hand_on_placing_mill: var_removesFromHandOnPlacingMill,
+            delays_placing_mill_reward: var_delaysPlacingMillReward,
+            reward_based_on_mill_count: var_rewardBasedOnMillCount,
+            may_remove_multiple: var_mayRemoveMultiple,
+            may_remove_from_mills_always: var_mayRemoveFromMillsAlways,
+            reusable_mills: var_reusableMills,
+            restricted_repeated_mills: var_restrictedRepeatedMills,
+            one_time_mills: var_oneTimeMills,
+            has_custodian_capture: var_hasCustodianCapture,
+            has_intervention_capture: var_hasInterventionCapture,
+            has_leap_capture: var_hasLeapCapture,
+            stalemate_is_loss: var_stalemateIsLoss,
+            stalemate_is_draw: var_stalemateIsDraw,
+            stalemate_changes_turn_or_removes: var_stalemateChangesTurnOrRemoves,
+            has_n_move_draw: var_hasNMoveDraw,
+            has_endgame_n_move_draw: var_hasEndgameNMoveDraw,
+            has_threefold_draw: var_hasThreefoldDraw,
+            standard_strategy_compatible: var_standardStrategyCompatible,
+            perfect_database_compatible: var_perfectDatabaseCompatible,
+            trap_patch_compatible: var_trapPatchCompatible,
         };
     }
 }
@@ -2786,13 +3055,13 @@ fn pde_ffi_dispatcher_primary_impl(
             rust_vec_len,
             data_len,
         ),
-        49 => wire__crate__api__mill_kernel__tgf_kernel_mill_search_events_impl(
+        50 => wire__crate__api__mill_kernel__tgf_kernel_mill_search_events_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        50 => wire__crate__api__mill_kernel__tgf_kernel_mill_search_events_with_config_impl(
+        51 => wire__crate__api__mill_kernel__tgf_kernel_mill_search_events_with_config_impl(
             port,
             ptr,
             rust_vec_len,
@@ -2914,64 +3183,69 @@ fn pde_ffi_dispatcher_sync_impl(
         40 => wire__crate__api__kernel__tgf_kernel_game_id_impl(ptr, rust_vec_len, data_len),
         41 => wire__crate__api__kernel__tgf_kernel_is_terminal_impl(ptr, rust_vec_len, data_len),
         42 => wire__crate__api__kernel__tgf_kernel_legal_actions_impl(ptr, rust_vec_len, data_len),
-        43 => wire__crate__api__mill_kernel__tgf_kernel_mill_patch_correct_action_impl(
+        43 => wire__crate__api__mill_kernel__tgf_kernel_mill_feedback_evidence_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        44 => wire__crate__api__mill_kernel__tgf_kernel_mill_patch_make_traps_action_impl(
+        44 => wire__crate__api__mill_kernel__tgf_kernel_mill_patch_correct_action_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        45 => wire__crate__api__mill_kernel__tgf_kernel_mill_patch_trap_aware_best_action_impl(
+        45 => wire__crate__api__mill_kernel__tgf_kernel_mill_patch_make_traps_action_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        46 => wire__crate__api__mill_kernel__tgf_kernel_mill_patch_trap_score_after_impl(
+        46 => wire__crate__api__mill_kernel__tgf_kernel_mill_patch_trap_aware_best_action_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        47 => wire__crate__api__mill_kernel__tgf_kernel_mill_perfect_db_analyze_impl(
+        47 => wire__crate__api__mill_kernel__tgf_kernel_mill_patch_trap_score_after_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        48 => wire__crate__api__mill_kernel__tgf_kernel_mill_perfect_db_best_action_impl(
+        48 => wire__crate__api__mill_kernel__tgf_kernel_mill_perfect_db_analyze_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        51 => wire__crate__api__kernel__tgf_kernel_outcome_impl(ptr, rust_vec_len, data_len),
-        52 => wire__crate__api__simple__tgf_kernel_player_info_impl(ptr, rust_vec_len, data_len),
-        53 => wire__crate__api__kernel__tgf_kernel_redo_impl(ptr, rust_vec_len, data_len),
-        54 => wire__crate__api__kernel__tgf_kernel_redo_depth_impl(ptr, rust_vec_len, data_len),
-        55 => {
+        49 => wire__crate__api__mill_kernel__tgf_kernel_mill_perfect_db_best_action_impl(
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        52 => wire__crate__api__kernel__tgf_kernel_outcome_impl(ptr, rust_vec_len, data_len),
+        53 => wire__crate__api__simple__tgf_kernel_player_info_impl(ptr, rust_vec_len, data_len),
+        54 => wire__crate__api__kernel__tgf_kernel_redo_impl(ptr, rust_vec_len, data_len),
+        55 => wire__crate__api__kernel__tgf_kernel_redo_depth_impl(ptr, rust_vec_len, data_len),
+        56 => {
             wire__crate__api__mill_kernel__tgf_kernel_set_from_fen_impl(ptr, rust_vec_len, data_len)
         }
-        56 => {
+        57 => {
             wire__crate__api__mill_kernel__tgf_kernel_setup_clear_impl(ptr, rust_vec_len, data_len)
         }
-        57 => {
+        58 => {
             wire__crate__api__mill_kernel__tgf_kernel_setup_finish_impl(ptr, rust_vec_len, data_len)
         }
-        58 => wire__crate__api__mill_kernel__tgf_kernel_setup_set_piece_impl(
+        59 => wire__crate__api__mill_kernel__tgf_kernel_setup_set_piece_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        59 => wire__crate__api__mill_kernel__tgf_kernel_setup_set_side_impl(
+        60 => wire__crate__api__mill_kernel__tgf_kernel_setup_set_side_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        60 => wire__crate__api__kernel__tgf_kernel_snapshot_impl(ptr, rust_vec_len, data_len),
-        61 => wire__crate__api__simple__tgf_kernel_topology_impl(ptr, rust_vec_len, data_len),
-        62 => wire__crate__api__kernel__tgf_kernel_undo_impl(ptr, rust_vec_len, data_len),
-        63 => wire__crate__api__kernel__tgf_kernel_undo_depth_impl(ptr, rust_vec_len, data_len),
-        64 => wire__crate__api__simple__tgf_version_impl(ptr, rust_vec_len, data_len),
+        61 => wire__crate__api__kernel__tgf_kernel_snapshot_impl(ptr, rust_vec_len, data_len),
+        62 => wire__crate__api__simple__tgf_kernel_topology_impl(ptr, rust_vec_len, data_len),
+        63 => wire__crate__api__kernel__tgf_kernel_undo_impl(ptr, rust_vec_len, data_len),
+        64 => wire__crate__api__kernel__tgf_kernel_undo_depth_impl(ptr, rust_vec_len, data_len),
+        65 => wire__crate__api__simple__tgf_version_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }
@@ -3108,6 +3382,100 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::simple::MillEngineConfig>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::mill_kernel::MillFeedbackCandidateInput {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.actions.into_into_dart().into_dart(),
+            self.score.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::mill_kernel::MillFeedbackCandidateInput
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::mill_kernel::MillFeedbackCandidateInput>
+    for crate::api::mill_kernel::MillFeedbackCandidateInput
+{
+    fn into_into_dart(self) -> crate::api::mill_kernel::MillFeedbackCandidateInput {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::mill_kernel::MillFeedbackEvidence {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.complete_turn_legal.into_into_dart().into_dart(),
+            self.action_kinds.into_into_dart().into_dart(),
+            self.phase_before.into_into_dart().into_dart(),
+            self.phase_after.into_into_dart().into_dart(),
+            self.side_before.into_into_dart().into_dart(),
+            self.side_after.into_into_dart().into_dart(),
+            self.pieces_on_board_before.into_into_dart().into_dart(),
+            self.pieces_on_board_after.into_into_dart().into_dart(),
+            self.pieces_in_hand_before.into_into_dart().into_dart(),
+            self.pieces_in_hand_after.into_into_dart().into_dart(),
+            self.pending_removals_before.into_into_dart().into_dart(),
+            self.pending_removals_after.into_into_dart().into_dart(),
+            self.delayed_marked_before.into_into_dart().into_dart(),
+            self.delayed_marked_after.into_into_dart().into_dart(),
+            self.legal_actions_before.into_into_dart().into_dart(),
+            self.legal_replies_after.into_into_dart().into_dart(),
+            self.mover_board_loss.into_into_dart().into_dart(),
+            self.opponent_board_loss.into_into_dart().into_dart(),
+            self.mover_hand_loss.into_into_dart().into_dart(),
+            self.opponent_hand_loss.into_into_dart().into_dart(),
+            self.removal_rights_created.into_into_dart().into_dart(),
+            self.formed_mill_with_reward.into_into_dart().into_dart(),
+            self.actual_special_capture.into_into_dart().into_dart(),
+            self.selected_capture_target.into_into_dart().into_dart(),
+            self.phase_transition.into_into_dart().into_dart(),
+            self.entered_flying.into_into_dart().into_dart(),
+            self.opponent_entered_flying.into_into_dart().into_dart(),
+            self.outcome_before.into_into_dart().into_dart(),
+            self.outcome_after.into_into_dart().into_dart(),
+            self.outcome_reason_after.into_into_dart().into_dart(),
+            self.mobility_delta.into_into_dart().into_dart(),
+            self.draw_counter_delta.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::mill_kernel::MillFeedbackEvidence
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::mill_kernel::MillFeedbackEvidence>
+    for crate::api::mill_kernel::MillFeedbackEvidence
+{
+    fn into_into_dart(self) -> crate::api::mill_kernel::MillFeedbackEvidence {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::mill_kernel::MillFeedbackReport {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.profile.into_into_dart().into_dart(),
+            self.evidence.into_into_dart().into_dart(),
+            self.context.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::mill_kernel::MillFeedbackReport
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::mill_kernel::MillFeedbackReport>
+    for crate::api::mill_kernel::MillFeedbackReport
+{
+    fn into_into_dart(self) -> crate::api::mill_kernel::MillFeedbackReport {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::simple::MillFormationActionInPlacingPhase {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         match self {
@@ -3232,6 +3600,37 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::simple::MillMoveAnalysis>
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::mill_kernel::MillMoveContextAssessment {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.forced.into_into_dart().into_dart(),
+            self.equivalent.into_into_dart().into_dart(),
+            self.routine_gain.into_into_dart().into_dart(),
+            self.created_opportunity.into_into_dart().into_dart(),
+            self.missed_opportunity.into_into_dart().into_dart(),
+            self.deferred_opportunity.into_into_dart().into_dart(),
+            self.replaced_opportunity.into_into_dart().into_dart(),
+            self.compensated_concession.into_into_dart().into_dart(),
+            self.initiative_swing.into_into_dart().into_dart(),
+            self.mobility_swing.into_into_dart().into_dart(),
+            self.phase_transition_impact.into_into_dart().into_dart(),
+            self.draw_resource_impact.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::mill_kernel::MillMoveContextAssessment
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::mill_kernel::MillMoveContextAssessment>
+    for crate::api::mill_kernel::MillMoveContextAssessment
+{
+    fn into_into_dart(self) -> crate::api::mill_kernel::MillMoveContextAssessment {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::simple::MillPatchStatus {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
@@ -3297,6 +3696,70 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::simple::MillPerfectDatabaseVa
     for crate::api::simple::MillPerfectDatabaseVariantStatus
 {
     fn into_into_dart(self) -> crate::api::simple::MillPerfectDatabaseVariantStatus {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::mill_kernel::MillRuleStrategyProfile {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [
+            self.topology_name.into_into_dart().into_dart(),
+            self.standard_topology.into_into_dart().into_dart(),
+            self.node_degrees.into_into_dart().into_dart(),
+            self.high_connection_nodes.into_into_dart().into_dart(),
+            self.channel_nodes.into_into_dart().into_dart(),
+            self.has_independent_placing_phase
+                .into_into_dart()
+                .into_dart(),
+            self.may_move_in_placing_phase.into_into_dart().into_dart(),
+            self.may_fly.into_into_dart().into_dart(),
+            self.fly_piece_count.into_into_dart().into_dart(),
+            self.pieces_at_least_count.into_into_dart().into_dart(),
+            self.removes_from_board_on_placing_mill
+                .into_into_dart()
+                .into_dart(),
+            self.removes_from_hand_on_placing_mill
+                .into_into_dart()
+                .into_dart(),
+            self.delays_placing_mill_reward.into_into_dart().into_dart(),
+            self.reward_based_on_mill_count.into_into_dart().into_dart(),
+            self.may_remove_multiple.into_into_dart().into_dart(),
+            self.may_remove_from_mills_always
+                .into_into_dart()
+                .into_dart(),
+            self.reusable_mills.into_into_dart().into_dart(),
+            self.restricted_repeated_mills.into_into_dart().into_dart(),
+            self.one_time_mills.into_into_dart().into_dart(),
+            self.has_custodian_capture.into_into_dart().into_dart(),
+            self.has_intervention_capture.into_into_dart().into_dart(),
+            self.has_leap_capture.into_into_dart().into_dart(),
+            self.stalemate_is_loss.into_into_dart().into_dart(),
+            self.stalemate_is_draw.into_into_dart().into_dart(),
+            self.stalemate_changes_turn_or_removes
+                .into_into_dart()
+                .into_dart(),
+            self.has_n_move_draw.into_into_dart().into_dart(),
+            self.has_endgame_n_move_draw.into_into_dart().into_dart(),
+            self.has_threefold_draw.into_into_dart().into_dart(),
+            self.standard_strategy_compatible
+                .into_into_dart()
+                .into_dart(),
+            self.perfect_database_compatible
+                .into_into_dart()
+                .into_dart(),
+            self.trap_patch_compatible.into_into_dart().into_dart(),
+        ]
+        .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::mill_kernel::MillRuleStrategyProfile
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::mill_kernel::MillRuleStrategyProfile>
+    for crate::api::mill_kernel::MillRuleStrategyProfile
+{
+    fn into_into_dart(self) -> crate::api::mill_kernel::MillRuleStrategyProfile {
         self
     }
 }
@@ -3654,6 +4117,16 @@ impl SseEncode for Vec<Vec<u16>> {
     }
 }
 
+impl SseEncode for Vec<crate::api::mill_kernel::MillFeedbackCandidateInput> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <crate::api::mill_kernel::MillFeedbackCandidateInput>::sse_encode(item, serializer);
+        }
+    }
+}
+
 impl SseEncode for Vec<crate::api::simple::MillHumanDatabaseMove> {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3680,6 +4153,16 @@ impl SseEncode for Vec<crate::api::simple::MillPerfectDatabaseVariantStatus> {
         <i32>::sse_encode(self.len() as _, serializer);
         for item in self {
             <crate::api::simple::MillPerfectDatabaseVariantStatus>::sse_encode(item, serializer);
+        }
+    }
+}
+
+impl SseEncode for Vec<i32> {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(self.len() as _, serializer);
+        for item in self {
+            <i32>::sse_encode(item, serializer);
         }
     }
 }
@@ -3779,6 +4262,61 @@ impl SseEncode for crate::api::simple::MillEngineConfig {
     }
 }
 
+impl SseEncode for crate::api::mill_kernel::MillFeedbackCandidateInput {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <Vec<crate::api::kernel::TgfAction>>::sse_encode(self.actions, serializer);
+        <i32>::sse_encode(self.score, serializer);
+    }
+}
+
+impl SseEncode for crate::api::mill_kernel::MillFeedbackEvidence {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.complete_turn_legal, serializer);
+        <Vec<String>>::sse_encode(self.action_kinds, serializer);
+        <String>::sse_encode(self.phase_before, serializer);
+        <String>::sse_encode(self.phase_after, serializer);
+        <i32>::sse_encode(self.side_before, serializer);
+        <i32>::sse_encode(self.side_after, serializer);
+        <Vec<i32>>::sse_encode(self.pieces_on_board_before, serializer);
+        <Vec<i32>>::sse_encode(self.pieces_on_board_after, serializer);
+        <Vec<i32>>::sse_encode(self.pieces_in_hand_before, serializer);
+        <Vec<i32>>::sse_encode(self.pieces_in_hand_after, serializer);
+        <Vec<i32>>::sse_encode(self.pending_removals_before, serializer);
+        <Vec<i32>>::sse_encode(self.pending_removals_after, serializer);
+        <u32>::sse_encode(self.delayed_marked_before, serializer);
+        <u32>::sse_encode(self.delayed_marked_after, serializer);
+        <u32>::sse_encode(self.legal_actions_before, serializer);
+        <u32>::sse_encode(self.legal_replies_after, serializer);
+        <i32>::sse_encode(self.mover_board_loss, serializer);
+        <i32>::sse_encode(self.opponent_board_loss, serializer);
+        <i32>::sse_encode(self.mover_hand_loss, serializer);
+        <i32>::sse_encode(self.opponent_hand_loss, serializer);
+        <i32>::sse_encode(self.removal_rights_created, serializer);
+        <bool>::sse_encode(self.formed_mill_with_reward, serializer);
+        <bool>::sse_encode(self.actual_special_capture, serializer);
+        <bool>::sse_encode(self.selected_capture_target, serializer);
+        <bool>::sse_encode(self.phase_transition, serializer);
+        <bool>::sse_encode(self.entered_flying, serializer);
+        <bool>::sse_encode(self.opponent_entered_flying, serializer);
+        <String>::sse_encode(self.outcome_before, serializer);
+        <String>::sse_encode(self.outcome_after, serializer);
+        <String>::sse_encode(self.outcome_reason_after, serializer);
+        <i32>::sse_encode(self.mobility_delta, serializer);
+        <i32>::sse_encode(self.draw_counter_delta, serializer);
+    }
+}
+
+impl SseEncode for crate::api::mill_kernel::MillFeedbackReport {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <crate::api::mill_kernel::MillRuleStrategyProfile>::sse_encode(self.profile, serializer);
+        <crate::api::mill_kernel::MillFeedbackEvidence>::sse_encode(self.evidence, serializer);
+        <crate::api::mill_kernel::MillMoveContextAssessment>::sse_encode(self.context, serializer);
+    }
+}
+
 impl SseEncode for crate::api::simple::MillFormationActionInPlacingPhase {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3839,6 +4377,24 @@ impl SseEncode for crate::api::simple::MillMoveAnalysis {
     }
 }
 
+impl SseEncode for crate::api::mill_kernel::MillMoveContextAssessment {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <bool>::sse_encode(self.forced, serializer);
+        <bool>::sse_encode(self.equivalent, serializer);
+        <bool>::sse_encode(self.routine_gain, serializer);
+        <bool>::sse_encode(self.created_opportunity, serializer);
+        <bool>::sse_encode(self.missed_opportunity, serializer);
+        <bool>::sse_encode(self.deferred_opportunity, serializer);
+        <bool>::sse_encode(self.replaced_opportunity, serializer);
+        <bool>::sse_encode(self.compensated_concession, serializer);
+        <bool>::sse_encode(self.initiative_swing, serializer);
+        <bool>::sse_encode(self.mobility_swing, serializer);
+        <bool>::sse_encode(self.phase_transition_impact, serializer);
+        <bool>::sse_encode(self.draw_resource_impact, serializer);
+    }
+}
+
 impl SseEncode for crate::api::simple::MillPatchStatus {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -3869,6 +4425,43 @@ impl SseEncode for crate::api::simple::MillPerfectDatabaseVariantStatus {
         <u8>::sse_encode(self.piece_count, serializer);
         <u32>::sse_encode(self.sector_count, serializer);
         <u32>::sse_encode(self.available_sector_count, serializer);
+    }
+}
+
+impl SseEncode for crate::api::mill_kernel::MillRuleStrategyProfile {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <String>::sse_encode(self.topology_name, serializer);
+        <bool>::sse_encode(self.standard_topology, serializer);
+        <Vec<i32>>::sse_encode(self.node_degrees, serializer);
+        <Vec<i32>>::sse_encode(self.high_connection_nodes, serializer);
+        <Vec<i32>>::sse_encode(self.channel_nodes, serializer);
+        <bool>::sse_encode(self.has_independent_placing_phase, serializer);
+        <bool>::sse_encode(self.may_move_in_placing_phase, serializer);
+        <bool>::sse_encode(self.may_fly, serializer);
+        <i32>::sse_encode(self.fly_piece_count, serializer);
+        <i32>::sse_encode(self.pieces_at_least_count, serializer);
+        <bool>::sse_encode(self.removes_from_board_on_placing_mill, serializer);
+        <bool>::sse_encode(self.removes_from_hand_on_placing_mill, serializer);
+        <bool>::sse_encode(self.delays_placing_mill_reward, serializer);
+        <bool>::sse_encode(self.reward_based_on_mill_count, serializer);
+        <bool>::sse_encode(self.may_remove_multiple, serializer);
+        <bool>::sse_encode(self.may_remove_from_mills_always, serializer);
+        <bool>::sse_encode(self.reusable_mills, serializer);
+        <bool>::sse_encode(self.restricted_repeated_mills, serializer);
+        <bool>::sse_encode(self.one_time_mills, serializer);
+        <bool>::sse_encode(self.has_custodian_capture, serializer);
+        <bool>::sse_encode(self.has_intervention_capture, serializer);
+        <bool>::sse_encode(self.has_leap_capture, serializer);
+        <bool>::sse_encode(self.stalemate_is_loss, serializer);
+        <bool>::sse_encode(self.stalemate_is_draw, serializer);
+        <bool>::sse_encode(self.stalemate_changes_turn_or_removes, serializer);
+        <bool>::sse_encode(self.has_n_move_draw, serializer);
+        <bool>::sse_encode(self.has_endgame_n_move_draw, serializer);
+        <bool>::sse_encode(self.has_threefold_draw, serializer);
+        <bool>::sse_encode(self.standard_strategy_compatible, serializer);
+        <bool>::sse_encode(self.perfect_database_compatible, serializer);
+        <bool>::sse_encode(self.trap_patch_compatible, serializer);
     }
 }
 

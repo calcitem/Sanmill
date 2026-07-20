@@ -49,6 +49,8 @@ import '../../shared/widgets/quality_annotation_sheet.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../statistics/services/stats_service.dart';
 import '../services/analysis/analysis_service.dart';
+import '../services/analysis/move_feedback.dart';
+import '../services/analysis/move_feedback_analysis_controller.dart';
 import '../services/analysis_mode.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
@@ -218,6 +220,26 @@ Future<void> showAnalysisSettingsSheet(
                           },
                         );
                         AnalysisMode.setSmallBoard(value, persist: true);
+                      },
+                    ),
+                    SwitchListTile.adaptive(
+                      key: const Key(
+                        'play_area_analysis_settings_move_feedback',
+                      ),
+                      secondary: const Icon(Icons.reviews_outlined),
+                      title: Text(strings.analysisMoveFeedback),
+                      subtitle: Text(strings.analysisMoveFeedbackDescription),
+                      value: AnalysisMode.showMoveFeedback,
+                      onChanged: (bool value) {
+                        RecordingService().recordEvent(
+                          RecordingEventType.toolbarAction,
+                          <String, dynamic>{
+                            'toolbar': 'analysisSettings',
+                            'action': 'setMoveFeedback',
+                            'visible': value,
+                          },
+                        );
+                        AnalysisMode.setShowMoveFeedback(value, persist: true);
                       },
                     ),
                     SwitchListTile.adaptive(
@@ -766,6 +788,8 @@ class PlayAreaState extends State<PlayArea> {
   /// A list to store historical advantage values for the advantage chart.
   List<int> advantageData = <int>[];
   late final LiveAdvantageHistory _liveAdvantageHistory;
+  late final MoveFeedbackAnalysisController _moveFeedbackController;
+  bool _moveFeedbackPvExpanded = false;
 
   bool _isBoardFlipped = false;
   bool _liveEvaluationSyncScheduled = false;
@@ -801,6 +825,9 @@ class PlayAreaState extends State<PlayArea> {
     // Listen to changes in header icons (usually triggered after a move).
     GameController().headerIconsNotifier.addListener(_updateUI);
     _liveAdvantageHistory = LiveAdvantageHistory(advantageData);
+    _moveFeedbackController = MoveFeedbackAnalysisController()
+      ..addListener(_handleMoveFeedbackChanged);
+    AnalysisMode.stateNotifier.addListener(_handleAnalysisPreferenceChanged);
     LiveEvaluationService.stateNotifier.addListener(
       _handleLiveEvaluationChanged,
     );
@@ -820,6 +847,10 @@ class PlayAreaState extends State<PlayArea> {
   @override
   void dispose() {
     AnalysisService.stopActiveEngineAnalysis();
+    AnalysisMode.stateNotifier.removeListener(_handleAnalysisPreferenceChanged);
+    _moveFeedbackController
+      ..removeListener(_handleMoveFeedbackChanged)
+      ..dispose();
     AnalysisService.invalidateBestMoveHintCache();
     GameController().headerIconsNotifier.removeListener(_updateUI);
     LiveEvaluationService.stateNotifier.removeListener(
@@ -875,6 +906,61 @@ class PlayAreaState extends State<PlayArea> {
       return;
     }
     if (!AnalysisMode.isFullAnalysis) {
+      _moveFeedbackController.clear();
+      return;
+    }
+    if (AnalysisMode.showMoveFeedback && currentNode.data != null) {
+      unawaited(_analyzeMoveFeedback(currentNode));
+    } else {
+      _moveFeedbackController.clear();
+      _scheduleAnalysisRefreshForCurrentPosition();
+    }
+  }
+
+  void _handleMoveFeedbackChanged() {
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  void _handleAnalysisPreferenceChanged() {
+    if (!AnalysisMode.showMoveFeedback) {
+      if (_moveFeedbackController.state.status !=
+          MoveFeedbackAnalysisStatus.idle) {
+        _moveFeedbackController.clear();
+      }
+      return;
+    }
+    if (AnalysisMode.isFullAnalysis &&
+        _moveFeedbackController.state.status ==
+            MoveFeedbackAnalysisStatus.idle) {
+      final PgnNode<ExtMove>? selectedNode =
+          GameController().gameRecorder.activeNode;
+      if (selectedNode?.data != null) {
+        unawaited(_analyzeMoveFeedback(selectedNode!));
+      }
+    }
+  }
+
+  Future<void> _analyzeMoveFeedback(PgnNode<ExtMove> selectedNode) async {
+    await AnalysisService.stopActiveEngineAnalysisAndWait();
+    if (!mounted ||
+        !AnalysisMode.isFullAnalysis ||
+        !AnalysisMode.showMoveFeedback ||
+        !identical(GameController().gameRecorder.activeNode, selectedNode)) {
+      return;
+    }
+    final GameRecorder recorder = GameController().gameRecorder;
+    await _moveFeedbackController.analyze(
+      recorder: recorder,
+      selectedNode: selectedNode,
+      rules: recorder.recordedRuleSettings ?? DB().ruleSettings,
+      generalSettings: DB().generalSettings,
+    );
+    if (!mounted ||
+        !AnalysisMode.isFullAnalysis ||
+        !AnalysisMode.showMoveFeedback ||
+        !identical(recorder.activeNode, selectedNode)) {
       return;
     }
     _scheduleAnalysisRefreshForCurrentPosition();
@@ -3904,6 +3990,99 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
+  Widget _buildMoveFeedbackCard(BuildContext context) {
+    if (!AnalysisMode.showMoveFeedback) {
+      return const SizedBox.shrink(key: Key('play_area_move_feedback_hidden'));
+    }
+    final MoveFeedbackAnalysisState state = _moveFeedbackController.state;
+    if (state.status == MoveFeedbackAnalysisStatus.idle ||
+        state.selectedNode?.data == null) {
+      return const SizedBox.shrink(key: Key('play_area_move_feedback_idle'));
+    }
+    return _AnalysisMoveFeedbackCard(
+      state: state,
+      pvExpanded: _moveFeedbackPvExpanded,
+      onTogglePv: () {
+        setState(() => _moveFeedbackPvExpanded = !_moveFeedbackPvExpanded);
+      },
+      onApplyAnnotation: state.result?.symbol.nag == null
+          ? null
+          : () => unawaited(_applySuggestedMoveAnnotation(context)),
+      onAddBestLine: state.bestLine.isEmpty
+          ? null
+          : () => _addSuggestedBestLine(context),
+    );
+  }
+
+  Future<void> _applySuggestedMoveAnnotation(BuildContext context) async {
+    final MoveFeedbackAnalysisState state = _moveFeedbackController.state;
+    final PgnNode<ExtMove>? node = state.feedbackNode;
+    final int? nag = state.result?.symbol.nag;
+    if (node?.data == null || nag == null) {
+      return;
+    }
+    final List<int> qualityNags = (node!.data!.nags ?? const <int>[])
+        .where((int value) => value >= 1 && value <= 6)
+        .toList(growable: false);
+    if (qualityNags.isNotEmpty && qualityNags.first != nag) {
+      final bool? replace = await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text(S.of(context).moveFeedbackReplaceAnnotationTitle),
+          content: Text(S.of(context).moveFeedbackReplaceAnnotationMessage),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(S.of(context).cancel),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text(S.of(context).moveFeedbackReplace),
+            ),
+          ],
+        ),
+      );
+      if (replace != true || !context.mounted) {
+        return;
+      }
+    }
+    GameController().gameRecorder.setMoveQualityNag(node, nag);
+    rootScaffoldMessengerKey.currentState?.showSnackBar(
+      SnackBar(content: Text(S.of(context).moveFeedbackAnnotationApplied)),
+    );
+  }
+
+  void _addSuggestedBestLine(BuildContext context) {
+    final MoveFeedbackAnalysisState state = _moveFeedbackController.state;
+    final PgnNode<ExtMove>? feedbackNode = state.feedbackNode;
+    if (feedbackNode?.data == null || state.bestLine.isEmpty) {
+      return;
+    }
+    final bool sameFirstMove =
+        state.bestLine.first.move == feedbackNode!.data!.move;
+    final PgnNode<ExtMove>? parent = sameFirstMove
+        ? feedbackNode
+        : feedbackNode.parent;
+    if (parent == null) {
+      return;
+    }
+    final Iterable<MoveFeedbackLineMove> additions = sameFirstMove
+        ? state.bestLine.skip(1)
+        : state.bestLine;
+    GameController().gameRecorder.addVariationLine(
+      parent,
+      additions
+          .map(
+            (MoveFeedbackLineMove lineMove) =>
+                ExtMove(lineMove.move, side: lineMove.side),
+          )
+          .toList(growable: false),
+    );
+    rootScaffoldMessengerKey.currentState?.showSnackBar(
+      SnackBar(content: Text(S.of(context).moveFeedbackBestLineAdded)),
+    );
+  }
+
   Widget _buildAnalysisTabs(BuildContext context, {bool framed = false}) {
     return ValueListenableBuilder<bool>(
       valueListenable: AnalysisMode.stateNotifier,
@@ -3925,6 +4104,7 @@ class PlayAreaState extends State<PlayArea> {
                 onOpenFullMoveList: () =>
                     _openMovesWithNavigator(Navigator.of(context)),
               ),
+              _buildMoveFeedbackCard(context),
               Expanded(
                 child: _InlineMoveList(
                   key: const Key('play_area_analysis_moves'),
@@ -6842,6 +7022,300 @@ class _AnalysisPanel extends StatelessWidget {
             )
           : content,
     );
+  }
+}
+
+class _AnalysisMoveFeedbackCard extends StatelessWidget {
+  const _AnalysisMoveFeedbackCard({
+    required this.state,
+    required this.pvExpanded,
+    required this.onTogglePv,
+    required this.onApplyAnnotation,
+    required this.onAddBestLine,
+  });
+
+  static const double height = 176;
+
+  final MoveFeedbackAnalysisState state;
+  final bool pvExpanded;
+  final VoidCallback onTogglePv;
+  final VoidCallback? onApplyAnnotation;
+  final VoidCallback? onAddBestLine;
+
+  @override
+  Widget build(BuildContext context) {
+    final S strings = S.of(context);
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colors = theme.colorScheme;
+    final double accessibilityScale = MediaQuery.textScalerOf(
+      context,
+    ).scale(1).clamp(1.0, 1.5);
+    return SizedBox(
+      key: const Key('play_area_move_feedback_card_slot'),
+      height: height * accessibilityScale,
+      child: Card(
+        margin: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+        color: colors.surfaceContainerHigh,
+        child: Semantics(
+          liveRegion: true,
+          label: strings.analysisMoveFeedback,
+          child: switch (state.status) {
+            MoveFeedbackAnalysisStatus.loading => Center(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const SizedBox.square(
+                    dimension: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(strings.moveFeedbackLoading),
+                ],
+              ),
+            ),
+            MoveFeedbackAnalysisStatus.error => Center(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Text(
+                  strings.moveFeedbackInsufficientEvidence,
+                  key: const Key('play_area_move_feedback_error'),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            MoveFeedbackAnalysisStatus.ready => _buildResult(
+              context,
+              strings,
+              theme,
+            ),
+            MoveFeedbackAnalysisStatus.idle => const SizedBox.shrink(),
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildResult(BuildContext context, S strings, ThemeData theme) {
+    final MoveFeedbackResult result = state.result!;
+    final String glyph = result.symbol.glyph.isEmpty
+        ? '•'
+        : result.symbol.glyph;
+    final List<String> reasonLabels = result.reasons
+        .take(2)
+        .map((MoveFeedbackReason reason) => _reasonLabel(strings, reason))
+        .toList(growable: false);
+    final String bestMove = result.bestMove ?? strings.unknown;
+    final String pv = result.principalVariation.join(' ');
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ExcludeSemantics(
+            child: SizedBox(
+              width: 44,
+              child: Text(
+                glyph,
+                key: const Key('play_area_move_feedback_symbol'),
+                textAlign: TextAlign.center,
+                style: theme.textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        _symbolLabel(strings, result),
+                        key: const Key('play_area_move_feedback_title'),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      result.source == MoveFeedbackSource.perfectDatabase
+                          ? strings.moveFeedbackSourceDatabase
+                          : strings.moveFeedbackSourceEngine,
+                      style: theme.textTheme.labelSmall,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  reasonLabels.join(' · '),
+                  key: const Key('play_area_move_feedback_reasons'),
+                  maxLines: pvExpanded ? 1 : 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodySmall,
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  '${strings.moveFeedbackScoreDifference(result.loss)}  '
+                  '${strings.moveFeedbackBestMove(bestMove)}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.labelMedium,
+                ),
+                if (pvExpanded && pv.isNotEmpty)
+                  Text(
+                    strings.moveFeedbackPrincipalVariation(pv),
+                    key: const Key('play_area_move_feedback_pv'),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall,
+                  ),
+                const Spacer(),
+                Row(
+                  children: <Widget>[
+                    if (pv.isNotEmpty)
+                      IconButton(
+                        key: const Key('play_area_move_feedback_toggle_pv'),
+                        tooltip: pvExpanded
+                            ? strings.moveFeedbackHideLine
+                            : strings.moveFeedbackShowLine,
+                        onPressed: onTogglePv,
+                        icon: Icon(
+                          pvExpanded ? Icons.expand_less : Icons.expand_more,
+                        ),
+                      ),
+                    const Spacer(),
+                    if (onApplyAnnotation != null)
+                      IconButton(
+                        key: const Key(
+                          'play_area_move_feedback_apply_annotation',
+                        ),
+                        tooltip: strings.moveFeedbackApplyAnnotation,
+                        onPressed: onApplyAnnotation,
+                        icon: const Icon(Icons.bookmark_add_outlined),
+                      ),
+                    if (onAddBestLine != null)
+                      IconButton(
+                        key: const Key('play_area_move_feedback_add_best_line'),
+                        tooltip: strings.moveFeedbackAddBestLine,
+                        onPressed: onAddBestLine,
+                        icon: const Icon(Icons.alt_route),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static String _symbolLabel(S strings, MoveFeedbackResult result) {
+    return switch (result.symbol) {
+      MoveFeedbackSymbol.brilliant => strings.moveFeedbackBrilliant,
+      MoveFeedbackSymbol.good => strings.moveFeedbackGood,
+      MoveFeedbackSymbol.interesting => strings.moveFeedbackInteresting,
+      MoveFeedbackSymbol.dubious => strings.moveFeedbackDubious,
+      MoveFeedbackSymbol.mistake => strings.moveFeedbackMistake,
+      MoveFeedbackSymbol.blunder => strings.moveFeedbackBlunder,
+      MoveFeedbackSymbol.none =>
+        result.reasons.isEmpty
+            ? strings.moveFeedbackRegularBest
+            : _reasonLabel(strings, result.reasons.first),
+    };
+  }
+
+  static String _reasonLabel(S strings, MoveFeedbackReason reason) {
+    return switch (reason) {
+      MoveFeedbackReason.regularBest => strings.moveFeedbackRegularBest,
+      MoveFeedbackReason.forcedMove => strings.moveFeedbackForcedMove,
+      MoveFeedbackReason.onlyCorrectMove => strings.moveFeedbackOnlyCorrect,
+      MoveFeedbackReason.equivalentChoice =>
+        strings.moveFeedbackEquivalentChoice,
+      MoveFeedbackReason.insufficientEvidence =>
+        strings.moveFeedbackInsufficientEvidence,
+      MoveFeedbackReason.engineEstimate => strings.moveFeedbackEngineEstimate,
+      MoveFeedbackReason.perfectDatabase => strings.moveFeedbackPerfectDatabase,
+      MoveFeedbackReason.preservesResult => strings.moveFeedbackPreservesResult,
+      MoveFeedbackReason.losesWinningResult =>
+        strings.moveFeedbackLosesWinningResult,
+      MoveFeedbackReason.losesDrawingResult =>
+        strings.moveFeedbackLosesDrawingResult,
+      MoveFeedbackReason.decisiveMaterialLoss =>
+        strings.moveFeedbackDecisiveMaterialLoss,
+      MoveFeedbackReason.missesImmediateRuleReward =>
+        strings.moveFeedbackMissesImmediateReward,
+      MoveFeedbackReason.directRuleReward =>
+        strings.moveFeedbackDirectRuleReward,
+      MoveFeedbackReason.routineConversion =>
+        strings.moveFeedbackRoutineConversion,
+      MoveFeedbackReason.naturalConversion =>
+        strings.moveFeedbackNaturalConversion,
+      MoveFeedbackReason.selectsCriticalCaptureTarget =>
+        strings.moveFeedbackCriticalCapture,
+      MoveFeedbackReason.allowsOpponentRuleReward =>
+        strings.moveFeedbackAllowsOpponentReward,
+      MoveFeedbackReason.selfBlock => strings.moveFeedbackSelfBlock,
+      MoveFeedbackReason.preservesInitiative =>
+        strings.moveFeedbackPreservesInitiative,
+      MoveFeedbackReason.forcesResponses => strings.moveFeedbackForcesResponses,
+      MoveFeedbackReason.avoidsDeadPlacement =>
+        strings.moveFeedbackAvoidsDeadPlacement,
+      MoveFeedbackReason.improvesTopologyControl =>
+        strings.moveFeedbackImprovesTopologyControl,
+      MoveFeedbackReason.preservesMobility =>
+        strings.moveFeedbackPreservesMobility,
+      MoveFeedbackReason.createsHerdingNet =>
+        strings.moveFeedbackCreatesHerdingNet,
+      MoveFeedbackReason.escapesHerding => strings.moveFeedbackEscapesHerding,
+      MoveFeedbackReason.createsReusableMill =>
+        strings.moveFeedbackCreatesReusableMill,
+      MoveFeedbackReason.createsEntwinedMills =>
+        strings.moveFeedbackCreatesEntwinedMills,
+      MoveFeedbackReason.createsIndependentMills =>
+        strings.moveFeedbackCreatesIndependentMills,
+      MoveFeedbackReason.createsFeeder => strings.moveFeedbackCreatesFeeder,
+      MoveFeedbackReason.nullifiesOpponentMill =>
+        strings.moveFeedbackNullifiesOpponentMill,
+      MoveFeedbackReason.recognizesRedundantMill =>
+        strings.moveFeedbackRecognizesRedundantMill,
+      MoveFeedbackReason.allowsConstrainedMill =>
+        strings.moveFeedbackAllowsConstrainedMill,
+      MoveFeedbackReason.abandonsMillForMobility =>
+        strings.moveFeedbackAbandonsMillForMobility,
+      MoveFeedbackReason.sacrificesMillForHigherOrderThreat =>
+        strings.moveFeedbackSacrificesMill,
+      MoveFeedbackReason.avoidsPrematureFlyingTransition =>
+        strings.moveFeedbackAvoidsPrematureFlying,
+      MoveFeedbackReason.usesFlyingTransition => strings.moveFeedbackUsesFlying,
+      MoveFeedbackReason.createsZugzwang => strings.moveFeedbackCreatesZugzwang,
+      MoveFeedbackReason.preservesDrawCycle =>
+        strings.moveFeedbackPreservesDrawCycle,
+      MoveFeedbackReason.breaksOpponentDrawResource =>
+        strings.moveFeedbackBreaksDrawResource,
+      MoveFeedbackReason.createsPracticalChances =>
+        strings.moveFeedbackPracticalChances,
+      MoveFeedbackReason.requiresPreciseFollowUp =>
+        strings.moveFeedbackPreciseFollowUp,
+      MoveFeedbackReason.mobilityLoss => strings.moveFeedbackMobilityLoss,
+      MoveFeedbackReason.phaseTransitionLoss =>
+        strings.moveFeedbackPhaseTransitionLoss,
+      MoveFeedbackReason.terminalRuleLoss =>
+        strings.moveFeedbackTerminalRuleLoss,
+      MoveFeedbackReason.compensatedConcession =>
+        strings.moveFeedbackCompensatedConcession,
+      MoveFeedbackReason.defersOpportunity =>
+        strings.moveFeedbackDefersOpportunity,
+      MoveFeedbackReason.replacesOpportunity =>
+        strings.moveFeedbackReplacesOpportunity,
+      MoveFeedbackReason.ruleStrategyUnavailable =>
+        strings.moveFeedbackRuleStrategyUnavailable,
+    };
   }
 }
 

@@ -17,6 +17,7 @@ import '../../game_platform/rules_port.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../src/rust/api/kernel.dart' as tgf;
+import '../../src/rust/api/mill_kernel.dart' as tgf_mill;
 import '../../src/rust/api/simple.dart' as tgf_simple;
 import 'mill_action_codec.dart';
 import 'mill_kernel_session.dart';
@@ -147,7 +148,7 @@ class NativeMillRulesPort implements RulesPort {
   /// empty report when the active rule variant is not supported by the
   /// bundled dataset.
   tgf_simple.MillAnalysisReport analyzePerfectDb() {
-    if (!isRuleSupportingPerfectDatabase()) {
+    if (!isRuleSupportingPerfectDatabase(ruleSettings)) {
       return const tgf_simple.MillAnalysisReport(
         moves: <tgf_simple.MillMoveAnalysis>[],
         traps: <String>[],
@@ -380,4 +381,48 @@ class NativeMillRulesPort implements RulesPort {
       _ => 'unknown',
     };
   }
+}
+
+extension NativeMillRulesPortFeedback on NativeMillRulesPort {
+  /// Extract rule facts after search, without mutating this port's kernel.
+  tgf_mill.MillFeedbackReport feedbackEvidence({
+    required List<GameAction> playedActions,
+    required List<NativeMillFeedbackCandidate> candidates,
+  }) {
+    final List<tgf.TgfAction> nativePlayed = playedActions
+        .map(MillActionCodec.toTgfAction)
+        .whereType<tgf.TgfAction>()
+        .toList(growable: false);
+    assert(
+      nativePlayed.length == playedActions.length,
+      'Feedback actions must all be valid Mill actions.',
+    );
+    final List<tgf_mill.MillFeedbackCandidateInput> nativeCandidates =
+        candidates
+            .map(
+              (NativeMillFeedbackCandidate candidate) =>
+                  tgf_mill.MillFeedbackCandidateInput(
+                    actions: candidate.actions
+                        .map(MillActionCodec.toTgfAction)
+                        .whereType<tgf.TgfAction>()
+                        .toList(growable: false),
+                    score: candidate.score,
+                  ),
+            )
+            .toList(growable: false);
+    return _session.rawFeedbackEvidence(
+      playedActions: nativePlayed,
+      candidates: nativeCandidates,
+    );
+  }
+}
+
+class NativeMillFeedbackCandidate {
+  const NativeMillFeedbackCandidate({
+    required this.actions,
+    required this.score,
+  });
+
+  final List<GameAction> actions;
+  final int score;
 }
