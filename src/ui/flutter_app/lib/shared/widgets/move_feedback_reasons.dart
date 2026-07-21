@@ -88,6 +88,8 @@ String moveFeedbackReasonLabel(S strings, MoveFeedbackReason reason) {
       strings.moveFeedbackReplacesOpportunity,
     MoveFeedbackReason.ruleStrategyUnavailable =>
       strings.moveFeedbackRuleStrategyUnavailable,
+    MoveFeedbackReason.noSavingAlternative =>
+      strings.moveFeedbackNoSavingAlternative,
   };
 }
 

@@ -3,7 +3,11 @@
 
 import 'package:flutter/foundation.dart';
 
-/// The six conventional PGN move-quality glyphs plus an unannotated result.
+/// Conventional PGN move-quality glyphs plus an unannotated result.
+///
+/// Phase 1 automatic classification emits only [none], [dubious], [mistake],
+/// and [blunder]. Positive glyphs remain for manual annotations and older
+/// persisted reports; the classifier never invents them.
 enum MoveFeedbackSymbol {
   none(null, ''),
   brilliant(3, '!!'),
@@ -34,6 +38,9 @@ enum MoveFeedbackSymbol {
 }
 
 /// Stable, persistence-safe reasons. UI code owns localization.
+///
+/// Phase 1 only *produces* a small factual subset. Legacy strategic values
+/// remain so older review reports continue to deserialize and display.
 enum MoveFeedbackReason {
   regularBest,
   forcedMove,
@@ -83,13 +90,14 @@ enum MoveFeedbackReason {
   defersOpportunity,
   replacesOpportunity,
   ruleStrategyUnavailable,
+  noSavingAlternative,
 }
 
 enum MoveFeedbackSource { engine, perfectDatabase }
 
 enum MoveFeedbackConfidence { low, medium, high }
 
-/// A single source for score thresholds used by review and on-demand feedback.
+/// Shared score bands for review and on-demand feedback.
 abstract final class MoveQualityThresholds {
   static const int defaultPieceValue = 5;
   static const int engineTerminalScore = 80;
@@ -115,10 +123,16 @@ abstract final class MoveQualityThresholds {
   static int blunderMinimum([int pieceValue = defaultPieceValue]) =>
       pieceValue * 3;
 
-  /// Conservative allowance for short, time-bounded engine MultiPV noise.
+  /// Minimum completed search depth before engine MultiPV scores may grade.
+  static const int minimumGradingDepth = 4;
+
+  /// Allowance for short, time-bounded engine MultiPV jitter.
+  ///
+  /// Kept near one-third of a piece so equality-to-worse swings around a
+  /// drawish score remain visible, while tiny 1–2 cp noise stays silent.
   /// Exact database scores continue to use the normalized bands directly.
   static int engineNoiseAllowance([int pieceValue = defaultPieceValue]) =>
-      pieceValue * 2;
+      (pieceValue * 0.6).ceil();
 }
 
 enum MoveFeedbackWdl { loss, draw, win }
@@ -221,13 +235,7 @@ class MoveFeedbackInput {
     this.searchStable = true,
     this.candidateCoverageComplete = true,
     this.allCandidatesLosing = false,
-    this.hasCalmerEquivalent = false,
-    this.opponentSafeReplies,
-    this.naturalRepliesLosing,
-    this.playedTrapScore,
-    this.calmTrapScore,
-    this.brilliantVerificationComplete = false,
-    this.strategicReasons = const <MoveFeedbackReason>{},
+    this.causalResultForfeited = false,
     this.pieceValue = MoveQualityThresholds.defaultPieceValue,
   });
 
@@ -241,15 +249,11 @@ class MoveFeedbackInput {
   final bool searchStable;
   final bool candidateCoverageComplete;
   final bool allCandidatesLosing;
-  final bool hasCalmerEquivalent;
-  final int? opponentSafeReplies;
-  final int? naturalRepliesLosing;
-  final int? playedTrapScore;
-  final int? calmTrapScore;
 
-  /// Whether a supplementary reply search verified the brilliant mechanism.
-  final bool brilliantVerificationComplete;
-  final Set<MoveFeedbackReason> strategicReasons;
+  /// Set by review causal attribution when a deep binary search proved the
+  /// parent still had a saving alternative and this move started the losing
+  /// stretch. Result forfeiture outranks per-move score bands.
+  final bool causalResultForfeited;
   final int pieceValue;
   final MoveFeedbackEvidence evidence;
 
@@ -301,9 +305,14 @@ class MoveFeedbackResult {
   );
 }
 
+/// Phase 1 score-and-result classifier with causal severity limits.
+///
+/// Automatic NAGs require that the played move uniquely worsens the result
+/// or spoils a still-saveable parent. Choosing among already-worse moves is
+/// not marked — full-game review attributes those to an earlier causative ply.
+/// Never invents `!` / `!!` / `!?`.
 abstract final class MoveFeedbackClassifier {
   static MoveFeedbackResult classify(MoveFeedbackInput input) {
-    final int rawLoss = input.loss;
     final int classifiedLoss = _classifiedLoss(input);
     final MoveFeedbackWdl bestWdl = _wdl(input.bestScore);
     final MoveFeedbackWdl playedWdl = _wdl(input.playedScore);
@@ -314,19 +323,51 @@ abstract final class MoveFeedbackClassifier {
         scoreEvidenceReliable &&
         bestWdl == MoveFeedbackWdl.win &&
         playedWdl == MoveFeedbackWdl.win;
+    // A non-negative best alternative means the parent was still saveable /
+    // equal; score-band marks are only meaningful in that case.
+    final bool hasNonNegativeAlternative =
+        scoreEvidenceReliable && input.bestScore >= 0;
+    final bool topCandidate =
+        input.playedRank == 1 &&
+        input.loss <= MoveQualityThresholds.bestMaximum(input.pieceValue);
+    // A parent that was already clearly worse (best at or below the mistake
+    // band) cannot host the causative mistake: sliding from -20 into the ±80
+    // terminal band, or walking into a forced self-trap there, only
+    // accelerates a lost cause. Attribution points at the earlier root ply.
+    // The (-1.6P, 0) noise strip stays markable so a greedy capture that
+    // self-traps out of rough equality is still a blunder without any
+    // perfect database.
+    final bool parentAlreadyLosing =
+        scoreEvidenceReliable &&
+        !input.causalResultForfeited &&
+        input.bestScore <=
+            -MoveQualityThresholds.mistakeMinimum(input.pieceValue);
+    final bool terminalSelfLoss =
+        input.evidence.outcomeReasonAfter == 'loseNoLegalMoves' ||
+        input.evidence.outcomeReasonAfter == 'loseFullBoard';
     final List<MoveFeedbackReason> facts = <MoveFeedbackReason>[];
 
-    if (resultDrop) {
-      facts.add(
-        bestWdl == MoveFeedbackWdl.win
-            ? MoveFeedbackReason.losesWinningResult
-            : MoveFeedbackReason.losesDrawingResult,
-      );
-    }
-
-    // Fixed negative priority: WDL drop, ??, ?, then ?!.
+    // ?? from a result drop vs alternatives, a terminal self-loss, or the
+    // blunder score band — unless the parent was already clearly lost.
     if (resultDrop ||
-        !preservesDeterminedWin && _isBlunder(input, classifiedLoss)) {
+        terminalSelfLoss ||
+        (hasNonNegativeAlternative &&
+            !preservesDeterminedWin &&
+            _isBlunder(input, classifiedLoss))) {
+      if (parentAlreadyLosing) {
+        facts.add(MoveFeedbackReason.noSavingAlternative);
+        if (terminalSelfLoss) {
+          facts.add(MoveFeedbackReason.terminalRuleLoss);
+        }
+        return _result(input, MoveFeedbackSymbol.none, facts);
+      }
+      if (resultDrop) {
+        facts.add(
+          bestWdl == MoveFeedbackWdl.win
+              ? MoveFeedbackReason.losesWinningResult
+              : MoveFeedbackReason.losesDrawingResult,
+        );
+      }
       if (input.evidence.phaseTransitionImpact) {
         facts.add(MoveFeedbackReason.phaseTransitionLoss);
       }
@@ -340,9 +381,29 @@ abstract final class MoveFeedbackClassifier {
       return _result(input, MoveFeedbackSymbol.blunder, facts);
     }
 
-    // A very large mate-distance or search-bound spread must not turn a move
-    // that still preserves a determined win into a material blunder. It made
-    // the win less direct and may demand precision, so cap it at `?!`.
+    // Causally attributed root mistake: the deep probe proved the parent
+    // still had a saving alternative and this move started the stretch that
+    // was never recovered. That is result-level evidence, so it must not be
+    // diluted by the per-move noise allowance or capped at `?!`. Exact WDL
+    // drops already earned `??` above; engine evidence grades `?`.
+    if (input.causalResultForfeited && hasNonNegativeAlternative) {
+      final bool signFlip = input.playedScore < 0;
+      if (signFlip ||
+          input.loss >=
+              MoveQualityThresholds.mistakeMinimum(input.pieceValue)) {
+        facts.add(
+          signFlip
+              ? (bestWdl == MoveFeedbackWdl.win
+                    ? MoveFeedbackReason.losesWinningResult
+                    : MoveFeedbackReason.losesDrawingResult)
+              : MoveFeedbackReason.decisiveMaterialLoss,
+        );
+        return _result(input, MoveFeedbackSymbol.mistake, facts);
+      }
+    }
+
+    // Same determined win with a large distance/search spread is not a
+    // material blunder; cap at dubious so mates-in-N noise stays honest.
     if (preservesDeterminedWin &&
         classifiedLoss >=
             MoveQualityThresholds.dubiousMinimum(input.pieceValue)) {
@@ -354,7 +415,26 @@ abstract final class MoveFeedbackClassifier {
       return _result(input, MoveFeedbackSymbol.dubious, facts);
     }
 
-    if (scoreEvidenceReliable && _isMistake(input, classifiedLoss)) {
+    // Already choosing among worse moves: do not invent a causative mark.
+    if (scoreEvidenceReliable && !hasNonNegativeAlternative && !resultDrop) {
+      facts.add(MoveFeedbackReason.noSavingAlternative);
+      return _result(input, MoveFeedbackSymbol.none, facts);
+    }
+
+    // Soft equality spoil: best stayed non-negative while the played move
+    // went negative. ±80 terminal bands alone miss this common case. Use the
+    // raw loss so the engine noise floor cannot hide a clear sign flip.
+    final bool spoiledEquality =
+        hasNonNegativeAlternative &&
+        input.playedScore < 0 &&
+        input.loss >= MoveQualityThresholds.dubiousMinimum(input.pieceValue);
+
+    if (hasNonNegativeAlternative &&
+        classifiedLoss >=
+            MoveQualityThresholds.mistakeMinimum(input.pieceValue)) {
+      if (spoiledEquality) {
+        facts.add(MoveFeedbackReason.losesDrawingResult);
+      }
       facts.add(
         input.evidence.missedOpportunity
             ? MoveFeedbackReason.missesImmediateRuleReward
@@ -365,53 +445,19 @@ abstract final class MoveFeedbackClassifier {
       return _result(input, MoveFeedbackSymbol.mistake, facts);
     }
 
-    if (scoreEvidenceReliable && _isDubious(input, classifiedLoss)) {
-      facts.add(
-        input.evidence.deferredOpportunity
-            ? MoveFeedbackReason.defersOpportunity
-            : MoveFeedbackReason.requiresPreciseFollowUp,
-      );
+    if (hasNonNegativeAlternative &&
+        (classifiedLoss >=
+                MoveQualityThresholds.dubiousMinimum(input.pieceValue) ||
+            spoiledEquality)) {
+      if (spoiledEquality) {
+        facts.add(MoveFeedbackReason.losesDrawingResult);
+      }
+      facts.add(MoveFeedbackReason.requiresPreciseFollowUp);
       return _result(input, MoveFeedbackSymbol.dubious, facts);
     }
 
-    final bool positiveEvidenceStable =
-        input.searchStable &&
-        input.candidateCoverageComplete &&
-        !input.evidence.forced &&
-        !input.evidence.equivalent &&
-        !input.evidence.routineGain;
-    final bool topCandidate =
-        input.playedRank == 1 &&
-        rawLoss <= MoveQualityThresholds.bestMaximum(input.pieceValue);
-    final int? runnerUpScore = input.runnerUpScore;
-    final int alternativeGap = runnerUpScore == null
-        ? 0
-        : input.playedScore - runnerUpScore;
-
-    if (positiveEvidenceStable &&
-        topCandidate &&
-        alternativeGap >=
-            MoveQualityThresholds.mistakeMinimum(input.pieceValue) &&
-        _hasBrilliantMechanism(input)) {
-      facts.addAll(_positiveReasons(input));
-      return _result(input, MoveFeedbackSymbol.brilliant, facts);
-    }
-
-    if (positiveEvidenceStable &&
-        topCandidate &&
-        alternativeGap >=
-            MoveQualityThresholds.dubiousMinimum(input.pieceValue) &&
-        _hasGoodMechanism(input)) {
-      facts.addAll(_positiveReasons(input));
-      return _result(input, MoveFeedbackSymbol.good, facts);
-    }
-
-    if (_isInteresting(input, bestWdl, playedWdl)) {
-      facts.add(MoveFeedbackReason.createsPracticalChances);
-      return _result(input, MoveFeedbackSymbol.interesting, facts);
-    }
-
-    if (!input.searchStable || !input.candidateCoverageComplete) {
+    // Phase 1: no automatic positive glyphs.
+    if (!_scoreEvidenceReliable(input)) {
       facts.add(MoveFeedbackReason.insufficientEvidence);
     } else if (input.evidence.forced || input.legalRootActionCount == 1) {
       facts.add(MoveFeedbackReason.forcedMove);
@@ -445,138 +491,14 @@ abstract final class MoveFeedbackClassifier {
             _negativePriority(a.symbol) >= _negativePriority(b.symbol) ? a : b,
       );
     }
-
-    // A routine capture cannot make a complete turn brilliant. A genuinely
-    // critical capture target may still earn `!` from its own action.
-    final Iterable<MoveFeedbackResult> positives = actions.where(
-      (MoveFeedbackResult result) => result.symbol.isPositive,
-    );
-    if (positives.isNotEmpty) {
-      final MoveFeedbackResult strongest = positives.reduce(
-        (MoveFeedbackResult a, MoveFeedbackResult b) =>
-            _positivePriority(a.symbol) >= _positivePriority(b.symbol) ? a : b,
-      );
-      final bool containsRoutineCapture = actions.any(
-        (MoveFeedbackResult result) =>
-            result.reasons.contains(MoveFeedbackReason.directRuleReward) ||
-            result.reasons.contains(MoveFeedbackReason.naturalConversion),
-      );
-      if (containsRoutineCapture &&
-          strongest.symbol == MoveFeedbackSymbol.brilliant) {
-        return MoveFeedbackResult(
-          symbol: MoveFeedbackSymbol.good,
-          reasons: strongest.reasons,
-          bestScore: strongest.bestScore,
-          playedScore: strongest.playedScore,
-          depth: strongest.depth,
-          source: strongest.source,
-          confidence: strongest.confidence,
-          bestMove: strongest.bestMove,
-          principalVariation: strongest.principalVariation,
-        );
-      }
-      return strongest;
-    }
     return actions.first;
   }
 
+  // Note: an all-candidates-losing parent (best <= -terminal) is always
+  // intercepted earlier by the parent-already-losing suppression.
   static bool _isBlunder(MoveFeedbackInput input, int loss) {
-    if (loss >= MoveQualityThresholds.blunderMinimum(input.pieceValue)) {
-      if (!_scoreEvidenceReliable(input)) {
-        return false;
-      }
-      if (input.allCandidatesLosing) {
-        return input.evidence.moverBoardLoss >= 2 ||
-            input.evidence.outcomeReasonAfter != 'ongoing';
-      }
-      return true;
-    }
-    return input.evidence.outcomeReasonAfter == 'loseNoLegalMoves' ||
-        input.evidence.outcomeReasonAfter == 'loseFullBoard';
-  }
-
-  static bool _isMistake(MoveFeedbackInput input, int loss) {
-    return loss >= MoveQualityThresholds.mistakeMinimum(input.pieceValue);
-  }
-
-  static bool _isDubious(MoveFeedbackInput input, int loss) {
-    return loss >= MoveQualityThresholds.dubiousMinimum(input.pieceValue);
-  }
-
-  static bool _hasBrilliantMechanism(MoveFeedbackInput input) {
-    if (!input.brilliantVerificationComplete) {
-      return false;
-    }
-    final MoveFeedbackEvidence evidence = input.evidence;
-    final Set<MoveFeedbackReason> reasons = input.strategicReasons;
-    return reasons.contains(MoveFeedbackReason.createsZugzwang) ||
-        evidence.compensatedConcession &&
-            reasons.contains(
-              MoveFeedbackReason.sacrificesMillForHigherOrderThreat,
-            ) ||
-        evidence.replacedOpportunity &&
-            reasons.any(_higherOrderThreatReasons.contains) ||
-        evidence.profile.reusableMills &&
-            reasons.contains(MoveFeedbackReason.createsReusableMill) ||
-        evidence.compensatedConcession &&
-            reasons.any(_verifiedDrawReasons.contains);
-  }
-
-  static bool _hasGoodMechanism(MoveFeedbackInput input) {
-    return input.strategicReasons.any(_verifiedGoodReasons.contains);
-  }
-
-  static bool _isInteresting(
-    MoveFeedbackInput input,
-    MoveFeedbackWdl bestWdl,
-    MoveFeedbackWdl playedWdl,
-  ) {
-    if (!input.searchStable ||
-        !input.candidateCoverageComplete ||
-        input.evidence.forced ||
-        bestWdl != playedWdl ||
-        input.loss >
-            MoveQualityThresholds.acceptableMaximum(input.pieceValue) ||
-        !input.hasCalmerEquivalent) {
-      return false;
-    }
-    final bool trapLibraryProof =
-        input.evidence.profile.trapPatchCompatible &&
-        input.playedTrapScore != null &&
-        input.calmTrapScore != null &&
-        input.playedTrapScore! - input.calmTrapScore! >= 34;
-    final int safeReplies = input.opponentSafeReplies ?? 1 << 30;
-    final int naturalLosing = input.naturalRepliesLosing ?? 0;
-    final bool replyProof =
-        input.evidence.legalRepliesAfter >= 4 &&
-        safeReplies <= 2 &&
-        naturalLosing * 2 >= input.evidence.legalRepliesAfter;
-    return trapLibraryProof || replyProof;
-  }
-
-  static List<MoveFeedbackReason> _positiveReasons(MoveFeedbackInput input) {
-    final List<MoveFeedbackReason> reasons = input.strategicReasons
-        .where(
-          (MoveFeedbackReason reason) =>
-              reason != MoveFeedbackReason.ruleStrategyUnavailable,
-        )
-        .toList();
-    if (input.evidence.compensatedConcession) {
-      reasons.add(MoveFeedbackReason.compensatedConcession);
-    }
-    if (input.evidence.replacedOpportunity) {
-      reasons.add(MoveFeedbackReason.replacesOpportunity);
-    }
-    if (input.evidence.initiativeSwing) {
-      reasons.add(MoveFeedbackReason.preservesInitiative);
-    }
-    if (input.evidence.mobilitySwing && input.evidence.mobilityDelta > 0) {
-      reasons.add(MoveFeedbackReason.preservesMobility);
-    }
-    if (reasons.isEmpty) {
-      reasons.add(MoveFeedbackReason.preservesResult);
-    }
-    return reasons.toSet().toList(growable: false);
+    return loss >= MoveQualityThresholds.blunderMinimum(input.pieceValue) &&
+        _scoreEvidenceReliable(input);
   }
 
   static MoveFeedbackResult _result(
@@ -596,9 +518,11 @@ abstract final class MoveFeedbackClassifier {
     source: input.source,
     confidence: input.source == MoveFeedbackSource.perfectDatabase
         ? MoveFeedbackConfidence.high
-        : input.searchStable && input.candidateCoverageComplete
+        : input.searchStable &&
+              input.candidateCoverageComplete &&
+              input.depth >= MoveQualityThresholds.minimumGradingDepth
         ? MoveFeedbackConfidence.high
-        : input.depth >= 8
+        : input.depth >= MoveQualityThresholds.minimumGradingDepth
         ? MoveFeedbackConfidence.medium
         : MoveFeedbackConfidence.low,
   );
@@ -617,8 +541,15 @@ abstract final class MoveFeedbackClassifier {
   }
 
   static bool _scoreEvidenceReliable(MoveFeedbackInput input) {
-    return input.source == MoveFeedbackSource.perfectDatabase ||
-        input.searchStable && input.candidateCoverageComplete;
+    if (input.source == MoveFeedbackSource.perfectDatabase) {
+      return true;
+    }
+    // Time-bounded MultiPV rarely finishes every legal root at equal depth.
+    // Partial coverage underestimates loss (best-among-returned ≤ true best),
+    // so negative grades stay conservative. Do not require full coverage or
+    // identical depths — that silenced almost all on-demand / quick-review
+    // annotations under a 200 ms budget.
+    return input.depth >= MoveQualityThresholds.minimumGradingDepth;
   }
 
   static int _classifiedLoss(MoveFeedbackInput input) {
@@ -630,52 +561,10 @@ abstract final class MoveFeedbackClassifier {
         .clamp(0, 1 << 30);
   }
 
-  static const Set<MoveFeedbackReason> _verifiedGoodReasons =
-      <MoveFeedbackReason>{
-        MoveFeedbackReason.selectsCriticalCaptureTarget,
-        MoveFeedbackReason.createsHerdingNet,
-        MoveFeedbackReason.escapesHerding,
-        MoveFeedbackReason.createsReusableMill,
-        MoveFeedbackReason.createsEntwinedMills,
-        MoveFeedbackReason.createsIndependentMills,
-        MoveFeedbackReason.createsFeeder,
-        MoveFeedbackReason.nullifiesOpponentMill,
-        MoveFeedbackReason.recognizesRedundantMill,
-        MoveFeedbackReason.allowsConstrainedMill,
-        MoveFeedbackReason.abandonsMillForMobility,
-        MoveFeedbackReason.sacrificesMillForHigherOrderThreat,
-        MoveFeedbackReason.avoidsPrematureFlyingTransition,
-        MoveFeedbackReason.createsZugzwang,
-        MoveFeedbackReason.preservesDrawCycle,
-        MoveFeedbackReason.breaksOpponentDrawResource,
-      };
-
-  static const Set<MoveFeedbackReason> _higherOrderThreatReasons =
-      <MoveFeedbackReason>{
-        MoveFeedbackReason.createsHerdingNet,
-        MoveFeedbackReason.createsEntwinedMills,
-        MoveFeedbackReason.createsIndependentMills,
-        MoveFeedbackReason.createsZugzwang,
-        MoveFeedbackReason.sacrificesMillForHigherOrderThreat,
-      };
-
-  static const Set<MoveFeedbackReason> _verifiedDrawReasons =
-      <MoveFeedbackReason>{
-        MoveFeedbackReason.preservesDrawCycle,
-        MoveFeedbackReason.breaksOpponentDrawResource,
-      };
-
   static int _negativePriority(MoveFeedbackSymbol symbol) => switch (symbol) {
     MoveFeedbackSymbol.blunder => 3,
     MoveFeedbackSymbol.mistake => 2,
     MoveFeedbackSymbol.dubious => 1,
-    _ => 0,
-  };
-
-  static int _positivePriority(MoveFeedbackSymbol symbol) => switch (symbol) {
-    MoveFeedbackSymbol.brilliant => 3,
-    MoveFeedbackSymbol.good => 2,
-    MoveFeedbackSymbol.interesting => 1,
     _ => 0,
   };
 }

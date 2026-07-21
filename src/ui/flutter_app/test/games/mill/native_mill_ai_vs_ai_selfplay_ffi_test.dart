@@ -182,11 +182,13 @@ void main() {
             };
         expect(feedback.length, greaterThanOrEqualTo(20));
         expect(
-          distribution[MoveFeedbackSymbol.brilliant],
+          distribution[MoveFeedbackSymbol.brilliant]! +
+              distribution[MoveFeedbackSymbol.good]! +
+              distribution[MoveFeedbackSymbol.interesting]!,
           0,
           reason:
-              'The ordinary 200 ms analysis path has no supplemental '
-              'brilliant-move verification; distribution=$distribution',
+              'Phase 1 automatic feedback never invents positive glyphs; '
+              'distribution=$distribution',
         );
         expect(
           unannotated * 10,
@@ -230,10 +232,12 @@ void main() {
         };
         expect(review.engineVersion, startsWith('$reviewEngineVersion:'));
         expect(
-          reviewDistribution[3],
+          reviewDistribution[1]! +
+              reviewDistribution[3]! +
+              reviewDistribution[5]!,
           0,
           reason:
-              'Quick review has no supplemental brilliant verification; '
+              'Phase 1 automatic review never invents positive NAGs; '
               'distribution=$reviewDistribution',
         );
         expect(

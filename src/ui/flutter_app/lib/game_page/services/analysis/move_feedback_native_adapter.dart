@@ -104,25 +104,3 @@ MoveFeedbackEvidence moveFeedbackEvidenceFromNative(
     ),
   );
 }
-
-Set<MoveFeedbackReason> moveFeedbackStrategicReasons(
-  MoveFeedbackEvidence evidence,
-) {
-  final Set<MoveFeedbackReason> reasons = <MoveFeedbackReason>{};
-  if (evidence.initiativeSwing) {
-    reasons.add(MoveFeedbackReason.forcesResponses);
-  }
-  if (evidence.mobilitySwing && evidence.mobilityDelta > 0) {
-    reasons.add(MoveFeedbackReason.preservesMobility);
-  }
-  if (evidence.enteredFlying) {
-    reasons.add(MoveFeedbackReason.usesFlyingTransition);
-  }
-  if (evidence.drawResourceImpact) {
-    reasons.add(MoveFeedbackReason.preservesDrawCycle);
-  }
-  if (!evidence.profile.standardStrategyCompatible && reasons.isEmpty) {
-    reasons.add(MoveFeedbackReason.ruleStrategyUnavailable);
-  }
-  return reasons;
-}

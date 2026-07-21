@@ -13,7 +13,7 @@ import '../../rule_settings/models/rule_settings.dart';
 const int reviewSchemaVersion = 1;
 // Increment whenever grading semantics change so stale annotations are not
 // reused after a classifier update.
-const String reviewEngineVersion = 'tgf-review-v4';
+const String reviewEngineVersion = 'tgf-review-v9';
 
 String _sha256Text(String value) =>
     sha256.convert(utf8.encode(value)).toString();
@@ -48,6 +48,9 @@ enum ReviewSide { white, black }
 
 enum ReviewProfile {
   quick(depth: 24, moveLimitMs: 200),
+
+  /// Deeper probes used only on binary-search blame points.
+  blameProbe(depth: 32, moveLimitMs: 1200),
   deep(depth: 64, moveLimitMs: 6000);
 
   const ReviewProfile({required this.depth, required this.moveLimitMs});

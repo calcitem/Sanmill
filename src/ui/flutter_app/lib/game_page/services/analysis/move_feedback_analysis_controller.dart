@@ -228,7 +228,6 @@ class MoveFeedbackAnalysisController extends ChangeNotifier {
                     ? MoveFeedbackSource.engine
                     : MoveFeedbackSource.perfectDatabase,
                 evidence: evidence,
-                strategicReasons: moveFeedbackStrategicReasons(evidence),
               ),
             ).copyWith(
               bestMove: bestVariation.move,

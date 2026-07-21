@@ -16,6 +16,7 @@ import '../../general_settings/models/general_settings.dart';
 import '../../shared/database/database.dart';
 import '../../src/rust/api/simple.dart' as tgf;
 import '../models/review_models.dart';
+import 'review_causal_attribution.dart';
 import 'review_storage.dart';
 
 class ReviewCapacityException implements Exception {
@@ -218,6 +219,35 @@ class ReviewAnalysisService {
       _searching = false;
     }
 
+    if (generation != _generation) {
+      return _cancelledReport(
+        record: record,
+        profile: profile,
+        actions: actions,
+        turns: turns,
+        variationCount: _variationCount(game.moves),
+        engineVersion: engineVersion,
+      );
+    }
+
+    final List<ReviewActionEvaluation> attributed =
+        await _attributeCausalMistakes(
+          record: record,
+          actions: actions,
+          capacity: capacity,
+          generation: generation,
+        );
+    if (generation != _generation) {
+      return _cancelledReport(
+        record: record,
+        profile: profile,
+        actions: attributed,
+        turns: turns,
+        variationCount: _variationCount(game.moves),
+        engineVersion: engineVersion,
+      );
+    }
+
     final DateTime now = DateTime.now().toUtc();
     final ReviewReport? previous = _storage.latestReportForRecord(record.id);
     final ReviewReport report = ReviewReport(
@@ -227,7 +257,7 @@ class ReviewAnalysisService {
       engineVersion: engineVersion,
       profile: profile,
       status: ReviewStatus.complete,
-      actions: List<ReviewActionEvaluation>.unmodifiable(actions),
+      actions: List<ReviewActionEvaluation>.unmodifiable(attributed),
       turns: List<ReviewTurnBoundary>.unmodifiable(turns),
       variationCount: _variationCount(game.moves),
       userNagOverrides: previous?.userNagOverrides ?? const <int, int?>{},
@@ -337,6 +367,227 @@ class ReviewAnalysisService {
     required int capacity,
     required ReviewProfile profile,
   }) async {
+    final _ScoredMoveEvaluation scored = await _scoreCurrentMove(
+      session: session,
+      move: move,
+      capacity: capacity,
+      profile: profile,
+    );
+    final MoveFeedbackResult feedback = MoveFeedbackClassifier.classify(
+      scored.input,
+    );
+    final ReviewGrade grade = _reviewGrade(feedback.symbol, scored.loss);
+    _applyMove(session, move);
+    return ReviewActionEvaluation(
+      atomicIndex: atomicIndex,
+      groupIndex: groupIndex,
+      move: move,
+      side: scored.side,
+      isHumanMove: record.humanSides.contains(scored.side),
+      legalRootActionCount: scored.input.legalRootActionCount,
+      bestScore: scored.input.bestScore,
+      playedScore: scored.input.playedScore,
+      loss: scored.loss,
+      grade: grade,
+      profile: profile,
+      candidates: scored.candidates,
+      automaticNag: feedback.symbol.nag,
+      feedbackReasons: feedback.reasons,
+    );
+  }
+
+  /// Shallow pass finds disadvantage windows; binary-searched deep probes
+  /// attribute the true root ply, then suppress later already-decided marks.
+  Future<List<ReviewActionEvaluation>> _attributeCausalMistakes({
+    required PrivateGameRecord record,
+    required List<ReviewActionEvaluation> actions,
+    required int capacity,
+    required int generation,
+  }) async {
+    if (actions.isEmpty) {
+      return actions;
+    }
+    List<ReviewActionEvaluation> updated = List<ReviewActionEvaluation>.from(
+      actions,
+    );
+    final Map<int, _ProbeSnapshot> probeCache = <int, _ProbeSnapshot>{};
+
+    Future<_ProbeSnapshot> probe(int atomicIndex) async {
+      final _ProbeSnapshot? cached = probeCache[atomicIndex];
+      if (cached != null) {
+        return cached;
+      }
+      final _ProbeSnapshot fresh = await _probeParentPosition(
+        record: record,
+        actions: updated,
+        atomicIndex: atomicIndex,
+        capacity: capacity,
+        profile: ReviewProfile.blameProbe,
+      );
+      probeCache[atomicIndex] = fresh;
+      return fresh;
+    }
+
+    for (final ReviewSide side in ReviewSide.values) {
+      int fromAtomicIndex = 0;
+      while (true) {
+        if (generation != _generation) {
+          return updated;
+        }
+        final int? collapse = ReviewCausalAttribution.firstDisadvantageAnchor(
+          updated,
+          side,
+          fromAtomicIndex: fromAtomicIndex,
+        );
+        if (collapse == null) {
+          break;
+        }
+        final List<int> indices = ReviewCausalAttribution.sideIndicesThrough(
+          updated,
+          side,
+          collapse,
+          fromAtomicIndex: fromAtomicIndex,
+        );
+        if (indices.length < 2) {
+          fromAtomicIndex = collapse + 1;
+          continue;
+        }
+
+        final int? blameIndex =
+            await ReviewCausalAttribution.findRootBlameIndex(
+              indices: indices,
+              isSaveable: (int atomicIndex) async {
+                final _ProbeSnapshot snapshot = await probe(atomicIndex);
+                return ReviewCausalAttribution.positionIsSaveable(
+                  bestScore: snapshot.bestScore,
+                  source: snapshot.source,
+                );
+              },
+              probe: (int atomicIndex) async {
+                final _ProbeSnapshot snapshot = await probe(atomicIndex);
+                return BlameProbe(
+                  bestScore: snapshot.bestScore,
+                  playedScore: snapshot.playedScore,
+                  playedRank: snapshot.playedRank,
+                  source: snapshot.source,
+                );
+              },
+            );
+        if (blameIndex == null) {
+          // No true self-root: clear episode negatives without inventing blame.
+          updated = ReviewCausalAttribution.clearNegativesAt(updated, indices);
+          fromAtomicIndex = collapse + 1;
+          continue;
+        }
+
+        final _ProbeSnapshot blameProbe = await probe(blameIndex);
+        final int listIndex = updated.indexWhere(
+          (ReviewActionEvaluation action) => action.atomicIndex == blameIndex,
+        );
+        assert(listIndex >= 0);
+        final ReviewActionEvaluation current = updated[listIndex];
+        final MoveFeedbackResult feedback = MoveFeedbackClassifier.classify(
+          MoveFeedbackInput(
+            bestScore: blameProbe.bestScore,
+            playedScore: blameProbe.playedScore,
+            playedRank: blameProbe.playedRank,
+            legalRootActionCount: blameProbe.legalRootActionCount,
+            depth: blameProbe.depth,
+            runnerUpScore: blameProbe.runnerUpScore,
+            searchStable: true,
+            candidateCoverageComplete: true,
+            allCandidatesLosing: blameProbe.allCandidatesLosing,
+            causalResultForfeited: true,
+            source: blameProbe.source,
+            evidence: blameProbe.evidence,
+          ),
+        );
+        updated[listIndex] = ReviewActionEvaluation(
+          atomicIndex: current.atomicIndex,
+          groupIndex: current.groupIndex,
+          move: current.move,
+          side: current.side,
+          isHumanMove: current.isHumanMove,
+          legalRootActionCount: blameProbe.legalRootActionCount,
+          bestScore: blameProbe.bestScore,
+          playedScore: blameProbe.playedScore,
+          loss: blameProbe.loss,
+          grade: _reviewGrade(feedback.symbol, blameProbe.loss),
+          profile: ReviewProfile.blameProbe,
+          candidates: blameProbe.candidates,
+          automaticNag: feedback.symbol.nag,
+          feedbackReasons: feedback.reasons,
+        );
+        updated = ReviewCausalAttribution.suppressSubsequentNegatives(
+          actions: updated,
+          side: side,
+          blameAtomicIndex: blameIndex,
+        );
+        fromAtomicIndex = collapse + 1;
+      }
+    }
+
+    return ReviewCausalAttribution.suppressTrailingNegativesAfterFirstBlame(
+      updated,
+    );
+  }
+
+  Future<_ProbeSnapshot> _probeParentPosition({
+    required PrivateGameRecord record,
+    required List<ReviewActionEvaluation> actions,
+    required int atomicIndex,
+    required int capacity,
+    required ReviewProfile profile,
+  }) async {
+    final NativeMillGameSession session = NativeMillGameSession(
+      rules: record.rules,
+      generalSettings: _engineSettings(),
+    );
+    try {
+      final PgnGame<PgnNodeData> game = PgnGame.parsePgn(record.sourcePgn);
+      final String setupFen = game.headers['FEN']?.trim() ?? record.initialFen;
+      if (setupFen.isNotEmpty && !session.loadFen(setupFen)) {
+        throw StateError('Review record carries an invalid initial FEN.');
+      }
+      final ReviewActionEvaluation target = actions.firstWhere(
+        (ReviewActionEvaluation action) => action.atomicIndex == atomicIndex,
+      );
+      for (final ReviewActionEvaluation action in actions) {
+        if (action.atomicIndex >= atomicIndex) {
+          break;
+        }
+        _applyMove(session, action.move);
+      }
+      final _ScoredMoveEvaluation scored = await _scoreCurrentMove(
+        session: session,
+        move: target.move,
+        capacity: capacity,
+        profile: profile,
+      );
+      return _ProbeSnapshot(
+        bestScore: scored.input.bestScore,
+        playedScore: scored.input.playedScore,
+        loss: scored.loss,
+        playedRank: scored.input.playedRank,
+        legalRootActionCount: scored.input.legalRootActionCount,
+        depth: scored.input.depth,
+        runnerUpScore: scored.input.runnerUpScore,
+        allCandidatesLosing: scored.input.allCandidatesLosing,
+        source: scored.input.source,
+        evidence: scored.input.evidence,
+        candidates: scored.candidates,
+      );
+    } finally {
+      session.dispose();
+    }
+  }
+
+  Future<_ScoredMoveEvaluation> _scoreCurrentMove({
+    required NativeMillGameSession session,
+    required String move,
+    required int capacity,
+    required ReviewProfile profile,
+  }) async {
     final List<GameAction> legalActions = session.legalActions;
     if (legalActions.length > capacity) {
       throw ReviewCapacityException(legalActions.length, capacity);
@@ -388,10 +639,11 @@ class ReviewAnalysisService {
     final ReviewCandidate? runnerUp = candidates
         .where((ReviewCandidate candidate) => candidate.rank == 2)
         .firstOrNull;
-    final Set<MoveFeedbackReason> strategicReasons =
-        moveFeedbackStrategicReasons(evidence);
-    final MoveFeedbackResult feedback = MoveFeedbackClassifier.classify(
-      MoveFeedbackInput(
+    return _ScoredMoveEvaluation(
+      side: side,
+      loss: loss,
+      candidates: candidates,
+      input: MoveFeedbackInput(
         bestScore: bestScore,
         playedScore: playedScore,
         playedRank: played.rank,
@@ -415,26 +667,7 @@ class ReviewAnalysisService {
             ? MoveFeedbackSource.engine
             : MoveFeedbackSource.perfectDatabase,
         evidence: evidence,
-        strategicReasons: strategicReasons,
       ),
-    );
-    final ReviewGrade grade = _reviewGrade(feedback.symbol, loss);
-    _applyMove(session, move);
-    return ReviewActionEvaluation(
-      atomicIndex: atomicIndex,
-      groupIndex: groupIndex,
-      move: move,
-      side: side,
-      isHumanMove: record.humanSides.contains(side),
-      legalRootActionCount: legalActions.length,
-      bestScore: bestScore,
-      playedScore: playedScore,
-      loss: loss,
-      grade: grade,
-      profile: profile,
-      candidates: candidates,
-      automaticNag: feedback.symbol.nag,
-      feedbackReasons: feedback.reasons,
     );
   }
 
@@ -542,6 +775,48 @@ class ReviewAnalysisService {
       lastAccessedAt: now,
     );
   }
+}
+
+class _ScoredMoveEvaluation {
+  const _ScoredMoveEvaluation({
+    required this.side,
+    required this.loss,
+    required this.candidates,
+    required this.input,
+  });
+
+  final ReviewSide side;
+  final int loss;
+  final List<ReviewCandidate> candidates;
+  final MoveFeedbackInput input;
+}
+
+class _ProbeSnapshot {
+  const _ProbeSnapshot({
+    required this.bestScore,
+    required this.playedScore,
+    required this.loss,
+    required this.playedRank,
+    required this.legalRootActionCount,
+    required this.depth,
+    required this.runnerUpScore,
+    required this.allCandidatesLosing,
+    required this.source,
+    required this.evidence,
+    required this.candidates,
+  });
+
+  final int bestScore;
+  final int playedScore;
+  final int loss;
+  final int playedRank;
+  final int legalRootActionCount;
+  final int depth;
+  final int? runnerUpScore;
+  final bool allCandidatesLosing;
+  final MoveFeedbackSource source;
+  final MoveFeedbackEvidence evidence;
+  final List<ReviewCandidate> candidates;
 }
 
 List<String> splitMillSan(String san) {
