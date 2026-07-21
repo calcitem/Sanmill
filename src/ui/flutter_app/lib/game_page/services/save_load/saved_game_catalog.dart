@@ -11,6 +11,7 @@ import '../../../game_platform/game_session.dart' show GameAction, PlayerSeat;
 import '../../../games/mill/mill_action_codec.dart';
 import '../../../games/mill/native_mill_rules_port.dart';
 import '../../../shared/database/database.dart';
+import '../../../shared/services/logger.dart';
 import '../import_export/pgn.dart';
 import '../mill.dart';
 
@@ -61,8 +62,15 @@ class SavedGameSummary {
 
 const SavedGameCatalog savedGameCatalog = SavedGameCatalog();
 
+typedef SavedGameDirectoryLister =
+    List<FileSystemEntity> Function(Directory directory);
+
 final class SavedGameCatalog {
-  const SavedGameCatalog();
+  const SavedGameCatalog({
+    @visibleForTesting SavedGameDirectoryLister? listDirectory,
+  }) : _listDirectory = listDirectory ?? _listDirectoryRecursively;
+
+  final SavedGameDirectoryLister _listDirectory;
 
   Future<Directory?> recordsDirectory({bool create = true}) async {
     if (kIsWeb) {
@@ -108,11 +116,23 @@ final class SavedGameCatalog {
       return const <SavedGameSummary>[];
     }
 
-    final List<File> files = dir
-        .listSync(recursive: true)
-        .whereType<File>()
-        .where((File file) => file.path.toLowerCase().endsWith('.pgn'))
-        .toList();
+    final List<File> files;
+    try {
+      files = _listDirectory(dir)
+          .whereType<File>()
+          .where((File file) => file.path.toLowerCase().endsWith('.pgn'))
+          .toList();
+    } on FileSystemException catch (error) {
+      // A desktop file picker grants access to a user-selected location only
+      // for as long as the platform keeps its security scope alive. The path
+      // can still exist after a restart while directory enumeration is denied.
+      // Treat that external catalog as unavailable instead of crashing Home.
+      logger.w(
+        '[SavedGameCatalog] Saved-game directory is unavailable '
+        '(OS error ${error.osError?.errorCode ?? 'unknown'}).',
+      );
+      return const <SavedGameSummary>[];
+    }
 
     files.sort((File a, File b) {
       return b.lastModifiedSync().compareTo(a.lastModifiedSync());
@@ -126,6 +146,10 @@ final class SavedGameCatalog {
       );
     }
     return summaries;
+  }
+
+  static List<FileSystemEntity> _listDirectoryRecursively(Directory directory) {
+    return directory.listSync(recursive: true);
   }
 
   Future<String?> computeFinalBoardLayout(String pgnContent) async {

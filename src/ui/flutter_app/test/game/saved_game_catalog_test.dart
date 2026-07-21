@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart' show PieceColor;
 import 'package:sanmill/game_page/services/save_load/saved_game_catalog.dart';
+import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
 
 import '../helpers/mocks/mock_database.dart';
@@ -64,6 +67,38 @@ void main() {
     expect(summary.representsPath('/tmp/records/./current.pgn'), isTrue);
     expect(summary.representsPath('/tmp/records/other.pgn'), isFalse);
     expect(summary.representsPath(null), isFalse);
+  });
+
+  test('an inaccessible saved-game directory does not crash startup', () async {
+    final Directory directory = Directory.systemTemp.createTempSync(
+      'sanmill-inaccessible-saved-games-',
+    );
+    addTearDown(() => directory.deleteSync(recursive: true));
+    DB().generalSettings = GeneralSettings(
+      lastPgnSaveDirectory: directory.path,
+    );
+    final SavedGameCatalog catalog = SavedGameCatalog(
+      listDirectory: (Directory _) {
+        throw const FileSystemException('Permission denied');
+      },
+    );
+
+    expect(await catalog.listRecent(includePreviews: true), isEmpty);
+  });
+
+  test('non-filesystem catalog errors remain visible', () async {
+    final Directory directory = Directory.systemTemp.createTempSync(
+      'sanmill-invalid-saved-games-',
+    );
+    addTearDown(() => directory.deleteSync(recursive: true));
+    DB().generalSettings = GeneralSettings(
+      lastPgnSaveDirectory: directory.path,
+    );
+    final SavedGameCatalog catalog = SavedGameCatalog(
+      listDirectory: (Directory _) => throw StateError('test bug'),
+    );
+
+    await expectLater(catalog.listRecent(), throwsStateError);
   });
 
   test(
