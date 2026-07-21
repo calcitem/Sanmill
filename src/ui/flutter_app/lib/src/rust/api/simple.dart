@@ -581,20 +581,22 @@ class MillHumanDatabaseStatus {
           moveCount == other.moveCount;
 }
 
-/// Perfect-database verdict for one legal move, used by the analysis overlay.
+/// Database or fallback-search verdict for one legal move, used by the
+/// analysis overlay.
 ///
 /// `value` and `outcome` are expressed from the perspective of the side that
-/// is to move in the analysed position (`"win"` / `"draw"` / `"loss"` and
-/// `1` / `0` / `-1`).  `steps` is the distance-to-conversion step count, or a
-/// negative value when the database does not expose one.
+/// is to move in the analysed position. Database rows use `"win"` / `"draw"`
+/// / `"loss"` and `1` / `0` / `-1`; missing rows use `"advantage"` /
+/// `"disadvantage"` and a raw heuristic score. `steps` is the
+/// distance-to-conversion step count, or a negative value when unavailable.
 class MillMoveAnalysis {
   /// Mill UCI notation token (`"a4"`, `"a1-a4"`, `"xg7"`).
   final String mv;
 
-  /// `"win"`, `"draw"` or `"loss"` for the analysing side.
+  /// Database WDL or fallback `"advantage"` / `"disadvantage"` outcome.
   final String outcome;
 
-  /// Win/draw/loss value for the analysing side (1 / 0 / -1).
+  /// Database WDL value (1 / 0 / -1) or raw fallback heuristic score.
   final int value;
 
   /// Distance-to-conversion step count; negative when unavailable.
