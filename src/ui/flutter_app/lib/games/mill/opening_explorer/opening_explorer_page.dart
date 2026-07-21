@@ -9,11 +9,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../appearance_settings/models/color_settings.dart';
 import '../../../appearance_settings/models/display_settings.dart';
+import '../../../experience_recording/services/diagnostic_reproduction_service.dart';
 import '../../../game_page/services/mill.dart'
-    show ExtMove, GameController, GameMode, MoveType;
+    show ExtMove, GameController, GameMode, MoveType, PieceColor;
 import '../../../game_page/services/transform/transform.dart';
 import '../../../game_page/widgets/game_page.dart';
 import '../../../game_platform/game_session.dart';
@@ -63,6 +65,12 @@ debugOpeningExplorerHumanDatabaseQuery;
 GameAction? Function(NativeMillGameSession session, GeneralSettings settings)?
 debugOpeningExplorerPerfectDatabaseAction;
 
+typedef OpeningExplorerShareText =
+    Future<void> Function({required String text, required String subject});
+
+@visibleForTesting
+OpeningExplorerShareText? debugOpeningExplorerShareText;
+
 class OpeningExplorerPage extends StatefulWidget {
   const OpeningExplorerPage({
     super.key,
@@ -88,6 +96,7 @@ typedef _OpeningExplorerPositionChanged =
       required String previousFen,
       required String currentFen,
       required String label,
+      required PieceColor mover,
     });
 
 typedef _OpeningExplorerTransformSelected =
@@ -120,10 +129,31 @@ const List<String> _openingExplorerHorizontalCoordinates = <String>[
 const Duration _explorerLinePlaybackStepInterval = Duration(milliseconds: 650);
 
 class _OpeningExplorerHistoryEntry {
-  const _OpeningExplorerHistoryEntry({required this.label, required this.fen});
+  const _OpeningExplorerHistoryEntry({
+    required this.label,
+    required this.fen,
+    this.mover,
+  });
 
   final String label;
   final String fen;
+  final PieceColor? mover;
+}
+
+class _OpeningExplorerPgnMove {
+  const _OpeningExplorerPgnMove({required this.label, required this.side});
+
+  final String label;
+  final PieceColor side;
+
+  bool get isRemoval => label.startsWith('x');
+}
+
+class _OpeningExplorerPgnTurn {
+  _OpeningExplorerPgnTurn({required this.notation, required this.side});
+
+  String notation;
+  final PieceColor side;
 }
 
 String _openingExplorerLabelFromAction(GameAction action) {
@@ -161,8 +191,11 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
   NativeMillGameSession? _explorerSession;
   ValueListenable<GameStateSnapshot>? _sourceState;
   String? _initialExplorerFen;
+  String? _initialPgnFen;
   String? _lastSourceFen;
   List<String> _initialPlacementMoves = const <String>[];
+  List<_OpeningExplorerPgnMove> _initialPgnMoves =
+      const <_OpeningExplorerPgnMove>[];
   int _explorerCursor = 0;
 
   // "Watch it play out" line-playback state. `_linePlaybackToken` is bumped
@@ -245,7 +278,9 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
     _explorerSession?.dispose();
     _explorerSession = null;
     _initialExplorerFen = null;
+    _initialPgnFen = null;
     _initialPlacementMoves = const <String>[];
+    _initialPgnMoves = const <_OpeningExplorerPgnMove>[];
     _explorerHistory.clear();
     _explorerCursor = 0;
     _tapController.clearSelection();
@@ -256,6 +291,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
       rules: DB().ruleSettings,
       generalSettings: DB().generalSettings,
     );
+    final String standardFen = explorer.getFen();
     final GameSession? source = widget.startFromSession ? widget.session : null;
     if (source is NativeMillGameSession) {
       _lastSourceFen = source.getFen();
@@ -266,10 +302,22 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
         return;
       }
       if (identical(source, GameController().activeNativeMillSession)) {
-        _initialPlacementMoves = _placementMovesFromRecorder(
-          GameController().gameRecorder.currentPath,
-        );
+        final List<ExtMove> currentPath =
+            GameController().gameRecorder.currentPath;
+        _initialPlacementMoves = _placementMovesFromRecorder(currentPath);
+        _initialPgnMoves = currentPath
+            .map(
+              (ExtMove move) =>
+                  _OpeningExplorerPgnMove(label: move.move, side: move.side),
+            )
+            .toList(growable: false);
+        _initialPgnFen =
+            GameController().gameRecorder.setupPosition ?? standardFen;
+      } else {
+        _initialPgnFen = source.getFen();
       }
+    } else {
+      _initialPgnFen = standardFen;
     }
     _explorerSession = explorer;
     _initialExplorerFen = explorer.getFen();
@@ -325,12 +373,17 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
       return;
     }
     final int token = ++_linePlaybackToken;
-    final bool loaded = session.loadFen(_standardInitialFen());
+    final String standardFen = _standardInitialFen();
+    final bool loaded = session.loadFen(standardFen);
     assert(loaded, 'Opening explorer line playback needs a fresh start FEN.');
     if (!loaded) {
       return;
     }
     setState(() {
+      _initialExplorerFen = standardFen;
+      _initialPgnFen = standardFen;
+      _initialPlacementMoves = const <String>[];
+      _initialPgnMoves = const <_OpeningExplorerPgnMove>[];
       _explorerHistory.clear();
       _explorerCursor = 0;
       _tapController.clearSelection();
@@ -359,6 +412,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
         break;
       }
       final String previousFen = session.getFen();
+      final PieceColor mover = session.sideToMove;
       await session.apply(action);
       if (!mounted || token != _linePlaybackToken) {
         return;
@@ -367,6 +421,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
         previousFen: previousFen,
         currentFen: session.getFen(),
         label: notation,
+        mover: mover,
       );
     }
 
@@ -461,6 +516,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
       return;
     }
     final String previousFen = session.getFen();
+    final PieceColor mover = session.sideToMove;
     await session.apply(action);
     final String currentFen = session.getFen();
     _tapController.clearSelection();
@@ -469,6 +525,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
         previousFen: previousFen,
         currentFen: currentFen,
         label: _openingExplorerLabelFromAction(action),
+        mover: mover,
       );
     }
   }
@@ -497,6 +554,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
     required String previousFen,
     required String currentFen,
     required String label,
+    PieceColor? mover,
   }) {
     assert(previousFen.isNotEmpty, 'Explorer previous FEN must not be empty.');
     assert(currentFen.isNotEmpty, 'Explorer current FEN must not be empty.');
@@ -509,7 +567,7 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
       _explorerHistory.removeRange(_explorerCursor, _explorerHistory.length);
     }
     _explorerHistory.add(
-      _OpeningExplorerHistoryEntry(label: label, fen: currentFen),
+      _OpeningExplorerHistoryEntry(label: label, fen: currentFen, mover: mover),
     );
     _explorerCursor = _explorerHistory.length;
     setState(() {});
@@ -588,6 +646,143 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
     setState(() {});
   }
 
+  ({String startFen, List<_OpeningExplorerPgnMove> moves}) _currentPgnLine() {
+    final String? initialFen = _initialPgnFen ?? _initialExplorerFen;
+    assert(initialFen != null, 'Opening explorer PGN requires a start FEN.');
+    if (initialFen == null) {
+      throw StateError('Opening explorer PGN requires a start FEN.');
+    }
+    String startFen = initialFen;
+
+    final List<_OpeningExplorerPgnMove> moves =
+        List<_OpeningExplorerPgnMove>.of(_initialPgnMoves);
+    for (final _OpeningExplorerHistoryEntry entry in _explorerHistory.take(
+      _explorerCursor,
+    )) {
+      final PieceColor? mover = entry.mover;
+      if (mover == null) {
+        // Board transformations are presentation tools, not legal moves. A
+        // line after one must therefore be exported as a setup-position PGN.
+        startFen = entry.fen;
+        moves.clear();
+        continue;
+      }
+      moves.add(_OpeningExplorerPgnMove(label: entry.label, side: mover));
+    }
+    return (startFen: startFen, moves: moves);
+  }
+
+  String _buildCurrentPgn() {
+    final ({String startFen, List<_OpeningExplorerPgnMove> moves}) line =
+        _currentPgnLine();
+    final String standardFen = _standardInitialFen();
+    final List<_OpeningExplorerPgnTurn> turns = <_OpeningExplorerPgnTurn>[];
+    for (final _OpeningExplorerPgnMove move in line.moves) {
+      if (move.isRemoval && turns.isNotEmpty && turns.last.side == move.side) {
+        turns.last.notation += move.label;
+      } else {
+        turns.add(
+          _OpeningExplorerPgnTurn(notation: move.label, side: move.side),
+        );
+      }
+    }
+
+    final List<String> moveTokens = <String>[];
+    int moveNumber = 1;
+    int index = 0;
+    while (index < turns.length) {
+      final _OpeningExplorerPgnTurn turn = turns[index];
+      if (turn.side == PieceColor.black) {
+        moveTokens.add('$moveNumber... ${turn.notation}');
+        moveNumber++;
+        index++;
+        continue;
+      }
+
+      final StringBuffer token = StringBuffer('$moveNumber. ${turn.notation}');
+      index++;
+      if (index < turns.length && turns[index].side == PieceColor.black) {
+        token.write(' ${turns[index].notation}');
+        index++;
+      }
+      moveTokens.add(token.toString());
+      moveNumber++;
+    }
+
+    final String date = DateFormat('yyyy.MM.dd').format(DateTime.now());
+    final StringBuffer pgn = StringBuffer()
+      ..writeln('[Event "Sanmill Opening Explorer"]')
+      ..writeln('[Site "Sanmill"]')
+      ..writeln('[Date "$date"]')
+      ..writeln('[Round "-"]')
+      ..writeln('[White "?"]')
+      ..writeln('[Black "?"]')
+      ..writeln('[Result "*"]')
+      ..writeln('[Variant "${RuleVariant.pgnNameFor(DB().ruleSettings)}"]')
+      ..writeln('[PlyCount "${line.moves.length}"]');
+    if (line.startFen != standardFen) {
+      pgn
+        ..writeln('[FEN "${line.startFen}"]')
+        ..writeln('[SetUp "1"]');
+    }
+    pgn
+      ..writeln()
+      ..write(moveTokens.isEmpty ? '*' : '${moveTokens.join(' ')} *');
+    return pgn.toString();
+  }
+
+  Future<void> _shareOpeningExplorerText({
+    required String text,
+    required String subject,
+  }) async {
+    assert(text.trim().isNotEmpty, 'Opening explorer share text is required.');
+    DiagnosticReplayGuard.requireAllowed('Game sharing');
+    final OpeningExplorerShareText? shareForTest =
+        debugOpeningExplorerShareText;
+    if (shareForTest != null) {
+      await shareForTest(text: text, subject: subject);
+      return;
+    }
+    await SharePlus.instance.share(ShareParams(text: text, subject: subject));
+  }
+
+  void _showShareMenu(BuildContext context) {
+    final NativeMillGameSession? session = _explorerSession;
+    if (session == null) {
+      return;
+    }
+    final S strings = S.of(context);
+    showLichessActionSheet<void>(
+      context: context,
+      sheetKey: const Key('opening_explorer_share_sheet'),
+      title: Text(strings.shareAndExport),
+      actions: <LichessActionSheetAction>[
+        LichessActionSheetAction(
+          key: const Key('opening_explorer_share_pgn'),
+          leading: const Icon(Icons.ios_share_outlined),
+          makeLabel: (BuildContext context) => Text(strings.sharePgn),
+          onPressed: () => unawaited(
+            _shareOpeningExplorerText(
+              text: _buildCurrentPgn(),
+              subject: 'Game PGN',
+            ),
+          ),
+        ),
+        LichessActionSheetAction(
+          key: const Key('opening_explorer_share_fen'),
+          leading: const Icon(Icons.ios_share_outlined),
+          makeLabel: (BuildContext context) => Text(strings.shareFen),
+          onPressed: () => unawaited(
+            _shareOpeningExplorerText(
+              text: session.getFen(),
+              subject: 'Position FEN',
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final S strings = S.of(context);
@@ -639,6 +834,14 @@ class _OpeningExplorerPageState extends State<OpeningExplorerPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(strings.openingExplorer),
+        actions: <Widget>[
+          IconButton(
+            key: const Key('opening_explorer_share_button'),
+            tooltip: strings.shareAndExport,
+            onPressed: () => _showShareMenu(context),
+            icon: const Icon(Icons.ios_share_outlined),
+          ),
+        ],
         bottom: session == null
             ? null
             : _OpeningExplorerMoveList(
@@ -1692,6 +1895,7 @@ class _OpeningExplorerBoardState extends State<_OpeningExplorerBoard> {
     final String notation = MillBoardCoordinateMaps.nodeToNotation(node);
     assert(notation.isNotEmpty, 'Opening explorer node must have notation.');
     final String previousFen = widget.session.getFen();
+    final PieceColor mover = widget.session.sideToMove;
     final MillSessionTapResult result = await widget.tapController.tap(
       session: widget.session,
       tappedLabel: notation,
@@ -1709,6 +1913,7 @@ class _OpeningExplorerBoardState extends State<_OpeningExplorerBoard> {
         previousFen: previousFen,
         currentFen: widget.session.getFen(),
         label: _openingExplorerLabelFromAction(action),
+        mover: mover,
       );
     }
     if (result.status != MillSessionTapStatus.ignored) {

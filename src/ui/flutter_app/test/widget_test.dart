@@ -3920,6 +3920,89 @@ void main() {
   );
 
   testWidgets(
+    'Opening explorer shares the current PGN and FEN',
+    (WidgetTester tester) async {
+      final List<({String text, String subject})> shared =
+          <({String text, String subject})>[];
+      debugOpeningExplorerShareText =
+          ({required String text, required String subject}) async {
+            shared.add((text: text, subject: subject));
+          };
+      addTearDown(() => debugOpeningExplorerShareText = null);
+
+      final NativeMillGameSession scratch = NativeMillGameSession(
+        rules: DB().ruleSettings,
+        generalSettings: DB().generalSettings,
+      );
+      final String initialFen = scratch.getFen();
+      scratch.dispose();
+
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightThemeData,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: const Locale('en'),
+          home: const OpeningExplorerPage(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final Finder shareButton = find.byKey(
+        const Key('opening_explorer_share_button'),
+      );
+      expect(shareButton, findsOneWidget);
+
+      await tester.tap(shareButton);
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('opening_explorer_share_sheet')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_share_pgn')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('opening_explorer_share_fen')),
+        findsOneWidget,
+      );
+      expect(find.text('Share PGN'), findsOneWidget);
+      expect(find.text('Share position as FEN'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('opening_explorer_share_fen')));
+      await tester.pumpAndSettle();
+      expect(shared, <({String text, String subject})>[
+        (text: initialFen, subject: 'Position FEN'),
+      ]);
+
+      final Finder board = find.byKey(const Key('opening_explorer_board'));
+      final Offset boardTopLeft = tester.getTopLeft(board);
+      final Size boardSize = tester.getSize(board);
+      await tester.tapAt(
+        boardTopLeft + MillBoardGeometry.nodeOffset(0, boardSize),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(shareButton);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('opening_explorer_share_pgn')));
+      await tester.pumpAndSettle();
+
+      expect(shared, hasLength(2));
+      final ({String text, String subject}) pgnShare = shared.last;
+      expect(pgnShare.subject, 'Game PGN');
+      expect(pgnShare.text, contains('[Event "Sanmill Opening Explorer"]'));
+      expect(pgnShare.text, contains('[Variant "Nine Men\'s Morris"]'));
+      expect(pgnShare.text, contains('[PlyCount "1"]'));
+      expect(pgnShare.text, isNot(contains('[FEN ')));
+      expect(pgnShare.text, matches(RegExp(r'1\. [a-g][1-7] \*$')));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Opening explorer line actions fit phone portrait layout',
     (WidgetTester tester) async {
       tester.view
