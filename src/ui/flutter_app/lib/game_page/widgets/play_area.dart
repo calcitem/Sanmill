@@ -5958,7 +5958,9 @@ class _InlineMoveListState extends State<_InlineMoveList> {
         ),
       ),
       child: ConstrainedBox(
-        constraints: BoxConstraints(minHeight: widget.showMiniBoards ? 76 : 40),
+        constraints: BoxConstraints(
+          minHeight: widget.showMiniBoards ? _kAnalysisMiniBoardSize + 24 : 40,
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -5994,7 +5996,9 @@ class _InlineMoveListState extends State<_InlineMoveList> {
         .where((_InlineMoveSegment segment) => segment.side == side)
         .toList(growable: false);
     if (segments.isEmpty) {
-      return SizedBox(height: widget.showMiniBoards ? 76 : 40);
+      return SizedBox(
+        height: widget.showMiniBoards ? _kAnalysisMiniBoardSize + 24 : 40,
+      );
     }
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
@@ -6026,7 +6030,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
             const TextStyle(fontSize: 16))
         .copyWith(
           color: onSurface.withValues(alpha: isSideline ? 0.6 : 0.9),
-          fontFamily: null,
+          fontFamily: 'monospace',
           fontSize: isSideline ? 15 : 16,
           fontWeight: FontWeight.w600,
           height: 1.5,
@@ -6042,7 +6046,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
     if (evaluation == null) {
       return null;
     }
-    return evaluation > 0 ? '+$evaluation' : '$evaluation';
+    return formatAnalysisEvaluationDisplay(evaluation);
   }
 
   Widget _analysisMiniBoard(
@@ -6197,10 +6201,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
             final double availableWidth = constraints.hasBoundedWidth
                 ? constraints.maxWidth
                 : 220;
-            final double boardSize = math.min(
-              68,
-              math.max(44, availableWidth * 0.32),
-            );
+            const double boardSize = _kAnalysisMiniBoardSize;
             final Widget? eval = evaluation == null
                 ? null
                 : Text(
@@ -6215,7 +6216,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
                               color: Theme.of(
                                 context,
                               ).colorScheme.onSurface.withValues(alpha: 0.4),
-                              fontFamily: null,
+                              fontFamily: 'monospace',
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
                               letterSpacing: 0,
@@ -6912,6 +6913,12 @@ class _IndexedMoveNode {
 
 enum _InlineMoveListLayout { wrap, horizontal, stacked, twoColumn }
 
+/// Fixed size for analysis-panel move mini boards.
+///
+/// Kept constant so two-column mainline cells and full-width sidelines render
+/// the same preview size (dynamic width-based sizing made them diverge).
+const double _kAnalysisMiniBoardSize = 52;
+
 enum _GameMoveChipStyle { filled, inlineText }
 
 class _BoundedMoveWrap extends StatelessWidget {
@@ -6999,15 +7006,11 @@ class _InlineMoveCount extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color color =
         foregroundColor ?? Theme.of(context).colorScheme.onSurfaceVariant;
-    final TextStyle baseStyle = fontSize == null
-        ? _inlineMoveListTextStyle(context)
-        : Theme.of(context).textTheme.bodyLarge ??
-              const TextStyle(fontSize: 16);
     return Padding(
       padding: const EdgeInsets.only(right: 3),
       child: Text(
         '$count.',
-        style: baseStyle.copyWith(
+        style: _inlineMoveListTextStyle(context).copyWith(
           color: color,
           fontSize: fontSize,
           fontWeight: FontWeight.w400,
@@ -7837,6 +7840,7 @@ class _AnalysisVariationButton extends StatelessWidget {
                     maxLines: 1,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: foregroundColor,
+                      fontFamily: 'monospace',
                       fontWeight: FontWeight.w600,
                       letterSpacing: 0,
                     ),
@@ -8057,6 +8061,7 @@ class _AnalysisEngineLine extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: chipTextColor,
+                        fontFamily: 'monospace',
                         fontSize: evalFontSize,
                         fontWeight: FontWeight.w600,
                         letterSpacing: 0,
@@ -8072,6 +8077,7 @@ class _AnalysisEngineLine extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: lineColor,
+                        fontFamily: 'monospace',
                         fontSize: 14,
                         letterSpacing: 0,
                       ),
@@ -8166,8 +8172,18 @@ String _analysisEvalLabel(AnalysisOutcome outcome) {
   if (outcome.stepCount != null && outcome.stepCount! > 0) {
     return '${outcome.name.substring(0, 1).toUpperCase()}${outcome.stepCount}';
   }
-  if (outcome.valueStr != null && outcome.valueStr!.isNotEmpty) {
-    return outcome.valueStr!;
+  // Scale heuristic / engine scores to piece units; keep perfect-database
+  // WDL rows as symbols (their valueStr is ±1 / 0, not an engine score).
+  if (outcome.name == 'advantage' ||
+      outcome.name == 'disadvantage' ||
+      outcome.name == 'draw') {
+    final String? valueStr = outcome.valueStr;
+    if (valueStr != null && valueStr.isNotEmpty) {
+      final String? formatted = formatAnalysisEvaluationValueStr(valueStr);
+      if (formatted != null) {
+        return formatted;
+      }
+    }
   }
   return switch (outcome.name) {
     'win' => 'W',

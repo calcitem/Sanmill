@@ -428,6 +428,11 @@ extension GameResultExtension on GameResult {
 }
 
 const int valueUnique = 100;
+
+/// Centipawn-style piece weight used by the engine evaluator.
+///
+/// Analysis-panel UI divides raw scores by this value via
+/// `formatAnalysisEvaluationDisplay` in `analysis_mode.dart`.
 const int valueEachPiece = 5;
 
 const int sqBegin = MillBoardCoordinateMaps.legacySquareBegin;

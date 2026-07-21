@@ -10,6 +10,34 @@ import '../../appearance_settings/models/display_settings.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../shared/database/database.dart';
 
+/// Divisor for showing engine scores in piece-equivalent units.
+///
+/// Must stay equal to `valueEachPiece` in `engine/types.dart` (kept here so
+/// this library does not create a circular import with `mill.dart`).
+const int kAnalysisEvaluationPieceValue = 5;
+
+/// Formats a raw engine score for analysis-panel display.
+///
+/// Engine scores use [kAnalysisEvaluationPieceValue] per piece, so the UI
+/// shows piece-equivalent units with one decimal place (e.g. `8` → `+1.6`).
+String formatAnalysisEvaluationDisplay(num rawScore) {
+  final double pieces = rawScore / kAnalysisEvaluationPieceValue;
+  if (pieces > 0) {
+    return '+${pieces.toStringAsFixed(1)}';
+  }
+  return pieces.toStringAsFixed(1);
+}
+
+/// Formats a numeric [valueStr] for analysis-panel display, or null when the
+/// string is not a parseable score.
+String? formatAnalysisEvaluationValueStr(String valueStr) {
+  final double? parsed = double.tryParse(valueStr);
+  if (parsed == null) {
+    return null;
+  }
+  return formatAnalysisEvaluationDisplay(parsed);
+}
+
 /// Verdict for a single analysed move.
 ///
 /// The standard win/draw/loss verdicts come from the perfect database;
@@ -66,7 +94,12 @@ class AnalysisOutcome {
   String get displayString {
     final StringBuffer buffer = StringBuffer(name);
     if (valueStr != null && valueStr!.isNotEmpty) {
-      buffer.write(' ($valueStr');
+      final bool scaleToPieces =
+          name == 'advantage' || name == 'disadvantage' || name == 'draw';
+      final String displayValue = scaleToPieces
+          ? (formatAnalysisEvaluationValueStr(valueStr!) ?? valueStr!)
+          : valueStr!;
+      buffer.write(' ($displayValue');
       if (stepCount != null && stepCount! > 0) {
         buffer.write(' in $stepCount steps');
       }

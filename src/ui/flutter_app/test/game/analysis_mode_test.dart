@@ -8,6 +8,8 @@ import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/analysis_mode.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   tearDown(() {
     AnalysisMode.disable();
     AnalysisMode.setSmallBoard(false);
@@ -306,5 +308,25 @@ void main() {
 
     AnalysisMode.setAnalyzing(false);
     expect(notifications, 4);
+  });
+
+  test('formats engine scores as piece units with one decimal', () {
+    expect(formatAnalysisEvaluationDisplay(0), '0.0');
+    expect(formatAnalysisEvaluationDisplay(5), '+1.0');
+    expect(formatAnalysisEvaluationDisplay(8), '+1.6');
+    expect(formatAnalysisEvaluationDisplay(-42), '-8.4');
+    expect(formatAnalysisEvaluationValueStr('+42'), '+8.4');
+    expect(formatAnalysisEvaluationValueStr('not-a-score'), isNull);
+  });
+
+  test('displayString scales heuristic scores but not perfect-db WDL', () {
+    expect(
+      AnalysisOutcome.withValue(AnalysisOutcome.advantage, '+42').displayString,
+      'advantage (+8.4)',
+    );
+    expect(
+      AnalysisOutcome.withValue(AnalysisOutcome.win, '1').displayString,
+      'win (1)',
+    );
   });
 }

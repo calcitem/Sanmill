@@ -977,7 +977,8 @@ class AnalysisRenderer {
         outcome.valueStr!.isNotEmpty &&
         (outcome == AnalysisOutcome.advantage ||
             outcome == AnalysisOutcome.disadvantage)) {
-      return outcome.valueStr!;
+      return formatAnalysisEvaluationValueStr(outcome.valueStr!) ??
+          outcome.valueStr!;
     }
     switch (outcome.name) {
       case 'win':

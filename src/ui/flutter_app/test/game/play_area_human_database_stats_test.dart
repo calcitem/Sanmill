@@ -2535,6 +2535,8 @@ void main() {
         final Rect boardRect = tester.getRect(find.byWidget(element.widget));
         expect(boardRect.left, greaterThanOrEqualTo(panelRect.left));
         expect(boardRect.right, lessThanOrEqualTo(panelRect.right + 0.01));
+        expect(boardRect.width, 52);
+        expect(boardRect.height, 52);
       }
       expect(tester.takeException(), isNull);
     },
@@ -6697,7 +6699,7 @@ void main() {
       find.byKey(const Key('play_area_analysis_move_tree')),
       findsOneWidget,
     );
-    expect(find.text('+5'), findsOneWidget);
+    expect(find.text('+1.0'), findsOneWidget);
     expect(
       find.byKey(const Key('play_area_analysis_variations_bar_content')),
       findsOneWidget,
