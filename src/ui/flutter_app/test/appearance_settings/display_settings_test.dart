@@ -64,6 +64,7 @@ void main() {
       expect(d.analysisEvaluationGaugePosition, EvaluationGaugePosition.left);
       expect(d.analysisShowAllBoardResults, isFalse);
       expect(d.analysisShowMoveFeedback, isTrue);
+      expect(d.analysisShowMoveMiniBoards, isFalse);
       expect(d.showLegalMoves, isTrue);
       expect(d.showLastMove, isTrue);
       expect(
@@ -103,6 +104,24 @@ void main() {
     expect(
       DisplaySettings.fromJson(legacyJson).analysisShowMoveFeedback,
       isTrue,
+    );
+  });
+
+  test('analysis mini-board preference copies and migrates safely', () {
+    final DisplaySettings changed = const DisplaySettings()
+        .copyWithAnalysisPreferences(analysisShowMoveMiniBoards: true);
+
+    expect(changed.analysisShowMoveMiniBoards, isTrue);
+    expect(
+      DisplaySettings.fromJson(changed.toJson()).analysisShowMoveMiniBoards,
+      isTrue,
+    );
+
+    final Map<String, dynamic> legacyJson = changed.toJson()
+      ..remove('AnalysisShowMoveMiniBoards');
+    expect(
+      DisplaySettings.fromJson(legacyJson).analysisShowMoveMiniBoards,
+      isFalse,
     );
   });
 

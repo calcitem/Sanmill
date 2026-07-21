@@ -1223,6 +1223,24 @@ void main() {
     expect(chinese.smallBoard, '小棋盘');
   });
 
+  test(
+    'localizes the aligned analysis-board labels in English and Chinese',
+    () {
+      final S english = lookupS(const Locale('en'));
+      final S chinese = lookupS(const Locale('zh'));
+
+      expect(english.analysisBoard, 'Analysis board');
+      expect(chinese.analysisBoard, '分析棋盘');
+      expect(english.sound, 'Sound');
+      expect(chinese.sound, '声音');
+      expect(
+        english.analysisShowMoveMiniBoards,
+        'Show mini boards beside moves',
+      );
+      expect(chinese.analysisShowMoveMiniBoards, '在着法旁显示小棋盘');
+    },
+  );
+
   test('uses natural Chinese copy for local diagnostic reports', () {
     final S chinese = lookupS(const Locale('zh'));
 

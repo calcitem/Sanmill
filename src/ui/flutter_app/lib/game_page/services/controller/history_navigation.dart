@@ -41,8 +41,45 @@ class HistoryNavigator {
       hypothesisId: 'RACE,ANALYSIS_RACE',
     );
     // #endregion
-    // Clear any existing analysis markers when player makes a move
-    AnalysisMode.disable();
+    if (_isGoingToHistory) {
+      logger.i("$_logTag Is going to history, ignore repeated request.");
+      if (pop && context.mounted) {
+        Navigator.pop(context);
+      }
+      return const HistoryOK();
+    }
+
+    _isGoingToHistory = true;
+    try {
+      return await _gotoHistoryUnlocked(
+        context,
+        navMode,
+        pop: pop,
+        toolbar: toolbar,
+        number: number,
+      );
+    } finally {
+      _isGoingToHistory = false;
+    }
+  }
+
+  static Future<HistoryResponse?> _gotoHistoryUnlocked(
+    BuildContext context,
+    HistoryNavMode navMode, {
+    required bool pop,
+    required bool toolbar,
+    required int? number,
+  }) async {
+    final bool keepAnalysisEnabled =
+        GameController().gameInstance.gameMode == GameMode.analysis &&
+        (AnalysisMode.isFullAnalysis || AnalysisMode.isAnalyzing);
+    if (!keepAnalysisEnabled) {
+      // Hints and overlays from a different position must never survive a
+      // history jump. Full analysis is preserved and refreshed by the move
+      // listener after its UI owner has stopped the current engine pass and
+      // the native position has been rebuilt.
+      AnalysisMode.disable();
+    }
 
     // Disable statistics
     GameController().disableStats = true;
@@ -159,15 +196,6 @@ class HistoryNavigator {
     GameController().headerIconsNotifier.showIcons();
     GameController().boardSemanticsNotifier.updateSemantics();
 
-    if (_isGoingToHistory) {
-      logger.i("$_logTag Is going to history, ignore repeated request.");
-      if (pop && context.mounted) {
-        Navigator.pop(context);
-      }
-      return const HistoryOK();
-    }
-
-    _isGoingToHistory = true;
     SoundManager().mute();
 
     if ((navMode == HistoryNavMode.takeBackAll ||
@@ -232,7 +260,6 @@ class HistoryNavigator {
       return resp;
     } finally {
       SoundManager().unMute();
-      _isGoingToHistory = false;
     }
   }
 
@@ -474,6 +501,27 @@ class HistoryNavigator {
     PgnNode<ExtMove> targetNode, {
     bool pop = true,
   }) async {
+    if (_isGoingToHistory) {
+      logger.i("$_logTag Is going to history, ignore repeated request.");
+      if (pop && context.mounted) {
+        Navigator.pop(context);
+      }
+      return const HistoryOK();
+    }
+
+    _isGoingToHistory = true;
+    try {
+      return await _gotoNodeUnlocked(context, targetNode, pop: pop);
+    } finally {
+      _isGoingToHistory = false;
+    }
+  }
+
+  static Future<HistoryResponse?> _gotoNodeUnlocked(
+    BuildContext context,
+    PgnNode<ExtMove> targetNode, {
+    required bool pop,
+  }) async {
     // Temporarily disable the controller and stop engine searching
     GameController().isControllerActive = false;
     if (GameController().isEngineRunning) {
@@ -494,7 +542,10 @@ class HistoryNavigator {
         for (final PgnNode<ExtMove> node in path)
           if (node.data != null) node.data!,
       ];
-      final bool success = await nativeSession.replayMainline(moves);
+      final bool success = await nativeSession.replayMainline(
+        moves,
+        initialFen: GameController().gameRecorder.setupPosition ?? '',
+      );
       if (!success) {
         importFailedStr = moves.isEmpty ? '' : moves.last.notation;
       }
@@ -602,7 +653,10 @@ class HistoryNavigator {
       hypothesisId: 'RACE,STALE',
     );
     // #endregion
-    final bool success = await session.replayMainline(pathMoves);
+    final bool success = await session.replayMainline(
+      pathMoves,
+      initialFen: GameController().gameRecorder.setupPosition ?? '',
+    );
     // #region agent log
     agentDbg(
       'history_navigation.dart:_nativeDoEachMove:afterReplay',
@@ -671,9 +725,6 @@ class HistoryNavigator {
       }
       rec.activeNode = parent;
     }
-
-    // Notify move count change — use currentPath for variation correctness.
-    rec.moveCountNotifier.value = rec.currentPath.length;
   }
 
   /// Move HEAD to the root.
@@ -700,7 +751,6 @@ class HistoryNavigator {
     }
     // HEAD => pgnRoot
     rec.activeNode = rec.pgnRoot;
-    rec.moveCountNotifier.value = 0;
   }
 
   /// Move HEAD forward by `n` steps.
@@ -721,7 +771,6 @@ class HistoryNavigator {
       );
       rec.activeNode = current.children[index];
     }
-    rec.moveCountNotifier.value = rec.currentPath.length;
   }
 
   /// Move HEAD forward to the very end along the current variation path.
@@ -738,7 +787,6 @@ class HistoryNavigator {
       final int index = _resolveChildIndex(rec, current, null);
       rec.activeNode = current.children[index];
     }
-    rec.moveCountNotifier.value = rec.currentPath.length;
   }
 
   /// Determines which child to follow at [node].

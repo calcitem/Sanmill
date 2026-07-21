@@ -145,6 +145,7 @@ class DisplaySettings {
     this.analysisEvaluationGaugePosition = EvaluationGaugePosition.left,
     this.analysisShowAllBoardResults = false,
     this.analysisShowMoveFeedback = true,
+    this.analysisShowMoveMiniBoards = false,
     this.showLegalMoves = true,
     this.showLastMove = true,
     this.analysisEngineLineCount = kDefaultAnalysisEngineLineCount,
@@ -364,6 +365,10 @@ class DisplaySettings {
   @HiveField(60, defaultValue: true)
   final bool analysisShowMoveFeedback;
 
+  /// Whether analysis move trees show a compact board beside every move.
+  @HiveField(61, defaultValue: false)
+  final bool analysisShowMoveMiniBoards;
+
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);
 
@@ -378,6 +383,7 @@ class DisplaySettings {
     EvaluationGaugePosition? analysisEvaluationGaugePosition,
     bool? analysisShowAllBoardResults,
     bool? analysisShowMoveFeedback,
+    bool? analysisShowMoveMiniBoards,
     int? analysisEngineLineCount,
     int? analysisEngineSearchTimeMs,
   }) {
@@ -446,6 +452,8 @@ class DisplaySettings {
           analysisShowAllBoardResults ?? this.analysisShowAllBoardResults,
       analysisShowMoveFeedback:
           analysisShowMoveFeedback ?? this.analysisShowMoveFeedback,
+      analysisShowMoveMiniBoards:
+          analysisShowMoveMiniBoards ?? this.analysisShowMoveMiniBoards,
       showLegalMoves: showLegalMoves,
       showLastMove: showLastMove,
       analysisEngineLineCount:

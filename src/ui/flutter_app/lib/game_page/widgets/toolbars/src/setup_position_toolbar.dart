@@ -206,7 +206,8 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   void _cancel() {
     _record('cancel');
     GameController().headerTipNotifier.showTip(S.of(context).restoredPosition);
-    GameController().cancelSetupPosition();
+    final GameMode resumedMode = GameController().cancelSetupPosition();
+    _resumeAnalysisIfNeeded(resumedMode);
     if (ModalRoute.of(context)?.settings.name ==
         MillRouteIds.setupPosition.value) {
       Navigator.of(context).pop();
@@ -241,8 +242,20 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       );
       return;
     }
-    GameController().finishSetupPosition(fen);
+    final GameMode resumedMode = GameController().finishSetupPosition(fen);
+    _resumeAnalysisIfNeeded(resumedMode);
     GameController().headerTipNotifier.showTip(S.of(context).gameStarted);
+  }
+
+  void _resumeAnalysisIfNeeded(GameMode resumedMode) {
+    if (resumedMode != GameMode.analysis) {
+      return;
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && !AnalysisMode.isAnalyzing) {
+        unawaited(AnalysisService.refresh(context));
+      }
+    });
   }
 
   Widget _paintColorIndicator(BuildContext context) {

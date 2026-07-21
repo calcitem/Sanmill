@@ -48,6 +48,8 @@ class ExtMove extends PgnNodeData {
     this.moveIndex,
     this.roundIndex,
     this.preferredRemoveTarget,
+    this.analysisEvaluation,
+    this.analysisEvaluationDepth,
     super.nags,
     super.startingComments,
     super.comments,
@@ -95,6 +97,12 @@ class ExtMove extends PgnNodeData {
   /// engine select the correct intervention capture line and ensures the second
   /// capture stays on the same line.
   int? preferredRemoveTarget;
+
+  /// Engine evaluation of the position after this move, from White's view.
+  int? analysisEvaluation;
+
+  /// Search depth that produced [analysisEvaluation].
+  int? analysisEvaluationDepth;
 
   /// Move quality evaluation
   MoveQuality? quality;

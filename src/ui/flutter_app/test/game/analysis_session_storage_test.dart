@@ -96,6 +96,8 @@ void main() {
     expect(restoredMove.branchLineType, 'end');
     expect(restoredMove.isLastSibling, isTrue);
     expect(restoredMove.siblingIndex, 1);
+    expect(restoredMove.analysisEvaluation, 5);
+    expect(restoredMove.analysisEvaluationDepth, 18);
   });
 
   test(
@@ -215,6 +217,52 @@ void main() {
     expect(recorder.hasReplaceableAnalysisContent, isTrue);
   });
 
+  test('editing an analysis root keeps the recorder listener identity', () {
+    final NativeMillGameSession session = NativeMillGameSession();
+    addTearDown(session.dispose);
+    final GameController controller = GameController();
+    controller.gameInstance.gameMode = GameMode.analysis;
+    controller.bindActiveSession(session);
+    addTearDown(() => controller.unbindActiveSession(session));
+    controller.gameRecorder = GameRecorder()
+      ..appendMove(ExtMove('d6', side: PieceColor.white));
+    final GameRecorder recorder = controller.gameRecorder;
+    int notifications = 0;
+    recorder.moveCountNotifier.addListener(() => notifications++);
+
+    controller.enterSetupPosition();
+    expect(controller.gameInstance.gameMode, GameMode.setupPosition);
+    final String fen = controller.setupPositionController!.exportFen();
+    final GameMode resumedMode = controller.finishSetupPosition(fen);
+
+    expect(resumedMode, GameMode.analysis);
+    expect(controller.gameInstance.gameMode, GameMode.analysis);
+    expect(identical(controller.gameRecorder, recorder), isTrue);
+    expect(controller.gameRecorder.currentPath, isEmpty);
+    expect(controller.gameRecorder.setupPosition, fen);
+    expect(controller.gameRecorder.lastPositionWithRemove, fen);
+    expect(notifications, greaterThan(0));
+  });
+
+  test('cached move evaluations only advance to equal or deeper searches', () {
+    final GameRecorder recorder = GameRecorder()
+      ..appendMove(ExtMove('d6', side: PieceColor.white));
+    final PgnNode<ExtMove> node = recorder.activeNode!;
+
+    recorder.setAnalysisEvaluation(node, 5, depth: 12);
+    recorder.setAnalysisEvaluation(node, -3, depth: 8);
+    expect(node.data!.analysisEvaluation, 5);
+    expect(node.data!.analysisEvaluationDepth, 12);
+
+    recorder.setAnalysisEvaluation(node, 7, depth: 12);
+    expect(node.data!.analysisEvaluation, 7);
+    expect(node.data!.analysisEvaluationDepth, 12);
+
+    recorder.setAnalysisEvaluation(node, 9, depth: 16);
+    expect(node.data!.analysisEvaluation, 9);
+    expect(node.data!.analysisEvaluationDepth, 16);
+  });
+
   test('rejects a detached current-position path', () async {
     const RuleSettings rules = RuleSettings();
     final GameRecorder recorder = _branchedRecorder(rules);
@@ -261,6 +309,8 @@ GameRecorder _branchedRecorder(RuleSettings rules) {
           nags: <int>[3, 14],
           startingComments: <String>['before'],
           comments: <String>['after'],
+          analysisEvaluation: 5,
+          analysisEvaluationDepth: 18,
         )
         ..quality = MoveQuality.majorGoodMove
         ..isVariation = true

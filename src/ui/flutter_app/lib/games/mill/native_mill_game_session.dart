@@ -1003,12 +1003,23 @@ class NativeMillGameSession implements GameSessionHandle {
     };
   }
 
-  /// Undo back to the root, then replay [moves] through this native session.
+  /// Return to the replay root, then replay [moves] through this session.
+  ///
+  /// When [initialFen] is omitted, the existing undo stack defines the root,
+  /// preserving the behaviour expected by recorder-independent callers. When
+  /// it is supplied, it is authoritative: an empty value means the standard
+  /// initial position, while a non-empty value is loaded as a setup position.
+  /// History navigation supplies this value because actions such as board
+  /// editing and coordinate transforms can legitimately clear the native
+  /// undo stack without changing the recorder tree.
   ///
   /// Returns false if any replayed move is illegal in the Rust session.  The
   /// caller remains responsible for keeping any external PGN active-node
   /// pointer in sync with its chosen target node.
-  Future<bool> replayMainline(Iterable<ExtMove> moves) async {
+  Future<bool> replayMainline(
+    Iterable<ExtMove> moves, {
+    String? initialFen,
+  }) async {
     // #region agent log
     final List<ExtMove> movesList = moves.toList(growable: false);
     agentDbg(
@@ -1028,8 +1039,17 @@ class NativeMillGameSession implements GameSessionHandle {
     );
     _isReplayingMainline = true;
     try {
-      while (undoDepth > 0) {
-        await undo();
+      if (initialFen != null) {
+        final String replayRoot = initialFen.trim();
+        if (replayRoot.isEmpty) {
+          resetGame();
+        } else if (!loadFen(replayRoot)) {
+          return false;
+        }
+      } else {
+        while (undoDepth > 0) {
+          await undo();
+        }
       }
       // #region agent log
       if (undoDepth != 0) {

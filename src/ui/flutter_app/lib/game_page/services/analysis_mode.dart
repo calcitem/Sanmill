@@ -172,6 +172,7 @@ class AnalysisMode {
       EvaluationGaugePosition.left;
   static bool _showAllBoardResults = false;
   static bool _showMoveFeedback = true;
+  static bool _showMoveMiniBoards = false;
   static bool _inlineNotation = false;
   static bool _smallBoard = false;
   static bool _isThreatMode = false;
@@ -231,6 +232,9 @@ class AnalysisMode {
 
   /// Whether selecting a played move runs and shows on-demand feedback.
   static bool get showMoveFeedback => _showMoveFeedback;
+
+  /// Whether the analysis move tree shows a compact board beside every move.
+  static bool get showMoveMiniBoards => _showMoveMiniBoards;
 
   /// Whether the analysis move list uses compact inline notation.
   static bool get inlineNotation => _inlineNotation;
@@ -472,6 +476,21 @@ class AnalysisMode {
     _publishState();
   }
 
+  /// Set whether the analysis move tree shows compact board previews.
+  static void setShowMoveMiniBoards(bool value, {bool persist = false}) {
+    if (_showMoveMiniBoards == value) {
+      if (persist) {
+        _saveDisplayPreferences(showMoveMiniBoards: value);
+      }
+      return;
+    }
+    _showMoveMiniBoards = value;
+    if (persist) {
+      _saveDisplayPreferences(showMoveMiniBoards: value);
+    }
+    _publishState();
+  }
+
   /// Set whether the analysis move list uses compact inline notation.
   static void setInlineNotation(bool value, {bool persist = false}) {
     if (_inlineNotation == value) {
@@ -578,6 +597,7 @@ class AnalysisMode {
     required EvaluationGaugePosition evaluationGaugePosition,
     required bool showAllBoardResults,
     bool showMoveFeedback = true,
+    bool showMoveMiniBoards = false,
     required int engineLineCount,
     required int engineSearchTimeMs,
     bool notify = true,
@@ -596,6 +616,7 @@ class AnalysisMode {
         _evaluationGaugePosition == evaluationGaugePosition &&
         _showAllBoardResults == showAllBoardResults &&
         _showMoveFeedback == showMoveFeedback &&
+        _showMoveMiniBoards == showMoveMiniBoards &&
         _engineLineCount == nextLineCount &&
         _engineSearchTimeMs == nextSearchTimeMs) {
       return;
@@ -610,6 +631,7 @@ class AnalysisMode {
     _evaluationGaugePosition = evaluationGaugePosition;
     _showAllBoardResults = showAllBoardResults;
     _showMoveFeedback = showMoveFeedback;
+    _showMoveMiniBoards = showMoveMiniBoards;
     _engineLineCount = nextLineCount;
     _engineSearchTimeMs = nextSearchTimeMs;
     if (notify) {
@@ -640,6 +662,7 @@ class AnalysisMode {
     EvaluationGaugePosition? evaluationGaugePosition,
     bool? showAllBoardResults,
     bool? showMoveFeedback,
+    bool? showMoveMiniBoards,
     int? engineLineCount,
     int? engineSearchTimeMs,
   }) {
@@ -663,6 +686,8 @@ class AnalysisMode {
           showAllBoardResults ?? settings.analysisShowAllBoardResults,
       analysisShowMoveFeedback:
           showMoveFeedback ?? settings.analysisShowMoveFeedback,
+      analysisShowMoveMiniBoards:
+          showMoveMiniBoards ?? settings.analysisShowMoveMiniBoards,
       analysisEngineLineCount:
           engineLineCount ?? settings.analysisEngineLineCount,
       analysisEngineSearchTimeMs:

@@ -1659,6 +1659,7 @@ void main() {
         find.byKey(const Key('game_page_analysis_appbar_title')),
         findsOneWidget,
       );
+      expect(find.text('Analysis board'), findsOneWidget);
       expect(
         find.byKey(const Key('game_page_analysis_annotation_button')),
         findsOneWidget,
@@ -1705,13 +1706,22 @@ void main() {
         find.byKey(const Key('game_page_analysis_menu_settings')),
         findsOneWidget,
       );
-      expect(find.text('Analysis settings'), findsOneWidget);
+      expect(find.text('Settings'), findsOneWidget);
       expect(
         find.byKey(const Key('game_page_analysis_menu_engine_lines')),
         findsOneWidget,
       );
       expect(find.text('Hide engine lines'), findsOneWidget);
-      expect(find.text('Engine · 2 lines'), findsOneWidget);
+      expect(find.text('Engine · 2 lines'), findsNothing);
+      expect(find.text('New analysis'), findsNothing);
+      expect(
+        find.byIcon(
+          DB().generalSettings.toneEnabled ? Icons.volume_up : Icons.volume_off,
+        ),
+        findsOneWidget,
+      );
+      expect(find.byIcon(Icons.settings), findsOneWidget);
+      expect(find.byIcon(Icons.subtitles_outlined), findsOneWidget);
       expect(AnalysisMode.showEngineLines, isTrue);
 
       final bool soundWasEnabled = DB().generalSettings.toneEnabled;
@@ -2130,13 +2140,6 @@ void main() {
         findsNothing,
       );
       expect(
-        find.byKey(
-          const Key('appearance_settings_page_advanced_display_card'),
-          skipOffstage: false,
-        ),
-        findsOneWidget,
-      );
-      expect(
         find.descendant(
           of: find.byKey(const Key('appearance_settings_page_appbar')),
           matching: find.byType(BackButton),
@@ -2255,6 +2258,16 @@ void main() {
             'display_settings_card_capturable_pieces_highlight_shown_switch_tile',
           ),
         ),
+        findsOneWidget,
+      );
+      await tester.scrollUntilVisible(
+        find.byKey(const Key('appearance_settings_page_advanced_display_card')),
+        320,
+        scrollable: appearanceScrollable,
+      );
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const Key('appearance_settings_page_advanced_display_card')),
         findsOneWidget,
       );
       final double displaySettingsOffset = tester

@@ -300,6 +300,8 @@ Map<String, dynamic> _encodeAnalysisNode(PgnNode<ExtMove> node) {
     'moveIndex': move.moveIndex,
     'roundIndex': move.roundIndex,
     'preferredRemoveTarget': move.preferredRemoveTarget,
+    'analysisEvaluation': move.analysisEvaluation,
+    'analysisEvaluationDepth': move.analysisEvaluationDepth,
     'nags': move.nags == null ? null : List<int>.from(move.nags!),
     'startingComments': move.startingComments == null
         ? null
@@ -340,6 +342,14 @@ PgnNode<ExtMove> _decodeAnalysisNode(dynamic raw, PgnNode<ExtMove> parent) {
     preferredRemoveTarget: _analysisNullableInt(
       json['preferredRemoveTarget'],
       'preferredRemoveTarget',
+    ),
+    analysisEvaluation: _analysisNullableInt(
+      json['analysisEvaluation'],
+      'analysisEvaluation',
+    ),
+    analysisEvaluationDepth: _analysisNullableInt(
+      json['analysisEvaluationDepth'],
+      'analysisEvaluationDepth',
     ),
     nags: _analysisNullableIntList(json['nags'], 'nags'),
     startingComments: _analysisNullableStringList(

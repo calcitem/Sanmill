@@ -6946,5 +6946,11 @@
     "moveFeedbackShowReasons": "Show all reasons",
     "@moveFeedbackShowReasons": {},
     "moveFeedbackReasonsTitle": "Why this move received this feedback",
-    "@moveFeedbackReasonsTitle": {}
+    "@moveFeedbackReasonsTitle": {},
+    "analysisShowMoveMiniBoards": "Show mini boards beside moves",
+    "@analysisShowMoveMiniBoards": {},
+    "analysisBoard": "Analysis board",
+    "@analysisBoard": {},
+    "sound": "Sound",
+    "@sound": {}
 }

@@ -107,6 +107,27 @@ class GameRecorder {
     moveCountNotifier.value = currentPath.length;
   }
 
+  /// Cache the engine evaluation for the position represented by [node].
+  void setAnalysisEvaluation(
+    PgnNode<ExtMove> node,
+    int evaluation, {
+    int? depth,
+  }) {
+    assert(node.data != null, 'Analysis evaluations require move data.');
+    final ExtMove move = node.data!;
+    final int previousDepth = move.analysisEvaluationDepth ?? -1;
+    final int nextDepth = depth ?? previousDepth;
+    if (nextDepth < previousDepth ||
+        (move.analysisEvaluation == evaluation &&
+            move.analysisEvaluationDepth == depth)) {
+      return;
+    }
+    move
+      ..analysisEvaluation = evaluation
+      ..analysisEvaluationDepth = depth;
+    moveCountNotifier.value = currentPath.length;
+  }
+
   /// Add or extend a line below [parent] while preserving the active node.
   /// Existing move tokens are reused, so repeated feedback actions never
   /// create duplicate variations.
@@ -284,6 +305,8 @@ class GameRecorder {
         move.preferredRemoveTarget,
         type,
       ),
+      analysisEvaluation: move.analysisEvaluation,
+      analysisEvaluationDepth: move.analysisEvaluationDepth,
       nags: move.nags == null ? null : List<int>.from(move.nags!),
       startingComments: move.startingComments == null
           ? null

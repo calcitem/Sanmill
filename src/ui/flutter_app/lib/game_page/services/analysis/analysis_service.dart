@@ -19,7 +19,8 @@ import '../../../shared/services/logger.dart';
 import '../../../shared/services/perfect_database_service.dart';
 import '../../../src/rust/api/simple.dart' as tgf;
 import '../analysis_mode.dart';
-import '../mill.dart' show GameController, LiveEvaluationService;
+import '../import_export/pgn.dart' show PgnNode;
+import '../mill.dart' show ExtMove, GameController, LiveEvaluationService;
 
 /// Drives the analysis overlay.
 ///
@@ -548,6 +549,9 @@ class AnalysisService {
       currentEngineResults,
       previousEngineLines,
     );
+    if (!isThreatMode && mode == AnalysisOverlayMode.analysis) {
+      _cacheCurrentPositionEvaluation(engineResults);
+    }
     final bool hasBaseResults = baseResults != null;
     AnalysisMode.enable(
       baseResults ?? engineResults,
@@ -560,6 +564,32 @@ class AnalysisService {
       isThreatMode: isThreatMode,
       isEngineAnalysisDeep: isDeepEngineAnalysis,
       isAnalyzing: isAnalyzing,
+    );
+  }
+
+  static void _cacheCurrentPositionEvaluation(
+    List<MoveAnalysisResult> engineResults,
+  ) {
+    if (engineResults.isEmpty) {
+      return;
+    }
+    final PgnNode<ExtMove>? activeNode =
+        GameController().gameRecorder.activeNode;
+    if (activeNode?.data == null) {
+      return;
+    }
+    final MoveAnalysisResult best = engineResults.firstWhere(
+      (MoveAnalysisResult result) => result.rank == 1,
+      orElse: () => engineResults.first,
+    );
+    final int? evaluation = int.tryParse(best.outcome.valueStr ?? '');
+    if (evaluation == null) {
+      return;
+    }
+    GameController().gameRecorder.setAnalysisEvaluation(
+      activeNode!,
+      evaluation,
+      depth: best.depth,
     );
   }
 

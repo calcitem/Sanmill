@@ -28,6 +28,8 @@ import '../../../shared/themes/app_theme.dart';
 import '../../../shared/utils/screen_insets.dart';
 import '../../../shared/widgets/lichess_bottom_bar.dart';
 import '../../../shared/widgets/snackbars/scaffold_messenger.dart';
+import '../../services/analysis/analysis_service.dart';
+import '../../services/analysis_mode.dart';
 import '../../services/annotation/annotation_manager.dart';
 import '../../services/mill.dart';
 import '../../services/transform/transform.dart';

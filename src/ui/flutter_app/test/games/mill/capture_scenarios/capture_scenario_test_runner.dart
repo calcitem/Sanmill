@@ -69,6 +69,7 @@ abstract final class CaptureScenarioTestRunner {
     try {
       final bool replayOk = await session.replayMainline(
         recorder.mainlineMoves,
+        initialFen: recorder.setupPosition ?? '',
       );
       if (!replayOk) {
         return TestCaseResult(

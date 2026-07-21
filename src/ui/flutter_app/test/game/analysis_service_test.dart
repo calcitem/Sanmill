@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/analysis/analysis_service.dart';
 import 'package:sanmill/game_page/services/analysis_mode.dart';
+import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_shell/game_session_scope.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
@@ -82,6 +83,43 @@ void main() {
     ]);
     expect(session.requestedDepthValues, <int>[64]);
     expect(session.requestedMoveLimitValues, <int>[6000]);
+  });
+
+  testWidgets('normal analysis caches the best score on the active move', (
+    WidgetTester tester,
+  ) async {
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession(
+      emitProgressUpdate: false,
+      variations: const <NativeMillPrincipalVariation>[
+        NativeMillPrincipalVariation(
+          rank: 1,
+          move: 'a7',
+          score: 42,
+          nodes: 2048,
+          depth: 12,
+          line: <String>['a7', 'd6'],
+        ),
+        NativeMillPrincipalVariation(
+          rank: 2,
+          move: 'd6',
+          score: -7,
+          nodes: 1024,
+          depth: 12,
+          line: <String>['d6'],
+        ),
+      ],
+    );
+    addTearDown(session.dispose);
+    final GameRecorder recorder = GameController().gameRecorder;
+    recorder.reset();
+    recorder.appendMove(ExtMove('d6', side: PieceColor.white));
+
+    await _pumpAnalysisButton(tester, session);
+    await tester.tap(find.byKey(const Key('analysis_service_toggle')));
+    await tester.pumpAndSettle();
+
+    expect(recorder.activeNode!.data!.analysisEvaluation, 42);
+    expect(recorder.activeNode!.data!.analysisEvaluationDepth, 12);
   });
 
   testWidgets('visible engine lines request the selected PV count', (

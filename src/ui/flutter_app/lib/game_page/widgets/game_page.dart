@@ -85,12 +85,7 @@ part 'game_header.dart';
 part 'game_page_action_sheet.dart';
 part 'modals/move_options_modal.dart';
 
-enum _AnalysisAppBarAction {
-  newAnalysis,
-  toggleSound,
-  settings,
-  toggleEngineLines,
-}
+enum _AnalysisAppBarAction { toggleSound, settings, toggleEngineLines }
 
 /// Main GamePage widget that initializes the game controller and passes it
 /// to a stateful inner widget managing annotation mode.
@@ -245,6 +240,11 @@ class _GamePageInnerState extends State<_GamePageInner>
     _analysisRecorder!.moveCountNotifier.addListener(
       _scheduleAnalysisSessionSave,
     );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && !AnalysisMode.isAnalyzing) {
+        unawaited(AnalysisService.refresh(context));
+      }
+    });
   }
 
   void _scheduleAnalysisSessionSave() {
@@ -300,6 +300,11 @@ class _GamePageInnerState extends State<_GamePageInner>
   @override
   void dispose() {
     if (_ownsAnalysisSession) {
+      // Engine searches belong to this analysis view. Leaving one running
+      // after the route is popped keeps publishing state into the next page
+      // and can also race its native-session operations.
+      AnalysisService.stopActiveEngineAnalysis();
+      AnalysisMode.disable();
       _analysisRecorder?.moveCountNotifier.removeListener(
         _scheduleAnalysisSessionSave,
       );
@@ -365,77 +370,6 @@ class _GamePageInnerState extends State<_GamePageInner>
     } else {
       unawaited(SoundManager().stopBackgroundMusic());
     }
-  }
-
-  Future<void> _startNewAnalysis() async {
-    assert(_isAnalysisPage, 'New analysis is analysis-only.');
-    final NativeMillGameSession? session =
-        widget.controller.activeNativeMillSession;
-    assert(session != null, 'New analysis requires an active Mill session.');
-    if (session == null) {
-      return;
-    }
-    final bool hasReplaceableContent =
-        widget.controller.gameRecorder.hasReplaceableAnalysisContent ||
-        _annotationManager.hasAnnotations;
-    if (hasReplaceableContent && !await _confirmReplacingAnalysis()) {
-      return;
-    }
-    RecordingService().recordEvent(
-      RecordingEventType.toolbarAction,
-      <String, dynamic>{'toolbar': 'analysisAppBar', 'action': 'newAnalysis'},
-    );
-    if (_isAnnotationMode) {
-      _annotationManager.clear();
-      _isAnnotationMode = false;
-      widget.controller.isAnnotationMode = false;
-    }
-    _analysisRecorder?.moveCountNotifier.removeListener(
-      _scheduleAnalysisSessionSave,
-    );
-    widget.controller.startNewAnalysis(session: session);
-    _analysisRecorder = widget.controller.gameRecorder;
-    _analysisRecorder!.moveCountNotifier.addListener(
-      _scheduleAnalysisSessionSave,
-    );
-    if (mounted) {
-      setState(() {});
-    }
-    await _saveAnalysisSession();
-    if (!mounted) {
-      return;
-    }
-    rootScaffoldMessengerKey.currentState?.showSnackBarClear(
-      S.of(context).newAnalysisStarted,
-    );
-  }
-
-  Future<bool> _confirmReplacingAnalysis() async {
-    assert(_isAnalysisPage, 'Replace confirmation is analysis-only.');
-    final bool? confirmed = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        final S strings = S.of(dialogContext);
-        return AlertDialog(
-          key: const Key('game_page_replace_analysis_dialog'),
-          title: Text(strings.replaceCurrentAnalysis),
-          content: Text(strings.currentAnalysisWillBeReplaced),
-          actions: <Widget>[
-            TextButton(
-              key: const Key('game_page_replace_analysis_cancel'),
-              onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: Text(strings.cancel),
-            ),
-            FilledButton(
-              key: const Key('game_page_replace_analysis_confirm'),
-              onPressed: () => Navigator.of(dialogContext).pop(true),
-              child: Text(strings.newAnalysis),
-            ),
-          ],
-        );
-      },
-    );
-    return confirmed ?? false;
   }
 
   @override
@@ -760,7 +694,7 @@ class _GamePageInnerState extends State<_GamePageInner>
           const SizedBox(width: 8),
           Flexible(
             child: Text(
-              strings.analysis,
+              strings.analysisBoard,
               key: const Key('game_page_analysis_appbar_title'),
               overflow: TextOverflow.ellipsis,
             ),
@@ -787,8 +721,6 @@ class _GamePageInnerState extends State<_GamePageInner>
               icon: Icon(Icons.more_horiz, semanticLabel: strings.menu),
               onSelected: (_AnalysisAppBarAction action) {
                 switch (action) {
-                  case _AnalysisAppBarAction.newAnalysis:
-                    unawaited(_startNewAnalysis());
                   case _AnalysisAppBarAction.toggleSound:
                     _toggleAnalysisSound();
                   case _AnalysisAppBarAction.settings:
@@ -817,24 +749,15 @@ class _GamePageInnerState extends State<_GamePageInner>
               itemBuilder: (BuildContext context) {
                 return <PopupMenuEntry<_AnalysisAppBarAction>>[
                   PopupMenuItem<_AnalysisAppBarAction>(
-                    key: const Key('game_page_analysis_menu_new_analysis'),
-                    value: _AnalysisAppBarAction.newAnalysis,
-                    child: ListTile(
-                      leading: const Icon(Icons.add_circle_outline_rounded),
-                      title: Text(strings.newAnalysis),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                  PopupMenuItem<_AnalysisAppBarAction>(
                     key: const Key('game_page_analysis_menu_sound'),
                     value: _AnalysisAppBarAction.toggleSound,
                     child: ListTile(
                       leading: Icon(
                         DB().generalSettings.toneEnabled
-                            ? Icons.volume_up_outlined
-                            : Icons.volume_off_outlined,
+                            ? Icons.volume_up
+                            : Icons.volume_off,
                       ),
-                      title: Text(strings.playSounds),
+                      title: Text(strings.sound),
                       contentPadding: EdgeInsets.zero,
                     ),
                   ),
@@ -842,8 +765,8 @@ class _GamePageInnerState extends State<_GamePageInner>
                     key: const Key('game_page_analysis_menu_settings'),
                     value: _AnalysisAppBarAction.settings,
                     child: ListTile(
-                      leading: const Icon(Icons.settings_outlined),
-                      title: Text(strings.analysisSettingsTitle),
+                      leading: const Icon(Icons.settings),
+                      title: Text(strings.settings),
                       contentPadding: EdgeInsets.zero,
                     ),
                   ),
@@ -860,9 +783,6 @@ class _GamePageInnerState extends State<_GamePageInner>
                         AnalysisMode.showEngineLines
                             ? strings.hideEngineLines
                             : strings.showEngineLines,
-                      ),
-                      subtitle: Text(
-                        _analysisAppBarEngineLinesSubtitle(strings),
                       ),
                       contentPadding: EdgeInsets.zero,
                     ),
@@ -937,31 +857,6 @@ class _GamePageInnerState extends State<_GamePageInner>
       icon: const Icon(FluentIcons.draw_image_24_regular, color: Colors.white),
       onPressed: _toggleTopAnnotationMode,
     );
-  }
-
-  String _analysisAppBarEngineLinesSubtitle(S strings) {
-    final int lineCount = AnalysisMode.engineLineCount;
-    final String lineCountLabel = lineCount <= 0
-        ? strings.openingExplorerNoDataShort
-        : strings.engineLineCount(lineCount);
-    return <String>[
-      _analysisAppBarSourceLabel(strings),
-      lineCountLabel,
-    ].join(' · ');
-  }
-
-  String _analysisAppBarSourceLabel(S strings) {
-    return switch (AnalysisMode.source) {
-      AnalysisSource.engine =>
-        AnalysisMode.isThreatMode
-            ? '${strings.analysisThreat} · ${strings.engine}'
-            : strings.engine,
-      AnalysisSource.perfectDatabaseAndEngine =>
-        '${strings.analysisPerfectDatabaseShortLabel} · ${strings.engine}',
-      AnalysisSource.perfectDatabase =>
-        strings.analysisPerfectDatabaseShortLabel,
-      null => strings.engine,
-    };
   }
 
   // Builds the background widget based on display settings.

@@ -21,6 +21,7 @@ void main() {
     AnalysisMode.setEvaluationGaugePosition(EvaluationGaugePosition.left);
     AnalysisMode.setShowAllBoardResults(false);
     AnalysisMode.setShowMoveFeedback(true);
+    AnalysisMode.setShowMoveMiniBoards(false);
   });
 
   test('tracks full analysis and hint overlay modes separately', () {
@@ -214,6 +215,7 @@ void main() {
       evaluationGaugePosition: EvaluationGaugePosition.top,
       showAllBoardResults: true,
       showMoveFeedback: false,
+      showMoveMiniBoards: true,
       engineLineCount: AnalysisMode.defaultEngineLineCount,
       engineSearchTimeMs: AnalysisMode.defaultEngineSearchTimeMs,
     );
@@ -226,6 +228,7 @@ void main() {
     expect(AnalysisMode.evaluationGaugePosition, EvaluationGaugePosition.top);
     expect(AnalysisMode.showAllBoardResults, isTrue);
     expect(AnalysisMode.showMoveFeedback, isFalse);
+    expect(AnalysisMode.showMoveMiniBoards, isTrue);
 
     AnalysisMode.setInlineNotation(false);
     AnalysisMode.setShowMoveAnnotations(true);
@@ -235,6 +238,7 @@ void main() {
     AnalysisMode.setEvaluationGaugePosition(EvaluationGaugePosition.right);
     AnalysisMode.setShowAllBoardResults(false);
     AnalysisMode.setShowMoveFeedback(true);
+    AnalysisMode.setShowMoveMiniBoards(false);
 
     expect(AnalysisMode.inlineNotation, isFalse);
     expect(AnalysisMode.showMoveAnnotations, isTrue);
@@ -244,6 +248,7 @@ void main() {
     expect(AnalysisMode.evaluationGaugePosition, EvaluationGaugePosition.right);
     expect(AnalysisMode.showAllBoardResults, isFalse);
     expect(AnalysisMode.showMoveFeedback, isTrue);
+    expect(AnalysisMode.showMoveMiniBoards, isFalse);
   });
 
   test('tracks deep engine analysis state', () {

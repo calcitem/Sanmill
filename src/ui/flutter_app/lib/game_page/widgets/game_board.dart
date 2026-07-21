@@ -52,6 +52,7 @@ class _GameBoardState extends State<GameBoard>
 
   // Flag to prevent duplicate dialog display in AI vs AI mode
   bool _isDialogShowing = false;
+  bool _boardTapInProgress = false;
   String? _archivedRecordId;
   late bool _screenReaderWasActive;
 
@@ -379,6 +380,21 @@ class _GameBoardState extends State<GameBoard>
   }
 
   Future<void> _handleSquareTap(int square, TapHandler tapHandler) async {
+    if (_boardTapInProgress) {
+      return;
+    }
+    _boardTapInProgress = true;
+    try {
+      await _handleSquareTapUnlocked(square, tapHandler);
+    } finally {
+      _boardTapInProgress = false;
+    }
+  }
+
+  Future<void> _handleSquareTapUnlocked(
+    int square,
+    TapHandler tapHandler,
+  ) async {
     final String strNotYourTurn = S.of(context).notYourTurn;
     final String strRemoteNotConnected = S.of(context).remoteNotConnected;
     final String strTimeout = S.of(context).timeout;
@@ -398,7 +414,15 @@ class _GameBoardState extends State<GameBoard>
       }
     }
 
-    if (AnalysisService.isBestMoveHintSearching || AnalysisMode.isHint) {
+    final bool restartFullAnalysis =
+        GameController().gameInstance.gameMode == GameMode.analysis &&
+        (AnalysisMode.isFullAnalysis || AnalysisMode.isAnalyzing);
+    if (restartFullAnalysis) {
+      await AnalysisService.stopActiveEngineAnalysisAndWait();
+      if (!mounted) {
+        return;
+      }
+    } else if (AnalysisService.isBestMoveHintSearching || AnalysisMode.isHint) {
       await AnalysisService.stopBestMoveHintAndWait();
       if (!mounted) {
         return;
@@ -448,6 +472,9 @@ class _GameBoardState extends State<GameBoard>
     }
 
     GameController().isDisposed = false;
+    if (restartFullAnalysis && mounted) {
+      unawaited(AnalysisService.refreshForCurrentPosition(context));
+    }
   }
 
   // Loading images and creating PiecePainter

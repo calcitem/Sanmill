@@ -6879,5 +6879,11 @@
     "moveFeedbackShowReasons": "查看全部原因",
     "@moveFeedbackShowReasons": {},
     "moveFeedbackReasonsTitle": "这步棋为何得到此反馈",
-    "@moveFeedbackReasonsTitle": {}
+    "@moveFeedbackReasonsTitle": {},
+    "analysisShowMoveMiniBoards": "在着法旁显示小棋盘",
+    "@analysisShowMoveMiniBoards": {},
+    "analysisBoard": "分析棋盘",
+    "@analysisBoard": {},
+    "sound": "声音",
+    "@sound": {}
 }

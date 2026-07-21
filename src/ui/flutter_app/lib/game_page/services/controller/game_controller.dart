@@ -786,22 +786,33 @@ class GameController {
 
   /// Commit the edited position: install [fen] as the game's setup
   /// position and restore the previous (playable) game mode.
-  void finishSetupPosition(String fen) {
+  GameMode finishSetupPosition(String fen) {
     final GameMode previous = _setupPreviousMode ?? GameMode.humanVsAi;
-    gameRecorder = GameRecorder(
-      lastPositionWithRemove: fen,
-      setupPosition: fen,
-    );
+    if (previous == GameMode.analysis) {
+      // Keep the recorder identity stable so the analysis-session save
+      // listener owned by GamePage remains attached after editing the root
+      // position. The editor starts a new analysis tree from the committed
+      // position, so the existing history is intentionally cleared.
+      gameRecorder.reset();
+      gameRecorder.setupPosition = fen;
+      gameRecorder.lastPositionWithRemove = fen;
+    } else {
+      gameRecorder = GameRecorder(
+        lastPositionWithRemove: fen,
+        setupPosition: fen,
+      );
+    }
     setupPositionController = null;
     _setupPreviousMode = null;
     gameInstance.gameMode = previous;
     headerIconsNotifier.showIcons();
     boardSemanticsNotifier.updateSemantics();
+    return previous;
   }
 
   /// Abandon setup editing, rolling the board back and restoring the
   /// previous game mode.
-  void cancelSetupPosition() {
+  GameMode cancelSetupPosition() {
     final GameMode previous = _setupPreviousMode ?? GameMode.humanVsAi;
     setupPositionController?.cancel();
     setupPositionController = null;
@@ -809,6 +820,7 @@ class GameController {
     gameInstance.gameMode = previous;
     headerIconsNotifier.showIcons();
     boardSemanticsNotifier.updateSemantics();
+    return previous;
   }
 
   /// Apply a board symmetry to the current local playable Mill game.

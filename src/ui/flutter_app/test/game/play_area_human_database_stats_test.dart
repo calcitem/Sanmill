@@ -16,6 +16,7 @@ import 'package:sanmill/appearance_settings/models/color_settings.dart';
 import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/analysis/analysis_service.dart';
 import 'package:sanmill/game_page/services/analysis_mode.dart';
+import 'package:sanmill/game_page/services/import_export/pgn.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/offline_board_clock.dart';
 import 'package:sanmill/game_page/services/painters/painters.dart';
@@ -92,6 +93,7 @@ void main() {
     AnalysisMode.setShowEvaluationGauge(true);
     AnalysisMode.setEvaluationGaugePosition(EvaluationGaugePosition.left);
     AnalysisMode.setShowAllBoardResults(false);
+    AnalysisMode.setShowMoveMiniBoards(false);
     AnalysisMode.setInlineNotation(false);
     AnalysisMode.setSmallBoard(false);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
@@ -112,6 +114,7 @@ void main() {
     AnalysisMode.setShowEvaluationGauge(true);
     AnalysisMode.setEvaluationGaugePosition(EvaluationGaugePosition.left);
     AnalysisMode.setShowAllBoardResults(false);
+    AnalysisMode.setShowMoveMiniBoards(false);
     AnalysisMode.setInlineNotation(false);
     AnalysisMode.setSmallBoard(false);
     AnalysisMode.setEngineLineCount(AnalysisMode.defaultEngineLineCount);
@@ -2418,6 +2421,125 @@ void main() {
     expect(find.byKey(const Key('play_area_analysis_panel')), findsOne);
   });
 
+  testWidgets(
+    'analysis deep branches and mini boards fit a narrow large-text layout',
+    (WidgetTester tester) async {
+      db.displaySettings = const DisplaySettings(
+        isUnplacedAndRemovedPiecesShown: false,
+      );
+      final NativeMillGameSession session = await _bindNativeGame(
+        GameMode.analysis,
+      );
+      final GameRecorder recorder = GameController().gameRecorder;
+      recorder.reset();
+      const String boardLayout = '********/********/O*******';
+      const List<String> moves = <String>[
+        'd6',
+        'f4',
+        'a1',
+        'd1',
+        'a4',
+        'd2',
+        'a7',
+        'd3',
+        'g7',
+        'g4',
+        'g1',
+        'b2',
+        'b4',
+        'b6',
+      ];
+      PgnNode<ExtMove> parent = recorder.pgnRoot;
+      for (int depth = 0; depth < 7; depth++) {
+        final PieceColor side = depth.isEven
+            ? PieceColor.white
+            : PieceColor.black;
+        recorder.activeNode = parent;
+        recorder.appendMove(
+          ExtMove(
+            moves[depth * 2],
+            side: side,
+            boardLayout: boardLayout,
+            analysisEvaluation: 7 - depth,
+            comments: <String>['A deliberately long branch comment'],
+          ),
+        );
+        recorder.activeNode = parent;
+        recorder.appendMove(
+          ExtMove(
+            moves[depth * 2 + 1],
+            side: side,
+            boardLayout: boardLayout,
+            comments: <String>['Another long sideline comment'],
+          ),
+        );
+        parent = recorder.activeNode!;
+      }
+      recorder.moveCountNotifier.value = recorder.currentPath.length;
+      AnalysisMode.setShowMoveMiniBoards(true);
+      AnalysisMode.enable(const <MoveAnalysisResult>[
+        MoveAnalysisResult(
+          move: 'd6',
+          outcome: AnalysisOutcome.advantage,
+          line: <String>['d6', 'f4', 'a1', 'd1', 'a4', 'd2', 'a7'],
+        ),
+        MoveAnalysisResult(
+          move: 'f4',
+          outcome: AnalysisOutcome.draw,
+          line: <String>['f4', 'a1', 'd1', 'a4', 'd2', 'a7'],
+        ),
+      ], source: AnalysisSource.engine);
+
+      await tester.binding.setSurfaceSize(const Size(280, 620));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await tester.pumpWidget(
+        _localizedApp(
+          GameSessionScope(
+            session: session,
+            child: const MediaQuery(
+              data: MediaQueryData(
+                size: Size(280, 620),
+                textScaler: TextScaler.linear(2),
+              ),
+              child: Scaffold(
+                body: PlayArea(
+                  boardImage: null,
+                  child: SizedBox.square(dimension: 280),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
+      expect(
+        find.byKey(const Key('play_area_analysis_move_tree')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('play_area_analysis_branch_gutter_7')),
+        findsOneWidget,
+      );
+      final Finder miniBoards = find.byWidgetPredicate((Widget widget) {
+        final Key? key = widget.key;
+        return key is ValueKey<String> &&
+            key.value.startsWith('play_area_analysis_move_mini_board_');
+      });
+      expect(miniBoards, findsAtLeastNWidgets(7));
+      final Rect panelRect = tester.getRect(
+        find.byKey(const Key('play_area_analysis_panel')),
+      );
+      for (final Element element in miniBoards.evaluate()) {
+        final Rect boardRect = tester.getRect(find.byWidget(element.widget));
+        expect(boardRect.left, greaterThanOrEqualTo(panelRect.left));
+        expect(boardRect.right, lessThanOrEqualTo(panelRect.right + 0.01));
+      }
+      expect(tester.takeException(), isNull);
+    },
+  );
+
   testWidgets('analysis tabs keep selected and unselected icons legible', (
     WidgetTester tester,
   ) async {
@@ -2657,6 +2779,9 @@ void main() {
       final NativeMillGameSession session = await _bindNativeGame(
         GameMode.analysis,
       );
+      GameController().gameRecorder.appendMove(
+        ExtMove('d6', side: PieceColor.white, roundIndex: 1),
+      );
       AnalysisMode.enable(const <MoveAnalysisResult>[
         MoveAnalysisResult(
           move: 'd6',
@@ -2688,15 +2813,19 @@ void main() {
         await tester.pumpAndSettle();
 
         final Text line = tester.widget<Text>(find.text('1. d6 f4'));
-        final Text title = tester.widget<Text>(
-          find.byKey(const Key('play_area_analysis_moves_header_title')),
-        );
         expect(
           find.byKey(const Key('play_area_analysis_engine_line_depth')),
           findsNothing,
         );
         expect(line.style?.color, Colors.white);
-        expect(title.style?.color, theme.colorScheme.onSurface);
+        expect(
+          find.byKey(const Key('play_area_analysis_moves_header_title')),
+          findsNothing,
+        );
+        expect(
+          find.byKey(const Key('play_area_analysis_move_tree')),
+          findsOneWidget,
+        );
       }
     },
   );
@@ -2947,6 +3076,18 @@ void main() {
     expect(find.text('d6! {Good opening}'), findsOne);
     expect(find.text('f4? {Check this}'), findsOne);
     expect(find.byKey(const Key('opening_explorer_embedded')), findsNothing);
+    expect(
+      find.byKey(const Key('play_area_analysis_move_mini_board_1')),
+      findsNothing,
+    );
+    AnalysisMode.setShowMoveMiniBoards(true);
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const Key('play_area_analysis_move_mini_board_1')),
+      findsOneWidget,
+    );
+    AnalysisMode.setShowMoveMiniBoards(false);
+    await tester.pumpAndSettle();
 
     await tester.longPress(find.byKey(const Key('play_area_analysis_move_1')));
     await tester.pumpAndSettle();
@@ -3061,7 +3202,16 @@ void main() {
       findsNothing,
     );
     expect(
-      find.byKey(const Key('play_area_regular_game_menu_board_editor')),
+      find.byKey(const Key('play_area_analysis_menu_clear_moves')),
+      findsOne,
+    );
+    expect(find.byKey(const Key('play_area_analysis_menu_variant')), findsOne);
+    expect(
+      find.byKey(const Key('play_area_analysis_menu_flip_board')),
+      findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_menu_board_editor')),
       findsOne,
     );
     expect(
@@ -3087,15 +3237,15 @@ void main() {
       findsNothing,
     );
     expect(
-      find.byKey(const Key('play_area_regular_game_menu_show_threat')),
+      find.byKey(const Key('play_area_analysis_menu_show_threat')),
       findsOne,
     );
     expect(
-      find.byKey(const Key('play_area_regular_game_menu_continue_from_here')),
+      find.byKey(const Key('play_area_analysis_menu_continue_from_here')),
       findsOne,
     );
     expect(
-      find.byKey(const Key('play_area_regular_game_menu_share_export')),
+      find.byKey(const Key('play_area_analysis_menu_share_export')),
       findsOne,
     );
 
@@ -3108,7 +3258,7 @@ void main() {
 
     expect(find.byType(MovesListPage), findsOneWidget);
     expect(
-      find.byKey(const Key('play_area_regular_game_menu_sheet')),
+      find.byKey(const Key('play_area_analysis_menu_sheet')),
       findsNothing,
     );
 
@@ -3123,7 +3273,7 @@ void main() {
     await tester.pumpAndSettle();
 
     final Finder shareExportTile = find.byKey(
-      const Key('play_area_regular_game_menu_share_export'),
+      const Key('play_area_analysis_menu_share_export'),
     );
     await tester.ensureVisible(shareExportTile);
     await tester.tap(shareExportTile);
@@ -3155,7 +3305,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(
-      find.byKey(const Key('play_area_regular_game_menu_continue_from_here')),
+      find.byKey(const Key('play_area_analysis_menu_continue_from_here')),
     );
     await tester.pumpAndSettle();
 
@@ -3197,7 +3347,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(
-      find.byKey(const Key('play_area_regular_game_menu_share_export')),
+      find.byKey(const Key('play_area_analysis_menu_share_export')),
     );
     await tester.pumpAndSettle();
 
@@ -3225,7 +3375,7 @@ void main() {
     );
   });
 
-  testWidgets('analysis position menu keeps only app settings', (
+  testWidgets('analysis position menu matches lichess actions', (
     WidgetTester tester,
   ) async {
     db.displaySettings = const DisplaySettings(
@@ -3244,17 +3394,192 @@ void main() {
     expect(find.text('Analysis settings'), findsNothing);
     expect(find.text('Sound'), findsNothing);
     expect(find.text('Hide engine lines'), findsNothing);
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_toolbar_item_options')),
-        matching: find.text('Settings'),
-      ),
-      findsOneWidget,
-    );
-    expect(find.text('Options'), findsNothing);
+    expect(find.text('Clear moves'), findsOneWidget);
+    expect(find.text('Variant'), findsOneWidget);
+    expect(find.text('Show threat'), findsOneWidget);
+    expect(find.text('Flip board'), findsOneWidget);
+    expect(find.text('Move list'), findsOneWidget);
+    expect(find.text('Board editor'), findsOneWidget);
+    expect(find.text('Continue from here'), findsOneWidget);
+    expect(find.text('Share and export'), findsOneWidget);
+    expect(find.text('Settings'), findsNothing);
+
+    final List<Finder> orderedActions = <Finder>[
+      find.byKey(const Key('play_area_analysis_menu_clear_moves')),
+      find.byKey(const Key('play_area_analysis_menu_variant')),
+      find.byKey(const Key('play_area_analysis_menu_show_threat')),
+      find.byKey(const Key('play_area_analysis_menu_flip_board')),
+      find.byKey(const Key('play_area_analysis_game_menu_move_list')),
+      find.byKey(const Key('play_area_analysis_menu_board_editor')),
+      find.byKey(const Key('play_area_analysis_menu_continue_from_here')),
+      find.byKey(const Key('play_area_analysis_menu_share_export')),
+    ];
+    final List<double> actionTops = orderedActions
+        .map((Finder finder) => tester.getTopLeft(finder).dy)
+        .toList(growable: false);
+    expect(actionTops, orderedEquals(actionTops.toList()..sort()));
   });
 
-  testWidgets('analysis position status identifies the side and phase', (
+  testWidgets('analysis controls survive repeated menu and tab interactions', (
+    WidgetTester tester,
+  ) async {
+    db.displaySettings = const DisplaySettings(
+      isUnplacedAndRemovedPiecesShown: false,
+    );
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    _bindExistingNativeGame(GameMode.analysis, session);
+    GameController().gameRecorder
+      ..appendMove(ExtMove('d6', side: PieceColor.white, roundIndex: 1))
+      ..appendMove(ExtMove('f4', side: PieceColor.black, roundIndex: 1));
+    AnalysisMode.enable(const <MoveAnalysisResult>[
+      MoveAnalysisResult(
+        move: 'd6',
+        outcome: AnalysisOutcome.advantage,
+        depth: 8,
+        line: <String>['d6', 'f4', 'a1'],
+      ),
+    ], source: AnalysisSource.engine);
+
+    await _pumpSessionPlayArea(tester, session);
+
+    for (int iteration = 0; iteration < 5; iteration++) {
+      await tester.tap(
+        find.byKey(const Key('play_area_analysis_tab_explorer')),
+      );
+      await tester.pump();
+      await tester.tap(find.byKey(const Key('play_area_analysis_tab_moves')));
+      await tester.pump();
+
+      await tester.tap(
+        find.byKey(const Key('play_area_analysis_bottom_bar_previous')),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.byKey(const Key('play_area_analysis_bottom_bar_next')),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(
+        find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
+      );
+      await tester.pumpAndSettle();
+      final Finder menuSheet = find.byKey(
+        const Key('play_area_analysis_menu_sheet'),
+      );
+      expect(menuSheet, findsOneWidget);
+      Navigator.of(tester.element(menuSheet)).pop();
+      await tester.pumpAndSettle();
+
+      await tester.longPress(
+        find.byKey(const Key('play_area_analysis_bottom_bar_engine')),
+      );
+      await tester.pumpAndSettle();
+      final Finder engineSheet = find.byKey(
+        const Key('play_area_analysis_engine_sheet'),
+      );
+      expect(engineSheet, findsOneWidget);
+      await tester.tap(
+        find.byKey(const Key('play_area_analysis_engine_settings')),
+      );
+      await tester.pumpAndSettle();
+      final Finder settingsSheet = find.byKey(
+        const Key('play_area_analysis_settings_sheet'),
+      );
+      expect(settingsSheet, findsOneWidget);
+      await tester.tap(
+        find.byKey(const Key('play_area_analysis_settings_move_mini_boards')),
+      );
+      await tester.pump();
+      Navigator.of(tester.element(settingsSheet)).pop();
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
+      expect(_currentPathMoves(), <String>['d6', 'f4']);
+    }
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_menu_flip_board')),
+    );
+    await tester.pumpAndSettle();
+    final Finder transformSheet = find.byKey(
+      const Key('play_area_regular_board_transform_sheet'),
+    );
+    expect(transformSheet, findsOneWidget);
+    Navigator.of(tester.element(transformSheet)).pop();
+    await tester.pumpAndSettle();
+
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('play_area_analysis_menu_variant')));
+    await tester.pumpAndSettle();
+    final Finder variantSheet = find.byKey(
+      const Key('play_area_analysis_variant_standard_9mm'),
+    );
+    expect(variantSheet, findsOneWidget);
+    Navigator.of(tester.element(variantSheet)).pop();
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets(
+    'analysis history serializes rapid taps after native undo history is lost',
+    (WidgetTester tester) async {
+      db.displaySettings = const DisplaySettings(
+        isUnplacedAndRemovedPiecesShown: false,
+      );
+      final _DelayedReplayAnalysisSession session =
+          _DelayedReplayAnalysisSession();
+      _bindExistingNativeGame(GameMode.analysis, session);
+      GameController().gameRecorder
+        ..appendMove(ExtMove('d6', side: PieceColor.white, roundIndex: 1))
+        ..appendMove(ExtMove('f4', side: PieceColor.black, roundIndex: 1));
+      expect(session.restoreMoveStrings(<String>['d6', 'f4']), isTrue);
+
+      // Setup-position cancellation and board transforms restore through FEN,
+      // which clears the native undo stack while the recorder keeps its tree.
+      // Navigation must rebuild from the recorder root, not this current FEN.
+      final String currentFen = session.getFen();
+      expect(session.loadFen(currentFen), isTrue);
+      expect(session.undoDepth, 0);
+
+      await _pumpSessionPlayArea(tester, session);
+
+      final Finder previous = find.byKey(
+        const Key('play_area_analysis_bottom_bar_previous'),
+      );
+      await tester.tap(previous);
+      await tester.pump();
+      expect(session.isReplayWaiting, isTrue);
+
+      // A second tap while the first native replay is suspended is ignored.
+      await tester.tap(previous);
+      await tester.pump();
+      expect(session.replayCalls, 1);
+
+      session.releaseReplay();
+      await tester.pumpAndSettle();
+      expect(_currentPathMoves(), <String>['d6']);
+      expect(session.undoDepth, 1);
+      expect(tester.takeException(), isNull);
+
+      await tester.tap(
+        find.byKey(const Key('play_area_analysis_bottom_bar_next')),
+      );
+      await tester.pumpAndSettle();
+      expect(_currentPathMoves(), <String>['d6', 'f4']);
+      expect(session.undoDepth, 2);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets('analysis omits the side and phase status strip', (
     WidgetTester tester,
   ) async {
     db.displaySettings = const DisplaySettings(
@@ -3269,13 +3594,13 @@ void main() {
 
     expect(
       find.byKey(const Key('play_area_analysis_position_status')),
-      findsOneWidget,
+      findsNothing,
     );
-    expect(find.text('Player 1 to move.'), findsOneWidget);
-    expect(find.text('Placing phase'), findsOneWidget);
+    expect(find.text('Player 1 to move.'), findsNothing);
+    expect(find.text('Placing phase'), findsNothing);
   });
 
-  testWidgets('analysis position status names an unfinished removal', (
+  testWidgets('analysis omits status text during an unfinished removal', (
     WidgetTester tester,
   ) async {
     db.displaySettings = const DisplaySettings(
@@ -3298,8 +3623,12 @@ void main() {
 
     await _pumpSessionPlayArea(tester, session);
 
-    expect(find.text('Player 1 to remove.'), findsOneWidget);
-    expect(find.text('Placing phase'), findsOneWidget);
+    expect(
+      find.byKey(const Key('play_area_analysis_position_status')),
+      findsNothing,
+    );
+    expect(find.text('Player 1 to remove.'), findsNothing);
+    expect(find.text('Placing phase'), findsNothing);
   });
 
   testWidgets('analysis move list toggles annotations and comments', (
@@ -3650,7 +3979,7 @@ void main() {
     );
     expect(engineValue.data, '8');
     expect(find.byTooltip('Engine · d8'), findsOneWidget);
-    expect(find.text('1. d6 f4 a1'), findsOneWidget);
+    expect(find.text('1. d6 f4 2. a1'), findsOneWidget);
     expect(
       find.descendant(
         of: find.byKey(const Key('play_area_analysis_engine_line_0')),
@@ -3669,8 +3998,18 @@ void main() {
       find.byKey(const Key('play_area_analysis_engine_line_depth')),
       findsNothing,
     );
-    final Text engineLineText = tester.widget<Text>(find.text('1. d6 f4 a1'));
-    expect(engineLineText.style?.fontSize, 11);
+    final Text engineLineText = tester.widget<Text>(
+      find.text('1. d6 f4 2. a1'),
+    );
+    expect(engineLineText.style?.fontSize, 14);
+    final Text engineEvalText = tester.widget<Text>(
+      find.descendant(
+        of: find.byKey(const Key('play_area_analysis_engine_line_0')),
+        matching: find.text('+'),
+      ),
+    );
+    expect(engineEvalText.style?.fontSize, 11);
+    expect(engineEvalText.style?.fontWeight, FontWeight.w600);
 
     AnalysisMode.enable(
       <MoveAnalysisResult>[
@@ -3722,7 +4061,7 @@ void main() {
       ),
     ], source: AnalysisSource.engine);
     await tester.pump();
-    expect(find.text('1... f4 a1'), findsOneWidget);
+    expect(find.text('1... f4 2. a1'), findsOneWidget);
     expect(find.textContaining('128k'), findsNothing);
     expect(find.textContaining('32k n/s'), findsNothing);
 
@@ -4767,8 +5106,8 @@ void main() {
     final Finder annotationsTile = find.byKey(
       const Key('play_area_analysis_settings_move_annotations'),
     );
-    final Finder moveFeedbackTile = find.byKey(
-      const Key('play_area_analysis_settings_move_feedback'),
+    final Finder miniBoardsTile = find.byKey(
+      const Key('play_area_analysis_settings_move_mini_boards'),
     );
     final Finder inlineNotationTile = find.byKey(
       const Key('play_area_analysis_settings_inline_notation'),
@@ -4780,8 +5119,12 @@ void main() {
       const Key('play_area_analysis_settings_best_move_arrow'),
     );
 
-    await tester.ensureVisible(moveFeedbackTile);
-    await tester.tap(moveFeedbackTile);
+    expect(
+      find.byKey(const Key('play_area_analysis_settings_move_feedback')),
+      findsNothing,
+    );
+    await tester.ensureVisible(miniBoardsTile);
+    await tester.tap(miniBoardsTile);
     await tester.pumpAndSettle();
     await tester.ensureVisible(inlineNotationTile);
     await tester.tap(inlineNotationTile);
@@ -4797,12 +5140,12 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(AnalysisMode.inlineNotation, isTrue);
-    expect(AnalysisMode.showMoveFeedback, isFalse);
+    expect(AnalysisMode.showMoveMiniBoards, isTrue);
     expect(AnalysisMode.showMoveAnnotations, isFalse);
     expect(AnalysisMode.showMoveComments, isFalse);
     expect(AnalysisMode.showBestMoveArrow, isFalse);
     expect(db.displaySettings.analysisInlineNotation, isTrue);
-    expect(db.displaySettings.analysisShowMoveFeedback, isFalse);
+    expect(db.displaySettings.analysisShowMoveMiniBoards, isTrue);
     expect(db.displaySettings.analysisShowMoveAnnotations, isFalse);
     expect(db.displaySettings.analysisShowMoveComments, isFalse);
     expect(db.displaySettings.analysisShowBestMoveArrow, isFalse);
@@ -5330,15 +5673,13 @@ void main() {
       findsNothing,
     );
     expect(
-      find.byKey(const Key('play_area_regular_game_menu_continue_from_here')),
+      find.byKey(const Key('play_area_analysis_menu_continue_from_here')),
       findsOneWidget,
     );
     expect(find.byKey(const Key('play_area_analysis_moves')), findsOneWidget);
 
     Navigator.of(
-      tester.element(
-        find.byKey(const Key('play_area_regular_game_menu_sheet')),
-      ),
+      tester.element(find.byKey(const Key('play_area_analysis_menu_sheet'))),
     ).pop();
     await tester.pumpAndSettle();
 
@@ -6100,7 +6441,7 @@ void main() {
     );
   });
 
-  testWidgets('analysis moves tab opens the full move list page', (
+  testWidgets('analysis menu opens the full move list page', (
     WidgetTester tester,
   ) async {
     db.displaySettings = const DisplaySettings(
@@ -6123,32 +6464,20 @@ void main() {
 
     expect(
       find.byKey(const Key('play_area_analysis_open_full_move_list')),
-      findsOneWidget,
+      findsNothing,
     );
-    expect(
-      find.byTooltip('Open move list with board previews · 1 move'),
-      findsOneWidget,
-    );
-    expect(find.text('Board previews'), findsOneWidget);
-    expect(
-      find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is Semantics &&
-            widget.properties.label ==
-                'Open move list with board previews · 1 move',
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_open_full_move_list')),
-        matching: find.byIcon(Icons.grid_view_rounded),
-      ),
-      findsOneWidget,
-    );
+    expect(find.text('Board previews'), findsNothing);
 
     await tester.tap(
-      find.byKey(const Key('play_area_analysis_open_full_move_list')),
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const Key('play_area_analysis_game_menu_move_list')),
+      findsOneWidget,
+    );
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_game_menu_move_list')),
     );
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
@@ -6199,11 +6528,13 @@ void main() {
     await _pumpSessionPlayArea(tester, session);
 
     await tester.tap(
-      find.byKey(const Key('play_area_analysis_open_full_move_list')),
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
     );
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 300));
-    await tester.pump();
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_game_menu_move_list')),
+    );
+    await tester.pumpAndSettle();
 
     expect(find.byKey(const Key('moves_list_page_scaffold')), findsOneWidget);
     expect(
@@ -6238,13 +6569,21 @@ void main() {
 
     await _pumpSessionPlayArea(tester, session);
     await tester.tap(
-      find.byKey(const Key('play_area_analysis_open_full_move_list')),
+      find.byKey(const Key('play_area_analysis_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(const Key('play_area_analysis_game_menu_move_list')),
     );
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
     await tester.pump();
 
-    await tester.tap(find.byKey(const Key('moves_list_layout_menu_button')));
+    tester
+        .state<PopupMenuButtonState<MovesViewLayout>>(
+          find.byKey(const Key('moves_list_layout_menu_button')),
+        )
+        .showButtonMenu();
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
 
@@ -6327,31 +6666,41 @@ void main() {
     db.displaySettings = const DisplaySettings(
       isUnplacedAndRemovedPiecesShown: false,
     );
-    final NativeMillGameSession session = await _bindNativeGame(
-      GameMode.analysis,
-    );
+    final _RecordingAnalysisSession session = _RecordingAnalysisSession();
+    _bindExistingNativeGame(GameMode.analysis, session);
     final GameRecorder recorder = GameController().gameRecorder;
     recorder.reset();
-    recorder.appendMove(ExtMove('d6', side: PieceColor.white, nags: <int>[1]));
+    recorder.appendMove(
+      ExtMove(
+        'd6',
+        side: PieceColor.white,
+        nags: <int>[1],
+        analysisEvaluation: 5,
+      ),
+    );
     recorder.activeNode = recorder.pgnRoot;
     recorder.appendMove(ExtMove('f4', side: PieceColor.white, nags: <int>[2]));
     recorder.activeNode = recorder.pgnRoot;
     recorder.moveCountNotifier.value = 0;
+    AnalysisMode.enable(const <MoveAnalysisResult>[
+      MoveAnalysisResult(move: 'd6', outcome: AnalysisOutcome.advantage),
+    ], source: AnalysisSource.engine);
 
     await _pumpSessionPlayArea(tester, session);
 
-    final Text movesHeaderTitle = tester.widget<Text>(
-      find.byKey(const Key('play_area_analysis_moves_header_title')),
-    );
-    expect(movesHeaderTitle.data, 'Move list');
     expect(
-      movesHeaderTitle.style?.color,
-      AppTheme.lightThemeData.colorScheme.onSurface,
+      find.byKey(const Key('play_area_analysis_moves_header_title')),
+      findsNothing,
     );
-    final Text movesHeaderSubtitle = tester.widget<Text>(
+    expect(
       find.byKey(const Key('play_area_analysis_moves_header_subtitle')),
+      findsNothing,
     );
-    expect(movesHeaderSubtitle.data, '1 move · 1 variation');
+    expect(
+      find.byKey(const Key('play_area_analysis_move_tree')),
+      findsOneWidget,
+    );
+    expect(find.text('+5'), findsOneWidget);
     expect(
       find.byKey(const Key('play_area_analysis_variations_bar_content')),
       findsOneWidget,
@@ -6421,16 +6770,18 @@ void main() {
     expect(_currentPathMoves(), <String>['f4']);
     expect(
       find.byKey(const Key('play_area_analysis_variations_bar_content')),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_analysis_path_variation_1_1')),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_analysis_path_variation_1_2')),
-      findsOneWidget,
+      findsNothing,
     );
+    expect(find.text('d6'), findsOneWidget);
+    expect(find.text('1. f4'), findsOneWidget);
 
     await tester.tap(
       find.byKey(const Key('play_area_analysis_bottom_bar_previous')),
@@ -6451,7 +6802,7 @@ void main() {
     expect(_currentPathMoves(), <String>['d6']);
   });
 
-  testWidgets('analysis variations bar keeps ancestor branches visible', (
+  testWidgets('analysis move tree keeps ancestor branches visible', (
     WidgetTester tester,
   ) async {
     db.displaySettings = const DisplaySettings(
@@ -6475,45 +6826,31 @@ void main() {
 
     expect(_currentPathMoves(), <String>['f4', 'a1', 'g7']);
     expect(
-      find.byKey(const Key('play_area_analysis_path_variation_group_1')),
+      find.byKey(const Key('play_area_analysis_variations_bar_content')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_move_tree')),
       findsOneWidget,
     );
     expect(
-      find.byKey(const Key('play_area_analysis_path_variation_group_3')),
+      find.byKey(const Key('play_area_analysis_branch_gutter_1')),
       findsOneWidget,
     );
     expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_path_variation_1_1')),
-        matching: find.text('d6'),
-      ),
+      find.byKey(const Key('play_area_analysis_branch_gutter_2')),
       findsOneWidget,
     );
     expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_path_variation_1_2')),
-        matching: find.text('f4'),
-      ),
+      find.byKey(const Key('play_area_analysis_branch_gutter_3')),
       findsOneWidget,
     );
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_path_variation_3_1')),
-        matching: find.text('d1'),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_analysis_path_variation_3_2')),
-        matching: find.text('g7'),
-      ),
-      findsOneWidget,
-    );
+    expect(find.text('d6'), findsOneWidget);
+    expect(find.text('1. f4'), findsOneWidget);
+    expect(find.text('2. d1'), findsOneWidget);
+    expect(find.text('2. g7'), findsOneWidget);
 
-    await tester.tap(
-      find.byKey(const Key('play_area_analysis_path_variation_1_1')),
-    );
+    await tester.tap(find.byKey(const Key('play_area_analysis_move_tree_1')));
     await tester.pumpAndSettle();
 
     expect(_currentPathMoves(), <String>['d6']);
@@ -7990,7 +8327,7 @@ void main() {
     );
     await tester.pumpAndSettle();
     final Finder flipBoard = find.byKey(
-      const Key('play_area_regular_game_menu_flip_board'),
+      const Key('play_area_analysis_menu_flip_board'),
     );
     await tester.ensureVisible(flipBoard);
     await tester.tap(flipBoard);
@@ -8401,6 +8738,36 @@ class _RecordingAnalysisSession extends NativeMillGameSession {
       return completer.future;
     }
     return variations;
+  }
+}
+
+class _DelayedReplayAnalysisSession extends NativeMillGameSession {
+  _DelayedReplayAnalysisSession() : super.fromPort(NativeMillRulesPort());
+
+  final Completer<void> _releaseFirstReplay = Completer<void>();
+  int replayCalls = 0;
+  bool isReplayWaiting = false;
+
+  void releaseReplay() {
+    assert(
+      !_releaseFirstReplay.isCompleted,
+      'The delayed history replay was already released.',
+    );
+    _releaseFirstReplay.complete();
+  }
+
+  @override
+  Future<bool> replayMainline(
+    Iterable<ExtMove> moves, {
+    String? initialFen,
+  }) async {
+    replayCalls++;
+    if (replayCalls == 1) {
+      isReplayWaiting = true;
+      await _releaseFirstReplay.future;
+      isReplayWaiting = false;
+    }
+    return super.replayMainline(moves, initialFen: initialFen);
   }
 }
 

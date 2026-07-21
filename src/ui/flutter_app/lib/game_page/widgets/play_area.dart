@@ -25,6 +25,7 @@ import '../../games/mill/mill_board_coordinate_maps.dart';
 import '../../games/mill/mill_board_transform_actions.dart';
 import '../../games/mill/mill_human_database_provider.dart';
 import '../../games/mill/mill_opening_book_provider.dart';
+import '../../games/mill/mill_variant_localization.dart';
 import '../../games/mill/native_mill_ai_turn_controller.dart';
 import '../../games/mill/native_mill_game_session.dart';
 import '../../games/mill/native_mill_rules_port.dart';
@@ -225,26 +226,6 @@ Future<void> showAnalysisSettingsSheet(
                     ),
                     SwitchListTile.adaptive(
                       key: const Key(
-                        'play_area_analysis_settings_move_feedback',
-                      ),
-                      secondary: const Icon(Icons.reviews_outlined),
-                      title: Text(strings.analysisMoveFeedback),
-                      subtitle: Text(strings.analysisMoveFeedbackDescription),
-                      value: AnalysisMode.showMoveFeedback,
-                      onChanged: (bool value) {
-                        RecordingService().recordEvent(
-                          RecordingEventType.toolbarAction,
-                          <String, dynamic>{
-                            'toolbar': 'analysisSettings',
-                            'action': 'setMoveFeedback',
-                            'visible': value,
-                          },
-                        );
-                        AnalysisMode.setShowMoveFeedback(value, persist: true);
-                      },
-                    ),
-                    SwitchListTile.adaptive(
-                      key: const Key(
                         'play_area_analysis_settings_inline_notation',
                       ),
                       secondary: const Icon(Icons.short_text_outlined),
@@ -260,6 +241,28 @@ Future<void> showAnalysisSettingsSheet(
                           },
                         );
                         AnalysisMode.setInlineNotation(value, persist: true);
+                      },
+                    ),
+                    SwitchListTile.adaptive(
+                      key: const Key(
+                        'play_area_analysis_settings_move_mini_boards',
+                      ),
+                      secondary: const Icon(Icons.grid_view_rounded),
+                      title: Text(strings.analysisShowMoveMiniBoards),
+                      value: AnalysisMode.showMoveMiniBoards,
+                      onChanged: (bool value) {
+                        RecordingService().recordEvent(
+                          RecordingEventType.toolbarAction,
+                          <String, dynamic>{
+                            'toolbar': 'analysisSettings',
+                            'action': 'setMoveMiniBoards',
+                            'visible': value,
+                          },
+                        );
+                        AnalysisMode.setShowMoveMiniBoards(
+                          value,
+                          persist: true,
+                        );
                       },
                     ),
                     SwitchListTile.adaptive(
@@ -789,11 +792,10 @@ class PlayAreaState extends State<PlayArea> {
   /// A list to store historical advantage values for the advantage chart.
   List<int> advantageData = <int>[];
   late final LiveAdvantageHistory _liveAdvantageHistory;
-  late final MoveFeedbackAnalysisController _moveFeedbackController;
-  bool _moveFeedbackPvExpanded = false;
 
   bool _isBoardFlipped = false;
   bool _liveEvaluationSyncScheduled = false;
+  bool _analysisPositionChangeInProgress = false;
   Timer? _analysisRefreshDebounceTimer;
   GameRecorder? _analysisMoveRecorder;
   PgnNode<ExtMove>? _lastAnalysisRefreshNode;
@@ -807,7 +809,6 @@ class PlayAreaState extends State<PlayArea> {
   static const double _kOfflineBoardPlayerPanelHeight = 72;
   static const double _kOfflineBoardLayoutSafetyMargin = 4;
   static const double _kAnalysisEngineLinesReserveHeight = 90;
-  static const double _kAnalysisPositionStatusHeight = 48;
   static const double _kAnalysisSmallBoardScale = 0.8;
   static const Duration _kAnalysisRefreshDebounceDelay = Duration(
     milliseconds: 250,
@@ -826,9 +827,6 @@ class PlayAreaState extends State<PlayArea> {
     // Listen to changes in header icons (usually triggered after a move).
     GameController().headerIconsNotifier.addListener(_updateUI);
     _liveAdvantageHistory = LiveAdvantageHistory(advantageData);
-    _moveFeedbackController = MoveFeedbackAnalysisController()
-      ..addListener(_handleMoveFeedbackChanged);
-    AnalysisMode.stateNotifier.addListener(_handleAnalysisPreferenceChanged);
     LiveEvaluationService.stateNotifier.addListener(
       _handleLiveEvaluationChanged,
     );
@@ -848,10 +846,6 @@ class PlayAreaState extends State<PlayArea> {
   @override
   void dispose() {
     AnalysisService.stopActiveEngineAnalysis();
-    AnalysisMode.stateNotifier.removeListener(_handleAnalysisPreferenceChanged);
-    _moveFeedbackController
-      ..removeListener(_handleMoveFeedbackChanged)
-      ..dispose();
     AnalysisService.invalidateBestMoveHintCache();
     GameController().headerIconsNotifier.removeListener(_updateUI);
     LiveEvaluationService.stateNotifier.removeListener(
@@ -906,65 +900,9 @@ class PlayAreaState extends State<PlayArea> {
       AnalysisService.stopBestMoveHint();
       return;
     }
-    if (!AnalysisMode.isFullAnalysis) {
-      _moveFeedbackController.clear();
-      return;
-    }
-    if (AnalysisMode.showMoveFeedback && currentNode.data != null) {
-      unawaited(_analyzeMoveFeedback(currentNode));
-    } else {
-      _moveFeedbackController.clear();
+    if (AnalysisMode.isFullAnalysis) {
       _scheduleAnalysisRefreshForCurrentPosition();
     }
-  }
-
-  void _handleMoveFeedbackChanged() {
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
-  void _handleAnalysisPreferenceChanged() {
-    if (!AnalysisMode.showMoveFeedback) {
-      if (_moveFeedbackController.state.status !=
-          MoveFeedbackAnalysisStatus.idle) {
-        _moveFeedbackController.clear();
-      }
-      return;
-    }
-    if (AnalysisMode.isFullAnalysis &&
-        _moveFeedbackController.state.status ==
-            MoveFeedbackAnalysisStatus.idle) {
-      final PgnNode<ExtMove>? selectedNode =
-          GameController().gameRecorder.activeNode;
-      if (selectedNode?.data != null) {
-        unawaited(_analyzeMoveFeedback(selectedNode!));
-      }
-    }
-  }
-
-  Future<void> _analyzeMoveFeedback(PgnNode<ExtMove> selectedNode) async {
-    await AnalysisService.stopActiveEngineAnalysisAndWait();
-    if (!mounted ||
-        !AnalysisMode.isFullAnalysis ||
-        !AnalysisMode.showMoveFeedback ||
-        !identical(GameController().gameRecorder.activeNode, selectedNode)) {
-      return;
-    }
-    final GameRecorder recorder = GameController().gameRecorder;
-    await _moveFeedbackController.analyze(
-      recorder: recorder,
-      selectedNode: selectedNode,
-      rules: recorder.recordedRuleSettings ?? DB().ruleSettings,
-      generalSettings: DB().generalSettings,
-    );
-    if (!mounted ||
-        !AnalysisMode.isFullAnalysis ||
-        !AnalysisMode.showMoveFeedback ||
-        !identical(recorder.activeNode, selectedNode)) {
-      return;
-    }
-    _scheduleAnalysisRefreshForCurrentPosition();
   }
 
   void _scheduleAnalysisRefreshForCurrentPosition() {
@@ -1294,6 +1232,48 @@ class PlayAreaState extends State<PlayArea> {
     return _applyAnalysisMove(context, move);
   }
 
+  Future<T?> _runAnalysisPositionChange<T>(Future<T> Function() change) async {
+    assert(_isAnalysisMode, 'Analysis position changes require analysis mode.');
+    if (_analysisPositionChangeInProgress) {
+      return null;
+    }
+
+    _analysisPositionChangeInProgress = true;
+    final bool restartAnalysis =
+        AnalysisMode.isFullAnalysis || AnalysisMode.isAnalyzing;
+    try {
+      // Native search cancellation is asynchronous. Mutating or replaying the
+      // same session before the old pass has drained can otherwise race the
+      // Rust search and recursively enter history replay under rapid taps.
+      await AnalysisService.stopActiveEngineAnalysisAndWait();
+      if (!mounted) {
+        return null;
+      }
+      final T result = await change();
+      if (restartAnalysis && mounted) {
+        if (AnalysisMode.isFullAnalysis) {
+          _scheduleAnalysisRefreshForCurrentPosition();
+        } else {
+          // The first engine pass may not have published a line yet, so there
+          // is no enabled overlay for the normal debounce path to preserve.
+          unawaited(AnalysisService.refresh(context));
+        }
+      }
+      return result;
+    } finally {
+      _analysisPositionChangeInProgress = false;
+    }
+  }
+
+  Future<void> _navigateAnalysisNode(
+    BuildContext context,
+    PgnNode<ExtMove> node,
+  ) async {
+    await _runAnalysisPositionChange<void>(() async {
+      await HistoryNavigator.gotoNode(context, node, pop: false);
+    });
+  }
+
   Future<bool> _applyAnalysisMove(BuildContext context, String move) async {
     final GameSession? session = GameSessionScope.sessionOf(context);
     assert(session != null, 'Analysis move application requires a session.');
@@ -1301,33 +1281,35 @@ class PlayAreaState extends State<PlayArea> {
       return false;
     }
 
-    GameAction? selectedAction;
-    for (final GameAction action in session.legalActions) {
-      if (MillActionCodec.moveStringFrom(action) == move) {
-        selectedAction = action;
-        break;
+    final bool? applied = await _runAnalysisPositionChange<bool>(() async {
+      GameAction? selectedAction;
+      for (final GameAction action in session.legalActions) {
+        if (MillActionCodec.moveStringFrom(action) == move) {
+          selectedAction = action;
+          break;
+        }
       }
-    }
 
-    assert(
-      selectedAction != null,
-      'Analysis move "$move" must be legal in the active session.',
-    );
-    if (selectedAction == null) {
-      return false;
-    }
+      assert(
+        selectedAction != null,
+        'Analysis move "$move" must be legal in the active session.',
+      );
+      if (selectedAction == null) {
+        return false;
+      }
 
-    final bool shouldRefreshAnalysis =
-        AnalysisMode.isFullAnalysis && !AnalysisMode.isAnalyzing;
-    await session.apply(selectedAction);
-    if (shouldRefreshAnalysis && context.mounted) {
-      _scheduleAnalysisRefreshForCurrentPosition();
-    }
-    return true;
+      await session.apply(selectedAction);
+      return true;
+    });
+    return applied ?? false;
   }
 
-  void _openBoardEditorFromAnalysis() {
+  Future<void> _openBoardEditorFromAnalysis() async {
     assert(_isAnalysisMode, 'Board editor menu entry is analysis-mode only.');
+    await AnalysisService.stopActiveEngineAnalysisAndWait();
+    if (!mounted) {
+      return;
+    }
     GameController().enterSetupPosition();
     GameController().headerTipNotifier.showTip(
       S.of(context).boardEditor,
@@ -1832,7 +1814,13 @@ class PlayAreaState extends State<PlayArea> {
     if (GameController().isRemoteGameMode) {
       return;
     }
-    await HistoryNavigator.takeBack(context, pop: false, toolbar: true);
+    if (_isAnalysisMode) {
+      await _runAnalysisPositionChange<void>(() async {
+        await HistoryNavigator.takeBack(context, pop: false, toolbar: true);
+      });
+    } else {
+      await HistoryNavigator.takeBack(context, pop: false, toolbar: true);
+    }
     _syncOfflineBoardClockToPosition();
   }
 
@@ -1840,7 +1828,13 @@ class PlayAreaState extends State<PlayArea> {
     if (GameController().isRemoteGameMode) {
       return;
     }
-    await HistoryNavigator.stepForward(context, pop: false, toolbar: true);
+    if (_isAnalysisMode) {
+      await _runAnalysisPositionChange<void>(() async {
+        await HistoryNavigator.stepForward(context, pop: false, toolbar: true);
+      });
+    } else {
+      await HistoryNavigator.stepForward(context, pop: false, toolbar: true);
+    }
     _syncOfflineBoardClockToPosition();
   }
 
@@ -2774,6 +2768,10 @@ class PlayAreaState extends State<PlayArea> {
       _showOfflineBoardGameMenu();
       return;
     }
+    if (_isAnalysisMode) {
+      _showAnalysisMenu();
+      return;
+    }
     final BuildContext hostContext = context;
     final BuildContext actionContext = _stableActionContext(hostContext);
     final S strings = S.of(hostContext);
@@ -2969,6 +2967,177 @@ class PlayAreaState extends State<PlayArea> {
         ),
       ],
     );
+  }
+
+  void _showAnalysisMenu() {
+    assert(_isAnalysisMode, 'Analysis menu is analysis-mode only.');
+    final BuildContext hostContext = context;
+    final BuildContext actionContext = _stableActionContext(hostContext);
+    final S strings = S.of(hostContext);
+    final NavigatorState hostNavigator = Navigator.of(hostContext);
+    final GameSession? scopedSession = GameSessionScope.sessionOf(hostContext);
+    final NativeMillGameSession? session =
+        scopedSession is NativeMillGameSession
+        ? scopedSession
+        : GameController().activeNativeMillSession;
+    assert(session != null, 'Analysis menu requires a native Mill session.');
+    if (session == null) {
+      return;
+    }
+    final String boardTransformLayout = _activeBoardLayoutForTransformPreview();
+
+    showLichessActionSheet<void>(
+      context: hostContext,
+      sheetKey: const Key('play_area_analysis_menu_sheet'),
+      backgroundColor: _actionSheetBackground(hostContext),
+      foregroundColor: _actionSheetForeground(hostContext),
+      actions: <LichessActionSheetAction>[
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_menu_clear_moves'),
+          makeLabel: (BuildContext context) => Text(strings.clearAnalysisMoves),
+          onPressed: () => unawaited(_clearAnalysisMoves(session)),
+        ),
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_menu_variant'),
+          makeLabel: (BuildContext context) => Text(strings.variant),
+          onPressed: () => unawaited(_showAnalysisVariantPicker(session)),
+        ),
+        if (AnalysisService.canShowThreat(session))
+          LichessActionSheetAction(
+            key: const Key('play_area_analysis_menu_show_threat'),
+            makeLabel: (BuildContext context) =>
+                Text(_analysisThreatActionLabel(strings)),
+            onPressed: () => unawaited(
+              _toggleAnalysisThreatFromAnalysis(
+                actionContext,
+                toolbar: 'analysisMenu',
+              ),
+            ),
+          ),
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_menu_flip_board'),
+          trailing: const Icon(Icons.chevron_right),
+          dismissOnPress: false,
+          makeLabel: (BuildContext context) => Text(strings.flipBoard),
+          onPressed: () {},
+          onPressedWithContext: (BuildContext menuActionContext) =>
+              _replaceMenuWithBoardTransformPicker(
+                Navigator.of(menuActionContext),
+                sheetKey: const Key('play_area_regular_board_transform_sheet'),
+                keyPrefix: 'play_area_regular_board_transform',
+                strings: strings,
+                title: strings.flipBoard,
+                currentBoardLayout: boardTransformLayout,
+                session: session,
+              ),
+        ),
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_game_menu_move_list'),
+          makeLabel: (BuildContext context) => Text(strings.moveList),
+          onPressed: () => _openMovesWithNavigator(hostNavigator),
+        ),
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_menu_board_editor'),
+          makeLabel: (BuildContext context) => Text(strings.boardEditor),
+          onPressed: () => unawaited(_openBoardEditorFromAnalysis()),
+        ),
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_menu_continue_from_here'),
+          makeLabel: (BuildContext context) => Text(strings.continueFromHere),
+          onPressed: () => _showContinueFromHereMenu(
+            actionContext,
+            session: session,
+            navigator: hostNavigator,
+            strings: strings,
+          ),
+        ),
+        LichessActionSheetAction(
+          key: const Key('play_area_analysis_menu_share_export'),
+          makeLabel: (BuildContext context) => Text(strings.shareAndExport),
+          onPressed: () =>
+              _showAnalysisShareExportMenu(actionContext, strings: strings),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _clearAnalysisMoves(NativeMillGameSession session) async {
+    assert(_isAnalysisMode, 'Clearing moves is analysis-mode only.');
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{'toolbar': 'analysisMenu', 'action': 'clearMoves'},
+    );
+    await AnalysisService.stopActiveEngineAnalysisAndWait();
+    if (!mounted) {
+      return;
+    }
+    GameController().annotationManager.clear();
+    GameController().startNewAnalysis(session: session);
+    _lastAnalysisRefreshNode = null;
+    await AnalysisService.refresh(context);
+    if (!mounted) {
+      return;
+    }
+    rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+      S.of(context).analysisMovesCleared,
+    );
+  }
+
+  Future<void> _showAnalysisVariantPicker(NativeMillGameSession session) async {
+    assert(_isAnalysisMode, 'Variant picker is analysis-mode only.');
+    final String? currentId = RuleVariant.exactCanonicalIdFor(
+      DB().ruleSettings,
+    );
+    final String? selectedId = await showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.sizeOf(context).height * 0.85,
+      ),
+      builder: (BuildContext sheetContext) {
+        final S strings = S.of(sheetContext);
+        return SafeArea(
+          top: false,
+          child: ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              for (final String id in RuleVariant.canonicalSettings.keys)
+                ListTile(
+                  key: Key('play_area_analysis_variant_$id'),
+                  selected: id == currentId,
+                  title: Text(localizedMillVariantNameById(strings, id)),
+                  trailing: id == currentId
+                      ? const Icon(Icons.check_rounded)
+                      : null,
+                  onTap: () => Navigator.of(sheetContext).pop(id),
+                ),
+            ],
+          ),
+        );
+      },
+    );
+    if (selectedId == null || selectedId == currentId || !mounted) {
+      return;
+    }
+
+    RecordingService().recordEvent(
+      RecordingEventType.toolbarAction,
+      <String, dynamic>{
+        'toolbar': 'analysisMenu',
+        'action': 'setVariant',
+        'variant': selectedId,
+      },
+    );
+    await AnalysisService.stopActiveEngineAnalysisAndWait();
+    if (!mounted) {
+      return;
+    }
+    DB().ruleSettings = RuleVariant.canonicalSettings[selectedId]!;
+    GameController().annotationManager.clear();
+    GameController().startNewAnalysis(session: session);
+    _lastAnalysisRefreshNode = null;
+    await AnalysisService.refresh(context);
   }
 
   void _showHumanAiGameMenu() {
@@ -3822,7 +3991,6 @@ class PlayAreaState extends State<PlayArea> {
                   engineLinesReserve -
                   tabPanelMinHeight -
                   pieceRowsHeight -
-                  _kAnalysisPositionStatusHeight -
                   evaluationGaugeVerticalReserve -
                   _kBalancedLayoutSafetyMargin;
               final double boardWidthBudget = math.max(
@@ -3855,7 +4023,6 @@ class PlayAreaState extends State<PlayArea> {
                         : _buildRemovedPieceCountRow()
                   else
                     const SizedBox(height: AppTheme.boardMargin),
-                  _buildAnalysisPositionStatus(context),
                   Expanded(child: _buildAnalysisTabs(context)),
                 ],
               );
@@ -3946,144 +4113,6 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
-  Widget _buildAnalysisPositionStatus(BuildContext context) {
-    final GameSession? session =
-        GameSessionScope.sessionOf(context) ??
-        GameController().activeNativeMillSession;
-    if (session == null) {
-      return const SizedBox.shrink(
-        key: Key('play_area_analysis_position_status_unavailable'),
-      );
-    }
-
-    return AnimatedBuilder(
-      animation: session.state,
-      builder: (BuildContext context, Widget? child) {
-        final S strings = S.of(context);
-        final GameController controller = GameController();
-        final MillBoardView view = controller.activeBoardView;
-        final PieceColor side =
-            controller.activeSessionSideToMove ?? view.sideToMove;
-        final String status;
-        if (view.phase == Phase.gameOver) {
-          status = strings.gameOver;
-        } else {
-          final String sideName = side.playerName(context);
-          status = view.action == Act.remove
-              ? strings.tipToRemove(sideName)
-              : strings.tipToMove(sideName);
-        }
-        final String? opening = controller.activeOpeningDisplayName();
-        final String contextLabel = opening == null
-            ? switch (view.phase) {
-                Phase.moving => strings.movingPhase,
-                Phase.gameOver => strings.results,
-                Phase.ready || Phase.placing => strings.placingPhase,
-              }
-            : '${strings.openingLabel}: $opening';
-
-        return _AnalysisPositionStatus(
-          side: side,
-          status: status,
-          contextLabel: contextLabel,
-        );
-      },
-    );
-  }
-
-  Widget _buildMoveFeedbackCard(BuildContext context) {
-    if (!AnalysisMode.showMoveFeedback) {
-      return const SizedBox.shrink(key: Key('play_area_move_feedback_hidden'));
-    }
-    final MoveFeedbackAnalysisState state = _moveFeedbackController.state;
-    if (state.status == MoveFeedbackAnalysisStatus.idle ||
-        state.selectedNode?.data == null) {
-      return const SizedBox.shrink(key: Key('play_area_move_feedback_idle'));
-    }
-    return AnalysisMoveFeedbackCard(
-      state: state,
-      pvExpanded: _moveFeedbackPvExpanded,
-      onTogglePv: () {
-        setState(() => _moveFeedbackPvExpanded = !_moveFeedbackPvExpanded);
-      },
-      onApplyAnnotation: state.result?.symbol.nag == null
-          ? null
-          : () => unawaited(_applySuggestedMoveAnnotation(context)),
-      onAddBestLine: state.bestLine.isEmpty
-          ? null
-          : () => _addSuggestedBestLine(context),
-    );
-  }
-
-  Future<void> _applySuggestedMoveAnnotation(BuildContext context) async {
-    final MoveFeedbackAnalysisState state = _moveFeedbackController.state;
-    final PgnNode<ExtMove>? node = state.feedbackNode;
-    final int? nag = state.result?.symbol.nag;
-    if (node?.data == null || nag == null) {
-      return;
-    }
-    final List<int> qualityNags = (node!.data!.nags ?? const <int>[])
-        .where((int value) => value >= 1 && value <= 6)
-        .toList(growable: false);
-    if (qualityNags.isNotEmpty && qualityNags.first != nag) {
-      final bool? replace = await showDialog<bool>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: Text(S.of(context).moveFeedbackReplaceAnnotationTitle),
-          content: Text(S.of(context).moveFeedbackReplaceAnnotationMessage),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text(S.of(context).cancel),
-            ),
-            FilledButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text(S.of(context).moveFeedbackReplace),
-            ),
-          ],
-        ),
-      );
-      if (replace != true || !context.mounted) {
-        return;
-      }
-    }
-    GameController().gameRecorder.setMoveQualityNag(node, nag);
-    rootScaffoldMessengerKey.currentState?.showSnackBar(
-      SnackBar(content: Text(S.of(context).moveFeedbackAnnotationApplied)),
-    );
-  }
-
-  void _addSuggestedBestLine(BuildContext context) {
-    final MoveFeedbackAnalysisState state = _moveFeedbackController.state;
-    final PgnNode<ExtMove>? feedbackNode = state.feedbackNode;
-    if (feedbackNode?.data == null || state.bestLine.isEmpty) {
-      return;
-    }
-    final bool sameFirstMove =
-        state.bestLine.first.move == feedbackNode!.data!.move;
-    final PgnNode<ExtMove>? parent = sameFirstMove
-        ? feedbackNode
-        : feedbackNode.parent;
-    if (parent == null) {
-      return;
-    }
-    final Iterable<MoveFeedbackLineMove> additions = sameFirstMove
-        ? state.bestLine.skip(1)
-        : state.bestLine;
-    GameController().gameRecorder.addVariationLine(
-      parent,
-      additions
-          .map(
-            (MoveFeedbackLineMove lineMove) =>
-                ExtMove(lineMove.move, side: lineMove.side),
-          )
-          .toList(growable: false),
-    );
-    rootScaffoldMessengerKey.currentState?.showSnackBar(
-      SnackBar(content: Text(S.of(context).moveFeedbackBestLineAdded)),
-    );
-  }
-
   Widget _buildAnalysisTabs(BuildContext context, {bool framed = false}) {
     return ValueListenableBuilder<bool>(
       valueListenable: AnalysisMode.stateNotifier,
@@ -4101,11 +4130,6 @@ class PlayAreaState extends State<PlayArea> {
           ),
           moves: Column(
             children: <Widget>[
-              _AnalysisMovesHeader(
-                onOpenFullMoveList: () =>
-                    _openMovesWithNavigator(Navigator.of(context)),
-              ),
-              _buildMoveFeedbackCard(context),
               Expanded(
                 child: _InlineMoveList(
                   key: const Key('play_area_analysis_moves'),
@@ -4113,7 +4137,7 @@ class PlayAreaState extends State<PlayArea> {
                   roundKeyPrefix: 'play_area_analysis_round_',
                   moveKeyPrefix: 'play_area_analysis_move_',
                   onMoveTap: (BuildContext context, PgnNode<ExtMove> node) {
-                    return HistoryNavigator.gotoNode(context, node, pop: false);
+                    return _navigateAnalysisNode(context, node);
                   },
                   showMainlineContinuation: true,
                   showMovePreview: true,
@@ -4122,6 +4146,9 @@ class PlayAreaState extends State<PlayArea> {
                   showMoveComments: AnalysisMode.showMoveComments,
                   showRootComments: true,
                   usesGameSurfaceColors: false,
+                  showVariations: true,
+                  showEvaluations: AnalysisMode.isFullAnalysis,
+                  showMiniBoards: AnalysisMode.showMoveMiniBoards,
                   layout: AnalysisMode.inlineNotation
                       ? _InlineMoveListLayout.stacked
                       : _InlineMoveListLayout.twoColumn,
@@ -4131,6 +4158,7 @@ class PlayAreaState extends State<PlayArea> {
               _AnalysisVariationsBar(
                 key: const Key('play_area_analysis_variations_bar'),
                 showAnnotations: AnalysisMode.showMoveAnnotations,
+                onMoveTap: _navigateAnalysisNode,
               ),
             ],
           ),
@@ -4452,7 +4480,6 @@ class PlayAreaState extends State<PlayArea> {
       0,
       availableHeight -
           (showPieceCountRows ? pieceRowHeight * 2 : 0) -
-          _kAnalysisPositionStatusHeight -
           evaluationGaugeVerticalReserve,
     );
     final double boardSize = math.min(
@@ -4511,7 +4538,6 @@ class PlayAreaState extends State<PlayArea> {
                                   ? _buildPieceCountRow()
                                   : _buildRemovedPieceCountRow(),
                             ),
-                          _buildAnalysisPositionStatus(context),
                         ],
                       ),
                     ),
@@ -5239,6 +5265,9 @@ class _InlineMoveList extends StatefulWidget {
     this.showMoveComments = false,
     this.showRootComments = false,
     this.showMainlineContinuation = false,
+    this.showVariations = false,
+    this.showEvaluations = false,
+    this.showMiniBoards = false,
     this.usesGameSurfaceColors = true,
     this.layout = _InlineMoveListLayout.wrap,
     this.groupByRound = false,
@@ -5269,6 +5298,9 @@ class _InlineMoveList extends StatefulWidget {
   final bool showMoveComments;
   final bool showRootComments;
   final bool showMainlineContinuation;
+  final bool showVariations;
+  final bool showEvaluations;
+  final bool showMiniBoards;
   final bool usesGameSurfaceColors;
   final _InlineMoveListLayout layout;
   final bool groupByRound;
@@ -5306,22 +5338,13 @@ List<PgnNode<ExtMove>> _recorderPathWithMainlineContinuation(
   return nodes;
 }
 
-int _recorderVariationBranchCount(GameRecorder recorder) {
-  int countBranches(PgnNode<ExtMove> node) {
-    final int sidelineCount = math.max(0, node.children.length - 1);
-    int total = sidelineCount;
-    for (final PgnNode<ExtMove> child in node.children) {
-      total += countBranches(child);
-    }
-    return total;
-  }
-
-  return countBranches(recorder.pgnRoot);
-}
-
 class _InlineMoveListState extends State<_InlineMoveList> {
   final GlobalKey _currentMoveKey = GlobalKey();
   PgnNode<ExtMove>? _lastAutoScrolledNode;
+  int _analysisTreeNodeOrdinal = 0;
+  int _analysisBranchOrdinal = 0;
+  final Map<PgnNode<ExtMove>, int> _analysisPathIndices =
+      <PgnNode<ExtMove>, int>{};
 
   List<PgnNode<ExtMove>> _currentPathNodes() {
     return _recorderCurrentPathNodes(GameController().gameRecorder);
@@ -5349,9 +5372,9 @@ class _InlineMoveListState extends State<_InlineMoveList> {
     return ValueListenableBuilder<int>(
       valueListenable: GameController().gameRecorder.moveCountNotifier,
       builder: (BuildContext context, _, _) {
+        final GameRecorder recorder = GameController().gameRecorder;
         final List<PgnNode<ExtMove>> nodes = _displayPathNodes();
-        final PgnNode<ExtMove>? activeNode =
-            GameController().gameRecorder.activeNode;
+        final PgnNode<ExtMove>? activeNode = recorder.activeNode;
         _scheduleCurrentMoveAutoScroll(activeNode);
 
         final bool hasRootComments = _hasRootComments();
@@ -5375,13 +5398,277 @@ class _InlineMoveListState extends State<_InlineMoveList> {
             padding: widget.layout == _InlineMoveListLayout.horizontal
                 ? const EdgeInsets.only(left: 5)
                 : const EdgeInsets.fromLTRB(12, 6, 12, 4),
-            child: nodes.isEmpty && !hasRootComments
+            child: recorder.pgnRoot.children.isEmpty && !hasRootComments
                 ? const SizedBox(height: 30)
+                : widget.showVariations
+                ? _buildAnalysisTree(context, recorder)
                 : _buildMoves(context: context, nodes: nodes),
           ),
         );
       },
     );
+  }
+
+  Widget _buildAnalysisTree(BuildContext context, GameRecorder recorder) {
+    _analysisTreeNodeOrdinal = 0;
+    _analysisBranchOrdinal = 0;
+    _analysisPathIndices
+      ..clear()
+      ..addEntries(
+        _recorderCurrentPathNodes(recorder).asMap().entries.map(
+          (MapEntry<int, PgnNode<ExtMove>> entry) =>
+              MapEntry<PgnNode<ExtMove>, int>(entry.value, entry.key + 1),
+        ),
+      );
+    final List<Widget> children = <Widget>[
+      ?_buildRootCommentsBlock(context),
+      ..._buildAnalysisMainlineSubtrees(context, recorder.pgnRoot),
+    ];
+    return SingleChildScrollView(
+      key: const Key('play_area_inline_move_list_scroll_view'),
+      child: KeyedSubtree(
+        key: widget.layout == _InlineMoveListLayout.stacked
+            ? const Key('play_area_inline_move_list_inline_notation')
+            : widget.layout == _InlineMoveListLayout.twoColumn
+            ? const Key('play_area_inline_move_list_two_column')
+            : null,
+        child: Column(
+          key: const Key('play_area_analysis_move_tree'),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: children,
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _buildAnalysisMainlineSubtrees(
+    BuildContext context,
+    PgnNode<ExtMove> root,
+  ) {
+    final List<Widget> widgets = <Widget>[];
+    PgnNode<ExtMove> parent = root;
+    int partIndex = 0;
+    while (parent.children.isNotEmpty) {
+      final List<PgnNode<ExtMove>> part = <PgnNode<ExtMove>>[];
+      PgnNode<ExtMove> forkParent = parent;
+      while (parent.children.isNotEmpty) {
+        forkParent = parent;
+        final PgnNode<ExtMove> mainlineMove = parent.children.first;
+        part.add(mainlineMove);
+        parent = mainlineMove;
+        if (forkParent.children.length > 1) {
+          break;
+        }
+      }
+      partIndex++;
+      widgets.add(_buildAnalysisMainlinePart(context, part, partIndex));
+      if (forkParent.children.length > 1) {
+        widgets.add(
+          _buildAnalysisIndentedSidelines(
+            context,
+            forkParent.children.skip(1).toList(growable: false),
+            depth: 1,
+          ),
+        );
+      }
+    }
+    return widgets;
+  }
+
+  Widget _buildAnalysisMainlinePart(
+    BuildContext context,
+    List<PgnNode<ExtMove>> nodes,
+    int partIndex,
+  ) {
+    assert(nodes.isNotEmpty, 'Analysis mainline parts cannot be empty.');
+    final ThemeData theme = Theme.of(context);
+    final List<_InlineMoveRound> rounds = _buildAnalysisMoveRounds(nodes);
+    final List<_InlineMoveSegment> segments = <_InlineMoveSegment>[
+      for (final _InlineMoveRound round in rounds) ...round.segments,
+    ];
+    return DecoratedBox(
+      key: Key('play_area_analysis_mainline_part_$partIndex'),
+      decoration: BoxDecoration(
+        color: theme.brightness == Brightness.dark
+            ? Colors.white.withValues(alpha: 0.045)
+            : Colors.black.withValues(alpha: 0.025),
+        border: Border(
+          top: BorderSide(color: theme.dividerColor.withValues(alpha: 0.7)),
+        ),
+      ),
+      child: widget.layout == _InlineMoveListLayout.stacked
+          ? Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return _BoundedMoveWrap(
+                    spacing: 4,
+                    runSpacing: 4,
+                    children: <Widget>[
+                      for (int i = 0; i < segments.length; i++)
+                        _buildMoveSegment(
+                          context,
+                          segments[i],
+                          maxWidth: constraints.maxWidth,
+                          allowMultiline: true,
+                          isSideline: false,
+                          showMoveIndex:
+                              i == 0 || segments[i].side == PieceColor.white,
+                          showEvaluation: true,
+                        ),
+                    ],
+                  );
+                },
+              ),
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                for (final _InlineMoveRound round in rounds)
+                  _buildMoveRoundTableRow(context, round),
+              ],
+            ),
+    );
+  }
+
+  Widget _buildAnalysisIndentedSidelines(
+    BuildContext context,
+    List<PgnNode<ExtMove>> sidelines, {
+    required int depth,
+  }) {
+    assert(sidelines.isNotEmpty, 'Indented sidelines cannot be empty.');
+    final Color guideColor = Theme.of(
+      context,
+    ).colorScheme.onSurface.withValues(alpha: 0.3);
+    return Padding(
+      padding: EdgeInsets.only(left: depth <= 6 ? 10 : 0, right: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          for (int i = 0; i < sidelines.length; i++)
+            CustomPaint(
+              key: Key(
+                'play_area_analysis_branch_gutter_${++_analysisBranchOrdinal}',
+              ),
+              painter: _AnalysisBranchGuidePainter(
+                color: guideColor,
+                isLast: i == sidelines.length - 1,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 12),
+                child: _buildAnalysisSideline(
+                  context,
+                  sidelines[i],
+                  depth: depth,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAnalysisSideline(
+    BuildContext context,
+    PgnNode<ExtMove> firstNode, {
+    required int depth,
+  }) {
+    final List<PgnNode<ExtMove>> part = <PgnNode<ExtMove>>[firstNode];
+    PgnNode<ExtMove> node = firstNode;
+    while (node.children.length == 1) {
+      node = node.children.first;
+      part.add(node);
+    }
+    final List<_InlineMoveRound> rounds = _buildAnalysisMoveRounds(part);
+    final List<_InlineMoveSegment> segments = <_InlineMoveSegment>[
+      for (final _InlineMoveRound round in rounds) ...round.segments,
+    ];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return _BoundedMoveWrap(
+                spacing: 4,
+                runSpacing: 4,
+                children: <Widget>[
+                  for (int i = 0; i < segments.length; i++)
+                    _buildMoveSegment(
+                      context,
+                      segments[i],
+                      maxWidth: constraints.maxWidth,
+                      allowMultiline: true,
+                      isSideline: true,
+                      showMoveIndex:
+                          i == 0 || segments[i].side == PieceColor.white,
+                      showEvaluation: false,
+                    ),
+                ],
+              );
+            },
+          ),
+        ),
+        if (node.children.length > 1)
+          _buildAnalysisIndentedSidelines(
+            context,
+            node.children,
+            depth: depth + 1,
+          ),
+      ],
+    );
+  }
+
+  List<_InlineMoveRound> _buildAnalysisMoveRounds(
+    List<PgnNode<ExtMove>> nodes,
+  ) {
+    final List<_InlineMoveRound> rounds = <_InlineMoveRound>[];
+    for (final PgnNode<ExtMove> node in nodes) {
+      final ExtMove move = node.data!;
+      final int roundNumber = move.roundIndex ?? _analysisRoundNumber(node);
+      final _InlineMoveRound round;
+      if (rounds.isNotEmpty && rounds.last.number == roundNumber) {
+        round = rounds.last;
+      } else {
+        round = _InlineMoveRound(roundNumber);
+        rounds.add(round);
+      }
+      final _InlineMoveSegment segment;
+      if (round.segments.isNotEmpty && round.segments.last.side == move.side) {
+        segment = round.segments.last;
+      } else {
+        segment = _InlineMoveSegment(side: move.side);
+        round.segments.add(segment);
+      }
+      _analysisTreeNodeOrdinal++;
+      segment.nodes.add(
+        _IndexedMoveNode(index: _analysisTreeNodeOrdinal - 1, node: node),
+      );
+    }
+    return rounds;
+  }
+
+  int _analysisRoundNumber(PgnNode<ExtMove> node) {
+    final List<PgnNode<ExtMove>> path = <PgnNode<ExtMove>>[];
+    PgnNode<ExtMove>? current = node;
+    while (current?.data != null) {
+      path.insert(0, current!);
+      current = current.parent;
+    }
+    int round = 1;
+    PieceColor? previousSide;
+    for (final PgnNode<ExtMove> pathNode in path) {
+      final PieceColor side = pathNode.data!.side;
+      if (previousSide == PieceColor.black && side == PieceColor.white) {
+        round++;
+      }
+      if (identical(pathNode, node)) {
+        return round;
+      }
+      previousSide = side;
+    }
+    return round;
   }
 
   String _completedMoveAnnouncement(
@@ -5662,30 +5949,23 @@ class _InlineMoveListState extends State<_InlineMoveList> {
         ),
       ),
       child: ConstrainedBox(
-        constraints: const BoxConstraints(minHeight: 36),
+        constraints: BoxConstraints(minHeight: widget.showMiniBoards ? 76 : 40),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(
-              width: 34,
+              width: widget.showVariations ? 50 : 34,
               child: Padding(
                 padding: const EdgeInsets.only(top: 9, left: 2),
                 child: _InlineMoveCount(
                   count: round.number,
                   foregroundColor: _gameSurfaceForegroundColor(),
+                  fontSize: widget.showVariations ? 16 : null,
                 ),
               ),
             ),
             Expanded(
               child: _buildMoveRoundTableCell(context, round, PieceColor.white),
-            ),
-            SizedBox(
-              height: 36,
-              child: VerticalDivider(
-                width: 1,
-                thickness: 1,
-                color: theme.dividerColor.withValues(alpha: 0.5),
-              ),
             ),
             Expanded(
               child: _buildMoveRoundTableCell(context, round, PieceColor.black),
@@ -5705,17 +5985,79 @@ class _InlineMoveListState extends State<_InlineMoveList> {
         .where((_InlineMoveSegment segment) => segment.side == side)
         .toList(growable: false);
     if (segments.isEmpty) {
-      return const SizedBox(height: 36);
+      return SizedBox(height: widget.showMiniBoards ? 76 : 40);
     }
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-      child: Wrap(
-        spacing: 6,
-        runSpacing: 4,
-        children: <Widget>[
-          for (final _InlineMoveSegment segment in segments)
-            _buildMoveSegment(context, segment, allowMultiline: true),
-        ],
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              for (final _InlineMoveSegment segment in segments)
+                _buildMoveSegment(
+                  context,
+                  segment,
+                  maxWidth: constraints.maxWidth - 8,
+                  allowMultiline: true,
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  TextStyle _analysisTreeTextStyle(
+    BuildContext context, {
+    required bool isSideline,
+  }) {
+    final Color onSurface = Theme.of(context).colorScheme.onSurface;
+    return (Theme.of(context).textTheme.bodyLarge ??
+            const TextStyle(fontSize: 16))
+        .copyWith(
+          color: onSurface.withValues(alpha: isSideline ? 0.6 : 0.9),
+          fontFamily: null,
+          fontSize: isSideline ? 15 : 16,
+          fontWeight: FontWeight.w600,
+          height: 1.5,
+          letterSpacing: 0,
+        );
+  }
+
+  String? _analysisEvaluationLabel(PgnNode<ExtMove> node) {
+    if (!widget.showEvaluations) {
+      return null;
+    }
+    final int? evaluation = node.data?.analysisEvaluation;
+    if (evaluation == null) {
+      return null;
+    }
+    return evaluation > 0 ? '+$evaluation' : '$evaluation';
+  }
+
+  Widget _analysisMiniBoard(
+    BuildContext context,
+    PgnNode<ExtMove> node,
+    double size,
+  ) {
+    final String boardLayout = node.data!.boardLayout!;
+    return Semantics(
+      image: true,
+      label: S.of(context).boardPreviews,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(
+          math.min(DB().displaySettings.boardCornerRadius, 4),
+        ),
+        child: ColoredBox(
+          color: DB().colorSettings.boardBackgroundColor,
+          child: SizedBox.square(
+            dimension: size,
+            child: CustomPaint(
+              painter: MiniBoardPainter(boardLayout: boardLayout),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -5766,6 +6108,9 @@ class _InlineMoveListState extends State<_InlineMoveList> {
     _InlineMoveSegment segment, {
     double? maxWidth,
     bool allowMultiline = false,
+    bool isSideline = false,
+    bool showMoveIndex = false,
+    bool showEvaluation = true,
   }) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
@@ -5787,18 +6132,31 @@ class _InlineMoveListState extends State<_InlineMoveList> {
       labelBuffer.write(moveLabel);
     }
     final String label = labelBuffer.toString();
-    final String displayLabel = _withMoveComments(label, lastNode.node.data!);
+    String displayLabel = _withMoveComments(label, lastNode.node.data!);
+    if (showMoveIndex) {
+      final int round =
+          lastNode.node.data!.roundIndex ?? _analysisRoundNumber(lastNode.node);
+      final String marker = segment.side == PieceColor.black ? '...' : '.';
+      displayLabel = '$round$marker $displayLabel';
+    }
     final PgnNode<ExtMove> targetNode = lastNode.node;
+    final int? pathIndex = _analysisPathIndices[targetNode];
+    final Key moveKey = widget.showVariations && pathIndex == null
+        ? Key('${widget.moveKeyPrefix}tree_${lastNode.index + 1}')
+        : Key('${widget.moveKeyPrefix}${pathIndex ?? lastNode.index + 1}');
     final Widget chip = _GameMoveChip(
-      key: Key('${widget.moveKeyPrefix}${lastNode.index + 1}'),
+      key: moveKey,
       label: displayLabel,
       selected: selected,
       selectedColor: colorScheme.primaryContainer,
       selectedTextColor: colorScheme.onPrimaryContainer,
-      textStyle: _inlineMoveListTextStyle(
-        context,
-      ).copyWith(color: _gameSurfaceForegroundColor()),
+      textStyle: widget.showVariations
+          ? _analysisTreeTextStyle(context, isSideline: isSideline)
+          : _inlineMoveListTextStyle(
+              context,
+            ).copyWith(color: _gameSurfaceForegroundColor()),
       style: _GameMoveChipStyle.inlineText,
+      fontWeight: widget.showVariations ? FontWeight.w600 : null,
       maxLines: allowMultiline ? null : 1,
       onTap: widget.onMoveTap == null
           ? null
@@ -5809,12 +6167,90 @@ class _InlineMoveListState extends State<_InlineMoveList> {
           ? () => _handleMoveLongPress(context, targetNode, lastNode.index + 1)
           : null,
     );
-    final Widget result = maxWidth == null
-        ? chip
-        : ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: maxWidth),
-            child: chip,
-          );
+    final String? evaluation = showEvaluation
+        ? _analysisEvaluationLabel(targetNode)
+        : null;
+    final bool showMiniBoard =
+        widget.showMiniBoards && _hasPreviewBoard(targetNode);
+    final Widget result;
+    if (!widget.showVariations || (evaluation == null && !showMiniBoard)) {
+      result = maxWidth == null
+          ? chip
+          : ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: maxWidth),
+              child: chip,
+            );
+    } else {
+      result = ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: maxWidth ?? double.infinity),
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            final double availableWidth = constraints.hasBoundedWidth
+                ? constraints.maxWidth
+                : 220;
+            final double boardSize = math.min(
+              68,
+              math.max(44, availableWidth * 0.32),
+            );
+            final Widget? eval = evaluation == null
+                ? null
+                : Text(
+                    evaluation,
+                    key: Key(
+                      'play_area_analysis_move_evaluation_${lastNode.index + 1}',
+                    ),
+                    style:
+                        (Theme.of(context).textTheme.bodySmall ??
+                                const TextStyle())
+                            .copyWith(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.4),
+                              fontFamily: null,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: 0,
+                            ),
+                  );
+            final Widget? board = showMiniBoard
+                ? KeyedSubtree(
+                    key: Key(
+                      'play_area_analysis_move_mini_board_${lastNode.index + 1}',
+                    ),
+                    child: _analysisMiniBoard(context, targetNode, boardSize),
+                  )
+                : null;
+            if (availableWidth >= 140) {
+              return Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Flexible(child: chip),
+                  if (eval != null) ...<Widget>[const SizedBox(width: 4), eval],
+                  if (board != null) ...<Widget>[
+                    const SizedBox(width: 6),
+                    board,
+                  ],
+                ],
+              );
+            }
+            return Wrap(
+              spacing: 4,
+              runSpacing: 4,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: <Widget>[
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: availableWidth),
+                  child: chip,
+                ),
+                ?eval,
+                ?board,
+              ],
+            );
+          },
+        ),
+      );
+    }
 
     if (selected) {
       return KeyedSubtree(key: _currentMoveKey, child: result);
@@ -6018,6 +6454,18 @@ class _InlineMoveListState extends State<_InlineMoveList> {
     );
   }
 
+  Future<void> _navigateToMoveNode(
+    BuildContext context,
+    PgnNode<ExtMove> node,
+  ) {
+    final Future<void> Function(BuildContext, PgnNode<ExtMove>)? onMoveTap =
+        widget.onMoveTap;
+    if (onMoveTap != null) {
+      return onMoveTap(context, node);
+    }
+    return HistoryNavigator.gotoNode(context, node, pop: false);
+  }
+
   int? _qualityNagForMove(ExtMove move) {
     for (final int nag in move.getAllNags()) {
       if (nag >= 1 && nag <= 6) {
@@ -6046,7 +6494,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
     if (!promoted || !context.mounted) {
       return;
     }
-    await HistoryNavigator.gotoNode(context, node, pop: false);
+    await _navigateToMoveNode(context, node);
   }
 
   Future<void> _promoteMovePathToMainline(
@@ -6088,7 +6536,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
     if (!changed || !context.mounted) {
       return;
     }
-    await HistoryNavigator.gotoNode(context, node, pop: false);
+    await _navigateToMoveNode(context, node);
   }
 
   Future<void> _deleteMoveFromHere(
@@ -6111,7 +6559,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
     if (!deleted || !activeWasDeleted || !context.mounted) {
       return;
     }
-    await HistoryNavigator.gotoNode(context, parent, pop: false);
+    await _navigateToMoveNode(context, parent);
   }
 
   List<PgnNode<ExtMove>> _pathNodesFromRoot(PgnNode<ExtMove> node) {
@@ -6219,9 +6667,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
                       icon: const Icon(Icons.my_location_rounded),
                       onPressed: () {
                         Navigator.of(dialogContext).pop();
-                        unawaited(
-                          HistoryNavigator.gotoNode(context, node, pop: false),
-                        );
+                        unawaited(_navigateToMoveNode(context, node));
                       },
                     ),
                     IconButton(
@@ -6498,23 +6944,66 @@ class _BoundedMoveWrap extends StatelessWidget {
   }
 }
 
+class _AnalysisBranchGuidePainter extends CustomPainter {
+  const _AnalysisBranchGuidePainter({
+    required this.color,
+    required this.isLast,
+  });
+
+  final Color color;
+  final bool isLast;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    const double elbowY = 18;
+    final Paint paint = Paint()
+      ..color = color
+      ..strokeWidth = 1.5
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke;
+    final Path path = Path()
+      ..moveTo(0, 0)
+      ..lineTo(0, isLast ? elbowY : size.height)
+      ..moveTo(0, elbowY)
+      ..lineTo(8, elbowY);
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(_AnalysisBranchGuidePainter oldDelegate) {
+    return oldDelegate.color != color || oldDelegate.isLast != isLast;
+  }
+}
+
 class _InlineMoveCount extends StatelessWidget {
-  const _InlineMoveCount({required this.count, this.foregroundColor});
+  const _InlineMoveCount({
+    required this.count,
+    this.foregroundColor,
+    this.fontSize,
+  });
 
   final int count;
   final Color? foregroundColor;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
     final Color color =
         foregroundColor ?? Theme.of(context).colorScheme.onSurfaceVariant;
+    final TextStyle baseStyle = fontSize == null
+        ? _inlineMoveListTextStyle(context)
+        : Theme.of(context).textTheme.bodyLarge ??
+              const TextStyle(fontSize: 16);
     return Padding(
       padding: const EdgeInsets.only(right: 3),
       child: Text(
         '$count.',
-        style: _inlineMoveListTextStyle(
-          context,
-        ).copyWith(color: color, fontWeight: FontWeight.w500),
+        style: baseStyle.copyWith(
+          color: color,
+          fontSize: fontSize,
+          fontWeight: FontWeight.w400,
+          fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+        ),
       ),
     );
   }
@@ -6535,6 +7024,7 @@ class _GameMoveChip extends StatelessWidget {
     required this.selectedTextColor,
     required this.textStyle,
     this.style = _GameMoveChipStyle.filled,
+    this.fontWeight,
     this.maxLines = 1,
     this.onTap,
     this.onLongPress,
@@ -6546,6 +7036,7 @@ class _GameMoveChip extends StatelessWidget {
   final Color selectedTextColor;
   final TextStyle? textStyle;
   final _GameMoveChipStyle style;
+  final FontWeight? fontWeight;
   final int? maxLines;
   final VoidCallback? onTap;
   final VoidCallback? onLongPress;
@@ -6566,13 +7057,15 @@ class _GameMoveChip extends StatelessWidget {
                   ? colorScheme.onPrimaryContainer
                   : textStyle?.color ?? colorScheme.onSurface,
           },
-          fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+          fontWeight:
+              fontWeight ?? (selected ? FontWeight.w600 : FontWeight.w500),
         ) ??
         TextStyle(
           color: selected
               ? colorScheme.onPrimaryContainer
               : colorScheme.onSurface,
-          fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
+          fontWeight:
+              fontWeight ?? (selected ? FontWeight.w600 : FontWeight.w500),
         );
     final Widget labelText = Text(
       label,
@@ -6841,108 +7334,6 @@ class _HumanAiGameTipPanel extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class _AnalysisPositionStatus extends StatelessWidget {
-  const _AnalysisPositionStatus({
-    required this.side,
-    required this.status,
-    required this.contextLabel,
-  });
-
-  final PieceColor side;
-  final String status;
-  final String contextLabel;
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    final ColorScheme colors = theme.colorScheme;
-    final Color pieceColor = switch (side) {
-      PieceColor.white => DB().colorSettings.whitePieceColor,
-      PieceColor.black => DB().colorSettings.blackPieceColor,
-      _ => colors.outline,
-    };
-
-    return Semantics(
-      key: const Key('play_area_analysis_position_status'),
-      container: true,
-      liveRegion: true,
-      label: '$status $contextLabel',
-      child: ExcludeSemantics(
-        child: SizedBox(
-          height: PlayAreaState._kAnalysisPositionStatusHeight,
-          child: Material(
-            color: colors.surfaceContainer,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    key: const Key('play_area_analysis_position_status_piece'),
-                    width: 28,
-                    height: 28,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: colors.surfaceContainerHighest,
-                    ),
-                    alignment: Alignment.center,
-                    child: Container(
-                      width: 17,
-                      height: 17,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: pieceColor,
-                        border: Border.all(color: colors.outline, width: 1.5),
-                        boxShadow: const <BoxShadow>[
-                          BoxShadow(
-                            color: Color(0x33000000),
-                            blurRadius: 2,
-                            offset: Offset(0, 1),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          status,
-                          key: const Key(
-                            'play_area_analysis_position_status_turn',
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
-                          contextLabel,
-                          key: const Key(
-                            'play_area_analysis_position_status_context',
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: colors.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
@@ -7257,144 +7648,17 @@ class AnalysisMoveFeedbackCard extends StatelessWidget {
   }
 }
 
-class _AnalysisMovesHeader extends StatelessWidget {
-  const _AnalysisMovesHeader({required this.onOpenFullMoveList});
-
-  final VoidCallback onOpenFullMoveList;
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder<int>(
-      valueListenable: GameController().gameRecorder.moveCountNotifier,
-      builder: (BuildContext context, _, _) {
-        final ThemeData theme = Theme.of(context);
-        final ColorScheme colorScheme = theme.colorScheme;
-        final S strings = S.of(context);
-        final GameRecorder recorder = GameController().gameRecorder;
-        final _AnalysisMovesHeaderLabels labels = _labels(strings, recorder);
-
-        return DecoratedBox(
-          decoration: BoxDecoration(
-            color: colorScheme.surfaceContainerLowest,
-            border: Border(
-              bottom: BorderSide(
-                color: theme.dividerColor.withValues(alpha: 0.65),
-              ),
-            ),
-          ),
-          child: SizedBox(
-            height: 48,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 12, right: 6),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          strings.moveList,
-                          key: const Key(
-                            'play_area_analysis_moves_header_title',
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.labelLarge?.copyWith(
-                            color: colorScheme.onSurface,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 0,
-                          ),
-                        ),
-                        Text(
-                          labels.subtitle,
-                          key: const Key(
-                            'play_area_analysis_moves_header_subtitle',
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: colorScheme.onSurfaceVariant,
-                            letterSpacing: 0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Semantics(
-                    button: true,
-                    label: labels.fullMoveListAction,
-                    excludeSemantics: true,
-                    child: Tooltip(
-                      message: labels.fullMoveListAction,
-                      child: TextButton.icon(
-                        key: const Key(
-                          'play_area_analysis_open_full_move_list',
-                        ),
-                        onPressed: onOpenFullMoveList,
-                        style: TextButton.styleFrom(
-                          foregroundColor: colorScheme.onSurfaceVariant,
-                          visualDensity: VisualDensity.compact,
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          textStyle: theme.textTheme.labelSmall?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        icon: const Icon(Icons.grid_view_rounded, size: 18),
-                        label: Text(
-                          strings.boardPreviews,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  _AnalysisMovesHeaderLabels _labels(S strings, GameRecorder recorder) {
-    final int moveCount = _recorderPathWithMainlineContinuation(
-      recorder,
-    ).length;
-    final int variationCount = _recorderVariationBranchCount(recorder);
-    final List<String> parts = <String>[
-      strings.analysisMoveCount(moveCount),
-      if (variationCount > 0) strings.analysisVariationCount(variationCount),
-    ];
-    final String subtitle = parts.join(' · ');
-
-    return _AnalysisMovesHeaderLabels(
-      subtitle: subtitle,
-      fullMoveListAction: <String>[
-        strings.openMoveListWithSmallBoard,
-        subtitle,
-      ].join(' · '),
-    );
-  }
-}
-
-class _AnalysisMovesHeaderLabels {
-  const _AnalysisMovesHeaderLabels({
-    required this.subtitle,
-    required this.fullMoveListAction,
-  });
-
-  final String subtitle;
-  final String fullMoveListAction;
-}
-
 class _AnalysisVariationsBar extends StatelessWidget {
-  const _AnalysisVariationsBar({super.key, required this.showAnnotations});
+  const _AnalysisVariationsBar({
+    super.key,
+    required this.showAnnotations,
+    required this.onMoveTap,
+  });
 
   static const double _maxVariationWidth = 72;
 
   final bool showAnnotations;
+  final Future<void> Function(BuildContext, PgnNode<ExtMove>) onMoveTap;
 
   @override
   Widget build(BuildContext context) {
@@ -7440,6 +7704,7 @@ class _AnalysisVariationsBar extends StatelessWidget {
                             isSelected: identical(variation, group.selected),
                             hasSelectedVariation: group.selected != null,
                             showAnnotations: showAnnotations,
+                            onMoveTap: onMoveTap,
                           ),
                         ),
                     ],
@@ -7461,42 +7726,18 @@ class _AnalysisVariationsBar extends StatelessWidget {
   }
 
   List<_AnalysisVariationGroup> _buildVariationGroups(GameRecorder recorder) {
-    final List<_AnalysisVariationGroup> groups = <_AnalysisVariationGroup>[];
-    final List<PgnNode<ExtMove>> pathNodes = _recorderCurrentPathNodes(
-      recorder,
-    );
-
-    for (int i = 0; i < pathNodes.length; i++) {
-      final PgnNode<ExtMove> selected = pathNodes[i];
-      final PgnNode<ExtMove>? parent = selected.parent;
-      assert(parent != null, 'Path move nodes must have a parent.');
-      if (parent == null || parent.children.length <= 1) {
-        continue;
-      }
-      groups.add(
-        _AnalysisVariationGroup(
-          variations: parent.children,
-          selected: selected,
-          keyPrefix: 'play_area_analysis_path_variation_${i + 1}',
-          rowKey: Key('play_area_analysis_path_variation_group_${i + 1}'),
-        ),
-      );
-    }
-
     final PgnNode<ExtMove> currentNode =
         recorder.activeNode ?? recorder.pgnRoot;
-    if (currentNode.children.length > 1) {
-      groups.add(
-        _AnalysisVariationGroup(
-          variations: currentNode.children,
-          selected: null,
-          keyPrefix: 'play_area_analysis_variation',
-          rowKey: const Key('play_area_analysis_current_variation_group'),
-        ),
-      );
-    }
-
-    return groups;
+    return currentNode.children.length > 1
+        ? <_AnalysisVariationGroup>[
+            _AnalysisVariationGroup(
+              variations: currentNode.children,
+              selected: null,
+              keyPrefix: 'play_area_analysis_variation',
+              rowKey: const Key('play_area_analysis_current_variation_group'),
+            ),
+          ]
+        : const <_AnalysisVariationGroup>[];
   }
 }
 
@@ -7522,6 +7763,7 @@ class _AnalysisVariationButton extends StatelessWidget {
     required this.isSelected,
     required this.hasSelectedVariation,
     required this.showAnnotations,
+    required this.onMoveTap,
   });
 
   final PgnNode<ExtMove> node;
@@ -7529,6 +7771,7 @@ class _AnalysisVariationButton extends StatelessWidget {
   final bool isSelected;
   final bool hasSelectedVariation;
   final bool showAnnotations;
+  final Future<void> Function(BuildContext, PgnNode<ExtMove>) onMoveTap;
 
   @override
   Widget build(BuildContext context) {
@@ -7571,9 +7814,7 @@ class _AnalysisVariationButton extends StatelessWidget {
           child: Material(
             color: backgroundColor,
             child: InkWell(
-              onTap: () => unawaited(
-                HistoryNavigator.gotoNode(context, node, pop: false),
-              ),
+              onTap: () => unawaited(onMoveTap(context, node)),
               child: Container(
                 alignment: Alignment.center,
                 constraints: const BoxConstraints(
@@ -7754,7 +7995,7 @@ class _AnalysisEngineLine extends StatelessWidget {
   });
 
   static const double height = 24;
-  static const double fontSize = 11;
+  static const double evalFontSize = 11;
 
   final int lineRank;
   final MoveAnalysisResult result;
@@ -7807,8 +8048,8 @@ class _AnalysisEngineLine extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: chipTextColor,
-                        fontSize: fontSize,
-                        fontWeight: FontWeight.w700,
+                        fontSize: evalFontSize,
+                        fontWeight: FontWeight.w600,
                         letterSpacing: 0,
                       ),
                     ),
@@ -7820,9 +8061,9 @@ class _AnalysisEngineLine extends StatelessWidget {
                       maxLines: 1,
                       softWrap: false,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodySmall?.copyWith(
+                      style: theme.textTheme.bodyMedium?.copyWith(
                         color: lineColor,
-                        fontSize: fontSize,
+                        fontSize: 14,
                         letterSpacing: 0,
                       ),
                     ),
@@ -7930,20 +8171,73 @@ String _analysisEvalLabel(AnalysisOutcome outcome) {
 }
 
 String _analysisLineText(MoveAnalysisResult result) {
-  final String rawLine = result.displayLine.join(' ');
   final PgnNode<ExtMove>? activeNode = GameController().gameRecorder.activeNode;
   final ExtMove? lastMove = activeNode?.data;
   final PieceColor? sideToMove =
       GameController().activeSessionSideToMove ??
       _nextAnalysisSideToMoveAfter(lastMove);
   if (sideToMove != PieceColor.white && sideToMove != PieceColor.black) {
-    return rawLine;
+    return result.displayLine.join(' ');
   }
 
   final PieceColor playableSideToMove = sideToMove!;
-  final int moveNumber = _nextAnalysisMoveNumber(lastMove, playableSideToMove);
-  final String marker = playableSideToMove == PieceColor.black ? '...' : '.';
-  return '$moveNumber$marker $rawLine';
+  final int moveNumber = _nextAnalysisMoveNumber(
+    activeNode,
+    playableSideToMove,
+  );
+  return _numberedAnalysisLine(
+    result.displayLine,
+    sideToMove: playableSideToMove,
+    moveNumber: moveNumber,
+  );
+}
+
+String _numberedAnalysisLine(
+  List<String> moves, {
+  required PieceColor sideToMove,
+  required int moveNumber,
+}) {
+  assert(
+    sideToMove == PieceColor.white || sideToMove == PieceColor.black,
+    'PV numbering requires a playable side.',
+  );
+  final StringBuffer buffer = StringBuffer();
+  PieceColor side = sideToMove;
+  int round = moveNumber;
+  bool startsTurn = true;
+
+  void writePart(String part) {
+    if (buffer.isNotEmpty) {
+      buffer.write(' ');
+    }
+    buffer.write(part);
+  }
+
+  for (int i = 0; i < moves.length; i++) {
+    if (startsTurn) {
+      if (side == PieceColor.white) {
+        writePart('$round.');
+      } else if (i == 0) {
+        writePart('$round...');
+      }
+    }
+    writePart(moves[i]);
+
+    final bool sameTurnContinues =
+        i + 1 < moves.length && moves[i + 1].startsWith('x');
+    if (sameTurnContinues) {
+      startsTurn = false;
+      continue;
+    }
+    startsTurn = true;
+    if (side == PieceColor.black) {
+      side = PieceColor.white;
+      round++;
+    } else {
+      side = PieceColor.black;
+    }
+  }
+  return buffer.toString();
 }
 
 PieceColor? _nextAnalysisSideToMoveAfter(ExtMove? lastMove) {
@@ -7954,9 +8248,30 @@ PieceColor? _nextAnalysisSideToMoveAfter(ExtMove? lastMove) {
   };
 }
 
-int _nextAnalysisMoveNumber(ExtMove? lastMove, PieceColor sideToMove) {
-  final int round = lastMove?.roundIndex ?? 1;
+int _nextAnalysisMoveNumber(
+  PgnNode<ExtMove>? activeNode,
+  PieceColor sideToMove,
+) {
+  final ExtMove? lastMove = activeNode?.data;
   if (lastMove == null) {
+    return 1;
+  }
+  final List<PgnNode<ExtMove>> path = <PgnNode<ExtMove>>[];
+  PgnNode<ExtMove>? node = activeNode;
+  while (node?.data != null) {
+    path.insert(0, node!);
+    node = node.parent;
+  }
+  int round = 1;
+  PieceColor? previousSide;
+  for (final PgnNode<ExtMove> pathNode in path) {
+    final PieceColor side = pathNode.data!.side;
+    if (previousSide == PieceColor.black && side == PieceColor.white) {
+      round++;
+    }
+    previousSide = side;
+  }
+  if (path.isEmpty) {
     return round;
   }
   if (sideToMove == PieceColor.white && lastMove.side == PieceColor.black) {

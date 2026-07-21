@@ -441,6 +441,7 @@ class SanmillAppState extends State<SanmillApp> {
       evaluationGaugePosition: displaySettings.analysisEvaluationGaugePosition,
       showAllBoardResults: displaySettings.analysisShowAllBoardResults,
       showMoveFeedback: displaySettings.analysisShowMoveFeedback,
+      showMoveMiniBoards: displaySettings.analysisShowMoveMiniBoards,
       engineLineCount: displaySettings.analysisEngineLineCount,
       engineSearchTimeMs: displaySettings.analysisEngineSearchTimeMs,
       notify: false,
