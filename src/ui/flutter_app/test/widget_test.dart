@@ -16,6 +16,7 @@ import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/appearance_settings/widgets/appearance_settings_page.dart';
 import 'package:sanmill/appearance_settings/widgets/piece_effect_selection_page.dart';
 import 'package:sanmill/appearance_settings/widgets/theme_selection_page.dart';
+import 'package:sanmill/experience_recording/models/user_action_event.dart';
 import 'package:sanmill/game_page/services/analysis_mode.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/save_load/saved_game_catalog.dart';
@@ -44,6 +45,9 @@ import 'package:sanmill/puzzle/pages/puzzle_creation_page.dart';
 import 'package:sanmill/puzzle/widgets/puzzle_card.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
+import 'package:sanmill/shared/models/diagnostic_bundle.dart';
+import 'package:sanmill/shared/pages/diagnostic_report_page.dart';
+import 'package:sanmill/shared/services/diagnostic_report_service.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
 import 'package:sanmill/shared/services/system_ui_service.dart';
 import 'package:sanmill/shared/themes/app_theme.dart';
@@ -159,6 +163,53 @@ void main() {
     // pending-timer invariant check at test teardown.
     await tester.pump(const Duration(milliseconds: 350));
   }, skip: nativeLibrarySkipReason() != null);
+
+  testWidgets(
+    'only crash drafts created during this run open automatically',
+    (WidgetTester tester) async {
+      DiagnosticReportDraft crashDraft(String id) {
+        return DiagnosticReportDraft(
+          id: id,
+          createdAtUtc: DateTime.utc(2026, 7, 21),
+          kind: DiagnosticReportKind.crash,
+          errorMessage: 'boom',
+          stackTrace: '#0 test',
+          config: const <String, dynamic>{},
+          game: const <String, dynamic>{},
+          actionTrail: DiagnosticActionTrailSnapshot(
+            checkpoint: null,
+            events: const <UserActionEventV1>[],
+            truncatedEventCount: 0,
+            recordedAtUtc: DateTime.utc(2026, 7, 21),
+          ),
+          logs: '',
+        );
+      }
+
+      final DiagnosticReportService reportService = DiagnosticReportService();
+      final List<DiagnosticReportDraft> originalDrafts =
+          reportService.drafts.value;
+      addTearDown(() => reportService.drafts.value = originalDrafts);
+      final DiagnosticReportDraft persistedDraft = crashDraft('persisted');
+      reportService.drafts.value = <DiagnosticReportDraft>[persistedDraft];
+
+      await tester.pumpWidget(const SanmillApp());
+      await tester.pump(const Duration(milliseconds: 350));
+      expect(find.byType(DiagnosticReportPage), findsNothing);
+
+      final DiagnosticReportDraft currentRunDraft = crashDraft('current-run');
+      reportService.drafts.value = <DiagnosticReportDraft>[
+        currentRunDraft,
+        persistedDraft,
+      ];
+      await tester.pumpAndSettle();
+      expect(find.byType(DiagnosticReportPage), findsOneWidget);
+
+      await tester.pumpWidget(const SizedBox.shrink());
+      reportService.drafts.value = originalDrafts;
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
 
   testWidgets('Human-computer first-move choice stays semantically stable', (
     WidgetTester tester,

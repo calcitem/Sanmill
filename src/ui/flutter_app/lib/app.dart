@@ -263,15 +263,20 @@ class SanmillApp extends StatefulWidget {
 
 class SanmillAppState extends State<SanmillApp> {
   StreamSubscription<List<SharedFile>>? _intentDataStreamSubscription;
-  String? _presentedDraftId;
+  final Set<String> _handledDraftIds = <String>{};
   late final RecordingNavigatorObserver _rootRouteObserver;
 
   @override
   void initState() {
     super.initState();
     _rootRouteObserver = RecordingNavigatorObserver(navigatorId: 'root');
-    DiagnosticReportService().drafts.addListener(_presentPendingDraft);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _presentPendingDraft());
+    final DiagnosticReportService reportService = DiagnosticReportService();
+    // Persisted drafts remain available from Developer options, but they must
+    // not be mistaken for a crash from this run and reopened on every launch.
+    _handledDraftIds.addAll(
+      reportService.drafts.value.map((DiagnosticReportDraft draft) => draft.id),
+    );
+    reportService.drafts.addListener(_presentPendingDraft);
     _setupSharingIntent();
   }
 
@@ -387,9 +392,12 @@ class SanmillAppState extends State<SanmillApp> {
     final List<DiagnosticReportDraft> drafts = DiagnosticReportService()
         .drafts
         .value
-        .where((DiagnosticReportDraft draft) => draft.isCrash)
+        .where(
+          (DiagnosticReportDraft draft) =>
+              draft.isCrash && !_handledDraftIds.contains(draft.id),
+        )
         .toList(growable: false);
-    if (drafts.isEmpty || drafts.first.id == _presentedDraftId) {
+    if (drafts.isEmpty) {
       return;
     }
     final NavigatorState? navigator = EnvironmentConfig.catcher && !kIsWeb
@@ -402,7 +410,7 @@ class SanmillAppState extends State<SanmillApp> {
       return;
     }
     final DiagnosticReportDraft draft = drafts.first;
-    _presentedDraftId = draft.id;
+    _handledDraftIds.add(draft.id);
     unawaited(
       navigator.push(
         MaterialPageRoute<void>(
