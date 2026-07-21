@@ -4289,5 +4289,7 @@
     "analysisKeyMoments": "關鍵時刻",
     "@analysisKeyMoments": {},
     "analysisSummaryEmptyHint": "執行分析來複盤目前局面。",
-    "@analysisSummaryEmptyHint": {}
+    "@analysisSummaryEmptyHint": {},
+    "analysisSearchTimeMinutesValue": "{minutes, plural, =1{1 分鐘} other{{minutes} 分鐘}}",
+    "@analysisSearchTimeMinutesValue": {}
 }

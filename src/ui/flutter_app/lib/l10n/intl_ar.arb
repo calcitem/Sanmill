@@ -4257,5 +4257,7 @@
     "nativeMillSessionDeveloperOption": "Rust / TGF Mill session",
     "@nativeMillSessionDeveloperOption": {},
     "nativeMillSessionDeveloperDescription": "New Mill games use the Rust rules engine. Start a new game for it to take effect.",
-    "@nativeMillSessionDeveloperDescription": {}
+    "@nativeMillSessionDeveloperDescription": {},
+    "analysisSearchTimeMinutesValue": "{minutes, plural, =1{دقيقة واحدة} zero{0 دقيقة} two{دقيقتان} few{{minutes} دقائق} many{{minutes} دقيقة} other{{minutes} دقيقة}}",
+    "@analysisSearchTimeMinutesValue": {}
 }

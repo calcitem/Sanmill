@@ -372,29 +372,30 @@ fn run_ab_like_search(
     let mut result = SearchResult::default_none();
     let mut first_guess = 0;
     let search_started_at = Instant::now();
-    if config.move_time_ms > 0 {
-        for d in 2..max_depth {
-            if searcher.was_aborted() {
-                break;
-            }
-            let remaining_ms =
-                set_iteration_search_options(searcher, config, search_context, search_started_at);
-            if remaining_ms == Some(0) && !result.best_action.is_none() {
-                break;
-            }
-            result = run_searcher_algorithm(searcher, wb, config.algorithm, d, first_guess);
-            first_guess = result.score;
-            on_info(searcher, d, &result);
+    // Always iterate so analysis can publish progressive completed depths.
+    // `move_time_ms == 0` means unlimited wall time: only depth / explicit
+    // abort stops the search (Lichess-style analysis board).
+    for d in 2..=max_depth {
+        if searcher.was_aborted() {
+            break;
         }
-    }
-    if !searcher.was_aborted() || result.best_action.is_none() {
         let remaining_ms =
             set_iteration_search_options(searcher, config, search_context, search_started_at);
-        if remaining_ms == Some(0) && !result.best_action.is_none() {
-            return result;
+        if config.move_time_ms > 0 && remaining_ms == Some(0) && !result.best_action.is_none() {
+            break;
         }
-        result = run_searcher_algorithm(searcher, wb, config.algorithm, max_depth, first_guess);
-        on_info(searcher, max_depth, &result);
+        let iteration = run_searcher_algorithm(searcher, wb, config.algorithm, d, first_guess);
+        // Time/stop can abort mid-iteration. Only publish depths that fully
+        // finished; keep the last completed result for the caller.
+        if searcher.was_aborted() {
+            if result.best_action.is_none() && !iteration.best_action.is_none() {
+                result = iteration;
+            }
+            break;
+        }
+        result = iteration;
+        first_guess = result.score;
+        on_info(searcher, d, &result);
     }
     result
 }
@@ -947,6 +948,9 @@ fn run_mill_engine_config_event_stream(
     let max_depth = origin_depth;
 
     let search_started_at = Instant::now();
+    // Last fully completed IDS depth reported to the UI. Must not be the
+    // requested ceiling when the final iteration was time/stop aborted.
+    let mut completed_depth = 0i32;
     let mut result = match algorithm_to_search(config.algorithm) {
         SearchAlgorithm::Random => {
             // Use time-seeded random to match master's rand()+time() behaviour.
@@ -956,6 +960,7 @@ fn run_mill_engine_config_event_stream(
                 .unwrap_or(42);
             searcher.set_random_seed(seed);
             let result = searcher.random_search(&mut wb);
+            completed_depth = 1;
             let _ = sink.add(crate::engine_event::info(1, result.score, result.nodes));
             result
         }
@@ -980,6 +985,7 @@ fn run_mill_engine_config_event_stream(
                         Arc::clone(&abort),
                         &sink,
                     );
+                    completed_depth = lazy_result.depth;
                     let _ = sink.add(crate::engine_event::info(
                         lazy_result.depth,
                         lazy_result.result.score,
@@ -999,6 +1005,7 @@ fn run_mill_engine_config_event_stream(
                         search_context,
                         max_depth,
                         |progress_searcher, depth, current| {
+                            completed_depth = depth;
                             progress.emit(progress_searcher, depth, current);
                         },
                     )
@@ -1011,6 +1018,7 @@ fn run_mill_engine_config_event_stream(
                     search_context,
                     max_depth,
                     |progress_searcher, depth, current| {
+                        completed_depth = depth;
                         progress.emit(progress_searcher, depth, current);
                     },
                 )
@@ -1095,6 +1103,7 @@ fn run_mill_engine_config_event_stream(
                 nodes: mcts_result.visits as u64,
                 draw_reason: None,
             };
+            completed_depth = max_depth;
             let _ = sink.add(crate::engine_event::info(
                 max_depth,
                 result.score,
@@ -1105,21 +1114,29 @@ fn run_mill_engine_config_event_stream(
     };
 
     if config.multi_pv > 1 {
-        let ctx = MultiPvEventContext {
-            game: &game,
-            snapshot: &snapshot,
-            searcher: &searcher,
-            root_side_to_move: snapshot.side_to_move,
-            config: &config,
-            search_context,
-            nodes_per_second: nodes_per_second(result.nodes, search_started_at.elapsed()),
-            // Reconstructing a missing tail runs additional searches for each
-            // root row. Keep timed analysis inside its single move budget;
-            // the TT-backed partial PV is sufficient for those callers.
-            complete_tail: should_complete_multi_pv_tail(&config),
-        };
-        for event in multi_pv_events(&ctx, max_depth) {
-            let _ = sink.add(event);
+        // Only republish when the last IDS iteration fully completed so the
+        // searcher's root rows match `completed_depth`. Timed analysis already
+        // streamed MultiPV at each completed depth; republishing with the
+        // requested ceiling (e.g. 64) after an aborted final pass made the UI
+        // claim an unreachable depth.
+        if completed_depth > 0 && !searcher.was_aborted() {
+            let ctx = MultiPvEventContext {
+                game: &game,
+                snapshot: &snapshot,
+                searcher: &searcher,
+                root_side_to_move: snapshot.side_to_move,
+                config: &config,
+                search_context,
+                nodes_per_second: nodes_per_second(result.nodes, search_started_at.elapsed()),
+                // Reconstructing a missing tail runs additional searches for
+                // each root row. Keep timed analysis inside its single move
+                // budget; the TT-backed partial PV is sufficient for those
+                // callers.
+                complete_tail: should_complete_multi_pv_tail(&config),
+            };
+            for event in multi_pv_events(&ctx, completed_depth) {
+                let _ = sink.add(event);
+            }
         }
     }
 
@@ -1202,6 +1219,7 @@ pub(crate) fn request_abort_active_search() -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::sync::atomic::Ordering;
     use tgf_mill::MillRules;
 
     #[test]
@@ -1533,6 +1551,97 @@ mod tests {
         assert!(
             pv_depths.iter().any(|depth| *depth > 1),
             "MultiPV events should report iterative depths: {pv_depths:?}"
+        );
+    }
+
+    #[test]
+    fn aborted_ids_iteration_does_not_report_incomplete_depth() {
+        let game = MillGame::default();
+        let snapshot = MillRules::default().initial_state(&[]);
+        let mut wb = game.build_workbench(&snapshot);
+        let config = MillEngineConfigPlan {
+            algorithm: MillSearchAlgorithmKind::Pvs,
+            depth: 8,
+            move_time_ms: 60_000,
+            skill_level: 30,
+            shuffling: false,
+            multi_pv: 1,
+            ..MillEngineConfigPlan::default()
+        };
+        let mut searcher = mill_searcher_for_config(&config);
+        let search_context = search_context_for_config(&config);
+        searcher.set_options(configured_search_options(&config, search_context));
+        let abort = Arc::new(AtomicBool::new(false));
+        searcher.set_abort_flag(Arc::clone(&abort));
+
+        let mut reported_depths = Vec::<i32>::new();
+        let result = run_ab_like_search(
+            &mut searcher,
+            &mut wb,
+            &config,
+            search_context,
+            config.depth,
+            |_progress_searcher, depth, _current| {
+                reported_depths.push(depth);
+                // Abort before the next IDS iteration starts so depth+1 and the
+                // final max-depth pass are incomplete and must not be reported.
+                if depth == 3 {
+                    abort.store(true, Ordering::Relaxed);
+                }
+            },
+        );
+
+        assert!(
+            !result.best_action.is_none(),
+            "search must still return a move after an aborted deeper pass"
+        );
+        assert_eq!(
+            reported_depths,
+            vec![2, 3],
+            "only fully completed IDS depths may be reported: {reported_depths:?}"
+        );
+        assert!(
+            !reported_depths.contains(&config.depth),
+            "requested ceiling depth must not be reported after abort"
+        );
+        assert!(searcher.was_aborted());
+    }
+
+    #[test]
+    fn unlimited_search_reports_progressive_completed_depths() {
+        let game = MillGame::default();
+        let snapshot = MillRules::default().initial_state(&[]);
+        let mut wb = game.build_workbench(&snapshot);
+        let config = MillEngineConfigPlan {
+            algorithm: MillSearchAlgorithmKind::Pvs,
+            depth: 5,
+            move_time_ms: 0,
+            skill_level: 30,
+            shuffling: false,
+            multi_pv: 1,
+            ..MillEngineConfigPlan::default()
+        };
+        let mut searcher = mill_searcher_for_config(&config);
+        let search_context = search_context_for_config(&config);
+        searcher.set_options(configured_search_options(&config, search_context));
+
+        let mut reported_depths = Vec::<i32>::new();
+        let result = run_ab_like_search(
+            &mut searcher,
+            &mut wb,
+            &config,
+            search_context,
+            config.depth,
+            |_progress_searcher, depth, _current| {
+                reported_depths.push(depth);
+            },
+        );
+
+        assert!(!result.best_action.is_none());
+        assert_eq!(
+            reported_depths,
+            vec![2, 3, 4, 5],
+            "unlimited searches must still iterate and report each completed depth: {reported_depths:?}"
         );
     }
 

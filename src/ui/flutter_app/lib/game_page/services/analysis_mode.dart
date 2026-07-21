@@ -4,6 +4,7 @@
 // analysis_mode.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import '../../appearance_settings/models/display_settings.dart';
 import '../../general_settings/models/general_settings.dart';
@@ -155,10 +156,20 @@ class AnalysisMode {
     15000,
     20000,
     30000,
+    60 * 1000,
+    2 * 60 * 1000,
+    5 * 60 * 1000,
+    10 * 60 * 1000,
     maxEngineSearchTimeMs,
   ];
   static const int defaultEngineSearchTimeMs =
       DisplaySettings.defaultAnalysisEngineSearchTimeMs;
+
+  /// Unlimited analysis-board search budget (UI "∞").
+  ///
+  /// Independent of [GeneralSettings.moveTime] (Human vs AI thinking time).
+  /// Converted to `moveLimitMs = 0` before calling the engine so depth / stop
+  /// alone drive termination.
   static const int maxEngineSearchTimeMs = 60 * 60 * 1000;
 
   static bool _isEnabled = false;
@@ -255,8 +266,20 @@ class AnalysisMode {
   static int get engineSearchTimeMs => _engineSearchTimeMs;
 
   /// Index of the current search-time option for the analysis settings slider.
-  static int get engineSearchTimeOptionIndex =>
-      engineSearchTimeOptionsMs.indexOf(_engineSearchTimeMs);
+  static int get engineSearchTimeOptionIndex {
+    final int index = engineSearchTimeOptionsMs.indexOf(_engineSearchTimeMs);
+    if (index >= 0) {
+      return index;
+    }
+    final int fallback = engineSearchTimeOptionsMs.indexOf(
+      defaultEngineSearchTimeMs,
+    );
+    assert(
+      fallback >= 0,
+      'Default analysis search time must be a slider option.',
+    );
+    return fallback;
+  }
 
   /// The current full per-move analysis results used by the board overlay.
   static List<MoveAnalysisResult> get analysisResults => _analysisResults;
@@ -317,7 +340,7 @@ class AnalysisMode {
   }
 
   /// Disable the overlay and clear all results.  Idempotent.
-  static void disable() {
+  static void disable({bool notify = true}) {
     if (!_isEnabled &&
         !_isAnalyzing &&
         !_isThreatMode &&
@@ -337,16 +360,20 @@ class AnalysisMode {
     _isEngineAnalysisDeep = false;
     _isEnabled = false;
     _isAnalyzing = false;
-    _publishState();
+    if (notify) {
+      _publishState();
+    }
   }
 
   /// Mark whether an analysis pass is in progress.
-  static void setAnalyzing(bool analyzing) {
+  static void setAnalyzing(bool analyzing, {bool notify = true}) {
     if (_isAnalyzing == analyzing) {
       return;
     }
     _isAnalyzing = analyzing;
-    _publishState();
+    if (notify) {
+      _publishState();
+    }
   }
 
   /// Toggle visibility of the engine line panel.
@@ -645,10 +672,25 @@ class AnalysisMode {
   }
 
   static void _publishState() {
-    if (stateNotifier.value == _isEnabled) {
-      stateNotifier.value = !_isEnabled;
+    void publish() {
+      if (stateNotifier.value == _isEnabled) {
+        stateNotifier.value = !_isEnabled;
+      }
+      stateNotifier.value = _isEnabled;
     }
-    stateNotifier.value = _isEnabled;
+
+    // Notifying ValueListenableBuilders during finalizeTree / mid-frame
+    // (e.g. PlayArea.dispose -> stopActiveEngineAnalysis) crashes with
+    // "setState() called when widget tree was locked".
+    switch (WidgetsBinding.instance.schedulerPhase) {
+      case SchedulerPhase.idle:
+      case SchedulerPhase.postFrameCallbacks:
+        publish();
+      case SchedulerPhase.transientCallbacks:
+      case SchedulerPhase.midFrameMicrotasks:
+      case SchedulerPhase.persistentCallbacks:
+        WidgetsBinding.instance.addPostFrameCallback((_) => publish());
+    }
   }
 
   static void _saveDisplayPreferences({

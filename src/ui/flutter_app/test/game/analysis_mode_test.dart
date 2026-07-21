@@ -190,7 +190,12 @@ void main() {
       AnalysisMode.engineSearchTimeMs,
       AnalysisMode.defaultEngineSearchTimeMs,
     );
-    expect(AnalysisMode.engineSearchTimeOptionIndex, 2);
+    expect(
+      AnalysisMode.engineSearchTimeOptionIndex,
+      AnalysisMode.engineSearchTimeOptionsMs.indexOf(
+        AnalysisMode.defaultEngineSearchTimeMs,
+      ),
+    );
 
     AnalysisMode.setEngineSearchTimeMs(AnalysisMode.maxEngineSearchTimeMs);
 

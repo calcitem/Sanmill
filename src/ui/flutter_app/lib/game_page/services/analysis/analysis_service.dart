@@ -36,7 +36,6 @@ class AnalysisService {
   static const int _analysisSearchDepth = 64;
   static const int _analysisSkillLevel = 30;
   static const int _hintSearchDepth = 32;
-  static const int _hintSearchTimeMs = 10 * 60 * 1000;
 
   static int _analysisSearchGeneration = 0;
   static Future<void>? _activeEngineAnalysis;
@@ -377,14 +376,20 @@ class AnalysisService {
       useAnalysisThreads: useAnalysisThreads,
     );
     final int searchDepth = searchDepthOverride ?? _analysisSearchDepth;
-    final int moveLimitMs =
+    final int configuredSearchTimeMs =
         moveLimitMsOverride ??
         (isDeepSearch
             ? AnalysisMode.maxEngineSearchTimeMs
             : AnalysisMode.engineSearchTimeMs);
+    // "∞" is stored as [AnalysisMode.maxEngineSearchTimeMs] but the native
+    // engine treats 0 as unlimited wall time (depth / stop only).
+    final int moveLimitMs =
+        configuredSearchTimeMs == AnalysisMode.maxEngineSearchTimeMs
+        ? 0
+        : configuredSearchTimeMs;
     final bool isDeepEngineAnalysis =
         mode == AnalysisOverlayMode.analysis &&
-        moveLimitMs == AnalysisMode.maxEngineSearchTimeMs;
+        configuredSearchTimeMs == AnalysisMode.maxEngineSearchTimeMs;
     NativeMillGameSession? temporarySession;
     final NativeMillGameSession searchSession;
     if (fenOverride == null) {
@@ -696,19 +701,19 @@ class AnalysisService {
   /// Full-analysis results stay visible, but their in-progress state is
   /// cleared. Hint results are removed because a hint belongs to the board
   /// position and view that requested it.
-  static void stopActiveEngineAnalysis() {
+  static void stopActiveEngineAnalysis({bool notify = true}) {
     final bool isHintSearch =
         _isBestMoveHintSearching ||
         AnalysisMode.isHint ||
         _activeEngineAnalysisMode == AnalysisOverlayMode.hint;
     if (isHintSearch) {
-      stopBestMoveHint();
+      stopBestMoveHint(notify: notify);
       return;
     }
     if (_activeEngineAnalysis != null || AnalysisMode.isAnalyzing) {
       _stopCurrentEngineAnalysis();
     }
-    AnalysisMode.setAnalyzing(false);
+    AnalysisMode.setAnalyzing(false, notify: notify);
   }
 
   /// Stop any current engine pass and wait for the native session to drain.
@@ -721,7 +726,7 @@ class AnalysisService {
   }
 
   /// Stop a running hint search and remove its board overlay.
-  static void stopBestMoveHint() {
+  static void stopBestMoveHint({bool notify = true}) {
     final bool hasPendingHintRequest = _isBestMoveHintSearching;
     final bool hasActiveHintSearch =
         _activeEngineAnalysisMode == AnalysisOverlayMode.hint;
@@ -739,7 +744,7 @@ class AnalysisService {
     if (hasPendingHintRequest || hasActiveHintSearch) {
       _stopCurrentEngineAnalysis();
     }
-    AnalysisMode.disable();
+    AnalysisMode.disable(notify: notify);
   }
 
   /// Forget the reusable hint for the previous position.
@@ -817,7 +822,6 @@ class AnalysisService {
         mode: AnalysisOverlayMode.hint,
         requestedLineCountOverride: 1,
         searchDepthOverride: _hintSearchDepth,
-        moveLimitMsOverride: _hintSearchTimeMs,
         hintCacheKey: hintCacheKey,
         cachedHintResult: cachedHintResult,
       );

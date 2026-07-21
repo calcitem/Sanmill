@@ -302,9 +302,10 @@ class _GamePageInnerState extends State<_GamePageInner>
     if (_ownsAnalysisSession) {
       // Engine searches belong to this analysis view. Leaving one running
       // after the route is popped keeps publishing state into the next page
-      // and can also race its native-session operations.
-      AnalysisService.stopActiveEngineAnalysis();
-      AnalysisMode.disable();
+      // and can also race its native-session operations.  Do not notify
+      // AnalysisMode listeners while the tree is locked for unmount.
+      AnalysisService.stopActiveEngineAnalysis(notify: false);
+      AnalysisMode.disable(notify: false);
       _analysisRecorder?.moveCountNotifier.removeListener(
         _scheduleAnalysisSessionSave,
       );

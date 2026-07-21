@@ -504,7 +504,7 @@ Future<void> showAnalysisSettingsSheet(
                         'play_area_analysis_settings_engine_search_time',
                       ),
                       leading: const Icon(Icons.timer_outlined),
-                      title: Text(strings.searchTime),
+                      title: Text(strings.analysisSearchTime),
                       subtitle: Text(
                         _analysisSearchTimeValueLabel(
                           strings,
@@ -734,7 +734,12 @@ String _analysisSearchTimeValueLabel(S strings, int valueMs) {
     return '∞';
   }
   assert(valueMs % 1000 == 0, 'Analysis search time must be whole seconds.');
-  return strings.aiThinkingTimeValue(valueMs ~/ 1000);
+  // Analysis-board budget only. Do not reuse aiThinkingTimeValue / moveTime —
+  // those control Human vs AI thinking time in GeneralSettings.
+  if (valueMs >= 60 * 1000 && valueMs % (60 * 1000) == 0) {
+    return strings.analysisSearchTimeMinutesValue(valueMs ~/ (60 * 1000));
+  }
+  return strings.analysisSearchTimeSecondsValue(valueMs ~/ 1000);
 }
 
 String _analysisEngineThreadsSubtitle(
@@ -845,7 +850,11 @@ class PlayAreaState extends State<PlayArea> {
 
   @override
   void dispose() {
-    AnalysisService.stopActiveEngineAnalysis();
+    // Stopping the engine must not notify AnalysisMode listeners here: the
+    // widget tree is locked during unmount (e.g. DisplaySettings rebuild after
+    // persisting analysis search time) and ValueListenableBuilder.setState
+    // would crash.
+    AnalysisService.stopActiveEngineAnalysis(notify: false);
     AnalysisService.invalidateBestMoveHintCache();
     GameController().headerIconsNotifier.removeListener(_updateUI);
     LiveEvaluationService.stateNotifier.removeListener(
@@ -8892,7 +8901,7 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
                           size: const Size.square(28),
                           painter: _AnalysisEngineChipPainter(chipColor),
                         ),
-                        if (isAnalyzing)
+                        if (isAnalyzing && (_analysisEngineDepth() ?? 0) <= 0)
                           SizedBox.square(
                             key: const Key(
                               'play_area_analysis_bottom_bar_engine_progress',
@@ -8961,7 +8970,19 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
     );
   }
 
+  bool get _hasCompletedEngineDepth {
+    final int? depth = _analysisEngineDepth();
+    return depth != null && depth > 0;
+  }
+
   String get _chipText {
+    // Show the last fully completed IDS depth even while a deeper pass is
+    // still running. Only fall back to a spinner/placeholder before the
+    // first completed iteration arrives.
+    final int? depth = _analysisEngineDepth();
+    if (depth != null && depth > 0) {
+      return math.min(99, depth).toString();
+    }
     if (AnalysisMode.isAnalyzing) {
       return '...';
     }
@@ -8970,17 +8991,18 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
     }
     final int count = AnalysisMode.analysisResults.length;
     assert(count > 0, 'Full analysis mode must have at least one line.');
-    if (AnalysisMode.hasEngineLinesSource &&
-        AnalysisMode.analysisLineResults.isNotEmpty) {
-      final int? depth = _analysisEngineDepth();
-      if (depth != null && depth > 0) {
-        return math.min(99, depth).toString();
-      }
-    }
     return math.min(99, count).toString();
   }
 
   String _statusLabel(S strings) {
+    final int? depth = _analysisEngineDepth();
+    if (depth != null && depth > 0) {
+      final String depthLabel = 'd${math.min(99, depth)}';
+      if (AnalysisMode.isAnalyzing) {
+        return '${strings.analyzing} · $depthLabel';
+      }
+      return depthLabel;
+    }
     if (AnalysisMode.isAnalyzing) {
       return strings.analyzing;
     }
@@ -8989,13 +9011,6 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
     }
     final int count = AnalysisMode.analysisResults.length;
     assert(count > 0, 'Full analysis mode must have at least one line.');
-    if (AnalysisMode.hasEngineLinesSource &&
-        AnalysisMode.analysisLineResults.isNotEmpty) {
-      final int? depth = _analysisEngineDepth();
-      if (depth != null && depth > 0) {
-        return 'd${math.min(99, depth)}';
-      }
-    }
     return math.min(99, count).toString();
   }
 

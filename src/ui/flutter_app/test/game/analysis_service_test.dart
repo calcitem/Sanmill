@@ -65,7 +65,7 @@ void main() {
       AnalysisMode.maxEngineLineCount,
     ]);
     expect(session.requestedDepthValues, <int>[64]);
-    expect(session.requestedMoveLimitValues, <int>[6000]);
+    expect(session.requestedMoveLimitValues, <int>[0]);
   });
 
   testWidgets('visible engine lines request the default PV count', (
@@ -82,7 +82,7 @@ void main() {
       AnalysisMode.defaultEngineLineCount,
     ]);
     expect(session.requestedDepthValues, <int>[64]);
-    expect(session.requestedMoveLimitValues, <int>[6000]);
+    expect(session.requestedMoveLimitValues, <int>[0]);
   });
 
   testWidgets('normal analysis caches the best score on the active move', (
@@ -139,7 +139,7 @@ void main() {
       AnalysisMode.maxEngineLineCount,
     ]);
     expect(session.requestedDepthValues, <int>[64]);
-    expect(session.requestedMoveLimitValues, <int>[6000]);
+    expect(session.requestedMoveLimitValues, <int>[0]);
   });
 
   testWidgets('normal analysis uses the selected search time', (
@@ -288,7 +288,7 @@ void main() {
 
     expect(session.requestedMultiPvValues, <int>[1]);
     expect(session.requestedDepthValues, <int>[32]);
-    expect(session.requestedMoveLimitValues, <int>[10 * 60 * 1000]);
+    expect(session.requestedMoveLimitValues, <int>[0]);
     expect(session.requestedSearchAlgorithmValues, <SearchAlgorithm?>[
       SearchAlgorithm.pvs,
     ]);
@@ -517,9 +517,7 @@ void main() {
       AnalysisMode.defaultEngineLineCount,
     ]);
     expect(session.requestedDepthValues, <int>[64]);
-    expect(session.requestedMoveLimitValues, <int>[
-      AnalysisMode.maxEngineSearchTimeMs,
-    ]);
+    expect(session.requestedMoveLimitValues, <int>[0]);
     expect(AnalysisMode.isEngineAnalysisDeep, isTrue);
 
     await AnalysisService.goDeeper(
@@ -527,9 +525,7 @@ void main() {
     );
     await tester.pump();
 
-    expect(session.requestedMoveLimitValues, <int>[
-      AnalysisMode.maxEngineSearchTimeMs,
-    ]);
+    expect(session.requestedMoveLimitValues, <int>[0]);
   });
 
   testWidgets('go deeper keeps deeper existing engine lines', (
@@ -654,9 +650,7 @@ void main() {
     expect(AnalysisMode.trapMoves, <String>['a1']);
     expect(AnalysisMode.analysisLineResults.single.move, 'f4');
     expect(AnalysisMode.analysisLineResults.single.depth, 6);
-    expect(session.requestedMoveLimitValues, <int>[
-      AnalysisMode.maxEngineSearchTimeMs,
-    ]);
+    expect(session.requestedMoveLimitValues, <int>[0]);
   });
 
   testWidgets('go deeper keeps threat-mode analysis', (
@@ -696,9 +690,7 @@ void main() {
     expect(AnalysisMode.source, AnalysisSource.engine);
     expect(AnalysisMode.analysisLineResults.single.move, 'a7');
     expect(temporarySessions, hasLength(1));
-    expect(temporarySessions.single.requestedMoveLimitValues, <int>[
-      AnalysisMode.maxEngineSearchTimeMs,
-    ]);
+    expect(temporarySessions.single.requestedMoveLimitValues, <int>[0]);
   });
 
   testWidgets('position refresh clears threat mode before new engine result', (
@@ -733,9 +725,7 @@ void main() {
     expect(AnalysisMode.isThreatMode, isFalse);
     expect(AnalysisMode.isAnalyzing, isTrue);
     expect(AnalysisMode.isFullAnalysis, isFalse);
-    expect(session.requestedMoveLimitValues, <int>[
-      AnalysisMode.engineSearchTimeMs,
-    ]);
+    expect(session.requestedMoveLimitValues, <int>[0]);
 
     session.completePendingSearch();
     await refresh;

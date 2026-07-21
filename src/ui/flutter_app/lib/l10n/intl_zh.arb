@@ -6885,5 +6885,29 @@
     "analysisBoard": "分析棋盘",
     "@analysisBoard": {},
     "sound": "声音",
-    "@sound": {}
+    "@sound": {},
+    "analysisSearchTime": "每步分析时间",
+    "@analysisSearchTime": {
+        "description": "Analysis-board per-position engine search-time setting title; not Human vs AI computer thinking time"
+    },
+    "analysisSearchTimeSecondsValue": "{seconds, plural, =1{1 秒} other{{seconds} 秒}}",
+    "@analysisSearchTimeSecondsValue": {
+        "description": "Displayed analysis engine search-time value in seconds; not Human vs AI thinking time",
+        "placeholders": {
+            "seconds": {
+                "type": "int",
+                "example": "6"
+            }
+        }
+    },
+    "analysisSearchTimeMinutesValue": "{minutes, plural, =1{1 分钟} other{{minutes} 分钟}}",
+    "@analysisSearchTimeMinutesValue": {
+        "description": "Displayed analysis engine search-time value when the selected budget is a whole number of minutes; not Human vs AI thinking time",
+        "placeholders": {
+            "minutes": {
+                "type": "int",
+                "example": "10"
+            }
+        }
+    }
 }

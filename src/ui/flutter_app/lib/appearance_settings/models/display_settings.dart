@@ -13,7 +13,12 @@ import '../../shared/database/adapters/adapters.dart';
 part 'display_settings.g.dart';
 
 const int kDefaultAnalysisEngineLineCount = 2;
-const int kDefaultAnalysisEngineSearchTimeMs = 6000;
+
+/// Sentinel for unlimited analysis search time (UI label "∞").
+///
+/// Must match [AnalysisMode.maxEngineSearchTimeMs]. The engine receives
+/// `moveLimitMs = 0` when this value is selected.
+const int kDefaultAnalysisEngineSearchTimeMs = 60 * 60 * 1000;
 
 /// Strategies for painting shapes and paths on points.
 @HiveType(typeId: 9)

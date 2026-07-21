@@ -4262,7 +4262,7 @@ void main() {
     expect(find.text('Stop showing threat'), findsOneWidget);
   });
 
-  testWidgets('analysis engine button shows progress while analyzing', (
+  testWidgets('analysis engine button shows completed depth while analyzing', (
     WidgetTester tester,
   ) async {
     db.displaySettings = const DisplaySettings(
@@ -4286,20 +4286,24 @@ void main() {
     AnalysisMode.setAnalyzing(true);
     await tester.pump();
 
+    // Progressive analysis already has a completed depth: show that number
+    // instead of an indefinite spinner.
     expect(
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_progress')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
       findsOneWidget,
     );
-    final CircularProgressIndicator bottomBarProgress = tester
-        .widget<CircularProgressIndicator>(
-          find.descendant(
-            of: find.byKey(
-              const Key('play_area_analysis_bottom_bar_engine_progress'),
-            ),
-            matching: find.byType(CircularProgressIndicator),
-          ),
-        );
-    expect(bottomBarProgress.semanticsLabel, 'Analyzing…');
+    expect(
+      tester
+          .widget<Text>(
+            find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
+          )
+          .data,
+      '8',
+    );
     expect(
       tester
           .widget<Opacity>(
@@ -4311,10 +4315,6 @@ void main() {
       1,
     );
     final Color expectedForeground = db.colorSettings.messageColor;
-    expect(
-      bottomBarProgress.valueColor?.value,
-      expectedForeground.withValues(alpha: 0.82),
-    );
     final Text engineLabel = tester.widget<Text>(
       find.byKey(const Key('play_area_analysis_bottom_bar_engine_label')),
     );
@@ -4323,15 +4323,11 @@ void main() {
       expectedForeground.withValues(alpha: 0.82),
     );
     expect(
-      find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
-      findsNothing,
-    );
-    expect(
       find.byWidgetPredicate((Widget widget) {
         if (widget is! Tooltip) {
           return false;
         }
-        return widget.message?.startsWith('Engine · Analyzing') ?? false;
+        return widget.message?.contains('d8') ?? false;
       }),
       findsOneWidget,
     );
@@ -4341,10 +4337,11 @@ void main() {
     );
     await tester.pump();
 
+    // Tap is ignored while analyzing.
     expect(AnalysisMode.isFullAnalysis, isTrue);
     expect(AnalysisMode.isAnalyzing, isTrue);
     expect(
-      find.byKey(const Key('play_area_analysis_bottom_bar_engine_progress')),
+      find.byKey(const Key('play_area_analysis_bottom_bar_engine_value')),
       findsOneWidget,
     );
 
