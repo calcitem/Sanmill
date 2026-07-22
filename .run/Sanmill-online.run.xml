@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Sanmill-online" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="additionalArgs" value="--dart-define-from-file=$PROJECT_DIR$/src/ui/flutter_app/.dart-defines.local.json" />
+    <option name="filePath" value="$PROJECT_DIR$/src/ui/flutter_app/lib/main.dart" />
+    <method v="2" />
+  </configuration>
+</component>
