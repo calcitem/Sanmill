@@ -87,11 +87,15 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Deploy Worker
         working-directory: services/online-worker
-        run: >-
-          pnpm run deploy --
-          --var ONLINE_ENABLED:${{ inputs.enable_service }}
-          --var SOURCE_VERSION:${{ github.sha }}
-          --var ANDROID_APP_LINK_SHA256_CERT_FINGERPRINTS:${{ vars.ANDROID_APP_LINK_SHA256_CERT_FINGERPRINTS }}
+        run: |
+          pnpm run build:wasm
+          pnpm exec wrangler deploy \
+            --var "ONLINE_ENABLED:${ONLINE_ENABLED}" \
+            --var "SOURCE_VERSION:${SOURCE_VERSION}" \
+            --var "ANDROID_APP_LINK_SHA256_CERT_FINGERPRINTS:${ANDROID_APP_LINK_SHA256_CERT_FINGERPRINTS}"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          ONLINE_ENABLED: ${{ inputs.enable_service }}
+          SOURCE_VERSION: ${{ github.sha }}
+          ANDROID_APP_LINK_SHA256_CERT_FINGERPRINTS: ${{ vars.ANDROID_APP_LINK_SHA256_CERT_FINGERPRINTS }}
