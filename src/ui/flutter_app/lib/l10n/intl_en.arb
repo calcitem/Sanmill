@@ -6974,5 +6974,37 @@
                 "example": "10"
             }
         }
+    },
+    "onlineProxySettings": "Online proxy",
+    "@onlineProxySettings": {
+        "description": "Title and tooltip for online-play proxy settings"
+    },
+    "onlineUseProxy": "Use an HTTP proxy for online play",
+    "@onlineUseProxy": {
+        "description": "Switch that enables a user-configured proxy for online play"
+    },
+    "onlineProxyDescription": "HTTPS and WebSocket connections use the same proxy.",
+    "@onlineProxyDescription": {
+        "description": "Explains that one proxy setting covers both online transports"
+    },
+    "onlineProxyHost": "Proxy host",
+    "@onlineProxyHost": {
+        "description": "Label for the online-play proxy host field"
+    },
+    "onlineProxyPort": "Proxy port",
+    "@onlineProxyPort": {
+        "description": "Label for the online-play proxy port field"
+    },
+    "onlineProxyInvalidHost": "Enter a valid proxy host.",
+    "@onlineProxyInvalidHost": {
+        "description": "Validation error for an invalid online-play proxy host"
+    },
+    "onlineProxyInvalidPort": "Enter a port from 1 to 65535.",
+    "@onlineProxyInvalidPort": {
+        "description": "Validation error for an invalid online-play proxy port"
+    },
+    "onlineProxySaved": "Proxy settings saved.",
+    "@onlineProxySaved": {
+        "description": "Confirmation shown after saving online-play proxy settings"
     }
 }

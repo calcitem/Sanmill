@@ -6907,5 +6907,37 @@
                 "example": "10"
             }
         }
+    },
+    "onlineProxySettings": "在线代理",
+    "@onlineProxySettings": {
+        "description": "Title and tooltip for online-play proxy settings"
+    },
+    "onlineUseProxy": "在线对战使用 HTTP 代理",
+    "@onlineUseProxy": {
+        "description": "Switch that enables a user-configured proxy for online play"
+    },
+    "onlineProxyDescription": "HTTPS 和 WebSocket 连接使用同一代理。",
+    "@onlineProxyDescription": {
+        "description": "Explains that one proxy setting covers both online transports"
+    },
+    "onlineProxyHost": "代理主机",
+    "@onlineProxyHost": {
+        "description": "Label for the online-play proxy host field"
+    },
+    "onlineProxyPort": "代理端口",
+    "@onlineProxyPort": {
+        "description": "Label for the online-play proxy port field"
+    },
+    "onlineProxyInvalidHost": "请输入有效的代理主机。",
+    "@onlineProxyInvalidHost": {
+        "description": "Validation error for an invalid online-play proxy host"
+    },
+    "onlineProxyInvalidPort": "请输入 1 到 65535 之间的端口。",
+    "@onlineProxyInvalidPort": {
+        "description": "Validation error for an invalid online-play proxy port"
+    },
+    "onlineProxySaved": "代理设置已保存。",
+    "@onlineProxySaved": {
+        "description": "Confirmation shown after saving online-play proxy settings"
     }
 }

@@ -7,6 +7,8 @@ import 'dart:convert';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../experience_recording/services/diagnostic_reproduction_service.dart';
+import 'online_proxy_settings.dart';
+import 'online_proxy_transport.dart';
 
 sealed class OnlineSocketEvent {
   const OnlineSocketEvent();
@@ -45,6 +47,12 @@ abstract interface class OnlineSocketClient {
 }
 
 class ChannelOnlineSocketClient implements OnlineSocketClient {
+  ChannelOnlineSocketClient({OnlineWebSocketTransport? transport})
+    : _transport =
+          transport ??
+          createOnlineWebSocketTransport(OnlineProxySettings.disabled);
+
+  final OnlineWebSocketTransport _transport;
   final StreamController<OnlineSocketEvent> _events =
       StreamController<OnlineSocketEvent>.broadcast(sync: true);
   WebSocketChannel? _channel;
@@ -63,7 +71,7 @@ class ChannelOnlineSocketClient implements OnlineSocketClient {
   Future<void> connect(Uri uri) async {
     DiagnosticReplayGuard.requireAllowed('Online socket connections');
     await _closeChannel();
-    final WebSocketChannel channel = WebSocketChannel.connect(uri);
+    final WebSocketChannel channel = _transport.connect(uri);
     _channel = channel;
     await channel.ready;
     _connected = true;
@@ -115,6 +123,7 @@ class ChannelOnlineSocketClient implements OnlineSocketClient {
   @override
   Future<void> close() async {
     await _closeChannel();
+    _transport.close();
     await _events.close();
   }
 

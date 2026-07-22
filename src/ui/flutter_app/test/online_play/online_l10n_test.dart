@@ -43,6 +43,14 @@ void main() {
     'onlineOpponentDisconnected',
     'onlineOpponentLeft',
     'onlineActionRejected',
+    'onlineProxySettings',
+    'onlineUseProxy',
+    'onlineProxyDescription',
+    'onlineProxyHost',
+    'onlineProxyPort',
+    'onlineProxyInvalidHost',
+    'onlineProxyInvalidPort',
+    'onlineProxySaved',
   ];
 
   test('online keys are appended to en and zh in identical order', () {

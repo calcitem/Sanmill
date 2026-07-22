@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -17,6 +18,8 @@ import 'cloud_match_coordinator.dart';
 import 'online_deep_links.dart';
 import 'online_game_registration.dart';
 import 'online_models.dart';
+import 'online_proxy_settings.dart';
+import 'online_proxy_transport.dart';
 import 'online_room_api.dart';
 import 'online_session_store.dart';
 import 'online_socket_client.dart';
@@ -32,6 +35,7 @@ class OnlineFriendGamePage extends StatefulWidget {
     this.service,
     this.roomApi,
     this.sessionStore,
+    this.proxySettingsStore,
     this.socketFactory,
     this.initialInviteUri,
   });
@@ -40,6 +44,7 @@ class OnlineFriendGamePage extends StatefulWidget {
   final OnlineServiceConfig? service;
   final OnlineRoomApi? roomApi;
   final OnlineSessionStore? sessionStore;
+  final OnlineProxySettingsStore? proxySettingsStore;
   final OnlineSocketClientFactory? socketFactory;
   final Uri? initialInviteUri;
 
@@ -52,7 +57,12 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
   OnlineServiceConfig? _service;
   OnlineRoomApi? _roomApi;
   late final OnlineSessionStore _sessionStore;
-  late final OnlineSocketClientFactory _socketFactory;
+  late final OnlineProxySettingsStore _proxySettingsStore;
+  OnlineProxySettings _proxySettings = OnlineProxySettings.disabled;
+  OnlineSocketClientFactory? _socketFactory;
+  http.Client? _ownedRoomClient;
+  bool _transportReady = false;
+  Uri? _pendingIncomingUri;
   CloudMatchCoordinator? _coordinator;
   StreamSubscription<RemoteMatchEvent>? _matchSubscription;
   StreamSubscription<Uri>? _linkSubscription;
@@ -64,28 +74,80 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
   void initState() {
     super.initState();
     _sessionStore = widget.sessionStore ?? SecureOnlineSessionStore();
-    _socketFactory = widget.socketFactory ?? () => ChannelOnlineSocketClient();
+    _proxySettingsStore =
+        widget.proxySettingsStore ?? SecureOnlineProxySettingsStore();
     try {
       _service = widget.service ?? OnlineServiceConfig.fromEnvironment();
-      _roomApi =
-          widget.roomApi ??
-          HttpOnlineRoomApi(
-            service: _service!,
-            definition: widget.registration.definition,
-          );
     } on FormatException {
       _failure = OnlineFailure.serviceUnavailable;
     }
     _linkSubscription = OnlineDeepLinkController.instance.links.listen(
       _handleIncomingUri,
     );
-    WidgetsBinding.instance.addPostFrameCallback((_) => _resumeOrJoin());
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => _initializeOnlineTransport(),
+    );
+  }
+
+  Future<void> _initializeOnlineTransport() async {
+    try {
+      final OnlineProxySettings environment =
+          OnlineProxySettings.fromEnvironment();
+      final OnlineProxySettings settings =
+          await _proxySettingsStore.read() ?? environment;
+      if (!mounted) {
+        return;
+      }
+      _installTransport(settings);
+      setState(() => _transportReady = true);
+      await _resumeOrJoin();
+    } on Object {
+      if (mounted) {
+        setState(() {
+          _transportReady = false;
+          _failure = OnlineFailure.serviceUnavailable;
+        });
+      }
+    }
+  }
+
+  void _installTransport(OnlineProxySettings settings) {
+    final OnlineProxySettings effectiveSettings = onlineProxySupported
+        ? settings
+        : OnlineProxySettings.disabled;
+    _ownedRoomClient?.close();
+    _ownedRoomClient = null;
+    _proxySettings = settings;
+    final OnlineServiceConfig? service = _service;
+    if (widget.roomApi != null) {
+      _roomApi = widget.roomApi;
+    } else if (service != null) {
+      final http.Client client = createOnlineHttpClient(effectiveSettings);
+      _ownedRoomClient = client;
+      _roomApi = HttpOnlineRoomApi(
+        service: service,
+        definition: widget.registration.definition,
+        client: client,
+      );
+    } else {
+      _roomApi = null;
+    }
+    _socketFactory =
+        widget.socketFactory ??
+        () => ChannelOnlineSocketClient(
+          transport: createOnlineWebSocketTransport(effectiveSettings),
+        );
   }
 
   Future<void> _resumeOrJoin() async {
+    if (!_transportReady) {
+      return;
+    }
     final Uri? initial =
+        _pendingIncomingUri ??
         widget.initialInviteUri ??
         OnlineDeepLinkController.instance.takePending();
+    _pendingIncomingUri = null;
     if (initial != null) {
       await _handleIncomingUri(initial);
       return;
@@ -116,6 +178,10 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
 
   Future<void> _handleIncomingUri(Uri uri) async {
     if (!mounted || _stage == _OnlinePageStage.busy) {
+      return;
+    }
+    if (!_transportReady) {
+      _pendingIncomingUri = uri;
       return;
     }
     OnlineDeepLinkController.instance.consume(uri);
@@ -202,11 +268,16 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
         session.room.rulesetId != definition.rulesetId) {
       throw const OnlineApiException(OnlineFailure.versionMismatch);
     }
+    final OnlineSocketClientFactory? socketFactory = _socketFactory;
+    final OnlineRoomApi? roomApi = _roomApi;
+    if (socketFactory == null || roomApi == null) {
+      throw const OnlineApiException(OnlineFailure.serviceUnavailable);
+    }
     final CloudMatchCoordinator coordinator = await widget.registration
         .installCoordinator(
           session: session,
-          roomApi: _roomApi!,
-          socket: _socketFactory(),
+          roomApi: roomApi,
+          socket: socketFactory(),
           sessionStore: _sessionStore,
         );
     _coordinator = coordinator;
@@ -335,6 +406,32 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
     await _joinInvite(invite);
   }
 
+  Future<void> _showProxySettings() async {
+    final OnlineProxySettings? settings = await showDialog<OnlineProxySettings>(
+      context: context,
+      builder: (BuildContext context) =>
+          _OnlineProxySettingsDialog(initial: _proxySettings),
+    );
+    if (settings == null || !mounted) {
+      return;
+    }
+    try {
+      await _proxySettingsStore.write(settings);
+      if (!mounted) {
+        return;
+      }
+      _installTransport(settings);
+      setState(() => _failure = null);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(S.of(context).onlineProxySaved)));
+    } on Object {
+      if (mounted) {
+        setState(() => _failure = OnlineFailure.serviceUnavailable);
+      }
+    }
+  }
+
   Future<void> _cancelWaitingRoom() async {
     final OnlineRoomSession? session = _roomSession;
     if (session == null || _roomApi == null) {
@@ -405,6 +502,15 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
               )
             : null,
         title: Text(s.onlineFriendGame),
+        actions: <Widget>[
+          if (_stage == _OnlinePageStage.home && onlineProxySupported)
+            IconButton(
+              key: const Key('online_proxy_settings'),
+              tooltip: s.onlineProxySettings,
+              onPressed: _transportReady ? _showProxySettings : null,
+              icon: const Icon(Icons.settings_ethernet),
+            ),
+        ],
       ),
       body: SafeArea(
         child: switch (_stage) {
@@ -457,14 +563,18 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
                   const SizedBox(height: 24),
                   FilledButton.icon(
                     key: const Key('online_create_game'),
-                    onPressed: _roomApi == null ? null : _showCreateSettings,
+                    onPressed: !_transportReady || _roomApi == null
+                        ? null
+                        : _showCreateSettings,
                     icon: const Icon(Icons.add_circle_outline),
                     label: Text(s.onlineCreateGame),
                   ),
                   const SizedBox(height: 12),
                   OutlinedButton.icon(
                     key: const Key('online_join_game'),
-                    onPressed: _roomApi == null ? null : _showJoinSheet,
+                    onPressed: !_transportReady || _roomApi == null
+                        ? null
+                        : _showJoinSheet,
                     icon: const Icon(Icons.link),
                     label: Text(s.onlineJoinGame),
                   ),
@@ -638,6 +748,145 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
     } else {
       unawaited(_matchSubscription?.cancel());
     }
+    _ownedRoomClient?.close();
+    super.dispose();
+  }
+}
+
+class _OnlineProxySettingsDialog extends StatefulWidget {
+  const _OnlineProxySettingsDialog({required this.initial});
+
+  final OnlineProxySettings initial;
+
+  @override
+  State<_OnlineProxySettingsDialog> createState() =>
+      _OnlineProxySettingsDialogState();
+}
+
+class _OnlineProxySettingsDialogState
+    extends State<_OnlineProxySettingsDialog> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late final TextEditingController _hostController;
+  late final TextEditingController _portController;
+  late bool _enabled;
+
+  @override
+  void initState() {
+    super.initState();
+    _enabled = widget.initial.enabled;
+    _hostController = TextEditingController(text: widget.initial.host);
+    _portController = TextEditingController(
+      text: widget.initial.port.toString(),
+    );
+  }
+
+  void _save() {
+    if (!_enabled) {
+      final String host = _hostController.text;
+      final int? port = int.tryParse(_portController.text);
+      final OnlineProxySettings settings =
+          OnlineProxySettings.isValidHost(host) &&
+              port != null &&
+              port >= 1 &&
+              port <= 65535
+          ? OnlineProxySettings.disabledWithAddress(host: host, port: port)
+          : OnlineProxySettings.disabled;
+      Navigator.of(context).pop(settings);
+      return;
+    }
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    Navigator.of(context).pop(
+      OnlineProxySettings.enabled(
+        host: _hostController.text,
+        port: int.parse(_portController.text),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final S s = S.of(context);
+    return AlertDialog(
+      title: Text(s.onlineProxySettings),
+      content: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              SwitchListTile(
+                key: const Key('online_proxy_enabled'),
+                contentPadding: EdgeInsets.zero,
+                title: Text(s.onlineUseProxy),
+                value: _enabled,
+                onChanged: (bool value) => setState(() => _enabled = value),
+              ),
+              Text(s.onlineProxyDescription),
+              const SizedBox(height: 16),
+              TextFormField(
+                key: const Key('online_proxy_host'),
+                controller: _hostController,
+                enabled: _enabled,
+                keyboardType: TextInputType.url,
+                autocorrect: false,
+                enableSuggestions: false,
+                decoration: InputDecoration(
+                  labelText: s.onlineProxyHost,
+                  border: const OutlineInputBorder(),
+                ),
+                validator: (String? value) {
+                  if (!_enabled ||
+                      OnlineProxySettings.isValidHost(value ?? '')) {
+                    return null;
+                  }
+                  return s.onlineProxyInvalidHost;
+                },
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                key: const Key('online_proxy_port'),
+                controller: _portController,
+                enabled: _enabled,
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                decoration: InputDecoration(
+                  labelText: s.onlineProxyPort,
+                  border: const OutlineInputBorder(),
+                ),
+                validator: (String? value) {
+                  if (!_enabled) {
+                    return null;
+                  }
+                  final int? port = int.tryParse(value ?? '');
+                  if (port == null || port < 1 || port > 65535) {
+                    return s.onlineProxyInvalidPort;
+                  }
+                  return null;
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(s.cancel),
+        ),
+        FilledButton(onPressed: _save, child: Text(s.save)),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    _hostController.dispose();
+    _portController.dispose();
     super.dispose();
   }
 }

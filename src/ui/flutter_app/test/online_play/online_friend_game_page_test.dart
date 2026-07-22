@@ -11,6 +11,7 @@ import 'package:sanmill/online_play/cloud_match_coordinator.dart';
 import 'package:sanmill/online_play/online_friend_game_page.dart';
 import 'package:sanmill/online_play/online_game_registration.dart';
 import 'package:sanmill/online_play/online_models.dart';
+import 'package:sanmill/online_play/online_proxy_settings.dart';
 import 'package:sanmill/online_play/online_room_api.dart';
 import 'package:sanmill/online_play/online_session_store.dart';
 import 'package:sanmill/online_play/online_socket_client.dart';
@@ -56,6 +57,7 @@ void main() {
           service: OnlineServiceConfig(Uri.parse('https://online.example')),
           roomApi: _UnusedApi(),
           sessionStore: _EmptyStore(),
+          proxySettingsStore: _MemoryProxyStore(),
         ),
       ),
     );
@@ -90,6 +92,7 @@ void main() {
                   ),
                   roomApi: _UnusedApi(),
                   sessionStore: _EmptyStore(),
+                  proxySettingsStore: _MemoryProxyStore(),
                 ),
               ),
             ),
@@ -168,6 +171,33 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('proxy settings persist one address for HTTPS and WebSocket', (
+    WidgetTester tester,
+  ) async {
+    final _MemoryProxyStore proxyStore = _MemoryProxyStore();
+    await tester.pumpWidget(
+      _testApp(api: _UnusedApi(), proxySettingsStore: proxyStore),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('online_proxy_settings')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(Switch));
+    await tester.pump();
+    await tester.enterText(
+      find.byKey(const Key('online_proxy_host')),
+      '192.168.1.79',
+    );
+    await tester.enterText(find.byKey(const Key('online_proxy_port')), '7890');
+    await tester.tap(find.widgetWithText(FilledButton, 'Save'));
+    await tester.pumpAndSettle();
+
+    expect(proxyStore.value?.enabled, isTrue);
+    expect(proxyStore.value?.host, '192.168.1.79');
+    expect(proxyStore.value?.port, 7890);
+    expect(find.text('Proxy settings saved.'), findsOneWidget);
+  });
+
   testWidgets('waiting page presents the invitation QR and cancellation', (
     WidgetTester tester,
   ) async {
@@ -210,6 +240,7 @@ Widget _testApp({
   TextScaler textScaler = TextScaler.noScaling,
   _TestRegistration? registration,
   OnlineSocketClientFactory? socketFactory,
+  OnlineProxySettingsStore? proxySettingsStore,
 }) {
   return MaterialApp(
     localizationsDelegates: S.localizationsDelegates,
@@ -221,10 +252,23 @@ Widget _testApp({
         service: OnlineServiceConfig(Uri.parse('https://online.example')),
         roomApi: api,
         sessionStore: _EmptyStore(),
+        proxySettingsStore: proxySettingsStore ?? _MemoryProxyStore(),
         socketFactory: socketFactory,
       ),
     ),
   );
+}
+
+class _MemoryProxyStore implements OnlineProxySettingsStore {
+  OnlineProxySettings? value;
+
+  @override
+  Future<OnlineProxySettings?> read() async => value;
+
+  @override
+  Future<void> write(OnlineProxySettings settings) async {
+    value = settings;
+  }
 }
 
 class _EmptyStore implements OnlineSessionStore {

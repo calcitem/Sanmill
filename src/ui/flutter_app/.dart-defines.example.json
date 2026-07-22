@@ -1,3 +1,4 @@
 {
-  "SANMILL_ONLINE_BASE_URL": "https://your-worker.example.com"
+  "SANMILL_ONLINE_BASE_URL": "https://your-worker.example.com",
+  "SANMILL_ONLINE_PROXY": ""
 }
