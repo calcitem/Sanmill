@@ -47,7 +47,7 @@ jobs:
           node-version: '24'
           cache: pnpm
           cache-dependency-path: services/online-worker/pnpm-lock.yaml
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@1.95.0
         with:
           targets: wasm32-unknown-unknown
       - name: Install wasm-bindgen CLI
@@ -77,7 +77,7 @@ jobs:
           node-version: '24'
           cache: pnpm
           cache-dependency-path: services/online-worker/pnpm-lock.yaml
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@1.95.0
         with:
           targets: wasm32-unknown-unknown
       - name: Install wasm-bindgen CLI
