@@ -39,7 +39,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: services/online-worker/package.json
+      - uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: pnpm
@@ -49,8 +52,6 @@ jobs:
           targets: wasm32-unknown-unknown
       - name: Install wasm-bindgen CLI
         run: cargo install wasm-bindgen-cli --version 0.2.118 --locked
-      - name: Enable pnpm
-        run: corepack enable
       - name: Install Worker dependencies
         working-directory: services/online-worker
         run: pnpm install --frozen-lockfile
@@ -68,7 +69,10 @@ jobs:
     environment: online-production
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: services/online-worker/package.json
+      - uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: pnpm
@@ -78,8 +82,6 @@ jobs:
           targets: wasm32-unknown-unknown
       - name: Install wasm-bindgen CLI
         run: cargo install wasm-bindgen-cli --version 0.2.118 --locked
-      - name: Enable pnpm
-        run: corepack enable
       - name: Install Worker dependencies
         working-directory: services/online-worker
         run: pnpm install --frozen-lockfile
