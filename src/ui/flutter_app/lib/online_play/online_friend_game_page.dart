@@ -441,22 +441,8 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
-                  const SizedBox(height: 16),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          const Icon(Icons.info_outline),
-                          const SizedBox(width: 12),
-                          Expanded(child: Text(s.onlineServiceDisclosure)),
-                        ],
-                      ),
-                    ),
-                  ),
                   if (_failure != null) ...<Widget>[
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 16),
                     Semantics(
                       liveRegion: true,
                       child: Card(

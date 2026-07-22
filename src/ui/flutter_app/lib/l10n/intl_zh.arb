@@ -4858,8 +4858,6 @@
     "@onlineFriendGame": {"description": "服务器好友对战标题。"},
     "onlineFriendGameDescription": "通过链接或二维码邀请好友对战。",
     "@onlineFriendGameDescription": {"description": "好友在线对战入口副标题。"},
-    "onlineServiceDisclosure": "在线对战使用 Cloudflare 传输对局数据，无需账号。",
-    "@onlineServiceDisclosure": {"description": "使用在线对战前显示的服务说明。"},
     "onlineCreateGame": "创建对局",
     "@onlineCreateGame": {"description": "创建好友在线对局的按钮。"},
     "onlineJoinGame": "加入对局",

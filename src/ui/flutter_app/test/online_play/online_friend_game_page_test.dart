@@ -44,7 +44,7 @@ void main() {
     expect(find.text('莫里斯九子棋'), findsOneWidget);
   });
 
-  testWidgets('home explains Cloudflare and exposes create and join actions', (
+  testWidgets('home focuses on create and join actions', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
@@ -62,10 +62,14 @@ void main() {
     await tester.pump();
 
     expect(find.text('Play with a friend'), findsOneWidget);
-    expect(find.textContaining('Cloudflare'), findsOneWidget);
+    expect(
+      find.text('Invite a friend with a link or QR code.'),
+      findsOneWidget,
+    );
+    expect(find.textContaining('Cloudflare'), findsNothing);
+    expect(find.textContaining('No account'), findsNothing);
     expect(find.byKey(const Key('online_create_game')), findsOneWidget);
     expect(find.byKey(const Key('online_join_game')), findsOneWidget);
-    expect(tester.getSemantics(find.textContaining('Cloudflare')), isNotNull);
   });
 
   testWidgets('pushed friend page gives its back button a spoken label', (

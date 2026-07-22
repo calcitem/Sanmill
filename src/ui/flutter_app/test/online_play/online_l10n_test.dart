@@ -12,7 +12,6 @@ void main() {
   const List<String> expected = <String>[
     'onlineFriendGame',
     'onlineFriendGameDescription',
-    'onlineServiceDisclosure',
     'onlineCreateGame',
     'onlineJoinGame',
     'onlineFriendGameSettings',

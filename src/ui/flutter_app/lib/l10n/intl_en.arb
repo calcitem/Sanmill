@@ -4918,8 +4918,6 @@
     "@onlineFriendGame": {"description": "Title for server-hosted friend play."},
     "onlineFriendGameDescription": "Invite a friend with a link or QR code.",
     "@onlineFriendGameDescription": {"description": "Subtitle for the online friend play entry."},
-    "onlineServiceDisclosure": "Online play uses Cloudflare to transmit game data. No account is required.",
-    "@onlineServiceDisclosure": {"description": "Disclosure shown before using online play."},
     "onlineCreateGame": "Create a game",
     "@onlineCreateGame": {"description": "Button that creates an online friend game."},
     "onlineJoinGame": "Join a game",
