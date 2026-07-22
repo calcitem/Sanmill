@@ -5962,12 +5962,14 @@ class _InlineMoveListState extends State<_InlineMoveList> {
           minHeight: widget.showMiniBoards ? _kAnalysisMiniBoardSize + 24 : 40,
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          // Center the ply index with White/Black cells so notation and mini
+          // boards share one vertical midline across the half-columns.
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             SizedBox(
               width: widget.showVariations ? 50 : 34,
               child: Padding(
-                padding: const EdgeInsets.only(top: 9, left: 2),
+                padding: const EdgeInsets.only(left: 2),
                 child: _InlineMoveCount(
                   count: round.number,
                   foregroundColor: _gameSurfaceForegroundColor(),
@@ -5996,14 +5998,39 @@ class _InlineMoveListState extends State<_InlineMoveList> {
         .where((_InlineMoveSegment segment) => segment.side == side)
         .toList(growable: false);
     if (segments.isEmpty) {
+      final double height = widget.showMiniBoards
+          ? _kAnalysisMiniBoardSize + 24
+          : 40;
+      if (!widget.showVariations) {
+        return SizedBox(height: height);
+      }
+      // Chess-score convention: an interrupted half-move slot shows an
+      // ellipsis placeholder (e.g. "4. ... xf4") instead of blank space.
       return SizedBox(
-        height: widget.showMiniBoards ? _kAnalysisMiniBoardSize + 24 : 40,
+        height: height,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: Text(
+              '…',
+              style: _analysisTreeTextStyle(context, isSideline: false)
+                  .copyWith(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.35),
+                  ),
+            ),
+          ),
+        ),
       );
     }
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+          // Extra trailing inset so Black-column mini boards do not sit flush
+          // against the panel edge when the SAN label is short.
+          padding: const EdgeInsets.fromLTRB(4, 4, 10, 4),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -6011,7 +6038,7 @@ class _InlineMoveListState extends State<_InlineMoveList> {
                 _buildMoveSegment(
                   context,
                   segment,
-                  maxWidth: constraints.maxWidth - 8,
+                  maxWidth: constraints.maxWidth - 14,
                   allowMultiline: true,
                 ),
             ],
@@ -6230,32 +6257,11 @@ class _InlineMoveListState extends State<_InlineMoveList> {
                     child: _analysisMiniBoard(context, targetNode, boardSize),
                   )
                 : null;
-            if (availableWidth >= 140) {
-              return Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Flexible(child: chip),
-                  if (eval != null) ...<Widget>[const SizedBox(width: 4), eval],
-                  if (board != null) ...<Widget>[
-                    const SizedBox(width: 6),
-                    board,
-                  ],
-                ],
-              );
-            }
-            return Wrap(
-              spacing: 4,
-              runSpacing: 4,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: <Widget>[
-                ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: availableWidth),
-                  child: chip,
-                ),
-                ?eval,
-                ?board,
-              ],
+            return _analysisMoveExtrasRow(
+              chip: chip,
+              eval: eval,
+              board: board,
+              availableWidth: availableWidth,
             );
           },
         ),
@@ -6918,6 +6924,73 @@ enum _InlineMoveListLayout { wrap, horizontal, stacked, twoColumn }
 /// Kept constant so two-column mainline cells and full-width sidelines render
 /// the same preview size (dynamic width-based sizing made them diverge).
 const double _kAnalysisMiniBoardSize = 52;
+
+/// Layout for an analysis move's notation, optional eval, and optional mini
+/// board.
+///
+/// Notation, eval, and mini board form one content-sized group so the board
+/// sits right beside its move text. The group must hug its content
+/// ([MainAxisSize.min]): inside wrapped sidelines a max-width row would force
+/// one move per line, stacking boards vertically and wasting vertical space.
+/// Two-column mainline cells impose tight constraints, so they are unaffected.
+Widget _analysisMoveExtrasRow({
+  required Widget chip,
+  required Widget? eval,
+  required Widget? board,
+  required double availableWidth,
+}) {
+  if (board != null) {
+    if (availableWidth >= 140) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Flexible(child: chip),
+          if (eval != null) ...<Widget>[const SizedBox(width: 4), eval],
+          const SizedBox(width: 6),
+          board,
+        ],
+      );
+    }
+    return Wrap(
+      spacing: 4,
+      runSpacing: 4,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: <Widget>[
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: availableWidth),
+          child: chip,
+        ),
+        ?eval,
+        board,
+      ],
+    );
+  }
+
+  if (availableWidth >= 140) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Flexible(child: chip),
+        if (eval != null) ...<Widget>[const SizedBox(width: 4), eval],
+      ],
+    );
+  }
+
+  return Wrap(
+    spacing: 4,
+    runSpacing: 4,
+    crossAxisAlignment: WrapCrossAlignment.center,
+    children: <Widget>[
+      ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: availableWidth),
+        child: chip,
+      ),
+      ?eval,
+    ],
+  );
+}
 
 enum _GameMoveChipStyle { filled, inlineText }
 
@@ -8984,11 +9057,6 @@ class _AnalysisEngineBottomBarButton extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  bool get _hasCompletedEngineDepth {
-    final int? depth = _analysisEngineDepth();
-    return depth != null && depth > 0;
   }
 
   String get _chipText {

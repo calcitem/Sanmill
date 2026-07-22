@@ -4531,8 +4531,8 @@ void main() {
       find.byKey(const Key('play_area_analysis_settings_perfect_database')),
       findsOneWidget,
     );
-    expect(find.text('Search time'), findsOneWidget);
-    expect(find.text('6 seconds'), findsOneWidget);
+    expect(find.text('Analysis time per move'), findsOneWidget);
+    expect(find.text('∞'), findsWidgets);
     expect(find.text('Use perfect database'), findsOneWidget);
     expect(find.text('Search threads'), findsOneWidget);
     expect(find.text('Multiple lines'), findsOneWidget);
