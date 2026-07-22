@@ -12,6 +12,16 @@
       "program": "lib/main.dart"
     },
     {
+      "name": "Sanmill-online",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "src/ui/flutter_app",
+      "program": "lib/main.dart",
+      "toolArgs": [
+        "--dart-define-from-file=.dart-defines.local.json"
+      ]
+    },
+    {
       "name": "Sanmill: Attach to Device",
       "type": "dart",
       "request": "attach"

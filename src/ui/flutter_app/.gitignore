@@ -42,5 +42,6 @@ android/app/out/
 
 # Sanmill Settings
 sanmill_settings.json
+/.dart-defines.local.json
 .run/
 *.g.*
