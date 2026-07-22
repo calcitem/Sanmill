@@ -2257,7 +2257,7 @@ class PlayAreaState extends State<PlayArea> {
     if (!mounted) {
       return;
     }
-    GameController().requestResignation();
+    await GameController().requestResignation();
   }
 
   /// Score margin (same scale as [NativeMillPrincipalVariation.score]) below
@@ -2480,7 +2480,7 @@ class PlayAreaState extends State<PlayArea> {
       RecordingEventType.toolbarAction,
       <String, dynamic>{'toolbar': 'regularBottom', 'action': 'resign'},
     );
-    GameController().requestResignation();
+    await GameController().requestResignation();
   }
 
   void _showRegularGameResult() {

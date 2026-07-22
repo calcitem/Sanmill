@@ -6,10 +6,15 @@
 // Extended tests for GameController singleton, reset, state management,
 // and notifiers.
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/remote_play/remote_match_controller.dart';
 import 'package:sanmill/shared/database/database.dart';
+import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
+import 'package:sanmill/shared/widgets/snackbars/scaffold_messenger.dart';
 
 import '../helpers/mocks/mock_animation_manager.dart';
 import '../helpers/mocks/mock_audios.dart';
@@ -227,4 +232,64 @@ void main() {
       expect(controller.disableStats, isFalse);
     });
   });
+
+  group('GameController.requestResignation', () {
+    testWidgets(
+      'delegates a confirmed remote resignation without another dialog',
+      (WidgetTester tester) async {
+        final GameController controller = GameController();
+        final GameMode previousMode = controller.gameInstance.gameMode;
+        final RemoteMatchController? previousCoordinator =
+            controller.remoteCoordinator;
+        final _ResignOnlyRemoteController coordinator =
+            _ResignOnlyRemoteController();
+        controller.gameInstance.gameMode = GameMode.humanVsCloud;
+        controller.remoteCoordinator = coordinator;
+        addTearDown(() {
+          controller.gameInstance.gameMode = previousMode;
+          controller.remoteCoordinator = previousCoordinator;
+        });
+
+        await tester.pumpWidget(
+          MaterialApp(
+            scaffoldMessengerKey: rootScaffoldMessengerKey,
+            localizationsDelegates: sanmillLocalizationsDelegates,
+            supportedLocales: S.supportedLocales,
+            home: Scaffold(
+              body: FilledButton(
+                onPressed: () async {
+                  await controller.requestResignation();
+                },
+                child: const Text('Confirm resignation'),
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.text('Confirm resignation'));
+        await tester.pumpAndSettle();
+
+        expect(coordinator.resignCalls, 1);
+        expect(find.byType(AlertDialog), findsNothing);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+  });
+}
+
+class _ResignOnlyRemoteController implements RemoteMatchController {
+  int resignCalls = 0;
+
+  @override
+  bool get isConnected => true;
+
+  @override
+  Future<bool> resign() async {
+    resignCalls += 1;
+    return true;
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

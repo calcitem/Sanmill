@@ -127,7 +127,7 @@ class NativeMillRemoteGameAdapter implements RemoteGameAdapter {
       GameOutcome.win(
         winner == RemoteSeat.first ? PlayerSeat.first : PlayerSeat.second,
       ),
-      reason: 'lose-resign',
+      reason: 'loseResign',
     );
     await onStateChanged?.call();
   }

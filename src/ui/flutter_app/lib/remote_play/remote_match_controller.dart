@@ -158,7 +158,9 @@ abstract interface class RemoteMatchController {
     required bool accepted,
   });
 
-  Future<void> resign();
+  /// Resigns the current match and returns whether the remote side accepted
+  /// the command.
+  Future<bool> resign();
 
   Future<void> leave();
 

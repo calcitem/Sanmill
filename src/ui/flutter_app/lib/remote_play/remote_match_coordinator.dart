@@ -334,14 +334,16 @@ class RemoteMatchCoordinator implements RemoteMatchController {
   }
 
   @override
-  Future<void> resign() async {
+  Future<bool> resign() async {
     _assertUsable();
-    if (!isConnected || _meta == null) {
-      return;
+    final RemoteSessionMeta? meta = _meta;
+    if (!isConnected || meta == null) {
+      return false;
     }
     await _send(RemoteMessageType.resign, const <String, Object?>{});
-    await game.forceWinner(_oppositeSeat(_meta!.localSeat));
+    await game.forceWinner(_oppositeSeat(meta.localSeat));
     _log.info('REMOTE_LOCAL_RESIGNED', 'revision=$_revision');
+    return true;
   }
 
   @override

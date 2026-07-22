@@ -105,6 +105,41 @@ void main() {
     expect(game.snapshots.last.revision, 0);
   });
 
+  test('resignation applies one terminal result after acceptance', () async {
+    final OnlineRoomSession session = _session(status: 'active');
+    final _FakeSocket socket = _FakeSocket();
+    final _MemoryStore store = _MemoryStore();
+    final _FakeGame game = _FakeGame();
+    socket.onConnect = () => socket.emit(_welcome(session));
+    final CloudMatchCoordinator coordinator = CloudMatchCoordinator(
+      definition: onlineMillGameDefinition,
+      session: session,
+      roomApi: _FakeApi(),
+      socket: socket,
+      game: game,
+      sessionStore: store,
+    );
+    addTearDown(coordinator.dispose);
+
+    await coordinator.start();
+    final Future<bool> resigned = coordinator.resign();
+    final Map<String, Object?> command = socket.sent.single;
+    expect(command, containsPair('type', 'resign'));
+    socket.emit(
+      _stateEvent(
+        session,
+        status: 'ended',
+        revision: 1,
+        commandId: command['commandId']! as String,
+      ),
+    );
+
+    expect(await resigned, isTrue);
+    expect(game.forcedWinners, const <RemoteSeat>[RemoteSeat.second]);
+    expect(coordinator.state, RemoteConnectionState.ended);
+    expect(store.deleted, isTrue);
+  });
+
   test('keeps recovery credentials after a non-terminal dispose', () async {
     final OnlineRoomSession session = _session(status: 'active');
     final _FakeSocket socket = _FakeSocket();
@@ -445,6 +480,7 @@ class _MemoryStore implements OnlineSessionStore {
 
 class _FakeGame implements RemoteGameAdapter {
   final List<RemoteStateSnapshot> snapshots = <RemoteStateSnapshot>[];
+  final List<RemoteSeat> forcedWinners = <RemoteSeat>[];
   RemoteMatchConfig? configured;
   RemoteSeat seat = RemoteSeat.first;
 
@@ -475,7 +511,9 @@ class _FakeGame implements RemoteGameAdapter {
   Future<void> undoActions(int steps) async {}
 
   @override
-  Future<void> forceWinner(RemoteSeat winner) async {}
+  Future<void> forceWinner(RemoteSeat winner) async {
+    forcedWinners.add(winner);
+  }
 
   @override
   Future<void> abandon() async {}

@@ -4,6 +4,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_action_codec.dart';
+import 'package:sanmill/games/mill/mill_marked_pieces_codec.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_remote_game_adapter.dart';
 import 'package:sanmill/remote_play/remote_models.dart';
@@ -112,4 +113,27 @@ void main() {
       skip: _nativeLibrarySkipReason,
     );
   }
+
+  test(
+    'forced winner publishes the canonical resignation reason',
+    () async {
+      DB.instance = MockDB();
+      final NativeMillGameSession session = NativeMillGameSession();
+      final NativeMillRemoteGameAdapter adapter = NativeMillRemoteGameAdapter(
+        session: session,
+        transportKind: RemoteTransportKind.cloud,
+        role: RemoteRole.host,
+      );
+      addTearDown(session.dispose);
+
+      await adapter.forceWinner(RemoteSeat.second);
+
+      expect(session.outcome.winner, PlayerSeat.second);
+      expect(
+        session.state.value.payload[millOutcomeReasonPayloadKey],
+        'loseResign',
+      );
+    },
+    skip: _nativeLibrarySkipReason,
+  );
 }

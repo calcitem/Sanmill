@@ -564,20 +564,22 @@ class CloudMatchCoordinator implements RemoteMatchController {
   }
 
   @override
-  Future<void> resign() async {
-    if (!isConnected || _meta == null) {
-      return;
+  Future<bool> resign() async {
+    final RemoteSessionMeta? meta = _meta;
+    if (!isConnected || meta == null) {
+      return false;
     }
     final bool accepted = await _sendCommand(
       'resign',
       const <String, Object?>{},
     );
     if (accepted) {
-      await game.forceWinner(_opposite(_meta!.localSeat));
+      await game.forceWinner(_opposite(meta.localSeat));
       _ending = true;
       _setState(RemoteConnectionState.ended);
       await sessionStore.delete();
     }
+    return accepted;
   }
 
   @override

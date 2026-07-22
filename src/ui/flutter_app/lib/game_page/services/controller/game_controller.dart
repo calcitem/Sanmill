@@ -1125,7 +1125,6 @@ class GameController {
         if (context != null) {
           headerTipNotifier.showTip(S.of(context).opponentResignedYouWin);
         }
-        gameResultNotifier.showResult(force: true);
       case RemoteOpponentConnectionChanged():
         final BuildContext? context = rootScaffoldMessengerKey.currentContext;
         if (context != null && !event.connected) {
@@ -1398,52 +1397,52 @@ class GameController {
     }
   }
 
-  void requestResignation() {
-    if (!isRemoteGameMode || !isRemoteConnected) {
-      logger.i("$_logTag Local resignation in non-LAN mode");
+  /// Applies a resignation after the calling UI has confirmed the action.
+  ///
+  /// Remote game adapters publish their terminal snapshot through
+  /// [_onRemoteSessionStateChanged], which is the single source of the result
+  /// notification. Publishing the result again here can race the dialog route
+  /// that initiated the resignation.
+  Future<void> requestResignation() async {
+    if (!isRemoteGameMode) {
+      logger.i("$_logTag Local resignation in non-remote mode");
       _handleLocalResignation();
       return;
     }
 
-    // In LAN mode, confirm with the player first
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-    if (context == null) {
+    final RemoteMatchController? coordinator = remoteCoordinator;
+    if (coordinator == null || !coordinator.isConnected) {
+      logger.w("$_logTag Cannot resign because the remote match is offline");
+      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+      if (context != null && context.mounted) {
+        headerTipNotifier.showTip(S.of(context).failedToSendResignation);
+      }
       return;
     }
 
-    showDialog<bool>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext dialogContext) {
-        final S strings = S.of(dialogContext);
-        return AlertDialog(
-          title: Text(strings.confirmResignation),
-          content: Text(strings.areYouSureYouWantToResignThisGame),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop(false);
-              },
-              child: Text(strings.cancel),
-            ),
-            TextButton(
-              onPressed: () async {
-                Navigator.of(dialogContext).pop(true);
-                try {
-                  await remoteCoordinator!.resign();
-                  headerTipNotifier.showTip(strings.youResignedGameOver);
-                  gameResultNotifier.showResult();
-                } catch (e) {
-                  logger.e("$_logTag Failed to send resignation: $e");
-                  headerTipNotifier.showTip(strings.failedToSendResignation);
-                }
-              },
-              child: Text(strings.resign),
-            ),
-          ],
+    try {
+      final bool accepted = await coordinator.resign();
+      if (!identical(remoteCoordinator, coordinator)) {
+        return;
+      }
+      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+      if (context != null && context.mounted) {
+        headerTipNotifier.showTip(
+          accepted
+              ? S.of(context).youResignedGameOver
+              : S.of(context).failedToSendResignation,
         );
-      },
-    );
+      }
+    } catch (error, stackTrace) {
+      logger.e(
+        "$_logTag Failed to send resignation: $error",
+        stackTrace: stackTrace,
+      );
+      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+      if (context != null && context.mounted) {
+        headerTipNotifier.showTip(S.of(context).failedToSendResignation);
+      }
+    }
   }
 
   /// Handles resignation in non-LAN modes (e.g., vs AI)
