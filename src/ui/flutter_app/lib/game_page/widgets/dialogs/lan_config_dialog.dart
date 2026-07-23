@@ -2,6 +2,7 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -510,6 +511,7 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
                               _status,
                               key: const Key('remote_status_text'),
                               softWrap: true,
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           ),
                       ],

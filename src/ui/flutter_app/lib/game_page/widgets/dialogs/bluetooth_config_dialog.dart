@@ -416,7 +416,11 @@ class _BluetoothConfigDialogState extends State<BluetoothConfigDialog> {
                 ),
                 if (_status.isNotEmpty) ...<Widget>[
                   const SizedBox(height: 16),
-                  Text(_status, key: const Key('remote_status_text')),
+                  Text(
+                    _status,
+                    key: const Key('remote_status_text'),
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ],
                 if (_working) ...<Widget>[
                   const SizedBox(height: 12),

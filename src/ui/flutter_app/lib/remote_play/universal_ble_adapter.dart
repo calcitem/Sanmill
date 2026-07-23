@@ -116,7 +116,13 @@ class UniversalBluetoothAdapter implements BluetoothAdapter {
         await Future<void>.delayed(const Duration(milliseconds: 400));
       }
     }
-    throw lastError ?? StateError('BLE connect failed without an error.');
+    if (lastError case final Exception exception) {
+      throw exception;
+    }
+    if (lastError case final Error error) {
+      throw error;
+    }
+    throw StateError('BLE connect failed without an error.');
   }
 
   @override

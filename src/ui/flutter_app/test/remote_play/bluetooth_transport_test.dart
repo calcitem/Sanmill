@@ -119,6 +119,37 @@ void main() {
       await mtuTransport.close();
     });
 
+    test('clamps central writes to the GATT attribute max', () async {
+      final FakeBluetoothAdapter adapter = FakeBluetoothAdapter()
+        ..requestedMtu = 517;
+      final BluetoothTransport transport = BluetoothTransport(
+        role: RemoteRole.join,
+        adapter: adapter,
+      );
+      await transport.join(
+        const RemoteEndpoint(id: 'large-mtu', label: 'Large MTU device'),
+      );
+
+      await transport.send(
+        Uint8List.fromList(
+          List<int>.generate(
+            BluetoothTransport.maxNotifyAttributeLength + 40,
+            (int i) => i & 0xff,
+          ),
+        ),
+      );
+
+      expect(
+        transport.payloadLength,
+        BluetoothTransport.maxNotifyAttributeLength,
+      );
+      expect(adapter.writes.map((Uint8List value) => value.length), <int>[
+        BluetoothTransport.maxNotifyAttributeLength,
+        40,
+      ]);
+      await transport.close();
+    });
+
     test('forwards notifications and reconnects after link loss', () async {
       final FakeBluetoothAdapter adapter = FakeBluetoothAdapter();
       final BluetoothTransport transport = BluetoothTransport(

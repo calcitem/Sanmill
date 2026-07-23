@@ -220,6 +220,25 @@ class RemoteMatchCoordinator implements RemoteMatchController {
     _setState(RemoteConnectionState.negotiating);
   }
 
+  Future<bool> tryApprovePeer({
+    required String peerId,
+    required bool accepted,
+  }) async {
+    _assertUsable();
+    if (!isHost) {
+      throw StateError('A join coordinator cannot approve a peer.');
+    }
+    if (_pendingApprovalPeer?.peerId != peerId) {
+      _log.warning(
+        'REMOTE_PEER_APPROVAL_STALE',
+        'peer=${RemoteLogContext.shortId(peerId)} accepted=$accepted',
+      );
+      return false;
+    }
+    await approvePeer(accepted: accepted);
+    return true;
+  }
+
   @override
   Future<bool> submitLocalAction(String notation) async {
     _assertUsable();
@@ -401,33 +420,63 @@ class RemoteMatchCoordinator implements RemoteMatchController {
   }
 
   Future<void> _consumeBytes(Uint8List bytes) async {
+    final List<RemoteEnvelope> frames;
     try {
-      final List<RemoteEnvelope> frames = _decoder.add(bytes);
-      for (final RemoteEnvelope envelope in frames) {
-        diagnostics.framesReceived++;
-        _lastInboundAt = DateTime.now();
-        _log.debug(
-          'REMOTE_FRAME_RECEIVED',
-          'type=${envelope.type.name} message='
-              '${RemoteLogContext.shortId(envelope.messageId)} '
-              'revision=${envelope.revision} bytes=${bytes.length}',
-        );
-        if (!_rememberMessage(envelope.messageId)) {
-          diagnostics.duplicateMessages++;
-          _log.warning(
-            'REMOTE_DUPLICATE_MESSAGE',
-            'message=${RemoteLogContext.shortId(envelope.messageId)} '
-                'type=${envelope.type.name}',
-          );
-          continue;
-        }
-        await _handleEnvelope(envelope);
-      }
+      frames = _decoder.add(bytes);
     } on Object catch (error, stackTrace) {
-      diagnostics.rejectedMessages++;
-      _log.error('REMOTE_PROTOCOL_DECODE_FAILED', error, stackTrace);
+      await _rejectProtocolFrame(error, stackTrace);
+      return;
+    }
+
+    for (final RemoteEnvelope envelope in frames) {
+      diagnostics.framesReceived++;
+      _lastInboundAt = DateTime.now();
+      _log.debug(
+        'REMOTE_FRAME_RECEIVED',
+        'type=${envelope.type.name} message='
+            '${RemoteLogContext.shortId(envelope.messageId)} '
+            'revision=${envelope.revision} bytes=${bytes.length}',
+      );
+      if (!_rememberMessage(envelope.messageId)) {
+        diagnostics.duplicateMessages++;
+        _log.warning(
+          'REMOTE_DUPLICATE_MESSAGE',
+          'message=${RemoteLogContext.shortId(envelope.messageId)} '
+              'type=${envelope.type.name}',
+        );
+        continue;
+      }
+      try {
+        await _handleEnvelope(envelope);
+      } on RemoteProtocolException catch (error, stackTrace) {
+        await _rejectProtocolFrame(error, stackTrace);
+        return;
+      } on FormatException catch (error, stackTrace) {
+        await _rejectProtocolFrame(error, stackTrace);
+        return;
+      } on Object catch (error, stackTrace) {
+        _log.error('REMOTE_FRAME_HANDLE_FAILED', error, stackTrace);
+        if (!_events.isClosed) {
+          _events.add(RemoteMatchFailure(error, stackTrace));
+        }
+      }
+    }
+  }
+
+  Future<void> _rejectProtocolFrame(Object error, StackTrace stackTrace) async {
+    diagnostics.rejectedMessages++;
+    _log.error('REMOTE_PROTOCOL_DECODE_FAILED', error, stackTrace);
+    if (!_events.isClosed) {
       _events.add(RemoteMatchFailure(error, stackTrace));
+    }
+    try {
       await transport.disconnectPeer(reason: 'Invalid remote protocol frame.');
+    } on Object catch (disconnectError, disconnectStackTrace) {
+      _log.error(
+        'REMOTE_PROTOCOL_DISCONNECT_FAILED',
+        disconnectError,
+        disconnectStackTrace,
+      );
     }
   }
 
@@ -504,9 +553,7 @@ class RemoteMatchCoordinator implements RemoteMatchController {
       case RemoteMessageType.resign:
         await _handleRemoteResignation();
       case RemoteMessageType.ping:
-        await _send(RemoteMessageType.pong, <String, Object?>{
-          'echo': envelope.payload['sentAt'],
-        });
+        await _sendHeartbeatPong(envelope.payload['sentAt']);
       case RemoteMessageType.pong:
         _log.trace('REMOTE_HEARTBEAT_PONG', 'echo=${envelope.payload['echo']}');
       case RemoteMessageType.disconnect:
@@ -588,9 +635,20 @@ class RemoteMatchCoordinator implements RemoteMatchController {
     _approvalTimer?.cancel();
     _approvalTimer = Timer(approvalWaitTimeout, () {
       if (_pendingApprovalPeer != null && !_disposed) {
-        unawaited(approvePeer(accepted: false));
+        unawaited(_expirePeerApproval());
       }
     });
+  }
+
+  Future<void> _expirePeerApproval() async {
+    try {
+      await approvePeer(accepted: false);
+    } on Object catch (error, stackTrace) {
+      _log.error('REMOTE_PEER_APPROVAL_EXPIRE_FAILED', error, stackTrace);
+      if (!_events.isClosed) {
+        _events.add(RemoteMatchFailure(error, stackTrace));
+      }
+    }
   }
 
   Future<void> _sendHello() async {
@@ -1237,12 +1295,28 @@ class RemoteMatchCoordinator implements RemoteMatchController {
         );
         return;
       }
-      unawaited(
-        _send(RemoteMessageType.ping, <String, Object?>{
-          'sentAt': DateTime.now().toIso8601String(),
-        }),
-      );
+      if (isHost) {
+        unawaited(_sendHeartbeatPing());
+      }
     });
+  }
+
+  Future<void> _sendHeartbeatPing() async {
+    try {
+      await _send(RemoteMessageType.ping, <String, Object?>{
+        'sentAt': DateTime.now().toIso8601String(),
+      });
+    } on Object catch (error) {
+      _log.warning('REMOTE_HEARTBEAT_SEND_FAILED', 'error=$error');
+    }
+  }
+
+  Future<void> _sendHeartbeatPong(Object? echo) async {
+    try {
+      await _send(RemoteMessageType.pong, <String, Object?>{'echo': echo});
+    } on Object catch (error) {
+      _log.warning('REMOTE_HEARTBEAT_RESPONSE_FAILED', 'error=$error');
+    }
   }
 
   void _installConfig(RemoteMatchConfig config) {

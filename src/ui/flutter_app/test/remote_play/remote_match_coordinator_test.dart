@@ -188,6 +188,10 @@ void main() {
       );
       await _eventLoop();
       expect(host.state, RemoteConnectionState.listening);
+      expect(
+        await host.tryApprovePeer(peerId: 'join', accepted: true),
+        isFalse,
+      );
     },
   );
 
@@ -297,6 +301,58 @@ void main() {
       expect(pair.host.diagnostics.rejectedMessages, greaterThanOrEqualTo(3));
     },
   );
+
+  test('only the host initiates heartbeat traffic', () async {
+    final _ReadyPair pair = await _ReadyPair.create(
+      heartbeatEvery: const Duration(milliseconds: 10),
+      heartbeatSilenceTimeout: const Duration(seconds: 1),
+    );
+    addTearDown(pair.dispose);
+    pair.hostTransport.sentMessageTypes.clear();
+    pair.joinTransport.sentMessageTypes.clear();
+
+    await Future<void>.delayed(const Duration(milliseconds: 60));
+
+    expect(
+      pair.hostTransport.sentMessageTypes.where(
+        (RemoteMessageType type) => type == RemoteMessageType.ping,
+      ),
+      isNotEmpty,
+    );
+    expect(
+      pair.joinTransport.sentMessageTypes.where(
+        (RemoteMessageType type) => type == RemoteMessageType.ping,
+      ),
+      isEmpty,
+    );
+    expect(
+      pair.joinTransport.sentMessageTypes.where(
+        (RemoteMessageType type) => type == RemoteMessageType.pong,
+      ),
+      isNotEmpty,
+    );
+  });
+
+  test('heartbeat write failure is not treated as a protocol error', () async {
+    final _ReadyPair pair = await _ReadyPair.create();
+    addTearDown(pair.dispose);
+    final int rejectedBefore = pair.join.diagnostics.rejectedMessages;
+    pair.joinTransport.failNextSend = TimeoutException('BLE write stalled');
+    final RemoteEnvelope ping = RemoteEnvelope(
+      type: RemoteMessageType.ping,
+      sessionId: pair.join.config!.sessionId,
+      roundId: pair.join.config!.roundId,
+      messageId: 'write-failure-ping',
+      revision: pair.join.revision,
+      payload: const <String, Object?>{'sentAt': 'test'},
+    );
+
+    pair.joinTransport.inject(RemoteFrameCodec.encode(ping));
+    await Future<void>.delayed(const Duration(milliseconds: 10));
+
+    expect(pair.join.diagnostics.rejectedMessages, rejectedBefore);
+    expect(pair.join.state, RemoteConnectionState.ready);
+  });
 
   test(
     'restart preserves rules and seats, and resignation is one-sided',
@@ -491,6 +547,8 @@ class _ReadyPair {
     bool hostPlaysFirst = true,
     Duration reconnectTimeout = const Duration(seconds: 3),
     Duration reconnectBackoffBase = const Duration(seconds: 1),
+    Duration heartbeatEvery = RemoteMatchCoordinator.heartbeatInterval,
+    Duration heartbeatSilenceTimeout = RemoteMatchCoordinator.heartbeatTimeout,
   }) async {
     final _MemoryTransport hostTransport = _MemoryTransport(
       role: RemoteRole.host,
@@ -508,6 +566,8 @@ class _ReadyPair {
       localPeer: _peer('host'),
       reconnectTimeout: reconnectTimeout,
       reconnectBackoffBase: reconnectBackoffBase,
+      heartbeatEvery: heartbeatEvery,
+      heartbeatSilenceTimeout: heartbeatSilenceTimeout,
     );
     final RemoteMatchCoordinator join = RemoteMatchCoordinator(
       transport: joinTransport,
@@ -515,6 +575,8 @@ class _ReadyPair {
       localPeer: _peer('join'),
       reconnectTimeout: reconnectTimeout,
       reconnectBackoffBase: reconnectBackoffBase,
+      heartbeatEvery: heartbeatEvery,
+      heartbeatSilenceTimeout: heartbeatSilenceTimeout,
     );
     final Future<RemotePeerApprovalRequested> approval = host.events
         .where((RemoteMatchEvent event) => event is RemotePeerApprovalRequested)
@@ -643,6 +705,8 @@ class _MemoryTransport implements RemoteTransport {
   RemoteConnectionState _state = RemoteConnectionState.idle;
   bool _connected = false;
   bool _closed = false;
+  Exception? failNextSend;
+  final List<RemoteMessageType> sentMessageTypes = <RemoteMessageType>[];
 
   @override
   RemoteTransportKind get kind => RemoteTransportKind.lan;
@@ -691,6 +755,16 @@ class _MemoryTransport implements RemoteTransport {
     if (!_connected) {
       throw StateError('not connected');
     }
+    final Exception? error = failNextSend;
+    failNextSend = null;
+    if (error != null) {
+      throw error;
+    }
+    sentMessageTypes.addAll(
+      RemoteFrameDecoder()
+          .add(bytes)
+          .map((RemoteEnvelope envelope) => envelope.type),
+    );
     peer!._events.add(RemoteTransportData(Uint8List.fromList(bytes)));
   }
 

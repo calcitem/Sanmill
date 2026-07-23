@@ -119,7 +119,13 @@ void main() {
     await tester.tap(find.byKey(const Key('lan_join_button')));
     await tester.pump();
 
-    expect(find.byKey(const Key('remote_status_text')), findsOneWidget);
+    final Finder statusText = find.byKey(const Key('remote_status_text'));
+    expect(statusText, findsOneWidget);
+    final BuildContext statusContext = tester.element(statusText);
+    expect(
+      tester.widget<Text>(statusText).style,
+      Theme.of(statusContext).textTheme.bodyLarge,
+    );
     expect(tester.getSize(find.byType(AlertDialog)), hostSize);
     await tester.pumpWidget(const SizedBox.shrink());
   });

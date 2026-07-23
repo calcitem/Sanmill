@@ -1234,7 +1234,10 @@ class GameController {
       return;
     }
     if (context == null) {
-      await coordinator.approvePeer(accepted: false);
+      await coordinator.tryApprovePeer(
+        peerId: event.peer.peerId,
+        accepted: false,
+      );
       return;
     }
     final bool accepted =
@@ -1266,7 +1269,10 @@ class GameController {
         ) ??
         false;
     if (identical(remoteCoordinator, coordinator)) {
-      await coordinator.approvePeer(accepted: accepted);
+      await coordinator.tryApprovePeer(
+        peerId: event.peer.peerId,
+        accepted: accepted,
+      );
     }
   }
 

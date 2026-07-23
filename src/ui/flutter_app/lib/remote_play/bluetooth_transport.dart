@@ -31,9 +31,9 @@ class BluetoothTransport
   static const int safePayloadLength = 20;
   static const int preferredMtu = 247;
 
-  /// Android [BluetoothGattServer.notifyCharacteristicChanged] rejects values
-  /// longer than the GATT attribute max (512), even when the negotiated MTU
-  /// would allow `mtu - 3` (e.g. 517 → 514).
+  /// GATT characteristic values are capped at 512 bytes. Android may negotiate
+  /// an MTU whose payload is larger (for example, 517 - 3 = 514), but both
+  /// central writes and peripheral notifications must stay within this limit.
   static const int maxNotifyAttributeLength = 512;
 
   @override
@@ -341,7 +341,7 @@ class BluetoothTransport
 
   Future<void> _sendBusyToPeripheral(String deviceId) async {
     try {
-      final int maximum = _clampNotifyPayload(
+      final int maximum = _clampGattPayload(
         await adapter.maximumNotifyLength(deviceId) ?? safePayloadLength,
       );
       final Uint8List frame = RemoteFrameCodec.encode(
@@ -424,9 +424,7 @@ class BluetoothTransport
     if (!isConnected || deviceId == null) {
       throw StateError('BLE peer is not connected.');
     }
-    final int payloadLength = role == RemoteRole.host
-        ? _clampNotifyPayload(_payloadLength)
-        : _payloadLength;
+    final int payloadLength = _clampGattPayload(_payloadLength);
     assert(payloadLength >= safePayloadLength);
     final int chunkCount = (bytes.length + payloadLength - 1) ~/ payloadLength;
     _log.debug(
@@ -436,8 +434,8 @@ class BluetoothTransport
     for (int offset = 0, index = 0; offset < bytes.length; index++) {
       final int end = (offset + payloadLength).clamp(0, bytes.length);
       final Uint8List chunk = Uint8List.fromList(bytes.sublist(offset, end));
+      assert(chunk.length <= maxNotifyAttributeLength);
       if (role == RemoteRole.host) {
-        assert(chunk.length <= maxNotifyAttributeLength);
         await adapter.notify(
           deviceId: deviceId,
           characteristicId: notifyCharacteristicId,
@@ -507,7 +505,7 @@ class BluetoothTransport
     }
   }
 
-  int _clampNotifyPayload(int candidate) {
+  int _clampGattPayload(int candidate) {
     final int floored = candidate >= safePayloadLength
         ? candidate
         : safePayloadLength;
@@ -521,9 +519,7 @@ class BluetoothTransport
     final int uncapped = candidate >= safePayloadLength
         ? candidate
         : safePayloadLength;
-    final int next = role == RemoteRole.host
-        ? _clampNotifyPayload(uncapped)
-        : uncapped;
+    final int next = _clampGattPayload(uncapped);
     if (_payloadLength == next) {
       return;
     }
