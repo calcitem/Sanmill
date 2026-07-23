@@ -222,13 +222,53 @@ class UniversalBluetoothAdapter implements BluetoothAdapter {
   Future<void> startAdvertising({
     required String serviceId,
     required String localName,
-  }) {
-    return UniversalBlePeripheral.startAdvertising(
-      services: <String>[serviceId],
-      localName: defaultTargetPlatform == TargetPlatform.windows
-          ? null
-          : localName,
-    );
+  }) async {
+    final String? advertisedName =
+        defaultTargetPlatform == TargetPlatform.windows ? null : localName;
+    // Android legacy ADV/scan-response packets are each capped at 31 bytes.
+    // A 128-bit service UUID (18 bytes) plus a device name overflows the
+    // primary packet (observed: 37 bytes → ADVERTISE_FAILED_DATA_TOO_LARGE).
+    // Put service UUIDs in the scan response so name+flags fit in ADV.
+    final bool servicesInScanResponse =
+        defaultTargetPlatform == TargetPlatform.android &&
+        advertisedName != null;
+    final Completer<PeripheralAdvertisingState> advertisingReady =
+        Completer<PeripheralAdvertisingState>();
+    final StreamSubscription<BlePeripheralAdvertisingStateChanged>
+    stateSubscription = UniversalBlePeripheral.advertisingStateStream.listen((
+      BlePeripheralAdvertisingStateChanged event,
+    ) {
+      if (event.state == PeripheralAdvertisingState.advertising ||
+          event.state == PeripheralAdvertisingState.error) {
+        if (!advertisingReady.isCompleted) {
+          advertisingReady.complete(event.state);
+        }
+      }
+    });
+    try {
+      await UniversalBlePeripheral.startAdvertising(
+        services: <String>[serviceId],
+        localName: advertisedName,
+        platformConfig: servicesInScanResponse
+            ? PeripheralPlatformConfig(
+                android: PeripheralAndroidOptions(
+                  addServicesInScanResponse: true,
+                ),
+              )
+            : null,
+      );
+      final PeripheralAdvertisingState state = await advertisingReady.future
+          .timeout(const Duration(seconds: 5));
+      assert(
+        state == PeripheralAdvertisingState.advertising,
+        'BLE advertising failed to start: ${state.name}',
+      );
+      if (state != PeripheralAdvertisingState.advertising) {
+        throw StateError('BLE advertising failed to start: ${state.name}');
+      }
+    } finally {
+      await stateSubscription.cancel();
+    }
   }
 
   @override

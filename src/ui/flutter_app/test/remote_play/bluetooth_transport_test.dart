@@ -198,6 +198,58 @@ void main() {
       expect(adapter.writeHandler, isNull);
     });
 
+    test('clamps host notify payload to GATT attribute max', () async {
+      final FakeBluetoothAdapter adapter = FakeBluetoothAdapter()
+        ..maximumNotificationLength = 514;
+      final BluetoothTransport transport = BluetoothTransport(
+        role: RemoteRole.host,
+        adapter: adapter,
+      );
+      await transport.startHost(
+        const RemoteHostOptions(advertisedLabel: 'Sanmill test'),
+      );
+      adapter.peripheralConnections.add(
+        const BluetoothConnectionEvent(deviceId: 'central', connected: true),
+      );
+      adapter.peripheralSubscriptions.add(
+        const BluetoothSubscriptionEvent(
+          deviceId: 'central',
+          characteristicId: BluetoothTransport.notifyCharacteristicId,
+          subscribed: true,
+        ),
+      );
+      await pumpEventQueue();
+      adapter.peripheralMtus.add(
+        const BluetoothMtuEvent(deviceId: 'central', mtu: 517),
+      );
+      await pumpEventQueue();
+      expect(
+        transport.payloadLength,
+        BluetoothTransport.maxNotifyAttributeLength,
+      );
+
+      await transport.send(
+        Uint8List.fromList(
+          List<int>.generate(
+            BluetoothTransport.maxNotifyAttributeLength + 40,
+            (int i) => i & 0xff,
+          ),
+        ),
+      );
+      expect(
+        adapter.notificationsSent.map((Uint8List value) => value.length),
+        <int>[BluetoothTransport.maxNotifyAttributeLength, 40],
+      );
+      expect(
+        adapter.notificationsSent.every(
+          (Uint8List value) =>
+              value.length <= BluetoothTransport.maxNotifyAttributeLength,
+        ),
+        isTrue,
+      );
+      await transport.close();
+    });
+
     test(
       'reports notification failures without stalling later sends',
       () async {

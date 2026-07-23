@@ -31,6 +31,11 @@ class BluetoothTransport
   static const int safePayloadLength = 20;
   static const int preferredMtu = 247;
 
+  /// Android [BluetoothGattServer.notifyCharacteristicChanged] rejects values
+  /// longer than the GATT attribute max (512), even when the negotiated MTU
+  /// would allow `mtu - 3` (e.g. 517 → 514).
+  static const int maxNotifyAttributeLength = 512;
+
   @override
   final RemoteRole role;
   final BluetoothAdapter adapter;
@@ -329,8 +334,9 @@ class BluetoothTransport
 
   Future<void> _sendBusyToPeripheral(String deviceId) async {
     try {
-      final int maximum =
-          await adapter.maximumNotifyLength(deviceId) ?? safePayloadLength;
+      final int maximum = _clampNotifyPayload(
+        await adapter.maximumNotifyLength(deviceId) ?? safePayloadLength,
+      );
       final Uint8List frame = RemoteFrameCodec.encode(
         RemoteEnvelope(
           type: RemoteMessageType.busy,
@@ -343,7 +349,7 @@ class BluetoothTransport
       );
       final List<Uint8List> chunks = RemoteFrameChunker.split(
         frame,
-        maxPayload: maximum < safePayloadLength ? safePayloadLength : maximum,
+        maxPayload: maximum,
       );
       for (final Uint8List chunk in chunks) {
         await adapter.notify(
@@ -411,16 +417,20 @@ class BluetoothTransport
     if (!isConnected || deviceId == null) {
       throw StateError('BLE peer is not connected.');
     }
-    final int chunkCount =
-        (bytes.length + _payloadLength - 1) ~/ _payloadLength;
+    final int payloadLength = role == RemoteRole.host
+        ? _clampNotifyPayload(_payloadLength)
+        : _payloadLength;
+    assert(payloadLength >= safePayloadLength);
+    final int chunkCount = (bytes.length + payloadLength - 1) ~/ payloadLength;
     _log.debug(
       'REMOTE_BLE_FRAME_FRAGMENTED',
-      'bytes=${bytes.length} payload=$_payloadLength chunks=$chunkCount',
+      'bytes=${bytes.length} payload=$payloadLength chunks=$chunkCount',
     );
     for (int offset = 0, index = 0; offset < bytes.length; index++) {
-      final int end = (offset + _payloadLength).clamp(0, bytes.length);
+      final int end = (offset + payloadLength).clamp(0, bytes.length);
       final Uint8List chunk = Uint8List.fromList(bytes.sublist(offset, end));
       if (role == RemoteRole.host) {
+        assert(chunk.length <= maxNotifyAttributeLength);
         await adapter.notify(
           deviceId: deviceId,
           characteristicId: notifyCharacteristicId,
@@ -490,10 +500,23 @@ class BluetoothTransport
     }
   }
 
-  void _updatePayloadLength(int candidate, {required String source}) {
-    final int next = candidate >= safePayloadLength
+  int _clampNotifyPayload(int candidate) {
+    final int floored = candidate >= safePayloadLength
         ? candidate
         : safePayloadLength;
+    if (floored <= maxNotifyAttributeLength) {
+      return floored;
+    }
+    return maxNotifyAttributeLength;
+  }
+
+  void _updatePayloadLength(int candidate, {required String source}) {
+    final int uncapped = candidate >= safePayloadLength
+        ? candidate
+        : safePayloadLength;
+    final int next = role == RemoteRole.host
+        ? _clampNotifyPayload(uncapped)
+        : uncapped;
     if (_payloadLength == next) {
       return;
     }
@@ -501,7 +524,8 @@ class BluetoothTransport
     _payloadLength = next;
     _log.debug(
       'REMOTE_BLE_PAYLOAD_CHANGED',
-      'source=$source previous=$previous current=$next',
+      'source=$source previous=$previous current=$next'
+          '${uncapped != next ? ' uncapped=$uncapped' : ''}',
     );
   }
 
