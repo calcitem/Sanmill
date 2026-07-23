@@ -277,6 +277,34 @@ void main() {
     },
   );
 
+  test('marks an initially restored active session as resumed', () async {
+    final OnlineRoomSession session = _session(status: 'active');
+    final _FakeSocket socket = _FakeSocket();
+    final List<RemoteMatchReady> readyEvents = <RemoteMatchReady>[];
+    socket.onConnect = () => socket.emit(_welcome(session));
+    final CloudMatchCoordinator coordinator = CloudMatchCoordinator(
+      definition: onlineMillGameDefinition,
+      session: session,
+      roomApi: _FakeApi(),
+      socket: socket,
+      game: _FakeGame(),
+      sessionStore: _MemoryStore(),
+    );
+    addTearDown(coordinator.dispose);
+    final StreamSubscription<RemoteMatchEvent> subscription = coordinator.events
+        .listen((RemoteMatchEvent event) {
+          if (event is RemoteMatchReady) {
+            readyEvents.add(event);
+          }
+        });
+    addTearDown(subscription.cancel);
+
+    await coordinator.start(resuming: true);
+
+    expect(readyEvents, hasLength(1));
+    expect(readyEvents.single.resumed, isTrue);
+  });
+
   test(
     'restores an opponent control request from a welcome snapshot',
     () async {

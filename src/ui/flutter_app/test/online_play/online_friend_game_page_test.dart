@@ -18,6 +18,7 @@ import 'package:sanmill/online_play/online_socket_client.dart';
 import 'package:sanmill/remote_play/remote_match_controller.dart';
 import 'package:sanmill/remote_play/remote_models.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
+import 'package:sanmill/shared/widgets/snackbars/scaffold_messenger.dart';
 
 void main() {
   testWidgets('Mill registration localizes the selected variant name', (
@@ -233,6 +234,79 @@ void main() {
     expect(registration._coordinator, isNull);
     expect(find.byKey(const Key('online_create_game')), findsOneWidget);
   });
+
+  testWidgets('saved waiting room asks before reconnecting', (
+    WidgetTester tester,
+  ) async {
+    final OnlineRoomSession session = _waitingSession();
+    final _MemorySessionStore store = _MemorySessionStore(session);
+    final _WelcomeSocket socket = _WelcomeSocket(session);
+    await tester.pumpWidget(
+      _testApp(
+        api: _UnusedApi(),
+        sessionStore: store,
+        socketFactory: () => socket,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('online_saved_room')), findsOneWidget);
+    expect(find.text('Unfinished friend game'), findsOneWidget);
+    expect(find.byKey(const Key('online_create_game')), findsNothing);
+    expect(find.byKey(const Key('online_join_game')), findsNothing);
+    expect(find.byType(QrImageView), findsNothing);
+
+    await tester.tap(find.byKey(const Key('online_continue_waiting')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Waiting for an opponent…'), findsOneWidget);
+    expect(find.byType(QrImageView), findsOneWidget);
+    expect(find.text('Opponent joined.'), findsNothing);
+
+    socket.opponentJoined();
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('test_online_board')), findsOneWidget);
+    expect(find.text('Opponent joined.'), findsOneWidget);
+  });
+
+  testWidgets('saved waiting room can be cancelled from the home page', (
+    WidgetTester tester,
+  ) async {
+    final OnlineRoomSession session = _waitingSession();
+    final _MemorySessionStore store = _MemorySessionStore(session);
+    final _UnusedApi api = _UnusedApi();
+    await tester.pumpWidget(_testApp(api: api, sessionStore: store));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('online_cancel_saved_room')));
+    await tester.pumpAndSettle();
+
+    expect(api.cancelCalls, 1);
+    expect(store.deleted, isTrue);
+    expect(store.value, isNull);
+    expect(find.byKey(const Key('online_saved_room')), findsNothing);
+    expect(find.byKey(const Key('online_create_game')), findsOneWidget);
+    expect(find.byKey(const Key('online_join_game')), findsOneWidget);
+  });
+
+  testWidgets('saved active match resumes without an opponent joined notice', (
+    WidgetTester tester,
+  ) async {
+    final OnlineRoomSession session = _waitingSession(status: 'active');
+    final _MemorySessionStore store = _MemorySessionStore(session);
+    await tester.pumpWidget(
+      _testApp(
+        api: _UnusedApi(),
+        sessionStore: store,
+        socketFactory: () => _WelcomeSocket(session),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('test_online_board')), findsOneWidget);
+    expect(find.text('Opponent joined.'), findsNothing);
+  });
 }
 
 Widget _testApp({
@@ -241,8 +315,10 @@ Widget _testApp({
   _TestRegistration? registration,
   OnlineSocketClientFactory? socketFactory,
   OnlineProxySettingsStore? proxySettingsStore,
+  OnlineSessionStore? sessionStore,
 }) {
   return MaterialApp(
+    scaffoldMessengerKey: rootScaffoldMessengerKey,
     localizationsDelegates: S.localizationsDelegates,
     supportedLocales: S.supportedLocales,
     home: MediaQuery(
@@ -251,7 +327,7 @@ Widget _testApp({
         registration: registration ?? _TestRegistration(),
         service: OnlineServiceConfig(Uri.parse('https://online.example')),
         roomApi: api,
-        sessionStore: _EmptyStore(),
+        sessionStore: sessionStore ?? _EmptyStore(),
         proxySettingsStore: proxySettingsStore ?? _MemoryProxyStore(),
         socketFactory: socketFactory,
       ),
@@ -280,6 +356,27 @@ class _EmptyStore implements OnlineSessionStore {
 
   @override
   Future<void> write(OnlineRoomSession session) async {}
+}
+
+class _MemorySessionStore implements OnlineSessionStore {
+  _MemorySessionStore(this.value);
+
+  OnlineRoomSession? value;
+  bool deleted = false;
+
+  @override
+  Future<void> delete() async {
+    deleted = true;
+    value = null;
+  }
+
+  @override
+  Future<OnlineRoomSession?> read() async => value;
+
+  @override
+  Future<void> write(OnlineRoomSession session) async {
+    value = session;
+  }
 }
 
 class _UnusedApi implements OnlineRoomApi {
@@ -330,7 +427,8 @@ class _TestRegistration implements OnlineGameRegistration {
       onlineOptionsFromRuleSettings(const RuleSettings());
 
   @override
-  Widget buildBoard(BuildContext context) => const SizedBox.shrink();
+  Widget buildBoard(BuildContext context) =>
+      const Scaffold(body: SizedBox(key: Key('test_online_board')));
 
   @override
   Future<void> disposeCoordinator() async {
@@ -363,7 +461,7 @@ class _TestRegistration implements OnlineGameRegistration {
       '9';
 }
 
-OnlineRoomSession _waitingSession() {
+OnlineRoomSession _waitingSession({String status = 'waiting'}) {
   final String roomId = List<String>.filled(22, 'A').join();
   final String seatToken = List<String>.filled(43, 'S').join();
   final String inviteToken = List<String>.filled(43, 'I').join();
@@ -376,7 +474,7 @@ OnlineRoomSession _waitingSession() {
       rulesetId: onlineMillRulesetId,
       ruleOptions: onlineOptionsFromRuleSettings(const RuleSettings()),
       creatorSeat: RemoteSeat.first,
-      status: 'waiting',
+      status: status,
       createdAt: DateTime.utc(2026),
       expiresAt: DateTime.utc(2027),
     ),
@@ -415,15 +513,32 @@ class _WelcomeSocket implements OnlineSocketClient {
         OnlineSocketMessage(<String, Object?>{
           'type': 'welcome',
           'seq': 0,
-          'status': 'waiting',
+          'status': session.room.status,
           'pendingControl': null,
           'room': session.room.toJson(),
           'seat': 'first',
-          'opponentConnected': false,
+          'opponentConnected': session.room.isActive,
           'snapshot': session.snapshot.toJson(),
         }),
       );
     });
+  }
+
+  void opponentJoined() {
+    _events.add(
+      OnlineSocketMessage(<String, Object?>{
+        'type': 'opponentJoined',
+        'seq': 1,
+        'status': 'active',
+        'connected': true,
+        'snapshot': <String, Object?>{
+          'revision': 1,
+          'initialFen': session.snapshot.initialFen,
+          'actions': const <String>[],
+          'resultFen': session.snapshot.resultFen,
+        },
+      }),
+    );
   }
 
   @override

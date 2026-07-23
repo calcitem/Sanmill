@@ -64,6 +64,7 @@ class CloudMatchCoordinator implements RemoteMatchController {
   int _reconnectAttempts = 0;
   bool _disposed = false;
   bool _everWelcomed = false;
+  bool _resumeOnFirstWelcome = false;
   bool _reconnectLoopRunning = false;
   bool _ending = false;
   String? _lastInboundControlRequestId;
@@ -110,8 +111,9 @@ class CloudMatchCoordinator implements RemoteMatchController {
     'expiresAt': _session.room.expiresAt.toIso8601String(),
   };
 
-  Future<void> start() async {
+  Future<void> start({bool resuming = false}) async {
     _assertUsable();
+    _resumeOnFirstWelcome = resuming;
     _installConfiguration();
     await game.configure(_config!);
     await game.restoreSnapshot(_session.snapshot);
@@ -273,7 +275,8 @@ class CloudMatchCoordinator implements RemoteMatchController {
     _installConfiguration();
     await game.configure(_config!);
     await _applyStateMessage(message, emitReady: false);
-    final bool resumed = _everWelcomed;
+    final bool resumed = _everWelcomed || _resumeOnFirstWelcome;
+    _resumeOnFirstWelcome = false;
     _everWelcomed = true;
     _reconnectAttempts = 0;
     if (room.isEnded) {

@@ -6939,5 +6939,21 @@
     "onlineProxySaved": "代理设置已保存。",
     "@onlineProxySaved": {
         "description": "Confirmation shown after saving online-play proxy settings"
+    },
+    "onlineSavedRoomTitle": "未完成的好友对战",
+    "@onlineSavedRoomTitle": {
+        "description": "Title for a saved friend-game room that is still waiting"
+    },
+    "onlineSavedRoomDescription": "有一个房间仍在等待对手。你可以继续等待或取消该房间。",
+    "@onlineSavedRoomDescription": {
+        "description": "Explains the choices available for a saved waiting room"
+    },
+    "onlineContinueWaiting": "继续等待",
+    "@onlineContinueWaiting": {
+        "description": "Button that reconnects to a saved waiting room"
+    },
+    "onlineCancelRoom": "取消房间",
+    "@onlineCancelRoom": {
+        "description": "Button that cancels a saved waiting room"
     }
 }

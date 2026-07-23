@@ -7006,5 +7006,21 @@
     "onlineProxySaved": "Proxy settings saved.",
     "@onlineProxySaved": {
         "description": "Confirmation shown after saving online-play proxy settings"
+    },
+    "onlineSavedRoomTitle": "Unfinished friend game",
+    "@onlineSavedRoomTitle": {
+        "description": "Title for a saved friend-game room that is still waiting"
+    },
+    "onlineSavedRoomDescription": "A room is still waiting for an opponent. Continue waiting or cancel it.",
+    "@onlineSavedRoomDescription": {
+        "description": "Explains the choices available for a saved waiting room"
+    },
+    "onlineContinueWaiting": "Continue waiting",
+    "@onlineContinueWaiting": {
+        "description": "Button that reconnects to a saved waiting room"
+    },
+    "onlineCancelRoom": "Cancel room",
+    "@onlineCancelRoom": {
+        "description": "Button that cancels a saved waiting room"
     }
 }

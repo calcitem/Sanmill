@@ -26,7 +26,7 @@ import 'online_socket_client.dart';
 
 typedef OnlineSocketClientFactory = OnlineSocketClient Function();
 
-enum _OnlinePageStage { home, busy, joining, waiting, board }
+enum _OnlinePageStage { home, busy, joining, synchronizing, waiting, board }
 
 class OnlineFriendGamePage extends StatefulWidget {
   const OnlineFriendGamePage({
@@ -66,6 +66,7 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
   CloudMatchCoordinator? _coordinator;
   StreamSubscription<RemoteMatchEvent>? _matchSubscription;
   StreamSubscription<Uri>? _linkSubscription;
+  OnlineRoomSession? _pendingSavedSession;
   OnlineRoomSession? _roomSession;
   OnlineFailure? _failure;
   String? _terminalStatus;
@@ -164,7 +165,24 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
         await _sessionStore.delete();
         return;
       }
-      await _connectSession(saved);
+      if (saved.room.isEnded) {
+        await _sessionStore.delete();
+        return;
+      }
+      if (saved.room.isActive) {
+        await _connectSession(saved, resuming: true);
+        return;
+      }
+      if (saved.room.status == 'waiting' &&
+          saved.role == RemoteRole.host &&
+          mounted) {
+        setState(() {
+          _pendingSavedSession = saved;
+          _stage = _OnlinePageStage.home;
+        });
+        return;
+      }
+      await _sessionStore.delete();
     } on OnlineApiException catch (error) {
       if (mounted) {
         setState(() => _failure = error.failure);
@@ -259,7 +277,10 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
     }
   }
 
-  Future<void> _connectSession(OnlineRoomSession session) async {
+  Future<void> _connectSession(
+    OnlineRoomSession session, {
+    bool resuming = false,
+  }) async {
     unawaited(_matchSubscription?.cancel());
     _matchSubscription = null;
     final OnlineGameDefinition definition = widget.registration.definition;
@@ -285,14 +306,17 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
     _matchSubscription = coordinator.events.listen(_handleMatchEvent);
     if (mounted) {
       setState(() {
-        _stage = session.role == RemoteRole.host
+        _pendingSavedSession = null;
+        _stage = resuming
+            ? _OnlinePageStage.synchronizing
+            : session.role == RemoteRole.host
             ? _OnlinePageStage.waiting
             : _OnlinePageStage.joining;
         _failure = null;
       });
     }
     try {
-      await coordinator.start();
+      await coordinator.start(resuming: resuming);
       if (!mounted) {
         return;
       }
@@ -457,6 +481,60 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
     }
   }
 
+  Future<void> _resumeSavedSession() async {
+    final OnlineRoomSession? session = _pendingSavedSession;
+    if (session == null) {
+      return;
+    }
+    try {
+      await _connectSession(session, resuming: true);
+    } on OnlineApiException catch (error) {
+      _showFailure(error.failure);
+    } on Object {
+      _showFailure(OnlineFailure.serviceUnavailable);
+    }
+  }
+
+  Future<void> _cancelSavedSession() async {
+    final OnlineRoomSession? session = _pendingSavedSession;
+    final OnlineRoomApi? api = _roomApi;
+    if (session == null || api == null) {
+      return;
+    }
+    setState(() {
+      _stage = _OnlinePageStage.synchronizing;
+      _failure = null;
+    });
+    try {
+      await api.cancelRoom(session);
+    } on OnlineApiException catch (error) {
+      if (error.failure != OnlineFailure.roomUnavailable) {
+        if (mounted) {
+          setState(() {
+            _stage = _OnlinePageStage.home;
+            _failure = error.failure;
+          });
+        }
+        return;
+      }
+    } on Object {
+      if (mounted) {
+        setState(() {
+          _stage = _OnlinePageStage.home;
+          _failure = OnlineFailure.serviceUnavailable;
+        });
+      }
+      return;
+    }
+    await _sessionStore.delete();
+    if (mounted) {
+      setState(() {
+        _pendingSavedSession = null;
+        _stage = _OnlinePageStage.home;
+      });
+    }
+  }
+
   Future<void> _leaveGame() async {
     await _disposeCoordinator(leave: true);
     if (mounted) {
@@ -516,6 +594,9 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
         child: switch (_stage) {
           _OnlinePageStage.busy => _ProgressBody(label: s.onlineCreatingGame),
           _OnlinePageStage.joining => _ProgressBody(label: s.onlineJoiningGame),
+          _OnlinePageStage.synchronizing => _ProgressBody(
+            label: s.onlineSynchronizing,
+          ),
           _OnlinePageStage.waiting => _buildWaiting(),
           _OnlinePageStage.home || _OnlinePageStage.board => _buildHome(),
         },
@@ -561,23 +642,57 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
                     ),
                   ],
                   const SizedBox(height: 24),
-                  FilledButton.icon(
-                    key: const Key('online_create_game'),
-                    onPressed: !_transportReady || _roomApi == null
-                        ? null
-                        : _showCreateSettings,
-                    icon: const Icon(Icons.add_circle_outline),
-                    label: Text(s.onlineCreateGame),
-                  ),
-                  const SizedBox(height: 12),
-                  OutlinedButton.icon(
-                    key: const Key('online_join_game'),
-                    onPressed: !_transportReady || _roomApi == null
-                        ? null
-                        : _showJoinSheet,
-                    icon: const Icon(Icons.link),
-                    label: Text(s.onlineJoinGame),
-                  ),
+                  if (_pendingSavedSession != null)
+                    Card(
+                      key: const Key('online_saved_room'),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Text(
+                              s.onlineSavedRoomTitle,
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(s.onlineSavedRoomDescription),
+                            const SizedBox(height: 16),
+                            OutlinedButton.icon(
+                              key: const Key('online_cancel_saved_room'),
+                              onPressed: _cancelSavedSession,
+                              icon: const Icon(Icons.close),
+                              label: Text(s.onlineCancelRoom),
+                            ),
+                            const SizedBox(height: 8),
+                            FilledButton.icon(
+                              key: const Key('online_continue_waiting'),
+                              onPressed: _resumeSavedSession,
+                              icon: const Icon(Icons.hourglass_bottom),
+                              label: Text(s.onlineContinueWaiting),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  else ...<Widget>[
+                    FilledButton.icon(
+                      key: const Key('online_create_game'),
+                      onPressed: !_transportReady || _roomApi == null
+                          ? null
+                          : _showCreateSettings,
+                      icon: const Icon(Icons.add_circle_outline),
+                      label: Text(s.onlineCreateGame),
+                    ),
+                    const SizedBox(height: 12),
+                    OutlinedButton.icon(
+                      key: const Key('online_join_game'),
+                      onPressed: !_transportReady || _roomApi == null
+                          ? null
+                          : _showJoinSheet,
+                      icon: const Icon(Icons.link),
+                      label: Text(s.onlineJoinGame),
+                    ),
+                  ],
                 ],
               ),
             ),
