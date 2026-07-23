@@ -6955,5 +6955,13 @@
     "onlineCancelRoom": "取消房间",
     "@onlineCancelRoom": {
         "description": "Button that cancels a saved waiting room"
+    },
+    "onlineCreateServiceUnavailableTitle": "在线服务暂时不可用",
+    "@onlineCreateServiceUnavailableTitle": {
+        "description": "Title shown when creating an online room fails because the service is unavailable"
+    },
+    "onlineCreateServiceUnavailableMessage": "本程序及在线对局服务均免费提供。在线服务在免费云资源额度内运行，高峰时段可能暂时无法创建或加入对局。如遇此情况，请稍后重试；离线功能不受影响。",
+    "@onlineCreateServiceUnavailableMessage": {
+        "description": "Explains free cloud capacity limits after creating an online room fails"
     }
 }

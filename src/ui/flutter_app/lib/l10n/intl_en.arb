@@ -7022,5 +7022,13 @@
     "onlineCancelRoom": "Cancel room",
     "@onlineCancelRoom": {
         "description": "Button that cancels a saved waiting room"
+    },
+    "onlineCreateServiceUnavailableTitle": "Online service temporarily unavailable",
+    "@onlineCreateServiceUnavailableTitle": {
+        "description": "Title shown when creating an online room fails because the service is unavailable"
+    },
+    "onlineCreateServiceUnavailableMessage": "This application and its online play service are provided free of charge. The online service runs within free cloud resource limits, so creating or joining a game may be temporarily unavailable during peak periods. If this happens, please try again later. Offline features are not affected.",
+    "@onlineCreateServiceUnavailableMessage": {
+        "description": "Explains free cloud capacity limits after creating an online room fails"
     }
 }

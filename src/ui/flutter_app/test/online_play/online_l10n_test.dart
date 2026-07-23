@@ -51,6 +51,12 @@ void main() {
     'onlineProxyInvalidHost',
     'onlineProxyInvalidPort',
     'onlineProxySaved',
+    'onlineSavedRoomTitle',
+    'onlineSavedRoomDescription',
+    'onlineContinueWaiting',
+    'onlineCancelRoom',
+    'onlineCreateServiceUnavailableTitle',
+    'onlineCreateServiceUnavailableMessage',
   ];
 
   test('online keys are appended to en and zh in identical order', () {

@@ -134,10 +134,55 @@ void main() {
 
       await tester.tap(find.widgetWithText(FilledButton, 'Create a game').last);
       await tester.pumpAndSettle();
-      expect(find.textContaining('temporarily unavailable'), findsOneWidget);
+      expect(
+        find.byKey(const Key('online_create_service_unavailable_dialog')),
+        findsOneWidget,
+      );
+      expect(
+        find.text('Online service temporarily unavailable'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('free cloud resource limits'), findsOneWidget);
       expect(api.createCalls, 1);
+
+      await tester.tap(find.widgetWithText(TextButton, 'OK'));
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const Key('online_create_service_unavailable_dialog')),
+        findsNothing,
+      );
+      expect(
+        find.textContaining('Online play is temporarily unavailable'),
+        findsNothing,
+      );
+      expect(find.byKey(const Key('online_create_game')), findsOneWidget);
     },
   );
+
+  testWidgets('other create failures do not show the capacity dialog', (
+    WidgetTester tester,
+  ) async {
+    final _UnusedApi api = _UnusedApi(
+      createFailure: OnlineFailure.versionMismatch,
+    );
+    await tester.pumpWidget(_testApp(api: api));
+    await tester.pump();
+
+    await tester.tap(find.byKey(const Key('online_create_game')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(FilledButton, 'Create a game').last);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('online_create_service_unavailable_dialog')),
+      findsNothing,
+    );
+    expect(
+      find.text('This game requires a compatible app version.'),
+      findsOneWidget,
+    );
+    expect(api.createCalls, 1);
+  });
 
   testWidgets('join sheet rejects malformed invitation links locally', (
     WidgetTester tester,

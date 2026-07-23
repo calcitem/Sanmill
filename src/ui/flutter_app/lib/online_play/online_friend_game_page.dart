@@ -226,14 +226,27 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
       _stage = _OnlinePageStage.busy;
       _failure = null;
     });
+    late final OnlineRoomSession session;
     try {
-      final OnlineRoomSession session = await api.createRoom(
+      session = await api.createRoom(
         ruleOptions: widget.registration.createRuleOptions(),
         sidePreference: side,
       );
-      if (!mounted) {
-        return;
+    } on OnlineApiException catch (error) {
+      if (error.failure == OnlineFailure.serviceUnavailable) {
+        await _showCreateServiceUnavailableDialog();
+      } else {
+        _showFailure(error.failure);
       }
+      return;
+    } on Object {
+      _showFailure(OnlineFailure.serviceUnavailable);
+      return;
+    }
+    if (!mounted) {
+      return;
+    }
+    try {
       await _connectSession(session);
     } on OnlineApiException catch (error) {
       _showFailure(error.failure);
@@ -393,6 +406,31 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
       _failure = failure;
       _stage = _OnlinePageStage.home;
     });
+  }
+
+  Future<void> _showCreateServiceUnavailableDialog() async {
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _failure = null;
+      _stage = _OnlinePageStage.home;
+    });
+    final S s = S.of(context);
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) => AlertDialog(
+        key: const Key('online_create_service_unavailable_dialog'),
+        title: Text(s.onlineCreateServiceUnavailableTitle),
+        content: Text(s.onlineCreateServiceUnavailableMessage),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(s.ok),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _showCreateSettings() async {
