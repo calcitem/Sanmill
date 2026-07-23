@@ -6,13 +6,21 @@
 // Extended tests for GameController singleton, reset, state management,
 // and notifiers.
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/game_platform/game_id.dart';
+import 'package:sanmill/game_platform/game_session.dart';
+import 'package:sanmill/games/mill/mill_remote_session_meta.dart';
+import 'package:sanmill/games/mill/native_mill_game_session.dart';
+import 'package:sanmill/games/mill/native_mill_rules_port.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/remote_play/remote_match_controller.dart';
 import 'package:sanmill/remote_play/remote_models.dart';
+import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 import 'package:sanmill/shared/widgets/snackbars/scaffold_messenger.dart';
@@ -278,6 +286,82 @@ void main() {
     );
   });
 
+  group('HistoryNavigator cloud takeback', () {
+    testWidgets('waits for cloud approval without undoing the local session', (
+      WidgetTester tester,
+    ) async {
+      final GameController controller = GameController();
+      final GameMode previousMode = controller.gameInstance.gameMode;
+      final RemoteMatchController? previousCoordinator =
+          controller.remoteCoordinator;
+      final _HistoryRulesPort rulesPort = _HistoryRulesPort();
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: rulesPort,
+      );
+      final _ResignOnlyRemoteController coordinator =
+          _ResignOnlyRemoteController();
+
+      session.remoteMeta = const MillRemoteSessionMeta(
+        localSeat: PlayerSeat.second,
+        hostPlaysWhite: true,
+        transportKind: RemoteTransportKind.cloud,
+        role: RemoteRole.join,
+        sessionId: 'cloud-takeback-test',
+      );
+      controller.bindActiveSession(session);
+      controller.gameInstance.gameMode = GameMode.humanVsCloud;
+      controller.remoteCoordinator = coordinator;
+      addTearDown(() {
+        controller.unbindActiveSession(session);
+        controller.gameInstance.gameMode = previousMode;
+        controller.remoteCoordinator = previousCoordinator;
+        session.dispose();
+      });
+
+      Future<HistoryResponse?>? navigation;
+      await tester.pumpWidget(
+        MaterialApp(
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(
+            body: Builder(
+              builder: (BuildContext context) => FilledButton(
+                onPressed: () {
+                  navigation = HistoryNavigator.takeBackN(
+                    context,
+                    1,
+                    pop: false,
+                    toolbar: true,
+                  );
+                },
+                child: const Text('Request takeback'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(session.undoDepth, 1);
+      await tester.tap(find.text('Request takeback'));
+      await tester.pump();
+
+      expect(coordinator.takeBackRequests, const <int>[1]);
+      expect(session.undoDepth, 1);
+      expect(rulesPort.undoCalls, 0);
+      expect(navigation, isNotNull);
+
+      coordinator.takeBackResult!.complete(true);
+      await tester.pumpAndSettle();
+
+      expect(await navigation, isA<HistoryOK>());
+      expect(session.undoDepth, 1);
+      expect(rulesPort.undoCalls, 0);
+
+      await tester.pumpWidget(const SizedBox.shrink());
+    });
+  });
+
   group('GameController.leaveRemoteMatch', () {
     test('leaves and disposes the active remote coordinator', () async {
       final GameController controller = GameController();
@@ -297,10 +381,52 @@ void main() {
   });
 }
 
+class _HistoryRulesPort implements NativeMillRulesPort {
+  GameStateSnapshot _snapshot = const GameStateSnapshot(
+    gameId: GameId.mill,
+    activeSeat: PlayerSeat.second,
+    outcome: GameOutcome.ongoing(),
+    phase: 'placing',
+  );
+  int undoCalls = 0;
+
+  @override
+  RuleSettings get ruleSettings => const RuleSettings();
+
+  @override
+  GameStateSnapshot get snapshot => _snapshot;
+
+  @override
+  int get undoDepth => 1 - undoCalls;
+
+  @override
+  int get redoDepth => undoCalls;
+
+  @override
+  GameStateSnapshot undo() {
+    undoCalls += 1;
+    _snapshot = const GameStateSnapshot(
+      gameId: GameId.mill,
+      activeSeat: PlayerSeat.first,
+      outcome: GameOutcome.ongoing(),
+      phase: 'placing',
+    );
+    return _snapshot;
+  }
+
+  @override
+  void dispose() {}
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
 class _ResignOnlyRemoteController implements RemoteMatchController {
   int resignCalls = 0;
   int leaveCalls = 0;
   int disposeCalls = 0;
+  final List<int> takeBackRequests = <int>[];
+  Completer<bool>? takeBackResult;
 
   @override
   final ValueNotifier<RemoteConnectionState> stateNotifier =
@@ -321,6 +447,14 @@ class _ResignOnlyRemoteController implements RemoteMatchController {
   @override
   Future<void> leave() async {
     leaveCalls += 1;
+  }
+
+  @override
+  Future<bool> requestTakeBack(int steps) {
+    takeBackRequests.add(steps);
+    final Completer<bool> result = Completer<bool>();
+    takeBackResult = result;
+    return result.future;
   }
 
   @override

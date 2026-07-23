@@ -88,19 +88,17 @@ class HistoryNavigator {
     //  Remote-match special rules:
     //   - Take-back requires remote approval and may cover multiple actions
     //     when the requester's last turn included a capture.
-    //   - All other history nav is disallowed in LAN mode.
+    //   - All other history nav is disallowed in every remote mode.
     // -----------------------------------------------------------
-    final GameMode currentMode = GameController().gameInstance.gameMode;
-    if (currentMode == GameMode.humanVsLAN ||
-        currentMode == GameMode.humanVsBluetooth) {
+    if (GameController().isRemoteGameMode) {
       if (navMode == HistoryNavMode.takeBack ||
           navMode == HistoryNavMode.takeBackN) {
         assert(
           navMode != HistoryNavMode.takeBackN || number != null,
-          'LAN takeBackN requires an explicit step count.',
+          'Remote takeBackN requires an explicit step count.',
         );
         final int steps = number ?? 1;
-        assert(steps > 0, 'LAN takeback requires a positive step count.');
+        assert(steps > 0, 'Remote takeback requires a positive step count.');
         final bool success = await _requestRemoteTakeBack(context, steps);
         // If user & remote accepted, success=true => done
         // If rejected or an error, success=false => do nothing
@@ -327,7 +325,7 @@ class HistoryNavigator {
     BuildContext context,
     int steps,
   ) async {
-    assert(steps > 0, 'LAN takeback requires a positive step count.');
+    assert(steps > 0, 'Remote takeback requires a positive step count.');
     if (steps <= 0) {
       return false;
     }

@@ -68,6 +68,71 @@ void main() {
   });
 
   test(
+    'applies the authoritative takeback before completing the request',
+    () async {
+      final OnlineRoomSession session = _session(status: 'active');
+      final _FakeSocket socket = _FakeSocket();
+      final _FakeGame game = _FakeGame();
+      socket.onConnect = () => socket.emit(_welcome(session));
+      final CloudMatchCoordinator coordinator = CloudMatchCoordinator(
+        definition: onlineMillGameDefinition,
+        session: session,
+        roomApi: _FakeApi(),
+        socket: socket,
+        game: game,
+        sessionStore: _MemoryStore(),
+      );
+      addTearDown(coordinator.dispose);
+
+      await coordinator.start();
+      socket.emit(
+        _stateEvent(
+          session,
+          status: 'active',
+          revision: 2,
+          actions: const <String>['a7', 'd7'],
+        ),
+      );
+      await _flushEvents();
+
+      final Future<bool> requested = coordinator.requestTakeBack(1);
+      final Map<String, Object?> command = socket.sent.single;
+      final String requestId = command['commandId']! as String;
+      expect(command, containsPair('type', 'takeBackRequest'));
+      expect(command['payload'], containsPair('steps', 1));
+      expect(game.snapshots.last.actions, const <String>['a7', 'd7']);
+
+      socket.emit(
+        _stateEvent(
+          session,
+          status: 'active',
+          revision: 3,
+          actions: const <String>['a7', 'd7'],
+          commandId: requestId,
+        ),
+      );
+      await _flushEvents();
+
+      socket.emit(<String, Object?>{
+        ..._stateEvent(
+          session,
+          type: 'controlResult',
+          status: 'active',
+          revision: 4,
+          actions: const <String>['a7'],
+        ),
+        'kind': 'takeBack',
+        'requestId': requestId,
+        'accepted': true,
+      });
+
+      expect(await requested, isTrue);
+      expect(coordinator.actionLog, const <String>['a7']);
+      expect(game.snapshots.last.actions, const <String>['a7']);
+    },
+  );
+
+  test(
     'does not report the join handshake as an opponent disconnection',
     () async {
       final OnlineRoomSession session = _session(status: 'waiting');
