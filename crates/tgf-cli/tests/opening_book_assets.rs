@@ -3,6 +3,7 @@
 // authoritative Rust rules for its variant.
 
 use serde_json::Value;
+use std::collections::HashSet;
 use tgf_core::{ActionList, GameRules};
 use tgf_mill::{MillUciCodec, rules_for_preset};
 
@@ -40,10 +41,15 @@ fn assert_oracle_recommendations_are_legal(asset: &str, preset: i32, variant: &s
             !recommendations.is_empty(),
             "opening-book position must recommend at least one move: {fen}"
         );
+        let mut seen = HashSet::new();
         for move_value in recommendations {
             let move_text = move_value
                 .as_str()
                 .unwrap_or_else(|| panic!("opening-book move must be a string: {fen}"));
+            assert!(
+                seen.insert(move_text),
+                "opening-book move {move_text} is duplicated for {fen}"
+            );
             let action = MillUciCodec::decode_action(&snapshot, move_text)
                 .unwrap_or_else(|| panic!("opening-book move must use Mill notation: {move_text}"));
             assert!(

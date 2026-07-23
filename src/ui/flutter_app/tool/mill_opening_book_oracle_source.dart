@@ -333,7 +333,7 @@ nineMensMorrisCanonicalOpeningBook = <String, List<String>>{
     a1 ----- d1 ----- g1
   */
   "********/**@O@*@O/O******* w p p 3 6 3 6 0 0 -1 -1 -1 -1 0 0 4 ids:nodes":
-      <String>["c5", "c4", "a4", "c5", "d1", "d3", "g4", "e4", "e3"],
+      <String>["c5", "c4", "a4", "d1", "d3", "g4", "e4", "e3"],
   /*
     a7 ----- d7 ----- g7
     |         |        |
