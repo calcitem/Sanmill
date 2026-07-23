@@ -322,6 +322,7 @@ void main() {
       Future<HistoryResponse?>? navigation;
       await tester.pumpWidget(
         MaterialApp(
+          navigatorKey: currentNavigatorKey,
           scaffoldMessengerKey: rootScaffoldMessengerKey,
           localizationsDelegates: sanmillLocalizationsDelegates,
           supportedLocales: S.supportedLocales,
@@ -351,6 +352,18 @@ void main() {
       expect(session.undoDepth, 1);
       expect(rulesPort.undoCalls, 0);
       expect(navigation, isNotNull);
+      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+      final BuildContext dialogContext = tester.element(
+        find.byType(AlertDialog),
+      );
+      expect(
+        find.text(
+          S.of(dialogContext).takeBackRequestSentWaitingForOpponentResponse,
+        ),
+        findsOneWidget,
+      );
 
       coordinator.takeBackResult!.complete(true);
       await tester.pumpAndSettle();
@@ -358,6 +371,7 @@ void main() {
       expect(await navigation, isA<HistoryOK>());
       expect(session.undoDepth, 1);
       expect(rulesPort.undoCalls, 0);
+      expect(find.byType(AlertDialog), findsNothing);
 
       await tester.pumpWidget(const SizedBox.shrink());
     });

@@ -1777,7 +1777,9 @@ class GameController {
       }
       return false;
     }
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    final BuildContext? dialogContext = _controllerDialogContext;
+    final BuildContext? context =
+        dialogContext ?? rootScaffoldMessengerKey.currentContext;
     final String? rejectedMessage = context != null
         ? S.of(context).takeBackRejected
         : null;
@@ -1787,7 +1789,51 @@ class GameController {
         snackBar: false,
       );
     }
-    final bool accepted = await coordinator.requestTakeBack(steps);
+    final bool accepted;
+    if (dialogContext == null) {
+      accepted = await coordinator.requestTakeBack(steps);
+    } else {
+      final NavigatorState navigator = Navigator.of(
+        dialogContext,
+        rootNavigator: true,
+      );
+      final DialogRoute<void> waitingRoute = DialogRoute<void>(
+        context: dialogContext,
+        barrierDismissible: false,
+        builder: (BuildContext waitingContext) => PopScope(
+          canPop: false,
+          child: AlertDialog(
+            title: Text(S.of(waitingContext).takeBackRequest),
+            content: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const SizedBox.square(
+                  dimension: 24,
+                  child: CircularProgressIndicator(),
+                ),
+                const SizedBox(width: 16),
+                Flexible(
+                  child: Text(
+                    S
+                        .of(waitingContext)
+                        .takeBackRequestSentWaitingForOpponentResponse,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+      final Future<void> waitingRouteClosed = navigator.push(waitingRoute);
+      try {
+        accepted = await coordinator.requestTakeBack(steps);
+      } finally {
+        if (waitingRoute.isActive) {
+          navigator.removeRoute(waitingRoute);
+        }
+        await waitingRouteClosed;
+      }
+    }
     if (!accepted && rejectedMessage != null) {
       headerTipNotifier.showTip(rejectedMessage);
     }

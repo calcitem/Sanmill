@@ -6963,5 +6963,9 @@
     "onlineCreateServiceUnavailableMessage": "本程序及在线对局服务均免费提供。在线服务在免费云资源额度内运行，高峰时段可能暂时无法创建或加入对局。如遇此情况，请稍后重试；离线功能不受影响。",
     "@onlineCreateServiceUnavailableMessage": {
         "description": "Explains free cloud capacity limits after creating an online room fails"
+    },
+    "takeBackRequestSentWaitingForOpponentResponse": "悔棋请求已发送，正在等待对手回复…",
+    "@takeBackRequestSentWaitingForOpponentResponse": {
+        "description": "Status shown while waiting for the opponent to answer a take-back request"
     }
 }
