@@ -40,4 +40,48 @@ void main() {
       );
     });
   });
+
+  group('QR camera watchdog', () {
+    test('does not restart before the first decoder callback', () {
+      expect(
+        qrCameraWatchdogShouldReinitialize(
+          hasReceivedScanActivity: false,
+          isBusy: false,
+          cameraAvailable: true,
+          isReinitializing: false,
+          idleFor: const Duration(minutes: 1),
+          threshold: const Duration(seconds: 5),
+        ),
+        isFalse,
+      );
+    });
+
+    test('restarts an idle camera after decoder activity has started', () {
+      expect(
+        qrCameraWatchdogShouldReinitialize(
+          hasReceivedScanActivity: true,
+          isBusy: false,
+          cameraAvailable: true,
+          isReinitializing: false,
+          idleFor: const Duration(seconds: 6),
+          threshold: const Duration(seconds: 5),
+        ),
+        isTrue,
+      );
+    });
+
+    test('does not restart while scan handling is busy', () {
+      expect(
+        qrCameraWatchdogShouldReinitialize(
+          hasReceivedScanActivity: true,
+          isBusy: true,
+          cameraAvailable: true,
+          isReinitializing: false,
+          idleFor: const Duration(seconds: 6),
+          threshold: const Duration(seconds: 5),
+        ),
+        isFalse,
+      );
+    });
+  });
 }

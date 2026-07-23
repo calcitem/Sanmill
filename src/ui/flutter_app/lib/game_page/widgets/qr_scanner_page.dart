@@ -64,6 +64,22 @@ bool qrScannerUsesLiveCamera({
   }
 }
 
+@visibleForTesting
+bool qrCameraWatchdogShouldReinitialize({
+  required bool hasReceivedScanActivity,
+  required bool isBusy,
+  required bool cameraAvailable,
+  required bool isReinitializing,
+  required Duration idleFor,
+  required Duration threshold,
+}) {
+  return hasReceivedScanActivity &&
+      !isBusy &&
+      cameraAvailable &&
+      !isReinitializing &&
+      idleFor > threshold;
+}
+
 bool get _supportsWindowsScreenCapture {
   return !kIsWeb && defaultTargetPlatform == TargetPlatform.windows;
 }
@@ -103,6 +119,10 @@ class _QrScannerPageState extends State<QrScannerPage>
   /// [CameraController] can finish its asynchronous disposal before a new one
   /// is created.
   bool _isReinitializing = false;
+
+  /// Prevents the watchdog from treating a decoder that has not produced its
+  /// first callback as a stalled camera.
+  bool _hasReceivedScanActivity = false;
 
   /// Timestamp of the most recent scan callback (success or failure).
   DateTime _lastScanActivity = DateTime.now();
@@ -192,18 +212,20 @@ class _QrScannerPageState extends State<QrScannerPage>
   // ── Camera health / watchdog ───────────────────────────────────────
 
   void _onScanActivity() {
+    _hasReceivedScanActivity = true;
     _lastScanActivity = DateTime.now();
   }
 
   void _startWatchdog() {
     _watchdogTimer = Timer.periodic(_watchdogInterval, (_) {
-      if (_hasPopped ||
-          _isBusy ||
-          _cameraState != _CameraState.available ||
-          _isReinitializing) {
-        return;
-      }
-      if (DateTime.now().difference(_lastScanActivity) > _watchdogThreshold) {
+      if (qrCameraWatchdogShouldReinitialize(
+        hasReceivedScanActivity: _hasReceivedScanActivity,
+        isBusy: _isBusy,
+        cameraAvailable: _cameraState == _CameraState.available,
+        isReinitializing: _isReinitializing,
+        idleFor: DateTime.now().difference(_lastScanActivity),
+        threshold: _watchdogThreshold,
+      )) {
         _reinitializeCamera();
       }
     });
@@ -217,6 +239,7 @@ class _QrScannerPageState extends State<QrScannerPage>
       return;
     }
 
+    _hasReceivedScanActivity = false;
     _lastScanActivity = DateTime.now();
 
     setState(() {
