@@ -842,57 +842,6 @@ class LanTransport implements RemoteTransport, RemoteTransportLogContextSink {
         .map((MapEntry<String, int> entry) => entry.key)
         .toList(growable: false);
 
-    // #region agent log
-    try {
-      final HttpClient client = HttpClient();
-      final HttpClientRequest request = await client.postUrl(
-        Uri.parse(
-          'http://127.0.0.1:7633/ingest/b907032b-252e-416d-aa37-5afced718c4c',
-        ),
-      );
-      request.headers.set(HttpHeaders.contentTypeHeader, 'application/json');
-      request.headers.set('X-Debug-Session-Id', '8d4c2e');
-      request.write(
-        jsonEncode(<String, Object?>{
-          'sessionId': '8d4c2e',
-          'hypothesisId': 'LAN1',
-          'location': 'lan_transport.dart:getLocalIpAddresses',
-          'message': 'lan_bind_address_candidates',
-          'data': <String, Object?>{
-            'reportedWifiIp': reportedWifiIp,
-            'trustedWifiIp': trustedWifiIp,
-            'wifiIfaceAddresses': wifiIfaceAddresses.toList(growable: false),
-            'interfaces': interfaces
-                .map(
-                  (NetworkInterface iface) => <String, Object?>{
-                    'name': iface.name,
-                    'addrs': iface.addresses
-                        .map((InternetAddress a) => a.address)
-                        .toList(growable: false),
-                  },
-                )
-                .toList(growable: false),
-            'ranked': ordered
-                .map(
-                  (MapEntry<String, int> e) => <String, Object?>{
-                    'ip': e.key,
-                    'score': e.value,
-                  },
-                )
-                .toList(growable: false),
-            'selectedDefault': addresses.isEmpty ? null : addresses.first,
-          },
-          'timestamp': DateTime.now().millisecondsSinceEpoch,
-          'runId': 'lan-vpn-bind-v2',
-        }),
-      );
-      await request.close();
-      client.close(force: true);
-    } on Object {
-      // Ignore debug ingest failures.
-    }
-    // #endregion
-
     logger.i(
       '[Remote][LAN] bind candidates reportedWifi=$reportedWifiIp '
       'trustedWifi=$trustedWifiIp default='

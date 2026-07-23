@@ -2,8 +2,6 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -61,41 +59,6 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
         _localAddresses = addresses;
         _selectedBindAddress = addresses.isEmpty ? null : addresses.first;
       });
-      // #region agent log
-      unawaited(() async {
-        try {
-          final HttpClient client = HttpClient();
-          final HttpClientRequest request = await client.postUrl(
-            Uri.parse(
-              'http://127.0.0.1:7633/ingest/b907032b-252e-416d-aa37-5afced718c4c',
-            ),
-          );
-          request.headers.set(
-            HttpHeaders.contentTypeHeader,
-            'application/json',
-          );
-          request.headers.set('X-Debug-Session-Id', '8d4c2e');
-          request.write(
-            jsonEncode(<String, Object?>{
-              'sessionId': '8d4c2e',
-              'hypothesisId': 'LAN1',
-              'location': 'lan_config_dialog.dart:_loadInterfaces',
-              'message': 'lan_dialog_default_bind',
-              'data': <String, Object?>{
-                'addresses': addresses,
-                'selected': _selectedBindAddress,
-              },
-              'timestamp': DateTime.now().millisecondsSinceEpoch,
-              'runId': 'lan-vpn-bind',
-            }),
-          );
-          await request.close();
-          client.close(force: true);
-        } on Object {
-          // Ignore debug ingest failures.
-        }
-      }());
-      // #endregion
     } on Object catch (error, stackTrace) {
       logger.e(
         '[Remote][LAN][UI] interface lookup failed: $error',
