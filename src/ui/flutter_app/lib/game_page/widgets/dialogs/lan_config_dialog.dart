@@ -2,6 +2,7 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -24,9 +25,8 @@ class LanConfigDialog extends StatefulWidget {
 class _LanConfigDialogState extends State<LanConfigDialog> {
   static const int _defaultPort = 33333;
 
-  final TextEditingController _addressController = TextEditingController(
-    text: '127.0.0.1',
-  );
+  // Loopback is useless between phones; leave empty for discover / manual IP.
+  final TextEditingController _addressController = TextEditingController();
   final TextEditingController _portController = TextEditingController(
     text: '$_defaultPort',
   );
@@ -61,6 +61,41 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
         _localAddresses = addresses;
         _selectedBindAddress = addresses.isEmpty ? null : addresses.first;
       });
+      // #region agent log
+      unawaited(() async {
+        try {
+          final HttpClient client = HttpClient();
+          final HttpClientRequest request = await client.postUrl(
+            Uri.parse(
+              'http://127.0.0.1:7633/ingest/b907032b-252e-416d-aa37-5afced718c4c',
+            ),
+          );
+          request.headers.set(
+            HttpHeaders.contentTypeHeader,
+            'application/json',
+          );
+          request.headers.set('X-Debug-Session-Id', '8d4c2e');
+          request.write(
+            jsonEncode(<String, Object?>{
+              'sessionId': '8d4c2e',
+              'hypothesisId': 'LAN1',
+              'location': 'lan_config_dialog.dart:_loadInterfaces',
+              'message': 'lan_dialog_default_bind',
+              'data': <String, Object?>{
+                'addresses': addresses,
+                'selected': _selectedBindAddress,
+              },
+              'timestamp': DateTime.now().millisecondsSinceEpoch,
+              'runId': 'lan-vpn-bind',
+            }),
+          );
+          await request.close();
+          client.close(force: true);
+        } on Object {
+          // Ignore debug ingest failures.
+        }
+      }());
+      // #endregion
     } on Object catch (error, stackTrace) {
       logger.e(
         '[Remote][LAN][UI] interface lookup failed: $error',
@@ -371,6 +406,7 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
               children: <Widget>[
                 SegmentedButton<RemoteRole>(
                   key: const Key('lan_role_selector'),
+                  showSelectedIcon: false,
                   segments: <ButtonSegment<RemoteRole>>[
                     ButtonSegment<RemoteRole>(
                       value: RemoteRole.host,
@@ -393,12 +429,13 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
                 DropdownButtonFormField<String>(
                   key: ValueKey<String?>(_selectedBindAddress),
                   initialValue: _selectedBindAddress,
+                  isExpanded: true,
                   decoration: InputDecoration(labelText: s.lanLocalAddress),
                   items: _localAddresses
                       .map(
                         (String address) => DropdownMenuItem<String>(
                           value: address,
-                          child: Text(address),
+                          child: Text(address, overflow: TextOverflow.ellipsis),
                         ),
                       )
                       .toList(growable: false),
@@ -408,77 +445,75 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
                           setState(() => _selectedBindAddress = value);
                         },
                 ),
-                IndexedStack(
+                // Build only the active role panel. IndexedStack still lays out
+                // inactive children and can overflow the tight dialog width.
+                KeyedSubtree(
                   key: const Key('lan_role_panels'),
-                  index: _role == RemoteRole.host ? 0 : 1,
-                  alignment: Alignment.topCenter,
-                  children: <Widget>[
-                    SizedBox(
-                      width: double.infinity,
-                      child: SwitchListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: Text(
-                          s.remotePlayAs(_hostPlaysWhite ? s.white : s.black),
-                        ),
-                        value: _hostPlaysWhite,
-                        onChanged: controlsLocked
-                            ? null
-                            : (bool value) {
-                                setState(() => _hostPlaysWhite = value);
-                              },
-                      ),
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          const SizedBox(height: 12),
-                          FilledButton.icon(
-                            key: const Key('lan_discover_button'),
-                            onPressed: _working ? null : _discover,
-                            icon: const Icon(Icons.radar),
-                            label: Text(s.discover),
+                  child: _role == RemoteRole.host
+                      ? SwitchListTile(
+                          contentPadding: EdgeInsets.zero,
+                          title: Text(
+                            s.remotePlayAs(_hostPlaysWhite ? s.white : s.black),
+                            softWrap: true,
                           ),
-                          const SizedBox(height: 12),
-                          if (_discovered.isNotEmpty)
-                            DropdownButtonFormField<RemoteEndpoint>(
-                              initialValue: _selectedEndpoint,
-                              decoration: InputDecoration(labelText: s.host),
-                              items: _discovered
-                                  .map(
-                                    (
-                                      RemoteEndpoint endpoint,
-                                    ) => DropdownMenuItem<RemoteEndpoint>(
-                                      value: endpoint,
-                                      child: Text(
-                                        '${endpoint.label} '
-                                        '(${endpoint.address}:${endpoint.port})',
-                                      ),
-                                    ),
-                                  )
-                                  .toList(growable: false),
-                              onChanged: _working
-                                  ? null
-                                  : (RemoteEndpoint? value) {
-                                      setState(() => _selectedEndpoint = value);
-                                    },
-                            )
-                          else
-                            TextField(
-                              key: const Key('lan_address_field'),
-                              controller: _addressController,
-                              enabled: !_working,
-                              decoration: InputDecoration(
-                                labelText: s.serverIp,
-                              ),
-                              keyboardType: TextInputType.url,
+                          value: _hostPlaysWhite,
+                          onChanged: controlsLocked
+                              ? null
+                              : (bool value) {
+                                  setState(() => _hostPlaysWhite = value);
+                                },
+                        )
+                      : Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            const SizedBox(height: 12),
+                            FilledButton.icon(
+                              key: const Key('lan_discover_button'),
+                              onPressed: _working ? null : _discover,
+                              icon: const Icon(Icons.radar),
+                              label: Text(s.discover),
                             ),
-                        ],
-                      ),
-                    ),
-                  ],
+                            const SizedBox(height: 12),
+                            if (_discovered.isNotEmpty)
+                              DropdownButtonFormField<RemoteEndpoint>(
+                                initialValue: _selectedEndpoint,
+                                isExpanded: true,
+                                decoration: InputDecoration(labelText: s.host),
+                                items: _discovered
+                                    .map(
+                                      (RemoteEndpoint endpoint) =>
+                                          DropdownMenuItem<RemoteEndpoint>(
+                                            value: endpoint,
+                                            child: Text(
+                                              '${endpoint.label} '
+                                              '(${endpoint.address}:'
+                                              '${endpoint.port})',
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                    )
+                                    .toList(growable: false),
+                                onChanged: _working
+                                    ? null
+                                    : (RemoteEndpoint? value) {
+                                        setState(
+                                          () => _selectedEndpoint = value,
+                                        );
+                                      },
+                              )
+                            else
+                              TextField(
+                                key: const Key('lan_address_field'),
+                                controller: _addressController,
+                                enabled: !_working,
+                                decoration: InputDecoration(
+                                  labelText: s.serverIp,
+                                ),
+                                keyboardType: TextInputType.url,
+                              ),
+                          ],
+                        ),
                 ),
                 const SizedBox(height: 12),
                 TextField(
@@ -511,6 +546,7 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
                             child: Text(
                               _status,
                               key: const Key('remote_status_text'),
+                              softWrap: true,
                             ),
                           ),
                       ],
@@ -521,6 +557,7 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
             ),
           ),
         ),
+        actionsOverflowButtonSpacing: 8,
         actions: <Widget>[
           TextButton(
             onPressed: controlsLocked

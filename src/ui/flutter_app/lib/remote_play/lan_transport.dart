@@ -12,6 +12,7 @@ import 'package:network_info_plus/network_info_plus.dart';
 import '../experience_recording/models/user_action_event.dart';
 import '../experience_recording/services/diagnostic_action_trail_service.dart';
 import '../experience_recording/services/diagnostic_reproduction_service.dart';
+import '../shared/services/logger.dart';
 import 'remote_diagnostics.dart';
 import 'remote_models.dart';
 import 'remote_protocol.dart';
@@ -770,28 +771,190 @@ class LanTransport implements RemoteTransport, RemoteTransportLogContextSink {
   }
 
   static Future<List<String>> getLocalIpAddresses() async {
-    final Set<String> addresses = <String>{};
+    String? reportedWifiIp;
     try {
       final String? wifi = await NetworkInfo().getWifiIP();
       if (wifi != null && _isUsableIpv4(wifi)) {
-        addresses.add(wifi);
+        reportedWifiIp = wifi;
       }
     } on Object {
       // NetworkInterface.list below is the cross-platform fallback.
     }
+
     final List<NetworkInterface> interfaces = await NetworkInterface.list(
       type: InternetAddressType.IPv4,
       includeLinkLocal: false,
       includeLoopback: false,
     );
+
+    // When a VPN is up, NetworkInfo.getWifiIP() may return the tunnel address
+    // (e.g. tun0 / 172.19.0.1) instead of the Wi‑Fi LAN IP. Only treat it as a
+    // Wi‑Fi hint when it also appears on a Wi‑Fi-like interface.
+    final Set<String> wifiIfaceAddresses = <String>{};
     for (final NetworkInterface interface in interfaces) {
-      for (final InternetAddress address in interface.addresses) {
-        if (_isUsableIpv4(address.address)) {
-          addresses.add(address.address);
+      if (_isWifiLikeInterface(interface.name)) {
+        for (final InternetAddress address in interface.addresses) {
+          if (_isUsableIpv4(address.address)) {
+            wifiIfaceAddresses.add(address.address);
+          }
         }
       }
     }
-    return addresses.toList(growable: false);
+    final String? trustedWifiIp =
+        reportedWifiIp != null && wifiIfaceAddresses.contains(reportedWifiIp)
+        ? reportedWifiIp
+        : (wifiIfaceAddresses.isEmpty ? null : wifiIfaceAddresses.first);
+
+    final Map<String, int> ranked = <String, int>{};
+    void consider(String address, {required String interfaceName}) {
+      if (!_isUsableIpv4(address)) {
+        return;
+      }
+      final int score = _lanBindPreferenceScore(
+        address,
+        interfaceName: interfaceName,
+        wifiIp: trustedWifiIp,
+      );
+      final int? previous = ranked[address];
+      if (previous == null || score > previous) {
+        ranked[address] = score;
+      }
+    }
+
+    if (trustedWifiIp != null) {
+      consider(trustedWifiIp, interfaceName: 'wifi');
+    }
+    for (final NetworkInterface interface in interfaces) {
+      for (final InternetAddress address in interface.addresses) {
+        consider(address.address, interfaceName: interface.name);
+      }
+    }
+
+    final List<MapEntry<String, int>> ordered = ranked.entries.toList()
+      ..sort((MapEntry<String, int> a, MapEntry<String, int> b) {
+        final int byScore = b.value.compareTo(a.value);
+        if (byScore != 0) {
+          return byScore;
+        }
+        return a.key.compareTo(b.key);
+      });
+    final List<String> addresses = ordered
+        .map((MapEntry<String, int> entry) => entry.key)
+        .toList(growable: false);
+
+    // #region agent log
+    try {
+      final HttpClient client = HttpClient();
+      final HttpClientRequest request = await client.postUrl(
+        Uri.parse(
+          'http://127.0.0.1:7633/ingest/b907032b-252e-416d-aa37-5afced718c4c',
+        ),
+      );
+      request.headers.set(HttpHeaders.contentTypeHeader, 'application/json');
+      request.headers.set('X-Debug-Session-Id', '8d4c2e');
+      request.write(
+        jsonEncode(<String, Object?>{
+          'sessionId': '8d4c2e',
+          'hypothesisId': 'LAN1',
+          'location': 'lan_transport.dart:getLocalIpAddresses',
+          'message': 'lan_bind_address_candidates',
+          'data': <String, Object?>{
+            'reportedWifiIp': reportedWifiIp,
+            'trustedWifiIp': trustedWifiIp,
+            'wifiIfaceAddresses': wifiIfaceAddresses.toList(growable: false),
+            'interfaces': interfaces
+                .map(
+                  (NetworkInterface iface) => <String, Object?>{
+                    'name': iface.name,
+                    'addrs': iface.addresses
+                        .map((InternetAddress a) => a.address)
+                        .toList(growable: false),
+                  },
+                )
+                .toList(growable: false),
+            'ranked': ordered
+                .map(
+                  (MapEntry<String, int> e) => <String, Object?>{
+                    'ip': e.key,
+                    'score': e.value,
+                  },
+                )
+                .toList(growable: false),
+            'selectedDefault': addresses.isEmpty ? null : addresses.first,
+          },
+          'timestamp': DateTime.now().millisecondsSinceEpoch,
+          'runId': 'lan-vpn-bind-v2',
+        }),
+      );
+      await request.close();
+      client.close(force: true);
+    } on Object {
+      // Ignore debug ingest failures.
+    }
+    // #endregion
+
+    logger.i(
+      '[Remote][LAN] bind candidates reportedWifi=$reportedWifiIp '
+      'trustedWifi=$trustedWifiIp default='
+      '${addresses.isEmpty ? null : addresses.first} all=$addresses',
+    );
+
+    return addresses;
+  }
+
+  /// Higher scores are preferred as the default LAN bind / advertise address.
+  ///
+  /// VPN / cellular tunnel interfaces (e.g. `tun0` → `172.19.0.1`) must not
+  /// outrank the Wi‑Fi LAN address when both are present.
+  static int _lanBindPreferenceScore(
+    String address, {
+    required String interfaceName,
+    required String? wifiIp,
+  }) {
+    final String iface = interfaceName.toLowerCase();
+    int score = 0;
+    if (wifiIp != null && address == wifiIp) {
+      score += 1000;
+    }
+    if (_isWifiLikeInterface(iface)) {
+      score += 400;
+    }
+    if (_isTunnelLikeInterface(iface)) {
+      score -= 800;
+    }
+    if (address.startsWith('192.168.')) {
+      score += 200;
+    } else if (address.startsWith('10.')) {
+      // Often cellular / carrier; keep selectable but below typical home LAN.
+      score += 40;
+    } else if (_isRfc1918Slash12(address)) {
+      // 172.16/12 includes many VPN overlays (e.g. 172.19.0.1).
+      score += 20;
+    }
+    return score;
+  }
+
+  static bool _isWifiLikeInterface(String interfaceName) {
+    final String iface = interfaceName.toLowerCase();
+    return iface == 'wifi' ||
+        RegExp(r'(^|[^a-z])(wlan|wifi|en\d*|eth|wl)').hasMatch(iface);
+  }
+
+  static bool _isTunnelLikeInterface(String interfaceName) {
+    final String iface = interfaceName.toLowerCase();
+    return RegExp(
+      r'(tun|tap|ppp|vpn|wg|ipsec|rmnet|ccmni|dummy)',
+    ).hasMatch(iface);
+  }
+
+  static bool _isRfc1918Slash12(String address) {
+    final List<String> parts = address.split('.');
+    if (parts.length != 4) {
+      return false;
+    }
+    final int? a = int.tryParse(parts[0]);
+    final int? b = int.tryParse(parts[1]);
+    return a == 172 && b != null && b >= 16 && b <= 31;
   }
 
   static bool _isUsableIpv4(String address) {
