@@ -52,6 +52,7 @@ class _GameBoardState extends State<GameBoard>
 
   // Flag to prevent duplicate dialog display in AI vs AI mode
   bool _isDialogShowing = false;
+  static const String _gameResultDialogRouteName = 'sanmill.gameResultAlert';
   bool _boardTapInProgress = false;
   String? _archivedRecordId;
   late bool _screenReaderWasActive;
@@ -782,6 +783,13 @@ class _GameBoardState extends State<GameBoard>
     final bool force = GameController().gameResultNotifier.force;
     final bool hasResult = GameController().gameResultNotifier.hasResult;
 
+    // Remote restart / session reset clears the notifier while the result
+    // dialog may still be on the navigator (often under an approval dialog).
+    // Pop it by route name so it cannot linger after the match resumes.
+    if (!hasResult) {
+      _dismissGameResultDialogIfOpen();
+    }
+
     // Header tip shows simple win/lose message
     final String? message = winner.getWinString(context);
 
@@ -836,6 +844,7 @@ class _GameBoardState extends State<GameBoard>
 
     // Check conditions for showing game result dialog
     final bool shouldShowDialog =
+        hasResult &&
         GameController().isAutoRestart() == false &&
         winner != PieceColor.nobody &&
         gameMode != GameMode.setupPosition &&
@@ -873,6 +882,8 @@ class _GameBoardState extends State<GameBoard>
             GameController().activeSessionGameOverReason ?? reason;
         showDialog(
           context: context,
+          useRootNavigator: true,
+          routeSettings: const RouteSettings(name: _gameResultDialogRouteName),
           builder: (_) => GameResultAlertDialog(
             winner: currentWinner,
             reason: currentReason,
@@ -947,5 +958,28 @@ class _GameBoardState extends State<GameBoard>
     GameController().gameResultNotifier.removeListener(_showResult);
     _removeValueNotifierListener();
     super.dispose();
+  }
+
+  void _dismissGameResultDialogIfOpen() {
+    // showDialog defaults to the root navigator; the GameBoard context may
+    // only see a nested shell navigator, so dismiss must target root too.
+    final NavigatorState? navigator = Navigator.maybeOf(
+      context,
+      rootNavigator: true,
+    );
+    if (navigator == null) {
+      return;
+    }
+    bool dismissed = false;
+    navigator.popUntil((Route<dynamic> route) {
+      if (route.settings.name == _gameResultDialogRouteName) {
+        dismissed = true;
+        return false;
+      }
+      return true;
+    });
+    if (dismissed) {
+      _isDialogShowing = false;
+    }
   }
 }

@@ -1143,6 +1143,18 @@ class PlayAreaState extends State<PlayArea> {
       return;
     }
 
+    final GameController controller = GameController();
+    // Remote matches: send a restart request immediately. Do not open the
+    // legacy GameOptionsModal (board editor / load / clipboard / save image).
+    if (controller.isRemoteGameMode && controller.isRemoteConnected) {
+      RecordingService().recordEvent(
+        RecordingEventType.toolbarAction,
+        <String, dynamic>{'toolbar': 'regularMenu', 'action': 'newGameRemote'},
+      );
+      controller.requestRestart();
+      return;
+    }
+
     _openGameOptions(navigator.context);
   }
 
@@ -2473,9 +2485,12 @@ class PlayAreaState extends State<PlayArea> {
         );
       },
     );
-    if (confirmed != true || !mounted) {
+    if (confirmed != true) {
       return;
     }
+    // Remote match updates can rebuild/dispose this State while the confirm
+    // dialog is open. Resignation is owned by the GameController singleton, so
+    // it must still run even when this widget is no longer mounted.
     RecordingService().recordEvent(
       RecordingEventType.toolbarAction,
       <String, dynamic>{'toolbar': 'regularBottom', 'action': 'resign'},

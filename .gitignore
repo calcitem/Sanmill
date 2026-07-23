@@ -481,6 +481,9 @@ diff-files*.md
 # Cursor plans
 .cursor/plans/*.plan.md
 
+# Local adb UI automation screenshots / dumps (debug sessions)
+.cursor/adb-shots/
+
 # Rust / Cargo build artifacts
 target/
 # Cargo.lock at workspace root is committed (library policy);

@@ -5,7 +5,6 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:universal_ble/universal_ble.dart';
-
 import 'bluetooth_adapter.dart';
 
 class UniversalBluetoothAdapter implements BluetoothAdapter {
@@ -89,12 +88,35 @@ class UniversalBluetoothAdapter implements BluetoothAdapter {
   Future<void> stopScan() => UniversalBle.stopScan();
 
   @override
-  Future<void> connect(String deviceId) {
-    return UniversalBle.connect(
-      deviceId,
-      timeout: const Duration(seconds: 15),
-      autoConnect: false,
-    );
+  Future<void> connect(String deviceId) async {
+    // Android 15+ surfaces GATT_CONNECTION_TIMEOUT as status 147. A single
+    // retry after releasing the GATT client clears most transient failures.
+    Object? lastError;
+    for (int attempt = 0; attempt < 2; attempt++) {
+      try {
+        await UniversalBle.connect(
+          deviceId,
+          timeout: const Duration(seconds: 20),
+          autoConnect: false,
+        );
+        return;
+      } on Object catch (error) {
+        lastError = error;
+        if (!_isTransientBleConnectError(error) || attempt == 1) {
+          rethrow;
+        }
+        try {
+          await UniversalBle.disconnect(
+            deviceId,
+            timeout: const Duration(seconds: 5),
+          );
+        } on Object {
+          // Best-effort cleanup before retry.
+        }
+        await Future<void>.delayed(const Duration(milliseconds: 400));
+      }
+    }
+    throw lastError ?? StateError('BLE connect failed without an error.');
   }
 
   @override
@@ -232,43 +254,64 @@ class UniversalBluetoothAdapter implements BluetoothAdapter {
     final bool servicesInScanResponse =
         defaultTargetPlatform == TargetPlatform.android &&
         advertisedName != null;
-    final Completer<PeripheralAdvertisingState> advertisingReady =
-        Completer<PeripheralAdvertisingState>();
-    final StreamSubscription<BlePeripheralAdvertisingStateChanged>
-    stateSubscription = UniversalBlePeripheral.advertisingStateStream.listen((
-      BlePeripheralAdvertisingStateChanged event,
-    ) {
-      if (event.state == PeripheralAdvertisingState.advertising ||
-          event.state == PeripheralAdvertisingState.error) {
-        if (!advertisingReady.isCompleted) {
-          advertisingReady.complete(event.state);
-        }
-      }
-    });
+    final PeripheralPlatformConfig? platformConfig = servicesInScanResponse
+        ? PeripheralPlatformConfig(
+            android: PeripheralAndroidOptions(addServicesInScanResponse: true),
+          )
+        : null;
+
+    // Clear a leftover advertiser from a previous host attempt. Android returns
+    // ADVERTISE_FAILED_ALREADY_STARTED (surfaced as state=error) otherwise.
     try {
-      await UniversalBlePeripheral.startAdvertising(
-        services: <String>[serviceId],
-        localName: advertisedName,
-        platformConfig: servicesInScanResponse
-            ? PeripheralPlatformConfig(
-                android: PeripheralAndroidOptions(
-                  addServicesInScanResponse: true,
-                ),
-              )
-            : null,
-      );
-      final PeripheralAdvertisingState state = await advertisingReady.future
-          .timeout(const Duration(seconds: 5));
-      assert(
-        state == PeripheralAdvertisingState.advertising,
-        'BLE advertising failed to start: ${state.name}',
-      );
-      if (state != PeripheralAdvertisingState.advertising) {
-        throw StateError('BLE advertising failed to start: ${state.name}');
-      }
-    } finally {
-      await stateSubscription.cancel();
+      await UniversalBlePeripheral.stopAdvertising();
+    } on Object {
+      // Ignore stop failures when nothing is advertising.
     }
+
+    Object? lastError;
+    for (int attempt = 0; attempt < 2; attempt++) {
+      final Completer<({PeripheralAdvertisingState state, String? error})>
+      advertisingReady =
+          Completer<({PeripheralAdvertisingState state, String? error})>();
+      final StreamSubscription<BlePeripheralAdvertisingStateChanged>
+      stateSubscription = UniversalBlePeripheral.advertisingStateStream.listen((
+        BlePeripheralAdvertisingStateChanged event,
+      ) {
+        if (event.state == PeripheralAdvertisingState.advertising ||
+            event.state == PeripheralAdvertisingState.error) {
+          if (!advertisingReady.isCompleted) {
+            advertisingReady.complete((state: event.state, error: event.error));
+          }
+        }
+      });
+      try {
+        await UniversalBlePeripheral.startAdvertising(
+          services: <String>[serviceId],
+          localName: advertisedName,
+          platformConfig: platformConfig,
+        );
+        final ({PeripheralAdvertisingState state, String? error}) result =
+            await advertisingReady.future.timeout(const Duration(seconds: 5));
+        if (result.state == PeripheralAdvertisingState.advertising) {
+          return;
+        }
+        lastError = result.error ?? result.state.name;
+        final bool alreadyStarted = (result.error ?? '').toLowerCase().contains(
+          'already',
+        );
+        if (!alreadyStarted || attempt == 1) {
+          break;
+        }
+        try {
+          await UniversalBlePeripheral.stopAdvertising();
+        } on Object {
+          // Retry after a best-effort stop.
+        }
+      } finally {
+        await stateSubscription.cancel();
+      }
+    }
+    throw StateError('BLE advertising failed to start: $lastError');
   }
 
   @override
@@ -332,4 +375,15 @@ class UniversalBluetoothAdapter implements BluetoothAdapter {
     UniversalBle.onConnectionChange = null;
     await _centralConnectionController.close();
   }
+}
+
+bool _isTransientBleConnectError(Object error) {
+  final String text = error.toString().toLowerCase();
+  // 147 = BluetoothGatt.GATT_CONNECTION_TIMEOUT (Android 15+).
+  // 133 = legacy GATT_ERROR often used for the same timeout case.
+  return text.contains('147') ||
+      text.contains('133') ||
+      text.contains('timeout') ||
+      text.contains('gatt_connection_timeout') ||
+      text.contains('gatt_error');
 }

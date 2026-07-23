@@ -6967,5 +6967,9 @@
     "takeBackRequestSentWaitingForOpponentResponse": "悔棋请求已发送，正在等待对手回复…",
     "@takeBackRequestSentWaitingForOpponentResponse": {
         "description": "Status shown while waiting for the opponent to answer a take-back request"
+    },
+    "bluetoothConnectionTimedOut": "蓝牙连接超时。请保持两台手机靠近，并确认主机仍在等待，然后重试。",
+    "@bluetoothConnectionTimedOut": {
+        "description": "Shown when a BLE GATT connect times out (e.g. Android status 147)"
     }
 }

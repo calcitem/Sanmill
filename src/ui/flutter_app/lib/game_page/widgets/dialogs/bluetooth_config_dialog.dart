@@ -95,7 +95,11 @@ class _BluetoothConfigDialogState extends State<BluetoothConfigDialog> {
               : s.remotePeerRejected;
         });
       case RemoteMatchFailure():
-        setState(() => _status = s.remoteConnectionFailed('${event.error}'));
+        setState(
+          () => _status = s.remoteConnectionFailed(
+            _describeRemoteError(context, event.error),
+          ),
+        );
       case RemoteMatchAborted():
         setState(() {
           _status = event.reason.startsWith('Reconnect timed out')
@@ -216,7 +220,9 @@ class _BluetoothConfigDialogState extends State<BluetoothConfigDialog> {
       );
       if (mounted) {
         setState(() {
-          _status = S.of(context).remoteConnectionFailed(error.toString());
+          _status = S
+              .of(context)
+              .remoteConnectionFailed(_describeRemoteError(context, error));
         });
       }
     } finally {
@@ -454,4 +460,16 @@ class _BluetoothConfigDialogState extends State<BluetoothConfigDialog> {
       ),
     );
   }
+}
+
+String _describeRemoteError(BuildContext context, Object error) {
+  final String raw = error.toString();
+  final String lower = raw.toLowerCase();
+  // Android 15+: BluetoothGatt.GATT_CONNECTION_TIMEOUT (0x93 / 147).
+  if (RegExp(r'\b147\b').hasMatch(raw) ||
+      lower.contains('gatt_connection_timeout') ||
+      (lower.contains('timeout') && lower.contains('connect'))) {
+    return S.of(context).bluetoothConnectionTimedOut;
+  }
+  return raw;
 }

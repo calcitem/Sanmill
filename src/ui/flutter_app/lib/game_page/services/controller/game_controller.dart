@@ -1088,11 +1088,28 @@ class GameController {
 
   void _prepareRemoteSessionReset(NativeMillGameSession session) {
     gameResultNotifier.clearResult();
+    _dismissGameResultDialogIfOpen();
     gameRecorder = GameRecorder(lastPositionWithRemove: session.getFen());
     lastMoveFromAI = false;
     PlayerTimer().reset();
     OfflineBoardClock().reset();
     _resetGameTiming();
+  }
+
+  /// Pops a lingering [GameResultAlertDialog] after remote session reset.
+  ///
+  /// The dialog is shown with `useRootNavigator: true`. Approving a remote
+  /// restart only dismisses the approval dialog, so the result route must be
+  /// cleared explicitly or it stays under the resumed board.
+  void _dismissGameResultDialogIfOpen() {
+    const String routeName = 'sanmill.gameResultAlert';
+    final NavigatorState? navigator = currentNavigatorKey.currentState;
+    if (navigator == null) {
+      return;
+    }
+    navigator.popUntil((Route<dynamic> route) {
+      return route.settings.name != routeName;
+    });
   }
 
   void _onRemoteSessionStateChanged(NativeMillGameSession session) {

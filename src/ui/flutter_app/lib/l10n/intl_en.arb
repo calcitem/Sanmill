@@ -7034,5 +7034,9 @@
     "takeBackRequestSentWaitingForOpponentResponse": "Take-back request sent. Waiting for your opponent's response…",
     "@takeBackRequestSentWaitingForOpponentResponse": {
         "description": "Status shown while waiting for the opponent to answer a take-back request"
+    },
+    "bluetoothConnectionTimedOut": "Bluetooth connection timed out. Keep both phones nearby with the host still waiting, then try again.",
+    "@bluetoothConnectionTimedOut": {
+        "description": "Shown when a BLE GATT connect times out (e.g. Android status 147)"
     }
 }

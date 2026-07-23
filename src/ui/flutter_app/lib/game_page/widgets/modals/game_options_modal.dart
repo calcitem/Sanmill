@@ -77,26 +77,32 @@ class GameOptionsModal extends StatelessWidget {
   }
 
   static void startNewGame(BuildContext context) {
-    GameController().reset(force: true);
+    final GameController controller = GameController();
+    // Bluetooth / LAN / cloud matches must negotiate a restart with the peer.
+    // Local reset(force) disposes the remote transport and looks like a
+    // unilateral disconnect ("远程连接失败") on the other phone.
+    if (controller.isRemoteGameMode && controller.isRemoteConnected) {
+      controller.requestRestart();
+      return;
+    }
 
-    GameController().headerTipNotifier.showTip(S.of(context).gameStarted);
-    GameController().headerIconsNotifier.showIcons();
+    controller.reset(force: true);
+
+    controller.headerTipNotifier.showTip(S.of(context).gameStarted);
+    controller.headerIconsNotifier.showIcons();
 
     logger.i(
       "$_logTag after reset: isAiSideToMove="
-      "${GameController().gameInstance.isAiSideToMove}",
+      "${controller.gameInstance.isAiSideToMove}",
     );
 
-    if (GameController().gameInstance.isAiSideToMove) {
+    if (controller.gameInstance.isAiSideToMove) {
       logger.i("$_logTag New game, AI to move; calling engineToGo");
 
-      GameController().engineToGo(context, isMoveNow: false);
+      controller.engineToGo(context, isMoveNow: false);
 
-      if (GameController().gameInstance.gameMode == GameMode.aiVsAi) {
-        GameController().headerTipNotifier.showTip(
-          millScoreString,
-          snackBar: false,
-        );
+      if (controller.gameInstance.gameMode == GameMode.aiVsAi) {
+        controller.headerTipNotifier.showTip(millScoreString, snackBar: false);
       } else {
         final String side = _sideToMoveName(context);
 
@@ -135,15 +141,25 @@ class GameOptionsModal extends StatelessWidget {
     BuildContext context, {
     bool closeCurrentRoute = false,
   }) async {
-    GameController().loadedGameFilenamePrefix = null;
+    final GameController controller = GameController();
+    controller.loadedGameFilenamePrefix = null;
 
     logger.i(
       "$_logTag New Game pressed: "
-      "gameMode=${GameController().gameInstance.gameMode}, "
+      "gameMode=${controller.gameInstance.gameMode}, "
       "canStart=${canStartNewGame()}, "
-      "isEngineRunning=${GameController().isEngineRunning}, "
-      "snapshot=${GameController().activeSessionSnapshot != null}",
+      "isEngineRunning=${controller.isEngineRunning}, "
+      "snapshot=${controller.activeSessionSnapshot != null}",
     );
+
+    // Remote matches: always ask the peer; never local-reset mid-session.
+    if (controller.isRemoteGameMode && controller.isRemoteConnected) {
+      startNewGame(context);
+      if (closeCurrentRoute && context.mounted) {
+        Navigator.of(context).pop();
+      }
+      return;
+    }
 
     if (canStartNewGame()) {
       startNewGame(context);

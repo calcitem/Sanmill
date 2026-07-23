@@ -179,6 +179,13 @@ class BluetoothTransport
       'device=${RemoteLogContext.shortId(endpoint.id)}',
     );
     try {
+      // Android often returns GATT status 147 (connection timeout) if a prior
+      // scan left the radio busy. Always stop scanning before connecting.
+      try {
+        await adapter.stopScan();
+      } on Object {
+        // Ignore when no scan is active.
+      }
       await adapter.connect(endpoint.id);
       _activeDeviceId = endpoint.id;
       await adapter.subscribe(
