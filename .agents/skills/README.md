@@ -8,7 +8,7 @@ frontmatter when a task matches its description.
 
 | Directory | Skill | Purpose |
 | --- | --- | --- |
-| `arb-translation-updater/` | ARB Translation Updater | Batch-update Flutter ARB translations when new English and Chinese keys are added. |
+| `arb-translation-updater/` | ARB Translation Updater | Choose en/zh-only or all-locale ARB updates from en/de/hu/zh tail alignment. |
 | `cpp-formatter/` | C++ Code Formatter | Format or check the remaining C++ code with the repository conventions. |
 | `engine-performance-audit/` | engine-performance-audit | Find Rust/TGF engine performance regressions and hotspots. |
 | `flutter-test-runner/` | Flutter Test Runner | Run Sanmill unit, widget, and integration tests. |

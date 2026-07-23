@@ -1,24 +1,52 @@
 ---
-name: "ARB Translation Updater"
-description: "Batch update ARB translation files across all languages when new translation keys are added to English and Chinese files; use when adding new i18n strings to the Flutter app."
+name: "arb-translation-updater"
+description: "Update Flutter ARB translations after checking the final message keys in English, German, Hungarian, and Chinese; use when adding new i18n strings, limiting changes to English and Chinese when those reference tails differ and otherwise synchronizing all locales by default."
 ---
 
 # ARB Translation Updater
 
 ## Purpose
 
-This skill helps batch update all language ARB (Application Resource Bundle) files when new translation entries are added to the base languages (English and Chinese). It automates the process of translating and distributing new entries across 60+ language files.
+This skill adds new ARB (Application Resource Bundle) entries with a scope chosen from the current synchronization state. It first compares the final message keys in English, German, Hungarian, and Chinese. If those keys differ, it updates only English and Chinese; if they match, it updates all locales unless the user explicitly requests another scope.
 
 ## Use Cases
 
-- Add new translation keys to all language files
-- Keep all ARB files synchronized with English (en) and Chinese (zh) base files
+- Add new translation keys to English and Chinese while locale tails are not synchronized
+- Batch update all language files once the reference locale tails are synchronized
 - Batch translate new UI strings for the Flutter app
-- Maintain consistency across all localization files
+- Avoid widening an existing locale synchronization gap
 
 ## **CRITICAL RULES** ⚠️
 
-### Rule 1: New Strings MUST Be Added at the END of ARB Files
+### Rule 1: Check Reference Tail Alignment Before Editing
+
+**ALWAYS run the tail-alignment check before adding a new key. Do not infer
+alignment from a git diff or from only English and Chinese.**
+
+From the repository root, run:
+
+```bash
+python .agents/skills/arb-translation-updater/scripts/check_arb_tail_alignment.py
+```
+
+The script parses `intl_en.arb`, `intl_de.arb`, `intl_hu.arb`, and
+`intl_zh.arb` in file order. For each file, it selects the last top-level key
+that does not start with `@`; metadata keys such as `@messageKey` and ARB
+attributes such as `@@locale` do not count as localization strings.
+
+Use the reported result as a scope gate:
+
+- `tail_alignment=mismatched`: The locale set is not currently unified. Add
+  each new string only to the ends of `intl_en.arb` and `intl_zh.arb`. Do not
+  create `new-items.txt`, run the batch updater, or modify any other ARB file.
+- `tail_alignment=aligned`: Unless the user explicitly requests a different
+  scope, follow the full synchronization workflow and add each new string to
+  every `intl_*.arb` file.
+
+Apply the gate before any edits so the newly added keys cannot change the
+decision.
+
+### Rule 2: New Strings MUST Be Added at the END of ARB Files
 
 **ALWAYS add new translation entries at the very end of each ARB file, just before the closing `}`.**
 
@@ -39,9 +67,11 @@ This skill helps batch update all language ARB (Application Resource Bundle) fil
 }
 ```
 
-### Rule 2: All Metadata Descriptions MUST Be in English
+### Rule 3: Keep Metadata Descriptions in English
 
-**ALL ARB files (including non-English languages) must have metadata descriptions written in English.**
+**When ARB metadata includes descriptions, write them in English in every
+locale. Preserve required placeholder metadata; use an empty object only when
+the entry does not need metadata.**
 
 - ✅ CORRECT: `"@perfectDatabaseChallengeHint": {"description": "Hint to enable perfect database for greater challenge", ...}`
 - ❌ WRONG: `"@perfectDatabaseChallengeHint": {"description": "启用完美数据库以获得更大挑战的提示", ...}` (in `intl_zh.arb`)
@@ -53,7 +83,7 @@ This applies to:
 
 **Rationale:** Flutter's ARB format specification requires metadata to be in English for tooling compatibility and consistency across all locales.
 
-### Rule 3: ALWAYS Check for Existing Entries Before Adding
+### Rule 4: ALWAYS Check for Existing Entries Before Adding
 
 **Before adding new translations, ALWAYS check if the key already exists in the ARB files.**
 
@@ -84,7 +114,7 @@ done
 - Don't assume keys need to be added just because the task mentions them
 - Verify the current state of ARB files before running update scripts
 
-### Rule 4: MUST Use 4-Space Indentation
+### Rule 5: MUST Use 4-Space Indentation
 
 **ALL ARB files MUST use 4-space indentation, NOT 2-space or tabs.**
 
@@ -135,16 +165,36 @@ done
 ## Workflow Overview
 
 ```
-1. Use git to identify new entries in intl_en.arb (and intl_zh.arb if available)
-2. Generate translations for all 59 other languages
-3. Create new-items.txt with all translations
-4. Run update_arb_files.sh to apply changes
-5. Validate JSON format of updated files
+1. Check the final message keys in intl_en/de/hu/zh.arb
+2. Choose the update scope before editing:
+   - mismatched tails: English and Chinese only
+   - aligned tails: all locales by default
+3. Use git to identify or verify the new English and Chinese entries
+4. In all-locale mode, generate translations and run update_arb_files.sh
+5. Validate JSON and verify that only the selected scope changed
 ```
 
 ## Step-by-Step Process
 
-### Step 1: Identify New Entries Using Git
+### Step 1: Check Tail Alignment and Lock the Scope
+
+Run the preflight from the repository root:
+
+```bash
+python .agents/skills/arb-translation-updater/scripts/check_arb_tail_alignment.py
+```
+
+Record `default_scope` before editing:
+
+- For `default_scope=en,zh`, append the new message and its metadata only to
+  `intl_en.arb` and `intl_zh.arb`, then skip directly to validation.
+- For `default_scope=all-locales`, use the existing batch translation flow
+  unless the user explicitly requested another scope.
+
+Do not re-run the check after adding the new keys to decide whether to widen
+the same update.
+
+### Step 2: Identify New Entries Using Git
 
 **Use git to see what was recently added** (most reliable method):
 
@@ -172,14 +222,19 @@ git diff intl_zh.arb
 - Look for newly added key-value pairs
 - Note both the key and its metadata (lines starting with `@`)
 - Each translation typically has 2 lines: `"key": "value"` and `"@key": {}`
-- **IMPORTANT**: All metadata objects must be empty `{}` - NO `description` field in any language file (including English and Chinese)
+- Preserve any required descriptions and placeholder metadata. Descriptions
+  must remain in English.
 
 **Priority:**
-1. If both `intl_en.arb` and `intl_zh.arb` have new entries → use both as translation reference
-2. If only `intl_en.arb` has new entries → translate from English only
-3. Chinese translation is optional; English is the primary source
+1. Add or verify the new entry in both `intl_en.arb` and `intl_zh.arb`.
+2. Use English as the primary semantic source and Chinese as a secondary
+   translation reference.
+3. Widen the update to other locales only when Step 1 selected all-locale
+   mode.
 
-### Step 2: Determine Which Languages Need Updates
+### Step 3: Determine Which Languages Need Updates
+
+Run this step only in all-locale mode.
 
 Check if the new keys exist in other language files:
 
@@ -198,7 +253,9 @@ for file in intl_*.arb; do
 done
 ```
 
-### Step 3: Generate Translations for All Languages
+### Step 4: Generate Translations for All Languages
+
+Run this step only in all-locale mode.
 
 Create translations for all required languages. Each ARB file needs:
 - Translation appropriate to the language
@@ -211,7 +268,9 @@ Create translations for all required languages. Each ARB file needs:
 - Middle Eastern: ar, fa, he, ur, hy, az, uz, tr
 - African: am, sw, zu, af
 
-### Step 4: Create new-items.txt
+### Step 5: Create new-items.txt
+
+Run this step only in all-locale mode.
 
 The `update_arb_files.sh` script reads from `new-items.txt` with this format:
 
@@ -258,7 +317,9 @@ The `update_arb_files.sh` script reads from `new-items.txt` with this format:
     "@stopPlacing_Detail": {}
 ```
 
-### Step 5: Run Update Script
+### Step 6: Run Update Script
+
+Run this step only in all-locale mode.
 
 Execute the update script to apply all translations:
 
@@ -275,19 +336,11 @@ cd src/ui/flutter_app/lib/l10n
 # - Maintain proper JSON formatting
 ```
 
-### Step 6: Validate Results
+### Step 7: Validate Results
 
 Verify that all files were updated correctly:
 
 ```bash
-# Check how many files contain the new key
-grep -l "stopPlacing" intl_*.arb | wc -l
-# Should return 63 (all language files including en and zh)
-
-# Count total arb files
-ls -1 intl_*.arb | wc -l
-# Should return 63
-
 # Validate JSON format of all files
 for file in intl_*.arb; do
   if ! python3 -m json.tool "$file" > /dev/null 2>&1; then
@@ -296,7 +349,21 @@ for file in intl_*.arb; do
 done
 echo "✅ JSON validation complete"
 
-# Spot check a few languages
+# Verify which ARB files changed
+git diff --name-only -- intl_*.arb
+```
+
+For `default_scope=en,zh`, the changed ARB list must contain only
+`intl_en.arb` and `intl_zh.arb`, and the new key must appear in both.
+
+For `default_scope=all-locales`, compare the key count with the ARB file
+count:
+
+```bash
+grep -l "stopPlacing" intl_*.arb | wc -l
+ls -1 intl_*.arb | wc -l
+
+# Spot check several translated locales
 tail -6 intl_ja.arb   # Japanese
 tail -6 intl_fr.arb   # French
 tail -6 intl_ru.arb   # Russian
@@ -366,154 +433,26 @@ When translating Mill game terms, consider:
 - Watch for gender agreement (de, fr, es, it)
 - Plural forms vary by language
 
-## Common Issues & Solutions
-
-### Issue: Not sure what was added recently
-
-**Solution:**
-```bash
-# Use git to see the actual changes
-git log -p --since="1 week ago" -- intl_en.arb
-
-# Compare with current HEAD
-git diff HEAD intl_en.arb
-
-# See only added lines
-git diff HEAD intl_en.arb | grep "^+[^+]"
-```
-
-### Issue: Chinese file doesn't have the new keys
-
-**Solution:**
-- This is normal and expected
-- Translate from English only
-- Chinese translations can be added separately later
-
-### Issue: Script doesn't update files
-
-**Solution:**
-- Check `new-items.txt` exists in l10n directory
-- Verify file format (comment lines start with `//`)
-- Ensure proper indentation (2 spaces)
-- Make sure you're NOT including intl_en.arb or intl_zh.arb in new-items.txt
-
-### Issue: JSON validation fails
-
-**Cause:** Trailing comma or malformed JSON
-
-**Solution:**
-```bash
-# Find the problematic file
-for file in intl_*.arb; do
-  python3 -m json.tool "$file" > /dev/null 2>&1 || echo "Error: $file"
-done
-
-# Manually fix JSON or re-run script
-```
-
-### Issue: Some languages missing translations
-
-**Check:**
-```bash
-# Verify all locales are in new-items.txt
-grep "^//" new-items.txt | wc -l
-# Should be around 59-61 (excluding en and zh base files)
-
-# List which files are included
-grep "^//" new-items.txt
-```
-
-### Issue: Translations are just English text
-
-**Problem:** Not properly translated, just English copied
-
-**Solution:** Regenerate translations ensuring each language gets proper localization
-
-### Issue: Metadata contains description field
-
-**Problem:** ARB files have `"@key": {"description": "..."}` instead of `"@key": {}`
-
-**Solution:**
-```python
-# Fix all ARB files to have empty metadata objects
-import json
-
-for locale in ['en', 'zh', 'ja', 'fr', ...]:  # all locales
-    file_path = f'intl_{locale}.arb'
-    with open(file_path, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-
-    # Remove description from all @ keys
-    for key in list(data.keys()):
-        if key.startswith('@'):
-            data[key] = {}
-
-    with open(file_path, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=4, ensure_ascii=False)
-        f.write('\n')
-```
-
-**Important:**
-- ALL language files (including `intl_en.arb` and `intl_zh.arb`) must have empty metadata objects `{}`
-- NEVER add `description` or any other fields to metadata
-- This applies to both base language files and all translations
-
 ## Best Practices
 
-1. **Use git to identify changes**
-   - `git diff` is more reliable than `tail`
-   - Shows exactly what was added/modified
-   - Avoids guessing from file endings
-
-2. **English is the primary source**
-   - Always check `intl_en.arb` for new entries
-   - Chinese (`intl_zh.arb`) is optional reference
-   - Don't wait for Chinese translations
-
-3. **Use consistent terminology**
-   - Refer to existing translations for game terms
-   - Maintain consistent voice and style
-   - Check similar keys in same file
-
-4. **Test after updating**
-   - Run Flutter app with different locales
-   - Verify text displays correctly
-   - Check for UI overflow issues
-
-5. **Version control**
-   - Commit base language changes separately first
-   - Commit batch translations in one commit
-   - Use clear commit messages: `i18n: Add translations for [feature]`
-
-6. **Quality over speed**
-   - Use professional translation services or AI for accuracy
-   - Review machine translations for context
-   - Consider cultural appropriateness
-
-## File Locations
-
-```
-src/ui/flutter_app/lib/l10n/
-├── intl_en.arb          # English (primary base)
-├── intl_zh.arb          # Chinese Simplified (optional reference)
-├── intl_zh_Hant.arb     # Chinese Traditional
-├── intl_*.arb           # 60 other language files
-├── new-items.txt        # Temporary: new translations to add
-├── update_arb_files.sh  # Main update script
-├── append.sh            # Helper script
-├── append-items.sh      # Helper script
-└── replace-locale.sh    # Helper script
-```
+1. Run the tail check before edits and retain its selected scope.
+2. Treat English as the primary semantic source and Chinese as the required
+   secondary base translation.
+3. Reuse established Mill terminology from nearby keys.
+4. Review machine translations for context and cultural appropriateness.
+5. Test changed locales for rendering, overflow, and localization generation.
 
 ## Verification Checklist
 
 After running the update process:
 
+- [ ] Ran the en/de/hu/zh tail check before editing
+- [ ] Preserved the selected en/zh-only or all-locale scope
 - [ ] Used git to identify what was actually added
 - [ ] All required ARB files contain the new keys
 - [ ] All JSON files validate successfully
-- [ ] Translations are in correct languages (not English placeholders)
-- [ ] Spot-checked 5+ languages for quality
+- [ ] In all-locale mode, translations are not English placeholders
+- [ ] In all-locale mode, spot-checked 5+ languages for quality
 - [ ] No trailing commas or syntax errors
 - [ ] Flutter app builds without i18n errors
 - [ ] UI displays correctly in different locales
@@ -521,118 +460,24 @@ After running the update process:
 ## Example: Complete Workflow
 
 ```bash
-# 1. Navigate to l10n directory
+# 1. From the repository root, decide scope before editing
+python .agents/skills/arb-translation-updater/scripts/check_arb_tail_alignment.py
+
+# 2. Append the new entry to both base files
+# src/ui/flutter_app/lib/l10n/intl_en.arb
+# src/ui/flutter_app/lib/l10n/intl_zh.arb
+
+# 3a. If default_scope=en,zh, do not touch another ARB file
+git diff --name-only -- src/ui/flutter_app/lib/l10n/intl_*.arb
+
+# 3b. If default_scope=all-locales, create new-items.txt and batch update
 cd src/ui/flutter_app/lib/l10n
-
-# 2. Use git to identify what's new
-git diff HEAD~1 intl_en.arb
-# OR if uncommitted:
-git diff intl_en.arb
-
-# Output shows:
-# +"newFeature": "Stop placing when empty",
-# +"@newFeature": {},
-# +"newFeature_Detail": "Detailed explanation...",
-# +"@newFeature_Detail": {}
-
-# 3. Check if Chinese also has these (optional)
-git diff HEAD~1 intl_zh.arb
-# If not found, proceed with English only
-
-# 4. Extract the new keys
-# newFeature
-# newFeature_Detail
-
-# 5. Generate translations for all languages
-# (Use AI or translation service to create new-items.txt)
-# Remember: do NOT include intl_en.arb or intl_zh.arb
-
-# 6. Verify new-items.txt format
-head -30 new-items.txt
-# Should start with: // intl_af.arb or similar (NOT intl_en.arb)
-
-# 7. Run update script
 ./update_arb_files.sh
 
-# 8. Validate results
-grep -l "newFeature" intl_*.arb | wc -l
-# Output: 63 ✓ (all files including en and zh)
-
-# 9. Validate JSON
+# 4. Validate JSON and the selected scope
 for file in intl_*.arb; do
   python3 -m json.tool "$file" > /dev/null 2>&1 || echo "Error: $file"
 done
-echo "✅ All files valid"
-
-# 10. Spot check translations
-tail -8 intl_ja.arb
-tail -8 intl_de.arb
-tail -8 intl_ar.arb
-
-# 11. Verify with git
-git diff intl_ja.arb
-git diff intl_de.arb
-
-# 12. Clean up
-rm new-items.txt  # Optional: keep for reference
-
-# 13. Commit changes
-# Navigate to project root directory
-git add src/ui/flutter_app/lib/l10n/intl_*.arb
-git commit -m "i18n: Add translations for new feature across all languages"
-```
-
-## Advanced: Automated Translation Generation
-
-When using AI to generate all translations:
-
-**Important:** Translate from English, optionally reference Chinese
-
-```markdown
-# Prompt template for AI translation:
-
-Translate the following Mill game UI strings from English to all these languages:
-[List of target languages]
-
-English source:
-"newFeature": "Stop placing when only two empty squares remain"
-"newFeature_Detail": "When enabled, the placing phase ends and moving phase begins when the board has only 2 empty spaces left, regardless of pieces in hand. This rule only applies to 12-piece games."
-
-Optional Chinese reference (if available):
-"newFeature": "棋盘只剩两个空位时停止放子"
-"newFeature_Detail": "启用后，当棋盘只剩2个空位时，无论手中是否还有棋子，放子阶段都会结束并进入走子阶段。此规则仅适用于12子棋。"
-
-Context:
-- This is for a Mill board game app (Nine Men's Morris)
-- "newFeature" is a short settings label
-- "newFeature_Detail" is a detailed description shown in settings
-
-Please provide natural, fluent translations for each language.
-Format as new-items.txt (do NOT include English or Chinese).
-```
-
-Then format the response into new-items.txt format.
-
-## Quick Reference Commands
-
-```bash
-# See what was added to English ARB
-git diff HEAD~1 intl_en.arb | grep "^+"
-
-# Check if all files have a key
-grep -l "keyName" intl_*.arb | wc -l
-
-# Validate all JSON files
-for f in intl_*.arb; do python3 -m json.tool "$f" >/dev/null 2>&1 || echo "Bad: $f"; done
-
-# Count languages in new-items.txt
-grep "^//" new-items.txt | wc -l
-
-# Update all ARB files
-./update_arb_files.sh
-
-# View recent ARB commits
-git log --oneline --follow -10 intl_en.arb
 ```
 
 ## Reference Resources
