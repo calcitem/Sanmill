@@ -307,6 +307,43 @@ void main() {
     expect(find.byKey(const Key('test_online_board')), findsOneWidget);
     expect(find.text('Opponent joined.'), findsNothing);
   });
+
+  testWidgets('leaving a restored disconnected match prevents another resume', (
+    WidgetTester tester,
+  ) async {
+    final OnlineRoomSession session = _waitingSession(status: 'active');
+    final _MemorySessionStore store = _MemorySessionStore(session);
+    final _TestRegistration registration = _TestRegistration();
+    await tester.pumpWidget(
+      _testApp(
+        api: _UnusedApi(),
+        registration: registration,
+        sessionStore: store,
+        socketFactory: () => _WelcomeSocket(session, opponentConnected: false),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+
+    expect(find.textContaining('Opponent disconnected'), findsOneWidget);
+    expect(find.widgetWithText(TextButton, 'Leave game'), findsOneWidget);
+
+    await tester.tap(find.widgetWithText(TextButton, 'Leave game'));
+    await tester.pumpAndSettle();
+
+    expect(store.deleted, isTrue);
+    expect(store.value, isNull);
+    expect(registration._coordinator, isNull);
+    expect(find.byKey(const Key('online_create_game')), findsOneWidget);
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump();
+    await tester.pumpWidget(_testApp(api: _UnusedApi(), sessionStore: store));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Synchronizing the game…'), findsNothing);
+    expect(find.byKey(const Key('online_create_game')), findsOneWidget);
+  });
 }
 
 Widget _testApp({
@@ -492,9 +529,11 @@ OnlineRoomSession _waitingSession({String status = 'waiting'}) {
 }
 
 class _WelcomeSocket implements OnlineSocketClient {
-  _WelcomeSocket(this.session);
+  _WelcomeSocket(this.session, {bool? opponentConnected})
+    : opponentConnected = opponentConnected ?? session.room.isActive;
 
   final OnlineRoomSession session;
+  final bool opponentConnected;
   final StreamController<OnlineSocketEvent> _events =
       StreamController<OnlineSocketEvent>.broadcast(sync: true);
   bool _connected = false;
@@ -517,7 +556,7 @@ class _WelcomeSocket implements OnlineSocketClient {
           'pendingControl': null,
           'room': session.room.toJson(),
           'seat': 'first',
-          'opponentConnected': session.room.isActive,
+          'opponentConnected': opponentConnected,
           'snapshot': session.snapshot.toJson(),
         }),
       );
@@ -542,7 +581,27 @@ class _WelcomeSocket implements OnlineSocketClient {
   }
 
   @override
-  void send(Map<String, Object?> message) {}
+  void send(Map<String, Object?> message) {
+    if (message['type'] != 'leave') {
+      return;
+    }
+    scheduleMicrotask(() {
+      _events.add(
+        OnlineSocketMessage(<String, Object?>{
+          'type': 'state',
+          'seq': 1,
+          'status': 'ended',
+          'commandId': message['commandId'],
+          'snapshot': <String, Object?>{
+            'revision': 1,
+            'initialFen': session.snapshot.initialFen,
+            'actions': const <String>[],
+            'resultFen': session.snapshot.resultFen,
+          },
+        }),
+      );
+    });
+  }
 
   @override
   Future<void> close() async {

@@ -1700,6 +1700,17 @@ class GameController {
     boardSemanticsNotifier.updateSemantics();
   }
 
+  Future<void> leaveRemoteMatch() async {
+    final RemoteMatchController? coordinator = remoteCoordinator;
+    if (coordinator == null) {
+      return;
+    }
+    await coordinator.leave();
+    if (identical(remoteCoordinator, coordinator)) {
+      await disposeRemoteMatch();
+    }
+  }
+
   void refreshRemoteTurn({bool showTip = true, bool snackBar = false}) {
     if (!isRemoteGameMode) {
       return;

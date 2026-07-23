@@ -587,15 +587,17 @@ class CloudMatchCoordinator implements RemoteMatchController {
 
   @override
   Future<void> leave() async {
-    if (_disposed) {
+    if (_disposed || _ending) {
       return;
     }
+    await sessionStore.delete();
+    Future<bool>? remoteLeave;
     if (socket.isConnected && !_ending) {
-      await _sendCommand('leave', const <String, Object?>{});
+      remoteLeave = _sendCommand('leave', const <String, Object?>{});
     }
     _ending = true;
+    await remoteLeave;
     await game.abandon();
-    await sessionStore.delete();
   }
 
   Future<bool> _sendCommand(

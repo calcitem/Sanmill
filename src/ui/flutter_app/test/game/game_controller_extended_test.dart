@@ -12,6 +12,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/remote_play/remote_match_controller.dart';
+import 'package:sanmill/remote_play/remote_models.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 import 'package:sanmill/shared/widgets/snackbars/scaffold_messenger.dart';
@@ -276,13 +277,51 @@ void main() {
       },
     );
   });
+
+  group('GameController.leaveRemoteMatch', () {
+    test('leaves and disposes the active remote coordinator', () async {
+      final GameController controller = GameController();
+      final RemoteMatchController? previousCoordinator =
+          controller.remoteCoordinator;
+      final _ResignOnlyRemoteController coordinator =
+          _ResignOnlyRemoteController();
+      controller.remoteCoordinator = coordinator;
+      addTearDown(() => controller.remoteCoordinator = previousCoordinator);
+
+      await controller.leaveRemoteMatch();
+
+      expect(coordinator.leaveCalls, 1);
+      expect(coordinator.disposeCalls, 1);
+      expect(controller.remoteCoordinator, isNull);
+    });
+  });
 }
 
 class _ResignOnlyRemoteController implements RemoteMatchController {
   int resignCalls = 0;
+  int leaveCalls = 0;
+  int disposeCalls = 0;
+
+  @override
+  final ValueNotifier<RemoteConnectionState> stateNotifier =
+      ValueNotifier<RemoteConnectionState>(RemoteConnectionState.ready);
 
   @override
   bool get isConnected => true;
+
+  @override
+  Map<String, Object?> get diagnosticSnapshot => const <String, Object?>{};
+
+  @override
+  Future<void> dispose() async {
+    disposeCalls += 1;
+    stateNotifier.dispose();
+  }
+
+  @override
+  Future<void> leave() async {
+    leaveCalls += 1;
+  }
 
   @override
   Future<bool> resign() async {

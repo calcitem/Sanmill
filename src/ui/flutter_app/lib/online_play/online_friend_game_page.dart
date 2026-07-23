@@ -321,7 +321,7 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
         return;
       }
       _roomSession = coordinator.roomSession;
-      if (coordinator.isConnected) {
+      if (coordinator.roomSession.room.isActive) {
         setState(() => _stage = _OnlinePageStage.board);
       } else if (session.role == RemoteRole.host) {
         setState(() => _stage = _OnlinePageStage.waiting);
@@ -1293,13 +1293,11 @@ class _ConnectionOverlay extends StatelessWidget {
                         child: Text(s.onlineRetryConnection),
                       ),
                     ],
-                    if (failed || ended) ...<Widget>[
-                      const SizedBox(height: 8),
-                      TextButton(
-                        onPressed: onLeave,
-                        child: Text(s.onlineLeaveGame),
-                      ),
-                    ],
+                    const SizedBox(height: 8),
+                    TextButton(
+                      onPressed: onLeave,
+                      child: Text(s.onlineLeaveGame),
+                    ),
                   ],
                 ),
               ),

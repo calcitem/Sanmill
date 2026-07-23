@@ -640,6 +640,12 @@ class _GamePageInnerState extends State<_GamePageInner>
     if (!mounted) {
       return;
     }
+    if (widget.controller.isRemoteGameMode) {
+      await widget.controller.leaveRemoteMatch();
+      if (!mounted) {
+        return;
+      }
+    }
     if (_isOfflineBoardGame) {
       OfflineBoardClock().reset();
     }
@@ -656,7 +662,9 @@ class _GamePageInnerState extends State<_GamePageInner>
         return AlertDialog(
           key: const Key('game_page_leave_dialog'),
           title: Text(strings.leaveCurrentGame),
-          content: Text(strings.currentGameWillBeKept),
+          content: widget.controller.isRemoteGameMode
+              ? null
+              : Text(strings.currentGameWillBeKept),
           actions: <Widget>[
             TextButton(
               key: const Key('game_page_leave_cancel_button'),
