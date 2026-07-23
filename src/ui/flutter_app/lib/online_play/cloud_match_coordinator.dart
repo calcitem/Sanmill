@@ -122,6 +122,9 @@ class CloudMatchCoordinator implements RemoteMatchController {
     try {
       await _connectAndAwaitWelcome();
     } on OnlineApiException catch (error) {
+      if (_disposed) {
+        rethrow;
+      }
       if (isTerminalOnlineFailure(error.failure)) {
         await _handleTerminalApiFailure(error.failure);
       } else {
@@ -130,6 +133,9 @@ class CloudMatchCoordinator implements RemoteMatchController {
       }
       rethrow;
     } on Object catch (error, stackTrace) {
+      if (_disposed) {
+        throw const OnlineApiException(OnlineFailure.serviceUnavailable);
+      }
       _events.add(
         RemoteMatchFailure(_sanitizedDiagnosticError(error), stackTrace),
       );
@@ -671,7 +677,11 @@ class CloudMatchCoordinator implements RemoteMatchController {
       return;
     }
     _disposed = true;
+    final Completer<void>? welcome = _welcomeCompleter;
     _welcomeCompleter = null;
+    if (welcome != null && !welcome.isCompleted) {
+      welcome.completeError(StateError('Coordinator disposed before welcome.'));
+    }
     for (final _PendingCommand pending in _pendingCommands.values) {
       pending.timer.cancel();
       if (!pending.completer.isCompleted) {

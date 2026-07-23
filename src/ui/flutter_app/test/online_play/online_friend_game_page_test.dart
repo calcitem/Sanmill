@@ -244,6 +244,53 @@ void main() {
     expect(find.text('Proxy settings saved.'), findsOneWidget);
   });
 
+  testWidgets(
+    'proxy settings remain available while synchronizing and reconnect',
+    (WidgetTester tester) async {
+      final OnlineRoomSession session = _waitingSession(status: 'active');
+      final _MemoryProxyStore proxyStore = _MemoryProxyStore();
+      final List<OnlineSocketClient> sockets = <OnlineSocketClient>[
+        _SilentSocket(),
+        _WelcomeSocket(session),
+      ];
+      int socketIndex = 0;
+      await tester.pumpWidget(
+        _testApp(
+          api: _UnusedApi(),
+          sessionStore: _MemorySessionStore(session),
+          proxySettingsStore: proxyStore,
+          socketFactory: () => sockets[socketIndex++],
+        ),
+      );
+      await tester.pump();
+      await tester.pump();
+
+      expect(find.text('Synchronizing the game…'), findsOneWidget);
+      expect(find.byKey(const Key('online_proxy_settings')), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('online_proxy_settings')));
+      await tester.pump();
+      await tester.tap(find.byType(Switch));
+      await tester.pump();
+      await tester.enterText(
+        find.byKey(const Key('online_proxy_host')),
+        '192.168.1.79',
+      );
+      await tester.enterText(
+        find.byKey(const Key('online_proxy_port')),
+        '7890',
+      );
+      await tester.tap(find.widgetWithText(FilledButton, 'Save'));
+      await tester.pumpAndSettle();
+
+      expect(proxyStore.value?.enabled, isTrue);
+      expect(socketIndex, 2);
+      expect(find.byKey(const Key('test_online_board')), findsOneWidget);
+      expect(find.text('Opponent joined.'), findsNothing);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
   testWidgets('waiting page presents the invitation QR and cancellation', (
     WidgetTester tester,
   ) async {
@@ -270,6 +317,7 @@ void main() {
     expect(find.text('Share invite link'), findsOneWidget);
     expect(find.textContaining('Anyone with this link'), findsOneWidget);
     expect(find.text(session.inviteUri.toString()), findsOneWidget);
+    expect(find.byKey(const Key('online_proxy_settings')), findsOneWidget);
 
     final Finder cancel = find.widgetWithText(TextButton, 'Cancel');
     await tester.ensureVisible(cancel);
@@ -571,6 +619,32 @@ OnlineRoomSession _waitingSession({String status = 'waiting'}) {
     ),
     inviteUri: Uri.parse('https://online.example/invite/$roomId#$inviteToken'),
   );
+}
+
+class _SilentSocket implements OnlineSocketClient {
+  final StreamController<OnlineSocketEvent> _events =
+      StreamController<OnlineSocketEvent>.broadcast(sync: true);
+  bool _connected = false;
+
+  @override
+  Stream<OnlineSocketEvent> get events => _events.stream;
+
+  @override
+  bool get isConnected => _connected;
+
+  @override
+  Future<void> connect(Uri uri) async {
+    _connected = true;
+  }
+
+  @override
+  void send(Map<String, Object?> message) {}
+
+  @override
+  Future<void> close() async {
+    _connected = false;
+    await _events.close();
+  }
 }
 
 class _WelcomeSocket implements OnlineSocketClient {

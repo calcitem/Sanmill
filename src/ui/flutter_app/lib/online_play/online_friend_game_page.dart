@@ -70,6 +70,7 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
   OnlineRoomSession? _roomSession;
   OnlineFailure? _failure;
   String? _terminalStatus;
+  int _connectionAttempt = 0;
 
   @override
   void initState() {
@@ -294,6 +295,7 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
     OnlineRoomSession session, {
     bool resuming = false,
   }) async {
+    final int connectionAttempt = ++_connectionAttempt;
     unawaited(_matchSubscription?.cancel());
     _matchSubscription = null;
     final OnlineGameDefinition definition = widget.registration.definition;
@@ -316,7 +318,11 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
         );
     _coordinator = coordinator;
     _roomSession = session;
-    _matchSubscription = coordinator.events.listen(_handleMatchEvent);
+    _matchSubscription = coordinator.events.listen((RemoteMatchEvent event) {
+      if (identical(_coordinator, coordinator)) {
+        _handleMatchEvent(event);
+      }
+    });
     if (mounted) {
       setState(() {
         _pendingSavedSession = null;
@@ -330,7 +336,9 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
     }
     try {
       await coordinator.start(resuming: resuming);
-      if (!mounted) {
+      if (!mounted ||
+          connectionAttempt != _connectionAttempt ||
+          !identical(_coordinator, coordinator)) {
         return;
       }
       _roomSession = coordinator.roomSession;
@@ -340,8 +348,16 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
         setState(() => _stage = _OnlinePageStage.waiting);
       }
     } on OnlineApiException catch (error) {
+      if (connectionAttempt != _connectionAttempt ||
+          !identical(_coordinator, coordinator)) {
+        return;
+      }
       await _showConnectionFailure(error.failure, session);
     } on Object {
+      if (connectionAttempt != _connectionAttempt ||
+          !identical(_coordinator, coordinator)) {
+        return;
+      }
       _showSessionFailure(OnlineFailure.serviceUnavailable, session);
     }
   }
@@ -482,11 +498,35 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
       if (!mounted) {
         return;
       }
+      final OnlineRoomSession? reconnectSession = _roomSession;
+      if (reconnectSession != null) {
+        await _disposeCoordinator();
+        if (!mounted) {
+          return;
+        }
+      }
       _installTransport(settings);
-      setState(() => _failure = null);
+      setState(() {
+        _failure = null;
+        if (reconnectSession != null) {
+          _stage = _OnlinePageStage.synchronizing;
+        }
+      });
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(S.of(context).onlineProxySaved)));
+      if (reconnectSession != null) {
+        try {
+          await _connectSession(reconnectSession, resuming: true);
+        } on OnlineApiException catch (error) {
+          _showFailure(error.failure);
+        } on Object {
+          _showSessionFailure(
+            OnlineFailure.serviceUnavailable,
+            reconnectSession,
+          );
+        }
+      }
     } on Object {
       if (mounted) {
         setState(() => _failure = OnlineFailure.serviceUnavailable);
@@ -585,6 +625,7 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
   }
 
   Future<void> _disposeCoordinator({bool leave = false}) async {
+    _connectionAttempt += 1;
     final StreamSubscription<RemoteMatchEvent>? subscription =
         _matchSubscription;
     final CloudMatchCoordinator? coordinator = _coordinator;
@@ -606,6 +647,10 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
     }
     final S s = S.of(context);
     final bool canPop = Navigator.of(context).canPop();
+    final bool canConfigureProxy =
+        onlineProxySupported &&
+        (_stage == _OnlinePageStage.home ||
+            (_roomSession != null && _stage != _OnlinePageStage.board));
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -619,7 +664,7 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
             : null,
         title: Text(s.onlineFriendGame),
         actions: <Widget>[
-          if (_stage == _OnlinePageStage.home && onlineProxySupported)
+          if (canConfigureProxy)
             IconButton(
               key: const Key('online_proxy_settings'),
               tooltip: s.onlineProxySettings,
