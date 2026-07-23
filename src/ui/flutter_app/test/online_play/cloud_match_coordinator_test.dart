@@ -67,6 +67,64 @@ void main() {
     expect(game.snapshots.last.actions, const <String>['a7']);
   });
 
+  test(
+    'does not report the join handshake as an opponent disconnection',
+    () async {
+      final OnlineRoomSession session = _session(status: 'waiting');
+      final _FakeSocket socket = _FakeSocket();
+      socket.onConnect = () => socket.emit(_welcome(session));
+      final CloudMatchCoordinator coordinator = CloudMatchCoordinator(
+        definition: onlineMillGameDefinition,
+        session: session,
+        roomApi: _FakeApi(),
+        socket: socket,
+        game: _FakeGame(),
+        sessionStore: _MemoryStore(),
+      );
+      addTearDown(coordinator.dispose);
+      final List<RemoteOpponentConnectionChanged> connectionEvents =
+          <RemoteOpponentConnectionChanged>[];
+      final StreamSubscription<RemoteMatchEvent> subscription = coordinator
+          .events
+          .listen((RemoteMatchEvent event) {
+            if (event case final RemoteOpponentConnectionChanged connection) {
+              connectionEvents.add(connection);
+            }
+          });
+      addTearDown(subscription.cancel);
+
+      await coordinator.start();
+      socket.emit(<String, Object?>{
+        ..._stateEvent(
+          session,
+          type: 'opponentJoined',
+          status: 'active',
+          revision: 1,
+        ),
+        'connected': false,
+      });
+      await _flushEvents();
+
+      expect(coordinator.state, RemoteConnectionState.listening);
+      expect(connectionEvents, isEmpty);
+
+      socket.emit(<String, Object?>{
+        'type': 'opponentConnection',
+        'connected': true,
+        'seq': 1,
+      });
+      await _flushEvents();
+
+      expect(coordinator.state, RemoteConnectionState.ready);
+      expect(
+        connectionEvents.map((RemoteOpponentConnectionChanged event) {
+          return event.connected;
+        }),
+        const <bool>[true],
+      );
+    },
+  );
+
   test('rejects stale action and restores the server snapshot', () async {
     final OnlineRoomSession session = _session(status: 'active');
     final _FakeSocket socket = _FakeSocket();

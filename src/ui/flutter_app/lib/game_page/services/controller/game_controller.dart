@@ -1126,12 +1126,16 @@ class GameController {
           headerTipNotifier.showTip(S.of(context).opponentResignedYouWin);
         }
       case RemoteOpponentConnectionChanged():
-        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-        if (context != null && !event.connected) {
-          headerTipNotifier.showTip(
-            S.of(context).onlineOpponentDisconnected,
-            snackBar: false,
-          );
+        if (event.connected) {
+          refreshRemoteTurn();
+        } else {
+          final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+          if (context != null) {
+            headerTipNotifier.showTip(
+              S.of(context).onlineOpponentDisconnected,
+              snackBar: false,
+            );
+          }
         }
       case RemoteOpponentLeft():
         final BuildContext? context = rootScaffoldMessengerKey.currentContext;

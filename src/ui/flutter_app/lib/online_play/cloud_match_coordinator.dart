@@ -211,8 +211,9 @@ class CloudMatchCoordinator implements RemoteMatchController {
         final bool connected = message['connected'] == true;
         if (!connected) {
           _setState(RemoteConnectionState.listening);
+        } else {
+          _events.add(const RemoteOpponentConnectionChanged(connected: true));
         }
-        _events.add(RemoteOpponentConnectionChanged(connected: connected));
       case 'error':
         await _handleErrorMessage(message);
       case 'controlRequest':
