@@ -98,7 +98,7 @@ class GameController {
     _updateEngineActivityNotifier();
   }
 
-  BuildContext _stableDialogContext(BuildContext fallbackContext) {
+  BuildContext? get _controllerDialogContext {
     final BuildContext? overlayContext =
         currentNavigatorKey.currentState?.overlay?.context;
     if (overlayContext != null && overlayContext.mounted) {
@@ -111,6 +111,15 @@ class GameController {
         messengerContext.mounted &&
         Navigator.maybeOf(messengerContext) != null) {
       return messengerContext;
+    }
+
+    return null;
+  }
+
+  BuildContext _stableDialogContext(BuildContext fallbackContext) {
+    final BuildContext? dialogContext = _controllerDialogContext;
+    if (dialogContext != null) {
+      return dialogContext;
     }
 
     assert(
@@ -1203,7 +1212,7 @@ class GameController {
 
   Future<void> _approveRemotePeer(RemotePeerApprovalRequested event) async {
     final RemoteMatchController? coordinator = remoteCoordinator;
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    final BuildContext? context = _controllerDialogContext;
     if (coordinator is! RemoteMatchCoordinator) {
       return;
     }
@@ -1248,7 +1257,7 @@ class GameController {
     RemoteTakeBackApprovalRequested event,
   ) async {
     final RemoteMatchController? coordinator = remoteCoordinator;
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    final BuildContext? context = _controllerDialogContext;
     if (coordinator == null) {
       return;
     }
@@ -1290,7 +1299,7 @@ class GameController {
     RemoteRestartApprovalRequested event,
   ) async {
     final RemoteMatchController? coordinator = remoteCoordinator;
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    final BuildContext? context = _controllerDialogContext;
     if (coordinator == null) {
       return;
     }
@@ -1328,7 +1337,7 @@ class GameController {
   }
 
   Future<void> _showRemoteUpgradeRequired() async {
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    final BuildContext? context = _controllerDialogContext;
     if (context == null) {
       return;
     }

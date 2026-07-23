@@ -21,6 +21,7 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/remote_play/remote_match_controller.dart';
 import 'package:sanmill/remote_play/remote_models.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
+import 'package:sanmill/shared/config/constants.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 import 'package:sanmill/shared/widgets/snackbars/scaffold_messenger.dart';
@@ -362,6 +363,67 @@ void main() {
     });
   });
 
+  group('GameController remote approval dialogs', () {
+    testWidgets(
+      'shows an incoming takeback request through the root navigator',
+      (WidgetTester tester) async {
+        final GameController controller = GameController();
+        final GameMode previousMode = controller.gameInstance.gameMode;
+        final NativeMillGameSession session = NativeMillGameSession(
+          rulesPort: _HistoryRulesPort(),
+        );
+        final _ResignOnlyRemoteController coordinator =
+            _ResignOnlyRemoteController();
+
+        controller.bindActiveSession(session);
+        addTearDown(() async {
+          if (identical(controller.remoteCoordinator, coordinator)) {
+            await controller.disposeRemoteMatch();
+          }
+          controller.unbindActiveSession(session);
+          controller.gameInstance.gameMode = previousMode;
+          session.dispose();
+        });
+
+        await tester.pumpWidget(
+          MaterialApp(
+            navigatorKey: currentNavigatorKey,
+            scaffoldMessengerKey: rootScaffoldMessengerKey,
+            localizationsDelegates: sanmillLocalizationsDelegates,
+            supportedLocales: S.supportedLocales,
+            home: const Scaffold(body: SizedBox.shrink()),
+          ),
+        );
+
+        await controller
+            .createCloudRemoteController<_ResignOnlyRemoteController>(
+              (RemoteGameAdapter game) async => coordinator,
+              role: RemoteRole.host,
+            );
+
+        coordinator.emit(
+          const RemoteTakeBackApprovalRequested('takeback-request', 1),
+        );
+        await tester.pump();
+
+        expect(tester.takeException(), isNull);
+        expect(find.byType(AlertDialog), findsOneWidget);
+
+        final BuildContext dialogContext = tester.element(
+          find.byType(AlertDialog),
+        );
+        await tester.tap(find.text(S.of(dialogContext).no));
+        await tester.pumpAndSettle();
+
+        expect(coordinator.respondedTakeBackRequestId, 'takeback-request');
+        expect(coordinator.respondedTakeBackSteps, 1);
+        expect(coordinator.respondedTakeBackAccepted, isFalse);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+  });
+
   group('GameController.leaveRemoteMatch', () {
     test('leaves and disposes the active remote coordinator', () async {
       final GameController controller = GameController();
@@ -427,10 +489,21 @@ class _ResignOnlyRemoteController implements RemoteMatchController {
   int disposeCalls = 0;
   final List<int> takeBackRequests = <int>[];
   Completer<bool>? takeBackResult;
+  final StreamController<RemoteMatchEvent> _events =
+      StreamController<RemoteMatchEvent>.broadcast();
+  String? respondedTakeBackRequestId;
+  int? respondedTakeBackSteps;
+  bool? respondedTakeBackAccepted;
 
   @override
   final ValueNotifier<RemoteConnectionState> stateNotifier =
       ValueNotifier<RemoteConnectionState>(RemoteConnectionState.ready);
+
+  @override
+  Stream<RemoteMatchEvent> get events => _events.stream;
+
+  @override
+  RemoteConnectionState get state => stateNotifier.value;
 
   @override
   bool get isConnected => true;
@@ -441,7 +514,12 @@ class _ResignOnlyRemoteController implements RemoteMatchController {
   @override
   Future<void> dispose() async {
     disposeCalls += 1;
+    await _events.close();
     stateNotifier.dispose();
+  }
+
+  void emit(RemoteMatchEvent event) {
+    _events.add(event);
   }
 
   @override
@@ -455,6 +533,17 @@ class _ResignOnlyRemoteController implements RemoteMatchController {
     final Completer<bool> result = Completer<bool>();
     takeBackResult = result;
     return result.future;
+  }
+
+  @override
+  Future<void> respondToTakeBack({
+    required String requestId,
+    required int steps,
+    required bool accepted,
+  }) async {
+    respondedTakeBackRequestId = requestId;
+    respondedTakeBackSteps = steps;
+    respondedTakeBackAccepted = accepted;
   }
 
   @override
