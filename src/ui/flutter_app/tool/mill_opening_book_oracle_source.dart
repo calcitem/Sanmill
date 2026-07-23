@@ -1620,21 +1620,6 @@ nineMensMorrisCanonicalOpeningBook = <String, List<String>>{
   "****O*O@/O*@O@*O@/@***O*@* w p p 6 3 6 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes":
       <String>["e3"],
   /*
-    a7 -----  @ -----  @
-    |         |        |
-    |   @ --  O --  @  |
-    |  |      |     |  |
-    |  |   O-d5-e5  |  |
-     O- O-c4    e4- O-g4
-    |  |   O- O-e3  |  |
-    |  |      |     |  |
-    |   O --  @ -- f2  |
-    |         |        |
-    a1 -----  @ ----- g1
-  */
-  "****OO*O/O@O*@OO@/@@**@*O* b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes":
-      <String>["c3"],
-  /*
     a7 ----- d7 ----- g7
     |         |        |
     |   O --  O --  @  |
