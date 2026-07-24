@@ -57,6 +57,7 @@ import '../../generated/intl/l10n.dart';
 import '../../puzzle/models/rule_variant.dart';
 import '../../remote_play/bluetooth_transport.dart';
 import '../../remote_play/lan_transport.dart';
+import '../../remote_play/remote_error_message.dart';
 import '../../remote_play/remote_match_coordinator.dart';
 import '../../remote_play/remote_models.dart';
 import '../../remote_play/remote_peer_identity.dart';

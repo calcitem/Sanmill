@@ -588,6 +588,16 @@ class _GamePageInnerState extends State<_GamePageInner>
     };
   }
 
+  bool get _isActiveRemoteGame {
+    if (!widget.controller.isRemoteGameMode) {
+      return false;
+    }
+    final bool hasTerminalSnapshot =
+        widget.controller.activeSessionSnapshot?.outcome.isTerminal ?? false;
+    return !hasTerminalSnapshot &&
+        !widget.controller.gameResultNotifier.hasResult;
+  }
+
   Future<void> _showInitialHumanAiNewGameSheet() async {
     if (!mounted || _didShowInitialHumanAiNewGameSheet || !_isHumanAiGame) {
       return;
@@ -630,6 +640,13 @@ class _GamePageInnerState extends State<_GamePageInner>
     }
 
     if (!_isPlayGameRoute || !Navigator.canPop(context)) {
+      return;
+    }
+
+    // A live remote game is a dedicated surface. Leaving it must be an
+    // explicit in-game action (for example, resigning), not generic route
+    // navigation that could expose analysis or other features mid-game.
+    if (_isActiveRemoteGame) {
       return;
     }
 
@@ -996,21 +1013,34 @@ class _GamePageInnerState extends State<_GamePageInner>
 
   /// Builds the top-left back button when this route can pop.
   Widget _buildTopLeftButton(BuildContext context) {
-    if (Navigator.canPop(context)) {
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: IconButton(
-          key: const Key('game_page_back_button'),
-          style: IconButton.styleFrom(backgroundColor: Colors.transparent),
-          color: DB().colorSettings.messageColor,
-          icon: const Icon(Icons.arrow_back),
-          tooltip: S.of(context).back,
-          onPressed: () => unawaited(Navigator.of(context).maybePop()),
-        ),
-      );
-    }
+    return ListenableBuilder(
+      listenable: Listenable.merge(<Listenable>[
+        widget.controller.activeSessionSnapshotNotifier,
+        widget.controller.gameResultNotifier,
+      ]),
+      builder: (BuildContext context, Widget? child) {
+        if (_isActiveRemoteGame) {
+          return const SizedBox.shrink(
+            key: Key('game_page_active_remote_back_button_hidden'),
+          );
+        }
+        if (Navigator.canPop(context)) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              key: const Key('game_page_back_button'),
+              style: IconButton.styleFrom(backgroundColor: Colors.transparent),
+              color: DB().colorSettings.messageColor,
+              icon: const Icon(Icons.arrow_back),
+              tooltip: S.of(context).back,
+              onPressed: () => unawaited(Navigator.of(context).maybePop()),
+            ),
+          );
+        }
 
-    return const SizedBox.shrink();
+        return const SizedBox.shrink();
+      },
+    );
   }
 
   // Calculates the toolbar height based on display settings.

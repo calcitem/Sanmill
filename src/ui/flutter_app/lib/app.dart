@@ -28,6 +28,7 @@ import 'games/built_in_game_modules.dart';
 import 'games/mill/opening_book/opening_book_repository.dart';
 import 'general_settings/models/general_settings.dart';
 import 'generated/intl/l10n.dart';
+import 'online_play/online_deep_links.dart';
 import 'puzzle/services/puzzle_manager.dart';
 import 'shared/config/constants.dart';
 import 'shared/database/database.dart';
@@ -487,6 +488,11 @@ class SanmillAppState extends State<SanmillApp> {
   void _handleSharedFiles(List<SharedFile> files, {required bool isRunning}) {
     if (files.isNotEmpty && files.first.value != null) {
       final String filePath = files.first.value!;
+      final Uri? uri = Uri.tryParse(filePath);
+      if (uri != null && isPotentialOnlineInviteUri(uri)) {
+        OnlineDeepLinkController.instance.receive(uri);
+        return;
+      }
       // Show notification to user about the shared file path
       logger.i("Setup Sharing Intent: $filePath");
       // Load the game from the shared file

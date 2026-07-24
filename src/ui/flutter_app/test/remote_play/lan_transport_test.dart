@@ -250,4 +250,53 @@ void main() {
 
     expect((await data.timeout(const Duration(seconds: 2))).bytes, frame);
   });
+
+  test(
+    'failed reconnect attempts stay reconnecting without fatal failures',
+    () async {
+      final LanTransport host = LanTransport(
+        role: RemoteRole.host,
+        enableDiscoveryResponder: false,
+      );
+      final LanTransport client = LanTransport(role: RemoteRole.join);
+      addTearDown(host.close);
+      addTearDown(client.close);
+      final List<RemoteTransportEvent> clientEvents = <RemoteTransportEvent>[];
+      final StreamSubscription<RemoteTransportEvent> subscription = client
+          .events
+          .listen(clientEvents.add);
+      addTearDown(subscription.cancel);
+
+      await host.startHost(
+        const RemoteHostOptions(bindAddress: '127.0.0.1', port: 0),
+      );
+      await client.join(
+        RemoteEndpoint(
+          id: 'reconnect-loopback',
+          label: 'reconnect-loopback',
+          address: '127.0.0.1',
+          port: host.serverSocket!.port,
+        ),
+      );
+      await host.close();
+      await _waitForState(client, RemoteConnectionState.reconnecting);
+      clientEvents.clear();
+
+      await expectLater(client.reconnect(), throwsA(isA<SocketException>()));
+
+      expect(client.state, RemoteConnectionState.reconnecting);
+      expect(clientEvents.whereType<RemoteTransportFailure>(), isEmpty);
+    },
+  );
+}
+
+Future<void> _waitForState(
+  LanTransport transport,
+  RemoteConnectionState expected,
+) async {
+  final DateTime deadline = DateTime.now().add(const Duration(seconds: 2));
+  while (transport.state != expected && DateTime.now().isBefore(deadline)) {
+    await Future<void>.delayed(const Duration(milliseconds: 10));
+  }
+  expect(transport.state, expected);
 }

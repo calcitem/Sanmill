@@ -5,6 +5,31 @@ import 'dart:async';
 
 import 'package:app_links/app_links.dart';
 
+final RegExp _onlineInviteRoomPattern = RegExp(r'^[A-Za-z0-9_-]{22}$');
+final RegExp _onlineInviteTokenPattern = RegExp(r'^[A-Za-z0-9_-]{43}$');
+
+bool isPotentialOnlineInviteUri(Uri uri) {
+  if (uri.query.isNotEmpty || uri.userInfo.isNotEmpty) {
+    return false;
+  }
+  final bool isHttpsInvite =
+      uri.scheme == 'https' &&
+      uri.pathSegments.length == 2 &&
+      uri.pathSegments.first == 'invite';
+  final bool isAppInvite =
+      uri.scheme == 'sanmill' &&
+      uri.host == 'invite' &&
+      uri.pathSegments.length == 1;
+  if (!isHttpsInvite && !isAppInvite) {
+    return false;
+  }
+  final String roomId = isHttpsInvite
+      ? uri.pathSegments[1]
+      : uri.pathSegments.first;
+  return _onlineInviteRoomPattern.hasMatch(roomId) &&
+      _onlineInviteTokenPattern.hasMatch(uri.fragment);
+}
+
 class OnlineDeepLinkController {
   OnlineDeepLinkController._();
 
@@ -27,9 +52,13 @@ class OnlineDeepLinkController {
       return;
     }
     _subscription = AppLinks().uriLinkStream.listen((Uri uri) {
-      _pending = uri;
-      _links.add(uri);
+      receive(uri);
     });
+  }
+
+  void receive(Uri uri) {
+    _pending = uri;
+    _links.add(uri);
   }
 
   Uri? takePending() {

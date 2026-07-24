@@ -274,6 +274,20 @@ void main() {
     );
   });
 
+  test('graceful peer departure is reported as opponent leaving', () async {
+    final _ReadyPair pair = await _ReadyPair.create();
+    addTearDown(pair.dispose);
+    final Future<RemoteOpponentLeft> opponentLeft = pair.host.events
+        .where((RemoteMatchEvent event) => event is RemoteOpponentLeft)
+        .cast<RemoteOpponentLeft>()
+        .first;
+
+    await pair.join.dispose();
+
+    await opponentLeft.timeout(const Duration(seconds: 1));
+    expect(pair.host.state, RemoteConnectionState.ended);
+  });
+
   test('incoming control timeout closes the approval request', () async {
     final _ReadyPair pair = await _ReadyPair.create(
       controlRequestTimeout: const Duration(milliseconds: 30),

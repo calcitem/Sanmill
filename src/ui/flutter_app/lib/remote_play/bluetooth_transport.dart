@@ -162,6 +162,13 @@ class BluetoothTransport
 
   @override
   Future<void> join(RemoteEndpoint endpoint) async {
+    await _connect(endpoint, reconnecting: false);
+  }
+
+  Future<void> _connect(
+    RemoteEndpoint endpoint, {
+    required bool reconnecting,
+  }) async {
     DiagnosticReplayGuard.requireAllowed('Bluetooth connections');
     if (role != RemoteRole.join) {
       throw StateError('A host BLE transport cannot join.');
@@ -172,7 +179,11 @@ class BluetoothTransport
     _log.peerId = endpoint.id;
     _connectedEventSent = false;
     _payloadLength = safePayloadLength;
-    _setState(RemoteConnectionState.connecting);
+    _setState(
+      reconnecting
+          ? RemoteConnectionState.reconnecting
+          : RemoteConnectionState.connecting,
+    );
     _listenCentralConnectionEvents();
     _log.info(
       'REMOTE_BLE_CONNECT_START',
@@ -227,9 +238,14 @@ class BluetoothTransport
             'payload=$_payloadLength',
       );
     } on Object catch (error, stackTrace) {
-      _setState(RemoteConnectionState.error);
-      _emitFailure('REMOTE_BLE_CONNECT_FAILED', error, stackTrace);
       await _disconnectActive(expected: true);
+      if (reconnecting) {
+        _setState(RemoteConnectionState.reconnecting);
+        _log.warning('REMOTE_BLE_RECONNECT_FAILED', 'error=$error');
+      } else {
+        _setState(RemoteConnectionState.error);
+        _emitFailure('REMOTE_BLE_CONNECT_FAILED', error, stackTrace);
+      }
       rethrow;
     }
   }
@@ -399,7 +415,7 @@ class BluetoothTransport
       throw StateError('No previous BLE endpoint is available.');
     }
     await _disconnectActive(expected: true);
-    await join(endpoint);
+    await _connect(endpoint, reconnecting: true);
   }
 
   @override

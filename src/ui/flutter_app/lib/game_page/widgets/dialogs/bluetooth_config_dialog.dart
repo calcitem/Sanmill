@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import '../../../generated/intl/l10n.dart';
 import '../../../remote_play/bluetooth_adapter.dart';
 import '../../../remote_play/bluetooth_transport.dart';
+import '../../../remote_play/remote_error_message.dart';
 import '../../../remote_play/remote_match_coordinator.dart';
 import '../../../remote_play/remote_models.dart';
 import '../../../remote_play/remote_transport.dart';
@@ -96,9 +97,7 @@ class _BluetoothConfigDialogState extends State<BluetoothConfigDialog> {
         });
       case RemoteMatchFailure():
         setState(
-          () => _status = s.remoteConnectionFailed(
-            _describeRemoteError(context, event.error),
-          ),
+          () => _status = remoteConnectionFailureMessage(s, event.error),
         );
       case RemoteMatchAborted():
         setState(() {
@@ -130,7 +129,7 @@ class _BluetoothConfigDialogState extends State<BluetoothConfigDialog> {
         await GameController().startRemoteHost(
           coordinator: coordinator,
           hostPlaysWhite: _hostPlaysWhite,
-          advertisedLabel: 'Mill ${coordinator.localPeer.label}',
+          advertisedLabel: coordinator.localPeer.label,
         );
       } on Object {
         await _disposeCoordinator();
@@ -222,9 +221,7 @@ class _BluetoothConfigDialogState extends State<BluetoothConfigDialog> {
       );
       if (mounted) {
         setState(() {
-          _status = S
-              .of(context)
-              .remoteConnectionFailed(_describeRemoteError(context, error));
+          _status = remoteConnectionFailureMessage(S.of(context), error);
         });
       }
     } finally {
@@ -391,6 +388,7 @@ class _BluetoothConfigDialogState extends State<BluetoothConfigDialog> {
                             DropdownButtonFormField<RemoteEndpoint>(
                               key: const Key('bluetooth_device_selector'),
                               initialValue: _selectedDevice,
+                              isExpanded: true,
                               items: _devices
                                   .map(
                                     (
@@ -400,6 +398,8 @@ class _BluetoothConfigDialogState extends State<BluetoothConfigDialog> {
                                       child: Text(
                                         '${device.label}'
                                         '${device.metadata['rssi'] == null ? '' : '  ${device.metadata['rssi']} dBm'}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                   )
@@ -466,16 +466,4 @@ class _BluetoothConfigDialogState extends State<BluetoothConfigDialog> {
       ),
     );
   }
-}
-
-String _describeRemoteError(BuildContext context, Object error) {
-  final String raw = error.toString();
-  final String lower = raw.toLowerCase();
-  // Android 15+: BluetoothGatt.GATT_CONNECTION_TIMEOUT (0x93 / 147).
-  if (RegExp(r'\b147\b').hasMatch(raw) ||
-      lower.contains('gatt_connection_timeout') ||
-      (lower.contains('timeout') && lower.contains('connect'))) {
-    return S.of(context).bluetoothConnectionTimedOut;
-  }
-  return raw;
 }

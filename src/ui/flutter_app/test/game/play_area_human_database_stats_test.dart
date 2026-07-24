@@ -1429,11 +1429,27 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_human_ai_player_turn_indicator')),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_human_ai_robot_turn_indicator')),
       findsNothing,
+    );
+    expect(
+      tester
+          .widget<Opacity>(
+            find.byKey(const Key('play_area_human_ai_player_turn_opacity')),
+          )
+          .opacity,
+      1,
+    );
+    expect(
+      tester
+          .widget<Opacity>(
+            find.byKey(const Key('play_area_human_ai_robot_turn_opacity')),
+          )
+          .opacity,
+      0.8,
     );
     expect(
       tester
@@ -1688,11 +1704,27 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_human_ai_player_turn_indicator')),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_human_ai_robot_turn_indicator')),
       findsNothing,
+    );
+    expect(
+      tester
+          .widget<Opacity>(
+            find.byKey(const Key('play_area_human_ai_player_turn_opacity')),
+          )
+          .opacity,
+      1,
+    );
+    expect(
+      tester
+          .widget<Opacity>(
+            find.byKey(const Key('play_area_human_ai_robot_turn_opacity')),
+          )
+          .opacity,
+      0.8,
     );
 
     await session.apply(
@@ -1710,7 +1742,23 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_human_ai_robot_turn_indicator')),
-      findsOneWidget,
+      findsNothing,
+    );
+    expect(
+      tester
+          .widget<Opacity>(
+            find.byKey(const Key('play_area_human_ai_player_turn_opacity')),
+          )
+          .opacity,
+      0.8,
+    );
+    expect(
+      tester
+          .widget<Opacity>(
+            find.byKey(const Key('play_area_human_ai_robot_turn_opacity')),
+          )
+          .opacity,
+      1,
     );
     expect(tester.takeException(), isNull);
   });
@@ -7593,6 +7641,92 @@ void main() {
     expect(find.byKey(const Key('game_page_scaffold')), findsNothing);
   });
 
+  testWidgets(
+    'active remote route blocks navigation and prioritizes board space',
+    (WidgetTester tester) async {
+      db = _GamePageDb(
+        generalSettings: const GeneralSettings(),
+        displaySettings: const DisplaySettings(
+          isAdvantageGraphShown: false,
+          isPositionalAdvantageIndicatorShown: false,
+          isUnplacedAndRemovedPiecesShown: false,
+        ),
+      );
+      DB.instance = db;
+
+      final NativeMillGameSession session = await _bindNativeGame(
+        GameMode.humanVsLAN,
+      );
+      session.remoteMeta = const MillRemoteSessionMeta(
+        localSeat: platform.PlayerSeat.first,
+        hostPlaysWhite: true,
+        transportKind: RemoteTransportKind.lan,
+        role: RemoteRole.host,
+        sessionId: 'active-remote-route-test',
+      );
+
+      // Pixel 5 exposes an approximately 390 x 844 logical portrait
+      // viewport once system insets are accounted for.
+      await tester.binding.setSurfaceSize(const Size(390, 844));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
+      await _pumpGamePageRoute(
+        tester,
+        session: session,
+        gameMode: GameMode.humanVsLAN,
+        openButtonKey: const Key('open_remote_game_page'),
+      );
+
+      await tester.tap(find.byKey(const Key('open_remote_game_page')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(find.byKey(const Key('game_page_scaffold')), findsOneWidget);
+      expect(find.byKey(const Key('game_page_back_button')), findsNothing);
+      expect(
+        find.byKey(const Key('game_page_active_remote_back_button_hidden')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('play_area_move_list_route_top_inset')),
+        findsNothing,
+      );
+      expect(
+        tester
+            .getSize(find.byKey(const Key('play_area_regular_move_list')))
+            .height,
+        48,
+      );
+      final Size boardSize = tester.getSize(
+        find.byKey(const Key('play_area_game_board_container')),
+      );
+      expect(boardSize.width, greaterThan(0));
+      expect(boardSize.height, boardSize.width);
+      expect(tester.takeException(), isNull);
+
+      await tester.binding.handlePopRoute();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(find.byKey(const Key('game_page_scaffold')), findsOneWidget);
+      expect(find.byKey(const Key('game_page_leave_dialog')), findsNothing);
+
+      GameController().activeSessionSnapshot = const platform.GameStateSnapshot(
+        gameId: GameId.mill,
+        activeSeat: platform.PlayerSeat.none,
+        outcome: platform.GameOutcome.win(platform.PlayerSeat.first),
+        phase: 'gameOver',
+      );
+      await tester.pump();
+
+      expect(find.byKey(const Key('game_page_back_button')), findsOneWidget);
+      expect(
+        find.byKey(const Key('game_page_active_remote_back_button_hidden')),
+        findsNothing,
+      );
+    },
+  );
+
   testWidgets('game tips menu survives its original play area rebuilding', (
     WidgetTester tester,
   ) async {
@@ -8711,11 +8845,27 @@ void main() {
         );
         expect(
           find.byKey(const Key('play_area_remote_local_turn_indicator')),
-          findsOneWidget,
+          findsNothing,
         );
         expect(
           find.byKey(const Key('play_area_remote_opponent_turn_indicator')),
           findsNothing,
+        );
+        expect(
+          tester
+              .widget<Opacity>(
+                find.byKey(const Key('play_area_remote_local_turn_opacity')),
+              )
+              .opacity,
+          1,
+        );
+        expect(
+          tester
+              .widget<Opacity>(
+                find.byKey(const Key('play_area_remote_opponent_turn_opacity')),
+              )
+              .opacity,
+          0.8,
         );
         expect(
           tester
@@ -8783,7 +8933,23 @@ void main() {
         );
         expect(
           find.byKey(const Key('play_area_remote_opponent_turn_indicator')),
-          findsOneWidget,
+          findsNothing,
+        );
+        expect(
+          tester
+              .widget<Opacity>(
+                find.byKey(const Key('play_area_remote_local_turn_opacity')),
+              )
+              .opacity,
+          0.8,
+        );
+        expect(
+          tester
+              .widget<Opacity>(
+                find.byKey(const Key('play_area_remote_opponent_turn_opacity')),
+              )
+              .opacity,
+          1,
         );
         expect(tester.takeException(), isNull);
 

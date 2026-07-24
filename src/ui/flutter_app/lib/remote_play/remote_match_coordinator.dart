@@ -1323,7 +1323,7 @@ class RemoteMatchCoordinator
     _clearIncomingControl();
     await game.abandon();
     _setState(RemoteConnectionState.ended);
-    _events.add(RemoteMatchAborted(reason));
+    _events.add(const RemoteOpponentLeft());
     _log.info('REMOTE_PEER_LEFT', 'reason=$reason');
     await transport.close();
   }

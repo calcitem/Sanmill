@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import '../../../generated/intl/l10n.dart';
 import '../../../remote_play/lan_transport.dart';
+import '../../../remote_play/remote_error_message.dart';
 import '../../../remote_play/remote_match_coordinator.dart';
 import '../../../remote_play/remote_models.dart';
 import '../../../remote_play/remote_transport.dart';
@@ -125,7 +126,9 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
               : s.remotePeerRejected;
         });
       case RemoteMatchFailure():
-        setState(() => _status = s.remoteConnectionFailed('${event.error}'));
+        setState(
+          () => _status = remoteConnectionFailureMessage(s, event.error),
+        );
       case RemoteMatchAborted():
         setState(() {
           _status = event.reason.startsWith('Reconnect timed out')
@@ -273,7 +276,7 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
       );
       if (mounted) {
         setState(() {
-          _status = S.of(context).remoteConnectionFailed(error.toString());
+          _status = remoteConnectionFailureMessage(S.of(context), error);
         });
       }
     } finally {

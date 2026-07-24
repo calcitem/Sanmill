@@ -68,6 +68,8 @@ import 'modals/offline_board_options_sheet.dart';
 import 'moves_list_page.dart';
 import 'toolbars/game_toolbar.dart';
 
+const double _kInactivePlayerOpacity = 0.8;
+
 String _evaluationGaugePositionLabel(
   S strings,
   EvaluationGaugePosition position,
@@ -808,6 +810,7 @@ class PlayAreaState extends State<PlayArea> {
   List<MoveAnalysisResult>? _scheduledAnalysisRefreshLineResults;
   static const double _kMoveListRouteTopInset = 80;
   static const double _kInlineMoveListHeight = 40;
+  static const double _kRemoteMoveListHeight = 48;
   static const double _kWrappedMoveListMaxHeight = 104;
   static const double _kPlayerPanelHeight = 56;
   static const double _kOfflineBoardPlayerPanelHeight = 72;
@@ -3579,7 +3582,10 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
-  Widget _buildMoveListForRegularGame(BuildContext context) {
+  Widget _buildMoveListForRegularGame(
+    BuildContext context, {
+    bool compact = false,
+  }) {
     final Widget moveList = _InlineMoveList(
       key: const Key('play_area_regular_move_list'),
       wrapKey: const Key('play_area_regular_move_list_wrap'),
@@ -3593,9 +3599,11 @@ class PlayAreaState extends State<PlayArea> {
       layout: _InlineMoveListLayout.stacked,
       groupByRound: true,
       announceCompletedMove: true,
-      fixedHeight: _kWrappedMoveListMaxHeight,
+      fixedHeight: compact
+          ? _kRemoteMoveListHeight
+          : _kWrappedMoveListMaxHeight,
     );
-    return _isOfflineBoardMode
+    return _isOfflineBoardMode || compact
         ? moveList
         : _withMoveListTopInset(context, moveList);
   }
@@ -4265,10 +4273,13 @@ class PlayAreaState extends State<PlayArea> {
       left: false,
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          final Widget moveList = _buildMoveListForRegularGame(context);
           final GameController controller = GameController();
           final bool isRemoteGame =
               isPlayableGame && controller.isRemoteGameMode;
+          final Widget moveList = _buildMoveListForRegularGame(
+            context,
+            compact: isRemoteGame,
+          );
           final bool showRemoteGameTip =
               isRemoteGame && DB().generalSettings.showGameTips;
           // Remote games mirror the human-vs-computer composition: the
@@ -4312,7 +4323,9 @@ class PlayAreaState extends State<PlayArea> {
               ? _playerPanelHeightForLayout(context)
               : 0;
           final double moveListReserve = isPlayableGame
-              ? _wrappedMoveListReservedHeightForRoute(context)
+              ? isRemoteGame
+                    ? _kRemoteMoveListHeight
+                    : _wrappedMoveListReservedHeightForRoute(context)
               : 0;
           final double pieceRowsHeight = showPieceCountRows
               ? _pieceRowsHeightForLayout(context)
@@ -7334,12 +7347,8 @@ class _RemotePlayerPanel extends StatelessWidget {
     final String? ratingLabel = rating == null
         ? null
         : strings.eloRating(rating);
-    final Color foreground = messageColor.withValues(
-      alpha: isActive ? 1 : 0.62,
-    );
-    final Color secondaryForeground = messageColor.withValues(
-      alpha: isActive ? 0.72 : 0.46,
-    );
+    final Color foreground = messageColor;
+    final Color secondaryForeground = messageColor.withValues(alpha: 0.72);
     final String turnLabel = isLocal ? strings.yourTurn : strings.opponentSTurn;
     final String semanticsLabel = <String>[
       title,
@@ -7368,86 +7377,78 @@ class _RemotePlayerPanel extends StatelessWidget {
           ),
           duration: const Duration(milliseconds: 180),
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-          child: Row(
+          child: Opacity(
             key: Key(
               isLocal
-                  ? 'play_area_remote_local_row'
-                  : 'play_area_remote_opponent_row',
+                  ? 'play_area_remote_local_turn_opacity'
+                  : 'play_area_remote_opponent_turn_opacity',
             ),
-            children: <Widget>[
-              SizedBox(
-                width: 24,
-                child: isActive
-                    ? Icon(
-                        Icons.play_arrow_rounded,
-                        key: Key(
-                          isLocal
-                              ? 'play_area_remote_local_turn_indicator'
-                              : 'play_area_remote_opponent_turn_indicator',
-                        ),
-                        size: 22,
-                        color: foreground,
-                      )
-                    : null,
+            opacity: isActive ? 1 : _kInactivePlayerOpacity,
+            child: Row(
+              key: Key(
+                isLocal
+                    ? 'play_area_remote_local_row'
+                    : 'play_area_remote_opponent_row',
               ),
-              const SizedBox(width: 4),
-              SizedBox.square(
-                dimension: 44,
-                child: Icon(
-                  isLocal
-                      ? FluentIcons.person_24_filled
-                      : _remoteOpponentIcon(controller.gameInstance.gameMode),
-                  key: Key(
+              children: <Widget>[
+                SizedBox.square(
+                  dimension: 44,
+                  child: Icon(
                     isLocal
-                        ? 'play_area_remote_local_identity_icon'
-                        : 'play_area_remote_opponent_identity_icon',
-                  ),
-                  size: 32,
-                  color: messageColor.withValues(alpha: isActive ? 0.82 : 0.46),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text(
-                      title,
-                      key: Key(
-                        isLocal
-                            ? 'play_area_remote_local_title'
-                            : 'play_area_remote_opponent_title',
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: foreground,
-                        fontWeight: isActive
-                            ? FontWeight.w700
-                            : FontWeight.w500,
-                        letterSpacing: 0,
-                      ),
+                        ? FluentIcons.person_24_filled
+                        : _remoteOpponentIcon(controller.gameInstance.gameMode),
+                    key: Key(
+                      isLocal
+                          ? 'play_area_remote_local_identity_icon'
+                          : 'play_area_remote_opponent_identity_icon',
                     ),
-                    if (ratingLabel != null)
+                    size: 32,
+                    color: messageColor.withValues(alpha: 0.82),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
                       Text(
-                        ratingLabel,
+                        title,
                         key: Key(
                           isLocal
-                              ? 'play_area_remote_local_elo'
-                              : 'play_area_remote_opponent_elo',
+                              ? 'play_area_remote_local_title'
+                              : 'play_area_remote_opponent_title',
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: secondaryForeground,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: foreground,
+                          fontWeight: isActive
+                              ? FontWeight.w700
+                              : FontWeight.w500,
                           letterSpacing: 0,
                         ),
                       ),
-                  ],
+                      if (ratingLabel != null)
+                        Text(
+                          ratingLabel,
+                          key: Key(
+                            isLocal
+                                ? 'play_area_remote_local_elo'
+                                : 'play_area_remote_opponent_elo',
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: secondaryForeground,
+                            letterSpacing: 0,
+                          ),
+                        ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -7543,12 +7544,8 @@ class _HumanAiPlayerPanel extends StatelessWidget {
         !controller.gameResultNotifier.hasResult &&
         (sideToMove == PieceColor.white || sideToMove == PieceColor.black) &&
         controller.gameInstance.getPlayerByColor(sideToMove).isAi == isRobot;
-    final Color foreground = messageColor.withValues(
-      alpha: isActivePlayer ? 1 : 0.62,
-    );
-    final Color secondaryForeground = messageColor.withValues(
-      alpha: isActivePlayer ? 0.72 : 0.46,
-    );
+    final Color foreground = messageColor;
+    final Color secondaryForeground = messageColor.withValues(alpha: 0.72);
     // A source is known only after the computer has completed its turn. Do
     // not show the previous source while it is thinking about a new move.
     final _ComputerMoveSource? completedMoveSource =
@@ -7627,43 +7624,32 @@ class _HumanAiPlayerPanel extends StatelessWidget {
         ),
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-        child: Row(
+        child: Opacity(
           key: Key(
             isRobot
-                ? 'play_area_human_ai_robot_row'
-                : 'play_area_human_ai_player_row',
+                ? 'play_area_human_ai_robot_turn_opacity'
+                : 'play_area_human_ai_player_turn_opacity',
           ),
-          children: <Widget>[
-            SizedBox(
-              width: 24,
-              child: isActivePlayer
-                  ? Icon(
-                      Icons.play_arrow_rounded,
-                      key: Key(
-                        isRobot
-                            ? 'play_area_human_ai_robot_turn_indicator'
-                            : 'play_area_human_ai_player_turn_indicator',
-                      ),
-                      size: 22,
-                      color: foreground,
-                      semanticLabel: S.of(context).sideToMove(title),
-                    )
-                  : null,
+          opacity: isActivePlayer ? 1 : _kInactivePlayerOpacity,
+          child: Row(
+            key: Key(
+              isRobot
+                  ? 'play_area_human_ai_robot_row'
+                  : 'play_area_human_ai_player_row',
             ),
-            const SizedBox(width: 4),
-            SizedBox.square(
-              dimension: 44,
-              child: Icon(
-                isRobot ? Icons.smart_toy_outlined : Icons.person_outline,
-                size: 32,
-                color: messageColor.withValues(
-                  alpha: isActivePlayer ? 0.82 : 0.46,
+            children: <Widget>[
+              SizedBox.square(
+                dimension: 44,
+                child: Icon(
+                  isRobot ? Icons.smart_toy_outlined : Icons.person_outline,
+                  size: 32,
+                  color: messageColor.withValues(alpha: 0.82),
                 ),
               ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(child: playerDetails),
-          ],
+              const SizedBox(width: 8),
+              Expanded(child: playerDetails),
+            ],
+          ),
         ),
       ),
     );
@@ -9189,9 +9175,7 @@ class _OfflineBoardPlayerPanel extends StatelessWidget {
         controller.activeBoardView.sideToMove;
     final bool isActive =
         !controller.gameResultNotifier.hasResult && sideToMove == side;
-    final Color contentColor = DB().colorSettings.messageColor.withValues(
-      alpha: isActive ? 1 : 0.58,
-    );
+    final Color contentColor = DB().colorSettings.messageColor;
     final String sideName = side == PieceColor.white
         ? S.of(context).offlineBoardWhite
         : S.of(context).offlineBoardBlack;
@@ -9203,35 +9187,27 @@ class _OfflineBoardPlayerPanel extends StatelessWidget {
       duration: const Duration(milliseconds: 180),
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Row(
-        children: <Widget>[
-          SizedBox(
-            width: 24,
-            child: isActive
-                ? Icon(
-                    Icons.play_arrow_rounded,
-                    key: Key('offline_board_${side.name}_turn_indicator'),
-                    color: contentColor,
-                    size: 22,
-                  )
-                : null,
-          ),
-          const SizedBox(width: 4),
-          Icon(Icons.person_outline, color: contentColor, size: 22),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              sideName,
-              key: Key('offline_board_${side.name}_name'),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.titleMedium?.copyWith(
-                color: contentColor,
-                fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+      child: Opacity(
+        key: Key('offline_board_${side.name}_turn_opacity'),
+        opacity: isActive ? 1 : _kInactivePlayerOpacity,
+        child: Row(
+          children: <Widget>[
+            Icon(Icons.person_outline, color: contentColor, size: 22),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                sideName,
+                key: Key('offline_board_${side.name}_name'),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: contentColor,
+                  fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
     return Semantics(

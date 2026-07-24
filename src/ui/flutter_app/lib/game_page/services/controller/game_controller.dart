@@ -1374,7 +1374,7 @@ class GameController {
             message: (S strings) =>
                 event.reason.startsWith('Reconnect timed out')
                 ? strings.remoteReconnectTimedOut
-                : strings.remoteConnectionFailed(event.reason),
+                : remoteConnectionFailureMessage(strings, event.reason),
           ),
         );
       case RemoteMatchFailure():
@@ -1387,7 +1387,7 @@ class GameController {
             dialogKey: const Key('remote_match_failure_dialog'),
             title: (S strings) => strings.appName,
             message: (S strings) =>
-                strings.remoteConnectionFailed(event.error.toString()),
+                remoteConnectionFailureMessage(strings, event.error),
           ),
         );
     }

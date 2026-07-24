@@ -7120,5 +7120,13 @@
     "remotePlayer": "Remote player",
     "@remotePlayer": {
         "description": "Label for the opponent in a remote game player row"
+    },
+    "remoteNetworkUnavailable": "Network connection unavailable. Make sure both devices are connected to the same Wi-Fi network, then try again.",
+    "@remoteNetworkUnavailable": {
+        "description": "User-facing explanation for a local remote-play connection failure without exposing technical socket details"
+    },
+    "bluetoothConnectionFailed": "Bluetooth connection failed. Keep both devices nearby, make sure the host is still waiting, then try again.",
+    "@bluetoothConnectionFailed": {
+        "description": "User-facing Bluetooth connection failure message without exposing GATT error codes"
     }
 }

@@ -7053,5 +7053,13 @@
     "remotePlayer": "远程玩家",
     "@remotePlayer": {
         "description": "Label for the opponent in a remote game player row"
+    },
+    "remoteNetworkUnavailable": "网络连接不可用。请确认两台设备已连接到同一 WLAN，然后重试。",
+    "@remoteNetworkUnavailable": {
+        "description": "User-facing explanation for a local remote-play connection failure without exposing technical socket details"
+    },
+    "bluetoothConnectionFailed": "蓝牙连接失败。请保持两台设备靠近，确认主机仍在等待，然后重试。",
+    "@bluetoothConnectionFailed": {
+        "description": "User-facing Bluetooth connection failure message without exposing GATT error codes"
     }
 }

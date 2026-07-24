@@ -306,6 +306,13 @@ class LanTransport implements RemoteTransport, RemoteTransportLogContextSink {
 
   @override
   Future<void> join(RemoteEndpoint endpoint) async {
+    await _connect(endpoint, reconnecting: false);
+  }
+
+  Future<void> _connect(
+    RemoteEndpoint endpoint, {
+    required bool reconnecting,
+  }) async {
     DiagnosticReplayGuard.requireAllowed('LAN connections');
     if (role != RemoteRole.join) {
       throw StateError('A host transport cannot join another host.');
@@ -320,7 +327,11 @@ class LanTransport implements RemoteTransport, RemoteTransportLogContextSink {
     }
     _lastEndpoint = endpoint;
     _log.peerId = endpoint.id;
-    _setState(RemoteConnectionState.connecting);
+    _setState(
+      reconnecting
+          ? RemoteConnectionState.reconnecting
+          : RemoteConnectionState.connecting,
+    );
     _log.info('REMOTE_LAN_CONNECT_START', 'remote=$address:$port');
     try {
       final Socket socket = await Socket.connect(
@@ -331,11 +342,13 @@ class LanTransport implements RemoteTransport, RemoteTransportLogContextSink {
       _installSocket(socket, endpoint, sendPreface: true);
       await _handshakeCompleter!.future.timeout(_prefaceTimeout);
     } on Object catch (error, stackTrace) {
-      if (error is! RemoteLanVersionMismatchException) {
+      if (!reconnecting && error is! RemoteLanVersionMismatchException) {
         _emitFailure('REMOTE_LAN_CONNECT_FAILED', error, stackTrace);
       }
       await _closePeerSocket(expected: true);
-      if (_state != RemoteConnectionState.error) {
+      if (reconnecting) {
+        _setState(RemoteConnectionState.reconnecting);
+      } else if (_state != RemoteConnectionState.error) {
         _setState(RemoteConnectionState.error);
       }
       rethrow;
@@ -545,7 +558,7 @@ class LanTransport implements RemoteTransport, RemoteTransportLogContextSink {
       throw StateError('No previous LAN endpoint is available.');
     }
     await _closePeerSocket(expected: true);
-    await join(endpoint);
+    await _connect(endpoint, reconnecting: true);
   }
 
   @override

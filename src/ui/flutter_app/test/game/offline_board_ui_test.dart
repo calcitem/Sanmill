@@ -14,6 +14,7 @@ import 'package:sanmill/game_page/widgets/modals/offline_board_options_sheet.dar
 import 'package:sanmill/game_page/widgets/play_area.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
+import 'package:sanmill/games/mill/mill_board_transform_actions.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
@@ -440,11 +441,27 @@ void main() {
     expect(find.text('Black'), findsOne);
     expect(
       find.byKey(const Key('offline_board_white_turn_indicator')),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('offline_board_black_turn_indicator')),
       findsNothing,
+    );
+    expect(
+      tester
+          .widget<Opacity>(
+            find.byKey(const Key('offline_board_white_turn_opacity')),
+          )
+          .opacity,
+      1,
+    );
+    expect(
+      tester
+          .widget<Opacity>(
+            find.byKey(const Key('offline_board_black_turn_opacity')),
+          )
+          .opacity,
+      0.8,
     );
     GameController().activeSessionSnapshot = const GameStateSnapshot(
       gameId: GameId.mill,
@@ -459,7 +476,23 @@ void main() {
     );
     expect(
       find.byKey(const Key('offline_board_black_turn_indicator')),
-      findsOneWidget,
+      findsNothing,
+    );
+    expect(
+      tester
+          .widget<Opacity>(
+            find.byKey(const Key('offline_board_white_turn_opacity')),
+          )
+          .opacity,
+      0.8,
+    );
+    expect(
+      tester
+          .widget<Opacity>(
+            find.byKey(const Key('offline_board_black_turn_opacity')),
+          )
+          .opacity,
+      1,
     );
     expect(find.text('5:00'), findsNothing);
     expect(
@@ -625,13 +658,38 @@ void main() {
       find.byKey(const Key('play_area_offline_board_transform_identity')),
       findsOne,
     );
-    final Text identityLabel = tester.widget<Text>(
-      find.descendant(
-        of: find.byKey(const Key('play_area_offline_board_transform_identity')),
-        matching: find.text('Original orientation'),
-      ),
+    final GridView grid = tester.widget<GridView>(
+      find.byKey(const Key('play_area_offline_board_transform_grid')),
     );
-    expect(identityLabel.style?.fontSize, greaterThanOrEqualTo(14));
+    expect(
+      (grid.gridDelegate as SliverGridDelegateWithFixedCrossAxisCount)
+          .crossAxisCount,
+      4,
+    );
+    for (final MillBoardTransformAction action
+        in allMillBoardTransformActions) {
+      expect(
+        find.byKey(Key('play_area_offline_board_transform_${action.id}')),
+        findsOneWidget,
+      );
+    }
+    final Finder identityTile = find.byKey(
+      const Key('play_area_offline_board_transform_identity'),
+    );
+    expect(
+      find.descendant(of: identityTile, matching: find.byType(Text)),
+      findsNothing,
+    );
+    final Iterable<Semantics> identitySemantics = tester.widgetList<Semantics>(
+      find.descendant(of: identityTile, matching: find.byType(Semantics)),
+    );
+    expect(
+      identitySemantics.any(
+        (Semantics semantics) =>
+            semantics.properties.label?.isNotEmpty ?? false,
+      ),
+      isTrue,
+    );
   });
 
   testWidgets('untimed games omit clock values and controls', (

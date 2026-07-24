@@ -181,6 +181,36 @@ void main() {
       await subscription.cancel();
       await transport.close();
     });
+
+    test(
+      'failed reconnect attempts stay reconnecting without fatal failures',
+      () async {
+        final FakeBluetoothAdapter adapter = FakeBluetoothAdapter();
+        final BluetoothTransport transport = BluetoothTransport(
+          role: RemoteRole.join,
+          adapter: adapter,
+        );
+        final List<RemoteTransportEvent> events = <RemoteTransportEvent>[];
+        final StreamSubscription<RemoteTransportEvent> subscription = transport
+            .events
+            .listen(events.add);
+        await transport.join(const RemoteEndpoint(id: 'peer', label: 'Peer'));
+        adapter.centralConnections.add(
+          const BluetoothConnectionEvent(deviceId: 'peer', connected: false),
+        );
+        await pumpEventQueue();
+        expect(transport.state, RemoteConnectionState.reconnecting);
+        events.clear();
+        adapter.connectError = StateError('GATT 133');
+
+        await expectLater(transport.reconnect(), throwsA(isA<StateError>()));
+
+        expect(transport.state, RemoteConnectionState.reconnecting);
+        expect(events.whereType<RemoteTransportFailure>(), isEmpty);
+        await subscription.cancel();
+        await transport.close();
+      },
+    );
   });
 
   group('BluetoothTransport host role', () {
@@ -387,6 +417,7 @@ class FakeBluetoothAdapter implements BluetoothAdapter {
   int requestedMtu = 23;
   int? maximumNotificationLength;
   Error? notificationError;
+  Error? connectError;
   List<BluetoothScanResult> scanResultsOnStart = <BluetoothScanResult>[];
   int startScanCount = 0;
   int stopScanCount = 0;
@@ -467,6 +498,10 @@ class FakeBluetoothAdapter implements BluetoothAdapter {
   @override
   Future<void> connect(String deviceId) async {
     connectCount++;
+    final Error? error = connectError;
+    if (error != null) {
+      throw error;
+    }
   }
 
   @override
