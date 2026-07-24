@@ -3,6 +3,7 @@
 
 import 'dart:async';
 
+import '../../game_page/services/transform/transform.dart';
 import '../../game_platform/game_session.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../remote_play/remote_match_coordinator.dart';
@@ -11,7 +12,8 @@ import '../../rule_settings/models/rule_settings.dart';
 import 'mill_remote_session_meta.dart';
 import 'native_mill_game_session.dart';
 
-class NativeMillRemoteGameAdapter implements RemoteGameAdapter {
+class NativeMillRemoteGameAdapter
+    implements RemoteGameAdapter, RemoteBoardTransformAdapter {
   NativeMillRemoteGameAdapter({
     required this.session,
     required this.transportKind,
@@ -90,15 +92,17 @@ class NativeMillRemoteGameAdapter implements RemoteGameAdapter {
     if (config == null) {
       throw StateError('Cannot restore a snapshot before match configuration.');
     }
-    await configure(config);
-    if (session.getFen() != snapshot.initialFen) {
-      final bool loaded = session.loadFen(snapshot.initialFen);
-      if (!loaded) {
-        throw FormatException(
-          'Invalid remote snapshot FEN: ${snapshot.initialFen}',
-        );
-      }
-    }
+    await configure(
+      RemoteMatchConfig(
+        sessionId: config.sessionId,
+        roundId: config.roundId,
+        ruleSchemaVersion: config.ruleSchemaVersion,
+        ruleSettings: config.ruleSettings,
+        initialFen: snapshot.initialFen,
+        hostPlaysFirst: config.hostPlaysFirst,
+        clockEnabled: config.clockEnabled,
+      ),
+    );
     for (final String action in snapshot.actions) {
       if (!session.applyMoveString(action)) {
         throw StateError('Snapshot contains illegal action: $action');
@@ -108,6 +112,36 @@ class NativeMillRemoteGameAdapter implements RemoteGameAdapter {
       throw StateError('Snapshot result does not match its action history.');
     }
     await onStateChanged?.call();
+  }
+
+  @override
+  bool supportsBoardTransform(String transformation) {
+    return TransformationType.values.any(
+      (TransformationType type) => type.name == transformation,
+    );
+  }
+
+  @override
+  RemoteStateSnapshot transformSnapshot(
+    RemoteStateSnapshot snapshot,
+    String transformation,
+  ) {
+    final TransformationType type;
+    try {
+      type = TransformationType.values.byName(transformation);
+    } on ArgumentError {
+      throw FormatException(
+        'Unsupported Mill board transformation: $transformation',
+      );
+    }
+    return RemoteStateSnapshot(
+      revision: snapshot.revision,
+      initialFen: transformFEN(snapshot.initialFen, type),
+      actions: snapshot.actions
+          .map((String action) => transformMoveNotation(action, type))
+          .toList(growable: false),
+      resultFen: transformFEN(snapshot.resultFen, type),
+    );
   }
 
   @override

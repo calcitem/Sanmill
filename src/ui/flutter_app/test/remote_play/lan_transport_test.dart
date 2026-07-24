@@ -13,7 +13,7 @@ import 'package:sanmill/remote_play/remote_protocol.dart';
 import 'package:sanmill/remote_play/remote_transport.dart';
 
 void main() {
-  test('LAN v2 exchanges framed bytes over a real loopback socket', () async {
+  test('LAN v3 exchanges framed bytes over a real loopback socket', () async {
     final LanTransport host = LanTransport(
       role: RemoteRole.host,
       enableDiscoveryResponder: false,
@@ -203,7 +203,7 @@ void main() {
           .bind(oldClient)
           .first
           .timeout(const Duration(seconds: 2)),
-      contains('protocol:2.0'),
+      contains('protocol:3.0'),
     );
   });
 
@@ -227,7 +227,7 @@ void main() {
       Socket socket,
     ) {
       socket.listen((Uint8List bytes) {
-        socket.add(<int>[...('protocol:2.0\n'.codeUnits), ...frame]);
+        socket.add(<int>[...('protocol:3.0\n'.codeUnits), ...frame]);
         unawaited(socket.flush());
       });
     });

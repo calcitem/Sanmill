@@ -27,6 +27,20 @@ abstract interface class RemoteGameAdapter {
   Future<void> abandon();
 }
 
+/// Optional game-specific support for negotiated board transformations.
+///
+/// The transformation token is stable protocol data. Implementations must
+/// reject unsupported tokens and transform the initial position, action
+/// history, and resulting position into one consistent coordinate frame.
+abstract interface class RemoteBoardTransformAdapter {
+  bool supportsBoardTransform(String transformation);
+
+  RemoteStateSnapshot transformSnapshot(
+    RemoteStateSnapshot snapshot,
+    String transformation,
+  );
+}
+
 sealed class RemoteMatchEvent {
   const RemoteMatchEvent();
 }
@@ -75,6 +89,18 @@ class RemoteRestartApprovalRequested extends RemoteMatchEvent {
   const RemoteRestartApprovalRequested(this.requestId);
 
   final String requestId;
+}
+
+class RemoteBoardTransformApprovalRequested extends RemoteMatchEvent {
+  const RemoteBoardTransformApprovalRequested(
+    this.requestId,
+    this.transformation,
+  );
+
+  final String requestId;
+
+  /// Stable transformation token supplied by the game adapter.
+  final String transformation;
 }
 
 class RemoteOpponentResigned extends RemoteMatchEvent {
@@ -167,4 +193,18 @@ abstract interface class RemoteMatchController {
   Future<void> retryConnection();
 
   Future<void> dispose();
+}
+
+/// Optional control surface implemented by peer-hosted remote matches.
+///
+/// Cloud matches do not expose this capability until their authoritative
+/// service supports the same negotiation.
+abstract interface class RemoteBoardTransformController {
+  Future<bool> requestBoardTransform(String transformation);
+
+  Future<void> respondToBoardTransform({
+    required String requestId,
+    required String transformation,
+    required bool accepted,
+  });
 }

@@ -354,6 +354,108 @@ void main() {
     expect(pair.join.state, RemoteConnectionState.ready);
   });
 
+  test('board transformation waits for approval and transforms authoritative '
+      'history', () async {
+    final _ReadyPair pair = await _ReadyPair.create();
+    addTearDown(pair.dispose);
+    expect(await pair.host.submitLocalAction('a1'), isTrue);
+    await _waitForSynchronization(pair);
+    final String beforeApproval = pair.hostGame.fen;
+    final Future<RemoteBoardTransformApprovalRequested> approval = pair
+        .join
+        .events
+        .where(
+          (RemoteMatchEvent event) =>
+              event is RemoteBoardTransformApprovalRequested,
+        )
+        .cast<RemoteBoardTransformApprovalRequested>()
+        .first;
+
+    final Future<bool> requested = pair.host.requestBoardTransform('flip');
+    final RemoteBoardTransformApprovalRequested request = await approval;
+    expect(request.transformation, 'flip');
+    expect(pair.hostGame.fen, beforeApproval);
+    expect(pair.joinGame.fen, beforeApproval);
+
+    await pair.join.respondToBoardTransform(
+      requestId: request.requestId,
+      transformation: request.transformation,
+      accepted: true,
+    );
+
+    expect(await requested.timeout(const Duration(seconds: 2)), isTrue);
+    await _waitForSynchronization(pair);
+    expect(pair.host.revision, 2);
+    expect(pair.join.revision, 2);
+    expect(pair.host.actionLog, const <String>['flip:a1']);
+    expect(pair.join.actionLog, pair.host.actionLog);
+    expect(pair.host.config!.initialFen, 'flip:start');
+    expect(pair.join.config!.initialFen, pair.host.config!.initialFen);
+    expect(pair.hostGame.fen, 'flip:start|flip:a1');
+    expect(pair.joinGame.fen, pair.hostGame.fen);
+
+    final Future<RemoteBoardTransformApprovalRequested> reverseApproval = pair
+        .host
+        .events
+        .where(
+          (RemoteMatchEvent event) =>
+              event is RemoteBoardTransformApprovalRequested,
+        )
+        .cast<RemoteBoardTransformApprovalRequested>()
+        .first;
+    final Future<bool> reverseRequested = pair.join.requestBoardTransform(
+      'flip',
+    );
+    final RemoteBoardTransformApprovalRequested reverseRequest =
+        await reverseApproval;
+    await pair.host.respondToBoardTransform(
+      requestId: reverseRequest.requestId,
+      transformation: reverseRequest.transformation,
+      accepted: true,
+    );
+
+    expect(await reverseRequested.timeout(const Duration(seconds: 2)), isTrue);
+    await _waitForSynchronization(pair);
+    expect(pair.host.revision, 3);
+    expect(pair.join.revision, 3);
+    expect(pair.host.actionLog, const <String>['flip:flip:a1']);
+    expect(pair.join.actionLog, pair.host.actionLog);
+    expect(pair.host.config!.initialFen, 'flip:flip:start');
+    expect(pair.join.config!.initialFen, pair.host.config!.initialFen);
+    expect(pair.hostGame.fen, 'flip:flip:start|flip:flip:a1');
+    expect(pair.joinGame.fen, pair.hostGame.fen);
+  });
+
+  test('rejected board transformation leaves both peers unchanged', () async {
+    final _ReadyPair pair = await _ReadyPair.create();
+    addTearDown(pair.dispose);
+    final Future<RemoteBoardTransformApprovalRequested> approval = pair
+        .host
+        .events
+        .where(
+          (RemoteMatchEvent event) =>
+              event is RemoteBoardTransformApprovalRequested,
+        )
+        .cast<RemoteBoardTransformApprovalRequested>()
+        .first;
+
+    final Future<bool> requested = pair.join.requestBoardTransform('flip');
+    final RemoteBoardTransformApprovalRequested request = await approval;
+    await pair.host.respondToBoardTransform(
+      requestId: request.requestId,
+      transformation: request.transformation,
+      accepted: false,
+    );
+
+    expect(await requested.timeout(const Duration(seconds: 2)), isFalse);
+    await _waitForSynchronization(pair);
+    expect(pair.host.revision, 0);
+    expect(pair.join.revision, 0);
+    expect(pair.hostGame.fen, 'start');
+    expect(pair.joinGame.fen, pair.hostGame.fen);
+    expect(await pair.host.requestBoardTransform('unsupported'), isFalse);
+  });
+
   test(
     'restart preserves rules and seats, and resignation is one-sided',
     () async {
@@ -638,7 +740,7 @@ RemotePeerInfo _peer(String id) {
 
 Future<void> _eventLoop() => Future<void>.delayed(Duration.zero);
 
-class _FakeGame implements RemoteGameAdapter {
+class _FakeGame implements RemoteGameAdapter, RemoteBoardTransformAdapter {
   RemoteSeat _activeSeat = RemoteSeat.first;
   String _initialFen = '';
   final List<String> _actions = <String>[];
@@ -676,6 +778,31 @@ class _FakeGame implements RemoteGameAdapter {
       ..clear()
       ..addAll(snapshot.actions);
     _activeSeat = _actions.length.isEven ? RemoteSeat.first : RemoteSeat.second;
+  }
+
+  @override
+  bool supportsBoardTransform(String transformation) {
+    return transformation == 'flip';
+  }
+
+  @override
+  RemoteStateSnapshot transformSnapshot(
+    RemoteStateSnapshot snapshot,
+    String transformation,
+  ) {
+    if (!supportsBoardTransform(transformation)) {
+      throw FormatException('Unsupported transformation: $transformation');
+    }
+    final String initialFen = '$transformation:${snapshot.initialFen}';
+    final List<String> actions = snapshot.actions
+        .map((String action) => '$transformation:$action')
+        .toList(growable: false);
+    return RemoteStateSnapshot(
+      revision: snapshot.revision,
+      initialFen: initialFen,
+      actions: actions,
+      resultFen: <String>[initialFen, ...actions].join('|'),
+    );
   }
 
   @override

@@ -408,6 +408,7 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
           RemoteMatchUpgradeRequired() ||
           RemoteTakeBackApprovalRequested() ||
           RemoteRestartApprovalRequested() ||
+          RemoteBoardTransformApprovalRequested() ||
           RemoteMatchAborted() ||
           RemoteMatchFailure():
         setState(() {});

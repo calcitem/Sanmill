@@ -879,6 +879,44 @@ class GameController {
     return true;
   }
 
+  /// Requests a board transformation from the remote opponent.
+  ///
+  /// Peer-hosted matches apply the transformation only after both players
+  /// agree and the host publishes the transformed authoritative snapshot.
+  Future<bool> requestRemoteBoardTransform(TransformationType type) async {
+    final RemoteMatchController? coordinator = remoteCoordinator;
+    if (!isRemoteGameMode ||
+        coordinator == null ||
+        !coordinator.isConnected ||
+        coordinator is! RemoteBoardTransformController ||
+        activeNativeMillSession?.outcome.isTerminal != false) {
+      return false;
+    }
+    final RemoteBoardTransformController transformController =
+        coordinator as RemoteBoardTransformController;
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    if (context != null) {
+      headerTipNotifier.showTip(
+        S.of(context).boardTransformRequestSent,
+        snackBar: false,
+      );
+    }
+    final bool accepted = await transformController.requestBoardTransform(
+      type.name,
+    );
+    if (accepted) {
+      RecordingService().recordEvent(
+        RecordingEventType.toolbarAction,
+        <String, dynamic>{
+          'toolbar': 'gameMenu',
+          'action': 'transformRemoteBoard',
+          'type': type.name,
+        },
+      );
+    }
+    return accepted;
+  }
+
   /// Discard an in-progress setup edit without changing the current game
   /// mode.  Used when the setup-position page is torn down by navigation:
   /// the next route has already set its own game mode, so this only rolls
@@ -1146,6 +1184,8 @@ class GameController {
         unawaited(_approveRemoteTakeBack(event));
       case RemoteRestartApprovalRequested():
         unawaited(_approveRemoteRestart(event));
+      case RemoteBoardTransformApprovalRequested():
+        unawaited(_approveRemoteBoardTransform(event));
       case RemoteOpponentResigned():
         final BuildContext? context = rootScaffoldMessengerKey.currentContext;
         if (context != null) {
@@ -1354,6 +1394,71 @@ class GameController {
     if (identical(remoteCoordinator, coordinator)) {
       await coordinator.respondToRestart(
         requestId: event.requestId,
+        accepted: accepted,
+      );
+    }
+  }
+
+  Future<void> _approveRemoteBoardTransform(
+    RemoteBoardTransformApprovalRequested event,
+  ) async {
+    final RemoteMatchController? coordinator = remoteCoordinator;
+    final BuildContext? context = _controllerDialogContext;
+    if (coordinator == null || coordinator is! RemoteBoardTransformController) {
+      return;
+    }
+    final RemoteBoardTransformController transformController =
+        coordinator as RemoteBoardTransformController;
+    TransformationType? type;
+    try {
+      type = TransformationType.values.byName(event.transformation);
+    } on ArgumentError {
+      type = null;
+    }
+    final MillBoardTransformAction? action = type == null
+        ? null
+        : allMillBoardTransformActions
+              .where(
+                (MillBoardTransformAction candidate) => candidate.type == type,
+              )
+              .firstOrNull;
+    final bool accepted =
+        context != null &&
+        action != null &&
+        (await showDialog<bool>(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext dialogContext) {
+                final S strings = S.of(dialogContext);
+                return AlertDialog(
+                  key: const Key('remote_board_transform_request_dialog'),
+                  title: Text(strings.flipBoard),
+                  content: Text(
+                    strings.opponentRequestsBoardTransform(
+                      action.label(strings),
+                    ),
+                    style: Theme.of(dialogContext).textTheme.bodyLarge,
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      key: const Key('remote_board_transform_reject'),
+                      onPressed: () => Navigator.of(dialogContext).pop(false),
+                      child: Text(strings.no),
+                    ),
+                    TextButton(
+                      key: const Key('remote_board_transform_accept'),
+                      onPressed: () => Navigator.of(dialogContext).pop(true),
+                      child: Text(strings.yes),
+                    ),
+                  ],
+                );
+              },
+            ) ??
+            false);
+    if (identical(remoteCoordinator, coordinator)) {
+      await transformController.respondToBoardTransform(
+        requestId: event.requestId,
+        transformation: event.transformation,
         accepted: accepted,
       );
     }

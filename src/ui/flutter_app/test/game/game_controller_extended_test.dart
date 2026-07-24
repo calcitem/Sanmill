@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/game_page/services/transform/transform.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_remote_session_meta.dart';
@@ -436,6 +437,77 @@ void main() {
         await tester.pumpWidget(const SizedBox.shrink());
       },
     );
+
+    testWidgets('shows a readable incoming board transformation request', (
+      WidgetTester tester,
+    ) async {
+      final GameController controller = GameController();
+      final GameMode previousMode = controller.gameInstance.gameMode;
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: _HistoryRulesPort(),
+      );
+      final _ResignOnlyRemoteController coordinator =
+          _ResignOnlyRemoteController();
+
+      controller.bindActiveSession(session);
+      addTearDown(() async {
+        if (identical(controller.remoteCoordinator, coordinator)) {
+          await controller.disposeRemoteMatch();
+        }
+        controller.unbindActiveSession(session);
+        controller.gameInstance.gameMode = previousMode;
+        session.dispose();
+      });
+
+      await tester.pumpWidget(
+        MaterialApp(
+          navigatorKey: currentNavigatorKey,
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: const Scaffold(body: SizedBox.shrink()),
+        ),
+      );
+
+      await controller.createCloudRemoteController<_ResignOnlyRemoteController>(
+        (RemoteGameAdapter game) async => coordinator,
+        role: RemoteRole.host,
+      );
+      coordinator.emit(
+        RemoteBoardTransformApprovalRequested(
+          'transform-request',
+          TransformationType.rotate180.name,
+        ),
+      );
+      await tester.pump();
+
+      expect(
+        find.byKey(const Key('remote_board_transform_request_dialog')),
+        findsOneWidget,
+      );
+      final BuildContext dialogContext = tester.element(
+        find.byKey(const Key('remote_board_transform_request_dialog')),
+      );
+      final String requestText = S
+          .of(dialogContext)
+          .opponentRequestsBoardTransform(
+            S.of(dialogContext).boardTransformRotateDegrees(180),
+          );
+      final Text content = tester.widget<Text>(find.text(requestText));
+      expect(content.style?.fontSize, greaterThanOrEqualTo(16));
+
+      await tester.tap(find.byKey(const Key('remote_board_transform_accept')));
+      await tester.pumpAndSettle();
+
+      expect(coordinator.respondedBoardTransformRequestId, 'transform-request');
+      expect(
+        coordinator.respondedBoardTransformation,
+        TransformationType.rotate180.name,
+      );
+      expect(coordinator.respondedBoardTransformAccepted, isTrue);
+
+      await tester.pumpWidget(const SizedBox.shrink());
+    });
   });
 
   group('GameController.leaveRemoteMatch', () {
@@ -497,7 +569,8 @@ class _HistoryRulesPort implements NativeMillRulesPort {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-class _ResignOnlyRemoteController implements RemoteMatchController {
+class _ResignOnlyRemoteController
+    implements RemoteMatchController, RemoteBoardTransformController {
   int resignCalls = 0;
   int leaveCalls = 0;
   int disposeCalls = 0;
@@ -508,6 +581,9 @@ class _ResignOnlyRemoteController implements RemoteMatchController {
   String? respondedTakeBackRequestId;
   int? respondedTakeBackSteps;
   bool? respondedTakeBackAccepted;
+  String? respondedBoardTransformRequestId;
+  String? respondedBoardTransformation;
+  bool? respondedBoardTransformAccepted;
 
   @override
   final ValueNotifier<RemoteConnectionState> stateNotifier =
@@ -558,6 +634,22 @@ class _ResignOnlyRemoteController implements RemoteMatchController {
     respondedTakeBackRequestId = requestId;
     respondedTakeBackSteps = steps;
     respondedTakeBackAccepted = accepted;
+  }
+
+  @override
+  Future<bool> requestBoardTransform(String transformation) async {
+    return true;
+  }
+
+  @override
+  Future<void> respondToBoardTransform({
+    required String requestId,
+    required String transformation,
+    required bool accepted,
+  }) async {
+    respondedBoardTransformRequestId = requestId;
+    respondedBoardTransformation = transformation;
+    respondedBoardTransformAccepted = accepted;
   }
 
   @override

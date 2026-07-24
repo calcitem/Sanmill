@@ -7038,5 +7038,23 @@
     "bluetoothConnectionTimedOut": "Bluetooth connection timed out. Keep both phones nearby with the host still waiting, then try again.",
     "@bluetoothConnectionTimedOut": {
         "description": "Shown when a BLE GATT connect times out (e.g. Android status 147)"
+    },
+    "boardTransformRequestSent": "Board transformation request sent. Waiting for your opponent's response…",
+    "@boardTransformRequestSent": {
+        "description": "Status shown while waiting for the opponent to answer a board transformation request"
+    },
+    "boardTransformRequestRejected": "The board transformation request was declined or could not be completed.",
+    "@boardTransformRequestRejected": {
+        "description": "Feedback shown when a remote board transformation is rejected or fails"
+    },
+    "opponentRequestsBoardTransform": "Your opponent wants to transform both boards using “{transform}”. Accept?",
+    "@opponentRequestsBoardTransform": {
+        "description": "Confirmation shown when the opponent requests a synchronized board transformation",
+        "placeholders": {
+            "transform": {
+                "description": "Localized name of the requested board transformation",
+                "type": "String"
+            }
+        }
     }
 }

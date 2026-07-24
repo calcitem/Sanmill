@@ -7,8 +7,8 @@ import 'dart:typed_data';
 import 'package:meta/meta.dart';
 
 abstract final class RemoteProtocolConstants {
-  static const int version = 2;
-  static const String lanVersion = '2.0';
+  static const int version = 3;
+  static const String lanVersion = '3.0';
   static const int maxFrameBytes = 64 * 1024;
   static const int lengthPrefixBytes = 4;
   static const int fallbackBlePayloadBytes = 20;
@@ -30,6 +30,8 @@ enum RemoteMessageType {
   takeBackResponse,
   restartRequest,
   restartResponse,
+  boardTransformRequest,
+  boardTransformResponse,
   resign,
   ping,
   pong,
@@ -62,7 +64,7 @@ class RemoteEnvelope {
         json.length != fields.length) {
       throw const RemoteProtocolException(
         RemoteProtocolError.invalidEnvelope,
-        'Envelope fields do not match the v2 schema.',
+        'Envelope fields do not match the v3 schema.',
       );
     }
 

@@ -602,6 +602,13 @@ void main() {
       find.byKey(const Key('play_area_offline_board_transform_identity')),
       findsOne,
     );
+    final Text identityLabel = tester.widget<Text>(
+      find.descendant(
+        of: find.byKey(const Key('play_area_offline_board_transform_identity')),
+        matching: find.text('Original orientation'),
+      ),
+    );
+    expect(identityLabel.style?.fontSize, greaterThanOrEqualTo(14));
   });
 
   testWidgets('untimed games omit clock values and controls', (

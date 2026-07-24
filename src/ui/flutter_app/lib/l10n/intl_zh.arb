@@ -6971,5 +6971,23 @@
     "bluetoothConnectionTimedOut": "蓝牙连接超时。请保持两台手机靠近，并确认主机仍在等待，然后重试。",
     "@bluetoothConnectionTimedOut": {
         "description": "Shown when a BLE GATT connect times out (e.g. Android status 147)"
+    },
+    "boardTransformRequestSent": "棋盘变换请求已发送，正在等待对手回复…",
+    "@boardTransformRequestSent": {
+        "description": "Status shown while waiting for the opponent to answer a board transformation request"
+    },
+    "boardTransformRequestRejected": "棋盘变换请求被拒绝或未能完成。",
+    "@boardTransformRequestRejected": {
+        "description": "Feedback shown when a remote board transformation is rejected or fails"
+    },
+    "opponentRequestsBoardTransform": "对手请求按“{transform}”同步变换双方棋盘。是否同意？",
+    "@opponentRequestsBoardTransform": {
+        "description": "Confirmation shown when the opponent requests a synchronized board transformation",
+        "placeholders": {
+            "transform": {
+                "description": "Localized name of the requested board transformation",
+                "type": "String"
+            }
+        }
     }
 }

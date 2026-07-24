@@ -1969,23 +1969,22 @@ class PlayAreaState extends State<PlayArea> {
         return;
       }
     }
-    final bool transformed = GameController().transformActiveLocalGame(
-      action.type,
-    );
+    final GameController controller = GameController();
+    final bool isRemoteTransform = controller.isRemoteGameMode;
+    final bool transformed = isRemoteTransform
+        ? await controller.requestRemoteBoardTransform(action.type)
+        : controller.transformActiveLocalGame(action.type);
+    if (!mounted) {
+      return;
+    }
     if (transformed) {
-      if (mounted) {
-        setState(() {
-          _isBoardFlipped = false;
-        });
-      }
+      setState(() {
+        _isBoardFlipped = false;
+      });
       if (_usesLichessHumanAiToolbar &&
-          GameController().gameInstance.isAiSideToMove) {
+          controller.gameInstance.isAiSideToMove) {
         unawaited(
-          GameController().engineToGo(
-            context,
-            isMoveNow: false,
-            session: session,
-          ),
+          controller.engineToGo(context, isMoveNow: false, session: session),
         );
       }
     }
@@ -2000,7 +1999,11 @@ class PlayAreaState extends State<PlayArea> {
       'Board transform feedback requires the root scaffold messenger.',
     );
     rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-      transformed ? strings.transformed : strings.cannotTransform,
+      transformed
+          ? strings.transformed
+          : isRemoteTransform
+          ? strings.boardTransformRequestRejected
+          : strings.cannotTransform,
     );
   }
 
@@ -9197,7 +9200,12 @@ class _BoardTransformPickerDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<_BoardTransformPreview> previews = _previews();
     assert(previews.isNotEmpty, 'Board transform picker must show options.');
-    final int crossAxisCount = math.min(4, math.max(1, previews.length));
+    final double screenWidth = MediaQuery.sizeOf(context).width;
+    final int preferredColumnCount = screenWidth < 480 ? 3 : 4;
+    final int crossAxisCount = math.min(
+      preferredColumnCount,
+      math.max(1, previews.length),
+    );
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return Dialog(
@@ -9362,10 +9370,13 @@ class _BoardTransformPreviewTile extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: _transformTileForegroundColor(context),
-                        letterSpacing: 0,
-                      ),
+                      style:
+                          (Theme.of(context).textTheme.bodyMedium ??
+                                  const TextStyle(fontSize: 14))
+                              .copyWith(
+                                color: _transformTileForegroundColor(context),
+                                letterSpacing: 0,
+                              ),
                     ),
                   ],
                 ),

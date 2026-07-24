@@ -18,7 +18,8 @@ import 'remote_transport.dart';
 
 export 'remote_match_controller.dart';
 
-class RemoteMatchCoordinator implements RemoteMatchController {
+class RemoteMatchCoordinator
+    implements RemoteMatchController, RemoteBoardTransformController {
   RemoteMatchCoordinator({
     required this.transport,
     required this.game,
@@ -91,9 +92,11 @@ class RemoteMatchCoordinator implements RemoteMatchController {
   String? _pendingActionRequestId;
   Completer<bool>? _pendingControl;
   String? _pendingControlRequestId;
+  String? _pendingBoardTransformation;
   String? _acceptedControlRequestId;
   String? _incomingControlRequestId;
   int? _incomingControlRevision;
+  String? _incomingBoardTransformation;
 
   @override
   Stream<RemoteMatchEvent> get events => _events.stream;
@@ -353,6 +356,61 @@ class RemoteMatchCoordinator implements RemoteMatchController {
   }
 
   @override
+  Future<bool> requestBoardTransform(String transformation) async {
+    _assertUsable();
+    final RemoteGameAdapter currentGame = game;
+    if (!isConnected ||
+        transformation.isEmpty ||
+        currentGame is! RemoteBoardTransformAdapter ||
+        _hasPendingControl) {
+      return false;
+    }
+    final RemoteBoardTransformAdapter transformer =
+        currentGame as RemoteBoardTransformAdapter;
+    if (!transformer.supportsBoardTransform(transformation)) {
+      return false;
+    }
+    _pendingBoardTransformation = transformation;
+    return _sendControlRequest(
+      RemoteMessageType.boardTransformRequest,
+      <String, Object?>{'transformation': transformation},
+    );
+  }
+
+  @override
+  Future<void> respondToBoardTransform({
+    required String requestId,
+    required String transformation,
+    required bool accepted,
+  }) async {
+    _assertUsable();
+    final RemoteGameAdapter currentGame = game;
+    final RemoteBoardTransformAdapter? transformer =
+        currentGame is RemoteBoardTransformAdapter
+        ? currentGame as RemoteBoardTransformAdapter
+        : null;
+    final bool supported =
+        transformer?.supportsBoardTransform(transformation) ?? false;
+    final bool requestMatches =
+        requestId == _incomingControlRequestId &&
+        transformation == _incomingBoardTransformation;
+    final bool revisionMatches =
+        requestMatches && _incomingControlRevision == _revision;
+    final bool canAccept =
+        accepted && supported && requestMatches && revisionMatches;
+    await _send(RemoteMessageType.boardTransformResponse, <String, Object?>{
+      'requestId': requestId,
+      'accepted': canAccept,
+      'transformation': transformation,
+      'expectedRevision': _incomingControlRevision ?? _revision,
+    });
+    if (canAccept && isHost) {
+      await _applyBoardTransformAsHost(transformation);
+    }
+    _clearIncomingControl(requestId);
+  }
+
+  @override
   Future<bool> resign() async {
     _assertUsable();
     final RemoteSessionMeta? meta = _meta;
@@ -550,6 +608,10 @@ class RemoteMatchCoordinator implements RemoteMatchController {
         await _handleRestartRequest(envelope);
       case RemoteMessageType.restartResponse:
         await _handleRestartResponse(envelope);
+      case RemoteMessageType.boardTransformRequest:
+        await _handleBoardTransformRequest(envelope);
+      case RemoteMessageType.boardTransformResponse:
+        await _handleBoardTransformResponse(envelope);
       case RemoteMessageType.resign:
         await _handleRemoteResignation();
       case RemoteMessageType.ping:
@@ -767,10 +829,16 @@ class RemoteMatchCoordinator implements RemoteMatchController {
       diagnostics.rejectedMessages++;
       return;
     }
-    if (expectedRevision != _revision || game.activeSeat == _meta!.localSeat) {
+    if (expectedRevision != _revision ||
+        game.activeSeat == _meta!.localSeat ||
+        _hasPendingControl) {
       await _rejectAction(
         requestId,
-        expectedRevision != _revision ? 'staleRevision' : 'notYourTurn',
+        expectedRevision != _revision
+            ? 'staleRevision'
+            : _hasPendingControl
+            ? 'controlPending'
+            : 'notYourTurn',
       );
       return;
     }
@@ -927,6 +995,7 @@ class RemoteMatchCoordinator implements RemoteMatchController {
         'host=${snapshot.resultFen}.',
       );
     }
+    _replaceConfigInitialFen(snapshot.initialFen);
     _actionLog
       ..clear()
       ..addAll(snapshot.actions);
@@ -1061,6 +1130,134 @@ class RemoteMatchCoordinator implements RemoteMatchController {
     } else {
       _acceptedControlRequestId = requestId;
     }
+  }
+
+  Future<void> _handleBoardTransformRequest(RemoteEnvelope envelope) async {
+    final String? requestId = envelope.payload['requestId'] as String?;
+    final String? transformation =
+        envelope.payload['transformation'] as String?;
+    final int? expectedRevision = envelope.payload['expectedRevision'] as int?;
+    final RemoteGameAdapter currentGame = game;
+    final RemoteBoardTransformAdapter? transformer =
+        currentGame is RemoteBoardTransformAdapter
+        ? currentGame as RemoteBoardTransformAdapter
+        : null;
+    final bool supported =
+        transformation != null &&
+        (transformer?.supportsBoardTransform(transformation) ?? false);
+    if (requestId == null ||
+        transformation == null ||
+        expectedRevision == null ||
+        !supported) {
+      diagnostics.rejectedMessages++;
+      if (requestId != null &&
+          transformation != null &&
+          expectedRevision != null) {
+        await _send(RemoteMessageType.boardTransformResponse, <String, Object?>{
+          'requestId': requestId,
+          'accepted': false,
+          'transformation': transformation,
+          'expectedRevision': expectedRevision,
+          'reason': 'unsupportedTransformation',
+        });
+      }
+      return;
+    }
+    if (state != RemoteConnectionState.ready ||
+        expectedRevision != _revision ||
+        _hasPendingControl) {
+      diagnostics.rejectedMessages++;
+      await _send(RemoteMessageType.boardTransformResponse, <String, Object?>{
+        'requestId': requestId,
+        'accepted': false,
+        'transformation': transformation,
+        'expectedRevision': expectedRevision,
+        'reason': expectedRevision != _revision
+            ? 'staleRevision'
+            : 'controlPending',
+      });
+      return;
+    }
+    _setIncomingControl(
+      requestId,
+      expectedRevision,
+      boardTransformation: transformation,
+    );
+    _events.add(
+      RemoteBoardTransformApprovalRequested(requestId, transformation),
+    );
+  }
+
+  Future<void> _handleBoardTransformResponse(RemoteEnvelope envelope) async {
+    final String? requestId = envelope.payload['requestId'] as String?;
+    final String? transformation =
+        envelope.payload['transformation'] as String?;
+    final bool accepted = envelope.payload['accepted'] == true;
+    final int? expectedRevision = envelope.payload['expectedRevision'] as int?;
+    if (requestId == null || requestId != _pendingControlRequestId) {
+      return;
+    }
+    if (!accepted ||
+        transformation == null ||
+        transformation != _pendingBoardTransformation ||
+        expectedRevision != _revision ||
+        envelope.revision != _revision) {
+      _completePendingControl(false);
+      return;
+    }
+    if (isHost) {
+      await _applyBoardTransformAsHost(transformation);
+      _completePendingControl(true);
+    } else {
+      _acceptedControlRequestId = requestId;
+    }
+  }
+
+  Future<void> _applyBoardTransformAsHost(String transformation) async {
+    final RemoteMatchConfig current = _config!;
+    final RemoteGameAdapter currentGame = game;
+    if (currentGame is! RemoteBoardTransformAdapter ||
+        !(currentGame as RemoteBoardTransformAdapter).supportsBoardTransform(
+          transformation,
+        )) {
+      throw FormatException(
+        'Unsupported remote board transformation: $transformation',
+      );
+    }
+    final RemoteBoardTransformAdapter transformer =
+        currentGame as RemoteBoardTransformAdapter;
+    final int nextRevision = _revision + 1;
+    final RemoteStateSnapshot transformed = transformer.transformSnapshot(
+      RemoteStateSnapshot(
+        revision: nextRevision,
+        initialFen: current.initialFen,
+        actions: List<String>.unmodifiable(_actionLog),
+        resultFen: game.fen,
+      ),
+      transformation,
+    );
+    if (transformed.revision != nextRevision) {
+      throw StateError('A board transformation changed the target revision.');
+    }
+    await game.restoreSnapshot(transformed);
+    if (game.fen != transformed.resultFen) {
+      throw StateError(
+        'Transformed snapshot replay diverged: local=${game.fen}, '
+        'expected=${transformed.resultFen}.',
+      );
+    }
+    _replaceConfigInitialFen(transformed.initialFen);
+    _actionLog
+      ..clear()
+      ..addAll(transformed.actions);
+    _revision = nextRevision;
+    diagnostics.lastRevision = _revision;
+    await _sendSnapshot();
+    _log.info(
+      'REMOTE_BOARD_TRANSFORM_APPLIED',
+      'type=$transformation revision=$_revision '
+          'actions=${_actionLog.length} fen=${_fenSummary(game.fen)}',
+    );
   }
 
   Future<void> _restartAsHost() async {
@@ -1329,6 +1526,24 @@ class RemoteMatchCoordinator implements RemoteMatchController {
     );
   }
 
+  void _replaceConfigInitialFen(String initialFen) {
+    final RemoteMatchConfig? current = _config;
+    if (current == null || current.initialFen == initialFen) {
+      return;
+    }
+    _installConfig(
+      RemoteMatchConfig(
+        sessionId: current.sessionId,
+        roundId: current.roundId,
+        ruleSchemaVersion: current.ruleSchemaVersion,
+        ruleSettings: current.ruleSettings,
+        initialFen: initialFen,
+        hostPlaysFirst: current.hostPlaysFirst,
+        clockEnabled: current.clockEnabled,
+      ),
+    );
+  }
+
   void _updateTransportLogContext({
     String? sessionId,
     String? roundId,
@@ -1382,6 +1597,7 @@ class RemoteMatchCoordinator implements RemoteMatchController {
     final Completer<bool>? completer = _pendingControl;
     _pendingControl = null;
     _pendingControlRequestId = null;
+    _pendingBoardTransformation = null;
     _acceptedControlRequestId = null;
     if (completer != null && !completer.isCompleted) {
       completer.complete(result);
@@ -1392,9 +1608,14 @@ class RemoteMatchCoordinator implements RemoteMatchController {
       (_pendingControl != null && !_pendingControl!.isCompleted) ||
       _incomingControlRequestId != null;
 
-  void _setIncomingControl(String requestId, int revision) {
+  void _setIncomingControl(
+    String requestId,
+    int revision, {
+    String? boardTransformation,
+  }) {
     _incomingControlRequestId = requestId;
     _incomingControlRevision = revision;
+    _incomingBoardTransformation = boardTransformation;
     _incomingControlTimer?.cancel();
     _incomingControlTimer = Timer(controlRequestTimeout, () {
       if (_incomingControlRequestId == requestId) {
@@ -1415,6 +1636,7 @@ class RemoteMatchCoordinator implements RemoteMatchController {
     _incomingControlTimer = null;
     _incomingControlRequestId = null;
     _incomingControlRevision = null;
+    _incomingBoardTransformation = null;
   }
 
   void _cancelReconnectDeadline() {

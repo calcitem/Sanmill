@@ -2,6 +2,7 @@
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/game_page/services/transform/transform.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_action_codec.dart';
 import 'package:sanmill/games/mill/mill_marked_pieces_codec.dart';
@@ -113,6 +114,63 @@ void main() {
       skip: _nativeLibrarySkipReason,
     );
   }
+
+  test(
+    'board transformation converts the snapshot and restores its undo history',
+    () async {
+      DB.instance = MockDB();
+      final NativeMillGameSession session = NativeMillGameSession();
+      final NativeMillRemoteGameAdapter adapter = NativeMillRemoteGameAdapter(
+        session: session,
+        transportKind: RemoteTransportKind.lan,
+        role: RemoteRole.host,
+      );
+      addTearDown(session.dispose);
+      final String initialFen = session.getFen();
+      final RemoteMatchConfig config = RemoteMatchConfig(
+        sessionId: 'transform-session',
+        roundId: 'transform-round',
+        ruleSchemaVersion: 1,
+        ruleSettings: const RuleSettings().toJson(),
+        initialFen: initialFen,
+        hostPlaysFirst: true,
+      );
+      await adapter.configure(config);
+      final String action = MillActionCodec.moveStringFrom(
+        session.legalActions.first,
+      )!;
+      expect(await adapter.applyAction(action), isTrue);
+      final String resultFen = adapter.fen;
+      final RemoteStateSnapshot transformed = adapter.transformSnapshot(
+        RemoteStateSnapshot(
+          revision: 2,
+          initialFen: initialFen,
+          actions: <String>[action],
+          resultFen: resultFen,
+        ),
+        TransformationType.rotate180.name,
+      );
+
+      expect(
+        transformed.initialFen,
+        transformFEN(initialFen, TransformationType.rotate180),
+      );
+      expect(transformed.actions, <String>[
+        transformMoveNotation(action, TransformationType.rotate180),
+      ]);
+      expect(
+        transformed.resultFen,
+        transformFEN(resultFen, TransformationType.rotate180),
+      );
+
+      await adapter.restoreSnapshot(transformed);
+
+      expect(adapter.fen, transformed.resultFen);
+      expect(session.undoDepth, 1);
+      expect(adapter.supportsBoardTransform('not-a-transformation'), isFalse);
+    },
+    skip: _nativeLibrarySkipReason,
+  );
 
   test(
     'forced winner publishes the canonical resignation reason',
