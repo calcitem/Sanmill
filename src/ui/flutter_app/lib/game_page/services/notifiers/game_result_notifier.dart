@@ -12,6 +12,7 @@ class GameResultNotifier extends ChangeNotifier {
   bool _force = false;
   GameOverReason? _reason;
   PieceColor? _winner;
+  EloRatingUpdate? _eloUpdate;
 
   // Import elo service
   final EloRatingService _eloService = EloRatingService();
@@ -30,6 +31,8 @@ class GameResultNotifier extends ChangeNotifier {
 
   /// Returns the winning player's color.
   PieceColor? get winner => _winner;
+
+  EloRatingUpdate? get eloUpdate => _eloUpdate;
 
   /// Checks if there's a game result and shows it.
   ///
@@ -95,6 +98,7 @@ class GameResultNotifier extends ChangeNotifier {
     _isVisible = false;
     _winner = null;
     _reason = null;
+    _eloUpdate = null;
     notifyListeners();
   }
 
@@ -128,7 +132,7 @@ class GameResultNotifier extends ChangeNotifier {
     }
 
     // Update the ELO ratings using the service
-    _eloService.updateStats(
+    _eloUpdate = _eloService.updateStats(
       _winner ?? PieceColor.none,
       GameController().gameInstance.gameMode,
     );

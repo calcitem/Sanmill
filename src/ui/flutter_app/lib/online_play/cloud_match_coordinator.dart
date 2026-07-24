@@ -27,6 +27,9 @@ class CloudMatchCoordinator implements RemoteMatchController {
     this.welcomeTimeout = const Duration(seconds: 12),
   }) : _session = session,
        _revision = session.snapshot.revision,
+       _firstEloRating = session.room.firstEloRating,
+       _secondEloRating = session.room.secondEloRating,
+       _hadTakeBack = session.snapshot.hadTakeBack,
        _actionLog = List<String>.of(session.snapshot.actions) {
     _socketSubscription = socket.events.listen(_onSocketEvent);
   }
@@ -61,12 +64,15 @@ class CloudMatchCoordinator implements RemoteMatchController {
   Future<void> _inboundSerial = Future<void>.value();
   Completer<void>? _welcomeCompleter;
   int _revision;
+  int? _firstEloRating;
+  int? _secondEloRating;
   int _reconnectAttempts = 0;
   bool _disposed = false;
   bool _everWelcomed = false;
   bool _resumeOnFirstWelcome = false;
   bool _reconnectLoopRunning = false;
   bool _ending = false;
+  bool _hadTakeBack;
   String? _lastInboundControlRequestId;
 
   OnlineRoomSession get roomSession => _session;
@@ -95,6 +101,16 @@ class CloudMatchCoordinator implements RemoteMatchController {
   @override
   bool get isLocalTurn =>
       isConnected && _meta != null && game.activeSeat == _meta!.localSeat;
+
+  @override
+  int? get opponentEloRating => switch (_meta?.localSeat) {
+    RemoteSeat.first => _secondEloRating,
+    RemoteSeat.second => _firstEloRating,
+    null => null,
+  };
+
+  @override
+  bool get isEloEligible => !_hadTakeBack;
 
   @override
   List<String> get actionLog => List<String>.unmodifiable(_actionLog);
@@ -279,6 +295,8 @@ class CloudMatchCoordinator implements RemoteMatchController {
       throw const FormatException('Welcome room does not match credentials.');
     }
     _session = _session.copyWith(room: room);
+    _firstEloRating = room.firstEloRating;
+    _secondEloRating = room.secondEloRating;
     _installConfiguration();
     await game.configure(_config!);
     await _applyStateMessage(message, emitReady: false);
@@ -334,6 +352,8 @@ class CloudMatchCoordinator implements RemoteMatchController {
     if (snapshot.revision < _revision) {
       return;
     }
+    _updatePlayerRatings(message['playerRatings']);
+    _hadTakeBack = snapshot.hadTakeBack;
     await game.restoreSnapshot(snapshot);
     _revision = snapshot.revision;
     _actionLog = List<String>.of(snapshot.actions);
@@ -383,6 +403,18 @@ class CloudMatchCoordinator implements RemoteMatchController {
       return;
     }
     _emitControlRequest(pending);
+  }
+
+  void _updatePlayerRatings(Object? rawRatings) {
+    if (rawRatings == null) {
+      return;
+    }
+    if (rawRatings is! Map) {
+      throw const FormatException('playerRatings must be an object.');
+    }
+    final Map<String, Object?> ratings = rawRatings.cast<String, Object?>();
+    _firstEloRating = _optionalEloRating(ratings['firstEloRating']);
+    _secondEloRating = _optionalEloRating(ratings['secondEloRating']);
   }
 
   void _emitControlRequest(Map<String, Object?> message) {
@@ -742,6 +774,16 @@ int _requiredInt(Map<String, Object?> json, String key) {
   final Object? value = json[key];
   if (value is! int || value < 0) {
     throw FormatException('$key must be a non-negative integer.');
+  }
+  return value;
+}
+
+int? _optionalEloRating(Object? value) {
+  if (value == null) {
+    return null;
+  }
+  if (value is! int || value < 100 || value > 4000) {
+    throw const FormatException('Elo rating must be between 100 and 4000.');
   }
   return value;
 }

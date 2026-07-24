@@ -23,6 +23,8 @@ import 'online_socket_client.dart';
 abstract interface class OnlineGameRegistration {
   OnlineGameDefinition get definition;
 
+  int get localEloRating;
+
   Map<String, Object?> createRuleOptions();
 
   String variantLabel(BuildContext context, Map<String, Object?> ruleOptions);
@@ -44,6 +46,9 @@ class MillOnlineGameRegistration implements OnlineGameRegistration {
 
   @override
   OnlineGameDefinition get definition => onlineMillGameDefinition;
+
+  @override
+  int get localEloRating => DB().statsSettings.humanStats.rating;
 
   @override
   Map<String, Object?> createRuleOptions() =>

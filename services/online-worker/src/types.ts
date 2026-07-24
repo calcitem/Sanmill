@@ -56,6 +56,8 @@ export interface RoomState {
   rulesetId: string;
   ruleOptions: Record<string, unknown>;
   creatorSeat: Seat;
+  creatorEloRating: number;
+  joinerEloRating: number | null;
   creatorTokenHash: string;
   joinerTokenHash: string | null;
   inviteTokenHash: string;
@@ -70,6 +72,7 @@ export interface RoomState {
   tickets: TicketRecord[];
   recentCommands: RecentCommand[];
   pendingControl: PendingControl | null;
+  hadTakeBack: boolean;
   endReason: EndReason | null;
   winnerSeat: Seat | null;
 }
@@ -114,6 +117,7 @@ export interface CreateRoomBody {
   rulesetId: string;
   ruleOptions: Record<string, unknown>;
   sidePreference: SidePreference;
+  eloRating?: number;
 }
 
 export interface JoinRoomBody {
@@ -122,4 +126,5 @@ export interface JoinRoomBody {
   inviteToken: string;
   supportedGames: string[];
   supportedRulesets: string[];
+  eloRating?: number;
 }

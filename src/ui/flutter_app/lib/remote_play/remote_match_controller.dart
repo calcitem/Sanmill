@@ -176,6 +176,10 @@ abstract interface class RemoteMatchController {
 
   bool get isLocalTurn;
 
+  int? get opponentEloRating;
+
+  bool get isEloEligible;
+
   List<String> get actionLog;
 
   Map<String, Object?> get diagnosticSnapshot;

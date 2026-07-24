@@ -97,6 +97,7 @@ class RemoteMatchCoordinator
   String? _incomingControlRequestId;
   int? _incomingControlRevision;
   String? _incomingBoardTransformation;
+  bool _hadTakeBack = false;
 
   @override
   Stream<RemoteMatchEvent> get events => _events.stream;
@@ -123,6 +124,12 @@ class RemoteMatchCoordinator
 
   @override
   bool get isLocalTurn => _meta != null && game.activeSeat == _meta!.localSeat;
+
+  @override
+  int? get opponentEloRating => _remotePeer?.eloRating;
+
+  @override
+  bool get isEloEligible => !_hadTakeBack;
 
   @override
   List<String> get actionLog => List<String>.unmodifiable(_actionLog);
@@ -159,6 +166,7 @@ class RemoteMatchCoordinator
       initialFen: initialFen,
       hostPlaysFirst: hostPlaysFirst,
     );
+    _hadTakeBack = false;
     _installConfig(config);
     _meta = RemoteSessionMeta(
       transportKind: transport.kind,
@@ -773,6 +781,7 @@ class RemoteMatchCoordinator
     );
     _actionLog.clear();
     _revision = 0;
+    _hadTakeBack = false;
     await game.configure(config);
     await _send(RemoteMessageType.ready, const <String, Object?>{
       'ack': false,
@@ -958,6 +967,7 @@ class RemoteMatchCoordinator
       initialFen: config.initialFen,
       actions: List<String>.unmodifiable(_actionLog),
       resultFen: game.fen,
+      hadTakeBack: _hadTakeBack,
     );
     await _send(
       RemoteMessageType.snapshot,
@@ -988,6 +998,7 @@ class RemoteMatchCoordinator
       );
       return;
     }
+    _hadTakeBack = snapshot.hadTakeBack;
     await game.restoreSnapshot(snapshot);
     if (game.fen != snapshot.resultFen) {
       throw StateError(
@@ -1083,6 +1094,7 @@ class RemoteMatchCoordinator
     if (steps <= 0 || steps > _actionLog.length) {
       throw RangeError.range(steps, 1, _actionLog.length, 'steps');
     }
+    _hadTakeBack = true;
     await game.undoActions(steps);
     _actionLog.removeRange(_actionLog.length - steps, _actionLog.length);
     _revision++;
@@ -1241,6 +1253,7 @@ class RemoteMatchCoordinator
         initialFen: current.initialFen,
         actions: List<String>.unmodifiable(_actionLog),
         resultFen: game.fen,
+        hadTakeBack: _hadTakeBack,
       ),
       transformation,
     );
@@ -1281,6 +1294,7 @@ class RemoteMatchCoordinator
     _installConfig(next);
     _revision = 0;
     _actionLog.clear();
+    _hadTakeBack = false;
     await game.configure(next);
     await _send(RemoteMessageType.matchConfig, next.toJson(), revision: 0);
     _setState(RemoteConnectionState.negotiating);

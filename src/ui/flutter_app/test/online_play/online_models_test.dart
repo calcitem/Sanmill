@@ -3,6 +3,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/online_play/online_models.dart';
+import 'package:sanmill/remote_play/remote_models.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
 
 void main() {
@@ -60,5 +61,26 @@ void main() {
     expect(restored.enableCustodianCapture, isTrue);
     expect(restored.boardFullAction, BoardFullAction.agreeToDraw);
     expect(restored.stalemateAction, StalemateAction.endWithStalemateDraw);
+  });
+
+  test('room descriptors preserve both players Elo ratings', () {
+    final OnlineRoomDescriptor room =
+        OnlineRoomDescriptor.fromJson(<String, Object?>{
+          'roomId': roomId,
+          'appId': onlineAppId,
+          'gameId': onlineMillGameId,
+          'rulesetId': onlineMillRulesetId,
+          'ruleOptions': onlineOptionsFromRuleSettings(const RuleSettings()),
+          'creatorSeat': RemoteSeat.first.name,
+          'status': 'active',
+          'createdAt': DateTime.utc(2026).millisecondsSinceEpoch,
+          'expiresAt': DateTime.utc(2027).millisecondsSinceEpoch,
+          'firstEloRating': 1450,
+          'secondEloRating': 1550,
+        });
+
+    expect(room.firstEloRating, 1450);
+    expect(room.secondEloRating, 1550);
+    expect(OnlineRoomDescriptor.fromJson(room.toJson()).secondEloRating, 1550);
   });
 }

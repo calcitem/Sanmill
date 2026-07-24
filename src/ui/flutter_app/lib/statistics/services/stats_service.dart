@@ -19,6 +19,27 @@ enum HumanOutcome {
   draw, // Game ends in a draw
 }
 
+enum EloRatingUpdateStatus {
+  updated,
+  takeBackUsed,
+  statisticsDisabled,
+  unavailable,
+}
+
+class EloRatingUpdate {
+  const EloRatingUpdate({
+    required this.status,
+    required this.previousRating,
+    required this.currentRating,
+  });
+
+  final EloRatingUpdateStatus status;
+  final int previousRating;
+  final int currentRating;
+
+  int get change => currentRating - previousRating;
+}
+
 /// Service class for managing ELO ratings
 class EloRatingService {
   // Singleton instance
@@ -158,21 +179,31 @@ class EloRatingService {
   }
 
   /// Updates player stats based on game outcome
-  void updateStats(PieceColor winnerColor, GameMode gameMode) {
+  EloRatingUpdate? updateStats(PieceColor winnerColor, GameMode gameMode) {
     try {
       final StatsSettings settings = DB().statsSettings;
+      final bool isRemote = _isRemoteMode(gameMode);
 
       // If stats are disabled, don't update
       if (!settings.isStatsEnabled) {
         logger.i("$_logTag Stats disabled, not updating");
-        return;
+        return isRemote
+            ? _unchangedRemoteUpdate(
+                EloRatingUpdateStatus.statisticsDisabled,
+                settings,
+              )
+            : null;
+      }
+
+      if (isRemote) {
+        return _updateRemoteStats(winnerColor, settings);
       }
 
       if (!EnvironmentConfig.devMode && GameController().disableStats == true) {
         logger.i(
           "$_logTag Stats disabled because of taking-back etc., not updating",
         );
-        return;
+        return null;
       }
 
       switch (gameMode) {
@@ -187,16 +218,9 @@ class EloRatingService {
           logger.i("$_logTag Analysis board, not updating stats");
           break;
         case GameMode.humanVsLAN:
-          // LAN games don't update stats
-          logger.i("$_logTag Human vs LAN game, not updating stats");
-          break;
         case GameMode.humanVsBluetooth:
-          logger.i("$_logTag Bluetooth match, not updating stats");
-          break;
         case GameMode.humanVsCloud:
-          // Online friend games are casual and do not update local AI ratings.
-          logger.i("$_logTag Online friend game, not updating stats");
-          break;
+          throw StateError('Remote modes must use the remote Elo path.');
         case GameMode.aiVsAi:
           // AI vs AI ratings not tracked
           logger.i("$_logTag AI vs AI game, not updating stats");
@@ -218,7 +242,135 @@ class EloRatingService {
       }
     } catch (e) {
       logger.e("$_logTag Error updating stats: $e");
+      if (_isRemoteMode(gameMode)) {
+        return _unchangedRemoteUpdate(
+          EloRatingUpdateStatus.unavailable,
+          DB().statsSettings,
+        );
+      }
     }
+    return null;
+  }
+
+  bool _isRemoteMode(GameMode mode) =>
+      mode == GameMode.humanVsLAN ||
+      mode == GameMode.humanVsBluetooth ||
+      mode == GameMode.humanVsCloud;
+
+  EloRatingUpdate _unchangedRemoteUpdate(
+    EloRatingUpdateStatus status,
+    StatsSettings settings,
+  ) {
+    return EloRatingUpdate(
+      status: status,
+      previousRating: settings.humanStats.rating,
+      currentRating: settings.humanStats.rating,
+    );
+  }
+
+  EloRatingUpdate _updateRemoteStats(
+    PieceColor winnerColor,
+    StatsSettings settings,
+  ) {
+    final GameController controller = GameController();
+    if (controller.remoteCoordinator == null) {
+      logger.i("$_logTag Remote coordinator is unavailable");
+      return _unchangedRemoteUpdate(
+        EloRatingUpdateStatus.unavailable,
+        settings,
+      );
+    }
+    if (!controller.isRemoteEloEligible) {
+      logger.i("$_logTag Remote game used a takeback, not updating Elo");
+      return _unchangedRemoteUpdate(
+        EloRatingUpdateStatus.takeBackUsed,
+        settings,
+      );
+    }
+    if (controller.disableStats) {
+      logger.i("$_logTag Remote game is not eligible for statistics");
+      return _unchangedRemoteUpdate(
+        EloRatingUpdateStatus.unavailable,
+        settings,
+      );
+    }
+
+    final int? opponentRating = controller.remoteOpponentEloRating;
+    final PieceColor localColor = controller.getLocalColor();
+    if (opponentRating == null ||
+        (localColor != PieceColor.white && localColor != PieceColor.black) ||
+        (winnerColor != PieceColor.white &&
+            winnerColor != PieceColor.black &&
+            winnerColor != PieceColor.draw)) {
+      logger.i("$_logTag Remote Elo metadata is incomplete");
+      return _unchangedRemoteUpdate(
+        EloRatingUpdateStatus.unavailable,
+        settings,
+      );
+    }
+
+    final HumanOutcome outcome = winnerColor == PieceColor.draw
+        ? HumanOutcome.draw
+        : winnerColor == localColor
+        ? HumanOutcome.playerWin
+        : HumanOutcome.opponentWin;
+    final PlayerStats current = settings.humanStats;
+    final (int calculatedRating, _) = calculateNewRatings(
+      current.rating,
+      opponentRating,
+      outcome,
+      current.gamesPlayed,
+    );
+    final int nextRating = calculatedRating < 100
+        ? 100
+        : calculatedRating > 4000
+        ? 4000
+        : calculatedRating;
+    final bool playsWhite = localColor == PieceColor.white;
+    final PlayerStats updated = current.copyWith(
+      rating: nextRating,
+      gamesPlayed: current.gamesPlayed + 1,
+      wins: outcome == HumanOutcome.playerWin ? current.wins + 1 : current.wins,
+      losses: outcome == HumanOutcome.opponentWin
+          ? current.losses + 1
+          : current.losses,
+      draws: outcome == HumanOutcome.draw ? current.draws + 1 : current.draws,
+      lastUpdated: DateTime.now(),
+      whiteGamesPlayed: playsWhite
+          ? current.whiteGamesPlayed + 1
+          : current.whiteGamesPlayed,
+      whiteWins: playsWhite && outcome == HumanOutcome.playerWin
+          ? current.whiteWins + 1
+          : current.whiteWins,
+      whiteLosses: playsWhite && outcome == HumanOutcome.opponentWin
+          ? current.whiteLosses + 1
+          : current.whiteLosses,
+      whiteDraws: playsWhite && outcome == HumanOutcome.draw
+          ? current.whiteDraws + 1
+          : current.whiteDraws,
+      blackGamesPlayed: !playsWhite
+          ? current.blackGamesPlayed + 1
+          : current.blackGamesPlayed,
+      blackWins: !playsWhite && outcome == HumanOutcome.playerWin
+          ? current.blackWins + 1
+          : current.blackWins,
+      blackLosses: !playsWhite && outcome == HumanOutcome.opponentWin
+          ? current.blackLosses + 1
+          : current.blackLosses,
+      blackDraws: !playsWhite && outcome == HumanOutcome.draw
+          ? current.blackDraws + 1
+          : current.blackDraws,
+    );
+    DB().statsSettings = settings.copyWith(humanStats: updated);
+    logger.i(
+      "$_logTag Updated remote Elo: ${current.rating} -> $nextRating "
+      "(opponent=$opponentRating, outcome=${outcome.name})",
+    );
+    return EloRatingUpdate(
+      status: EloRatingUpdateStatus.updated,
+      previousRating: current.rating,
+      currentRating: nextRating,
+    );
   }
 
   /// Updates stats for Human vs AI games

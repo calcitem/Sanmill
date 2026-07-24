@@ -259,6 +259,8 @@ export class GameRoom extends DurableObject<Env> {
       rulesetId: body.rulesetId,
       ruleOptions: body.ruleOptions,
       creatorSeat,
+      creatorEloRating: body.eloRating ?? 1400,
+      joinerEloRating: null,
       creatorTokenHash: await tokenHash(creatorToken),
       joinerTokenHash: null,
       inviteTokenHash: await tokenHash(inviteToken),
@@ -273,6 +275,7 @@ export class GameRoom extends DurableObject<Env> {
       tickets: [],
       recentCommands: [],
       pendingControl: null,
+      hadTakeBack: false,
       endReason: null,
       winnerSeat: null,
     };
@@ -297,7 +300,8 @@ export class GameRoom extends DurableObject<Env> {
       typeof body.inviteToken !== "string" ||
       !validSecretToken(body.inviteToken) ||
       !Array.isArray(body.supportedGames) ||
-      !Array.isArray(body.supportedRulesets)
+      !Array.isArray(body.supportedRulesets) ||
+      (body.eloRating !== undefined && !validEloRating(body.eloRating))
     ) {
       return protocolError(400, "invalid_invite");
     }
@@ -337,6 +341,7 @@ export class GameRoom extends DurableObject<Env> {
     const seatToken = randomToken(32);
     const seat = opposite(state.creatorSeat);
     state.joinerTokenHash = await tokenHash(seatToken);
+    state.joinerEloRating = body.eloRating ?? 1400;
     state.inviteUsed = true;
     state.status = "active";
     state.seq += 1;
@@ -652,10 +657,12 @@ export class GameRoom extends DurableObject<Env> {
       state.actions.splice(state.actions.length - steps, steps);
       state.position = this.replayActions(state);
       state.status = "active";
+      state.hadTakeBack = true;
     } else if (accepted && kind === "restart") {
       state.actions = [];
       state.position = this.replayActions(state);
       state.status = "active";
+      state.hadTakeBack = false;
     }
     state.pendingControl = null;
     state.seq += 1;
@@ -709,7 +716,18 @@ export class GameRoom extends DurableObject<Env> {
         "SELECT json FROM room_state WHERE singleton = 1",
       ),
     ];
-    return rows.length === 0 ? null : (JSON.parse(rows[0].json) as RoomState);
+    if (rows.length === 0) {
+      return null;
+    }
+    const state = JSON.parse(rows[0].json) as RoomState;
+    state.creatorEloRating = validEloRating(state.creatorEloRating)
+      ? state.creatorEloRating
+      : 1400;
+    state.joinerEloRating = validEloRating(state.joinerEloRating)
+      ? state.joinerEloRating
+      : null;
+    state.hadTakeBack = state.hadTakeBack === true;
+    return state;
   }
 
   private persistState(state: RoomState): void {
@@ -769,6 +787,7 @@ export class GameRoom extends DurableObject<Env> {
       rulesetId: state.rulesetId,
       ruleOptions: state.ruleOptions,
       creatorSeat: state.creatorSeat,
+      ...this.playerRatings(state),
       status: state.status,
       createdAt: state.createdAt,
       expiresAt: state.expiresAt,
@@ -784,6 +803,7 @@ export class GameRoom extends DurableObject<Env> {
       actions: state.actions,
       resultFen: state.position.fen,
       outcome: state.position.outcome,
+      hadTakeBack: state.hadTakeBack,
     };
   }
 
@@ -797,8 +817,21 @@ export class GameRoom extends DurableObject<Env> {
       status: state.status,
       ...(commandId === undefined ? {} : { commandId }),
       pendingControl: state.pendingControl,
+      playerRatings: this.playerRatings(state),
       snapshot: this.snapshot(state),
     };
+  }
+
+  private playerRatings(state: RoomState): Record<string, number | null> {
+    return state.creatorSeat === "first"
+      ? {
+          firstEloRating: state.creatorEloRating,
+          secondEloRating: state.joinerEloRating,
+        }
+      : {
+          firstEloRating: state.joinerEloRating,
+          secondEloRating: state.creatorEloRating,
+        };
   }
 
   private sendError(
@@ -874,7 +907,17 @@ function validCreateBody(value: CreateRoomBody): boolean {
     value.ruleOptions !== null &&
     typeof value.ruleOptions === "object" &&
     !Array.isArray(value.ruleOptions) &&
-    ["first", "second", "random"].includes(value.sidePreference)
+    ["first", "second", "random"].includes(value.sidePreference) &&
+    (value.eloRating === undefined || validEloRating(value.eloRating))
+  );
+}
+
+function validEloRating(value: unknown): value is number {
+  return (
+    typeof value === "number" &&
+    Number.isInteger(value) &&
+    value >= 100 &&
+    value <= 4000
   );
 }
 

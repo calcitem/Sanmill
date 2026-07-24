@@ -13,7 +13,8 @@ import 'remote_models.dart';
 abstract final class RemotePeerIdentity {
   static const Uuid _uuid = Uuid();
 
-  static Future<RemotePeerInfo> create() async {
+  static Future<RemotePeerInfo> create({required int eloRating}) async {
+    assert(eloRating >= 100 && eloRating <= 4000);
     final (BaseDeviceInfo device, PackageInfo package) = await (
       DeviceInfoPlugin().deviceInfo,
       PackageInfo.fromPlatform(),
@@ -30,6 +31,7 @@ abstract final class RemotePeerIdentity {
       platform: defaultTargetPlatform.name,
       appVersion: package.version,
       appBuild: package.buildNumber,
+      eloRating: eloRating,
     );
   }
 

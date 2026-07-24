@@ -4268,7 +4268,8 @@ class PlayAreaState extends State<PlayArea> {
           final bool showContextualTip =
               isPlayableGame &&
               _supportsGameTips &&
-              DB().generalSettings.showGameTips;
+              (DB().generalSettings.showGameTips ||
+                  GameController().isRemoteGameMode);
           final Widget topTable = showContextualTip
               ? const GameHeader(key: Key('play_area_game_header'))
               : const SizedBox.shrink(key: Key('play_area_game_header_hidden'));
@@ -4816,7 +4817,8 @@ class PlayAreaState extends State<PlayArea> {
                             ),
                           ),
                           if (_supportsGameTips &&
-                              DB().generalSettings.showGameTips)
+                              (DB().generalSettings.showGameTips ||
+                                  GameController().isRemoteGameMode))
                             const GameHeader(
                               key: Key('play_area_regular_landscape_header'),
                             ),

@@ -96,6 +96,8 @@ class OnlineRoomDescriptor {
     required this.status,
     required this.createdAt,
     required this.expiresAt,
+    this.firstEloRating,
+    this.secondEloRating,
     this.endReason,
     this.winnerSeat,
   });
@@ -121,6 +123,8 @@ class OnlineRoomDescriptor {
         _requiredInt(json, 'expiresAt'),
         isUtc: true,
       ),
+      firstEloRating: _optionalEloRating(json['firstEloRating']),
+      secondEloRating: _optionalEloRating(json['secondEloRating']),
       endReason: json['endReason'] as String?,
       winnerSeat: json['winnerSeat'] == null ? null : _seat(json['winnerSeat']),
     );
@@ -135,6 +139,8 @@ class OnlineRoomDescriptor {
   final String status;
   final DateTime createdAt;
   final DateTime expiresAt;
+  final int? firstEloRating;
+  final int? secondEloRating;
   final String? endReason;
   final RemoteSeat? winnerSeat;
 
@@ -152,6 +158,8 @@ class OnlineRoomDescriptor {
       status: status ?? this.status,
       createdAt: createdAt,
       expiresAt: expiresAt,
+      firstEloRating: firstEloRating,
+      secondEloRating: secondEloRating,
       endReason: endReason,
       winnerSeat: winnerSeat,
     );
@@ -167,6 +175,8 @@ class OnlineRoomDescriptor {
     'status': status,
     'createdAt': createdAt.millisecondsSinceEpoch,
     'expiresAt': expiresAt.millisecondsSinceEpoch,
+    if (firstEloRating != null) 'firstEloRating': firstEloRating,
+    if (secondEloRating != null) 'secondEloRating': secondEloRating,
     if (endReason != null) 'endReason': endReason,
     if (winnerSeat != null) 'winnerSeat': winnerSeat!.name,
   };
@@ -482,6 +492,16 @@ int _requiredInt(Map<String, Object?> json, String key) {
   final Object? value = json[key];
   if (value is! int || value < 0) {
     throw FormatException('$key must be a non-negative integer.');
+  }
+  return value;
+}
+
+int? _optionalEloRating(Object? value) {
+  if (value == null) {
+    return null;
+  }
+  if (value is! int || value < 100 || value > 4000) {
+    throw const FormatException('Elo rating must be between 100 and 4000.');
   }
   return value;
 }

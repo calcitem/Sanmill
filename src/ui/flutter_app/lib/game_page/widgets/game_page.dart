@@ -52,6 +52,7 @@ import '../../shared/widgets/lichess_bottom_bar.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../src/rust/api/simple.dart' as tgf;
 import '../../statistics/model/stats_settings.dart';
+import '../../statistics/services/stats_service.dart';
 // Voice assistant functionality disabled
 // import '../../voice_assistant/widgets/voice_button.dart';
 import '../services/analysis/analysis_service.dart';

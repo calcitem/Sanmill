@@ -7001,5 +7001,49 @@
     "lanRecommendedAddress": "推荐",
     "@lanRecommendedAddress": {
         "description": "Badge for the most likely usable local IP address when several LAN candidates are available"
+    },
+    "remoteEloChanged": "等级分：{previousRating} → {currentRating}（{change}）",
+    "@remoteEloChanged": {
+        "description": "Remote match result summary showing the local player's Elo change",
+        "placeholders": {
+            "previousRating": {
+                "description": "The local player's Elo before the match",
+                "type": "int"
+            },
+            "currentRating": {
+                "description": "The local player's Elo after the match",
+                "type": "int"
+            },
+            "change": {
+                "description": "Signed Elo change such as +20 or -16",
+                "type": "String"
+            }
+        }
+    },
+    "remoteEloUnchangedAfterTakeBack": "本局发生过悔棋，等级分不变。",
+    "@remoteEloUnchangedAfterTakeBack": {
+        "description": "Remote result explanation when an accepted takeback makes the game unrated"
+    },
+    "remoteEloUnchangedStatisticsDisabled": "统计功能已关闭，等级分不变。",
+    "@remoteEloUnchangedStatisticsDisabled": {
+        "description": "Remote result explanation when statistics are disabled"
+    },
+    "remoteEloUnavailable": "未能获取对手的等级分，本局未更新等级分。",
+    "@remoteEloUnavailable": {
+        "description": "Remote result explanation when rating metadata is unavailable"
+    },
+    "remotePlayerElo": "{player}：等级分 {rating}",
+    "@remotePlayerElo": {
+        "description": "A remote player's side label and Elo shown during a game",
+        "placeholders": {
+            "player": {
+                "description": "Localized player or side label",
+                "type": "String"
+            },
+            "rating": {
+                "description": "The player's current Elo",
+                "type": "int"
+            }
+        }
     }
 }

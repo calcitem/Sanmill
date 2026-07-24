@@ -69,6 +69,10 @@ void main() {
         hostReady,
         joinReady,
       ]).timeout(const Duration(seconds: 2));
+      expect(host.opponentEloRating, 1550);
+      expect(join.opponentEloRating, 1450);
+      expect(host.isEloEligible, isTrue);
+      expect(join.isEloEligible, isTrue);
 
       expect(await host.submitLocalAction('a1'), isTrue);
       await _eventLoop();
@@ -95,6 +99,8 @@ void main() {
         accepted: false,
       );
       expect(await ownTurnRequest, isFalse);
+      expect(host.isEloEligible, isTrue);
+      expect(join.isEloEligible, isTrue);
 
       expect(await join.submitLocalAction('b2'), isTrue);
       await _eventLoop();
@@ -120,6 +126,8 @@ void main() {
       await _eventLoop();
       expect(hostGame.fen, 'start|a1');
       expect(joinGame.fen, hostGame.fen);
+      expect(host.isEloEligible, isFalse);
+      expect(join.isEloEligible, isFalse);
     },
   );
 
@@ -505,6 +513,8 @@ void main() {
       });
       expect(pair.host.meta!.localSeat, RemoteSeat.second);
       expect(pair.join.meta!.localSeat, RemoteSeat.first);
+      expect(pair.host.isEloEligible, isTrue);
+      expect(pair.join.isEloEligible, isTrue);
 
       final Future<RemoteOpponentResigned> resignation = pair.host.events
           .where((RemoteMatchEvent event) => event is RemoteOpponentResigned)
@@ -755,6 +765,7 @@ RemotePeerInfo _peer(String id) {
     platform: 'test',
     appVersion: '1.0.0',
     appBuild: '1',
+    eloRating: id == 'host' ? 1450 : 1550,
   );
 }
 
@@ -822,6 +833,7 @@ class _FakeGame implements RemoteGameAdapter, RemoteBoardTransformAdapter {
       initialFen: initialFen,
       actions: actions,
       resultFen: <String>[initialFen, ...actions].join('|'),
+      hadTakeBack: snapshot.hadTakeBack,
     );
   }
 

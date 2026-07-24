@@ -25,28 +25,36 @@ class _GameHeaderState extends State<GameHeader> {
       animation: Listenable.merge(<Listenable>[
         controller.headerTipNotifier,
         controller.headerIconsNotifier,
+        controller.gameResultNotifier,
+        if (controller.remoteCoordinator != null)
+          controller.remoteCoordinator!.stateNotifier,
       ]),
       builder: (BuildContext context, Widget? child) {
-        if (!DB().generalSettings.showGameTips) {
+        final bool showGameTips = DB().generalSettings.showGameTips;
+        if (!showGameTips && !controller.isRemoteGameMode) {
           return const SizedBox.shrink(key: Key('game_header_hidden'));
         }
 
         final PieceColor side =
             controller.activeSessionSideToMove ??
             controller.activeBoardView.sideToMove;
-        final String playerLabel = switch (side) {
-          PieceColor.white => S.of(context).white,
-          PieceColor.black => S.of(context).black,
-          _ => S.of(context).none,
-        };
+        final String playerLabel = showGameTips
+            ? switch (side) {
+                PieceColor.white => S.of(context).white,
+                PieceColor.black => S.of(context).black,
+                _ => S.of(context).none,
+              }
+            : '';
         final NativeMillGameSession? session =
             controller.activeNativeMillSession;
-        final String message = controller.headerTipNotifier.message.isEmpty
-            ? session == null
-                  ? S.of(context).welcome
-                  : controller.nativeSessionTurnTip(context, session) ??
-                        S.of(context).welcome
-            : controller.headerTipNotifier.message;
+        final String message = showGameTips
+            ? controller.headerTipNotifier.message.isEmpty
+                  ? session == null
+                        ? S.of(context).welcome
+                        : controller.nativeSessionTurnTip(context, session) ??
+                              S.of(context).welcome
+                  : controller.headerTipNotifier.message
+            : '';
         return SizedBox(
           key: const Key('game_header_contextual_row'),
           height: widget.preferredSize.height,
@@ -55,28 +63,42 @@ class _GameHeaderState extends State<GameHeader> {
             padding: const EdgeInsets.fromLTRB(12, 4, 12, AppTheme.boardMargin),
             child: Row(
               children: <Widget>[
-                Semantics(
-                  image: true,
-                  label: playerLabel,
-                  child: ExcludeSemantics(
-                    child: SizedBox.square(
-                      dimension: 44,
-                      child: Icon(
-                        _activePlayerIcon(controller, side),
-                        key: const Key('game_header_active_player_avatar'),
-                        size: 32,
-                        color: DB().colorSettings.messageColor,
+                if (showGameTips) ...<Widget>[
+                  Semantics(
+                    image: true,
+                    label: playerLabel,
+                    child: ExcludeSemantics(
+                      child: SizedBox.square(
+                        dimension: 44,
+                        child: Icon(
+                          _activePlayerIcon(controller, side),
+                          key: const Key('game_header_active_player_avatar'),
+                          size: 32,
+                          color: DB().colorSettings.messageColor,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: GameTipBubble(
-                    key: const Key('game_header_contextual_tip'),
-                    message: message,
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: GameTipBubble(
+                      key: const Key('game_header_contextual_tip'),
+                      message: message,
+                    ),
                   ),
-                ),
+                ],
+                if (controller.isRemoteGameMode) ...<Widget>[
+                  if (showGameTips) const SizedBox(width: 8),
+                  if (showGameTips)
+                    _RemoteEloSummary(controller: controller)
+                  else
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: _RemoteEloSummary(controller: controller),
+                      ),
+                    ),
+                ],
               ],
             ),
           ),
@@ -108,6 +130,78 @@ class _GameHeaderState extends State<GameHeader> {
       return FluentIcons.bot_24_filled;
     }
     return FluentIcons.person_24_filled;
+  }
+}
+
+class _RemoteEloSummary extends StatelessWidget {
+  const _RemoteEloSummary({required this.controller});
+
+  final GameController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final int localRating = DB().statsSettings.humanStats.rating;
+    final int? opponentRating = controller.remoteOpponentEloRating;
+    final PieceColor localColor = controller.getLocalColor();
+    final int? whiteRating = switch (localColor) {
+      PieceColor.white => localRating,
+      PieceColor.black => opponentRating,
+      _ => null,
+    };
+    final int? blackRating = switch (localColor) {
+      PieceColor.white => opponentRating,
+      PieceColor.black => localRating,
+      _ => null,
+    };
+    final List<String> ratingLines = <String>[
+      if (whiteRating != null)
+        S.of(context).remotePlayerElo(S.of(context).white, whiteRating),
+      if (blackRating != null)
+        S.of(context).remotePlayerElo(S.of(context).black, blackRating),
+    ];
+    if (ratingLines.isEmpty) {
+      return const SizedBox.shrink(key: Key('game_header_remote_elo_hidden'));
+    }
+
+    final TextStyle style =
+        Theme.of(context).textTheme.bodyMedium?.copyWith(
+          color: DB().colorSettings.messageColor,
+          fontWeight: FontWeight.w600,
+          height: 1.15,
+        ) ??
+        TextStyle(
+          color: DB().colorSettings.messageColor,
+          fontWeight: FontWeight.w600,
+          height: 1.15,
+        );
+    return Semantics(
+      key: const Key('game_header_remote_elo'),
+      container: true,
+      label: ratingLines.join(', '),
+      child: ExcludeSemantics(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 160),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              for (int i = 0; i < ratingLines.length; i++)
+                Text(
+                  ratingLines[i],
+                  key: Key(
+                    i == 0
+                        ? 'game_header_remote_elo_first'
+                        : 'game_header_remote_elo_second',
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: style,
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 

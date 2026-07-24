@@ -74,6 +74,13 @@ class GameResultAlertDialog extends StatelessWidget {
         reason?.getName(context, winner) ?? S.of(context).gameOverUnknownReason;
 
     final StringBuffer content = StringBuffer(reasonText);
+    final String? remoteEloSummary = _remoteEloSummary(context);
+    if (remoteEloSummary != null) {
+      content
+        ..writeln()
+        ..writeln()
+        ..write(remoteEloSummary);
+    }
 
     logger.t("$_logTag Game over reason string: $content");
 
@@ -257,6 +264,33 @@ class GameResultAlertDialog extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String? _remoteEloSummary(BuildContext context) {
+    final GameController controller = GameController();
+    if (!controller.isRemoteGameMode) {
+      return null;
+    }
+    final EloRatingUpdate? update = controller.gameResultNotifier.eloUpdate;
+    if (update == null) {
+      return null;
+    }
+
+    return switch (update.status) {
+      EloRatingUpdateStatus.updated =>
+        S
+            .of(context)
+            .remoteEloChanged(
+              update.previousRating,
+              update.currentRating,
+              update.change > 0 ? '+${update.change}' : '${update.change}',
+            ),
+      EloRatingUpdateStatus.takeBackUsed =>
+        S.of(context).remoteEloUnchangedAfterTakeBack,
+      EloRatingUpdateStatus.statisticsDisabled =>
+        S.of(context).remoteEloUnchangedStatisticsDisabled,
+      EloRatingUpdateStatus.unavailable => S.of(context).remoteEloUnavailable,
+    };
   }
 
   Widget _buildPrioritizedActions({

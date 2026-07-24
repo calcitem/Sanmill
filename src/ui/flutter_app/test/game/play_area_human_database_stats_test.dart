@@ -8759,6 +8759,12 @@ class _MenuRemoteController implements RemoteMatchController {
   bool get isConnected => true;
 
   @override
+  int? get opponentEloRating => 1500;
+
+  @override
+  bool get isEloEligible => true;
+
+  @override
   Map<String, Object?> get diagnosticSnapshot => const <String, Object?>{};
 
   @override

@@ -125,6 +125,9 @@ describe("online worker", () => {
     expect(wrongRules.status).toBe(409);
     expect(await wrongRules.json()).toMatchObject({ error: "version_mismatch" });
 
+    const wrongElo = await joinRoom(created, { eloRating: 99 });
+    expect(wrongElo.status).toBe(400);
+
     expect((await joinRoom(created)).status).toBe(200);
   });
 
@@ -162,6 +165,15 @@ describe("online worker", () => {
       type: "welcome",
       seat: "first",
       opponentConnected: false,
+      room: {
+        firstEloRating: 1450,
+        secondEloRating: 1550,
+      },
+      playerRatings: {
+        firstEloRating: 1450,
+        secondEloRating: 1550,
+      },
+      snapshot: { hadTakeBack: false },
     });
 
     const reused = await SELF.fetch(
@@ -178,6 +190,10 @@ describe("online worker", () => {
       type: "welcome",
       seat: "second",
       opponentConnected: true,
+      playerRatings: {
+        firstEloRating: 1450,
+        secondEloRating: 1550,
+      },
     });
     await expect(hostPeerConnected).resolves.toMatchObject({
       type: "opponentConnection",
@@ -303,11 +319,12 @@ describe("online worker", () => {
       type: "controlResult",
       accepted: true,
       seq: 4,
-      snapshot: { actions: [] },
+      snapshot: { actions: [], hadTakeBack: true },
     });
     await expect(joinResult).resolves.toMatchObject({
       type: "controlResult",
       seq: 4,
+      snapshot: { hadTakeBack: true },
     });
 
     const hostEnded = nextMessage(host.socket);
@@ -330,6 +347,7 @@ describe("online worker", () => {
         endReason: "resign",
         winnerSeat: "second",
       },
+      snapshot: { hadTakeBack: true },
     });
   });
 
@@ -400,6 +418,7 @@ async function createRoom(sidePreference: "first" | "second" | "random") {
       rulesetId: "custom-v1",
       ruleOptions: defaultOptions,
       sidePreference,
+      eloRating: 1450,
     }),
   });
   expect(response.status).toBe(201);
@@ -414,6 +433,7 @@ function joinRoom(
     inviteToken: string;
     supportedGames: string[];
     supportedRulesets: string[];
+    eloRating: number;
   }> = {},
 ): Promise<Response> {
   const roomId = created.room.roomId as string;
@@ -426,6 +446,7 @@ function joinRoom(
       inviteToken: created.inviteToken,
       supportedGames: ["mill"],
       supportedRulesets: ["custom-v1"],
+      eloRating: 1550,
       ...overrides,
     }),
   });

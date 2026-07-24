@@ -141,6 +141,7 @@ class NativeMillRemoteGameAdapter
           .map((String action) => transformMoveNotation(action, type))
           .toList(growable: false),
       resultFen: transformFEN(snapshot.resultFen, type),
+      hadTakeBack: snapshot.hadTakeBack,
     );
   }
 

@@ -7068,5 +7068,49 @@
     "lanRecommendedAddress": "Recommended",
     "@lanRecommendedAddress": {
         "description": "Badge for the most likely usable local IP address when several LAN candidates are available"
+    },
+    "remoteEloChanged": "Elo: {previousRating} → {currentRating} ({change})",
+    "@remoteEloChanged": {
+        "description": "Remote match result summary showing the local player's Elo change",
+        "placeholders": {
+            "previousRating": {
+                "description": "The local player's Elo before the match",
+                "type": "int"
+            },
+            "currentRating": {
+                "description": "The local player's Elo after the match",
+                "type": "int"
+            },
+            "change": {
+                "description": "Signed Elo change such as +20 or -16",
+                "type": "String"
+            }
+        }
+    },
+    "remoteEloUnchangedAfterTakeBack": "Elo unchanged because this game included a takeback.",
+    "@remoteEloUnchangedAfterTakeBack": {
+        "description": "Remote result explanation when an accepted takeback makes the game unrated"
+    },
+    "remoteEloUnchangedStatisticsDisabled": "Elo unchanged because statistics are disabled.",
+    "@remoteEloUnchangedStatisticsDisabled": {
+        "description": "Remote result explanation when statistics are disabled"
+    },
+    "remoteEloUnavailable": "Elo was not updated because the opponent's rating was unavailable.",
+    "@remoteEloUnavailable": {
+        "description": "Remote result explanation when rating metadata is unavailable"
+    },
+    "remotePlayerElo": "{player}: {rating} Elo",
+    "@remotePlayerElo": {
+        "description": "A remote player's side label and Elo shown during a game",
+        "placeholders": {
+            "player": {
+                "description": "Localized player or side label",
+                "type": "String"
+            },
+            "rating": {
+                "description": "The player's current Elo",
+                "type": "int"
+            }
+        }
     }
 }

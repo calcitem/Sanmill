@@ -14,9 +14,13 @@ abstract interface class OnlineRoomApi {
   Future<OnlineRoomSession> createRoom({
     required Map<String, Object?> ruleOptions,
     required OnlineSidePreference sidePreference,
+    required int eloRating,
   });
 
-  Future<OnlineRoomSession> joinRoom(OnlineInvite invite);
+  Future<OnlineRoomSession> joinRoom(
+    OnlineInvite invite, {
+    required int eloRating,
+  });
 
   Future<String> issueTicket(OnlineRoomSession session);
 
@@ -50,7 +54,9 @@ class HttpOnlineRoomApi implements OnlineRoomApi {
   Future<OnlineRoomSession> createRoom({
     required Map<String, Object?> ruleOptions,
     required OnlineSidePreference sidePreference,
+    required int eloRating,
   }) async {
+    assert(eloRating >= 100 && eloRating <= 4000);
     final Map<String, Object?> body = <String, Object?>{
       'protocolVersion': onlineProtocolVersion,
       'appId': definition.appId,
@@ -58,6 +64,7 @@ class HttpOnlineRoomApi implements OnlineRoomApi {
       'rulesetId': definition.rulesetId,
       'ruleOptions': ruleOptions,
       'sidePreference': sidePreference.name,
+      'eloRating': eloRating,
     };
     final Map<String, Object?> json = await _requestJson(
       'POST',
@@ -73,7 +80,11 @@ class HttpOnlineRoomApi implements OnlineRoomApi {
   }
 
   @override
-  Future<OnlineRoomSession> joinRoom(OnlineInvite invite) async {
+  Future<OnlineRoomSession> joinRoom(
+    OnlineInvite invite, {
+    required int eloRating,
+  }) async {
+    assert(eloRating >= 100 && eloRating <= 4000);
     final Map<String, Object?> json = await _requestJson(
       'POST',
       service.resolve('/v1/rooms/${invite.roomId}/join'),
@@ -83,6 +94,7 @@ class HttpOnlineRoomApi implements OnlineRoomApi {
         'inviteToken': invite.inviteToken,
         'supportedGames': <String>[definition.gameId],
         'supportedRulesets': <String>[definition.rulesetId],
+        'eloRating': eloRating,
       },
     );
     return OnlineRoomSession.fromResponse(

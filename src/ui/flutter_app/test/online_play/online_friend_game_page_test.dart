@@ -526,6 +526,7 @@ class _UnusedApi implements OnlineRoomApi {
   Future<OnlineRoomSession> createRoom({
     required Map<String, Object?> ruleOptions,
     required OnlineSidePreference sidePreference,
+    required int eloRating,
   }) async {
     createCalls += 1;
     final OnlineFailure? failure = createFailure;
@@ -542,8 +543,10 @@ class _UnusedApi implements OnlineRoomApi {
   Future<String> issueTicket(OnlineRoomSession session) async => 'ticket';
 
   @override
-  Future<OnlineRoomSession> joinRoom(OnlineInvite invite) =>
-      throw UnimplementedError();
+  Future<OnlineRoomSession> joinRoom(
+    OnlineInvite invite, {
+    required int eloRating,
+  }) => throw UnimplementedError();
 }
 
 class _TestRegistration implements OnlineGameRegistration {
@@ -551,6 +554,9 @@ class _TestRegistration implements OnlineGameRegistration {
 
   @override
   OnlineGameDefinition get definition => onlineMillGameDefinition;
+
+  @override
+  int get localEloRating => 1400;
 
   @override
   Map<String, Object?> createRuleOptions() =>

@@ -47,6 +47,7 @@ class RemotePeerInfo {
     required this.platform,
     required this.appVersion,
     required this.appBuild,
+    this.eloRating,
   });
 
   factory RemotePeerInfo.fromJson(Map<String, Object?> json) {
@@ -56,6 +57,7 @@ class RemotePeerInfo {
       platform: _requiredString(json, 'platform'),
       appVersion: _requiredString(json, 'appVersion'),
       appBuild: _requiredString(json, 'appBuild'),
+      eloRating: _optionalEloRating(json['eloRating']),
     );
   }
 
@@ -64,8 +66,20 @@ class RemotePeerInfo {
   final String platform;
   final String appVersion;
   final String appBuild;
+  final int? eloRating;
 
   String get shortId => peerId.length <= 8 ? peerId : peerId.substring(0, 8);
+
+  RemotePeerInfo copyWith({int? eloRating}) {
+    return RemotePeerInfo(
+      peerId: peerId,
+      label: label,
+      platform: platform,
+      appVersion: appVersion,
+      appBuild: appBuild,
+      eloRating: eloRating ?? this.eloRating,
+    );
+  }
 
   Map<String, Object?> toJson() => <String, Object?>{
     'peerId': peerId,
@@ -73,6 +87,7 @@ class RemotePeerInfo {
     'platform': platform,
     'appVersion': appVersion,
     'appBuild': appBuild,
+    if (eloRating != null) 'eloRating': eloRating,
   };
 }
 
@@ -156,6 +171,7 @@ class RemoteStateSnapshot {
     required this.initialFen,
     required this.actions,
     required this.resultFen,
+    this.hadTakeBack = false,
   });
 
   factory RemoteStateSnapshot.fromJson(Map<String, Object?> json) {
@@ -168,6 +184,7 @@ class RemoteStateSnapshot {
       initialFen: _requiredString(json, 'initialFen'),
       actions: rawActions.cast<String>(),
       resultFen: _requiredString(json, 'resultFen'),
+      hadTakeBack: json['hadTakeBack'] == true,
     );
   }
 
@@ -175,13 +192,25 @@ class RemoteStateSnapshot {
   final String initialFen;
   final List<String> actions;
   final String resultFen;
+  final bool hadTakeBack;
 
   Map<String, Object?> toJson() => <String, Object?>{
     'revision': revision,
     'initialFen': initialFen,
     'actions': actions,
     'resultFen': resultFen,
+    'hadTakeBack': hadTakeBack,
   };
+}
+
+int? _optionalEloRating(Object? value) {
+  if (value == null) {
+    return null;
+  }
+  if (value is! int || value < 100 || value > 4000) {
+    throw const FormatException('eloRating must be between 100 and 4000.');
+  }
+  return value;
 }
 
 String _requiredString(Map<String, Object?> json, String key) {

@@ -1084,6 +1084,10 @@ class GameController {
 
   bool get isRemoteConnected => remoteCoordinator?.isConnected ?? false;
 
+  int? get remoteOpponentEloRating => remoteCoordinator?.opponentEloRating;
+
+  bool get isRemoteEloEligible => remoteCoordinator?.isEloEligible ?? false;
+
   bool get supportsRemoteBoardTransform =>
       remoteCoordinator is RemoteBoardTransformController;
 
@@ -1163,7 +1167,9 @@ class GameController {
     final RemoteMatchCoordinator coordinator = RemoteMatchCoordinator(
       transport: transport,
       game: adapter,
-      localPeer: await RemotePeerIdentity.create(),
+      localPeer: await RemotePeerIdentity.create(
+        eloRating: DB().statsSettings.humanStats.rating,
+      ),
     );
     remoteCoordinator = coordinator;
     _remoteMatchSubscription = coordinator.events.listen(_onRemoteMatchEvent);

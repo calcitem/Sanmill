@@ -232,6 +232,7 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
       session = await api.createRoom(
         ruleOptions: widget.registration.createRuleOptions(),
         sidePreference: side,
+        eloRating: widget.registration.localEloRating,
       );
     } on OnlineApiException catch (error) {
       if (error.failure == OnlineFailure.serviceUnavailable) {
@@ -279,7 +280,10 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
       _failure = null;
     });
     try {
-      final OnlineRoomSession session = await api.joinRoom(invite);
+      final OnlineRoomSession session = await api.joinRoom(
+        invite,
+        eloRating: widget.registration.localEloRating,
+      );
       if (!mounted) {
         return;
       }

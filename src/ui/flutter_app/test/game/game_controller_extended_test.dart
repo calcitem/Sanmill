@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/transform/transform.dart';
+import 'package:sanmill/game_page/widgets/game_page.dart';
 import 'package:sanmill/game_platform/game_id.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/games/mill/mill_remote_session_meta.dart';
@@ -26,6 +27,8 @@ import 'package:sanmill/shared/config/constants.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
 import 'package:sanmill/shared/widgets/snackbars/scaffold_messenger.dart';
+import 'package:sanmill/statistics/model/stats_settings.dart';
+import 'package:sanmill/statistics/services/stats_service.dart';
 
 import '../helpers/mocks/mock_animation_manager.dart';
 import '../helpers/mocks/mock_audios.dart';
@@ -946,6 +949,160 @@ void main() {
       expect(controller.remoteCoordinator, isNull);
     });
   });
+
+  group('remote Elo settlement', () {
+    testWidgets('updates Elo and shows the change after an eligible result', (
+      WidgetTester tester,
+    ) async {
+      final GameController controller = GameController();
+      final GameMode previousMode = controller.gameInstance.gameMode;
+      final RemoteMatchController? previousCoordinator =
+          controller.remoteCoordinator;
+      final bool previousDisableStats = controller.disableStats;
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: _HistoryRulesPort(activeSeat: PlayerSeat.first),
+      );
+      final _ResignOnlyRemoteController coordinator =
+          _ResignOnlyRemoteController()
+            ..opponentEloRating = 1400
+            ..isEloEligible = true;
+      session.remoteMeta = const MillRemoteSessionMeta(
+        localSeat: PlayerSeat.first,
+        hostPlaysWhite: true,
+        transportKind: RemoteTransportKind.lan,
+        role: RemoteRole.host,
+        sessionId: 'remote-elo-update-test',
+      );
+      controller.bindActiveSession(session);
+      controller.gameInstance.gameMode = GameMode.humanVsLAN;
+      controller.remoteCoordinator = coordinator;
+      controller.disableStats = false;
+      controller.gameResultNotifier.clearResult();
+      DB().statsSettings = const StatsSettings(
+        humanStats: PlayerStats(rating: 1400, gamesPlayed: 30),
+      );
+      addTearDown(() async {
+        controller.unbindActiveSession(session);
+        controller.gameInstance.gameMode = previousMode;
+        controller.remoteCoordinator = previousCoordinator;
+        controller.disableStats = previousDisableStats;
+        controller.gameResultNotifier.clearResult();
+        session.dispose();
+        await coordinator.dispose();
+      });
+
+      await tester.pumpWidget(
+        const MaterialApp(
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(body: GameHeader()),
+        ),
+      );
+      expect(find.byKey(const Key('game_header_remote_elo')), findsOneWidget);
+      expect(find.byKey(const Key('game_header_contextual_tip')), findsNothing);
+      expect(find.text('Player 1: 1400 Elo'), findsOneWidget);
+      expect(find.text('Player 2: 1400 Elo'), findsOneWidget);
+      final Text firstRating = tester.widget<Text>(
+        find.byKey(const Key('game_header_remote_elo_first')),
+      );
+      expect(firstRating.style?.fontSize, greaterThanOrEqualTo(14));
+
+      controller.activeSessionSnapshot = const GameStateSnapshot(
+        gameId: GameId.mill,
+        activeSeat: PlayerSeat.second,
+        outcome: GameOutcome.win(PlayerSeat.first),
+        phase: 'gameOver',
+      );
+      controller.gameResultNotifier.showResult();
+      final EloRatingUpdate? update = controller.gameResultNotifier.eloUpdate;
+
+      expect(update?.status, EloRatingUpdateStatus.updated);
+      expect(update?.previousRating, 1400);
+      expect(update?.currentRating, 1410);
+      expect(DB().statsSettings.humanStats.rating, 1410);
+      expect(DB().statsSettings.humanStats.gamesPlayed, 31);
+      expect(DB().statsSettings.humanStats.wins, 1);
+      expect(DB().statsSettings.humanStats.whiteGamesPlayed, 1);
+      expect(DB().statsSettings.humanStats.whiteWins, 1);
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(body: GameResultAlertDialog(winner: PieceColor.white)),
+        ),
+      );
+      expect(find.textContaining('Elo: 1400 → 1410 (+10)'), findsOneWidget);
+    });
+
+    testWidgets('keeps Elo unchanged after an accepted takeback', (
+      WidgetTester tester,
+    ) async {
+      final GameController controller = GameController();
+      final GameMode previousMode = controller.gameInstance.gameMode;
+      final RemoteMatchController? previousCoordinator =
+          controller.remoteCoordinator;
+      final bool previousDisableStats = controller.disableStats;
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: _HistoryRulesPort(activeSeat: PlayerSeat.second),
+      );
+      final _ResignOnlyRemoteController coordinator =
+          _ResignOnlyRemoteController()
+            ..opponentEloRating = 1600
+            ..isEloEligible = false;
+      session.remoteMeta = const MillRemoteSessionMeta(
+        localSeat: PlayerSeat.second,
+        hostPlaysWhite: true,
+        transportKind: RemoteTransportKind.bluetooth,
+        role: RemoteRole.join,
+        sessionId: 'remote-elo-takeback-test',
+      );
+      controller.bindActiveSession(session);
+      controller.gameInstance.gameMode = GameMode.humanVsBluetooth;
+      controller.remoteCoordinator = coordinator;
+      controller.disableStats = true;
+      controller.gameResultNotifier.clearResult();
+      DB().statsSettings = const StatsSettings(
+        humanStats: PlayerStats(rating: 1520, gamesPlayed: 12),
+      );
+      addTearDown(() async {
+        controller.unbindActiveSession(session);
+        controller.gameInstance.gameMode = previousMode;
+        controller.remoteCoordinator = previousCoordinator;
+        controller.disableStats = previousDisableStats;
+        controller.gameResultNotifier.clearResult();
+        session.dispose();
+        await coordinator.dispose();
+      });
+
+      controller.activeSessionSnapshot = const GameStateSnapshot(
+        gameId: GameId.mill,
+        activeSeat: PlayerSeat.first,
+        outcome: GameOutcome.win(PlayerSeat.first),
+        phase: 'gameOver',
+      );
+      controller.gameResultNotifier.showResult();
+      final EloRatingUpdate? update = controller.gameResultNotifier.eloUpdate;
+
+      expect(update?.status, EloRatingUpdateStatus.takeBackUsed);
+      expect(update?.previousRating, 1520);
+      expect(update?.currentRating, 1520);
+      expect(DB().statsSettings.humanStats.rating, 1520);
+      expect(DB().statsSettings.humanStats.gamesPlayed, 12);
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(body: GameResultAlertDialog(winner: PieceColor.white)),
+        ),
+      );
+      expect(
+        find.textContaining(
+          'Elo unchanged because this game included a takeback.',
+        ),
+        findsOneWidget,
+      );
+    });
+  });
 }
 
 class _HistoryRulesPort implements NativeMillRulesPort {
@@ -1024,6 +1181,12 @@ class _ResignOnlyRemoteController
 
   @override
   bool get isConnected => true;
+
+  @override
+  int? opponentEloRating = 1500;
+
+  @override
+  bool isEloEligible = true;
 
   @override
   Map<String, Object?> get diagnosticSnapshot => const <String, Object?>{};

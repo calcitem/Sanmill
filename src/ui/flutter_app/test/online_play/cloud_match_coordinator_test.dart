@@ -33,6 +33,8 @@ void main() {
     await coordinator.start();
     expect(coordinator.state, RemoteConnectionState.listening);
     expect(store.value, isNotNull);
+    expect(coordinator.opponentEloRating, 1550);
+    expect(coordinator.isEloEligible, isTrue);
 
     socket.emit(<String, Object?>{
       ..._stateEvent(
@@ -120,6 +122,7 @@ void main() {
           status: 'active',
           revision: 4,
           actions: const <String>['a7'],
+          hadTakeBack: true,
         ),
         'kind': 'takeBack',
         'requestId': requestId,
@@ -129,6 +132,7 @@ void main() {
       expect(await requested, isTrue);
       expect(coordinator.actionLog, const <String>['a7']);
       expect(game.snapshots.last.actions, const <String>['a7']);
+      expect(coordinator.isEloEligible, isFalse);
     },
   );
 
@@ -501,6 +505,8 @@ OnlineRoomSession _session({required String status}) {
       status: status,
       createdAt: DateTime.utc(2026),
       expiresAt: DateTime.utc(2027, 1, 2),
+      firstEloRating: 1450,
+      secondEloRating: 1550,
     ),
     role: RemoteRole.host,
     localSeat: RemoteSeat.first,
@@ -534,16 +540,22 @@ Map<String, Object?> _stateEvent(
   required int revision,
   List<String> actions = const <String>[],
   String? commandId,
+  bool hadTakeBack = false,
 }) => <String, Object?>{
   'type': type,
   'seq': revision,
   'status': status,
   'commandId': ?commandId,
+  'playerRatings': <String, Object?>{
+    'firstEloRating': session.room.firstEloRating,
+    'secondEloRating': session.room.secondEloRating,
+  },
   'snapshot': <String, Object?>{
     'revision': revision,
     'initialFen': session.snapshot.initialFen,
     'actions': actions,
     'resultFen': actions.isEmpty ? 'initial' : 'after',
+    'hadTakeBack': hadTakeBack,
   },
 };
 
@@ -569,11 +581,14 @@ class _FakeApi implements OnlineRoomApi {
   Future<OnlineRoomSession> createRoom({
     required Map<String, Object?> ruleOptions,
     required OnlineSidePreference sidePreference,
+    required int eloRating,
   }) => throw UnimplementedError();
 
   @override
-  Future<OnlineRoomSession> joinRoom(OnlineInvite invite) =>
-      throw UnimplementedError();
+  Future<OnlineRoomSession> joinRoom(
+    OnlineInvite invite, {
+    required int eloRating,
+  }) => throw UnimplementedError();
 }
 
 class _FakeSocket implements OnlineSocketClient {
