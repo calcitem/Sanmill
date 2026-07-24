@@ -264,8 +264,6 @@ class BluetoothTransport
             );
             return;
           }
-          _activeDeviceId ??= event.deviceId;
-          _log.peerId = event.deviceId;
           _log.info(
             'REMOTE_BLE_CENTRAL_CONNECTED',
             'device=${RemoteLogContext.shortId(event.deviceId)}',
@@ -298,6 +296,7 @@ class BluetoothTransport
           return;
         }
         _activeDeviceId = event.deviceId;
+        _log.peerId = event.deviceId;
         final int? maximum = await adapter.maximumNotifyLength(event.deviceId);
         if (maximum != null) {
           _updatePayloadLength(maximum, source: 'peripheralMaximum');

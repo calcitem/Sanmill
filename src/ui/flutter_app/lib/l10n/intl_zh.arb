@@ -1679,7 +1679,7 @@
     "@areYouSureYouWantToClearAllAnnotations": {},
     "llmPromptCopiedToClipboard": "大模型提示词已复制到剪贴板。",
     "@llmPromptCopiedToClipboard": {},
-    "connectionRefusedTheServerMayBeDown": "连接被拒绝，服务器可能已宕机",
+    "connectionRefusedTheServerMayBeDown": "无法连接，主机可能不可用。",
     "@connectionRefusedTheServerMayBeDown": {},
     "discoverySuccessfulAwaitingConnection": "发现成功，等待连接...",
     "@discoverySuccessfulAwaitingConnection": {},
@@ -1693,15 +1693,15 @@
     "@takeBackRequest": {},
     "nothingToShow": "无可显示内容。",
     "@nothingToShow": {},
-    "stopHosting": "停止服务",
+    "stopHosting": "关闭房间",
     "@stopHosting": {},
     "connectionResetByPeer": "连接被对方重置",
     "@connectionResetByPeer": {},
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "由于心跳超时，连接丢失。请重新连接。",
     "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
-    "startHosting": "开始服务",
+    "startHosting": "创建房间",
     "@startHosting": {},
-    "restartRequestRejected": "重启请求被拒绝。",
+    "restartRequestRejected": "对方不同意重新开始对局。",
     "@restartRequestRejected": {},
     "notConnectedToLanOpponent": "未连接到局域网对手。",
     "@notConnectedToLanOpponent": {},
@@ -1709,7 +1709,7 @@
     "@llmPrompt": {},
     "gameRestarted": "游戏已重启",
     "@gameRestarted": {},
-    "takeBackRejected": "悔棋请求已被拒绝。",
+    "takeBackRejected": "对方不同意悔棋。",
     "@takeBackRejected": {},
     "areYouSureYouWantToResignThisGame": "您确定要认输吗？",
     "@areYouSureYouWantToResignThisGame": {},
@@ -1733,7 +1733,7 @@
     "@noHostDiscovered": {},
     "confirmResignation": "确认认输",
     "@confirmResignation": {},
-    "startedHostingGameWaitingForPlayersToJoin": "已开始服务，等待玩家加入...",
+    "startedHostingGameWaitingForPlayersToJoin": "房间已创建，正在等待对手加入…",
     "@startedHostingGameWaitingForPlayersToJoin": {},
     "connectionTimedOutNetworkConnectionUnstable": "连接超时，网络连接不稳定",
     "@connectionTimedOutNetworkConnectionUnstable": {},
@@ -1749,7 +1749,7 @@
     "@opponentSTurn": {},
     "waitingAClientConnection": "等待客户端连接...",
     "@waitingAClientConnection": {},
-    "takeBackRequestWasRejectedOrFailed": "悔棋请求被拒绝或无法完成。",
+    "takeBackRequestWasRejectedOrFailed": "对方不同意悔棋，或请求未能完成。",
     "@takeBackRequestWasRejectedOrFailed": {},
     "addText": "添加文本",
     "@addText": {},
@@ -1765,7 +1765,7 @@
     "@serverIsStopped": {},
     "restartRequest": "重启请求",
     "@restartRequest": {},
-    "cannotRequestATakeBackWhenItSNotYourTurn": "仅能在轮到您行棋时请求悔棋。",
+    "cannotRequestATakeBackWhenItSNotYourTurn": "完成至少一次行棋后才能请求悔棋。",
     "@cannotRequestATakeBackWhenItSNotYourTurn": {},
     "takeBackAccepted": "悔棋请求已被接受。",
     "@takeBackAccepted": {},
@@ -4108,6 +4108,10 @@
             }
         }
     },
+    "opponentRequestsTakeBackTurnAccept": "对手请求仅撤回自己最近的一次行棋。是否同意？",
+    "@opponentRequestsTakeBackTurnAccept": {},
+    "opponentRequestsTakeBackTurnAndReplyAccept": "对手请求撤回自己最近的一次行棋，并一并撤回您随后的一次应着。是否同意？",
+    "@opponentRequestsTakeBackTurnAndReplyAccept": {},
     "errorLoadingImages": "加载图片出错",
     "@errorLoadingImages": {},
     "fileAlreadyExists": "文件 {name} 已存在",
@@ -4830,7 +4834,7 @@
             "shortId": {}
         }
     },
-    "remotePeerRejected": "主机拒绝了连接。",
+    "remotePeerRejected": "对方未同意连接。",
     "@remotePeerRejected": {},
     "remoteProtocolUpgradeRequired": "对方版本不兼容。双方都需要将应用升级到最新版本。",
     "@remoteProtocolUpgradeRequired": {},
@@ -4844,7 +4848,7 @@
     "@remoteReconnectingBoardLocked": {},
     "remoteReconnectTimedOut": "60 秒内未能重连。对局已中止且不会计入统计。",
     "@remoteReconnectTimedOut": {},
-    "remoteActionRejected": "远程着法被拒绝，棋盘将重新同步。",
+    "remoteActionRejected": "远程着法未能通过校验，棋盘将重新同步。",
     "@remoteActionRejected": {},
     "remoteConnectionFailed": "远程连接失败：{error}",
     "@remoteConnectionFailed": {
@@ -4918,7 +4922,7 @@
     "@onlineOpponentDisconnected": {"description": "对手暂时断线时的状态。"},
     "onlineOpponentLeft": "对手已离开对局。",
     "@onlineOpponentLeft": {"description": "对手永久离开时的状态。"},
-    "onlineActionRejected": "服务器拒绝了该着法，棋盘已重新同步。",
+    "onlineActionRejected": "该着法未能通过服务器校验，棋盘已重新同步。",
     "@onlineActionRejected": {"description": "权威服务器拒绝着法并同步后的错误信息。"},
     "flipBoard": "翻转棋盘",
     "analysisSettingsLayout": "布局",
@@ -5719,7 +5723,7 @@
     "@moveListLayoutTable": {
         "description": "Move-list layout option that displays a compact table"
     },
-    "remoteHistoryNavigationUnavailable": "联网对局只能针对自己最近的一手棋申请悔棋。",
+    "remoteHistoryNavigationUnavailable": "联网对局可申请仅撤回自己最近的一次行棋；若对方已应着，则同时撤回该次应着。",
     "@remoteHistoryNavigationUnavailable": {
         "description": "Explains why full history navigation is unavailable in a remote game"
     },
@@ -6964,9 +6968,13 @@
     "@onlineCreateServiceUnavailableMessage": {
         "description": "Explains free cloud capacity limits after creating an online room fails"
     },
-    "takeBackRequestSentWaitingForOpponentResponse": "悔棋请求已发送，正在等待对手回复…",
+    "takeBackRequestSentWaitingForOpponentResponse": "已请求撤回自己最近的一次行棋及对方随后的一次应着，正在等待对方回应…",
     "@takeBackRequestSentWaitingForOpponentResponse": {
-        "description": "Status shown while waiting for the opponent to answer a take-back request"
+        "description": "Status shown while waiting to take back the requester's turn and the opponent's reply"
+    },
+    "takeBackOwnTurnRequestSentWaitingForOpponentResponse": "已请求仅撤回自己最近的一次行棋，正在等待对方回应…",
+    "@takeBackOwnTurnRequestSentWaitingForOpponentResponse": {
+        "description": "Status shown while waiting to take back only the requester's latest turn"
     },
     "bluetoothConnectionTimedOut": "蓝牙连接超时。请保持两台手机靠近，并确认主机仍在等待，然后重试。",
     "@bluetoothConnectionTimedOut": {
@@ -6976,7 +6984,7 @@
     "@boardTransformRequestSent": {
         "description": "Status shown while waiting for the opponent to answer a board transformation request"
     },
-    "boardTransformRequestRejected": "棋盘变换请求被拒绝或未能完成。",
+    "boardTransformRequestRejected": "对方不同意棋盘变换，或请求未能完成。",
     "@boardTransformRequestRejected": {
         "description": "Feedback shown when a remote board transformation is rejected or fails"
     },
@@ -6989,5 +6997,9 @@
                 "type": "String"
             }
         }
+    },
+    "lanRecommendedAddress": "推荐",
+    "@lanRecommendedAddress": {
+        "description": "Badge for the most likely usable local IP address when several LAN candidates are available"
     }
 }

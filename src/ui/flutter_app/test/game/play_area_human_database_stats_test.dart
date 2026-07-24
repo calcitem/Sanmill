@@ -31,6 +31,7 @@ import 'package:sanmill/game_platform/game_session.dart' as platform;
 import 'package:sanmill/game_shell/game_session_scope.dart';
 import 'package:sanmill/games/mill/mill_action_codec.dart';
 import 'package:sanmill/games/mill/mill_board_transform_actions.dart';
+import 'package:sanmill/games/mill/mill_remote_session_meta.dart';
 import 'package:sanmill/games/mill/mill_session_recorder_bridge.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
 import 'package:sanmill/games/mill/native_mill_rules_port.dart';
@@ -38,6 +39,8 @@ import 'package:sanmill/games/mill/opening_book/opening_book_repository.dart';
 import 'package:sanmill/games/mill/opening_explorer/opening_explorer_page.dart';
 import 'package:sanmill/general_settings/models/general_settings.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/remote_play/remote_match_controller.dart';
+import 'package:sanmill/remote_play/remote_models.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
 import 'package:sanmill/shared/config/constants.dart';
 import 'package:sanmill/shared/database/database.dart';
@@ -8009,7 +8012,7 @@ void main() {
   });
 
   testWidgets(
-    'human vs ai white takeback removes black reply and own capture',
+    'human vs ai takeback removes both complete turns including capture',
     (WidgetTester tester) async {
       final NativeMillGameSession session = await _bindNativeHumanAiGame();
       final MillSessionRecorderBridge recorderBridge =
@@ -8044,13 +8047,13 @@ void main() {
       await tester.tap(find.byKey(const Key('play_area_bottom_bar_take_back')));
       await tester.pumpAndSettle();
 
-      expect(_currentPathMoves(), <String>['a1', 'd1', 'a4', 'd2', 'a7']);
+      expect(_currentPathMoves(), <String>['a1', 'd1', 'a4', 'd2']);
       expect(GameController().gameInstance.isHumanToMove, isTrue);
     },
   );
 
   testWidgets(
-    'human vs ai black takeback removes only black reply after capture',
+    'human vs ai takeback during opponent turn removes own complete turn',
     (WidgetTester tester) async {
       db.generalSettings = const GeneralSettings(aiMovesFirst: true);
       final NativeMillGameSession session = await _bindNativeHumanAiGame();
@@ -8097,6 +8100,169 @@ void main() {
       expect(GameController().gameInstance.isHumanToMove, isTrue);
     },
   );
+
+  testWidgets(
+    'cloud remote menu hides unsupported transforms and analysis markers',
+    (WidgetTester tester) async {
+      final NativeMillGameSession session = await _bindNativeGame(
+        GameMode.humanVsCloud,
+      );
+      session.remoteMeta = const MillRemoteSessionMeta(
+        localSeat: platform.PlayerSeat.first,
+        hostPlaysWhite: true,
+        transportKind: RemoteTransportKind.cloud,
+        role: RemoteRole.host,
+        sessionId: 'cloud-menu-test',
+      );
+      final GameController controller = GameController();
+      final RemoteMatchController? previousCoordinator =
+          controller.remoteCoordinator;
+      final _MenuRemoteController coordinator = _MenuRemoteController();
+      controller.remoteCoordinator = coordinator;
+      addTearDown(() async {
+        controller.remoteCoordinator = previousCoordinator;
+        await coordinator.dispose();
+      });
+
+      await _pumpSessionPlayArea(tester, session);
+      await tester.tap(
+        find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('play_area_regular_game_menu_flip_board')),
+        findsNothing,
+      );
+      final Finder markerGuide = find.byKey(
+        const Key('play_area_regular_game_menu_marker_guide'),
+      );
+      expect(markerGuide, findsOneWidget);
+      await tester.ensureVisible(markerGuide);
+      await tester.tap(markerGuide);
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('board_marker_guide_sheet')), findsOneWidget);
+      for (final String marker in <String>[
+        'selected',
+        'legalDestination',
+        'removable',
+        'completedMove',
+        'pendingRemoval',
+      ]) {
+        expect(find.byKey(Key('board_marker_sample_$marker')), findsOneWidget);
+      }
+      for (final String label in <String>[
+        'Hint or best suggestion',
+        'Secondary engine line',
+        'Threat',
+        'Move quality',
+        'Drawing colors',
+      ]) {
+        expect(find.text(label), findsNothing);
+      }
+    },
+  );
+
+  for (final ({GameMode mode, RemoteTransportKind transport}) remoteMode
+      in <({GameMode mode, RemoteTransportKind transport})>[
+        (mode: GameMode.humanVsLAN, transport: RemoteTransportKind.lan),
+        (
+          mode: GameMode.humanVsBluetooth,
+          transport: RemoteTransportKind.bluetooth,
+        ),
+      ]) {
+    testWidgets(
+      '${remoteMode.mode.name} menu opens the negotiated transform picker',
+      (WidgetTester tester) async {
+        await tester.binding.setSurfaceSize(const Size(390, 844));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        final NativeMillGameSession session = await _bindNativeGame(
+          remoteMode.mode,
+        );
+        session.remoteMeta = MillRemoteSessionMeta(
+          localSeat: platform.PlayerSeat.first,
+          hostPlaysWhite: true,
+          transportKind: remoteMode.transport,
+          role: RemoteRole.host,
+          sessionId: '${remoteMode.mode.name}-menu-test',
+        );
+        final GameController controller = GameController();
+        final RemoteMatchController? previousCoordinator =
+            controller.remoteCoordinator;
+        final _MenuTransformRemoteController coordinator =
+            _MenuTransformRemoteController();
+        controller.remoteCoordinator = coordinator;
+        addTearDown(() async {
+          controller.remoteCoordinator = previousCoordinator;
+          await coordinator.dispose();
+        });
+
+        await _pumpSessionPlayArea(tester, session);
+        await tester.tap(
+          find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+        );
+        await tester.pumpAndSettle();
+
+        final Finder transform = find.byKey(
+          const Key('play_area_regular_game_menu_flip_board'),
+        );
+        expect(transform, findsOneWidget);
+        await tester.tap(transform);
+        await tester.pumpAndSettle();
+
+        expect(
+          find.byKey(const Key('play_area_regular_board_transform_sheet')),
+          findsOneWidget,
+        );
+        final GridView grid = tester.widget<GridView>(
+          find.byKey(const Key('play_area_regular_board_transform_grid')),
+        );
+        expect(
+          (grid.gridDelegate as SliverGridDelegateWithFixedCrossAxisCount)
+              .crossAxisCount,
+          4,
+        );
+        for (final MillBoardTransformAction action
+            in allMillBoardTransformActions) {
+          expect(
+            find.byKey(Key('play_area_regular_board_transform_${action.id}')),
+            findsOneWidget,
+          );
+        }
+        final Finder identityTile = find.byKey(
+          const Key('play_area_regular_board_transform_identity'),
+        );
+        expect(
+          find.descendant(of: identityTile, matching: find.byType(Text)),
+          findsNothing,
+        );
+        final Iterable<Semantics> identitySemantics = tester
+            .widgetList<Semantics>(
+              find.descendant(
+                of: identityTile,
+                matching: find.byType(Semantics),
+              ),
+            );
+        expect(
+          identitySemantics.any(
+            (Semantics semantics) =>
+                semantics.properties.label?.isNotEmpty ?? false,
+          ),
+          isTrue,
+        );
+
+        await tester.tap(identityTile);
+        await tester.pumpAndSettle();
+
+        expect(
+          find.byKey(const Key('play_area_regular_board_transform_sheet')),
+          findsNothing,
+        );
+        expect(coordinator.boardTransformRequestCount, 0);
+      },
+    );
+  }
 
   testWidgets('human vs ai takeback removes one move during AI turn', (
     WidgetTester tester,
@@ -8573,6 +8739,54 @@ class _MoveNowFakeSearchSession extends NativeMillGameSession {
     }
     return legalActions.isEmpty ? null : legalActions.first;
   }
+}
+
+class _MenuRemoteController implements RemoteMatchController {
+  final StreamController<RemoteMatchEvent> _events =
+      StreamController<RemoteMatchEvent>.broadcast();
+
+  @override
+  final ValueNotifier<RemoteConnectionState> stateNotifier =
+      ValueNotifier<RemoteConnectionState>(RemoteConnectionState.ready);
+
+  @override
+  Stream<RemoteMatchEvent> get events => _events.stream;
+
+  @override
+  RemoteConnectionState get state => stateNotifier.value;
+
+  @override
+  bool get isConnected => true;
+
+  @override
+  Map<String, Object?> get diagnosticSnapshot => const <String, Object?>{};
+
+  @override
+  Future<void> dispose() async {
+    await _events.close();
+    stateNotifier.dispose();
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+class _MenuTransformRemoteController extends _MenuRemoteController
+    implements RemoteBoardTransformController {
+  int boardTransformRequestCount = 0;
+
+  @override
+  Future<bool> requestBoardTransform(String transformation) async {
+    boardTransformRequestCount++;
+    return false;
+  }
+
+  @override
+  Future<void> respondToBoardTransform({
+    required String requestId,
+    required String transformation,
+    required bool accepted,
+  }) async {}
 }
 
 Future<NativeMillGameSession> _bindNativeGame(GameMode gameMode) async {

@@ -184,6 +184,57 @@ void main() {
   });
 
   group('BluetoothTransport host role', () {
+    test('does not let a stale connection occupy the peer slot', () async {
+      final FakeBluetoothAdapter adapter = FakeBluetoothAdapter();
+      final BluetoothTransport transport = BluetoothTransport(
+        role: RemoteRole.host,
+        adapter: adapter,
+      );
+      final List<RemoteTransportEvent> events = <RemoteTransportEvent>[];
+      final StreamSubscription<RemoteTransportEvent> subscription = transport
+          .events
+          .listen(events.add);
+      await transport.startHost(
+        const RemoteHostOptions(advertisedLabel: 'Sanmill test'),
+      );
+
+      adapter.peripheralConnections.add(
+        const BluetoothConnectionEvent(
+          deviceId: 'stale-central',
+          connected: true,
+        ),
+      );
+      await pumpEventQueue();
+      expect(transport.isConnected, isFalse);
+
+      adapter.peripheralConnections.add(
+        const BluetoothConnectionEvent(
+          deviceId: 'current-central',
+          connected: true,
+        ),
+      );
+      adapter.peripheralSubscriptions.add(
+        const BluetoothSubscriptionEvent(
+          deviceId: 'current-central',
+          characteristicId: BluetoothTransport.notifyCharacteristicId,
+          subscribed: true,
+        ),
+      );
+      await pumpEventQueue();
+
+      expect(transport.isConnected, isTrue);
+      adapter.emitPeripheralWrite(
+        'current-central',
+        Uint8List.fromList(<int>[7, 8]),
+      );
+      await pumpEventQueue();
+      expect(events.whereType<RemoteTransportData>().single.bytes, <int>[7, 8]);
+      expect(adapter.notificationsSent, isEmpty);
+
+      await subscription.cancel();
+      await transport.close();
+    });
+
     test('waits for subscription and fragments notifications', () async {
       final FakeBluetoothAdapter adapter = FakeBluetoothAdapter()
         ..maximumNotificationLength = 20;

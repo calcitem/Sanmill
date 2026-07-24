@@ -99,7 +99,7 @@ class HistoryNavigator {
         );
         final int steps = number ?? 1;
         assert(steps > 0, 'Remote takeback requires a positive step count.');
-        final bool success = await _requestRemoteTakeBack(context, steps);
+        final bool success = await _requestRemoteTakeBack(steps);
         // If user & remote accepted, success=true => done
         // If rejected or an error, success=false => do nothing
         if (pop && context.mounted) {
@@ -321,10 +321,7 @@ class HistoryNavigator {
   }
 
   /// Requests a remote take back and waits for peer approval.
-  static Future<bool> _requestRemoteTakeBack(
-    BuildContext context,
-    int steps,
-  ) async {
+  static Future<bool> _requestRemoteTakeBack(int steps) async {
     assert(steps > 0, 'Remote takeback requires a positive step count.');
     if (steps <= 0) {
       return false;
@@ -332,15 +329,7 @@ class HistoryNavigator {
     // This calls a new method in GameController that sends
     // "take back:<steps>:request"
     // and awaits an async result from the peer.
-    final bool ok = await GameController().requestRemoteTakeBack(steps);
-    if (!ok && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(S.of(context).takeBackRequestWasRejectedOrFailed),
-        ),
-      );
-    }
-    return ok;
+    return GameController().requestRemoteTakeBack(steps);
   }
 
   static Future<HistoryResponse?> takeBack(

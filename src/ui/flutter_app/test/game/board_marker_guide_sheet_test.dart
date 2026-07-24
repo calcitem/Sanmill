@@ -83,4 +83,50 @@ void main() {
     expect(find.text('已完成着法'), findsOneWidget);
     expect(find.text('提示或最佳建议'), findsOneWidget);
   });
+
+  testWidgets('remote games hide analysis-only board markers', (
+    WidgetTester tester,
+  ) async {
+    tester.view
+      ..physicalSize = const Size(480, 900)
+      ..devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      const MaterialApp(
+        locale: Locale('en'),
+        localizationsDelegates: sanmillLocalizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        home: Scaffold(body: BoardMarkerGuideSheet(remoteGame: true)),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    for (final String marker in <String>[
+      'selected',
+      'legalDestination',
+      'removable',
+      'completedMove',
+      'pendingRemoval',
+    ]) {
+      expect(find.byKey(Key('board_marker_sample_$marker')), findsOneWidget);
+    }
+    for (final String label in <String>[
+      'Hint or best suggestion',
+      'Secondary engine line',
+      'Threat',
+      'Move quality',
+      'Drawing colors',
+    ]) {
+      expect(find.text(label), findsNothing);
+    }
+    for (final String marker in <String>[
+      'bestSuggestion',
+      'secondarySuggestion',
+      'threat',
+    ]) {
+      expect(find.byKey(Key('board_marker_sample_$marker')), findsNothing);
+    }
+  });
 }

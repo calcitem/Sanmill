@@ -1711,15 +1711,15 @@
     "@takeBackRequest": {},
     "nothingToShow": "Nothing to show.",
     "@nothingToShow": {},
-    "stopHosting": "Stop hosting",
+    "stopHosting": "Close room",
     "@stopHosting": {},
     "connectionResetByPeer": "Connection reset by peer.",
     "@connectionResetByPeer": {},
     "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Connection lost because no response was received. Please reconnect.",
     "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
-    "startHosting": "Start hosting",
+    "startHosting": "Create room",
     "@startHosting": {},
-    "restartRequestRejected": "Restart request rejected.",
+    "restartRequestRejected": "The other player did not agree to restart the game.",
     "@restartRequestRejected": {},
     "notConnectedToLanOpponent": "Not connected to a LAN opponent.",
     "@notConnectedToLanOpponent": {},
@@ -1751,7 +1751,7 @@
     "@noHostDiscovered": {},
     "confirmResignation": "Resign this game?",
     "@confirmResignation": {},
-    "startedHostingGameWaitingForPlayersToJoin": "Hosting game. Waiting for a player to join…",
+    "startedHostingGameWaitingForPlayersToJoin": "Room created. Waiting for an opponent…",
     "@startedHostingGameWaitingForPlayersToJoin": {},
     "connectionTimedOutNetworkConnectionUnstable": "Connection timed out. The network may be unstable.",
     "@connectionTimedOutNetworkConnectionUnstable": {},
@@ -1767,7 +1767,7 @@
     "@opponentSTurn": {},
     "waitingAClientConnection": "Waiting for a player to connect…",
     "@waitingAClientConnection": {},
-    "takeBackRequestWasRejectedOrFailed": "The take-back request was declined or could not be completed.",
+    "takeBackRequestWasRejectedOrFailed": "The other player did not agree to the take-back, or the request could not be completed.",
     "@takeBackRequestWasRejectedOrFailed": {},
     "addText": "Add text",
     "@addText": {},
@@ -1783,7 +1783,7 @@
     "@serverIsStopped": {},
     "restartRequest": "Restart request",
     "@restartRequest": {},
-    "cannotRequestATakeBackWhenItSNotYourTurn": "You can request a take back only on your turn.",
+    "cannotRequestATakeBackWhenItSNotYourTurn": "You can request a take back only after completing a turn.",
     "@cannotRequestATakeBackWhenItSNotYourTurn": {},
     "takeBackAccepted": "Take-back request accepted.",
     "@takeBackAccepted": {},
@@ -4060,6 +4060,10 @@
             }
         }
     },
+    "opponentRequestsTakeBackTurnAccept": "Your opponent wants to take back only their latest turn. Accept?",
+    "@opponentRequestsTakeBackTurnAccept": {},
+    "opponentRequestsTakeBackTurnAndReplyAccept": "Your opponent wants to take back their latest turn together with your following reply. Accept?",
+    "@opponentRequestsTakeBackTurnAndReplyAccept": {},
     "errorLoadingImages": "Error loading images",
     "@errorLoadingImages": {},
     "fileAlreadyExists": "File {name} already exists",
@@ -5902,7 +5906,7 @@
             }
         }
     },
-    "remoteHistoryNavigationUnavailable": "Remote games support only a take-back request for your latest move.",
+    "remoteHistoryNavigationUnavailable": "Remote games can take back your latest turn alone, or that turn together with your opponent's following reply.",
     "@remoteHistoryNavigationUnavailable": {
         "description": "Message shown when a remote player selects unsupported history navigation"
     },
@@ -7031,9 +7035,13 @@
     "@onlineCreateServiceUnavailableMessage": {
         "description": "Explains free cloud capacity limits after creating an online room fails"
     },
-    "takeBackRequestSentWaitingForOpponentResponse": "Take-back request sent. Waiting for your opponent's response…",
+    "takeBackRequestSentWaitingForOpponentResponse": "Requested to take back your latest turn together with your opponent's following reply. Waiting for your opponent…",
     "@takeBackRequestSentWaitingForOpponentResponse": {
-        "description": "Status shown while waiting for the opponent to answer a take-back request"
+        "description": "Status shown while waiting to take back the requester's turn and the opponent's reply"
+    },
+    "takeBackOwnTurnRequestSentWaitingForOpponentResponse": "Requested to take back only your latest turn. Waiting for your opponent…",
+    "@takeBackOwnTurnRequestSentWaitingForOpponentResponse": {
+        "description": "Status shown while waiting to take back only the requester's latest turn"
     },
     "bluetoothConnectionTimedOut": "Bluetooth connection timed out. Keep both phones nearby with the host still waiting, then try again.",
     "@bluetoothConnectionTimedOut": {
@@ -7043,7 +7051,7 @@
     "@boardTransformRequestSent": {
         "description": "Status shown while waiting for the opponent to answer a board transformation request"
     },
-    "boardTransformRequestRejected": "The board transformation request was declined or could not be completed.",
+    "boardTransformRequestRejected": "The other player did not agree to the board transformation, or the request could not be completed.",
     "@boardTransformRequestRejected": {
         "description": "Feedback shown when a remote board transformation is rejected or fails"
     },
@@ -7056,5 +7064,9 @@
                 "type": "String"
             }
         }
+    },
+    "lanRecommendedAddress": "Recommended",
+    "@lanRecommendedAddress": {
+        "description": "Badge for the most likely usable local IP address when several LAN candidates are available"
     }
 }

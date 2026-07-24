@@ -58,5 +58,64 @@ void main() {
         throwsAssertionError,
       );
     });
+
+    group('requester takeback', () {
+      test('has no takeback before the requester has moved', () {
+        expect(
+          OfflineBoardHistory.requesterTakeBackStepCount(const <PieceColor>[
+            PieceColor.white,
+          ], PieceColor.black),
+          isNull,
+        );
+      });
+
+      test('takes back only the requester turn before a reply', () {
+        expect(
+          OfflineBoardHistory.requesterTakeBackStepCount(const <PieceColor>[
+            PieceColor.white,
+          ], PieceColor.white),
+          1,
+        );
+      });
+
+      test('takes back the requester turn and opponent reply', () {
+        expect(
+          OfflineBoardHistory.requesterTakeBackStepCount(const <PieceColor>[
+            PieceColor.white,
+            PieceColor.black,
+            PieceColor.white,
+            PieceColor.black,
+          ], PieceColor.white),
+          2,
+        );
+      });
+
+      test('keeps a capture inside the requester complete turn', () {
+        expect(
+          OfflineBoardHistory.requesterTakeBackStepCount(const <PieceColor>[
+            PieceColor.white,
+            PieceColor.black,
+            PieceColor.white,
+            PieceColor.white,
+            PieceColor.black,
+          ], PieceColor.white),
+          3,
+        );
+      });
+
+      test('keeps captures inside both complete turns', () {
+        expect(
+          OfflineBoardHistory.requesterTakeBackStepCount(const <PieceColor>[
+            PieceColor.white,
+            PieceColor.black,
+            PieceColor.white,
+            PieceColor.white,
+            PieceColor.black,
+            PieceColor.black,
+          ], PieceColor.white),
+          4,
+        );
+      });
+    });
   });
 }

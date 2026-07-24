@@ -431,28 +431,86 @@ void main() {
     expect(english.takeBackRequestSentToTheOpponent, 'Take-back request sent.');
     expect(
       english.cannotRequestATakeBackWhenItSNotYourTurn,
-      'You can request a take back only on your turn.',
+      'You can request a take back only after completing a turn.',
     );
     expect(
-      english.opponentRequestsTakeBackAccept('1'),
-      'Your opponent wants to take back 1 move. Accept?',
+      english.opponentRequestsTakeBackTurnAccept,
+      'Your opponent wants to take back only their latest turn. Accept?',
+    );
+    expect(
+      english.opponentRequestsTakeBackTurnAndReplyAccept,
+      'Your opponent wants to take back their latest turn together with '
+      'your following reply. Accept?',
     );
     expect(
       english.remoteHistoryNavigationUnavailable,
-      'Remote games support only a take-back request for your latest move.',
+      'Remote games can take back your latest turn alone, or that turn '
+      "together with your opponent's following reply.",
+    );
+    expect(
+      english.takeBackRequestSentWaitingForOpponentResponse,
+      'Requested to take back your latest turn together with your '
+      "opponent's following reply. Waiting for your opponent…",
+    );
+    expect(
+      english.takeBackOwnTurnRequestSentWaitingForOpponentResponse,
+      'Requested to take back only your latest turn. Waiting for your '
+      'opponent…',
     );
   });
 
   test('uses clear Chinese take-back terminology', () {
     final S chinese = lookupS(const Locale('zh'));
 
-    expect(chinese.takeBackRejected, '悔棋请求已被拒绝。');
+    expect(chinese.takeBackRejected, '对方不同意悔棋。');
     expect(chinese.takeBackAccepted, '悔棋请求已被接受。');
     expect(chinese.takeBackRequestSentToTheOpponent, '悔棋请求已发送。');
-    expect(chinese.takeBackRequestWasRejectedOrFailed, '悔棋请求被拒绝或无法完成。');
-    expect(chinese.cannotRequestATakeBackWhenItSNotYourTurn, '仅能在轮到您行棋时请求悔棋。');
-    expect(chinese.opponentRequestsTakeBackAccept('2'), '对手请求悔棋 2 手，是否接受？');
-    expect(chinese.remoteHistoryNavigationUnavailable, '联网对局只能针对自己最近的一手棋申请悔棋。');
+    expect(chinese.takeBackRequestWasRejectedOrFailed, '对方不同意悔棋，或请求未能完成。');
+    expect(
+      chinese.cannotRequestATakeBackWhenItSNotYourTurn,
+      '完成至少一次行棋后才能请求悔棋。',
+    );
+    expect(
+      chinese.opponentRequestsTakeBackTurnAccept,
+      '对手请求仅撤回自己最近的一次行棋。是否同意？',
+    );
+    expect(
+      chinese.opponentRequestsTakeBackTurnAndReplyAccept,
+      '对手请求撤回自己最近的一次行棋，并一并撤回您随后的一次应着。是否同意？',
+    );
+    expect(
+      chinese.remoteHistoryNavigationUnavailable,
+      '联网对局可申请仅撤回自己最近的一次行棋；若对方已应着，则同时撤回该次应着。',
+    );
+    expect(
+      chinese.takeBackRequestSentWaitingForOpponentResponse,
+      '已请求撤回自己最近的一次行棋及对方随后的一次应着，正在等待对方回应…',
+    );
+    expect(
+      chinese.takeBackOwnTurnRequestSentWaitingForOpponentResponse,
+      '已请求仅撤回自己最近的一次行棋，正在等待对方回应…',
+    );
+    expect(chinese.remotePeerRejected, '对方未同意连接。');
+    expect(chinese.remoteActionRejected, '远程着法未能通过校验，棋盘将重新同步。');
+    expect(chinese.onlineActionRejected, '该着法未能通过服务器校验，棋盘已重新同步。');
+  });
+
+  test('uses player-facing room wording for remote hosting', () {
+    final S english = lookupS(const Locale('en'));
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(english.startHosting, 'Create room');
+    expect(english.stopHosting, 'Close room');
+    expect(
+      english.startedHostingGameWaitingForPlayersToJoin,
+      'Room created. Waiting for an opponent…',
+    );
+    expect(chinese.startHosting, '创建房间');
+    expect(chinese.stopHosting, '关闭房间');
+    expect(
+      chinese.startedHostingGameWaitingForPlayersToJoin,
+      '房间已创建，正在等待对手加入…',
+    );
   });
 
   test('uses action-specific English annotation clearing copy', () {

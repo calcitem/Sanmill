@@ -21,18 +21,24 @@ enum _BoardMarkerSampleKind {
   threat,
 }
 
-Future<void> showBoardMarkerGuide(BuildContext context) {
+Future<void> showBoardMarkerGuide(
+  BuildContext context, {
+  bool remoteGame = false,
+}) {
   return showModalBottomSheet<void>(
     context: context,
     useSafeArea: true,
     isScrollControlled: true,
     showDragHandle: true,
-    builder: (BuildContext context) => const BoardMarkerGuideSheet(),
+    builder: (BuildContext context) =>
+        BoardMarkerGuideSheet(remoteGame: remoteGame),
   );
 }
 
 class BoardMarkerGuideSheet extends StatelessWidget {
-  const BoardMarkerGuideSheet({super.key});
+  const BoardMarkerGuideSheet({super.key, this.remoteGame = false});
+
+  final bool remoteGame;
 
   @override
   Widget build(BuildContext context) {
@@ -59,16 +65,20 @@ class BoardMarkerGuideSheet extends StatelessWidget {
             label: strings.markerPendingRemoval,
             kind: _BoardMarkerSampleKind.pendingRemoval,
           ),
-          (
-            label: strings.markerBestSuggestion,
-            kind: _BoardMarkerSampleKind.bestSuggestion,
-          ),
-          (
-            label: strings.markerSecondarySuggestion,
-            kind: _BoardMarkerSampleKind.secondarySuggestion,
-          ),
-          (label: strings.markerThreat, kind: _BoardMarkerSampleKind.threat),
         ];
+    if (!remoteGame) {
+      markers.addAll(<({String label, _BoardMarkerSampleKind kind})>[
+        (
+          label: strings.markerBestSuggestion,
+          kind: _BoardMarkerSampleKind.bestSuggestion,
+        ),
+        (
+          label: strings.markerSecondarySuggestion,
+          kind: _BoardMarkerSampleKind.secondarySuggestion,
+        ),
+        (label: strings.markerThreat, kind: _BoardMarkerSampleKind.threat),
+      ]);
+    }
 
     return ConstrainedBox(
       constraints: BoxConstraints(
@@ -89,7 +99,7 @@ class BoardMarkerGuideSheet extends StatelessWidget {
           Flexible(
             child: ListView.separated(
               padding: const EdgeInsets.symmetric(vertical: 8),
-              itemCount: markers.length + 2,
+              itemCount: markers.length + (remoteGame ? 0 : 2),
               separatorBuilder: (BuildContext context, int index) =>
                   const Divider(height: 1, indent: 164),
               itemBuilder: (BuildContext context, int index) {

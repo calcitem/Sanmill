@@ -467,6 +467,7 @@ void main() {
       expect(requests, hasLength(1));
       expect(requests.single.requestId, 'takeback-restored');
       expect(requests.single.steps, 2);
+      expect(requests.single.scope, RemoteTakeBackScope.requesterTurnOnly);
 
       socket.emit(<String, Object?>{
         'type': 'controlRequest',

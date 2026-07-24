@@ -81,6 +81,10 @@ void main() {
     final Future<bool> takeBack = host.requestTakeBack(1);
     final RemoteTakeBackApprovalRequested takeBackRequest =
         await takeBackApproval;
+    expect(
+      takeBackRequest.scope,
+      RemoteTakeBackScope.requesterTurnAndOpponentReply,
+    );
     await join.respondToTakeBack(
       requestId: takeBackRequest.requestId,
       steps: takeBackRequest.steps,

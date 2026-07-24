@@ -1045,7 +1045,15 @@ class RemoteMatchCoordinator
       return;
     }
     _setIncomingControl(requestId, expectedRevision);
-    _events.add(RemoteTakeBackApprovalRequested(requestId, steps));
+    _events.add(
+      RemoteTakeBackApprovalRequested(
+        requestId,
+        steps,
+        scope: isLocalTurn
+            ? RemoteTakeBackScope.requesterTurnOnly
+            : RemoteTakeBackScope.requesterTurnAndOpponentReply,
+      ),
+    );
   }
 
   Future<void> _handleTakeBackResponse(RemoteEnvelope envelope) async {

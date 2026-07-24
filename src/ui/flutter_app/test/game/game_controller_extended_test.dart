@@ -286,6 +286,344 @@ void main() {
         await tester.pumpWidget(const SizedBox.shrink());
       },
     );
+
+    testWidgets(
+      'shows a readable dialog when remote resignation fails with tips off',
+      (WidgetTester tester) async {
+        final GameController controller = GameController();
+        final GameMode previousMode = controller.gameInstance.gameMode;
+        final RemoteMatchController? previousCoordinator =
+            controller.remoteCoordinator;
+        final _ResignOnlyRemoteController coordinator =
+            _ResignOnlyRemoteController()..resignResult = false;
+        controller.gameInstance.gameMode = GameMode.humanVsCloud;
+        controller.remoteCoordinator = coordinator;
+        addTearDown(() {
+          controller.gameInstance.gameMode = previousMode;
+          controller.remoteCoordinator = previousCoordinator;
+        });
+
+        Future<void>? resignation;
+        await tester.pumpWidget(
+          MaterialApp(
+            navigatorKey: currentNavigatorKey,
+            scaffoldMessengerKey: rootScaffoldMessengerKey,
+            localizationsDelegates: sanmillLocalizationsDelegates,
+            supportedLocales: S.supportedLocales,
+            home: Scaffold(
+              body: FilledButton(
+                onPressed: () {
+                  resignation = controller.requestResignation();
+                },
+                child: const Text('Confirm resignation'),
+              ),
+            ),
+          ),
+        );
+
+        expect(DB().generalSettings.showGameTips, isFalse);
+        await tester.tap(find.text('Confirm resignation'));
+        await tester.pumpAndSettle();
+
+        final Finder resultDialog = find.byKey(
+          const Key('remote_resignation_failure_dialog'),
+        );
+        expect(coordinator.resignCalls, 1);
+        expect(resultDialog, findsOneWidget);
+        final BuildContext dialogContext = tester.element(resultDialog);
+        final Text message = tester.widget<Text>(
+          find.text(S.of(dialogContext).failedToSendResignation),
+        );
+        expect(message.style?.fontSize, greaterThanOrEqualTo(16));
+
+        await tester.tap(find.byKey(const Key('remote_important_dialog_ok')));
+        await tester.pumpAndSettle();
+        await resignation;
+        expect(resultDialog, findsNothing);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+  });
+
+  group('GameController outgoing remote request dialogs', () {
+    testWidgets('shows restart waiting and rejection dialogs with tips off', (
+      WidgetTester tester,
+    ) async {
+      final GameController controller = GameController();
+      final GameMode previousMode = controller.gameInstance.gameMode;
+      final RemoteMatchController? previousCoordinator =
+          controller.remoteCoordinator;
+      final _ResignOnlyRemoteController coordinator =
+          _ResignOnlyRemoteController();
+      controller.gameInstance.gameMode = GameMode.humanVsCloud;
+      controller.remoteCoordinator = coordinator;
+      addTearDown(() {
+        controller.gameInstance.gameMode = previousMode;
+        controller.remoteCoordinator = previousCoordinator;
+      });
+
+      await tester.pumpWidget(
+        MaterialApp(
+          navigatorKey: currentNavigatorKey,
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(
+            body: FilledButton(
+              onPressed: controller.requestRestart,
+              child: const Text('Request restart'),
+            ),
+          ),
+        ),
+      );
+
+      expect(DB().generalSettings.showGameTips, isFalse);
+      await tester.tap(find.text('Request restart'));
+      await tester.pump();
+
+      expect(coordinator.restartCalls, 1);
+      expect(
+        find.byKey(const Key('remote_restart_waiting_dialog')),
+        findsOneWidget,
+      );
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+      coordinator.restartResult!.complete(false);
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('remote_restart_waiting_dialog')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const Key('remote_restart_result_dialog')),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.byKey(const Key('remote_important_dialog_ok')));
+      await tester.pumpAndSettle();
+      expect(find.byType(AlertDialog), findsNothing);
+
+      await tester.pumpWidget(const SizedBox.shrink());
+    });
+
+    testWidgets('shows takeback waiting and rejection dialogs with tips off', (
+      WidgetTester tester,
+    ) async {
+      final GameController controller = GameController();
+      final GameMode previousMode = controller.gameInstance.gameMode;
+      final RemoteMatchController? previousCoordinator =
+          controller.remoteCoordinator;
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: _HistoryRulesPort(),
+      );
+      final _ResignOnlyRemoteController coordinator =
+          _ResignOnlyRemoteController();
+      session.remoteMeta = const MillRemoteSessionMeta(
+        localSeat: PlayerSeat.second,
+        hostPlaysWhite: true,
+        transportKind: RemoteTransportKind.cloud,
+        role: RemoteRole.join,
+        sessionId: 'cloud-takeback-rejection-test',
+      );
+      controller.bindActiveSession(session);
+      controller.gameInstance.gameMode = GameMode.humanVsCloud;
+      controller.remoteCoordinator = coordinator;
+      addTearDown(() {
+        controller.unbindActiveSession(session);
+        controller.gameInstance.gameMode = previousMode;
+        controller.remoteCoordinator = previousCoordinator;
+        session.dispose();
+      });
+
+      Future<bool>? request;
+      await tester.pumpWidget(
+        MaterialApp(
+          navigatorKey: currentNavigatorKey,
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(
+            body: FilledButton(
+              onPressed: () {
+                request = controller.requestRemoteTakeBack(1);
+              },
+              child: const Text('Request takeback'),
+            ),
+          ),
+        ),
+      );
+
+      expect(DB().generalSettings.showGameTips, isFalse);
+      await tester.tap(find.text('Request takeback'));
+      await tester.pump();
+
+      expect(coordinator.takeBackRequests, const <int>[1]);
+      expect(
+        find.byKey(const Key('remote_takeback_waiting_dialog')),
+        findsOneWidget,
+      );
+      expect(
+        find.text(
+          'Requested to take back your latest turn together with your '
+          "opponent's following reply. Waiting for your opponent…",
+        ),
+        findsOneWidget,
+      );
+
+      coordinator.takeBackResult!.complete(false);
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('remote_takeback_result_dialog')),
+        findsOneWidget,
+      );
+      await tester.tap(find.byKey(const Key('remote_important_dialog_ok')));
+      await tester.pumpAndSettle();
+      expect(await request, isFalse);
+      expect(find.byType(SnackBar), findsNothing);
+
+      await tester.pumpWidget(const SizedBox.shrink());
+    });
+
+    testWidgets(
+      'allows requesting only the local turn before the opponent replies',
+      (WidgetTester tester) async {
+        final GameController controller = GameController();
+        final GameMode previousMode = controller.gameInstance.gameMode;
+        final RemoteMatchController? previousCoordinator =
+            controller.remoteCoordinator;
+        final NativeMillGameSession session = NativeMillGameSession(
+          rulesPort: _HistoryRulesPort(activeSeat: PlayerSeat.first),
+        );
+        final _ResignOnlyRemoteController coordinator =
+            _ResignOnlyRemoteController();
+        session.remoteMeta = const MillRemoteSessionMeta(
+          localSeat: PlayerSeat.second,
+          hostPlaysWhite: true,
+          transportKind: RemoteTransportKind.lan,
+          role: RemoteRole.join,
+          sessionId: 'lan-own-turn-takeback-test',
+        );
+        controller.bindActiveSession(session);
+        controller.gameInstance.gameMode = GameMode.humanVsLAN;
+        controller.remoteCoordinator = coordinator;
+        addTearDown(() {
+          controller.unbindActiveSession(session);
+          controller.gameInstance.gameMode = previousMode;
+          controller.remoteCoordinator = previousCoordinator;
+          session.dispose();
+        });
+
+        Future<bool>? request;
+        await tester.pumpWidget(
+          MaterialApp(
+            navigatorKey: currentNavigatorKey,
+            scaffoldMessengerKey: rootScaffoldMessengerKey,
+            localizationsDelegates: sanmillLocalizationsDelegates,
+            supportedLocales: S.supportedLocales,
+            home: Scaffold(
+              body: FilledButton(
+                onPressed: () {
+                  request = controller.requestRemoteTakeBack(1);
+                },
+                child: const Text('Request own turn'),
+              ),
+            ),
+          ),
+        );
+
+        expect(controller.isRemoteOpponentTurn, isTrue);
+        await tester.tap(find.text('Request own turn'));
+        await tester.pump();
+
+        expect(coordinator.takeBackRequests, const <int>[1]);
+        expect(
+          find.text(
+            'Requested to take back only your latest turn. Waiting for your '
+            'opponent…',
+          ),
+          findsOneWidget,
+        );
+
+        coordinator.takeBackResult!.complete(true);
+        await tester.pumpAndSettle();
+        expect(await request, isTrue);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
+
+    testWidgets(
+      'shows board transformation waiting and rejection dialogs with tips off',
+      (WidgetTester tester) async {
+        final GameController controller = GameController();
+        final GameMode previousMode = controller.gameInstance.gameMode;
+        final RemoteMatchController? previousCoordinator =
+            controller.remoteCoordinator;
+        final NativeMillGameSession session = NativeMillGameSession(
+          rulesPort: _HistoryRulesPort(),
+        );
+        final _ResignOnlyRemoteController coordinator =
+            _ResignOnlyRemoteController();
+        controller.bindActiveSession(session);
+        controller.gameInstance.gameMode = GameMode.humanVsBluetooth;
+        controller.remoteCoordinator = coordinator;
+        addTearDown(() {
+          controller.unbindActiveSession(session);
+          controller.gameInstance.gameMode = previousMode;
+          controller.remoteCoordinator = previousCoordinator;
+          session.dispose();
+        });
+
+        Future<bool>? request;
+        await tester.pumpWidget(
+          MaterialApp(
+            navigatorKey: currentNavigatorKey,
+            scaffoldMessengerKey: rootScaffoldMessengerKey,
+            localizationsDelegates: sanmillLocalizationsDelegates,
+            supportedLocales: S.supportedLocales,
+            home: Scaffold(
+              body: FilledButton(
+                onPressed: () {
+                  request = controller.requestRemoteBoardTransform(
+                    TransformationType.rotate180,
+                  );
+                },
+                child: const Text('Request transformation'),
+              ),
+            ),
+          ),
+        );
+
+        expect(DB().generalSettings.showGameTips, isFalse);
+        await tester.tap(find.text('Request transformation'));
+        await tester.pump();
+
+        expect(
+          coordinator.requestedBoardTransformation,
+          TransformationType.rotate180.name,
+        );
+        expect(
+          find.byKey(const Key('remote_board_transform_waiting_dialog')),
+          findsOneWidget,
+        );
+
+        coordinator.boardTransformResult!.complete(false);
+        await tester.pumpAndSettle();
+
+        expect(
+          find.byKey(const Key('remote_board_transform_result_dialog')),
+          findsOneWidget,
+        );
+        await tester.tap(find.byKey(const Key('remote_important_dialog_ok')));
+        await tester.pumpAndSettle();
+        expect(await request, isFalse);
+
+        await tester.pumpWidget(const SizedBox.shrink());
+      },
+    );
   });
 
   group('HistoryNavigator cloud takeback', () {
@@ -417,7 +755,11 @@ void main() {
             );
 
         coordinator.emit(
-          const RemoteTakeBackApprovalRequested('takeback-request', 1),
+          const RemoteTakeBackApprovalRequested(
+            'takeback-request',
+            3,
+            scope: RemoteTakeBackScope.requesterTurnAndOpponentReply,
+          ),
         );
         await tester.pump();
 
@@ -427,16 +769,93 @@ void main() {
         final BuildContext dialogContext = tester.element(
           find.byType(AlertDialog),
         );
+        expect(
+          find.text(
+            S.of(dialogContext).opponentRequestsTakeBackTurnAndReplyAccept,
+          ),
+          findsOneWidget,
+        );
         await tester.tap(find.text(S.of(dialogContext).no));
         await tester.pumpAndSettle();
 
         expect(coordinator.respondedTakeBackRequestId, 'takeback-request');
-        expect(coordinator.respondedTakeBackSteps, 1);
+        expect(coordinator.respondedTakeBackSteps, 3);
         expect(coordinator.respondedTakeBackAccepted, isFalse);
 
         await tester.pumpWidget(const SizedBox.shrink());
       },
     );
+
+    testWidgets('distinguishes a request for only the opponent turn', (
+      WidgetTester tester,
+    ) async {
+      final GameController controller = GameController();
+      final GameMode previousMode = controller.gameInstance.gameMode;
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: _HistoryRulesPort(),
+      );
+      final _ResignOnlyRemoteController coordinator =
+          _ResignOnlyRemoteController();
+
+      controller.bindActiveSession(session);
+      addTearDown(() async {
+        if (identical(controller.remoteCoordinator, coordinator)) {
+          await controller.disposeRemoteMatch();
+        }
+        controller.unbindActiveSession(session);
+        controller.gameInstance.gameMode = previousMode;
+        session.dispose();
+      });
+
+      await tester.pumpWidget(
+        MaterialApp(
+          navigatorKey: currentNavigatorKey,
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: const Scaffold(body: SizedBox.shrink()),
+        ),
+      );
+
+      await controller.createCloudRemoteController<_ResignOnlyRemoteController>(
+        (RemoteGameAdapter game) async => coordinator,
+        role: RemoteRole.host,
+      );
+
+      coordinator.emit(
+        const RemoteTakeBackApprovalRequested(
+          'takeback-own-turn-request',
+          2,
+          scope: RemoteTakeBackScope.requesterTurnOnly,
+        ),
+      );
+      await tester.pump();
+
+      final BuildContext dialogContext = tester.element(
+        find.byType(AlertDialog),
+      );
+      expect(
+        find.text(S.of(dialogContext).opponentRequestsTakeBackTurnAccept),
+        findsOneWidget,
+      );
+      expect(
+        find.text(
+          S.of(dialogContext).opponentRequestsTakeBackTurnAndReplyAccept,
+        ),
+        findsNothing,
+      );
+      await tester.tap(find.text(S.of(dialogContext).no));
+      await tester.pumpAndSettle();
+
+      expect(
+        coordinator.respondedTakeBackRequestId,
+        'takeback-own-turn-request',
+      );
+      expect(coordinator.respondedTakeBackSteps, 2);
+      expect(coordinator.respondedTakeBackAccepted, isFalse);
+
+      await tester.pumpWidget(const SizedBox.shrink());
+    });
 
     testWidgets('shows a readable incoming board transformation request', (
       WidgetTester tester,
@@ -530,12 +949,15 @@ void main() {
 }
 
 class _HistoryRulesPort implements NativeMillRulesPort {
-  GameStateSnapshot _snapshot = const GameStateSnapshot(
-    gameId: GameId.mill,
-    activeSeat: PlayerSeat.second,
-    outcome: GameOutcome.ongoing(),
-    phase: 'placing',
-  );
+  _HistoryRulesPort({PlayerSeat activeSeat = PlayerSeat.second})
+    : _snapshot = GameStateSnapshot(
+        gameId: GameId.mill,
+        activeSeat: activeSeat,
+        outcome: const GameOutcome.ongoing(),
+        phase: 'placing',
+      );
+
+  GameStateSnapshot _snapshot;
   int undoCalls = 0;
 
   @override
@@ -572,10 +994,15 @@ class _HistoryRulesPort implements NativeMillRulesPort {
 class _ResignOnlyRemoteController
     implements RemoteMatchController, RemoteBoardTransformController {
   int resignCalls = 0;
+  bool resignResult = true;
   int leaveCalls = 0;
   int disposeCalls = 0;
+  int restartCalls = 0;
   final List<int> takeBackRequests = <int>[];
   Completer<bool>? takeBackResult;
+  Completer<bool>? restartResult;
+  Completer<bool>? boardTransformResult;
+  String? requestedBoardTransformation;
   final StreamController<RemoteMatchEvent> _events =
       StreamController<RemoteMatchEvent>.broadcast();
   String? respondedTakeBackRequestId;
@@ -638,7 +1065,10 @@ class _ResignOnlyRemoteController
 
   @override
   Future<bool> requestBoardTransform(String transformation) async {
-    return true;
+    requestedBoardTransformation = transformation;
+    final Completer<bool> result = Completer<bool>();
+    boardTransformResult = result;
+    return result.future;
   }
 
   @override
@@ -655,7 +1085,15 @@ class _ResignOnlyRemoteController
   @override
   Future<bool> resign() async {
     resignCalls += 1;
-    return true;
+    return resignResult;
+  }
+
+  @override
+  Future<bool> requestRestart() {
+    restartCalls += 1;
+    final Completer<bool> result = Completer<bool>();
+    restartResult = result;
+    return result.future;
   }
 
   @override

@@ -130,6 +130,54 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
+  testWidgets('LAN marks only the preferred address when candidates differ', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      makeTestableWidget(
+        LanConfigDialog(
+          localAddressProvider: () async => const <String>[
+            '192.168.1.110',
+            '10.42.39.223',
+            '172.19.0.1',
+          ],
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final DropdownButtonFormField<String> addressField = tester
+        .widget<DropdownButtonFormField<String>>(
+          find.byType(DropdownButtonFormField<String>),
+        );
+    expect(addressField.initialValue, '192.168.1.110');
+    expect(
+      find.byKey(const Key('lan_recommended_address_badge')),
+      findsOneWidget,
+    );
+    expect(find.text('Recommended'), findsOneWidget);
+    final BuildContext badgeContext = tester.element(find.text('Recommended'));
+    expect(
+      tester.widget<Text>(find.text('Recommended')).style?.fontSize,
+      Theme.of(badgeContext).textTheme.labelLarge?.fontSize,
+    );
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump();
+    await tester.pumpWidget(
+      makeTestableWidget(
+        LanConfigDialog(
+          localAddressProvider: () async => const <String>['192.168.1.110'],
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const Key('lan_recommended_address_badge')),
+      findsNothing,
+    );
+  });
+
   testWidgets(
     'LAN hosting locks dismissal until the service is stopped',
     (WidgetTester tester) async {

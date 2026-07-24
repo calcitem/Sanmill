@@ -78,11 +78,24 @@ class RemoteMatchActionRejected extends RemoteMatchEvent {
   final String reason;
 }
 
+enum RemoteTakeBackScope {
+  /// Only the requester's latest complete turn is removed.
+  requesterTurnOnly,
+
+  /// The requester's latest complete turn and the opponent's reply are removed.
+  requesterTurnAndOpponentReply,
+}
+
 class RemoteTakeBackApprovalRequested extends RemoteMatchEvent {
-  const RemoteTakeBackApprovalRequested(this.requestId, this.steps);
+  const RemoteTakeBackApprovalRequested(
+    this.requestId,
+    this.steps, {
+    required this.scope,
+  });
 
   final String requestId;
   final int steps;
+  final RemoteTakeBackScope scope;
 }
 
 class RemoteRestartApprovalRequested extends RemoteMatchEvent {

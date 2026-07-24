@@ -28,7 +28,6 @@ import '../../games/mill/mill_opening_book_provider.dart';
 import '../../games/mill/mill_variant_localization.dart';
 import '../../games/mill/native_mill_ai_turn_controller.dart';
 import '../../games/mill/native_mill_game_session.dart';
-import '../../games/mill/native_mill_rules_port.dart';
 import '../../games/mill/opening_explorer/opening_explorer_page.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../general_settings/widgets/general_settings_page.dart';
@@ -1146,7 +1145,7 @@ class PlayAreaState extends State<PlayArea> {
     final GameController controller = GameController();
     // Remote matches: send a restart request immediately. Do not open the
     // legacy GameOptionsModal (board editor / load / clipboard / save image).
-    if (controller.isRemoteGameMode && controller.isRemoteConnected) {
+    if (controller.isRemoteGameMode) {
       RecordingService().recordEvent(
         RecordingEventType.toolbarAction,
         <String, dynamic>{'toolbar': 'regularMenu', 'action': 'newGameRemote'},
@@ -1713,79 +1712,10 @@ class PlayAreaState extends State<PlayArea> {
       requesterSide == PieceColor.white || requesterSide == PieceColor.black,
     );
     final List<ExtMove> path = GameController().gameRecorder.currentPath;
-    if (path.isEmpty) {
-      return null;
-    }
-
-    final NativeMillRulesPort? preview = _takeBackPreviewPortOrNull(path);
-    if (preview == null) {
-      return null;
-    }
-    try {
-      // Undo until the requester is truly the side to act. This keeps capture
-      // actions attached to the requester: if White made a mill and captured,
-      // then Black replied, a Black request removes only Black's move, while a
-      // White request removes Black's move and White's capture.
-      for (int steps = 1; steps <= path.length; steps++) {
-        preview.undo();
-        final PieceColor sideAfterUndo = _pieceColorFromSeat(
-          preview.snapshot.activeSeat,
-        );
-        if (sideAfterUndo == requesterSide) {
-          return steps;
-        }
-      }
-    } finally {
-      preview.dispose();
-    }
-
-    return null;
-  }
-
-  NativeMillRulesPort? _takeBackPreviewPortOrNull(List<ExtMove> path) {
-    final NativeMillRulesPort port = NativeMillRulesPort(
-      ruleSettings:
-          GameController().activeNativeMillSession?.activeRuleSettings ??
-          DB().ruleSettings,
-      generalSettings: DB().generalSettings,
+    return OfflineBoardHistory.requesterTakeBackStepCount(
+      path.map((ExtMove move) => move.side).toList(growable: false),
+      requesterSide,
     );
-
-    try {
-      final String? setupPosition = GameController().gameRecorder.setupPosition;
-      if (setupPosition != null) {
-        port.setFromFen(setupPosition);
-      }
-
-      for (final ExtMove move in path) {
-        final GameAction? action = _legalActionForMove(port, move.move);
-        if (action == null) {
-          port.dispose();
-          return null;
-        }
-        port.apply(action);
-      }
-      return port;
-    } on Object {
-      port.dispose();
-      rethrow;
-    }
-  }
-
-  GameAction? _legalActionForMove(NativeMillRulesPort port, String move) {
-    for (final GameAction action in port.legalActions) {
-      if (MillActionCodec.moveStringFrom(action) == move) {
-        return action;
-      }
-    }
-    return null;
-  }
-
-  PieceColor _pieceColorFromSeat(PlayerSeat seat) {
-    assert(
-      seat == PlayerSeat.first || seat == PlayerSeat.second,
-      'Requester takeback requires a playable side, got $seat.',
-    );
-    return seat == PlayerSeat.first ? PieceColor.white : PieceColor.black;
   }
 
   Future<void> _takeBackFromRegularBottomBar(BuildContext context) async {
@@ -1940,7 +1870,8 @@ class PlayAreaState extends State<PlayArea> {
       return false;
     }
     if (GameController().isRemoteGameMode) {
-      return _remoteTakeBackStepCountOrNull != null;
+      return GameController().isRemoteConnected &&
+          _remoteTakeBackStepCountOrNull != null;
     }
     return true;
   }
@@ -1994,16 +1925,15 @@ class PlayAreaState extends State<PlayArea> {
         return;
       }
     }
+    if (isRemoteTransform && !transformed) {
+      return;
+    }
     assert(
       rootScaffoldMessengerKey.currentState != null,
       'Board transform feedback requires the root scaffold messenger.',
     );
     rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-      transformed
-          ? strings.transformed
-          : isRemoteTransform
-          ? strings.boardTransformRequestRejected
-          : strings.cannotTransform,
+      transformed ? strings.transformed : strings.cannotTransform,
     );
   }
 
@@ -2841,24 +2771,28 @@ class PlayAreaState extends State<PlayArea> {
               ),
             ),
           ),
-        LichessActionSheetAction(
-          key: const Key('play_area_regular_game_menu_flip_board'),
-          leading: const Icon(Icons.flip_camera_android_outlined),
-          trailing: const Icon(Icons.chevron_right),
-          dismissOnPress: false,
-          makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
-          onPressed: () {},
-          onPressedWithContext: (BuildContext menuActionContext) =>
-              _replaceMenuWithBoardTransformPicker(
-                Navigator.of(menuActionContext),
-                sheetKey: const Key('play_area_regular_board_transform_sheet'),
-                keyPrefix: 'play_area_regular_board_transform',
-                strings: strings,
-                title: strings.flipBoard,
-                currentBoardLayout: boardTransformLayout,
-                session: hostSession,
-              ),
-        ),
+        if (!GameController().isRemoteGameMode ||
+            GameController().supportsRemoteBoardTransform)
+          LichessActionSheetAction(
+            key: const Key('play_area_regular_game_menu_flip_board'),
+            leading: const Icon(Icons.flip_camera_android_outlined),
+            trailing: const Icon(Icons.chevron_right),
+            dismissOnPress: false,
+            makeLabel: (BuildContext context) => Text(S.of(context).flipBoard),
+            onPressed: () {},
+            onPressedWithContext: (BuildContext menuActionContext) =>
+                _replaceMenuWithBoardTransformPicker(
+                  Navigator.of(menuActionContext),
+                  sheetKey: const Key(
+                    'play_area_regular_board_transform_sheet',
+                  ),
+                  keyPrefix: 'play_area_regular_board_transform',
+                  strings: strings,
+                  title: strings.flipBoard,
+                  currentBoardLayout: boardTransformLayout,
+                  session: hostSession,
+                ),
+          ),
         if (!_isAnalysisMode && _supportsGameTips)
           _gameTipsMenuAction(
             key: const Key('play_area_regular_game_menu_game_tips'),
@@ -2920,7 +2854,10 @@ class PlayAreaState extends State<PlayArea> {
           key: const Key('play_area_regular_game_menu_marker_guide'),
           leading: const Icon(Icons.help_outline),
           makeLabel: (BuildContext context) => Text(strings.boardMarkerGuide),
-          onPressed: () => showBoardMarkerGuide(actionContext),
+          onPressed: () => showBoardMarkerGuide(
+            actionContext,
+            remoteGame: GameController().isRemoteGameMode,
+          ),
         ),
         if (_shouldShowMoveNowMenuAction)
           LichessActionSheetAction(
@@ -9200,12 +9137,10 @@ class _BoardTransformPickerDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<_BoardTransformPreview> previews = _previews();
     assert(previews.isNotEmpty, 'Board transform picker must show options.');
-    final double screenWidth = MediaQuery.sizeOf(context).width;
-    final int preferredColumnCount = screenWidth < 480 ? 3 : 4;
-    final int crossAxisCount = math.min(
-      preferredColumnCount,
-      math.max(1, previews.length),
-    );
+    // The complete Mill transformation group has 16 entries, including the
+    // identity. Keep the picker as a stable 4 × 4 matrix on phones as well as
+    // larger screens so every option is visible without a ragged final row.
+    final int crossAxisCount = math.min(4, math.max(1, previews.length));
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return Dialog(
@@ -9244,7 +9179,7 @@ class _BoardTransformPickerDialog extends StatelessWidget {
                       crossAxisCount: crossAxisCount,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
-                      childAspectRatio: 0.78,
+                      childAspectRatio: 1,
                     ),
                     itemCount: previews.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -9259,6 +9194,14 @@ class _BoardTransformPickerDialog extends StatelessWidget {
                             context,
                           );
                           navigator.pop();
+                          if (preview.action.type ==
+                              TransformationType.identity) {
+                            // Identity is the explicit "keep the original
+                            // orientation" choice. Closing the picker is
+                            // sufficient; a remote no-op must not be sent for
+                            // negotiation.
+                            return;
+                          }
                           WidgetsBinding.instance.addPostFrameCallback(
                             (_) => onSelected(preview.action),
                           );
@@ -9342,43 +9285,16 @@ class _BoardTransformPreviewTile extends StatelessWidget {
                 border: Border.all(color: borderColor),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(6),
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: AspectRatio(
-                        aspectRatio: 1,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(
-                            AppStyles.compactRadius,
-                          ),
-                          child: ColoredBox(
-                            color: DB().colorSettings.boardBackgroundColor,
-                            child: CustomPaint(
-                              painter: MiniBoardPainter(
-                                boardLayout: boardLayout,
-                              ),
-                              child: const SizedBox.expand(),
-                            ),
-                          ),
-                        ),
-                      ),
+                padding: const EdgeInsets.all(8),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(AppStyles.compactRadius),
+                  child: ColoredBox(
+                    color: DB().colorSettings.boardBackgroundColor,
+                    child: CustomPaint(
+                      painter: MiniBoardPainter(boardLayout: boardLayout),
+                      child: const SizedBox.expand(),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      label,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style:
-                          (Theme.of(context).textTheme.bodyMedium ??
-                                  const TextStyle(fontSize: 14))
-                              .copyWith(
-                                color: _transformTileForegroundColor(context),
-                                letterSpacing: 0,
-                              ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -9387,11 +9303,6 @@ class _BoardTransformPreviewTile extends StatelessWidget {
       ),
     );
   }
-}
-
-Color _transformTileForegroundColor(BuildContext context) {
-  return DefaultTextStyle.of(context).style.color ??
-      Theme.of(context).colorScheme.onSurface;
 }
 
 class _LichessGameBottomBar extends StatelessWidget {

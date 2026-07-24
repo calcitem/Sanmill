@@ -397,6 +397,9 @@ class CloudMatchCoordinator implements RemoteMatchController {
           RemoteTakeBackApprovalRequested(
             requestId,
             _requiredInt(message, 'steps'),
+            scope: isLocalTurn
+                ? RemoteTakeBackScope.requesterTurnOnly
+                : RemoteTakeBackScope.requesterTurnAndOpponentReply,
           ),
         );
       case 'restart':

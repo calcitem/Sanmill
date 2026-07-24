@@ -15,7 +15,9 @@ import '../../../shared/services/logger.dart';
 import '../../services/mill.dart';
 
 class LanConfigDialog extends StatefulWidget {
-  const LanConfigDialog({super.key});
+  const LanConfigDialog({super.key, this.localAddressProvider});
+
+  final Future<List<String>> Function()? localAddressProvider;
 
   @override
   State<LanConfigDialog> createState() => _LanConfigDialogState();
@@ -52,7 +54,9 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
 
   Future<void> _loadInterfaces() async {
     try {
-      final List<String> addresses = await LanTransport.getLocalIpAddresses();
+      final Future<List<String>> Function() provider =
+          widget.localAddressProvider ?? LanTransport.getLocalIpAddresses;
+      final List<String> addresses = await provider();
       if (!mounted) {
         return;
       }
@@ -400,7 +404,12 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
                       .map(
                         (String address) => DropdownMenuItem<String>(
                           value: address,
-                          child: Text(address, overflow: TextOverflow.ellipsis),
+                          child: _LanAddressOption(
+                            address: address,
+                            recommended:
+                                _localAddresses.length > 1 &&
+                                address == _localAddresses.first,
+                          ),
                         ),
                       )
                       .toList(growable: false),
@@ -556,6 +565,40 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _LanAddressOption extends StatelessWidget {
+  const _LanAddressOption({required this.address, required this.recommended});
+
+  final String address;
+  final bool recommended;
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme colors = Theme.of(context).colorScheme;
+    return Row(
+      children: <Widget>[
+        Expanded(child: Text(address, overflow: TextOverflow.ellipsis)),
+        if (recommended) ...<Widget>[
+          const SizedBox(width: 8),
+          Container(
+            key: const Key('lan_recommended_address_badge'),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            decoration: BoxDecoration(
+              color: colors.primaryContainer,
+              borderRadius: BorderRadius.circular(999),
+            ),
+            child: Text(
+              S.of(context).lanRecommendedAddress,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: colors.onPrimaryContainer,
+              ),
+            ),
+          ),
+        ],
+      ],
     );
   }
 }

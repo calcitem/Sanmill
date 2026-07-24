@@ -77,6 +77,25 @@ void main() {
       expect(host.revision, 1);
       expect(join.revision, 1);
 
+      final Future<RemoteTakeBackApprovalRequested> ownTurnTakeBack = join
+          .events
+          .where(
+            (RemoteMatchEvent event) =>
+                event is RemoteTakeBackApprovalRequested,
+          )
+          .cast<RemoteTakeBackApprovalRequested>()
+          .first;
+      final Future<bool> ownTurnRequest = host.requestTakeBack(1);
+      final RemoteTakeBackApprovalRequested ownTurnReceived =
+          await ownTurnTakeBack;
+      expect(ownTurnReceived.scope, RemoteTakeBackScope.requesterTurnOnly);
+      await join.respondToTakeBack(
+        requestId: ownTurnReceived.requestId,
+        steps: ownTurnReceived.steps,
+        accepted: false,
+      );
+      expect(await ownTurnRequest, isFalse);
+
       expect(await join.submitLocalAction('b2'), isTrue);
       await _eventLoop();
       expect(hostGame.fen, 'start|a1|b2');
@@ -91,6 +110,7 @@ void main() {
           .first;
       final Future<bool> request = host.requestTakeBack(1);
       final RemoteTakeBackApprovalRequested received = await takeBack;
+      expect(received.scope, RemoteTakeBackScope.requesterTurnAndOpponentReply);
       await join.respondToTakeBack(
         requestId: received.requestId,
         steps: received.steps,

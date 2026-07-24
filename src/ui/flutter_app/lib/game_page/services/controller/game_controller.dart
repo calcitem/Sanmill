@@ -129,6 +129,95 @@ class GameController {
     return fallbackContext;
   }
 
+  Future<void> _showImportantRemoteDialog({
+    required Key dialogKey,
+    required String Function(S strings) title,
+    required String Function(S strings) message,
+  }) async {
+    final BuildContext? context = _controllerDialogContext;
+    if (context == null) {
+      return;
+    }
+    await showDialog<void>(
+      context: context,
+      useRootNavigator: true,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        final S strings = S.of(dialogContext);
+        return PopScope(
+          canPop: false,
+          child: AlertDialog(
+            key: dialogKey,
+            title: Text(title(strings)),
+            content: Text(
+              message(strings),
+              style: Theme.of(dialogContext).textTheme.bodyLarge,
+            ),
+            actions: <Widget>[
+              TextButton(
+                key: const Key('remote_important_dialog_ok'),
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: Text(strings.ok),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<bool> _awaitRemoteRequestWithDialog({
+    required Key dialogKey,
+    required String Function(S strings) title,
+    required String Function(S strings) message,
+    required Future<bool> Function() request,
+  }) async {
+    final BuildContext? context = _controllerDialogContext;
+    if (context == null) {
+      return request();
+    }
+    final NavigatorState navigator = Navigator.of(context, rootNavigator: true);
+    final DialogRoute<void> waitingRoute = DialogRoute<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext waitingContext) {
+        final S strings = S.of(waitingContext);
+        return PopScope(
+          canPop: false,
+          child: AlertDialog(
+            key: dialogKey,
+            title: Text(title(strings)),
+            content: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const SizedBox.square(
+                  dimension: 24,
+                  child: CircularProgressIndicator(),
+                ),
+                const SizedBox(width: 16),
+                Flexible(
+                  child: Text(
+                    message(strings),
+                    style: Theme.of(waitingContext).textTheme.bodyLarge,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    final Future<void> waitingRouteClosed = navigator.push(waitingRoute);
+    try {
+      return await request();
+    } finally {
+      if (waitingRoute.isActive) {
+        navigator.removeRoute(waitingRoute);
+      }
+      await waitingRouteClosed;
+    }
+  }
+
   void _updateEngineActivityNotifier() {
     final bool isEngineActive = _isEngineRunning || _isEngineInDelay;
     if (engineActivityNotifier.value != isEngineActive) {
@@ -885,25 +974,45 @@ class GameController {
   /// agree and the host publishes the transformed authoritative snapshot.
   Future<bool> requestRemoteBoardTransform(TransformationType type) async {
     final RemoteMatchController? coordinator = remoteCoordinator;
-    if (!isRemoteGameMode ||
-        coordinator == null ||
-        !coordinator.isConnected ||
-        coordinator is! RemoteBoardTransformController ||
+    if (!isRemoteGameMode) {
+      return false;
+    }
+    if (coordinator == null || !coordinator.isConnected) {
+      await _showImportantRemoteDialog(
+        dialogKey: const Key('remote_board_transform_result_dialog'),
+        title: (S strings) => strings.flipBoard,
+        message: (S strings) => strings.remoteNotConnected,
+      );
+      return false;
+    }
+    if (coordinator is! RemoteBoardTransformController ||
         activeNativeMillSession?.outcome.isTerminal != false) {
+      await _showImportantRemoteDialog(
+        dialogKey: const Key('remote_board_transform_result_dialog'),
+        title: (S strings) => strings.flipBoard,
+        message: (S strings) => strings.boardTransformRequestRejected,
+      );
       return false;
     }
     final RemoteBoardTransformController transformController =
         coordinator as RemoteBoardTransformController;
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-    if (context != null) {
-      headerTipNotifier.showTip(
-        S.of(context).boardTransformRequestSent,
-        snackBar: false,
+    bool accepted = false;
+    try {
+      accepted = await _awaitRemoteRequestWithDialog(
+        dialogKey: const Key('remote_board_transform_waiting_dialog'),
+        title: (S strings) => strings.flipBoard,
+        message: (S strings) => strings.boardTransformRequestSent,
+        request: () => transformController.requestBoardTransform(type.name),
+      );
+    } catch (error, stackTrace) {
+      logger.e(
+        '$_logTag Failed to request a remote board transformation: $error',
+        stackTrace: stackTrace,
       );
     }
-    final bool accepted = await transformController.requestBoardTransform(
-      type.name,
-    );
+    if (!identical(remoteCoordinator, coordinator)) {
+      return false;
+    }
     if (accepted) {
       RecordingService().recordEvent(
         RecordingEventType.toolbarAction,
@@ -912,6 +1021,12 @@ class GameController {
           'action': 'transformRemoteBoard',
           'type': type.name,
         },
+      );
+    } else {
+      await _showImportantRemoteDialog(
+        dialogKey: const Key('remote_board_transform_result_dialog'),
+        title: (S strings) => strings.flipBoard,
+        message: (S strings) => strings.boardTransformRequestRejected,
       );
     }
     return accepted;
@@ -968,6 +1083,9 @@ class GameController {
       isRemoteGameMode ? activeNativeMillSession?.remoteMeta : null;
 
   bool get isRemoteConnected => remoteCoordinator?.isConnected ?? false;
+
+  bool get supportsRemoteBoardTransform =>
+      remoteCoordinator is RemoteBoardTransformController;
 
   bool get isRemoteBoardLocked => isRemoteGameMode && !isRemoteConnected;
 
@@ -1204,52 +1322,55 @@ class GameController {
           }
         }
       case RemoteOpponentLeft():
-        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-        if (context != null) {
-          headerTipNotifier.showTip(
-            S.of(context).onlineOpponentLeft,
-            snackBar: true,
-          );
-        }
+        unawaited(
+          _showImportantRemoteDialog(
+            dialogKey: const Key('remote_opponent_left_dialog'),
+            title: (S strings) => strings.appName,
+            message: (S strings) => strings.onlineOpponentLeft,
+          ),
+        );
       case RemoteReconnectExhausted():
-        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-        if (context != null) {
-          headerTipNotifier.showTip(
-            S.of(context).onlineReconnectFailed,
-            snackBar: true,
-          );
-        }
+        unawaited(
+          _showImportantRemoteDialog(
+            dialogKey: const Key('remote_reconnect_failed_dialog'),
+            title: (S strings) => strings.appName,
+            message: (S strings) => strings.onlineReconnectFailed,
+          ),
+        );
       case RemoteOnlineFailure():
-        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-        if (context != null) {
-          headerTipNotifier.showTip(
-            _onlineFailureMessage(S.of(context), event.failure),
-            snackBar: true,
-          );
-        }
+        unawaited(
+          _showImportantRemoteDialog(
+            dialogKey: const Key('remote_online_failure_dialog'),
+            title: (S strings) => strings.onlineFriendGame,
+            message: (S strings) =>
+                _onlineFailureMessage(strings, event.failure),
+          ),
+        );
       case RemoteMatchAborted():
         disableStats = true;
-        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-        if (context != null) {
-          headerTipNotifier.showTip(
-            event.reason.startsWith('Reconnect timed out')
-                ? S.of(context).remoteReconnectTimedOut
-                : S.of(context).remoteConnectionFailed(event.reason),
-            snackBar: true,
-          );
-        }
+        unawaited(
+          _showImportantRemoteDialog(
+            dialogKey: const Key('remote_match_aborted_dialog'),
+            title: (S strings) => strings.appName,
+            message: (S strings) =>
+                event.reason.startsWith('Reconnect timed out')
+                ? strings.remoteReconnectTimedOut
+                : strings.remoteConnectionFailed(event.reason),
+          ),
+        );
       case RemoteMatchFailure():
         logger.e(
           '$_logTag [Remote] coordinator failure: ${event.error}',
           stackTrace: event.stackTrace,
         );
-        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-        if (context != null) {
-          headerTipNotifier.showTip(
-            S.of(context).remoteConnectionFailed(event.error.toString()),
-            snackBar: true,
-          );
-        }
+        unawaited(
+          _showImportantRemoteDialog(
+            dialogKey: const Key('remote_match_failure_dialog'),
+            title: (S strings) => strings.appName,
+            message: (S strings) =>
+                strings.remoteConnectionFailed(event.error.toString()),
+          ),
+        );
     }
   }
 
@@ -1285,6 +1406,7 @@ class GameController {
           context: context,
           barrierDismissible: false,
           builder: (BuildContext dialogContext) => AlertDialog(
+            key: const Key('remote_peer_approval_dialog'),
             title: Text(S.of(dialogContext).remoteApprovalTitle),
             content: Text(
               S
@@ -1294,6 +1416,7 @@ class GameController {
                     event.peer.platform,
                     event.peer.shortId,
                   ),
+              style: Theme.of(dialogContext).textTheme.bodyLarge,
             ),
             actions: <Widget>[
               TextButton(
@@ -1330,12 +1453,16 @@ class GameController {
               context: context,
               barrierDismissible: false,
               builder: (BuildContext dialogContext) => AlertDialog(
+                key: const Key('remote_takeback_request_dialog'),
                 title: Text(S.of(dialogContext).takeBackRequest),
-                content: Text(
-                  S
-                      .of(dialogContext)
-                      .opponentRequestsTakeBackAccept(event.steps.toString()),
-                ),
+                content: Text(switch (event.scope) {
+                  RemoteTakeBackScope.requesterTurnOnly =>
+                    S.of(dialogContext).opponentRequestsTakeBackTurnAccept,
+                  RemoteTakeBackScope.requesterTurnAndOpponentReply =>
+                    S
+                        .of(dialogContext)
+                        .opponentRequestsTakeBackTurnAndReplyAccept,
+                }, style: Theme.of(dialogContext).textTheme.bodyLarge),
                 actions: <Widget>[
                   TextButton(
                     onPressed: () => Navigator.of(dialogContext).pop(false),
@@ -1372,11 +1499,13 @@ class GameController {
               context: context,
               barrierDismissible: false,
               builder: (BuildContext dialogContext) => AlertDialog(
+                key: const Key('remote_restart_request_dialog'),
                 title: Text(S.of(dialogContext).restartRequest),
                 content: Text(
                   S
                       .of(dialogContext)
                       .opponentRequestedToRestartTheGameDoYouAccept,
+                  style: Theme.of(dialogContext).textTheme.bodyLarge,
                 ),
                 actions: <Widget>[
                   TextButton(
@@ -1465,38 +1594,27 @@ class GameController {
   }
 
   Future<void> _showRemoteUpgradeRequired() async {
-    final BuildContext? context = _controllerDialogContext;
-    if (context == null) {
-      return;
-    }
-    await showDialog<void>(
-      context: context,
-      builder: (BuildContext dialogContext) => AlertDialog(
-        title: Text(S.of(dialogContext).appName),
-        content: Text(S.of(dialogContext).remoteProtocolUpgradeRequired),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(S.of(dialogContext).ok),
-          ),
-        ],
-      ),
+    await _showImportantRemoteDialog(
+      dialogKey: const Key('remote_upgrade_required_dialog'),
+      title: (S strings) => strings.appName,
+      message: (S strings) => strings.remoteProtocolUpgradeRequired,
     );
   }
 
   void _showRemoteRejection(String reason) {
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-    if (context == null) {
-      return;
-    }
-    final String message = switch (reason) {
-      'hostBusy' ||
-      'activeSession' ||
-      'approvalPending' => S.of(context).remoteHostBusy,
-      'hostRejected' => S.of(context).remotePeerRejected,
-      _ => S.of(context).remoteActionRejected,
-    };
-    headerTipNotifier.showTip(message, snackBar: true);
+    unawaited(
+      _showImportantRemoteDialog(
+        dialogKey: const Key('remote_action_rejected_dialog'),
+        title: (S strings) => strings.appName,
+        message: (S strings) => switch (reason) {
+          'hostBusy' ||
+          'activeSession' ||
+          'approvalPending' => strings.remoteHostBusy,
+          'hostRejected' => strings.remotePeerRejected,
+          _ => strings.remoteActionRejected,
+        },
+      ),
+    );
   }
 
   /// Undo the last move through the active [NativeMillGameSession].
@@ -1517,24 +1635,44 @@ class GameController {
   }
 
   void requestRestart() {
-    if (isRemoteGameMode && isRemoteConnected) {
+    if (isRemoteGameMode) {
       unawaited(_requestRemoteRestart());
-      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-      if (context != null) {
-        headerTipNotifier.showTip(
-          S.of(context).restartRequestSentWaitingForOpponentSResponse,
-        );
-      }
     } else {
       reset();
     }
   }
 
   Future<void> _requestRemoteRestart() async {
-    final bool accepted = await remoteCoordinator!.requestRestart();
-    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-    if (!accepted && context != null && context.mounted) {
-      headerTipNotifier.showTip(S.of(context).restartRequestRejected);
+    final RemoteMatchController? coordinator = remoteCoordinator;
+    if (coordinator == null || !coordinator.isConnected) {
+      await _showImportantRemoteDialog(
+        dialogKey: const Key('remote_restart_result_dialog'),
+        title: (S strings) => strings.restartRequest,
+        message: (S strings) => strings.remoteNotConnected,
+      );
+      return;
+    }
+    bool accepted = false;
+    try {
+      accepted = await _awaitRemoteRequestWithDialog(
+        dialogKey: const Key('remote_restart_waiting_dialog'),
+        title: (S strings) => strings.restartRequest,
+        message: (S strings) =>
+            strings.restartRequestSentWaitingForOpponentSResponse,
+        request: coordinator.requestRestart,
+      );
+    } catch (error, stackTrace) {
+      logger.e(
+        '$_logTag Failed to request a remote restart: $error',
+        stackTrace: stackTrace,
+      );
+    }
+    if (identical(remoteCoordinator, coordinator) && !accepted) {
+      await _showImportantRemoteDialog(
+        dialogKey: const Key('remote_restart_result_dialog'),
+        title: (S strings) => strings.restartRequest,
+        message: (S strings) => strings.restartRequestRejected,
+      );
     }
   }
 
@@ -1554,10 +1692,11 @@ class GameController {
     final RemoteMatchController? coordinator = remoteCoordinator;
     if (coordinator == null || !coordinator.isConnected) {
       logger.w("$_logTag Cannot resign because the remote match is offline");
-      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-      if (context != null && context.mounted) {
-        headerTipNotifier.showTip(S.of(context).failedToSendResignation);
-      }
+      await _showImportantRemoteDialog(
+        dialogKey: const Key('remote_resignation_failure_dialog'),
+        title: (S strings) => strings.resign,
+        message: (S strings) => strings.failedToSendResignation,
+      );
       return;
     }
 
@@ -1566,12 +1705,16 @@ class GameController {
       if (!identical(remoteCoordinator, coordinator)) {
         return;
       }
-      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-      if (context != null && context.mounted) {
-        headerTipNotifier.showTip(
-          accepted
-              ? S.of(context).youResignedGameOver
-              : S.of(context).failedToSendResignation,
+      if (accepted) {
+        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+        if (context != null && context.mounted) {
+          headerTipNotifier.showTip(S.of(context).youResignedGameOver);
+        }
+      } else {
+        await _showImportantRemoteDialog(
+          dialogKey: const Key('remote_resignation_failure_dialog'),
+          title: (S strings) => strings.resign,
+          message: (S strings) => strings.failedToSendResignation,
         );
       }
     } catch (error, stackTrace) {
@@ -1579,9 +1722,12 @@ class GameController {
         "$_logTag Failed to send resignation: $error",
         stackTrace: stackTrace,
       );
-      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-      if (context != null && context.mounted) {
-        headerTipNotifier.showTip(S.of(context).failedToSendResignation);
+      if (identical(remoteCoordinator, coordinator)) {
+        await _showImportantRemoteDialog(
+          dialogKey: const Key('remote_resignation_failure_dialog'),
+          title: (S strings) => strings.resign,
+          message: (S strings) => strings.failedToSendResignation,
+        );
       }
     }
   }
@@ -1890,80 +2036,43 @@ class GameController {
   Future<bool> requestRemoteTakeBack(int steps) async {
     assert(steps > 0, 'Remote takeback requires a positive step count.');
     final RemoteMatchController? coordinator = remoteCoordinator;
-    if (!isRemoteGameMode ||
-        coordinator == null ||
-        !coordinator.isConnected ||
-        steps <= 0) {
+    if (!isRemoteGameMode || steps <= 0) {
       return false;
     }
-    if (isRemoteOpponentTurn) {
-      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
-      if (context != null) {
-        headerTipNotifier.showTip(
-          S.of(context).cannotRequestATakeBackWhenItSNotYourTurn,
-        );
-      }
+    if (coordinator == null || !coordinator.isConnected) {
+      await _showImportantRemoteDialog(
+        dialogKey: const Key('remote_takeback_result_dialog'),
+        title: (S strings) => strings.takeBackRequest,
+        message: (S strings) => strings.remoteNotConnected,
+      );
       return false;
     }
-    final BuildContext? dialogContext = _controllerDialogContext;
-    final BuildContext? context =
-        dialogContext ?? rootScaffoldMessengerKey.currentContext;
-    final String? rejectedMessage = context != null
-        ? S.of(context).takeBackRejected
-        : null;
-    if (context != null) {
-      headerTipNotifier.showTip(
-        S.of(context).takeBackRequestSentToTheOpponent,
-        snackBar: false,
+    final bool includesOpponentReply = !isRemoteOpponentTurn;
+    bool accepted = false;
+    try {
+      accepted = await _awaitRemoteRequestWithDialog(
+        dialogKey: const Key('remote_takeback_waiting_dialog'),
+        title: (S strings) => strings.takeBackRequest,
+        message: (S strings) => includesOpponentReply
+            ? strings.takeBackRequestSentWaitingForOpponentResponse
+            : strings.takeBackOwnTurnRequestSentWaitingForOpponentResponse,
+        request: () => coordinator.requestTakeBack(steps),
+      );
+    } catch (error, stackTrace) {
+      logger.e(
+        '$_logTag Failed to request a remote takeback: $error',
+        stackTrace: stackTrace,
       );
     }
-    final bool accepted;
-    if (dialogContext == null) {
-      accepted = await coordinator.requestTakeBack(steps);
-    } else {
-      final NavigatorState navigator = Navigator.of(
-        dialogContext,
-        rootNavigator: true,
-      );
-      final DialogRoute<void> waitingRoute = DialogRoute<void>(
-        context: dialogContext,
-        barrierDismissible: false,
-        builder: (BuildContext waitingContext) => PopScope(
-          canPop: false,
-          child: AlertDialog(
-            title: Text(S.of(waitingContext).takeBackRequest),
-            content: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const SizedBox.square(
-                  dimension: 24,
-                  child: CircularProgressIndicator(),
-                ),
-                const SizedBox(width: 16),
-                Flexible(
-                  child: Text(
-                    S
-                        .of(waitingContext)
-                        .takeBackRequestSentWaitingForOpponentResponse,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-      final Future<void> waitingRouteClosed = navigator.push(waitingRoute);
-      try {
-        accepted = await coordinator.requestTakeBack(steps);
-      } finally {
-        if (waitingRoute.isActive) {
-          navigator.removeRoute(waitingRoute);
-        }
-        await waitingRouteClosed;
-      }
+    if (!identical(remoteCoordinator, coordinator)) {
+      return false;
     }
-    if (!accepted && rejectedMessage != null) {
-      headerTipNotifier.showTip(rejectedMessage);
+    if (!accepted) {
+      await _showImportantRemoteDialog(
+        dialogKey: const Key('remote_takeback_result_dialog'),
+        title: (S strings) => strings.takeBackRequest,
+        message: (S strings) => strings.takeBackRequestWasRejectedOrFailed,
+      );
     }
     return accepted;
   }
