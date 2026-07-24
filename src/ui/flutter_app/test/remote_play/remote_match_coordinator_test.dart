@@ -274,6 +274,32 @@ void main() {
     );
   });
 
+  test('incoming control timeout closes the approval request', () async {
+    final _ReadyPair pair = await _ReadyPair.create(
+      controlRequestTimeout: const Duration(milliseconds: 30),
+    );
+    addTearDown(pair.dispose);
+    final Future<RemoteRestartApprovalRequested> approval = pair.host.events
+        .where(
+          (RemoteMatchEvent event) => event is RemoteRestartApprovalRequested,
+        )
+        .cast<RemoteRestartApprovalRequested>()
+        .first;
+    final Future<RemoteControlRequestClosed> closed = pair.host.events
+        .where((RemoteMatchEvent event) => event is RemoteControlRequestClosed)
+        .cast<RemoteControlRequestClosed>()
+        .first;
+
+    final Future<bool> request = pair.join.requestRestart();
+    final RemoteRestartApprovalRequested received = await approval;
+    final RemoteControlRequestClosed expired = await closed.timeout(
+      const Duration(seconds: 1),
+    );
+
+    expect(expired.requestId, received.requestId);
+    expect(await request, isFalse);
+  });
+
   test(
     'duplicates, stale revisions, and illegal actions are rejected',
     () async {
@@ -681,6 +707,7 @@ class _ReadyPair {
     Duration reconnectBackoffBase = const Duration(seconds: 1),
     Duration heartbeatEvery = RemoteMatchCoordinator.heartbeatInterval,
     Duration heartbeatSilenceTimeout = RemoteMatchCoordinator.heartbeatTimeout,
+    Duration controlRequestTimeout = RemoteMatchCoordinator.requestTimeout,
   }) async {
     final _MemoryTransport hostTransport = _MemoryTransport(
       role: RemoteRole.host,
@@ -700,6 +727,7 @@ class _ReadyPair {
       reconnectBackoffBase: reconnectBackoffBase,
       heartbeatEvery: heartbeatEvery,
       heartbeatSilenceTimeout: heartbeatSilenceTimeout,
+      controlRequestTimeout: controlRequestTimeout,
     );
     final RemoteMatchCoordinator join = RemoteMatchCoordinator(
       transport: joinTransport,
@@ -709,6 +737,7 @@ class _ReadyPair {
       reconnectBackoffBase: reconnectBackoffBase,
       heartbeatEvery: heartbeatEvery,
       heartbeatSilenceTimeout: heartbeatSilenceTimeout,
+      controlRequestTimeout: controlRequestTimeout,
     );
     final Future<RemotePeerApprovalRequested> approval = host.events
         .where((RemoteMatchEvent event) => event is RemotePeerApprovalRequested)

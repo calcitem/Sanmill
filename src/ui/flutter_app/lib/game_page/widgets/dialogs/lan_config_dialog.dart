@@ -135,6 +135,7 @@ class _LanConfigDialogState extends State<LanConfigDialog> {
       case RemoteTakeBackApprovalRequested() ||
           RemoteRestartApprovalRequested() ||
           RemoteBoardTransformApprovalRequested() ||
+          RemoteControlRequestClosed() ||
           RemoteOpponentResigned() ||
           RemoteOpponentConnectionChanged() ||
           RemoteOpponentLeft() ||

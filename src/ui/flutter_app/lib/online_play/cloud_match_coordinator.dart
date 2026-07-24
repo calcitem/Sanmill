@@ -244,9 +244,7 @@ class CloudMatchCoordinator implements RemoteMatchController {
       case 'controlResult':
         await _applyStateMessage(message);
         final String requestId = _requiredString(message, 'requestId');
-        if (_lastInboundControlRequestId == requestId) {
-          _lastInboundControlRequestId = null;
-        }
+        _closeInboundControl(requestId);
         _pendingControls
             .remove(requestId)
             ?.complete(message['accepted'] == true);
@@ -392,7 +390,7 @@ class CloudMatchCoordinator implements RemoteMatchController {
     }
     final Object? rawPending = message['pendingControl'];
     if (rawPending == null) {
-      _lastInboundControlRequestId = null;
+      _closeInboundControl();
       return;
     }
     if (rawPending is! Map) {
@@ -403,6 +401,16 @@ class CloudMatchCoordinator implements RemoteMatchController {
       return;
     }
     _emitControlRequest(pending);
+  }
+
+  void _closeInboundControl([String? requestId]) {
+    final String? closedRequestId = _lastInboundControlRequestId;
+    if (closedRequestId == null ||
+        (requestId != null && requestId != closedRequestId)) {
+      return;
+    }
+    _lastInboundControlRequestId = null;
+    _events.add(RemoteControlRequestClosed(closedRequestId));
   }
 
   void _updatePlayerRatings(Object? rawRatings) {

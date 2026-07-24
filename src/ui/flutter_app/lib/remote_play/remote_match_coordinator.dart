@@ -19,7 +19,10 @@ import 'remote_transport.dart';
 export 'remote_match_controller.dart';
 
 class RemoteMatchCoordinator
-    implements RemoteMatchController, RemoteBoardTransformController {
+    implements
+        RemoteMatchController,
+        RemotePeerApprovalController,
+        RemoteBoardTransformController {
   RemoteMatchCoordinator({
     required this.transport,
     required this.game,
@@ -231,6 +234,7 @@ class RemoteMatchCoordinator
     _setState(RemoteConnectionState.negotiating);
   }
 
+  @override
   Future<bool> tryApprovePeer({
     required String peerId,
     required bool accepted,
@@ -1654,11 +1658,15 @@ class RemoteMatchCoordinator
     if (requestId != null && requestId != _incomingControlRequestId) {
       return;
     }
+    final String? closedRequestId = _incomingControlRequestId;
     _incomingControlTimer?.cancel();
     _incomingControlTimer = null;
     _incomingControlRequestId = null;
     _incomingControlRevision = null;
     _incomingBoardTransformation = null;
+    if (closedRequestId != null && !_events.isClosed) {
+      _events.add(RemoteControlRequestClosed(closedRequestId));
+    }
   }
 
   void _cancelReconnectDeadline() {

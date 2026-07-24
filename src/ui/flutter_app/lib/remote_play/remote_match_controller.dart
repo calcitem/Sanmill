@@ -116,6 +116,16 @@ class RemoteBoardTransformApprovalRequested extends RemoteMatchEvent {
   final String transformation;
 }
 
+/// The remote side no longer accepts a response to a control request.
+///
+/// This closes any still-visible approval dialog when a take-back, restart,
+/// or board-transformation request expires or is otherwise withdrawn.
+class RemoteControlRequestClosed extends RemoteMatchEvent {
+  const RemoteControlRequestClosed(this.requestId);
+
+  final String requestId;
+}
+
 class RemoteOpponentResigned extends RemoteMatchEvent {
   const RemoteOpponentResigned();
 }
@@ -210,6 +220,14 @@ abstract interface class RemoteMatchController {
   Future<void> retryConnection();
 
   Future<void> dispose();
+}
+
+/// Optional host approval surface implemented by peer-hosted matches.
+///
+/// The approval request can expire while its dialog is open, so callers must
+/// use [tryApprovePeer] and tolerate a stale decision.
+abstract interface class RemotePeerApprovalController {
+  Future<bool> tryApprovePeer({required String peerId, required bool accepted});
 }
 
 /// Optional control surface implemented by peer-hosted remote matches.

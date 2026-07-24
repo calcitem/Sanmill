@@ -113,6 +113,7 @@ class _BluetoothConfigDialogState extends State<BluetoothConfigDialog> {
       case RemoteTakeBackApprovalRequested() ||
           RemoteRestartApprovalRequested() ||
           RemoteBoardTransformApprovalRequested() ||
+          RemoteControlRequestClosed() ||
           RemoteOpponentResigned() ||
           RemoteOpponentConnectionChanged() ||
           RemoteOpponentLeft() ||

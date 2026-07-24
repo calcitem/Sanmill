@@ -63,6 +63,11 @@ class GameController {
   // Canceled by disposeRemoteMatch before every coordinator replacement.
   // ignore: cancel_subscriptions
   StreamSubscription<RemoteMatchEvent>? _remoteMatchSubscription;
+  DialogRoute<bool>? _remotePeerApprovalRoute;
+  NavigatorState? _remotePeerApprovalNavigator;
+  DialogRoute<bool>? _remoteControlApprovalRoute;
+  NavigatorState? _remoteControlApprovalNavigator;
+  String? _remoteControlApprovalRequestId;
 
   bool isDisposed = false;
   bool isControllerReady = false;
@@ -1285,6 +1290,12 @@ class GameController {
   void _onRemoteMatchEvent(RemoteMatchEvent event) {
     switch (event) {
       case RemoteMatchStateChanged():
+        if (event.state != RemoteConnectionState.awaitingApproval) {
+          _dismissRemotePeerApprovalDialog();
+        }
+        if (event.state != RemoteConnectionState.ready) {
+          _dismissRemoteControlApprovalDialog();
+        }
         if (event.state == RemoteConnectionState.reconnecting) {
           final BuildContext? context = rootScaffoldMessengerKey.currentContext;
           if (context != null) {
@@ -1310,6 +1321,8 @@ class GameController {
         unawaited(_approveRemoteRestart(event));
       case RemoteBoardTransformApprovalRequested():
         unawaited(_approveRemoteBoardTransform(event));
+      case RemoteControlRequestClosed():
+        _dismissRemoteControlApprovalDialog(requestId: event.requestId);
       case RemoteOpponentResigned():
         final BuildContext? context = rootScaffoldMessengerKey.currentContext;
         if (context != null) {
@@ -1397,51 +1410,80 @@ class GameController {
   Future<void> _approveRemotePeer(RemotePeerApprovalRequested event) async {
     final RemoteMatchController? coordinator = remoteCoordinator;
     final BuildContext? context = _controllerDialogContext;
-    if (coordinator is! RemoteMatchCoordinator) {
+    if (coordinator is! RemotePeerApprovalController) {
       return;
     }
+    final RemotePeerApprovalController approvalController =
+        coordinator! as RemotePeerApprovalController;
     if (context == null) {
-      await coordinator.tryApprovePeer(
+      await approvalController.tryApprovePeer(
         peerId: event.peer.peerId,
         accepted: false,
       );
       return;
     }
-    final bool accepted =
-        await showDialog<bool>(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext dialogContext) => AlertDialog(
-            key: const Key('remote_peer_approval_dialog'),
-            title: Text(S.of(dialogContext).remoteApprovalTitle),
-            content: Text(
-              S
-                  .of(dialogContext)
-                  .remoteApprovalBody(
-                    event.peer.label,
-                    event.peer.platform,
-                    event.peer.shortId,
-                  ),
-              style: Theme.of(dialogContext).textTheme.bodyLarge,
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(dialogContext).pop(false),
-                child: Text(S.of(dialogContext).no),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(dialogContext).pop(true),
-                child: Text(S.of(dialogContext).yes),
-              ),
-            ],
+    final NavigatorState navigator = Navigator.of(context, rootNavigator: true);
+    final DialogRoute<bool> approvalRoute = DialogRoute<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) => PopScope(
+        canPop: false,
+        child: AlertDialog(
+          key: const Key('remote_peer_approval_dialog'),
+          title: Text(S.of(dialogContext).remoteApprovalTitle),
+          content: Text(
+            S
+                .of(dialogContext)
+                .remoteApprovalBody(
+                  event.peer.label,
+                  event.peer.platform,
+                  event.peer.shortId,
+                ),
+            style: Theme.of(dialogContext).textTheme.bodyLarge,
           ),
-        ) ??
-        false;
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(S.of(dialogContext).no),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text(S.of(dialogContext).yes),
+            ),
+          ],
+        ),
+      ),
+    );
+    _dismissRemotePeerApprovalDialog();
+    _remotePeerApprovalRoute = approvalRoute;
+    _remotePeerApprovalNavigator = navigator;
+    final bool? accepted;
+    try {
+      accepted = await navigator.push<bool>(approvalRoute);
+    } finally {
+      if (identical(_remotePeerApprovalRoute, approvalRoute)) {
+        _remotePeerApprovalRoute = null;
+        _remotePeerApprovalNavigator = null;
+      }
+    }
+    if (accepted == null) {
+      return;
+    }
     if (identical(remoteCoordinator, coordinator)) {
-      await coordinator.tryApprovePeer(
+      await approvalController.tryApprovePeer(
         peerId: event.peer.peerId,
         accepted: accepted,
       );
+    }
+  }
+
+  void _dismissRemotePeerApprovalDialog() {
+    final DialogRoute<bool>? route = _remotePeerApprovalRoute;
+    final NavigatorState? navigator = _remotePeerApprovalNavigator;
+    _remotePeerApprovalRoute = null;
+    _remotePeerApprovalNavigator = null;
+    if (route != null && route.isActive && navigator != null) {
+      navigator.removeRoute(route);
     }
   }
 
@@ -1449,39 +1491,35 @@ class GameController {
     RemoteTakeBackApprovalRequested event,
   ) async {
     final RemoteMatchController? coordinator = remoteCoordinator;
-    final BuildContext? context = _controllerDialogContext;
     if (coordinator == null) {
       return;
     }
-    final bool accepted =
-        context != null &&
-        (await showDialog<bool>(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext dialogContext) => AlertDialog(
-                key: const Key('remote_takeback_request_dialog'),
-                title: Text(S.of(dialogContext).takeBackRequest),
-                content: Text(switch (event.scope) {
-                  RemoteTakeBackScope.requesterTurnOnly =>
-                    S.of(dialogContext).opponentRequestsTakeBackTurnAccept,
-                  RemoteTakeBackScope.requesterTurnAndOpponentReply =>
-                    S
-                        .of(dialogContext)
-                        .opponentRequestsTakeBackTurnAndReplyAccept,
-                }, style: Theme.of(dialogContext).textTheme.bodyLarge),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => Navigator.of(dialogContext).pop(false),
-                    child: Text(S.of(dialogContext).no),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(dialogContext).pop(true),
-                    child: Text(S.of(dialogContext).yes),
-                  ),
-                ],
-              ),
-            ) ??
-            false);
+    final bool? accepted = await _showRemoteControlApprovalDialog(
+      requestId: event.requestId,
+      builder: (BuildContext dialogContext) => AlertDialog(
+        key: const Key('remote_takeback_request_dialog'),
+        title: Text(S.of(dialogContext).takeBackRequest),
+        content: Text(switch (event.scope) {
+          RemoteTakeBackScope.requesterTurnOnly =>
+            S.of(dialogContext).opponentRequestsTakeBackTurnAccept,
+          RemoteTakeBackScope.requesterTurnAndOpponentReply =>
+            S.of(dialogContext).opponentRequestsTakeBackTurnAndReplyAccept,
+        }, style: Theme.of(dialogContext).textTheme.bodyLarge),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(S.of(dialogContext).no),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(S.of(dialogContext).yes),
+          ),
+        ],
+      ),
+    );
+    if (accepted == null) {
+      return;
+    }
     if (identical(remoteCoordinator, coordinator)) {
       await coordinator.respondToTakeBack(
         requestId: event.requestId,
@@ -1495,37 +1533,33 @@ class GameController {
     RemoteRestartApprovalRequested event,
   ) async {
     final RemoteMatchController? coordinator = remoteCoordinator;
-    final BuildContext? context = _controllerDialogContext;
     if (coordinator == null) {
       return;
     }
-    final bool accepted =
-        context != null &&
-        (await showDialog<bool>(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext dialogContext) => AlertDialog(
-                key: const Key('remote_restart_request_dialog'),
-                title: Text(S.of(dialogContext).restartRequest),
-                content: Text(
-                  S
-                      .of(dialogContext)
-                      .opponentRequestedToRestartTheGameDoYouAccept,
-                  style: Theme.of(dialogContext).textTheme.bodyLarge,
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () => Navigator.of(dialogContext).pop(false),
-                    child: Text(S.of(dialogContext).no),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.of(dialogContext).pop(true),
-                    child: Text(S.of(dialogContext).yes),
-                  ),
-                ],
-              ),
-            ) ??
-            false);
+    final bool? accepted = await _showRemoteControlApprovalDialog(
+      requestId: event.requestId,
+      builder: (BuildContext dialogContext) => AlertDialog(
+        key: const Key('remote_restart_request_dialog'),
+        title: Text(S.of(dialogContext).restartRequest),
+        content: Text(
+          S.of(dialogContext).opponentRequestedToRestartTheGameDoYouAccept,
+          style: Theme.of(dialogContext).textTheme.bodyLarge,
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(S.of(dialogContext).no),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(S.of(dialogContext).yes),
+          ),
+        ],
+      ),
+    );
+    if (accepted == null) {
+      return;
+    }
     if (identical(remoteCoordinator, coordinator)) {
       await coordinator.respondToRestart(
         requestId: event.requestId,
@@ -1538,7 +1572,6 @@ class GameController {
     RemoteBoardTransformApprovalRequested event,
   ) async {
     final RemoteMatchController? coordinator = remoteCoordinator;
-    final BuildContext? context = _controllerDialogContext;
     if (coordinator == null || coordinator is! RemoteBoardTransformController) {
       return;
     }
@@ -1557,45 +1590,90 @@ class GameController {
                 (MillBoardTransformAction candidate) => candidate.type == type,
               )
               .firstOrNull;
-    final bool accepted =
-        context != null &&
-        action != null &&
-        (await showDialog<bool>(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext dialogContext) {
-                final S strings = S.of(dialogContext);
-                return AlertDialog(
-                  key: const Key('remote_board_transform_request_dialog'),
-                  title: Text(strings.flipBoard),
-                  content: Text(
-                    strings.opponentRequestsBoardTransform(
-                      action.label(strings),
-                    ),
-                    style: Theme.of(dialogContext).textTheme.bodyLarge,
+    final bool? accepted = action == null
+        ? false
+        : await _showRemoteControlApprovalDialog(
+            requestId: event.requestId,
+            builder: (BuildContext dialogContext) {
+              final S strings = S.of(dialogContext);
+              return AlertDialog(
+                key: const Key('remote_board_transform_request_dialog'),
+                title: Text(strings.flipBoard),
+                content: Text(
+                  strings.opponentRequestsBoardTransform(action.label(strings)),
+                  style: Theme.of(dialogContext).textTheme.bodyLarge,
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    key: const Key('remote_board_transform_reject'),
+                    onPressed: () => Navigator.of(dialogContext).pop(false),
+                    child: Text(strings.no),
                   ),
-                  actions: <Widget>[
-                    TextButton(
-                      key: const Key('remote_board_transform_reject'),
-                      onPressed: () => Navigator.of(dialogContext).pop(false),
-                      child: Text(strings.no),
-                    ),
-                    TextButton(
-                      key: const Key('remote_board_transform_accept'),
-                      onPressed: () => Navigator.of(dialogContext).pop(true),
-                      child: Text(strings.yes),
-                    ),
-                  ],
-                );
-              },
-            ) ??
-            false);
+                  TextButton(
+                    key: const Key('remote_board_transform_accept'),
+                    onPressed: () => Navigator.of(dialogContext).pop(true),
+                    child: Text(strings.yes),
+                  ),
+                ],
+              );
+            },
+          );
+    if (accepted == null) {
+      return;
+    }
     if (identical(remoteCoordinator, coordinator)) {
       await transformController.respondToBoardTransform(
         requestId: event.requestId,
         transformation: event.transformation,
         accepted: accepted,
       );
+    }
+  }
+
+  Future<bool?> _showRemoteControlApprovalDialog({
+    required String requestId,
+    required WidgetBuilder builder,
+  }) async {
+    final BuildContext? context = _controllerDialogContext;
+    if (context == null) {
+      return false;
+    }
+    final NavigatorState navigator = Navigator.of(context, rootNavigator: true);
+    final DialogRoute<bool> approvalRoute = DialogRoute<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) =>
+          PopScope(canPop: false, child: builder(dialogContext)),
+    );
+    _dismissRemoteControlApprovalDialog();
+    _remoteControlApprovalRoute = approvalRoute;
+    _remoteControlApprovalNavigator = navigator;
+    _remoteControlApprovalRequestId = requestId;
+    try {
+      return await navigator.push<bool>(approvalRoute);
+    } finally {
+      if (identical(_remoteControlApprovalRoute, approvalRoute)) {
+        _remoteControlApprovalRoute = null;
+        _remoteControlApprovalNavigator = null;
+        _remoteControlApprovalRequestId = null;
+      }
+    }
+  }
+
+  void _dismissRemoteControlApprovalDialog({String? requestId}) {
+    if (requestId != null && requestId != _remoteControlApprovalRequestId) {
+      return;
+    }
+    final DialogRoute<bool>? route = _remoteControlApprovalRoute;
+    final NavigatorState? navigator = _remoteControlApprovalNavigator;
+    _remoteControlApprovalRoute = null;
+    _remoteControlApprovalNavigator = null;
+    _remoteControlApprovalRequestId = null;
+    if (route != null &&
+        route.isActive &&
+        navigator != null &&
+        navigator.mounted) {
+      navigator.removeRoute(route);
     }
   }
 
@@ -1982,6 +2060,8 @@ class GameController {
     final StreamSubscription<RemoteMatchEvent>? subscription =
         _remoteMatchSubscription;
     final NativeMillGameSession? session = activeNativeMillSession;
+    _dismissRemotePeerApprovalDialog();
+    _dismissRemoteControlApprovalDialog();
     remoteCoordinator = null;
     _remoteMatchSubscription = null;
     await subscription?.cancel();

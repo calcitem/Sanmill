@@ -458,11 +458,15 @@ void main() {
       addTearDown(coordinator.dispose);
       final List<RemoteTakeBackApprovalRequested> requests =
           <RemoteTakeBackApprovalRequested>[];
+      final List<RemoteControlRequestClosed> closedRequests =
+          <RemoteControlRequestClosed>[];
       final StreamSubscription<RemoteMatchEvent> subscription = coordinator
           .events
           .listen((RemoteMatchEvent event) {
             if (event is RemoteTakeBackApprovalRequested) {
               requests.add(event);
+            } else if (event is RemoteControlRequestClosed) {
+              closedRequests.add(event);
             }
           });
       addTearDown(subscription.cancel);
@@ -482,6 +486,14 @@ void main() {
       });
       await _flushEvents();
       expect(requests, hasLength(1));
+
+      socket.emit(<String, Object?>{
+        ..._stateEvent(session, status: 'active', revision: 0),
+        'pendingControl': null,
+      });
+      await _flushEvents();
+      expect(closedRequests, hasLength(1));
+      expect(closedRequests.single.requestId, 'takeback-restored');
     },
   );
 }

@@ -720,6 +720,93 @@ void main() {
   });
 
   group('GameController remote approval dialogs', () {
+    testWidgets('dismisses expired remote approval dialogs', (
+      WidgetTester tester,
+    ) async {
+      final GameController controller = GameController();
+      final GameMode previousMode = controller.gameInstance.gameMode;
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: _HistoryRulesPort(),
+      );
+      final _ResignOnlyRemoteController coordinator =
+          _ResignOnlyRemoteController();
+
+      controller.bindActiveSession(session);
+      addTearDown(() async {
+        if (identical(controller.remoteCoordinator, coordinator)) {
+          await controller.disposeRemoteMatch();
+        }
+        controller.unbindActiveSession(session);
+        controller.gameInstance.gameMode = previousMode;
+        session.dispose();
+      });
+
+      await tester.pumpWidget(
+        MaterialApp(
+          navigatorKey: currentNavigatorKey,
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: const Scaffold(body: SizedBox.shrink()),
+        ),
+      );
+
+      await controller.createCloudRemoteController<_ResignOnlyRemoteController>(
+        (RemoteGameAdapter game) async => coordinator,
+        role: RemoteRole.host,
+      );
+
+      coordinator.emit(
+        const RemotePeerApprovalRequested(
+          RemotePeerInfo(
+            peerId: 'expired-peer',
+            label: 'Google Pixel 7',
+            platform: 'android',
+            appVersion: '1.0.0',
+            appBuild: '1',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('remote_peer_approval_dialog')),
+        findsOneWidget,
+      );
+
+      coordinator.emit(
+        const RemoteMatchStateChanged(RemoteConnectionState.listening),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('remote_peer_approval_dialog')),
+        findsNothing,
+      );
+      expect(coordinator.approvedPeerId, isNull);
+      expect(coordinator.peerApprovalAccepted, isNull);
+
+      coordinator.emit(const RemoteRestartApprovalRequested('expired-restart'));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('remote_restart_request_dialog')),
+        findsOneWidget,
+      );
+
+      coordinator.emit(const RemoteControlRequestClosed('expired-restart'));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('remote_restart_request_dialog')),
+        findsNothing,
+      );
+      expect(coordinator.respondedRestartRequestId, isNull);
+      expect(coordinator.respondedRestartAccepted, isNull);
+
+      await tester.pumpWidget(const SizedBox.shrink());
+    });
+
     testWidgets(
       'shows an incoming takeback request through the root navigator',
       (WidgetTester tester) async {
@@ -1149,7 +1236,10 @@ class _HistoryRulesPort implements NativeMillRulesPort {
 }
 
 class _ResignOnlyRemoteController
-    implements RemoteMatchController, RemoteBoardTransformController {
+    implements
+        RemoteMatchController,
+        RemotePeerApprovalController,
+        RemoteBoardTransformController {
   int resignCalls = 0;
   bool resignResult = true;
   int leaveCalls = 0;
@@ -1168,6 +1258,10 @@ class _ResignOnlyRemoteController
   String? respondedBoardTransformRequestId;
   String? respondedBoardTransformation;
   bool? respondedBoardTransformAccepted;
+  String? approvedPeerId;
+  bool? peerApprovalAccepted;
+  String? respondedRestartRequestId;
+  bool? respondedRestartAccepted;
 
   @override
   final ValueNotifier<RemoteConnectionState> stateNotifier =
@@ -1205,6 +1299,16 @@ class _ResignOnlyRemoteController
   @override
   Future<void> leave() async {
     leaveCalls += 1;
+  }
+
+  @override
+  Future<bool> tryApprovePeer({
+    required String peerId,
+    required bool accepted,
+  }) async {
+    approvedPeerId = peerId;
+    peerApprovalAccepted = accepted;
+    return true;
   }
 
   @override
@@ -1257,6 +1361,15 @@ class _ResignOnlyRemoteController
     final Completer<bool> result = Completer<bool>();
     restartResult = result;
     return result.future;
+  }
+
+  @override
+  Future<void> respondToRestart({
+    required String requestId,
+    required bool accepted,
+  }) async {
+    respondedRestartRequestId = requestId;
+    respondedRestartAccepted = accepted;
   }
 
   @override
