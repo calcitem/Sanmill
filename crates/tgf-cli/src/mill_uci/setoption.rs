@@ -130,6 +130,12 @@ pub(super) fn apply_setoption(
                 SetoptionResult::SearchConfig
             })
             .unwrap_or(SetoptionResult::Unknown),
+        "strictfailurepolicy" | "strict failure policy" => parse_bool(value)
+            .map(|v| {
+                engine_cfg.strict_failure_policy = v;
+                SetoptionResult::Acknowledged
+            })
+            .unwrap_or(SetoptionResult::Unknown),
         "uselazysmp" | "use lazy smp" => parse_bool(value)
             .map(|v| {
                 engine_cfg.use_lazy_smp = v;

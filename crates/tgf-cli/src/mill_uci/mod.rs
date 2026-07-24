@@ -17,9 +17,10 @@ use std::sync::{Arc, mpsc};
 use std::thread::{self, JoinHandle};
 
 use perfect_db::database::{DatabaseOptions, DatabaseVariant, PerfectDatabaseRuleMismatch};
+use serde::Serialize;
 use tgf_core::{
     Action, ActionList, Evaluator, Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm,
-    MoveOrderContext, SearchActionList, Workbench,
+    MoveOrderContext, OutcomeKind, SearchActionList, Workbench,
 };
 use tgf_mill::{
     EngineRuntimeOptions, MillActionKind, MillEvalWeights, MillEvaluator, MillGame, MillRules,
@@ -40,9 +41,55 @@ pub(crate) use bench::print_benchmark_toml;
 use board::board_ascii_lines;
 use board::{
     GoOptions, ParsedPosition, action_to_uci, parse_go_options, parse_position_command,
-    print_board_ascii, print_uci_options,
+    parse_position_command_strict, print_board_ascii, print_uci_options,
 };
 use setoption::{SetoptionResult, apply_setoption};
+
+const UCI_ERROR_PROTOCOL_VERSION: u32 = 1;
+
+/// Stable machine-readable error payload for opt-in strict UCI sessions.
+///
+/// The JSON is carried after the UCI-compatible
+/// `info string sanmill_error ` prefix. Optional history fields are present
+/// only for a rejected `position ... moves ...` action.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+struct UciMachineError {
+    protocol_version: u32,
+    status: &'static str,
+    code: &'static str,
+    command: &'static str,
+    message: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    action_index: Option<usize>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    token: Option<String>,
+}
+
+impl UciMachineError {
+    fn new(code: &'static str, command: &'static str, message: impl Into<String>) -> Self {
+        Self {
+            protocol_version: UCI_ERROR_PROTOCOL_VERSION,
+            status: "error",
+            code,
+            command,
+            message: message.into(),
+            action_index: None,
+            token: None,
+        }
+    }
+
+    fn with_history_action(mut self, action_index: usize, token: &str) -> Self {
+        self.action_index = Some(action_index);
+        self.token = Some(token.to_owned());
+        self
+    }
+
+    fn info_line(&self) -> String {
+        let json = serde_json::to_string(self)
+            .expect("serializing a strict UCI error payload must not fail");
+        format!("info string sanmill_error {json}")
+    }
+}
 
 /// `TGF_TT_CLUSTER_BITS` (10-26) selects `2^bits` direct TT slots; see
 /// `tgf_search::Searcher::new_with_tt_cluster_bits`.  Default 24 to
@@ -178,6 +225,10 @@ struct EngineConfig {
     /// 1000 ms matches the legacy 1-second default.
     move_time_ms: u32,
     shuffling: bool,
+    /// Opt-in fail-closed policy for external UCI clients. The Flutter/FRB
+    /// engine path does not construct this CLI configuration, and the
+    /// historical UCI behavior remains the default.
+    strict_failure_policy: bool,
     draw_on_human_experience: bool,
     developer_mode: bool,
     hash_mb: u32,
@@ -237,6 +288,7 @@ impl Default for EngineConfig {
             last_best_value_side_to_move: -1,
             move_time_ms: 1000,
             shuffling: true,
+            strict_failure_policy: false,
             draw_on_human_experience: true,
             developer_mode: true,
             hash_mb: 16,
@@ -387,6 +439,7 @@ pub(crate) fn run_uci_loop() {
     apply_patch_env_defaults(&mut engine_cfg);
     let mut shared_tt = allocate_shared_tt(engine_cfg.hash_mb);
     let mut active_search: Option<ActiveSearch> = None;
+    let mut rejected_position: Option<UciMachineError> = None;
     let stdin = io::stdin();
     for line in stdin.lock().lines().map_while(Result::ok) {
         drain_finished_search(&mut active_search, &mut engine_cfg);
@@ -405,6 +458,7 @@ pub(crate) fn run_uci_loop() {
             finish_active_search(&mut active_search, &mut engine_cfg);
             state = rules.initial_state(&[]);
             state_history.clear();
+            rejected_position = None;
         } else if line == "compiler" {
             println!(
                 "info string compiler Rust {} target {}",
@@ -430,6 +484,7 @@ pub(crate) fn run_uci_loop() {
                     rules = mill_rules_with_eval_weights(options.clone());
                     state = rules.initial_state(&[]);
                     state_history.clear();
+                    rejected_position = None;
                     shared_tt.bump_age();
                     sync_perfect_db(&mut engine_cfg, &options);
                     patch::sync_runtime(
@@ -470,10 +525,26 @@ pub(crate) fn run_uci_loop() {
             println!("info string bench is a separate subcommand; run: tgf bench");
         } else if line.starts_with("position") {
             finish_active_search(&mut active_search, &mut engine_cfg);
-            let parsed = parse_position_command(&rules, line);
-            state = parsed.state;
-            state_history = parsed.history;
-            patch::set_position_context(line);
+            if engine_cfg.strict_failure_policy {
+                match parse_position_command_strict(&rules, line) {
+                    Ok(parsed) => {
+                        state = parsed.state;
+                        state_history = parsed.history;
+                        rejected_position = None;
+                        patch::set_position_context(line);
+                    }
+                    Err(error) => {
+                        println!("{}", error.info_line());
+                        rejected_position = Some(error);
+                    }
+                }
+            } else {
+                let parsed = parse_position_command(&rules, line);
+                state = parsed.state;
+                state_history = parsed.history;
+                rejected_position = None;
+                patch::set_position_context(line);
+            }
         } else if line == "d" {
             print_board_ascii(&state, &options);
         } else if line == "fen" {
@@ -541,6 +612,20 @@ pub(crate) fn run_uci_loop() {
             println!("info eval {}", format_score(output_score));
         } else if line.starts_with("go") {
             finish_active_search(&mut active_search, &mut engine_cfg);
+            if engine_cfg.strict_failure_policy
+                && let Some(position_error) = rejected_position.as_ref()
+            {
+                let error = UciMachineError::new(
+                    "position_unavailable",
+                    "go",
+                    format!(
+                        "the most recent position command was rejected ({})",
+                        position_error.code
+                    ),
+                );
+                println!("{}", error.info_line());
+                continue;
+            }
             let go = parse_go_options(line, state.side_to_move, &engine_cfg);
             active_search = Some(spawn_search(
                 options.clone(),
@@ -586,6 +671,9 @@ struct ActiveSearch {
 struct SpawnResult {
     depth: i32,
     result: SearchResult,
+    /// Present only when an opt-in strict UCI search failed closed. In that
+    /// case the search thread emits this JSON error and no `bestmove` line.
+    strict_error: Option<UciMachineError>,
     /// Side to move at the root of the search tree (0=white, 1=black).
     /// Used by format_spawn_result to flip the score to White's perspective,
     /// matching master SearchEngine::emitCommand (P1-C.1).
@@ -648,7 +736,7 @@ fn spawn_search(
             searcher.set_options(search_options);
             searcher.set_qsearch_max_depth(qsearch_max_depth);
             let result = run_configured_search(
-                options,
+                options.clone(),
                 state,
                 root_repetition_history,
                 root_position_resets_repetition,
@@ -656,9 +744,15 @@ fn spawn_search(
                 &cfg,
                 &mut searcher,
             );
+            let strict_error = if cfg.strict_failure_policy {
+                ongoing_bestmove_error(&options, &state, &result)
+            } else {
+                None
+            };
             let spawn = SpawnResult {
                 depth,
                 result,
+                strict_error,
                 root_side_to_move,
                 topn_request,
             };
@@ -687,6 +781,7 @@ fn spawn_search(
             let spawn = SpawnResult {
                 depth: outcome.depth,
                 result: outcome.result,
+                strict_error: None,
                 root_side_to_move,
                 topn_request,
             };
@@ -726,7 +821,9 @@ struct LazySmpSearchInput {
 fn lazy_smp_is_allowed(cfg: &EngineConfig, threads: usize) -> bool {
     // Shuffling is the UCI/Flutter "Move randomly" switch.  When it is off,
     // preserve same-position bestmove stability by avoiding shared-TT races.
-    cfg.use_lazy_smp && threads > 1 && cfg.shuffling
+    // Strict machine sessions also stay single-threaded so a failed worker
+    // cannot be masked by a different worker or a nondeterministic vote.
+    cfg.use_lazy_smp && threads > 1 && cfg.shuffling && !cfg.strict_failure_policy
 }
 
 fn lazy_smp_workers_for_go(
@@ -967,9 +1064,8 @@ fn run_configured_search(
     searcher: &mut Searcher<MillGame>,
 ) -> SearchResult {
     let root_outcome = MillRules::new(options.clone()).outcome(&state);
-    if matches!(root_outcome.kind, tgf_core::OutcomeKind::Draw)
-        && root_outcome.reason != "drawFullBoard"
-    {
+    let root_is_ongoing = matches!(&root_outcome.kind, OutcomeKind::Ongoing);
+    if matches!(&root_outcome.kind, OutcomeKind::Draw) && root_outcome.reason != "drawFullBoard" {
         return SearchResult::draw_short_circuit("draw");
     }
 
@@ -1006,6 +1102,19 @@ fn run_configured_search(
         select_completed_search_result(final_result, best_so_far, searcher.was_aborted())
     };
 
+    // An opt-in strict machine session must judge the primary configured
+    // search before Perfect DB, patch, depth-4, or random code can mask a
+    // missing/illegal move. Terminal roots are allowed to have no move and
+    // likewise bypass all post-search move sources.
+    if cfg.strict_failure_policy {
+        if !root_is_ongoing {
+            return result;
+        }
+        if ongoing_bestmove_error(&options, &state, &result).is_some() {
+            return result;
+        }
+    }
+
     apply_perfect_database_result(&mut result, &options, &state, cfg);
     patch::apply_patch_avoid_traps_result(&mut result, &options, &state);
     if !cfg.use_perfect_database {
@@ -1022,7 +1131,7 @@ fn run_configured_search(
     // skips the random fallback to keep the bug surface obvious.  We
     // surface the same pattern: assert(false) in debug, depth-4 +
     // random in release.
-    if result.best_action.is_none() {
+    result = resolve_missing_bestmove(result, cfg.strict_failure_policy, || {
         debug_assert!(
             false,
             "main search returned MOVE_NONE; bug must be diagnosed before \
@@ -1038,15 +1147,69 @@ fn run_configured_search(
         let mut quick_wb = MillGame::new(options.clone()).build_workbench(&state);
         let quick_result = quick_searcher.search(&mut quick_wb, 4);
         if !quick_result.best_action.is_none() {
-            result = quick_result;
+            quick_result
         } else {
             let mut rand_searcher = mill_searcher();
             rand_searcher.set_random_seed(search_shuffle_seed(cfg));
             let mut rand_wb = MillGame::new(options).build_workbench(&state);
-            result = rand_searcher.random_search(&mut rand_wb);
+            rand_searcher.random_search(&mut rand_wb)
         }
-    }
+    });
     result
+}
+
+/// Return a stable strict-UCI error when an ongoing position has no legal
+/// selected action. This check is deliberately called only when the explicit
+/// policy is enabled, leaving the default search hot path unchanged.
+fn ongoing_bestmove_error(
+    options: &MillVariantOptions,
+    state: &GameStateSnapshot,
+    result: &SearchResult,
+) -> Option<UciMachineError> {
+    let rules = MillRules::new(options.clone());
+    if !matches!(rules.outcome(state).kind, OutcomeKind::Ongoing) {
+        return None;
+    }
+    if result.best_action.is_none() || result.draw_reason.is_some() {
+        return Some(UciMachineError::new(
+            "search_missing_bestmove",
+            "go",
+            "the primary search returned no legal action for an ongoing position",
+        ));
+    }
+
+    let mut legal = ActionList::<256>::new();
+    rules.legal_actions(state, &mut legal);
+    if legal.contains(&result.best_action) {
+        None
+    } else {
+        let notation =
+            action_to_uci(result.best_action).unwrap_or_else(|| "<unencodable>".to_owned());
+        Some(UciMachineError::new(
+            "search_illegal_bestmove",
+            "go",
+            format!("the selected bestmove `{notation}` is not legal in the root position"),
+        ))
+    }
+}
+
+/// Preserve the legacy recovery chain unless strict failure handling is
+/// explicitly enabled. Keeping the recovery work behind `fallback` makes the
+/// strict branch mechanically incapable of constructing a depth-4 or random
+/// searcher.
+fn resolve_missing_bestmove<F>(
+    result: SearchResult,
+    strict_failure_policy: bool,
+    fallback: F,
+) -> SearchResult
+where
+    F: FnOnce() -> SearchResult,
+{
+    if result.best_action.is_none() && !strict_failure_policy {
+        fallback()
+    } else {
+        result
+    }
 }
 
 fn apply_perfect_database_result(
@@ -1605,6 +1768,7 @@ fn take_finished_search(slot: &mut Option<ActiveSearch>) -> Option<SpawnResult> 
             Some(SpawnResult {
                 depth: 0,
                 result: SearchResult::default_none(),
+                strict_error: None,
                 root_side_to_move: 0,
                 topn_request: None,
             })
@@ -1654,6 +1818,10 @@ fn join_and_update(active: ActiveSearch, cfg: &mut EngineConfig) {
 /// Called from the search thread, where all stdout output for one `go`
 /// command must be serialised.
 fn emit_topn_and_spawn_result(spawn: &SpawnResult) {
+    if let Some(error) = spawn.strict_error.as_ref() {
+        println!("{}", error.info_line());
+        return;
+    }
     if let Some(ref req) = spawn.topn_request {
         // Score all legal moves at a fixed shallow depth and emit ranked lines
         // before the bestmove.  Depth 2 balances quality against speed: at
@@ -1725,11 +1893,17 @@ fn score_moves_at_depth(
 }
 
 fn update_last_best_value(cfg: &mut EngineConfig, spawn: &SpawnResult) {
+    if spawn.strict_error.is_some() {
+        return;
+    }
     cfg.last_best_value = spawn.result.score;
     cfg.last_best_value_side_to_move = spawn.root_side_to_move;
 }
 
 fn format_spawn_result(spawn: &SpawnResult) -> String {
+    if let Some(error) = spawn.strict_error.as_ref() {
+        return error.info_line();
+    }
     // Mirror master SearchEngine::emitCommand
     // (src/search_engine.cpp:38-43, "outputValue = ... ? -bestvalue
     // : bestvalue"): the UCI score is always reported from White's

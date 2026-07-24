@@ -109,6 +109,7 @@ life of the process; you do not need to resend them for every move.
 | `MoveTime` | spin 0..60 | 1 | Per-move thinking time in **seconds** (rounded) |
 | `MoveTimeMs` | spin 0..60000 | 1000 | Per-move thinking time in **milliseconds** (Sanmill only) |
 | `Shuffling` | check | true | Random tie-breaking; set false for deterministic output |
+| `StrictFailurePolicy` | check | false | Fail closed on rejected histories or a missing/illegal search move |
 | `AiIsLazy` | check | false | When true, skips re-searching when score already good |
 | `IDSEnabled` | check | false | Iterative deepening; auto-enabled when MoveTimeMs > 0 |
 
@@ -122,6 +123,45 @@ setoption name Algorithm value 2
 setoption name MoveTimeMs value 200
 setoption name Shuffling value false
 ```
+
+### Strict failure policy for machine clients
+
+`StrictFailurePolicy` is an explicit UCI-only safety option. It defaults to
+`false`, so Flutter/FRB play and historical UCI clients retain Sanmill's
+legacy behavior. Enable it before the first `position` command when a bridge
+must distinguish a real search result from recovery behavior:
+
+```
+setoption name StrictFailurePolicy value true
+```
+
+Strict errors use one stable line format. The text after
+`info string sanmill_error ` is compact JSON:
+
+```
+info string sanmill_error {"protocol_version":1,"status":"error","code":"search_missing_bestmove","command":"go","message":"the primary search returned no legal action for an ongoing position"}
+```
+
+For an ongoing position, Sanmill validates the primary configured search
+result against the current Mill rules before consulting Perfect DB, patch
+data, the legacy depth-4 recovery search, or random recovery. If the primary
+result is missing or illegal, the engine:
+
+1. emits `search_missing_bestmove` or `search_illegal_bestmove`;
+2. stops that `go` operation;
+3. emits no `bestmove`, `topn`, or fallback result.
+
+The UCI process remains alive so the caller may submit a new valid position.
+A strict bridge must therefore finish a pending `go` response when it sees
+either a normal line containing `bestmove` or a `sanmill_error` line.
+
+This policy prevents a failed primary search from being masked; it does not
+rewrite an explicitly selected `Algorithm` or disable a configured database
+or patch override after a *successful* primary search. A reproducible pure
+MTD(f) client should also set `Algorithm=2`, `Shuffling=false`,
+`UsePerfectDatabase=false`, `PatchAvoidTraps=false`, and
+`PatchMakeTraps=false`. Strict sessions do not use lazy SMP, so one worker
+cannot hide another worker's failure.
 
 Example configuration for high-quality advisory signal:
 
@@ -196,6 +236,27 @@ UCI move tokens (see Move notation above).
 position startpos moves d6 f4 d2 b4 g4 d7
 ```
 
+With `StrictFailurePolicy=true`, the whole command is transactional. Sanmill
+rejects an invalid FEN, an empty `moves` tail, a malformed/truncated action
+token, or an action that is not legal at its exact replay index. It does not
+activate the successfully replayed prefix. Example:
+
+```
+→ position startpos moves a7 a7
+← info string sanmill_error {"protocol_version":1,"status":"error","code":"position_history_illegal_action","command":"position","message":"history action 1 is not legal in its replay state","action_index":1,"token":"a7"}
+```
+
+`action_index` is zero-based. A following `go` is rejected with
+`position_unavailable` and no `bestmove` until a valid `position` or
+`ucinewgame` is supplied. A valid mill-forming primary action may leave the
+state in pending removal; that is a complete atomic UCI action, not a
+truncated history. The required `x<square>` remains the next action and both
+actions still belong to one logical Mill turn.
+
+When strict mode is off, the legacy parser remains unchanged: it reports an
+invalid tail and keeps the successfully replayed prefix. Machine evaluation
+clients should not rely on that compatibility behavior.
+
 Send `ucinewgame` before starting a new game to reset repetition history and
 age the transposition table:
 
@@ -239,6 +300,23 @@ bridge must not forward this token to the game board.
 
 No move: `bestmove none` (game is over or position is illegal).
 
+In strict mode, an ongoing position never reports `bestmove none` as a
+recovery result. It reports `sanmill_error` and emits no `bestmove`. Terminal
+positions retain the normal terminal/no-move representation.
+
+For deterministic node-limited runs, disable the time limit and shuffling,
+enable iterative deepening so the last completed iteration remains usable,
+and provide both a depth ceiling and a node budget:
+
+```
+setoption name StrictFailurePolicy value true
+setoption name MoveTimeMs value 0
+setoption name IDSEnabled value true
+setoption name Shuffling value false
+setoption name SearchShuffleSeed value 7
+go depth 12 nodes 256
+```
+
 ### go topn N
 
 ```
@@ -264,9 +342,11 @@ relative ordering and feature construction).
 
 All scores are White-perspective, matching the main search convention.
 
-Parse the output by reading lines until you see `bestmove`.  Lines that start
-with `info topn rank` carry the ranked candidates; the final `info depth`
-line carries the main search result; `bestmove` terminates the response.
+Parse normal output by reading lines until you see `bestmove`. Lines that
+start with `info topn rank` carry the ranked candidates; the final
+`info depth` line carries the main search result. In a strict session,
+`info string sanmill_error` also terminates the response and no `bestmove`
+follows it.
 
 Use case: Overseer training feature construction.  Instead of calling `go`
 once per legal move (up to 24 round trips per position), a single
@@ -401,5 +481,6 @@ position encoding, move notation, and side-to-move are all correct.
 | `crates/tgf-cli/src/mill_uci/mod.rs` | Main UCI loop, `eval`, `go topn` dispatch |
 | `crates/tgf-cli/src/mill_uci/board.rs` | `GoOptions`, `parse_go_options`, coordinate codec |
 | `crates/tgf-cli/src/mill_uci/setoption.rs` | `setoption` parser |
+| `crates/tgf-cli/tests/strict_uci.rs` | Cross-process strict-policy and fixed-node regressions |
 | `crates/tgf-mill/src/rules/types.rs` | `MillEvalWeights`, `TGF_EVAL_WEIGHTS` format |
 | `crates/tgf-frb/src/games/mill/human_db.rs` | Coordinate system, symmetry group (Python parity) |

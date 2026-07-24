@@ -9,7 +9,7 @@
 use tgf_core::{Action, ActionList, GameRules, GameStateSnapshot};
 use tgf_mill::{MillRules, MillVariantOptions};
 
-use super::EngineConfig;
+use super::{EngineConfig, UciMachineError};
 
 pub(super) fn print_board_ascii(state: &GameStateSnapshot, options: &MillVariantOptions) {
     for line in board_ascii_lines(state, options.has_diagonal_lines) {
@@ -130,6 +130,7 @@ pub(super) fn print_uci_options() {
     println!("option name Slow Mover type spin default 100 min 10 max 1000");
     println!("option name nodestime type spin default 0 min 0 max 10000");
     println!("option name Shuffling type check default true");
+    println!("option name StrictFailurePolicy type check default false");
     println!("option name UseLazySmp type check default false");
     println!("option name Algorithm type spin default 2 min 0 max 4");
     println!("option name DrawOnHumanExperience type check default true");
@@ -232,6 +233,114 @@ pub(super) fn parse_position_command(rules: &MillRules, line: &str) -> ParsedPos
         }
     }
     ParsedPosition { state, history }
+}
+
+/// Parse a `position` command without accepting a partial replay.
+///
+/// The legacy parser above intentionally mirrors Sanmill's historical UCI
+/// behavior: an invalid FEN resets to startpos and an invalid move leaves the
+/// successfully replayed prefix active. Strict machine clients must not
+/// inherit either fallback, so this parser rejects the whole command and
+/// leaves the caller's previous position untouched.
+pub(super) fn parse_position_command_strict(
+    rules: &MillRules,
+    line: &str,
+) -> Result<ParsedPosition, UciMachineError> {
+    let tokens = line.split_whitespace().collect::<Vec<_>>();
+    if tokens.first().copied() != Some("position") {
+        return Err(UciMachineError::new(
+            "invalid_position_command",
+            "position",
+            "command must start with `position`",
+        ));
+    }
+
+    let moves_idx = tokens.iter().position(|token| *token == "moves");
+    let mut state = match tokens.get(1).copied() {
+        Some("startpos") => {
+            if tokens.get(2).is_some_and(|token| *token != "moves") {
+                return Err(UciMachineError::new(
+                    "invalid_position_command",
+                    "position",
+                    "unexpected token after `position startpos`",
+                ));
+            }
+            rules.initial_state(&[])
+        }
+        Some("fen") => {
+            let fen_end = moves_idx.unwrap_or(tokens.len());
+            if fen_end <= 2 {
+                return Err(UciMachineError::new(
+                    "invalid_fen",
+                    "position",
+                    "missing FEN after `position fen`",
+                ));
+            }
+            let fen = tokens[2..fen_end].join(" ");
+            rules
+                .set_from_fen(&fen)
+                .map(|state| rules.encode_state(state))
+                .map_err(|error| {
+                    UciMachineError::new(
+                        "invalid_fen",
+                        "position",
+                        format!("Sanmill FEN could not be parsed: {error}"),
+                    )
+                })?
+        }
+        Some(other) => {
+            return Err(UciMachineError::new(
+                "invalid_position_command",
+                "position",
+                format!("unsupported position origin `{other}`"),
+            ));
+        }
+        None => {
+            return Err(UciMachineError::new(
+                "invalid_position_command",
+                "position",
+                "missing position origin (`startpos` or `fen`)",
+            ));
+        }
+    };
+    let mut history = Vec::new();
+
+    let Some(moves_idx) = moves_idx else {
+        return Ok(ParsedPosition { state, history });
+    };
+    if moves_idx + 1 == tokens.len() {
+        return Err(UciMachineError::new(
+            "position_history_truncated",
+            "position",
+            "`moves` must be followed by at least one complete action token",
+        ));
+    }
+
+    for (action_index, token) in tokens.iter().skip(moves_idx + 1).enumerate() {
+        let Some(action) = tgf_mill::MillUciCodec::decode_action(&state, token) else {
+            return Err(UciMachineError::new(
+                "position_history_truncated",
+                "position",
+                format!("history action {action_index} is malformed or truncated"),
+            )
+            .with_history_action(action_index, token));
+        };
+        let mut legal = ActionList::<256>::new();
+        rules.legal_actions(&state, &mut legal);
+        if !legal.contains(&action) {
+            return Err(UciMachineError::new(
+                "position_history_illegal_action",
+                "position",
+                format!("history action {action_index} is not legal in its replay state"),
+            )
+            .with_history_action(action_index, token));
+        }
+        let next = rules.apply_with_history(&state, action, &history);
+        history.push(state);
+        state = next;
+    }
+
+    Ok(ParsedPosition { state, history })
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

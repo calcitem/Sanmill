@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Unit tests for the Mill UCI adapter.
 
+use std::cell::Cell;
 use std::time::Duration;
 
 use tgf_core::Action;
@@ -45,6 +46,67 @@ fn parse_position_fen_with_moves_applies_tail_moves() {
 
     assert_eq!(state.opaque_payload[16], 1); // d7 / node 16
     assert_eq!(state.side_to_move, 1);
+}
+
+#[test]
+fn legacy_position_parser_still_keeps_the_valid_prefix() {
+    let rules = MillRules::default();
+    let parsed = parse_position_command(&rules, "position startpos moves a7 a7");
+
+    assert_eq!(parsed.history.len(), 1);
+    assert_eq!(parsed.state.opaque_payload[23], 1);
+}
+
+#[test]
+fn strict_position_rejects_illegal_and_truncated_history() {
+    let rules = MillRules::default();
+
+    let illegal =
+        parse_position_command_strict(&rules, "position startpos moves a7 a7").unwrap_err();
+    assert_eq!(illegal.code, "position_history_illegal_action");
+    assert_eq!(illegal.action_index, Some(1));
+    assert_eq!(illegal.token.as_deref(), Some("a7"));
+
+    let truncated =
+        parse_position_command_strict(&rules, "position startpos moves a7 a4-").unwrap_err();
+    assert_eq!(truncated.code, "position_history_truncated");
+    assert_eq!(truncated.action_index, Some(1));
+    assert_eq!(truncated.token.as_deref(), Some("a4-"));
+
+    let empty_tail = parse_position_command_strict(&rules, "position startpos moves").unwrap_err();
+    assert_eq!(empty_tail.code, "position_history_truncated");
+}
+
+#[test]
+fn strict_position_accepts_a_complete_pending_removal_state() {
+    let rules = MillRules::default();
+    let parsed = parse_position_command_strict(&rules, "position startpos moves a7 b6 d7 b2 g7")
+        .expect("a mill-forming primary action is a complete UCI action");
+    let decoded = MillRules::decode_snapshot(parsed.state);
+
+    assert_eq!(decoded.pending_removals(), [1, 0]);
+    assert_eq!(parsed.history.len(), 5);
+}
+
+#[test]
+fn strict_failure_policy_is_explicit_and_default_off() {
+    let mut options = MillVariantOptions::default();
+    let mut threads = 1;
+    let mut qsearch = 0;
+    let mut cfg = EngineConfig::default();
+    assert!(!cfg.strict_failure_policy);
+
+    assert_eq!(
+        apply_setoption(
+            "setoption name StrictFailurePolicy value true",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut cfg,
+        ),
+        SetoptionResult::Acknowledged
+    );
+    assert!(cfg.strict_failure_policy);
 }
 
 #[test]
@@ -867,6 +929,64 @@ fn lazy_smp_requires_move_randomly_for_bestmove_stability() {
 
     cfg.shuffling = true;
     assert!(lazy_smp_is_allowed(&cfg, 4));
+
+    cfg.strict_failure_policy = true;
+    assert!(
+        !lazy_smp_is_allowed(&cfg, 4),
+        "strict UCI search must not let another worker mask a failure"
+    );
+}
+
+#[test]
+fn strict_missing_bestmove_never_invokes_legacy_fallback() {
+    let fallback_calls = Cell::new(0);
+    let missing = SearchResult::default_none();
+
+    let resolved = resolve_missing_bestmove(missing, true, || {
+        fallback_calls.set(fallback_calls.get() + 1);
+        panic!("strict mode must not construct a depth-4 or random fallback");
+    });
+
+    assert_eq!(resolved, missing);
+    assert_eq!(fallback_calls.get(), 0);
+}
+
+#[test]
+fn strict_search_validation_requires_a_legal_move_only_for_ongoing_roots() {
+    let options = MillVariantOptions::default();
+    let rules = MillRules::new(options.clone());
+    let state = rules.initial_state(&[]);
+
+    let missing = ongoing_bestmove_error(&options, &state, &SearchResult::default_none())
+        .expect("ongoing startpos must require a move");
+    assert_eq!(missing.code, "search_missing_bestmove");
+
+    let illegal = SearchResult {
+        best_action: Action {
+            kind_tag: MillActionKind::Remove as i16,
+            from_node: -1,
+            to_node: 0,
+            aux: -1,
+            payload_bits: 0,
+        },
+        score: 0,
+        nodes: 0,
+        draw_reason: None,
+    };
+    assert_eq!(
+        ongoing_bestmove_error(&options, &state, &illegal)
+            .expect("removal is illegal in startpos")
+            .code,
+        "search_illegal_bestmove"
+    );
+
+    let legal = SearchResult {
+        best_action: board::action_from_uci(&rules, &state, "a7").unwrap(),
+        score: 0,
+        nodes: 1,
+        draw_reason: None,
+    };
+    assert!(ongoing_bestmove_error(&options, &state, &legal).is_none());
 }
 
 #[test]
@@ -898,6 +1018,7 @@ fn active_search_try_take_finished_updates_last_best_value() {
                 nodes: 1,
                 draw_reason: None,
             },
+            strict_error: None,
             root_side_to_move: 0,
             topn_request: None,
         })
@@ -927,6 +1048,7 @@ fn format_spawn_result_prints_draw_bestmove_for_draw_short_circuit() {
     let spawn = SpawnResult {
         depth: 2,
         result: SearchResult::draw_short_circuit("draw"),
+        strict_error: None,
         root_side_to_move: -1,
         topn_request: None,
     };
@@ -935,4 +1057,26 @@ fn format_spawn_result_prints_draw_bestmove_for_draw_short_circuit() {
         format_spawn_result(&spawn),
         "info depth 2 score cp 0 nodes 0 bestmove draw"
     );
+}
+
+#[test]
+fn format_spawn_result_prints_only_the_strict_machine_error() {
+    let spawn = SpawnResult {
+        depth: 12,
+        result: SearchResult::default_none(),
+        strict_error: Some(UciMachineError::new(
+            "search_missing_bestmove",
+            "go",
+            "the primary search returned no legal action for an ongoing position",
+        )),
+        root_side_to_move: 0,
+        topn_request: None,
+    };
+
+    let line = format_spawn_result(&spawn);
+    assert_eq!(
+        line,
+        r#"info string sanmill_error {"protocol_version":1,"status":"error","code":"search_missing_bestmove","command":"go","message":"the primary search returned no legal action for an ongoing position"}"#
+    );
+    assert!(!line.contains("bestmove "));
 }
