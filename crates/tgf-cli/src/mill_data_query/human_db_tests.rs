@@ -34,6 +34,9 @@ impl FixtureDb {
 impl Drop for FixtureDb {
     fn drop(&mut self) {
         let _ = fs::remove_file(&self.path);
+        for suffix in ["-wal", "-shm"] {
+            let _ = fs::remove_file(format!("{}{suffix}", self.path.display()));
+        }
         let _ = fs::remove_dir(&self.directory);
     }
 }
@@ -165,6 +168,17 @@ fn sqlite_uri_is_read_only_and_immutable() {
 }
 
 #[test]
+fn nonempty_sqlite_sidecars_fail_closed() {
+    let replayed = replay(&[]);
+    let (state_key, _) = canonical_state(&replayed);
+    let fixture = fixture_database(&state_key, Some(TRUSTED_MALOM_LABEL_VERSION), &[]);
+    fs::write(format!("{}-wal", fixture.path.display()), b"live WAL").unwrap();
+
+    let error = open_error(fixture.path_text());
+    assert_eq!(error.code, "database_not_immutable");
+}
+
+#[test]
 fn malom_wdl_validation_rejects_unknown_labels() {
     assert!(validate_malom_wdl(Some("W"), "field").is_ok());
     assert!(validate_malom_wdl(None, "field").is_ok());
@@ -240,6 +254,58 @@ fn missing_or_unknown_marker_masks_only_malom_fields() {
 }
 
 #[test]
+fn trusted_marker_preserves_nullable_malom_fields() {
+    let replayed = replay(&[]);
+    let (state_key, _) = canonical_state(&replayed);
+    let fixture = fixture_database(
+        &state_key,
+        Some(TRUSTED_MALOM_LABEL_VERSION),
+        &[("d2", 18, 2, 10, 30, 90.0, None, None)],
+    );
+    let conn = Connection::open(&fixture.path).unwrap();
+    conn.execute(
+        "UPDATE positions SET malom_wdl=NULL, malom_dtw=NULL, \
+         canonical_winning_move=NULL WHERE state_key=?1",
+        [&state_key],
+    )
+    .unwrap();
+    drop(conn);
+
+    let source = HumanDbSource::open(fixture.path_text()).unwrap();
+    let result = source.query(&replayed, None, 0).unwrap();
+    assert_eq!(result.source["identity"]["malom_trusted"], true);
+    assert!(result.source["position"].get("malom_wdl").is_none());
+    assert!(result.source["position"].get("malom_dtw").is_none());
+    assert!(
+        result.source["position"]
+            .get("canonical_winning_move")
+            .is_none()
+    );
+    let human = result.candidates[0].human.as_ref().unwrap();
+    assert!(human.malom_wdl_after.is_none());
+    assert!(human.malom_dtw_after.is_none());
+}
+
+#[test]
+fn non_nmm_rules_are_rejected_without_querying_rows() {
+    let replayed = ReplayedPosition::replay(&PositionRequest {
+        rule: RulePreset::ElFilja,
+        initial: "startpos".to_owned(),
+        history_origin: HistoryOrigin::GameStart,
+        actions: Vec::new(),
+        expected_current_fen: None,
+    })
+    .unwrap();
+    let nmm = replay(&[]);
+    let (state_key, _) = canonical_state(&nmm);
+    let fixture = fixture_database(&state_key, Some(TRUSTED_MALOM_LABEL_VERSION), &[]);
+    let source = HumanDbSource::open(fixture.path_text()).unwrap();
+
+    let error = source.query(&replayed, None, 0).unwrap_err();
+    assert_eq!(error.code, "unsupported_rule");
+}
+
+#[test]
 fn d4_notation_is_mapped_back_to_the_live_orientation() {
     let replayed = replay(&["d2", "a1"]);
     let (state_key, symmetry) = canonical_state(&replayed);
@@ -263,6 +329,95 @@ fn d4_notation_is_mapped_back_to_the_live_orientation() {
     );
     assert_eq!(result.candidates[0].mapped_notation, "d6");
     assert_eq!(result.candidates[0].full_turn_actions, ["d6"]);
+}
+
+#[test]
+fn all_eight_d4_presentations_map_back_to_the_live_orientation() {
+    let base_actions = ["d2", "a1", "g4", "b2", "f6", "c3"];
+    let base = replay(&base_actions);
+    let (state_key, base_to_canonical) = canonical_state(&base);
+    let canonical_notation = transform_notation("d6", base_to_canonical).unwrap();
+    let fixture = fixture_database(
+        &state_key,
+        Some(TRUSTED_MALOM_LABEL_VERSION),
+        &[(&canonical_notation, 4, 2, 4, 10, 20.0, Some("D"), Some(3))],
+    );
+    let source = HumanDbSource::open(fixture.path_text()).unwrap();
+
+    for live_symmetry in 0..SYM_INVERSE.len() {
+        let transformed_actions = base_actions
+            .iter()
+            .map(|action| transform_notation(action, live_symmetry).unwrap())
+            .collect::<Vec<_>>();
+        let transformed_refs = transformed_actions
+            .iter()
+            .map(String::as_str)
+            .collect::<Vec<_>>();
+        let replayed = replay(&transformed_refs);
+        let (transformed_key, _) = canonical_state(&replayed);
+        assert_eq!(
+            transformed_key, state_key,
+            "D4 presentation {live_symmetry} must retain the canonical state key"
+        );
+
+        let result = source.query(&replayed, None, 0).unwrap();
+        let expected = transform_notation("d6", live_symmetry).unwrap();
+        assert_eq!(result.candidates.len(), 1);
+        assert_eq!(
+            result.candidates[0].mapped_notation, expected,
+            "D4 presentation {live_symmetry} must map the move to the live board"
+        );
+        assert_eq!(result.candidates[0].full_turn_actions, [expected]);
+    }
+}
+
+#[test]
+fn candidate_limits_preserve_stable_prefixes_and_frequency_denominator() {
+    let replayed = replay(&[]);
+    let (state_key, _) = canonical_state(&replayed);
+    let fixture = fixture_database(
+        &state_key,
+        Some(TRUSTED_MALOM_LABEL_VERSION),
+        &[
+            ("d2", 10, 5, 5, 20, 40.0, Some("W"), Some(2)),
+            ("a1", 4, 4, 4, 12, 24.0, Some("D"), Some(3)),
+            ("f4", 2, 3, 3, 8, 16.0, Some("L"), Some(4)),
+        ],
+    );
+    let source = HumanDbSource::open(fixture.path_text()).unwrap();
+    let all = source.query(&replayed, None, 0).unwrap();
+    let first = source.query(&replayed, Some(1), 0).unwrap();
+    let first_two = source.query(&replayed, Some(2), 0).unwrap();
+
+    let all_moves = all
+        .candidates
+        .iter()
+        .map(|candidate| candidate.mapped_notation.as_str())
+        .collect::<Vec<_>>();
+    let one_move = first
+        .candidates
+        .iter()
+        .map(|candidate| candidate.mapped_notation.as_str())
+        .collect::<Vec<_>>();
+    let two_moves = first_two
+        .candidates
+        .iter()
+        .map(|candidate| candidate.mapped_notation.as_str())
+        .collect::<Vec<_>>();
+    assert_eq!(all_moves, ["d2", "a1", "f4"]);
+    assert_eq!(one_move, &all_moves[..1]);
+    assert_eq!(two_moves, &all_moves[..2]);
+    for result in [&all, &first, &first_two] {
+        assert!(
+            result.candidates.iter().all(|candidate| {
+                candidate
+                    .human
+                    .as_ref()
+                    .is_some_and(|human| human.frequency_denominator == 40)
+            }),
+            "candidate_limit must not change the all-candidate denominator"
+        );
+    }
 }
 
 #[test]

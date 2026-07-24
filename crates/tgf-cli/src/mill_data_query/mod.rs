@@ -450,14 +450,14 @@ mod tests {
                 "rule":"nmm",
                 "initial":"startpos",
                 "history_origin":"game_start",
-                "actions":["d2","b2","d6","b6","a4","g4","c3","e3"]
+                "actions":["d7","a1","g7","d1","a7","xa1","a4","b6","g1"]
             },
             "count_mode":"logical"
         }"#;
         let response = process_text(&mut QueryContext::default(), request);
         assert_eq!(response.status, ApiStatus::Available);
         let state = response.state.unwrap();
-        assert_eq!(state.action_token_count, 8);
+        assert_eq!(state.action_token_count, 9);
         assert_eq!(state.logical_ply_count, 8);
         assert_eq!(state.logical_plies_by_side, [4, 4]);
         assert_eq!(response.result.unwrap()["selected_count"], 8);
@@ -535,5 +535,52 @@ mod tests {
         let response = process_text(&mut QueryContext::default(), request);
         assert_eq!(response.status, ApiStatus::Error);
         assert_eq!(response.error.unwrap().code, "protocol_error");
+    }
+
+    #[test]
+    fn replay_preserves_no_capture_and_repetition_history_evidence() {
+        let initial = "******O@/O*******/*@@****O w m s 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes";
+        let first_request = format!(
+            r#"{{
+                "operation":"history_summary",
+                "protocol_version":1,
+                "position":{{
+                    "rule":"nmm",
+                    "initial":{initial:?},
+                    "history_origin":"fresh_setup",
+                    "actions":["d6-d7","g4-g1","d7-d6","g1-g4"]
+                }}
+            }}"#
+        );
+        let second_request = format!(
+            r#"{{
+                "operation":"history_summary",
+                "protocol_version":1,
+                "position":{{
+                    "rule":"nmm",
+                    "initial":{initial:?},
+                    "history_origin":"fresh_setup",
+                    "actions":["d6-a4","g4-b4","a4-d6","b4-g4"]
+                }}
+            }}"#
+        );
+
+        let first = process_text(&mut QueryContext::default(), &first_request);
+        let second = process_text(&mut QueryContext::default(), &second_request);
+        assert_eq!(first.status, ApiStatus::Available);
+        assert_eq!(second.status, ApiStatus::Available);
+        let first_state = first.state.unwrap();
+        let second_state = second.state.unwrap();
+        assert_eq!(first_state.current_fen, second_state.current_fen);
+        assert_eq!(first_state.snapshot_history_len, 4);
+        assert_eq!(second_state.snapshot_history_len, 4);
+        assert_eq!(first_state.no_capture_plies, 4);
+        assert_eq!(second_state.no_capture_plies, 4);
+        assert_eq!(first_state.repetition_history_len, 4);
+        assert_eq!(second_state.repetition_history_len, 4);
+        assert_ne!(
+            first_state.history_sha256, second_state.history_sha256,
+            "equal current FENs with different complete histories need distinct identities"
+        );
     }
 }

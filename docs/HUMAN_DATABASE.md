@@ -251,7 +251,7 @@ initial-position candidate:
   "status": "available",
   "source": {
     "state_key": "........................|W|place|0|0|0|0",
-    "candidate_order": "total_desc_then_canonical_notation",
+    "candidate_order": "total_desc_then_canonical_notation_then_mapped_notation",
     "identity": {
       "sha256": "f0b20d33aefcbab9aedc8537f12fa2e53f7865b0387e2175afd0ea32d1b90e42",
       "schema_version": "2",

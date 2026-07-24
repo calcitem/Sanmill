@@ -41,6 +41,8 @@ pub(super) struct PerfectIdentity {
     flying_related_sector_count: usize,
     fully_available: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
+    full_content_algorithm: Option<&'static str>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     full_content_sha256: Option<String>,
 }
 
@@ -358,10 +360,13 @@ fn build_identity(
         manifest.update(metadata.len().to_le_bytes());
         manifest.update(header);
     }
-    let full_content_sha256 = if mode == IdentityMode::Full {
-        Some(full_content_identity(root, standard)?)
+    let (full_content_algorithm, full_content_sha256) = if mode == IdentityMode::Full {
+        (
+            Some("sha256(names,sizes,file-sha256-hex)-v1"),
+            Some(full_content_identity(root, standard)?),
+        )
     } else {
-        None
+        (None, None)
     };
     Ok(PerfectIdentity {
         kind: "perfect_database",
@@ -378,6 +383,7 @@ fn build_identity(
         settled_sector_count: settled,
         flying_related_sector_count: flying,
         fully_available: standard.is_fully_available(),
+        full_content_algorithm,
         full_content_sha256,
     })
 }
@@ -470,7 +476,7 @@ fn full_content_identity(
     standard: &SupportedPerfectVariant,
 ) -> Result<String, ApiError> {
     let mut hash = Sha256::new();
-    hash.update(b"sanmill.perfect-db.full-content.v1\0");
+    hash.update(b"sanmill.perfect-db.full-manifest.v1\0");
     let mut names = vec![DatabaseVariant::STANDARD.secval_file_name()];
     names.extend(
         standard
@@ -488,25 +494,9 @@ fn full_content_identity(
         })?;
         update_length_prefixed(&mut hash, name.as_bytes());
         hash.update(metadata.len().to_le_bytes());
-        let mut file = File::open(&path).map_err(|error| {
-            ApiError::new(
-                "database_open_error",
-                format!("failed to open {}: {error}", path.display()),
-            )
-        })?;
-        let mut buffer = vec![0_u8; 1024 * 1024];
-        loop {
-            let read = file.read(&mut buffer).map_err(|error| {
-                ApiError::new(
-                    "database_open_error",
-                    format!("failed to read {}: {error}", path.display()),
-                )
-            })?;
-            if read == 0 {
-                break;
-            }
-            hash.update(&buffer[..read]);
-        }
+        let file_sha256 =
+            sha256_file(&path).map_err(|message| ApiError::new("database_open_error", message))?;
+        update_length_prefixed(&mut hash, file_sha256.as_bytes());
     }
     Ok(hex_lower(&hash.finalize()))
 }
@@ -577,7 +567,9 @@ mod tests {
     use super::*;
     use crate::mill_data_query::position::ReplayedPosition;
     use crate::mill_data_query::protocol::{HistoryOrigin, PositionRequest};
+    use std::collections::BTreeSet;
     use std::sync::atomic::{AtomicUsize, Ordering};
+    use tgf_mill::{MillUciCodec, legal_logical_turns};
 
     static FIXTURE_COUNTER: AtomicUsize = AtomicUsize::new(0);
 
@@ -613,15 +605,19 @@ mod tests {
         PerfectFixture { root }
     }
 
-    fn initial_position() -> ReplayedPosition {
+    fn position(actions: &[&str]) -> ReplayedPosition {
         ReplayedPosition::replay(&PositionRequest {
             rule: RulePreset::Nmm,
             initial: "startpos".to_owned(),
             history_origin: HistoryOrigin::GameStart,
-            actions: Vec::new(),
+            actions: actions.iter().map(|action| (*action).to_owned()).collect(),
             expected_current_fen: None,
         })
-        .expect("initial position must replay")
+        .expect("fixture position must replay")
+    }
+
+    fn initial_position() -> ReplayedPosition {
+        position(&[])
     }
 
     fn open_error(path: &str) -> ApiError {
@@ -661,7 +657,8 @@ mod tests {
     fn strict_steps_returns_every_tied_initial_move_in_stable_order() {
         let fixture = initial_sector_fixture();
         let mut source = PerfectDbSource::open(fixture.root.to_str().unwrap(), Some(2)).unwrap();
-        let result = source.query(&initial_position()).unwrap();
+        let position = initial_position();
+        let result = source.query(&position).unwrap();
 
         assert_eq!(result.candidates.len(), 24);
         let actions = result
@@ -672,6 +669,25 @@ mod tests {
         let mut sorted = actions.clone();
         sorted.sort();
         assert_eq!(actions, sorted);
+        let legal = legal_logical_turns(&position.rules, &position.snapshot, &position.history)
+            .unwrap()
+            .into_iter()
+            .map(|turn| {
+                turn.actions
+                    .into_iter()
+                    .map(MillUciCodec::encode_action)
+                    .collect::<Vec<_>>()
+            })
+            .collect::<BTreeSet<_>>();
+        assert_eq!(
+            result
+                .candidates
+                .iter()
+                .map(|candidate| candidate.full_turn_actions.clone())
+                .collect::<BTreeSet<_>>(),
+            legal,
+            "the database must only score complete turns generated by Sanmill rules"
+        );
         assert!(result.candidates.iter().all(|candidate| {
             candidate.logical_ply_delta == 1
                 && candidate
@@ -679,6 +695,17 @@ mod tests {
                     .as_ref()
                     .is_some_and(|data| data.category == "draw" && data.steps == 1)
         }));
+    }
+
+    #[test]
+    fn a_valid_position_outside_fixture_coverage_is_a_database_miss() {
+        let fixture = initial_sector_fixture();
+        let mut source = PerfectDbSource::open(fixture.root.to_str().unwrap(), Some(2)).unwrap();
+        let result = source.query(&position(&["d2"])).unwrap();
+        assert!(
+            result.candidates.is_empty(),
+            "a valid uncovered state must be reported as db_miss by the dispatcher"
+        );
     }
 
     #[test]
@@ -705,6 +732,51 @@ mod tests {
             ),
             "unexpected error code: {}",
             error.code
+        );
+    }
+
+    #[test]
+    fn incompatible_sector_version_is_reported_exactly() {
+        let fixture = initial_sector_fixture();
+        let sector_path = fixture.root.join("std_0_1_9_8.sec2");
+        let mut bytes = fs::read(&sector_path).unwrap();
+        bytes[..4].copy_from_slice(&(SECTOR_FORMAT_VERSION - 1).to_le_bytes());
+        fs::write(&sector_path, bytes).unwrap();
+
+        let error = open_error(fixture.root.to_str().unwrap());
+        assert_eq!(error.code, "database_format_incompatible");
+    }
+
+    #[test]
+    fn full_identity_aggregates_each_files_sha256() {
+        let fixture = initial_sector_fixture();
+        let first = identity(fixture.root.to_str().unwrap(), IdentityMode::Full).unwrap();
+        assert_eq!(
+            first["full_content_algorithm"],
+            "sha256(names,sizes,file-sha256-hex)-v1"
+        );
+        assert_eq!(
+            first["full_content_sha256"]
+                .as_str()
+                .expect("full identity must contain a digest")
+                .len(),
+            64
+        );
+
+        let sector_path = fixture.root.join("std_0_1_9_8.sec2");
+        let mut bytes = fs::read(&sector_path).unwrap();
+        let last = bytes.last_mut().expect("fixture sector must not be empty");
+        *last ^= 1;
+        fs::write(&sector_path, bytes).unwrap();
+        let second = identity(fixture.root.to_str().unwrap(), IdentityMode::Full).unwrap();
+
+        assert_eq!(
+            first["fast_manifest_sha256"], second["fast_manifest_sha256"],
+            "the fast header manifest intentionally ignores sector payload bytes"
+        );
+        assert_ne!(
+            first["full_content_sha256"], second["full_content_sha256"],
+            "the full identity must include every sector payload through its file SHA-256"
         );
     }
 

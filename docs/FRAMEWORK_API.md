@@ -686,21 +686,24 @@ versioned SHA-256 manifest over sorted sector names, byte lengths, and parsed
 }
 ```
 
-`mode: "full"` streams the complete database and returns
-`full_content_sha256`; for the current standard database this means reading
-roughly 83 GB. Missing, incomplete, unreadable, structurally corrupt, and
-format-incompatible databases are distinct errors. A valid query outside the
-database's coverage is `db_miss`.
+`mode: "full"` streams the complete database, computes every file's SHA-256,
+and returns a versioned aggregate as `full_content_sha256`, with
+`full_content_algorithm` set to
+`sha256(names,sizes,file-sha256-hex)-v1`. For the current standard database
+this means reading roughly 83 GB. Missing, incomplete, unreadable,
+structurally corrupt, and format-incompatible databases are distinct errors.
+A valid query outside the database's coverage is `db_miss`.
 
 ### Reproducibility boundary
 
 Candidate enumeration contains no time, random seed, `HashMap` iteration, or
-SQLite unspecified ordering. A cross-process integration test compares
-byte-identical opening-book responses from two fresh processes. The protocol
-does not offer random selection, so experiment-owned seeds, weighted sampling,
-the proposed 75/25 source mix, and `opening_logical_plies=8` remain external
-configuration. External sampling must select only from a returned candidate
-array and record the source identity.
+SQLite unspecified ordering. Cross-process integration tests compare
+byte-identical opening-book, Perfect Database, and HumanDB fixture responses
+from two fresh processes. The protocol does not offer random selection, so
+experiment-owned seeds, weighted sampling, the proposed 75/25 source mix, and
+`opening_logical_plies=8` remain external configuration. External sampling
+must select only from a returned candidate array and record the source
+identity.
 
 This interface does not change Flutter search defaults. Flutter may retain
 normal search shuffling. A reproducible external evaluation should explicitly

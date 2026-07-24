@@ -642,11 +642,14 @@ pub fn best_logical_turn_choices_with_ordering<P: DatabaseProvider>(
                 });
             }
             let state = MillRules::decode_snapshot(turn.final_snapshot);
-            let Some(outcome) =
-                evaluate_state_outcome_with_database(database, &state, options, final_side)?
-            else {
-                return Ok(None);
-            };
+            let outcome =
+                match evaluate_state_outcome_with_database(database, &state, options, final_side) {
+                    Ok(Some(outcome)) => outcome,
+                    Ok(None) | Err(DatabaseError::MissingSectorValue { .. }) => {
+                        return Ok(None);
+                    }
+                    Err(error) => return Err(error),
+                };
             if final_side == root_side {
                 outcome
             } else {

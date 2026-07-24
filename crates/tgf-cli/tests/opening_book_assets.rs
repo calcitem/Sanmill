@@ -4,7 +4,7 @@
 
 use serde_json::Value;
 use sha2::{Digest, Sha256};
-use std::collections::HashSet;
+use std::collections::{BTreeMap, HashSet};
 use tgf_core::{ActionList, GameRules};
 use tgf_mill::{MillUciCodec, rules_for_preset};
 
@@ -12,6 +12,9 @@ const NMM_BOOK: &str =
     include_str!("../../../src/ui/flutter_app/assets/opening_books/nmm/opening_book.json");
 const EL_FILJA_BOOK: &str =
     include_str!("../../../src/ui/flutter_app/assets/opening_books/el_filja/opening_book.json");
+const NMM_ATLAS: &str = include_str!("../../../src/ui/flutter_app/tool/nmm_opening_book_atlas.md");
+const EL_FILJA_ATLAS: &str =
+    include_str!("../../../src/ui/flutter_app/tool/el_filja_opening_book_atlas.md");
 const OCCUPIED_C3_FEN: &str =
     "****OO*O/O@O*@OO@/@@**@*O* b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes";
 const DUPLICATE_C5_FEN: &str =
@@ -63,6 +66,59 @@ fn assert_oracle_recommendations_are_legal(asset: &str, preset: i32, variant: &s
             );
         }
     }
+}
+
+fn assert_atlas_matches_json(asset: &str, atlas: &str) {
+    let document: Value = serde_json::from_str(asset).expect("opening-book asset must be JSON");
+    let expected = document["oracle"]
+        .as_object()
+        .expect("opening-book asset must contain an oracle object")
+        .iter()
+        .map(|(fen, moves)| {
+            (
+                fen.clone(),
+                moves
+                    .as_array()
+                    .expect("candidate list must be an array")
+                    .iter()
+                    .map(|candidate| {
+                        candidate
+                            .as_str()
+                            .expect("candidate must be a string")
+                            .to_owned()
+                    })
+                    .collect::<Vec<_>>(),
+            )
+        })
+        .collect::<BTreeMap<_, _>>();
+
+    let mut actual = BTreeMap::new();
+    let mut current_fen: Option<String> = None;
+    for line in atlas.lines() {
+        if let Some(fen) = line.strip_prefix("FEN: ") {
+            assert!(
+                current_fen.replace(fen.to_owned()).is_none(),
+                "atlas FEN must be followed by its best line"
+            );
+        } else if let Some(best) = line.strip_prefix("best: ") {
+            let fen = current_fen
+                .take()
+                .expect("atlas best line must follow a FEN");
+            let moves = best.split(", ").map(str::to_owned).collect::<Vec<_>>();
+            assert!(
+                actual.insert(fen.clone(), moves).is_none(),
+                "atlas contains duplicate FEN {fen}"
+            );
+        }
+    }
+    assert!(
+        current_fen.is_none(),
+        "atlas must not end with an unmatched FEN"
+    );
+    assert_eq!(
+        actual, expected,
+        "generated atlas and shipped JSON must contain the same ordered oracle"
+    );
 }
 
 #[test]
@@ -125,4 +181,10 @@ fn repaired_nmm_records_do_not_regress() {
         c5_count, 1,
         "c5 must not receive accidental duplicate weight"
     );
+}
+
+#[test]
+fn generated_atlases_match_the_shipped_oracles() {
+    assert_atlas_matches_json(NMM_BOOK, NMM_ATLAS);
+    assert_atlas_matches_json(EL_FILJA_BOOK, EL_FILJA_ATLAS);
 }

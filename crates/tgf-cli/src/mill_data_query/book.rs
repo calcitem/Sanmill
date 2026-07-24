@@ -507,6 +507,52 @@ mod tests {
     }
 
     #[test]
+    fn mill_closing_book_move_keeps_one_rank_across_removal_branches() {
+        let asset = BookAsset::load(RulePreset::Nmm, None).unwrap();
+        let rules = rules_for_preset(RulePreset::Nmm.preset_id()).unwrap();
+
+        for (fen, raw_moves) in &asset.oracle {
+            let snapshot = rules.encode_state(rules.set_from_fen(fen).unwrap());
+            let turns = legal_logical_turns(&rules, &snapshot, &[]).unwrap();
+            for (rank_index, raw_move) in raw_moves.iter().enumerate() {
+                let primary = decode_legal(&rules, &snapshot, raw_move).unwrap();
+                let expected = turns
+                    .iter()
+                    .filter(|turn| turn.actions.first() == Some(&primary) && turn.actions.len() > 1)
+                    .count();
+                if expected < 2 {
+                    continue;
+                }
+
+                let replayed = ReplayedPosition::replay(&PositionRequest {
+                    rule: RulePreset::Nmm,
+                    initial: fen.clone(),
+                    history_origin: HistoryOrigin::FreshSetup,
+                    actions: Vec::new(),
+                    expected_current_fen: None,
+                })
+                .unwrap();
+                let result = query(&replayed, None).unwrap();
+                let branches = result
+                    .candidates
+                    .iter()
+                    .filter(|candidate| candidate.source_rank == Some(rank_index + 1))
+                    .collect::<Vec<_>>();
+                assert_eq!(branches.len(), expected);
+                assert!(branches.iter().all(|candidate| {
+                    candidate.source_group_id == Some(format!("book-rank-{}", rank_index + 1))
+                        && candidate.contains_removal
+                        && candidate.removal_action.is_some()
+                        && candidate.full_turn_actions.len() > 1
+                        && candidate.logical_ply_delta == 1
+                }));
+                return;
+            }
+        }
+        panic!("bundled NMM book must contain a mill-closing move with removal choices");
+    }
+
+    #[test]
     fn book_miss_is_distinct_from_asset_integrity_errors() {
         let replayed = ReplayedPosition::replay(&PositionRequest {
             rule: RulePreset::Nmm,
@@ -530,5 +576,32 @@ mod tests {
         }"#;
         let error = BookAsset::parse(RulePreset::Nmm, duplicate, "fixture".to_owned()).unwrap_err();
         assert_eq!(error.code, "asset_integrity_error");
+    }
+
+    #[test]
+    fn missing_malformed_and_illegal_assets_have_distinct_errors() {
+        let missing = std::env::temp_dir().join(format!(
+            "sanmill_missing_opening_book_{}.json",
+            std::process::id()
+        ));
+        let error = BookAsset::load(RulePreset::Nmm, Some(missing.to_str().unwrap())).unwrap_err();
+        assert_eq!(error.code, "asset_missing");
+
+        let error =
+            BookAsset::parse(RulePreset::Nmm, b"not JSON", "fixture".to_owned()).unwrap_err();
+        assert_eq!(error.code, "asset_parse_error");
+
+        let illegal = br#"{
+            "schemaVersion":1,
+            "variant":"nmm",
+            "symmetry":"ring16",
+            "oracle":{
+                "********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes":
+                    ["d2-d6"]
+            },
+            "openings":[]
+        }"#;
+        let error = BookAsset::parse(RulePreset::Nmm, illegal, "fixture".to_owned()).unwrap_err();
+        assert_eq!(error.code, "illegal_source_move");
     }
 }

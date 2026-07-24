@@ -335,7 +335,8 @@ impl HumanDbSource {
                 "identity": self.identity,
                 "state_key": state_key,
                 "symmetry_index": symmetry_index,
-                "candidate_order": "total_desc_then_canonical_notation",
+                "candidate_order":
+                    "total_desc_then_canonical_notation_then_mapped_notation",
                 "frequency_denominator_scope": if source_position.prefix_tokens.is_empty() {
                     "all_state_candidates"
                 } else {
