@@ -975,8 +975,8 @@ class GameController {
 
   /// Requests a board transformation from the remote opponent.
   ///
-  /// Peer-hosted matches apply the transformation only after both players
-  /// agree and the host publishes the transformed authoritative snapshot.
+  /// Remote matches apply the transformation only after both players agree
+  /// and the match authority publishes the transformed snapshot.
   Future<bool> requestRemoteBoardTransform(TransformationType type) async {
     final RemoteMatchController? coordinator = remoteCoordinator;
     if (!isRemoteGameMode) {
@@ -1680,7 +1680,7 @@ class GameController {
   Future<void> _showRemoteUpgradeRequired() async {
     await _showImportantRemoteDialog(
       dialogKey: const Key('remote_upgrade_required_dialog'),
-      title: (S strings) => strings.appName,
+      title: (S strings) => strings.remoteVersionIncompatibleTitle,
       message: (S strings) => strings.remoteProtocolUpgradeRequired,
     );
   }

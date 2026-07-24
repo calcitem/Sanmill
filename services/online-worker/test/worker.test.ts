@@ -351,6 +351,105 @@ describe("online worker", () => {
     });
   });
 
+  it("negotiates an authoritative board transformation and keeps playing", async () => {
+    const created = await createRoom("first");
+    const joined = (await (await joinRoom(created)).json()) as Json;
+    const roomId = created.room.roomId as string;
+    const host = await openSocket(
+      roomId,
+      await ticketValue(roomId, created.seatToken),
+    );
+    const hostConnected = nextMessage(host.socket);
+    const joiner = await openSocket(
+      roomId,
+      await ticketValue(roomId, joined.seatToken as string),
+    );
+    await hostConnected;
+
+    let hostState = nextMessage(host.socket);
+    let joinState = nextMessage(joiner.socket);
+    host.socket.send(
+      JSON.stringify(command("transform-a1", 1, "action", { action: "a7" })),
+    );
+    await hostState;
+    await joinState;
+
+    hostState = nextMessage(host.socket);
+    joinState = nextMessage(joiner.socket);
+    joiner.socket.send(
+      JSON.stringify(command("transform-a2", 2, "action", { action: "d7" })),
+    );
+    await hostState;
+    await joinState;
+
+    const hostRequestAck = nextMessage(host.socket);
+    const joinRequest = nextMessage(joiner.socket);
+    host.socket.send(
+      JSON.stringify(
+        command("transform-req", 3, "boardTransformRequest", {
+          transformation: "rotate90",
+        }),
+      ),
+    );
+    await expect(hostRequestAck).resolves.toMatchObject({
+      type: "state",
+      seq: 4,
+      pendingControl: {
+        kind: "boardTransform",
+        requestId: "transform-req",
+        requester: "first",
+        transformation: "rotate90",
+      },
+    });
+    await expect(joinRequest).resolves.toMatchObject({
+      type: "controlRequest",
+      kind: "boardTransform",
+      requestId: "transform-req",
+      transformation: "rotate90",
+      seq: 4,
+    });
+
+    const hostResult = nextMessage(host.socket);
+    const joinResult = nextMessage(joiner.socket);
+    joiner.socket.send(
+      JSON.stringify(
+        command("transform-resp", 4, "boardTransformResponse", {
+          requestId: "transform-req",
+          transformation: "rotate90",
+          accepted: true,
+        }),
+      ),
+    );
+    await expect(hostResult).resolves.toMatchObject({
+      type: "controlResult",
+      accepted: true,
+      seq: 5,
+      snapshot: { actions: ["g7", "g4"], hadTakeBack: false },
+    });
+    await expect(joinResult).resolves.toMatchObject({
+      type: "controlResult",
+      transformation: "rotate90",
+      seq: 5,
+      snapshot: { actions: ["g7", "g4"] },
+    });
+
+    hostState = nextMessage(host.socket);
+    joinState = nextMessage(joiner.socket);
+    host.socket.send(
+      JSON.stringify(command("transform-a3", 5, "action", { action: "d7" })),
+    );
+    await expect(hostState).resolves.toMatchObject({
+      type: "state",
+      seq: 6,
+      snapshot: { actions: ["g7", "g4", "d7"] },
+    });
+    await expect(joinState).resolves.toMatchObject({
+      type: "state",
+      seq: 6,
+      snapshot: { actions: ["g7", "g4", "d7"] },
+    });
+  });
+
   it("automatically rejects an unanswered control request without deleting the room", async () => {
     const created = await createRoom("first");
     const joined = (await (await joinRoom(created)).json()) as Json;

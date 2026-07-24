@@ -13,7 +13,8 @@ import 'online_room_api.dart';
 import 'online_session_store.dart';
 import 'online_socket_client.dart';
 
-class CloudMatchCoordinator implements RemoteMatchController {
+class CloudMatchCoordinator
+    implements RemoteMatchController, RemoteBoardTransformController {
   CloudMatchCoordinator({
     required this.definition,
     required OnlineRoomSession session,
@@ -444,6 +445,27 @@ class CloudMatchCoordinator implements RemoteMatchController {
         );
       case 'restart':
         _events.add(RemoteRestartApprovalRequested(requestId));
+      case 'boardTransform':
+        final String transformation = _requiredString(
+          message,
+          'transformation',
+        );
+        final RemoteGameAdapter currentGame = game;
+        if (currentGame is! RemoteBoardTransformAdapter) {
+          throw const FormatException(
+            'Unsupported online board transformation.',
+          );
+        }
+        final RemoteBoardTransformAdapter transformer =
+            currentGame as RemoteBoardTransformAdapter;
+        if (!transformer.supportsBoardTransform(transformation)) {
+          throw const FormatException(
+            'Unsupported online board transformation.',
+          );
+        }
+        _events.add(
+          RemoteBoardTransformApprovalRequested(requestId, transformation),
+        );
       default:
         throw const FormatException('Unknown control request kind.');
     }
@@ -617,6 +639,60 @@ class CloudMatchCoordinator implements RemoteMatchController {
   }
 
   @override
+  Future<bool> requestBoardTransform(String transformation) async {
+    final RemoteGameAdapter currentGame = game;
+    if (!isConnected ||
+        transformation.isEmpty ||
+        currentGame is! RemoteBoardTransformAdapter) {
+      return false;
+    }
+    final RemoteBoardTransformAdapter transformer =
+        currentGame as RemoteBoardTransformAdapter;
+    if (!transformer.supportsBoardTransform(transformation)) {
+      return false;
+    }
+    final String requestId = _uuid.v4();
+    final Completer<bool> result = Completer<bool>();
+    _pendingControls[requestId] = result;
+    final bool sent = await _sendCommand(
+      'boardTransformRequest',
+      <String, Object?>{'transformation': transformation},
+      commandId: requestId,
+    );
+    if (!sent) {
+      _pendingControls.remove(requestId);
+      return false;
+    }
+    return result.future.timeout(
+      controlTimeout,
+      onTimeout: () {
+        _pendingControls.remove(requestId);
+        return false;
+      },
+    );
+  }
+
+  @override
+  Future<void> respondToBoardTransform({
+    required String requestId,
+    required String transformation,
+    required bool accepted,
+  }) async {
+    final RemoteGameAdapter currentGame = game;
+    final RemoteBoardTransformAdapter? transformer =
+        currentGame is RemoteBoardTransformAdapter
+        ? currentGame as RemoteBoardTransformAdapter
+        : null;
+    final bool supported =
+        transformer?.supportsBoardTransform(transformation) ?? false;
+    await _sendCommand('boardTransformResponse', <String, Object?>{
+      'requestId': requestId,
+      'transformation': transformation,
+      'accepted': accepted && supported,
+    });
+  }
+
+  @override
   Future<bool> resign() async {
     final RemoteSessionMeta? meta = _meta;
     if (!isConnected || meta == null) {
@@ -748,7 +824,8 @@ class CloudMatchCoordinator implements RemoteMatchController {
 bool isTerminalOnlineFailure(OnlineFailure failure) =>
     failure == OnlineFailure.roomUnavailable ||
     failure == OnlineFailure.unauthorized ||
-    failure == OnlineFailure.inviteExpired;
+    failure == OnlineFailure.inviteExpired ||
+    failure == OnlineFailure.versionMismatch;
 
 OnlineFailure onlineFailureForCode(String code) => switch (code) {
   'invalid_invite' || 'invalid_request' => OnlineFailure.invalidInvite,

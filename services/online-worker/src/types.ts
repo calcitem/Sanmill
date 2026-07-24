@@ -11,7 +11,7 @@ export type Seat = "first" | "second";
 export type SidePreference = Seat | "random";
 export type RoomStatus = "waiting" | "active" | "ended";
 export type EndReason = "outcome" | "resign" | "left";
-export type ControlKind = "takeBack" | "restart";
+export type ControlKind = "takeBack" | "restart" | "boardTransform";
 
 export interface Env {
   ROOMS: DurableObjectNamespace;
@@ -46,6 +46,7 @@ export interface PendingControl {
   requester: Seat;
   expiresAt: number;
   steps?: number;
+  transformation?: string;
 }
 
 export interface RoomState {
@@ -105,6 +106,8 @@ export interface ClientCommand {
     | "takeBackResponse"
     | "restartRequest"
     | "restartResponse"
+    | "boardTransformRequest"
+    | "boardTransformResponse"
     | "resign"
     | "leave";
   payload: Record<string, unknown>;

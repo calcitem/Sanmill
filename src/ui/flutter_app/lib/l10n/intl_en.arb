@@ -4896,7 +4896,7 @@
     },
     "remotePeerRejected": "The host declined the connection.",
     "@remotePeerRejected": {},
-    "remoteProtocolUpgradeRequired": "This opponent uses an incompatible version. Both players must update the app to the latest version.",
+    "remoteProtocolUpgradeRequired": "The two software versions are incompatible. Update the software on both devices, then try again.",
     "@remoteProtocolUpgradeRequired": {},
     "remoteHostBusy": "This host already has an opponent.",
     "@remoteHostBusy": {},
@@ -4962,7 +4962,7 @@
     "@onlineRoomUnavailable": {"description": "Error for a canceled or deleted room."},
     "onlineRoomFull": "This game already has two players.",
     "@onlineRoomFull": {"description": "Error for a room that already has two players."},
-    "onlineVersionMismatch": "This game requires a compatible app version.",
+    "onlineVersionMismatch": "This game uses an incompatible software version. Update the software, then try again.",
     "@onlineVersionMismatch": {"description": "Error for incompatible protocol or rules."},
     "onlineServiceUnavailable": "Online play is temporarily unavailable. You can still play over a local network or offline.",
     "@onlineServiceUnavailable": {"description": "Error when the online service cannot be used."},
@@ -7112,5 +7112,9 @@
                 "type": "int"
             }
         }
+    },
+    "remoteVersionIncompatibleTitle": "Incompatible versions",
+    "@remoteVersionIncompatibleTitle": {
+        "description": "Title for a blocking dialog shown when remote play versions cannot communicate"
     }
 }

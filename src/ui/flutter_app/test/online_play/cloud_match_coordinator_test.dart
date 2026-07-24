@@ -137,6 +137,137 @@ void main() {
   );
 
   test(
+    'applies an authoritative board transformation after approval',
+    () async {
+      final OnlineRoomSession session = _session(status: 'active');
+      final _FakeSocket socket = _FakeSocket();
+      final _FakeTransformGame game = _FakeTransformGame();
+      socket.onConnect = () => socket.emit(_welcome(session));
+      final CloudMatchCoordinator coordinator = CloudMatchCoordinator(
+        definition: onlineMillGameDefinition,
+        session: session,
+        roomApi: _FakeApi(),
+        socket: socket,
+        game: game,
+        sessionStore: _MemoryStore(),
+      );
+      addTearDown(coordinator.dispose);
+
+      await coordinator.start();
+      socket.emit(
+        _stateEvent(
+          session,
+          status: 'active',
+          revision: 2,
+          actions: const <String>['a7', 'd7'],
+        ),
+      );
+      await _flushEvents();
+
+      final Future<bool> requested = coordinator.requestBoardTransform(
+        'rotate90',
+      );
+      final Map<String, Object?> command = socket.sent.single;
+      final String requestId = command['commandId']! as String;
+      expect(command, containsPair('type', 'boardTransformRequest'));
+      expect(command['payload'], containsPair('transformation', 'rotate90'));
+
+      socket.emit(
+        _stateEvent(
+          session,
+          status: 'active',
+          revision: 3,
+          actions: const <String>['a7', 'd7'],
+          commandId: requestId,
+        ),
+      );
+      await _flushEvents();
+      socket.emit(<String, Object?>{
+        ..._stateEvent(
+          session,
+          type: 'controlResult',
+          status: 'active',
+          revision: 4,
+          actions: const <String>['g7', 'g4'],
+        ),
+        'kind': 'boardTransform',
+        'requestId': requestId,
+        'transformation': 'rotate90',
+        'accepted': true,
+      });
+
+      expect(await requested, isTrue);
+      expect(coordinator.actionLog, const <String>['g7', 'g4']);
+      expect(game.snapshots.last.actions, const <String>['g7', 'g4']);
+      expect(coordinator.isEloEligible, isTrue);
+    },
+  );
+
+  test('emits and answers an online board transformation request', () async {
+    final OnlineRoomSession session = _session(status: 'active');
+    final _FakeSocket socket = _FakeSocket();
+    socket.onConnect = () => socket.emit(_welcome(session));
+    final CloudMatchCoordinator coordinator = CloudMatchCoordinator(
+      definition: onlineMillGameDefinition,
+      session: session,
+      roomApi: _FakeApi(),
+      socket: socket,
+      game: _FakeTransformGame(),
+      sessionStore: _MemoryStore(),
+    );
+    addTearDown(coordinator.dispose);
+    final List<RemoteBoardTransformApprovalRequested> requests =
+        <RemoteBoardTransformApprovalRequested>[];
+    final StreamSubscription<RemoteMatchEvent> subscription = coordinator.events
+        .listen((RemoteMatchEvent event) {
+          if (event is RemoteBoardTransformApprovalRequested) {
+            requests.add(event);
+          }
+        });
+    addTearDown(subscription.cancel);
+
+    await coordinator.start();
+    socket.emit(<String, Object?>{
+      'type': 'controlRequest',
+      'kind': 'boardTransform',
+      'requestId': 'transform-inbound',
+      'transformation': 'mirrorVertical',
+      'seq': 0,
+    });
+    await _flushEvents();
+    expect(requests, hasLength(1));
+    expect(requests.single.requestId, 'transform-inbound');
+    expect(requests.single.transformation, 'mirrorVertical');
+
+    final Future<void> responded = coordinator.respondToBoardTransform(
+      requestId: 'transform-inbound',
+      transformation: 'mirrorVertical',
+      accepted: true,
+    );
+    final Map<String, Object?> command = socket.sent.single;
+    expect(command, containsPair('type', 'boardTransformResponse'));
+    expect(command['payload'], <String, Object?>{
+      'requestId': 'transform-inbound',
+      'transformation': 'mirrorVertical',
+      'accepted': true,
+    });
+    socket.emit(<String, Object?>{
+      ..._stateEvent(
+        session,
+        type: 'controlResult',
+        status: 'active',
+        revision: 1,
+        commandId: command['commandId']! as String,
+      ),
+      'kind': 'boardTransform',
+      'requestId': 'transform-inbound',
+      'transformation': 'mirrorVertical',
+      'accepted': true,
+    });
+    await responded;
+  });
+
+  test(
     'does not report the join handshake as an opponent disconnection',
     () async {
       final OnlineRoomSession session = _session(status: 'waiting');
@@ -696,4 +827,17 @@ class _FakeGame implements RemoteGameAdapter {
 
   @override
   Future<void> abandon() async {}
+}
+
+class _FakeTransformGame extends _FakeGame
+    implements RemoteBoardTransformAdapter {
+  @override
+  bool supportsBoardTransform(String transformation) =>
+      transformation == 'rotate90' || transformation == 'mirrorVertical';
+
+  @override
+  RemoteStateSnapshot transformSnapshot(
+    RemoteStateSnapshot snapshot,
+    String transformation,
+  ) => snapshot;
 }

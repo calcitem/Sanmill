@@ -1,3 +1,5 @@
+import java.net.URI
+
 plugins {
     id "com.android.application"
     id "dev.flutter.flutter-gradle-plugin"
@@ -24,7 +26,23 @@ if (flutterVersionName == null) {
 // Keep every Sanmill Android distribution on the lowest API level supported
 // by the Dart 3.12 Flutter toolchain and the current plugin graph.
 def sanmillMinSdkVersion = 24
-def sanmillOnlineHost = project.findProperty('SANMILL_ONLINE_HOST') ?: System.getenv('SANMILL_ONLINE_HOST') ?: 'sanmill-online.invalid'
+def dartDefines = [:]
+if (project.hasProperty('dart-defines')) {
+    project.property('dart-defines').split(',').each { encoded ->
+        def pair = new String(encoded.decodeBase64(), 'UTF-8').split('=', 2)
+        if (pair.length == 2) {
+            dartDefines[pair[0]] = pair[1]
+        }
+    }
+}
+def sanmillOnlineHost = project.findProperty('SANMILL_ONLINE_HOST') ?: System.getenv('SANMILL_ONLINE_HOST')
+if (!sanmillOnlineHost && dartDefines['SANMILL_ONLINE_BASE_URL']) {
+    sanmillOnlineHost = new URI(dartDefines['SANMILL_ONLINE_BASE_URL']).host
+}
+sanmillOnlineHost = sanmillOnlineHost ?: 'sanmill-online.invalid'
+if (!(sanmillOnlineHost ==~ /[A-Za-z0-9.-]+/)) {
+    throw new GradleException('SANMILL_ONLINE_HOST must be a valid host name')
+}
 
 android {
     ndkVersion "28.2.13676358"

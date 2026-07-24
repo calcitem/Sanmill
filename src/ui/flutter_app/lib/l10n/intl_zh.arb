@@ -4836,7 +4836,7 @@
     },
     "remotePeerRejected": "对方未同意连接。",
     "@remotePeerRejected": {},
-    "remoteProtocolUpgradeRequired": "对方版本不兼容。双方都需要将应用升级到最新版本。",
+    "remoteProtocolUpgradeRequired": "双方的软件版本不兼容。请在两台设备上更新软件后重试。",
     "@remoteProtocolUpgradeRequired": {},
     "remoteHostBusy": "此主机已有对手。",
     "@remoteHostBusy": {},
@@ -4902,7 +4902,7 @@
     "@onlineRoomUnavailable": {"description": "房间已取消或删除的错误信息。"},
     "onlineRoomFull": "此对局已有两名玩家。",
     "@onlineRoomFull": {"description": "房间已有两名玩家的错误信息。"},
-    "onlineVersionMismatch": "此对局需要兼容的应用版本。",
+    "onlineVersionMismatch": "此对局使用的软件版本不兼容。请更新软件后重试。",
     "@onlineVersionMismatch": {"description": "协议或规则版本不兼容的错误信息。"},
     "onlineServiceUnavailable": "在线对战暂时不可用，仍可使用 WLAN 或离线对战。",
     "@onlineServiceUnavailable": {"description": "在线服务不可用时的错误信息。"},
@@ -7045,5 +7045,9 @@
                 "type": "int"
             }
         }
+    },
+    "remoteVersionIncompatibleTitle": "版本不兼容",
+    "@remoteVersionIncompatibleTitle": {
+        "description": "Title for a blocking dialog shown when remote play versions cannot communicate"
     }
 }

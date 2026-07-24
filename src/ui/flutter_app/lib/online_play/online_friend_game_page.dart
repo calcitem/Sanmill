@@ -71,6 +71,7 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
   OnlineFailure? _failure;
   String? _terminalStatus;
   int _connectionAttempt = 0;
+  bool _versionMismatchDialogVisible = false;
 
   @override
   void initState() {
@@ -428,6 +429,44 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
       _failure = failure;
       _stage = _OnlinePageStage.home;
     });
+    if (failure == OnlineFailure.versionMismatch) {
+      unawaited(_showVersionMismatchDialog());
+    }
+  }
+
+  Future<void> _showVersionMismatchDialog() async {
+    if (!mounted || _versionMismatchDialogVisible) {
+      return;
+    }
+    _versionMismatchDialogVisible = true;
+    try {
+      await showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext dialogContext) {
+          final S s = S.of(dialogContext);
+          return PopScope(
+            canPop: false,
+            child: AlertDialog(
+              key: const Key('online_version_mismatch_dialog'),
+              title: Text(s.remoteVersionIncompatibleTitle),
+              content: Text(
+                s.onlineVersionMismatch,
+                style: Theme.of(dialogContext).textTheme.bodyLarge,
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                  child: Text(s.ok),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    } finally {
+      _versionMismatchDialogVisible = false;
+    }
   }
 
   Future<void> _showCreateServiceUnavailableDialog() async {

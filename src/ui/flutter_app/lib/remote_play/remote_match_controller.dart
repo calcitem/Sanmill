@@ -230,10 +230,7 @@ abstract interface class RemotePeerApprovalController {
   Future<bool> tryApprovePeer({required String peerId, required bool accepted});
 }
 
-/// Optional control surface implemented by peer-hosted remote matches.
-///
-/// Cloud matches do not expose this capability until their authoritative
-/// service supports the same negotiation.
+/// Optional control surface for matches that negotiate board transformations.
 abstract interface class RemoteBoardTransformController {
   Future<bool> requestBoardTransform(String transformation);
 

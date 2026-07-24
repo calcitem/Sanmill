@@ -159,7 +159,7 @@ void main() {
     },
   );
 
-  testWidgets('other create failures do not show the capacity dialog', (
+  testWidgets('version mismatch shows a blocking software update dialog', (
     WidgetTester tester,
   ) async {
     final _UnusedApi api = _UnusedApi(
@@ -178,10 +178,36 @@ void main() {
       findsNothing,
     );
     expect(
-      find.text('This game requires a compatible app version.'),
+      find.byKey(const Key('online_version_mismatch_dialog')),
       findsOneWidget,
     );
+    expect(find.text('Incompatible versions'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('online_version_mismatch_dialog')),
+        matching: find.text(
+          'This game uses an incompatible software version. '
+          'Update the software, then try again.',
+        ),
+      ),
+      findsOneWidget,
+    );
+    expect(find.textContaining('Sanmill'), findsNothing);
     expect(api.createCalls, 1);
+
+    await tester.tapAt(const Offset(8, 8));
+    await tester.pump();
+    expect(
+      find.byKey(const Key('online_version_mismatch_dialog')),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.widgetWithText(TextButton, 'OK'));
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const Key('online_version_mismatch_dialog')),
+      findsNothing,
+    );
   });
 
   testWidgets('join sheet rejects malformed invitation links locally', (

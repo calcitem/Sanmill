@@ -3,6 +3,10 @@
 import { DurableObject } from "cloudflare:workers";
 
 import {
+  isBoardTransformation,
+  transformMillAction,
+} from "./board_transform";
+import {
   bearerToken,
   equalTokenHash,
   randomToken,
@@ -17,6 +21,7 @@ import {
   ROOM_LIFETIME_MS,
   TICKET_LIFETIME_MS,
   type ClientCommand,
+  type ControlKind,
   type CreateRoomBody,
   type Env,
   type JoinRoomBody,
@@ -464,11 +469,29 @@ export class GameRoom extends DurableObject<Env> {
       case "restartRequest":
         await this.requestControl(socket, seat, state, command, "restart");
         return;
+      case "boardTransformRequest":
+        await this.requestControl(
+          socket,
+          seat,
+          state,
+          command,
+          "boardTransform",
+        );
+        return;
       case "takeBackResponse":
         await this.respondControl(socket, seat, state, command, "takeBack");
         return;
       case "restartResponse":
         await this.respondControl(socket, seat, state, command, "restart");
+        return;
+      case "boardTransformResponse":
+        await this.respondControl(
+          socket,
+          seat,
+          state,
+          command,
+          "boardTransform",
+        );
         return;
       case "resign":
         if (state.status !== "active") {
@@ -577,9 +600,13 @@ export class GameRoom extends DurableObject<Env> {
     seat: Seat,
     state: RoomState,
     command: ClientCommand,
-    kind: "takeBack" | "restart",
+    kind: ControlKind,
   ): Promise<void> {
     const steps = kind === "takeBack" ? command.payload.steps : undefined;
+    const transformation =
+      kind === "boardTransform"
+        ? command.payload.transformation
+        : undefined;
     if (
       state.status !== "active" ||
       state.pendingControl !== null ||
@@ -587,7 +614,9 @@ export class GameRoom extends DurableObject<Env> {
         (typeof steps !== "number" ||
           !Number.isInteger(steps) ||
           steps <= 0 ||
-          steps > state.actions.length))
+          steps > state.actions.length)) ||
+      (kind === "boardTransform" &&
+        !isBoardTransformation(transformation))
     ) {
       this.rejectCommand(
         socket,
@@ -608,6 +637,9 @@ export class GameRoom extends DurableObject<Env> {
       requester: seat,
       expiresAt,
       ...(typeof steps === "number" ? { steps } : {}),
+      ...(isBoardTransformation(transformation)
+        ? { transformation }
+        : {}),
     };
     state.seq += 1;
     this.remember(state, seat, command.commandId);
@@ -620,6 +652,7 @@ export class GameRoom extends DurableObject<Env> {
         kind,
         requestId: command.commandId,
         steps,
+        transformation,
         seq: state.seq,
       },
       seat,
@@ -631,17 +664,20 @@ export class GameRoom extends DurableObject<Env> {
     seat: Seat,
     state: RoomState,
     command: ClientCommand,
-    kind: "takeBack" | "restart",
+    kind: ControlKind,
   ): Promise<void> {
     const pending: PendingControl | null = state.pendingControl;
     const requestId = command.payload.requestId;
     const accepted = command.payload.accepted;
+    const transformation = command.payload.transformation;
     if (
       pending === null ||
       pending.kind !== kind ||
       pending.requester === seat ||
       requestId !== pending.requestId ||
-      typeof accepted !== "boolean"
+      typeof accepted !== "boolean" ||
+      (kind === "boardTransform" &&
+        transformation !== pending.transformation)
     ) {
       this.rejectCommand(
         socket,
@@ -663,6 +699,16 @@ export class GameRoom extends DurableObject<Env> {
       state.position = this.replayActions(state);
       state.status = "active";
       state.hadTakeBack = false;
+    } else if (accepted && kind === "boardTransform") {
+      const requestedTransformation = pending.transformation;
+      if (!isBoardTransformation(requestedTransformation)) {
+        throw new Error("Persisted board transformation is invalid");
+      }
+      state.actions = state.actions.map((action) =>
+        transformMillAction(action, requestedTransformation),
+      );
+      state.position = this.replayActions(state);
+      state.status = "active";
     }
     state.pendingControl = null;
     state.seq += 1;
@@ -675,6 +721,7 @@ export class GameRoom extends DurableObject<Env> {
       kind,
       requestId,
       accepted,
+      ...(kind === "boardTransform" ? { transformation } : {}),
     });
   }
 
@@ -985,6 +1032,8 @@ function parseCommand(source: string): ClientCommand {
       "takeBackResponse",
       "restartRequest",
       "restartResponse",
+      "boardTransformRequest",
+      "boardTransformResponse",
       "resign",
       "leave",
     ].includes(value.type) ||
