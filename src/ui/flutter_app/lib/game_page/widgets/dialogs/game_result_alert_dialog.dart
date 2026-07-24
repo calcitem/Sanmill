@@ -183,27 +183,31 @@ class GameResultAlertDialog extends StatelessWidget {
       ];
     } else {
       secondaryActions = <Widget>[
-        TextButton(
-          key: const Key('game_result_alert_dialog_restart_button'),
-          child: Text(
-            S.of(context).restart,
-            style: TextStyle(
-              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+        // Server-hosted rooms are terminal once a result is recorded. A new
+        // online game must use a new room and invite, while peer transports
+        // can still negotiate a restart over their existing connection.
+        if (gameMode != GameMode.humanVsCloud)
+          TextButton(
+            key: const Key('game_result_alert_dialog_restart_button'),
+            child: Text(
+              S.of(context).restart,
+              style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+              ),
             ),
+            onPressed: () {
+              if (GameController().isRemoteGameMode) {
+                GameController().requestRestart();
+              } else {
+                GameController().reset(force: true);
+              }
+              GameController().headerTipNotifier.showTip(
+                S.of(context).gameStarted,
+              );
+              GameController().headerIconsNotifier.showIcons();
+              Navigator.pop(context);
+            },
           ),
-          onPressed: () {
-            if (GameController().isRemoteGameMode) {
-              GameController().requestRestart();
-            } else {
-              GameController().reset(force: true);
-            }
-            GameController().headerTipNotifier.showTip(
-              S.of(context).gameStarted,
-            );
-            GameController().headerIconsNotifier.showIcons();
-            Navigator.pop(context);
-          },
-        ),
         TextButton(
           key: const Key('game_result_alert_dialog_cancel_button'),
           child: Text(

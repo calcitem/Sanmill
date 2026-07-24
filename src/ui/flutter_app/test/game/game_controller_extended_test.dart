@@ -1038,6 +1038,54 @@ void main() {
   });
 
   group('remote Elo settlement', () {
+    testWidgets('hides unsupported online restart while keeping peer restart', (
+      WidgetTester tester,
+    ) async {
+      final GameController controller = GameController();
+      final GameMode previousMode = controller.gameInstance.gameMode;
+      addTearDown(() {
+        controller.gameInstance.gameMode = previousMode;
+        controller.gameResultNotifier.clearResult();
+      });
+
+      controller.gameInstance.gameMode = GameMode.humanVsCloud;
+      controller.gameResultNotifier.clearResult();
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(body: GameResultAlertDialog(winner: PieceColor.white)),
+        ),
+      );
+
+      expect(
+        find.byKey(const Key('game_result_alert_dialog_restart_button')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const Key('game_result_alert_dialog_review_button')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('game_result_alert_dialog_cancel_button')),
+        findsOneWidget,
+      );
+
+      controller.gameInstance.gameMode = GameMode.humanVsLAN;
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(body: GameResultAlertDialog(winner: PieceColor.white)),
+        ),
+      );
+
+      expect(
+        find.byKey(const Key('game_result_alert_dialog_restart_button')),
+        findsOneWidget,
+      );
+    });
+
     testWidgets('updates Elo and shows the change after an eligible result', (
       WidgetTester tester,
     ) async {
