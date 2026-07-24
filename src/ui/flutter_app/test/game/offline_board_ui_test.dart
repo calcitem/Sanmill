@@ -438,6 +438,29 @@ void main() {
     expect(find.byKey(const Key('offline_board_black_clock')), findsNothing);
     expect(find.text('White'), findsOne);
     expect(find.text('Black'), findsOne);
+    expect(
+      find.byKey(const Key('offline_board_white_turn_indicator')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('offline_board_black_turn_indicator')),
+      findsNothing,
+    );
+    GameController().activeSessionSnapshot = const GameStateSnapshot(
+      gameId: GameId.mill,
+      activeSeat: PlayerSeat.second,
+      outcome: GameOutcome.ongoing(),
+      phase: 'placing',
+    );
+    await tester.pump();
+    expect(
+      find.byKey(const Key('offline_board_white_turn_indicator')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('offline_board_black_turn_indicator')),
+      findsOneWidget,
+    );
     expect(find.text('5:00'), findsNothing);
     expect(
       find.byKey(const Key('play_area_offline_board_bottom_menu')),

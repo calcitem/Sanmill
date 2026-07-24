@@ -25,16 +25,13 @@ class _GameHeaderState extends State<GameHeader> {
       animation: Listenable.merge(<Listenable>[
         controller.headerTipNotifier,
         controller.headerIconsNotifier,
+        controller.activeSessionSnapshotNotifier,
         controller.gameResultNotifier,
         if (controller.remoteCoordinator != null)
           controller.remoteCoordinator!.stateNotifier,
       ]),
       builder: (BuildContext context, Widget? child) {
         final bool showGameTips = DB().generalSettings.showGameTips;
-        if (!showGameTips && !controller.isRemoteGameMode) {
-          return const SizedBox.shrink(key: Key('game_header_hidden'));
-        }
-
         final PieceColor side =
             controller.activeSessionSideToMove ??
             controller.activeBoardView.sideToMove;
@@ -87,17 +84,21 @@ class _GameHeaderState extends State<GameHeader> {
                     ),
                   ),
                 ],
-                if (controller.isRemoteGameMode) ...<Widget>[
-                  if (showGameTips) const SizedBox(width: 8),
-                  if (showGameTips)
-                    _RemoteEloSummary(controller: controller)
-                  else
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: _RemoteEloSummary(controller: controller),
+                if (!showGameTips)
+                  Expanded(
+                    child: Align(
+                      alignment: controller.isRemoteGameMode
+                          ? Alignment.centerLeft
+                          : Alignment.center,
+                      child: _CompactTurnIndicator(
+                        controller: controller,
+                        side: side,
                       ),
                     ),
+                  ),
+                if (controller.isRemoteGameMode) ...<Widget>[
+                  const SizedBox(width: 8),
+                  _RemoteEloSummary(controller: controller),
                 ],
               ],
             ),
@@ -130,6 +131,76 @@ class _GameHeaderState extends State<GameHeader> {
       return FluentIcons.bot_24_filled;
     }
     return FluentIcons.person_24_filled;
+  }
+}
+
+/// Essential turn state that remains visible when instructional game tips are
+/// disabled.
+///
+/// Lichess keeps both player rows visible and marks the active clock. Sanmill
+/// has no clock in several game modes, so this compact fallback provides the
+/// same persistent, non-colour-only cue without placing a foreign-coloured
+/// card over the board background.
+class _CompactTurnIndicator extends StatelessWidget {
+  const _CompactTurnIndicator({required this.controller, required this.side});
+
+  final GameController controller;
+  final PieceColor side;
+
+  @override
+  Widget build(BuildContext context) {
+    if (controller.gameResultNotifier.hasResult ||
+        (side != PieceColor.white && side != PieceColor.black)) {
+      return const SizedBox.shrink(
+        key: Key('game_header_turn_indicator_hidden'),
+      );
+    }
+
+    final S strings = S.of(context);
+    final PieceColor localColor = controller.getLocalColor();
+    final bool hasLocalSide =
+        localColor == PieceColor.white || localColor == PieceColor.black;
+    final String label = controller.isRemoteGameMode && hasLocalSide
+        ? side == localColor
+              ? strings.yourTurn
+              : strings.opponentSTurn
+        : strings.sideToMove(
+            side == PieceColor.white ? strings.white : strings.black,
+          );
+    final ThemeData theme = Theme.of(context);
+    final Color foreground = DB().colorSettings.messageColor;
+
+    return Semantics(
+      key: const Key('game_header_turn_indicator'),
+      container: true,
+      liveRegion: true,
+      label: label,
+      child: ExcludeSemantics(
+        child: Container(
+          key: const Key('game_header_turn_indicator_surface'),
+          constraints: const BoxConstraints(minHeight: 40),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Icon(Icons.play_arrow_rounded, size: 22, color: foreground),
+              const SizedBox(width: 4),
+              Flexible(
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: foreground,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 

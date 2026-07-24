@@ -138,12 +138,13 @@ void main() {
       );
     });
 
-    testWidgets("GameHeader hides when game tips are disabled", (
+    testWidgets("GameHeader keeps the current player when tips are disabled", (
       WidgetTester tester,
     ) async {
       DB.instance = MockDB();
       final GameController controller = GameController();
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
+      controller.gameResultNotifier.clearResult();
 
       await tester.pumpWidget(
         makeTestableWidget(
@@ -153,8 +154,20 @@ void main() {
         ),
       );
 
-      expect(find.byKey(const Key('game_header_hidden')), findsOneWidget);
-      expect(find.byKey(const Key('game_header_contextual_row')), findsNothing);
+      expect(
+        find.byKey(const Key('game_header_contextual_row')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('game_header_turn_indicator')),
+        findsOneWidget,
+      );
+      expect(find.text(SEn().sideToMove(SEn().white)), findsOneWidget);
+      expect(find.byKey(const Key('game_header_contextual_tip')), findsNothing);
+      final Text turnLabel = tester.widget<Text>(
+        find.text(SEn().sideToMove(SEn().white)),
+      );
+      expect(turnLabel.style?.fontSize, greaterThanOrEqualTo(16));
     });
   });
 }

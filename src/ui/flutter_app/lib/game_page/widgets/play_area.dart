@@ -1032,7 +1032,7 @@ class PlayAreaState extends State<PlayArea> {
     return math.max(24, scaledTextHeight + 6) * 2;
   }
 
-  double _humanAiPlayerPanelHeightForLayout(BuildContext context) {
+  double _playerPanelHeightForLayout(BuildContext context) {
     final double scaledTextHeight = MediaQuery.textScalerOf(context).scale(38);
     return math.max(_kPlayerPanelHeight, scaledTextHeight + 18);
   }
@@ -2581,6 +2581,9 @@ class PlayAreaState extends State<PlayArea> {
     final GeneralSettings current = DB().generalSettings;
     final bool enabled = !current.showGameTips;
     DB().generalSettings = current.copyWith(showGameTips: enabled);
+    if (mounted) {
+      setState(() {});
+    }
     final GameController controller = GameController();
     controller.headerIconsNotifier.showIcons();
     RecordingService().recordEvent(
@@ -3648,12 +3651,10 @@ class PlayAreaState extends State<PlayArea> {
                 ? _pieceRowsHeightForLayout(context)
                 : 0;
             final double topPanelHeight = showPlayerPanels
-                ? _humanAiPlayerPanelHeightForLayout(context)
+                ? _playerPanelHeightForLayout(context)
                 : 0;
             final double bottomPanelHeight =
-                (showPlayerPanels
-                    ? _humanAiPlayerPanelHeightForLayout(context)
-                    : 0) +
+                (showPlayerPanels ? _playerPanelHeightForLayout(context) : 0) +
                 (showAdvantageGraph ? 112 : 0);
             final double nonBoardHeight =
                 moveListHeight +
@@ -4265,16 +4266,50 @@ class PlayAreaState extends State<PlayArea> {
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           final Widget moveList = _buildMoveListForRegularGame(context);
-          final bool showContextualTip =
-              isPlayableGame &&
-              _supportsGameTips &&
-              (DB().generalSettings.showGameTips ||
-                  GameController().isRemoteGameMode);
-          final Widget topTable = showContextualTip
+          final GameController controller = GameController();
+          final bool isRemoteGame =
+              isPlayableGame && controller.isRemoteGameMode;
+          final bool showRemoteGameTip =
+              isRemoteGame && DB().generalSettings.showGameTips;
+          // Remote games mirror the human-vs-computer composition: the
+          // opponent stays above the board and the local player below it.
+          // The transport icon takes the robot's identity slot.
+          final bool showGameHeader =
+              isPlayableGame && _supportsGameTips && !isRemoteGame;
+          final Widget topTable = isRemoteGame
+              ? Column(
+                  key: const Key('play_area_remote_top_area'),
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    SizedBox(
+                      height: _playerPanelHeightForLayout(context),
+                      child: const _RemotePlayerPanel(
+                        key: Key('play_area_remote_opponent_panel'),
+                        isLocal: false,
+                      ),
+                    ),
+                    if (showRemoteGameTip)
+                      SizedBox(
+                        height: _gameTipPanelHeightForLayout(context),
+                        child: const _RemoteGameTipPanel(
+                          key: Key('play_area_remote_tip_panel'),
+                        ),
+                      ),
+                  ],
+                )
+              : showGameHeader
               ? const GameHeader(key: Key('play_area_game_header'))
               : const SizedBox.shrink(key: Key('play_area_game_header_hidden'));
-          final double topPanelHeight = showContextualTip
+          final double topPanelHeight = isRemoteGame
+              ? _playerPanelHeightForLayout(context) +
+                    (showRemoteGameTip
+                        ? _gameTipPanelHeightForLayout(context)
+                        : 0)
+              : showGameHeader
               ? GameHeader.contextualHeight
+              : 0;
+          final double bottomPlayerPanelHeight = isRemoteGame
+              ? _playerPanelHeightForLayout(context)
               : 0;
           final double moveListReserve = isPlayableGame
               ? _wrappedMoveListReservedHeightForRoute(context)
@@ -4286,6 +4321,7 @@ class PlayAreaState extends State<PlayArea> {
           final double nonBoardHeight =
               moveListReserve +
               topPanelHeight +
+              bottomPlayerPanelHeight +
               pieceRowsHeight +
               advantageGraphHeight +
               AppTheme.boardMargin;
@@ -4316,6 +4352,14 @@ class PlayAreaState extends State<PlayArea> {
               const SizedBox(height: AppTheme.boardMargin),
           ];
           final List<Widget> bottomChildren = <Widget>[
+            if (isRemoteGame)
+              SizedBox(
+                height: bottomPlayerPanelHeight,
+                child: const _RemotePlayerPanel(
+                  key: Key('play_area_remote_local_panel'),
+                  isLocal: true,
+                ),
+              ),
             if (showAdvantageGraph)
               SizedBox(
                 key: const Key('play_area_advantage_graph'),
@@ -4333,7 +4377,9 @@ class PlayAreaState extends State<PlayArea> {
               constraints.maxWidth + nonBoardHeight;
           final double balancedSidePanelHeight = math.max(
             topPanelHeight,
-            advantageGraphHeight + AppTheme.boardMargin,
+            bottomPlayerPanelHeight +
+                advantageGraphHeight +
+                AppTheme.boardMargin,
           );
           final double balancedFixedHeight =
               moveListReserve + pieceRowsHeight + boardSize;
@@ -4706,6 +4752,7 @@ class PlayAreaState extends State<PlayArea> {
       'Regular landscape layout requires bounded height.',
     );
     final Size viewport = constraints.biggest;
+    final bool isRemoteGame = GameController().isRemoteGameMode;
     const double horizontalPadding = AppStyles.bodyPadding;
     const double verticalPadding = 8;
     const double gap = AppStyles.bodyPadding;
@@ -4816,9 +4863,29 @@ class PlayAreaState extends State<PlayArea> {
                               announceCompletedMove: true,
                             ),
                           ),
-                          if (_supportsGameTips &&
-                              (DB().generalSettings.showGameTips ||
-                                  GameController().isRemoteGameMode))
+                          if (isRemoteGame) ...<Widget>[
+                            const _RemotePlayerPanel(
+                              key: Key(
+                                'play_area_remote_landscape_opponent_panel',
+                              ),
+                              isLocal: false,
+                            ),
+                            if (DB().generalSettings.showGameTips)
+                              SizedBox(
+                                height: _gameTipPanelHeightForLayout(context),
+                                child: const _RemoteGameTipPanel(
+                                  key: Key(
+                                    'play_area_remote_landscape_tip_panel',
+                                  ),
+                                ),
+                              ),
+                            const _RemotePlayerPanel(
+                              key: Key(
+                                'play_area_remote_landscape_local_panel',
+                              ),
+                              isLocal: true,
+                            ),
+                          ] else if (_supportsGameTips)
                             const GameHeader(
                               key: Key('play_area_regular_landscape_header'),
                             ),
@@ -7214,6 +7281,226 @@ class _ComputerMoveSourceBadge extends StatelessWidget {
   }
 }
 
+class _RemotePlayerPanel extends StatelessWidget {
+  const _RemotePlayerPanel({super.key, required this.isLocal});
+
+  final bool isLocal;
+
+  @override
+  Widget build(BuildContext context) {
+    final GameController controller = GameController();
+    return AnimatedBuilder(
+      animation: Listenable.merge(<Listenable>[
+        controller.headerIconsNotifier,
+        controller.activeSessionSnapshotNotifier,
+        controller.gameResultNotifier,
+        if (controller.remoteCoordinator != null)
+          controller.remoteCoordinator!.stateNotifier,
+      ]),
+      builder: (BuildContext context, Widget? child) {
+        return _buildPanel(context, controller);
+      },
+    );
+  }
+
+  Widget _buildPanel(BuildContext context, GameController controller) {
+    final S strings = S.of(context);
+    final ThemeData theme = Theme.of(context);
+    final Color messageColor = DB().colorSettings.messageColor;
+    final PieceColor localSide = controller.getLocalColor();
+    final bool hasLocalSide =
+        localSide == PieceColor.white || localSide == PieceColor.black;
+    final PieceColor panelSide = hasLocalSide
+        ? isLocal
+              ? localSide
+              : localSide.opponent
+        : PieceColor.none;
+    final PieceColor sideToMove =
+        controller.activeSessionSideToMove ??
+        controller.activeBoardView.sideToMove;
+    final bool isActive =
+        !controller.gameResultNotifier.hasResult &&
+        hasLocalSide &&
+        sideToMove == panelSide;
+    final String? sideLabel = switch (panelSide) {
+      PieceColor.white => strings.white,
+      PieceColor.black => strings.black,
+      _ => null,
+    };
+    final String title = isLocal ? strings.humanAiPlayer : strings.remotePlayer;
+    final int? rating = isLocal
+        ? DB().statsSettings.humanStats.rating
+        : controller.remoteOpponentEloRating;
+    final String? ratingLabel = rating == null
+        ? null
+        : strings.eloRating(rating);
+    final Color foreground = messageColor.withValues(
+      alpha: isActive ? 1 : 0.62,
+    );
+    final Color secondaryForeground = messageColor.withValues(
+      alpha: isActive ? 0.72 : 0.46,
+    );
+    final String turnLabel = isLocal ? strings.yourTurn : strings.opponentSTurn;
+    final String semanticsLabel = <String>[
+      title,
+      ?sideLabel,
+      ?ratingLabel,
+      if (isActive) turnLabel,
+    ].join(', ');
+
+    return Semantics(
+      key: Key(
+        isLocal
+            ? 'play_area_remote_local_semantics'
+            : 'play_area_remote_opponent_semantics',
+      ),
+      container: true,
+      liveRegion: isActive,
+      label: semanticsLabel,
+      excludeSemantics: true,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        child: AnimatedContainer(
+          key: Key(
+            isLocal
+                ? 'play_area_remote_local_turn_surface'
+                : 'play_area_remote_opponent_turn_surface',
+          ),
+          duration: const Duration(milliseconds: 180),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          child: Row(
+            key: Key(
+              isLocal
+                  ? 'play_area_remote_local_row'
+                  : 'play_area_remote_opponent_row',
+            ),
+            children: <Widget>[
+              SizedBox(
+                width: 24,
+                child: isActive
+                    ? Icon(
+                        Icons.play_arrow_rounded,
+                        key: Key(
+                          isLocal
+                              ? 'play_area_remote_local_turn_indicator'
+                              : 'play_area_remote_opponent_turn_indicator',
+                        ),
+                        size: 22,
+                        color: foreground,
+                      )
+                    : null,
+              ),
+              const SizedBox(width: 4),
+              SizedBox.square(
+                dimension: 44,
+                child: Icon(
+                  isLocal
+                      ? FluentIcons.person_24_filled
+                      : _remoteOpponentIcon(controller.gameInstance.gameMode),
+                  key: Key(
+                    isLocal
+                        ? 'play_area_remote_local_identity_icon'
+                        : 'play_area_remote_opponent_identity_icon',
+                  ),
+                  size: 32,
+                  color: messageColor.withValues(alpha: isActive ? 0.82 : 0.46),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      title,
+                      key: Key(
+                        isLocal
+                            ? 'play_area_remote_local_title'
+                            : 'play_area_remote_opponent_title',
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: foreground,
+                        fontWeight: isActive
+                            ? FontWeight.w700
+                            : FontWeight.w500,
+                        letterSpacing: 0,
+                      ),
+                    ),
+                    if (ratingLabel != null)
+                      Text(
+                        ratingLabel,
+                        key: Key(
+                          isLocal
+                              ? 'play_area_remote_local_elo'
+                              : 'play_area_remote_opponent_elo',
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: secondaryForeground,
+                          letterSpacing: 0,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  IconData _remoteOpponentIcon(GameMode mode) {
+    return switch (mode) {
+      GameMode.humanVsBluetooth => FluentIcons.bluetooth_24_filled,
+      GameMode.humanVsCloud => FluentIcons.cloud_24_filled,
+      GameMode.humanVsLAN ||
+      GameMode.testViaLAN => FluentIcons.wifi_1_24_filled,
+      _ => FluentIcons.person_24_filled,
+    };
+  }
+}
+
+class _RemoteGameTipPanel extends StatelessWidget {
+  const _RemoteGameTipPanel({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final GameController controller = GameController();
+    return AnimatedBuilder(
+      animation: Listenable.merge(<Listenable>[
+        controller.headerTipNotifier,
+        controller.headerIconsNotifier,
+      ]),
+      builder: (BuildContext context, Widget? child) {
+        if (!DB().generalSettings.showGameTips) {
+          return const SizedBox.shrink(key: Key('play_area_remote_tip_hidden'));
+        }
+
+        final NativeMillGameSession? session =
+            controller.activeNativeMillSession;
+        final String message = controller.headerTipNotifier.message.isEmpty
+            ? session == null
+                  ? S.of(context).welcome
+                  : controller.nativeSessionTurnTip(context, session) ??
+                        S.of(context).welcome
+            : controller.headerTipNotifier.message;
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          child: GameTipBubble(
+            key: const Key('play_area_remote_tip'),
+            message: message,
+          ),
+        );
+      },
+    );
+  }
+}
+
 class _HumanAiPlayerPanel extends StatelessWidget {
   const _HumanAiPlayerPanel({super.key, required this.isRobot});
 
@@ -7225,6 +7512,8 @@ class _HumanAiPlayerPanel extends StatelessWidget {
     return AnimatedBuilder(
       animation: Listenable.merge(<Listenable>[
         controller.headerIconsNotifier,
+        controller.activeSessionSnapshotNotifier,
+        controller.gameResultNotifier,
         if (isRobot) controller.engineActivityNotifier,
       ]),
       builder: (BuildContext context, Widget? child) {
@@ -7247,10 +7536,19 @@ class _HumanAiPlayerPanel extends StatelessWidget {
     final String title = isRobot
         ? S.of(context).humanAiRobotLevel(level)
         : S.of(context).humanAiPlayer;
-    final PieceColor sideToMove = controller.activeBoardView.sideToMove;
+    final PieceColor sideToMove =
+        controller.activeSessionSideToMove ??
+        controller.activeBoardView.sideToMove;
     final bool isActivePlayer =
+        !controller.gameResultNotifier.hasResult &&
         (sideToMove == PieceColor.white || sideToMove == PieceColor.black) &&
         controller.gameInstance.getPlayerByColor(sideToMove).isAi == isRobot;
+    final Color foreground = messageColor.withValues(
+      alpha: isActivePlayer ? 1 : 0.62,
+    );
+    final Color secondaryForeground = messageColor.withValues(
+      alpha: isActivePlayer ? 0.72 : 0.46,
+    );
     // A source is known only after the computer has completed its turn. Do
     // not show the previous source while it is thinking about a new move.
     final _ComputerMoveSource? completedMoveSource =
@@ -7275,8 +7573,10 @@ class _HumanAiPlayerPanel extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: messageColor,
-                  fontWeight: FontWeight.w600,
+                  color: foreground,
+                  fontWeight: isActivePlayer
+                      ? FontWeight.w700
+                      : FontWeight.w500,
                   letterSpacing: 0,
                 ),
               ),
@@ -7286,7 +7586,7 @@ class _HumanAiPlayerPanel extends StatelessWidget {
               _ComputerMoveSourceBadge(
                 key: const Key('play_area_human_ai_robot_move_source'),
                 source: completedMoveSource,
-                color: messageColor.withValues(alpha: 0.72),
+                color: secondaryForeground,
               ),
             ],
             if (isThinking) ...<Widget>[
@@ -7295,7 +7595,7 @@ class _HumanAiPlayerPanel extends StatelessWidget {
                 Icons.hourglass_top,
                 key: const Key('play_area_human_ai_robot_thinking_icon'),
                 size: 16,
-                color: messageColor.withValues(alpha: 0.72),
+                color: secondaryForeground,
               ),
             ],
           ],
@@ -7310,7 +7610,7 @@ class _HumanAiPlayerPanel extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: theme.textTheme.bodySmall?.copyWith(
-            color: messageColor.withValues(alpha: 0.72),
+            color: secondaryForeground,
             letterSpacing: 0,
           ),
         ),
@@ -7318,25 +7618,53 @@ class _HumanAiPlayerPanel extends StatelessWidget {
     );
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      child: Row(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      child: AnimatedContainer(
         key: Key(
           isRobot
-              ? 'play_area_human_ai_robot_row'
-              : 'play_area_human_ai_player_row',
+              ? 'play_area_human_ai_robot_turn_surface'
+              : 'play_area_human_ai_player_turn_surface',
         ),
-        children: <Widget>[
-          SizedBox.square(
-            dimension: 44,
-            child: Icon(
-              isRobot ? Icons.smart_toy_outlined : Icons.person_outline,
-              size: 32,
-              color: messageColor.withValues(alpha: 0.82),
-            ),
+        duration: const Duration(milliseconds: 180),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+        child: Row(
+          key: Key(
+            isRobot
+                ? 'play_area_human_ai_robot_row'
+                : 'play_area_human_ai_player_row',
           ),
-          const SizedBox(width: 8),
-          Expanded(child: playerDetails),
-        ],
+          children: <Widget>[
+            SizedBox(
+              width: 24,
+              child: isActivePlayer
+                  ? Icon(
+                      Icons.play_arrow_rounded,
+                      key: Key(
+                        isRobot
+                            ? 'play_area_human_ai_robot_turn_indicator'
+                            : 'play_area_human_ai_player_turn_indicator',
+                      ),
+                      size: 22,
+                      color: foreground,
+                      semanticLabel: S.of(context).sideToMove(title),
+                    )
+                  : null,
+            ),
+            const SizedBox(width: 4),
+            SizedBox.square(
+              dimension: 44,
+              child: Icon(
+                isRobot ? Icons.smart_toy_outlined : Icons.person_outline,
+                size: 32,
+                color: messageColor.withValues(
+                  alpha: isActivePlayer ? 0.82 : 0.46,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(child: playerDetails),
+          ],
+        ),
       ),
     );
   }
@@ -8841,16 +9169,54 @@ class _OfflineBoardPlayerPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     assert(side == PieceColor.white || side == PieceColor.black);
+    final GameController controller = GameController();
+    return AnimatedBuilder(
+      animation: Listenable.merge(<Listenable>[
+        controller.headerIconsNotifier,
+        controller.activeSessionSnapshotNotifier,
+        controller.gameResultNotifier,
+      ]),
+      builder: (BuildContext context, Widget? child) {
+        return _buildPanel(context, controller);
+      },
+    );
+  }
+
+  Widget _buildPanel(BuildContext context, GameController controller) {
+    final ThemeData theme = Theme.of(context);
+    final PieceColor sideToMove =
+        controller.activeSessionSideToMove ??
+        controller.activeBoardView.sideToMove;
+    final bool isActive =
+        !controller.gameResultNotifier.hasResult && sideToMove == side;
     final Color contentColor = DB().colorSettings.messageColor.withValues(
-      alpha: 0.78,
+      alpha: isActive ? 1 : 0.58,
     );
     final String sideName = side == PieceColor.white
         ? S.of(context).offlineBoardWhite
         : S.of(context).offlineBoardBlack;
-    final Widget content = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 8),
+    final String semanticsLabel = isActive
+        ? S.of(context).sideToMove(sideName)
+        : sideName;
+    final Widget content = AnimatedContainer(
+      key: Key('offline_board_${side.name}_turn_surface'),
+      duration: const Duration(milliseconds: 180),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: Row(
         children: <Widget>[
+          SizedBox(
+            width: 24,
+            child: isActive
+                ? Icon(
+                    Icons.play_arrow_rounded,
+                    key: Key('offline_board_${side.name}_turn_indicator'),
+                    color: contentColor,
+                    size: 22,
+                  )
+                : null,
+          ),
+          const SizedBox(width: 4),
           Icon(Icons.person_outline, color: contentColor, size: 22),
           const SizedBox(width: 8),
           Expanded(
@@ -8859,9 +9225,9 @@ class _OfflineBoardPlayerPanel extends StatelessWidget {
               key: Key('offline_board_${side.name}_name'),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              style: theme.textTheme.titleMedium?.copyWith(
                 color: contentColor,
-                fontWeight: FontWeight.w500,
+                fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
               ),
             ),
           ),
@@ -8870,7 +9236,9 @@ class _OfflineBoardPlayerPanel extends StatelessWidget {
     );
     return Semantics(
       container: true,
-      label: sideName,
+      liveRegion: isActive,
+      excludeSemantics: true,
+      label: semanticsLabel,
       child: upsideDown ? RotatedBox(quarterTurns: 2, child: content) : content,
     );
   }

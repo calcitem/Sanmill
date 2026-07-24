@@ -1135,12 +1135,28 @@ void main() {
       );
       expect(find.byKey(const Key('game_header_remote_elo')), findsOneWidget);
       expect(find.byKey(const Key('game_header_contextual_tip')), findsNothing);
+      expect(
+        find.byKey(const Key('game_header_turn_indicator')),
+        findsOneWidget,
+      );
+      expect(find.text('Your turn.'), findsOneWidget);
       expect(find.text('Player 1: 1400 Elo'), findsOneWidget);
       expect(find.text('Player 2: 1400 Elo'), findsOneWidget);
       final Text firstRating = tester.widget<Text>(
         find.byKey(const Key('game_header_remote_elo_first')),
       );
       expect(firstRating.style?.fontSize, greaterThanOrEqualTo(14));
+
+      controller.activeSessionSnapshot = const GameStateSnapshot(
+        gameId: GameId.mill,
+        activeSeat: PlayerSeat.second,
+        outcome: GameOutcome.ongoing(),
+        phase: 'placing',
+      );
+      await tester.pump();
+      expect(find.text("Opponent's turn."), findsOneWidget);
+      expect(find.text('Your turn.'), findsNothing);
+      expect(tester.takeException(), isNull);
 
       controller.activeSessionSnapshot = const GameStateSnapshot(
         gameId: GameId.mill,

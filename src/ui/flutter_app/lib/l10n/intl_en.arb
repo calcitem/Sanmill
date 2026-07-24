@@ -7116,5 +7116,9 @@
     "remoteVersionIncompatibleTitle": "Incompatible versions",
     "@remoteVersionIncompatibleTitle": {
         "description": "Title for a blocking dialog shown when remote play versions cannot communicate"
+    },
+    "remotePlayer": "Remote player",
+    "@remotePlayer": {
+        "description": "Label for the opponent in a remote game player row"
     }
 }

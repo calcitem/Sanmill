@@ -5,6 +5,7 @@
 
 import 'dart:async';
 
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -772,11 +773,9 @@ void main() {
       find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_move_list')),
       findsOneWidget,
     );
-    expect(
-      find.byKey(const Key('play_area_game_header_hidden')),
-      findsOneWidget,
-    );
-    expect(find.byKey(const Key('play_area_game_header')), findsNothing);
+    expect(find.byKey(const Key('play_area_game_header')), findsOneWidget);
+    expect(find.byKey(const Key('game_header_turn_indicator')), findsOneWidget);
+    expect(find.text('Side to move: Player 1'), findsOneWidget);
 
     final LichessBottomBarButton playbackButton = tester.widget(
       find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_playback')),
@@ -1429,6 +1428,14 @@ void main() {
       messageTextColor.withValues(alpha: 0.72),
     );
     expect(
+      find.byKey(const Key('play_area_human_ai_player_turn_indicator')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_human_ai_robot_turn_indicator')),
+      findsNothing,
+    );
+    expect(
       tester
           .widget<Text>(find.byKey(const Key('play_area_human_ai_robot_elo')))
           .data,
@@ -1666,6 +1673,46 @@ void main() {
     }
     expect(find.byKey(const Key('play_area_human_ai_robot_panel')), findsOne);
     expect(find.byKey(const Key('play_area_human_ai_player_panel')), findsOne);
+  });
+
+  testWidgets('human vs computer keeps a turn highlight when tips are off', (
+    WidgetTester tester,
+  ) async {
+    db.generalSettings = const GeneralSettings(showGameTips: false);
+    final NativeMillGameSession session = await _bindNativeHumanAiGame();
+    await _pumpSessionPlayArea(tester, session);
+
+    expect(
+      find.byKey(const Key('play_area_human_ai_tip_panel_hidden')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_human_ai_player_turn_indicator')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_human_ai_robot_turn_indicator')),
+      findsNothing,
+    );
+
+    await session.apply(
+      const platform.GameAction(
+        type: MillActionTypes.place,
+        payload: <String, Object?>{'move': 'd6'},
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 180));
+
+    expect(
+      find.byKey(const Key('play_area_human_ai_player_turn_indicator')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_human_ai_robot_turn_indicator')),
+      findsOneWidget,
+    );
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('human vs computer keeps tips above the computer panel', (
@@ -8574,6 +8621,192 @@ void main() {
 
     expect(_currentPathMoves(), <String>['a1', 'd1', 'a4', 'd2']);
   });
+
+  for (final (
+        GameMode mode,
+        RemoteTransportKind transport,
+        IconData opponentIcon,
+      )
+      in <(GameMode, RemoteTransportKind, IconData)>[
+        (
+          GameMode.humanVsBluetooth,
+          RemoteTransportKind.bluetooth,
+          FluentIcons.bluetooth_24_filled,
+        ),
+        (
+          GameMode.humanVsLAN,
+          RemoteTransportKind.lan,
+          FluentIcons.wifi_1_24_filled,
+        ),
+        (
+          GameMode.humanVsCloud,
+          RemoteTransportKind.cloud,
+          FluentIcons.cloud_24_filled,
+        ),
+      ]) {
+    testWidgets(
+      '${mode.name} uses player rows and its transport icon with tips off',
+      (WidgetTester tester) async {
+        db.generalSettings = const GeneralSettings(showGameTips: false);
+        final NativeMillGameSession session = NativeMillGameSession();
+        session.remoteMeta = MillRemoteSessionMeta(
+          localSeat: platform.PlayerSeat.first,
+          hostPlaysWhite: true,
+          transportKind: transport,
+          role: RemoteRole.host,
+          sessionId: 'remote-player-panel-${mode.name}',
+        );
+        _bindExistingNativeGame(mode, session);
+
+        final GameController controller = GameController();
+        final RemoteMatchController? previousCoordinator =
+            controller.remoteCoordinator;
+        final _MenuRemoteController coordinator = _MenuRemoteController();
+        controller.remoteCoordinator = coordinator;
+        addTearDown(() async {
+          controller.remoteCoordinator = previousCoordinator;
+          await coordinator.dispose();
+        });
+
+        await _pumpSessionPlayArea(tester, session);
+
+        final Finder opponentPanel = find.byKey(
+          const Key('play_area_remote_opponent_panel'),
+        );
+        final Finder localPanel = find.byKey(
+          const Key('play_area_remote_local_panel'),
+        );
+        expect(opponentPanel, findsOneWidget);
+        expect(localPanel, findsOneWidget);
+        expect(
+          tester
+              .widget<Text>(
+                find.byKey(const Key('play_area_remote_opponent_title')),
+              )
+              .data,
+          'Remote player',
+        );
+        expect(
+          tester
+              .widget<Text>(
+                find.byKey(const Key('play_area_remote_local_title')),
+              )
+              .data,
+          'Player',
+        );
+        expect(find.byKey(const Key('play_area_game_header')), findsNothing);
+        expect(
+          find.byKey(const Key('game_header_turn_indicator')),
+          findsNothing,
+        );
+        expect(
+          tester
+              .widget<Icon>(
+                find.byKey(
+                  const Key('play_area_remote_opponent_identity_icon'),
+                ),
+              )
+              .icon,
+          opponentIcon,
+        );
+        expect(
+          find.byKey(const Key('play_area_remote_local_turn_indicator')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('play_area_remote_opponent_turn_indicator')),
+          findsNothing,
+        );
+        expect(
+          tester
+              .widget<AnimatedContainer>(
+                find.byKey(const Key('play_area_remote_local_turn_surface')),
+              )
+              .decoration,
+          isNull,
+        );
+        expect(
+          tester.getTopLeft(opponentPanel).dy,
+          lessThan(
+            tester.getTopLeft(find.byKey(const Key('test_board_square'))).dy,
+          ),
+        );
+        expect(
+          tester.getTopLeft(localPanel).dy,
+          greaterThan(
+            tester.getBottomLeft(find.byKey(const Key('test_board_square'))).dy,
+          ),
+        );
+
+        if (mode == GameMode.humanVsLAN) {
+          await tester.tap(
+            find.byKey(const Key('play_area_regular_bottom_bar_menu')),
+          );
+          await tester.pumpAndSettle();
+          final Finder gameTipsAction = find.byKey(
+            const Key('play_area_regular_game_menu_game_tips'),
+          );
+          expect(gameTipsAction, findsOneWidget);
+
+          await tester.tap(gameTipsAction);
+          await tester.pumpAndSettle();
+          expect(db.generalSettings.showGameTips, isTrue);
+          expect(
+            find.byKey(const Key('play_area_remote_tip_panel')),
+            findsOneWidget,
+          );
+          expect(find.byKey(const Key('play_area_remote_tip')), findsOneWidget);
+
+          await tester.tap(gameTipsAction);
+          await tester.pumpAndSettle();
+          expect(db.generalSettings.showGameTips, isFalse);
+          expect(
+            find.byKey(const Key('play_area_remote_tip_panel')),
+            findsNothing,
+          );
+          await tester.tapAt(const Offset(4, 4));
+          await tester.pumpAndSettle();
+        }
+
+        await session.apply(
+          const platform.GameAction(
+            type: MillActionTypes.place,
+            payload: <String, Object?>{'move': 'd6'},
+          ),
+        );
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 180));
+
+        expect(
+          find.byKey(const Key('play_area_remote_local_turn_indicator')),
+          findsNothing,
+        );
+        expect(
+          find.byKey(const Key('play_area_remote_opponent_turn_indicator')),
+          findsOneWidget,
+        );
+        expect(tester.takeException(), isNull);
+
+        if (mode == GameMode.humanVsLAN) {
+          await tester.binding.setSurfaceSize(const Size(844, 390));
+          await tester.pumpAndSettle();
+          expect(
+            find.byKey(const Key('play_area_remote_landscape_opponent_panel')),
+            findsOneWidget,
+          );
+          expect(
+            find.byKey(const Key('play_area_remote_landscape_local_panel')),
+            findsOneWidget,
+          );
+          expect(
+            find.byKey(const Key('play_area_regular_landscape_header')),
+            findsNothing,
+          );
+          expect(tester.takeException(), isNull);
+        }
+      },
+    );
+  }
 }
 
 Widget _localizedApp(

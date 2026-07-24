@@ -31,6 +31,16 @@ void main() {
     }
   });
 
+  test('labels remote game rows by player identity', () {
+    final S english = lookupS(const Locale('en'));
+    final S chinese = lookupS(const Locale('zh'));
+
+    expect(english.humanAiPlayer, 'Player');
+    expect(english.remotePlayer, 'Remote player');
+    expect(chinese.humanAiPlayer, '玩家');
+    expect(chinese.remotePlayer, '远程玩家');
+  });
+
   test('distinguishes Chinese ring-swap semantics from its compact label', () {
     final S chinese = lookupS(const Locale('zh'));
 
