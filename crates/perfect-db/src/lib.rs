@@ -19,7 +19,8 @@ pub mod patch;
 mod rust_global;
 pub mod wdl_plane;
 pub use mill::{
-    PerfectMoveChoice, PerfectMoveOrdering, all_move_outcomes_with_ordering, all_move_wdl_fast,
+    PerfectLogicalTurnChoice, PerfectMoveChoice, PerfectMoveOrdering,
+    all_move_outcomes_with_ordering, all_move_wdl_fast, best_logical_turn_choices_with_ordering,
     best_move_choice_for_query_with_database, best_move_choice_for_query_with_ordering,
     best_move_choice_with_database, best_move_choice_with_ordering,
     best_move_choices_with_database, best_move_choices_with_ordering, best_move_token_for_state,

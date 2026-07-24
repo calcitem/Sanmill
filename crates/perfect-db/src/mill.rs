@@ -18,7 +18,10 @@ use crate::database::{
 use crate::wdl_plane::WdlPlaneCache;
 use tgf_core::{Action, ActionList, GameRules, GameStateSnapshot, OutcomeKind};
 use tgf_mill::rules::MillState;
-use tgf_mill::{MillPhase, MillRules, MillUciCodec, MillVariantOptions, default_mill_topology};
+use tgf_mill::{
+    MillPhase, MillRules, MillUciCodec, MillVariantOptions, default_mill_topology,
+    legal_logical_turns,
+};
 
 const MAX_REMOVAL_CONTINUATION_DEPTH: u8 = 4;
 
@@ -565,6 +568,13 @@ pub struct PerfectMoveChoice {
     pub outcome: PerfectOutcome,
 }
 
+/// One complete logical Mill turn tied for the requested database optimum.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct PerfectLogicalTurnChoice {
+    pub tokens: Vec<String>,
+    pub outcome: PerfectOutcome,
+}
+
 /// Move ordering policy used when several legal actions have database values.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum PerfectMoveOrdering {
@@ -586,6 +596,92 @@ impl PerfectMoveOrdering {
 
     fn is_better(self, candidate: PerfectOutcome, incumbent: PerfectOutcome) -> bool {
         self.compare(candidate, incumbent).is_gt()
+    }
+}
+
+/// Select every complete legal turn tied for the best database outcome.
+///
+/// Unlike [`best_move_choices_with_ordering`], this keeps every mandatory
+/// removal continuation explicit. `history` is the chronological replay
+/// history excluding `snap`, so terminal repetition handling remains
+/// authoritative at the machine-query boundary.
+pub fn best_logical_turn_choices_with_ordering<P: DatabaseProvider>(
+    database: &mut Database<P>,
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    history: &[GameStateSnapshot],
+    options: &MillVariantOptions,
+    ordering: PerfectMoveOrdering,
+) -> Result<Option<Vec<PerfectLogicalTurnChoice>>, DatabaseError> {
+    let root_side = snap.side_to_move;
+    if !database_matches_options(database, options) {
+        return Ok(None);
+    }
+    if root_side != 0 && root_side != 1 {
+        return Ok(None);
+    }
+
+    let turns =
+        legal_logical_turns(rules, snap, history).map_err(|error| DatabaseError::InvalidState {
+            message: error.to_string(),
+        })?;
+    let mut best_outcome: Option<PerfectOutcome> = None;
+    let mut best_choices = Vec::new();
+    for turn in turns {
+        let outcome = if let Some(outcome) =
+            terminal_outcome_for_root(rules, &turn.final_snapshot, root_side)
+        {
+            outcome
+        } else {
+            let final_side = turn.final_snapshot.side_to_move;
+            if final_side != 0 && final_side != 1 {
+                return Err(DatabaseError::InvalidState {
+                    message: format!(
+                        "completed logical turn has invalid side to move {final_side}"
+                    ),
+                });
+            }
+            let state = MillRules::decode_snapshot(turn.final_snapshot);
+            let Some(outcome) =
+                evaluate_state_outcome_with_database(database, &state, options, final_side)?
+            else {
+                return Ok(None);
+            };
+            if final_side == root_side {
+                outcome
+            } else {
+                outcome.negate()
+            }
+        };
+        let choice = PerfectLogicalTurnChoice {
+            tokens: turn
+                .actions
+                .into_iter()
+                .map(MillUciCodec::encode_action)
+                .collect(),
+            outcome,
+        };
+        match best_outcome {
+            None => {
+                best_outcome = Some(outcome);
+                best_choices.push(choice);
+            }
+            Some(incumbent) => match ordering.compare(outcome, incumbent) {
+                Ordering::Greater => {
+                    best_outcome = Some(outcome);
+                    best_choices.clear();
+                    best_choices.push(choice);
+                }
+                Ordering::Equal => best_choices.push(choice),
+                Ordering::Less => {}
+            },
+        }
+    }
+    best_choices.sort_by(|left, right| left.tokens.cmp(&right.tokens));
+    if best_choices.is_empty() {
+        Ok(None)
+    } else {
+        Ok(Some(best_choices))
     }
 }
 

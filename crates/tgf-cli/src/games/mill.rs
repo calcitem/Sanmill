@@ -20,6 +20,7 @@ const CMD_MINE: CommandId = CommandId::new("mine");
 const CMD_MINE_ENDGAME: CommandId = CommandId::new("mine-endgame");
 const CMD_PATCH_PACK: CommandId = CommandId::new("patch-pack");
 const CMD_ARENA: CommandId = CommandId::new("arena");
+const CMD_DATA_QUERY: CommandId = CommandId::new("data-query");
 
 const MILL_COMMANDS: &[CommandSpec] = &[
     CommandSpec {
@@ -100,6 +101,12 @@ const MILL_COMMANDS: &[CommandSpec] = &[
         aliases: &[],
         description: "play full-rules engine-vs-Perfect-DB games (patched vs unpatched KPI)",
     },
+    CommandSpec {
+        id: CMD_DATA_QUERY,
+        name: "data-query",
+        aliases: &["data"],
+        description: "query reproducible Mill data sources through JSON",
+    },
 ];
 
 impl CliGame for MillCli {
@@ -136,6 +143,7 @@ impl CliGame for MillCli {
             CMD_MINE_ENDGAME => crate::mill_endgame::run_mill_endgame(args),
             CMD_PATCH_PACK => crate::mill_pack::run_patch_pack(args),
             CMD_ARENA => crate::mill_arena::run_mill_arena(args),
+            CMD_DATA_QUERY => crate::mill_data_query::run(args),
             CMD_UCI => {
                 warn_unused_args("uci", args);
                 crate::mill_uci::run_uci_loop();

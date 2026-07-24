@@ -55,10 +55,11 @@ impl SecValTable {
 
         let (win_line, win_text) = next_line(&mut lines, 2, "virt_win_val")?;
         let virt_win_val = parse_prefixed_i16(win_line, win_text, "virt_win_val:")?;
-        assert_eq!(
-            virt_win_val, -virt_loss_val,
-            "Perfect DB virtual win/loss values must be symmetric"
-        );
+        if virt_win_val != -virt_loss_val {
+            return Err(ParseError::InvalidHeader {
+                message: "Perfect DB virtual win/loss values must be symmetric".to_owned(),
+            });
+        }
 
         let (count_line, count_text) = next_line(&mut lines, 3, "sector count")?;
         let expected_count = parse_usize(count_line, count_text)?;
@@ -67,10 +68,12 @@ impl SecValTable {
         for _ in 0..expected_count {
             let (line_number, line) = next_line(&mut lines, count_line + 1, "sector value")?;
             let (id, value) = parse_sector_value(line_number, line)?;
-            assert!(
-                values.insert(id, value).is_none(),
-                "duplicate Perfect DB sector id: {id:?}"
-            );
+            if values.insert(id, value).is_some() {
+                return Err(ParseError::InvalidLine {
+                    line: line_number,
+                    message: format!("duplicate Perfect DB sector id: {id:?}"),
+                });
+            }
         }
 
         for (line_index, line) in lines {
@@ -82,11 +85,11 @@ impl SecValTable {
             }
         }
 
-        assert_eq!(
-            values.len(),
-            expected_count,
-            "parsed sector count must match std.secval header"
-        );
+        if values.len() != expected_count {
+            return Err(ParseError::InvalidHeader {
+                message: "parsed sector count must match std.secval header".to_owned(),
+            });
+        }
 
         Ok(Self {
             virt_loss_val,
@@ -180,6 +183,15 @@ fn parse_sector_value(line_number: usize, line: &str) -> ParseResult<(SectorId, 
     let black_on_board = parse_u8(line_number, parts[1])?;
     let white_in_hand = parse_u8(line_number, parts[2])?;
     let black_in_hand = parse_u8(line_number, parts[3])?;
+    if [white_on_board, black_on_board, white_in_hand, black_in_hand]
+        .into_iter()
+        .any(|count| count > 12)
+    {
+        return Err(ParseError::InvalidLine {
+            line: line_number,
+            message: "Perfect DB sector piece counts must be in 0..=12".to_owned(),
+        });
+    }
     let value = parse_i16(line_number, parts[4])?;
     Ok((
         SectorId::new(white_on_board, black_on_board, white_in_hand, black_in_hand),

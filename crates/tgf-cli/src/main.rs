@@ -11,6 +11,7 @@ mod game_adapter;
 mod games;
 mod human_db_fen;
 mod mill_arena;
+mod mill_data_query;
 mod mill_endgame;
 mod mill_mine;
 mod mill_pack;

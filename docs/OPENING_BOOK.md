@@ -7,11 +7,13 @@ architecture, the settings that control it, and how to maintain or extend it.
 
 ## Overview
 
-The opening book is a **frontend-only, advisory** feature. It lives entirely in
-the Flutter app; the Rust/TGF engine knows nothing about it. On an AI turn it is
-consulted **before** the Human Database and the native search (see
+The opening book is an advisory Flutter move source and a read-only Rust/TGF
+data source. The Flutter app consults it **before** the Human Database and the
+native search (see
 [Interaction with other move sources](#interaction-with-other-move-sources)),
-and only during the **placing phase**.
+and only during the **placing phase**. The Rust CLI exposes the Oracle layer
+for reproducible external evaluation; that interface enumerates candidates and
+never selects a move or falls through to another source.
 
 It combines two layers in one asset:
 
@@ -47,6 +49,7 @@ flowchart TD
   Build["tool/build_opening_book.dart (dart run: sanitise + symmetry-dedup)"] --> Json["assets/opening_books/&lt;variant&gt;/opening_book.json (shipped)"]
   Build --> Atlas["tool/&lt;variant&gt;_opening_book_atlas.md (human-readable)"]
   Json --> Repo["OpeningBookRepository.ensureLoaded() (async, at startup)"]
+  Json --> Query["tgf mill data-query (strict JSON / JSONL)"]
   Repo --> Provider["MillOpeningBookProvider.lookup() (director -> oracle -> continuation) -> AI placement"]
   Repo --> Recognizer["MillOpeningRecognizer -> name / notes / favoured side"]
   Provider --> AiTurn["NativeMillAiTurnController (AI turn)"]
@@ -82,6 +85,12 @@ Layers:
     candidate book moves.
   - `lib/games/mill/opening_book/mill_opening_recognizer.dart` — stateless
     opening recognition used for display and the director.
+- **Machine query (Rust)**:
+  - `crates/tgf-mill/src/opening_book_symmetry.rs` — the same ordered 16-way
+    transform and notation mapping used by the asset.
+  - `crates/tgf-cli/src/mill_data_query/book.rs` — strict parsing, whole-asset
+    legality and duplicate validation, source identity, and deterministic
+    candidate enumeration.
 
 Loading is asynchronous (`rootBundle`), kicked off from `main.dart` via
 `OpeningBookRepository.instance.ensureLoaded()`. Every query is synchronous
@@ -203,6 +212,11 @@ combined with the inner/outer ring swap), implemented in
 - `lookupCanonicalOpeningBook` maps a query FEN to its canonical key, fetches the
   stored line, and rotates the moves back into the query's frame with the
   inverse symmetry.
+- The Rust `canonical_opening_book_fen` and
+  `transform_opening_book_notation` functions use the same operation order.
+  The machine API tests every presentation in the 16-element orbit and maps
+  every returned move back to the live board before validating it with the
+  active Sanmill rules.
 - Recognition and the director apply the same 16 transforms to the played
   placement sequence so a rotated/reflected game is matched as the same opening.
 
@@ -231,6 +245,101 @@ Because every *oracle* candidate is already a "best" move, the selector can neve
 weaken the AI on the oracle path — it only changes which equally-good move is
 played. The same selector (and the same bias) also applies to the favoured-opening
 director and the continuation fallback.
+
+The machine-query API deliberately does not run this selector. It returns the
+complete stable candidate list, preserving `source_rank` and the geometric
+rank metadata (`ratio = 0.6`, `weight = ratio^(rank-1)`). External callers own
+their seed and sampling policy. This keeps experiment ratios and random seeds
+out of Sanmill core code and leaves Flutter's existing shuffling behaviour
+unchanged.
+
+## Machine-readable Oracle query
+
+Run a one-shot request with:
+
+```sh
+cargo run -p tgf-cli -- mill data-query
+```
+
+or keep a process alive and send one request per line with
+`mill data-query --jsonl`. Protocol version 1 uses this request shape:
+
+```json
+{
+  "operation": "query_book",
+  "protocol_version": 1,
+  "request_id": "opening-001",
+  "position": {
+    "rule": "nmm",
+    "initial": "startpos",
+    "history_origin": "game_start",
+    "actions": []
+  }
+}
+```
+
+`actions` contains Sanmill UCI action tokens. A mill-forming primary action and
+its mandatory `x...` removal are separate tokens, but the response groups them
+into one `full_turn_actions` value with `logical_ply_delta: 1`. Supplying an
+explicit initial FEN requires `history_origin: "fresh_setup"`; a full game
+replay must start with `startpos`. `expected_current_fen` may be supplied to
+guard against replay drift.
+
+An initial NMM query currently starts as follows (fields omitted only for
+brevity):
+
+```json
+{
+  "protocol_version": 1,
+  "operation": "query_book",
+  "status": "available",
+  "source": {
+    "candidate_order": "source_array",
+    "identity": {
+      "schema_version": 1,
+      "variant": "nmm",
+      "symmetry": "ring16",
+      "oracle_positions": 109,
+      "oracle_records": 437,
+      "sha256": "cdc4768bc461c22177634985a4cc1d92452774e2992515b937fed8812eb076f5"
+    }
+  },
+  "candidates": [
+    {
+      "stable_index": 0,
+      "source_rank": 1,
+      "raw_notation": "d2",
+      "mapped_notation": "d2",
+      "full_turn_actions": ["d2"],
+      "remaining_actions": ["d2"],
+      "logical_ply_delta": 1
+    }
+  ]
+}
+```
+
+The loader validates the complete asset before answering any position:
+
+- every canonical FEN must parse under the matching Sanmill preset;
+- every candidate must be legal;
+- candidate lists must be non-empty and contain no duplicate move;
+- duplicate JSON FEN keys, malformed JSON, unsupported schema/symmetry, and
+  identity mismatches are errors.
+
+No matching Oracle key returns `status: "book_miss"`. Asset, mapping, and
+legality failures return `status: "error"` with a specific code; they are
+never converted into a miss and never invoke named-opening continuation,
+HumanDB, Random, or search.
+
+The asset identity can also be obtained without querying a position:
+
+```json
+{
+  "operation": "source_identity",
+  "protocol_version": 1,
+  "source": {"kind": "book", "variant": "nmm"}
+}
+```
 
 ## Opening recognition
 

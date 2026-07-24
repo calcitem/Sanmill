@@ -7,8 +7,8 @@ use std::io::{Read, Seek, SeekFrom};
 
 use super::{ParseError, ParseResult, read_i32_le};
 
-const DD_HEADER_SIZE: usize = 64;
-const SUPPORTED_VERSION: i32 = 2;
+pub const SECTOR_HEADER_SIZE: usize = 64;
+pub const SECTOR_FORMAT_VERSION: i32 = 2;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct SectorHeader {
@@ -19,18 +19,18 @@ pub struct SectorHeader {
 }
 
 impl SectorHeader {
-    fn parse(bytes: &[u8]) -> ParseResult<Self> {
-        if bytes.len() < DD_HEADER_SIZE {
+    pub fn parse(bytes: &[u8]) -> ParseResult<Self> {
+        if bytes.len() < SECTOR_HEADER_SIZE {
             return Err(ParseError::InvalidLength {
-                expected: DD_HEADER_SIZE,
+                expected: SECTOR_HEADER_SIZE,
                 actual: bytes.len(),
             });
         }
 
         let version = read_i32_le(bytes, 0)?;
-        if version != SUPPORTED_VERSION {
+        if version != SECTOR_FORMAT_VERSION {
             return Err(ParseError::InvalidHeader {
-                message: format!("expected version {SUPPORTED_VERSION}, got {version}"),
+                message: format!("expected version {SECTOR_FORMAT_VERSION}, got {version}"),
             });
         }
 
@@ -80,19 +80,25 @@ impl RawEval {
     }
 
     pub fn kind(self) -> RawEvalKind {
+        self.try_kind()
+            .expect("packed Perfect DB symmetry operation must be valid")
+    }
+
+    pub fn try_kind(self) -> ParseResult<RawEvalKind> {
         if self.key1 != 0 {
-            RawEvalKind::Value
+            Ok(RawEvalKind::Value)
         } else if self.key2 >= 0 {
-            RawEvalKind::Count
+            Ok(RawEvalKind::Count)
         } else {
             let operation = -(self.key2 + 1);
-            assert!(
-                (0..16).contains(&operation),
-                "symmetry operation must be in 0..16"
-            );
-            RawEvalKind::Symmetry {
-                operation: operation as u8,
+            if !(0..16).contains(&operation) {
+                return Err(ParseError::InvalidHeader {
+                    message: format!("symmetry operation must be in 0..16, got {operation}"),
+                });
             }
+            Ok(RawEvalKind::Symmetry {
+                operation: operation as u8,
+            })
         }
     }
 }
@@ -131,9 +137,13 @@ impl fmt::Debug for SectorFile {
 /// require. Shared by [`SectorFile::parse`] and
 /// [`SectorFile::decode_all_from_bytes`] so the two whole-buffer entry
 /// points can never disagree on this layout.
-fn parse_em_set(bytes: &[u8], eval_size: usize) -> ParseResult<BTreeMap<usize, i32>> {
+fn parse_em_set(
+    bytes: &[u8],
+    eval_size: usize,
+    eval_count: usize,
+) -> ParseResult<BTreeMap<usize, i32>> {
     let em_set_count_offset =
-        DD_HEADER_SIZE
+        SECTOR_HEADER_SIZE
             .checked_add(eval_size)
             .ok_or(ParseError::InvalidLength {
                 expected: usize::MAX,
@@ -172,10 +182,17 @@ fn parse_em_set(bytes: &[u8], eval_size: usize) -> ParseResult<BTreeMap<usize, i
             });
         }
         let index = index as usize;
-        assert!(
-            em_set.insert(index, value).is_none(),
-            "duplicate em_set entry for eval index {index}"
-        );
+        if index >= eval_count {
+            return Err(ParseError::OutOfBounds {
+                index,
+                len: eval_count,
+            });
+        }
+        if em_set.insert(index, value).is_some() {
+            return Err(ParseError::InvalidHeader {
+                message: format!("duplicate em_set entry for eval index {index}"),
+            });
+        }
         offset += 8;
     }
     Ok(em_set)
@@ -196,7 +213,7 @@ impl SectorFile {
                     expected: usize::MAX,
                     actual: bytes.len(),
                 })?;
-        let em_set = parse_em_set(bytes, eval_size)?;
+        let em_set = parse_em_set(bytes, eval_size, eval_count)?;
         let reader = std::io::Cursor::new(bytes.to_vec());
 
         Ok(Self {
@@ -225,7 +242,7 @@ impl SectorFile {
                     expected: usize::MAX,
                     actual: bytes.len(),
                 })?;
-        let em_set = parse_em_set(bytes, eval_size)?;
+        let em_set = parse_em_set(bytes, eval_size, eval_count)?;
 
         let n = header.eval_struct_size;
         let field1_bits = header.field2_offset;
@@ -235,7 +252,7 @@ impl SectorFile {
 
         let mut out = Vec::with_capacity(eval_count);
         for index in 0..eval_count {
-            let offset = DD_HEADER_SIZE + index * n;
+            let offset = SECTOR_HEADER_SIZE + index * n;
             let mut raw = 0_u32;
             for (byte_index, &byte) in bytes[offset..offset + n].iter().enumerate() {
                 raw |= u32::from(byte) << (8 * byte_index);
@@ -260,11 +277,11 @@ impl SectorFile {
         mut reader: Box<dyn crate::database::ReadSeek + Send>,
         eval_count: usize,
     ) -> ParseResult<Self> {
-        let mut header_bytes = [0u8; DD_HEADER_SIZE];
+        let mut header_bytes = [0u8; SECTOR_HEADER_SIZE];
         reader
             .read_exact(&mut header_bytes)
             .map_err(|_| ParseError::InvalidLength {
-                expected: DD_HEADER_SIZE,
+                expected: SECTOR_HEADER_SIZE,
                 actual: 0,
             })?;
         let header = SectorHeader::parse(&header_bytes)?;
@@ -276,7 +293,7 @@ impl SectorFile {
                     actual: usize::MAX,
                 })?;
         let em_set_count_offset =
-            DD_HEADER_SIZE
+            SECTOR_HEADER_SIZE
                 .checked_add(eval_size)
                 .ok_or(ParseError::InvalidLength {
                     expected: usize::MAX,
@@ -317,10 +334,17 @@ impl SectorFile {
                 });
             }
             let index = index as usize;
-            assert!(
-                em_set.insert(index, value).is_none(),
-                "duplicate em_set entry for eval index {index}"
-            );
+            if index >= eval_count {
+                return Err(ParseError::OutOfBounds {
+                    index,
+                    len: eval_count,
+                });
+            }
+            if em_set.insert(index, value).is_some() {
+                return Err(ParseError::InvalidHeader {
+                    message: format!("duplicate em_set entry for eval index {index}"),
+                });
+            }
         }
 
         Ok(Self {
@@ -351,7 +375,7 @@ impl SectorFile {
             });
         }
 
-        let offset = DD_HEADER_SIZE + index * self.header.eval_struct_size;
+        let offset = SECTOR_HEADER_SIZE + index * self.header.eval_struct_size;
         let n = self.header.eval_struct_size;
         let mut buf = [0u8; 4];
         self.reader

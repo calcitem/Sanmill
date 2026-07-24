@@ -12,12 +12,16 @@ human-vs-human games. For a given board position it stores, per move, how often
 human players chose that move and how those games turned out (win / draw / loss
 from the mover's perspective).
 
-Sanmill uses it as an **advisory move book for the AI**: on an AI turn, if the
-current position is present in the database, the AI plays a human move directly
-instead of running the native search. It is consulted **after** the built-in
-opening book and **before** the native search, and a configured perfect
-database can still override its choice (see
+The Flutter app uses it as an **advisory move book for the AI**: on an AI turn,
+if the current position is present in the database, the AI may play a human
+move directly instead of running the native search. It is consulted **after**
+the built-in opening book and **before** the native search, and a configured
+perfect database can still override its choice (see
 [Interaction with other move sources](#interaction-with-other-move-sources)).
+
+The Rust CLI also exposes a separate, strict machine-query surface. That
+surface returns all raw candidate statistics for external evaluation. It never
+chooses a move, invokes another data source, or falls through to search.
 
 Key points:
 
@@ -35,6 +39,7 @@ flowchart TD
   Toggle["Settings: enable + pick .sqlite file"] --> Service["HumanDatabaseService (Dart)"]
   Service -->|"millHumanDbInit / millHumanDbStatus"| Frb["FRB api: mill_human_db_*"]
   Frb --> Rust["games/mill/human_db.rs (read-only SQLite)"]
+  Database["external human_db.sqlite"] --> Query["tgf mill data-query (strict JSON / JSONL)"]
   AiTurn["NativeMillAiTurnController (AI turn)"] --> Provider["MillHumanDatabaseProvider.lookup"]
   Provider -->|"getFen + millHumanDbQuery"| Frb
   Provider -->|"chosen move"| AiTurn
@@ -56,6 +61,10 @@ Layers:
   `mill_human_db_deinit`).
 - `crates/tgf-frb/src/games/mill/human_db.rs`: opens the SQLite file read-only,
   validates the schema, computes the canonical position key, and runs the query.
+- `crates/tgf-cli/src/mill_data_query/human_db.rs`: independently opens the
+  external file in immutable read-only mode, pins its SHA-256 and schema,
+  validates every returned logical turn with current NMM rules, and exposes
+  complete raw statistics in stable order.
 
 ## Settings
 
@@ -92,6 +101,7 @@ The database is produced by an external tool and must contain at least the
 | `schema_version`| schema version string                    |
 | `build_date`    | ISO-8601 build timestamp                 |
 | `total_games`   | number of games indexed (parsed as int)  |
+| `malom_label_version` | optional trust marker for Malom labels |
 
 ### `positions`
 
@@ -103,9 +113,23 @@ selection uses the `moves` table.
 ### `moves`
 
 Primary key `(state_key, notation)` with `wins`, `losses`, `draws`, `total`,
-and optional annotation columns. Sanmill reads `notation`, `wins`, `losses`,
-`draws`, and `total`. Win / loss / draw counts are from the perspective of the
-side to move at `state_key`.
+`moves_to_end_sum`, and optional annotation columns. Win / loss / draw counts
+are from the perspective of the side to move at `state_key`.
+
+The machine API treats the two statistical axes independently:
+
+- `total` is the human selection count and is the numerator used for relative
+  human frequency;
+- `wins`, `losses`, and `draws` are empirical outcomes after that selection.
+
+The current Flutter confidence-weighted experience score is returned as a
+separate field. It is never substituted for human frequency.
+
+Historical `malom_wdl`, `malom_dtw`, `canonical_winning_move`,
+`malom_wdl_after`, and `malom_dtw_after` values are exposed only when
+`meta.malom_label_version` is exactly `sector-corrected-v1`. With no marker or
+any other value, only those Malom-derived fields are masked; human frequency
+and empirical W/D/L remain available.
 
 ### Position key (`state_key`)
 
@@ -181,6 +205,115 @@ Database notations combine a base move with a capture, for example
 If a perfect-database correction replaces the chosen move, the pending capture
 is discarded.
 
+## Machine-readable HumanDB query
+
+Run `cargo run -p tgf-cli -- mill data-query` for one JSON request, or add
+`--jsonl` for a long-running process. The latter reuses an already validated
+read-only SQLite handle and verifies its file stamp and absence of live WAL/SHM
+sidecars before every query.
+
+```json
+{
+  "operation": "query_human_db",
+  "protocol_version": 1,
+  "request_id": "human-001",
+  "position": {
+    "rule": "nmm",
+    "initial": "startpos",
+    "history_origin": "game_start",
+    "actions": []
+  },
+  "database_path": "I:\\Mill_Training\\Mills\\human_db.sqlite",
+  "candidate_limit": 5,
+  "min_total": 0
+}
+```
+
+The result includes:
+
+- the canonical `state_key` and D4 `symmetry_index`;
+- the exact database SHA-256, byte length, schema version and schema SHA-256,
+  build date, `total_games`, row counts, sorted metadata, and Malom trust
+  decision;
+- every eligible notation in stable
+  `total DESC, canonical notation ASC` order (or the explicit
+  `candidate_limit`);
+- raw notation, mapped live-board notation, complete and remaining UCI action
+  tokens, capture metadata, and one logical-ply delta;
+- raw `wins`, `losses`, `draws`, `total`, `moves_to_end_sum`, empirical rates,
+  relative human frequency, and the legacy Flutter experience score.
+
+For example, the audited database built on 2026-07-21 returns this leading
+initial-position candidate:
+
+```json
+{
+  "status": "available",
+  "source": {
+    "state_key": "........................|W|place|0|0|0|0",
+    "candidate_order": "total_desc_then_canonical_notation",
+    "identity": {
+      "sha256": "f0b20d33aefcbab9aedc8537f12fa2e53f7865b0387e2175afd0ea32d1b90e42",
+      "schema_version": "2",
+      "schema_sha256": "8edd0cf31739725e953de7e26e07b62e853df383e068d0d5d5865be976249efb",
+      "build_date": "2026-07-21T12:38:20",
+      "total_games": 95221,
+      "position_count": 2167498,
+      "move_count": 2533886,
+      "malom_label_version": "sector-corrected-v1",
+      "malom_trusted": true
+    }
+  },
+  "candidates": [
+    {
+      "raw_notation": "d6",
+      "mapped_notation": "d6",
+      "full_turn_actions": ["d6"],
+      "logical_ply_delta": 1,
+      "human": {
+        "total": 29840,
+        "frequency_numerator": 29840,
+        "frequency_denominator": 95221
+      }
+    }
+  ]
+}
+```
+
+The query validates **all** rows matching the state before applying
+`min_total` or `candidate_limit`; an illegal low-ranked row therefore cannot
+be hidden by a small limit. A combined notation such as `d7xb4` is validated
+as one complete logical turn and may be returned as two UCI actions. When the
+input is already waiting for removal, the initiating primary action must be
+present in `position.actions`; the response then returns the complete turn and
+only the still-pending action in `remaining_actions`.
+
+No matching row returns `status: "human_db_miss"`. A missing file, non-empty
+WAL/SHM sidecar, failed integrity check, incompatible schema, changed file,
+invalid statistics, bad D4 mapping, or illegal move returns
+`status: "error"` and never triggers the opening book, Perfect DB, Random, or
+MTD(f).
+
+Use this request to pin identity without querying a position:
+
+```json
+{
+  "operation": "source_identity",
+  "protocol_version": 1,
+  "source": {
+    "kind": "human_db",
+    "database_path": "I:\\Mill_Training\\Mills\\human_db.sqlite"
+  }
+}
+```
+
+External experiments may use `total` to weight already-legal opening-book
+candidates or already-optimal Perfect DB ties. Sanmill does not hard-code that
+policy, a 75/25 source mixture, or an opening seed. Training and evaluation
+reports must independently record the exact database SHA-256; if the same
+HumanDB influenced model training, prefixes sampled from it are not fully
+held-out data.
+
 ## Interaction with other move sources
 
 On an AI turn the order is: opening book, then Human Database, then native
@@ -223,7 +356,8 @@ off the beaten path -- falls back to the native PVS / MTD(f) search.
 - Standard Nine Men's Morris only. The provider checks the active rule set and
   returns nothing for other variants.
 - The file is user-supplied and not bundled; an absent, unreadable, or
-  schema-incompatible file simply disables the feature.
+  schema-incompatible file simply disables the Flutter feature. The machine
+  query instead returns an explicit error and fails closed.
 - The database is opened read-only. If the builder left it in SQLite WAL mode,
   reading it requires a writable directory (so SQLite can create the `-shm` /
   `-wal` side files). Picked files copied into app-writable storage work; a
@@ -248,3 +382,5 @@ off the beaten path -- falls back to the native PVS / MTD(f) search.
 - `crates/tgf-frb/src/api/simple.rs` -- FRB entry points.
 - `crates/tgf-frb/src/games/mill/human_db.rs` -- read-only SQLite access,
   canonicalization, and query.
+- `crates/tgf-cli/src/mill_data_query/human_db.rs` -- strict machine query,
+  complete statistics, identity, validation, and fail-closed errors.

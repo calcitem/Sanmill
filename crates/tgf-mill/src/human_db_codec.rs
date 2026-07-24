@@ -156,14 +156,16 @@ pub fn state_key_from_fen(fen: &str) -> Result<(String, usize), String> {
     let pieces_on_board = state.pieces_on_board();
 
     for (side, in_hand) in pieces_in_hand.iter().enumerate() {
-        assert!(
-            *in_hand <= 9,
-            "Human Database supports standard Nine Men's Morris hand counts only"
-        );
-        assert!(
-            pieces_on_board[side] + *in_hand <= 9,
-            "Human Database supports standard Nine Men's Morris piece totals only"
-        );
+        if *in_hand > 9 {
+            return Err(
+                "Human Database supports standard Nine Men's Morris hand counts only".to_owned(),
+            );
+        }
+        if pieces_on_board[side] + *in_hand > 9 {
+            return Err(
+                "Human Database supports standard Nine Men's Morris piece totals only".to_owned(),
+            );
+        }
     }
 
     let board24 = nmm_board24(state.board());
@@ -231,6 +233,9 @@ pub fn canonical_board_str(board24: &str) -> (String, usize) {
 /// Apply symmetry `sym_idx` to a 24-character board string.
 pub fn apply_board_sym(board24: &str, sym_idx: usize) -> Option<String> {
     let chars = board24.chars().collect::<Vec<_>>();
+    if chars.len() != 24 || sym_idx >= SYMMETRIES.len() {
+        return None;
+    }
     let mut result = ['?'; 24];
     for (old_idx, ch) in chars.into_iter().enumerate() {
         let new_idx = transform_index(old_idx, sym_idx)?;
@@ -282,8 +287,8 @@ pub fn transform_pos(pos: &str, sym_idx: usize) -> Option<&'static str> {
 
 /// Map a [`NMM_POSITIONS`] index through symmetry `sym_idx`.
 pub fn transform_index(idx: usize, sym_idx: usize) -> Option<usize> {
-    let (x, y) = POSITION_COORDS[idx];
-    let (a, b, c, d) = SYMMETRIES[sym_idx];
+    let &(x, y) = POSITION_COORDS.get(idx)?;
+    let &(a, b, c, d) = SYMMETRIES.get(sym_idx)?;
     position_index_from_coords((a * x + b * y, c * x + d * y))
 }
 
@@ -353,6 +358,20 @@ pub fn parse_human_turn_notation(
     snap: &GameStateSnapshot,
     notation: &str,
 ) -> Result<HumanTurn, HumanTurnError> {
+    parse_human_turn_notation_with_history(rules, snap, &[], notation)
+}
+
+/// Parse a human-database turn while preserving the caller's full history.
+///
+/// This is the strict machine-query counterpart of
+/// [`parse_human_turn_notation`]. The history slice is chronological and
+/// excludes `snap`, matching [`GameRules::apply_with_history`].
+pub fn parse_human_turn_notation_with_history(
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    history: &[GameStateSnapshot],
+    notation: &str,
+) -> Result<HumanTurn, HumanTurnError> {
     let trimmed = notation.trim();
     if let Some(rest) = trimmed.strip_prefix('x') {
         let action =
@@ -366,7 +385,7 @@ pub fn parse_human_turn_notation(
         }
         Some((base_text, capture_text)) => {
             let base = decode_legal(rules, snap, base_text).ok_or(HumanTurnError::BaseInvalid)?;
-            let after_base = rules.apply(snap, base);
+            let after_base = rules.apply_with_history(snap, base, history);
             let after_state = MillRules::decode_snapshot(after_base);
             let side = after_state.side_to_move();
             let base_state = MillRules::decode_snapshot(*snap);

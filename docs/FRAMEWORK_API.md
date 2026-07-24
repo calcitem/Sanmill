@@ -542,3 +542,169 @@ Each new field follows the same pattern: extend `MillVariantOptions`, update
 `crates/tgf-frb/src/api/simple.rs::MillVariantOptions`, then in
 `lib/games/mill/mill_variant_options_mapper.dart`, then re-run
 `flutter_rust_bridge_codegen generate`.
+
+## Versioned Mill data-query protocol
+
+`tgf-cli` exposes a non-UI, fail-closed JSON protocol for reproducible
+evaluation:
+
+```sh
+cargo run -p tgf-cli -- mill data-query
+cargo run -p tgf-cli -- mill data-query --jsonl
+```
+
+The first form reads one JSON object from standard input. The JSONL form reads
+one object per line and reuses validated database handles. HumanDB and Perfect
+DB sources recheck their captured file length/modification identities (and
+HumanDB sidecars) before each reused query. Every response is one compact JSON
+line. Protocol version 1 rejects unknown fields and unknown operations.
+
+### Position and history contract
+
+All position-dependent requests contain:
+
+```json
+{
+  "rule": "nmm",
+  "initial": "startpos",
+  "history_origin": "game_start",
+  "actions": ["d7", "a1", "g7", "d1", "a7", "xa1"],
+  "expected_current_fen": "... optional guard ..."
+}
+```
+
+- `rule` is `nmm` or, for opening-book queries only, `el_filja`.
+- `startpos` requires `history_origin: "game_start"`.
+- An explicit full Sanmill FEN requires `history_origin: "fresh_setup"`.
+- `actions` is the complete chronological Sanmill UCI action stream after the
+  initial state. Replay uses current `tgf-mill` legality and
+  `apply_with_history`; a bad token or illegal action reports its exact index.
+- The state response preserves the full current FEN, side, phase, pending
+  removal counts, no-capture count, action count, logical-ply count by side,
+  snapshot/repetition history lengths, terminal result, and a deterministic
+  history SHA-256.
+
+A primary placement or movement that forms a mill and its subsequent removal
+are separate action tokens but one logical ply. `MillPlyCount` increments only
+when the side actually changes or the game terminates. `history_summary`
+defaults to `count_mode: "logical"` and also accepts
+`count_mode: "actions"`. Thus eight logical plies mean exactly four completed
+turns by each side even if one or more turns contain removal tokens.
+
+A query made while removal is pending must include the initiating primary
+action in history. Otherwise a complete logical turn cannot be reconstructed
+and source queries return `incomplete_history`.
+
+### Operations
+
+| Operation | Contract |
+| --- | --- |
+| `query_book` | Validate the complete bundled or explicit asset, map the live position through the ordered ring16 orbit, and return all legal Oracle candidates in source-rank order. |
+| `query_perfect_db` | Open an explicit standard Malom database and return every complete legal turn tied under `strict_steps`. No Random or search is run first. |
+| `query_human_db` | Open an explicit schema-v2 SQLite database read-only and return stable raw human candidates and statistics. |
+| `history_summary` | Replay and report action/logical-ply counts without consulting any move source. |
+| `source_identity` | Return source identity without selecting or querying a move. |
+
+Common candidate fields are `logical_move_id`, `stable_index`,
+`source_rank` where meaningful, raw/mapped notation,
+`full_turn_actions`, `remaining_actions`, removal metadata,
+`logical_ply_delta`, and `turn_prefix_complete`. Book, Perfect DB, and HumanDB
+add source-specific raw fields.
+
+The only non-error statuses are:
+
+- `available`;
+- `book_miss`, `db_miss`, or `human_db_miss`;
+- `terminal`, with the authoritative outcome and no candidates.
+
+All parse, schema, identity, mapping, database-I/O, corruption, protocol, and
+legality failures use `status: "error"` with a specific error code. No
+operation calls Random, PVS, MTD(f), another database, or a lower-quality move
+source on failure.
+
+### Perfect Database StrictSteps query
+
+```json
+{
+  "operation": "query_perfect_db",
+  "protocol_version": 1,
+  "request_id": "perfect-001",
+  "position": {
+    "rule": "nmm",
+    "initial": "startpos",
+    "history_origin": "game_start",
+    "actions": []
+  },
+  "database_path": "D:\\user\\Documents\\strong",
+  "cache_sectors": 8
+}
+```
+
+The implementation first enumerates complete logical turns with current
+Sanmill rules, including every mandatory removal continuation. It then
+evaluates each endpoint directly with the Rust Perfect Database. The database
+therefore cannot inject an ungenerated move. Faster wins and slower losses are
+preferred; draws with different step values remain tied. Every exact tie is
+returned in lexicographic full-turn UCI order with raw `category`, `wdl`,
+`steps`, and `mode: "strict_steps"`.
+
+The audited standard database returns all 24 legal initial placements as tied
+draws with `steps: 1`. Its fast identity reports:
+
+```json
+{
+  "database_format": "malom-sector",
+  "sector_format_version": 2,
+  "variant": "std",
+  "secval_sha256": "5078bf84505fe2845a4af7c36907efa2d66b2eb76f149ce12faa248117405b68",
+  "declared_sector_count": 498,
+  "available_sector_count": 498,
+  "placement_sector_count": 449,
+  "settled_sector_count": 49,
+  "flying_related_sector_count": 13,
+  "fully_available": true
+}
+```
+
+This confirms real coverage of placement, ordinary movement, and flying
+states; it is not a search simulation of an opening database. Pending-removal
+states are resolved through legal continuation into covered settled states.
+
+The default query identity includes the exact `std.secval` SHA-256 and a
+versioned SHA-256 manifest over sorted sector names, byte lengths, and parsed
+64-byte headers. To pin every sector byte, request the expensive full identity:
+
+```json
+{
+  "operation": "source_identity",
+  "protocol_version": 1,
+  "source": {
+    "kind": "perfect_db",
+    "database_path": "D:\\user\\Documents\\strong"
+  },
+  "mode": "full"
+}
+```
+
+`mode: "full"` streams the complete database and returns
+`full_content_sha256`; for the current standard database this means reading
+roughly 83 GB. Missing, incomplete, unreadable, structurally corrupt, and
+format-incompatible databases are distinct errors. A valid query outside the
+database's coverage is `db_miss`.
+
+### Reproducibility boundary
+
+Candidate enumeration contains no time, random seed, `HashMap` iteration, or
+SQLite unspecified ordering. A cross-process integration test compares
+byte-identical opening-book responses from two fresh processes. The protocol
+does not offer random selection, so experiment-owned seeds, weighted sampling,
+the proposed 75/25 source mix, and `opening_logical_plies=8` remain external
+configuration. External sampling must select only from a returned candidate
+array and record the source identity.
+
+This interface does not change Flutter search defaults. Flutter may retain
+normal search shuffling. A reproducible external evaluation should explicitly
+run its post-prefix MTD(f) search single-threaded with a fixed node budget,
+fixed search seed, and shuffling disabled. HumanDB is not automatically used
+after the prefix. Patch, trap, Sentinel, ValueNet, GapNet, and other optional
+networks are outside this protocol.

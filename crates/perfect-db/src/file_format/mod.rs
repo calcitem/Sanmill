@@ -10,7 +10,9 @@
 mod sector;
 mod secval;
 
-pub use sector::{RawEval, RawEvalKind, SectorFile, SectorHeader};
+pub use sector::{
+    RawEval, RawEvalKind, SECTOR_FORMAT_VERSION, SECTOR_HEADER_SIZE, SectorFile, SectorHeader,
+};
 pub use secval::{SecValTable, SectorId};
 
 use std::fmt;
@@ -191,5 +193,36 @@ mod tests {
         let eval = sector.eval_at(0).unwrap();
         assert_eq!(eval, RawEval::new(0, -3));
         assert_eq!(eval.kind(), RawEvalKind::Symmetry { operation: 2 });
+    }
+
+    #[test]
+    fn malformed_em_set_entries_return_errors_instead_of_panicking() {
+        fn sector_with_entries(entries: &[(i32, i32)]) -> Vec<u8> {
+            let mut bytes = Vec::new();
+            bytes.extend_from_slice(&2_i32.to_le_bytes());
+            bytes.extend_from_slice(&3_i32.to_le_bytes());
+            bytes.extend_from_slice(&12_i32.to_le_bytes());
+            bytes.push(0);
+            bytes.resize(SECTOR_HEADER_SIZE, 0);
+            bytes.extend_from_slice(&[0_u8; 3]);
+            bytes.extend_from_slice(&(entries.len() as i32).to_le_bytes());
+            for (index, value) in entries {
+                bytes.extend_from_slice(&index.to_le_bytes());
+                bytes.extend_from_slice(&value.to_le_bytes());
+            }
+            bytes
+        }
+
+        let duplicate = sector_with_entries(&[(0, 1), (0, 2)]);
+        assert!(matches!(
+            SectorFile::parse(&duplicate, 1),
+            Err(ParseError::InvalidHeader { .. })
+        ));
+
+        let out_of_bounds = sector_with_entries(&[(1, 1)]);
+        assert_eq!(
+            SectorFile::parse(&out_of_bounds, 1).unwrap_err(),
+            ParseError::OutOfBounds { index: 1, len: 1 }
+        );
     }
 }

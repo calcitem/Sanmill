@@ -38,6 +38,9 @@ pub enum DatabaseError {
     MissingSectorValue {
         id: SectorId,
     },
+    InvalidState {
+        message: String,
+    },
 }
 
 impl DatabaseError {
@@ -60,6 +63,7 @@ impl fmt::Display for DatabaseError {
             Self::MissingSectorValue { id } => {
                 write!(f, "missing sector base value for {id:?}")
             }
+            Self::InvalidState { message } => write!(f, "invalid database query state: {message}"),
         }
     }
 }
@@ -332,11 +336,11 @@ impl DatabaseVariant {
         if self == Self::STANDARD { 12 } else { 14 }
     }
 
-    fn secval_file_name(self) -> String {
+    pub fn secval_file_name(self) -> String {
         format!("{}.secval", self.name)
     }
 
-    pub(crate) fn sector_file_name(self, id: SectorId) -> String {
+    pub fn sector_file_name(self, id: SectorId) -> String {
         format!(
             "{}_{}_{}_{}_{}.sec2",
             self.name, id.white_on_board, id.black_on_board, id.white_in_hand, id.black_in_hand
@@ -715,7 +719,12 @@ impl<P: DatabaseProvider> Database<P> {
                 source,
             })?;
 
-        if let RawEvalKind::Symmetry { operation } = raw.kind() {
+        if let RawEvalKind::Symmetry { operation } =
+            raw.try_kind().map_err(|source| DatabaseError::Parse {
+                name: sector_name.clone(),
+                source,
+            })?
+        {
             let redirected_board = transform48(operation, probe.canonical_board);
             let redirected_index = sector.hasher.direct_hash_index(redirected_board);
             raw = sector
@@ -725,10 +734,21 @@ impl<P: DatabaseProvider> Database<P> {
                     name: sector_name.clone(),
                     source,
                 })?;
-            assert!(
-                !matches!(raw.kind(), RawEvalKind::Symmetry { .. }),
-                "Perfect DB symmetry redirects must resolve to a concrete eval"
-            );
+            if matches!(
+                raw.try_kind().map_err(|source| DatabaseError::Parse {
+                    name: sector_name.clone(),
+                    source,
+                })?,
+                RawEvalKind::Symmetry { .. }
+            ) {
+                return Err(DatabaseError::Parse {
+                    name: sector_name,
+                    source: ParseError::InvalidHeader {
+                        message: "Perfect DB symmetry redirect resolved to another redirect"
+                            .to_owned(),
+                    },
+                });
+            }
         }
 
         let sector_value = sector.value;
