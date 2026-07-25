@@ -2217,6 +2217,37 @@ void main() {
     expect(await engineLoop, const EngineResponseOK());
   });
 
+  testWidgets('AI vs AI board taps are ignored', (WidgetTester tester) async {
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.aiVsAi,
+    );
+    expect(
+      await session.replayMainline(<ExtMove>[
+        ExtMove('d2', side: PieceColor.white),
+        ExtMove('f4', side: PieceColor.black),
+        ExtMove('f2', side: PieceColor.white),
+        ExtMove('d6', side: PieceColor.black),
+      ]),
+      isTrue,
+    );
+    final GameController controller = GameController()
+      ..isControllerReady = true
+      ..loadedGameFilenamePrefix = 'loaded-game';
+    addTearDown(() => controller.loadedGameFilenamePrefix = null);
+    final String fenBeforeTap = session.getFen();
+
+    await _pumpSessionPlayArea(tester, session);
+    final BuildContext context = tester.element(find.byType(PlayArea));
+    final EngineResponse response = await TapHandler(
+      context: context,
+    ).onBoardTap(22);
+
+    expect(response, const EngineResponseSkip());
+    expect(session.getFen(), fenBeforeTap);
+    expect(controller.isEngineRunning, isFalse);
+    expect(controller.loadedGameFilenamePrefix, 'loaded-game');
+  });
+
   testWidgets('computer self-play can pause, step once, and resume', (
     WidgetTester tester,
   ) async {

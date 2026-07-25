@@ -506,12 +506,14 @@ class TapHandler {
       }
     }
 
-    GameController().loadedGameFilenamePrefix = null;
-
-    if (GameController().gameInstance.gameMode == GameMode.testViaLAN) {
-      logger.t("$_logTag Engine type is no human, ignore tapping.");
+    final GameMode mode = controller.gameInstance.gameMode;
+    if (mode == GameMode.aiVsAi || mode == GameMode.testViaLAN) {
+      _nativeSessionTapController.clearSelection();
+      logger.t("$_logTag $mode has no human player; ignoring tap <$sq>.");
       return const EngineResponseSkip();
     }
+
+    controller.loadedGameFilenamePrefix = null;
 
     final EngineResponse? nativeSessionResponse = await _tryNativeSessionTap(
       sq,
@@ -522,12 +524,11 @@ class TapHandler {
     }
 
     // Reaching this point means `_tryNativeSessionTap` returned null,
-    // which only happens for game modes outside its allow-list
-    // (aiVsAi, testViaLAN). None of
-    // these accept human taps in steady state.  Surface loudly if a
-    // future game mode is added without an explicit native-tap
-    // branch; the previous legacy fall-through that mutated
-    // `Position` directly is gone with the puzzle removal.
+    // which only happens for a game mode outside its allow-list and the
+    // explicit non-human guards above. Surface loudly if a future game mode
+    // is added without an explicit native-tap branch; the previous legacy
+    // fall-through that mutated `Position` directly is gone with the puzzle
+    // removal.
     assert(
       false,
       "$_logTag onBoardTap unreachable: gameMode="
