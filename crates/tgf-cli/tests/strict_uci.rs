@@ -3,6 +3,11 @@
 use std::io::Write;
 use std::process::{Command, Stdio};
 
+use serde_json::Value;
+
+const STATE_PREFIX: &str = "info string sanmill_state ";
+const LOGICAL_TURN_PREFIX: &str = "info string sanmill_logical_turn ";
+
 fn run_uci(script: &str) -> String {
     let mut child = Command::new(env!("CARGO_BIN_EXE_tgf"))
         .args(["mill", "uci"])
@@ -37,6 +42,14 @@ fn fixed_node_script() -> &'static str {
      position startpos\n\
      go depth 12 nodes 256\n\
      quit\n"
+}
+
+fn prefixed_json_lines(output: &str, prefix: &str) -> Vec<Value> {
+    output
+        .lines()
+        .filter_map(|line| line.strip_prefix(prefix))
+        .map(|payload| serde_json::from_str(payload).expect("machine response must be valid JSON"))
+        .collect()
 }
 
 #[test]
@@ -109,4 +122,273 @@ fn strict_position_history_errors_block_search_without_bestmove() {
         "{truncated}"
     );
     assert!(!truncated.contains("bestmove"), "{truncated}");
+}
+
+#[test]
+fn statejson_tracks_atomic_actions_and_complete_logical_turns() {
+    let output = run_uci(
+        "setoption name StrictFailurePolicy value true\n\
+         position startpos\n\
+         statejson\n\
+         position startpos moves d7 a1 g7 d1 a7\n\
+         statejson\n\
+         position startpos moves d7 a1 g7 d1 a7 xa1\n\
+         statejson\n\
+         quit\n",
+    );
+    let states = prefixed_json_lines(&output, STATE_PREFIX);
+    assert_eq!(states.len(), 3, "{output}");
+
+    assert_eq!(states[0]["status"], "ok");
+    assert_eq!(states[0]["ruleset_id"], "nmm");
+    assert_eq!(states[0]["action_token_count"], 0);
+    assert_eq!(states[0]["logical_ply_count"], 0);
+    assert_eq!(states[0]["legal_actions"].as_array().unwrap().len(), 24);
+
+    assert_eq!(states[1]["action"], "remove");
+    assert_eq!(states[1]["pending_removal"], true);
+    assert_eq!(states[1]["pending_removal_count"], 1);
+    assert_eq!(states[1]["action_token_count"], 5);
+    assert_eq!(states[1]["logical_ply_count"], 4);
+
+    assert_eq!(states[2]["action"], "place");
+    assert_eq!(states[2]["pending_removal"], false);
+    assert_eq!(states[2]["action_token_count"], 6);
+    assert_eq!(states[2]["logical_ply_count"], 5);
+    assert_eq!(
+        states[2]["logical_plies_by_side"],
+        serde_json::json!([3, 2])
+    );
+    assert_eq!(states[2]["no_capture_count"], 0);
+    assert_eq!(states[2]["repetition_history_length"], 0);
+    assert_eq!(
+        states[2]["history_sha256"].as_str().unwrap().len(),
+        64,
+        "{output}"
+    );
+}
+
+#[test]
+fn statejson_reports_terminal_reasons_and_rule_counters() {
+    let output = run_uci(
+        "setoption name StrictFailurePolicy value true\n\
+         position fen **O**O**/**@**@**/******** w m s 2 0 2 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes\n\
+         statejson\n\
+         position fen O@O@O@O@/@*@*@*@*/******** w m s 4 0 8 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes\n\
+         statejson\n\
+         position fen O*@*****/O*@*****/*@*****O w m s 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes moves d5-e5 e4-e3 e5-d5 e3-e4 d5-e5 e4-e3 e5-d5 e3-e4 d5-e5\n\
+         statejson\n\
+         quit\n",
+    );
+    let states = prefixed_json_lines(&output, STATE_PREFIX);
+    assert_eq!(states.len(), 3, "{output}");
+
+    assert_eq!(states[0]["status"], "terminal");
+    assert_eq!(states[0]["winner"], "black");
+    assert_eq!(states[0]["outcome_reason_code"], "lose_fewer_than_three");
+
+    assert_eq!(states[1]["status"], "terminal");
+    assert_eq!(states[1]["winner"], "black");
+    assert_eq!(states[1]["outcome_reason_code"], "lose_no_legal_moves");
+    assert!(states[1]["legal_actions"].as_array().unwrap().is_empty());
+
+    assert_eq!(states[2]["status"], "terminal");
+    assert_eq!(
+        states[2]["outcome_reason_code"],
+        "draw_threefold_repetition"
+    );
+    assert_eq!(states[2]["repetition_current_count"], 3);
+    assert_eq!(states[2]["action_token_count"], 9);
+    assert_eq!(states[2]["logical_ply_count"], 9);
+}
+
+#[test]
+fn statejson_counts_exactly_one_hundred_no_capture_logical_plies() {
+    let cycle = ["d5-e5", "e4-e3", "e5-d5", "e3-e4"].repeat(25).join(" ");
+    let script = format!(
+        "setoption name StrictFailurePolicy value true\n\
+         setoption name ThreefoldRepetitionRule value false\n\
+         position fen O*@*****/O*@*****/*@*****O w m s 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes moves {cycle}\n\
+         statejson\n\
+         quit\n"
+    );
+    let output = run_uci(&script);
+    let states = prefixed_json_lines(&output, STATE_PREFIX);
+    assert_eq!(states.len(), 1, "{output}");
+    let state = &states[0];
+
+    assert_eq!(state["status"], "terminal");
+    assert_eq!(state["outcome_reason_code"], "draw_fifty_move");
+    assert_eq!(state["action_token_count"], 100);
+    assert_eq!(state["logical_ply_count"], 100);
+    assert_eq!(state["logical_plies_by_side"], serde_json::json!([50, 50]));
+    assert_eq!(state["no_capture_count"], 100);
+}
+
+#[test]
+fn rejected_position_makes_statejson_unavailable() {
+    let output = run_uci(
+        "setoption name StrictFailurePolicy value true\n\
+         position startpos moves a7\n\
+         statejson\n\
+         position startpos moves a7 a7\n\
+         statejson\n\
+         position startpos moves a7 a4-\n\
+         statejson\n\
+         quit\n",
+    );
+    let states = prefixed_json_lines(&output, STATE_PREFIX);
+    assert_eq!(states.len(), 3, "{output}");
+    assert_eq!(states[0]["status"], "ok");
+    assert!(states[0].get("fen").is_some());
+    assert_eq!(states[1]["status"], "position_unavailable");
+    assert_eq!(
+        states[1]["position_error_code"],
+        "position_history_illegal_action"
+    );
+    assert!(states[1].get("fen").is_none());
+    assert_eq!(states[2]["status"], "position_unavailable");
+    assert_eq!(
+        states[2]["position_error_code"],
+        "position_history_truncated"
+    );
+    assert!(states[2].get("fen").is_none());
+}
+
+#[test]
+fn statejson_and_history_digest_are_reproducible_across_processes() {
+    let script = "setoption name StrictFailurePolicy value true\n\
+                  position startpos moves d2 d6 f4 b4 f2 g4 f6 xg4\n\
+                  statejson\n\
+                  quit\n";
+    let first = run_uci(script);
+    let second = run_uci(script);
+    assert_eq!(first, second);
+    let state = prefixed_json_lines(&first, STATE_PREFIX)
+        .pop()
+        .expect("statejson response");
+    assert_eq!(state["action_token_count"], 8);
+    assert_eq!(state["logical_ply_count"], 7);
+    assert_eq!(state["history_sha256"].as_str().unwrap().len(), 64);
+}
+
+#[test]
+fn logical_go_covers_place_move_fly_and_mill_removal_turns() {
+    let output = run_uci(
+        "setoption name StrictFailurePolicy value true\n\
+         setoption name Algorithm value 2\n\
+         setoption name MoveTimeMs value 0\n\
+         setoption name IDSEnabled value true\n\
+         setoption name Shuffling value false\n\
+         setoption name SearchShuffleSeed value 7\n\
+         setoption name SkillLevel value 30\n\
+         position startpos\n\
+         go logical nodes 4096 depth 4\n\
+         position fen ***O****/OO@*@*@@/@OOO@*O* w m s 7 0 6 0 0 0 -1 -1 -1 -1 0 3 15 ids:nodes\n\
+         go logical nodes 20000 depth 4\n\
+         position fen O**O*@**/**O*@***/*@****** w m s 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes\n\
+         go logical nodes 20000 depth 4\n\
+         position startpos moves d2 d6 f4 b4 f2 g4\n\
+         go logical nodes 100000 depth 5\n\
+         position startpos moves d6 f4 d2 b4 g4 d7 a4 d1 d5 d3 e4 f6 f2 b2 b6 g7 a7 c3 d5-c5 c3-c4 e4-e5 c4-c3\n\
+         go logical nodes 500000 depth 8\n\
+         position fen **O**O**/**@**@**/******** w m s 2 0 2 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes\n\
+         go logical nodes 100 depth 2\n\
+         quit\n",
+    );
+    let turns = prefixed_json_lines(&output, LOGICAL_TURN_PREFIX);
+    assert_eq!(turns.len(), 6, "{output}");
+
+    assert_eq!(turns[0]["full_turn_actions"].as_array().unwrap().len(), 1);
+    assert!(turns[0]["model_action"]["from"].is_null());
+
+    assert_eq!(turns[1]["full_turn_actions"].as_array().unwrap().len(), 1);
+    assert!(turns[1]["model_action"]["from"].is_string());
+    assert!(turns[1]["model_action"]["capture"].is_null());
+
+    assert_eq!(turns[2]["full_turn_actions"].as_array().unwrap().len(), 1);
+    assert!(turns[2]["model_action"]["from"].is_string());
+    assert!(turns[2]["model_action"]["capture"].is_null());
+
+    for turn in [&turns[3], &turns[4]] {
+        assert_eq!(turn["full_turn_actions"].as_array().unwrap().len(), 2);
+        assert!(turn["model_action"]["capture"].is_string());
+        assert_eq!(turn["logical_ply_delta"], 1);
+        assert_eq!(turn["resulting_side_to_move"], "black");
+        assert_eq!(turn["terminal"], false);
+        assert!(turn["logical_move_id"].as_str().unwrap().contains('x'));
+    }
+    assert_eq!(turns[3]["model_action"]["from"], Value::Null);
+    assert!(turns[4]["model_action"]["from"].is_string());
+    let placement_removal = turns[3]["full_turn_actions"][1].as_str().unwrap();
+    assert!(
+        ["xg4", "xb4", "xd6"].contains(&placement_removal),
+        "{placement_removal} must be one of the legal capture targets"
+    );
+
+    assert_eq!(turns[5]["status"], "terminal");
+    assert!(turns[5]["full_turn_actions"].as_array().unwrap().is_empty());
+    assert_eq!(turns[5]["logical_ply_delta"], 0);
+    assert_eq!(turns[5]["total_nodes"], 0);
+    assert_eq!(turns[5]["outcome_reason"], "loseFewerThanThree");
+
+    for turn in turns {
+        let budget = turn["node_budget"].as_u64().unwrap();
+        let primary = turn["primary_nodes"].as_u64().unwrap();
+        let removal = turn["removal_nodes"].as_u64().unwrap();
+        let total = turn["total_nodes"].as_u64().unwrap();
+        assert_eq!(primary + removal, total);
+        assert!(total <= budget, "{turn}");
+    }
+}
+
+#[test]
+fn logical_go_is_cross_process_reproducible_under_fixed_contract() {
+    let script = "setoption name StrictFailurePolicy value true\n\
+                  setoption name Algorithm value 2\n\
+                  setoption name MoveTimeMs value 0\n\
+                  setoption name IDSEnabled value true\n\
+                  setoption name Shuffling value false\n\
+                  setoption name SearchShuffleSeed value 7\n\
+                  setoption name SkillLevel value 30\n\
+                  position startpos moves d2 d6 f4 b4 f2 g4\n\
+                  go logical nodes 100000 depth 5\n\
+                  quit\n";
+    let first = run_uci(script);
+    let second = run_uci(script);
+    assert_eq!(
+        first, second,
+        "logical action, node accounting, and resulting state must match"
+    );
+    assert_eq!(prefixed_json_lines(&first, LOGICAL_TURN_PREFIX).len(), 1);
+}
+
+#[test]
+fn logical_go_errors_are_fail_closed_without_legacy_fallbacks() {
+    let output = run_uci(
+        "position startpos\n\
+         go logical nodes 100 depth 2\n\
+         setoption name StrictFailurePolicy value true\n\
+         position startpos moves d7 a1 g7 d1 a7\n\
+         go logical nodes 100 depth 2\n\
+         position startpos\n\
+         go logical nodes 1 depth 12\n\
+         position startpos moves a7 a7\n\
+         go logical nodes 100 depth 2\n\
+         quit\n",
+    );
+    for code in [
+        "strict_policy_required",
+        "logical_turn_unstable_position",
+        "logical_turn_budget_exhausted",
+        "position_unavailable",
+    ] {
+        assert!(
+            output.contains(&format!(r#""code":"{code}""#)),
+            "missing {code}:\n{output}"
+        );
+    }
+    assert!(!output.contains("bestmove"), "{output}");
+    assert!(!output.contains(LOGICAL_TURN_PREFIX), "{output}");
+    assert!(!output.contains("aimovetype"), "{output}");
 }

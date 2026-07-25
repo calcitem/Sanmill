@@ -595,6 +595,14 @@ A query made while removal is pending must include the initiating primary
 action in history. Otherwise a complete logical turn cannot be reconstructed
 and source queries return `incomplete_history`.
 
+The live `tgf mill uci` process exposes the same history-summary semantics
+through `statejson`. It also provides the opt-in
+`go logical nodes N` extension, which searches a complete primary-plus-removal
+turn under one aggregate node budget. Both are CLI-only cold paths; they do
+not change the normal UCI or Flutter/FRB search path. See
+`docs/UCI_CLI_BRIDGE.md` for the version-1 fields, strict failure contract,
+and invocation examples.
+
 ### Operations
 
 | Operation | Contract |

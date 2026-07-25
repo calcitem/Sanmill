@@ -317,6 +317,73 @@ setoption name SearchShuffleSeed value 7
 go depth 12 nodes 256
 ```
 
+### `go logical nodes N`
+
+Formal evaluators that treat a move plus its mandatory removal as one action
+should use the explicit logical-turn extension:
+
+```
+go logical nodes 500000
+go logical nodes 500000 depth 12
+```
+
+This command requires `StrictFailurePolicy=true`, an explicit positive node
+budget, and Algorithm 0, 1, or 2. It is a synchronous, single-threaded,
+CLI-only cold path. Normal `go` and Flutter/FRB play do not call it.
+
+The command searches only from a stable position with no pending removal. It
+returns one protocol action for an ordinary placement, move, or flight, and
+returns the primary action plus the required `x<square>` action when the
+primary action forms a mill. The returned sequence is validated by the active
+Sanmill rules and must:
+
+- complete exactly one logical ply;
+- switch the side to move or end the game;
+- leave no pending removal.
+
+Every search call shares one aggregate budget. Iterative-deepening passes,
+the primary search, and any additional removal search are charged before the
+next call receives the remaining budget. `total_nodes` never exceeds
+`node_budget`. Normally the primary search already searched the removal and
+the command reconstructs it from that search's TT/PV; in that case
+`removal_nodes` is zero because those nodes are already included in
+`primary_nodes`. A forced single legal removal requires no extra search.
+
+The result is one compact, versioned JSON line and no legacy `bestmove` line:
+
+```
+info string sanmill_logical_turn {"protocol_version":1,"status":"ok","full_turn_actions":["d6-d5","xc3"],"logical_move_id":"d6-d5xc3","model_action":{"from":"d6","to":"d5","capture":"c3"},"logical_ply_delta":1,"resulting_fen":"...","resulting_side_to_move":"black","terminal":false,"winner":null,"winner_code":null,"outcome_reason":"ongoing","effective_depth":8,"completed_depth":8,"score_kind":"cp","score":11,"score_perspective":"white","node_budget":500000,"primary_nodes":11776,"removal_nodes":0,"total_nodes":11776,"search_calls":8}
+```
+
+`model_action` is the direct NMM_LLM `{from,to,capture}` representation.
+`completed_depth` is the last fully completed primary IDS pass;
+`effective_depth` is the requested/configured ceiling. The reported score is
+from White's perspective. A terminal root returns `status: "terminal"`, no
+actions, and zero consumed nodes.
+
+`go logical` never consults Perfect DB or patch/trap data and never enters the
+legacy depth-4 or random recovery chain. An invalid command, an unstable
+root, an unsupported algorithm, or a budget that cannot produce a complete
+legal turn emits `info string sanmill_error {...}` and no move. The command
+does not mutate the UCI position; replay the returned actions in the next
+`position` command, just as for normal UCI.
+
+For cross-process reproducibility, use:
+
+```
+setoption name StrictFailurePolicy value true
+setoption name Algorithm value 2
+setoption name MoveTimeMs value 0
+setoption name IDSEnabled value true
+setoption name Shuffling value false
+setoption name SearchShuffleSeed value 7
+setoption name Threads value 1
+```
+
+With identical rule options, full action history, seed, depth ceiling, and
+node budget, the JSON action sequence, node accounting, and resulting FEN are
+stable across fresh processes.
+
 ### go topn N
 
 ```
@@ -351,6 +418,45 @@ follows it.
 Use case: Overseer training feature construction.  Instead of calling `go`
 once per legal move (up to 24 round trips per position), a single
 `go topn N movetime M` call returns all needed scores.
+
+## `statejson` command
+
+```
+statejson
+```
+
+Returns a versioned snapshot of the exact position and history currently
+owned by the UCI process. It is the machine-readable replacement for parsing
+`d`, `fen`, `moves`, and `hist` debug text. An abbreviated response is:
+
+```
+info string sanmill_state {"protocol_version":1,"status":"ok","ruleset_id":"nmm","rules_identity":{"format_version":1,"sha256":"3e62cb93a1e0afe4534ce4824d233344816050b547bb8761dd7fe985d8ad399f"},"history_origin":"game_start","fen":"********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes","side_to_move":"white","phase":"placing","action":"place","pending_removal":false,"pending_removal_count":0,"pending_removals":[0,0],"legal_actions":["d5","e5","..."],"action_token_count":0,"logical_ply_count":0,"logical_plies_by_side":[0,0],"no_capture_count":0,"repetition_current_count":0,"repetition_history_length":0,"snapshot_history_length":0,"history_sha256":"3399f97a1de994f4513ae6a7dabb0377392ddea95def7bceb242456d81444e09","terminal":false,"winner":null,"winner_code":null,"outcome_reason":"ongoing","outcome_reason_code":"ongoing"}
+```
+
+Protocol version 1 includes:
+
+- the ruleset ID, complete serialized rule options, and a SHA-256 identity for
+  those options;
+- the authoritative FEN, side, phase, current atomic action, pending-removal
+  count, and stable rule-order legal action list;
+- atomic action count, logical-ply count and per-side counts;
+- no-capture and repetition counters;
+- snapshot/repetition history lengths and the same deterministic
+  `sanmill.data-query.history.v1` SHA-256 used by `mill data-query`;
+- terminal, winner, and raw plus stable-code termination reason fields.
+
+`history_origin` is `game_start` for `position startpos` and `fresh_setup` for
+an explicit FEN. Counts and the history digest cover the canonical action
+tokens supplied after that origin. A mill-forming primary action therefore
+increments `action_token_count` but not `logical_ply_count`; its removal
+increments both the action count and the completed logical-ply count.
+
+The command only reads the live state. It runs no search, database, patch, or
+random code. Pending removal remains visible as such. Terminal positions use
+`status: "terminal"` with an empty legal-action list. If strict parsing
+rejected the most recent `position`, the response is
+`status: "position_unavailable"` and deliberately omits the old FEN and state
+fields until a valid position or `ucinewgame` is supplied.
 
 ## eval command
 
@@ -478,8 +584,10 @@ position encoding, move notation, and side-to-move are all correct.
 
 | File | Purpose |
 |---|---|
-| `crates/tgf-cli/src/mill_uci/mod.rs` | Main UCI loop, `eval`, `go topn` dispatch |
+| `crates/tgf-cli/src/mill_uci/mod.rs` | Main UCI loop and command dispatch |
 | `crates/tgf-cli/src/mill_uci/board.rs` | `GoOptions`, `parse_go_options`, coordinate codec |
+| `crates/tgf-cli/src/mill_uci/logical_turn.rs` | One-budget complete logical-turn search |
+| `crates/tgf-cli/src/mill_uci/state_json.rs` | Versioned live-state JSON snapshot |
 | `crates/tgf-cli/src/mill_uci/setoption.rs` | `setoption` parser |
 | `crates/tgf-cli/tests/strict_uci.rs` | Cross-process strict-policy and fixed-node regressions |
 | `crates/tgf-mill/src/rules/types.rs` | `MillEvalWeights`, `TGF_EVAL_WEIGHTS` format |

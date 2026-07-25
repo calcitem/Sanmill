@@ -250,7 +250,7 @@ impl ApiError {
 }
 
 #[derive(Clone, Debug, Serialize)]
-pub(super) struct StateSummary {
+pub(crate) struct StateSummary {
     pub current_fen: String,
     pub side_to_move: Option<String>,
     pub phase: String,
@@ -267,7 +267,7 @@ pub(super) struct StateSummary {
 }
 
 #[derive(Clone, Debug, Serialize)]
-pub(super) struct OutcomeSummary {
+pub(crate) struct OutcomeSummary {
     pub kind: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub winner: Option<i8>,

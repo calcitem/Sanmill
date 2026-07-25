@@ -23,8 +23,8 @@ use tgf_core::{
     MoveOrderContext, OutcomeKind, SearchActionList, Workbench,
 };
 use tgf_mill::{
-    EngineRuntimeOptions, MillActionKind, MillEvalWeights, MillEvaluator, MillGame, MillRules,
-    MillVariantOptions, recommended_search_depth,
+    EngineRuntimeOptions, MillActionKind, MillEvalWeights, MillEvaluator, MillGame, MillPlyCount,
+    MillRules, MillVariantOptions, recommended_search_depth,
 };
 use tgf_search::{
     LazySmpWorker, MctsOptions, MctsSearcher, RootMoveSummary, SearchAbortHandle, SearchOptions,
@@ -33,15 +33,17 @@ use tgf_search::{
 
 mod bench;
 mod board;
+mod logical_turn;
 mod patch;
 mod setoption;
+mod state_json;
 
 pub(crate) use bench::print_benchmark_toml;
 #[cfg(test)]
 use board::board_ascii_lines;
 use board::{
-    GoOptions, ParsedPosition, action_to_uci, parse_go_options, parse_position_command,
-    parse_position_command_strict, print_board_ascii, print_uci_options,
+    GoOptions, ParsedPosition, PositionHistoryOrigin, action_to_uci, parse_go_options,
+    parse_position_command, parse_position_command_strict, print_board_ascii, print_uci_options,
 };
 use setoption::{SetoptionResult, apply_setoption};
 
@@ -433,6 +435,9 @@ pub(crate) fn run_uci_loop() {
     let mut rules = mill_rules_with_eval_weights(options.clone());
     let mut state = rules.initial_state(&[]);
     let mut state_history: Vec<GameStateSnapshot> = Vec::new();
+    let mut state_action_tokens: Vec<String> = Vec::new();
+    let mut state_counts = MillPlyCount::default();
+    let mut state_history_origin = PositionHistoryOrigin::GameStart;
     let mut threads: usize = 1;
     let mut qsearch_max_depth: i32 = 0;
     let mut engine_cfg = EngineConfig::default();
@@ -458,6 +463,9 @@ pub(crate) fn run_uci_loop() {
             finish_active_search(&mut active_search, &mut engine_cfg);
             state = rules.initial_state(&[]);
             state_history.clear();
+            state_action_tokens.clear();
+            state_counts = MillPlyCount::default();
+            state_history_origin = PositionHistoryOrigin::GameStart;
             rejected_position = None;
         } else if line == "compiler" {
             println!(
@@ -484,6 +492,9 @@ pub(crate) fn run_uci_loop() {
                     rules = mill_rules_with_eval_weights(options.clone());
                     state = rules.initial_state(&[]);
                     state_history.clear();
+                    state_action_tokens.clear();
+                    state_counts = MillPlyCount::default();
+                    state_history_origin = PositionHistoryOrigin::GameStart;
                     rejected_position = None;
                     shared_tt.bump_age();
                     sync_perfect_db(&mut engine_cfg, &options);
@@ -530,6 +541,9 @@ pub(crate) fn run_uci_loop() {
                     Ok(parsed) => {
                         state = parsed.state;
                         state_history = parsed.history;
+                        state_action_tokens = parsed.action_tokens;
+                        state_counts = parsed.counts;
+                        state_history_origin = parsed.history_origin;
                         rejected_position = None;
                         patch::set_position_context(line);
                     }
@@ -542,9 +556,29 @@ pub(crate) fn run_uci_loop() {
                 let parsed = parse_position_command(&rules, line);
                 state = parsed.state;
                 state_history = parsed.history;
+                state_action_tokens = parsed.action_tokens;
+                state_counts = parsed.counts;
+                state_history_origin = parsed.history_origin;
                 rejected_position = None;
                 patch::set_position_context(line);
             }
+        } else if line == "statejson" {
+            let position = ParsedPosition {
+                state,
+                history: state_history.clone(),
+                action_tokens: state_action_tokens.clone(),
+                counts: state_counts,
+                history_origin: state_history_origin,
+            };
+            println!(
+                "{}",
+                state_json::state_info_line(
+                    &options,
+                    &rules,
+                    &position,
+                    rejected_position.as_ref(),
+                )
+            );
         } else if line == "d" {
             print_board_ascii(&state, &options);
         } else if line == "fen" {
@@ -610,6 +644,38 @@ pub(crate) fn run_uci_loop() {
             let raw = MillEvaluator::score(&wb);
             let output_score = if state.side_to_move == 1 { -raw } else { raw };
             println!("info eval {}", format_score(output_score));
+        } else if line.starts_with("go logical") {
+            finish_active_search(&mut active_search, &mut engine_cfg);
+            if let Some(position_error) = rejected_position.as_ref() {
+                let error = UciMachineError::new(
+                    "position_unavailable",
+                    "go logical",
+                    format!(
+                        "the most recent position command was rejected ({})",
+                        position_error.code
+                    ),
+                );
+                println!("{}", error.info_line());
+                continue;
+            }
+            let position = ParsedPosition {
+                state,
+                history: state_history.clone(),
+                action_tokens: state_action_tokens.clone(),
+                counts: state_counts,
+                history_origin: state_history_origin,
+            };
+            match logical_turn::run_logical_go(
+                line,
+                &options,
+                &position,
+                &engine_cfg,
+                qsearch_max_depth,
+                shared_tt.clone(),
+            ) {
+                Ok(info) => println!("{info}"),
+                Err(error) => println!("{}", error.info_line()),
+            }
         } else if line.starts_with("go") {
             finish_active_search(&mut active_search, &mut engine_cfg);
             if engine_cfg.strict_failure_policy
@@ -632,6 +698,9 @@ pub(crate) fn run_uci_loop() {
                 ParsedPosition {
                     state,
                     history: state_history.clone(),
+                    action_tokens: state_action_tokens.clone(),
+                    counts: state_counts,
+                    history_origin: state_history_origin,
                 },
                 go,
                 threads,

@@ -148,46 +148,19 @@ impl ReplayedPosition {
     }
 
     pub(super) fn state_summary(&self) -> StateSummary {
-        let state = MillRules::decode_snapshot(self.snapshot);
-        let outcome = self.rules.outcome(&self.snapshot);
-        let (kind, winner) = match outcome.kind {
-            OutcomeKind::Ongoing => ("ongoing", None),
-            OutcomeKind::Win(side) => ("win", Some(side)),
-            OutcomeKind::Draw => ("draw", None),
-            OutcomeKind::Abandoned => ("abandoned", None),
-            OutcomeKind::WinTeam(_) => ("win_team", None),
-        };
-        let repetition_history =
-            MillRules::repetition_history_from_snapshots(&self.snapshot, &self.history);
-        StateSummary {
-            current_fen: self.rules.export_fen(&state),
-            side_to_move: match self.snapshot.side_to_move {
-                0 => Some("white".to_owned()),
-                1 => Some("black".to_owned()),
-                _ => None,
-            },
-            phase: match state.phase() {
-                MillPhase::Ready => "ready",
-                MillPhase::Placing => "placing",
-                MillPhase::Moving => "moving",
-                MillPhase::GameOver => "game_over",
-            }
-            .to_owned(),
-            pending_removal: self.current_side_has_pending_removal(),
-            pending_removals: state.pending_removals(),
-            no_capture_plies: state.ply_since_capture(),
-            action_token_count: self.counts.action_tokens,
-            logical_ply_count: self.counts.logical_plies,
-            logical_plies_by_side: self.counts.logical_plies_by_side,
-            snapshot_history_len: self.history.len(),
-            repetition_history_len: repetition_history.len(),
-            history_sha256: self.history_sha256(),
-            outcome: OutcomeSummary {
-                kind: kind.to_owned(),
-                winner,
-                reason: outcome.reason,
-            },
-        }
+        let tokens = self
+            .applied
+            .iter()
+            .map(|record| record.token.clone())
+            .collect::<Vec<_>>();
+        summarize_position(
+            &self.rules,
+            &self.snapshot,
+            &self.history,
+            &tokens,
+            self.counts,
+        )
+        .expect("a replayed data-query position has aligned history and action tokens")
     }
 
     pub(super) fn source_position(&self) -> SourcePosition<'_> {
@@ -235,24 +208,89 @@ impl ReplayedPosition {
     pub(super) fn current_side_has_pending_removal(&self) -> bool {
         snapshot_has_pending_removal(&self.snapshot)
     }
+}
 
-    fn history_sha256(&self) -> String {
-        let mut hash = Sha256::new();
-        hash.update(b"sanmill.data-query.history.v1\0");
-        for (index, record) in self.applied.iter().enumerate() {
-            let fen = self
-                .rules
-                .export_fen(&MillRules::decode_snapshot(record.before));
-            update_length_prefixed(&mut hash, fen.as_bytes());
-            update_length_prefixed(&mut hash, record.token.as_bytes());
-            hash.update((index as u64).to_le_bytes());
-        }
-        let current = self
-            .rules
-            .export_fen(&MillRules::decode_snapshot(self.snapshot));
-        update_length_prefixed(&mut hash, current.as_bytes());
-        hex_lower(&hash.finalize())
+/// Build the version-1 data-query state summary from an already replayed
+/// position.
+///
+/// The UCI `statejson` extension calls this same cold-path function so its
+/// logical-ply counts, repetition-window length, and history digest cannot
+/// drift from `mill data-query`. `history` is chronological and excludes
+/// `snapshot`; `action_tokens[index]` must be the canonical action that
+/// transformed `history[index]` toward the next state.
+pub(crate) fn summarize_position(
+    rules: &MillRules,
+    snapshot: &GameStateSnapshot,
+    history: &[GameStateSnapshot],
+    action_tokens: &[String],
+    counts: MillPlyCount,
+) -> Result<StateSummary, String> {
+    if history.len() != action_tokens.len() {
+        return Err(format!(
+            "snapshot history length {} does not match action-token length {}",
+            history.len(),
+            action_tokens.len()
+        ));
     }
+
+    let state = MillRules::decode_snapshot(*snapshot);
+    let outcome = rules.outcome(snapshot);
+    let (kind, winner) = match outcome.kind {
+        OutcomeKind::Ongoing => ("ongoing", None),
+        OutcomeKind::Win(side) => ("win", Some(side)),
+        OutcomeKind::Draw => ("draw", None),
+        OutcomeKind::Abandoned => ("abandoned", None),
+        OutcomeKind::WinTeam(_) => ("win_team", None),
+    };
+    let repetition_history = MillRules::repetition_history_from_snapshots(snapshot, history);
+    Ok(StateSummary {
+        current_fen: rules.export_fen(&state),
+        side_to_move: match snapshot.side_to_move {
+            0 => Some("white".to_owned()),
+            1 => Some("black".to_owned()),
+            _ => None,
+        },
+        phase: match state.phase() {
+            MillPhase::Ready => "ready",
+            MillPhase::Placing => "placing",
+            MillPhase::Moving => "moving",
+            MillPhase::GameOver => "game_over",
+        }
+        .to_owned(),
+        pending_removal: snapshot_has_pending_removal(snapshot),
+        pending_removals: state.pending_removals(),
+        no_capture_plies: state.ply_since_capture(),
+        action_token_count: counts.action_tokens,
+        logical_ply_count: counts.logical_plies,
+        logical_plies_by_side: counts.logical_plies_by_side,
+        snapshot_history_len: history.len(),
+        repetition_history_len: repetition_history.len(),
+        history_sha256: history_sha256(rules, snapshot, history, action_tokens),
+        outcome: OutcomeSummary {
+            kind: kind.to_owned(),
+            winner,
+            reason: outcome.reason,
+        },
+    })
+}
+
+fn history_sha256(
+    rules: &MillRules,
+    snapshot: &GameStateSnapshot,
+    history: &[GameStateSnapshot],
+    action_tokens: &[String],
+) -> String {
+    let mut hash = Sha256::new();
+    hash.update(b"sanmill.data-query.history.v1\0");
+    for (index, (before, token)) in history.iter().zip(action_tokens).enumerate() {
+        let fen = rules.export_fen(&MillRules::decode_snapshot(*before));
+        update_length_prefixed(&mut hash, fen.as_bytes());
+        update_length_prefixed(&mut hash, token.as_bytes());
+        hash.update((index as u64).to_le_bytes());
+    }
+    let current = rules.export_fen(&MillRules::decode_snapshot(*snapshot));
+    update_length_prefixed(&mut hash, current.as_bytes());
+    hex_lower(&hash.finalize())
 }
 
 fn snapshot_has_pending_removal(snapshot: &GameStateSnapshot) -> bool {

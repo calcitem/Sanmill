@@ -7,7 +7,7 @@
 //   * action_to_uci / action_from_uci                    — UCI move codec
 
 use tgf_core::{Action, ActionList, GameRules, GameStateSnapshot};
-use tgf_mill::{MillRules, MillVariantOptions};
+use tgf_mill::{MillPlyCount, MillRules, MillUciCodec, MillVariantOptions};
 
 use super::{EngineConfig, UciMachineError};
 
@@ -196,35 +196,56 @@ pub(super) fn print_uci_options() {
 pub(super) struct ParsedPosition {
     pub(super) state: GameStateSnapshot,
     pub(super) history: Vec<GameStateSnapshot>,
+    pub(super) action_tokens: Vec<String>,
+    pub(super) counts: MillPlyCount,
+    pub(super) history_origin: PositionHistoryOrigin,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(super) enum PositionHistoryOrigin {
+    GameStart,
+    FreshSetup,
 }
 
 pub(super) fn parse_position_command(rules: &MillRules, line: &str) -> ParsedPosition {
     let tokens = line.split_whitespace().collect::<Vec<_>>();
 
     let moves_idx = tokens.iter().position(|t| *t == "moves");
-    let mut state = match tokens.get(1).copied() {
-        Some("startpos") => rules.initial_state(&[]),
+    let (mut state, history_origin) = match tokens.get(1).copied() {
+        Some("startpos") => (rules.initial_state(&[]), PositionHistoryOrigin::GameStart),
         Some("fen") => {
             let fen_end = moves_idx.unwrap_or(tokens.len());
             let fen = tokens[2..fen_end].join(" ");
             match rules.set_from_fen(&fen) {
-                Ok(state) => rules.encode_state(state),
+                Ok(state) => (rules.encode_state(state), PositionHistoryOrigin::FreshSetup),
                 Err(e) => {
                     println!("info string invalid fen ignored: {e}");
-                    rules.initial_state(&[])
+                    (rules.initial_state(&[]), PositionHistoryOrigin::GameStart)
                 }
             }
         }
-        _ => rules.initial_state(&[]),
+        _ => (rules.initial_state(&[]), PositionHistoryOrigin::GameStart),
     };
     let mut history = Vec::new();
+    let mut action_tokens = Vec::new();
+    let mut counts = MillPlyCount::default();
 
     let Some(moves_idx) = moves_idx else {
-        return ParsedPosition { state, history };
+        return ParsedPosition {
+            state,
+            history,
+            action_tokens,
+            counts,
+            history_origin,
+        };
     };
     for mv in tokens.iter().skip(moves_idx + 1) {
         if let Some(action) = action_from_uci(rules, &state, mv) {
             let next = rules.apply_with_history(&state, action, &history);
+            counts
+                .record(rules, &state, &next)
+                .expect("a legal Mill action must have a valid side to move");
+            action_tokens.push(MillUciCodec::encode_action(action));
             history.push(state);
             state = next;
         } else {
@@ -232,7 +253,13 @@ pub(super) fn parse_position_command(rules: &MillRules, line: &str) -> ParsedPos
             break;
         }
     }
-    ParsedPosition { state, history }
+    ParsedPosition {
+        state,
+        history,
+        action_tokens,
+        counts,
+        history_origin,
+    }
 }
 
 /// Parse a `position` command without accepting a partial replay.
@@ -256,7 +283,7 @@ pub(super) fn parse_position_command_strict(
     }
 
     let moves_idx = tokens.iter().position(|token| *token == "moves");
-    let mut state = match tokens.get(1).copied() {
+    let (mut state, history_origin) = match tokens.get(1).copied() {
         Some("startpos") => {
             if tokens.get(2).is_some_and(|token| *token != "moves") {
                 return Err(UciMachineError::new(
@@ -265,7 +292,7 @@ pub(super) fn parse_position_command_strict(
                     "unexpected token after `position startpos`",
                 ));
             }
-            rules.initial_state(&[])
+            (rules.initial_state(&[]), PositionHistoryOrigin::GameStart)
         }
         Some("fen") => {
             let fen_end = moves_idx.unwrap_or(tokens.len());
@@ -279,7 +306,7 @@ pub(super) fn parse_position_command_strict(
             let fen = tokens[2..fen_end].join(" ");
             rules
                 .set_from_fen(&fen)
-                .map(|state| rules.encode_state(state))
+                .map(|state| (rules.encode_state(state), PositionHistoryOrigin::FreshSetup))
                 .map_err(|error| {
                     UciMachineError::new(
                         "invalid_fen",
@@ -304,9 +331,17 @@ pub(super) fn parse_position_command_strict(
         }
     };
     let mut history = Vec::new();
+    let mut action_tokens = Vec::new();
+    let mut counts = MillPlyCount::default();
 
     let Some(moves_idx) = moves_idx else {
-        return Ok(ParsedPosition { state, history });
+        return Ok(ParsedPosition {
+            state,
+            history,
+            action_tokens,
+            counts,
+            history_origin,
+        });
     };
     if moves_idx + 1 == tokens.len() {
         return Err(UciMachineError::new(
@@ -317,7 +352,7 @@ pub(super) fn parse_position_command_strict(
     }
 
     for (action_index, token) in tokens.iter().skip(moves_idx + 1).enumerate() {
-        let Some(action) = tgf_mill::MillUciCodec::decode_action(&state, token) else {
+        let Some(action) = MillUciCodec::decode_action(&state, token) else {
             return Err(UciMachineError::new(
                 "position_history_truncated",
                 "position",
@@ -336,11 +371,26 @@ pub(super) fn parse_position_command_strict(
             .with_history_action(action_index, token));
         }
         let next = rules.apply_with_history(&state, action, &history);
+        counts.record(rules, &state, &next).map_err(|error| {
+            UciMachineError::new(
+                "position_history_invalid_state",
+                "position",
+                format!("history action {action_index} produced an invalid state: {error}"),
+            )
+            .with_history_action(action_index, token)
+        })?;
+        action_tokens.push(MillUciCodec::encode_action(action));
         history.push(state);
         state = next;
     }
 
-    Ok(ParsedPosition { state, history })
+    Ok(ParsedPosition {
+        state,
+        history,
+        action_tokens,
+        counts,
+        history_origin,
+    })
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

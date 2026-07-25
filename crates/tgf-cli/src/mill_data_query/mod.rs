@@ -10,6 +10,8 @@ use self::protocol::{
     ApiError, ApiRequest, ApiResponse, ApiStatus, IdentitySource, PROTOCOL_VERSION, PlyCountMode,
 };
 
+pub(crate) use self::position::summarize_position;
+
 mod book;
 mod hashing;
 mod human_db;
