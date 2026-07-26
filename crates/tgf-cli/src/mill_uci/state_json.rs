@@ -7,9 +7,9 @@
 
 use serde::Serialize;
 use serde_json::json;
-use sha2::{Digest, Sha256};
+use tgf_cli::h2h_trace::{mill_rules_identity, mill_ruleset_id};
 use tgf_core::{ActionList, GameRules, OutcomeKind};
-use tgf_mill::{MillRules, MillUciCodec, MillVariantOptions, rules_for_preset};
+use tgf_mill::{MillRules, MillUciCodec, MillVariantOptions};
 
 use super::UciMachineError;
 use super::board::{ParsedPosition, PositionHistoryOrigin};
@@ -172,37 +172,14 @@ pub(super) fn state_info_line(
 }
 
 fn ruleset_id(options: &MillVariantOptions) -> &'static str {
-    let current = serde_json::to_value(options)
-        .expect("serializing Mill rule options for identity must not fail");
-    let standard = serde_json::to_value(MillVariantOptions::default())
-        .expect("serializing default Mill rule options must not fail");
-    if current == standard {
-        return "nmm";
-    }
-    if let Some(el_filja) = rules_for_preset(9)
-        && current
-            == serde_json::to_value(el_filja.options())
-                .expect("serializing El Filja rule options must not fail")
-    {
-        return "el_filja";
-    }
-    "custom"
+    mill_ruleset_id(options)
 }
 
 fn rules_identity(options: &MillVariantOptions) -> RulesIdentity {
-    let bytes = serde_json::to_vec(options)
-        .expect("serializing Mill rule options for identity must not fail");
-    let mut hash = Sha256::new();
-    hash.update(b"sanmill.uci.rules.v1\0");
-    hash.update((bytes.len() as u64).to_le_bytes());
-    hash.update(bytes);
+    let identity = mill_rules_identity(options);
     RulesIdentity {
-        format_version: 1,
-        sha256: hash
-            .finalize()
-            .iter()
-            .map(|byte| format!("{byte:02x}"))
-            .collect(),
+        format_version: identity.format_version,
+        sha256: identity.sha256,
     }
 }
 

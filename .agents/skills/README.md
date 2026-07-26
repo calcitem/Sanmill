@@ -10,7 +10,7 @@ frontmatter when a task matches its description.
 | --- | --- | --- |
 | `arb-translation-updater/` | ARB Translation Updater | Choose en/zh-only or all-locale ARB updates from en/de/hu/zh tail alignment. |
 | `cpp-formatter/` | C++ Code Formatter | Format or check the remaining C++ code with the repository conventions. |
-| `engine-performance-audit/` | engine-performance-audit | Find Rust/TGF engine performance regressions and hotspots. |
+| `engine-performance-audit/` | engine-performance-audit | Find Rust/TGF performance regressions, hotspots, and deterministic H2H engine anomalies. |
 | `flutter-test-runner/` | Flutter Test Runner | Run Sanmill unit, widget, and integration tests. |
 | `game-rule-validator/` | New Rule Completeness Validator | Check that a new game rule or variant updates every required layer. |
 | `refactor-parity-audit/` | refactor-parity-audit | Audit Rust/TGF refactors and ports against a reference implementation. |

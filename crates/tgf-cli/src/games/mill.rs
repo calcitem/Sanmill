@@ -21,6 +21,8 @@ const CMD_MINE_ENDGAME: CommandId = CommandId::new("mine-endgame");
 const CMD_PATCH_PACK: CommandId = CommandId::new("patch-pack");
 const CMD_ARENA: CommandId = CommandId::new("arena");
 const CMD_DATA_QUERY: CommandId = CommandId::new("data-query");
+const CMD_H2H_ANALYZE: CommandId = CommandId::new("h2h-analyze");
+const CMD_H2H_BASELINE: CommandId = CommandId::new("h2h-baseline");
 
 const MILL_COMMANDS: &[CommandSpec] = &[
     CommandSpec {
@@ -107,6 +109,18 @@ const MILL_COMMANDS: &[CommandSpec] = &[
         aliases: &["data"],
         description: "query reproducible Mill data sources through JSON",
     },
+    CommandSpec {
+        id: CMD_H2H_ANALYZE,
+        name: "h2h-analyze",
+        aliases: &[],
+        description: "replay an H2H trace and mine engine anomalies",
+    },
+    CommandSpec {
+        id: CMD_H2H_BASELINE,
+        name: "h2h-baseline",
+        aliases: &[],
+        description: "explicitly accept an eligible H2H forensic baseline",
+    },
 ];
 
 impl CliGame for MillCli {
@@ -144,6 +158,8 @@ impl CliGame for MillCli {
             CMD_PATCH_PACK => crate::mill_pack::run_patch_pack(args),
             CMD_ARENA => crate::mill_arena::run_mill_arena(args),
             CMD_DATA_QUERY => crate::mill_data_query::run(args),
+            CMD_H2H_ANALYZE => crate::mill_h2h_analyze::run_h2h_analyze(args),
+            CMD_H2H_BASELINE => crate::mill_h2h_analyze::run_h2h_baseline(args),
             CMD_UCI => {
                 warn_unused_args("uci", args);
                 crate::mill_uci::run_uci_loop();

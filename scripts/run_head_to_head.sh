@@ -66,6 +66,14 @@ SELF="${SELF:-}"
 VS_PERFECT="${VS_PERFECT:-}"
 PERFECT_DB_PATH="${PERFECT_DB_PATH:-${OPENING_DB_PATH:-$REPO_ROOT/src/ui/flutter_app/assets/databases}}"
 PERFECT_DB_CACHE="${PERFECT_DB_CACHE:-32}"
+FORENSICS="${FORENSICS:-}"
+FORENSICS_PROFILE="${FORENSICS_PROFILE:-pr}"
+ANALYSIS_DB="${ANALYSIS_DB:-}"
+ANALYSIS_BASELINE="${ANALYSIS_BASELINE:-}"
+ANALYSIS_OUT="${ANALYSIS_OUT:-}"
+ANALYSIS_MAX_SEARCH_CASES="${ANALYSIS_MAX_SEARCH_CASES:-}"
+SEARCH_SHUFFLE_SEED="${H2H_SEARCH_SHUFFLE_SEED:-}"
+AI_IS_LAZY="${H2H_AI_IS_LAZY:-}"
 
 usage() {
     cat <<'EOF'
@@ -117,6 +125,14 @@ Options:
       --current-go CMD go command for current engine             [default: go depth 0]
       --master-go CMD  go command for master/opponent engine     [default: go]
       --mingw-bin DIR   dir holding MinGW runtime DLLs to copy next to master
+      --forensics       deterministic self-current H2H plus offline analysis
+                         (FORENSICS_PROFILE=pr|full)
+      --analysis-db PATH
+                         Perfect DB used by the offline analyzer
+      --analysis-baseline PATH
+                         approved baseline used for relative gating
+      --analysis-out PATH
+                         analyzer report directory
   -h, --help           show this help and exit
 
 Patch options (Sanmill `tgf` only; sent as UCI setoption):
@@ -148,7 +164,10 @@ Each option also has an environment-variable form (command-line flags win):
   H2H_MASTER_PATCH_PATH, H2H_MASTER_PATCH_AVOID_TRAPS,
   H2H_MASTER_TRAPS_PATH, H2H_MASTER_PATCH_MAKE_TRAPS,
   N_MOVE_RULE, ENDGAME_N_MOVE_RULE, OPENING_PLIES, OPENING_SEED,
-  OPENING_DB_PATH, MINGW_BIN.
+  OPENING_DB_PATH, MINGW_BIN, FORENSICS, FORENSICS_PROFILE,
+  ANALYSIS_DB, ANALYSIS_BASELINE, ANALYSIS_OUT,
+  ANALYSIS_MAX_SEARCH_CASES, H2H_SEARCH_SHUFFLE_SEED,
+  H2H_AI_IS_LAZY.
 
 Fairness notes:
   * Depth is controlled by --skill: the master engine IGNORES UCI `go depth N`
@@ -169,8 +188,12 @@ Examples:
   run_head_to_head.sh --engine-threads 4    # send UCI Threads=4 to engines
   run_head_to_head.sh --self master -g 50    # master self-play (colour bias)
   run_head_to_head.sh --self current -g 50   # current self-play (colour bias)
-  H2H_CURRENT_PATCH_AVOID_TRAPS=true GAMES=5000 JOBS=20 \\
+  H2H_CURRENT_PATCH_AVOID_TRAPS=true GAMES=5000 JOBS=20 \
     bash scripts/run_head_to_head.sh           # patched current vs unpatched master
+  bash scripts/run_head_to_head.sh --forensics # deterministic 64-game PR profile
+  FORENSICS_PROFILE=full ANALYSIS_DB=/db/nmm \
+    bash scripts/run_head_to_head.sh --forensics
+                                                # local 1000-game full-DB profile
 EOF
 }
 
@@ -224,9 +247,55 @@ while [ $# -gt 0 ]; do
         --master-go=*)  MASTER_GO="${1#*=}"; shift ;;
         --mingw-bin)    MINGW_BIN="$2"; shift 2 ;;
         --mingw-bin=*)  MINGW_BIN="${1#*=}"; shift ;;
+        --forensics)    FORENSICS=1; shift ;;
+        --analysis-db)  ANALYSIS_DB="$2"; shift 2 ;;
+        --analysis-db=*) ANALYSIS_DB="${1#*=}"; shift ;;
+        --analysis-baseline) ANALYSIS_BASELINE="$2"; shift 2 ;;
+        --analysis-baseline=*) ANALYSIS_BASELINE="${1#*=}"; shift ;;
+        --analysis-out) ANALYSIS_OUT="$2"; shift 2 ;;
+        --analysis-out=*) ANALYSIS_OUT="${1#*=}"; shift ;;
         *) echo "Unknown option: $1" >&2; echo "Try '$0 -h' for help." >&2; exit 2 ;;
     esac
 done
+
+if [ -n "$FORENSICS" ]; then
+    case "$FORENSICS_PROFILE" in
+        pr)
+            GAMES=32
+            JOBS=4
+            ANALYSIS_MAX_SEARCH_CASES="${ANALYSIS_MAX_SEARCH_CASES:-8}"
+            ;;
+        full)
+            GAMES=500
+            JOBS=20
+            ANALYSIS_MAX_SEARCH_CASES="${ANALYSIS_MAX_SEARCH_CASES:-128}"
+            if [ -z "$ANALYSIS_DB" ]; then
+                echo "ERROR: FORENSICS_PROFILE=full requires --analysis-db PATH" >&2
+                exit 2
+            fi
+            ;;
+        *)
+            echo "ERROR: FORENSICS_PROFILE must be 'pr' or 'full'" >&2
+            exit 2
+            ;;
+    esac
+    SELF=current
+    SKILL=30
+    ENGINE_THREADS=1
+    MOVETIME=0
+    MOVETIME_MS=""
+    MAX_PLIES=120
+    N_MOVE_RULE=50
+    ENDGAME_N_MOVE_RULE=20
+    OPENING_PLIES=4
+    OPENING_SEED=0x9E3779B97F4A7C15
+    SEARCH_SHUFFLE_SEED=0xD1A64E5EED
+    AI_IS_LAZY=false
+    CURRENT_GO="go nodes 100000"
+    MASTER_GO="go nodes 100000"
+    ANALYSIS_DB="${ANALYSIS_DB:-$OPENING_DB_PATH}"
+    ANALYSIS_OUT="${ANALYSIS_OUT:-$REPO_ROOT/out/h2h-forensics-$FORENSICS_PROFILE}"
+fi
 
 case "$SELF" in
     "")      MODE="vs";           NEED_CURRENT=1; NEED_MASTER=1 ;;
@@ -375,8 +444,14 @@ else
 fi
 [ "$NEED_CURRENT" -eq 1 ] && echo "     current = $CURRENT_ENGINE"
 [ "$NEED_MASTER" -eq 1 ] && echo "     master  = $MASTER_ENGINE"
-[ -n "$CURRENT_ENV" ] && echo "     current_env = $CURRENT_ENV"
-[ -n "$MASTER_ENV" ] && echo "     master_env = $MASTER_ENV"
+[ -n "$CURRENT_ENV" ] && echo "     current_env = <redacted; names and value hashes enter manifest>"
+[ -n "$MASTER_ENV" ] && echo "     master_env = <redacted; names and value hashes enter manifest>"
+if [ -n "$FORENSICS" ]; then
+    echo "     forensics = $FORENSICS_PROFILE"
+    echo "     analysis_db = $ANALYSIS_DB"
+    echo "     analysis_out = $ANALYSIS_OUT"
+    [ -n "$ANALYSIS_BASELINE" ] && echo "     analysis_baseline = $ANALYSIS_BASELINE"
+fi
 if [ -n "$VS_PERFECT" ]; then
     echo "     vs_perfect = on"
     echo "     perfect_db = $PERFECT_DB_PATH"
@@ -414,6 +489,20 @@ if [ "$NEED_MASTER" -eq 1 ] && [ -n "${MOVETIME_MS:-}" ] && [ "$MOVETIME_MS" -gt
     esac
 fi
 
+TRACE_LOG=""
+TRACE_MANIFEST=""
+if [ -n "$SEARCH_SHUFFLE_SEED" ]; then
+    export H2H_SEARCH_SHUFFLE_SEED="$SEARCH_SHUFFLE_SEED"
+fi
+if [ -n "$FORENSICS" ]; then
+    TRACE_DIR="${ANALYSIS_OUT}-trace"
+    TRACE_LOG="$TRACE_DIR/games.jsonl"
+    TRACE_MANIFEST="$TRACE_DIR/games.manifest.json"
+    mkdir -p "$TRACE_DIR" "$ANALYSIS_OUT"
+    export H2H_GAME_LOG="$TRACE_LOG"
+    export H2H_MANIFEST="$TRACE_MANIFEST"
+fi
+
 cd "$REPO_ROOT"
 H2H_CURRENT="$(winpath "$CURRENT_ENGINE")" \
 H2H_CURRENT_ARGS="$CURRENT_ARGS" \
@@ -424,6 +513,7 @@ H2H_MASTER_ENV="$MASTER_ENV" \
 H2H_MODE="$MODE" \
 H2H_SKILL="$SKILL" \
 H2H_ENGINE_THREADS="$ENGINE_THREADS" \
+H2H_AI_IS_LAZY="$AI_IS_LAZY" \
 H2H_GAMES="$GAMES" \
 H2H_JOBS="$JOBS" \
 H2H_MOVETIME="$MOVETIME" \
@@ -442,3 +532,26 @@ H2H_MASTER_PERFECT_DB_CACHE="$PERFECT_DB_CACHE" \
 H2H_MASTER_PERFECT_DB_ORDERING="${H2H_MASTER_PERFECT_DB_ORDERING:-${VS_PERFECT:+strict}}" \
     cargo test -p tgf-cli --release --test head_to_head \
         head_to_head_vs_master -- --ignored --nocapture
+
+if [ -n "$FORENSICS" ]; then
+    ANALYZER_ENGINE="$(default_current_engine)"
+    if [ ! -f "$ANALYZER_ENGINE" ]; then
+        build_current_engine
+    fi
+    ANALYSIS_ARGS=(
+        mill h2h-analyze
+        --log "$TRACE_LOG"
+        --manifest "$TRACE_MANIFEST"
+        --out-dir "$ANALYSIS_OUT"
+        --db "$ANALYSIS_DB"
+        --max-search-cases "$ANALYSIS_MAX_SEARCH_CASES"
+    )
+    if [ -n "$ANALYSIS_BASELINE" ]; then
+        ANALYSIS_ARGS+=(--baseline "$ANALYSIS_BASELINE" --fail-on baseline)
+    else
+        ANALYSIS_ARGS+=(--fail-on none)
+    fi
+    echo ">> Running offline H2H anomaly analysis ..."
+    "$ANALYZER_ENGINE" "${ANALYSIS_ARGS[@]}"
+    echo ">> Forensics report: $ANALYSIS_OUT"
+fi

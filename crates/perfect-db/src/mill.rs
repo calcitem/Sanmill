@@ -568,9 +568,12 @@ pub struct PerfectMoveChoice {
     pub outcome: PerfectOutcome,
 }
 
-/// One complete logical Mill turn tied for the requested database optimum.
+/// One complete legal logical Mill turn and its exact database outcome.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct PerfectLogicalTurnChoice {
+    /// Canonical TGF actions for cold-path callers that need to replay the
+    /// complete turn without decoding notation again.
+    pub actions: Vec<Action>,
     pub tokens: Vec<String>,
     pub outcome: PerfectOutcome,
 }
@@ -613,6 +616,57 @@ pub fn best_logical_turn_choices_with_ordering<P: DatabaseProvider>(
     options: &MillVariantOptions,
     ordering: PerfectMoveOrdering,
 ) -> Result<Option<Vec<PerfectLogicalTurnChoice>>, DatabaseError> {
+    let Some(turns) =
+        all_logical_turn_outcomes_with_database(database, rules, snap, history, options)?
+    else {
+        return Ok(None);
+    };
+    let mut best_outcome: Option<PerfectOutcome> = None;
+    let mut best_choices = Vec::new();
+    for choice in turns {
+        let outcome = choice.outcome;
+        match best_outcome {
+            None => {
+                best_outcome = Some(outcome);
+                best_choices.push(choice);
+            }
+            Some(incumbent) => match ordering.compare(outcome, incumbent) {
+                Ordering::Greater => {
+                    best_outcome = Some(outcome);
+                    best_choices.clear();
+                    best_choices.push(choice);
+                }
+                Ordering::Equal => best_choices.push(choice),
+                Ordering::Less => {}
+            },
+        }
+    }
+    best_choices.sort_by(|left, right| left.tokens.cmp(&right.tokens));
+    if best_choices.is_empty() {
+        Ok(None)
+    } else {
+        Ok(Some(best_choices))
+    }
+}
+
+/// Enumerate every complete legal logical turn and its exact database value.
+///
+/// Outcomes are expressed from `snap.side_to_move`'s perspective.  Mandatory
+/// removal continuations stay explicit in both [`PerfectLogicalTurnChoice::actions`]
+/// and [`PerfectLogicalTurnChoice::tokens`], so callers can distinguish a
+/// correct mill-forming primary action followed by a wrong capture.
+///
+/// `history` is chronological and excludes `snap`, matching
+/// [`tgf_core::GameRules::apply_with_history`].  `None` means the requested
+/// variant or at least one candidate line is not covered; callers must treat
+/// that as unresolved evidence rather than as a safe position.
+pub fn all_logical_turn_outcomes_with_database<P: DatabaseProvider>(
+    database: &mut Database<P>,
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    history: &[GameStateSnapshot],
+    options: &MillVariantOptions,
+) -> Result<Option<Vec<PerfectLogicalTurnChoice>>, DatabaseError> {
     let root_side = snap.side_to_move;
     if !database_matches_options(database, options) {
         return Ok(None);
@@ -625,8 +679,7 @@ pub fn best_logical_turn_choices_with_ordering<P: DatabaseProvider>(
         legal_logical_turns(rules, snap, history).map_err(|error| DatabaseError::InvalidState {
             message: error.to_string(),
         })?;
-    let mut best_outcome: Option<PerfectOutcome> = None;
-    let mut best_choices = Vec::new();
+    let mut choices = Vec::with_capacity(turns.len());
     for turn in turns {
         let outcome = if let Some(outcome) =
             terminal_outcome_for_root(rules, &turn.final_snapshot, root_side)
@@ -656,35 +709,23 @@ pub fn best_logical_turn_choices_with_ordering<P: DatabaseProvider>(
                 outcome.negate()
             }
         };
-        let choice = PerfectLogicalTurnChoice {
-            tokens: turn
-                .actions
-                .into_iter()
-                .map(MillUciCodec::encode_action)
-                .collect(),
+        let actions = turn.actions;
+        let tokens = actions
+            .iter()
+            .copied()
+            .map(MillUciCodec::encode_action)
+            .collect();
+        choices.push(PerfectLogicalTurnChoice {
+            actions,
+            tokens,
             outcome,
-        };
-        match best_outcome {
-            None => {
-                best_outcome = Some(outcome);
-                best_choices.push(choice);
-            }
-            Some(incumbent) => match ordering.compare(outcome, incumbent) {
-                Ordering::Greater => {
-                    best_outcome = Some(outcome);
-                    best_choices.clear();
-                    best_choices.push(choice);
-                }
-                Ordering::Equal => best_choices.push(choice),
-                Ordering::Less => {}
-            },
-        }
+        });
     }
-    best_choices.sort_by(|left, right| left.tokens.cmp(&right.tokens));
-    if best_choices.is_empty() {
+    choices.sort_by(|left, right| left.tokens.cmp(&right.tokens));
+    if choices.is_empty() {
         Ok(None)
     } else {
-        Ok(Some(best_choices))
+        Ok(Some(choices))
     }
 }
 
@@ -1242,6 +1283,64 @@ mod tests {
             best[0].outcome.wdl(),
             "full enumeration must agree with best_move_choices on the winning WDL"
         );
+    }
+
+    #[test]
+    fn all_logical_turn_outcomes_exposes_actions_and_drives_best_filtering() {
+        let options = MillVariantOptions::default();
+        let rules = MillRules::new(options.clone());
+        let variant = DatabaseVariant::from_mill_options(&options).unwrap();
+        let mut db = Database::open_variant_with_options(
+            FileDatabaseProvider::new(asset_root()),
+            variant,
+            DatabaseOptions::with_sector_cache_capacity(8),
+        )
+        .expect("bundled Perfect DB assets must open");
+        let query = PerfectQuery::new(0b0000_0111, 0b0011_1000_0000_0000_0000, 0, 0, 0, false);
+        let snap = snapshot_from_perfect_query(&rules, &options, query);
+
+        let Some(all) =
+            all_logical_turn_outcomes_with_database(&mut db, &rules, &snap, &[], &options)
+                .expect("database read must not fail")
+        else {
+            return;
+        };
+        assert!(!all.is_empty());
+        for choice in &all {
+            assert!(!choice.actions.is_empty());
+            assert_eq!(choice.actions.len(), choice.tokens.len());
+            assert_eq!(
+                choice
+                    .actions
+                    .iter()
+                    .copied()
+                    .map(MillUciCodec::encode_action)
+                    .collect::<Vec<_>>(),
+                choice.tokens
+            );
+        }
+
+        let best = best_logical_turn_choices_with_ordering(
+            &mut db,
+            &rules,
+            &snap,
+            &[],
+            &options,
+            PerfectMoveOrdering::StrictSteps,
+        )
+        .expect("database read must not fail")
+        .expect("covered root must have a best logical turn");
+        let optimum = all
+            .iter()
+            .map(|choice| choice.outcome)
+            .max_by(|left, right| PerfectMoveOrdering::StrictSteps.compare(*left, *right))
+            .unwrap();
+        assert!(best.iter().all(|choice| {
+            PerfectMoveOrdering::StrictSteps
+                .compare(choice.outcome, optimum)
+                .is_eq()
+                && all.iter().any(|candidate| candidate == choice)
+        }));
     }
 
     #[test]

@@ -1,6 +1,6 @@
 ---
 name: engine-performance-audit
-description: Locate Sanmill engine performance regressions and hotspots by comparing the next-branch Rust/TGF engine with the legacy master C++ reference, using parity checks, compare_engine_perf.py, profilers (perf on Linux, WPA/flamegraph on Windows), Criterion, and focused traces.
+description: Locate Sanmill engine performance regressions, hotspots, and deterministic H2H anomalies by comparing Rust/TGF with the legacy C++ reference, using parity checks, forensic traces, Perfect DB evidence, profilers, Criterion, and focused replays.
 ---
 
 # Engine Performance Audit
@@ -1688,6 +1688,92 @@ Behavior-changing or high-risk experiments:
   Residual open item: the high-risk eval scale redesign remains intentionally
   disabled.  The accepted tuned profile fits within the existing mate=80 scale,
   so no TT/UCI/MTD(f) score-scale redesign is justified.
+
+## H2H anomaly forensics
+
+Do not use aggregate win rate alone to decide whether a search change is safe.
+For deterministic same-commit H2H, collect Trace v2 without adding work to the
+live search, then analyze every game after the match:
+
+```bash
+bash scripts/run_head_to_head.sh --forensics \
+  --analysis-out "$SCRATCH/h2h-forensics-pr"
+```
+
+The PR profile is fixed at self-current A/A, 32 paired openings (64 games),
+Skill 30, MTD(f), one engine thread, four match jobs, `go nodes 100000`,
+fixed opening/search seeds, and at most eight deep-search cases. For the local
+full-DB profile:
+
+```bash
+FORENSICS_PROFILE=full \
+  bash scripts/run_head_to_head.sh --forensics \
+    --analysis-db /path/to/full-standard-nmm-db \
+    --analysis-baseline /path/to/approved-full-db-baseline.json \
+    --analysis-out "$SCRATCH/h2h-forensics-full"
+```
+
+That profile runs 500 paired openings (1000 games), 20 jobs, and at most 128
+deep-search cases. It is intended for a local scheduled task; do not assume a
+GitHub self-hosted runner is available.
+
+To analyze an existing Trace v2 directly:
+
+```bash
+"$TGF" mill h2h-analyze \
+  --log "$SCRATCH/h2h-trace/games.jsonl" \
+  --manifest "$SCRATCH/h2h-trace/games.manifest.json" \
+  --out-dir "$SCRATCH/h2h-report" \
+  --db /path/to/perfect-db \
+  --baseline /path/to/approved-baseline.json \
+  --fail-on baseline
+```
+
+Accept a new baseline only after inspecting the report:
+
+```bash
+"$TGF" mill h2h-baseline accept \
+  --report "$SCRATCH/h2h-report/summary.json" \
+  --out "$SCRATCH/approved-baseline.json"
+```
+
+Apply these evidence rules:
+
+- `Hard` means a rule, state, replay, or search-contract contradiction. It
+  always fails and can never be approved into a baseline.
+- `Exact` means Perfect DB proved that a complete logical turn lowered WDL.
+  This is a move error, not automatically an engineering defect.
+- `Probable` requires PVS and MTD(f) to agree at both triage and confirmation
+  node budgets on the same better complete logical turn.
+- `Unresolved` is never silently treated as safe. Preserve the evidence bundle
+  so a human or LLM can investigate it.
+
+Baseline comparisons use paired openings as the statistical unit and a
+deterministic 99.9% paired confidence interval. Block an ordinary move-error
+metric only when the lower confidence bound of the regression is greater than
+zero. Profile, database, or coverage mismatch is a configuration failure, not
+a pass. Hard anomalies bypass statistical gating.
+
+Retain the complete report artifact set:
+
+```text
+summary.json
+findings.jsonl
+losses.jsonl
+clusters.json
+report.md
+cases/<case-id>.json
+cases/<case-id>.md
+SHA256SUMS
+```
+
+The sibling Trace v2 JSONL and manifest are also required. Never copy arbitrary
+process environment values into artifacts: record variable names and SHA-256
+value hashes unless a specific safe engine switch is explicitly allowlisted.
+When the analyzer cannot prove a cause, the case Markdown must still contain
+the exact root, state/history, atomic actions grouped into logical turns, UCI
+output, DB result, deterministic search matrix, process replay comparison, and
+a copyable reproduction command.
 
 ## Report format
 
