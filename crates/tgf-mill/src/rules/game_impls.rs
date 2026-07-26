@@ -1125,6 +1125,13 @@ impl Game for MillGame {
 fn search_n_move_draw_alpha_override(wb: &MillWorkbench) -> Option<i32> {
     let state = &wb.state;
     let options = &wb.rules.options;
+    // A move that forms a mill is only the first half of a logical turn.
+    // The mandatory removal resets the inactivity counter, so adjudicating
+    // the N-move draw before that continuation is resolved hides the capture
+    // and can make a losing mill look like a safe draw to the searcher.
+    if state.pending_removals.iter().any(|&count| count > 0) {
+        return None;
+    }
     let is_move_counting_phase = state.phase == MillPhase::Moving
         || (state.phase == MillPhase::Placing && options.may_move_in_placing_phase);
     if !is_move_counting_phase {

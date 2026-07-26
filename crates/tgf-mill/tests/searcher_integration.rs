@@ -12,7 +12,9 @@ use tgf_core::{
     Action, ActionList, Evaluator, Game, GameRules, MoveOrderAlgorithm, MoveOrderContext,
     SearchActionList, assert_game_rules_game_consistency,
 };
-use tgf_mill::{MillActionKind, MillEvaluator, MillGame, MillRules, MillVariantOptions};
+use tgf_mill::{
+    MillActionKind, MillEvaluator, MillGame, MillRules, MillUciCodec, MillVariantOptions,
+};
 use tgf_search::{
     LazySmpWorker, MctsOptions, MctsSearcher, SearchOptions, SearchPolicy, Searcher, SharedTt,
     VALUE_UNIQUE_ROOT_MOVE, lazy_smp_search, mcts_search_parallel, perft,
@@ -118,6 +120,45 @@ fn mill_mtdf_returns_a_finite_score() {
     let score = searcher.mtdf(&mut wb, 0, 1);
     assert!(score > i32::MIN + 1);
     assert!(score < i32::MAX - 1);
+}
+
+#[test]
+fn mill_mtdf_resolves_capture_before_endgame_draw() {
+    let options = MillVariantOptions {
+        n_move_rule: 50,
+        endgame_n_move_rule: 20,
+        ..MillVariantOptions::default()
+    };
+    let rules = MillRules::new(options.clone());
+    let state = rules
+        .set_from_fen(
+            "O*****@*/O*****@*/**@***O@ w m s 3 0 4 0 0 0 \
+             -1 -1 -1 -1 0 19 32 ids:nodes",
+        )
+        .expect("reported endgame FEN must parse");
+    let snapshot = rules.encode_state(state);
+    let game = MillGame::new(options);
+    let mut wb = game.build_workbench(&snapshot);
+    let mut searcher = Searcher::<MillGame>::new();
+    searcher.set_policy(SearchPolicy {
+        quiescence_kind_tag: Some(MillActionKind::Remove as i16),
+        ..Default::default()
+    });
+    searcher.set_move_order_context(MoveOrderContext {
+        algorithm: MoveOrderAlgorithm::Mtdf,
+        skill_level: 19,
+        shuffling: false,
+        hash_move: None,
+        shuffle_seed: 7,
+    });
+
+    let result = searcher.search_mtdf_with_guess(&mut wb, 6, 0);
+
+    assert_eq!(
+        MillUciCodec::encode_action(result.best_action),
+        "d5-e5",
+        "search must avoid a4-d7, whose forced removal leaves a double-mill threat"
+    );
 }
 
 #[test]

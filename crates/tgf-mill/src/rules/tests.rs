@@ -2592,6 +2592,37 @@ fn search_workbench_endgame_n_move_rule_draws_at_threshold() {
 }
 
 #[test]
+fn search_workbench_endgame_n_move_rule_waits_for_pending_removal() {
+    let options = MillVariantOptions {
+        n_move_rule: 50,
+        endgame_n_move_rule: 20,
+        ..MillVariantOptions::default()
+    };
+    let rules = MillRules::new(options.clone());
+    let game = MillGame::new(options);
+    let state = rules
+        .set_from_fen(
+            "O*****@*/O*****@*/**@***O@ w m s 3 0 4 0 0 0 \
+             -1 -1 -1 -1 0 19 32 ids:nodes",
+        )
+        .expect("reported endgame FEN must parse");
+    let snap = rules.encode_state(state);
+    let action =
+        MillUciCodec::decode_action(&snap, "a4-d7").expect("mill-forming move must decode");
+    let mut wb = game.build_workbench(&snap);
+
+    wb.do_move(action);
+
+    assert_eq!(wb.state.ply_since_capture, 20);
+    assert_eq!(wb.state.pending_removals, [1, 0]);
+    assert_eq!(
+        <MillGame as Game>::search_alpha_override(&wb),
+        None,
+        "the mandatory removal must resolve before the inactivity draw"
+    );
+}
+
+#[test]
 fn endgame_n_move_rule_uses_lower_threshold() {
     // Use minimum valid endgame_n_move_rule (5) and pre-load
     // ply_since_capture to one less than the endgame threshold.
