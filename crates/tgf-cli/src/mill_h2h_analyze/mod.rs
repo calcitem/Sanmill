@@ -668,6 +668,7 @@ mod tests {
                 opening_plies: 4,
                 opening_seed: "0x1".to_string(),
                 search_seed: Some("0x2".to_string()),
+                strict_pairing: false,
                 shuffling: true,
                 algorithm: "mtdf".to_string(),
                 draw_on_human_experience: true,

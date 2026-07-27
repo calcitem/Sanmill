@@ -63,6 +63,12 @@
 //                  paired diffs are then subject to unpaired tie-break
 //                  noise on top of the paired opening. White/black seeds
 //                  are recorded in H2H_GAME_LOG for offline verification.
+//   H2H_STRICT_PAIRING true/false (default false). When true, both games in
+//                  one colour-swapped opening pair run consecutively on the
+//                  same worker, reuse the same shuffle seed for each physical
+//                  board side, and clear both engines' hash before each game.
+//                  This removes role/seed and prior-TT confounding from paired
+//                  strength experiments.
 //   H2H_GO_CURRENT go command for the current engine (default "go depth 0")
 //   H2H_GO_MASTER  go command for the master engine     (default "go")
 //   H2H_MOVETIME   per-move thinking time in SECONDS via MoveTime setoption
@@ -327,8 +333,11 @@ impl Engine {
         }
     }
 
-    fn new_game(&mut self) {
+    fn new_game(&mut self, clear_hash: bool) {
         self.cmd("ucinewgame");
+        if clear_hash {
+            self.cmd("setoption name Clear Hash");
+        }
     }
 
     /// Ask the engine for its best move and retain the complete UCI stream
@@ -654,20 +663,25 @@ fn paired_opening_seed(base_seed: u64, game_index: usize) -> u64 {
     splitmix64(base_seed ^ (pair_index as u64).wrapping_mul(0xD1B5_4A32_D192_ED03))
 }
 
-/// Deterministic per-(game, board-side) `SearchShuffleSeed` value, derived
+fn search_shuffle_stream_index(game_index: usize, strict_pairing: bool) -> usize {
+    if strict_pairing {
+        game_index / 2
+    } else {
+        game_index
+    }
+}
+
+/// Deterministic per-(stream, board-side) `SearchShuffleSeed` value, derived
 /// independently of [`paired_opening_seed`] (disjoint salts, so the two
 /// streams can never alias). `board_side` is the physical board side (0 =
 /// White, 1 = Black) -- NEVER which engine (current/master) occupies it --
-/// so the exact same `(game_index, board_side)` pair gets the exact same
-/// tie-break stream in every comparison group (A/B/C/gated-C) regardless
-/// of which engine plays which colour in that group's run. Keyed by the
-/// literal `game_index` (not the opening's `pair_index`): the two games of
-/// one paired-opening pair are still two distinct physical games and get
-/// distinct seeds, exactly like every other game.
-fn derive_shuffle_seed(base_seed: u64, game_index: usize, board_side: u8) -> u64 {
+/// so the exact same `(stream_index, board_side)` pair gets the exact same
+/// tie-break stream regardless of which engine plays which colour. Historical
+/// mode uses the game index; strict pairing uses the opening-pair index.
+fn derive_shuffle_seed(base_seed: u64, stream_index: usize, board_side: u8) -> u64 {
     splitmix64(
         base_seed
-            ^ (game_index as u64).wrapping_mul(0x9E37_79B9_7F4A_7C15)
+            ^ (stream_index as u64).wrapping_mul(0x9E37_79B9_7F4A_7C15)
             ^ (board_side as u64).wrapping_mul(0xBF58_476D_1CE4_E5B9),
     )
 }
@@ -815,6 +829,7 @@ struct Referee {
     /// `None` (the default) sends no `SearchShuffleSeed` at all, leaving
     /// engines on their historical wall-clock tie-break stream.
     shuffle_seed: Option<u64>,
+    strict_pairing: bool,
 }
 
 impl Referee {
@@ -822,6 +837,7 @@ impl Referee {
         options: MillVariantOptions,
         opening: PerfectOpening,
         shuffle_seed: Option<u64>,
+        strict_pairing: bool,
     ) -> Self {
         Self {
             rules: MillRules::new(options.clone()),
@@ -829,6 +845,7 @@ impl Referee {
             options,
             opening,
             shuffle_seed,
+            strict_pairing,
         }
     }
 
@@ -929,18 +946,19 @@ impl Referee {
         let mut repetition = RepetitionReferee::default();
         let mut counts = MillPlyCount::default();
         let mut decisions = Vec::new();
-        white.new_game();
-        black.new_game();
-        // Deterministic per-(game, board-side) tie-break stream for BOTH
-        // engines (whichever role -- current or master/opponent -- occupies
-        // that colour this game): without pinning the opponent too, its
-        // own shuffle noise would still pollute a paired diff. Sent after
-        // `ucinewgame` (which does not reset engine options) and before
-        // any `position`/`go`, so it is in effect for the whole game.
+        white.new_game(self.strict_pairing);
+        black.new_game(self.strict_pairing);
+        // Deterministic tie-break stream for BOTH engines (whichever role --
+        // current or master/opponent -- occupies that colour this game).
+        // Strict pairing keys it by (opening pair, board side), so the two
+        // colour-swapped games reuse each physical side's stream. Historical
+        // mode keeps the original (game, board side) key. Sent after
+        // `ucinewgame` and before any `position`/`go`.
         let (white_seed, black_seed) = match self.shuffle_seed {
             Some(base) => {
-                let w = derive_shuffle_seed(base, game_index, 0);
-                let b = derive_shuffle_seed(base, game_index, 1);
+                let seed_index = search_shuffle_stream_index(game_index, self.strict_pairing);
+                let w = derive_shuffle_seed(base, seed_index, 0);
+                let b = derive_shuffle_seed(base, seed_index, 1);
                 white.cmd(&format!(
                     "setoption name SearchShuffleSeed value 0x{w:016x}"
                 ));
@@ -1120,8 +1138,8 @@ fn repetition_referee_preserves_long_reversible_history() {
 }
 
 /// `derive_shuffle_seed` must be a pure, stable function of its inputs
-/// (same base/game/side always reproduces the same seed -- the entire
-/// point of pinning it), while varying either `game_index` or
+/// (same base/stream/side always reproduces the same seed -- the entire
+/// point of pinning it), while varying either `stream_index` or
 /// `board_side` alone must change the result (otherwise two different
 /// games, or the two colours of the same game, would silently share one
 /// tie-break stream). It must also never collide with
@@ -1170,6 +1188,21 @@ fn derive_shuffle_seed_is_stable_and_varies_with_game_and_side() {
         derive_shuffle_seed(base, 7, 0),
         paired_opening_seed(base, 7)
     );
+}
+
+#[test]
+fn strict_pairing_reuses_side_streams_and_keeps_pairs_on_one_worker() {
+    assert_eq!(search_shuffle_stream_index(6, true), 3);
+    assert_eq!(search_shuffle_stream_index(7, true), 3);
+    assert_eq!(search_shuffle_stream_index(6, false), 6);
+    assert_eq!(search_shuffle_stream_index(7, false), 7);
+
+    let workers = (0..3)
+        .map(|worker| worker_game_indices(worker, 10, 3, true))
+        .collect::<Vec<_>>();
+    assert_eq!(workers[0], vec![0, 1, 6, 7]);
+    assert_eq!(workers[1], vec![2, 3, 8, 9]);
+    assert_eq!(workers[2], vec![4, 5]);
 }
 
 /// Percentage of `num` out of `den` (0 when `den == 0`).
@@ -1523,6 +1556,7 @@ struct MatchConfig {
     /// Base seed for `derive_shuffle_seed`; `None` (default) sends no
     /// `SearchShuffleSeed`, preserving the historical wall-clock stream.
     shuffle_seed: Option<u64>,
+    strict_pairing: bool,
 }
 
 #[derive(Debug)]
@@ -1656,6 +1690,7 @@ impl TraceRecorder {
             opening_plies: config.opening_plies,
             opening_seed: format!("0x{:016x}", config.opening_seed),
             search_seed: config.shuffle_seed.map(|seed| format!("0x{seed:016x}")),
+            strict_pairing: config.strict_pairing,
             shuffling: true,
             algorithm: "mtdf".to_string(),
             draw_on_human_experience: true,
@@ -2048,6 +2083,7 @@ fn build_referee(config: &MatchConfig) -> Referee {
             config.opening_db_path.clone(),
         ),
         config.shuffle_seed,
+        config.strict_pairing,
     )
 }
 
@@ -2099,8 +2135,21 @@ fn apply_vs_report(report: &GameReport, white: &mut [usize; 4], black: &mut [usi
     idx
 }
 
-fn worker_game_indices(worker_id: usize, total: usize, jobs: usize) -> impl Iterator<Item = usize> {
-    (worker_id..total).step_by(jobs)
+fn worker_game_indices(
+    worker_id: usize,
+    total: usize,
+    jobs: usize,
+    strict_pairing: bool,
+) -> Vec<usize> {
+    if strict_pairing {
+        assert!(total.is_multiple_of(2));
+        (worker_id..(total / 2))
+            .step_by(jobs)
+            .flat_map(|pair_index| [2 * pair_index, 2 * pair_index + 1])
+            .collect()
+    } else {
+        (worker_id..total).step_by(jobs).collect()
+    }
 }
 
 fn run_self_play_parallel(config: MatchConfig, is_master: bool, label: &str) {
@@ -2178,7 +2227,12 @@ fn run_self_play_parallel(config: MatchConfig, is_master: bool, label: &str) {
                 )
             };
 
-            for game_index in worker_game_indices(worker_id, config.total_games, config.jobs) {
+            for game_index in worker_game_indices(
+                worker_id,
+                config.total_games,
+                config.jobs,
+                config.strict_pairing,
+            ) {
                 let played = referee.play_game(&mut ew, &mut eb, config.max_plies, game_index);
                 tx.send(make_game_report(worker_id, game_index, None, played))
                     .expect("main H2H collector should stay alive");
@@ -2293,7 +2347,12 @@ fn run_vs_parallel(config: MatchConfig) {
                 patch: &config.master_patch,
             });
 
-            for game_index in worker_game_indices(worker_id, config.total_games, config.jobs) {
+            for game_index in worker_game_indices(
+                worker_id,
+                config.total_games,
+                config.jobs,
+                config.strict_pairing,
+            ) {
                 let current_white = game_index % 2 == 0;
                 // Deterministic per-game tag for the engine-side patchtrap
                 // trace (see TGF_PATCH_TRACE_DIR): joins each traced
@@ -2466,6 +2525,7 @@ fn head_to_head_vs_master() {
     let opening_seed = env_u64("H2H_OPENING_SEED", 0x9E37_79B9_7F4A_7C15);
     let opening_db_path = env_path("H2H_OPENING_DB_PATH");
     let shuffle_seed = env_u64_option("H2H_SEARCH_SHUFFLE_SEED");
+    let strict_pairing = env_bool("H2H_STRICT_PAIRING", false);
     let total = games * 2;
     assert!(total > 0, "H2H_GAMES must schedule at least one game");
     let jobs = jobs_for_total(total);
@@ -2548,6 +2608,7 @@ fn head_to_head_vs_master() {
         opening_seed,
         opening_db_path: env_path("H2H_OPENING_DB_PATH"),
         shuffle_seed,
+        strict_pairing,
     };
 
     if mode == "self-current" || mode == "self-master" {
@@ -2556,6 +2617,9 @@ fn head_to_head_vs_master() {
         eprintln!(
             "Self-play: {label} vs {label}  (rows = board side)\n  skill={skill} movetime_ms={move_time_ms} shuffling=on algo=MTD(f) games={total} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  shuffle_seed={}\n  current_env_names={current_env_names:?} master_env_names={master_env_names:?}\n  current_db={current_perfect_db:?} master_db={master_perfect_db:?}\n  current_patch={current_patch:?} master_patch={master_patch:?}",
             match shuffle_seed {
+                Some(seed) if strict_pairing => {
+                    format!("0x{seed:016x} (strict paired side streams; hash cleared)")
+                }
                 Some(seed) => format!("0x{seed:016x} (deterministic per game/side)"),
                 None => "unset (wall-clock, unpaired)".to_string(),
             }
@@ -2567,6 +2631,9 @@ fn head_to_head_vs_master() {
         eprintln!(
             "Head-to-head: current=`{current}` vs master=`{master}`  (rows = current's colour)\n  skill={skill} movetime_ms={move_time_ms} shuffling=on algo=MTD(f) games/color={games} jobs={jobs} ply_cap={max_plies} n_move={n_move_rule} endgame_n_move={endgame_n_move_rule} {opening_config}\n  shuffle_seed={}\n  current_args={current_args:?} master_args={master_args:?}\n  current_env_names={current_env_names:?} master_env_names={master_env_names:?}\n  current_db={current_perfect_db:?} master_db={master_perfect_db:?}\n  current_patch={current_patch:?} master_patch={master_patch:?}\n  go_current=`{go_current}` go_master=`{go_master}`",
             match shuffle_seed {
+                Some(seed) if strict_pairing => {
+                    format!("0x{seed:016x} (strict paired side streams; hash cleared)")
+                }
                 Some(seed) => format!("0x{seed:016x} (deterministic per game/side)"),
                 None => "unset (wall-clock, unpaired)".to_string(),
             }

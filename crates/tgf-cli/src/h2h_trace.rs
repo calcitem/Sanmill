@@ -120,6 +120,11 @@ pub struct H2hMatchConfig {
     pub opening_seed: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub search_seed: Option<String>,
+    /// When true, both colour-swapped games in an opening pair reuse the
+    /// same board-side shuffle seeds, run on one worker, and start from an
+    /// empty transposition table.
+    #[serde(default)]
+    pub strict_pairing: bool,
     pub shuffling: bool,
     pub algorithm: String,
     pub draw_on_human_experience: bool,
