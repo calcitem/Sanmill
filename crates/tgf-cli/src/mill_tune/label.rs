@@ -5,8 +5,9 @@ use std::fs::{self, File};
 use std::io::{BufRead, BufReader, BufWriter, Write};
 use std::time::Instant;
 
+use perfect_db::database::PerfectOutcome;
 use perfect_db::database::{Database, DatabaseOptions, DatabaseVariant, FileDatabaseProvider};
-use perfect_db::evaluate_state_with_database;
+use perfect_db::evaluate_state_outcome_with_database;
 use tgf_mill::{MillRules, MillState, MillVariantOptions};
 
 use super::{PositionRecord, flag_present, parse_flag};
@@ -89,13 +90,13 @@ pub(crate) fn run_label(args: &[String]) {
             }
         };
 
-        match evaluate_state_with_database(&mut db, &state, &options, side) {
-            Ok(Some((wdl, steps))) => {
+        match evaluate_state_outcome_with_database(&mut db, &state, &options, side) {
+            Ok(Some(outcome)) => {
                 // DB WDL is side-to-move perspective; store White perspective
                 // to match the static evaluator's positive-is-White convention.
-                let white_wdl = if side == 1 { -wdl } else { wdl };
+                let (white_wdl, steps) = white_label(outcome, side);
                 input.rec.wdl = Some(white_wdl);
-                input.rec.steps = if steps < 0 { None } else { Some(steps) };
+                input.rec.steps = steps;
                 labeled += 1;
             }
             Ok(None) => {
@@ -143,6 +144,13 @@ pub(crate) fn run_label(args: &[String]) {
          ({label_rate:.1}%), {not_found} not-found, {skipped_resume} resumed \
          ({elapsed:.1}s, {rate:.0} pos/s)"
     );
+}
+
+fn white_label(outcome: PerfectOutcome, side_to_move: i8) -> (i32, Option<i32>) {
+    let wdl = outcome.wdl();
+    let white_wdl = if side_to_move == 1 { -wdl } else { wdl };
+    let steps = outcome.steps();
+    (white_wdl, (steps >= 0).then_some(steps))
 }
 
 fn read_records(path: &str) -> Vec<InputRecord> {
@@ -201,4 +209,55 @@ fn print_progress(
         "[tune label] {total}/{n_data_lines} ({pct:.1}%): {labeled} labeled, \
          {not_found} not-found, {skipped_resume} resumed{eta_str}"
     );
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use perfect_db::database::FileDatabaseProvider;
+    use std::path::PathBuf;
+
+    #[test]
+    fn theoretical_draw_with_nonzero_sector_value_stays_a_draw() {
+        let options = MillVariantOptions::default();
+        let rules = MillRules::new(options.clone());
+        let state = rules
+            .set_from_fen(
+                "********/******O*/*****@** w p p 1 8 1 8 0 0 \
+                 -1 -1 -1 -1 0 0 1 ids:nodes",
+            )
+            .expect("regression FEN must parse");
+        let root = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("../../src/ui/flutter_app/assets/databases");
+        let mut database =
+            Database::open(FileDatabaseProvider::new(root)).expect("bundled database must open");
+
+        let outcome = evaluate_state_outcome_with_database(
+            &mut database,
+            &state,
+            &options,
+            state.side_to_move(),
+        )
+        .expect("database query must succeed")
+        .expect("bundled sector must cover the regression FEN");
+
+        assert_eq!(outcome.wdl(), 0);
+        assert_eq!(white_label(outcome, state.side_to_move()).0, 0);
+    }
+
+    #[test]
+    fn white_label_orients_wdl_and_keeps_nonnegative_steps() {
+        assert_eq!(
+            white_label(PerfectOutcome::Win { steps: 7 }, 0),
+            (1, Some(7))
+        );
+        assert_eq!(
+            white_label(PerfectOutcome::Win { steps: 7 }, 1),
+            (-1, Some(7))
+        );
+        assert_eq!(
+            white_label(PerfectOutcome::Draw { steps: -1 }, 0),
+            (0, None)
+        );
+    }
 }
