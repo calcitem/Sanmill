@@ -22,6 +22,7 @@ import '../game_page/services/mill.dart'
         LocalGameSessionStorage,
         PieceColor;
 import '../game_page/services/save_load/saved_game_catalog.dart';
+import '../game_page/widgets/game_page.dart';
 import '../game_page/widgets/mini_board.dart';
 import '../game_page/widgets/saved_games_page.dart';
 import '../game_platform/game_id.dart';
@@ -700,25 +701,94 @@ class SanmillAppShellState extends State<SanmillAppShell>
       _currentTab = SanmillShellTab.more;
     });
 
-    await Navigator.of(context, rootNavigator: true).push(
-      MaterialPageRoute<void>(
-        settings: RouteSettings(name: routeId),
-        builder: (_) {
-          if (session == null) {
-            return screen;
-          }
-          return GameSessionScope(session: session, child: screen);
-        },
-      ),
-    );
+    final Object? result = await Navigator.of(context, rootNavigator: true)
+        .push<Object?>(
+          MaterialPageRoute<Object?>(
+            settings: RouteSettings(name: routeId),
+            builder: (_) {
+              if (session == null) {
+                return screen;
+              }
+              return GameSessionScope(session: session, child: screen);
+            },
+          ),
+        );
 
     if (!mounted || _routeId != routeId) {
+      return;
+    }
+    if (routeId == MillRouteIds.setupPosition.value && result != null) {
+      if (result is! GameMode) {
+        throw StateError('Board Editor must return a GameMode destination.');
+      }
+      await _openSetupPositionDestination(result);
       return;
     }
     if (await _transitionToRoute(_rootRouteIdForTab(SanmillShellTab.more)) &&
         mounted) {
       setState(() {});
     }
+  }
+
+  Future<void> _openSetupPositionDestination(GameMode destination) async {
+    switch (destination) {
+      case GameMode.humanVsAi:
+      case GameMode.humanVsHuman:
+      case GameMode.aiVsAi:
+        final String routeId = sanmillPlayRouteIdForGameMode(
+          gameId: GameRegistry.instance.currentId,
+          gameMode: destination,
+          fallbackRouteId: _playRouteId,
+        );
+        await _selectPlayRoute(routeId);
+        _startSetupDestinationAiIfNeeded(destination);
+        return;
+      case GameMode.analysis:
+        final String? fen =
+            GameController().activeNativeMillSession?.getFen() ??
+            GameController().activeFen;
+        assert(
+          fen != null && fen.isNotEmpty,
+          'Board Editor must provide a FEN for Analysis.',
+        );
+        if (fen == null ||
+            fen.isEmpty ||
+            !await _transitionToRoute(MillRouteIds.analysis.value) ||
+            !mounted) {
+          return;
+        }
+        await _pushFullscreenToolRoute(
+          MillRouteIds.analysis.value,
+          GamePage(GameMode.analysis, initialAnalysisFen: fen),
+        );
+        return;
+      case GameMode.setupPosition:
+      case GameMode.puzzle:
+      case GameMode.humanVsCloud:
+      case GameMode.humanVsLAN:
+      case GameMode.humanVsBluetooth:
+      case GameMode.testViaLAN:
+        assert(false, 'Unsupported Board Editor destination: $destination');
+        return;
+    }
+  }
+
+  void _startSetupDestinationAiIfNeeded(GameMode destination) {
+    if (destination != GameMode.humanVsAi && destination != GameMode.aiVsAi) {
+      return;
+    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
+      final GameController controller = GameController();
+      if (controller.gameInstance.gameMode == destination &&
+          controller.gameInstance.isAiSideToMove &&
+          !controller.isEngineRunning &&
+          !controller.isEngineInDelay) {
+        unawaited(controller.engineToGo(context, isMoveNow: false));
+      }
+    });
   }
 
   Future<void> _pushWatchRoute(String routeId) async {

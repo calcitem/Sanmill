@@ -7065,5 +7065,17 @@
     "puzzleSlowerWinningLine": "做得好——这个走法仍然能赢，但还有更快的解法。请再试一次。",
     "@puzzleSlowerWinningLine": {
         "description": "Encouraging feedback when a puzzle line wins but takes longer than the shortest solution"
+    },
+    "boardRecognitionCornerInstruction": "请将四个标记拖到棋盘最外层方框的四个交点上。",
+    "@boardRecognitionCornerInstruction": {
+        "description": "Instruction shown while aligning a photographed Mill board"
+    },
+    "boardRecognitionInvalidCorners": "请按顺序放置标记，并确保标记连线没有交叉。",
+    "@boardRecognitionInvalidCorners": {
+        "description": "Validation message for an invalid board-corner quadrilateral"
+    },
+    "boardRecognitionReviewInstruction": "点击棋位可在空位、白棋和黑棋之间切换。请检查黄色边框标记的位置，如识别有误，点击修正。",
+    "@boardRecognitionReviewInstruction": {
+        "description": "Instruction shown while reviewing recognized board pieces"
     }
 }

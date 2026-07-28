@@ -97,15 +97,25 @@ class GamePage extends StatelessWidget {
     this.showInitialHumanAiNewGameSheet = true,
     this.showInitialOfflineBoardNewGameSheet = true,
     this.resumeAnalysis = false,
+    this.initialAnalysisFen,
   }) : assert(
          !resumeAnalysis || gameMode == GameMode.analysis,
          'Only an Analysis page can resume an Analysis session.',
+       ),
+       assert(
+         initialAnalysisFen == null || gameMode == GameMode.analysis,
+         'Only an Analysis page can load an initial Analysis FEN.',
+       ),
+       assert(
+         initialAnalysisFen == null || !resumeAnalysis,
+         'Analysis cannot resume storage and load an initial FEN together.',
        );
 
   final GameMode gameMode;
   final bool showInitialHumanAiNewGameSheet;
   final bool showInitialOfflineBoardNewGameSheet;
   final bool resumeAnalysis;
+  final String? initialAnalysisFen;
 
   @override
   Widget build(BuildContext context) {
@@ -117,6 +127,7 @@ class GamePage extends StatelessWidget {
       showInitialHumanAiNewGameSheet: showInitialHumanAiNewGameSheet,
       showInitialOfflineBoardNewGameSheet: showInitialOfflineBoardNewGameSheet,
       resumeAnalysis: resumeAnalysis,
+      initialAnalysisFen: initialAnalysisFen,
     );
   }
 }
@@ -128,12 +139,14 @@ class _GamePageInner extends StatefulWidget {
     required this.showInitialHumanAiNewGameSheet,
     required this.showInitialOfflineBoardNewGameSheet,
     required this.resumeAnalysis,
+    required this.initialAnalysisFen,
   });
 
   final GameController controller;
   final bool showInitialHumanAiNewGameSheet;
   final bool showInitialOfflineBoardNewGameSheet;
   final bool resumeAnalysis;
+  final String? initialAnalysisFen;
 
   @override
   State<_GamePageInner> createState() => _GamePageInnerState();
@@ -213,9 +226,18 @@ class _GamePageInnerState extends State<_GamePageInner>
 
   void _initializeAnalysisSession() {
     final GameController controller = widget.controller;
-    controller.reset(force: true);
+    final String? initialFen = widget.initialAnalysisFen;
+    if (initialFen != null) {
+      final bool started = controller.startGameFromFen(
+        mode: GameMode.analysis,
+        fen: initialFen,
+      );
+      assert(started, 'Initial Analysis FEN must start a valid session.');
+    } else {
+      controller.reset(force: true);
+    }
 
-    if (widget.resumeAnalysis) {
+    if (initialFen == null && widget.resumeAnalysis) {
       try {
         AnalysisSessionStorage.instance.restoreCurrent(controller);
       } catch (error, stackTrace) {
@@ -461,39 +483,18 @@ class _GamePageInnerState extends State<_GamePageInner>
                           children: <Widget>[
                             if (DB().displaySettings.isAnnotationToolbarShown)
                               _buildSetupPositionAnnotationButton(context),
-                            // Board-image recognition remains available to
-                            // developers while its accuracy is improved, but
-                            // it is not exposed as a user-facing editor action.
-                            if (EnvironmentConfig.devMode) ...<Widget>[
-                              IconButton(
-                                key: const Key(
-                                  'game_page_recognition_params_button',
-                                ),
-                                icon: const Icon(
-                                  FluentIcons.settings_24_regular,
-                                  color: Colors.white,
-                                ),
-                                tooltip: S.of(context).recognitionParameters,
-                                onPressed: () =>
-                                    BoardRecognitionImport.showParametersDialog(
-                                      context,
-                                    ),
+                            IconButton(
+                              key: const Key(
+                                'game_page_image_recognition_button',
                               ),
-                              IconButton(
-                                key: const Key(
-                                  'game_page_image_recognition_button',
-                                ),
-                                icon: const Icon(
-                                  FluentIcons.camera_24_regular,
-                                  color: Colors.white,
-                                ),
-                                tooltip: S.of(context).recognizeBoardFromImage,
-                                onPressed: () =>
-                                    BoardRecognitionImport.recognizeFromGallery(
-                                      context,
-                                    ),
+                              icon: const Icon(
+                                FluentIcons.camera_24_regular,
+                                color: Colors.white,
                               ),
-                            ],
+                              tooltip: S.of(context).recognizeBoardFromImage,
+                              onPressed: () =>
+                                  BoardRecognitionImport.recognize(context),
+                            ),
                           ],
                         ),
                       ),

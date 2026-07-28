@@ -7132,5 +7132,17 @@
     "puzzleSlowerWinningLine": "Well done — that still wins, but there is a faster solution. Try again.",
     "@puzzleSlowerWinningLine": {
         "description": "Encouraging feedback when a puzzle line wins but takes longer than the shortest solution"
+    },
+    "boardRecognitionCornerInstruction": "Drag the four markers onto the corner intersections of the outermost board square.",
+    "@boardRecognitionCornerInstruction": {
+        "description": "Instruction shown while aligning a photographed Mill board"
+    },
+    "boardRecognitionInvalidCorners": "Keep the markers in order and make sure their outline does not cross itself.",
+    "@boardRecognitionInvalidCorners": {
+        "description": "Validation message for an invalid board-corner quadrilateral"
+    },
+    "boardRecognitionReviewInstruction": "Tap a point to cycle through empty, white, and black. Review yellow-outlined points and tap them if the result is incorrect.",
+    "@boardRecognitionReviewInstruction": {
+        "description": "Instruction shown while reviewing recognized board pieces"
     }
 }

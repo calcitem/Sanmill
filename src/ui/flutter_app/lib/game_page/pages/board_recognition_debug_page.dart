@@ -11,10 +11,10 @@
 // ([BoardRecognitionDebugView]) and the generated FEN before the user
 // decides whether to load it into the Setup Position editor.
 //
-// The legacy standalone tuning page (crop / manual point adjustment) was
-// intentionally not ported: it mutated the deleted Dart `Position`
-// directly and was never wired to a route.  Applying a recognised board
-// now goes through the native setup session via [BoardRecognitionImport].
+// The normal flow now uses an interactive corner editor and result review.
+// This page remains a development-only view of intermediate diagnostics.
+// Applying a recognised board goes through the native setup session via
+// [BoardRecognitionImport].
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

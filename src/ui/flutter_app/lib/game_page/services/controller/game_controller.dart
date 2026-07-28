@@ -763,6 +763,9 @@ class GameController {
   /// Game mode to restore when leaving the setup-position editor.
   GameMode? _setupPreviousMode;
 
+  /// Whether Setup Position was opened as a standalone tool route.
+  bool _setupPositionIsStandalone = false;
+
   late GameRecorder gameRecorder;
   GameRecorder? newGameRecorder;
 
@@ -859,6 +862,13 @@ class GameController {
       gameInstance.gameMode == GameMode.setupPosition &&
       setupPositionController != null;
 
+  /// True when the editor was opened from the standalone Board Editor tool.
+  ///
+  /// Embedded editors restore their originating game or Analysis mode.
+  /// Standalone editors instead ask the user where to continue.
+  bool get isStandaloneSetupPosition =>
+      isSetupPosition && _setupPositionIsStandalone;
+
   /// Enter the setup-position editor, seeding it from the current native
   /// session board.  No-op when there is no active native Mill session or
   /// when an editor is already active (idempotent).
@@ -875,11 +885,10 @@ class GameController {
       session: session,
       ruleSettings: DB().ruleSettings,
     )..initFromSession();
-    // The editor may be mounted directly on a setup-position route, in which
-    // case the previous mode is already `setupPosition`; fall back to a
-    // playable mode so committing/cancelling lands on a real game.
-    _setupPreviousMode = gameInstance.gameMode == GameMode.setupPosition
-        ? GameMode.humanVsAi
+    _setupPositionIsStandalone =
+        gameInstance.gameMode == GameMode.setupPosition;
+    _setupPreviousMode = _setupPositionIsStandalone
+        ? null
         : gameInstance.gameMode;
     setupPositionController = controller;
     gameInstance.gameMode = GameMode.setupPosition;
@@ -887,10 +896,31 @@ class GameController {
     boardSemanticsNotifier.updateSemantics();
   }
 
-  /// Commit the edited position: install [fen] as the game's setup
-  /// position and restore the previous (playable) game mode.
-  GameMode finishSetupPosition(String fen) {
-    final GameMode previous = _setupPreviousMode ?? GameMode.humanVsAi;
+  /// Commit the edited position and leave Setup Position.
+  ///
+  /// Embedded editors restore their originating mode. A standalone editor
+  /// must provide one of the supported local [destination] modes.
+  GameMode finishSetupPosition(String fen, {GameMode? destination}) {
+    assert(
+      destination == null ||
+          (_setupPositionIsStandalone &&
+              (destination == GameMode.humanVsAi ||
+                  destination == GameMode.humanVsHuman ||
+                  destination == GameMode.aiVsAi ||
+                  destination == GameMode.analysis)),
+      'Only standalone Board Editor sessions accept a local destination.',
+    );
+    assert(
+      !_setupPositionIsStandalone || destination != null,
+      'Standalone Board Editor completion requires a destination.',
+    );
+    assert(
+      _setupPositionIsStandalone || _setupPreviousMode != null,
+      'Embedded Board Editor completion requires an originating mode.',
+    );
+    final GameMode previous = _setupPositionIsStandalone
+        ? destination!
+        : _setupPreviousMode!;
     if (previous == GameMode.analysis) {
       // Keep the recorder identity stable so the analysis-session save
       // listener owned by GamePage remains attached after editing the root
@@ -907,6 +937,7 @@ class GameController {
     }
     setupPositionController = null;
     _setupPreviousMode = null;
+    _setupPositionIsStandalone = false;
     gameInstance.gameMode = previous;
     headerIconsNotifier.showIcons();
     boardSemanticsNotifier.updateSemantics();
@@ -916,10 +947,19 @@ class GameController {
   /// Abandon setup editing, rolling the board back and restoring the
   /// previous game mode.
   GameMode cancelSetupPosition() {
-    final GameMode previous = _setupPreviousMode ?? GameMode.humanVsAi;
+    assert(
+      _setupPositionIsStandalone || _setupPreviousMode != null,
+      'Embedded Board Editor cancellation requires an originating mode.',
+    );
+    // A standalone tool route has no embedded game to restore. Reset the
+    // controller to the default local mode before the route is dismissed.
+    final GameMode previous = _setupPositionIsStandalone
+        ? GameMode.humanVsAi
+        : _setupPreviousMode!;
     setupPositionController?.cancel();
     setupPositionController = null;
     _setupPreviousMode = null;
+    _setupPositionIsStandalone = false;
     gameInstance.gameMode = previous;
     headerIconsNotifier.showIcons();
     boardSemanticsNotifier.updateSemantics();
@@ -1049,6 +1089,7 @@ class GameController {
     controller.cancel();
     setupPositionController = null;
     _setupPreviousMode = null;
+    _setupPositionIsStandalone = false;
   }
 
   @visibleForTesting

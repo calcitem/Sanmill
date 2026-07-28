@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/game_page/services/board_recognition_import.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/widgets/toolbars/game_toolbar.dart';
 import 'package:sanmill/games/mill/mill_route_ids.dart';
@@ -35,52 +36,250 @@ void main() {
 
   tearDownAll(disposeRustLibForTests);
 
-  testWidgets('cancel leaves the standalone board editor route', (
-    WidgetTester tester,
-  ) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        localizationsDelegates: sanmillLocalizationsDelegates,
-        supportedLocales: S.supportedLocales,
-        locale: const Locale('en'),
-        home: Builder(
-          builder: (BuildContext context) => Scaffold(
-            body: Center(
-              child: FilledButton(
-                key: const Key('open_board_editor'),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      settings: RouteSettings(
-                        name: MillRouteIds.setupPosition.value,
-                      ),
-                      builder: (_) => const Scaffold(
-                        body: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: SetupPositionToolbar(),
+  test(
+    'embedded board editors restore their originating mode',
+    () {
+      final GameController controller = GameController();
+      final GameMode originalMode = controller.gameInstance.gameMode;
+      final NativeMillGameSession session = NativeMillGameSession();
+      controller.bindActiveSession(session);
+      addTearDown(() {
+        controller.abandonSetupPositionIfActive();
+        controller.unbindActiveSession(session);
+        controller.gameInstance.gameMode = originalMode;
+        session.dispose();
+      });
+
+      for (final GameMode origin in const <GameMode>[
+        GameMode.humanVsAi,
+        GameMode.humanVsHuman,
+        GameMode.aiVsAi,
+        GameMode.analysis,
+      ]) {
+        controller.gameInstance.gameMode = origin;
+        controller.enterSetupPosition();
+        expect(controller.isStandaloneSetupPosition, isFalse);
+        final String fen = controller.setupPositionController!.exportFen();
+
+        expect(controller.finishSetupPosition(fen), origin);
+        expect(controller.gameInstance.gameMode, origin);
+
+        controller.enterSetupPosition();
+        expect(controller.cancelSetupPosition(), origin);
+        expect(controller.gameInstance.gameMode, origin);
+      }
+    },
+    skip: _nativeLibrarySkipReason != null,
+  );
+
+  test(
+    'standalone board editor accepts every local destination',
+    () {
+      final GameController controller = GameController();
+      final GameMode originalMode = controller.gameInstance.gameMode;
+      final NativeMillGameSession session = NativeMillGameSession();
+      controller.bindActiveSession(session);
+      addTearDown(() {
+        controller.abandonSetupPositionIfActive();
+        controller.unbindActiveSession(session);
+        controller.gameInstance.gameMode = originalMode;
+        session.dispose();
+      });
+
+      for (final GameMode destination in const <GameMode>[
+        GameMode.humanVsAi,
+        GameMode.humanVsHuman,
+        GameMode.aiVsAi,
+        GameMode.analysis,
+      ]) {
+        controller.gameInstance.gameMode = GameMode.setupPosition;
+        controller.enterSetupPosition();
+        expect(controller.isStandaloneSetupPosition, isTrue);
+        final String fen = controller.setupPositionController!.exportFen();
+
+        expect(
+          controller.finishSetupPosition(fen, destination: destination),
+          destination,
+        );
+        expect(controller.gameInstance.gameMode, destination);
+      }
+    },
+    skip: _nativeLibrarySkipReason != null,
+  );
+
+  test(
+    'board recognition requires an active board editor session',
+    () {
+      final GameMode originalMode = GameController().gameInstance.gameMode;
+      addTearDown(() => GameController().gameInstance.gameMode = originalMode);
+      final NativeMillGameSession session = NativeMillGameSession();
+      addTearDown(session.dispose);
+      final MillSetupPositionController controller =
+          MillSetupPositionController(
+            session: session,
+            ruleSettings: const RuleSettings(),
+          )..initFromSession();
+      GameController().setupPositionController = controller;
+
+      GameController().gameInstance.gameMode = GameMode.humanVsHuman;
+      expect(BoardRecognitionImport.isAvailable, isFalse);
+
+      GameController().gameInstance.gameMode = GameMode.setupPosition;
+      expect(BoardRecognitionImport.isAvailable, isTrue);
+    },
+    skip: _nativeLibrarySkipReason != null,
+  );
+
+  testWidgets(
+    'standalone done offers play and analysis destinations',
+    (WidgetTester tester) async {
+      final GameController controller = GameController();
+      final GameMode originalMode = controller.gameInstance.gameMode;
+      final NativeMillGameSession session = NativeMillGameSession();
+      controller.bindActiveSession(session);
+      controller.gameInstance.gameMode = GameMode.setupPosition;
+      controller.enterSetupPosition();
+      addTearDown(() {
+        controller.abandonSetupPositionIfActive();
+        controller.unbindActiveSession(session);
+        controller.gameInstance.gameMode = originalMode;
+        session.dispose();
+      });
+      GameMode? returnedMode;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: const Locale('en'),
+          home: Builder(
+            builder: (BuildContext context) => Scaffold(
+              body: Center(
+                child: FilledButton(
+                  key: const Key('open_board_editor'),
+                  onPressed: () async {
+                    returnedMode = await Navigator.of(context).push<GameMode>(
+                      MaterialPageRoute<GameMode>(
+                        settings: RouteSettings(
+                          name: MillRouteIds.setupPosition.value,
+                        ),
+                        builder: (_) => const Scaffold(
+                          body: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: SetupPositionToolbar(),
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
-                child: const Text('Open'),
+                    );
+                  },
+                  child: const Text('Open'),
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
 
-    await tester.tap(find.byKey(const Key('open_board_editor')));
-    await tester.pumpAndSettle();
-    expect(find.byKey(const Key('cancel_button')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('open_board_editor')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('done_button')));
+      await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(const Key('cancel_button')));
-    await tester.pumpAndSettle();
+      expect(
+        find.byKey(const Key('setup_position_destination_sheet')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('setup_position_destination_human_vs_ai')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('setup_position_destination_human_vs_human')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('setup_position_destination_ai_vs_ai')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('setup_position_destination_analysis')),
+        findsOneWidget,
+      );
 
-    expect(find.byKey(const Key('open_board_editor')), findsOneWidget);
-    expect(find.byKey(const Key('cancel_button')), findsNothing);
-  });
+      await tester.tap(
+        find.byKey(const Key('setup_position_destination_analysis')),
+      );
+      await tester.pumpAndSettle();
+
+      expect(returnedMode, GameMode.analysis);
+      expect(controller.gameInstance.gameMode, GameMode.analysis);
+      expect(controller.setupPositionController, isNull);
+      expect(find.byKey(const Key('open_board_editor')), findsOneWidget);
+    },
+    skip: _nativeLibrarySkipReason != null,
+  );
+
+  testWidgets(
+    'cancel leaves the standalone board editor route',
+    (WidgetTester tester) async {
+      final GameController controller = GameController();
+      final GameMode originalMode = controller.gameInstance.gameMode;
+      final NativeMillGameSession session = NativeMillGameSession();
+      controller.bindActiveSession(session);
+      controller.gameInstance.gameMode = GameMode.setupPosition;
+      controller.enterSetupPosition();
+      addTearDown(() {
+        controller.abandonSetupPositionIfActive();
+        controller.unbindActiveSession(session);
+        controller.gameInstance.gameMode = originalMode;
+        session.dispose();
+      });
+
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: const Locale('en'),
+          home: Builder(
+            builder: (BuildContext context) => Scaffold(
+              body: Center(
+                child: FilledButton(
+                  key: const Key('open_board_editor'),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        settings: RouteSettings(
+                          name: MillRouteIds.setupPosition.value,
+                        ),
+                        builder: (_) => const Scaffold(
+                          body: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: SetupPositionToolbar(),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text('Open'),
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.byKey(const Key('open_board_editor')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('cancel_button')), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('cancel_button')));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const Key('open_board_editor')), findsOneWidget);
+      expect(find.byKey(const Key('cancel_button')), findsNothing);
+    },
+    skip: _nativeLibrarySkipReason != null,
+  );
 
   testWidgets(
     'paint selector uses solid white and black piece indicators',

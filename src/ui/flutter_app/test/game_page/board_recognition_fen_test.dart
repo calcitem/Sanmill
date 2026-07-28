@@ -69,6 +69,15 @@ void main() {
       );
     });
 
+    test('all-empty recognition map yields no FEN', () {
+      expect(
+        BoardRecognitionDebugView.generateTempFenString(<int, PieceColor>{
+          for (int index = 0; index < 24; index++) index: PieceColor.none,
+        }),
+        isNull,
+      );
+    });
+
     test(
       'recognized pieces produce a kernel-valid FEN with matching counts',
       () {

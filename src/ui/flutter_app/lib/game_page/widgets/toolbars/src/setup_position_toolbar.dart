@@ -204,22 +204,25 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   }
 
   void _cancel() {
+    final GameController gameController = GameController();
+    final bool isStandalone = gameController.isStandaloneSetupPosition;
     _record('cancel');
-    GameController().headerTipNotifier.showTip(S.of(context).restoredPosition);
-    final GameMode resumedMode = GameController().cancelSetupPosition();
-    _resumeAnalysisIfNeeded(resumedMode);
+    gameController.headerTipNotifier.showTip(S.of(context).restoredPosition);
+    final GameMode resumedMode = gameController.cancelSetupPosition();
+    if (!isStandalone) {
+      _resumeOriginModeIfNeeded(resumedMode);
+    }
     if (ModalRoute.of(context)?.settings.name ==
         MillRouteIds.setupPosition.value) {
       Navigator.of(context).pop();
     }
   }
 
-  void _done() {
+  Future<void> _done() async {
     final MillSetupPositionController? controller = _controller;
     if (controller == null) {
       return;
     }
-    _record('done');
     final String? fen = controller.commit();
     if (fen == null) {
       final ScaffoldMessengerState? messenger =
@@ -242,18 +245,106 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       );
       return;
     }
-    final GameMode resumedMode = GameController().finishSetupPosition(fen);
-    _resumeAnalysisIfNeeded(resumedMode);
-    GameController().headerTipNotifier.showTip(S.of(context).gameStarted);
-  }
 
-  void _resumeAnalysisIfNeeded(GameMode resumedMode) {
-    if (resumedMode != GameMode.analysis) {
+    final GameController gameController = GameController();
+    final bool isStandalone = gameController.isStandaloneSetupPosition;
+    final GameMode? destination = isStandalone
+        ? await _chooseStandaloneDestination()
+        : null;
+    if (!mounted ||
+        !identical(_controller, controller) ||
+        (isStandalone && destination == null)) {
       return;
     }
+
+    _record('done', <String, dynamic>{
+      if (destination != null) 'destination': destination.name,
+    });
+    final GameMode resumedMode = gameController.finishSetupPosition(
+      fen,
+      destination: destination,
+    );
+    gameController.headerTipNotifier.showTip(S.of(context).gameStarted);
+
+    if (isStandalone) {
+      assert(
+        ModalRoute.of(context)?.settings.name ==
+            MillRouteIds.setupPosition.value,
+        'Standalone Board Editor must complete on its tool route.',
+      );
+      Navigator.of(context).pop(resumedMode);
+      return;
+    }
+    _resumeOriginModeIfNeeded(resumedMode);
+  }
+
+  Future<GameMode?> _chooseStandaloneDestination() {
+    final S strings = S.of(context);
+    return showLichessActionSheet<GameMode>(
+      context: context,
+      sheetKey: const Key('setup_position_destination_sheet'),
+      title: Text(strings.continueFromHere),
+      actions: <LichessActionSheetAction>[
+        _destinationAction(
+          key: const Key('setup_position_destination_human_vs_ai'),
+          icon: Icons.smart_toy_outlined,
+          label: strings.playAgainstComputer,
+          mode: GameMode.humanVsAi,
+        ),
+        _destinationAction(
+          key: const Key('setup_position_destination_human_vs_human'),
+          icon: Icons.groups_2_outlined,
+          label: strings.offlineBoard,
+          mode: GameMode.humanVsHuman,
+        ),
+        _destinationAction(
+          key: const Key('setup_position_destination_ai_vs_ai'),
+          icon: FluentIcons.bot_24_regular,
+          label: strings.aiVsAi,
+          mode: GameMode.aiVsAi,
+        ),
+        _destinationAction(
+          key: const Key('setup_position_destination_analysis'),
+          icon: Icons.biotech_outlined,
+          label: strings.analysis,
+          mode: GameMode.analysis,
+        ),
+      ],
+    );
+  }
+
+  LichessActionSheetAction _destinationAction({
+    required Key key,
+    required IconData icon,
+    required String label,
+    required GameMode mode,
+  }) {
+    return LichessActionSheetAction(
+      key: key,
+      leading: Icon(icon),
+      dismissOnPress: false,
+      makeLabel: (BuildContext context) => Text(label),
+      onPressed: () {},
+      onPressedWithContext: (BuildContext actionContext) =>
+          Navigator.of(actionContext).pop(mode),
+    );
+  }
+
+  void _resumeOriginModeIfNeeded(GameMode resumedMode) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && !AnalysisMode.isAnalyzing) {
+      if (!mounted || GameController().gameInstance.gameMode != resumedMode) {
+        return;
+      }
+      if (resumedMode == GameMode.analysis && !AnalysisMode.isAnalyzing) {
         unawaited(AnalysisService.refresh(context));
+        return;
+      }
+      if ((resumedMode == GameMode.humanVsAi ||
+              resumedMode == GameMode.aiVsAi) &&
+          GameController().gameInstance.isAiSideToMove &&
+          !GameController().isEngineRunning &&
+          !GameController().isEngineInDelay) {
+        unawaited(GameController().engineToGo(context, isMoveNow: false));
       }
     });
   }
@@ -463,7 +554,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
           key: const Key('done_button'),
           icon: FluentIcons.checkmark_24_regular,
           label: strings.done,
-          onPressed: _done,
+          onPressed: () => unawaited(_done()),
         ),
       ),
     ];

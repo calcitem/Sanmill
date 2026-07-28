@@ -56,6 +56,7 @@ import 'package:sanmill/shared/widgets/lichess_bottom_bar.dart';
 import 'package:sanmill/tutorial/widgets/tutorial_dialog.dart';
 
 import 'games/mill/opening_book/opening_book_test_assets.dart';
+import 'helpers/mocks/mock_audios.dart';
 import 'helpers/test_native_library.dart';
 
 void main() {
@@ -708,6 +709,112 @@ void main() {
         find.byKey(const Key('sanmill_bottom_navigation_bar')),
         findsOneWidget,
       );
+
+      // Drain any settings-save debounce timer (see the smoke test above).
+      await tester.pump(const Duration(milliseconds: 350));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
+    'standalone board editor starts the selected local mode',
+    (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(390, 844)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final SoundManager previousSoundManager = SoundManager.instance;
+      SoundManager.instance = MockAudios();
+      addTearDown(() => SoundManager.instance = previousSoundManager);
+
+      await tester.pumpWidget(const SanmillApp());
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      await tester.tap(find.byKey(const Key('sanmill_tab_more')));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(
+        find.byKey(const Key('drawer_item_setup_position')),
+      );
+      await tester.tap(find.byKey(const Key('drawer_item_setup_position')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      expect(find.byKey(const Key('done_button')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('done_button')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+      await tester.tap(
+        find.byKey(const Key('setup_position_destination_human_vs_human')),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      expect(GameController().gameInstance.gameMode, GameMode.humanVsHuman);
+      expect(GameController().setupPositionController, isNull);
+      expect(find.byKey(const Key('human_human')), findsOneWidget);
+      expect(
+        find.byKey(const Key('sanmill_bottom_navigation_bar')),
+        findsNothing,
+      );
+
+      // Drain the settings debounce and the board's post-mount ready timer.
+      await tester.pump(const Duration(milliseconds: 350));
+      await tester.pump(const Duration(milliseconds: 1));
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
+    'standalone board editor carries its position into analysis',
+    (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(390, 844)
+        ..devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final SoundManager previousSoundManager = SoundManager.instance;
+      SoundManager.instance = MockAudios();
+      addTearDown(() => SoundManager.instance = previousSoundManager);
+
+      await tester.pumpWidget(const SanmillApp());
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      await tester.tap(find.byKey(const Key('sanmill_tab_more')));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(
+        find.byKey(const Key('drawer_item_setup_position')),
+      );
+      await tester.tap(find.byKey(const Key('drawer_item_setup_position')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      final String expectedFen = GameController().setupPositionController!
+          .exportFen();
+      await tester.tap(find.byKey(const Key('done_button')));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+      await tester.tap(
+        find.byKey(const Key('setup_position_destination_analysis')),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+
+      expect(GameController().gameInstance.gameMode, GameMode.analysis);
+      expect(GameController().setupPositionController, isNull);
+      expect(GameController().activeNativeMillSession?.getFen(), expectedFen);
+      expect(GameController().gameRecorder.setupPosition, expectedFen);
+      expect(find.byKey(const Key('game_page_stack')), findsOneWidget);
+      expect(
+        find.byKey(const Key('sanmill_bottom_navigation_bar')),
+        findsNothing,
+      );
+
+      await tester.binding.handlePopRoute();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
 
       // Drain any settings-save debounce timer (see the smoke test above).
       await tester.pump(const Duration(milliseconds: 350));

@@ -55,7 +55,11 @@ class BoardRecognitionDebugView extends StatefulWidget {
   /// This is used only for display purposes in the FinalResult stage
   /// Made public static to be callable from BoardRecognitionDebugPage
   static String? generateTempFenString(Map<int, PieceColor> resultMap) {
-    if (resultMap.isEmpty) {
+    final bool hasPieces = resultMap.values.any(
+      (PieceColor color) =>
+          color == PieceColor.white || color == PieceColor.black,
+    );
+    if (!hasPieces) {
       return null;
     }
 
