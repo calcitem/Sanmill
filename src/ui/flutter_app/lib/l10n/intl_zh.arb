@@ -7061,5 +7061,9 @@
     "bluetoothConnectionFailed": "蓝牙连接失败。请保持两台设备靠近，确认主机仍在等待，然后重试。",
     "@bluetoothConnectionFailed": {
         "description": "User-facing Bluetooth connection failure message without exposing GATT error codes"
+    },
+    "puzzleSlowerWinningLine": "做得好——这个走法仍然能赢，但还有更快的解法。请再试一次。",
+    "@puzzleSlowerWinningLine": {
+        "description": "Encouraging feedback when a puzzle line wins but takes longer than the shortest solution"
     }
 }

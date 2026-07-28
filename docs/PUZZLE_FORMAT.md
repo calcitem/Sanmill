@@ -30,11 +30,45 @@ Sanmill uses a structured JSON format for puzzles that supports:
   "metadata": {
     // Puzzle pack metadata (optional)
   },
+  "reviewBatches": [
+    // Optional embedded-review provenance records
+  ],
   "puzzles": [
     // Array of puzzle objects
   ]
 }
 ```
+
+### Embedded Review Batches (Optional)
+
+An application build may embed certified candidates before editorial
+approval. Such a package must set `metadata.isOfficial` to `false`, give each
+candidate a `review-status:expert-pending` and `review-batch:<id>` tag, and
+retain a top-level record linking the batch to its selector evidence:
+
+```json
+{
+  "id": "engine-blunder-review-selected-30",
+  "status": "expert-pending",
+  "puzzleCount": 30,
+  "selectionProvenance": {
+    "solver": "OR-Tools CP-SAT",
+    "status": "OPTIMAL",
+    "selectedCandidates": []
+  }
+}
+```
+
+This metadata records selection and review state; it is not game-theoretic
+proof. Each included puzzle still requires independent rules-engine and
+Perfect DB validation. Once every candidate has an explicit review decision,
+the pack may remove or replace the pending tags and publish a non-prerelease
+pack version.
+
+More than one pending batch may be embedded. Every pending puzzle must name
+exactly one `review-batch:<id>`, that id must occur exactly once in the
+top-level `reviewBatches` array, and each recorded `puzzleCount` must match
+the number of puzzles carrying the corresponding tag.
 
 ### Puzzle Pack Metadata (Optional)
 
@@ -142,6 +176,7 @@ Metadata provides information about a collection of puzzles:
 | `version` | integer | Format version (default: 1) |
 | `rating` | integer | ELO-style difficulty rating |
 | `ruleVariantId` | string | Rule set identifier |
+| `provenance` | object | Optional replay evidence for a source game |
 | `*LocalizationKey` | string | L10n key for internationalization |
 
 ### Solution Object
@@ -150,7 +185,7 @@ Metadata provides information about a collection of puzzles:
 |-------|------|-------------|
 | `moves` | array | Array of PuzzleMove objects |
 | `description` | string | Optional solution description |
-| `isOptimal` | boolean | Whether this is the optimal solution |
+| `isOptimal` | boolean | Whether this line achieves the shortest accepted solution |
 
 ### PuzzleMove Object
 
@@ -159,6 +194,64 @@ Metadata provides information about a collection of puzzles:
 | `notation` | string | Move in algebraic notation |
 | `side` | enum | "white" or "black" |
 | `comment` | string | Optional move annotation |
+
+### Replay Provenance Object
+
+A puzzle tagged `source:replay-backed` carries a `provenance` object:
+
+```json
+{
+  "kind": "human-game-replay",
+  "corpus": "HumanDB raw human games (anonymised PlayOK sample)",
+  "databaseSha256": "64 lowercase hexadecimal characters",
+  "sourceGameSha256": "64 lowercase hexadecimal characters",
+  "sourceLogicalPly": 39,
+  "replayHistory": ["a7", "d7", "g7", "d6", "a7-a4"],
+  "recordedTurn": "e5-e4xd1",
+  "presentationTransform": 0,
+  "transformModel": "sanmill-ring16-v1",
+  "positionGames": 1,
+  "recordedTurnGames": 1
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `kind` | string | Currently `human-game-replay` |
+| `corpus` | string | Non-identifying source corpus label |
+| `databaseSha256` | string | SHA-256 of the HumanDB annotation snapshot |
+| `sourceGameSha256` | string | SHA-256 of the exact source JSONL game row |
+| `sourceLogicalPly` | integer | One-based complete logical turn at the puzzle root |
+| `replayHistory` | array | Complete transformed full-turn history before the root |
+| `recordedTurn` | string | Legal transformed human turn that missed the win |
+| `presentationTransform` | integer | Deterministic presentation transform in `0..15` |
+| `transformModel` | string | Currently `sanmill-ring16-v1` |
+| `positionGames` | integer | HumanDB sample count for the annotated position |
+| `recordedTurnGames` | integer | HumanDB sample count for the recorded turn |
+
+`sourceLogicalPly` must equal `replayHistory.length + 1`. Player names and
+account identifiers must not be included. The production rules engine must
+legally replay the history and recorded turn, and the replayed root must match
+`initialPosition`.
+
+For compact offline packs, `solution-display:principal-variation` means each
+equally shortest first turn is represented by one deterministic line. Perfect
+DB still proves the root and classifies every legal first turn; the stored line
+is the human-readable main variation against a defence that delays defeat,
+not a serialised copy of the complete proof tree.
+
+### Logical-Turn Counting
+
+Mill-forming actions and their compulsory `x…` removal tokens are stored as
+separate `PuzzleMove` objects so that the line can be replayed exactly. They
+belong to one complete logical turn, however, and the removal does not add to
+the public **Win in N** value or to player move statistics. **Win in N** counts
+non-removal turns by the solving side.
+
+All lines tied for the shortest accepted distance should use
+`isOptimal: true`. If a pack also records a slower forced-win line, it must use
+`isOptimal: false`; when the puzzle has an explicitly optimal line, Sanmill
+acknowledges the slower win but does not mark the puzzle complete.
 
 ## Categories
 
@@ -191,11 +284,16 @@ Metadata provides information about a collection of puzzles:
 
 ### Best Practices
 
-1. **Optimal Solution**: Mark the shortest solution as `isOptimal: true`
-2. **Side Alternation**: Moves must alternate between sides correctly
+1. **Optimal Solutions**: Mark every equally shortest solution as
+   `isOptimal: true`
+2. **Side Sequence**: Turns alternate between sides, except that a compulsory
+   removal immediately follows the mill-forming action with the same `side`
 3. **Comments**: Use comments sparingly, for key moves only
 4. **Attribution**: Include author name for custom puzzles
 5. **Tags**: Use descriptive, lowercase tags
+6. **Position Source**: Use `source:composed` when no legal replay witness is
+   claimed, or `source:replay-backed` only when provenance includes a replay
+   accepted by the current rules engine
 
 ## Export File Naming
 

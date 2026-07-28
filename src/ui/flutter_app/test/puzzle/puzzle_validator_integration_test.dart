@@ -207,6 +207,40 @@ void main() {
       }
       expect(foundInSolution, isTrue);
     });
+
+    test('classifies an explicitly non-optimal winning line as slower', () {
+      final PuzzleInfo puzzle = PuzzleInfo(
+        id: 'slower_solution',
+        title: 'Shortest Win',
+        description: 'Find the fastest forced win',
+        category: PuzzleCategory.winGame,
+        difficulty: PuzzleDifficulty.medium,
+        initialPosition:
+            '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
+        solutions: const <PuzzleSolution>[
+          PuzzleSolution(
+            moves: <PuzzleMove>[
+              PuzzleMove(notation: 'a1', side: PieceColor.white),
+            ],
+          ),
+          PuzzleSolution(
+            moves: <PuzzleMove>[
+              PuzzleMove(notation: 'a4', side: PieceColor.white),
+            ],
+            isOptimal: false,
+          ),
+        ],
+      );
+      final PuzzleValidator validator = PuzzleValidator(puzzle: puzzle);
+      validator.addMove('a4');
+
+      final ValidationFeedback feedback = validator.validateSolution(
+        MillBoardView.empty(),
+      );
+
+      expect(feedback.result, ValidationResult.slowerWin);
+      expect(feedback.isOptimal, isFalse);
+    });
   });
 
   group('PuzzleValidator Integration - Hint System', () {

@@ -30,6 +30,14 @@ impl PhaseChoice {
             _ => Self::Random,
         }
     }
+
+    pub(crate) fn accepts(self, is_moving: bool) -> bool {
+        match self {
+            Self::Placing => !is_moving,
+            Self::Moving => is_moving,
+            Self::Random => true,
+        }
+    }
 }
 
 /// Which side to move a sampled root position should have.
@@ -56,6 +64,14 @@ impl SideChoice {
             Self::Random => (next_u64(rng) & 1) as u8,
         }
     }
+
+    pub(crate) fn accepts(self, side: u8) -> bool {
+        match self {
+            Self::White => side == 0,
+            Self::Black => side == 1,
+            Self::Random => side <= 1,
+        }
+    }
 }
 
 /// Sampling parameters for one candidate root position.
@@ -63,8 +79,12 @@ impl SideChoice {
 pub(crate) struct SampleSpec {
     pub phase: PhaseChoice,
     pub side: SideChoice,
-    pub min_pieces: u8,
-    pub max_pieces: u8,
+    /// On-board material range for the side to move (the puzzle solver).
+    pub min_solver_pieces: u8,
+    pub max_solver_pieces: u8,
+    /// On-board material range for the other side (the defender).
+    pub min_defender_pieces: u8,
+    pub max_defender_pieces: u8,
 }
 
 /// xorshift64* step; matches the PRNG idiom used by `mill_tune::datagen`.
@@ -147,10 +167,29 @@ pub(crate) fn sample_sector_shape(
     // hard database error rather than an ordinary "no data" miss.
     let side_to_move = spec.side.resolve(rng);
 
-    let lo = spec.min_pieces.max(options.pieces_at_least_count);
-    let hi = spec.max_pieces.min(options.piece_count).max(lo);
-    let white_on_board = next_range(rng, lo, hi);
-    let black_on_board = next_range(rng, lo, hi);
+    let solver_lo = spec
+        .min_solver_pieces
+        .max(options.pieces_at_least_count)
+        .min(options.piece_count);
+    let solver_hi = spec
+        .max_solver_pieces
+        .min(options.piece_count)
+        .max(solver_lo);
+    let defender_lo = spec
+        .min_defender_pieces
+        .max(options.pieces_at_least_count)
+        .min(options.piece_count);
+    let defender_hi = spec
+        .max_defender_pieces
+        .min(options.piece_count)
+        .max(defender_lo);
+    let solver_on_board = next_range(rng, solver_lo, solver_hi);
+    let defender_on_board = next_range(rng, defender_lo, defender_hi);
+    let (white_on_board, black_on_board) = if side_to_move == 0 {
+        (solver_on_board, defender_on_board)
+    } else {
+        (defender_on_board, solver_on_board)
+    };
     let white_room = options.piece_count - white_on_board;
     let black_room = options.piece_count - black_on_board;
 
@@ -262,8 +301,10 @@ mod tests {
         let spec = SampleSpec {
             phase: PhaseChoice::Random,
             side: SideChoice::Random,
-            min_pieces: 3,
-            max_pieces: 7,
+            min_solver_pieces: 3,
+            max_solver_pieces: 7,
+            min_defender_pieces: 3,
+            max_defender_pieces: 7,
         };
         let mut rng = 0xDEAD_BEEF_u64;
         for _ in 0..2000 {
@@ -289,8 +330,10 @@ mod tests {
         let spec = SampleSpec {
             phase: PhaseChoice::Moving,
             side: SideChoice::White,
-            min_pieces: 3,
-            max_pieces: 6,
+            min_solver_pieces: 3,
+            max_solver_pieces: 6,
+            min_defender_pieces: 3,
+            max_defender_pieces: 6,
         };
         let mut rng = 1_u64;
         for _ in 0..200 {
@@ -314,8 +357,10 @@ mod tests {
             let spec = SampleSpec {
                 phase,
                 side: SideChoice::Random,
-                min_pieces: 1,
-                max_pieces: 9,
+                min_solver_pieces: 1,
+                max_solver_pieces: 9,
+                min_defender_pieces: 1,
+                max_defender_pieces: 9,
             };
             let mut rng = 0x1234_5678_u64;
             for _ in 0..5000 {
@@ -343,8 +388,10 @@ mod tests {
         let spec = SampleSpec {
             phase: PhaseChoice::Placing,
             side: SideChoice::Random,
-            min_pieces: 3,
-            max_pieces: 7,
+            min_solver_pieces: 3,
+            max_solver_pieces: 7,
+            min_defender_pieces: 3,
+            max_defender_pieces: 7,
         };
         let mut rng = 42_u64;
         for _ in 0..200 {
@@ -365,5 +412,34 @@ mod tests {
         assert_eq!(SideChoice::parse("white"), SideChoice::White);
         assert_eq!(SideChoice::parse("b"), SideChoice::Black);
         assert_eq!(SideChoice::parse("random"), SideChoice::Random);
+    }
+
+    #[test]
+    fn asymmetric_material_ranges_follow_the_side_to_move() {
+        let options = MillVariantOptions::default();
+        for (side, expected_side) in [(SideChoice::White, 0), (SideChoice::Black, 1)] {
+            let spec = SampleSpec {
+                phase: PhaseChoice::Moving,
+                side,
+                min_solver_pieces: 6,
+                max_solver_pieces: 7,
+                min_defender_pieces: 4,
+                max_defender_pieces: 4,
+            };
+            let mut rng = 0xCAFE_BABE_u64;
+            for _ in 0..200 {
+                let query = sample_root_query(&mut rng, &spec, &options);
+                let white = query.white_bits.count_ones() as u8;
+                let black = query.black_bits.count_ones() as u8;
+                assert_eq!(query.side_to_move, expected_side);
+                if expected_side == 0 {
+                    assert!((6..=7).contains(&white));
+                    assert_eq!(black, 4);
+                } else {
+                    assert!((6..=7).contains(&black));
+                    assert_eq!(white, 4);
+                }
+            }
+        }
     }
 }

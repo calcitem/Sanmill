@@ -5,9 +5,11 @@
 //
 // Loads the built-in puzzle pack bundled with the app. The pack is
 // generated offline from the Malom Nine Men's Morris perfect-play database
-// by `tgf puzzle-gen` (see `crates/tgf-cli/src/mill_puzzle/`) and committed
-// as a plain `.sanmill_puzzles` JSON asset, so no native/FFI access to the
-// (multi-gigabyte) perfect database is needed at app runtime.
+// by `tgf puzzle-gen` (see `crates/tgf-cli/src/mill_puzzle/`). Certified
+// review batches may be merged by `scripts/merge_mill_review_candidates.py`.
+// The result is committed as a plain `.sanmill_puzzles` JSON asset, so no
+// native/FFI access to the (multi-gigabyte) perfect database is needed at
+// app runtime.
 
 import 'dart:convert';
 

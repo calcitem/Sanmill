@@ -11,6 +11,8 @@
 
 use serde::Serialize;
 
+use super::candidate_input::{EngineBlunderEvidence, HumanReplayEvidence};
+use super::motifs::PuzzleMotif;
 use super::solver::BuiltSolution;
 
 #[derive(Debug, Clone, Serialize)]
@@ -65,6 +67,8 @@ pub(crate) struct PuzzleInfoJson {
     pub hint: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub completion_message: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub provenance: Option<PuzzleProvenanceJson>,
     pub tags: Vec<String>,
     pub is_custom: bool,
     pub author: String,
@@ -73,6 +77,22 @@ pub(crate) struct PuzzleInfoJson {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub rating: Option<i32>,
     pub rule_variant_id: String,
+}
+
+#[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct PuzzleProvenanceJson {
+    pub kind: &'static str,
+    pub corpus: String,
+    pub database_sha256: String,
+    pub source_game_sha256: String,
+    pub source_logical_ply: usize,
+    pub replay_history: Vec<String>,
+    pub recorded_turn: String,
+    pub presentation_transform: u8,
+    pub transform_model: String,
+    pub position_games: u64,
+    pub recorded_turn_games: u64,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -117,8 +137,18 @@ fn short_hash(text: &str) -> String {
 /// what difficulty rating, tags, and all human-facing prose key off.
 #[derive(Debug, Clone, Copy)]
 pub(crate) struct PuzzleTraits {
-    /// Number of legal first moves that immediately throw the win away.
-    pub mistake_count: usize,
+    /// Constraint-directed motif independently confirmed on every shortest
+    /// Perfect DB-certified first turn.
+    pub motif: PuzzleMotif,
+    /// Complete first turns tied for the shortest forced win.
+    pub shortest_winning_count: usize,
+    /// Number of complete legal first turns that fail to achieve the
+    /// shortest forced win, including slower wins and non-wins.
+    pub non_shortest_count: usize,
+    /// Complete first turns that still force a win but take longer.
+    pub slower_winning_count: usize,
+    /// Complete first turns that lead only to a draw or loss.
+    pub non_winning_count: usize,
     /// A mill-closing (capturing) first move exists that loses or draws:
     /// the most tempting move on the board is the trap.
     pub tempting_mill_mistake: bool,
@@ -138,7 +168,7 @@ pub(crate) struct PuzzleTraits {
 /// the raw length of the win.
 fn derive_difficulty_and_rating(
     target_moves: i32,
-    winning_first_move_count: usize,
+    shortest_first_turn_count: usize,
     traits: &PuzzleTraits,
     line: &LineTraits,
     is_moving_phase: bool,
@@ -152,7 +182,7 @@ fn derive_difficulty_and_rating(
         Some(other) => unreachable!("unexpected probe depth {other}"),
         None => 700,
     };
-    if winning_first_move_count <= 1 {
+    if shortest_first_turn_count <= 1 {
         rating += 80;
     }
     rating += (line.only_move_count * 50).min(200);
@@ -223,6 +253,13 @@ pub(crate) struct PuzzleBuildInput<'a> {
     pub author: &'a str,
     pub rule_variant_id: &'a str,
     pub generated_at: &'a str,
+    /// Optional discovery provenance, distinct from proof authority.
+    pub discovery_tag: Option<&'a str>,
+    /// Present only when Rust/TGF replayed a complete source-game prefix.
+    pub replay_provenance: Option<&'a HumanReplayEvidence>,
+    /// Optional source-ranking evidence from the engine-error mining corpus.
+    /// It is audit metadata, never proof of the published solution.
+    pub engine_blunder: Option<&'a EngineBlunderEvidence>,
 }
 
 /// Human-facing prose for one theme: headline fragment, hint, and
@@ -239,8 +276,124 @@ struct ThemeProse {
 /// first decision defines the puzzle's face; execution motifs (swing mill,
 /// immobilization, sacrifice, flying defense) come next; a plain forced win
 /// is the fallback.
-fn select_theme(traits: &PuzzleTraits, line: &LineTraits) -> ThemeProse {
-    if traits.tempting_mill_mistake && traits.quiet_first_move {
+fn select_theme(
+    traits: &PuzzleTraits,
+    line: &LineTraits,
+    conceal_first_move_trap: bool,
+) -> ThemeProse {
+    match traits.motif {
+        PuzzleMotif::DualThreat => {
+            return ThemeProse {
+                tag: "dual-threat",
+                headline: "create two threats at once",
+                hint: "Look for a quiet move that leaves two different mills ready to close.",
+                completion: "One quiet move created two mill threats; the defence could answer \
+                             only one.",
+            };
+        }
+        PuzzleMotif::MillBlock => {
+            return ThemeProse {
+                tag: "mill-block",
+                headline: "block before attacking",
+                hint: "The opponent already has an accessible open mill. Stop it while keeping \
+                       your own winning plan alive.",
+                completion: "The defensive block took away the immediate mill and preserved the \
+                             winning initiative.",
+            };
+        }
+        PuzzleMotif::MillAbandonment => {
+            return ThemeProse {
+                tag: "mill-abandonment",
+                headline: "abandon a mill to win",
+                hint: "A formed mill is not always worth keeping closed. Consider which piece \
+                       can leave it to create the decisive continuation.",
+                completion: "Opening the existing mill released the piece needed for the forced \
+                             win.",
+            };
+        }
+        PuzzleMotif::CaptureChoice => {
+            return ThemeProse {
+                tag: "capture-choice",
+                headline: "remove the right piece",
+                hint: "The mill is only half the decision. Compare every legal removal before \
+                       choosing the target.",
+                completion: "The correct removal preserved the shortest forced win; another \
+                             legal target would not.",
+            };
+        }
+        PuzzleMotif::Zugzwang => {
+            return ThemeProse {
+                tag: "zugzwang",
+                headline: "leave only a losing move",
+                hint: "Do not rush to remove material. Find the quiet move that leaves the \
+                       opponent exactly one legal reply.",
+                completion: "The opponent was left with one compulsory move, and making it \
+                             conceded the winning route.",
+            };
+        }
+        PuzzleMotif::AllowMill => {
+            return ThemeProse {
+                tag: "allow-mill",
+                headline: "look beyond the immediate mill",
+                hint: "The obvious threat need not be stopped. Compare what the opponent must \
+                       concede after carrying it out.",
+                completion: "Allowing the mill preserved the larger plan and left the defence \
+                             unable to meet the follow-up.",
+            };
+        }
+        PuzzleMotif::MobilitySqueeze => {
+            return ThemeProse {
+                tag: "mobility-squeeze",
+                headline: "compress the defence",
+                hint: "Count useful replies as well as material. One quiet move sharply reduces \
+                       the opponent's freedom.",
+                completion: "The quiet move compressed the defender's mobility and made the \
+                             remaining route forcing.",
+            };
+        }
+        PuzzleMotif::JunctionRelease => {
+            return ThemeProse {
+                tag: "junction-release",
+                headline: "release the key junction",
+                hint: "A valuable intersection need not be occupied forever. Consider what \
+                       moving away forces elsewhere.",
+                completion: "Giving up the junction reduced the opponent's freedom and took the \
+                             initiative.",
+            };
+        }
+        PuzzleMotif::MillRecovery => {
+            return ThemeProse {
+                tag: "mill-recovery",
+                headline: "prepare the mill's recovery",
+                hint: "Improve the support around the formed mill so that losing one member will \
+                       not end the structure.",
+                completion: "The supporting move made the mill recoverable and preserved the \
+                             winning mechanism.",
+            };
+        }
+        PuzzleMotif::RightAngleThreat => {
+            return ThemeProse {
+                tag: "right-angle-threat",
+                headline: "turn the corner with two threats",
+                hint: "Find the quiet landing point which supports an open mill in each \
+                       direction.",
+                completion: "The landing piece joined two perpendicular open mills, leaving \
+                             the defence unable to cover both.",
+            };
+        }
+        PuzzleMotif::RingTransfer => {
+            return ThemeProse {
+                tag: "ring-transfer",
+                headline: "transfer the attack across the rings",
+                hint: "Look along the connectors between rings. A quiet transfer can create a \
+                       new mill threat on arrival.",
+                completion: "Crossing to the neighbouring ring created a new open mill and \
+                             carried the attack forward.",
+            };
+        }
+        PuzzleMotif::Any => {}
+    }
+    if !conceal_first_move_trap && traits.tempting_mill_mistake && traits.quiet_first_move {
         return ThemeProse {
             tag: "trap:greedy-mill",
             headline: "resist the tempting mill",
@@ -250,7 +403,7 @@ fn select_theme(traits: &PuzzleTraits, line: &LineTraits) -> ThemeProse {
                          was the only path.",
         };
     }
-    if traits.tempting_mill_mistake {
+    if !conceal_first_move_trap && traits.tempting_mill_mistake {
         return ThemeProse {
             tag: "trap:wrong-mill",
             headline: "choose the right removal",
@@ -258,6 +411,16 @@ fn select_theme(traits: &PuzzleTraits, line: &LineTraits) -> ThemeProse {
                    Compare the resulting positions.",
             completion: "Only one of the tempting removals preserved the forced win; the \
                          others handed the game back.",
+        };
+    }
+    if conceal_first_move_trap && traits.tempting_mill_mistake {
+        return ThemeProse {
+            tag: "forced-win",
+            headline: "find the forced win",
+            hint: "Compare the complete result of every legal first turn. Find the route that \
+                   keeps the shortest win.",
+            completion: "The attractive immediate continuation was the trap; the less obvious \
+                         route preserved the shortest forced win.",
         };
     }
     if line.double_mill {
@@ -314,7 +477,7 @@ fn select_theme(traits: &PuzzleTraits, line: &LineTraits) -> ThemeProse {
         headline: "find the forced win",
         hint: "Every reply has been accounted for. Find the move that keeps all the doors \
                closed.",
-        completion: "A clean forced win, carried through against the best practical defense.",
+        completion: "A clean forced win, carried through against the defence that delays defeat.",
     }
 }
 
@@ -335,13 +498,23 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
         .map(|s| s.solver_move_count)
         .min()
         .expect("solutions is non-empty");
-    let winning_first_move_count = input.solutions.len();
-    let line = aggregate_line_traits(input.solutions);
-    let theme = select_theme(&input.traits, &line);
+    let shortest_first_turn_count = input.traits.shortest_winning_count;
+    assert!(
+        shortest_first_turn_count > 0,
+        "a puzzle must expose at least one shortest winning first turn"
+    );
+    let optimal_solutions = input
+        .solutions
+        .iter()
+        .filter(|solution| solution.solver_move_count == target_moves)
+        .cloned()
+        .collect::<Vec<_>>();
+    let line = aggregate_line_traits(&optimal_solutions);
+    let theme = select_theme(&input.traits, &line, input.engine_blunder.is_some());
 
     let (difficulty, rating) = derive_difficulty_and_rating(
         target_moves,
-        winning_first_move_count,
+        shortest_first_turn_count,
         &input.traits,
         &line,
         input.is_moving_phase,
@@ -366,18 +539,29 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
         headline = theme.headline
     );
 
-    let total_first_moves = winning_first_move_count + input.traits.mistake_count;
+    let total_first_turns = shortest_first_turn_count + input.traits.non_shortest_count;
     let move_noun = if target_moves == 1 { "move" } else { "moves" };
     let mut description = format!(
-        "{side} to move and win in {target_moves} {move_noun} against the opponent's best \
-         practical defense.",
+        "{side} to move and win in {target_moves} {move_noun} against the defence that delays \
+         defeat.",
         side = capitalize(side_word),
     );
-    if input.traits.mistake_count > 0 {
+    if input.traits.non_shortest_count > 0 {
         description.push_str(&format!(
-            " Only {winning_first_move_count} of the {total_first_moves} legal first moves \
-             keep{s} the win alive.",
-            s = if winning_first_move_count == 1 {
+            " Only {shortest_first_turn_count} of the {total_first_turns} complete legal first \
+             turns achieve the shortest win.",
+        ));
+    }
+    if input.traits.slower_winning_count > 0 {
+        description.push_str(&format!(
+            " {} other winning first turn{} take{} longer.",
+            input.traits.slower_winning_count,
+            if input.traits.slower_winning_count == 1 {
+                ""
+            } else {
+                "s"
+            },
+            if input.traits.slower_winning_count == 1 {
                 "s"
             } else {
                 ""
@@ -387,14 +571,34 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
     if line.sacrifice {
         description.push_str(" Requires accepting a material sacrifice along the way.");
     }
+    if input.discovery_tag == Some("discovery:smt-z3") {
+        description.push_str(
+            " Its geometry was synthesised with Z3 and independently rechecked by Rust/TGF.",
+        );
+    }
+    if input.replay_provenance.is_some() {
+        description.push_str(
+            " Replay-backed position: Rust/TGF accepted the anonymised source-game history, and \
+             the recorded human turn missed this Perfect DB-certified win. Displayed solutions \
+             are deterministic principal variations against a defence that delays defeat; \
+             equally fast later continuations may exist.",
+        );
+    } else {
+        description.push_str(
+            " Composed position: rule-consistent and Perfect DB-certified; no legal replay \
+             witness is claimed.",
+        );
+    }
 
     let mut completion = String::from(theme.completion);
     if line.only_move_count > 0 && line.decision_point_count > 0 {
         if line.decision_point_count == 1 {
-            completion.push_str(" At the later decision point, only one move preserved the win.");
+            completion
+                .push_str(" At the later decision point, only one turn achieved the shortest win.");
         } else {
             completion.push_str(&format!(
-                " At {only} of the {total} later decision points, only one move preserved the win.",
+                " At {only} of the {total} later decision points, only one turn achieved the \
+                 shortest win.",
                 only = line.only_move_count,
                 total = line.decision_point_count,
             ));
@@ -405,10 +609,77 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
         "generated".to_string(),
         "malom-db".to_string(),
         format!("win-in-{target_moves}"),
+        format!(
+            "distance-band:{}",
+            if target_moves <= 7 {
+                "short"
+            } else if target_moves <= 15 {
+                "medium"
+            } else {
+                "long"
+            }
+        ),
         format!("phase:{phase_word}"),
         format!("side:{side_word}"),
+        format!("shortest-first-turns:{shortest_first_turn_count}"),
+        format!(
+            "slower-winning-first-turns:{}",
+            input.traits.slower_winning_count
+        ),
+        format!("non-winning-first-turns:{}", input.traits.non_winning_count),
         theme.tag.to_string(),
     ];
+    if let Some(replay) = input.replay_provenance {
+        tags.push("source:replay-backed".to_string());
+        tags.push("human-missed-win".to_string());
+        tags.push("solution-display:principal-variation".to_string());
+        tags.push(format!(
+            "evidence:human-replay:{}",
+            &replay.source_game_sha256[..12]
+        ));
+        tags.push(format!(
+            "presentation-transform:{}",
+            replay.presentation_transform
+        ));
+    } else {
+        tags.push("source:composed".to_string());
+    }
+    if let Some(discovery_tag) = input.discovery_tag {
+        tags.push(discovery_tag.to_string());
+    }
+    if let Some(evidence) = input.engine_blunder {
+        tags.push("source:engine-blunder-corpus".to_string());
+        tags.push(format!("source-severity:{}", evidence.severity));
+        tags.push(format!("source-search-depth:{}", evidence.depth_used));
+        tags.push(format!(
+            "source-trap-score-band:{}",
+            match evidence.trap_score {
+                0..=63 => "low",
+                64..=127 => "medium",
+                128..=191 => "high",
+                _ => "very-high",
+            }
+        ));
+        tags.push(format!(
+            "source-mass-band:{}",
+            if evidence.mass >= 100_000.0 {
+                "very-high"
+            } else if evidence.mass >= 1_000.0 {
+                "high"
+            } else if evidence.mass >= 10.0 {
+                "medium"
+            } else {
+                "low"
+            }
+        ));
+    }
+    if input.traits.tempting_mill_mistake && input.traits.quiet_first_move {
+        if theme.tag != "trap:greedy-mill" {
+            tags.push("trap:greedy-mill".to_string());
+        }
+    } else if input.traits.tempting_mill_mistake && theme.tag != "trap:wrong-mill" {
+        tags.push("trap:wrong-mill".to_string());
+    }
     if line.sacrifice && theme.tag != "sacrifice" {
         tags.push("sacrifice".to_string());
     }
@@ -449,9 +720,11 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
                 })
                 .collect(),
             description: Some(if index == 0 {
-                "Main solution".to_string()
+                "Main shortest solution".to_string()
+            } else if built.solver_move_count == target_moves {
+                format!("Alternative shortest solution {}", index + 1)
             } else {
-                format!("Alternative solution {}", index + 1)
+                format!("Slower winning solution {}", index + 1)
             }),
             // The shortest solver-move-count line(s) are marked optimal so
             // the in-app hint system and star rating key off the sharpest
@@ -459,6 +732,20 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
             is_optimal: built.solver_move_count == target_moves,
         })
         .collect();
+
+    let provenance = input.replay_provenance.map(|replay| PuzzleProvenanceJson {
+        kind: "human-game-replay",
+        corpus: replay.corpus.clone(),
+        database_sha256: replay.database_sha256.clone(),
+        source_game_sha256: replay.source_game_sha256.clone(),
+        source_logical_ply: replay.source_logical_ply,
+        replay_history: replay.history.clone(),
+        recorded_turn: replay.recorded_turn.clone(),
+        presentation_transform: replay.presentation_transform,
+        transform_model: replay.transform_model.clone(),
+        position_games: replay.position_games,
+        recorded_turn_games: replay.recorded_turn_games,
+    });
 
     PuzzleInfoJson {
         id,
@@ -470,6 +757,7 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
         solutions,
         hint: Some(theme.hint.to_string()),
         completion_message: Some(completion),
+        provenance,
         tags,
         is_custom: false,
         author: input.author.to_string(),
@@ -523,7 +811,11 @@ mod tests {
 
     fn plain_traits() -> PuzzleTraits {
         PuzzleTraits {
-            mistake_count: 0,
+            motif: PuzzleMotif::Any,
+            shortest_winning_count: 1,
+            non_shortest_count: 0,
+            slower_winning_count: 0,
+            non_winning_count: 0,
             tempting_mill_mistake: false,
             quiet_first_move: false,
             solve_depth: Some(2),
@@ -540,7 +832,11 @@ mod tests {
             ..LineTraits::default()
         };
         let hard_traits = PuzzleTraits {
-            mistake_count: 10,
+            motif: PuzzleMotif::Any,
+            shortest_winning_count: 1,
+            non_shortest_count: 10,
+            slower_winning_count: 2,
+            non_winning_count: 8,
             tempting_mill_mistake: true,
             quiet_first_move: true,
             solve_depth: None,
@@ -582,7 +878,11 @@ mod tests {
             decision_point_count: 99,
         };
         let max_traits = PuzzleTraits {
-            mistake_count: 30,
+            motif: PuzzleMotif::Any,
+            shortest_winning_count: 1,
+            non_shortest_count: 30,
+            slower_winning_count: 5,
+            non_winning_count: 25,
             tempting_mill_mistake: true,
             quiet_first_move: true,
             solve_depth: None,
@@ -601,7 +901,11 @@ mod tests {
             is_moving_phase: true,
             solutions: &solutions,
             traits: PuzzleTraits {
-                mistake_count: 5,
+                motif: PuzzleMotif::Any,
+                shortest_winning_count: 1,
+                non_shortest_count: 5,
+                slower_winning_count: 2,
+                non_winning_count: 3,
                 tempting_mill_mistake: false,
                 quiet_first_move: false,
                 solve_depth: Some(4),
@@ -609,6 +913,9 @@ mod tests {
             author: "Test Author",
             rule_variant_id: "standard_9mm",
             generated_at: "2026-01-01T00:00:00.000Z",
+            discovery_tag: None,
+            replay_provenance: None,
+            engine_blunder: None,
         };
         let info = build_puzzle_info(&input);
 
@@ -642,7 +949,11 @@ mod tests {
             is_moving_phase: false,
             solutions: &solutions,
             traits: PuzzleTraits {
-                mistake_count: 8,
+                motif: PuzzleMotif::Any,
+                shortest_winning_count: 1,
+                non_shortest_count: 8,
+                slower_winning_count: 0,
+                non_winning_count: 8,
                 tempting_mill_mistake: true,
                 quiet_first_move: true,
                 solve_depth: None,
@@ -650,6 +961,9 @@ mod tests {
             author: "Test Author",
             rule_variant_id: "standard_9mm",
             generated_at: "2026-01-01T00:00:00.000Z",
+            discovery_tag: None,
+            replay_provenance: None,
+            engine_blunder: None,
         };
         let info = build_puzzle_info(&input);
 
@@ -658,7 +972,7 @@ mod tests {
         assert!(info.tags.contains(&"solve-depth:deep".to_string()));
         assert!(
             info.description
-                .contains("Only 1 of the 9 legal first moves")
+                .contains("Only 1 of the 9 complete legal first turns")
         );
         assert!(
             info.completion_message
@@ -667,6 +981,49 @@ mod tests {
                 .contains(" — ")
         );
         assert_eq!(info.category, "opening");
+    }
+
+    #[test]
+    fn engine_blunder_source_keeps_the_trap_out_of_the_headline() {
+        let solutions = vec![built(4, false)];
+        let evidence = EngineBlunderEvidence {
+            severity: 2,
+            trap_score: 220,
+            mass: 2_000.0,
+            depth_used: 9,
+        };
+        let input = PuzzleBuildInput {
+            fen: "hidden-trap-fen",
+            solver_side: 0,
+            is_moving_phase: true,
+            solutions: &solutions,
+            traits: PuzzleTraits {
+                motif: PuzzleMotif::Any,
+                shortest_winning_count: 1,
+                non_shortest_count: 8,
+                slower_winning_count: 0,
+                non_winning_count: 8,
+                tempting_mill_mistake: true,
+                quiet_first_move: true,
+                solve_depth: None,
+            },
+            author: "Test Author",
+            rule_variant_id: "standard_9mm",
+            generated_at: "2026-01-01T00:00:00.000Z",
+            discovery_tag: Some("discovery:engine-blunder-corpus"),
+            replay_provenance: None,
+            engine_blunder: Some(&evidence),
+        };
+        let info = build_puzzle_info(&input);
+
+        assert_eq!(info.title, "Win in 4: find the forced win");
+        assert!(info.tags.contains(&"trap:greedy-mill".to_string()));
+        assert!(
+            info.tags
+                .contains(&"source:engine-blunder-corpus".to_string())
+        );
+        assert!(!info.hint.as_deref().unwrap().contains("trap"));
+        assert!(!info.hint.as_deref().unwrap().contains("quiet"));
     }
 
     #[test]
@@ -682,6 +1039,9 @@ mod tests {
                 author: "Test Author",
                 rule_variant_id: "standard_9mm",
                 generated_at: "2026-01-01T00:00:00.000Z",
+                discovery_tag: None,
+                replay_provenance: None,
+                engine_blunder: None,
             };
             build_puzzle_info(&input).description
         };
@@ -706,6 +1066,9 @@ mod tests {
                 author: "Test Author",
                 rule_variant_id: "standard_9mm",
                 generated_at: "2026-01-01T00:00:00.000Z",
+                discovery_tag: None,
+                replay_provenance: None,
+                engine_blunder: None,
             };
             build_puzzle_info(&input)
                 .completion_message
@@ -714,12 +1077,11 @@ mod tests {
 
         assert!(
             build_completion(1)
-                .contains("At the later decision point, only one move preserved the win.")
+                .contains("At the later decision point, only one turn achieved the shortest win.")
         );
-        assert!(
-            build_completion(2)
-                .contains("At 1 of the 2 later decision points, only one move preserved the win.")
-        );
+        assert!(build_completion(2).contains(
+            "At 1 of the 2 later decision points, only one turn achieved the shortest win."
+        ));
     }
 
     #[test]
@@ -730,6 +1092,7 @@ mod tests {
                 vs_flying: true,
                 ..LineTraits::default()
             },
+            false,
         );
 
         assert_eq!(theme.headline, "ground the flying defense");
@@ -747,6 +1110,7 @@ mod tests {
                 immobilization_win: true,
                 ..LineTraits::default()
             },
+            false,
         );
 
         assert_eq!(theme.headline, "immobilize the opponent");
@@ -762,6 +1126,7 @@ mod tests {
                 ..plain_traits()
             },
             &LineTraits::default(),
+            false,
         );
         let quiet_move = select_theme(
             &PuzzleTraits {
@@ -769,6 +1134,7 @@ mod tests {
                 ..plain_traits()
             },
             &LineTraits::default(),
+            false,
         );
 
         for theme in [wrong_mill, quiet_move] {

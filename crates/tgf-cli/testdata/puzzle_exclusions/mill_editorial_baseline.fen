@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# Editorial collision baseline for offline mining and release tests.
+# tgf puzzle-gen canonicalises every FEN under all 16 supported Mill board
+# automorphisms before accepting a candidate.
+#
+# Reference E-01
+****@*OO/@**OOO**/*@@@*@O* b m s 6 0 6 0 0 0 0 0 0 0 0 0 1
+# Reference E-02
+******O*/OOO@*@*@/******** w m s 4 0 3 0 0 0 0 0 0 0 0 0 1
+# Reference E-03
+***@O@**/O**@***O/@******* w m s 3 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+# Reference E-04
+***OO**@/*O@*@***/****@*** w m s 3 0 4 0 0 0 0 0 0 0 0 0 1
+# Reference E-05
+**OO*O*@/OOO@@*@O/**@***** b p p 7 2 5 3 0 0 -1 -1 -1 -1 0 0 7 ids:nodes
+# Reference E-06
+@@O***O@/OOO@@O@O/**@*O**@ b m s 8 0 8 0 0 0 0 0 0 0 0 0 1
+# Reference E-07
+********/***@*O@*/*OO@**** w m s 3 0 3 0 0 0 0 0 0 0 0 0 1
+# Reference E-08
+@@@*O*O*/O@OO@@@O/**@O**O* w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+# Reference E-09
+O*O@**@@/******O*/******O* w m s 4 0 3 0 0 0 0 0 0 0 0 0 1
+# Reference E-10
+**@**@OO/O*O*@O@*/@***O*** b p p 6 3 5 4 0 0 -1 -1 -1 -1 0 0 6 ids:nodes
+# Reference E-11
+**O*@**O/**O@@*@O/***@*@** b m s 4 0 6 0 0 0 0 0 0 0 0 0 1
+# Reference E-12
+@*@*O*O*/OOO@@O@O/**O*@*** b p p 8 1 6 2 0 0 -1 -1 -1 -1 0 0 8 ids:nodes

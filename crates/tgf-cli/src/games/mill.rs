@@ -16,6 +16,7 @@ const CMD_TUNE_LABEL: CommandId = CommandId::new("tune-label");
 const CMD_TUNE_STATS: CommandId = CommandId::new("tune-stats");
 const CMD_TUNE_FIT: CommandId = CommandId::new("tune-fit");
 const CMD_PUZZLE_GEN: CommandId = CommandId::new("puzzle-gen");
+const CMD_REPLAY_INDEX: CommandId = CommandId::new("replay-index");
 const CMD_MINE: CommandId = CommandId::new("mine");
 const CMD_MINE_ENDGAME: CommandId = CommandId::new("mine-endgame");
 const CMD_PATCH_PACK: CommandId = CommandId::new("patch-pack");
@@ -78,6 +79,12 @@ const MILL_COMMANDS: &[CommandSpec] = &[
         name: "puzzle-gen",
         aliases: &["puzzle gen"],
         description: "generate forced-win puzzles from a Perfect DB",
+    },
+    CommandSpec {
+        id: CMD_REPLAY_INDEX,
+        name: "replay-index",
+        aliases: &["replay index"],
+        description: "build an anonymised HumanDB game replay index",
     },
     CommandSpec {
         id: CMD_MINE,
@@ -153,6 +160,7 @@ impl CliGame for MillCli {
             CMD_TUNE_STATS => crate::mill_tune::run_stats(args),
             CMD_TUNE_FIT => crate::mill_tune::run_fit(args),
             CMD_PUZZLE_GEN => crate::mill_puzzle::run_puzzle_gen(args),
+            CMD_REPLAY_INDEX => crate::mill_replay_index::run(args),
             CMD_MINE => crate::mill_mine::run_mill_mine(args),
             CMD_MINE_ENDGAME => crate::mill_endgame::run_mill_endgame(args),
             CMD_PATCH_PACK => crate::mill_pack::run_patch_pack(args),

@@ -609,6 +609,36 @@ void main() {
     );
 
     testWidgets(
+      'encourages a known slower line without completing the puzzle',
+      (WidgetTester tester) async {
+        final PuzzleInfo puzzle = buildPuzzle(
+          solutions: const <List<String>>[
+            <String>['a1'],
+            <String>['a4'],
+          ],
+          markFirstSolutionOptimal: true,
+        );
+        await pumpPuzzlePage(tester, puzzle);
+
+        final PuzzleInfo transformed = loadedTransformedPuzzle(puzzle);
+        final String slowerMove = transformed.solutions[1].moves.first.notation;
+        await applyHumanMoveViaNativeSession(slowerMove);
+        await drainUi(tester);
+
+        expect(
+          find.text(
+            'Well done — that still wins, but there is a faster solution. '
+            'Try again.',
+          ),
+          findsOneWidget,
+        );
+        expect(find.text('Try again'), findsOneWidget);
+        await teardownPuzzlePage(tester);
+      },
+      skip: nativeLibrarySkipReason() != null,
+    );
+
+    testWidgets(
       'auto-plays consecutive opponent moves (mill then remove)',
       (WidgetTester tester) async {
         final String startFen = buildPositionFenForOpponentMillThenRemove();

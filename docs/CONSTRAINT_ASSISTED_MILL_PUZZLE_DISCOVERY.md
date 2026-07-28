@@ -6,9 +6,12 @@
 
 - **Document type:** Sanmill technical white paper
 - **Purpose:** Independent review by Mill specialists
-- **Status:** Revised after initial Mill expert review; implementation pending
+- **Status:** Expert-reviewed; complete-turn certification, a Z3/CP-SAT
+  discovery pilot, a replay-backed HumanDB pilot, an engine-error-corpus
+  adapter and the product curriculum implemented; full strategy-tree
+  certificate sidecars remain pending
 - **Language:** British English
-- **Repository baseline:** Sanmill source reviewed on 27 July 2026
+- **Repository baseline:** Sanmill source reviewed on 28 July 2026
 - **Prepared for:** Rules, composition and endgame experts
 
 > This paper separates mathematical proof, candidate discovery and expert judgement.
@@ -51,7 +54,126 @@ Sanmill already follows the right deployment pattern. The built-in puzzle pack i
 
 The existing generator samples legal-shaped positions, queries exact root outcomes, rejects uncovered or unsuitable states, measures mistakes and shallow-search difficulty, removes symmetric duplicates and exports a solution. This is a credible foundation. Its broad sampler, however, constructs disjoint bitboards within material budgets rather than proving that the sampled position occurs in a legal history. Acceptance is sparse—approximately one useful root per several thousand attempts under typical filters—and a greedy run makes the final composition depend on sample order.
 
-A second limitation is representational. The current solution builder uses Perfect DB for the solving side but may use a heuristic engine to choose one defender reply. Such a line is useful for display and difficulty estimation, but it is not the same artefact as a complete proof against all relevant defences. The Perfect DB library now exposes complete logical-turn choices and outcomes, preserving the mandatory removal continuation and query history. That stronger API should be the certification boundary.
+The first expert-reviewed implementation removed the earlier
+**action-level** principal-variation shortcut. Root choices are now classified
+exhaustively as complete logical turns, including compulsory removal.
+Reviewer-facing lines use strict Perfect DB ordering for both sides: the
+attacker chooses a fastest win and the defender chooses the best available
+result or, in a forced loss, the longest resistance. For a replay-backed
+puzzle, the compact asset stores one deterministic principal variation for
+each equally shortest first turn; this display policy does not replace the
+all-turn root proof. Public move counts ignore removal tokens, and the
+application distinguishes a recorded or terminal slower win from a shortest
+completion. The remaining limitation is evidential breadth: a separate,
+immutable certificate sidecar is still required to archive the complete
+strategy tree rather than only its reviewer-facing variations.
+
+The first full-database expansion added 39 symmetry-unique movement-phase
+compositions from the four-, five- and six-men-per-side sectors, taking the
+built-in pack from 60 to 99 puzzles. Two further candidates were rejected as
+symmetry-equivalent to accepted roots. Every puzzle is explicitly labelled
+`source:composed`; no legal replay witness is claimed. This is an engineering
+expansion of the candidate pack, not a substitute for the proposed blind
+expert review or for a future replay-backed and placement-phase sample.
+
+A subsequent constraint-directed pilot used Z3 5.0.0 to enumerate
+rule-shaped board geometries for five deliberately different themes:
+capture choice, mill blocking, dual threat, mill abandonment and zugzwang.
+Z3 was a source of proposals, not a chess-like evaluator. Rust/TGF rebuilt
+each position, enumerated all legal complete first turns and required every
+equally short winning turn to satisfy the requested theme predicate. Perfect
+DB alone supplied the W/D/L and distance claims. The generator also excluded
+the 99 existing roots and twelve editorial-reference roots under all 16
+supported board symmetries. The reference roots are retained in the
+version-controlled
+`crates/tgf-cli/testdata/puzzle_exclusions/mill_editorial_baseline.fen`
+record, giving 111 distinct exclusions when combined with the 99-puzzle base
+pack. The record is an editorial collision baseline, not application content.
+
+An exact ring-16 audit against the July 2026 HumanDB source corpus found that
+some reference roots occur in recorded games and others do not. Corpus
+occurrence is evidence of reachability, whereas absence is only a coverage
+result.
+
+That process produced 82 publishable, database-certified candidates. A
+deterministic OR-Tools CP-SAT 9.15.6755 model selected 15: three from each
+theme, seven with White to move and eight with Black to move. The selected
+difficulty distribution is three beginner, three easy, five medium, one hard
+and three expert puzzles. The built-in pack therefore contains 114 puzzles in
+version 1.3.0. Every entry has exactly one `topic:*`, one `curriculum:*` and
+one `progression:*` tag, and the asset is ordered first by teaching topic and
+then from beginner to expert. All 15 new positions remain explicitly
+composed: the structural model and exact endgame proof do not imply that a
+legal replay from the initial position exists.
+
+A subsequent real-game pilot built a versioned, anonymised SQLite replay
+sidecar over the HumanDB raw corpus. The production Rust command
+`tgf mill replay-index` uses bounded parallel workers for JSON parsing and D4
+canonicalisation, with one batched SQLite writer. Its first full build
+processed 95,389 source files in 46.4 seconds, retained 94,540 unique games,
+4,470,985 complete logical turns and 2,662,650 searchable movement roots, and
+ignored 849 exact duplicate source rows. The resulting database is accompanied
+by a same-directory Markdown build record containing its schema, counts,
+source path and SHA-256.
+
+HumanDB was used only as a candidate prior: winning annotated roots at which
+the recorded turn differed from the canonical winning turn were joined to
+the replay sidecar. Rust/TGF then replayed every transformed game prefix and
+recorded turn, and Perfect DB independently required a genuine win-to-draw or
+win-to-loss swing. The candidates were stratified by annotated distance
+(`1–15`, `16–31` and `32+`) rather than imposing a universal short-distance
+cut-off. This matters for blockade: the published replay sample includes
+immobilisation wins in 14 and 30 solver moves.
+
+The v1.4.0 built-in pack contains 127 puzzles: 114 labelled compositions and
+13 replay-backed human missed wins. The replay additions are balanced by side
+(seven White, six Black) and progression (three short, five medium and five
+long). Their primary topics are greedy-mill trap, wrong-mill trap, double
+mill, quiet move, sacrifice and immobilisation. Every replay record retains
+the anonymised source-game SHA-256, complete transformed history, recorded
+human turn, HumanDB snapshot SHA-256, source logical ply and deterministic
+presentation transform. All 127 entries have exactly one `topic:*`,
+`curriculum:*`, `progression:*` and `distance-band:*` tag.
+
+The embedded v1.5.0 review build adds a 30-position engine-error-corpus
+shortlist chosen globally by CP-SAT from 87 certified records. It contains
+15 positions for each side to move and draws from six profiles: balanced
+advanced play, balanced expert play, 6v4, 7v4, play against a flying defender
+and late placement after at least twelve primary placements. The resulting
+application asset contains 157 puzzles: 144 labelled compositions and the
+same 13 replay-backed positions. The new entries remain visibly tagged
+`review-status:expert-pending`; consequently the package version is
+`1.5.0-review.1` and its `isOfficial` field remains false until specialist
+assessment is complete.
+
+The v1.6.0 review build adds the ten-position strategy-theme shortlist as a
+second traceable pending batch. The current application asset therefore
+contains 167 puzzles: 154 labelled compositions and the same 13
+replay-backed positions. Forty entries are pending specialist assessment,
+the package version is `1.6.0-review.1`, and `isOfficial` remains false.
+
+## 1.1 Implemented curriculum
+
+Classification is deliberately hierarchical rather than a flat collection of
+machine tags. Every puzzle belongs to one teaching strand, one primary topic
+within that strand and one difficulty level. A position may retain secondary
+descriptive tags, such as sacrifice or precision, but these do not give it two
+places in the curriculum.
+
+| **Strand**              | **Primary topics**                                                                 | **Teaching purpose**                                                   |
+|-------------------------|------------------------------------------------------------------------------------|------------------------------------------------------------------------|
+| **01 — foundations**    | Capture choice; quiet move                                                         | Read the whole logical turn and look beyond the most forcing action.    |
+| **02 — mill tactics**   | Mill block; greedy-mill trap; wrong-mill trap; double mill; dual threat; right-angle threat; mill recovery | Compare immediate mills with prevention, preparation and paired threats. |
+| **03 — positional play** | Mill abandonment; junction release; ring transfer; sacrifice; mobility squeeze   | Give up static structure or material, transfer pressure and restrict activity. |
+| **04 — endgames**       | Immobilisation; flying defence; zugzwang                                           | Control mobility and calculate rule-sensitive endings.                 |
+| **05 — calculation**    | General forced wins that do not yet have a clearer specialist-approved topic       | Retain sound material without pretending that a weak label is a theme. |
+
+Within each topic, the asset is sorted through the public sequence
+**beginner → easy → medium → hard → expert**, then by winning distance and
+rating. The strand order is pedagogical, not a claim that every puzzle in one
+strand is easier than every puzzle in the next. Empty reserved topics are
+acceptable until a certified and expert-approved example exists; puzzles are
+not forced into them merely to make the taxonomy look complete.
 
 | **Existing strength**      | **Why it matters**                                  | **Proposed extension**                                                |
 |----------------------------|-----------------------------------------------------|-----------------------------------------------------------------------|
@@ -60,6 +182,170 @@ A second limitation is representational. The current solution builder uses Perfe
 | **Symmetry deduplication** | Rotated and reflected copies do not crowd the pack. | Record the canonical key and test all 16 board presentations.         |
 | **Shallow search probes**  | Provides an empirical difficulty signal.            | Treat the signal as ranking evidence, never as proof.                 |
 | **Random broad sampling**  | Can reach a very large state space.                 | Add stratification, constraints, replay sources and global selection. |
+
+## 1.2 Editorial reference audit
+
+A July 2026 maintainer-inbox audit recovered 36 ordinary prompt positions
+and eight positions from two study sheets. The 44 raw roots form 42 ring-16
+classes: two pairs on the study sheets are intentionally equivalent after
+exchanging the outer and inner rings. One item refers to two further diagrams
+which were absent from the supplied folder; no position was guessed from
+prose alone.
+
+Exactly three supplied prompts carry explicit replay provenance and game
+links. The other 41 raw roots form 39 canonical classes. Four roots also
+occur in the separate twelve-root editorial collision baseline. This overlap
+is between reference sets, not Sanmill’s pack.
+
+An exact audit of the current 167-position review build found **no match**
+between its roots and any of the 44 editorial reference diagrams under all
+16 supported board automorphisms.
+Opposite-side-to-move and colour-exchanged checks also found no match. No
+existing Sanmill puzzle therefore needs removal or reorientation.
+The committed asset replay test repeats both the colour-preserving and
+solver-colour-normalised collision checks for every built-in puzzle, so this
+is a release invariant rather than a one-off report.
+
+The collision policy is mechanical:
+
+- a root without explicit replay provenance is excluded from every Sanmill
+  candidate pack under ring-16 symmetry;
+- a replay-attributed root remains excluded from composed mining;
+- it may reappear only as a replay-backed HumanDB candidate, never merely on
+  the strength of the attribution;
+- its exported raw board must differ from the reference presentation, even
+  though deduplication and evidence retain the same canonical identity; and
+- reference records are used solely as mining and release-test inputs.
+
+Editorial references influence only candidate search and collision checks.
+Published puzzle copy is independently generated from certified board
+evidence and limited to concise Sanmill-authored prompts and solution
+annotations.
+
+Perfect DB analysis explains why these reference sets differ from a generic
+forced-win collection. Of the 36 ordinary prompt roots, 17 are wins,
+18 are draws and one is a loss for the side to move. The eight sheet studies
+are wins. Eight paired prompts move only one stone yet cross a W/D/L
+boundary. The recurring selection signals are therefore:
+
+- six- or seven-piece attacking constructions against four defenders;
+- comparison of near-identical positions rather than an isolated tactic;
+- a unique drawing resource, flying-phase defence or blockade;
+- swing mills, double mills, mill redundancy and ring-exchange structure;
+- quiet or counter-intuitive first turns, including a tempting mill which
+  fails; and
+- theoretically drawn positions in which one move creates the strongest
+  practical pressure.
+
+These observations are discovery priors, not automatic quality labels. The
+first reproducible review-profile run produced 19 independent forced-win
+review candidates: eight 6v4, eight 7v4 and three against a flying defender.
+Eighteen
+exercise flying somewhere in the certified line; the set includes eight
+greedy-mill traps, seven quiet-move studies, two capture-choice studies, one
+immobilisation and one double mill. A separate one-stone perturbation miner
+produced 80 broad W/D/L contrast pairs across 3v4, 4v3, 6v4 and 7v4 sectors.
+A low-mobility 4v3 pass added ten sharper pairs in which the drawing position
+has exactly one drawing turn: three W/D contrasts and seven D/L contrasts.
+All 90 were checked against the then-current 127 roots and every editorial
+reference record. They remain unreviewed files under `out/`; none of that
+separate contrast set was silently added to the application.
+
+## 1.3 Engine-error records as a discovery prior
+
+The compact correction patch is not itself a puzzle database: its canonical
+keys do not retain the original FEN presentation, and its corrective child
+identifies an engine repair rather than a complete puzzle solution. The
+reproducible FEN-bearing JSONL records used to build that patch are useful,
+however. Each record states that the configured engine made a measured W/D/L
+error, together with its search depth and propagated reach mass. This is
+stronger candidate evidence than an arbitrary legal-shaped sample, but it is
+still only a discovery prior.
+
+The Rust puzzle command can now stream those JSONL files without loading the
+corpus into memory. It validates each FEN with the production rules, removes
+terminal and pending-removal roots, canonicalises all board symmetries, keeps
+a bounded ranked heap per phase/material shape and schedules small
+sector-local blocks for Perfect DB certification. The source files receive a
+content manifest. Source severity, depth, mass and trap score are retained as
+audit metadata; none is treated as proof.
+
+The advanced review profiles impose additional aesthetic proxies:
+
+- exactly one shortest complete first turn;
+- several plausible alternatives, including a minimum number which lose the
+  win rather than merely winning more slowly;
+- a quiet shortest first action;
+- failure of shallow depth-2/4 probes, or of every depth-2/4/6/8 probe for
+  the expert tier;
+- a bounded exported equal-length solution set, normally at most 32 lines;
+  and
+- exclusion of the existing Sanmill pack and all recorded editorial roots
+  under the full ring-16 symmetry group.
+
+All profile outputs are explicitly marked unofficial review packs. A selected
+batch may be embedded in the built-in asset for prerelease review only when it
+retains an `expert-pending` batch marker and the package remains unofficial.
+Promotion from that review state is a separate, deliberate release step after
+specialist approval and final collision tests.
+
+The source `trap_score` combines W/D/L severity with log-scaled reach mass. It
+does **not** measure surprise, visual concealment or teaching value. A
+separate hidden-trap profile therefore requires an immediate mill-forming
+mistake, a quiet winning turn and failure of every shallow probe; its title
+and first textual hint do not disclose the trap.
+
+Six opt-in strategy-led profiles add narrower structural requirements to
+the same engine-error corpus. They search for deliberately permitting an
+opposing mill, compressing movement mobility, vacating a four-way junction
+to gain control elsewhere, and creating a new recovery link to an existing
+mill. Two further profiles require a landing piece to support perpendicular
+open mills, or a move between adjacent rings to create a new open mill.
+These ideas are implemented as exact Rust predicates rather than text
+matching. Every equally short winning first turn must satisfy the selected
+predicate, and Perfect DB must still certify the win. The names are
+provisional working labels; a matching position is only a review candidate,
+not proof that the idea is clear or aesthetically worthwhile.
+
+For the advanced placement profile, at least twelve primary placements must
+already have occurred, corresponding to six complete alternating rounds.
+Earlier positions are not declared worthless: blockades, tempo and paired
+threats may still support a foundations curriculum. They are simply not
+promoted as advanced examples of the familiar advice against greedy early
+captures.
+
+## 1.4 Strategy-led extension pilot
+
+The six new predicates were exercised against the same FEN-bearing
+engine-error corpus. Before the run, the collision input was rebuilt from the
+then-current 157-puzzle application asset and all three version-controlled
+editorial records. The resulting 213 raw FENs formed 207 distinct ring-16
+classes. This caught one candidate which an older, 127-puzzle exclusion run
+would have repeated from the 30-puzzle embedded review batch.
+
+From 20,000 ranked source candidates per profile, Perfect DB and the
+publication gates certified ten mobility-squeeze, ten junction-release, two
+mill-recovery, two right-angle-threat and ten ring-transfer records. Four
+positions satisfied two requested predicates, leaving 30 distinct roots from
+34 rows. The allow-mill profile found structural matches but no position
+survived the complete strategy-tree, contrast and distance gates. An
+expanded 100,000-root pass was also left empty rather than filling a theme
+quota with weaker material.
+
+CP-SAT selected a ten-position supplementary review set: two
+mobility-squeeze, three junction-release, one mill-recovery, one
+right-angle-threat and three ring-transfer candidates, balanced five–five by
+side to move. All ten have different first actions.
+In addition to exact ring-16 and solver-colour-normalised deduplication, the
+selector required at least four differing coloured points under the closest
+symmetry, both within the shortlist and against the current application and
+editorial-reference roots. This reference-distance pass removed eight
+near-variants from the 34-row pool; there were no additional exact
+colour-exchanged collisions. The shortlist is embedded as a second
+`expert-pending` application batch for blind specialist review. A
+deterministic Markdown renderer produces diagrams first and places one
+Perfect DB-ordered line and the provisional machine label in a separate
+answer key.
 
 # 2. Semantics fixed for mining
 
@@ -104,7 +390,12 @@ D^*(s)
 \end{aligned}
 $$
 
-> **Forced defence tree.** Every relevant defender reply is represented, not merely one principal variation.
+> **Forced defence tree.** Every relevant defender reply belongs in the
+> machine evidence record. The reviewer-facing view shows one deterministic
+> principal variation and the number of alternatives. The product asset may
+> retain a bounded set of equal-length lines so that later equally short
+> attacking choices are accepted; a candidate which exceeds the profile cap
+> is rejected. This compact validation set is not a serialised proof tree.
 
 Every member of $\operatorname{ShortestWinningTurns}(s)$ is a correct solution, including at the first move. A member of $\operatorname{SlowerWinningTurns}(s)$ is not accepted as completion of a shortest-win puzzle, but the interface should acknowledge that it still wins and invite the player to find the faster solution. A turn with non-winning outcome receives the ordinary incorrect response. The database’s raw StrictSteps value is retained alongside the derived logical-ply and public move counts.
 
@@ -149,6 +440,21 @@ Small no-hand material sectors can be enumerated through the exact symmetry-redu
 
 Broad random sampling remains necessary in the large state space, but it should be stratified. A deterministic sampler should allocate budgets by phase, on-board material, pieces in hand, side to move, flying status, database distance band and coarse mobility. Within each stratum, reproducible pseudo-random seeds permit exact reruns. Sampling weights should be recorded rather than hidden in code.
 
+The replay pilot uses the following discovery bands. They are workload and
+curriculum strata, not correctness gates:
+
+| **Band** | **Annotated distance prior** | **Typical review emphasis** |
+|----------|------------------------------|-----------------------------|
+| **Short** | `1–15` | Immediate tactics and compact conversions. |
+| **Medium** | `16–31` | Multi-stage plans and sustained mill pressure. |
+| **Long** | `32+` | Strategic squeezes, blockade, flying defence and endgame conversion. |
+
+A long distance does not make a candidate unsuitable. The publication test is
+whether its theme remains intelligible, its shortest first turn is meaningful
+and its reviewer-facing principal variation is usable. In particular,
+immobilisation candidates must not be discarded merely because the final
+blockade lies beyond distance 15.
+
 - Oversample rare tactical circumstances—such as a forced win with material deficit—while retaining enough ordinary positions for comparison.
 
 - Cap acceptance from any one database sector before pack selection, so the evidence pool is not dominated by a conveniently dense region.
@@ -189,6 +495,30 @@ $$
 ## 5.4 Replay- and expert-derived candidates
 
 Played games, annotated studies and expert submissions provide a different and valuable prior: the position has a natural context. Every imported game must be replayed by the current Rust rules, normalised to the selected variant and re-certified by Perfect DB. Frequency is not correctness, and a famous position is not exempt from complete-turn validation. The original source and attribution should remain in provenance.
+
+For large raw corpora, repeated JSONL scans are the wrong abstraction. The
+implemented Human Replay Index normalises each source game once into two
+SQLite tables: an anonymised game record and its ordered complete turns.
+Opening turns are retained for replay, while only post-placement movement
+roots receive HumanDB-compatible `state_key` and `canonical_notation` lookup
+fields. This avoids both repeated parsing and a needlessly large opening
+lookup index.
+
+The index deliberately stores no player name, account identifier, rating or
+free text. A maintainer can trace a record through its exact source-row
+SHA-256, relative source file and line number. The database is a derived
+candidate index, not proof: its aggregate HumanDB join is followed by a legal
+Rust/TGF replay, a root-position equality check, a legal recorded-turn check
+and a fresh Perfect DB evaluation.
+
+Presentation variation is also separated from identity. One deterministic
+pseudo-random member of Sanmill's 16 board automorphisms transforms the
+history, root and recorded turn at export. Deduplication still uses the
+canonical 16-transform root, so presentation changes do not multiply one
+source puzzle into several apparent examples. If that first deterministic
+choice reproduces a replay reference presentation, extraction advances
+through the same orbit until the raw board differs. If no distinct presentation
+exists because of a position’s stabiliser, the candidate is rejected.
 
 ## 5.5 Symmetry and model enumeration
 
@@ -305,7 +635,33 @@ Run the ordinary Sanmill search at controlled depths and seeds. Record the first
 
 ## 9.3 Tactical and strategic theme features
 
-A tactical or strategic theme is a recurring idea that explains why a solution works. Candidate themes include quiet moves, delayed mills, double threats, opening and closing mills, forced capture choice, material sacrifice, blockade or immobilisation, tempo transfer, flying-stage geometry, and a tempting immediate mill that fails. Detectors can be implemented in Rust or prototyped as SMT/ASP predicates, but their labels are provisional. The computer may flag a possible pattern; specialists should name, merge or reject themes after seeing actual positions.
+A tactical or strategic theme is a recurring idea that explains why a
+solution works. Candidate themes include quiet moves, delayed mills, double
+threats, opening and closing mills, forced capture choice, material
+sacrifice, blockade or immobilisation, tempo transfer, flying-stage geometry,
+and a tempting immediate mill that fails. Detectors can be implemented in
+Rust or prototyped as SMT/ASP predicates, but their labels are provisional.
+The computer may flag a possible pattern; specialists should name, merge or
+reject themes after seeing actual positions.
+
+The current Rust filter has six additional strategy-led predicates. They
+are deliberately conservative and inspect the complete first turn:
+
+| **Working label**       | **Exact first-turn requirement** |
+|-------------------------|----------------------------------|
+| **Allow mill**          | A quiet winning turn leaves an opposing open mill which was already reachable, does not occupy its target, and leaves the opponent at least one legal mill-closing action. |
+| **Mobility squeeze**    | A quiet movement turn cuts non-flying defender mobility by at least two actions and at least 25 per cent, without merely ending the game or reducing mobility to zero. |
+| **Junction release**    | The winning piece leaves a degree-four point for a lower-degree point, was not leaving its own formed mill, and the turn reduces opposing mobility. |
+| **Mill recovery**       | A quiet move from outside a formed mill creates a new adjacent feeder link to one of the side’s existing mills. |
+| **Right-angle threat**  | The quiet landing point belongs to two different open mill lines, one horizontal and one vertical, with two distinct closing targets. |
+| **Ring transfer**       | A quiet move crosses one ring boundary and creates a new open-mill target through its destination. |
+
+These predicates describe visible board changes only. They do not assert
+that the offered mill is the defender’s best reply, that every mobility
+reduction is instructive, or that a feeder link will be used in the displayed
+line. Those are reviewer questions. Requiring every equally short winning
+first turn to match the same predicate prevents a labelled theme from being
+an incidental feature of only one interchangeable solution.
 
 | **Expert review dimension** | **Suggested question**                                                       | **Machine evidence**                                         |
 |-----------------------------|------------------------------------------------------------------------------|--------------------------------------------------------------|
@@ -321,6 +677,13 @@ A tactical or strategic theme is a recurring idea that explains why a solution w
 The certified pool should be much larger than the published pack. Choosing candidates greedily as they are found makes the result depend on enumeration order and often over-represents common sectors or themes. CP-SAT converts editorial intentions into an auditable global selection problem.
 
 For each certified candidate $i$, introduce a Boolean variable $x_i$. Hard constraints set the pack size and quotas by difficulty, phase, material, reachability and variant, with one position per symmetry class, sector caps and near-duplicate exclusions. Theme balance should initially be a soft objective until experts have validated the vocabulary against real positions. The objective rewards expert score, theme clarity and evidence completeness while penalising similarity.
+
+Exact deduplication first canonicalises the 16 board transformations. A
+second key normalises White and Black to **solver** and **defender**, so a
+colour-exchanged copy with the corresponding side to move cannot be selected
+twice. An optional minimum-position-distance constraint counts differing
+solver-coloured and defender-coloured points under the closest symmetry; it
+is a diversity gate, not a game-theoretic metric.
 
 $$
 x_i \in \{0,1\},
@@ -401,19 +764,34 @@ The pipeline should be fail-closed and deterministic. A candidate passes only wh
 
 - A clean-machine generation run should verify dependency pinning, licence notices, database manifest and byte-for-byte deterministic output.
 
+- Generated JSON, FEN, manifest and Markdown artefacts use UTF-8 with explicit
+  LF line endings, so their recorded SHA-256 values do not depend on the host
+  operating system’s newline convention.
+
 # 13. Staged implementation for Sanmill
 
 The method can be introduced incrementally around the existing tgf-cli generator. The first useful improvement does not require a new solver: it requires stronger logical-turn certification and a persistent evidence pool.
 
-| **Stage**                    | **Engineering work**                                                                                                 | **Review milestone**                                         |
-|------------------------------|----------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
-| **0 — policy codification**  | Encode the confirmed complete-turn, shortest-solution, distance, reachability and variant policies.                  | This expert-reviewed decision record is versioned.            |
-| **1 — evidence pool**        | Refactor generation into candidate mining and certification; write deterministic JSON Lines evidence.                | Existing generator results can be regenerated and compared.  |
-| **2 — logical-turn proof**   | Use the history-aware all-logical-turn outcome API; export exact strategy trees, official lines and optional human lines separately. | Experts inspect a small, fully evidenced sample.      |
-| **3 — reachability**         | Add replay certificates and optional bounded/reverse search; label composed and replay-backed positions.             | Confirm labels and evidence on a pilot sample.                |
-| **4 — constraint discovery** | Add optional Z3 or MiniZinc candidate sources behind a plain-file interface; verify against Rust.                    | Compare yield and theme quality with stratified sampling.    |
-| **5 — pack selection**       | Add CP-SAT selection with versioned quotas, similarity constraints and alternative near-optimal packs.               | Experts choose the editorial policy and review alternatives. |
-| **6 — release**              | Export the structured asset, archive evidence, notices, manifests and deterministic build instructions.              | Final expert approval and release digest.                    |
+The current implementation completes Stage 0, the product-facing subset of
+Stage 2, and pilot implementations of Stages 3, 4 and 5. Complete root turns
+are classified, official lines use exact delay-defeat defence, logical-turn
+move counts reach the Flutter client, and a slower win receives encouraging
+non-completion feedback. Z3 proposals cross a plain JSON boundary and are
+independently checked in Rust; CP-SAT then selects a balanced subset without
+making any correctness claim. HumanDB source games cross a separate,
+anonymised SQLite/replay boundary and are independently replayed before
+Perfect DB certification. A persistent full proof-evidence pool and complete
+strategy-tree sidecars remain staged work.
+
+| **Stage**                    | **Status**             | **Engineering work**                                                                                                 | **Review milestone**                                         |
+|------------------------------|------------------------|----------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
+| **0 — policy codification**  | Implemented            | Encode the confirmed complete-turn, shortest-solution, distance, reachability and variant policies.                  | This expert-reviewed decision record is versioned.            |
+| **1 — evidence pool**        | Pending                | Refactor generation into candidate mining and certification; write deterministic JSON Lines evidence.                | Existing generator results can be regenerated and compared.  |
+| **2 — logical-turn proof**   | Product subset complete | Use the history-aware all-logical-turn outcome API; export exact strategy trees, official lines and optional human lines separately. | Experts inspect a small, fully evidenced sample.      |
+| **3 — reachability**         | Replay pilot implemented | Build the anonymised replay index, retain transformed histories and label composed and replay-backed positions separately. | Review the 13 real-game missed-win positions and provenance. |
+| **4 — constraint discovery** | Pilot implemented      | Accept Z3-generated candidates behind a validated plain-file interface; re-evaluate themes and legality in Rust.      | Review the five-theme pilot for naturalness and teaching value. |
+| **5 — pack selection**       | Pilot implemented      | Use deterministic CP-SAT selection with symmetry, side, difficulty, topic and diversity constraints.                 | Experts review the selected pack and the declared quotas.     |
+| **6 — release**              | Partly implemented     | Export the structured curriculum asset; archive full evidence, notices, manifests and deterministic build instructions. | Final expert approval and release digest.                  |
 
 A practical PC workflow could expose four commands: puzzle-mine (candidate stream), puzzle-certify (Perfect DB evidence), puzzle-select (CP-SAT editorial model) and puzzle-export (stable Sanmill format). These names are illustrative; the important boundary is that each stage consumes immutable files, records its configuration and can be rerun independently.
 
@@ -455,15 +833,39 @@ The following matters remain editorial rather than semantic and should be calibr
 - which theme and difficulty targets become hard pack quotas rather than soft preferences;
 - attribution requirements for database-, game- and expert-derived material.
 
-> **Next outcome.** Generate a small pilot with full machine certificates and concise reviewer cards. Use blind specialist scoring to refine theme vocabulary, difficulty bands and pack balance before committing to a large release.
+> **Next outcome.** Blind-review the 40 embedded engine-error-corpus
+> candidates and the resulting 167-puzzle curriculum order. Retain the
+> earlier 15 constraint-directed compositions and 13 replay-backed human
+> missed wins as calibration material. Use specialist scoring to refine
+> theme names, difficulty bands, long blockade presentation and pack balance.
+> Full machine certificate sidecars should be added before describing the
+> wider pack as an evidence-complete release.
 
 # Appendix A. Sanmill implementation touchpoints
 
 - `crates/tgf-cli/src/mill_puzzle/mod.rs` — existing offline Perfect DB puzzle generator, filters, deduplication and export.
 
-- `crates/tgf-cli/src/mill_puzzle/sampler.rs` — broad legal-shaped bitboard sampling; currently does not prove game-tree reachability.
+- `crates/tgf-cli/src/mill_puzzle/candidate_input.rs` — validated plain-JSON boundary for solver-generated candidates and solver provenance.
 
-- `crates/tgf-cli/src/mill_puzzle/solver.rs` — solution-line construction; distinguishes database play from heuristic representative defence.
+- `crates/tgf-cli/src/mill_puzzle/mine_entry_input.rs` — bounded-memory,
+  symmetry-aware adapter from FEN-bearing engine-error JSONL records to the
+  exact puzzle-certification pipeline.
+
+- `crates/tgf-cli/src/mill_puzzle/motifs.rs` — Rust-side predicates applied
+  to every shortest complete first turn for the five constraint-directed
+  pilot themes and six strategy-led review themes.
+
+- `crates/tgf-cli/src/mill_puzzle/sampler.rs` — broad legal-shaped bitboard
+  sampling with separate solver/defender material ranges; currently does not
+  prove game-tree reachability.
+
+- `crates/tgf-cli/src/mill_puzzle/solver.rs` — official line construction using fastest database attack and delay-defeat database defence over complete logical turns.
+
+- `crates/tgf-cli/src/mill_replay_index/` — bounded-parallel Rust builder for
+  the anonymised HumanDB replay SQLite sidecar and its co-located build record.
+
+- `src/ui/flutter_app/lib/puzzle/pages/puzzle_page.dart` — shortest-win
+  completion policy and encouraging feedback for slower winning lines.
 
 - `crates/perfect-db/src/mill.rs` — history-aware complete-logical-turn choices and all-turn outcome enumeration.
 
@@ -473,15 +875,95 @@ The following matters remain editorial rather than semantic and should be calibr
 
 - `src/ui/flutter_app/lib/puzzle/services/built_in_puzzles.dart` — offline-generated static pack loading with no runtime database dependency.
 
-- `docs/PUZZLE_FORMAT.md` — versioned structured puzzle, solution and move format.
+- `src/ui/flutter_app/tool/merge_puzzle_packs.dart` — symmetry-aware pack merge, curriculum classification and progressive ordering.
 
-# Appendix B. Suggested pilot
+- `scripts/generate_mill_smt_candidates.py` — pinned Z3 Boolean/pseudo-Boolean candidate model and deterministic enumeration.
 
-Before generating a full release pack, produce a 60-position pilot: 20 exhaustively enumerated small-sector studies, 20 stratified large-sector samples and 20 constraint-directed or replay-derived positions. Require full complete-turn certificates. Present experts with anonymised diagrams in random order, one official shortest line, an equally-short-alternative count and the composed/replay-backed label. Compare correctness, naturalness, clarity, surprise, economy and teaching value by source. The pilot should test whether constraint-directed synthesis improves quality or merely increases novelty. It should also calibrate candidate theme names and search features against human judgements before theme quotas or automatic difficulty bands are published. Use the matched standard rules for the baseline; add a Russian-rules sample only if compatibility and exact coverage are already available.
+- `scripts/select_mill_puzzles_cp_sat.py` — deterministic CP-SAT editorial selector over already certified candidates.
+
+- `scripts/build_mill_editorial_collisions.py` — editorial-reference and
+  existing-pack collision-input preparation.
+
+- `crates/tgf-cli/testdata/puzzle_exclusions/mill_editorial_baseline.fen` —
+  version-controlled editorial collision roots used by the non-duplication
+  test.
+
+- `crates/tgf-cli/testdata/puzzle_exclusions/mill_editorial_non_replay.fen` —
+  editorial roots without explicit replay provenance.
+
+- `crates/tgf-cli/testdata/puzzle_exclusions/mill_editorial_replay.fen` —
+  replay-attributed editorial roots and links, subject to replay and
+  different-presentation gates rather than a general allow-list.
+
+- `scripts/extract_human_game_puzzle_candidates.py` — indexed HumanDB
+  distance-band query, reference-aware deterministic presentation
+  and replay-candidate package export.
+
+- `scripts/mine_mill_review_candidates.py` — reproducible 6v4, 7v4,
+  flying-defence, precision-trap and long-endgame forced-win review profiles.
+
+- `scripts/mine_mill_engine_blunder_candidates.py` — reproducible
+  engine-error-corpus profiles for balanced quiet play, material odds,
+  flying defence and post-six-round placement, plus opt-in allow-mill,
+  mobility-squeeze, junction-release, mill-recovery, right-angle-threat and
+  ring-transfer searches, with optional parallel profile execution. It fails
+  closed if the supplied collision record does not include every root in the
+  current built-in pack.
+
+- `scripts/mine_mill_outcome_contrast_studies.py` — persistent Rust/TGF
+  data-query client for one-stone W/D/L contrast pairs and unique draw-saving
+  candidates which do not yet fit the forced-win application format.
+
+- `scripts/merge_mill_review_candidates.py` — deterministic promotion of a
+  certified CP-SAT shortlist into the application asset, including review
+  provenance, curriculum classification and an idempotent batch marker.
+
+- `scripts/render_mill_puzzle_review_pack.py` — deterministic, blind
+  Typora-compatible Markdown diagrams with a separate one-line answer key
+  and no HTML or CSS. It also checks that optimal lines match the public
+  solver-move distance and marked slower wins are genuinely longer.
+
+- `scripts/build_human_replay_index.py` — independent Python reference
+  builder retained for small Rust/Python schema and canonicalisation parity
+  checks; the Rust command is the production full-corpus path.
+
+- `docs/HUMAN_REPLAY_INDEX.md` — versioned purpose, privacy, schema,
+  symmetry, rebuild and traceability contract for the replay database.
+
+- `docs/PUZZLE_FORMAT.md` — versioned structured puzzle, solution, move and
+  replay-provenance format.
+
+# Appendix B. Pilot review package
+
+The embedded review package comprises 15 earlier constraint-directed
+compositions, 13 replay-backed human missed wins and 40 pending
+engine-error-corpus candidates in a 167-puzzle application asset. The
+constraint subset contains three examples of each pilot theme and spans all
+five public difficulty bands. The replay subset contains three short, five
+medium and five long positions, including two immobilisation studies. The
+first engine-error shortlist is balanced 15–15 by side to move. The
+strategy-theme supplement is balanced five–five, covers five additional
+working topics and applies both internal and reference-distance diversity
+gates. They are retained as separate traceable `expert-pending` batches.
+Reviewers should receive anonymised diagrams in curriculum order and,
+separately, in random order, with one official shortest line, the
+equally-short-first-turn count and the appropriate `source:composed` or
+`source:replay-backed` label. They should score correctness, naturalness,
+clarity, surprise, economy and teaching value without being told whether a
+composition was found by broad sampling or Z3-directed search.
+
+This compact pilot tests the new machinery; it does not replace the broader
+comparative study originally proposed. Before a large evidence-complete
+release, retain the target of 60 independently reviewed positions: 20
+exhaustively enumerated small-sector studies, 20 stratified large-sector
+samples and 20 constraint-directed or replay-derived positions. Require full
+complete-turn certificate sidecars for that study. Use matched Standard rules
+for the baseline; add a Russian-rules sample only when implementation
+compatibility and exact database coverage are both recorded.
 
 # Appendix C. Reference and licence notes
 
-External tool descriptions below refer to official project documentation current on 27 July 2026. Licence notes are concise engineering indicators, not legal advice; release preparation should verify the exact versions and redistributed components.
+External tool descriptions below refer to official project documentation current on 28 July 2026. Licence notes are concise engineering indicators, not legal advice; release preparation should verify the exact versions and redistributed components.
 
 1.  [Sanmill repository](https://github.com/calcitem/Sanmill). AGPL-3.0 project source and implementation baseline.
 

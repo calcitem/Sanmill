@@ -15,6 +15,10 @@ enum ValidationResult {
   /// Solution is correct
   correct,
 
+  /// The line still wins, but takes more logical turns than the shortest
+  /// accepted solution.
+  slowerWin,
+
   /// Solution is wrong
   wrong,
 
@@ -122,9 +126,15 @@ class PuzzleValidator {
     // correct.
     final PuzzleSolution? matchedSolution = _findMatchingSolution();
     if (matchedSolution != null) {
+      final bool hasExplicitOptimal = puzzle.solutions.any(
+        (PuzzleSolution solution) => solution.isOptimal,
+      );
+      final bool isSlower = hasExplicitOptimal && !matchedSolution.isOptimal;
       return ValidationFeedback(
-        result: ValidationResult.correct,
-        isOptimal: matchedSolution.isOptimal,
+        result: isSlower
+            ? ValidationResult.slowerWin
+            : ValidationResult.correct,
+        isOptimal: !isSlower,
         moveCount: _playerMoves.length,
       );
     }

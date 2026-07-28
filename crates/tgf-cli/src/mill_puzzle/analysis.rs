@@ -1,18 +1,15 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-// Root-position analysis for puzzle generation: winning/mistake move
-// classification, tempting-trap detection, symmetry-canonical dedup keys,
-// and a heuristic "human difficulty" probe.
+// Root-position analysis for puzzle generation: shortest/slower/non-winning
+// logical-turn classification, tempting-trap detection, symmetry-canonical
+// dedup keys, and a heuristic "human difficulty" probe.
 //
-// The guiding principle (borrowed from the puzzle chapter of Brandwood's
-// "Nine Men's Morris: Strategy") is that a position only makes an
-// interesting puzzle when wrong moves exist *and* look attractive:
-// "Can White play a mill and win?" -- where the answer is often no -- and
-// "all other moves lead to losing trajectories". The helpers below measure
-// exactly those properties so the generator can filter for them.
+// A useful puzzle needs both a precise best continuation and plausible
+// alternatives. The helpers below measure those properties without treating
+// a structural pattern or heuristic search result as proof.
 
-use perfect_db::PerfectMoveChoice;
 use perfect_db::database::PerfectQuery;
 use perfect_db::index::symmetry::{SYMMETRY_COUNT, transform24};
+use perfect_db::{PerfectLogicalTurnChoice, PerfectMoveOrdering};
 use tgf_core::{Action, Game, GameRules, GameStateSnapshot, MoveOrderAlgorithm, MoveOrderContext};
 use tgf_mill::{MillActionKind, MillGame, MillRules};
 use tgf_search::{SearchOptions, SearchPolicy, Searcher};
@@ -25,60 +22,86 @@ use tgf_search::{SearchOptions, SearchPolicy, Searcher};
 /// database-grade precision.
 pub(super) const PROBE_DEPTHS: [i32; 4] = [2, 4, 6, 8];
 
-/// Classification of every legal root move by Perfect DB outcome.
+/// Deterministic work budget for each heuristic difficulty probe.
+///
+/// Perfect DB remains the correctness authority. The search probe is only a
+/// human-difficulty signal, so a fixed node cap prevents one strategically
+/// dense position from stalling an offline generation batch while keeping
+/// repeated runs reproducible.
+pub(super) const PROBE_NODE_LIMIT: u64 = 5_000;
+
+/// Classification of every complete legal root turn by Perfect DB outcome.
 #[derive(Debug, Clone)]
-pub(super) struct RootMoveBreakdown {
-    /// Moves that keep the forced win alive.
-    pub winning: Vec<Action>,
-    /// Legal moves that immediately throw the forced win away (they lead
-    /// to a draw or a loss). These are the puzzle's "error budget": with
-    /// no mistakes available the position solves itself.
-    pub mistake_count: usize,
-    /// At least one mistake closes a mill: the greedy, natural-looking
-    /// capture is exactly the move that spoils the win.
+pub(super) struct RootTurnBreakdown {
+    /// Every complete first turn tied for the shortest forced win.
+    pub shortest_winning: Vec<PerfectLogicalTurnChoice>,
+    /// Complete first turns that still force a win but take longer.
+    pub slower_winning: Vec<PerfectLogicalTurnChoice>,
+    /// Complete first turns that lead only to a draw or loss.
+    pub non_winning_count: usize,
+    /// At least one non-winning turn starts by closing a mill: the greedy,
+    /// natural-looking capture is exactly the choice that spoils the win.
     pub tempting_mill_mistake: bool,
-    /// No winning first move forms a mill immediately, so the solution
-    /// starts with a quiet move -- which humans overlook far more often
-    /// than a capture.
+    /// No shortest winning first turn forms a mill immediately, so the
+    /// solution starts with a quiet move.
     pub quiet_first_move: bool,
 }
 
-/// Classify every legal root move against its Perfect DB outcome.
+impl RootTurnBreakdown {
+    /// Number of legal turns that fail to achieve the shortest forced win.
+    pub fn non_shortest_count(&self) -> usize {
+        self.slower_winning.len() + self.non_winning_count
+    }
+}
+
+/// Classify every complete legal root turn against its Perfect DB outcome.
 ///
-/// `legal` and `outcomes` must be the aligned 1:1 pair produced by
-/// `GameRules::legal_actions` and `all_move_outcomes_with_ordering`.
-pub(super) fn classify_root_moves(
+/// A mill-forming primary action and its compulsory removal remain one
+/// classification unit, so a good primary action followed by a bad capture
+/// cannot be mistaken for a correct solution.
+pub(super) fn classify_root_turns(
     rules: &MillRules,
     snap: &GameStateSnapshot,
-    legal: &[Action],
-    outcomes: &[PerfectMoveChoice],
+    turns: &[PerfectLogicalTurnChoice],
     root_side: i8,
-) -> RootMoveBreakdown {
-    assert_eq!(
-        legal.len(),
-        outcomes.len(),
-        "move outcome enumeration must align 1:1 with legal_actions"
-    );
+) -> RootTurnBreakdown {
+    let best_winning_outcome = turns
+        .iter()
+        .filter(|choice| choice.outcome.wdl() == 1)
+        .map(|choice| choice.outcome)
+        .max_by(|left, right| PerfectMoveOrdering::StrictSteps.compare(*left, *right))
+        .expect("a forced-win root must expose at least one winning logical turn");
 
-    let mut winning = Vec::new();
-    let mut mistake_count = 0usize;
+    let mut shortest_winning = Vec::new();
+    let mut slower_winning = Vec::new();
+    let mut non_winning_count = 0usize;
     let mut tempting_mill_mistake = false;
-    let mut any_winning_mill = false;
-    for (&action, choice) in legal.iter().zip(outcomes) {
-        let closes = closes_mill(rules, snap, action, root_side);
-        if choice.outcome.wdl() == 1 {
-            winning.push(action);
-            any_winning_mill |= closes;
-        } else {
-            mistake_count += 1;
+    let mut any_shortest_winning_mill = false;
+    for choice in turns {
+        assert!(
+            !choice.actions.is_empty(),
+            "a complete logical turn must contain at least one action"
+        );
+        let closes = closes_mill(rules, snap, choice.actions[0], root_side);
+        if choice.outcome.wdl() != 1 {
+            non_winning_count += 1;
             tempting_mill_mistake |= closes;
+        } else if PerfectMoveOrdering::StrictSteps
+            .compare(choice.outcome, best_winning_outcome)
+            .is_eq()
+        {
+            shortest_winning.push(choice.clone());
+            any_shortest_winning_mill |= closes;
+        } else {
+            slower_winning.push(choice.clone());
         }
     }
 
-    RootMoveBreakdown {
-        quiet_first_move: !winning.is_empty() && !any_winning_mill,
-        winning,
-        mistake_count,
+    RootTurnBreakdown {
+        quiet_first_move: !shortest_winning.is_empty() && !any_shortest_winning_mill,
+        shortest_winning,
+        slower_winning,
+        non_winning_count,
         tempting_mill_mistake,
     }
 }
@@ -87,7 +110,12 @@ pub(super) fn classify_root_moves(
 /// keeps the move and owes a removal. This is the "tempting" move shape:
 /// closing a mill and capturing looks like progress even when the database
 /// says it throws the win away.
-fn closes_mill(rules: &MillRules, snap: &GameStateSnapshot, action: Action, mover: i8) -> bool {
+pub(super) fn closes_mill(
+    rules: &MillRules,
+    snap: &GameStateSnapshot,
+    action: Action,
+    mover: i8,
+) -> bool {
     if action.kind_tag == MillActionKind::Remove as i16 {
         return false;
     }
@@ -124,13 +152,53 @@ pub(super) fn canonical_symmetry_key(query: &PerfectQuery) -> u64 {
     best
 }
 
-/// Search options shared by the opponent model and the difficulty probe:
-/// a deterministic, no-frills PVS at full skill, matching how the in-app
-/// engine plays a position out.
+/// Canonical editorial-comparison key with the solver normalised to White.
+///
+/// The regular generation key deliberately keeps colours distinct because
+/// side to move and hand counts are part of a puzzle's identity. Editorial
+/// collision checks are stricter: the same solver/defender structure remains
+/// recognisable when every colour and the side to move are exchanged.
+#[cfg(test)]
+pub(super) fn canonical_solver_symmetry_key(query: &PerfectQuery) -> u64 {
+    let (solver, defender, solver_in_hand, defender_in_hand) = if query.side_to_move == 0 {
+        (
+            query.white_bits,
+            query.black_bits,
+            query.white_in_hand,
+            query.black_in_hand,
+        )
+    } else {
+        (
+            query.black_bits,
+            query.white_bits,
+            query.black_in_hand,
+            query.white_in_hand,
+        )
+    };
+    assert!(
+        solver_in_hand < 16 && defender_in_hand < 16,
+        "hand counts must fit the 4-bit key fields"
+    );
+
+    let mut best = u64::MAX;
+    for op in 0..SYMMETRY_COUNT as u8 {
+        let solver = u64::from(transform24(op, solver));
+        let defender = u64::from(transform24(op, defender));
+        let key = solver
+            | (defender << 24)
+            | (u64::from(solver_in_hand) << 48)
+            | (u64::from(defender_in_hand) << 52);
+        best = best.min(key);
+    }
+    best
+}
+
+/// Search options for the difficulty probe: a deterministic, no-frills PVS
+/// at full skill, matching how the in-app engine examines a position.
 pub(super) fn heuristic_search_options() -> SearchOptions {
     SearchOptions {
         depth_extension: true,
-        node_limit: None,
+        node_limit: Some(PROBE_NODE_LIMIT),
         time_limit_ms: None,
         allow_null_move: false,
         shuffle_root: false,
@@ -154,9 +222,10 @@ pub(super) fn heuristic_search_options() -> SearchOptions {
 /// move -- the puzzle then requires database-grade precision to solve, the
 /// strongest possible difficulty signal.
 pub(super) fn shallowest_solving_depth(
+    rules: &MillRules,
     game: &MillGame,
     snap: &GameStateSnapshot,
-    winning: &[Action],
+    winning: &[Vec<Action>],
     seed: u64,
 ) -> Option<i32> {
     assert!(
@@ -164,16 +233,32 @@ pub(super) fn shallowest_solving_depth(
         "difficulty probe requires at least one winning root move"
     );
     for &depth in PROBE_DEPTHS.iter() {
-        let mut workbench = game.build_workbench(snap);
-        let mut searcher = Searcher::<MillGame>::new();
-        searcher.set_options(heuristic_search_options());
-        searcher.set_policy(SearchPolicy {
-            quiescence_kind_tag: Some(MillActionKind::Remove as i16),
-            ..Default::default()
-        });
-        searcher.set_random_seed(seed);
-        let result = searcher.search_pvs(&mut workbench, depth);
-        if winning.contains(&result.best_action) {
+        let mut current = *snap;
+        let root_side = current.side_to_move;
+        let mut chosen_turn = Vec::new();
+        loop {
+            let mut workbench = game.build_workbench(&current);
+            let mut searcher = Searcher::<MillGame>::new();
+            searcher.set_options(heuristic_search_options());
+            searcher.set_policy(SearchPolicy {
+                quiescence_kind_tag: Some(MillActionKind::Remove as i16),
+                ..Default::default()
+            });
+            searcher.set_random_seed(seed ^ chosen_turn.len() as u64);
+            let result = searcher.search_pvs(&mut workbench, depth);
+            chosen_turn.push(result.best_action);
+            current = rules.apply(&current, result.best_action);
+            if rules.outcome(&current).kind != tgf_core::OutcomeKind::Ongoing
+                || current.side_to_move != root_side
+            {
+                break;
+            }
+            assert!(
+                chosen_turn.len() < 12,
+                "one Mill logical turn cannot contain twelve actions"
+            );
+        }
+        if winning.contains(&chosen_turn) {
             return Some(depth);
         }
     }

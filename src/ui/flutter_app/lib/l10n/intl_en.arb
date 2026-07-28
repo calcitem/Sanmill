@@ -7128,5 +7128,9 @@
     "bluetoothConnectionFailed": "Bluetooth connection failed. Keep both devices nearby, make sure the host is still waiting, then try again.",
     "@bluetoothConnectionFailed": {
         "description": "User-facing Bluetooth connection failure message without exposing GATT error codes"
+    },
+    "puzzleSlowerWinningLine": "Well done — that still wins, but there is a faster solution. Try again.",
+    "@puzzleSlowerWinningLine": {
+        "description": "Encouraging feedback when a puzzle line wins but takes longer than the shortest solution"
     }
 }

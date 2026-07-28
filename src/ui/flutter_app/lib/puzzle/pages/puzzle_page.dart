@@ -82,6 +82,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
   bool _isSolved = false;
   bool _isAutoPlayingOpponent = false;
   bool _isPlayingSolution = false;
+  bool _slowerWinFeedbackShown = false;
   DateTime _attemptStartedAt = DateTime.now();
 
   // Board symmetry transformation state.
@@ -346,6 +347,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     controller.gameInstance.gameMode = GameMode.puzzle;
     _isSolved = false;
     _isAutoPlayingOpponent = false;
+    _slowerWinFeedbackShown = false;
 
     // Store the starting position for exports and history
     controller.gameRecorder.setupPosition = _transformedPuzzle.initialPosition;
@@ -884,11 +886,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
       // Add move to validator using the move's string representation
       _validator.addMove(latestMove.move);
-
-      // Count only *player* moves so it aligns with optimalMoveCount and hint index.
-      if (humanColor == null || latestMove.side == humanColor) {
-        _moveCountNotifier.value++;
-      }
+    }
+    assert(
+      humanColor != null,
+      'Puzzle human side must be known after loading.',
+    );
+    if (humanColor != null) {
+      _moveCountNotifier.value = _countLogicalMovesForSide(moves, humanColor);
     }
 
     // During solution playback we only want to update internal counters;
@@ -922,20 +926,41 @@ class _PuzzlePageState extends State<PuzzlePage> {
     {
       final PuzzleSolution? matchedSolution =
           _findMatchingPuzzleSolutionFromRecorder();
-      // Some solution lines reach the puzzle goal (e.g. a winning terminal
-      // state) even when the recorder notation does not line up exactly with
-      // the stored solution, or the line finishes with opponent auto-moves.
-      // Treat the goal being achieved as an equivalent success signal so the
-      // completion flow (and repeat-solve feedback) always fires.
-      final bool goalAchieved = _isPuzzleGoalAchievedByTerminalState();
-      if (matchedSolution != null || goalAchieved) {
+      final int moveCount = _activePlayerLogicalMoveCount(controller);
+      final bool hasExplicitOptimal = _transformedPuzzle.solutions.any(
+        (PuzzleSolution solution) => solution.isOptimal,
+      );
+      if (matchedSolution != null &&
+          hasExplicitOptimal &&
+          !matchedSolution.isOptimal) {
+        return _showSlowerWinFeedback(moveCount);
+      }
+      if (matchedSolution != null) {
         final ValidationFeedback feedback = ValidationFeedback(
           result: ValidationResult.correct,
-          isOptimal: matchedSolution?.isOptimal ?? false,
-          moveCount: _activePuzzleMoves(controller).length,
+          isOptimal: true,
+          moveCount: moveCount,
         );
         _onPuzzleSolved(feedback);
         return feedback;
+      }
+
+      // A terminal line may differ from the single display line while still
+      // taking the same minimum number of solver turns. Accept that equal
+      // shortest continuation without requiring the full strategy tree in
+      // the compact app asset.
+      final bool goalAchieved = _isPuzzleGoalAchievedByTerminalState();
+      if (goalAchieved && moveCount == _transformedPuzzle.optimalMoveCount) {
+        final ValidationFeedback feedback = ValidationFeedback(
+          result: ValidationResult.correct,
+          isOptimal: true,
+          moveCount: moveCount,
+        );
+        _onPuzzleSolved(feedback);
+        return feedback;
+      }
+      if (goalAchieved && moveCount > _transformedPuzzle.optimalMoveCount) {
+        return _showSlowerWinFeedback(moveCount);
       }
       if (!autoCheck) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -947,9 +972,27 @@ class _PuzzlePageState extends State<PuzzlePage> {
       }
       return ValidationFeedback(
         result: ValidationResult.inProgress,
-        moveCount: _activePuzzleMoves(controller).length,
+        moveCount: moveCount,
       );
     }
+  }
+
+  ValidationFeedback _showSlowerWinFeedback(int moveCount) {
+    if (!_slowerWinFeedbackShown) {
+      _slowerWinFeedbackShown = true;
+      final S s = S.of(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(s.puzzleSlowerWinningLine),
+          duration: const Duration(seconds: 4),
+          action: SnackBarAction(label: s.tryAgain, onPressed: _resetPuzzle),
+        ),
+      );
+    }
+    return ValidationFeedback(
+      result: ValidationResult.slowerWin,
+      moveCount: moveCount,
+    );
   }
 
   /// Returns true when the active native session has reached a terminal state
@@ -1630,7 +1673,6 @@ class _PuzzlePageState extends State<PuzzlePage> {
     int undone = 0;
 
     while (_activePuzzleMoves(controller).isNotEmpty && undone < maxSteps) {
-      final ExtMove lastMove = _activePuzzleMoves(controller).last;
       final bool ok = await controller.undoNativeMove();
       assert(ok, 'Native puzzle undo failed with a non-empty move history.');
       if (!ok) {
@@ -1638,11 +1680,6 @@ class _PuzzlePageState extends State<PuzzlePage> {
       }
       undone++;
 
-      if (humanColor == null || lastMove.side == humanColor) {
-        if (_moveCountNotifier.value > 0) {
-          _moveCountNotifier.value--;
-        }
-      }
       _lastRecordedMoveIndex--;
       _validator.undoLastMove();
 
@@ -1650,6 +1687,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
           controller.activeSessionSideToMove == humanColor) {
         break;
       }
+    }
+    assert(humanColor != null, 'Puzzle human side must be known before undo.');
+    if (humanColor != null) {
+      _moveCountNotifier.value = _countLogicalMovesForSide(
+        _activePuzzleMoves(controller),
+        humanColor,
+      );
     }
   }
 
@@ -1685,6 +1729,29 @@ class _PuzzlePageState extends State<PuzzlePage> {
   /// can still contain a prior wrong attempt even when [currentPath] is empty.
   List<ExtMove> _activePuzzleMoves(GameController controller) {
     return controller.gameRecorder.currentPath;
+  }
+
+  int _activePlayerLogicalMoveCount(GameController controller) {
+    final PieceColor? humanColor =
+        _puzzleHumanColor ?? controller.puzzleHumanColor;
+    assert(
+      humanColor != null,
+      'Puzzle human side must be known after loading.',
+    );
+    if (humanColor == null) {
+      return 0;
+    }
+    return _countLogicalMovesForSide(
+      _activePuzzleMoves(controller),
+      humanColor,
+    );
+  }
+
+  int _countLogicalMovesForSide(List<ExtMove> moves, PieceColor side) {
+    return moves.where((ExtMove move) {
+      final String notation = move.move.trimLeft().toLowerCase();
+      return move.side == side && !notation.startsWith('x');
+    }).length;
   }
 
   List<String> _activePuzzleMoveNotations(GameController controller) {

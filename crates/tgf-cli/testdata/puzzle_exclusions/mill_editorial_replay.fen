@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# Editorial comparison roots with explicit replay provenance. Composed mining
+# treats them as collisions. Replay-backed export may use the same canonical
+# root only when its raw presentation differs from the recorded reference.
+#
+# The source links make the replay condition independently auditable.
+#
+# Reference 22
+# https://www.playok.com/p/?g=ml11744988#54
+# SHA-256 5056918408c6391451f3f45728fbdd2fff7de53fbf9a1ddb4b8d5ae66997522e
+****@*OO/@**OOO**/*@@@*@O* b m s 6 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference 24
+# https://www.playok.com/p/?g=ml11775540#43
+# SHA-256 a48ef59a33159000ba4138aecd5096c71557bd61fe877aee9f723a3c82efc24b
+O*O@**@@/******O*/******O* w m s 4 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference 25
+# https://www.playok.com/p/?g=ml11785484#70
+# SHA-256 ff8dae09bb768d3b89627c7996968015b3b1407652f33f71917aed21867ccc44
+**@OO***/**@*@O**/***O**** b m s 4 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes

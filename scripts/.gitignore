@@ -25,5 +25,16 @@
 !uci_probe.py
 !compare_engine_perf.py
 !convert_mill_fen_ids.py
+!build_mill_editorial_collisions.py
+!build_human_replay_index.py
+!extract_human_game_puzzle_candidates.py
+!generate_mill_smt_candidates.py
+!mine_mill_engine_blunder_candidates.py
+!mine_mill_review_candidates.py
+!mine_mill_outcome_contrast_studies.py
+!select_mill_puzzles_cp_sat.py
+!merge_mill_review_candidates.py
+!render_mill_puzzle_review_pack.py
+!requirements-puzzle-math.txt
 !build-online-wasm.sh
 !verify-fdroid-online-exclusion.sh

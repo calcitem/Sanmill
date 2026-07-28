@@ -1,0 +1,167 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# Editorial comparison roots recovered from a July 2026 review set. Candidate
+# preparation checks them under all 16 supported board automorphisms.
+#
+# This file contains derived FENs, stable reference labels and one-way audit
+# fingerprints.
+# The complete audited inbox fingerprint is:
+# 0ede6683d2cffac244d7b67c4673f7e8bd7cbeeb1716dd2c670e2e642bde5eb5
+#
+# Reference A-251225
+# SHA-256 6b3d2d16efc63a4a8a3acdafea5067b326c1ccc1f703eead6ca124402dcdb8bf
+***OO**@/*O@*@***/****@*** w m s 3 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-1
+# SHA-256 0cfdd667ff4af14a75117d9384310b75a14c16e40a65f67ce48bdd1daf8fc517
+**@*O***/*@*@OO*O/**@OO*O* w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-2
+# SHA-256 3e1241467561711f8622439673c08fd1874c6a58825ecf739dbca4634cd4dc52
+*@**O**@/@O***OO*/@**OOO** w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-3
+# SHA-256 da8a4ac7060d08442bb608742e8d8a561c1d1be7e09cd445a07817843ac86984
+O**@**O@/**O*@O*O/***@**O* w m s 6 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-4a
+# SHA-256 c5a863daefb19074940d4e68c2e15fdc7d34f13f80c9e27a4d5bf538a53f0434
+*@*****@/@*OOO*OO/@***OO** w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-4b
+# SHA-256 ba191f60175651818c537d0d9d191026abc59dd6c13cc3d377641e8e73be25b4
+*@*****@/@*OOO*OO/@**OO*** w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-6a
+# SHA-256 0a5b54437f48b10252b25682a28d5954f92f0ce3c2fec7d0a92487aa4e564b52
+@@O*O*@*/***O*O**/*O***O@O w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-6b
+# SHA-256 7d8e58dc4da15ca0d47e77422b2f9e1149956798b1f7e6085cd4e18879af4c08
+@*******/*@*O*O*@/@*OOOOO* w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-7a
+# SHA-256 3baf55050b51737056375dfeb3a76b0a69d6c8d0637bc72d6a8199236b249ba5
+***O****/@*@OO**@/O*@*OOO* w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-7b
+# SHA-256 3c05d862f32cd4c77845a7e354ab1664be25669fed7e7f988a6d3b7ac2a8b15a
+***O****/@*@OO*O@/**@*OO*O w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-8a
+# SHA-256 a48e3c9580d4fc98d4842085ac15c8c06d190e087d22b942c96f05e6d0492a5b
+@*@@***@/O**OOO*O/******OO w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-8b
+# SHA-256 dacaf886d647972fa768b0ef3a80adbb29f7af0c19391573292895c36d404376
+@*@@***@/**OOOO*O/******OO w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-9
+# SHA-256 624abdf5ec22a3662af0ae3f4dcb4c57de01d7a21ae0af18d7673ce3b9c529b9
+****O*O*/O*OO*O*O/***@@@@@ w m s 7 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-10
+# SHA-256 d7832d95741afa920d016c56dd8a671e56e5a2ccfaeebe83a6cb58f0d7a83443
+*@**O@**/@@*O*O@*/@***O*@O b m s 5 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-11a
+# SHA-256 15bbc2bf9fe15b92358b6690b1c1d98711fbaa9ff228d1d771b9147ad427c5f0
+@**OOO**/*@*O**O@/@**O**O* w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-11b
+# SHA-256 4205a46e1ef56cb4aafaf193eb7592020e982ec64cf12ed2c50198f9984a0caf
+@***OO**/*@*O**O@/@**O**OO w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-12
+# SHA-256 6568dc16602fe1e42197e9d99eb989140cbcd16db94c8e350caf545170229878
+**@***O*/*@*@*O*O/**@OOOO* w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-13
+# SHA-256 8f31e5678a1abaa0763580b3e5fbb955c61b36ae132f9742403d1c8e54fe8170
+@O*O@O**/**OOOO*@/@******* w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-14a
+# SHA-256 9ebd51c40f93ec2a84befe7eb45032c57e845b8fd7e6d01e59057847431d6c7d
+**@OO**O/**@O*O*O/*@*@**O* w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-14b
+# SHA-256 8343ac48cca52fa45e799e2b321971d497f776c4ea1493023d9a813831180d45
+**@OO*O*/**@O*O*O/*@*@***O w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-15
+# SHA-256 f1c7f81ce53b278aa1d08af1a78df4b70cba7f3c5dd9fe3d492b7229ca02ca72
+****@O**/@***O*O*/@**OO@O* w m s 6 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-16
+# SHA-256 186f56659a18d08d9fba1295e1768abd3f209b10427764cfd1149f9d3f9ceee0
+****@***/O**@****/O@O****@ b m s 3 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-18a
+# SHA-256 b3f43a90caa298c69352fb7b6725ced3d34e3566906e0eb3e81315a7dfbb87c7
+*@*****@/@*OO*OO*/@*O*OO** w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-18b
+# SHA-256 b67bfe649166a67551160a324c1815141ce0abf00b048cc5ce0cadbcf50c8f15
+*@*****@/@*O*OO**/@*OO*OO* w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-19
+# SHA-256 8f9bdedb444e8ede788186b1b442ea690f98add8ef3a61bc09cc13dd709eb3b3
+****@O**/**O****O/*O***@*@ w m s 4 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-20
+# SHA-256 1481f8bd737b9d936eff368cf4721d791903f4d14c682c86cdf4e2bd9a3c3f67
+@*****O*/**@O***O/@*@O**OO w m s 6 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-21
+# SHA-256 220ba5b868af37fad58570fda6d1a22544c7eaec5898a0810ffb457b346d5bd4
+******O*/OOO@*@*@/******** w m s 4 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-23
+# SHA-256 c627cb3044324872ec9a8b419ddbb4767de170ca27844d6090a29e386b064dd4
+OO*****O/**OOOO@*/**@***@@ w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-26
+# SHA-256 1812c7b29dd6a85c4610c793c9173dc4f7298a743b6c6b6d4977e51071ed4a5f
+*OO*O**@/O*@*O@O*/****@O** w m s 7 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-27
+# SHA-256 0fc6f1f99971a1b9fd2ea0e38867ef65f9df06a4d6cecb5a52185df9b14aed8b
+@******@/O@OO*OO*/@***O*** w m s 6 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-28a
+# SHA-256 37b010a395466ee001af29d41388e7aaad6cc09ff28058283435d168d7f84466
+@*O*O***/***OO@@@/@***O*@* w m s 5 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-28b
+# SHA-256 cfd7c9e3dfed9c1e6fd050001926739cdcf1c5a274a249d7a17a9d9176248a42
+@O**O***/***OO@@@/@***O*@* w m s 5 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-29
+# SHA-256 ce25b09a863cd17820e2e3c288a4113bf081cdd01f425956a97a56ea973f4eed
+****O***/******O*/O*@*@O*@ b m s 4 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-study-1.1
+# Sheet SHA-256 e3fa3c068c7e9eb90ecacf6ff30752ef9da08888ae17641ba83239965309213c
+@*****O*/***OO*O*/@*@@**OO w m s 6 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-study-1.2
+@*****OO/***OO*O*/@*@@**O* w m s 6 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-study-2.1
+@*****O*/***OOO**/@*@@O*O* w m s 6 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-study-2.2
+@***O*O*/***OOO**/@*@@**O* w m s 6 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-study-3.1
+# Sheet SHA-256 875642f84f6b9bf31fec1cf01e777b777a5604eda6f103b2d0a442d2f7434a88
+**@***O*/*@*@**OO/**@OO*O* w m s 6 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-study-3.2
+**@OO*O*/*@*@**OO/**@***O* w m s 6 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-study-4.1
+**@***O*/*@*@O*O*/**@OOO** w m s 6 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes
+#
+# Reference B-study-4.2
+**@OOO**/*@*@O*O*/**@***O* w m s 6 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes

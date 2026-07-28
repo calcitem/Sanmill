@@ -442,6 +442,7 @@ void main() {
       const PuzzleSolution solution = PuzzleSolution(
         moves: <PuzzleMove>[
           PuzzleMove(notation: 'a1', side: PieceColor.white),
+          PuzzleMove(notation: 'xd1', side: PieceColor.white),
           PuzzleMove(notation: 'b2', side: PieceColor.black),
           PuzzleMove(notation: 'c3', side: PieceColor.white),
         ],
@@ -449,6 +450,17 @@ void main() {
 
       expect(solution.getPlayerMoveCount(PieceColor.white), 2);
       expect(solution.getPlayerMoveCount(PieceColor.black), 1);
+    });
+
+    test('getPlayerMoveCount supports player-only legacy lines', () {
+      const PuzzleSolution solution = PuzzleSolution(
+        moves: <PuzzleMove>[
+          PuzzleMove(notation: 'a1', side: PieceColor.white),
+          PuzzleMove(notation: 'a4', side: PieceColor.white),
+        ],
+      );
+
+      expect(solution.getPlayerMoveCount(PieceColor.white), 2);
     });
 
     test('equality should work for identical solutions', () {

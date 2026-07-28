@@ -109,9 +109,16 @@ class PuzzleSolution {
     return moves.where((PuzzleMove m) => m.side != playerSide).toList();
   }
 
-  /// Get the number of player moves (for star rating calculation)
+  /// Get the number of complete logical turns by [playerSide].
+  ///
+  /// A mill-forming action and its compulsory removal are stored as two
+  /// [PuzzleMove] entries, but the `x…` removal token does not begin another
+  /// move for "Win in N", hints, ratings, or attempt statistics.
   int getPlayerMoveCount(PieceColor playerSide) {
-    return getPlayerMoves(playerSide).length;
+    return moves.where((PuzzleMove move) {
+      final String notation = move.notation.trimLeft().toLowerCase();
+      return move.side == playerSide && !notation.startsWith('x');
+    }).length;
   }
 
   /// Convert to JSON

@@ -17,6 +17,7 @@ mod mill_h2h_analyze;
 mod mill_mine;
 mod mill_pack;
 mod mill_puzzle;
+mod mill_replay_index;
 mod mill_tune;
 mod mill_uci;
 mod selfplay;
