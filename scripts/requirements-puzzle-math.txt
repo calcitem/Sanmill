@@ -2,5 +2,5 @@
 # into or distributed with the Sanmill application.
 z3-solver==5.0.0.0
 ortools==9.15.6755
-Pillow==11.0.0
+Pillow==12.3.0
 zxing-cpp==3.1.0
