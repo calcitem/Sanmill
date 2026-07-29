@@ -3,7 +3,7 @@
 """Merge a certified CP-SAT review shortlist into Sanmill's built-in pack.
 
 The shortlist must already have been proved by Rust/TGF and Perfect DB and
-selected by ``select_mill_puzzles_cp_sat.py``. This script adds the
+selected by the matching CP-SAT selector. This script adds the
 application-facing curriculum tags, preserves the complete selected
 positions and solution lines, records the pending expert-review batch, and
 keeps all embedded pending-review puzzles in deterministic curriculum order
@@ -19,6 +19,7 @@ import argparse
 import json
 from pathlib import Path
 
+from mill_puzzle_objectives import validate_public_objectives
 from mill_puzzle_similarity import (
     DEFAULT_MINIMUM_POSITION_DISTANCE,
     find_position_conflicts,
@@ -41,6 +42,7 @@ TOPIC_ORDER = (
     "ring-transfer",
     "sacrifice",
     "mobility-squeeze",
+    "draw-save",
     "immobilization",
     "flying-defence",
     "zugzwang",
@@ -69,6 +71,7 @@ TOPIC_MAP = {
     "mill-recovery": "mill-recovery",
     "right-angle-threat": "right-angle-threat",
     "ring-transfer": "ring-transfer",
+    "draw-save": "draw-save",
     "vs-flying": "flying-defence",
     "trap:greedy-mill": "greedy-mill-trap",
     "trap:wrong-mill": "wrong-mill-trap",
@@ -106,6 +109,7 @@ def _replace_classification(tags: list[str], prefix: str, value: str) -> None:
 
 def _curriculum(topic: str, profile: str) -> str:
     if profile in ENDGAME_PROFILES or topic in {
+        "draw-save",
         "immobilization",
         "flying-defence",
         "zugzwang",
@@ -136,9 +140,14 @@ def _selection_records(review: dict) -> tuple[str, dict[str, dict]]:
     if not isinstance(provenance, dict):
         raise ValueError("review package lacks selectionProvenance")
     source = provenance.get("source")
-    if source not in {"engine-blunder", "certified"}:
+    if source not in {
+        "engine-blunder",
+        "certified",
+        "perfect-db-draw-save",
+    }:
         raise ValueError(
-            "review package must be an engine-blunder or certified shortlist"
+            "review package must be an engine-blunder, certified, or "
+            "Perfect DB draw-save shortlist"
         )
     selected = provenance.get("selectedCandidates")
     if not isinstance(selected, list):
@@ -231,20 +240,36 @@ def _curriculum_key(puzzle: dict) -> tuple[int, int, int, int, str]:
     if _one_tag(tags, "progression:", puzzle_id) != expected_progression:
         raise ValueError(f"{puzzle_id} has inconsistent progression")
     _one_tag(tags, "distance-band:", puzzle_id)
-    win_tags = [
-        tag.removeprefix("win-in-")
+    objectives = [
+        tag.removeprefix("objective:")
         for tag in tags
-        if tag.startswith("win-in-")
+        if tag.startswith("objective:")
     ]
-    if len(win_tags) != 1 or not win_tags[0].isdigit():
-        raise ValueError(f"{puzzle_id} must have exactly one numeric win-in tag")
+    if objectives == ["win"]:
+        move_tags = [
+            tag.removeprefix("win-in-")
+            for tag in tags
+            if tag.startswith("win-in-")
+        ]
+    elif objectives == ["hold-draw"]:
+        move_tags = [
+            tag.removeprefix("hold-draw-in-")
+            for tag in tags
+            if tag.startswith("hold-draw-in-")
+        ]
+    else:
+        raise ValueError(f"{puzzle_id} has invalid objective tags {objectives}")
+    if len(move_tags) != 1 or not move_tags[0].isdigit():
+        raise ValueError(
+            f"{puzzle_id} must have exactly one numeric objective-move tag"
+        )
     rating = puzzle.get("rating")
     if not isinstance(rating, int):
         raise ValueError(f"{puzzle_id} has no numeric rating")
     return (
         TOPIC_ORDER.index(topic),
         DIFFICULTY_RANK[difficulty],
-        int(win_tags[0]),
+        int(move_tags[0]),
         rating,
         puzzle_id,
     )
@@ -336,6 +361,12 @@ def main() -> None:
     combined = established + pending_review
     if len({puzzle.get("id") for puzzle in combined}) != len(combined):
         raise ValueError("combined pack contains duplicate puzzle ids")
+    objective_errors = validate_public_objectives(combined)
+    if objective_errors:
+        raise ValueError(
+            "combined pack has inconsistent public objectives:\n"
+            + "\n".join(f"  {error}" for error in objective_errors)
+        )
     conflicts = find_position_conflicts(
         combined,
         minimum_distance=args.min_position_distance,
@@ -367,6 +398,8 @@ def main() -> None:
         raise ValueError("base metadata tags must be a list")
     if selection_source == "engine-blunder":
         _append_unique(metadata_tags, "engine-blunder-corpus")
+    elif selection_source == "perfect-db-draw-save":
+        _append_unique(metadata_tags, "draw-defence")
     else:
         _append_unique(metadata_tags, "perfect-db-certified")
     _append_unique(metadata_tags, "expert-review")

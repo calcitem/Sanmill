@@ -30,9 +30,13 @@
 !extract_human_game_puzzle_candidates.py
 !generate_mill_smt_candidates.py
 !mill_puzzle_similarity.py
+!mill_puzzle_objectives.py
 !audit_mill_puzzle_similarity.py
 !prune_mill_puzzle_similarity.py
 !test_mill_puzzle_similarity.py
+!test_mill_puzzle_objectives.py
+!normalize_mill_puzzle_objectives.py
+!build_mill_draw_review_candidates.py
 !mine_mill_engine_blunder_candidates.py
 !mine_mill_review_candidates.py
 !mine_mill_outcome_contrast_studies.py

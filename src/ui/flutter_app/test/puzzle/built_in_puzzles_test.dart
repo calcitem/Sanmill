@@ -33,11 +33,11 @@ void main() {
       final List<PuzzleInfo> puzzles = await getBuiltInPuzzles();
 
       expect(puzzles, isNotEmpty);
-      expect(puzzles, hasLength(167));
+      expect(puzzles, hasLength(177));
       expect(
         puzzles.any(
           (PuzzleInfo puzzle) =>
-              puzzle.title == 'Win in 5: immobilize the opponent',
+              puzzle.title == 'White · Win in 5: immobilize the opponent',
         ),
         isTrue,
       );
@@ -85,8 +85,11 @@ void main() {
 
     test('player-facing descriptions stay concise and non-technical', () async {
       final List<PuzzleInfo> puzzles = await getBuiltInPuzzles();
-      final RegExp objective = RegExp(
+      final RegExp winObjective = RegExp(
         r'^(White|Black) to move\. Find the forced win in \d+ moves?\.$',
+      );
+      final RegExp drawObjective = RegExp(
+        r'^(White|Black) to move\. Find the only move that preserves the draw; every other legal move loses\.$',
       );
       const List<String> technicalTerms = <String>[
         'Perfect DB',
@@ -98,11 +101,92 @@ void main() {
       ];
 
       for (final PuzzleInfo puzzle in puzzles) {
-        expect(puzzle.description, matches(objective), reason: puzzle.id);
+        expect(
+          puzzle.description,
+          matches(
+            puzzle.category == PuzzleCategory.defend
+                ? drawObjective
+                : winObjective,
+          ),
+          reason: puzzle.id,
+        );
         for (final String term in technicalTerms) {
           expect(puzzle.description, isNot(contains(term)), reason: puzzle.id);
         }
       }
+    });
+
+    test('public objectives agree with every optimal solution', () async {
+      final List<PuzzleInfo> puzzles = await getBuiltInPuzzles();
+      final RegExp winTitle = RegExp(r'^(White|Black) · Win in (\d+)(?::.*)?$');
+      final RegExp drawTitle = RegExp(
+        r'^(White|Black) · Hold the draw(?::.*)?$',
+      );
+      int winCount = 0;
+      int drawCount = 0;
+
+      for (final PuzzleInfo puzzle in puzzles) {
+        final String sideName =
+            puzzle.initialPosition.split(RegExp(r'\s+'))[1] == 'w'
+            ? 'White'
+            : 'Black';
+        final solverSide = puzzle.solutions.first.moves.first.side;
+        expect(solverSide.name, sideName.toLowerCase(), reason: puzzle.id);
+        final Set<int> optimalCounts = puzzle.solutions
+            .where((PuzzleSolution solution) => solution.isOptimal)
+            .map(
+              (PuzzleSolution solution) =>
+                  solution.getPlayerMoveCount(solverSide),
+            )
+            .toSet();
+        expect(optimalCounts, hasLength(1), reason: puzzle.id);
+        final int moveCount = optimalCounts.single;
+        expect(moveCount, greaterThan(0), reason: puzzle.id);
+
+        switch (puzzle.category) {
+          case PuzzleCategory.winGame:
+          case PuzzleCategory.opening:
+            winCount += 1;
+            final RegExpMatch? match = winTitle.firstMatch(puzzle.title);
+            expect(match, isNotNull, reason: puzzle.id);
+            expect(match!.group(1), sideName, reason: puzzle.id);
+            expect(int.parse(match.group(2)!), moveCount, reason: puzzle.id);
+            expect(
+              puzzle.tags.where((String tag) => tag.startsWith('win-in-')),
+              <String>['win-in-$moveCount'],
+              reason: puzzle.id,
+            );
+            expect(puzzle.tags, contains('objective:win'), reason: puzzle.id);
+            expect(puzzle.id, contains('_${moveCount}_'), reason: puzzle.id);
+          case PuzzleCategory.defend:
+            drawCount += 1;
+            final RegExpMatch? match = drawTitle.firstMatch(puzzle.title);
+            expect(match, isNotNull, reason: puzzle.id);
+            expect(match!.group(1), sideName, reason: puzzle.id);
+            expect(moveCount, 1, reason: puzzle.id);
+            expect(
+              puzzle.tags,
+              containsAll(<String>[
+                'objective:hold-draw',
+                'hold-draw-in-1',
+                'unique-draw-save',
+              ]),
+              reason: puzzle.id,
+            );
+          case PuzzleCategory.formMill:
+          case PuzzleCategory.capturePieces:
+          case PuzzleCategory.findBestMove:
+          case PuzzleCategory.endgame:
+          case PuzzleCategory.mixed:
+            fail(
+              '${puzzle.id} has unsupported built-in objective '
+              '${puzzle.category.name}',
+            );
+        }
+      }
+
+      expect(winCount, 167);
+      expect(drawCount, 10);
     });
 
     test('the embedded expert-review batches remain identifiable', () async {
@@ -113,13 +197,13 @@ void main() {
               as Map<String, dynamic>;
       final Map<String, dynamic> metadata =
           package['metadata']! as Map<String, dynamic>;
-      expect(metadata['version'], '1.6.1-review.1');
+      expect(metadata['version'], '1.7.0-review.1');
       expect(metadata['isOfficial'], isFalse);
 
       final List<Map<String, dynamic>> reviewBatches =
           (package['reviewBatches']! as List<dynamic>)
               .cast<Map<String, dynamic>>();
-      expect(reviewBatches, hasLength(3));
+      expect(reviewBatches, hasLength(4));
       expect(
         <String, int>{
           for (final Map<String, dynamic> batch in reviewBatches)
@@ -129,6 +213,7 @@ void main() {
           'engine-blunder-review-selected-30': 30,
           'strategy-theme-review-selected-10': 10,
           'similarity-repair-selected-16': 16,
+          'draw-defence-review-selected-10': 10,
         },
       );
       for (final Map<String, dynamic> batch in reviewBatches) {
@@ -149,7 +234,7 @@ void main() {
                     ),
               )
               .toList();
-      expect(reviewPuzzles, hasLength(56));
+      expect(reviewPuzzles, hasLength(66));
       final Map<String, int> puzzleBatchCounts = <String, int>{};
       for (final Map<String, dynamic> puzzle in reviewPuzzles) {
         final List<dynamic> tags = puzzle['tags']! as List<dynamic>;
@@ -158,7 +243,8 @@ void main() {
             (dynamic tag) =>
                 tag == 'discovery:engine-blunder-corpus' ||
                 tag == 'discovery:smt-z3' ||
-                tag == 'discovery:broad-perfect-db-sampling',
+                tag == 'discovery:broad-perfect-db-sampling' ||
+                tag == 'discovery:outcome-contrast',
           ),
           isTrue,
           reason: puzzle['id']! as String,
@@ -186,6 +272,7 @@ void main() {
         'engine-blunder-review-selected-30': 30,
         'strategy-theme-review-selected-10': 10,
         'similarity-repair-selected-16': 16,
+        'draw-defence-review-selected-10': 10,
       });
     });
 
@@ -209,6 +296,7 @@ void main() {
           'ring-transfer',
           'sacrifice',
           'mobility-squeeze',
+          'draw-save',
           'immobilization',
           'flying-defence',
           'zugzwang',

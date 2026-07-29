@@ -13,10 +13,14 @@ from __future__ import annotations
 import argparse
 import json
 import random
-import re
 import textwrap
 from dataclasses import dataclass
 from pathlib import Path
+
+from mill_puzzle_objectives import (
+    optimal_solver_move_count,
+    validate_public_objectives,
+)
 
 
 FEN_LABELS = (
@@ -100,6 +104,7 @@ THEMES = (
     "immobilization",
     "sacrifice",
     "quiet-move",
+    "draw-save",
     "vs-flying",
     "trap:greedy-mill",
     "trap:wrong-mill",
@@ -176,20 +181,20 @@ def _side_to_move(fen: str) -> str:
     return "White" if fields[1] == "w" else "Black"
 
 
-def _win_distance(puzzle: dict) -> int:
-    title = puzzle.get("title")
-    if not isinstance(title, str):
-        raise ValueError(f"{puzzle.get('id')} has no title")
-    match = re.match(r"Win in ([0-9]+):", title)
-    if match is None:
-        raise ValueError(f"{puzzle.get('id')} has no Win in N title")
-    return int(match.group(1))
-
-
 def _primary_theme(puzzle: dict) -> str:
     tags = puzzle.get("tags")
     if not isinstance(tags, list):
         raise ValueError(f"{puzzle.get('id')} has no tags")
+    topic = next(
+        (
+            tag.removeprefix("topic:")
+            for tag in tags
+            if isinstance(tag, str) and tag.startswith("topic:")
+        ),
+        None,
+    )
+    if topic is not None:
+        return topic
     return next((theme for theme in THEMES if theme in tags), "unclassified")
 
 
@@ -214,7 +219,8 @@ def _validate_solution_distances(puzzle: dict) -> None:
     if not isinstance(fen, str):
         raise ValueError(f"{puzzle.get('id')} has no initialPosition")
     solver_side = _side_to_move(fen).lower()
-    expected = _win_distance(puzzle)
+    expected = optimal_solver_move_count(puzzle)
+    category = puzzle.get("category")
     solutions = puzzle.get("solutions")
     if not isinstance(solutions, list) or not solutions:
         raise ValueError(f"{puzzle.get('id')} has no certified line")
@@ -242,6 +248,11 @@ def _validate_solution_distances(puzzle: dict) -> None:
             raise ValueError(
                 f"{puzzle.get('id')} slower solution {index} is not longer "
                 f"than the public distance {expected}"
+            )
+        if category == "defend" and is_optimal is False:
+            raise ValueError(
+                f"{puzzle.get('id')} draw-defence solution {index} must be "
+                "the certified drawing turn"
             )
         if not isinstance(is_optimal, bool):
             raise ValueError(
@@ -274,6 +285,12 @@ def main() -> None:
         if not isinstance(puzzle, dict):
             raise ValueError(f"{input_path} has a non-object puzzle")
         _validate_solution_distances(puzzle)
+    objective_errors = validate_public_objectives(puzzles)
+    if objective_errors:
+        raise ValueError(
+            "inconsistent public puzzle objectives:\n"
+            + "\n".join(f"  {error}" for error in objective_errors)
+        )
 
     shuffled = list(puzzles)
     random.Random(args.seed).shuffle(shuffled)
@@ -287,11 +304,13 @@ def main() -> None:
         "",
         "Status: unpublished specialist-review material.",
         "",
-        "For each position, find a shortest forced win. One turn means one",
-        "primary action by one player plus any compulsory removal after forming",
-        "a mill. Public `Win in N` counts turns by the solving side; defensive",
-        "replies do not add to N. `W` is White, `B` is Black and `.` is an empty",
-        "point. Theme labels are withheld until the answer key.",
+        "For each position, solve the stated objective. One turn means one",
+        "primary action by one player plus any compulsory removal after",
+        "forming a mill. Public `Win in N` counts turns by the solving side;",
+        "defensive replies do not add to N. `Hold the draw` asks for the only",
+        "move that preserves a draw when every alternative loses. `W` is",
+        "White, `B` is Black and `.` is an empty point. Theme labels are",
+        "withheld until the answer key.",
         "",
         "Coordinate reference:",
         "",
@@ -305,12 +324,22 @@ def main() -> None:
         fen = puzzle.get("initialPosition")
         if not isinstance(fen, str):
             raise ValueError(f"{puzzle.get('id')} has no initialPosition")
+        if puzzle.get("category") == "defend":
+            objective = (
+                f"{_side_to_move(fen)} to move. Find the only move that "
+                "preserves the draw."
+            )
+        else:
+            objective = (
+                f"{_side_to_move(fen)} to move. Win in "
+                f"{optimal_solver_move_count(puzzle)} moves by the solving "
+                "side."
+            )
         lines.extend(
             [
                 f"## Puzzle {item.number}",
                 "",
-                f"{_side_to_move(fen)} to move. Win in "
-                f"{_win_distance(puzzle)} moves by the solving side.",
+                objective,
                 "",
                 "```text",
                 _board_diagram(fen),
@@ -323,9 +352,10 @@ def main() -> None:
         [
             "# Answer key",
             "",
-            "Each entry gives one Perfect DB-ordered shortest line. Other",
-            "equally short branches and explicitly marked slower winning lines",
-            "may also be certified in the source package.",
+            "Each entry gives one Perfect DB-certified line. Winning studies",
+            "may also contain equally short branches or explicitly marked",
+            "slower wins in the source package. Draw studies contain the",
+            "unique turn that preserves the draw.",
             "",
         ]
     )

@@ -558,6 +558,65 @@ void main() {
           ),
           findsNothing,
         );
+        expect(
+          find.descendant(
+            of: find.byKey(const Key('puzzle_first_move_stat_chip')),
+            matching: find.text('White'),
+          ),
+          findsOneWidget,
+        );
+        expect(
+          tester
+              .getTopLeft(find.byKey(const Key('puzzle_first_move_stat_chip')))
+              .dx,
+          greaterThan(
+            tester
+                .getTopRight(
+                  find.byKey(const Key('puzzle_difficulty_stat_chip')),
+                )
+                .dx,
+          ),
+        );
+        expect(tester.takeException(), isNull);
+
+        await teardownPuzzlePage(tester);
+      },
+      skip: nativeLibrarySkipReason() != null,
+    );
+
+    testWidgets(
+      'shows when Black makes the first puzzle move',
+      (WidgetTester tester) async {
+        final PuzzleInfo puzzle = buildPuzzle(
+          initialPosition:
+              '********/********/******** b p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
+          solutions: const <List<String>>[
+            <String>['a1', 'd7'],
+          ],
+        );
+        await pumpPuzzlePage(tester, puzzle);
+
+        expect(
+          find.descendant(
+            of: find.byKey(const Key('puzzle_first_move_stat_chip')),
+            matching: find.text('First move'),
+          ),
+          findsOneWidget,
+        );
+        expect(
+          find.descendant(
+            of: find.byKey(const Key('puzzle_first_move_stat_chip')),
+            matching: find.text('Black'),
+          ),
+          findsOneWidget,
+        );
+        expect(
+          find.descendant(
+            of: find.byKey(const Key('puzzle_first_move_stat_chip')),
+            matching: find.byIcon(Icons.play_arrow),
+          ),
+          findsOneWidget,
+        );
 
         await teardownPuzzlePage(tester);
       },

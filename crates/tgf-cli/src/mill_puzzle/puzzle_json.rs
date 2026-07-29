@@ -531,15 +531,16 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
         "placement"
     };
     let side_word = side_label(input.solver_side);
+    let side_display = capitalize(side_word);
     let title = format!(
-        "Win in {target_moves}: {headline}",
+        "{side_display} · Win in {target_moves}: {headline}",
         headline = theme.headline
     );
 
     let move_noun = if target_moves == 1 { "move" } else { "moves" };
     let description = format!(
         "{side} to move. Find the forced win in {target_moves} {move_noun}.",
-        side = capitalize(side_word),
+        side = side_display,
     );
     // Proof and discovery details belong in tags/provenance for audits, not
     // in the player-facing objective.
@@ -562,6 +563,7 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
     let mut tags = vec![
         "generated".to_string(),
         "malom-db".to_string(),
+        "objective:win".to_string(),
         format!("win-in-{target_moves}"),
         format!(
             "distance-band:{}",
@@ -869,7 +871,7 @@ mod tests {
         };
         let info = build_puzzle_info(&input);
 
-        assert!(info.title.starts_with("Win in 2:"));
+        assert!(info.title.starts_with("White · Win in 2:"));
         assert!(info.tags.contains(&"win-in-2".to_string()));
         assert!(info.tags.contains(&"sacrifice".to_string()));
         assert!(info.tags.contains(&"solve-depth:4".to_string()));
@@ -916,7 +918,7 @@ mod tests {
         };
         let info = build_puzzle_info(&input);
 
-        assert_eq!(info.title, "Win in 3: resist the tempting mill");
+        assert_eq!(info.title, "Black · Win in 3: resist the tempting mill");
         assert!(info.tags.contains(&"trap:greedy-mill".to_string()));
         assert!(info.tags.contains(&"solve-depth:deep".to_string()));
         assert_eq!(
@@ -964,7 +966,7 @@ mod tests {
         };
         let info = build_puzzle_info(&input);
 
-        assert_eq!(info.title, "Win in 4: find the forced win");
+        assert_eq!(info.title, "White · Win in 4: find the forced win");
         assert!(info.tags.contains(&"trap:greedy-mill".to_string()));
         assert!(
             info.tags

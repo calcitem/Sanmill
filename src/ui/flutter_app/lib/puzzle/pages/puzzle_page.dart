@@ -747,6 +747,17 @@ class _PuzzlePageState extends State<PuzzlePage> {
                             context,
                           ),
                           Icons.signal_cellular_alt,
+                          key: const Key('puzzle_difficulty_stat_chip'),
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: _buildStatChip(
+                          context,
+                          s.whoMovesFirst,
+                          _puzzleFirstMoverLabel(s),
+                          Icons.play_arrow,
+                          key: const Key('puzzle_first_move_stat_chip'),
                         ),
                       ),
                       if (attempts > 0) ...<Widget>[
@@ -768,6 +779,16 @@ class _PuzzlePageState extends State<PuzzlePage> {
         ],
       ),
     );
+  }
+
+  String _puzzleFirstMoverLabel(S s) {
+    return switch (_activePuzzle.playerSide) {
+      PieceColor.white => s.offlineBoardWhite,
+      PieceColor.black => s.offlineBoardBlack,
+      final PieceColor side => throw StateError(
+        'Puzzle ${_activePuzzle.id} has invalid initial side to move: $side',
+      ),
+    };
   }
 
   Widget _buildPlayingSolutionBanner(BuildContext context, S s) {

@@ -8,8 +8,8 @@
 - **Purpose:** Independent review by Mill specialists
 - **Status:** Expert-reviewed; complete-turn certification, a Z3/CP-SAT
   discovery pilot, a replay-backed HumanDB pilot, an engine-error-corpus
-  adapter and the product curriculum implemented; full strategy-tree
-  certificate sidecars remain pending
+  adapter, a unique-draw-defence pilot and the product curriculum
+  implemented; full strategy-tree certificate sidecars remain pending
 - **Language:** British English
 - **Repository baseline:** Sanmill source reviewed on 28 July 2026
 - **Prepared for:** Rules, composition and endgame experts
@@ -35,6 +35,14 @@ This paper proposes an offline, evidence-preserving method for discovering and c
 - The objective is the shortest forced win. Every first turn or later continuation that achieves the same minimum distance is accepted as correct. A move that still forces a win but takes longer is recognised as a slower win and prompts the player to try again.
 
 - Public **Win in N** labels count moves by the solving side. A sequence in which the solver moves, the defender replies and the solver then wins is **Win in 2**.
+
+- Public objective titles begin with the side to move, for example
+  **White · Win in 5** or **Black · Hold the draw**. This makes the solver
+  immediately visible without relying on board orientation.
+
+- A **Hold the draw** study starts from a database draw and accepts only a
+  complete logical turn that preserves that result. A unique-draw-save
+  puzzle additionally requires every other legal logical turn to lose.
 
 - The official solution line uses mathematically optimal defence: the defender preserves the best available outcome and, when defeat is forced, delays it for as long as possible. A separately labelled human or illustrative line may also be shown.
 
@@ -158,6 +166,24 @@ replay-backed positions. Fifty-six entries are pending specialist
 assessment, the package version is `1.6.1-review.1`, and `isOfficial`
 remains false.
 
+The v1.7.0 review build introduces mixed public objectives. It retains all
+167 previous positions but derives every winning title, description,
+`win-in-*` tag and generated ID from the exported optimal solution. This
+repairs 49 legacy metadata counts, including position `#656830EE`, whose
+public label is now **White · Win in 5**. All winning and draw-defence titles
+also state White or Black explicitly.
+
+The same build adds ten movement-phase **Hold the draw** studies selected
+globally by CP-SAT from exact Perfect DB outcome-contrast records. They are
+balanced five–five by side to move and remain at least four stones apart
+from the previous asset and from one another after all board symmetries and
+solver-side colour normalisation. Each root is a draw with exactly one
+drawing logical turn; every other legal logical turn is a loss. The
+application asset therefore contains 177 puzzles: 164 labelled
+compositions and 13 replay-backed positions. Sixty-six entries are pending
+specialist assessment, the package version is `1.7.0-review.1`, and
+`isOfficial` remains false.
+
 ## 1.1 Implemented curriculum
 
 Classification is deliberately hierarchical rather than a flat collection of
@@ -171,7 +197,7 @@ places in the curriculum.
 | **01 — foundations**    | Capture choice; quiet move                                                         | Read the whole logical turn and look beyond the most forcing action.    |
 | **02 — mill tactics**   | Mill block; greedy-mill trap; wrong-mill trap; double mill; dual threat; right-angle threat; mill recovery | Compare immediate mills with prevention, preparation and paired threats. |
 | **03 — positional play** | Mill abandonment; junction release; ring transfer; sacrifice; mobility squeeze   | Give up static structure or material, transfer pressure and restrict activity. |
-| **04 — endgames**       | Immobilisation; flying defence; zugzwang                                           | Control mobility and calculate rule-sensitive endings.                 |
+| **04 — endgames**       | Draw save; immobilisation; flying defence; zugzwang                                | Preserve defensive resources, control mobility and calculate rule-sensitive endings. |
 | **05 — calculation**    | General forced wins that do not yet have a clearer specialist-approved topic       | Retain sound material without pretending that a weak label is a theme. |
 
 Within each topic, the asset is sorted through the public sequence
@@ -203,7 +229,7 @@ links. The other 41 raw roots form 39 canonical classes. Four roots also
 occur in the separate twelve-root editorial collision baseline. This overlap
 is between reference sets, not Sanmill’s pack.
 
-An exact audit of the current 167-position review build found **no match**
+An exact audit of the current 177-position review build found **no match**
 between its roots and any of the 44 editorial reference diagrams under all
 16 supported board automorphisms.
 Opposite-side-to-move and colour-exchanged checks also found no match. No
@@ -832,6 +858,10 @@ Initial specialist review produced the following binding assumptions for the pil
 - All equally short first moves and continuations are correct.
 - A slower forced win is acknowledged but does not complete a shortest-win puzzle.
 - **Win in N** counts moves by the solving side.
+- Public titles state the side to move before the objective.
+- **Hold the draw** accepts a complete logical turn only when exact database
+  evidence says it preserves a draw; a unique draw save has no other drawing
+  or winning turn.
 - The official line uses the defence that delays defeat; a human line may be shown separately.
 - The default review view shows one solution line and the number of equally short alternatives.
 - R1 compositions and R2/R3 replay-backed positions are both allowed under clear labels.
@@ -846,8 +876,8 @@ The following matters remain editorial rather than semantic and should be calibr
 - which theme and difficulty targets become hard pack quotas rather than soft preferences;
 - attribution requirements for database-, game- and expert-derived material.
 
-> **Next outcome.** Blind-review the 56 embedded pending candidates and the
-> resulting 167-puzzle curriculum order. Retain the 13 constraint-directed
+> **Next outcome.** Blind-review the 66 embedded pending candidates and the
+> resulting 177-puzzle curriculum order. Retain the 13 constraint-directed
 > compositions and 13 replay-backed human missed wins as calibration
 > material. Use specialist scoring, together with anonymised aggregate user
 > pass rates, to refine theme names, difficulty bands, long blockade
@@ -944,7 +974,14 @@ specialist scoring, diversity selection and observed user completion data.
 
 - `scripts/mine_mill_outcome_contrast_studies.py` — persistent Rust/TGF
   data-query client for one-stone W/D/L contrast pairs and unique draw-saving
-  candidates which do not yet fit the forced-win application format.
+  candidates.
+
+- `scripts/build_mill_draw_review_candidates.py` — CP-SAT selection of
+  side-balanced, symmetry-distant unique draw saves into a review package.
+
+- `scripts/mill_puzzle_objectives.py` and
+  `scripts/normalize_mill_puzzle_objectives.py` — one public move-count and
+  objective contract shared by asset repair, merge validation and tests.
 
 - `scripts/merge_mill_review_candidates.py` — deterministic promotion of a
   certified CP-SAT shortlist into the application asset, including review
@@ -968,16 +1005,19 @@ specialist scoring, diversity selection and observed user completion data.
 # Appendix B. Pilot review package
 
 The embedded review package comprises 13 retained constraint-directed
-compositions, 13 replay-backed human missed wins and 56 pending candidates
-in a 167-puzzle application asset. The replay subset contains three short,
+compositions, 13 replay-backed human missed wins and 66 pending candidates
+in a 177-puzzle application asset. The replay subset contains three short,
 five medium and five long positions, including two immobilisation studies.
 The first engine-error shortlist is balanced 15–15 by side to move. The
 strategy-theme supplement is balanced five–five. The 16-position similarity
 repair batch is balanced eight–eight, includes two beginner replacements
 with different primary topics, caps displayed solution lines at 32 and
 applies a minimum distance of four both internally and against the retained
-151-position base. The three pending batches remain separately traceable as
-`expert-pending` material.
+151-position base. The ten-position draw-defence batch is balanced five–five,
+contains exactly one database-certified drawing turn per root and applies
+the same minimum distance of four against the complete 167-position base.
+The four pending batches remain separately traceable as `expert-pending`
+material.
 Reviewers should receive anonymised diagrams in curriculum order and,
 separately, in random order, with one official shortest line, the
 equally-short-first-turn count and the appropriate `source:composed` or

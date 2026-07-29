@@ -4,14 +4,14 @@
     "appName": "Sanmill",
     "platform": "tgf-cli"
   },
-  "exportDate": "2026-07-29T07:14:22.000Z",
-  "puzzleCount": 167,
+  "exportDate": "2026-07-29T15:10:57Z",
+  "puzzleCount": 177,
   "metadata": {
     "id": "malom_perfect_db_v1",
     "name": "Malom Perfect DB Puzzles — Expert Review",
     "description": "Perfect DB-certified composed and replay-backed puzzles organised as a progressive curriculum. This review build includes certified shortlists pending Mill specialist assessment.",
     "author": "Sanmill Perfect DB Generator",
-    "version": "1.6.1-review.1",
+    "version": "1.7.0-review.1",
     "tags": [
       "cp-sat-selected",
       "curriculum",
@@ -22,7 +22,8 @@
       "smt-z3",
       "engine-blunder-corpus",
       "expert-review",
-      "perfect-db-certified"
+      "perfect-db-certified",
+      "draw-defence"
     ],
     "isOfficial": false,
     "ruleVariantId": "standard_9mm"
@@ -30,7 +31,7 @@
   "puzzles": [
     {
       "id": "malom_movement_black_1_73b7b931",
-      "title": "Win in 1: remove the right piece",
+      "title": "Black · Win in 1: remove the right piece",
       "description": "Black to move. Find the forced win in 1 move.",
       "category": "winGame",
       "difficulty": "beginner",
@@ -103,7 +104,6 @@
         "generated",
         "malom-db",
         "source:composed",
-        "win-in-1",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -116,7 +116,9 @@
         "topic:capture-choice",
         "curriculum:01-foundations",
         "progression:1-beginner",
-        "distance-band:short"
+        "win-in-1",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Puzzle Toolchain",
@@ -126,9 +128,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_black_3_f3e59caf",
-      "title": "Win in 3: a quiet move wins",
-      "description": "Black to move. Find the forced win in 3 moves.",
+      "id": "malom_movement_black_2_f3e59caf",
+      "title": "Black · Win in 2: a quiet move wins",
+      "description": "Black to move. Find the forced win in 2 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "@O****O*/*****O*@/*@****@@ b m p 3 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -161,7 +163,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:black",
         "quiet-move",
@@ -171,7 +172,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-2",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -181,9 +184,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_black_3_28832663",
-      "title": "Win in 3: a quiet move wins",
-      "description": "Black to move. Find the forced win in 3 moves.",
+      "id": "malom_movement_black_2_28832663",
+      "title": "Black · Win in 2: a quiet move wins",
+      "description": "Black to move. Find the forced win in 2 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "*******@/*****@**/*OOO**@* b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -238,7 +241,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:black",
         "quiet-move",
@@ -248,7 +250,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-2",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -258,9 +262,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_3_ab82e6ee",
-      "title": "Win in 3: a quiet move wins",
-      "description": "White to move. Find the forced win in 3 moves.",
+      "id": "malom_movement_white_2_ab82e6ee",
+      "title": "White · Win in 2: a quiet move wins",
+      "description": "White to move. Find the forced win in 2 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "***O**@*/****O*@*/*****O@* w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -315,7 +319,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:white",
         "quiet-move",
@@ -325,7 +328,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-2",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -335,9 +340,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_black_3_5213c691",
-      "title": "Win in 3: a quiet move wins",
-      "description": "Black to move. Find the forced win in 3 moves.",
+      "id": "malom_movement_black_2_5213c691",
+      "title": "Black · Win in 2: a quiet move wins",
+      "description": "Black to move. Find the forced win in 2 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "**@****@/*OOO****/*******@ b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -370,7 +375,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:black",
         "quiet-move",
@@ -380,7 +384,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-2",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -390,9 +396,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_black_3_8592a30d",
-      "title": "Win in 3: a quiet move wins",
-      "description": "Black to move. Find the forced win in 3 moves.",
+      "id": "malom_movement_black_2_8592a30d",
+      "title": "Black · Win in 2: a quiet move wins",
+      "description": "Black to move. Find the forced win in 2 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "**O*@***/*@O@****/**O***** b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -425,7 +431,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:black",
         "quiet-move",
@@ -435,7 +440,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-2",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -445,9 +452,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_black_3_a6f241fb",
-      "title": "Win in 3: a quiet move wins",
-      "description": "Black to move. Find the forced win in 3 moves.",
+      "id": "malom_movement_black_2_a6f241fb",
+      "title": "Black · Win in 2: a quiet move wins",
+      "description": "Black to move. Find the forced win in 2 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "*OOO****/**@*****/*@****@* b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -480,7 +487,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:black",
         "quiet-move",
@@ -490,7 +496,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-2",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -500,9 +508,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_3_2aa2278e",
-      "title": "Win in 3: a quiet move wins",
-      "description": "White to move. Find the forced win in 3 moves.",
+      "id": "malom_movement_white_2_2aa2278e",
+      "title": "White · Win in 2: a quiet move wins",
+      "description": "White to move. Find the forced win in 2 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "****O***/**O**O**/***@@@** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -535,7 +543,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:white",
         "quiet-move",
@@ -545,7 +552,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-2",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -555,9 +564,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_3_9cfc61ba",
-      "title": "Win in 3: a quiet move wins",
-      "description": "White to move. Find the forced win in 3 moves.",
+      "id": "malom_movement_white_2_9cfc61ba",
+      "title": "White · Win in 2: a quiet move wins",
+      "description": "White to move. Find the forced win in 2 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "******O*/*******O/@@*O***@ w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -590,7 +599,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:white",
         "quiet-move",
@@ -600,7 +608,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-2",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -610,9 +620,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_3_b54a3368",
-      "title": "Win in 3: a quiet move wins",
-      "description": "White to move. Find the forced win in 3 moves.",
+      "id": "malom_movement_white_2_b54a3368",
+      "title": "White · Win in 2: a quiet move wins",
+      "description": "White to move. Find the forced win in 2 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "******O*/**O*O***/***@@@** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -645,7 +655,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:white",
         "quiet-move",
@@ -655,7 +664,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-2",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -665,9 +676,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_3_b9143030",
-      "title": "Win in 3: a quiet move wins",
-      "description": "White to move. Find the forced win in 3 moves.",
+      "id": "malom_movement_white_2_b9143030",
+      "title": "White · Win in 2: a quiet move wins",
+      "description": "White to move. Find the forced win in 2 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "**O***O*/*******O/***@@@** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -700,7 +711,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:white",
         "quiet-move",
@@ -710,7 +720,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-2",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -720,9 +732,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_3_c801c588",
-      "title": "Win in 3: a quiet move wins",
-      "description": "White to move. Find the forced win in 3 moves.",
+      "id": "malom_movement_white_2_c801c588",
+      "title": "White · Win in 2: a quiet move wins",
+      "description": "White to move. Find the forced win in 2 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "**@*O***/**@*****/*O@O**** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -755,7 +767,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:white",
         "quiet-move",
@@ -765,7 +776,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-2",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -775,9 +788,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_3_f66d0588",
-      "title": "Win in 3: a quiet move wins",
-      "description": "White to move. Find the forced win in 3 moves.",
+      "id": "malom_movement_white_2_f66d0588",
+      "title": "White · Win in 2: a quiet move wins",
+      "description": "White to move. Find the forced win in 2 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "@@*O***@/**O*****/****O*** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -810,7 +823,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:white",
         "quiet-move",
@@ -820,7 +832,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-2",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -830,9 +844,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_black_3_598401ab",
-      "title": "Win in 3: a quiet move wins",
-      "description": "Black to move. Find the forced win in 3 moves.",
+      "id": "malom_movement_black_2_598401ab",
+      "title": "Black · Win in 2: a quiet move wins",
+      "description": "Black to move. Find the forced win in 2 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "****@@*O/O@@*****/****@O** b m p 3 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -865,7 +879,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:black",
         "quiet-move",
@@ -875,7 +888,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-2",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -885,9 +900,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_black_3_e855454d",
-      "title": "Win in 3: a quiet move wins",
-      "description": "Black to move. Find the forced win in 3 moves.",
+      "id": "malom_movement_black_2_e855454d",
+      "title": "Black · Win in 2: a quiet move wins",
+      "description": "Black to move. Find the forced win in 2 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "**O*@***/O****@@@/*O*@**** b m p 3 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -920,7 +935,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:black",
         "quiet-move",
@@ -930,7 +944,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-2",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -940,9 +956,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_3_5802f5f2",
-      "title": "Win in 3: a quiet move wins",
-      "description": "White to move. Find the forced win in 3 moves.",
+      "id": "malom_movement_white_2_5802f5f2",
+      "title": "White · Win in 2: a quiet move wins",
+      "description": "White to move. Find the forced win in 2 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "**@O****/***O**OO/@***O@** w m p 5 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -975,7 +991,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:white",
         "quiet-move",
@@ -985,7 +1000,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-2",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -995,9 +1012,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_3_99030546",
-      "title": "Win in 3: a quiet move wins",
-      "description": "White to move. Find the forced win in 3 moves.",
+      "id": "malom_movement_white_2_99030546",
+      "title": "White · Win in 2: a quiet move wins",
+      "description": "White to move. Find the forced win in 2 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "****O**@/@****OOO/***O***@ w m p 5 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1030,7 +1047,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:white",
         "quiet-move",
@@ -1040,7 +1056,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-2",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -1050,9 +1068,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_6_656830ee",
-      "title": "Win in 6: a quiet move wins",
-      "description": "White to move. Find the forced win in 6 moves.",
+      "id": "malom_movement_white_5_656830ee",
+      "title": "White · Win in 5: a quiet move wins",
+      "description": "White to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "**O***@*/***O****/@**O***@ w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1155,7 +1173,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:movement",
         "side:white",
         "quiet-move",
@@ -1165,7 +1182,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -1175,9 +1194,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_5_06a045ec",
-      "title": "Win in 5: a quiet move wins",
-      "description": "White to move. Find the forced win in 5 moves.",
+      "id": "malom_movement_white_4_06a045ec",
+      "title": "White · Win in 4: a quiet move wins",
+      "description": "White to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "medium",
       "initialPosition": "*@**@***/********/*OOO@*** w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1280,7 +1299,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
         "phase:movement",
         "side:white",
         "quiet-move",
@@ -1290,7 +1308,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -1300,9 +1320,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_6_e6b07226",
-      "title": "Win in 6: a quiet move wins",
-      "description": "White to move. Find the forced win in 6 moves.",
+      "id": "malom_movement_white_5_e6b07226",
+      "title": "White · Win in 5: a quiet move wins",
+      "description": "White to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "hard",
       "initialPosition": "***O**@@/@****O**/O******* w m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1405,7 +1425,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:movement",
         "side:white",
         "quiet-move",
@@ -1415,7 +1434,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -1425,9 +1446,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_black_7_35eda02b",
-      "title": "Win in 7: a quiet move wins",
-      "description": "Black to move. Find the forced win in 7 moves.",
+      "id": "malom_movement_black_6_35eda02b",
+      "title": "Black · Win in 6: a quiet move wins",
+      "description": "Black to move. Find the forced win in 6 moves.",
       "category": "winGame",
       "difficulty": "hard",
       "initialPosition": "O**@***O/O**@****/@******* b m p 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -1492,7 +1513,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:movement",
         "side:black",
         "quiet-move",
@@ -1502,7 +1522,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-6",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -1513,7 +1535,7 @@
     },
     {
       "id": "malom_movement_white_9_5d0be2a9",
-      "title": "Win in 9: a quiet move wins",
+      "title": "White · Win in 9: a quiet move wins",
       "description": "White to move. Find the forced win in 9 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -1655,7 +1677,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-9",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -1673,7 +1694,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:5-expert",
-        "distance-band:medium"
+        "win-in-9",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -1684,7 +1707,7 @@
     },
     {
       "id": "malom_movement_black_17_abbad4fb",
-      "title": "Win in 17: a quiet move wins",
+      "title": "Black · Win in 17: a quiet move wins",
       "description": "Black to move. Find the forced win in 17 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -1893,7 +1916,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-17",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -1911,7 +1933,9 @@
         "topic:quiet-move",
         "curriculum:01-foundations",
         "progression:5-expert",
-        "distance-band:long"
+        "win-in-17",
+        "distance-band:long",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -1922,7 +1946,7 @@
     },
     {
       "id": "malom_movement_white_3_ff41e459",
-      "title": "Win in 3: block before attacking",
+      "title": "White · Win in 3: block before attacking",
       "description": "White to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -1961,7 +1985,6 @@
         "generated",
         "malom-db",
         "source:composed",
-        "win-in-3",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -1975,7 +1998,9 @@
         "topic:mill-block",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Puzzle Toolchain",
@@ -1986,7 +2011,7 @@
     },
     {
       "id": "malom_movement_white_5_eb321257",
-      "title": "Win in 5: block before attacking",
+      "title": "White · Win in 5: block before attacking",
       "description": "White to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -2041,7 +2066,6 @@
         "generated",
         "malom-db",
         "source:composed",
-        "win-in-5",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -2055,7 +2079,9 @@
         "topic:mill-block",
         "curriculum:02-mill-tactics",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Puzzle Toolchain",
@@ -2065,9 +2091,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_4_a572a624",
-      "title": "Win in 4: resist the tempting mill",
-      "description": "White to move. Find the forced win in 4 moves.",
+      "id": "malom_movement_white_3_a572a624",
+      "title": "White · Win in 3: resist the tempting mill",
+      "description": "White to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "O@**O@@@/O******@/O****OO* w m p 6 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -2108,7 +2134,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
         "phase:movement",
         "side:white",
         "trap:greedy-mill",
@@ -2118,7 +2143,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -2129,7 +2156,7 @@
     },
     {
       "id": "malom_movement_black_3_52c0004b",
-      "title": "Win in 3: resist the tempting mill",
+      "title": "Black · Win in 3: resist the tempting mill",
       "description": "Black to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -2171,7 +2198,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -2185,7 +2211,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -2196,7 +2224,7 @@
     },
     {
       "id": "malom_placement_black_4_5c3138c2",
-      "title": "Win in 4: resist the tempting mill",
+      "title": "Black · Win in 4: resist the tempting mill",
       "description": "Black to move. Find the forced win in 4 moves.",
       "category": "opening",
       "difficulty": "medium",
@@ -2242,7 +2270,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
         "phase:placement",
         "side:black",
         "trap:greedy-mill",
@@ -2252,7 +2279,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -2263,7 +2292,7 @@
     },
     {
       "id": "malom_movement_black_4_c5252744",
-      "title": "Win in 4: resist the tempting mill",
+      "title": "Black · Win in 4: resist the tempting mill",
       "description": "Black to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -2443,7 +2472,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -2456,7 +2484,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -2467,7 +2497,7 @@
     },
     {
       "id": "malom_movement_black_4_e894ae2e",
-      "title": "Win in 4: resist the tempting mill",
+      "title": "Black · Win in 4: resist the tempting mill",
       "description": "Black to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -2647,7 +2677,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -2660,7 +2689,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -2671,7 +2702,7 @@
     },
     {
       "id": "malom_movement_black_4_70d90f5c",
-      "title": "Win in 4: resist the tempting mill",
+      "title": "Black · Win in 4: resist the tempting mill",
       "description": "Black to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -2767,7 +2798,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -2780,7 +2810,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -2790,9 +2822,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_black_5_30e4c3ff",
-      "title": "Win in 5: resist the tempting mill",
-      "description": "Black to move. Find the forced win in 5 moves.",
+      "id": "malom_placement_black_4_30e4c3ff",
+      "title": "Black · Win in 4: resist the tempting mill",
+      "description": "Black to move. Find the forced win in 4 moves.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "*O@**OOO/***@@O@*/**@***** b p p 5 1 5 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -2841,7 +2873,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
         "phase:placement",
         "side:black",
         "trap:greedy-mill",
@@ -2851,7 +2882,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -2861,9 +2894,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_black_5_7b3f7add",
-      "title": "Win in 5: resist the tempting mill",
-      "description": "Black to move. Find the forced win in 5 moves.",
+      "id": "malom_placement_black_4_7b3f7add",
+      "title": "Black · Win in 4: resist the tempting mill",
+      "description": "Black to move. Find the forced win in 4 moves.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "***@O*O@/**@OOO@*/*@@O*O*@ b p p 7 0 7 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -2912,7 +2945,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
         "phase:placement",
         "side:black",
         "trap:greedy-mill",
@@ -2922,7 +2954,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -2932,9 +2966,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_white_5_b01fb265",
-      "title": "Win in 5: resist the tempting mill",
-      "description": "White to move. Find the forced win in 5 moves.",
+      "id": "malom_placement_white_4_b01fb265",
+      "title": "White · Win in 4: resist the tempting mill",
+      "description": "White to move. Find the forced win in 4 moves.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "***O**O*/***@@@OO/O@O@@@*O w p p 7 2 7 2 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3029,7 +3063,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
         "phase:placement",
         "side:white",
         "trap:greedy-mill",
@@ -3041,7 +3074,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -3051,9 +3086,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_black_5_45a544af",
-      "title": "Win in 5: resist the tempting mill",
-      "description": "Black to move. Find the forced win in 5 moves.",
+      "id": "malom_placement_black_4_45a544af",
+      "title": "Black · Win in 4: resist the tempting mill",
+      "description": "Black to move. Find the forced win in 4 moves.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "*@******/@@O*****/*OO*@O@O b p p 5 0 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3102,7 +3137,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
         "phase:placement",
         "side:black",
         "trap:greedy-mill",
@@ -3112,7 +3146,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -3123,7 +3159,7 @@
     },
     {
       "id": "malom_movement_white_5_cf41ba76",
-      "title": "Win in 5: resist the tempting mill",
+      "title": "White · Win in 5: resist the tempting mill",
       "description": "White to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -3181,7 +3217,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -3195,7 +3230,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -3205,9 +3242,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_black_5_ab7f88bf",
-      "title": "Win in 5: resist the tempting mill",
-      "description": "Black to move. Find the forced win in 5 moves.",
+      "id": "malom_placement_black_4_ab7f88bf",
+      "title": "Black · Win in 4: resist the tempting mill",
+      "description": "Black to move. Find the forced win in 4 moves.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "***O@OOO/@*****OO/*@**@*@* b p p 6 0 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3256,7 +3293,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
         "phase:placement",
         "side:black",
         "trap:greedy-mill",
@@ -3266,7 +3302,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -3276,9 +3314,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_6_bb854233",
-      "title": "Win in 6: resist the tempting mill",
-      "description": "White to move. Find the forced win in 6 moves.",
+      "id": "malom_movement_white_4_bb854233",
+      "title": "White · Win in 4: resist the tempting mill",
+      "description": "White to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "medium",
       "initialPosition": "O@O@@@O*/O*@O*O**/****@*O* w m p 7 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3373,7 +3411,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:movement",
         "side:white",
         "trap:greedy-mill",
@@ -3384,7 +3421,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -3394,9 +3433,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_black_6_ca36fbb5",
-      "title": "Win in 6: resist the tempting mill",
-      "description": "Black to move. Find the forced win in 6 moves.",
+      "id": "malom_placement_black_4_ca36fbb5",
+      "title": "Black · Win in 4: resist the tempting mill",
+      "description": "Black to move. Find the forced win in 4 moves.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "O@**@OOO/@O***@*O/****@*O* b p p 7 0 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3449,7 +3488,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:placement",
         "side:black",
         "trap:greedy-mill",
@@ -3459,7 +3497,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -3469,9 +3509,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_black_6_e908d262",
-      "title": "Win in 6: resist the tempting mill",
-      "description": "Black to move. Find the forced win in 6 moves.",
+      "id": "malom_placement_black_5_e908d262",
+      "title": "Black · Win in 5: resist the tempting mill",
+      "description": "Black to move. Find the forced win in 5 moves.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "*@@@*O*@/@*@*@*O*/OOO@OO*O b p p 8 0 8 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3528,7 +3568,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:placement",
         "side:black",
         "trap:greedy-mill",
@@ -3538,7 +3577,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -3549,7 +3590,7 @@
     },
     {
       "id": "malom_placement_black_6_511c14ed",
-      "title": "Win in 6: resist the tempting mill",
+      "title": "Black · Win in 6: resist the tempting mill",
       "description": "Black to move. Find the forced win in 6 moves.",
       "category": "opening",
       "difficulty": "medium",
@@ -3611,7 +3652,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:placement",
         "side:black",
         "trap:greedy-mill",
@@ -3621,7 +3661,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-6",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -3631,9 +3673,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_black_6_da5c21f3",
-      "title": "Win in 6: resist the tempting mill",
-      "description": "Black to move. Find the forced win in 6 moves.",
+      "id": "malom_placement_black_5_da5c21f3",
+      "title": "Black · Win in 5: resist the tempting mill",
+      "description": "Black to move. Find the forced win in 5 moves.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "*@*@****/*@O@**O*/@OOO**** b p p 5 0 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3690,7 +3732,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:placement",
         "side:black",
         "trap:greedy-mill",
@@ -3700,7 +3741,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -3710,9 +3753,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_white_6_ca06ba6d",
-      "title": "Win in 6: resist the tempting mill",
-      "description": "White to move. Find the forced win in 6 moves.",
+      "id": "malom_placement_white_5_ca06ba6d",
+      "title": "White · Win in 5: resist the tempting mill",
+      "description": "White to move. Find the forced win in 5 moves.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "***O*O*O/O*******/@@*OO@@@ w p p 6 1 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3769,7 +3812,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:placement",
         "side:white",
         "trap:greedy-mill",
@@ -3779,7 +3821,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -3789,9 +3833,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_black_7_ea1eb9d0",
-      "title": "Win in 7: resist the tempting mill",
-      "description": "Black to move. Find the forced win in 7 moves.",
+      "id": "malom_placement_black_5_ea1eb9d0",
+      "title": "Black · Win in 5: resist the tempting mill",
+      "description": "Black to move. Find the forced win in 5 moves.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "*@****@*/@O@**@*O/OO@**OO* b p p 6 0 6 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3852,7 +3896,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:placement",
         "side:black",
         "trap:greedy-mill",
@@ -3862,7 +3905,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -3872,9 +3917,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_white_7_ab8b7268",
-      "title": "Win in 7: resist the tempting mill",
-      "description": "White to move. Find the forced win in 7 moves.",
+      "id": "malom_placement_white_5_ab8b7268",
+      "title": "White · Win in 5: resist the tempting mill",
+      "description": "White to move. Find the forced win in 5 moves.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "@O**O@@@/O*****@@/*OOO@O@O w p p 8 1 8 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -3935,7 +3980,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:placement",
         "side:white",
         "trap:greedy-mill",
@@ -3945,7 +3989,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -3955,9 +4001,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_7_a8e26d5a",
-      "title": "Win in 7: resist the tempting mill",
-      "description": "White to move. Find the forced win in 7 moves.",
+      "id": "malom_movement_white_5_a8e26d5a",
+      "title": "White · Win in 5: resist the tempting mill",
+      "description": "White to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "medium",
       "initialPosition": "@*O@@@O*/O*O@*@@*/OO**O*** w m p 7 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -4018,7 +4064,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:movement",
         "side:white",
         "trap:greedy-mill",
@@ -4028,7 +4073,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -4038,9 +4085,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_white_7_3434b36c",
-      "title": "Win in 7: resist the tempting mill",
-      "description": "White to move. Find the forced win in 7 moves.",
+      "id": "malom_placement_white_5_3434b36c",
+      "title": "White · Win in 5: resist the tempting mill",
+      "description": "White to move. Find the forced win in 5 moves.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "@@*@@O*@/O**@O*O@/@O****OO w p p 7 1 8 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -4101,7 +4148,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:placement",
         "side:white",
         "trap:greedy-mill",
@@ -4111,7 +4157,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -4121,9 +4169,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_white_7_d6c23ef6",
-      "title": "Win in 7: resist the tempting mill",
-      "description": "White to move. Find the forced win in 7 moves.",
+      "id": "malom_placement_white_5_d6c23ef6",
+      "title": "White · Win in 5: resist the tempting mill",
+      "description": "White to move. Find the forced win in 5 moves.",
       "category": "opening",
       "difficulty": "medium",
       "initialPosition": "@@@@OOO@/*O***O**/O*@****O w p p 7 1 6 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -4184,7 +4232,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:placement",
         "side:white",
         "trap:greedy-mill",
@@ -4195,7 +4242,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -4206,7 +4255,7 @@
     },
     {
       "id": "malom_movement_white_4_9b62e0f5",
-      "title": "Win in 4: resist the tempting mill",
+      "title": "White · Win in 4: resist the tempting mill",
       "description": "White to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -4294,7 +4343,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -4307,7 +4355,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -4318,7 +4368,7 @@
     },
     {
       "id": "malom_movement_black_5_731365ac",
-      "title": "Win in 5: resist the tempting mill",
+      "title": "Black · Win in 5: resist the tempting mill",
       "description": "Black to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -4730,7 +4780,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -4743,7 +4792,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -4753,9 +4804,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_white_6_9252120f",
-      "title": "Win in 6: resist the tempting mill",
-      "description": "White to move. Find the forced win in 6 moves.",
+      "id": "malom_placement_white_5_9252120f",
+      "title": "White · Win in 5: resist the tempting mill",
+      "description": "White to move. Find the forced win in 5 moves.",
       "category": "opening",
       "difficulty": "hard",
       "initialPosition": "****O***/*@OO*O*@/@@@O*O@@ w p p 6 1 7 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -4812,7 +4863,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:placement",
         "side:white",
         "trap:greedy-mill",
@@ -4822,7 +4872,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -4833,7 +4885,7 @@
     },
     {
       "id": "malom_placement_white_6_56993bad",
-      "title": "Win in 6: resist the tempting mill",
+      "title": "White · Win in 6: resist the tempting mill",
       "description": "White to move. Find the forced win in 6 moves.",
       "category": "opening",
       "difficulty": "hard",
@@ -4949,7 +5001,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:placement",
         "side:white",
         "trap:greedy-mill",
@@ -4960,7 +5011,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-6",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -4970,9 +5023,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_black_6_fc2e19d4",
-      "title": "Win in 6: resist the tempting mill",
-      "description": "Black to move. Find the forced win in 6 moves.",
+      "id": "malom_placement_black_5_fc2e19d4",
+      "title": "Black · Win in 5: resist the tempting mill",
+      "description": "Black to move. Find the forced win in 5 moves.",
       "category": "opening",
       "difficulty": "hard",
       "initialPosition": "@@@@OOOO/O**@*OO*/@***@@O* b p p 8 0 8 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -5029,7 +5082,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:placement",
         "side:black",
         "trap:greedy-mill",
@@ -5039,7 +5091,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -5049,9 +5103,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_white_6_c38a663d",
-      "title": "Win in 6: resist the tempting mill",
-      "description": "White to move. Find the forced win in 6 moves.",
+      "id": "malom_placement_white_5_c38a663d",
+      "title": "White · Win in 5: resist the tempting mill",
+      "description": "White to move. Find the forced win in 5 moves.",
       "category": "opening",
       "difficulty": "hard",
       "initialPosition": "*@*@O**O/*@@@O**O/**O**O** w p p 6 1 5 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -5108,7 +5162,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:placement",
         "side:white",
         "trap:greedy-mill",
@@ -5118,7 +5171,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -5129,7 +5184,7 @@
     },
     {
       "id": "malom_movement_black_7_eb88bb84",
-      "title": "Win in 7: resist the tempting mill",
+      "title": "Black · Win in 7: resist the tempting mill",
       "description": "Black to move. Find the forced win in 7 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -5669,7 +5724,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -5682,7 +5736,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-7",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -5693,7 +5749,7 @@
     },
     {
       "id": "malom_placement_black_7_4a364d05",
-      "title": "Win in 7: resist the tempting mill",
+      "title": "Black · Win in 7: resist the tempting mill",
       "description": "Black to move. Find the forced win in 7 moves.",
       "category": "opening",
       "difficulty": "hard",
@@ -5763,7 +5819,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:placement",
         "side:black",
         "trap:greedy-mill",
@@ -5773,7 +5828,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-7",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -5783,9 +5840,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_white_7_1c365c12",
-      "title": "Win in 7: resist the tempting mill",
-      "description": "White to move. Find the forced win in 7 moves.",
+      "id": "malom_placement_white_6_1c365c12",
+      "title": "White · Win in 6: resist the tempting mill",
+      "description": "White to move. Find the forced win in 6 moves.",
       "category": "opening",
       "difficulty": "hard",
       "initialPosition": "O***@*OO/**O@*@**/*O*@@@OO w p p 7 1 6 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -5850,7 +5907,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:placement",
         "side:white",
         "trap:greedy-mill",
@@ -5860,7 +5916,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-6",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -5870,9 +5928,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_black_7_f9e521d8",
-      "title": "Win in 7: resist the tempting mill",
-      "description": "Black to move. Find the forced win in 7 moves.",
+      "id": "malom_placement_black_6_f9e521d8",
+      "title": "Black · Win in 6: resist the tempting mill",
+      "description": "Black to move. Find the forced win in 6 moves.",
       "category": "opening",
       "difficulty": "hard",
       "initialPosition": "**@OO*@*/@*O*@@**/OOO@**O* b p p 7 2 6 3 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -5941,7 +5999,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:placement",
         "side:black",
         "trap:greedy-mill",
@@ -5952,7 +6009,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-6",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -5962,9 +6021,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_placement_black_7_2429e2aa",
-      "title": "Win in 7: resist the tempting mill",
-      "description": "Black to move. Find the forced win in 7 moves.",
+      "id": "malom_placement_black_5_2429e2aa",
+      "title": "Black · Win in 5: resist the tempting mill",
+      "description": "Black to move. Find the forced win in 5 moves.",
       "category": "opening",
       "difficulty": "hard",
       "initialPosition": "*@@OOOO*/@O**@@O@/******** b p p 6 0 6 1 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -6025,7 +6084,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:placement",
         "side:black",
         "trap:greedy-mill",
@@ -6035,7 +6093,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -6046,7 +6106,7 @@
     },
     {
       "id": "malom_placement_black_6_578fc568",
-      "title": "Win in 6: resist the tempting mill",
+      "title": "Black · Win in 6: resist the tempting mill",
       "description": "Black to move. Find the forced win in 6 moves.",
       "category": "opening",
       "difficulty": "expert",
@@ -6158,7 +6218,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:placement",
         "side:black",
         "trap:greedy-mill",
@@ -6168,7 +6227,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:5-expert",
-        "distance-band:short"
+        "win-in-6",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -6179,7 +6240,7 @@
     },
     {
       "id": "malom_movement_white_6_8f3a4e94",
-      "title": "Win in 6: resist the tempting mill",
+      "title": "White · Win in 6: resist the tempting mill",
       "description": "White to move. Find the forced win in 6 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -6305,7 +6366,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -6323,7 +6383,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:5-expert",
-        "distance-band:short"
+        "win-in-6",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -6334,7 +6396,7 @@
     },
     {
       "id": "malom_placement_black_6_3f3e1b4e",
-      "title": "Win in 6: resist the tempting mill",
+      "title": "Black · Win in 6: resist the tempting mill",
       "description": "Black to move. Find the forced win in 6 moves.",
       "category": "opening",
       "difficulty": "expert",
@@ -6400,7 +6462,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:placement",
         "side:black",
         "trap:greedy-mill",
@@ -6411,7 +6472,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:5-expert",
-        "distance-band:short"
+        "win-in-6",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -6422,7 +6485,7 @@
     },
     {
       "id": "malom_movement_black_6_90998583",
-      "title": "Win in 6: resist the tempting mill",
+      "title": "Black · Win in 6: resist the tempting mill",
       "description": "Black to move. Find the forced win in 6 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -6542,7 +6605,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -6555,7 +6617,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:5-expert",
-        "distance-band:short"
+        "win-in-6",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -6566,7 +6630,7 @@
     },
     {
       "id": "malom_placement_white_7_0f03cc2c",
-      "title": "Win in 7: resist the tempting mill",
+      "title": "White · Win in 7: resist the tempting mill",
       "description": "White to move. Find the forced win in 7 moves.",
       "category": "opening",
       "difficulty": "expert",
@@ -6640,7 +6704,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:placement",
         "side:white",
         "trap:greedy-mill",
@@ -6651,7 +6714,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:5-expert",
-        "distance-band:short"
+        "win-in-7",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -6662,7 +6727,7 @@
     },
     {
       "id": "malom_movement_black_7_74d53c63",
-      "title": "Win in 7: resist the tempting mill",
+      "title": "Black · Win in 7: resist the tempting mill",
       "description": "Black to move. Find the forced win in 7 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -6865,7 +6930,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:movement",
         "side:black",
         "shortest-first-turns:2",
@@ -6884,7 +6948,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:5-expert",
-        "distance-band:short"
+        "win-in-7",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -6895,7 +6961,7 @@
     },
     {
       "id": "malom_movement_black_15_4ee3cf19",
-      "title": "Win in 15: resist the tempting mill",
+      "title": "Black · Win in 15: resist the tempting mill",
       "description": "Black to move. Find the forced win in 15 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -7106,7 +7172,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-15",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -7124,7 +7189,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:5-expert",
-        "distance-band:medium"
+        "win-in-15",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -7135,7 +7202,7 @@
     },
     {
       "id": "malom_movement_white_17_96606872",
-      "title": "Win in 17: resist the tempting mill",
+      "title": "White · Win in 17: resist the tempting mill",
       "description": "White to move. Find the forced win in 17 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -7347,7 +7414,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-17",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -7366,7 +7432,9 @@
         "topic:greedy-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:5-expert",
-        "distance-band:long"
+        "win-in-17",
+        "distance-band:long",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -7377,7 +7445,7 @@
     },
     {
       "id": "malom_movement_white_7_a0c7445d",
-      "title": "Win in 7: choose the right removal",
+      "title": "White · Win in 7: choose the right removal",
       "description": "White to move. Find the forced win in 7 moves.",
       "category": "winGame",
       "difficulty": "easy",
@@ -7587,7 +7655,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:movement",
         "side:white",
         "shortest-first-turns:2",
@@ -7606,7 +7673,9 @@
         "topic:wrong-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-7",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -7617,7 +7686,7 @@
     },
     {
       "id": "malom_movement_black_4_122bb709",
-      "title": "Win in 4: choose the right removal",
+      "title": "Black · Win in 4: choose the right removal",
       "description": "Black to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -7667,7 +7736,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -7681,7 +7749,9 @@
         "topic:wrong-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -7691,9 +7761,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_black_5_213e23e7",
-      "title": "Win in 5: choose the right removal",
-      "description": "Black to move. Find the forced win in 5 moves.",
+      "id": "malom_movement_black_3_213e23e7",
+      "title": "Black · Win in 3: choose the right removal",
+      "description": "Black to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "medium",
       "initialPosition": "@*O*OOOO/****@@*@/@O@***@* b m p 6 0 7 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -7738,7 +7808,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
         "phase:movement",
         "side:black",
         "trap:wrong-mill",
@@ -7748,7 +7817,9 @@
         "topic:wrong-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -7759,7 +7830,7 @@
     },
     {
       "id": "malom_movement_white_5_3acb44b0",
-      "title": "Win in 5: choose the right removal",
+      "title": "White · Win in 5: choose the right removal",
       "description": "White to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -7817,7 +7888,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -7831,7 +7901,9 @@
         "topic:wrong-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -7841,9 +7913,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_7_a4d5d883",
-      "title": "Win in 7: choose the right removal",
-      "description": "White to move. Find the forced win in 7 moves.",
+      "id": "malom_movement_white_5_a4d5d883",
+      "title": "White · Win in 5: choose the right removal",
+      "description": "White to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "medium",
       "initialPosition": "***@O***/*O@@*O*O/O@@@O**O w m p 7 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -7904,7 +7976,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:movement",
         "side:white",
         "trap:wrong-mill",
@@ -7914,7 +7985,9 @@
         "topic:wrong-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -7924,9 +7997,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_7_b4d3fb85",
-      "title": "Win in 7: choose the right removal",
-      "description": "White to move. Find the forced win in 7 moves.",
+      "id": "malom_movement_white_5_b4d3fb85",
+      "title": "White · Win in 5: choose the right removal",
+      "description": "White to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "hard",
       "initialPosition": "@*******/*O**@*OO/****@**@ w m p 3 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -7987,7 +8060,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:movement",
         "side:white",
         "trap:wrong-mill",
@@ -7997,7 +8069,9 @@
         "topic:wrong-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -8007,9 +8081,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_7_7d907ee0",
-      "title": "Win in 7: choose the right removal",
-      "description": "White to move. Find the forced win in 7 moves.",
+      "id": "malom_movement_white_4_7d907ee0",
+      "title": "White · Win in 4: choose the right removal",
+      "description": "White to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "hard",
       "initialPosition": "*@**@***/O*@O*OO*/***@@O*O w m p 6 0 5 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -8066,7 +8140,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:movement",
         "side:white",
         "trap:wrong-mill",
@@ -8077,7 +8150,9 @@
         "topic:wrong-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -8087,9 +8162,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_black_7_8a12282f",
-      "title": "Win in 7: choose the right removal",
-      "description": "Black to move. Find the forced win in 7 moves.",
+      "id": "malom_movement_black_5_8a12282f",
+      "title": "Black · Win in 5: choose the right removal",
+      "description": "Black to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "expert",
       "initialPosition": "*@@**O*@/****O***/**O***O* b m p 4 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -8150,7 +8225,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:movement",
         "side:black",
         "trap:wrong-mill",
@@ -8160,7 +8234,9 @@
         "topic:wrong-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:5-expert",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -8170,9 +8246,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_black_7_40eadef4",
-      "title": "Win in 7: choose the right removal",
-      "description": "Black to move. Find the forced win in 7 moves.",
+      "id": "malom_movement_black_4_40eadef4",
+      "title": "Black · Win in 4: choose the right removal",
+      "description": "Black to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "expert",
       "initialPosition": "@O*@*@*@/****@*@O/**O*O**O b m p 5 0 6 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -8229,7 +8305,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:movement",
         "side:black",
         "trap:wrong-mill",
@@ -8240,7 +8315,9 @@
         "topic:wrong-mill-trap",
         "curriculum:02-mill-tactics",
         "progression:5-expert",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -8251,7 +8328,7 @@
     },
     {
       "id": "malom_movement_black_11_bf7ac7b5",
-      "title": "Win in 11: set up the swing mill",
+      "title": "Black · Win in 11: set up the swing mill",
       "description": "Black to move. Find the forced win in 11 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -8570,7 +8647,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-11",
         "phase:movement",
         "side:black",
         "shortest-first-turns:2",
@@ -8588,7 +8664,9 @@
         "topic:double-mill",
         "curriculum:02-mill-tactics",
         "progression:4-hard",
-        "distance-band:medium"
+        "win-in-11",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -8599,7 +8677,7 @@
     },
     {
       "id": "malom_movement_white_15_4908000e",
-      "title": "Win in 15: set up the swing mill",
+      "title": "White · Win in 15: set up the swing mill",
       "description": "White to move. Find the forced win in 15 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -8791,7 +8869,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-15",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -8809,7 +8886,9 @@
         "topic:double-mill",
         "curriculum:02-mill-tactics",
         "progression:5-expert",
-        "distance-band:medium"
+        "win-in-15",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -8820,7 +8899,7 @@
     },
     {
       "id": "malom_movement_white_24_d64bf92b",
-      "title": "Win in 24: set up the swing mill",
+      "title": "White · Win in 24: set up the swing mill",
       "description": "White to move. Find the forced win in 24 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -9324,7 +9403,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-24",
         "phase:movement",
         "side:white",
         "shortest-first-turns:2",
@@ -9343,7 +9421,9 @@
         "topic:double-mill",
         "curriculum:02-mill-tactics",
         "progression:5-expert",
-        "distance-band:long"
+        "win-in-24",
+        "distance-band:long",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -9354,7 +9434,7 @@
     },
     {
       "id": "malom_movement_white_13_5a69674a",
-      "title": "Win in 13: create two threats at once",
+      "title": "White · Win in 13: create two threats at once",
       "description": "White to move. Find the forced win in 13 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -9917,7 +9997,6 @@
         "generated",
         "malom-db",
         "source:composed",
-        "win-in-13",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -9930,7 +10009,9 @@
         "topic:dual-threat",
         "curriculum:02-mill-tactics",
         "progression:5-expert",
-        "distance-band:medium"
+        "win-in-13",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Puzzle Toolchain",
@@ -9941,7 +10022,7 @@
     },
     {
       "id": "malom_movement_white_14_9ab02f34",
-      "title": "Win in 14: create two threats at once",
+      "title": "White · Win in 14: create two threats at once",
       "description": "White to move. Find the forced win in 14 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -10544,7 +10625,6 @@
         "generated",
         "malom-db",
         "source:composed",
-        "win-in-14",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -10557,7 +10637,9 @@
         "topic:dual-threat",
         "curriculum:02-mill-tactics",
         "progression:5-expert",
-        "distance-band:medium"
+        "win-in-14",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Puzzle Toolchain",
@@ -10568,7 +10650,7 @@
     },
     {
       "id": "malom_movement_white_16_f38ec17c",
-      "title": "Win in 16: create two threats at once",
+      "title": "White · Win in 16: create two threats at once",
       "description": "White to move. Find the forced win in 16 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -11251,7 +11333,6 @@
         "generated",
         "malom-db",
         "source:composed",
-        "win-in-16",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -11264,7 +11345,9 @@
         "topic:dual-threat",
         "curriculum:02-mill-tactics",
         "progression:5-expert",
-        "distance-band:long"
+        "win-in-16",
+        "distance-band:long",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Puzzle Toolchain",
@@ -11275,7 +11358,7 @@
     },
     {
       "id": "malom_movement_black_4_7a6a3321",
-      "title": "Win in 4: abandon a mill to win",
+      "title": "Black · Win in 4: abandon a mill to win",
       "description": "Black to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "easy",
@@ -11322,7 +11405,6 @@
         "generated",
         "malom-db",
         "source:composed",
-        "win-in-4",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -11336,7 +11418,9 @@
         "topic:mill-abandonment",
         "curriculum:03-positional-play",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Puzzle Toolchain",
@@ -11347,7 +11431,7 @@
     },
     {
       "id": "malom_movement_black_22_9fe9f92a",
-      "title": "Win in 22: give up a piece to win",
+      "title": "Black · Win in 22: give up a piece to win",
       "description": "Black to move. Find the forced win in 22 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -11844,7 +11928,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-22",
         "phase:movement",
         "side:black",
         "shortest-first-turns:2",
@@ -11862,7 +11945,9 @@
         "topic:sacrifice",
         "curriculum:03-positional-play",
         "progression:5-expert",
-        "distance-band:long"
+        "win-in-22",
+        "distance-band:long",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -11873,7 +11958,7 @@
     },
     {
       "id": "malom_movement_black_3_1d8beb88",
-      "title": "Win in 3: immobilize the opponent",
+      "title": "Black · Win in 3: immobilize the opponent",
       "description": "Black to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -11911,7 +11996,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -11924,7 +12008,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -11935,7 +12021,7 @@
     },
     {
       "id": "malom_movement_black_3_38158f63",
-      "title": "Win in 3: immobilize the opponent",
+      "title": "Black · Win in 3: immobilize the opponent",
       "description": "Black to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -11977,7 +12063,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -11990,7 +12075,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -12001,7 +12088,7 @@
     },
     {
       "id": "malom_movement_black_3_788889bb",
-      "title": "Win in 3: immobilize the opponent",
+      "title": "Black · Win in 3: immobilize the opponent",
       "description": "Black to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -12043,7 +12130,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -12056,7 +12142,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -12067,7 +12155,7 @@
     },
     {
       "id": "malom_movement_white_3_0102fa15",
-      "title": "Win in 3: immobilize the opponent",
+      "title": "White · Win in 3: immobilize the opponent",
       "description": "White to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -12105,7 +12193,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -12118,7 +12205,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -12129,7 +12218,7 @@
     },
     {
       "id": "malom_movement_white_3_cc46cff2",
-      "title": "Win in 3: immobilize the opponent",
+      "title": "White · Win in 3: immobilize the opponent",
       "description": "White to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -12171,7 +12260,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -12184,7 +12272,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -12195,7 +12285,7 @@
     },
     {
       "id": "malom_movement_white_3_d19e4641",
-      "title": "Win in 3: immobilize the opponent",
+      "title": "White · Win in 3: immobilize the opponent",
       "description": "White to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -12237,7 +12327,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -12250,7 +12339,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -12261,7 +12352,7 @@
     },
     {
       "id": "malom_movement_white_3_fe890d8e",
-      "title": "Win in 3: immobilize the opponent",
+      "title": "White · Win in 3: immobilize the opponent",
       "description": "White to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -12441,7 +12532,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -12454,7 +12544,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -12465,7 +12557,7 @@
     },
     {
       "id": "malom_movement_white_4_517db0a3",
-      "title": "Win in 4: immobilize the opponent",
+      "title": "White · Win in 4: immobilize the opponent",
       "description": "White to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -12545,7 +12637,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -12557,7 +12648,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -12568,7 +12661,7 @@
     },
     {
       "id": "malom_movement_black_4_4fdaf29a",
-      "title": "Win in 4: immobilize the opponent",
+      "title": "Black · Win in 4: immobilize the opponent",
       "description": "Black to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -12614,7 +12707,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -12627,7 +12719,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -12638,7 +12732,7 @@
     },
     {
       "id": "malom_movement_white_4_8735acc8",
-      "title": "Win in 4: immobilize the opponent",
+      "title": "White · Win in 4: immobilize the opponent",
       "description": "White to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -12688,7 +12782,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -12701,7 +12794,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -12712,7 +12807,7 @@
     },
     {
       "id": "malom_movement_white_5_eb653ee3",
-      "title": "Win in 5: immobilize the opponent",
+      "title": "White · Win in 5: immobilize the opponent",
       "description": "White to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -12766,7 +12861,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
         "phase:movement",
         "side:white",
         "immobilization",
@@ -12775,7 +12869,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -12786,7 +12882,7 @@
     },
     {
       "id": "malom_movement_black_5_dfe57491",
-      "title": "Win in 5: immobilize the opponent",
+      "title": "Black · Win in 5: immobilize the opponent",
       "description": "Black to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -12844,7 +12940,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -12857,7 +12952,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -12868,7 +12965,7 @@
     },
     {
       "id": "malom_movement_white_5_8ff81fd6",
-      "title": "Win in 5: immobilize the opponent",
+      "title": "White · Win in 5: immobilize the opponent",
       "description": "White to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -12926,7 +13023,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -12939,7 +13035,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -12950,7 +13048,7 @@
     },
     {
       "id": "malom_movement_black_6_b8c40683",
-      "title": "Win in 6: immobilize the opponent",
+      "title": "Black · Win in 6: immobilize the opponent",
       "description": "Black to move. Find the forced win in 6 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -13016,7 +13114,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -13029,7 +13126,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-6",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -13040,7 +13139,7 @@
     },
     {
       "id": "malom_movement_white_6_2e071e3c",
-      "title": "Win in 6: immobilize the opponent",
+      "title": "White · Win in 6: immobilize the opponent",
       "description": "White to move. Find the forced win in 6 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -13106,7 +13205,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -13119,7 +13217,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-6",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -13130,7 +13230,7 @@
     },
     {
       "id": "malom_movement_white_6_4c1cfd4b",
-      "title": "Win in 6: immobilize the opponent",
+      "title": "White · Win in 6: immobilize the opponent",
       "description": "White to move. Find the forced win in 6 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -13304,7 +13404,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -13316,7 +13415,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-6",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -13327,7 +13428,7 @@
     },
     {
       "id": "malom_placement_white_6_dc5d4d04",
-      "title": "Win in 6: immobilize the opponent",
+      "title": "White · Win in 6: immobilize the opponent",
       "description": "White to move. Find the forced win in 6 moves.",
       "category": "opening",
       "difficulty": "medium",
@@ -13389,7 +13490,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
         "phase:placement",
         "side:white",
         "immobilization",
@@ -13398,7 +13498,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-6",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -13409,7 +13511,7 @@
     },
     {
       "id": "malom_movement_white_5_8448aeb3",
-      "title": "Win in 5: immobilize the opponent",
+      "title": "White · Win in 5: immobilize the opponent",
       "description": "White to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -13621,7 +13723,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -13633,7 +13734,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -13644,7 +13747,7 @@
     },
     {
       "id": "malom_movement_black_5_ca3800d0",
-      "title": "Win in 5: immobilize the opponent",
+      "title": "Black · Win in 5: immobilize the opponent",
       "description": "Black to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -13740,7 +13843,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -13752,7 +13854,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -13763,7 +13867,7 @@
     },
     {
       "id": "malom_movement_white_5_0de9ab0a",
-      "title": "Win in 5: immobilize the opponent",
+      "title": "White · Win in 5: immobilize the opponent",
       "description": "White to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -13821,7 +13925,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -13834,7 +13937,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:4-hard",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -13845,7 +13950,7 @@
     },
     {
       "id": "malom_movement_white_14_1245c1db",
-      "title": "Win in 14: immobilize the opponent",
+      "title": "White · Win in 14: immobilize the opponent",
       "description": "White to move. Find the forced win in 14 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -14045,7 +14150,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-14",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -14062,7 +14166,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:4-hard",
-        "distance-band:medium"
+        "win-in-14",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -14073,7 +14179,7 @@
     },
     {
       "id": "malom_movement_white_7_61b01b57",
-      "title": "Win in 7: immobilize the opponent",
+      "title": "White · Win in 7: immobilize the opponent",
       "description": "White to move. Find the forced win in 7 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -14547,7 +14653,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -14559,7 +14664,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:5-expert",
-        "distance-band:short"
+        "win-in-7",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -14570,7 +14677,7 @@
     },
     {
       "id": "malom_movement_black_30_e71d7232",
-      "title": "Win in 30: immobilize the opponent",
+      "title": "Black · Win in 30: immobilize the opponent",
       "description": "Black to move. Find the forced win in 30 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -15405,7 +15512,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-30",
         "phase:movement",
         "side:black",
         "shortest-first-turns:3",
@@ -15422,7 +15528,9 @@
         "topic:immobilization",
         "curriculum:04-endgames",
         "progression:5-expert",
-        "distance-band:long"
+        "win-in-30",
+        "distance-band:long",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -15432,9 +15540,9 @@
       "ruleVariantId": "standard_9mm"
     },
     {
-      "id": "malom_movement_white_5_1fa1787f",
-      "title": "Win in 5: ground the flying defense",
-      "description": "White to move. Find the forced win in 5 moves.",
+      "id": "malom_movement_white_3_1fa1787f",
+      "title": "White · Win in 3: ground the flying defense",
+      "description": "White to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "easy",
       "initialPosition": "*OOO****/@O**O@*@/****O*@* w m p 6 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
@@ -15479,7 +15587,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
         "phase:movement",
         "side:white",
         "vs-flying",
@@ -15488,7 +15595,9 @@
         "topic:flying-defence",
         "curriculum:04-endgames",
         "progression:2-easy",
-        "distance-band:short"
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Perfect DB Generator",
@@ -15499,7 +15608,7 @@
     },
     {
       "id": "malom_movement_black_3_c1f4275f",
-      "title": "Win in 3: leave only a losing move",
+      "title": "Black · Win in 3: leave only a losing move",
       "description": "Black to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -15538,7 +15647,6 @@
         "generated",
         "malom-db",
         "source:composed",
-        "win-in-3",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -15552,7 +15660,9 @@
         "topic:zugzwang",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Puzzle Toolchain",
@@ -15563,7 +15673,7 @@
     },
     {
       "id": "malom_movement_black_5_ffd87e55",
-      "title": "Win in 5: leave only a losing move",
+      "title": "Black · Win in 5: leave only a losing move",
       "description": "Black to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -15618,7 +15728,6 @@
         "generated",
         "malom-db",
         "source:composed",
-        "win-in-5",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -15632,7 +15741,9 @@
         "topic:zugzwang",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Puzzle Toolchain",
@@ -15643,7 +15754,7 @@
     },
     {
       "id": "malom_movement_black_7_405c9bef",
-      "title": "Win in 7: leave only a losing move",
+      "title": "Black · Win in 7: leave only a losing move",
       "description": "Black to move. Find the forced win in 7 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -15714,7 +15825,6 @@
         "generated",
         "malom-db",
         "source:composed",
-        "win-in-7",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -15728,7 +15838,9 @@
         "topic:zugzwang",
         "curriculum:04-endgames",
         "progression:3-medium",
-        "distance-band:short"
+        "win-in-7",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill Puzzle Toolchain",
@@ -15739,7 +15851,7 @@
     },
     {
       "id": "malom_movement_white_4_1f466d4e",
-      "title": "Win in 4: a quiet move wins",
+      "title": "White · Win in 4: a quiet move wins",
       "description": "White to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -15979,8 +16091,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -16001,7 +16111,10 @@
         "progression:4-hard",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:against-flying"
+        "selection-profile:against-flying",
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -16012,7 +16125,7 @@
     },
     {
       "id": "malom_movement_white_4_3aa2da82",
-      "title": "Win in 4: a quiet move wins",
+      "title": "White · Win in 4: a quiet move wins",
       "description": "White to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -16252,8 +16365,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -16274,7 +16385,10 @@
         "progression:4-hard",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:against-flying"
+        "selection-profile:against-flying",
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -16285,7 +16399,7 @@
     },
     {
       "id": "malom_movement_white_4_89a9f08e",
-      "title": "Win in 4: a quiet move wins",
+      "title": "White · Win in 4: a quiet move wins",
       "description": "White to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -16525,8 +16639,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -16547,7 +16659,10 @@
         "progression:4-hard",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:against-flying"
+        "selection-profile:against-flying",
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -16558,7 +16673,7 @@
     },
     {
       "id": "malom_movement_white_4_e8a008f6",
-      "title": "Win in 4: a quiet move wins",
+      "title": "White · Win in 4: a quiet move wins",
       "description": "White to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -16798,8 +16913,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -16820,7 +16933,10 @@
         "progression:4-hard",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:against-flying"
+        "selection-profile:against-flying",
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -16831,7 +16947,7 @@
     },
     {
       "id": "malom_movement_white_4_fbdc3550",
-      "title": "Win in 4: a quiet move wins",
+      "title": "White · Win in 4: a quiet move wins",
       "description": "White to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -17071,8 +17187,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -17093,7 +17207,10 @@
         "progression:4-hard",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:against-flying"
+        "selection-profile:against-flying",
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -17104,7 +17221,7 @@
     },
     {
       "id": "malom_movement_white_6_cb835e02",
-      "title": "Win in 6: a quiet move wins",
+      "title": "White · Win in 6: a quiet move wins",
       "description": "White to move. Find the forced win in 6 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -17278,8 +17395,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -17300,7 +17415,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:against-flying"
+        "selection-profile:against-flying",
+        "win-in-6",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -17311,7 +17429,7 @@
     },
     {
       "id": "malom_movement_white_8_2cf174eb",
-      "title": "Win in 8: a quiet move wins",
+      "title": "White · Win in 8: a quiet move wins",
       "description": "White to move. Find the forced win in 8 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -17545,8 +17663,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-8",
-        "distance-band:medium",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -17567,7 +17683,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:material-odds-7v4"
+        "selection-profile:material-odds-7v4",
+        "win-in-8",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -17578,7 +17697,7 @@
     },
     {
       "id": "malom_movement_white_8_9e37635f",
-      "title": "Win in 8: a quiet move wins",
+      "title": "White · Win in 8: a quiet move wins",
       "description": "White to move. Find the forced win in 8 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -17812,8 +17931,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-8",
-        "distance-band:medium",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -17834,7 +17951,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:material-odds-7v4"
+        "selection-profile:material-odds-7v4",
+        "win-in-8",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -17845,7 +17965,7 @@
     },
     {
       "id": "malom_movement_white_1_7302eead",
-      "title": "Win in 1: block before attacking",
+      "title": "White · Win in 1: block before attacking",
       "description": "White to move. Find the forced win in 1 move.",
       "category": "winGame",
       "difficulty": "beginner",
@@ -17919,8 +18039,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-1",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -17937,7 +18055,10 @@
         "progression:1-beginner",
         "review-status:expert-pending",
         "review-batch:similarity-repair-selected-16",
-        "selection-profile:certified_mill_block_white_5v4"
+        "selection-profile:certified_mill_block_white_5v4",
+        "win-in-1",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -17948,7 +18069,7 @@
     },
     {
       "id": "malom_movement_white_4_b7c34d11",
-      "title": "Win in 4: block before attacking",
+      "title": "White · Win in 4: block before attacking",
       "description": "White to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "easy",
@@ -17994,8 +18115,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -18012,7 +18131,10 @@
         "progression:2-easy",
         "review-status:expert-pending",
         "review-batch:similarity-repair-selected-16",
-        "selection-profile:certified_mill_block_white_5v4"
+        "selection-profile:certified_mill_block_white_5v4",
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -18023,7 +18145,7 @@
     },
     {
       "id": "malom_movement_white_5_ca1ba223",
-      "title": "Win in 5: block before attacking",
+      "title": "White · Win in 5: block before attacking",
       "description": "White to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -18077,8 +18199,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -18095,7 +18215,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:similarity-repair-selected-16",
-        "selection-profile:certified_mill_block_white_5v4"
+        "selection-profile:certified_mill_block_white_5v4",
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -18106,7 +18229,7 @@
     },
     {
       "id": "malom_movement_black_3_61b0d5c0",
-      "title": "Win in 3: resist the tempting mill",
+      "title": "Black · Win in 3: resist the tempting mill",
       "description": "Black to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "easy",
@@ -18148,8 +18271,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
-        "distance-band:short",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -18166,7 +18287,10 @@
         "progression:2-easy",
         "review-status:expert-pending",
         "review-batch:similarity-repair-selected-16",
-        "selection-profile:shallow_certified_pool"
+        "selection-profile:shallow_certified_pool",
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -18177,7 +18301,7 @@
     },
     {
       "id": "malom_movement_black_3_68fdceb3",
-      "title": "Win in 3: resist the tempting mill",
+      "title": "Black · Win in 3: resist the tempting mill",
       "description": "Black to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "easy",
@@ -18215,8 +18339,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
-        "distance-band:short",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -18233,7 +18355,10 @@
         "progression:2-easy",
         "review-status:expert-pending",
         "review-batch:similarity-repair-selected-16",
-        "selection-profile:shallow_certified_pool"
+        "selection-profile:shallow_certified_pool",
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -18244,7 +18369,7 @@
     },
     {
       "id": "malom_movement_white_6_5aa1e884",
-      "title": "Win in 6: resist the tempting mill",
+      "title": "White · Win in 6: resist the tempting mill",
       "description": "White to move. Find the forced win in 6 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -18318,8 +18443,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -18336,7 +18459,10 @@
         "progression:4-hard",
         "review-status:expert-pending",
         "review-batch:similarity-repair-selected-16",
-        "selection-profile:balanced_certified_pool"
+        "selection-profile:balanced_certified_pool",
+        "win-in-6",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -18347,7 +18473,7 @@
     },
     {
       "id": "malom_movement_black_7_a96cec9e",
-      "title": "Win in 7: resist the tempting mill",
+      "title": "Black · Win in 7: resist the tempting mill",
       "description": "Black to move. Find the forced win in 7 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -20599,8 +20725,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
-        "distance-band:short",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -20616,7 +20740,10 @@
         "progression:4-hard",
         "review-status:expert-pending",
         "review-batch:similarity-repair-selected-16",
-        "selection-profile:balanced_certified_pool"
+        "selection-profile:balanced_certified_pool",
+        "win-in-7",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -20627,7 +20754,7 @@
     },
     {
       "id": "malom_movement_white_9_4b6a9e7e",
-      "title": "Win in 9: choose the right removal",
+      "title": "White · Win in 9: choose the right removal",
       "description": "White to move. Find the forced win in 9 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -23459,8 +23586,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-9",
-        "distance-band:medium",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -23477,7 +23602,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:similarity-repair-selected-16",
-        "selection-profile:balanced_certified_pool"
+        "selection-profile:balanced_certified_pool",
+        "win-in-9",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -23488,7 +23616,7 @@
     },
     {
       "id": "malom_movement_black_10_b8ac4a0b",
-      "title": "Win in 10: choose the right removal",
+      "title": "Black · Win in 10: choose the right removal",
       "description": "Black to move. Find the forced win in 10 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -25264,8 +25392,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-10",
-        "distance-band:medium",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -25282,7 +25408,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:similarity-repair-selected-16",
-        "selection-profile:balanced_certified_pool"
+        "selection-profile:balanced_certified_pool",
+        "win-in-10",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -25293,7 +25422,7 @@
     },
     {
       "id": "malom_movement_white_5_d70c992e",
-      "title": "Win in 5: set up the swing mill",
+      "title": "White · Win in 5: set up the swing mill",
       "description": "White to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -25791,8 +25920,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -25808,7 +25935,10 @@
         "progression:3-medium",
         "review-status:expert-pending",
         "review-batch:similarity-repair-selected-16",
-        "selection-profile:balanced_certified_pool"
+        "selection-profile:balanced_certified_pool",
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -25819,7 +25949,7 @@
     },
     {
       "id": "malom_movement_black_10_3a9d6011",
-      "title": "Win in 10: set up the swing mill",
+      "title": "Black · Win in 10: set up the swing mill",
       "description": "Black to move. Find the forced win in 10 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -27007,8 +27137,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-10",
-        "distance-band:medium",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -27024,7 +27152,10 @@
         "progression:4-hard",
         "review-status:expert-pending",
         "review-batch:similarity-repair-selected-16",
-        "selection-profile:balanced_certified_pool"
+        "selection-profile:balanced_certified_pool",
+        "win-in-10",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -27035,7 +27166,7 @@
     },
     {
       "id": "malom_movement_black_11_8bd11329",
-      "title": "Win in 11: set up the swing mill",
+      "title": "Black · Win in 11: set up the swing mill",
       "description": "Black to move. Find the forced win in 11 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -28367,8 +28498,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-11",
-        "distance-band:medium",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -28389,7 +28518,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:balanced-expert"
+        "selection-profile:balanced-expert",
+        "win-in-11",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -28400,7 +28532,7 @@
     },
     {
       "id": "malom_movement_black_7_9b06db46",
-      "title": "Win in 7: turn the corner with two threats",
+      "title": "Black · Win in 7: turn the corner with two threats",
       "description": "Black to move. Find the forced win in 7 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -29574,8 +29706,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
-        "distance-band:short",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -29597,7 +29727,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:strategy-theme-review-selected-10",
-        "selection-profile:right-angle-threat-review"
+        "selection-profile:right-angle-threat-review",
+        "win-in-7",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -29608,7 +29741,7 @@
     },
     {
       "id": "malom_movement_black_12_063af7a2",
-      "title": "Win in 12: prepare the mill's recovery",
+      "title": "Black · Win in 12: prepare the mill's recovery",
       "description": "Black to move. Find the forced win in 12 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -31380,8 +31513,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-12",
-        "distance-band:medium",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -31402,7 +31533,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:strategy-theme-review-selected-10",
-        "selection-profile:mill-recovery-review"
+        "selection-profile:mill-recovery-review",
+        "win-in-12",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -31413,7 +31547,7 @@
     },
     {
       "id": "malom_movement_white_6_38386b7f",
-      "title": "Win in 6: release the key junction",
+      "title": "White · Win in 6: release the key junction",
       "description": "White to move. Find the forced win in 6 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -31525,8 +31659,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -31548,7 +31680,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:strategy-theme-review-selected-10",
-        "selection-profile:junction-release-review"
+        "selection-profile:junction-release-review",
+        "win-in-6",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -31559,7 +31694,7 @@
     },
     {
       "id": "malom_movement_white_10_be04c029",
-      "title": "Win in 10: release the key junction",
+      "title": "White · Win in 10: release the key junction",
       "description": "White to move. Find the forced win in 10 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -31915,8 +32050,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-10",
-        "distance-band:medium",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -31937,7 +32070,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:strategy-theme-review-selected-10",
-        "selection-profile:junction-release-review"
+        "selection-profile:junction-release-review",
+        "win-in-10",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -31948,7 +32084,7 @@
     },
     {
       "id": "malom_movement_white_12_cb84937d",
-      "title": "Win in 12: release the key junction",
+      "title": "White · Win in 12: release the key junction",
       "description": "White to move. Find the forced win in 12 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -32596,8 +32732,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-12",
-        "distance-band:medium",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -32619,7 +32753,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:strategy-theme-review-selected-10",
-        "selection-profile:junction-release-review"
+        "selection-profile:junction-release-review",
+        "win-in-12",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -32630,7 +32767,7 @@
     },
     {
       "id": "malom_movement_black_5_a5bb3d84",
-      "title": "Win in 5: transfer the attack across the rings",
+      "title": "Black · Win in 5: transfer the attack across the rings",
       "description": "Black to move. Find the forced win in 5 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -33290,8 +33427,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-5",
-        "distance-band:short",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -33314,7 +33449,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:strategy-theme-review-selected-10",
-        "selection-profile:ring-transfer-review"
+        "selection-profile:ring-transfer-review",
+        "win-in-5",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -33325,7 +33463,7 @@
     },
     {
       "id": "malom_movement_white_6_1eede33d",
-      "title": "Win in 6: transfer the attack across the rings",
+      "title": "White · Win in 6: transfer the attack across the rings",
       "description": "White to move. Find the forced win in 6 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -33437,8 +33575,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-6",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -33459,7 +33595,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:strategy-theme-review-selected-10",
-        "selection-profile:ring-transfer-review"
+        "selection-profile:ring-transfer-review",
+        "win-in-6",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -33470,7 +33609,7 @@
     },
     {
       "id": "malom_movement_white_14_47f3ca40",
-      "title": "Win in 14: transfer the attack across the rings",
+      "title": "White · Win in 14: transfer the attack across the rings",
       "description": "White to move. Find the forced win in 14 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -34190,8 +34329,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-14",
-        "distance-band:medium",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -34212,7 +34349,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:strategy-theme-review-selected-10",
-        "selection-profile:ring-transfer-review"
+        "selection-profile:ring-transfer-review",
+        "win-in-14",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -34223,7 +34363,7 @@
     },
     {
       "id": "malom_movement_black_4_89cd3ff9",
-      "title": "Win in 4: give up a piece to win",
+      "title": "Black · Win in 4: give up a piece to win",
       "description": "Black to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -34985,8 +35125,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
-        "distance-band:short",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -35007,7 +35145,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:material-odds-7v4"
+        "selection-profile:material-odds-7v4",
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -35018,7 +35159,7 @@
     },
     {
       "id": "malom_movement_black_10_98cb30ca",
-      "title": "Win in 10: compress the defence",
+      "title": "Black · Win in 10: compress the defence",
       "description": "Black to move. Find the forced win in 10 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -35570,8 +35711,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-10",
-        "distance-band:medium",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -35592,7 +35731,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:strategy-theme-review-selected-10",
-        "selection-profile:mobility-squeeze-review"
+        "selection-profile:mobility-squeeze-review",
+        "win-in-10",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -35603,7 +35745,7 @@
     },
     {
       "id": "malom_movement_black_10_9531e80e",
-      "title": "Win in 10: compress the defence",
+      "title": "Black · Win in 10: compress the defence",
       "description": "Black to move. Find the forced win in 10 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -36743,8 +36885,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-10",
-        "distance-band:medium",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -36765,7 +36905,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:strategy-theme-review-selected-10",
-        "selection-profile:mobility-squeeze-review"
+        "selection-profile:mobility-squeeze-review",
+        "win-in-10",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -36775,8 +36918,478 @@
       "ruleVariantId": "standard_9mm"
     },
     {
+      "id": "malom_draw_black_1_a9d5ddd3",
+      "title": "Black · Hold the draw: find the only defence",
+      "description": "Black to move. Find the only move that preserves the draw; every other legal move loses.",
+      "category": "defend",
+      "difficulty": "easy",
+      "initialPosition": "****@O@*/@OO****@/******** b m s 3 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "d3-e3",
+              "side": "black"
+            }
+          ],
+          "description": "Unique drawing move",
+          "isOptimal": true
+        }
+      ],
+      "hint": "Do not chase a quick threat. Preserve the defensive resource that keeps the position balanced.",
+      "completionMessage": "You found the only move that keeps the position drawn.",
+      "tags": [
+        "generated",
+        "malom-db",
+        "perfect-db-certified",
+        "hold-draw-in-1",
+        "objective:hold-draw",
+        "unique-draw-save",
+        "phase:movement",
+        "side:black",
+        "source:composed",
+        "distance-band:short",
+        "review-status:expert-pending",
+        "discovery:outcome-contrast",
+        "selection-profile:unique-draw-save-4v3",
+        "review-batch:draw-defence-review-selected-10",
+        "topic:draw-save",
+        "curriculum:04-endgames",
+        "progression:2-easy"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-29T15:10:57Z",
+      "version": 1,
+      "rating": 1200,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_draw_white_1_86603d5b",
+      "title": "White · Hold the draw: find the only defence",
+      "description": "White to move. Find the only move that preserves the draw; every other legal move loses.",
+      "category": "defend",
+      "difficulty": "easy",
+      "initialPosition": "*****O**/***@****/O@*@**OO w m s 4 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "c3-c4",
+              "side": "white"
+            }
+          ],
+          "description": "Unique drawing move",
+          "isOptimal": true
+        }
+      ],
+      "hint": "Do not chase a quick threat. Preserve the defensive resource that keeps the position balanced.",
+      "completionMessage": "You found the only move that keeps the position drawn.",
+      "tags": [
+        "generated",
+        "malom-db",
+        "perfect-db-certified",
+        "hold-draw-in-1",
+        "objective:hold-draw",
+        "unique-draw-save",
+        "phase:movement",
+        "side:white",
+        "source:composed",
+        "distance-band:short",
+        "review-status:expert-pending",
+        "discovery:outcome-contrast",
+        "selection-profile:unique-draw-save-4v3",
+        "review-batch:draw-defence-review-selected-10",
+        "topic:draw-save",
+        "curriculum:04-endgames",
+        "progression:2-easy"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-29T15:10:57Z",
+      "version": 1,
+      "rating": 1200,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_draw_black_1_fd22e3b7",
+      "title": "Black · Hold the draw: find the only defence",
+      "description": "Black to move. Find the only move that preserves the draw; every other legal move loses.",
+      "category": "defend",
+      "difficulty": "medium",
+      "initialPosition": "**@O*O@@/***@**O*/******** b m s 3 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "e4-e5",
+              "side": "black"
+            }
+          ],
+          "description": "Unique drawing move",
+          "isOptimal": true
+        }
+      ],
+      "hint": "Do not chase a quick threat. Preserve the defensive resource that keeps the position balanced.",
+      "completionMessage": "You found the only move that keeps the position drawn.",
+      "tags": [
+        "generated",
+        "malom-db",
+        "perfect-db-certified",
+        "hold-draw-in-1",
+        "objective:hold-draw",
+        "unique-draw-save",
+        "phase:movement",
+        "side:black",
+        "source:composed",
+        "distance-band:short",
+        "review-status:expert-pending",
+        "discovery:outcome-contrast",
+        "selection-profile:unique-draw-save-4v3",
+        "review-batch:draw-defence-review-selected-10",
+        "topic:draw-save",
+        "curriculum:04-endgames",
+        "progression:3-medium"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-29T15:10:57Z",
+      "version": 1,
+      "rating": 1370,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_draw_white_1_5d76e78c",
+      "title": "White · Hold the draw: find the only defence",
+      "description": "White to move. Find the only move that preserves the draw; every other legal move loses.",
+      "category": "defend",
+      "difficulty": "medium",
+      "initialPosition": "***O*@**/O@*@O**O/******** w m s 4 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "d2-b2",
+              "side": "white"
+            }
+          ],
+          "description": "Unique drawing move",
+          "isOptimal": true
+        }
+      ],
+      "hint": "Do not chase a quick threat. Preserve the defensive resource that keeps the position balanced.",
+      "completionMessage": "You found the only move that keeps the position drawn.",
+      "tags": [
+        "generated",
+        "malom-db",
+        "perfect-db-certified",
+        "hold-draw-in-1",
+        "objective:hold-draw",
+        "unique-draw-save",
+        "phase:movement",
+        "side:white",
+        "source:composed",
+        "distance-band:short",
+        "review-status:expert-pending",
+        "discovery:outcome-contrast",
+        "selection-profile:unique-draw-save-4v3",
+        "review-batch:draw-defence-review-selected-10",
+        "topic:draw-save",
+        "curriculum:04-endgames",
+        "progression:3-medium"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-29T15:10:57Z",
+      "version": 1,
+      "rating": 1370,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_draw_white_1_71dd689e",
+      "title": "White · Hold the draw: find the only defence",
+      "description": "White to move. Find the only move that preserves the draw; every other legal move loses.",
+      "category": "defend",
+      "difficulty": "medium",
+      "initialPosition": "*****O*@/O@***@*O/****O*** w m s 4 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "b6-b4",
+              "side": "white"
+            }
+          ],
+          "description": "Unique drawing move",
+          "isOptimal": true
+        }
+      ],
+      "hint": "Do not chase a quick threat. Preserve the defensive resource that keeps the position balanced.",
+      "completionMessage": "You found the only move that keeps the position drawn.",
+      "tags": [
+        "generated",
+        "malom-db",
+        "perfect-db-certified",
+        "hold-draw-in-1",
+        "objective:hold-draw",
+        "unique-draw-save",
+        "phase:movement",
+        "side:white",
+        "source:composed",
+        "distance-band:short",
+        "review-status:expert-pending",
+        "discovery:outcome-contrast",
+        "selection-profile:unique-draw-save-4v3",
+        "review-batch:draw-defence-review-selected-10",
+        "topic:draw-save",
+        "curriculum:04-endgames",
+        "progression:3-medium"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-29T15:10:57Z",
+      "version": 1,
+      "rating": 1370,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_draw_black_1_8d4939e4",
+      "title": "Black · Hold the draw: find the only defence",
+      "description": "Black to move. Find the only move that preserves the draw; every other legal move loses.",
+      "category": "defend",
+      "difficulty": "medium",
+      "initialPosition": "*******@/**OO@@**/**@**O** b m s 3 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "c5-c4",
+              "side": "black"
+            }
+          ],
+          "description": "Unique drawing move",
+          "isOptimal": true
+        }
+      ],
+      "hint": "Do not chase a quick threat. Preserve the defensive resource that keeps the position balanced.",
+      "completionMessage": "You found the only move that keeps the position drawn.",
+      "tags": [
+        "generated",
+        "malom-db",
+        "perfect-db-certified",
+        "hold-draw-in-1",
+        "objective:hold-draw",
+        "unique-draw-save",
+        "phase:movement",
+        "side:black",
+        "source:composed",
+        "distance-band:short",
+        "review-status:expert-pending",
+        "discovery:outcome-contrast",
+        "selection-profile:unique-draw-save-4v3",
+        "review-batch:draw-defence-review-selected-10",
+        "topic:draw-save",
+        "curriculum:04-endgames",
+        "progression:3-medium"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-29T15:10:57Z",
+      "version": 1,
+      "rating": 1390,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_draw_black_1_e3c5069f",
+      "title": "Black · Hold the draw: find the only defence",
+      "description": "Black to move. Find the only move that preserves the draw; every other legal move loses.",
+      "category": "defend",
+      "difficulty": "medium",
+      "initialPosition": "***O****/***O*O@@/@*@***** b m s 3 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "g4-g1",
+              "side": "black"
+            }
+          ],
+          "description": "Unique drawing move",
+          "isOptimal": true
+        }
+      ],
+      "hint": "Do not chase a quick threat. Preserve the defensive resource that keeps the position balanced.",
+      "completionMessage": "You found the only move that keeps the position drawn.",
+      "tags": [
+        "generated",
+        "malom-db",
+        "perfect-db-certified",
+        "hold-draw-in-1",
+        "objective:hold-draw",
+        "unique-draw-save",
+        "phase:movement",
+        "side:black",
+        "source:composed",
+        "distance-band:short",
+        "review-status:expert-pending",
+        "discovery:outcome-contrast",
+        "selection-profile:unique-draw-save-4v3",
+        "review-batch:draw-defence-review-selected-10",
+        "topic:draw-save",
+        "curriculum:04-endgames",
+        "progression:3-medium"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-29T15:10:57Z",
+      "version": 1,
+      "rating": 1390,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_draw_black_1_ffd1e76c",
+      "title": "Black · Hold the draw: find the only defence",
+      "description": "Black to move. Find the only move that preserves the draw; every other legal move loses.",
+      "category": "defend",
+      "difficulty": "medium",
+      "initialPosition": "**O@****/@@O**O**/****@*** b m s 3 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "d6-b6",
+              "side": "black"
+            }
+          ],
+          "description": "Unique drawing move",
+          "isOptimal": true
+        }
+      ],
+      "hint": "Do not chase a quick threat. Preserve the defensive resource that keeps the position balanced.",
+      "completionMessage": "You found the only move that keeps the position drawn.",
+      "tags": [
+        "generated",
+        "malom-db",
+        "perfect-db-certified",
+        "hold-draw-in-1",
+        "objective:hold-draw",
+        "unique-draw-save",
+        "phase:movement",
+        "side:black",
+        "source:composed",
+        "distance-band:short",
+        "review-status:expert-pending",
+        "discovery:outcome-contrast",
+        "selection-profile:unique-draw-save-4v3",
+        "review-batch:draw-defence-review-selected-10",
+        "topic:draw-save",
+        "curriculum:04-endgames",
+        "progression:3-medium"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-29T15:10:57Z",
+      "version": 1,
+      "rating": 1390,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_draw_white_1_694ae995",
+      "title": "White · Hold the draw: find the only defence",
+      "description": "White to move. Find the only move that preserves the draw; every other legal move loses.",
+      "category": "defend",
+      "difficulty": "medium",
+      "initialPosition": "*@@**O**/O****@O*/****O*** w m s 4 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "c3-d3",
+              "side": "white"
+            }
+          ],
+          "description": "Unique drawing move",
+          "isOptimal": true
+        }
+      ],
+      "hint": "Do not chase a quick threat. Preserve the defensive resource that keeps the position balanced.",
+      "completionMessage": "You found the only move that keeps the position drawn.",
+      "tags": [
+        "generated",
+        "malom-db",
+        "perfect-db-certified",
+        "hold-draw-in-1",
+        "objective:hold-draw",
+        "unique-draw-save",
+        "phase:movement",
+        "side:white",
+        "source:composed",
+        "distance-band:short",
+        "review-status:expert-pending",
+        "discovery:outcome-contrast",
+        "selection-profile:unique-draw-save-4v3",
+        "review-batch:draw-defence-review-selected-10",
+        "topic:draw-save",
+        "curriculum:04-endgames",
+        "progression:3-medium"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-29T15:10:57Z",
+      "version": 1,
+      "rating": 1390,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
+      "id": "malom_draw_white_1_56d26117",
+      "title": "White · Hold the draw: find the only defence",
+      "description": "White to move. Find the only move that preserves the draw; every other legal move loses.",
+      "category": "defend",
+      "difficulty": "medium",
+      "initialPosition": "****O***/@@*@*O**/OO****** w m s 4 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes",
+      "solutions": [
+        {
+          "moves": [
+            {
+              "notation": "b2-d2",
+              "side": "white"
+            }
+          ],
+          "description": "Unique drawing move",
+          "isOptimal": true
+        }
+      ],
+      "hint": "Do not chase a quick threat. Preserve the defensive resource that keeps the position balanced.",
+      "completionMessage": "You found the only move that keeps the position drawn.",
+      "tags": [
+        "generated",
+        "malom-db",
+        "perfect-db-certified",
+        "hold-draw-in-1",
+        "objective:hold-draw",
+        "unique-draw-save",
+        "phase:movement",
+        "side:white",
+        "source:composed",
+        "distance-band:short",
+        "review-status:expert-pending",
+        "discovery:outcome-contrast",
+        "selection-profile:unique-draw-save-4v3",
+        "review-batch:draw-defence-review-selected-10",
+        "topic:draw-save",
+        "curriculum:04-endgames",
+        "progression:3-medium"
+      ],
+      "isCustom": false,
+      "author": "Sanmill Perfect DB Generator",
+      "createdDate": "2026-07-29T15:10:57Z",
+      "version": 1,
+      "rating": 1410,
+      "ruleVariantId": "standard_9mm"
+    },
+    {
       "id": "malom_movement_black_2_2e5f203d",
-      "title": "Win in 2: immobilize the opponent",
+      "title": "Black · Win in 2: immobilize the opponent",
       "description": "Black to move. Find the forced win in 2 moves.",
       "category": "winGame",
       "difficulty": "beginner",
@@ -36824,8 +37437,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-2",
-        "distance-band:short",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -36840,7 +37451,10 @@
         "progression:1-beginner",
         "review-status:expert-pending",
         "review-batch:similarity-repair-selected-16",
-        "selection-profile:shallow_certified_pool"
+        "selection-profile:shallow_certified_pool",
+        "win-in-2",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -36851,7 +37465,7 @@
     },
     {
       "id": "malom_movement_black_3_4ed59d48",
-      "title": "Win in 3: immobilize the opponent",
+      "title": "Black · Win in 3: immobilize the opponent",
       "description": "Black to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "easy",
@@ -36889,8 +37503,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
-        "distance-band:short",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -36906,7 +37518,10 @@
         "progression:2-easy",
         "review-status:expert-pending",
         "review-batch:similarity-repair-selected-16",
-        "selection-profile:shallow_certified_pool"
+        "selection-profile:shallow_certified_pool",
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -36917,7 +37532,7 @@
     },
     {
       "id": "malom_movement_black_3_b07c89f7",
-      "title": "Win in 3: immobilize the opponent",
+      "title": "Black · Win in 3: immobilize the opponent",
       "description": "Black to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "easy",
@@ -36955,8 +37570,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
-        "distance-band:short",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -36972,7 +37585,10 @@
         "progression:2-easy",
         "review-status:expert-pending",
         "review-batch:similarity-repair-selected-16",
-        "selection-profile:shallow_certified_pool"
+        "selection-profile:shallow_certified_pool",
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -36983,7 +37599,7 @@
     },
     {
       "id": "malom_movement_white_3_17933a21",
-      "title": "Win in 3: immobilize the opponent",
+      "title": "White · Win in 3: immobilize the opponent",
       "description": "White to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "easy",
@@ -37021,8 +37637,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -37038,7 +37652,10 @@
         "progression:2-easy",
         "review-status:expert-pending",
         "review-batch:similarity-repair-selected-16",
-        "selection-profile:shallow_certified_pool"
+        "selection-profile:shallow_certified_pool",
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -37049,7 +37666,7 @@
     },
     {
       "id": "malom_movement_white_3_f77aa0a1",
-      "title": "Win in 3: immobilize the opponent",
+      "title": "White · Win in 3: immobilize the opponent",
       "description": "White to move. Find the forced win in 3 moves.",
       "category": "winGame",
       "difficulty": "easy",
@@ -37087,8 +37704,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-3",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -37104,7 +37719,10 @@
         "progression:2-easy",
         "review-status:expert-pending",
         "review-batch:similarity-repair-selected-16",
-        "selection-profile:shallow_certified_pool"
+        "selection-profile:shallow_certified_pool",
+        "win-in-3",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Perfect DB Generator",
@@ -37115,7 +37733,7 @@
     },
     {
       "id": "malom_placement_black_9_3f0366fb",
-      "title": "Win in 9: immobilize the opponent",
+      "title": "Black · Win in 9: immobilize the opponent",
       "description": "Black to move. Find the forced win in 9 moves.",
       "category": "opening",
       "difficulty": "expert",
@@ -37533,8 +38151,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-9",
-        "distance-band:medium",
         "phase:placement",
         "side:black",
         "shortest-first-turns:1",
@@ -37554,7 +38170,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:late-placement"
+        "selection-profile:late-placement",
+        "win-in-9",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -37565,7 +38184,7 @@
     },
     {
       "id": "malom_placement_black_10_14ee5491",
-      "title": "Win in 10: immobilize the opponent",
+      "title": "Black · Win in 10: immobilize the opponent",
       "description": "Black to move. Find the forced win in 10 moves.",
       "category": "opening",
       "difficulty": "expert",
@@ -37663,8 +38282,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-10",
-        "distance-band:medium",
         "phase:placement",
         "side:black",
         "shortest-first-turns:1",
@@ -37685,7 +38302,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:late-placement"
+        "selection-profile:late-placement",
+        "win-in-10",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -37696,7 +38316,7 @@
     },
     {
       "id": "malom_placement_black_11_48eaf003",
-      "title": "Win in 11: immobilize the opponent",
+      "title": "Black · Win in 11: immobilize the opponent",
       "description": "Black to move. Find the forced win in 11 moves.",
       "category": "opening",
       "difficulty": "expert",
@@ -38112,8 +38732,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-11",
-        "distance-band:medium",
         "phase:placement",
         "side:black",
         "shortest-first-turns:1",
@@ -38133,7 +38751,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:late-placement"
+        "selection-profile:late-placement",
+        "win-in-11",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -38144,7 +38765,7 @@
     },
     {
       "id": "malom_placement_black_12_392e537b",
-      "title": "Win in 12: immobilize the opponent",
+      "title": "Black · Win in 12: immobilize the opponent",
       "description": "Black to move. Find the forced win in 12 moves.",
       "category": "opening",
       "difficulty": "expert",
@@ -38792,8 +39413,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-12",
-        "distance-band:medium",
         "phase:placement",
         "side:black",
         "shortest-first-turns:1",
@@ -38813,7 +39432,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:late-placement"
+        "selection-profile:late-placement",
+        "win-in-12",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -38824,7 +39446,7 @@
     },
     {
       "id": "malom_movement_white_4_01c0a411",
-      "title": "Win in 4: find the forced win",
+      "title": "White · Win in 4: find the forced win",
       "description": "White to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "medium",
@@ -39844,8 +40466,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -39867,7 +40487,10 @@
         "progression:3-medium",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:material-odds-7v4"
+        "selection-profile:material-odds-7v4",
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -39878,7 +40501,7 @@
     },
     {
       "id": "malom_movement_black_7_11d8cdb8",
-      "title": "Win in 7: find the forced win",
+      "title": "Black · Win in 7: find the forced win",
       "description": "Black to move. Find the forced win in 7 moves.",
       "category": "winGame",
       "difficulty": "hard",
@@ -39952,8 +40575,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
-        "distance-band:short",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -39976,7 +40597,10 @@
         "progression:4-hard",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:balanced-advanced"
+        "selection-profile:balanced-advanced",
+        "win-in-7",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -39987,7 +40611,7 @@
     },
     {
       "id": "malom_movement_black_4_0b66e52c",
-      "title": "Win in 4: find the forced win",
+      "title": "Black · Win in 4: find the forced win",
       "description": "Black to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -40251,8 +40875,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
-        "distance-band:short",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -40274,7 +40896,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:material-odds-6v4"
+        "selection-profile:material-odds-6v4",
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -40285,7 +40910,7 @@
     },
     {
       "id": "malom_movement_black_4_17689474",
-      "title": "Win in 4: find the forced win",
+      "title": "Black · Win in 4: find the forced win",
       "description": "Black to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -40675,8 +41300,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
-        "distance-band:short",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -40698,7 +41321,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:material-odds-6v4"
+        "selection-profile:material-odds-6v4",
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -40709,7 +41335,7 @@
     },
     {
       "id": "malom_movement_black_4_ca2505d2",
-      "title": "Win in 4: find the forced win",
+      "title": "Black · Win in 4: find the forced win",
       "description": "Black to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -40973,8 +41599,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
-        "distance-band:short",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -40996,7 +41620,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:material-odds-6v4"
+        "selection-profile:material-odds-6v4",
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -41007,7 +41634,7 @@
     },
     {
       "id": "malom_movement_black_4_e0704676",
-      "title": "Win in 4: find the forced win",
+      "title": "Black · Win in 4: find the forced win",
       "description": "Black to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -41271,8 +41898,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
-        "distance-band:short",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -41294,7 +41919,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:material-odds-6v4"
+        "selection-profile:material-odds-6v4",
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -41305,7 +41933,7 @@
     },
     {
       "id": "malom_movement_white_4_0fc9dcd3",
-      "title": "Win in 4: find the forced win",
+      "title": "White · Win in 4: find the forced win",
       "description": "White to move. Find the forced win in 4 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -41695,8 +42323,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-4",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -41718,7 +42344,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:material-odds-6v4"
+        "selection-profile:material-odds-6v4",
+        "win-in-4",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -41729,7 +42358,7 @@
     },
     {
       "id": "malom_placement_black_7_d0129a11",
-      "title": "Win in 7: find the forced win",
+      "title": "Black · Win in 7: find the forced win",
       "description": "Black to move. Find the forced win in 7 moves.",
       "category": "opening",
       "difficulty": "expert",
@@ -41877,8 +42506,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
-        "distance-band:short",
         "phase:placement",
         "side:black",
         "shortest-first-turns:1",
@@ -41901,7 +42528,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:late-placement"
+        "selection-profile:late-placement",
+        "win-in-7",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -41912,7 +42542,7 @@
     },
     {
       "id": "malom_movement_white_7_0a495d9b",
-      "title": "Win in 7: find the forced win",
+      "title": "White · Win in 7: find the forced win",
       "description": "White to move. Find the forced win in 7 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -42122,8 +42752,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-7",
-        "distance-band:short",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -42145,7 +42773,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:material-odds-7v4"
+        "selection-profile:material-odds-7v4",
+        "win-in-7",
+        "distance-band:short",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -42156,7 +42787,7 @@
     },
     {
       "id": "malom_movement_black_8_a5593993",
-      "title": "Win in 8: find the forced win",
+      "title": "Black · Win in 8: find the forced win",
       "description": "Black to move. Find the forced win in 8 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -42464,8 +43095,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-8",
-        "distance-band:medium",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -42487,7 +43116,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:balanced-advanced"
+        "selection-profile:balanced-advanced",
+        "win-in-8",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -42498,7 +43130,7 @@
     },
     {
       "id": "malom_movement_black_9_e23d55a0",
-      "title": "Win in 9: find the forced win",
+      "title": "Black · Win in 9: find the forced win",
       "description": "Black to move. Find the forced win in 9 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -42846,8 +43478,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-9",
-        "distance-band:medium",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -42869,7 +43499,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:balanced-advanced"
+        "selection-profile:balanced-advanced",
+        "win-in-9",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -42880,7 +43513,7 @@
     },
     {
       "id": "malom_movement_white_9_90c0bddc",
-      "title": "Win in 9: find the forced win",
+      "title": "White · Win in 9: find the forced win",
       "description": "White to move. Find the forced win in 9 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -43236,8 +43869,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-9",
-        "distance-band:medium",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -43259,7 +43890,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:balanced-expert"
+        "selection-profile:balanced-expert",
+        "win-in-9",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -43270,7 +43904,7 @@
     },
     {
       "id": "malom_movement_white_10_047b0117",
-      "title": "Win in 10: find the forced win",
+      "title": "White · Win in 10: find the forced win",
       "description": "White to move. Find the forced win in 10 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -43462,8 +44096,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-10",
-        "distance-band:medium",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -43485,7 +44117,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:balanced-advanced"
+        "selection-profile:balanced-advanced",
+        "win-in-10",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -43496,7 +44131,7 @@
     },
     {
       "id": "malom_movement_white_10_b53abf04",
-      "title": "Win in 10: find the forced win",
+      "title": "White · Win in 10: find the forced win",
       "description": "White to move. Find the forced win in 10 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -44166,8 +44801,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-10",
-        "distance-band:medium",
         "phase:movement",
         "side:white",
         "shortest-first-turns:1",
@@ -44189,7 +44822,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:balanced-advanced"
+        "selection-profile:balanced-advanced",
+        "win-in-10",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -44200,7 +44836,7 @@
     },
     {
       "id": "malom_movement_black_15_3607671b",
-      "title": "Win in 15: find the forced win",
+      "title": "Black · Win in 15: find the forced win",
       "description": "Black to move. Find the forced win in 15 moves.",
       "category": "winGame",
       "difficulty": "expert",
@@ -45252,8 +45888,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-15",
-        "distance-band:medium",
         "phase:movement",
         "side:black",
         "shortest-first-turns:1",
@@ -45275,7 +45909,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:balanced-expert"
+        "selection-profile:balanced-expert",
+        "win-in-15",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -45286,7 +45923,7 @@
     },
     {
       "id": "malom_placement_white_15_393b14d8",
-      "title": "Win in 15: find the forced win",
+      "title": "White · Win in 15: find the forced win",
       "description": "White to move. Find the forced win in 15 moves.",
       "category": "opening",
       "difficulty": "expert",
@@ -45550,8 +46187,6 @@
       "tags": [
         "generated",
         "malom-db",
-        "win-in-15",
-        "distance-band:medium",
         "phase:placement",
         "side:white",
         "shortest-first-turns:1",
@@ -45573,7 +46208,10 @@
         "progression:5-expert",
         "review-status:expert-pending",
         "review-batch:engine-blunder-review-selected-30",
-        "selection-profile:late-placement"
+        "selection-profile:late-placement",
+        "win-in-15",
+        "distance-band:medium",
+        "objective:win"
       ],
       "isCustom": false,
       "author": "Sanmill offline review miner",
@@ -46093,6 +46731,178 @@
             "profile": "balanced_certified_pool",
             "topic": "trap:wrong-mill",
             "score": -2548
+          }
+        ]
+      }
+    },
+    {
+      "id": "draw-defence-review-selected-10",
+      "status": "expert-pending",
+      "puzzleCount": 10,
+      "selectionProvenance": {
+        "solver": "OR-Tools CP-SAT",
+        "version": "9.15.6755",
+        "source": "perfect-db-draw-save",
+        "status": "OPTIMAL",
+        "seed": 20260730,
+        "objectiveValue": 24358,
+        "minimumPositionDistance": 4,
+        "referencePuzzleCount": 167,
+        "candidateCount": 19,
+        "sideCounts": {
+          "white": 5,
+          "black": 5
+        },
+        "selectedCandidates": [
+          {
+            "id": "malom_draw_black_1_a9d5ddd3",
+            "topic": "draw-save",
+            "profile": "unique-draw-save-4v3",
+            "sourceCandidate": "contrast-0002",
+            "sourceFile": "contrast-4v3.json",
+            "sideToMove": "black",
+            "legalPrimaryMoves": 5,
+            "drawingTurn": [
+              "d3-e3"
+            ],
+            "rootOutcome": "draw",
+            "drawingTurnCount": 1,
+            "minimumReferenceDistance": 7
+          },
+          {
+            "id": "malom_draw_white_1_86603d5b",
+            "topic": "draw-save",
+            "profile": "unique-draw-save-4v3",
+            "sourceCandidate": "contrast-0014",
+            "sourceFile": "contrast-4v3.json",
+            "sideToMove": "white",
+            "legalPrimaryMoves": 5,
+            "drawingTurn": [
+              "c3-c4"
+            ],
+            "rootOutcome": "draw",
+            "drawingTurnCount": 1,
+            "minimumReferenceDistance": 5
+          },
+          {
+            "id": "malom_draw_black_1_8d4939e4",
+            "topic": "draw-save",
+            "profile": "unique-draw-save-4v3",
+            "sourceCandidate": "contrast-0001",
+            "sourceFile": "contrast-4v3.json",
+            "sideToMove": "black",
+            "legalPrimaryMoves": 7,
+            "drawingTurn": [
+              "c5-c4"
+            ],
+            "rootOutcome": "draw",
+            "drawingTurnCount": 1,
+            "minimumReferenceDistance": 5
+          },
+          {
+            "id": "malom_draw_black_1_e3c5069f",
+            "topic": "draw-save",
+            "profile": "unique-draw-save-4v3",
+            "sourceCandidate": "contrast-0005",
+            "sourceFile": "contrast-4v3.json",
+            "sideToMove": "black",
+            "legalPrimaryMoves": 7,
+            "drawingTurn": [
+              "g4-g1"
+            ],
+            "rootOutcome": "draw",
+            "drawingTurnCount": 1,
+            "minimumReferenceDistance": 6
+          },
+          {
+            "id": "malom_draw_black_1_fd22e3b7",
+            "topic": "draw-save",
+            "profile": "unique-draw-save-4v3",
+            "sourceCandidate": "contrast-0010",
+            "sourceFile": "contrast-4v3.json",
+            "sideToMove": "black",
+            "legalPrimaryMoves": 6,
+            "drawingTurn": [
+              "e4-e5"
+            ],
+            "rootOutcome": "draw",
+            "drawingTurnCount": 1,
+            "minimumReferenceDistance": 5
+          },
+          {
+            "id": "malom_draw_black_1_ffd1e76c",
+            "topic": "draw-save",
+            "profile": "unique-draw-save-4v3",
+            "sourceCandidate": "contrast-0006",
+            "sourceFile": "contrast-4v3.json",
+            "sideToMove": "black",
+            "legalPrimaryMoves": 7,
+            "drawingTurn": [
+              "d6-b6"
+            ],
+            "rootOutcome": "draw",
+            "drawingTurnCount": 1,
+            "minimumReferenceDistance": 5
+          },
+          {
+            "id": "malom_draw_white_1_56d26117",
+            "topic": "draw-save",
+            "profile": "unique-draw-save-4v3",
+            "sourceCandidate": "contrast-0016",
+            "sourceFile": "contrast-4v3.json",
+            "sideToMove": "white",
+            "legalPrimaryMoves": 8,
+            "drawingTurn": [
+              "b2-d2"
+            ],
+            "rootOutcome": "draw",
+            "drawingTurnCount": 1,
+            "minimumReferenceDistance": 7
+          },
+          {
+            "id": "malom_draw_white_1_5d76e78c",
+            "topic": "draw-save",
+            "profile": "unique-draw-save-4v3",
+            "sourceCandidate": "contrast-0009",
+            "sourceFile": "contrast-4v3.json",
+            "sideToMove": "white",
+            "legalPrimaryMoves": 6,
+            "drawingTurn": [
+              "d2-b2"
+            ],
+            "rootOutcome": "draw",
+            "drawingTurnCount": 1,
+            "minimumReferenceDistance": 6
+          },
+          {
+            "id": "malom_draw_white_1_694ae995",
+            "topic": "draw-save",
+            "profile": "unique-draw-save-4v3",
+            "sourceCandidate": "contrast-0007",
+            "sourceFile": "contrast-4v3.json",
+            "sideToMove": "white",
+            "legalPrimaryMoves": 7,
+            "drawingTurn": [
+              "c3-d3"
+            ],
+            "rootOutcome": "draw",
+            "drawingTurnCount": 1,
+            "minimumReferenceDistance": 5
+          },
+          {
+            "id": "malom_draw_white_1_71dd689e",
+            "topic": "draw-save",
+            "profile": "unique-draw-save-4v3",
+            "sourceCandidate": "contrast-0017",
+            "sourceFile": "contrast-4v3.json",
+            "sideToMove": "white",
+            "legalPrimaryMoves": 6,
+            "drawingTurn": [
+              "b6-b4"
+            ],
+            "rootOutcome": "draw",
+            "drawingTurnCount": 1,
+            "minimumReferenceDistance": 6
           }
         ]
       }

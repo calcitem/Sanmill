@@ -7,7 +7,9 @@ use std::collections::HashSet;
 use perfect_db::database::{
     Database, DatabaseOptions, DatabaseVariant, FileDatabaseProvider, PerfectOutcome, PerfectQuery,
 };
-use perfect_db::{PerfectLogicalTurnChoice, query_from_state};
+use perfect_db::{
+    PerfectLogicalTurnChoice, all_logical_turn_outcomes_with_database, query_from_state,
+};
 use tgf_core::{Action, ActionList, GameRules, OutcomeKind};
 use tgf_mill::human_db_codec::{HumanTurn, parse_human_turn_notation_with_history};
 use tgf_mill::{
@@ -680,13 +682,14 @@ fn canonical_symmetry_key_is_invariant_under_board_transforms() {
     );
 }
 
-/// Replay every solution line of the committed built-in puzzle asset and
-/// assert each one is legal move-by-move and genuinely ends in a win for
-/// the solving side. This guards the shipped `.sanmill_puzzles` file (which
-/// is regenerated offline against the full external Perfect DB) against
-/// corruption, stale rule changes, or a bad merge.
+/// Validate every public objective in the committed built-in puzzle asset.
+///
+/// Winning lines must replay legally to a win and expose a solver-move count
+/// consistent with their title, description, ID and tags. Draw-defence
+/// studies are re-queried against the bundled Perfect DB: exactly one legal
+/// logical turn must draw and every alternative must lose.
 #[test]
-fn committed_built_in_puzzle_asset_replays_to_a_win() {
+fn committed_built_in_puzzle_asset_has_certified_objectives() {
     let asset_path = std::path::Path::new(concat!(
         env!("CARGO_MANIFEST_DIR"),
         "/../../src/ui/flutter_app/assets/puzzles/malom_perfect_db_puzzles.sanmill_puzzles"
@@ -706,12 +709,12 @@ fn committed_built_in_puzzle_asset_replays_to_a_win() {
     );
     assert_eq!(
         puzzles.len(),
-        167,
+        177,
         "the expert-review curriculum size is intentional"
     );
     assert_eq!(
         package["metadata"]["version"].as_str(),
-        Some("1.6.1-review.1"),
+        Some("1.7.0-review.1"),
         "the embedded expert-review build requires its prerelease contract"
     );
     assert_eq!(
@@ -722,7 +725,7 @@ fn committed_built_in_puzzle_asset_replays_to_a_win() {
     let review_batches = package["reviewBatches"]
         .as_array()
         .expect("expert-review asset must declare reviewBatches");
-    assert_eq!(review_batches.len(), 3);
+    assert_eq!(review_batches.len(), 4);
     let review_batch_counts = review_batches
         .iter()
         .map(|batch| {
@@ -748,11 +751,13 @@ fn committed_built_in_puzzle_asset_replays_to_a_win() {
             ("engine-blunder-review-selected-30".to_string(), 30),
             ("strategy-theme-review-selected-10".to_string(), 10),
             ("similarity-repair-selected-16".to_string(), 16),
+            ("draw-defence-review-selected-10".to_string(), 10),
         ])
     );
 
     let options = MillVariantOptions::default();
     let rules = MillRules::new(options.clone());
+    let mut database = open_bundled_database();
     let editorial_baseline_queries = exclusion_queries(
         include_str!(concat!(
             env!("CARGO_MANIFEST_DIR"),
@@ -836,6 +841,8 @@ fn committed_built_in_puzzle_asset_replays_to_a_win() {
     let mut expert_review_count = 0_usize;
     let mut expert_review_batch_counts = std::collections::HashMap::<String, usize>::new();
     let mut reference_root_overlap_count = 0_usize;
+    let mut win_objective_count = 0_usize;
+    let mut draw_objective_count = 0_usize;
     let mut similarity_roots = Vec::<(String, PerfectQuery)>::new();
     for puzzle in puzzles {
         let id = puzzle["id"].as_str().expect("puzzle id must be a string");
@@ -884,6 +891,7 @@ fn committed_built_in_puzzle_asset_replays_to_a_win() {
                             "discovery:engine-blunder-corpus"
                                 | "discovery:smt-z3"
                                 | "discovery:broad-perfect-db-sampling"
+                                | "discovery:outcome-contrast"
                         )
                     )
                 }),
@@ -1075,6 +1083,148 @@ fn committed_built_in_puzzle_asset_replays_to_a_win() {
             .as_array()
             .expect("puzzle must carry solutions");
         assert!(!solutions.is_empty(), "puzzle `{id}` has no solutions");
+        let side_name = if solver_side == 0 { "White" } else { "Black" };
+        let side_token = side_name.to_ascii_lowercase();
+        let optimal_move_counts = solutions
+            .iter()
+            .filter(|solution| solution["isOptimal"].as_bool().unwrap_or(true))
+            .map(|solution| {
+                solution["moves"]
+                    .as_array()
+                    .expect("moves array")
+                    .iter()
+                    .filter(|mv| {
+                        mv["side"].as_str() == Some(side_token.as_str())
+                            && !mv["notation"]
+                                .as_str()
+                                .expect("move notation")
+                                .trim_start()
+                                .to_ascii_lowercase()
+                                .starts_with('x')
+                    })
+                    .count()
+            })
+            .collect::<HashSet<_>>();
+        assert_eq!(
+            optimal_move_counts.len(),
+            1,
+            "puzzle `{id}` must expose one consistent optimal solver-move count"
+        );
+        let public_move_count = *optimal_move_counts
+            .iter()
+            .next()
+            .expect("puzzle must have an optimal solution");
+        assert!(public_move_count > 0, "puzzle `{id}` has an empty solution");
+        let category = puzzle["category"]
+            .as_str()
+            .expect("puzzle category must be text");
+        match category {
+            "winGame" | "opening" => {
+                win_objective_count += 1;
+                let expected_prefix = format!("{side_name} · Win in {public_move_count}");
+                assert!(
+                    puzzle["title"]
+                        .as_str()
+                        .is_some_and(|title| title.starts_with(&expected_prefix)),
+                    "puzzle `{id}` title must start with `{expected_prefix}`"
+                );
+                let move_noun = if public_move_count == 1 {
+                    "move"
+                } else {
+                    "moves"
+                };
+                assert_eq!(
+                    puzzle["description"].as_str(),
+                    Some(
+                        format!(
+                            "{side_name} to move. Find the forced win in \
+                             {public_move_count} {move_noun}."
+                        )
+                        .as_str()
+                    ),
+                    "puzzle `{id}` public description must match its solution"
+                );
+                assert_eq!(
+                    tags.iter()
+                        .filter_map(|tag| tag.as_str())
+                        .filter(|tag| tag.starts_with("win-in-"))
+                        .collect::<Vec<_>>(),
+                    vec![format!("win-in-{public_move_count}").as_str()],
+                    "puzzle `{id}` win-in tag must match its solution"
+                );
+                assert!(
+                    tags.iter().any(|tag| tag.as_str() == Some("objective:win")),
+                    "puzzle `{id}` must declare the win objective"
+                );
+                let id_marker = format!("_{public_move_count}_");
+                assert!(
+                    id.contains(&id_marker),
+                    "puzzle `{id}` ID must match its public move count"
+                );
+            }
+            "defend" => {
+                draw_objective_count += 1;
+                let expected_prefix = format!("{side_name} · Hold the draw");
+                assert!(
+                    puzzle["title"]
+                        .as_str()
+                        .is_some_and(|title| title.starts_with(&expected_prefix)),
+                    "puzzle `{id}` title must start with `{expected_prefix}`"
+                );
+                assert_eq!(
+                    public_move_count, 1,
+                    "puzzle `{id}` must be a one-turn draw save"
+                );
+                for required_tag in ["objective:hold-draw", "hold-draw-in-1", "unique-draw-save"] {
+                    assert!(
+                        tags.iter().any(|tag| tag.as_str() == Some(required_tag)),
+                        "puzzle `{id}` must carry `{required_tag}`"
+                    );
+                }
+                let choices = all_logical_turn_outcomes_with_database(
+                    &mut database,
+                    &rules,
+                    &root_snap,
+                    &[],
+                    &options,
+                )
+                .unwrap_or_else(|error| panic!("puzzle `{id}` Perfect DB query failed: {error}"))
+                .unwrap_or_else(|| {
+                    panic!("puzzle `{id}` must be covered by the bundled Perfect DB")
+                });
+                let drawing_choices = choices
+                    .iter()
+                    .filter(|choice| choice.outcome.wdl() == 0)
+                    .collect::<Vec<_>>();
+                assert_eq!(
+                    drawing_choices.len(),
+                    1,
+                    "puzzle `{id}` must have exactly one drawing logical turn"
+                );
+                assert!(
+                    choices
+                        .iter()
+                        .all(|choice| choice.outcome.wdl() == 0 || choice.outcome.wdl() == -1),
+                    "puzzle `{id}` must have no winning alternative"
+                );
+                let exported_tokens = solutions[0]["moves"]
+                    .as_array()
+                    .expect("draw solution moves")
+                    .iter()
+                    .map(|mv| {
+                        mv["notation"]
+                            .as_str()
+                            .expect("draw solution notation")
+                            .to_string()
+                    })
+                    .collect::<Vec<_>>();
+                assert_eq!(
+                    exported_tokens, drawing_choices[0].tokens,
+                    "puzzle `{id}` must export the unique drawing logical turn"
+                );
+            }
+            other => panic!("puzzle `{id}` has unsupported objective category `{other}`"),
+        }
         let solution_line_limit = if is_pending_expert_review { 32 } else { 8 };
         assert!(
             solutions.len() <= solution_line_limit,
@@ -1096,11 +1246,13 @@ fn committed_built_in_puzzle_asset_replays_to_a_win() {
                     });
                 snap = rules.apply(&snap, action);
             }
-            assert_eq!(
-                rules.outcome(&snap).kind,
-                OutcomeKind::Win(solver_side),
-                "puzzle `{id}` solution must end in a win for the solving side"
-            );
+            if category != "defend" {
+                assert_eq!(
+                    rules.outcome(&snap).kind,
+                    OutcomeKind::Win(solver_side),
+                    "puzzle `{id}` solution must end in a win for the solving side"
+                );
+            }
         }
     }
     for left_index in 0..similarity_roots.len() {
@@ -1131,13 +1283,15 @@ fn committed_built_in_puzzle_asset_replays_to_a_win() {
         ]),
         "the retained constraint-directed positions must match the curated asset"
     );
-    assert_eq!(composed_count, 154);
+    assert_eq!(composed_count, 164);
     assert_eq!(replay_count, 13);
-    assert_eq!(expert_review_count, 56);
+    assert_eq!(expert_review_count, 66);
     assert_eq!(expert_review_batch_counts, review_batch_counts);
+    assert_eq!(win_objective_count, 167);
+    assert_eq!(draw_objective_count, 10);
     assert_eq!(
         reference_root_overlap_count, 0,
-        "the current 167-puzzle review curriculum has no editorial-reference overlap"
+        "the current 177-puzzle review curriculum has no editorial-reference overlap"
     );
     assert_eq!(
         replay_distance_counts,
