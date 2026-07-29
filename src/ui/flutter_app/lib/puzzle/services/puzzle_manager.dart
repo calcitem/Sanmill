@@ -276,6 +276,24 @@ class PuzzleManager {
     _saveSettings(newSettings);
   }
 
+  /// Reset all puzzle learning state while preserving puzzle content and
+  /// user-facing puzzle preferences.
+  Future<void> resetAllPuzzleState() async {
+    logger.i("$_tag Resetting all puzzle state");
+    const PuzzleSettings defaults = PuzzleSettings();
+    final PuzzleSettings newSettings = settingsNotifier.value.copyWith(
+      progressMap: <String, PuzzleProgress>{},
+      userRating: defaults.userRating,
+    );
+    _saveSettings(newSettings);
+
+    await Future.wait<void>(<Future<void>>[
+      DB().puzzleAnalyticsBox.delete(DB.puzzleAttemptHistoryKey),
+      DB().puzzleAnalyticsBox.delete('dailyPuzzleStats'),
+      DB().puzzleAnalyticsBox.delete('puzzleStreakHistory'),
+    ]);
+  }
+
   /// Get statistics
   Map<String, dynamic> getStatistics() {
     final PuzzleSettings settings = settingsNotifier.value;

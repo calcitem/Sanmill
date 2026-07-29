@@ -79,6 +79,33 @@ class PuzzleInfo extends HiveObject {
   @HiveField(0)
   final String id;
 
+  /// Stable, compact identifier intended for screenshots and bug reports.
+  ///
+  /// Generated built-in puzzle IDs already end in an eight-character
+  /// hexadecimal fingerprint, so expose that fingerprint directly. Other
+  /// puzzle IDs use deterministic FNV-1a rather than [String.hashCode], whose
+  /// stability is not part of the persisted puzzle format contract.
+  String get referenceCode => referenceCodeForId(id);
+
+  static String referenceCodeForId(String id) {
+    final String normalizedId = id.trim();
+    assert(normalizedId.isNotEmpty, 'Puzzle ID must not be empty.');
+
+    final RegExpMatch? fingerprint = RegExp(
+      r'(?:^|_)([0-9a-fA-F]{8})$',
+    ).firstMatch(normalizedId);
+    if (fingerprint != null) {
+      return fingerprint.group(1)!.toUpperCase();
+    }
+
+    int hash = 0x811c9dc5;
+    for (final int codeUnit in normalizedId.codeUnits) {
+      hash ^= codeUnit;
+      hash = (hash * 0x01000193) & 0xffffffff;
+    }
+    return hash.toRadixString(16).padLeft(8, '0').toUpperCase();
+  }
+
   /// Title of the puzzle
   @HiveField(1)
   final String title;
@@ -317,5 +344,16 @@ class PuzzleInfo extends HiveObject {
     // For now, return the raw completion message
     // Future enhancement: similar to getLocalizedTitle
     return completionMessage;
+  }
+
+  /// Return the player-facing title, withholding generated tactical clues
+  /// unless puzzle hints are enabled.
+  String titleForDisplay({required bool showHints}) {
+    if (showHints || isCustom || !tags.contains('generated')) {
+      return title;
+    }
+
+    final int clueSeparator = title.indexOf(':');
+    return clueSeparator > 0 ? title.substring(0, clueSeparator).trim() : title;
   }
 }

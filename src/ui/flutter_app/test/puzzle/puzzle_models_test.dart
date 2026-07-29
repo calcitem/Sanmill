@@ -11,6 +11,94 @@ import 'package:sanmill/puzzle/models/puzzle_models.dart';
 import 'package:sanmill/puzzle/services/puzzle_export_service.dart';
 
 void main() {
+  group('PuzzleInfo reference code', () {
+    test('uses the built-in puzzle fingerprint when present', () {
+      final PuzzleInfo puzzle = PuzzleInfo(
+        id: 'malom_movement_black_1_a974821f',
+        title: 'Reference test',
+        description: 'Description',
+        category: PuzzleCategory.winGame,
+        difficulty: PuzzleDifficulty.easy,
+        initialPosition: 'fen',
+        solutions: const <PuzzleSolution>[],
+      );
+
+      expect(puzzle.referenceCode, 'A974821F');
+    });
+
+    test('is deterministic for custom and imported puzzle IDs', () {
+      final PuzzleInfo puzzle = PuzzleInfo(
+        id: 'custom_1785321000123',
+        title: 'Reference test',
+        description: 'Description',
+        category: PuzzleCategory.formMill,
+        difficulty: PuzzleDifficulty.medium,
+        initialPosition: 'fen',
+        solutions: const <PuzzleSolution>[],
+      );
+      final PuzzleInfo restored = PuzzleInfo.fromJson(puzzle.toJson());
+
+      expect(puzzle.referenceCode, matches(RegExp(r'^[0-9A-F]{8}$')));
+      expect(restored.referenceCode, puzzle.referenceCode);
+      expect(
+        puzzle.copyWith(title: 'Edited').referenceCode,
+        puzzle.referenceCode,
+      );
+    });
+  });
+
+  group('PuzzleInfo display title', () {
+    PuzzleInfo puzzle({
+      required String title,
+      List<String> tags = const <String>['generated'],
+      bool isCustom = false,
+    }) {
+      return PuzzleInfo(
+        id: 'display-title',
+        title: title,
+        description: 'Description',
+        category: PuzzleCategory.winGame,
+        difficulty: PuzzleDifficulty.easy,
+        initialPosition: 'fen',
+        solutions: const <PuzzleSolution>[],
+        tags: tags,
+        isCustom: isCustom,
+      );
+    }
+
+    test('hides generated tactical clue when hints are disabled', () {
+      final PuzzleInfo generated = puzzle(
+        title: 'Win in 17: resist the tempting mill',
+      );
+
+      expect(generated.titleForDisplay(showHints: false), 'Win in 17');
+      expect(
+        generated.titleForDisplay(showHints: true),
+        'Win in 17: resist the tempting mill',
+      );
+    });
+
+    test('never truncates custom or non-generated titles', () {
+      final PuzzleInfo custom = puzzle(
+        title: 'Study: my favourite position',
+        isCustom: true,
+      );
+      final PuzzleInfo imported = puzzle(
+        title: 'Study: positional squeeze',
+        tags: const <String>[],
+      );
+
+      expect(
+        custom.titleForDisplay(showHints: false),
+        'Study: my favourite position',
+      );
+      expect(
+        imported.titleForDisplay(showHints: false),
+        'Study: positional squeeze',
+      );
+    });
+  });
+
   group('PuzzleExportService JSON format', () {
     test('exports single solution puzzle correctly', () {
       final PuzzleInfo puzzle = PuzzleInfo(

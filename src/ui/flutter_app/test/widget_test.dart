@@ -1327,14 +1327,22 @@ void main() {
 
       expect(shellState.debugCurrentTab, SanmillShellTab.puzzles);
       expect(find.byKey(const Key('puzzles_home_list')), findsOneWidget);
-      expect(
-        find.byKey(const Key('puzzles_home_progress_section')),
-        findsOneWidget,
+      final Finder puzzleListScrollable = find.descendant(
+        of: find.byKey(const Key('puzzles_home_list')),
+        matching: find.byType(Scrollable),
       );
       expect(
         find.byKey(const Key('puzzles_home_modes_section')),
         findsOneWidget,
       );
+      expect(
+        find.byKey(const Key('puzzles_home_settings_section')),
+        findsOneWidget,
+      );
+      final SwitchListTile puzzleHintsSwitch = tester.widget<SwitchListTile>(
+        find.byKey(const Key('puzzles_home_show_hints')),
+      );
+      expect(puzzleHintsSwitch.value, isFalse);
       expect(
         find.descendant(
           of: find.byKey(const Key('puzzles_home_modes_section')),
@@ -1346,10 +1354,44 @@ void main() {
       expect(find.byKey(const Key('puzzles_home_all')), findsOneWidget);
       expect(find.text('Solve puzzles'), findsOneWidget);
       expect(find.text('Choose from all available puzzles'), findsOneWidget);
-      expect(find.text('0.0% complete'), findsOneWidget);
       expect(find.byKey(const Key('puzzles_home_rush')), findsNothing);
       expect(find.byKey(const Key('puzzles_home_streak')), findsOneWidget);
 
+      await tester.scrollUntilVisible(
+        find.byKey(const Key('puzzles_home_progress_section')),
+        300,
+        scrollable: puzzleListScrollable,
+      );
+      expect(
+        find.byKey(const Key('puzzles_home_progress_section')),
+        findsOneWidget,
+      );
+      expect(find.text('0.0% complete'), findsOneWidget);
+      expect(
+        find.byKey(const Key('puzzles_home_reset_progress')),
+        findsOneWidget,
+      );
+
+      await tester.ensureVisible(
+        find.byKey(const Key('puzzles_home_reset_progress')),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('puzzles_home_reset_progress')));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.byKey(const Key('reset_puzzle_progress_dialog')),
+        findsOneWidget,
+      );
+      expect(
+        find.textContaining('Custom and imported puzzles are kept'),
+        findsOneWidget,
+      );
+      await tester.tap(find.byKey(const Key('reset_puzzle_progress_cancel')));
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(find.byKey(const Key('puzzles_home_daily')));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('puzzles_home_daily')));
       await tester.pumpAndSettle();
 
@@ -5143,6 +5185,7 @@ void main() {
         completed: true,
         stars: 2,
       );
+      int tapCount = 0;
 
       await tester.pumpWidget(
         MaterialApp(
@@ -5155,6 +5198,9 @@ void main() {
                 puzzle: puzzle,
                 progress: progress,
                 showCustomBadge: true,
+                onTap: () {
+                  tapCount++;
+                },
               ),
             ),
           ),
@@ -5170,8 +5216,20 @@ void main() {
       expect(card.elevation, 0);
       expect(card.color, Theme.of(cardContext).colorScheme.surfaceContainer);
       expect(find.text('Opening tactic'), findsOneWidget);
+      expect(
+        find.text(S.of(cardContext).puzzleReference(puzzle.referenceCode)),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('puzzle_reference_test-puzzle')),
+        findsOneWidget,
+      );
       expect(find.byType(MiniBoard), findsOneWidget);
       expect(find.byIcon(Icons.check_circle), findsOneWidget);
+
+      await tester.tapAt(tester.getCenter(find.byType(MiniBoard)));
+      await tester.pump();
+      expect(tapCount, 1);
 
       await tester.pump(const Duration(milliseconds: 350));
     },

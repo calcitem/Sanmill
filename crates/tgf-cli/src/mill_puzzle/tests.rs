@@ -66,6 +66,40 @@ fn exclusion_queries(
         .collect()
 }
 
+fn solver_normalised_position_distance(left: &PerfectQuery, right: &PerfectQuery) -> u32 {
+    use perfect_db::index::symmetry::{SYMMETRY_COUNT, transform24};
+
+    let normalise = |query: &PerfectQuery| {
+        if query.side_to_move == 0 {
+            (
+                query.white_bits,
+                query.black_bits,
+                query.white_in_hand,
+                query.black_in_hand,
+            )
+        } else {
+            (
+                query.black_bits,
+                query.white_bits,
+                query.black_in_hand,
+                query.white_in_hand,
+            )
+        }
+    };
+    let (left_solver, left_defender, left_solver_hand, left_defender_hand) = normalise(left);
+    let (right_solver, right_defender, right_solver_hand, right_defender_hand) = normalise(right);
+    let hand_distance = u32::from(left_solver_hand.abs_diff(right_solver_hand))
+        + u32::from(left_defender_hand.abs_diff(right_defender_hand));
+    hand_distance
+        + (0..SYMMETRY_COUNT as u8)
+            .map(|op| {
+                (left_solver ^ transform24(op, right_solver)).count_ones()
+                    + (left_defender ^ transform24(op, right_defender)).count_ones()
+            })
+            .min()
+            .expect("Mill exposes at least one board symmetry")
+}
+
 fn permissive_test_config() -> GenConfig {
     GenConfig {
         db_path: bundled_db_root().to_string_lossy().into_owned(),
@@ -677,7 +711,7 @@ fn committed_built_in_puzzle_asset_replays_to_a_win() {
     );
     assert_eq!(
         package["metadata"]["version"].as_str(),
-        Some("1.6.0-review.1"),
+        Some("1.6.1-review.1"),
         "the embedded expert-review build requires its prerelease contract"
     );
     assert_eq!(
@@ -688,7 +722,7 @@ fn committed_built_in_puzzle_asset_replays_to_a_win() {
     let review_batches = package["reviewBatches"]
         .as_array()
         .expect("expert-review asset must declare reviewBatches");
-    assert_eq!(review_batches.len(), 2);
+    assert_eq!(review_batches.len(), 3);
     let review_batch_counts = review_batches
         .iter()
         .map(|batch| {
@@ -713,6 +747,7 @@ fn committed_built_in_puzzle_asset_replays_to_a_win() {
         std::collections::HashMap::from([
             ("engine-blunder-review-selected-30".to_string(), 30),
             ("strategy-theme-review-selected-10".to_string(), 10),
+            ("similarity-repair-selected-16".to_string(), 16),
         ])
     );
 
@@ -801,6 +836,7 @@ fn committed_built_in_puzzle_asset_replays_to_a_win() {
     let mut expert_review_count = 0_usize;
     let mut expert_review_batch_counts = std::collections::HashMap::<String, usize>::new();
     let mut reference_root_overlap_count = 0_usize;
+    let mut similarity_roots = Vec::<(String, PerfectQuery)>::new();
     for puzzle in puzzles {
         let id = puzzle["id"].as_str().expect("puzzle id must be a string");
         assert!(ids.insert(id.to_string()), "duplicate puzzle id `{id}`");
@@ -841,8 +877,16 @@ fn committed_built_in_puzzle_asset_replays_to_a_win() {
             expert_review_count += 1;
             assert!(is_composed, "review candidate `{id}` must be composed");
             assert!(
-                tags.iter()
-                    .any(|tag| { tag.as_str() == Some("discovery:engine-blunder-corpus") }),
+                tags.iter().any(|tag| {
+                    matches!(
+                        tag.as_str(),
+                        Some(
+                            "discovery:engine-blunder-corpus"
+                                | "discovery:smt-z3"
+                                | "discovery:broad-perfect-db-sampling"
+                        )
+                    )
+                }),
                 "review candidate `{id}` must retain discovery provenance"
             );
             let batch_tags = tags
@@ -913,6 +957,7 @@ fn committed_built_in_puzzle_asset_replays_to_a_win() {
         let root_snap = rules.encode_state(root_state);
         let canonical_root = canonical_symmetry_key(&query);
         let canonical_solver_root = canonical_solver_symmetry_key(&query);
+        similarity_roots.push((id.to_string(), query));
         assert!(
             canonical_roots.insert(canonical_root),
             "puzzle `{id}` duplicates another root under a board symmetry"
@@ -1058,20 +1103,37 @@ fn committed_built_in_puzzle_asset_replays_to_a_win() {
             );
         }
     }
+    for left_index in 0..similarity_roots.len() {
+        let (left_id, left) = &similarity_roots[left_index];
+        for (right_id, right) in &similarity_roots[left_index + 1..] {
+            let distance = solver_normalised_position_distance(left, right);
+            assert!(
+                distance >= 4,
+                concat!(
+                    "puzzles `{}` and `{}` are recognisably similar ",
+                    "after ring-16 symmetry and solver-side normalisation ",
+                    "(distance {}, minimum 4)"
+                ),
+                left_id,
+                right_id,
+                distance
+            );
+        }
+    }
     assert_eq!(
         z3_topic_counts,
         std::collections::HashMap::from([
-            ("capture-choice".to_string(), 3),
+            ("capture-choice".to_string(), 1),
             ("dual-threat".to_string(), 3),
-            ("mill-abandonment".to_string(), 3),
-            ("mill-block".to_string(), 3),
+            ("mill-abandonment".to_string(), 1),
+            ("mill-block".to_string(), 5),
             ("zugzwang".to_string(), 3),
         ]),
-        "the constraint-directed pilot must stay balanced across five topics"
+        "the retained constraint-directed positions must match the curated asset"
     );
     assert_eq!(composed_count, 154);
     assert_eq!(replay_count, 13);
-    assert_eq!(expert_review_count, 40);
+    assert_eq!(expert_review_count, 56);
     assert_eq!(expert_review_batch_counts, review_batch_counts);
     assert_eq!(
         reference_root_overlap_count, 0,

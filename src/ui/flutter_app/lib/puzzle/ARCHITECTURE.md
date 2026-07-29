@@ -102,10 +102,11 @@ PuzzleManager.completePuzzle()
 ### 5. Daily Puzzle & Streak
 
 ```
-DailyPuzzleService.getTodaysPuzzle()
+DailyPuzzleService.getTodaysPuzzle() (async)
   ├─> Calculate dayNumber (days since epoch: 2025-01-01)
-  ├─> Select puzzle: allPuzzles[dayNumber % allPuzzles.length]
-  └─> Load streak stats from puzzleAnalyticsBox.dailyPuzzleStats
+  ├─> Restore the persisted assignment for the date, when available
+  ├─> Select from built-in puzzles using guided difficulty or user rating
+  └─> Persist completion stats and date-to-puzzle assignments
 
 PuzzleStreakPage
   ├─> Shuffle all puzzles → sequential challenge
@@ -169,9 +170,10 @@ Import:
   - `pickSolutionForPrefix()` → First-match strategy
 
 ### DailyPuzzleService (Singleton)
-- **Purpose**: Deterministic daily puzzle rotation + streak tracking
-- **Rotation**: `allPuzzles[dayNumber % allPuzzles.length]` (ensures same puzzle for same day)
-- **⚠️ Limitation**: Streak stats are in-memory only (not persisted)
+- **Purpose**: Stable, ability-appropriate daily puzzle assignment and completion tracking
+- **Guided start**: Beginner puzzles for the first three completions, then easy puzzles through completion ten
+- **Adaptive selection**: Later puzzles target the user's rating and exclude custom puzzles
+- **Persistence**: Date-to-puzzle assignments and completion dates are stored in Hive
 
 ## Data Models
 
@@ -352,4 +354,3 @@ PuzzlesHomePage (main hub)
 
 *Last updated: 2025-12-30*
 *Schema version: v1*
-

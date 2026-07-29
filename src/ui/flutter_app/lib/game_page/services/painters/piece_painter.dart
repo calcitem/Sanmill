@@ -25,6 +25,7 @@ class PiecePainter extends CustomPainter {
     this.legalMoveDestinationGridIndices = const <int>{},
     this.pieceNumbersByNode = const <int, int>{},
     this.rotatePiecesForOfflineBoard = false,
+    this.forceCapturableHighlights = false,
   });
 
   final double placeAnimationValue;
@@ -40,6 +41,7 @@ class PiecePainter extends CustomPainter {
   final Set<int> legalMoveDestinationGridIndices;
   final Map<int, int> pieceNumbersByNode;
   final bool rotatePiecesForOfflineBoard;
+  final bool forceCapturableHighlights;
 
   // Animation instances for place and remove effects.
   final PieceEffectAnimation placeEffectAnimation;
@@ -775,7 +777,8 @@ class PiecePainter extends CustomPainter {
       }
     }
 
-    if (DB().displaySettings.isCapturablePiecesHighlightShown &&
+    if ((DB().displaySettings.isCapturablePiecesHighlightShown ||
+            forceCapturableHighlights) &&
         GameController().gameInstance.gameMode != GameMode.setupPosition) {
       paint.color = markerPalette.contrast.withValues(alpha: 0.82);
       paint.style = PaintingStyle.stroke;
@@ -844,6 +847,7 @@ class PiecePainter extends CustomPainter {
       ) ||
       !mapEquals(pieceNumbersByNode, oldDelegate.pieceNumbersByNode) ||
       rotatePiecesForOfflineBoard != oldDelegate.rotatePiecesForOfflineBoard ||
+      forceCapturableHighlights != oldDelegate.forceCapturableHighlights ||
       _nativeBoardVisibleStateChanged(oldDelegate);
 
   bool _nativeBoardVisibleStateChanged(PiecePainter oldDelegate) {

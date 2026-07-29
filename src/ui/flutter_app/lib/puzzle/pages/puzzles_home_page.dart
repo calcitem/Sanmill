@@ -45,6 +45,7 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
           padding: const EdgeInsets.only(top: 16, bottom: 24),
           children: <Widget>[
             _buildPuzzleSection(context, s),
+            _buildPreferencesSection(context, s),
             _buildStatsSection(context, s),
           ],
         ),
@@ -119,6 +120,18 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
                 ],
               ),
             ),
+            ListTile(
+              key: const Key('puzzles_home_reset_progress'),
+              leading: Icon(
+                FluentIcons.arrow_reset_24_regular,
+                color: Theme.of(context).colorScheme.error,
+              ),
+              title: Text(
+                s.resetPuzzleProgress,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+              onTap: _confirmResetPuzzleProgress,
+            ),
           ],
         );
       },
@@ -175,6 +188,30 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
     );
   }
 
+  Widget _buildPreferencesSection(BuildContext context, S s) {
+    return ValueListenableBuilder<PuzzleSettings>(
+      valueListenable: _puzzleManager.settingsNotifier,
+      builder: (BuildContext context, PuzzleSettings settings, Widget? child) {
+        return LichessListSection(
+          header: Text(s.settings),
+          cardKey: const Key('puzzles_home_settings_section'),
+          children: <Widget>[
+            SwitchListTile(
+              key: const Key('puzzles_home_show_hints'),
+              secondary: const Icon(FluentIcons.lightbulb_24_regular),
+              title: Text(s.showPuzzleHints),
+              subtitle: Text(s.showPuzzleHintsDescription),
+              value: settings.showHints,
+              onChanged: (bool value) {
+                _puzzleManager.updateSettings(showHints: value);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   /// Build a single stat item.
   Widget _buildStatItem(
     BuildContext context,
@@ -210,6 +247,47 @@ class _PuzzlesHomePageState extends State<PuzzlesHomePage> {
         ],
       ),
     );
+  }
+
+  Future<void> _confirmResetPuzzleProgress() async {
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        final S s = S.of(dialogContext);
+        return AlertDialog(
+          key: const Key('reset_puzzle_progress_dialog'),
+          title: Text(s.resetPuzzleProgress),
+          content: Text(s.resetPuzzleProgressConfirmation),
+          actions: <Widget>[
+            TextButton(
+              key: const Key('reset_puzzle_progress_cancel'),
+              onPressed: () => Navigator.of(dialogContext).pop(false),
+              child: Text(s.cancel),
+            ),
+            TextButton(
+              key: const Key('reset_puzzle_progress_confirm'),
+              style: TextButton.styleFrom(
+                foregroundColor: Theme.of(dialogContext).colorScheme.error,
+              ),
+              onPressed: () => Navigator.of(dialogContext).pop(true),
+              child: Text(s.reset),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed != true) {
+      return;
+    }
+
+    await _puzzleManager.resetAllPuzzleState();
+    if (!mounted) {
+      return;
+    }
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(S.of(context).puzzleProgressReset)));
   }
 
   /// Navigate to a page

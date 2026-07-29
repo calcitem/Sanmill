@@ -149,8 +149,10 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--reference-markdown",
-        required=True,
-        help="path to the external reference Markdown",
+        help=(
+            "path to the external reference Markdown; optional when only "
+            "existing packs or FEN records are being combined"
+        ),
     )
     parser.add_argument(
         "--base-pack",
@@ -204,17 +206,32 @@ def main() -> None:
         raise ValueError(
             "--skip-image-decode requires --curated-reference-roots"
         )
-    reference_path = Path(args.reference_markdown).resolve()
-    markdown = reference_path.read_text(encoding="utf-8-sig")
-    chapter = _chapter(markdown)
-
-    source_fens = _extract_fens(chapter)
-    if args.skip_image_decode:
-        decoded_fens, decoded_count = set(), 0
+    if args.reference_markdown:
+        reference_path = Path(args.reference_markdown).resolve()
+        markdown = reference_path.read_text(encoding="utf-8-sig")
+        chapter = _chapter(markdown)
+        source_fens = _extract_fens(chapter)
+        if args.skip_image_decode:
+            decoded_fens, decoded_count = set(), 0
+        else:
+            decoded_fens, decoded_count = _decode_images(
+                reference_path,
+                chapter,
+            )
+        source_fens.update(decoded_fens)
     else:
-        decoded_fens, decoded_count = _decode_images(reference_path, chapter)
-    source_fens.update(decoded_fens)
+        source_fens = set()
+        decoded_count = 0
     source_fens.update(_validated_extra_fens(args.extra_fen))
+    if not (
+        source_fens
+        or args.curated_reference_roots
+        or args.additional_exclusions
+        or args.base_pack
+    ):
+        raise ValueError(
+            "provide --reference-markdown, a FEN record, or a base pack"
+        )
     curated_count = 0
     curated_only_count = 0
     if args.curated_reference_roots:
@@ -230,9 +247,9 @@ def main() -> None:
             )
         curated_count = len(curated_fens)
         curated_only_count = len(curated_fens - source_fens)
-        fens = curated_fens
+        fens = set(curated_fens)
     else:
-        fens = source_fens
+        fens = set(source_fens)
     additional_count = 0
     for raw_path in args.additional_exclusions:
         additional_fens = _recorded_fens(Path(raw_path).resolve())

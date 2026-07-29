@@ -298,6 +298,51 @@ void main() {
         final PuzzleProgress? progress = manager.getProgress('prog_test_001');
         expect(progress, isNull);
       });
+
+      test(
+        'resetAllPuzzleState clears learning state but keeps puzzle content',
+        () async {
+          manager.updateSettings(
+            showHints: false,
+            autoShowSolution: true,
+            soundEnabled: false,
+          );
+          manager.completePuzzle(
+            puzzleId: 'prog_test_001',
+            moveCount: 1,
+            difficulty: PuzzleDifficulty.easy,
+            optimalMoveCount: 1,
+            hintsUsed: false,
+          );
+          await DB().puzzleAnalyticsBox.put(
+            'dailyPuzzleStats',
+            <String, dynamic>{
+              'completedDates': <String>['2026-07-16T00:00:00.000Z'],
+              'longestStreak': 1,
+              'puzzleAssignments': <String, String>{
+                '2026-07-16T00:00:00.000Z': 'prog_test_001',
+              },
+            },
+          );
+          await DB().puzzleAnalyticsBox.put(
+            'puzzleStreakHistory',
+            <String, dynamic>{'2026-07-16': 1},
+          );
+
+          await manager.resetAllPuzzleState();
+
+          final PuzzleSettings settings = manager.settingsNotifier.value;
+          expect(settings.progressMap, isEmpty);
+          expect(settings.userRating, 1500);
+          expect(settings.showHints, isFalse);
+          expect(settings.autoShowSolution, isTrue);
+          expect(settings.soundEnabled, isFalse);
+          expect(manager.getPuzzleById('prog_test_001'), isNotNull);
+          expect(DB().puzzleAttemptHistoryRaw, isEmpty);
+          expect(DB().puzzleAnalyticsBox.get('dailyPuzzleStats'), isNull);
+          expect(DB().puzzleAnalyticsBox.get('puzzleStreakHistory'), isNull);
+        },
+      );
     });
 
     group('Recommendations', () {

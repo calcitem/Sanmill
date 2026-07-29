@@ -19,6 +19,11 @@ import argparse
 import json
 from pathlib import Path
 
+from mill_puzzle_similarity import (
+    DEFAULT_MINIMUM_POSITION_DISTANCE,
+    find_position_conflicts,
+)
+
 
 TOPIC_ORDER = (
     "capture-choice",
@@ -49,6 +54,11 @@ DIFFICULTY_RANK = {
     "expert": 5,
 }
 TOPIC_MAP = {
+    "capture-choice": "capture-choice",
+    "dual-threat": "dual-threat",
+    "mill-abandonment": "mill-abandonment",
+    "mill-block": "mill-block",
+    "zugzwang": "zugzwang",
     "double-mill": "double-mill",
     "immobilization": "immobilization",
     "sacrifice": "sacrifice",
@@ -121,12 +131,15 @@ def _append_unique(tags: list[str], value: str) -> None:
         tags.append(value)
 
 
-def _selection_records(review: dict) -> dict[str, dict]:
+def _selection_records(review: dict) -> tuple[str, dict[str, dict]]:
     provenance = review.get("selectionProvenance")
     if not isinstance(provenance, dict):
         raise ValueError("review package lacks selectionProvenance")
-    if provenance.get("source") != "engine-blunder":
-        raise ValueError("review package is not an engine-blunder shortlist")
+    source = provenance.get("source")
+    if source not in {"engine-blunder", "certified"}:
+        raise ValueError(
+            "review package must be an engine-blunder or certified shortlist"
+        )
     selected = provenance.get("selectedCandidates")
     if not isinstance(selected, list):
         raise ValueError("review package lacks selectedCandidates")
@@ -138,7 +151,7 @@ def _selection_records(review: dict) -> dict[str, dict]:
         if puzzle_id in records:
             raise ValueError(f"duplicate selection record {puzzle_id}")
         records[puzzle_id] = record
-    return records
+    return source, records
 
 
 def _decorate_review_puzzle(
@@ -146,6 +159,7 @@ def _decorate_review_puzzle(
     record: dict,
     batch_id: str,
     max_solution_lines: int,
+    selection_source: str,
 ) -> dict:
     puzzle_id = puzzle.get("id")
     if not isinstance(puzzle_id, str) or not puzzle_id:
@@ -176,8 +190,13 @@ def _decorate_review_puzzle(
         )
     if "source:composed" not in tags or "source:replay-backed" in tags:
         raise ValueError(f"{puzzle_id} must be disclosed as a composition")
-    if "discovery:engine-blunder-corpus" not in tags:
-        raise ValueError(f"{puzzle_id} lacks engine-blunder discovery provenance")
+    if selection_source == "engine-blunder":
+        if "discovery:engine-blunder-corpus" not in tags:
+            raise ValueError(
+                f"{puzzle_id} lacks engine-blunder discovery provenance"
+            )
+    elif not any(tag.startswith("discovery:") for tag in tags):
+        _append_unique(tags, "discovery:broad-perfect-db-sampling")
 
     _replace_classification(tags, "topic:", topic)
     _replace_classification(tags, "curriculum:", _curriculum(topic, profile))
@@ -239,11 +258,22 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--version", default="1.5.0-review.1")
     parser.add_argument("--expected-review-count", type=int, default=30)
     parser.add_argument("--max-review-solution-lines", type=int, default=32)
+    parser.add_argument(
+        "--min-position-distance",
+        type=int,
+        default=DEFAULT_MINIMUM_POSITION_DISTANCE,
+        help=(
+            "minimum whole-pack coloured-point distance after ring-16 "
+            "symmetry and solver-side normalisation"
+        ),
+    )
     args = parser.parse_args()
     if args.expected_review_count < 1:
         parser.error("--expected-review-count must be positive")
     if args.max_review_solution_lines < 1:
         parser.error("--max-review-solution-lines must be positive")
+    if args.min_position_distance < 0:
+        parser.error("--min-position-distance must not be negative")
     return args
 
 
@@ -266,7 +296,7 @@ def main() -> None:
             f"found {len(review['puzzles'])}"
         )
 
-    records = _selection_records(review)
+    selection_source, records = _selection_records(review)
     review_ids = {puzzle.get("id") for puzzle in review["puzzles"]}
     if review_ids != set(records):
         raise ValueError("review puzzles and CP-SAT selection records differ")
@@ -288,6 +318,7 @@ def main() -> None:
             records[puzzle["id"]],
             batch_id,
             args.max_review_solution_lines,
+            selection_source,
         )
         for puzzle in review["puzzles"]
     ]
@@ -305,6 +336,20 @@ def main() -> None:
     combined = established + pending_review
     if len({puzzle.get("id") for puzzle in combined}) != len(combined):
         raise ValueError("combined pack contains duplicate puzzle ids")
+    conflicts = find_position_conflicts(
+        combined,
+        minimum_distance=args.min_position_distance,
+    )
+    if conflicts:
+        details = "\n".join(
+            f"  distance {conflict.distance}: "
+            f"{conflict.left_id} <> {conflict.right_id}"
+            for conflict in conflicts
+        )
+        raise ValueError(
+            "combined pack contains recognisably similar positions below "
+            f"distance {args.min_position_distance}:\n{details}"
+        )
 
     output_metadata = base.get("metadata")
     if not isinstance(output_metadata, dict):
@@ -314,13 +359,16 @@ def main() -> None:
     output_metadata["name"] = "Malom Perfect DB Puzzles — Expert Review"
     output_metadata["description"] = (
         "Perfect DB-certified composed and replay-backed puzzles organised "
-        "as a progressive curriculum. This review build includes an "
-        "engine-error-corpus shortlist pending Mill specialist assessment."
+        "as a progressive curriculum. This review build includes certified "
+        "shortlists pending Mill specialist assessment."
     )
     metadata_tags = output_metadata.get("tags")
     if not isinstance(metadata_tags, list):
         raise ValueError("base metadata tags must be a list")
-    _append_unique(metadata_tags, "engine-blunder-corpus")
+    if selection_source == "engine-blunder":
+        _append_unique(metadata_tags, "engine-blunder-corpus")
+    else:
+        _append_unique(metadata_tags, "perfect-db-certified")
     _append_unique(metadata_tags, "expert-review")
 
     review_batches = base.get("reviewBatches", [])

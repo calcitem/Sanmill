@@ -277,6 +277,14 @@ class _PuzzleHistoryPageState extends State<PuzzleHistoryPage> {
 
     return <Widget>[
       _PuzzleHistoryDetailChip(
+        icon: Icons.numbers,
+        label: s.puzzleReference(
+          puzzle?.referenceCode ??
+              PuzzleInfo.referenceCodeForId(attempt.puzzleId),
+        ),
+        color: colorScheme.onSurfaceVariant,
+      ),
+      _PuzzleHistoryDetailChip(
         icon: FluentIcons.timer_24_regular,
         label: _formatDuration(attempt.timeSpent),
         color: colorScheme.primary,

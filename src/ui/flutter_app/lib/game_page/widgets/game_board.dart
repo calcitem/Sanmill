@@ -602,9 +602,15 @@ class _GameBoardState extends State<GameBoard>
                         builder: (_, Widget? child) {
                           final MillBoardView view =
                               GameController().activeBoardView;
+                          final bool isPuzzleRemovalPending =
+                              GameController().gameInstance.gameMode ==
+                                  GameMode.puzzle &&
+                              view.action == Act.remove;
                           final MillTurnHighlight? highlight =
                               DB().displaySettings.showLastMove &&
-                                  !animationManager.isTurnTransitionInProgress
+                                  !animationManager
+                                      .isTurnTransitionInProgress &&
+                                  !isPuzzleRemovalPending
                               ? MillTurnHighlight.fromPath(
                                   GameController().gameRecorder.currentPath,
                                   isRemovalPending: view.action == Act.remove,
@@ -708,6 +714,9 @@ class _GameBoardState extends State<GameBoard>
                                                 .activeBoardView
                                                 .sideToMove ==
                                             PieceColor.black)),
+                            forceCapturableHighlights:
+                                GameController().gameInstance.gameMode ==
+                                GameMode.puzzle,
                           ),
                           child: AccessibilityStatus.semanticsEnabled
                               ? _BoardSemantics(

@@ -142,9 +142,6 @@ pub(crate) struct PuzzleTraits {
     pub motif: PuzzleMotif,
     /// Complete first turns tied for the shortest forced win.
     pub shortest_winning_count: usize,
-    /// Number of complete legal first turns that fail to achieve the
-    /// shortest forced win, including slower wins and non-wins.
-    pub non_shortest_count: usize,
     /// Complete first turns that still force a win but take longer.
     pub slower_winning_count: usize,
     /// Complete first turns that lead only to a draw or loss.
@@ -539,56 +536,13 @@ pub(crate) fn build_puzzle_info(input: &PuzzleBuildInput<'_>) -> PuzzleInfoJson 
         headline = theme.headline
     );
 
-    let total_first_turns = shortest_first_turn_count + input.traits.non_shortest_count;
     let move_noun = if target_moves == 1 { "move" } else { "moves" };
-    let mut description = format!(
-        "{side} to move and win in {target_moves} {move_noun} against the defence that delays \
-         defeat.",
+    let description = format!(
+        "{side} to move. Find the forced win in {target_moves} {move_noun}.",
         side = capitalize(side_word),
     );
-    if input.traits.non_shortest_count > 0 {
-        description.push_str(&format!(
-            " Only {shortest_first_turn_count} of the {total_first_turns} complete legal first \
-             turns achieve the shortest win.",
-        ));
-    }
-    if input.traits.slower_winning_count > 0 {
-        description.push_str(&format!(
-            " {} other winning first turn{} take{} longer.",
-            input.traits.slower_winning_count,
-            if input.traits.slower_winning_count == 1 {
-                ""
-            } else {
-                "s"
-            },
-            if input.traits.slower_winning_count == 1 {
-                "s"
-            } else {
-                ""
-            },
-        ));
-    }
-    if line.sacrifice {
-        description.push_str(" Requires accepting a material sacrifice along the way.");
-    }
-    if input.discovery_tag == Some("discovery:smt-z3") {
-        description.push_str(
-            " Its geometry was synthesised with Z3 and independently rechecked by Rust/TGF.",
-        );
-    }
-    if input.replay_provenance.is_some() {
-        description.push_str(
-            " Replay-backed position: Rust/TGF accepted the anonymised source-game history, and \
-             the recorded human turn missed this Perfect DB-certified win. Displayed solutions \
-             are deterministic principal variations against a defence that delays defeat; \
-             equally fast later continuations may exist.",
-        );
-    } else {
-        description.push_str(
-            " Composed position: rule-consistent and Perfect DB-certified; no legal replay \
-             witness is claimed.",
-        );
-    }
+    // Proof and discovery details belong in tags/provenance for audits, not
+    // in the player-facing objective.
 
     let mut completion = String::from(theme.completion);
     if line.only_move_count > 0 && line.decision_point_count > 0 {
@@ -813,7 +767,6 @@ mod tests {
         PuzzleTraits {
             motif: PuzzleMotif::Any,
             shortest_winning_count: 1,
-            non_shortest_count: 0,
             slower_winning_count: 0,
             non_winning_count: 0,
             tempting_mill_mistake: false,
@@ -834,7 +787,6 @@ mod tests {
         let hard_traits = PuzzleTraits {
             motif: PuzzleMotif::Any,
             shortest_winning_count: 1,
-            non_shortest_count: 10,
             slower_winning_count: 2,
             non_winning_count: 8,
             tempting_mill_mistake: true,
@@ -880,7 +832,6 @@ mod tests {
         let max_traits = PuzzleTraits {
             motif: PuzzleMotif::Any,
             shortest_winning_count: 1,
-            non_shortest_count: 30,
             slower_winning_count: 5,
             non_winning_count: 25,
             tempting_mill_mistake: true,
@@ -903,7 +854,6 @@ mod tests {
             traits: PuzzleTraits {
                 motif: PuzzleMotif::Any,
                 shortest_winning_count: 1,
-                non_shortest_count: 5,
                 slower_winning_count: 2,
                 non_winning_count: 3,
                 tempting_mill_mistake: false,
@@ -951,7 +901,6 @@ mod tests {
             traits: PuzzleTraits {
                 motif: PuzzleMotif::Any,
                 shortest_winning_count: 1,
-                non_shortest_count: 8,
                 slower_winning_count: 0,
                 non_winning_count: 8,
                 tempting_mill_mistake: true,
@@ -970,9 +919,9 @@ mod tests {
         assert_eq!(info.title, "Win in 3: resist the tempting mill");
         assert!(info.tags.contains(&"trap:greedy-mill".to_string()));
         assert!(info.tags.contains(&"solve-depth:deep".to_string()));
-        assert!(
-            info.description
-                .contains("Only 1 of the 9 complete legal first turns")
+        assert_eq!(
+            info.description,
+            "Black to move. Find the forced win in 3 moves."
         );
         assert!(
             info.completion_message
@@ -1000,7 +949,6 @@ mod tests {
             traits: PuzzleTraits {
                 motif: PuzzleMotif::Any,
                 shortest_winning_count: 1,
-                non_shortest_count: 8,
                 slower_winning_count: 0,
                 non_winning_count: 8,
                 tempting_mill_mistake: true,
@@ -1046,8 +994,11 @@ mod tests {
             build_puzzle_info(&input).description
         };
 
-        assert!(build_description(1).contains("win in 1 move against"));
-        assert!(build_description(2).contains("win in 2 moves against"));
+        assert!(build_description(1).contains("win in 1 move."));
+        assert!(build_description(2).contains("win in 2 moves."));
+        for technical_term in ["Perfect DB", "Rust/TGF", "Z3", "principal variation"] {
+            assert!(!build_description(2).contains(technical_term));
+        }
     }
 
     #[test]

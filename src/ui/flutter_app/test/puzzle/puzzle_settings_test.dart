@@ -60,7 +60,7 @@ void main() {
 
       expect(settings.allPuzzles, isEmpty);
       expect(settings.progressMap, isEmpty);
-      expect(settings.showHints, isTrue);
+      expect(settings.showHints, isFalse);
       expect(settings.autoShowSolution, isFalse);
       expect(settings.soundEnabled, isTrue);
       expect(settings.userRating, 1500);
@@ -265,7 +265,7 @@ void main() {
         const <String, dynamic>{},
       );
 
-      expect(settings.showHints, isTrue);
+      expect(settings.showHints, isFalse);
       expect(settings.autoShowSolution, isFalse);
       expect(settings.soundEnabled, isTrue);
       expect(settings.userRating, 1500);

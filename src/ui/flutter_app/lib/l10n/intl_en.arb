@@ -3654,9 +3654,9 @@
     "@puzzleBackToList": {
         "description": "Button to go back to puzzle list"
     },
-    "puzzleWrongMove": "Wrong move. Try again.",
+    "puzzleWrongMove": "That move isn't part of the solution. Try again.",
     "@puzzleWrongMove": {
-        "description": "Message shown when user makes wrong move"
+        "description": "Message shown when a move does not match the puzzle solution"
     },
     "puzzleWrongMoveMessage": "That move doesn't match the solution. You can try again or view the correct solution.",
     "@puzzleWrongMoveMessage": {
@@ -7144,5 +7144,55 @@
     "boardRecognitionReviewInstruction": "Tap a point to cycle through empty, white, and black. Review yellow-outlined points and tap them if the result is incorrect.",
     "@boardRecognitionReviewInstruction": {
         "description": "Instruction shown while reviewing recognized board pieces"
+    },
+    "resetPuzzleProgress": "Reset puzzle progress",
+    "@resetPuzzleProgress": {
+        "description": "Action that clears puzzle progress and ratings while preserving custom puzzles"
+    },
+    "resetPuzzleProgressConfirmation": "This resets puzzle ratings, completion progress, attempt history, daily records, and daily assignments. Custom and imported puzzles are kept. This cannot be undone.",
+    "@resetPuzzleProgressConfirmation": {
+        "description": "Confirmation warning shown before clearing all puzzle progress"
+    },
+    "puzzleProgressReset": "Puzzle progress has been reset.",
+    "@puzzleProgressReset": {
+        "description": "Confirmation message shown after puzzle progress is cleared"
+    },
+    "showPuzzleHints": "Show puzzle hints",
+    "@showPuzzleHints": {
+        "description": "Setting that reveals tactical title clues and enables the puzzle hint button"
+    },
+    "showPuzzleHintsDescription": "Show tactical clues in puzzle titles and enable the hint button.",
+    "@showPuzzleHintsDescription": {
+        "description": "Explanation for the puzzle hint visibility setting"
+    },
+    "puzzleAttemptsLabel": "Attempts",
+    "@puzzleAttemptsLabel": {
+        "description": "Compact label for the number of attempts on the current puzzle"
+    },
+    "puzzleReference": "Puzzle #{reference}",
+    "@puzzleReference": {
+        "description": "Stable short reference shown so users can identify a specific puzzle in feedback",
+        "placeholders": {
+            "reference": {
+                "description": "Stable eight-character puzzle reference code",
+                "type": "String"
+            }
+        }
+    },
+    "puzzleNextPuzzle": "Next puzzle",
+    "@puzzleNextPuzzle": {
+        "description": "Action that continues from the current puzzle to another puzzle"
+    },
+    "puzzleSkip": "Skip puzzle",
+    "@puzzleSkip": {
+        "description": "Action that leaves the current puzzle unsolved and continues to another puzzle"
+    },
+    "exitPuzzleAction": "Exit puzzle",
+    "@exitPuzzleAction": {
+        "description": "Confirmation action that leaves the current puzzle"
+    },
+    "puzzleContinueNext": "Next puzzle",
+    "@puzzleContinueNext": {
+        "description": "Menu action that continues to another puzzle after solving the current one"
     }
 }

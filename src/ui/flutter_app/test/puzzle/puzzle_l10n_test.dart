@@ -22,6 +22,9 @@ void main() {
     expect(strings.puzzleSolutionActionCount(3), '3 个原子动作');
     expect(strings.puzzleStatsCurrentRating, '当前等级分');
     expect(strings.puzzleStreakQuitTitle, '退出连续解谜？');
+    expect(strings.exitPuzzleAction, '退出谜题');
+    expect(strings.puzzleContinueNext, '继续下一题');
+    expect(strings.puzzleWrongMove, '这一步不符合解法，请再试试。');
     expect(strings.puzzlesExportedForContribution(1), '已导出 1 个谜题以供贡献');
     expect(strings.puzzlesExportedForContribution(3), '已导出 3 个谜题以供贡献');
     expect(strings.viewContributionGuide, '查看指南');

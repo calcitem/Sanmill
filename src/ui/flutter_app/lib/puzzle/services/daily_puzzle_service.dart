@@ -11,6 +11,7 @@ import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../models/puzzle_models.dart';
 import 'puzzle_manager.dart';
+import 'puzzle_selection_service.dart';
 
 /// Information about the daily puzzle
 class DailyPuzzleInfo {
@@ -45,22 +46,25 @@ class DailyPuzzleService {
   /// Epoch date for day number calculation (January 1, 2025)
   static final DateTime _epochDate = DateTime(2025);
 
+  static const PuzzleSelectionService _selectionService =
+      PuzzleSelectionService();
+
   /// Get today's puzzle information
-  DailyPuzzleInfo getTodaysPuzzle() {
+  Future<DailyPuzzleInfo> getTodaysPuzzle() async {
     final DateTime today = _normalizeDate(_now());
+    final String todayKey = today.toIso8601String();
     final int dayNumber = _getDayNumber(today);
     final DailyPuzzleStats stats = _getStats();
-    final bool completedToday = stats.completedDates.contains(
-      today.toIso8601String(),
-    );
+    final bool completedToday = stats.completedDates.contains(todayKey);
 
-    // Get all available puzzles
     final PuzzleManager puzzleManager = PuzzleManager();
-    final List<PuzzleInfo> allPuzzles = puzzleManager.getAllPuzzles();
+    final List<PuzzleInfo> builtInPuzzles = puzzleManager
+        .getAllPuzzles()
+        .where((PuzzleInfo puzzle) => !puzzle.isCustom)
+        .toList();
 
-    if (allPuzzles.isEmpty) {
+    if (builtInPuzzles.isEmpty) {
       logger.w("$_tag No puzzles available for daily puzzle");
-      // Return a default/placeholder
       return DailyPuzzleInfo(
         date: today,
         puzzleId: '',
@@ -70,8 +74,21 @@ class DailyPuzzleService {
       );
     }
 
-    // Select puzzle based on day number (deterministic rotation)
-    final PuzzleInfo todaysPuzzle = allPuzzles[dayNumber % allPuzzles.length];
+    PuzzleInfo? todaysPuzzle = _findPuzzleById(
+      builtInPuzzles,
+      stats.puzzleAssignments[todayKey],
+    );
+    if (todaysPuzzle == null) {
+      todaysPuzzle = _selectPuzzle(
+        puzzles: builtInPuzzles,
+        puzzleManager: puzzleManager,
+        stats: stats,
+        today: today,
+        dayNumber: dayNumber,
+      );
+      stats.puzzleAssignments[todayKey] = todaysPuzzle.id;
+      await _saveStats(stats);
+    }
 
     return DailyPuzzleInfo(
       date: today,
@@ -80,6 +97,58 @@ class DailyPuzzleService {
       completedToday: completedToday,
       totalCompleted: stats.completedDates.length,
     );
+  }
+
+  PuzzleInfo? _findPuzzleById(List<PuzzleInfo> puzzles, String? id) {
+    if (id == null) {
+      return null;
+    }
+    for (final PuzzleInfo puzzle in puzzles) {
+      if (puzzle.id == id) {
+        return puzzle;
+      }
+    }
+    return null;
+  }
+
+  PuzzleInfo _selectPuzzle({
+    required List<PuzzleInfo> puzzles,
+    required PuzzleManager puzzleManager,
+    required DailyPuzzleStats stats,
+    required DateTime today,
+    required int dayNumber,
+  }) {
+    final int priorDailyCompletions = stats.completedDates
+        .map(DateTime.tryParse)
+        .whereType<DateTime>()
+        .map(_normalizeDate)
+        .where((DateTime date) => date.isBefore(today))
+        .toSet()
+        .length;
+    final int completedPuzzles =
+        puzzleManager.settingsNotifier.value.totalCompleted;
+    final int experience = priorDailyCompletions > completedPuzzles
+        ? priorDailyCompletions
+        : completedPuzzles;
+
+    final List<PuzzleInfo> candidates = _selectionService
+        .candidatesForExperience(
+          puzzles,
+          experience: experience,
+          userRating: puzzleManager.settingsNotifier.value.userRating,
+        );
+
+    final Set<String> previouslyAssigned = stats.puzzleAssignments.values
+        .toSet();
+    final List<PuzzleInfo> unseenCandidates = candidates
+        .where((PuzzleInfo puzzle) => !previouslyAssigned.contains(puzzle.id))
+        .toList();
+    final List<PuzzleInfo> selectionPool = unseenCandidates.isNotEmpty
+        ? unseenCandidates
+        : List<PuzzleInfo>.from(candidates);
+    selectionPool.sort((PuzzleInfo a, PuzzleInfo b) => a.id.compareTo(b.id));
+
+    return selectionPool[dayNumber % selectionPool.length];
   }
 
   /// Record completion of today's puzzle
@@ -106,11 +175,21 @@ class DailyPuzzleService {
       final Map<String, dynamic> map = Map<String, dynamic>.from(
         data as Map<dynamic, dynamic>,
       );
+      final Map<String, String> puzzleAssignments = <String, String>{};
+      final dynamic rawAssignments = map['puzzleAssignments'];
+      if (rawAssignments is Map<dynamic, dynamic>) {
+        for (final MapEntry<dynamic, dynamic> entry in rawAssignments.entries) {
+          if (entry.key is String && entry.value is String) {
+            puzzleAssignments[entry.key as String] = entry.value as String;
+          }
+        }
+      }
       return DailyPuzzleStats(
         completedDates: List<String>.from(
           map['completedDates'] as List<dynamic>? ?? <dynamic>[],
         ),
         longestStreak: map['longestStreak'] as int? ?? 0,
+        puzzleAssignments: puzzleAssignments,
       );
     } catch (e) {
       logger.e("$_tag Failed to load daily puzzle stats: $e");
@@ -125,6 +204,7 @@ class DailyPuzzleService {
       await DB().puzzleAnalyticsBox.put('dailyPuzzleStats', <String, dynamic>{
         'completedDates': stats.completedDates,
         'longestStreak': stats.longestStreak,
+        'puzzleAssignments': stats.puzzleAssignments,
       });
       logger.i(
         "$_tag Saved daily puzzle stats: ${stats.completedDates.length} completed",
@@ -151,10 +231,17 @@ class DailyPuzzleService {
 
 /// Statistics for daily puzzles
 class DailyPuzzleStats {
-  DailyPuzzleStats({required this.completedDates, required this.longestStreak});
+  DailyPuzzleStats({
+    required this.completedDates,
+    required this.longestStreak,
+    Map<String, String> puzzleAssignments = const <String, String>{},
+  }) : puzzleAssignments = Map<String, String>.from(puzzleAssignments);
 
   List<String> completedDates;
 
   /// Retained only so existing streak history is not destroyed on save.
   int longestStreak;
+
+  /// Stable puzzle IDs keyed by normalized UTC date.
+  final Map<String, String> puzzleAssignments;
 }

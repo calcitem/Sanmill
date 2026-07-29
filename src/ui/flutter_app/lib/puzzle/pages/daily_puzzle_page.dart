@@ -29,32 +29,56 @@ class DailyPuzzlePage extends StatefulWidget {
 class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
   final DailyPuzzleService _dailyPuzzleService = DailyPuzzleService();
   final PuzzleManager _puzzleManager = PuzzleManager();
+  late Future<DailyPuzzleInfo> _dailyInfoFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _dailyInfoFuture = _dailyPuzzleService.getTodaysPuzzle();
+  }
 
   @override
   Widget build(BuildContext context) {
     final S s = S.of(context);
-    final DailyPuzzleInfo dailyInfo = _dailyPuzzleService.getTodaysPuzzle();
-    final PuzzleInfo? puzzle = _puzzleManager.getPuzzleById(dailyInfo.puzzleId);
     final ThemeData theme = Theme.of(context);
 
     return Scaffold(
       key: const Key('daily_puzzle_page_scaffold'),
       backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(title: Text(s.dailyPuzzle)),
-      body: puzzle == null
-          ? Center(
-              key: const Key('daily_puzzle_empty_state'),
-              child: Text(s.noPuzzlesAvailable),
-            )
-          : _DailyPuzzleContent(
-              dailyInfo: dailyInfo,
-              puzzle: puzzle,
-              progress: _puzzleManager.getProgress(puzzle.id),
-              formatDate: _formatDate,
-              difficultyColorFor: (PuzzleDifficulty difficulty) =>
-                  _getDifficultyColor(context, difficulty),
-              onStartPuzzle: _startPuzzle,
-            ),
+      body: FutureBuilder<DailyPuzzleInfo>(
+        future: _dailyInfoFuture,
+        builder:
+            (BuildContext context, AsyncSnapshot<DailyPuzzleInfo> snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return const Center(
+                  key: Key('daily_puzzle_loading'),
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              final DailyPuzzleInfo dailyInfo = snapshot.requireData;
+              final PuzzleInfo? puzzle = _puzzleManager.getPuzzleById(
+                dailyInfo.puzzleId,
+              );
+              return puzzle == null
+                  ? Center(
+                      key: const Key('daily_puzzle_empty_state'),
+                      child: Text(s.noPuzzlesAvailable),
+                    )
+                  : _DailyPuzzleContent(
+                      dailyInfo: dailyInfo,
+                      puzzle: puzzle,
+                      progress: _puzzleManager.getProgress(puzzle.id),
+                      showHints:
+                          _puzzleManager.settingsNotifier.value.showHints,
+                      formatDate: _formatDate,
+                      difficultyColorFor: (PuzzleDifficulty difficulty) =>
+                          _getDifficultyColor(context, difficulty),
+                      onStartPuzzle: _startPuzzle,
+                    );
+            },
+      ),
     );
   }
 
@@ -96,20 +120,25 @@ class _DailyPuzzlePageState extends State<DailyPuzzlePage> {
           ),
         )
         .then((_) {
-          if (mounted) {
-            setState(() {});
-          }
+          _reloadDailyInfo();
         });
   }
 
   void _recordDailyCompletion() {
     unawaited(
       _dailyPuzzleService.recordCompletion().then((_) {
-        if (mounted) {
-          setState(() {});
-        }
+        _reloadDailyInfo();
       }),
     );
+  }
+
+  void _reloadDailyInfo() {
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _dailyInfoFuture = _dailyPuzzleService.getTodaysPuzzle();
+    });
   }
 }
 
@@ -118,6 +147,7 @@ class _DailyPuzzleContent extends StatelessWidget {
     required this.dailyInfo,
     required this.puzzle,
     required this.progress,
+    required this.showHints,
     required this.formatDate,
     required this.difficultyColorFor,
     required this.onStartPuzzle,
@@ -126,6 +156,7 @@ class _DailyPuzzleContent extends StatelessWidget {
   final DailyPuzzleInfo dailyInfo;
   final PuzzleInfo puzzle;
   final PuzzleProgress? progress;
+  final bool showHints;
   final String Function(DateTime date) formatDate;
   final Color Function(PuzzleDifficulty difficulty) difficultyColorFor;
   final ValueChanged<PuzzleInfo> onStartPuzzle;
@@ -162,12 +193,15 @@ class _DailyPuzzleContent extends StatelessWidget {
           key: const Key('daily_puzzle_summary_tile'),
           leading: Icon(puzzle.category.icon, color: difficultyColor),
           title: Text(
-            puzzle.title,
+            puzzle.titleForDisplay(showHints: showHints),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
           subtitle: Text(
-            '${puzzle.difficulty.displayName(context)}\n${puzzle.description}',
+            '${s.puzzleReference(puzzle.referenceCode)} · '
+            '${puzzle.difficulty.displayName(context)}\n'
+            '${puzzle.description}',
+            key: const Key('daily_puzzle_reference'),
             maxLines: 4,
             overflow: TextOverflow.ellipsis,
           ),

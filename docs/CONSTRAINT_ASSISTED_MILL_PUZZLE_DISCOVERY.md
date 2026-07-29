@@ -147,10 +147,16 @@ same 13 replay-backed positions. The new entries remain visibly tagged
 assessment is complete.
 
 The v1.6.0 review build adds the ten-position strategy-theme shortlist as a
-second traceable pending batch. The current application asset therefore
-contains 167 puzzles: 154 labelled compositions and the same 13
-replay-backed positions. Forty entries are pending specialist assessment,
-the package version is `1.6.0-review.1`, and `isOfficial` remains false.
+second traceable pending batch.
+
+The v1.6.1 similarity repair audits every pair after all 16 board
+automorphisms and solver-side colour normalisation. It removes 16 positions
+from nine recognisably similar clusters and replaces them with a CP-SAT
+shortlist of 16 independently certified candidates. The application asset
+therefore remains at 167 puzzles: 154 labelled compositions and the same 13
+replay-backed positions. Fifty-six entries are pending specialist
+assessment, the package version is `1.6.1-review.1`, and `isOfficial`
+remains false.
 
 ## 1.1 Implemented curriculum
 
@@ -685,6 +691,13 @@ twice. An optional minimum-position-distance constraint counts differing
 solver-coloured and defender-coloured points under the closest symmetry; it
 is a diversity gate, not a game-theoretic metric.
 
+The application pack uses a minimum distance of **four**. This rejects exact
+copies, colour-exchanged copies, one-stone changes and the smallest
+two-stone edits. The same default is enforced while selecting candidates,
+against reference FEN records, when merging review batches and by the
+committed Rust asset test. A selector run may choose a stricter threshold,
+but a merge may not weaken the application invariant.
+
 $$
 x_i \in \{0,1\},
 \qquad
@@ -833,13 +846,19 @@ The following matters remain editorial rather than semantic and should be calibr
 - which theme and difficulty targets become hard pack quotas rather than soft preferences;
 - attribution requirements for database-, game- and expert-derived material.
 
-> **Next outcome.** Blind-review the 40 embedded engine-error-corpus
-> candidates and the resulting 167-puzzle curriculum order. Retain the
-> earlier 15 constraint-directed compositions and 13 replay-backed human
-> missed wins as calibration material. Use specialist scoring to refine
-> theme names, difficulty bands, long blockade presentation and pack balance.
-> Full machine certificate sidecars should be added before describing the
-> wider pack as an evidence-complete release.
+> **Next outcome.** Blind-review the 56 embedded pending candidates and the
+> resulting 167-puzzle curriculum order. Retain the 13 constraint-directed
+> compositions and 13 replay-backed human missed wins as calibration
+> material. Use specialist scoring, together with anonymised aggregate user
+> pass rates, to refine theme names, difficulty bands, long blockade
+> presentation and pack balance. Full machine certificate sidecars should be
+> added before describing the wider pack as an evidence-complete release.
+
+The next product milestone is approximately **500 official curated
+puzzles**, not a million-position application bundle. Perfect DB and HumanDB
+may support a much larger PC-side candidate warehouse, but candidates should
+advance into the Flutter asset gradually through exact certification,
+specialist scoring, diversity selection and observed user completion data.
 
 # Appendix A. Sanmill implementation touchpoints
 
@@ -879,7 +898,20 @@ The following matters remain editorial rather than semantic and should be calibr
 
 - `scripts/generate_mill_smt_candidates.py` — pinned Z3 Boolean/pseudo-Boolean candidate model and deterministic enumeration.
 
-- `scripts/select_mill_puzzles_cp_sat.py` — deterministic CP-SAT editorial selector over already certified candidates.
+- `scripts/select_mill_puzzles_cp_sat.py` — deterministic CP-SAT editorial
+  selector over already certified candidates, including per-difficulty,
+  solution-line, candidate-distance and reference-distance gates.
+
+- `scripts/mill_puzzle_similarity.py` — dependency-free ring-16,
+  solver-side-normalised similarity definition shared by selection, audit
+  and merge tools.
+
+- `scripts/audit_mill_puzzle_similarity.py` — whole-package conflict and
+  connected-cluster report.
+
+- `scripts/prune_mill_puzzle_similarity.py` — deterministic maximum-cardinality
+  repair step used to remove an existing pack’s conflicting positions before
+  certified replacements are selected.
 
 - `scripts/build_mill_editorial_collisions.py` — editorial-reference and
   existing-pack collision-input preparation.
@@ -935,16 +967,17 @@ The following matters remain editorial rather than semantic and should be calibr
 
 # Appendix B. Pilot review package
 
-The embedded review package comprises 15 earlier constraint-directed
-compositions, 13 replay-backed human missed wins and 40 pending
-engine-error-corpus candidates in a 167-puzzle application asset. The
-constraint subset contains three examples of each pilot theme and spans all
-five public difficulty bands. The replay subset contains three short, five
-medium and five long positions, including two immobilisation studies. The
-first engine-error shortlist is balanced 15–15 by side to move. The
-strategy-theme supplement is balanced five–five, covers five additional
-working topics and applies both internal and reference-distance diversity
-gates. They are retained as separate traceable `expert-pending` batches.
+The embedded review package comprises 13 retained constraint-directed
+compositions, 13 replay-backed human missed wins and 56 pending candidates
+in a 167-puzzle application asset. The replay subset contains three short,
+five medium and five long positions, including two immobilisation studies.
+The first engine-error shortlist is balanced 15–15 by side to move. The
+strategy-theme supplement is balanced five–five. The 16-position similarity
+repair batch is balanced eight–eight, includes two beginner replacements
+with different primary topics, caps displayed solution lines at 32 and
+applies a minimum distance of four both internally and against the retained
+151-position base. The three pending batches remain separately traceable as
+`expert-pending` material.
 Reviewers should receive anonymised diagrams in curriculum order and,
 separately, in random order, with one official shortest line, the
 equally-short-first-turn count and the appropriate `source:composed` or

@@ -44,7 +44,7 @@ class PuzzleHintService {
 
   static const String _tag = "[PuzzleHintService]";
 
-  final PuzzleInfo puzzle;
+  PuzzleInfo puzzle;
   int _hintsGiven = 0;
   int _currentHintLevel = 0;
 
@@ -207,6 +207,15 @@ class PuzzleHintService {
 
   /// Get number of hints given
   int get hintsGiven => _hintsGiven;
+
+  /// Updates coordinate-bearing hint data without resetting hint usage.
+  void updatePuzzle(PuzzleInfo transformedPuzzle) {
+    assert(
+      transformedPuzzle.id == puzzle.id,
+      'A hint service can only update its current puzzle.',
+    );
+    puzzle = transformedPuzzle;
+  }
 
   /// Check if hints are available
   bool get hasHints {

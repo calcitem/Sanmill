@@ -3702,9 +3702,9 @@
     "@puzzleBackToList": {
         "description": "Button to go back to puzzle list"
     },
-    "puzzleWrongMove": "错误着法，请重试。",
+    "puzzleWrongMove": "这一步不符合解法，请再试试。",
     "@puzzleWrongMove": {
-        "description": "Message shown when user makes wrong move"
+        "description": "Message shown when a move does not match the puzzle solution"
     },
     "puzzleWrongMoveMessage": "该着法与解答不符。您可以重试或查看正确解答。",
     "@puzzleWrongMoveMessage": {
@@ -7077,5 +7077,55 @@
     "boardRecognitionReviewInstruction": "点击棋位可在空位、白棋和黑棋之间切换。请检查黄色边框标记的位置，如识别有误，点击修正。",
     "@boardRecognitionReviewInstruction": {
         "description": "Instruction shown while reviewing recognized board pieces"
+    },
+    "resetPuzzleProgress": "重置谜题进度",
+    "@resetPuzzleProgress": {
+        "description": "Action that clears puzzle progress and ratings while preserving custom puzzles"
+    },
+    "resetPuzzleProgressConfirmation": "这会重置谜题等级分、完成进度、尝试历史、每日记录和每日分配。自建及导入的谜题会保留。此操作无法撤销。",
+    "@resetPuzzleProgressConfirmation": {
+        "description": "Confirmation warning shown before clearing all puzzle progress"
+    },
+    "puzzleProgressReset": "谜题进度已重置。",
+    "@puzzleProgressReset": {
+        "description": "Confirmation message shown after puzzle progress is cleared"
+    },
+    "showPuzzleHints": "显示谜题提示",
+    "@showPuzzleHints": {
+        "description": "Setting that reveals tactical title clues and enables the puzzle hint button"
+    },
+    "showPuzzleHintsDescription": "显示题目标题中的战术线索，并启用提示按钮。",
+    "@showPuzzleHintsDescription": {
+        "description": "Explanation for the puzzle hint visibility setting"
+    },
+    "puzzleAttemptsLabel": "尝试",
+    "@puzzleAttemptsLabel": {
+        "description": "Compact label for the number of attempts on the current puzzle"
+    },
+    "puzzleReference": "谜题 #{reference}",
+    "@puzzleReference": {
+        "description": "Stable short reference shown so users can identify a specific puzzle in feedback",
+        "placeholders": {
+            "reference": {
+                "description": "Stable eight-character puzzle reference code",
+                "type": "String"
+            }
+        }
+    },
+    "puzzleNextPuzzle": "下一题",
+    "@puzzleNextPuzzle": {
+        "description": "Action that continues from the current puzzle to another puzzle"
+    },
+    "puzzleSkip": "跳过此题",
+    "@puzzleSkip": {
+        "description": "Action that leaves the current puzzle unsolved and continues to another puzzle"
+    },
+    "exitPuzzleAction": "退出谜题",
+    "@exitPuzzleAction": {
+        "description": "Confirmation action that leaves the current puzzle"
+    },
+    "puzzleContinueNext": "继续下一题",
+    "@puzzleContinueNext": {
+        "description": "Menu action that continues to another puzzle after solving the current one"
     }
 }

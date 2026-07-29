@@ -63,6 +63,48 @@ void main() {
       expect(ids.length, puzzles.length);
     });
 
+    test('beginner puzzles introduce three different concepts', () async {
+      final List<PuzzleInfo> puzzles = await getBuiltInPuzzles();
+      final List<PuzzleInfo> beginnerPuzzles = puzzles
+          .where((PuzzleInfo puzzle) => puzzle.difficulty.name == 'beginner')
+          .toList();
+      final Set<String> topics = beginnerPuzzles
+          .expand(
+            (PuzzleInfo puzzle) =>
+                puzzle.tags.where((String tag) => tag.startsWith('topic:')),
+          )
+          .toSet();
+
+      expect(beginnerPuzzles, hasLength(3));
+      expect(topics, <String>{
+        'topic:capture-choice',
+        'topic:mill-block',
+        'topic:immobilization',
+      });
+    });
+
+    test('player-facing descriptions stay concise and non-technical', () async {
+      final List<PuzzleInfo> puzzles = await getBuiltInPuzzles();
+      final RegExp objective = RegExp(
+        r'^(White|Black) to move\. Find the forced win in \d+ moves?\.$',
+      );
+      const List<String> technicalTerms = <String>[
+        'Perfect DB',
+        'Rust/TGF',
+        'Z3',
+        'principal variation',
+        'replay witness',
+        'anonymised',
+      ];
+
+      for (final PuzzleInfo puzzle in puzzles) {
+        expect(puzzle.description, matches(objective), reason: puzzle.id);
+        for (final String term in technicalTerms) {
+          expect(puzzle.description, isNot(contains(term)), reason: puzzle.id);
+        }
+      }
+    });
+
     test('the embedded expert-review batches remain identifiable', () async {
       final Map<String, dynamic> package =
           jsonDecode(
@@ -71,13 +113,13 @@ void main() {
               as Map<String, dynamic>;
       final Map<String, dynamic> metadata =
           package['metadata']! as Map<String, dynamic>;
-      expect(metadata['version'], '1.6.0-review.1');
+      expect(metadata['version'], '1.6.1-review.1');
       expect(metadata['isOfficial'], isFalse);
 
       final List<Map<String, dynamic>> reviewBatches =
           (package['reviewBatches']! as List<dynamic>)
               .cast<Map<String, dynamic>>();
-      expect(reviewBatches, hasLength(2));
+      expect(reviewBatches, hasLength(3));
       expect(
         <String, int>{
           for (final Map<String, dynamic> batch in reviewBatches)
@@ -86,6 +128,7 @@ void main() {
         <String, int>{
           'engine-blunder-review-selected-30': 30,
           'strategy-theme-review-selected-10': 10,
+          'similarity-repair-selected-16': 16,
         },
       );
       for (final Map<String, dynamic> batch in reviewBatches) {
@@ -106,11 +149,20 @@ void main() {
                     ),
               )
               .toList();
-      expect(reviewPuzzles, hasLength(40));
+      expect(reviewPuzzles, hasLength(56));
       final Map<String, int> puzzleBatchCounts = <String, int>{};
       for (final Map<String, dynamic> puzzle in reviewPuzzles) {
         final List<dynamic> tags = puzzle['tags']! as List<dynamic>;
-        expect(tags, contains('discovery:engine-blunder-corpus'));
+        expect(
+          tags.any(
+            (dynamic tag) =>
+                tag == 'discovery:engine-blunder-corpus' ||
+                tag == 'discovery:smt-z3' ||
+                tag == 'discovery:broad-perfect-db-sampling',
+          ),
+          isTrue,
+          reason: puzzle['id']! as String,
+        );
         final List<String> batchTags = tags
             .cast<String>()
             .where((String tag) => tag.startsWith('review-batch:'))
@@ -133,6 +185,7 @@ void main() {
       expect(puzzleBatchCounts, <String, int>{
         'engine-blunder-review-selected-30': 30,
         'strategy-theme-review-selected-10': 10,
+        'similarity-repair-selected-16': 16,
       });
     });
 

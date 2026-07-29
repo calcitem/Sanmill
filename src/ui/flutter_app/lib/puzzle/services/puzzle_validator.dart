@@ -6,6 +6,7 @@
 // Validates puzzle solutions and provides feedback
 
 import '../../game_page/services/mill.dart';
+import '../../game_page/services/transform/transform.dart';
 import '../../shared/services/logger.dart';
 import '../models/puzzle_models.dart';
 import 'puzzle_rule_engine.dart';
@@ -63,7 +64,7 @@ class PuzzleValidator {
 
   static const String _tag = "[PuzzleValidator]";
 
-  final PuzzleInfo puzzle;
+  PuzzleInfo puzzle;
   late final PieceColor _puzzleOpponentSide;
   late final int _initialOpponentPiecesTotal;
   bool _warnedMissingCaptureTarget = false;
@@ -104,6 +105,25 @@ class PuzzleValidator {
 
   /// Get player's moves
   List<String> get playerMoves => List<String>.unmodifiable(_playerMoves);
+
+  /// Moves the validator into the same coordinate frame as the live board.
+  ///
+  /// Board transformations are presentation changes, not new attempts. Keep
+  /// the accumulated validation state while remapping every recorded action
+  /// and replacing the solution lines used for subsequent checks.
+  void transformCoordinates(
+    TransformationType type, {
+    required PuzzleInfo transformedPuzzle,
+  }) {
+    assert(
+      transformedPuzzle.id == puzzle.id,
+      'A validator can only transform its current puzzle.',
+    );
+    puzzle = transformedPuzzle;
+    for (int i = 0; i < _playerMoves.length; i++) {
+      _playerMoves[i] = transformMoveNotation(_playerMoves[i], type);
+    }
+  }
 
   /// Validate the current solution
   ValidationFeedback validateSolution(MillBoardView currentPosition) {

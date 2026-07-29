@@ -13,6 +13,7 @@ import 'package:sanmill/puzzle/models/puzzle_models.dart';
 import 'package:sanmill/puzzle/pages/daily_puzzle_page.dart';
 import 'package:sanmill/puzzle/services/daily_puzzle_service.dart';
 import 'package:sanmill/puzzle/services/puzzle_manager.dart';
+import 'package:sanmill/puzzle/services/puzzle_selection_service.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
 
@@ -93,6 +94,234 @@ void main() {
     expect((stats['completedDates'] as List<dynamic>).length, 2);
   });
 
+  test('assigns a built-in beginner puzzle to a new user', () async {
+    final PuzzleManager puzzleManager = PuzzleManager();
+    final PuzzleSettings originalSettings =
+        puzzleManager.settingsNotifier.value;
+    addTearDown(() {
+      puzzleManager.settingsNotifier.value = originalSettings;
+    });
+    puzzleManager.settingsNotifier.value = PuzzleSettings(
+      allPuzzles: <PuzzleInfo>[
+        _selectionPuzzle(
+          id: 'custom-beginner',
+          difficulty: PuzzleDifficulty.beginner,
+          rating: 800,
+          isCustom: true,
+        ),
+        _selectionPuzzle(
+          id: 'expert-built-in',
+          difficulty: PuzzleDifficulty.expert,
+          rating: 2400,
+        ),
+        _selectionPuzzle(
+          id: 'easy-built-in',
+          difficulty: PuzzleDifficulty.easy,
+          rating: 1100,
+        ),
+        _selectionPuzzle(
+          id: 'beginner-built-in',
+          difficulty: PuzzleDifficulty.beginner,
+          rating: 900,
+        ),
+      ],
+    );
+
+    final DailyPuzzleInfo info = await DailyPuzzleService().getTodaysPuzzle();
+
+    expect(info.puzzleId, 'beginner-built-in');
+    await DB().puzzleAnalyticsBox.flush();
+    final Map<dynamic, dynamic> stats =
+        DB().puzzleAnalyticsBox.get('dailyPuzzleStats')
+            as Map<dynamic, dynamic>;
+    final Map<dynamic, dynamic> assignments =
+        stats['puzzleAssignments'] as Map<dynamic, dynamic>;
+    expect(
+      assignments[DateTime.utc(2026, 7, 16).toIso8601String()],
+      'beginner-built-in',
+    );
+  });
+
+  test('keeps the second puzzle at beginner level', () {
+    final List<PuzzleInfo> candidates = const PuzzleSelectionService()
+        .candidatesForExperience(
+          <PuzzleInfo>[
+            _selectionPuzzle(
+              id: 'beginner-second',
+              difficulty: PuzzleDifficulty.beginner,
+              rating: 900,
+            ),
+            _selectionPuzzle(
+              id: 'easy-second',
+              difficulty: PuzzleDifficulty.easy,
+              rating: 1100,
+            ),
+            _selectionPuzzle(
+              id: 'expert-4908000e',
+              difficulty: PuzzleDifficulty.expert,
+              rating: 1770,
+            ),
+          ],
+          experience: 1,
+          userRating: 1500,
+        );
+
+    expect(candidates, isNotEmpty);
+    expect(
+      candidates.every(
+        (PuzzleInfo puzzle) => puzzle.difficulty == PuzzleDifficulty.beginner,
+      ),
+      isTrue,
+    );
+    expect(
+      candidates.any((PuzzleInfo puzzle) => puzzle.id == 'expert-4908000e'),
+      isFalse,
+    );
+  });
+
+  test('does not enable rating matching before ten completions', () {
+    const PuzzleSelectionService service = PuzzleSelectionService();
+    final List<PuzzleInfo> puzzles = <PuzzleInfo>[
+      _selectionPuzzle(
+        id: 'beginner',
+        difficulty: PuzzleDifficulty.beginner,
+        rating: 900,
+      ),
+      _selectionPuzzle(
+        id: 'easy',
+        difficulty: PuzzleDifficulty.easy,
+        rating: 1100,
+      ),
+      _selectionPuzzle(
+        id: 'expert',
+        difficulty: PuzzleDifficulty.expert,
+        rating: 1770,
+      ),
+    ];
+
+    expect(
+      service
+          .candidatesForExperience(puzzles, experience: 2, userRating: 1770)
+          .single
+          .difficulty,
+      PuzzleDifficulty.beginner,
+    );
+    expect(
+      service
+          .candidatesForExperience(puzzles, experience: 3, userRating: 1770)
+          .single
+          .difficulty,
+      PuzzleDifficulty.easy,
+    );
+    expect(
+      service
+          .candidatesForExperience(puzzles, experience: 9, userRating: 1770)
+          .single
+          .difficulty,
+      PuzzleDifficulty.easy,
+    );
+    expect(
+      service
+          .candidatesForExperience(puzzles, experience: 10, userRating: 1770)
+          .single
+          .difficulty,
+      PuzzleDifficulty.expert,
+    );
+  });
+
+  test('keeps todays assignment when the built-in pack changes', () async {
+    final PuzzleManager puzzleManager = PuzzleManager();
+    final PuzzleSettings originalSettings =
+        puzzleManager.settingsNotifier.value;
+    addTearDown(() {
+      puzzleManager.settingsNotifier.value = originalSettings;
+    });
+    final PuzzleInfo first = _selectionPuzzle(
+      id: 'beginner-a',
+      difficulty: PuzzleDifficulty.beginner,
+      rating: 800,
+    );
+    final PuzzleInfo second = _selectionPuzzle(
+      id: 'beginner-b',
+      difficulty: PuzzleDifficulty.beginner,
+      rating: 850,
+    );
+    puzzleManager.settingsNotifier.value = PuzzleSettings(
+      allPuzzles: <PuzzleInfo>[first, second],
+    );
+
+    final DailyPuzzleInfo initial = await DailyPuzzleService()
+        .getTodaysPuzzle();
+    await DB().puzzleAnalyticsBox.flush();
+
+    puzzleManager.settingsNotifier.value = PuzzleSettings(
+      allPuzzles: <PuzzleInfo>[
+        _selectionPuzzle(
+          id: 'new-pack-puzzle',
+          difficulty: PuzzleDifficulty.beginner,
+          rating: 750,
+        ),
+        second,
+        first,
+      ],
+      userRating: 2400,
+    );
+
+    final DailyPuzzleInfo afterPackChange = await DailyPuzzleService()
+        .getTodaysPuzzle();
+
+    expect(afterPackChange.puzzleId, initial.puzzleId);
+  });
+
+  test('matches experienced users to their rating range', () async {
+    final PuzzleManager puzzleManager = PuzzleManager();
+    final PuzzleSettings originalSettings =
+        puzzleManager.settingsNotifier.value;
+    addTearDown(() {
+      puzzleManager.settingsNotifier.value = originalSettings;
+    });
+    puzzleManager.settingsNotifier.value = PuzzleSettings(
+      allPuzzles: <PuzzleInfo>[
+        _selectionPuzzle(
+          id: 'beginner-900',
+          difficulty: PuzzleDifficulty.beginner,
+          rating: 900,
+        ),
+        _selectionPuzzle(
+          id: 'medium-1500',
+          difficulty: PuzzleDifficulty.medium,
+          rating: 1500,
+        ),
+        _selectionPuzzle(
+          id: 'expert-2000',
+          difficulty: PuzzleDifficulty.expert,
+          rating: 2000,
+        ),
+        _selectionPuzzle(
+          id: 'expert-2100',
+          difficulty: PuzzleDifficulty.expert,
+          rating: 2100,
+        ),
+      ],
+      userRating: 2050,
+    );
+    final DateTime yesterday = DateTime.utc(2026, 7, 15);
+    await DB().puzzleAnalyticsBox.put('dailyPuzzleStats', <String, dynamic>{
+      'completedDates': List<String>.generate(
+        10,
+        (int index) =>
+            yesterday.subtract(Duration(days: index)).toIso8601String(),
+      ),
+      'longestStreak': 0,
+    });
+
+    final DailyPuzzleInfo info = await DailyPuzzleService().getTodaysPuzzle();
+    final PuzzleInfo selected = puzzleManager.getPuzzleById(info.puzzleId)!;
+
+    expect(selected.difficulty, PuzzleDifficulty.expert);
+    expect((selected.rating! - 2050).abs(), lessThanOrEqualTo(200));
+  });
+
   testWidgets('shows today and cumulative progress without streak pressure', (
     WidgetTester tester,
   ) async {
@@ -107,6 +336,9 @@ void main() {
     );
 
     Future<void> pumpPage({Locale locale = const Locale('en')}) async {
+      await tester.runAsync<DailyPuzzleInfo>(
+        () => DailyPuzzleService().getTodaysPuzzle(),
+      );
       await tester.pumpWidget(
         MaterialApp(
           locale: locale,
@@ -123,6 +355,11 @@ void main() {
 
     expect(find.text('Daily puzzle'), findsOneWidget);
     expect(find.byKey(const Key('daily_puzzle_progress_section')), findsOne);
+    expect(find.byKey(const Key('daily_puzzle_reference')), findsOne);
+    expect(
+      find.textContaining('Puzzle #${_dailyPuzzle().referenceCode}'),
+      findsOne,
+    );
     expect(find.byKey(const Key('daily_puzzle_today_tile')), findsOne);
     expect(find.byKey(const Key('daily_puzzle_total_tile')), findsOne);
     expect(find.byKey(const Key('daily_puzzle_streak_button')), findsNothing);
@@ -160,5 +397,29 @@ PuzzleInfo _dailyPuzzle() {
         moves: <PuzzleMove>[PuzzleMove(notation: 'a1', side: PieceColor.white)],
       ),
     ],
+  );
+}
+
+PuzzleInfo _selectionPuzzle({
+  required String id,
+  required PuzzleDifficulty difficulty,
+  required int rating,
+  bool isCustom = false,
+}) {
+  return PuzzleInfo(
+    id: id,
+    title: id,
+    description: 'Daily puzzle selection test.',
+    category: PuzzleCategory.formMill,
+    difficulty: difficulty,
+    initialPosition:
+        '********/********/******** w p p 0 9 0 9 0 0 -1 -1 -1 -1 0 0 1 ids:nodes',
+    solutions: const <PuzzleSolution>[
+      PuzzleSolution(
+        moves: <PuzzleMove>[PuzzleMove(notation: 'a1', side: PieceColor.white)],
+      ),
+    ],
+    isCustom: isCustom,
+    rating: rating,
   );
 }

@@ -6,15 +6,17 @@
 // Main puzzle solving page
 
 import 'dart:convert';
-import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
+import '../../game_page/services/import_export/pgn.dart';
 import '../../game_page/services/mill.dart';
 import '../../game_page/services/transform/transform.dart';
+import '../../game_page/widgets/board_transform_picker_dialog.dart';
 import '../../game_platform/game_session.dart';
+import '../../games/mill/mill_board_transform_actions.dart';
 import '../../games/mill/native_mill_game_session.dart';
 import '../../generated/intl/l10n.dart';
 import '../../rule_settings/models/rule_settings.dart';
@@ -28,10 +30,17 @@ import '../services/puzzle_hint_service.dart';
 import '../services/puzzle_manager.dart';
 import '../services/puzzle_rating_service.dart';
 import '../services/puzzle_rule_engine.dart';
+import '../services/puzzle_selection_service.dart';
 import '../services/puzzle_transform_service.dart';
 import '../services/puzzle_validator.dart';
 import '../widgets/puzzle_game_board.dart';
 import '../widgets/puzzle_solution_view.dart';
+
+enum _PuzzleSolutionAction { stay, nextPuzzle, backToList }
+
+enum _PuzzleCompletionAction { tryAgain, nextPuzzle, backToList }
+
+enum _PuzzleAppBarAction { continueOrSkip }
 
 /// Page for solving a specific puzzle
 class PuzzlePage extends StatefulWidget {
@@ -85,11 +94,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
   bool _slowerWinFeedbackShown = false;
   DateTime _attemptStartedAt = DateTime.now();
 
-  // Board symmetry transformation state.
-  // A random transformation is applied when the puzzle loads to prevent
-  // memorization and increase replayability.  The player can also cycle
-  // through transformations manually via the AppBar button.
-  TransformationType _currentTransform = TransformationType.identity;
+  // A random board symmetry is applied when the puzzle loads to prevent
+  // memorization. Manual transformations are relative to the current board
+  // and preserve the active attempt.
+  late PuzzleInfo _activePuzzle;
   late PuzzleInfo _transformedPuzzle;
 
   // Store original game state to restore on exit
@@ -105,13 +113,15 @@ class _PuzzlePageState extends State<PuzzlePage> {
   void initState() {
     super.initState();
 
+    _activePuzzle = widget.puzzle;
+
     // Apply a random board symmetry transformation to prevent memorization.
-    _currentTransform =
+    final TransformationType initialTransform =
         PuzzlePage.debugTransformationOverride ??
         randomTransformationType(excludeIdentity: false);
     _transformedPuzzle = PuzzleTransformService.transformPuzzle(
-      widget.puzzle,
-      _currentTransform,
+      _activePuzzle,
+      initialTransform,
     );
 
     _validator = PuzzleValidator(puzzle: _transformedPuzzle);
@@ -134,13 +144,14 @@ class _PuzzlePageState extends State<PuzzlePage> {
   void didUpdateWidget(covariant PuzzlePage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.puzzle.id != widget.puzzle.id) {
+      _activePuzzle = widget.puzzle;
       // New puzzle — pick a fresh random transformation.
-      _currentTransform =
+      final TransformationType initialTransform =
           PuzzlePage.debugTransformationOverride ??
           randomTransformationType(excludeIdentity: false);
       _transformedPuzzle = PuzzleTransformService.transformPuzzle(
-        widget.puzzle,
-        _currentTransform,
+        _activePuzzle,
+        initialTransform,
       );
       _validator = PuzzleValidator(puzzle: _transformedPuzzle);
       _hintService = PuzzleHintService(puzzle: _transformedPuzzle);
@@ -203,7 +214,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     final RuleVariant currentVariant = RuleVariant.fromRuleSettings(
       DB().ruleSettings,
     );
-    final String puzzleVariantId = widget.puzzle.ruleVariantId;
+    final String puzzleVariantId = _activePuzzle.ruleVariantId;
 
     // --- 1) Variant IDs already agree — structural rules are correct ------
 
@@ -213,10 +224,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     // --- 2) Try the embedded rule-settings snapshot -----------------------
 
-    if (widget.puzzle.ruleSettingsJson != null) {
+    if (_activePuzzle.ruleSettingsJson != null) {
       try {
         final Map<String, dynamic> json =
-            jsonDecode(widget.puzzle.ruleSettingsJson!) as Map<String, dynamic>;
+            jsonDecode(_activePuzzle.ruleSettingsJson!) as Map<String, dynamic>;
         final RuleSettings snapshotSettings = RuleSettings.fromJson(json);
 
         DB().ruleSettings = snapshotSettings;
@@ -227,13 +238,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
         logger.i(
           '[PuzzlePage] Applied rule-settings snapshot '
-          'for puzzle "${widget.puzzle.id}"',
+          'for puzzle "${_activePuzzle.id}"',
         );
         return;
       } catch (e) {
         logger.e(
           '[PuzzlePage] Failed to deserialize ruleSettingsJson '
-          'for puzzle "${widget.puzzle.id}": $e',
+          'for puzzle "${_activePuzzle.id}": $e',
         );
         // Fall through to canonical lookup.
       }
@@ -253,7 +264,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
       logger.i(
         '[PuzzlePage] Auto-switched rules to "$puzzleVariantId" '
-        'for puzzle "${widget.puzzle.id}"',
+        'for puzzle "${_activePuzzle.id}"',
       );
       return;
     }
@@ -366,50 +377,49 @@ class _PuzzlePageState extends State<PuzzlePage> {
     }
   }
 
-  /// Applies a new board symmetry transformation to the puzzle.
+  /// Applies a symmetry relative to the current puzzle position.
   ///
-  /// Recomputes the transformed puzzle from the original [widget.puzzle],
-  /// recreates the validator and hint service with the new data, and
-  /// re-initializes the game board.
-  void _applyTransformation(TransformationType type) {
-    _currentTransform = type;
-    _transformedPuzzle = PuzzleTransformService.transformPuzzle(
-      widget.puzzle,
-      _currentTransform,
-    );
-    _validator = PuzzleValidator(puzzle: _transformedPuzzle);
-    _hintService = PuzzleHintService(puzzle: _transformedPuzzle);
-
-    _initializePuzzle();
-    setState(() {
-      _hintsUsed = false;
-      _solutionViewed = false;
-    });
-    _isSolved = false;
-    _isAutoPlayingOpponent = false;
-    GameController().headerIconsNotifier.showIcons();
-  }
-
-  /// Cycles to the next transformation type and re-initializes the puzzle.
-  void _cycleTransformation() {
-    if (_isPlayingSolution) {
+  /// This is a presentation change, so the active attempt is preserved. The
+  /// live session, recorder/move list, accepted solutions, validator history,
+  /// and future hints must all move into the same coordinate frame.
+  void _transformPuzzleBoard(TransformationType type) {
+    final GameController controller = GameController();
+    if (_isPlayingSolution ||
+        _isAutoPlayingOpponent ||
+        controller.isPuzzleAutoMoveInProgress) {
       return;
     }
 
-    const List<TransformationType> allTypes = TransformationType.values;
-    final int currentIndex = allTypes.indexOf(_currentTransform);
-    final int nextIndex = (currentIndex + 1) % allTypes.length;
-
-    _applyTransformation(allTypes[nextIndex]);
-
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(S.of(context).transformed),
-          duration: const Duration(seconds: 1),
-        ),
-      );
+    final PuzzleInfo nextPuzzle = PuzzleTransformService.transformPuzzle(
+      _transformedPuzzle,
+      type,
+    );
+    final bool transformed = controller.transformActiveLocalGame(type);
+    if (!transformed) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(S.of(context).cannotTransform)));
+      }
+      return;
     }
+
+    _validator.transformCoordinates(type, transformedPuzzle: nextPuzzle);
+    _hintService.updatePuzzle(nextPuzzle);
+    _lastRecordedMoveIndex = _activePuzzleMoves(controller).length - 1;
+
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _transformedPuzzle = nextPuzzle;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(S.of(context).transformed),
+        duration: const Duration(seconds: 1),
+      ),
+    );
   }
 
   /// Show error dialog when FEN validation fails
@@ -458,7 +468,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     // Get friendly rule names instead of IDs
     final RuleVariant puzzleVariant = _getVariantById(
-      widget.puzzle.ruleVariantId,
+      _activePuzzle.ruleVariantId,
     );
     final String puzzleRuleName = puzzleVariant.name;
     final String currentRuleName = currentVariant.name;
@@ -531,6 +541,11 @@ class _PuzzlePageState extends State<PuzzlePage> {
   Widget build(BuildContext context) {
     final S s = S.of(context);
     final ThemeData settingsTheme = Theme.of(context);
+    final GameController controller = GameController();
+    final bool canContinueOrSkipPuzzle =
+        !_isPlayingSolution &&
+        !_isAutoPlayingOpponent &&
+        !controller.isPuzzleAutoMoveInProgress;
     _settingsThemeForDialogs = settingsTheme;
 
     return PopScope(
@@ -553,8 +568,9 @@ class _PuzzlePageState extends State<PuzzlePage> {
                     child: Text(s.cancel),
                   ),
                   TextButton(
+                    key: const Key('puzzle_exit_confirm'),
                     onPressed: () => Navigator.of(dialogContext).pop(true),
-                    child: Text(s.exit),
+                    child: Text(s.exitPuzzleAction),
                   ),
                 ],
               ),
@@ -573,7 +589,66 @@ class _PuzzlePageState extends State<PuzzlePage> {
       child: Scaffold(
         key: const Key('puzzle_page_scaffold'),
         backgroundColor: settingsTheme.colorScheme.surface,
-        appBar: AppBar(title: Text(widget.puzzle.title)),
+        appBar: AppBar(
+          title: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                _activePuzzle.titleForDisplay(
+                  showHints: DB().puzzleSettings.showHints,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                s.puzzleReference(_activePuzzle.referenceCode),
+                key: const Key('puzzle_page_reference'),
+                style: settingsTheme.textTheme.labelSmall?.copyWith(
+                  color: settingsTheme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            PopupMenuButton<_PuzzleAppBarAction>(
+              key: const Key('puzzle_page_app_bar_more'),
+              tooltip: s.menu,
+              icon: const Icon(Icons.more_vert),
+              onSelected: (_PuzzleAppBarAction action) {
+                switch (action) {
+                  case _PuzzleAppBarAction.continueOrSkip:
+                    if (_isSolved) {
+                      _loadNextPuzzle();
+                    } else {
+                      _skipPuzzle();
+                    }
+                }
+              },
+              itemBuilder: (BuildContext context) {
+                return <PopupMenuEntry<_PuzzleAppBarAction>>[
+                  PopupMenuItem<_PuzzleAppBarAction>(
+                    key: Key(
+                      _isSolved
+                          ? 'puzzle_page_app_bar_next'
+                          : 'puzzle_page_app_bar_skip',
+                    ),
+                    value: _PuzzleAppBarAction.continueOrSkip,
+                    enabled: canContinueOrSkipPuzzle,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Icon(_isSolved ? Icons.arrow_forward : Icons.skip_next),
+                        const SizedBox(width: 12),
+                        Text(_isSolved ? s.puzzleContinueNext : s.puzzleSkip),
+                      ],
+                    ),
+                  ),
+                ];
+              },
+            ),
+          ],
+        ),
         body: Column(
           children: <Widget>[
             ValueListenableBuilder<int>(
@@ -584,7 +659,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
             ),
             Expanded(
               child: PuzzleGameBoard(
-                puzzle: widget.puzzle,
+                puzzle: _activePuzzle,
                 onMoveCompleted: _onPlayerMove,
               ),
             ),
@@ -624,7 +699,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
                 ? _buildPlayingSolutionBanner(context, s)
                 : SingleChildScrollView(
                     child: Text(
-                      widget.puzzle.description,
+                      _activePuzzle.description,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: colorScheme.onSurfaceVariant,
                         height: 1.35,
@@ -633,76 +708,61 @@ class _PuzzlePageState extends State<PuzzlePage> {
                   ),
           ),
           const SizedBox(height: 8),
-          Row(
-            children: <Widget>[
-              Flexible(
-                child: _buildStatChip(
-                  context,
-                  s.moves,
-                  moveCount.toString(),
-                  Icons.swap_horiz,
-                ),
-              ),
-              const SizedBox(width: 4),
-              Flexible(
-                child: _buildStatChip(
-                  context,
-                  s.optimal,
-                  widget.puzzle.optimalMoveCount.toString(),
-                  Icons.star,
-                ),
-              ),
-              const SizedBox(width: 4),
-              Flexible(
-                child: _buildStatChip(
-                  context,
-                  s.difficulty,
-                  widget.puzzle.difficulty.getDisplayName(S.of, context),
-                  Icons.signal_cellular_alt,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
           ValueListenableBuilder<PuzzleSettings>(
             valueListenable: _puzzleManager.settingsNotifier,
             builder:
                 (BuildContext context, PuzzleSettings settings, Widget? child) {
                   final PuzzleProgress? progress = settings.getProgress(
-                    widget.puzzle.id,
+                    _activePuzzle.id,
                   );
                   final int attempts = progress?.attempts ?? 0;
 
-                  if (attempts > 0) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 4,
-                        horizontal: 8,
+                  return Row(
+                    key: const Key('puzzle_page_stats_row'),
+                    children: <Widget>[
+                      Flexible(
+                        child: _buildStatChip(
+                          context,
+                          s.moves,
+                          moveCount.toString(),
+                          Icons.swap_horiz,
+                        ),
                       ),
-                      decoration: BoxDecoration(
-                        color: colorScheme.surfaceContainerHigh,
-                        borderRadius: BorderRadius.circular(999),
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: _buildStatChip(
+                          context,
+                          s.optimal,
+                          _activePuzzle.optimalMoveCount.toString(),
+                          Icons.star,
+                        ),
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Icon(
-                            Icons.replay,
-                            size: 14,
-                            color: colorScheme.onSurfaceVariant,
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: _buildStatChip(
+                          context,
+                          s.difficulty,
+                          _activePuzzle.difficulty.getDisplayName(
+                            S.of,
+                            context,
                           ),
-                          const SizedBox(width: 4),
-                          Text(
-                            s.puzzleAttempts(attempts),
-                            style: theme.textTheme.labelSmall?.copyWith(
-                              color: colorScheme.onSurfaceVariant,
-                            ),
-                          ),
-                        ],
+                          Icons.signal_cellular_alt,
+                        ),
                       ),
-                    );
-                  }
-                  return const SizedBox.shrink();
+                      if (attempts > 0) ...<Widget>[
+                        const SizedBox(width: 4),
+                        Flexible(
+                          child: _buildStatChip(
+                            context,
+                            s.puzzleAttemptsLabel,
+                            attempts.toString(),
+                            Icons.numbers,
+                            key: const Key('puzzle_attempts_stat_chip'),
+                          ),
+                        ),
+                      ],
+                    ],
+                  );
                 },
           ),
         ],
@@ -753,12 +813,14 @@ class _PuzzlePageState extends State<PuzzlePage> {
     BuildContext context,
     String label,
     String value,
-    IconData icon,
-  ) {
+    IconData icon, {
+    Key? key,
+  }) {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
 
     return Container(
+      key: key,
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHigh,
@@ -799,7 +861,12 @@ class _PuzzlePageState extends State<PuzzlePage> {
   }
 
   Widget _buildPuzzleBottomBar(BuildContext context, S s, int moveCount) {
-    final bool canUseActions = !_isPlayingSolution && !_isSolved;
+    final GameController controller = GameController();
+    final bool canUseActions =
+        !_isPlayingSolution &&
+        !_isSolved &&
+        !_isAutoPlayingOpponent &&
+        !controller.isPuzzleAutoMoveInProgress;
     final bool canUndo = moveCount > 0 && canUseActions;
     final bool canShowHint =
         canUseActions && DB().puzzleSettings.showHints && _hintService.hasHints;
@@ -839,6 +906,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
   void _openPuzzleMenu(BuildContext context) {
     final S s = S.of(context);
+    final String boardLayout = _activePuzzleBoardLayoutForTransformPreview();
     showLichessActionSheet<void>(
       context: context,
       sheetKey: const Key('puzzle_page_action_sheet'),
@@ -847,8 +915,38 @@ class _PuzzlePageState extends State<PuzzlePage> {
         LichessActionSheetAction(
           key: const Key('puzzle_page_action_rotate'),
           leading: const Icon(Icons.rotate_right),
+          trailing: const Icon(Icons.chevron_right),
+          dismissOnPress: false,
           makeLabel: (BuildContext context) => Text(s.rotate),
-          onPressed: _cycleTransformation,
+          onPressed: () {},
+          onPressedWithContext: (BuildContext menuActionContext) {
+            final NavigatorState navigator = Navigator.of(menuActionContext);
+            navigator.pushReplacement<void, void>(
+              DialogRoute<void>(
+                context: navigator.context,
+                builder: (BuildContext dialogContext) {
+                  final ThemeData theme =
+                      _settingsThemeForDialogs ?? Theme.of(dialogContext);
+                  final ColorScheme colors = theme.colorScheme;
+                  return Theme(
+                    data: theme,
+                    child: BoardTransformPickerDialog(
+                      sheetKey: const Key('puzzle_page_board_transform_sheet'),
+                      keyPrefix: 'puzzle_page_board_transform',
+                      title: s.rotate,
+                      currentBoardLayout: boardLayout,
+                      backgroundColor:
+                          theme.dialogTheme.backgroundColor ??
+                          colors.surfaceContainer,
+                      foregroundColor: colors.onSurface,
+                      onSelected: (MillBoardTransformAction action) =>
+                          _transformPuzzleBoard(action.type),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
         ),
         LichessActionSheetAction(
           key: const Key('puzzle_page_action_show_solution'),
@@ -866,6 +964,17 @@ class _PuzzlePageState extends State<PuzzlePage> {
         ),
       ],
     );
+  }
+
+  String _activePuzzleBoardLayoutForTransformPreview() {
+    final String fen =
+        GameController().activeNativeMillSession?.getFen() ??
+        _transformedPuzzle.initialPosition;
+    assert(
+      fen.length >= 26,
+      'Puzzle board transform preview requires a complete FEN.',
+    );
+    return fen.substring(0, 26);
   }
 
   void _onPlayerMove() {
@@ -1014,7 +1123,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
       return false;
     }
     final PieceColor? winner = controller.activeSessionWinner;
-    switch (widget.puzzle.category) {
+    switch (_activePuzzle.category) {
       case PuzzleCategory.winGame:
       case PuzzleCategory.endgame:
         return winner == humanColor;
@@ -1031,7 +1140,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
   PuzzleSolution? _findMatchingPuzzleSolutionFromRecorder() {
     final List<String> moves = _activePuzzleMoveNotations(GameController());
-    for (final PuzzleSolution solution in _transformedPuzzle.solutions) {
+    for (final PuzzleSolution solution in _acceptedPuzzleSolutions()) {
       final List<String> expected = solution.moves
           .map((PuzzleMove m) => PuzzleAutoPlayer.normalizeMove(m.notation))
           .toList(growable: false);
@@ -1052,13 +1161,27 @@ class _PuzzlePageState extends State<PuzzlePage> {
     return null;
   }
 
+  /// Solution lines accepted while the player is solving the puzzle.
+  ///
+  /// Generated puzzle sets can retain longer winning alternatives for review.
+  /// Once a puzzle explicitly identifies one or more optimal lines, those
+  /// alternatives remain visible in the solution dialog but must not make a
+  /// non-optimal move appear correct during play.
+  List<PuzzleSolution> _acceptedPuzzleSolutions() {
+    final List<PuzzleSolution> optimalSolutions = _transformedPuzzle.solutions
+        .where((PuzzleSolution solution) => solution.isOptimal)
+        .toList(growable: false);
+    return optimalSolutions.isNotEmpty
+        ? optimalSolutions
+        : _transformedPuzzle.solutions;
+  }
+
   /// Show dialog when user makes a wrong move.
   // ignore: unused_element
   void _showWrongMoveDialog() {
     final S s = S.of(context);
     showDialog<void>(
       context: context,
-      barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return Theme(
           data: _settingsThemeForDialogs ?? Theme.of(dialogContext),
@@ -1124,8 +1247,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
     // viewing the solution.
     final PuzzleSettings settings = _puzzleManager.settingsNotifier.value;
     final PuzzleProgress currentProgress =
-        settings.getProgress(widget.puzzle.id) ??
-        PuzzleProgress(puzzleId: widget.puzzle.id);
+        settings.getProgress(_activePuzzle.id) ??
+        PuzzleProgress(puzzleId: _activePuzzle.id);
     _puzzleManager.updateProgress(
       currentProgress.copyWith(solutionViewed: true),
     );
@@ -1215,7 +1338,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     // Convert transformed solutions to legacy format for auto-player.
     // The transformed notations match the current board orientation.
-    final List<List<String>> legacySolutions = _transformedPuzzle.solutions
+    final List<List<String>> legacySolutions = _acceptedPuzzleSolutions()
         .map(
           (PuzzleSolution s) =>
               s.moves.map((PuzzleMove m) => m.notation).toList(),
@@ -1269,7 +1392,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
         );
       } finally {
         controller.isPuzzleAutoMoveInProgress = false;
-        _isAutoPlayingOpponent = false;
+        if (mounted) {
+          setState(() {
+            _isAutoPlayingOpponent = false;
+          });
+        } else {
+          _isAutoPlayingOpponent = false;
+        }
         controller.headerIconsNotifier.showIcons();
         controller.boardSemanticsNotifier.updateSemantics();
         _checkPuzzleCompletionAfterProgress();
@@ -1323,7 +1452,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     // The local _solutionViewed flag can be reset by _resetPuzzle(), so we
     // must also consult the persisted progress to detect prior solution views.
     final PuzzleProgress? priorProgress = _puzzleManager.getProgress(
-      widget.puzzle.id,
+      _activePuzzle.id,
     );
     final bool wasAlreadyCompleted = priorProgress?.completed ?? false;
     final bool effectiveSolutionViewed =
@@ -1336,10 +1465,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
     // Use _hintsUsed (current session only) instead of merging with
     // priorProgress.hintsUsed so that a clean retry can earn full stars.
     _puzzleManager.completePuzzle(
-      puzzleId: widget.puzzle.id,
+      puzzleId: _activePuzzle.id,
       moveCount: _moveCountNotifier.value,
-      difficulty: widget.puzzle.difficulty,
-      optimalMoveCount: widget.puzzle.optimalMoveCount,
+      difficulty: _activePuzzle.difficulty,
+      optimalMoveCount: _activePuzzle.optimalMoveCount,
       hintsUsed: _hintsUsed,
       solutionViewed: effectiveSolutionViewed,
     );
@@ -1348,7 +1477,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     final int ratingChange = newRating - oldRating;
     _ratingService.saveAttemptResult(
       PuzzleAttemptResult(
-        puzzleId: widget.puzzle.id,
+        puzzleId: _activePuzzle.id,
         success: true,
         timeSpent: timeSpent,
         hintsUsed: hintsUsed,
@@ -1361,12 +1490,16 @@ class _PuzzlePageState extends State<PuzzlePage> {
     );
 
     // Notify parent (e.g. PuzzleRush / PuzzleStreak) that the puzzle was solved.
-    widget.onSolved?.call();
+    final bool isCallbackPuzzle =
+        widget.onSolved != null && _activePuzzle.id == widget.puzzle.id;
+    if (isCallbackPuzzle) {
+      widget.onSolved!.call();
+    }
 
     // In Rush/Streak mode the parent has already advanced to the next puzzle
     // via setState, so showing a completion dialog here would target a stale
     // widget tree and cause timing conflicts.
-    if (widget.onSolved != null && !widget.showSolvedDialogAfterCallback) {
+    if (isCallbackPuzzle && !widget.showSolvedDialogAfterCallback) {
       return;
     }
 
@@ -1375,26 +1508,44 @@ class _PuzzlePageState extends State<PuzzlePage> {
         isNewBestMoveCount: isNewBestMoveCount && previousBestMoveCount != null,
         moveCount: movesPlayed,
       );
+    }
+
+    // Always show the completion dialog in standalone puzzle mode, including
+    // repeat solves, so the solver can continue directly to another puzzle.
+    _showCompletionDialog(feedback);
+  }
+
+  Future<void> _showCompletionDialog(ValidationFeedback feedback) async {
+    final _PuzzleCompletionAction? action =
+        await showDialog<_PuzzleCompletionAction>(
+          context: context,
+          barrierDismissible: true,
+          builder: (BuildContext dialogContext) {
+            final ThemeData theme =
+                _settingsThemeForDialogs ?? Theme.of(dialogContext);
+            return Theme(
+              data: theme,
+              child: Builder(
+                builder: (BuildContext context) {
+                  return _buildCompletionDialog(context, feedback);
+                },
+              ),
+            );
+          },
+        );
+
+    if (action == null || !mounted) {
       return;
     }
 
-    // Show completion dialog (standalone puzzle mode only)
-    showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext dialogContext) {
-        final ThemeData theme =
-            _settingsThemeForDialogs ?? Theme.of(dialogContext);
-        return Theme(
-          data: theme,
-          child: Builder(
-            builder: (BuildContext context) {
-              return _buildCompletionDialog(context, feedback);
-            },
-          ),
-        );
-      },
-    );
+    switch (action) {
+      case _PuzzleCompletionAction.tryAgain:
+        _resetPuzzle();
+      case _PuzzleCompletionAction.nextPuzzle:
+        _loadNextPuzzle();
+      case _PuzzleCompletionAction.backToList:
+        Navigator.of(context).pop();
+    }
   }
 
   void _showRepeatSolveFeedback({
@@ -1419,20 +1570,20 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
     // Use persisted progress to compute stars consistently with completePuzzle().
     final PuzzleProgress? priorProgress = _puzzleManager.getProgress(
-      widget.puzzle.id,
+      _activePuzzle.id,
     );
     final bool effectiveSolutionViewed =
         _solutionViewed || (priorProgress?.solutionViewed ?? false);
 
     final int stars = PuzzleProgress.calculateStars(
       moveCount: _moveCountNotifier.value,
-      optimalMoveCount: widget.puzzle.optimalMoveCount,
-      difficulty: widget.puzzle.difficulty,
+      optimalMoveCount: _activePuzzle.optimalMoveCount,
+      difficulty: _activePuzzle.difficulty,
       hintsUsed: _hintsUsed,
       solutionViewed: effectiveSolutionViewed,
     );
 
-    final String? completionMessage = widget.puzzle
+    final String? completionMessage = _activePuzzle
         .getLocalizedCompletionMessage(context);
 
     return AlertDialog(
@@ -1474,7 +1625,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
               child: Column(
                 children: <Widget>[
                   Text('${s.moves}: ${_moveCountNotifier.value}'),
-                  Text('${s.optimal}: ${widget.puzzle.optimalMoveCount}'),
+                  Text('${s.optimal}: ${_activePuzzle.optimalMoveCount}'),
                   if (_hintsUsed) Text(s.hintsUsed),
                   if (_solutionViewed)
                     Text(
@@ -1522,24 +1673,21 @@ class _PuzzlePageState extends State<PuzzlePage> {
       ),
       actions: <Widget>[
         TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            _resetPuzzle();
-          },
+          key: const Key('puzzle_completion_try_again'),
+          onPressed: () =>
+              Navigator.of(context).pop(_PuzzleCompletionAction.tryAgain),
           child: Text(s.tryAgain),
         ),
         TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            _loadNextPuzzle();
-          },
-          child: Text(s.next),
+          key: const Key('puzzle_completion_next_puzzle'),
+          onPressed: () =>
+              Navigator.of(context).pop(_PuzzleCompletionAction.nextPuzzle),
+          child: Text(s.puzzleNextPuzzle),
         ),
         TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).pop();
-          },
+          key: const Key('puzzle_completion_back_to_list'),
+          onPressed: () =>
+              Navigator.of(context).pop(_PuzzleCompletionAction.backToList),
           child: Text(s.backToList),
         ),
       ],
@@ -1547,14 +1695,15 @@ class _PuzzlePageState extends State<PuzzlePage> {
   }
 
   void _loadNextPuzzle() {
-    // Pick a random unsolved puzzle, preferring the same category.
+    // Keep continuous practice on the same guided difficulty curve as the
+    // daily puzzle. Previously this selected randomly from every unsolved
+    // puzzle, allowing a beginner puzzle to jump directly to expert.
     final List<PuzzleInfo> allPuzzles = _puzzleManager.getAllPuzzles();
     final PuzzleSettings settings = _puzzleManager.settingsNotifier.value;
-    final Random rng = Random();
 
     // Filter for unsolved puzzles (excluding the current one).
-    final List<PuzzleInfo> candidates = allPuzzles.where((PuzzleInfo p) {
-      if (p.id == widget.puzzle.id) {
+    List<PuzzleInfo> candidates = allPuzzles.where((PuzzleInfo p) {
+      if (p.id == _activePuzzle.id) {
         return false;
       }
       final PuzzleProgress? progress = settings.getProgress(p.id);
@@ -1570,22 +1719,62 @@ class _PuzzlePageState extends State<PuzzlePage> {
       return;
     }
 
-    // Prefer puzzles from the same category; fall back to any unsolved puzzle.
-    final List<PuzzleInfo> sameCategoryPuzzles = candidates
-        .where((PuzzleInfo p) => p.category == widget.puzzle.category)
+    // Built-in practice should not unexpectedly jump into a custom puzzle.
+    if (!_activePuzzle.isCustom) {
+      final List<PuzzleInfo> builtInCandidates = candidates
+          .where((PuzzleInfo puzzle) => !puzzle.isCustom)
+          .toList();
+      if (builtInCandidates.isNotEmpty) {
+        candidates = builtInCandidates;
+      }
+    }
+
+    final List<PuzzleInfo> guidedCandidates = const PuzzleSelectionService()
+        .candidatesForExperience(
+          candidates,
+          experience: settings.totalCompleted,
+          userRating: settings.userRating,
+        );
+
+    // Within the guided difficulty, prefer the same tactical category.
+    final List<PuzzleInfo> sameCategoryPuzzles = guidedCandidates
+        .where((PuzzleInfo p) => p.category == _activePuzzle.category)
         .toList();
 
     final List<PuzzleInfo> pool = sameCategoryPuzzles.isNotEmpty
         ? sameCategoryPuzzles
-        : candidates;
-    final PuzzleInfo nextPuzzle = pool[rng.nextInt(pool.length)];
+        : guidedCandidates;
+    pool.sort((PuzzleInfo a, PuzzleInfo b) {
+      final int aDistance = a.rating == null
+          ? 1 << 30
+          : (a.rating! - settings.userRating).abs();
+      final int bDistance = b.rating == null
+          ? 1 << 30
+          : (b.rating! - settings.userRating).abs();
+      final int ratingComparison = aDistance.compareTo(bDistance);
+      return ratingComparison != 0 ? ratingComparison : a.id.compareTo(b.id);
+    });
+    final PuzzleInfo nextPuzzle = pool.first;
 
-    // Replace current page with new puzzle.
-    Navigator.of(context).pushReplacement<void, void>(
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) => PuzzlePage(puzzle: nextPuzzle),
-      ),
-    );
+    // Keep the same route alive while changing puzzles. Replacing the route
+    // would dispose the old PuzzlePage after the new one initializes, causing
+    // the old page to restore human-vs-AI mode over the new puzzle session.
+    final TransformationType initialTransform =
+        PuzzlePage.debugTransformationOverride ??
+        randomTransformationType(excludeIdentity: false);
+    setState(() {
+      _activePuzzle = nextPuzzle;
+      _transformedPuzzle = PuzzleTransformService.transformPuzzle(
+        nextPuzzle,
+        initialTransform,
+      );
+      _validator = PuzzleValidator(puzzle: _transformedPuzzle);
+      _hintService = PuzzleHintService(puzzle: _transformedPuzzle);
+      _hintsUsed = false;
+      _solutionViewed = false;
+      _isPlayingSolution = false;
+    });
+    _scheduleInitializePuzzle();
   }
 
   void _showHint() {
@@ -1602,7 +1791,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
       _hintsUsed = true;
     });
 
-    _puzzleManager.recordHintUsed(widget.puzzle.id);
+    _puzzleManager.recordHintUsed(_activePuzzle.id);
 
     final S s = S.of(context);
     final String content = switch (hint.type) {
@@ -1673,9 +1862,21 @@ class _PuzzlePageState extends State<PuzzlePage> {
     int undone = 0;
 
     while (_activePuzzleMoves(controller).isNotEmpty && undone < maxSteps) {
-      final bool ok = await controller.undoNativeMove();
-      assert(ok, 'Native puzzle undo failed with a non-empty move history.');
-      if (!ok) {
+      final int moveCountBeforeUndo = _activePuzzleMoves(controller).length;
+      final PgnNode<ExtMove>? target =
+          controller.gameRecorder.activeNode?.parent;
+      assert(
+        target != null,
+        'A non-empty puzzle path must have a parent history node.',
+      );
+      if (target == null || !mounted) {
+        return;
+      }
+      await HistoryNavigator.gotoNode(context, target, pop: false);
+      final bool movedBack =
+          _activePuzzleMoves(controller).length == moveCountBeforeUndo - 1;
+      assert(movedBack, 'Puzzle history replay failed to take back one move.');
+      if (!movedBack) {
         return;
       }
       undone++;
@@ -1700,10 +1901,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
   void _resetPuzzle() {
     // Record retry attempt if puzzle was already started
     if (_moveCountNotifier.value > 0 && !_isSolved) {
-      _puzzleManager.recordAttempt(widget.puzzle.id);
+      _puzzleManager.recordAttempt(_activePuzzle.id);
       _ratingService.saveAttemptResult(
         PuzzleAttemptResult(
-          puzzleId: widget.puzzle.id,
+          puzzleId: _activePuzzle.id,
           success: false,
           timeSpent: DateTime.now().difference(_attemptStartedAt),
           hintsUsed: _hintService.hintsGiven,
@@ -1760,7 +1961,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
         .toList(growable: false);
   }
 
-  void _giveUp() {
+  Future<void> _giveUp() async {
     final S s = S.of(context);
 
     // The dialog reveals the full solution, so mark solutionViewed immediately.
@@ -1768,13 +1969,14 @@ class _PuzzlePageState extends State<PuzzlePage> {
     // seen the answer and should not earn full stars on a subsequent solve.
     _solutionViewed = true;
     final PuzzleProgress currentProgress =
-        _puzzleManager.getProgress(widget.puzzle.id) ??
-        PuzzleProgress(puzzleId: widget.puzzle.id);
+        _puzzleManager.getProgress(_activePuzzle.id) ??
+        PuzzleProgress(puzzleId: _activePuzzle.id);
     _puzzleManager.updateProgress(
       currentProgress.copyWith(solutionViewed: true),
     );
 
-    showDialog<void>(
+    final _PuzzleSolutionAction?
+    action = await showDialog<_PuzzleSolutionAction>(
       context: context,
       builder: (BuildContext dialogContext) {
         final ThemeData theme =
@@ -1785,6 +1987,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
             builder: (BuildContext context) {
               final ColorScheme colorScheme = Theme.of(context).colorScheme;
               return AlertDialog(
+                key: const Key('puzzle_solution_dialog'),
                 title: Row(
                   children: <Widget>[
                     Icon(
@@ -1827,14 +2030,26 @@ class _PuzzlePageState extends State<PuzzlePage> {
                                       ),
                                     ),
                                     const SizedBox(height: 12),
-                                    ...buildSolutionMoves(solution, context),
+                                    ...buildSolutionMoves(
+                                      solution,
+                                      context,
+                                      initialPosition:
+                                          _transformedPuzzle.initialPosition,
+                                      ruleSettings: DB().ruleSettings,
+                                      keyPrefix:
+                                          'puzzle_solution_${solutionIndex + 1}',
+                                    ),
                                   ],
                                 )
                               : ExpansionTile(
-                                  title: Row(
+                                  title: Wrap(
+                                    spacing: 8,
+                                    runSpacing: 4,
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
                                     children: <Widget>[
                                       Text(
-                                        '${s.puzzleSolutionTab(solutionIndex + 1)} ',
+                                        s.puzzleSolutionTab(solutionIndex + 1),
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -1850,7 +2065,6 @@ class _PuzzlePageState extends State<PuzzlePage> {
                                               : colorScheme.onSurfaceVariant,
                                         ),
                                       ),
-                                      const SizedBox(width: 8),
                                       Text(
                                         '(${s.puzzleSolutionActionCount(solution.moves.length)})',
                                         style: TextStyle(
@@ -1870,6 +2084,11 @@ class _PuzzlePageState extends State<PuzzlePage> {
                                         children: buildSolutionMoves(
                                           solution,
                                           context,
+                                          initialPosition: _transformedPuzzle
+                                              .initialPosition,
+                                          ruleSettings: DB().ruleSettings,
+                                          keyPrefix:
+                                              'puzzle_solution_${solutionIndex + 1}',
                                         ),
                                       ),
                                     ),
@@ -1882,29 +2101,23 @@ class _PuzzlePageState extends State<PuzzlePage> {
                 ),
                 actions: <Widget>[
                   TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
+                    key: const Key('puzzle_solution_cancel'),
+                    onPressed: () =>
+                        Navigator.of(context).pop(_PuzzleSolutionAction.stay),
                     child: Text(s.cancel),
                   ),
                   TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      _puzzleManager.recordAttempt(widget.puzzle.id);
-                      if (_moveCountNotifier.value > 0 || _hintsUsed) {
-                        _ratingService.saveAttemptResult(
-                          PuzzleAttemptResult(
-                            puzzleId: widget.puzzle.id,
-                            success: false,
-                            timeSpent: DateTime.now().difference(
-                              _attemptStartedAt,
-                            ),
-                            hintsUsed: _hintService.hintsGiven,
-                            movesPlayed: _moveCountNotifier.value,
-                            timestamp: DateTime.now(),
-                          ),
-                        );
-                      }
-                      Navigator.of(context).pop();
-                    },
+                    key: const Key('puzzle_solution_next_puzzle'),
+                    onPressed: () => Navigator.of(
+                      context,
+                    ).pop(_PuzzleSolutionAction.nextPuzzle),
+                    child: Text(s.puzzleNextPuzzle),
+                  ),
+                  TextButton(
+                    key: const Key('puzzle_solution_back_to_list'),
+                    onPressed: () => Navigator.of(
+                      context,
+                    ).pop(_PuzzleSolutionAction.backToList),
                     child: Text(s.backToList),
                   ),
                 ],
@@ -1914,5 +2127,55 @@ class _PuzzlePageState extends State<PuzzlePage> {
         );
       },
     );
+
+    if (action == null || action == _PuzzleSolutionAction.stay || !mounted) {
+      return;
+    }
+
+    _puzzleManager.recordAttempt(_activePuzzle.id);
+    if (_moveCountNotifier.value > 0 || _hintsUsed) {
+      _ratingService.saveAttemptResult(
+        PuzzleAttemptResult(
+          puzzleId: _activePuzzle.id,
+          success: false,
+          timeSpent: DateTime.now().difference(_attemptStartedAt),
+          hintsUsed: _hintService.hintsGiven,
+          movesPlayed: _moveCountNotifier.value,
+          timestamp: DateTime.now(),
+        ),
+      );
+    }
+    if (action == _PuzzleSolutionAction.nextPuzzle) {
+      if (widget.onFailed != null && _activePuzzle.id == widget.puzzle.id) {
+        widget.onFailed!.call();
+      } else {
+        _loadNextPuzzle();
+      }
+    } else {
+      Navigator.of(context).pop();
+    }
+  }
+
+  void _skipPuzzle() {
+    if (_isSolved || _isPlayingSolution || _isAutoPlayingOpponent) {
+      return;
+    }
+
+    _puzzleManager.recordAttempt(_activePuzzle.id);
+    _ratingService.saveAttemptResult(
+      PuzzleAttemptResult(
+        puzzleId: _activePuzzle.id,
+        success: false,
+        timeSpent: DateTime.now().difference(_attemptStartedAt),
+        hintsUsed: _hintService.hintsGiven,
+        movesPlayed: _moveCountNotifier.value,
+        timestamp: DateTime.now(),
+      ),
+    );
+    if (widget.onFailed != null && _activePuzzle.id == widget.puzzle.id) {
+      widget.onFailed!.call();
+    } else {
+      _loadNextPuzzle();
+    }
   }
 }

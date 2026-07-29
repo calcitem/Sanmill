@@ -1164,7 +1164,6 @@ fn try_build_puzzle<P: DatabaseProvider>(
         traits: PuzzleTraits {
             motif: cfg.required_motif,
             shortest_winning_count: breakdown.shortest_winning.len(),
-            non_shortest_count: breakdown.non_shortest_count(),
             slower_winning_count: breakdown.slower_winning.len(),
             non_winning_count: breakdown.non_winning_count,
             tempting_mill_mistake: breakdown.tempting_mill_mistake,

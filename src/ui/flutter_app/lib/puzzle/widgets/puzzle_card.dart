@@ -174,8 +174,12 @@ class PuzzleCard extends StatelessWidget {
                   child: SizedBox(
                     width: 64,
                     height: 64,
-                    child: MiniBoard(
-                      boardLayout: _extractBoardLayout(puzzle.initialPosition),
+                    child: IgnorePointer(
+                      child: MiniBoard(
+                        boardLayout: _extractBoardLayout(
+                          puzzle.initialPosition,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -187,7 +191,9 @@ class PuzzleCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      puzzle.title,
+                      puzzle.titleForDisplay(
+                        showHints: DB().puzzleSettings.showHints,
+                      ),
                       style: theme.textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -208,6 +214,15 @@ class PuzzleCard extends StatelessWidget {
                       spacing: 6,
                       runSpacing: 6,
                       children: <Widget>[
+                        Tooltip(
+                          message: puzzle.id,
+                          child: _buildBadge(
+                            context,
+                            s.puzzleReference(puzzle.referenceCode),
+                            colorScheme.onSurfaceVariant,
+                            key: Key('puzzle_reference_${puzzle.id}'),
+                          ),
+                        ),
                         _buildBadge(
                           context,
                           puzzle.difficulty.getDisplayName(S.of, context),
@@ -271,8 +286,14 @@ class PuzzleCard extends StatelessWidget {
     return parts[0];
   }
 
-  Widget _buildBadge(BuildContext context, String text, Color color) {
+  Widget _buildBadge(
+    BuildContext context,
+    String text,
+    Color color, {
+    Key? key,
+  }) {
     return Container(
+      key: key,
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.13),

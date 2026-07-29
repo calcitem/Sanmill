@@ -11,7 +11,7 @@ class PuzzleSettings {
   const PuzzleSettings({
     this.allPuzzles = const <PuzzleInfo>[],
     this.progressMap = const <String, PuzzleProgress>{},
-    this.showHints = true,
+    this.showHints = false,
     this.autoShowSolution = false,
     this.soundEnabled = true,
     this.userRating = 1500, // Default ELO-style rating
@@ -35,7 +35,7 @@ class PuzzleSettings {
             ),
           ) ??
           const <String, PuzzleProgress>{},
-      showHints: json['showHints'] as bool? ?? true,
+      showHints: json['showHints'] as bool? ?? false,
       autoShowSolution: json['autoShowSolution'] as bool? ?? false,
       soundEnabled: json['soundEnabled'] as bool? ?? true,
       userRating: json['userRating'] as int? ?? 1500,
