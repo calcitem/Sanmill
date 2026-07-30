@@ -1176,6 +1176,52 @@ void main() {
     );
 
     testWidgets(
+      'rejects a wrong mill-forming move before asking for removal',
+      (WidgetTester tester) async {
+        // Built-in puzzle #7302EEAD: e4-e3 is the only shortest move.
+        // d2-b2 instead forms a mill, but that primary action is already
+        // outside every accepted solution and must be rejected immediately.
+        const String startFen =
+            'O*O*@@@@/****O*OO/******** w m p 5 0 4 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes';
+        final PuzzleRuleEngine? probe = PuzzleRuleEngine.tryLoad(startFen);
+        assert(probe != null, 'Failed to load puzzle #7302EEAD.');
+        expect(probe!.applyMoves(<String>['d2-b2']), 1);
+        expect(probe.view.action, Act.remove);
+        probe.dispose();
+
+        final PuzzleInfo puzzle = buildPuzzle(
+          id: 'malom_movement_white_1_7302eead',
+          title: 'White · Win in 1: block before attacking',
+          initialPosition: startFen,
+          solutions: const <List<String>>[
+            <String>['e4-e3'],
+          ],
+          markFirstSolutionOptimal: true,
+        );
+        await pumpPuzzlePage(tester, puzzle);
+
+        final GameController controller = GameController();
+        final PuzzleInfo transformed = loadedTransformedPuzzle(puzzle);
+        await applyHumanMoveViaNativeSession('d2-b2');
+        await drainUi(tester);
+
+        expect(
+          find.text("That move isn't part of the solution. Try again."),
+          findsOneWidget,
+        );
+        expect(controller.gameRecorder.currentPath, isEmpty);
+        expect(controller.activeBoardView.action, isNot(Act.remove));
+        expect(
+          controller.activeNativeMillSession?.getFen(),
+          transformed.initialPosition,
+        );
+        expect(tester.takeException(), isNull);
+        await teardownPuzzlePage(tester);
+      },
+      skip: nativeLibrarySkipReason() != null,
+    );
+
+    testWidgets(
       'rejects a non-optimal removal when an optimal line is explicit',
       (WidgetTester tester) async {
         const String startFen =

@@ -1349,14 +1349,6 @@ class _PuzzlePageState extends State<PuzzlePage> {
       return;
     }
 
-    // Only auto-play when it's the opponent's turn.
-    if (_nativePuzzleSideToAct(nativeSession) == humanColor) {
-      return;
-    }
-
-    _isAutoPlayingOpponent = true;
-    controller.isPuzzleAutoMoveInProgress = true;
-
     // Convert transformed solutions to legacy format for auto-player.
     // The transformed notations match the current board orientation.
     final List<List<String>> legacySolutions = _acceptedPuzzleSolutions()
@@ -1365,6 +1357,25 @@ class _PuzzlePageState extends State<PuzzlePage> {
               s.moves.map((PuzzleMove m) => m.notation).toList(),
         )
         .toList();
+    final bool matchesAcceptedPrefix =
+        PuzzleAutoPlayer.pickSolutionForPrefix(
+          solutions: legacySolutions,
+          movesSoFar: _activePuzzleMoveNotations(controller),
+        ) !=
+        null;
+    final bool isOpponentTurn =
+        _nativePuzzleSideToAct(nativeSession) != humanColor;
+
+    // A mill-forming action keeps the same player in control until the
+    // compulsory removal is made. Validate the solution prefix before the
+    // side-to-act gate so a wrong mill is rejected immediately instead of
+    // misleading the solver into choosing a capture first.
+    if (matchesAcceptedPrefix && !isOpponentTurn) {
+      return;
+    }
+
+    _isAutoPlayingOpponent = true;
+    controller.isPuzzleAutoMoveInProgress = true;
 
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) {
@@ -1373,6 +1384,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
       try {
         if (controller.hasAnimationManager) {
           await controller.animationManager.waitForBoardAnimations();
+        }
+        if (!matchesAcceptedPrefix) {
+          await _showWrongMoveAndUndo(controller);
+          return;
         }
         await PuzzleAutoPlayer.autoPlayOpponentResponses(
           solutions: legacySolutions,
@@ -1393,22 +1408,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
           onWrongMove: () async {
             // No solution matches the current line. Undo the last move to prevent
             // a deadlock (human input is restricted to one side in puzzle mode).
-            if (!mounted) {
-              return;
-            }
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(S.of(context).puzzleWrongMove),
-                duration: const Duration(seconds: 2),
-              ),
-            );
-            await _undoMove(allowDuringAutoPlay: true);
-
-            // Clear auto-play flags immediately after undo so subsequent moves can
-            // trigger auto-play again. Otherwise, the finally block would only run
-            // after autoPlayOpponentResponses completes (which is too late).
-            controller.isPuzzleAutoMoveInProgress = false;
-            _isAutoPlayingOpponent = false;
+            await _showWrongMoveAndUndo(controller);
           },
         );
       } finally {
@@ -1425,6 +1425,24 @@ class _PuzzlePageState extends State<PuzzlePage> {
         _checkPuzzleCompletionAfterProgress();
       }
     });
+  }
+
+  Future<void> _showWrongMoveAndUndo(GameController controller) async {
+    if (!mounted) {
+      return;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(S.of(context).puzzleWrongMove),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+    await _undoMove(allowDuringAutoPlay: true);
+
+    // Clear auto-play flags immediately after undo so the corrected move can
+    // trigger validation without waiting for the surrounding callback.
+    controller.isPuzzleAutoMoveInProgress = false;
+    _isAutoPlayingOpponent = false;
   }
 
   PieceColor _nativePuzzleSideToAct(NativeMillGameSession nativeSession) {
