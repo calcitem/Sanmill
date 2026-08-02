@@ -30,6 +30,36 @@ const List<String> horizontalNotations = <String>[
 /// The padding applied to the actual mill field
 double get boardMargin => AppTheme.boardPadding;
 
+/// Visual scale for strokes and marker details drawn over a Mill board.
+///
+/// Board geometry already follows the canvas size, but fixed-pixel details
+/// such as arrow heads and ring strokes also need to become smaller when a
+/// compact layout reduces the board. A 350 px board with the default 28 px
+/// margin is the reference used by the existing artwork and tests.
+@immutable
+class BoardVisualMetrics {
+  const BoardVisualMetrics({required this.gridUnit, required this.scale});
+
+  factory BoardVisualMetrics.fromSize(Size size) {
+    final double innerExtent = max(0, size.shortestSide - boardMargin * 2);
+    final double gridUnit = innerExtent / 6;
+    final double scale = (gridUnit / referenceGridUnit).clamp(
+      minimumScale,
+      maximumScale,
+    );
+    return BoardVisualMetrics(gridUnit: gridUnit, scale: scale);
+  }
+
+  static const double referenceGridUnit = 49;
+  static const double minimumScale = 0.45;
+  static const double maximumScale = 1.5;
+
+  final double gridUnit;
+  final double scale;
+
+  double scaled(double value) => value * scale;
+}
+
 /// Calculates the position of the given point
 Offset pointFromIndex(int index, Size size) {
   final double row = (index ~/ 7).toDouble();

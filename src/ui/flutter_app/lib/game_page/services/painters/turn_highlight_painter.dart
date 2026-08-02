@@ -136,8 +136,9 @@ class TurnHighlightPainter extends CustomPainter {
     final bool provisional = !turn.isComplete;
     final double boardInnerWidth = size.width - AppTheme.boardPadding * 2;
     final double pieceDiameter = boardInnerWidth * pieceWidth / 6 - 1;
-    final double radius = max(8, pieceDiameter * 0.57);
-    final double strokeWidth = provisional ? 2.0 : 3.0;
+    final BoardVisualMetrics visualMetrics = BoardVisualMetrics.fromSize(size);
+    final double radius = max(visualMetrics.scaled(8), pieceDiameter * 0.57);
+    final double strokeWidth = visualMetrics.scaled(provisional ? 2.0 : 3.0);
     final Paint paint = Paint()
       ..color = color.withValues(alpha: provisional ? 0.55 : 0.72)
       ..style = PaintingStyle.stroke
@@ -169,6 +170,7 @@ class TurnHighlightPainter extends CustomPainter {
             radius,
             paint,
             dashed: provisional,
+            visualScale: visualMetrics.scale,
           );
         }
         break;
@@ -186,6 +188,7 @@ class TurnHighlightPainter extends CustomPainter {
         radius * 0.66,
         paint,
         dashed: provisional,
+        visualScale: visualMetrics.scale,
       );
     }
   }
@@ -223,6 +226,7 @@ class TurnHighlightPainter extends CustomPainter {
     double inset,
     Paint paint, {
     required bool dashed,
+    required double visualScale,
   }) {
     final Offset direction = rawEnd - rawStart;
     if (direction.distance == 0) {
@@ -231,7 +235,14 @@ class TurnHighlightPainter extends CustomPainter {
     final Offset unit = direction / direction.distance;
     final Offset start = rawStart + unit * inset;
     final Offset end = rawEnd - unit * inset;
-    _drawLine(canvas, start, end, paint, dashed: dashed);
+    _drawLine(
+      canvas,
+      start,
+      end,
+      paint,
+      dashed: dashed,
+      visualScale: visualScale,
+    );
     _drawRing(canvas, rawStart, inset, paint, dashed: dashed);
     _drawRing(canvas, rawEnd, inset, paint, dashed: dashed);
   }
@@ -242,6 +253,7 @@ class TurnHighlightPainter extends CustomPainter {
     double radius,
     Paint paint, {
     required bool dashed,
+    required double visualScale,
   }) {
     _drawLine(
       canvas,
@@ -249,6 +261,7 @@ class TurnHighlightPainter extends CustomPainter {
       center + Offset(radius, radius),
       paint,
       dashed: dashed,
+      visualScale: visualScale,
     );
     _drawLine(
       canvas,
@@ -256,6 +269,7 @@ class TurnHighlightPainter extends CustomPainter {
       center + Offset(radius, -radius),
       paint,
       dashed: dashed,
+      visualScale: visualScale,
     );
   }
 
@@ -265,6 +279,7 @@ class TurnHighlightPainter extends CustomPainter {
     Offset end,
     Paint paint, {
     required bool dashed,
+    required double visualScale,
   }) {
     if (!dashed) {
       canvas.drawLine(start, end, paint);
@@ -277,8 +292,8 @@ class TurnHighlightPainter extends CustomPainter {
       return;
     }
     final Offset unit = delta / length;
-    const double dashLength = 7;
-    const double gapLength = 5;
+    final double dashLength = 7 * visualScale;
+    final double gapLength = 5 * visualScale;
     double distance = 0;
     while (distance < length) {
       final double dashEnd = min(distance + dashLength, length);

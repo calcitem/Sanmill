@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
@@ -148,6 +150,43 @@ void main() {
       );
     });
 
+    testWidgets('scales the completed-turn ring on a compact board', (
+      WidgetTester tester,
+    ) async {
+      const Size size = Size.square(203);
+      final BoardVisualMetrics visualMetrics = BoardVisualMetrics.fromSize(
+        size,
+      );
+      final MillTurnHighlight highlight = MillTurnHighlight.fromPath(<ExtMove>[
+        ExtMove('a7', side: PieceColor.white),
+      ], isRemovalPending: false)!;
+      final TurnHighlightPainter painter = TurnHighlightPainter(
+        highlight: highlight,
+        color: Colors.blue,
+        pieceWidth: 1,
+      );
+      final Offset point = pointFromSquare(notationToSquare('a7'), size);
+      final double pieceDiameter =
+          (size.width - AppTheme.boardPadding * 2) / 6 - 1;
+      final double radius = math.max(
+        visualMetrics.scaled(8),
+        pieceDiameter * 0.57,
+      );
+
+      void paint(Canvas canvas) => painter.paint(canvas, size);
+
+      expect(
+        paint,
+        paints..circle(
+          x: point.dx,
+          y: point.dy,
+          radius: radius,
+          style: PaintingStyle.stroke,
+          strokeWidth: visualMetrics.scaled(3),
+        ),
+      );
+    });
+
     testWidgets('paints a completed movement as an arrowless trail', (
       WidgetTester tester,
     ) async {
@@ -206,6 +245,50 @@ void main() {
           ..circle(style: PaintingStyle.stroke, strokeWidth: 3.0)
           ..line(strokeWidth: 3.0)
           ..line(strokeWidth: 3.0),
+      );
+    });
+
+    testWidgets('scales completed removal crosses on a compact board', (
+      WidgetTester tester,
+    ) async {
+      const Size size = Size.square(203);
+      final BoardVisualMetrics visualMetrics = BoardVisualMetrics.fromSize(
+        size,
+      );
+      final MillTurnHighlight highlight = MillTurnHighlight.fromPath(<ExtMove>[
+        ExtMove('a7', side: PieceColor.white),
+        ExtMove('xd7', side: PieceColor.white),
+      ], isRemovalPending: false)!;
+      final TurnHighlightPainter painter = TurnHighlightPainter(
+        highlight: highlight,
+        color: Colors.blue,
+        pieceWidth: 1,
+      );
+      final Offset center = pointFromSquare(notationToSquare('d7'), size);
+      final double pieceDiameter =
+          (size.width - AppTheme.boardPadding * 2) / 6 - 1;
+      final double turnRadius = math.max(
+        visualMetrics.scaled(8),
+        pieceDiameter * 0.57,
+      );
+      final double crossRadius = turnRadius * 0.66;
+
+      void paint(Canvas canvas) => painter.paint(canvas, size);
+
+      expect(
+        paint,
+        paints
+          ..circle()
+          ..line(
+            p1: center + Offset(-crossRadius, -crossRadius),
+            p2: center + Offset(crossRadius, crossRadius),
+            strokeWidth: visualMetrics.scaled(3),
+          )
+          ..line(
+            p1: center + Offset(-crossRadius, crossRadius),
+            p2: center + Offset(crossRadius, -crossRadius),
+            strokeWidth: visualMetrics.scaled(3),
+          ),
       );
     });
   });

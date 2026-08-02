@@ -145,6 +145,52 @@ void main() {
     );
   });
 
+  testWidgets('scales move Hint details on a compact board', (
+    WidgetTester tester,
+  ) async {
+    const Size size = Size.square(203);
+    final double squareSize = (size.width - boardMargin * 2) / 6;
+    final BoardVisualMetrics visualMetrics = BoardVisualMetrics.fromSize(size);
+    final Offset startPoint = pointFromSquare(notationToSquare('a1'), size);
+    final Color hintColor = BoardMarkerPalette.fromBackground(
+      DB().colorSettings.boardBackgroundColor,
+    ).bestMove.withValues(alpha: 0.88);
+
+    AnalysisMode.enable(
+      const <MoveAnalysisResult>[
+        MoveAnalysisResult(
+          move: 'a1-d1',
+          outcome: AnalysisOutcome.disadvantage,
+        ),
+      ],
+      mode: AnalysisOverlayMode.hint,
+      source: AnalysisSource.engine,
+    );
+
+    void paint(Canvas canvas) {
+      AnalysisRenderer.render(canvas, size, squareSize);
+    }
+
+    expect(
+      paint,
+      paints
+        ..line(
+          p1: startPoint,
+          color: hintColor,
+          strokeWidth: visualMetrics.scaled(5),
+          style: PaintingStyle.stroke,
+        )
+        ..circle(
+          x: startPoint.dx,
+          y: startPoint.dy,
+          radius: visualMetrics.scaled(3),
+          color: hintColor,
+          style: PaintingStyle.fill,
+        ),
+    );
+    expect(visualMetrics.scale, lessThan(1));
+  });
+
   testWidgets('renders a placement Hint as a blue bullseye', (
     WidgetTester tester,
   ) async {

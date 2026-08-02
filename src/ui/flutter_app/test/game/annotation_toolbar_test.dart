@@ -6,6 +6,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/annotation/annotation_manager.dart';
+import 'package:sanmill/game_page/services/painters/painters.dart';
 import 'package:sanmill/game_page/widgets/toolbars/game_toolbar.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/shared/database/database.dart';
@@ -31,6 +32,48 @@ void main() {
 
     manager.clear();
     expect(manager.hasAnnotations, isFalse);
+  });
+
+  testWidgets('centers the selection highlight around annotation text', (
+    WidgetTester tester,
+  ) async {
+    final AnnotationManager manager = AnnotationManager();
+    addTearDown(manager.dispose);
+    final AnnotationText annotation = AnnotationText(
+      point: const Offset(100, 80),
+      text: 'A',
+      color: Colors.red,
+    );
+    manager
+      ..addShape(annotation)
+      ..selectShape(annotation);
+    final TextPainter textPainter = TextPainter(
+      text: const TextSpan(
+        text: 'A',
+        style: TextStyle(color: Colors.red, fontSize: 16),
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout();
+    final Rect expectedHighlight = Rect.fromCenter(
+      center: annotation.point,
+      width: textPainter.width,
+      height: textPainter.height,
+    ).inflate(5);
+
+    void paint(Canvas canvas) {
+      AnnotationPainter(manager).paint(canvas, const Size.square(200));
+    }
+
+    expect(
+      paint,
+      paints
+        ..paragraph()
+        ..rect(
+          rect: expectedHighlight,
+          style: PaintingStyle.stroke,
+          strokeWidth: 3,
+        ),
+    );
   });
 
   testWidgets('cross marker follows the rendered board size and position', (
@@ -121,6 +164,232 @@ void main() {
     expect(cross.crossSize, closeTo(expectedHalfExtent(boardExtent), 0.01));
     expect((cross.point - expectedOuterPoint()).distance, lessThan(0.01));
   });
+
+  testWidgets(
+    'all board annotations follow board resize, movement, and rotation',
+    (WidgetTester tester) async {
+      final Database? previousDatabase = Database.instance;
+      Database.instance = MockDB();
+      addTearDown(() => Database.instance = previousDatabase);
+      AppTheme.boardPadding = 28;
+
+      final AnnotationManager manager = AnnotationManager();
+      addTearDown(manager.dispose);
+      final GlobalKey boardKey = GlobalKey();
+      const Key overlayKey = Key('all_shapes_annotation_overlay');
+      late StateSetter setHostState;
+      double boardExtent = 320;
+      bool isFlipped = false;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          home: Scaffold(
+            body: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                setHostState = setState;
+                return SizedBox(
+                  width: 600,
+                  height: 600,
+                  child: Stack(
+                    children: <Widget>[
+                      Center(
+                        child: RotatedBox(
+                          quarterTurns: isFlipped ? 2 : 0,
+                          child: SizedBox.square(
+                            key: boardKey,
+                            dimension: boardExtent,
+                          ),
+                        ),
+                      ),
+                      Positioned.fill(
+                        child: AnnotationOverlay(
+                          key: overlayKey,
+                          annotationManager: manager,
+                          gameBoardKey: boardKey,
+                          child: const SizedBox.expand(),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      Offset overlayPointForBoardPoint(Offset boardPoint) {
+        final RenderBox boardBox =
+            boardKey.currentContext!.findRenderObject()! as RenderBox;
+        final RenderBox overlayBox =
+            tester.renderObject(find.byKey(overlayKey)) as RenderBox;
+        final Offset boardLocal = offsetFromPointWithInnerSize(
+          boardPoint,
+          boardBox.size,
+        );
+        return overlayBox.globalToLocal(boardBox.localToGlobal(boardLocal));
+      }
+
+      Offset overlayPointForBoardFraction(Offset boardFraction) {
+        final RenderBox boardBox =
+            boardKey.currentContext!.findRenderObject()! as RenderBox;
+        final RenderBox overlayBox =
+            tester.renderObject(find.byKey(overlayKey)) as RenderBox;
+        final Offset boardLocal = Offset(
+          boardBox.size.width * boardFraction.dx,
+          boardBox.size.height * boardFraction.dy,
+        );
+        return overlayBox.globalToLocal(boardBox.localToGlobal(boardLocal));
+      }
+
+      Future<void> tapBoardPoint(AnnotationTool tool, Offset point) async {
+        manager.currentTool = tool;
+        final Offset overlayTopLeft = tester.getTopLeft(find.byKey(overlayKey));
+        await tester.tapAt(overlayTopLeft + overlayPointForBoardPoint(point));
+        await tester.pump();
+      }
+
+      await tapBoardPoint(AnnotationTool.circle, Offset.zero);
+      await tapBoardPoint(AnnotationTool.dot, const Offset(3, 0));
+      await tapBoardPoint(AnnotationTool.cross, const Offset(6, 0));
+      await tapBoardPoint(AnnotationTool.line, const Offset(0, 3));
+      await tapBoardPoint(AnnotationTool.line, const Offset(6, 3));
+      await tapBoardPoint(AnnotationTool.arrow, const Offset(0, 6));
+      await tapBoardPoint(AnnotationTool.arrow, const Offset(6, 6));
+
+      const Offset rectStartFraction = Offset(0.2, 0.25);
+      const Offset rectEndFraction = Offset(0.8, 0.75);
+      manager.currentTool = AnnotationTool.rect;
+      final Offset overlayTopLeft = tester.getTopLeft(find.byKey(overlayKey));
+      await tester.tapAt(
+        overlayTopLeft + overlayPointForBoardFraction(rectStartFraction),
+      );
+      await tester.pump();
+      await tester.tapAt(
+        overlayTopLeft + overlayPointForBoardFraction(rectEndFraction),
+      );
+      await tester.pump();
+
+      manager.currentTool = AnnotationTool.text;
+      await tester.tapAt(
+        overlayTopLeft + overlayPointForBoardPoint(const Offset(3, 6)),
+      );
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextField), 'A');
+      await tester.tap(find.text('OK'));
+      await tester.pumpAndSettle();
+
+      final AnnotationCircle circle = manager.shapes
+          .whereType<AnnotationCircle>()
+          .single;
+      final AnnotationDot dot = manager.shapes
+          .whereType<AnnotationDot>()
+          .single;
+      final AnnotationCross cross = manager.shapes
+          .whereType<AnnotationCross>()
+          .single;
+      final AnnotationLine line = manager.shapes
+          .whereType<AnnotationLine>()
+          .single;
+      final AnnotationArrow arrow = manager.shapes
+          .whereType<AnnotationArrow>()
+          .single;
+      final AnnotationRect rect = manager.shapes
+          .whereType<AnnotationRect>()
+          .single;
+      final AnnotationText annotationText = manager.shapes
+          .whereType<AnnotationText>()
+          .single;
+
+      expect(circle.boardPoint, Offset.zero);
+      expect(dot.boardPoint, const Offset(3, 0));
+      expect(line.startBoardPoint, const Offset(0, 3));
+      expect(line.endBoardPoint, const Offset(6, 3));
+      expect(arrow.startBoardPoint, const Offset(0, 6));
+      expect(arrow.endBoardPoint, const Offset(6, 6));
+      expect(rect.startBoardFraction, isNotNull);
+      expect(rect.endBoardFraction, isNotNull);
+      expect(annotationText.boardPoint, const Offset(3, 6));
+
+      final double initialCircleRadius = circle.radius;
+      final double initialDotRadius = dot.radius;
+      final double initialTextScale = annotationText.visualScale;
+
+      setHostState(() => boardExtent = 180);
+      await tester.pump();
+      await tester.pump();
+
+      expect(circle.radius, lessThan(initialCircleRadius));
+      expect(dot.radius, lessThan(initialDotRadius));
+      expect(annotationText.visualScale, lessThan(initialTextScale));
+      expect(
+        (circle.center - overlayPointForBoardPoint(Offset.zero)).distance,
+        lessThan(0.01),
+      );
+      expect(
+        (dot.point - overlayPointForBoardPoint(const Offset(3, 0))).distance,
+        lessThan(0.01),
+      );
+      expect(
+        (cross.point - overlayPointForBoardPoint(const Offset(6, 0))).distance,
+        lessThan(0.01),
+      );
+      expect(
+        (line.start - overlayPointForBoardPoint(const Offset(0, 3))).distance,
+        lessThan(0.01),
+      );
+      expect(
+        (line.end - overlayPointForBoardPoint(const Offset(6, 3))).distance,
+        lessThan(0.01),
+      );
+      expect(
+        (arrow.start - overlayPointForBoardPoint(const Offset(0, 6))).distance,
+        lessThan(0.01),
+      );
+      expect(
+        (arrow.end - overlayPointForBoardPoint(const Offset(6, 6))).distance,
+        lessThan(0.01),
+      );
+      expect(
+        (rect.start - overlayPointForBoardFraction(rect.startBoardFraction!))
+            .distance,
+        lessThan(0.01),
+      );
+      expect(
+        (rect.end - overlayPointForBoardFraction(rect.endBoardFraction!))
+            .distance,
+        lessThan(0.01),
+      );
+      expect(
+        (annotationText.point - overlayPointForBoardPoint(const Offset(3, 6)))
+            .distance,
+        lessThan(0.01),
+      );
+
+      final Offset circleBeforeFlip = circle.center;
+      setHostState(() => isFlipped = true);
+      await tester.pump();
+      await tester.pump();
+
+      expect((circle.center - circleBeforeFlip).distance, greaterThan(1));
+      expect(
+        (circle.center - overlayPointForBoardPoint(Offset.zero)).distance,
+        lessThan(0.01),
+      );
+      expect(
+        (arrow.end - overlayPointForBoardPoint(const Offset(6, 6))).distance,
+        lessThan(0.01),
+      );
+      expect(
+        (rect.start - overlayPointForBoardFraction(rect.startBoardFraction!))
+            .distance,
+        lessThan(0.01),
+      );
+    },
+  );
 
   testWidgets('localizes annotation toolbar semantics in English and Chinese', (
     WidgetTester tester,

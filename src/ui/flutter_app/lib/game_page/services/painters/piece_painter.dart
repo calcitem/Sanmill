@@ -325,6 +325,7 @@ class PiecePainter extends CustomPainter {
             DB().displaySettings.pieceWidth /
             6 -
         1;
+    final BoardVisualMetrics visualMetrics = BoardVisualMetrics.fromSize(size);
 
     // Draw pieces on board.
     for (int row = 0; row < 7; row++) {
@@ -650,7 +651,7 @@ class PiecePainter extends CustomPainter {
 
         if (DB().colorSettings.boardBackgroundColor == Colors.white) {
           paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 4.0;
+          paint.strokeWidth = visualMetrics.scaled(4);
         } else {
           paint.style = PaintingStyle.fill;
         }
@@ -751,7 +752,7 @@ class PiecePainter extends CustomPainter {
 
         if (DB().colorSettings.boardBackgroundColor == Colors.white) {
           paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 4.0;
+          paint.strokeWidth = visualMetrics.scaled(4);
         } else {
           paint.style = PaintingStyle.fill;
         }
@@ -782,7 +783,7 @@ class PiecePainter extends CustomPainter {
         GameController().gameInstance.gameMode != GameMode.setupPosition) {
       paint.color = markerPalette.contrast.withValues(alpha: 0.82);
       paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 3;
+      paint.strokeWidth = visualMetrics.scaled(3);
 
       for (final int gridIndex in capturableGridIndices) {
         canvas.drawCircle(
@@ -795,7 +796,10 @@ class PiecePainter extends CustomPainter {
 
     paint.color = markerPalette.contrast.withValues(alpha: 0.62);
     paint.style = PaintingStyle.fill;
-    final double legalMoveMarkerRadius = max(4.0, pieceWidth * 0.12);
+    final double legalMoveMarkerRadius = max(
+      visualMetrics.scaled(4),
+      pieceWidth * 0.12,
+    );
     for (final int gridIndex in legalMoveDestinationGridIndices) {
       canvas.drawCircle(
         pointFromIndex(gridIndex, size),
@@ -812,7 +816,7 @@ class PiecePainter extends CustomPainter {
         GameController().gameInstance.gameMode != GameMode.setupPosition) {
       paint.color = markerPalette.contrast;
       paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 3;
+      paint.strokeWidth = visualMetrics.scaled(3);
 
       // Follow the lifted selected piece.
       final Map<String, double> effects = _calculatePieceEffects(

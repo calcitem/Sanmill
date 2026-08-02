@@ -20,10 +20,13 @@ enum AnnotationTool { line, arrow, circle, dot, cross, rect, text, move }
 /// AnnotationShape is the base class for all drawable annotations.
 /// It holds a color field, and each subclass implements its own drawing and dragging logic.
 abstract class AnnotationShape {
-  AnnotationShape({required this.color});
+  AnnotationShape({required this.color, this.visualScale = 1});
 
   /// The color of this shape.
   Color color;
+
+  /// Scales fixed-pixel visual details on compact boards.
+  double visualScale;
 
   /// Draws the shape on the provided [canvas] within the specified [size].
   void draw(Canvas canvas, Size size);
@@ -44,7 +47,9 @@ class AnnotationCircle extends AnnotationShape {
     required this.center,
     required this.radius,
     required Color color,
+    this.boardPoint,
     this.strokeWidth = 3.0,
+    super.visualScale,
   }) : super(color: color) {
     paint = Paint()
       ..color = color
@@ -74,17 +79,20 @@ class AnnotationCircle extends AnnotationShape {
 
   Offset center;
   double radius;
+  Offset? boardPoint;
   final double strokeWidth;
   late Paint paint;
 
   @override
   void translate(Offset delta) {
     center += delta;
+    boardPoint = null;
   }
 
   @override
   void draw(Canvas canvas, Size size) {
     paint.color = color;
+    paint.strokeWidth = strokeWidth * visualScale;
     canvas.drawCircle(center, radius, paint);
   }
 
@@ -100,24 +108,31 @@ class AnnotationLine extends AnnotationShape {
     required this.start,
     required this.end,
     required super.color,
+    this.startBoardPoint,
+    this.endBoardPoint,
     this.strokeWidth = 3.0,
+    super.visualScale,
   });
 
   Offset start;
   Offset end;
+  Offset? startBoardPoint;
+  Offset? endBoardPoint;
   final double strokeWidth;
 
   @override
   void translate(Offset delta) {
     start += delta;
     end += delta;
+    startBoardPoint = null;
+    endBoardPoint = null;
   }
 
   @override
   void draw(Canvas canvas, Size size) {
     final Paint paint = Paint()
       ..color = color
-      ..strokeWidth = strokeWidth
+      ..strokeWidth = strokeWidth * visualScale
       ..style = PaintingStyle.stroke;
     canvas.drawLine(start, end, paint);
   }
@@ -152,7 +167,10 @@ class AnnotationArrow extends AnnotationShape {
     required this.start,
     required this.end,
     required Color color,
+    this.startBoardPoint,
+    this.endBoardPoint,
     this.strokeWidth = 3.0,
+    super.visualScale,
   }) : super(color: color) {
     paint = Paint()
       ..color = color
@@ -162,6 +180,8 @@ class AnnotationArrow extends AnnotationShape {
 
   Offset start;
   Offset end;
+  Offset? startBoardPoint;
+  Offset? endBoardPoint;
   final double strokeWidth;
   late Paint paint;
 
@@ -169,16 +189,19 @@ class AnnotationArrow extends AnnotationShape {
   void translate(Offset delta) {
     start += delta;
     end += delta;
+    startBoardPoint = null;
+    endBoardPoint = null;
   }
 
   @override
   void draw(Canvas canvas, Size size) {
     // Set the paint color
     paint.color = color;
+    paint.strokeWidth = strokeWidth * visualScale;
 
     // Define arrow parameters
-    const double arrowLength = 15.0; // Length from arrow tip to the base center
-    const double arrowWidth = 12.0; // Maximum width of the arrow tip
+    final double arrowLength = 15.0 * visualScale;
+    final double arrowWidth = 12.0 * visualScale;
 
     // Calculate the angle of the line's direction
     final double angle = (end - start).direction;
@@ -239,7 +262,10 @@ class AnnotationRect extends AnnotationShape {
     required this.start,
     required this.end,
     required Color color,
+    this.startBoardFraction,
+    this.endBoardFraction,
     this.strokeWidth = 3.0,
+    super.visualScale,
   }) : super(color: color) {
     paint = Paint()
       ..color = color
@@ -249,6 +275,8 @@ class AnnotationRect extends AnnotationShape {
 
   Offset start;
   Offset end;
+  Offset? startBoardFraction;
+  Offset? endBoardFraction;
   final double strokeWidth;
   late Paint paint;
 
@@ -256,11 +284,14 @@ class AnnotationRect extends AnnotationShape {
   void translate(Offset delta) {
     start += delta;
     end += delta;
+    startBoardFraction = null;
+    endBoardFraction = null;
   }
 
   @override
   void draw(Canvas canvas, Size size) {
     paint.color = color;
+    paint.strokeWidth = strokeWidth * visualScale;
     canvas.drawRect(Rect.fromPoints(start, end), paint);
   }
 
@@ -272,14 +303,22 @@ class AnnotationRect extends AnnotationShape {
 }
 
 class AnnotationDot extends AnnotationShape {
-  AnnotationDot({required this.point, required super.color, this.radius = 4.0});
+  AnnotationDot({
+    required this.point,
+    required super.color,
+    this.boardPoint,
+    this.radius = 4.0,
+    super.visualScale,
+  });
 
   Offset point;
+  Offset? boardPoint;
   double radius;
 
   @override
   void translate(Offset delta) {
     point += delta;
+    boardPoint = null;
   }
 
   @override
@@ -304,6 +343,7 @@ class AnnotationCross extends AnnotationShape {
     this.boardPoint,
     this.crossSize = 8.0,
     this.strokeWidth = 3.0,
+    super.visualScale,
   });
 
   /// The center point of the cross.
@@ -331,7 +371,7 @@ class AnnotationCross extends AnnotationShape {
     final Paint paint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth;
+      ..strokeWidth = strokeWidth * visualScale;
 
     // Calculate the endpoints for the two diagonals to form an 'X'.
     final Offset topLeft = Offset(point.dx - crossSize, point.dy - crossSize);
@@ -368,17 +408,21 @@ class AnnotationText extends AnnotationShape {
     required this.point,
     required this.text,
     required super.color,
+    this.boardPoint,
     this.fontSize = 16.0,
+    super.visualScale,
   });
 
   // The point now represents the center of the text.
   Offset point;
+  Offset? boardPoint;
   String text;
   final double fontSize;
 
   @override
   void translate(Offset delta) {
     point += delta;
+    boardPoint = null;
   }
 
   @override
@@ -386,7 +430,7 @@ class AnnotationText extends AnnotationShape {
     // Create a TextSpan with the desired style.
     final TextSpan span = TextSpan(
       text: text,
-      style: TextStyle(color: color, fontSize: fontSize),
+      style: TextStyle(color: color, fontSize: fontSize * visualScale),
     );
     // Layout the text to measure its dimensions.
     final TextPainter tp = TextPainter(
@@ -407,7 +451,7 @@ class AnnotationText extends AnnotationShape {
     // Create a TextSpan with the desired style.
     final TextSpan span = TextSpan(
       text: text,
-      style: TextStyle(color: color, fontSize: fontSize),
+      style: TextStyle(color: color, fontSize: fontSize * visualScale),
     );
     // Layout the text to measure its dimensions.
     final TextPainter tp = TextPainter(
@@ -606,30 +650,153 @@ class AnnotationManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Keeps snapped crosses aligned and proportional to the rendered board,
-  /// without recording a user-visible edit in the undo history.
-  void syncBoardRelativeCrosses({
-    required double crossSize,
+  /// Keeps board-bound annotations aligned and proportional to the rendered
+  /// board without recording a user-visible edit in the undo history.
+  void syncBoardRelativeShapes({
+    required double pieceDiameter,
+    required double visualScale,
     required Offset Function(Offset boardPoint) positionForBoardPoint,
+    required Offset Function(Offset boardFraction) positionForBoardFraction,
   }) {
-    assert(crossSize >= 0, 'Cross size cannot be negative.');
+    assert(pieceDiameter >= 0, 'Piece diameter cannot be negative.');
+    assert(visualScale > 0, 'Visual scale must be positive.');
     bool changed = false;
 
+    void updateOffset(
+      Offset current,
+      Offset next,
+      void Function(Offset value) assign,
+    ) {
+      if ((current - next).distance >= 0.01) {
+        assign(next);
+        changed = true;
+      }
+    }
+
+    void updateDouble(
+      double current,
+      double next,
+      void Function(double value) assign,
+    ) {
+      if ((current - next).abs() >= 0.01) {
+        assign(next);
+        changed = true;
+      }
+    }
+
     void updateShape(AnnotationShape? shape) {
-      if (shape is! AnnotationCross) {
+      if (shape == null) {
         return;
       }
-      final Offset? boardPoint = shape.boardPoint;
-      if (boardPoint != null) {
-        final Offset nextPoint = positionForBoardPoint(boardPoint);
-        if ((shape.point - nextPoint).distance >= 0.01) {
-          shape.point = nextPoint;
-          changed = true;
+
+      updateDouble(
+        shape.visualScale,
+        visualScale,
+        (double value) => shape.visualScale = value,
+      );
+
+      if (shape is AnnotationCircle) {
+        final Offset? boardPoint = shape.boardPoint;
+        if (boardPoint != null) {
+          updateOffset(
+            shape.center,
+            positionForBoardPoint(boardPoint),
+            (Offset value) => shape.center = value,
+          );
         }
-      }
-      if ((shape.crossSize - crossSize).abs() >= 0.01) {
-        shape.crossSize = crossSize;
-        changed = true;
+        updateDouble(
+          shape.radius,
+          pieceDiameter / 2,
+          (double value) => shape.radius = value,
+        );
+      } else if (shape is AnnotationDot) {
+        final Offset? boardPoint = shape.boardPoint;
+        if (boardPoint != null) {
+          updateOffset(
+            shape.point,
+            positionForBoardPoint(boardPoint),
+            (Offset value) => shape.point = value,
+          );
+        }
+        updateDouble(
+          shape.radius,
+          pieceDiameter / 6,
+          (double value) => shape.radius = value,
+        );
+      } else if (shape is AnnotationCross) {
+        final Offset? boardPoint = shape.boardPoint;
+        if (boardPoint != null) {
+          updateOffset(
+            shape.point,
+            positionForBoardPoint(boardPoint),
+            (Offset value) => shape.point = value,
+          );
+        }
+        updateDouble(
+          shape.crossSize,
+          pieceDiameter / 2,
+          (double value) => shape.crossSize = value,
+        );
+      } else if (shape is AnnotationText) {
+        final Offset? boardPoint = shape.boardPoint;
+        if (boardPoint != null) {
+          updateOffset(
+            shape.point,
+            positionForBoardPoint(boardPoint),
+            (Offset value) => shape.point = value,
+          );
+        }
+      } else if (shape is AnnotationLine) {
+        final Offset? startBoardPoint = shape.startBoardPoint;
+        final Offset? endBoardPoint = shape.endBoardPoint;
+        if (startBoardPoint != null) {
+          updateOffset(
+            shape.start,
+            positionForBoardPoint(startBoardPoint),
+            (Offset value) => shape.start = value,
+          );
+        }
+        if (endBoardPoint != null) {
+          updateOffset(
+            shape.end,
+            positionForBoardPoint(endBoardPoint),
+            (Offset value) => shape.end = value,
+          );
+        }
+      } else if (shape is AnnotationArrow) {
+        final Offset? startBoardPoint = shape.startBoardPoint;
+        final Offset? endBoardPoint = shape.endBoardPoint;
+        if (startBoardPoint != null) {
+          updateOffset(
+            shape.start,
+            positionForBoardPoint(startBoardPoint),
+            (Offset value) => shape.start = value,
+          );
+        }
+        if (endBoardPoint != null) {
+          updateOffset(
+            shape.end,
+            positionForBoardPoint(endBoardPoint),
+            (Offset value) => shape.end = value,
+          );
+        }
+      } else if (shape is AnnotationRect) {
+        final Offset? startBoardFraction = shape.startBoardFraction;
+        final Offset? endBoardFraction = shape.endBoardFraction;
+        if (startBoardFraction != null) {
+          updateOffset(
+            shape.start,
+            positionForBoardFraction(startBoardFraction),
+            (Offset value) => shape.start = value,
+          );
+        }
+        if (endBoardFraction != null) {
+          updateOffset(
+            shape.end,
+            positionForBoardFraction(endBoardFraction),
+            (Offset value) => shape.end = value,
+          );
+        }
       }
     }
 
@@ -693,6 +860,7 @@ class AnnotationManager extends ChangeNotifier {
 
   void moveText(AnnotationText shape, Offset oldOffset, Offset newOffset) {
     shape.point = newOffset;
+    shape.boardPoint = null;
     _redoStack.clear();
     _pushUndoCommand(
       AnnotationCommand(
@@ -773,26 +941,36 @@ class AnnotationPainter extends CustomPainter {
   }
 
   void _drawHighlight(Canvas canvas, AnnotationShape shape) {
+    final double highlightPadding = 5 * shape.visualScale;
     final Paint p = Paint()
       ..color = Colors.yellow.withValues(alpha: 0.6)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3;
+      ..strokeWidth = 3 * shape.visualScale;
     // Highlight the bounding region of the shape.
     if (shape is AnnotationCircle) {
-      canvas.drawCircle(shape.center, shape.radius + 5, p);
+      canvas.drawCircle(shape.center, shape.radius + highlightPadding, p);
     } else if (shape is AnnotationLine) {
-      final Rect r = Rect.fromPoints(shape.start, shape.end).inflate(5);
+      final Rect r = Rect.fromPoints(
+        shape.start,
+        shape.end,
+      ).inflate(highlightPadding);
       canvas.drawRect(r, p);
     } else if (shape is AnnotationArrow) {
-      final Rect r = Rect.fromPoints(shape.start, shape.end).inflate(5);
+      final Rect r = Rect.fromPoints(
+        shape.start,
+        shape.end,
+      ).inflate(highlightPadding);
       canvas.drawRect(r, p);
     } else if (shape is AnnotationRect) {
-      final Rect r = Rect.fromPoints(shape.start, shape.end).inflate(5);
+      final Rect r = Rect.fromPoints(
+        shape.start,
+        shape.end,
+      ).inflate(highlightPadding);
       canvas.drawRect(r, p);
     } else if (shape is AnnotationDot) {
-      canvas.drawCircle(shape.point, shape.radius + 5, p);
+      canvas.drawCircle(shape.point, shape.radius + highlightPadding, p);
     } else if (shape is AnnotationCross) {
-      final double extent = shape.crossSize + 5.0;
+      final double extent = shape.crossSize + highlightPadding;
       final Rect r = Rect.fromCenter(
         center: shape.point,
         width: extent * 2,
@@ -802,19 +980,21 @@ class AnnotationPainter extends CustomPainter {
     } else if (shape is AnnotationText) {
       final TextSpan span = TextSpan(
         text: shape.text,
-        style: TextStyle(color: shape.color, fontSize: shape.fontSize),
+        style: TextStyle(
+          color: shape.color,
+          fontSize: shape.fontSize * shape.visualScale,
+        ),
       );
       final TextPainter tp = TextPainter(
         text: span,
         textDirection: TextDirection.ltr,
       );
       tp.layout();
-      final Rect r = Rect.fromLTWH(
-        shape.point.dx,
-        shape.point.dy,
-        tp.width,
-        tp.height,
-      ).inflate(5);
+      final Rect r = Rect.fromCenter(
+        center: shape.point,
+        width: tp.width,
+        height: tp.height,
+      ).inflate(highlightPadding);
       canvas.drawRect(r, p);
     }
   }
@@ -848,9 +1028,21 @@ class AnnotationOverlay extends StatefulWidget {
 
 class _AnnotationOverlayState extends State<AnnotationOverlay> {
   /// Two-tap tracking for line, arrow, and rect tools.
-  Offset? _firstTapPosition;
+  ({
+    Offset overlayPoint,
+    Offset? boardPoint,
+    Offset? boardFraction,
+    AnnotationTool tool,
+  })?
+  _firstTap;
 
-  bool _boardRelativeCrossSyncScheduled = false;
+  bool _boardRelativeSyncScheduled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scheduleBoardRelativeSync();
+  }
 
   /// The piece width (diameter) used to set forced sizes on shapes.
   double get _pieceWidth {
@@ -866,13 +1058,22 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
     return max(0, boardInnerWidth * DB().displaySettings.pieceWidth / 6 - 1);
   }
 
-  void _scheduleBoardRelativeCrossSync() {
-    if (_boardRelativeCrossSyncScheduled) {
+  double get _boardVisualScale {
+    final RenderObject? renderObject = widget.gameBoardKey.currentContext
+        ?.findRenderObject();
+    if (renderObject is! RenderBox || !renderObject.hasSize) {
+      return 1;
+    }
+    return BoardVisualMetrics.fromSize(renderObject.size).scale;
+  }
+
+  void _scheduleBoardRelativeSync() {
+    if (_boardRelativeSyncScheduled) {
       return;
     }
-    _boardRelativeCrossSyncScheduled = true;
+    _boardRelativeSyncScheduled = true;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _boardRelativeCrossSyncScheduled = false;
+      _boardRelativeSyncScheduled = false;
       if (!mounted) {
         return;
       }
@@ -884,29 +1085,45 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
           !boardRenderObject.hasSize ||
           overlayRenderObject is! RenderBox ||
           !overlayRenderObject.hasSize) {
+        _scheduleBoardRelativeSync();
         return;
       }
       final double pieceWidth = _pieceWidth;
       if (pieceWidth <= 0) {
+        _scheduleBoardRelativeSync();
         return;
       }
-      widget.annotationManager.syncBoardRelativeCrosses(
-        crossSize: pieceWidth / 2,
+      final BoardVisualMetrics metrics = BoardVisualMetrics.fromSize(
+        boardRenderObject.size,
+      );
+      Offset boardLocalToOverlay(Offset boardLocal) {
+        final Offset global = boardRenderObject.localToGlobal(boardLocal);
+        return overlayRenderObject.globalToLocal(global);
+      }
+
+      widget.annotationManager.syncBoardRelativeShapes(
+        pieceDiameter: pieceWidth,
+        visualScale: metrics.scale,
         positionForBoardPoint: (Offset boardPoint) {
-          final Offset boardLocal = offsetFromPointWithInnerSize(
-            boardPoint,
-            boardRenderObject.size,
+          return boardLocalToOverlay(
+            offsetFromPointWithInnerSize(boardPoint, boardRenderObject.size),
           );
-          final Offset global = boardRenderObject.localToGlobal(boardLocal);
-          return overlayRenderObject.globalToLocal(global);
+        },
+        positionForBoardFraction: (Offset boardFraction) {
+          return boardLocalToOverlay(
+            Offset(
+              boardFraction.dx * boardRenderObject.size.width,
+              boardFraction.dy * boardRenderObject.size.height,
+            ),
+          );
         },
       );
+      _scheduleBoardRelativeSync();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    _scheduleBoardRelativeCrossSync();
     return Stack(
       children: <Widget>[
         // The board (or other content) underneath:
@@ -950,8 +1167,10 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
     // Conditionally snap the tap position based on the tool.
     Offset pos;
     Offset? snappedBoardPoint;
+    Offset? boardFraction;
     if (currentTool == AnnotationTool.rect) {
       pos = tapPos; // No snapping for the rectangle tool.
+      boardFraction = _boardFractionForOverlayPoint(tapPos);
     } else {
       final ({Offset overlayPoint, Offset? boardPoint}) snapped =
           _snapToBoardIntersection(tapPos);
@@ -962,22 +1181,28 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
     // Switch based on the current tool.
     switch (currentTool) {
       case AnnotationTool.dot:
-        _createDot(pos, currentColor);
+        _createDot(pos, currentColor, boardPoint: snappedBoardPoint);
         break;
       case AnnotationTool.cross:
         _createCross(pos, currentColor, boardPoint: snappedBoardPoint);
         break;
       case AnnotationTool.text:
-        _createTextAt(pos, currentColor);
+        _createTextAt(pos, currentColor, boardPoint: snappedBoardPoint);
         break;
       case AnnotationTool.line:
       case AnnotationTool.arrow:
       case AnnotationTool.rect:
         // Lines, arrows, and rectangles are created via two taps.
-        _handleTwoTapTool(pos, currentTool, currentColor);
+        _handleTwoTapTool(
+          pos,
+          currentTool,
+          currentColor,
+          boardPoint: snappedBoardPoint,
+          boardFraction: boardFraction,
+        );
         break;
       case AnnotationTool.circle:
-        _createCircle(pos, currentColor);
+        _createCircle(pos, currentColor, boardPoint: snappedBoardPoint);
         break;
       case AnnotationTool.move:
         // Do nothing for the 'move' tool on single taps (disabled).
@@ -1027,6 +1252,27 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
     final Offset snappedGlobal = boardBox.localToGlobal(bestBoardLocal);
     final Offset snappedOverlayLocal = overlayBox.globalToLocal(snappedGlobal);
     return (overlayPoint: snappedOverlayLocal, boardPoint: bestBoardPoint);
+  }
+
+  /// Converts a free-form overlay position into a stable fraction of the
+  /// board's local bounds so rectangles follow board movement and resizing.
+  Offset? _boardFractionForOverlayPoint(Offset overlayLocalPoint) {
+    final RenderObject? boardRenderObject = widget.gameBoardKey.currentContext
+        ?.findRenderObject();
+    final RenderObject? overlayRenderObject = context.findRenderObject();
+    if (boardRenderObject is! RenderBox ||
+        !boardRenderObject.hasSize ||
+        overlayRenderObject is! RenderBox ||
+        !overlayRenderObject.hasSize ||
+        boardRenderObject.size.isEmpty) {
+      return null;
+    }
+    final Offset global = overlayRenderObject.localToGlobal(overlayLocalPoint);
+    final Offset boardLocal = boardRenderObject.globalToLocal(global);
+    return Offset(
+      boardLocal.dx / boardRenderObject.size.width,
+      boardLocal.dy / boardRenderObject.size.height,
+    );
   }
 
   // --------------------------------------------------------------------------
@@ -1087,12 +1333,14 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
   }
 
   /// Creates a dot at the snapped position with a fixed radius.
-  void _createDot(Offset point, Color color) {
+  void _createDot(Offset point, Color color, {required Offset? boardPoint}) {
     final double radius = _pieceWidth / 6; // For a small dot.
     final AnnotationDot shape = AnnotationDot(
       point: point,
       color: color,
+      boardPoint: boardPoint,
       radius: radius,
+      visualScale: _boardVisualScale,
     );
     widget.annotationManager.addShape(shape);
   }
@@ -1105,23 +1353,30 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
       color: color,
       boardPoint: boardPoint,
       crossSize: crossSize,
+      visualScale: _boardVisualScale,
     );
     widget.annotationManager.addShape(shape);
   }
 
   /// Creates a circle at the snapped position, using the piece radius.
-  void _createCircle(Offset point, Color color) {
+  void _createCircle(Offset point, Color color, {required Offset? boardPoint}) {
     final double forcedRadius = _pieceWidth / 2;
     final AnnotationCircle shape = AnnotationCircle(
       center: point,
       radius: forcedRadius,
       color: color,
+      boardPoint: boardPoint,
+      visualScale: _boardVisualScale,
     );
     widget.annotationManager.addShape(shape);
   }
 
   /// Prompts the user for text and creates an AnnotationText at the snapped position.
-  Future<void> _createTextAt(Offset point, Color color) async {
+  Future<void> _createTextAt(
+    Offset point,
+    Color color, {
+    required Offset? boardPoint,
+  }) async {
     final TextEditingController controller = SafeTextEditingController();
 
     final String? userText = await showDialog<String>(
@@ -1154,34 +1409,76 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
         point: point,
         text: userText,
         color: color,
+        boardPoint: boardPoint,
+        visualScale: _boardVisualScale,
       );
       widget.annotationManager.addShape(shape);
     }
   }
 
   /// Handles two-tap tools (line, arrow, rect).
-  void _handleTwoTapTool(Offset tapPos, AnnotationTool tool, Color color) {
-    if (_firstTapPosition == null) {
-      _firstTapPosition = tapPos;
+  void _handleTwoTapTool(
+    Offset tapPos,
+    AnnotationTool tool,
+    Color color, {
+    required Offset? boardPoint,
+    required Offset? boardFraction,
+  }) {
+    final ({
+      Offset overlayPoint,
+      Offset? boardPoint,
+      Offset? boardFraction,
+      AnnotationTool tool,
+    })?
+    firstTap = _firstTap;
+    if (firstTap == null || firstTap.tool != tool) {
+      _firstTap = (
+        overlayPoint: tapPos,
+        boardPoint: boardPoint,
+        boardFraction: boardFraction,
+        tool: tool,
+      );
     } else {
-      final Offset start = _firstTapPosition!;
+      final Offset start = firstTap.overlayPoint;
       final Offset end = tapPos;
+      final double visualScale = _boardVisualScale;
 
       switch (tool) {
         case AnnotationTool.line:
           widget.annotationManager.addShape(
-            AnnotationLine(start: start, end: end, color: color),
+            AnnotationLine(
+              start: start,
+              end: end,
+              color: color,
+              startBoardPoint: firstTap.boardPoint,
+              endBoardPoint: boardPoint,
+              visualScale: visualScale,
+            ),
           );
           break;
         case AnnotationTool.arrow:
           widget.annotationManager.addShape(
-            AnnotationArrow(start: start, end: end, color: color),
+            AnnotationArrow(
+              start: start,
+              end: end,
+              color: color,
+              startBoardPoint: firstTap.boardPoint,
+              endBoardPoint: boardPoint,
+              visualScale: visualScale,
+            ),
           );
           break;
         case AnnotationTool.rect:
           // Create a rectangle with the unsnapped start and end points.
           widget.annotationManager.addShape(
-            AnnotationRect(start: start, end: end, color: color),
+            AnnotationRect(
+              start: start,
+              end: end,
+              color: color,
+              startBoardFraction: firstTap.boardFraction,
+              endBoardFraction: boardFraction,
+              visualScale: visualScale,
+            ),
           );
           break;
         case AnnotationTool.circle:
@@ -1192,7 +1489,7 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
           break;
       }
 
-      _firstTapPosition = null;
+      _firstTap = null;
     }
   }
 }

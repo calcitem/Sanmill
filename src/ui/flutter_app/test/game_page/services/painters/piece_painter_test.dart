@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
-import 'dart:math' show pi;
+import 'dart:math' show max, pi;
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -150,6 +150,47 @@ void main() {
       );
 
       expect(newPainter.shouldRepaint(oldPainter), isTrue);
+    });
+
+    testWidgets('scales legal move markers on a compact board', (
+      WidgetTester tester,
+    ) async {
+      const Size size = Size.square(203);
+      final int destinationIndex = _legacyGridIndex('d7');
+      final NativeMillSnapshotBoardView view = _viewWithBlackAtNode(23);
+      final PiecePainter painter = _painterFor(
+        view,
+        legalMoveDestinationGridIndices: <int>{destinationIndex},
+      );
+      final BoardVisualMetrics visualMetrics = BoardVisualMetrics.fromSize(
+        size,
+      );
+      final double pieceWidth =
+          (size.width - AppTheme.boardPadding * 2) *
+              DB().displaySettings.pieceWidth /
+              6 -
+          1;
+      final double markerRadius = max(
+        visualMetrics.scaled(4),
+        pieceWidth * 0.12,
+      );
+      final Offset destination = pointFromIndex(destinationIndex, size);
+
+      void paint(Canvas canvas) => painter.paint(canvas, size);
+
+      expect(
+        paint,
+        paints
+          ..circle()
+          ..circle()
+          ..circle(
+            x: destination.dx,
+            y: destination.dy,
+            radius: markerRadius,
+            style: PaintingStyle.fill,
+          ),
+      );
+      expect(markerRadius, lessThan(4));
     });
 
     testWidgets('paints a placement number when the setting is enabled', (

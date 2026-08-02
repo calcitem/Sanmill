@@ -114,6 +114,7 @@ class AnalysisRenderer {
       return;
     }
 
+    final BoardVisualMetrics visualMetrics = BoardVisualMetrics.fromSize(size);
     final MoveAnalysisResult result = _getSortedResults(results).first;
     final String move = _rootMoveForLine(result);
     final Color color = _markerPalette.bestMove.withValues(alpha: 0.88);
@@ -125,7 +126,7 @@ class AnalysisRenderer {
           move,
           color,
           size,
-          strokeWidth: _engineBestMoveStrokeWidth,
+          strokeWidth: visualMetrics.scaled(_engineBestMoveStrokeWidth),
         );
         break;
       case AnalysisResultType.place:
@@ -162,17 +163,18 @@ class AnalysisRenderer {
       squareNotation,
       size,
     );
+    final BoardVisualMetrics visualMetrics = BoardVisualMetrics.fromSize(size);
     final Paint fillPaint = Paint()
       ..color = color.withValues(alpha: 0.18)
       ..style = PaintingStyle.fill;
     final Paint outerPaint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = _engineBestMoveStrokeWidth;
+      ..strokeWidth = visualMetrics.scaled(_engineBestMoveStrokeWidth);
     final Paint innerPaint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0;
+      ..strokeWidth = visualMetrics.scaled(2);
     final Paint centerPaint = Paint()
       ..color = color
       ..style = PaintingStyle.fill;
@@ -180,7 +182,7 @@ class AnalysisRenderer {
     canvas.drawCircle(position, radius, fillPaint);
     canvas.drawCircle(position, radius, outerPaint);
     canvas.drawCircle(position, radius * 0.48, innerPaint);
-    canvas.drawCircle(position, 3.5, centerPaint);
+    canvas.drawCircle(position, visualMetrics.scaled(3.5), centerPaint);
   }
 
   static void _renderResults(
@@ -194,6 +196,7 @@ class AnalysisRenderer {
       return;
     }
 
+    final BoardVisualMetrics visualMetrics = BoardVisualMetrics.fromSize(size);
     final List<MoveAnalysisResult> sortedResults = _getSortedResults(results);
 
     final double? bestValue = _getBestValue(sortedResults);
@@ -239,6 +242,7 @@ class AnalysisRenderer {
               isTopResult,
               result.move,
               useThreatColors: useThreatColors,
+              visualScale: visualMetrics.scale,
             );
           } else {
             logger.w("Failed to parse place move: ${result.move}");
@@ -371,9 +375,10 @@ class AnalysisRenderer {
     final Color highlightColor = color.withValues(
       alpha: isPrimary ? 0.82 : 0.6,
     );
-    final double strokeWidth = isPrimary
-        ? _engineBestMoveStrokeWidth
-        : _engineSecondaryMoveStrokeWidth;
+    final BoardVisualMetrics visualMetrics = BoardVisualMetrics.fromSize(size);
+    final double strokeWidth = visualMetrics.scaled(
+      isPrimary ? _engineBestMoveStrokeWidth : _engineSecondaryMoveStrokeWidth,
+    );
 
     switch (_determineResultType(move)) {
       case AnalysisResultType.move:
@@ -440,6 +445,7 @@ class AnalysisRenderer {
     final List<String> squares = moveStr.split('-');
     final Offset startPos = _getPositionFromStandardNotation(squares[0], size);
     final Offset endPos = _getPositionFromStandardNotation(squares[1], size);
+    final BoardVisualMetrics visualMetrics = BoardVisualMetrics.fromSize(size);
     _drawArrow(
       canvas,
       startPos,
@@ -448,6 +454,7 @@ class AnalysisRenderer {
       useDashPattern: dashed,
       hollow: hollow,
       strokeWidth: strokeWidth,
+      visualScale: visualMetrics.scale,
     );
   }
 
@@ -483,6 +490,7 @@ class AnalysisRenderer {
         radius,
         color,
         strokeWidth: strokeWidth,
+        visualScale: BoardVisualMetrics.fromSize(size).scale,
       );
     } else {
       canvas.drawCircle(
@@ -604,13 +612,11 @@ class AnalysisRenderer {
     bool isTopResult,
     String move, {
     required bool useThreatColors,
+    required double visualScale,
   }) {
     final bool useDashPattern = _shouldUseDashPattern(outcome);
-    final double strokeWidth = _getStrokeWidth(
-      outcome,
-      isTopResult,
-      move: move,
-    );
+    final double strokeWidth =
+        _getStrokeWidth(outcome, isTopResult, move: move) * visualScale;
 
     final Color resultColor = _resultColor(
       outcome,
@@ -637,6 +643,7 @@ class AnalysisRenderer {
         radius,
         paint.color,
         strokeWidth: strokeWidth,
+        visualScale: visualScale,
       );
     } else {
       canvas.drawCircle(position, radius, paint);
@@ -681,6 +688,7 @@ class AnalysisRenderer {
 
     final Offset startPos = _getPositionFromStandardNotation(squares[0], size);
     final Offset endPos = _getPositionFromStandardNotation(squares[1], size);
+    final BoardVisualMetrics visualMetrics = BoardVisualMetrics.fromSize(size);
 
     final Color arrowColor = _resultColor(
       outcome,
@@ -693,11 +701,9 @@ class AnalysisRenderer {
       useThreatColors: useThreatColors,
     );
     final bool useDashPattern = _shouldUseDashPattern(outcome);
-    final double strokeWidth = _getStrokeWidth(
-      outcome,
-      isTopResult,
-      move: moveStr,
-    );
+    final double strokeWidth =
+        _getStrokeWidth(outcome, isTopResult, move: moveStr) *
+        visualMetrics.scale;
 
     _drawArrow(
       canvas,
@@ -706,6 +712,7 @@ class AnalysisRenderer {
       arrowColor.withValues(alpha: opacity),
       useDashPattern: useDashPattern,
       strokeWidth: strokeWidth,
+      visualScale: visualMetrics.scale,
     );
 
     final int? stepCount = outcome.stepCount;
@@ -715,7 +722,7 @@ class AnalysisRenderer {
           text: stepCount.toString(),
           style: TextStyle(
             color: arrowColor,
-            fontSize: 12,
+            fontSize: visualMetrics.scaled(12),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -731,13 +738,14 @@ class AnalysisRenderer {
       double textX = midPoint.dx;
       double textY = midPoint.dy;
       if (cos(angle).abs() > sin(angle).abs()) {
-        textY = midPoint.dy - stepTextPainter.height - 5;
+        textY = midPoint.dy - stepTextPainter.height - visualMetrics.scaled(5);
         textX = midPoint.dx - stepTextPainter.width / 2;
       } else {
-        textX = midPoint.dx + 10;
+        textX = midPoint.dx + visualMetrics.scaled(10);
         textY = midPoint.dy - stepTextPainter.height / 2;
         if (endPos.dx < startPos.dx) {
-          textX = midPoint.dx - stepTextPainter.width - 10;
+          textX =
+              midPoint.dx - stepTextPainter.width - visualMetrics.scaled(10);
         }
       }
       stepTextPainter.paint(canvas, Offset(textX, textY));
@@ -763,6 +771,7 @@ class AnalysisRenderer {
       squareNotation,
       size,
     );
+    final BoardVisualMetrics visualMetrics = BoardVisualMetrics.fromSize(size);
 
     final Color circleColor = _resultColor(
       outcome,
@@ -775,11 +784,9 @@ class AnalysisRenderer {
       useThreatColors: useThreatColors,
     );
     final bool useDashPattern = _shouldUseDashPattern(outcome);
-    final double strokeWidth = _getStrokeWidth(
-      outcome,
-      isTopResult,
-      move: moveStr,
-    );
+    final double strokeWidth =
+        _getStrokeWidth(outcome, isTopResult, move: moveStr) *
+        visualMetrics.scale;
 
     if (useDashPattern) {
       _drawDashedCircle(
@@ -789,6 +796,7 @@ class AnalysisRenderer {
         circleColor.withValues(alpha: opacity),
         strokeWidth: strokeWidth,
         dashLength: 6.0,
+        visualScale: visualMetrics.scale,
       );
     } else {
       final Paint circlePaint = Paint()
@@ -814,7 +822,7 @@ class AnalysisRenderer {
       stepTextPainter.layout();
       final Offset stepTextOffset = Offset(
         position.dx - stepTextPainter.width / 2,
-        position.dy - radius - stepTextPainter.height - 2,
+        position.dy - radius - stepTextPainter.height - visualMetrics.scaled(2),
       );
       stepTextPainter.paint(canvas, stepTextOffset);
     }
@@ -829,14 +837,18 @@ class AnalysisRenderer {
     double strokeWidth = 2.0,
     double dashLength = 5.0,
     double gapLength = 3.0,
+    double visualScale = 1,
   }) {
     final Paint paint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
 
+    final double scaledDashLength = dashLength * visualScale;
+    final double scaledGapLength = gapLength * visualScale;
     final double circumference = 2 * pi * radius;
-    final int dashCount = (circumference / (dashLength + gapLength)).round();
+    final int dashCount = (circumference / (scaledDashLength + scaledGapLength))
+        .round();
     if (dashCount <= 0) {
       canvas.drawCircle(center, radius, paint);
       return;
@@ -844,7 +856,7 @@ class AnalysisRenderer {
     final double dashAngle = 2 * pi / dashCount;
     for (int i = 0; i < dashCount; i++) {
       final double startAngle = i * dashAngle;
-      final double sweep = (dashLength / circumference) * 2 * pi;
+      final double sweep = (scaledDashLength / circumference) * 2 * pi;
       final Path dashPath = Path()
         ..addArc(
           Rect.fromCircle(center: center, radius: radius),
@@ -864,9 +876,10 @@ class AnalysisRenderer {
     bool useDashPattern = false,
     bool hollow = false,
     double strokeWidth = 2.5,
+    double visualScale = 1,
   }) {
-    const double arrowLength = 15.0;
-    const double arrowWidth = 12.0;
+    final double arrowLength = 15 * visualScale;
+    final double arrowWidth = 12 * visualScale;
 
     final Paint paint = Paint()
       ..color = color
@@ -878,7 +891,13 @@ class AnalysisRenderer {
         end - Offset(arrowLength * cos(angle), arrowLength * sin(angle));
 
     if (useDashPattern) {
-      _drawDashedLine(canvas, start, adjustedEnd, paint);
+      _drawDashedLine(
+        canvas,
+        start,
+        adjustedEnd,
+        paint,
+        visualScale: visualScale,
+      );
     } else {
       canvas.drawLine(start, adjustedEnd, paint);
     }
@@ -914,10 +933,11 @@ class AnalysisRenderer {
     Canvas canvas,
     Offset start,
     Offset end,
-    Paint paint,
-  ) {
-    const double dashLength = 8.0;
-    const double gapLength = 4.0;
+    Paint paint, {
+    double visualScale = 1,
+  }) {
+    final double dashLength = 8 * visualScale;
+    final double gapLength = 4 * visualScale;
 
     final double dx = end.dx - start.dx;
     final double dy = end.dy - start.dy;
