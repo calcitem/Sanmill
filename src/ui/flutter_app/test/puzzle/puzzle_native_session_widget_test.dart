@@ -373,6 +373,12 @@ void main() {
           animationDuration: 0.0,
           isAnnotationToolbarShown: true,
         );
+        const PuzzleSettings settings = PuzzleSettings(
+          showHints: true,
+          userRating: 1723,
+        );
+        DB().puzzleSettings = settings;
+        PuzzleManager().settingsNotifier.value = settings;
         final PuzzleInfo puzzle = buildPuzzle(
           solutions: const <List<String>>[
             <String>['a1', 'd7'],
@@ -449,12 +455,42 @@ void main() {
           findsNothing,
         );
         expect(
-          find.byKey(const Key('puzzle_page_bottom_bar_undo')),
+          find.byKey(const Key('puzzle_page_bottom_bar_previous')),
           findsOneWidget,
         );
         expect(
-          find.byKey(const Key('puzzle_page_bottom_bar_hint')),
+          find.byKey(const Key('puzzle_page_bottom_bar_next')),
           findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('puzzle_page_bottom_bar_undo')),
+          findsNothing,
+        );
+        expect(
+          find.byKey(const Key('puzzle_page_bottom_bar_hint')),
+          findsNothing,
+        );
+        expect(find.text('Your turn to move.'), findsOneWidget);
+        expect(find.text('1723 Elo'), findsOneWidget);
+        expect(
+          tester
+              .getRect(find.byKey(const Key('puzzle_page_board_feedback')))
+              .bottom,
+          lessThanOrEqualTo(
+            tester
+                .getRect(
+                  find.byKey(const Key('play_area_game_board_container')),
+                )
+                .top,
+          ),
+        );
+        expect(
+          tester
+              .getRect(find.byKey(const Key('play_area_game_board_container')))
+              .bottom,
+          lessThanOrEqualTo(
+            tester.getRect(find.byKey(const Key('puzzle_page_player_elo'))).top,
+          ),
         );
         expect(
           find.byKey(const Key('play_area_human_ai_landscape_side_panel')),
@@ -479,6 +515,10 @@ void main() {
         );
         expect(
           find.byKey(const Key('puzzle_page_action_show_solution')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const Key('puzzle_page_action_hint')),
           findsOneWidget,
         );
         expect(find.text('Show solution'), findsOneWidget);
@@ -777,7 +817,22 @@ void main() {
           expectedMoves,
         );
 
-        await tester.tap(find.byKey(const Key('puzzle_page_bottom_bar_undo')));
+        await tester.tap(
+          find.byKey(const Key('puzzle_page_bottom_bar_previous')),
+        );
+        await drainUi(tester);
+        expect(controller.gameRecorder.currentPath, hasLength(1));
+        expect(
+          tester
+              .widget<IgnorePointer>(
+                find.byKey(const Key('puzzle_page_board_interaction_guard')),
+              )
+              .ignoring,
+          isTrue,
+        );
+        await tester.tap(
+          find.byKey(const Key('puzzle_page_bottom_bar_previous')),
+        );
         await drainUi(tester);
         expect(controller.gameRecorder.currentPath, isEmpty);
         expect(
@@ -785,15 +840,24 @@ void main() {
           transformFEN(initialFen, TransformationType.rotate90),
         );
 
-        await applyHumanMoveViaNativeSession(
-          transformMoveNotation('a1', TransformationType.rotate90),
-        );
+        await tester.tap(find.byKey(const Key('puzzle_page_bottom_bar_next')));
+        await drainUi(tester);
+        expect(controller.gameRecorder.currentPath, hasLength(1));
+        await tester.tap(find.byKey(const Key('puzzle_page_bottom_bar_next')));
         await drainUi(tester);
         expect(
           controller.gameRecorder.currentPath
               .map((ExtMove move) => move.move)
               .toList(growable: false),
           expectedMoves,
+        );
+        expect(
+          tester
+              .widget<IgnorePointer>(
+                find.byKey(const Key('puzzle_page_board_interaction_guard')),
+              )
+              .ignoring,
+          isFalse,
         );
 
         final String nextHumanMove = transformMoveNotation(
@@ -1195,10 +1259,8 @@ void main() {
         await applyHumanMoveViaNativeSession(wrongMove);
         await drainUi(tester);
 
-        expect(
-          find.text("That move isn't part of the solution. Try again."),
-          findsOneWidget,
-        );
+        expect(find.text('Not the best move. Try again.'), findsOneWidget);
+        expect(find.byType(SnackBar), findsNothing);
         // The wrong move is undone on the live session: it is the human's turn
         // again and the board is back to the puzzle's initial position.  The PGN
         // tree keeps the move as a dangling branch (history navigation), so we
@@ -1240,10 +1302,7 @@ void main() {
         await applyHumanMoveViaNativeSession('xd2');
         await drainUi(tester);
 
-        expect(
-          find.text("That move isn't part of the solution. Try again."),
-          findsOneWidget,
-        );
+        expect(find.text('Not the best move. Try again.'), findsOneWidget);
         expect(
           controller.gameRecorder.currentPath
               .map((ExtMove move) => move.move)
@@ -1287,10 +1346,7 @@ void main() {
         await applyHumanMoveViaNativeSession('d2-b2');
         await drainUi(tester);
 
-        expect(
-          find.text("That move isn't part of the solution. Try again."),
-          findsOneWidget,
-        );
+        expect(find.text('Not the best move. Try again.'), findsOneWidget);
         expect(controller.gameRecorder.currentPath, isEmpty);
         expect(controller.activeBoardView.action, isNot(Act.remove));
         expect(
@@ -1326,10 +1382,7 @@ void main() {
         await applyHumanMoveViaNativeSession('xb6');
         await drainUi(tester);
 
-        expect(
-          find.text("That move isn't part of the solution. Try again."),
-          findsOneWidget,
-        );
+        expect(find.text('Not the best move. Try again.'), findsOneWidget);
         expect(
           controller.gameRecorder.currentPath
               .map((ExtMove move) => move.move)
@@ -1418,10 +1471,7 @@ void main() {
           MillBoardCoordinateMaps.notationToLegacySquare('f6'),
         );
         await drainUi(tester);
-        expect(
-          find.text("That move isn't part of the solution. Try again."),
-          findsOneWidget,
-        );
+        expect(find.text('Not the best move. Try again.'), findsOneWidget);
         expect(controller.activeBoardView.action, Act.remove);
         expect(
           controller.gameRecorder.currentPath
@@ -1462,10 +1512,7 @@ void main() {
         await applyHumanMoveViaNativeSession(wrongMove);
         await drainUi(tester);
 
-        expect(
-          find.text("That move isn't part of the solution. Try again."),
-          findsOneWidget,
-        );
+        expect(find.text('Not the best move. Try again.'), findsOneWidget);
         expect(controller.gameRecorder.currentPath, isEmpty);
         await tester.pump(const Duration(seconds: 3));
 
@@ -1527,10 +1574,7 @@ void main() {
         await applyHumanMoveViaNativeSession(slowerMove);
         await drainUi(tester);
 
-        expect(
-          find.text("That move isn't part of the solution. Try again."),
-          findsOneWidget,
-        );
+        expect(find.text('Not the best move. Try again.'), findsOneWidget);
         expect(GameController().gameRecorder.currentPath, isEmpty);
         await teardownPuzzlePage(tester);
       },
@@ -1538,7 +1582,7 @@ void main() {
     );
 
     testWidgets(
-      'auto-plays consecutive opponent moves (mill then remove)',
+      'navigates an opponent mill and removal as one complete turn',
       (WidgetTester tester) async {
         final String startFen = buildPositionFenForOpponentMillThenRemove();
         final PuzzleRuleEngine? probe = PuzzleRuleEngine.tryLoad(startFen);
@@ -1550,7 +1594,7 @@ void main() {
         final PuzzleInfo puzzle = buildPuzzle(
           initialPosition: startFen,
           solutions: const <List<String>>[
-            <String>['g1', 'a7', 'xd1'],
+            <String>['g1', 'a7', 'xd1', 'd7'],
           ],
         );
         await pumpPuzzlePage(tester, puzzle);
@@ -1570,8 +1614,44 @@ void main() {
         final List<String> moves = controller.gameRecorder.mainlineMoves
             .map((ExtMove m) => m.move)
             .toList(growable: false);
-        expect(moves, expectedMoves);
+        expect(moves, expectedMoves.take(3).toList(growable: false));
         expect(controller.activeBoardView.sideToMove, PieceColor.white);
+
+        await tester.tap(
+          find.byKey(const Key('puzzle_page_bottom_bar_previous')),
+        );
+        await drainUi(tester);
+        expect(
+          controller.gameRecorder.currentPath
+              .map((ExtMove move) => move.move)
+              .toList(growable: false),
+          <String>[expectedMoves.first],
+        );
+        expect(
+          tester
+              .widget<IgnorePointer>(
+                find.byKey(const Key('puzzle_page_board_interaction_guard')),
+              )
+              .ignoring,
+          isTrue,
+        );
+
+        await tester.tap(find.byKey(const Key('puzzle_page_bottom_bar_next')));
+        await drainUi(tester);
+        expect(
+          controller.gameRecorder.currentPath
+              .map((ExtMove move) => move.move)
+              .toList(growable: false),
+          expectedMoves.take(3).toList(growable: false),
+        );
+        expect(
+          tester
+              .widget<IgnorePointer>(
+                find.byKey(const Key('puzzle_page_board_interaction_guard')),
+              )
+              .ignoring,
+          isFalse,
+        );
         await teardownPuzzlePage(tester);
       },
       skip: nativeLibrarySkipReason() != null,

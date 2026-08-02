@@ -25,6 +25,8 @@ void main() {
     expect(strings.exitPuzzleAction, '退出谜题');
     expect(strings.puzzleContinueNext, '继续下一题');
     expect(strings.puzzleWrongMove, '这一步不符合解法，请再试试。');
+    expect(strings.puzzleYourTurn, '轮到你走棋。');
+    expect(strings.puzzleNotBestMove, '不是最佳着法，请再试试。');
     expect(strings.puzzlesExportedForContribution(1), '已导出 1 个谜题以供贡献');
     expect(strings.puzzlesExportedForContribution(3), '已导出 3 个谜题以供贡献');
     expect(strings.viewContributionGuide, '查看指南');

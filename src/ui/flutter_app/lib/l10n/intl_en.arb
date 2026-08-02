@@ -7281,5 +7281,13 @@
     "ponderEnabled_Detail": "Think in the background while waiting for your move. This can make replies faster, but increases power use and heat.",
     "@ponderEnabled_Detail": {
         "description": "Explains the performance and power tradeoff of pondering"
+    },
+    "puzzleYourTurn": "Your turn to move.",
+    "@puzzleYourTurn": {
+        "description": "Puzzle board feedback shown when the solver can move"
+    },
+    "puzzleNotBestMove": "Not the best move. Try again.",
+    "@puzzleNotBestMove": {
+        "description": "Puzzle board feedback shown after a non-solution move"
     }
 }

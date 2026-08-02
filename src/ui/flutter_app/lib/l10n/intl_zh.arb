@@ -7214,5 +7214,13 @@
     "ponderEnabled_Detail": "等待你走棋时在后台预测应招并继续搜索，可加快命中后的回复，但会增加耗电和发热。",
     "@ponderEnabled_Detail": {
         "description": "Explains the performance and power tradeoff of pondering"
+    },
+    "puzzleYourTurn": "轮到你走棋。",
+    "@puzzleYourTurn": {
+        "description": "Puzzle board feedback shown when the solver can move"
+    },
+    "puzzleNotBestMove": "不是最佳着法，请再试试。",
+    "@puzzleNotBestMove": {
+        "description": "Puzzle board feedback shown after a non-solution move"
     }
 }

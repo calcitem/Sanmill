@@ -45,6 +45,8 @@ enum _PuzzleCompletionAction { tryAgain, nextPuzzle, backToList }
 
 enum _PuzzleAppBarAction { continueOrSkip }
 
+enum _PuzzleBoardFeedback { yourTurn, notBestMove }
+
 /// Page for solving a specific puzzle
 class PuzzlePage extends StatefulWidget {
   const PuzzlePage({
@@ -99,7 +101,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
   bool _isSolved = false;
   bool _isAutoPlayingOpponent = false;
   bool _isPlayingSolution = false;
+  bool _isNavigatingHistory = false;
   bool _slowerWinFeedbackShown = false;
+  _PuzzleBoardFeedback _boardFeedback = _PuzzleBoardFeedback.yourTurn;
+  PgnNode<ExtMove>? _latestPuzzleNode;
   DateTime _attemptStartedAt = DateTime.now();
 
   // A random board symmetry is applied when the puzzle loads to prevent
@@ -370,7 +375,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
     controller.gameInstance.gameMode = GameMode.puzzle;
     _isSolved = false;
     _isAutoPlayingOpponent = false;
+    _isNavigatingHistory = false;
     _slowerWinFeedbackShown = false;
+    _boardFeedback = _PuzzleBoardFeedback.yourTurn;
+    _latestPuzzleNode = controller.gameRecorder.activeNode;
 
     // Store the starting position for exports and history
     controller.gameRecorder.setupPosition = _transformedPuzzle.initialPosition;
@@ -557,6 +565,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     final bool canContinueOrSkipPuzzle =
         !_isPlayingSolution &&
         !_isAutoPlayingOpponent &&
+        !_isNavigatingHistory &&
         !controller.isPuzzleAutoMoveInProgress;
     _settingsThemeForDialogs = settingsTheme;
 
@@ -695,13 +704,19 @@ class _PuzzlePageState extends State<PuzzlePage> {
                 return _buildInfoPanel(context, s, moveCount);
               },
             ),
+            _buildPuzzleBoardFeedback(context, s),
             Expanded(
-              child: PuzzleGameBoard(
-                puzzle: _activePuzzle,
-                onMoveCompleted: _onPlayerMove,
-                annotationModeNotifier: _annotationModeNotifier,
+              child: IgnorePointer(
+                key: const Key('puzzle_page_board_interaction_guard'),
+                ignoring: !_isPuzzleBoardInteractive,
+                child: PuzzleGameBoard(
+                  puzzle: _activePuzzle,
+                  onMoveCompleted: _onPlayerMove,
+                  annotationModeNotifier: _annotationModeNotifier,
+                ),
               ),
             ),
+            _buildPlayerElo(context, s),
           ],
         ),
         bottomNavigationBar: ValueListenableBuilder<int>(
@@ -711,6 +726,107 @@ class _PuzzlePageState extends State<PuzzlePage> {
           },
         ),
       ),
+    );
+  }
+
+  bool get _isAtLatestPuzzlePosition {
+    final PgnNode<ExtMove>? latest = _latestPuzzleNode;
+    if (latest == null) {
+      return true;
+    }
+    return identical(GameController().gameRecorder.activeNode, latest);
+  }
+
+  bool get _isPuzzleBoardInteractive {
+    final GameController controller = GameController();
+    return _isAtLatestPuzzlePosition &&
+        !_isSolved &&
+        !_isPlayingSolution &&
+        !_isAutoPlayingOpponent &&
+        !_isNavigatingHistory &&
+        !controller.isPuzzleAutoMoveInProgress;
+  }
+
+  Widget _buildPuzzleBoardFeedback(BuildContext context, S s) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colors = theme.colorScheme;
+    final bool isError = _boardFeedback == _PuzzleBoardFeedback.notBestMove;
+    final String message = isError ? s.puzzleNotBestMove : s.puzzleYourTurn;
+
+    return Semantics(
+      liveRegion: true,
+      label: message,
+      excludeSemantics: true,
+      child: Container(
+        key: const Key('puzzle_page_board_feedback'),
+        width: double.infinity,
+        constraints: const BoxConstraints(minHeight: 36),
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+        decoration: BoxDecoration(
+          color: colors.surface,
+          border: Border(
+            bottom: BorderSide(
+              color: colors.outlineVariant.withValues(alpha: 0.45),
+            ),
+          ),
+        ),
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 180),
+          child: Text(
+            message,
+            key: ValueKey<_PuzzleBoardFeedback>(_boardFeedback),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.start,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: isError ? colors.error : colors.onSurfaceVariant,
+              fontWeight: isError ? FontWeight.w600 : FontWeight.normal,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _updateBoardFeedback(_PuzzleBoardFeedback feedback) {
+    if (!mounted || _boardFeedback == feedback) {
+      return;
+    }
+    setState(() => _boardFeedback = feedback);
+  }
+
+  Widget _buildPlayerElo(BuildContext context, S s) {
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colors = theme.colorScheme;
+    return ValueListenableBuilder<PuzzleSettings>(
+      valueListenable: _puzzleManager.settingsNotifier,
+      builder: (BuildContext context, PuzzleSettings settings, Widget? child) {
+        return Container(
+          key: const Key('puzzle_page_player_elo'),
+          width: double.infinity,
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.fromLTRB(12, 6, 12, 8),
+          decoration: BoxDecoration(
+            color: colors.surface,
+            border: Border(
+              top: BorderSide(
+                color: colors.outlineVariant.withValues(alpha: 0.45),
+              ),
+            ),
+          ),
+          child: Text(
+            s.eloRating(settings.userRating),
+            key: const Key('puzzle_page_player_elo_text'),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: colors.onSurfaceVariant,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -922,14 +1038,20 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
   Widget _buildPuzzleBottomBar(BuildContext context, S s, int moveCount) {
     final GameController controller = GameController();
-    final bool canUseActions =
+    assert(moveCount >= 0, 'Puzzle move count cannot be negative.');
+    final bool canNavigate =
         !_isPlayingSolution &&
-        !_isSolved &&
         !_isAutoPlayingOpponent &&
+        !_isNavigatingHistory &&
         !controller.isPuzzleAutoMoveInProgress;
-    final bool canUndo = moveCount > 0 && canUseActions;
-    final bool canShowHint =
-        canUseActions && DB().puzzleSettings.showHints && _hintService.hasHints;
+    final bool canUseActions =
+        canNavigate && !_isSolved && _isAtLatestPuzzlePosition;
+    final PgnNode<ExtMove>? previousTurn = canNavigate
+        ? _previousPuzzleTurnNode()
+        : null;
+    final PgnNode<ExtMove>? nextTurn = canNavigate
+        ? _nextPuzzleTurnNode()
+        : null;
 
     return LichessBottomBar(
       key: const Key('puzzle_page_lichess_bottom_bar'),
@@ -947,21 +1069,129 @@ class _PuzzlePageState extends State<PuzzlePage> {
           onTap: canUseActions ? _giveUp : null,
         ),
         LichessBottomBarButton(
-          key: const Key('puzzle_page_bottom_bar_undo'),
-          icon: Icons.undo,
-          label: s.takeBack,
-          onTap: canUndo ? () => _undoMove() : null,
+          key: const Key('puzzle_page_bottom_bar_previous'),
+          icon: Icons.chevron_left,
+          label: s.previous,
+          onTap: previousTurn == null
+              ? null
+              : () => _navigatePuzzleHistory(previousTurn),
           showTooltip: false,
         ),
         LichessBottomBarButton(
-          key: const Key('puzzle_page_bottom_bar_hint'),
-          icon: Icons.lightbulb_outline,
-          label: s.hint,
-          onTap: canShowHint ? _showHint : null,
-          highlighted: canShowHint && !_hintsUsed,
+          key: const Key('puzzle_page_bottom_bar_next'),
+          icon: Icons.chevron_right,
+          label: s.next,
+          onTap: nextTurn == null
+              ? null
+              : () => _navigatePuzzleHistory(nextTurn),
+          showTooltip: false,
         ),
       ],
     );
+  }
+
+  /// Returns the position immediately before the current complete Mill turn.
+  ///
+  /// A Mill turn may contain a placement/movement followed by one or more
+  /// removals by the same side. History navigation keeps that group atomic so
+  /// the board never stops halfway through a completed turn.
+  PgnNode<ExtMove>? _previousPuzzleTurnNode() {
+    final GameRecorder recorder = GameController().gameRecorder;
+    final PgnNode<ExtMove>? active = recorder.activeNode;
+    if (active == null || identical(active, recorder.pgnRoot)) {
+      return null;
+    }
+
+    assert(active.data != null, 'A non-root puzzle history node needs a move.');
+    final PieceColor side = active.data!.side;
+    assert(
+      side == PieceColor.white || side == PieceColor.black,
+      'Puzzle history moves must belong to a playable side.',
+    );
+    PgnNode<ExtMove>? target = active.parent;
+    while (target != null &&
+        !identical(target, recorder.pgnRoot) &&
+        target.data?.side == side) {
+      target = target.parent;
+    }
+    return target ?? recorder.pgnRoot;
+  }
+
+  /// Returns the end of the next complete turn on the recorded active line.
+  PgnNode<ExtMove>? _nextPuzzleTurnNode() {
+    final GameRecorder recorder = GameController().gameRecorder;
+    final PgnNode<ExtMove>? latest = _latestPuzzleNode;
+    final PgnNode<ExtMove>? active = recorder.activeNode;
+    if (latest == null || active == null || identical(active, latest)) {
+      return null;
+    }
+
+    final List<PgnNode<ExtMove>> latestPath = <PgnNode<ExtMove>>[];
+    PgnNode<ExtMove>? node = latest;
+    while (node != null && !identical(node, recorder.pgnRoot)) {
+      latestPath.add(node);
+      node = node.parent;
+    }
+    if (node == null) {
+      return null;
+    }
+    final List<PgnNode<ExtMove>> orderedPath = latestPath.reversed.toList(
+      growable: false,
+    );
+
+    final int activeIndex = identical(active, recorder.pgnRoot)
+        ? -1
+        : orderedPath.indexOf(active);
+    if ((!identical(active, recorder.pgnRoot) && activeIndex == -1) ||
+        activeIndex + 1 >= orderedPath.length) {
+      return null;
+    }
+
+    int targetIndex = activeIndex + 1;
+    assert(
+      orderedPath[targetIndex].data != null,
+      'A puzzle history path cannot contain an empty move node.',
+    );
+    final PieceColor side = orderedPath[targetIndex].data!.side;
+    assert(
+      side == PieceColor.white || side == PieceColor.black,
+      'Puzzle history moves must belong to a playable side.',
+    );
+    while (targetIndex + 1 < orderedPath.length &&
+        orderedPath[targetIndex + 1].data?.side == side) {
+      targetIndex++;
+    }
+    return orderedPath[targetIndex];
+  }
+
+  Future<void> _navigatePuzzleHistory(PgnNode<ExtMove> target) async {
+    final GameController controller = GameController();
+    if (!mounted ||
+        _isPlayingSolution ||
+        _isAutoPlayingOpponent ||
+        _isNavigatingHistory ||
+        controller.isPuzzleAutoMoveInProgress ||
+        identical(controller.gameRecorder.activeNode, target)) {
+      return;
+    }
+
+    setState(() => _isNavigatingHistory = true);
+    try {
+      final HistoryResponse? response = await HistoryNavigator.gotoNode(
+        context,
+        target,
+        pop: false,
+      );
+      if (response is! HistoryOK) {
+        logger.w('[PuzzlePage] Failed to navigate puzzle history: $response');
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isNavigatingHistory = false);
+      } else {
+        _isNavigatingHistory = false;
+      }
+    }
   }
 
   void _openPuzzleMenu(BuildContext context) {
@@ -1008,6 +1238,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
             );
           },
         ),
+        if (DB().puzzleSettings.showHints && _hintService.hasHints)
+          LichessActionSheetAction(
+            key: const Key('puzzle_page_action_hint'),
+            leading: const Icon(Icons.lightbulb_outline),
+            makeLabel: (BuildContext context) => Text(s.hint),
+            onPressed: _showHint,
+          ),
         LichessActionSheetAction(
           key: const Key('puzzle_page_action_show_solution'),
           leading: const Icon(Icons.play_arrow),
@@ -1038,6 +1275,10 @@ class _PuzzlePageState extends State<PuzzlePage> {
   }
 
   void _onPlayerMove() {
+    if (_isNavigatingHistory) {
+      return;
+    }
+
     // Get the latest move from the game recorder
     final GameController controller = GameController();
     final List<ExtMove> moves = _activePuzzleMoves(controller);
@@ -1056,6 +1297,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
       // Add move to validator using the move's string representation
       _validator.addMove(latestMove.move);
     }
+    _latestPuzzleNode = controller.gameRecorder.activeNode;
     assert(
       humanColor != null,
       'Puzzle human side must be known after loading.',
@@ -1410,11 +1652,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
     // side-to-act gate so a wrong mill is rejected immediately instead of
     // misleading the solver into choosing a capture first.
     if (matchesAcceptedPrefix && !isOpponentTurn) {
+      _updateBoardFeedback(_PuzzleBoardFeedback.yourTurn);
       return;
     }
 
     _isAutoPlayingOpponent = true;
     controller.isPuzzleAutoMoveInProgress = true;
+    bool wrongMoveDetected = !matchesAcceptedPrefix;
 
     SchedulerBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) {
@@ -1447,9 +1691,13 @@ class _PuzzlePageState extends State<PuzzlePage> {
           onWrongMove: () async {
             // No solution matches the current line. Undo the last move to prevent
             // a deadlock (human input is restricted to one side in puzzle mode).
+            wrongMoveDetected = true;
             await _showWrongMoveAndUndo(controller);
           },
         );
+        if (!wrongMoveDetected) {
+          _updateBoardFeedback(_PuzzleBoardFeedback.yourTurn);
+        }
       } finally {
         controller.isPuzzleAutoMoveInProgress = false;
         if (mounted) {
@@ -1470,12 +1718,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
     if (!mounted) {
       return;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(S.of(context).puzzleWrongMove),
-        duration: const Duration(seconds: 2),
-      ),
-    );
+    _updateBoardFeedback(_PuzzleBoardFeedback.notBestMove);
     await _undoMove(allowDuringAutoPlay: true);
 
     // Clear auto-play flags immediately after undo so the corrected move can
@@ -2004,6 +2247,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
       }
     }
     assert(humanColor != null, 'Puzzle human side must be known before undo.');
+    _latestPuzzleNode = controller.gameRecorder.activeNode;
     if (humanColor != null) {
       _moveCountNotifier.value = _countLogicalMovesForSide(
         _activePuzzleMoves(controller),
