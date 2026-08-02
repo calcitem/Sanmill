@@ -36,7 +36,7 @@
     "@humanVsCloud": {
         "description": "Human Vs Cloud"
     },
-    "humanVsLAN": "联网对战",
+    "humanVsLAN": "局域网对战",
     "@humanVsLAN": {
         "description": "Human Vs LAN"
     },

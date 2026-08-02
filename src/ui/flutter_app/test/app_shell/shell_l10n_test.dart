@@ -12,9 +12,16 @@ void main() {
     expect(strings.tools, '工具');
     expect(strings.home, '首页');
     expect(strings.learn, '学习');
+    expect(strings.humanVsLAN, '局域网对战');
     expect(strings.todayProgress, '今天');
     expect(strings.todayProgressSummary(2, 1), '完成 2 局 · 复盘 1 局');
     expect(strings.recentGames, '最近保存的棋局');
+  });
+
+  test('English identifies LAN play explicitly', () async {
+    final S strings = await S.delegate.load(const Locale('en'));
+
+    expect(strings.humanVsLAN, 'LAN match');
   });
 
   test('Simplified Chinese uses step-based navigation labels', () async {
