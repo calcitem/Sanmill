@@ -301,12 +301,17 @@ class AnnotationCross extends AnnotationShape {
   AnnotationCross({
     required this.point,
     required super.color,
+    this.boardPoint,
     this.crossSize = 8.0,
     this.strokeWidth = 3.0,
   });
 
   /// The center point of the cross.
   Offset point;
+
+  /// Logical 7×7 board coordinate used to keep a snapped cross aligned when
+  /// the board moves or changes size.
+  Offset? boardPoint;
 
   /// Half the length of each diagonal line.
   double crossSize;
@@ -317,6 +322,7 @@ class AnnotationCross extends AnnotationShape {
   @override
   void translate(Offset delta) {
     point += delta;
+    boardPoint = null;
   }
 
   @override
@@ -600,6 +606,42 @@ class AnnotationManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Keeps snapped crosses aligned and proportional to the rendered board,
+  /// without recording a user-visible edit in the undo history.
+  void syncBoardRelativeCrosses({
+    required double crossSize,
+    required Offset Function(Offset boardPoint) positionForBoardPoint,
+  }) {
+    assert(crossSize >= 0, 'Cross size cannot be negative.');
+    bool changed = false;
+
+    void updateShape(AnnotationShape? shape) {
+      if (shape is! AnnotationCross) {
+        return;
+      }
+      final Offset? boardPoint = shape.boardPoint;
+      if (boardPoint != null) {
+        final Offset nextPoint = positionForBoardPoint(boardPoint);
+        if ((shape.point - nextPoint).distance >= 0.01) {
+          shape.point = nextPoint;
+          changed = true;
+        }
+      }
+      if ((shape.crossSize - crossSize).abs() >= 0.01) {
+        shape.crossSize = crossSize;
+        changed = true;
+      }
+    }
+
+    for (final AnnotationShape shape in shapes) {
+      updateShape(shape);
+    }
+    updateShape(_currentDrawingShape);
+    if (changed) {
+      notifyListeners();
+    }
+  }
+
   void removeShape(AnnotationShape shape) {
     if (shapes.remove(shape)) {
       _redoStack.clear();
@@ -808,23 +850,63 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
   /// Two-tap tracking for line, arrow, and rect tools.
   Offset? _firstTapPosition;
 
+  bool _boardRelativeCrossSyncScheduled = false;
+
   /// The piece width (diameter) used to set forced sizes on shapes.
   double get _pieceWidth {
-    final RenderObject? renderObject = context.findRenderObject();
-    if (renderObject is! RenderBox) {
-      // Handle the null or unexpected type case, e.g., return a default value.
+    final RenderObject? renderObject = widget.gameBoardKey.currentContext
+        ?.findRenderObject();
+    if (renderObject is! RenderBox || !renderObject.hasSize) {
       return 0;
     }
-    final RenderBox box = renderObject;
-    final Size overlaySize = box.size;
-    return ((overlaySize.width - (AppTheme.boardPadding * 2)) *
-            DB().displaySettings.pieceWidth /
-            6) -
-        1;
+    final double boardInnerWidth = max(
+      0,
+      renderObject.size.width - AppTheme.boardPadding * 2,
+    );
+    return max(0, boardInnerWidth * DB().displaySettings.pieceWidth / 6 - 1);
+  }
+
+  void _scheduleBoardRelativeCrossSync() {
+    if (_boardRelativeCrossSyncScheduled) {
+      return;
+    }
+    _boardRelativeCrossSyncScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _boardRelativeCrossSyncScheduled = false;
+      if (!mounted) {
+        return;
+      }
+
+      final RenderObject? boardRenderObject = widget.gameBoardKey.currentContext
+          ?.findRenderObject();
+      final RenderObject? overlayRenderObject = context.findRenderObject();
+      if (boardRenderObject is! RenderBox ||
+          !boardRenderObject.hasSize ||
+          overlayRenderObject is! RenderBox ||
+          !overlayRenderObject.hasSize) {
+        return;
+      }
+      final double pieceWidth = _pieceWidth;
+      if (pieceWidth <= 0) {
+        return;
+      }
+      widget.annotationManager.syncBoardRelativeCrosses(
+        crossSize: pieceWidth / 2,
+        positionForBoardPoint: (Offset boardPoint) {
+          final Offset boardLocal = offsetFromPointWithInnerSize(
+            boardPoint,
+            boardRenderObject.size,
+          );
+          final Offset global = boardRenderObject.localToGlobal(boardLocal);
+          return overlayRenderObject.globalToLocal(global);
+        },
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    _scheduleBoardRelativeCrossSync();
     return Stack(
       children: <Widget>[
         // The board (or other content) underneath:
@@ -867,10 +949,14 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
 
     // Conditionally snap the tap position based on the tool.
     Offset pos;
+    Offset? snappedBoardPoint;
     if (currentTool == AnnotationTool.rect) {
       pos = tapPos; // No snapping for the rectangle tool.
     } else {
-      pos = _snapToBoardIntersection(tapPos); // Snap for other tools.
+      final ({Offset overlayPoint, Offset? boardPoint}) snapped =
+          _snapToBoardIntersection(tapPos);
+      pos = snapped.overlayPoint;
+      snappedBoardPoint = snapped.boardPoint;
     }
 
     // Switch based on the current tool.
@@ -879,7 +965,7 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
         _createDot(pos, currentColor);
         break;
       case AnnotationTool.cross:
-        _createCross(pos, currentColor);
+        _createCross(pos, currentColor, boardPoint: snappedBoardPoint);
         break;
       case AnnotationTool.text:
         _createTextAt(pos, currentColor);
@@ -902,13 +988,15 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
   }
 
   /// Snaps [overlayLocalTap] to the nearest board intersection.
-  Offset _snapToBoardIntersection(Offset overlayLocalTap) {
+  ({Offset overlayPoint, Offset? boardPoint}) _snapToBoardIntersection(
+    Offset overlayLocalTap,
+  ) {
     // Attempt to get the board's RenderBox.
     final RenderObject? ro = widget.gameBoardKey.currentContext
         ?.findRenderObject();
     if (ro is! RenderBox) {
       logger.w('GameBoard RenderBox is not available. Using original tap.');
-      return overlayLocalTap;
+      return (overlayPoint: overlayLocalTap, boardPoint: null);
     }
     final RenderBox boardBox = ro;
 
@@ -920,6 +1008,7 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
 
     // Find the closest intersection from `points`.
     Offset bestBoardLocal = boardLocalTap;
+    Offset? bestBoardPoint;
     double minDistance = double.infinity;
     for (final Offset boardLogicalPoint in points) {
       final Offset candidate = offsetFromPointWithInnerSize(
@@ -930,13 +1019,14 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
       if (dist < minDistance) {
         minDistance = dist;
         bestBoardLocal = candidate;
+        bestBoardPoint = boardLogicalPoint;
       }
     }
 
     // Convert back to overlay-local coordinates.
     final Offset snappedGlobal = boardBox.localToGlobal(bestBoardLocal);
     final Offset snappedOverlayLocal = overlayBox.globalToLocal(snappedGlobal);
-    return snappedOverlayLocal;
+    return (overlayPoint: snappedOverlayLocal, boardPoint: bestBoardPoint);
   }
 
   // --------------------------------------------------------------------------
@@ -1008,11 +1098,12 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
   }
 
   /// Creates a cross at the snapped position with a bounding box equal to the piece diameter.
-  void _createCross(Offset point, Color color) {
+  void _createCross(Offset point, Color color, {required Offset? boardPoint}) {
     final double crossSize = _pieceWidth / 2;
     final AnnotationCross shape = AnnotationCross(
       point: point,
       color: color,
+      boardPoint: boardPoint,
       crossSize: crossSize,
     );
     widget.annotationManager.addShape(shape);

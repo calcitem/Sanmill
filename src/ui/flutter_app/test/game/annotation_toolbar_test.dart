@@ -1,12 +1,18 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/annotation/annotation_manager.dart';
 import 'package:sanmill/game_page/widgets/toolbars/game_toolbar.dart';
 import 'package:sanmill/generated/intl/l10n.dart';
+import 'package:sanmill/shared/database/database.dart';
+import 'package:sanmill/shared/themes/app_theme.dart';
 import 'package:sanmill/shared/utils/localizations/sanmill_localizations.dart';
+
+import '../helpers/mocks/mock_database.dart';
 
 void main() {
   test('tracks whether committed board annotations would be discarded', () {
@@ -25,6 +31,95 @@ void main() {
 
     manager.clear();
     expect(manager.hasAnnotations, isFalse);
+  });
+
+  testWidgets('cross marker follows the rendered board size and position', (
+    WidgetTester tester,
+  ) async {
+    final Database? previousDatabase = Database.instance;
+    Database.instance = MockDB();
+    addTearDown(() => Database.instance = previousDatabase);
+    AppTheme.boardPadding = 28;
+
+    final AnnotationManager manager = AnnotationManager()
+      ..currentTool = AnnotationTool.cross;
+    addTearDown(manager.dispose);
+    final GlobalKey boardKey = GlobalKey();
+    const Key overlayKey = Key('resizable_annotation_overlay');
+    late StateSetter setHostState;
+    double boardExtent = 320;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              setHostState = setState;
+              return SizedBox(
+                width: 600,
+                height: 600,
+                child: Stack(
+                  children: <Widget>[
+                    Center(
+                      child: SizedBox.square(
+                        key: boardKey,
+                        dimension: boardExtent,
+                      ),
+                    ),
+                    Positioned.fill(
+                      child: AnnotationOverlay(
+                        key: overlayKey,
+                        annotationManager: manager,
+                        gameBoardKey: boardKey,
+                        child: const SizedBox.expand(),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    Offset expectedOuterPoint() {
+      final Offset boardTopLeft = tester.getTopLeft(find.byKey(boardKey));
+      final Offset overlayTopLeft = tester.getTopLeft(find.byKey(overlayKey));
+      return boardTopLeft +
+          Offset(AppTheme.boardPadding, AppTheme.boardPadding) -
+          overlayTopLeft;
+    }
+
+    final Offset initialOuterPoint = expectedOuterPoint();
+    await tester.tapAt(
+      tester.getTopLeft(find.byKey(overlayKey)) + initialOuterPoint,
+    );
+    await tester.pump();
+
+    final AnnotationCross cross = manager.shapes.single as AnnotationCross;
+    expect(cross.boardPoint, Offset.zero);
+    expect((cross.point - initialOuterPoint).distance, lessThan(0.01));
+    double expectedHalfExtent(double extent) {
+      final double innerWidth = math.max(0, extent - AppTheme.boardPadding * 2);
+      final double pieceDiameter = math.max(
+        0,
+        innerWidth * DB().displaySettings.pieceWidth / 6 - 1,
+      );
+      return pieceDiameter / 2;
+    }
+
+    expect(cross.crossSize, closeTo(expectedHalfExtent(boardExtent), 0.01));
+    final double expandedCrossSize = cross.crossSize;
+
+    setHostState(() => boardExtent = 180);
+    await tester.pump();
+    await tester.pump();
+
+    expect(cross.crossSize, lessThan(expandedCrossSize));
+    expect(cross.crossSize, closeTo(expectedHalfExtent(boardExtent), 0.01));
+    expect((cross.point - expectedOuterPoint()).distance, lessThan(0.01));
   });
 
   testWidgets('localizes annotation toolbar semantics in English and Chinese', (
