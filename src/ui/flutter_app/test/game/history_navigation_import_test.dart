@@ -6,7 +6,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/mill.dart';
+import 'package:sanmill/game_page/widgets/mini_board.dart';
+import 'package:sanmill/game_page/widgets/moves_list_page.dart';
 import 'package:sanmill/game_platform/game_session.dart';
 import 'package:sanmill/game_shell/game_session_scope.dart';
 import 'package:sanmill/games/mill/mill_action_codec.dart';
@@ -229,6 +232,104 @@ void main() {
       expect(session.getFen(), _expectedFenAfter(expectedMoves));
 
       await tester.pumpAndSettle();
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
+    'reported PlayOK import renders mini boards and opens at the first move',
+    (WidgetTester tester) async {
+      final NativeMillGameSession session = NativeMillGameSession();
+      addTearDown(session.dispose);
+
+      GameController().bindActiveSession(session);
+      addTearDown(() => GameController().unbindActiveSession(session));
+
+      late BuildContext importContext;
+      await tester.pumpWidget(
+        MaterialApp(
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: const Locale('en'),
+          home: Builder(
+            builder: (BuildContext context) {
+              importContext = context;
+              return GameSessionScope(
+                session: session,
+                child: const SizedBox.shrink(),
+              );
+            },
+          ),
+        ),
+      );
+
+      const String playOkGame = '''
+[Event "?"]
+[Site "PlayOK"]
+[Date "2026.03.11"]
+[Round "-"]
+[White "gyorgyusz"]
+[Black "nft7489g"]
+[Result "1-0"]
+[Time "19:16:16"]
+[TimeControl "300"]
+[GameType "70,0"]
+[WhiteElo "1265"]
+[BlackElo "1147"]
+
+1. 5 13 2. 20 19 3. 14 21 4. 7 8 5.
+23 17 6. 12 16 7. 18 11 8. 4 6 9.
+10 22 10.
+23-24 22-23 11. 24-15 23-22 12.
+15-3 13-9 13. 18-13 22-23 14. 5-2
+17-18 15.
+10-1x23 8-5 16. 7-8 16-17 17.
+12-16 11-10 18. 4-11 5-4 19. 2-5
+10-22 20.
+3-15x22 1-0''';
+
+      ImportService.import(playOkGame);
+      await LoadService.handleHistoryNavigation(
+        importContext,
+        showSuccessMessage: false,
+      );
+
+      final GameRecorder recorder = GameController().gameRecorder;
+      expect(recorder.mainlineMoves, hasLength(41));
+      expect(recorder.activeNode?.data?.move, 'xa1');
+      expect(
+        recorder.mainlineMoves.every(
+          (ExtMove move) => move.boardLayout?.length == 26,
+        ),
+        isTrue,
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: const Locale('en'),
+          home: GameSessionScope(
+            session: session,
+            child: const MovesListPage(
+              initialLayout: MovesViewLayout.medium,
+              initialScrollToStart: true,
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 50));
+      await tester.pump(const Duration(milliseconds: 50));
+      await tester.pump(const Duration(milliseconds: 50));
+
+      expect(find.byType(MiniBoard), findsWidgets);
+      expect(find.text('1. d6'), findsOneWidget);
+      expect(
+        find.byKey(const Key('moves_list_active_node_item')),
+        findsNothing,
+      );
     },
     skip: nativeLibrarySkipReason() != null,
   );

@@ -142,6 +142,9 @@ class _ChallengeConfettiState extends State<ChallengeConfetti>
   // Ticker for driving the physics simulation
   late final Ticker _ticker;
 
+  // Delayed waves and cleanup must not outlive a removed confetti overlay.
+  final List<Timer> _scheduledTimers = <Timer>[];
+
   // Tracks the last timestamp for calculating delta time (dt)
   double _lastTimestamp = 0.0;
 
@@ -163,6 +166,10 @@ class _ChallengeConfettiState extends State<ChallengeConfetti>
 
   @override
   void dispose() {
+    for (final Timer timer in _scheduledTimers) {
+      timer.cancel();
+    }
+    _scheduledTimers.clear();
     _ticker.dispose();
     // Dispose controllers held by particles
     for (final ConfettiParticle particle in _particles) {
@@ -236,22 +243,26 @@ class _ChallengeConfettiState extends State<ChallengeConfetti>
       final int randomWaveDelay =
           widget.waveDelayMs +
           _random.nextInt((widget.waveDelayMs / 2).floor());
-      Future<void>.delayed(Duration(milliseconds: randomWaveDelay * wave), () {
-        if (!mounted) {
-          return;
-        }
-        for (int i = 0; i < widget.particlesPerWave; i++) {
-          _launchConfetti();
-        }
-      });
+      _scheduledTimers.add(
+        Timer(Duration(milliseconds: randomWaveDelay * wave), () {
+          if (!mounted) {
+            return;
+          }
+          for (int i = 0; i < widget.particlesPerWave; i++) {
+            _launchConfetti();
+          }
+        }),
+      );
     }
 
     // Schedule a potential cleanup check far in the future, just in case
     final int totalDuration =
         widget.waveDelayMs * widget.numberOfWaves + widget.maxLifetimeMs + 1000;
-    Future<void>.delayed(Duration(milliseconds: totalDuration), () {
-      _cleanupLingeringParticles();
-    });
+    _scheduledTimers.add(
+      Timer(Duration(milliseconds: totalDuration), () {
+        _cleanupLingeringParticles();
+      }),
+    );
   }
 
   /// Creates one confetti piece and adds it to the simulation.
@@ -362,14 +373,11 @@ class _ChallengeConfettiState extends State<ChallengeConfetti>
       random: _random,
     );
 
-    // Use addPostFrameCallback to ensure setState is not called during build
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        _particles.add(particle);
-      });
+    // Wave timers run outside the build phase, so register each controller
+    // immediately. This guarantees dispose() can stop every ticker even when
+    // the surrounding overlay is removed before the next frame.
+    setState(() {
+      _particles.add(particle);
     });
 
     // Start the controller (manages lifetime and fade)

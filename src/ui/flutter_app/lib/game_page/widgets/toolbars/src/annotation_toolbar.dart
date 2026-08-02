@@ -162,47 +162,64 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
         .where((AnnotationTool t) => t != AnnotationTool.move)
         .toList();
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: tools.map((AnnotationTool tool) {
-        final bool isSelected = (currentTool == tool);
-        return Semantics(
-          // Provide a semantic label for the tool for screen readers.
-          label: _toolLabel(context, tool),
-          button: true,
-          child: InkWell(
-            onTap: () {
-              RecordingService().recordEvent(
-                RecordingEventType.annotationAction,
-                <String, dynamic>{'action': 'selectTool', 'tool': tool.name},
-              );
-              setState(() => widget.annotationManager.currentTool = tool);
-            },
-            borderRadius: BorderRadius.circular(8.0),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeInOut,
-              decoration: BoxDecoration(
-                // Use a semi-transparent background color when selected.
-                color: isSelected
-                    ? Colors.yellow.withAlpha(25)
-                    : Colors.transparent,
-                // Always reserve border space by setting a fixed border.
-                border: Border.all(
-                  color: isSelected ? Colors.yellow : Colors.transparent,
-                  width: 2,
-                ),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              padding: const EdgeInsets.all(8),
-              child: Icon(
-                _iconForTool(tool),
-                color: isSelected ? Colors.white : Colors.grey[300],
-              ),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: constraints.maxWidth),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: tools.map((AnnotationTool tool) {
+                final bool isSelected = (currentTool == tool);
+                return Semantics(
+                  // Provide a semantic label for the tool for screen readers.
+                  label: _toolLabel(context, tool),
+                  button: true,
+                  child: InkWell(
+                    onTap: () {
+                      RecordingService().recordEvent(
+                        RecordingEventType.annotationAction,
+                        <String, dynamic>{
+                          'action': 'selectTool',
+                          'tool': tool.name,
+                        },
+                      );
+                      setState(
+                        () => widget.annotationManager.currentTool = tool,
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeInOut,
+                      decoration: BoxDecoration(
+                        // Use a semi-transparent background color when selected.
+                        color: isSelected
+                            ? Colors.yellow.withAlpha(25)
+                            : Colors.transparent,
+                        // Always reserve border space by setting a fixed border.
+                        border: Border.all(
+                          color: isSelected
+                              ? Colors.yellow
+                              : Colors.transparent,
+                          width: 2,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      padding: const EdgeInsets.all(8),
+                      child: Icon(
+                        _iconForTool(tool),
+                        color: isSelected ? Colors.white : Colors.grey[300],
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
             ),
           ),
         );
-      }).toList(),
+      },
     );
   }
 

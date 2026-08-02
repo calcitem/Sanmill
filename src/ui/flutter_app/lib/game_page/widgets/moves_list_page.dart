@@ -68,6 +68,7 @@ class MovesListPage extends StatefulWidget {
     super.key,
     this.initialLayout,
     this.initialShowBranchTree,
+    this.initialScrollToStart = false,
   });
 
   /// Optional route-local layout used by callers that need a specific
@@ -77,6 +78,10 @@ class MovesListPage extends StatefulWidget {
   /// Optional route-local branch-tree mode used by callers that open the
   /// move list from a variation-focused entry point.
   final bool? initialShowBranchTree;
+
+  /// Whether this route should begin at the first move instead of following
+  /// the active history node.
+  final bool initialScrollToStart;
 
   @override
   MovesListPageState createState() => MovesListPageState();
@@ -120,7 +125,9 @@ class MovesListPageState extends State<MovesListPage> {
     // _collectAllNodes(root);
     _refreshAllNodes();
     _scrollController = ScrollController(
-      initialScrollOffset: _initialScrollOffsetForActiveNode(),
+      initialScrollOffset: widget.initialScrollToStart
+          ? 0
+          : _initialScrollOffsetForActiveNode(),
     );
 
     // Listen to move changes to auto-refresh the list when moves are made

@@ -157,7 +157,8 @@ class _ImportGamePageState extends State<ImportGamePage> {
 
     await Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
-        builder: (BuildContext context) => const MovesListPage(),
+        builder: (BuildContext context) =>
+            const MovesListPage(initialScrollToStart: true),
       ),
     );
     return true;

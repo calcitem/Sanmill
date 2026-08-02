@@ -79,6 +79,65 @@ void main() {
       },
       skip: nativeLibrarySkipReason(),
     );
+
+    test(
+      "reported 20-turn PlayOK game imports through the final capture",
+      () {
+        const String playOkText = '''
+[Event "?"]
+[Site "PlayOK"]
+[Date "2026.03.11"]
+[Round "-"]
+[White "gyorgyusz"]
+[Black "nft7489g"]
+[Result "1-0"]
+[Time "19:16:16"]
+[TimeControl "300"]
+[GameType "70,0"]
+[WhiteElo "1265"]
+[BlackElo "1147"]
+
+1. 5 13 2. 20 19 3. 14 21 4. 7 8 5.
+23 17 6. 12 16 7. 18 11 8. 4 6 9.
+10 22 10.
+23-24 22-23 11. 24-15 23-22 12.
+15-3 13-9 13. 18-13 22-23 14. 5-2
+17-18 15.
+10-1x23 8-5 16. 7-8 16-17 17.
+12-16 11-10 18. 4-11 5-4 19. 2-5
+10-22 20.
+3-15x22 1-0''';
+
+        ImportService.import(playOkText);
+
+        final GameRecorder recorder = GameController().newGameRecorder!;
+        final List<String> moves = recorder.mainlineMoves
+            .map((ExtMove move) => move.move)
+            .toList(growable: false);
+        expect(moves, hasLength(41));
+        expect(
+          recorder.mainlineMoves.every(
+            (ExtMove move) => move.boardLayout?.length == 26,
+          ),
+          isTrue,
+          reason: 'Every PlayOK move must provide a mini-board preview.',
+        );
+        expect(moves.take(10), <String>[
+          'd6',
+          'e4',
+          'd2',
+          'b2',
+          'f4',
+          'f2',
+          'c5',
+          'd5',
+          'd1',
+          'd3',
+        ]);
+        expect(moves.sublist(moves.length - 2), <String>['g7-g4', 'xa1']);
+      },
+      skip: nativeLibrarySkipReason(),
+    );
   });
 
   group("ImportService PGN comments", () {

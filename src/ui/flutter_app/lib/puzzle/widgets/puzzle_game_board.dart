@@ -12,11 +12,13 @@ class PuzzleGameBoard extends StatefulWidget {
   const PuzzleGameBoard({
     required this.puzzle,
     required this.onMoveCompleted,
+    required this.annotationModeNotifier,
     super.key,
   });
 
   final PuzzleInfo puzzle;
   final VoidCallback onMoveCompleted;
+  final ValueNotifier<bool> annotationModeNotifier;
 
   @override
   State<PuzzleGameBoard> createState() => _PuzzleGameBoardState();
@@ -79,6 +81,10 @@ class _PuzzleGameBoardState extends State<PuzzleGameBoard> {
     _bindMoveCountNotifier();
 
     // Use GamePage with puzzle mode
-    return const GamePage(GameMode.puzzle, key: Key('puzzle_game'));
+    return GamePage(
+      GameMode.puzzle,
+      key: const Key('puzzle_game'),
+      annotationModeNotifier: widget.annotationModeNotifier,
+    );
   }
 }

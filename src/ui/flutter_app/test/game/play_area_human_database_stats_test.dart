@@ -89,6 +89,7 @@ void main() {
     controller.gameRecorder.reset();
     controller.isEngineRunning = false;
     controller.isEngineInDelay = false;
+    controller.isAnnotationMode = false;
     AnalysisMode.disable();
     AnalysisMode.setShowEngineLines(true);
     AnalysisMode.setShowMoveAnnotations(true);
@@ -110,6 +111,7 @@ void main() {
   });
 
   tearDown(() {
+    GameController().isAnnotationMode = false;
     AnalysisMode.disable();
     AnalysisMode.setShowEngineLines(true);
     AnalysisMode.setShowMoveAnnotations(true);
@@ -1690,6 +1692,189 @@ void main() {
     expect(find.byKey(const Key('play_area_human_ai_robot_panel')), findsOne);
     expect(find.byKey(const Key('play_area_human_ai_player_panel')), findsOne);
   });
+
+  testWidgets('annotation mode adapts the move list and restores it after exit', (
+    WidgetTester tester,
+  ) async {
+    final GameController controller = GameController();
+    controller.gameInstance.gameMode = GameMode.humanVsAi;
+    controller.gameRecorder
+      ..reset()
+      ..appendMove(ExtMove('d6', side: PieceColor.white))
+      ..appendMove(ExtMove('f4', side: PieceColor.black));
+    controller.isAnnotationMode = true;
+
+    await tester.binding.setSurfaceSize(const Size(390, 650));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(
+      _localizedApp(
+        const MediaQuery(
+          data: MediaQueryData(size: Size(390, 650)),
+          child: Scaffold(
+            body: PlayArea(
+              boardImage: null,
+              child: SizedBox.square(
+                key: Key('test_board_square'),
+                dimension: 390,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    List<String> visibleMoveListDensities() =>
+        <String>[
+          'expanded',
+          'compact',
+          'singleLine',
+          'hidden_for_annotation',
+        ].where((String density) {
+          return find
+              .byKey(Key('play_area_human_ai_move_list_$density'))
+              .evaluate()
+              .isNotEmpty;
+        }).toList();
+
+    expect(
+      visibleMoveListDensities(),
+      <String>['compact'],
+      reason:
+          'annotation=${controller.isAnnotationMode}, '
+          'main=${tester.getSize(find.byKey(const Key('play_area_main_content')))}, '
+          'board=${tester.getSize(find.byKey(const Key('test_board_square')))}',
+    );
+    expect(
+      tester.getSize(find.byKey(const Key('test_board_square'))).width,
+      390,
+    );
+
+    await tester.binding.setSurfaceSize(const Size(390, 600));
+    await tester.pump();
+    expect(visibleMoveListDensities(), <String>['singleLine']);
+    expect(
+      tester
+          .widget<SingleChildScrollView>(
+            find.byKey(const Key('play_area_inline_move_list_scroll_view')),
+          )
+          .scrollDirection,
+      Axis.horizontal,
+    );
+
+    await tester.binding.setSurfaceSize(const Size(390, 575));
+    await tester.pump();
+    expect(visibleMoveListDensities(), <String>['hidden_for_annotation']);
+    expect(find.byKey(const Key('play_area_human_ai_move_list')), findsNothing);
+
+    controller.isAnnotationMode = false;
+    await tester.pumpWidget(
+      _localizedApp(
+        const MediaQuery(
+          data: MediaQueryData(size: Size(390, 650)),
+          child: Scaffold(
+            body: PlayArea(
+              boardImage: null,
+              child: SizedBox.square(
+                key: Key('test_board_square'),
+                dimension: 390,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(visibleMoveListDensities(), <String>['expanded']);
+    expect(
+      find.byKey(const Key('play_area_human_ai_move_list')),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets(
+    'annotation toolbar keeps the board clear and restores the move list',
+    (WidgetTester tester) async {
+      db = _GamePageDb(
+        generalSettings: const GeneralSettings(),
+        displaySettings: const DisplaySettings(
+          isAnnotationToolbarShown: true,
+          isUnplacedAndRemovedPiecesShown: false,
+        ),
+      );
+      DB.instance = db;
+      final NativeMillGameSession session = await _bindNativeGame(
+        GameMode.humanVsAi,
+      );
+      GameController().gameRecorder
+        ..appendMove(ExtMove('d6', side: PieceColor.white))
+        ..appendMove(ExtMove('f4', side: PieceColor.black));
+
+      await tester.binding.setSurfaceSize(const Size(390, 700));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await tester.pumpWidget(
+        _localizedApp(
+          GameSessionScope(
+            session: session,
+            child: const MediaQuery(
+              data: MediaQueryData(size: Size(390, 700)),
+              child: GamePage(GameMode.humanVsAi),
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 250));
+
+      final Finder screenshot = find.byKey(
+        const Key('play_area_native_screenshot'),
+      );
+      final Rect initialBoardRect = tester.getRect(screenshot);
+      expect(
+        find.byKey(const Key('play_area_human_ai_move_list_expanded')),
+        findsOneWidget,
+      );
+      final Finder collapsedToolbar = find.byKey(
+        const Key('annotation_toolbar_collapsed_position'),
+      );
+      expect(collapsedToolbar, findsOneWidget);
+
+      await tester.tap(
+        find.descendant(
+          of: collapsedToolbar,
+          matching: find.byType(IconButton),
+        ),
+      );
+      await tester.pump();
+
+      final Finder expandedToolbar = find.byKey(
+        const Key('annotation_toolbar_expanded_position'),
+      );
+      expect(expandedToolbar, findsOneWidget);
+      expect(
+        find.byKey(
+          const Key('play_area_human_ai_move_list_hidden_for_annotation'),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        tester.getRect(screenshot).bottom,
+        lessThanOrEqualTo(tester.getRect(expandedToolbar).top),
+      );
+
+      await tester.tap(find.byTooltip('Exit annotation mode'));
+      await tester.pump();
+
+      expect(collapsedToolbar, findsOneWidget);
+      expect(
+        find.byKey(const Key('play_area_human_ai_move_list_expanded')),
+        findsOneWidget,
+      );
+      expect(tester.getRect(screenshot), initialBoardRect);
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets('human vs computer keeps a turn highlight when tips are off', (
     WidgetTester tester,

@@ -98,6 +98,7 @@ class GamePage extends StatelessWidget {
     this.showInitialOfflineBoardNewGameSheet = true,
     this.resumeAnalysis = false,
     this.initialAnalysisFen,
+    this.annotationModeNotifier,
   }) : assert(
          !resumeAnalysis || gameMode == GameMode.analysis,
          'Only an Analysis page can resume an Analysis session.',
@@ -116,6 +117,7 @@ class GamePage extends StatelessWidget {
   final bool showInitialOfflineBoardNewGameSheet;
   final bool resumeAnalysis;
   final String? initialAnalysisFen;
+  final ValueNotifier<bool>? annotationModeNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -128,6 +130,7 @@ class GamePage extends StatelessWidget {
       showInitialOfflineBoardNewGameSheet: showInitialOfflineBoardNewGameSheet,
       resumeAnalysis: resumeAnalysis,
       initialAnalysisFen: initialAnalysisFen,
+      annotationModeNotifier: annotationModeNotifier,
     );
   }
 }
@@ -140,6 +143,7 @@ class _GamePageInner extends StatefulWidget {
     required this.showInitialOfflineBoardNewGameSheet,
     required this.resumeAnalysis,
     required this.initialAnalysisFen,
+    required this.annotationModeNotifier,
   });
 
   final GameController controller;
@@ -147,6 +151,7 @@ class _GamePageInner extends StatefulWidget {
   final bool showInitialOfflineBoardNewGameSheet;
   final bool resumeAnalysis;
   final String? initialAnalysisFen;
+  final ValueNotifier<bool>? annotationModeNotifier;
 
   @override
   State<_GamePageInner> createState() => _GamePageInnerState();
@@ -160,6 +165,8 @@ class _GamePageInnerState extends State<_GamePageInner>
   bool _isAnnotationMode = false;
   bool _didShowInitialHumanAiNewGameSheet = false;
   bool _didShowInitialOfflineBoardNewGameSheet = false;
+  // UI-only rebuilds must not temporarily replace the board with its loader.
+  late final Future<void> _controllerStartFuture;
   late final AnnotationManager _annotationManager;
   late final bool _ownsAnalysisSession;
   GameRecorder? _analysisRecorder;
@@ -168,6 +175,7 @@ class _GamePageInnerState extends State<_GamePageInner>
   @override
   void initState() {
     super.initState();
+    _controllerStartFuture = widget.controller.startController();
     _ownsAnalysisSession =
         widget.controller.gameInstance.gameMode == GameMode.analysis;
     if (_ownsAnalysisSession) {
@@ -189,6 +197,11 @@ class _GamePageInnerState extends State<_GamePageInner>
     resetMillScore();
     // Initialize annotation manager from game controller.
     _annotationManager = widget.controller.annotationManager;
+    _isAnnotationMode = widget.annotationModeNotifier?.value ?? false;
+    widget.controller.isAnnotationMode = _isAnnotationMode;
+    widget.annotationModeNotifier?.addListener(
+      _onExternalAnnotationModeChanged,
+    );
 
     // Auto-start experience recording if enabled and not already recording.
     _maybeStartRecording();
@@ -222,6 +235,21 @@ class _GamePageInnerState extends State<_GamePageInner>
         );
       }
     }
+  }
+
+  @override
+  void didUpdateWidget(covariant _GamePageInner oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.annotationModeNotifier == widget.annotationModeNotifier) {
+      return;
+    }
+    oldWidget.annotationModeNotifier?.removeListener(
+      _onExternalAnnotationModeChanged,
+    );
+    widget.annotationModeNotifier?.addListener(
+      _onExternalAnnotationModeChanged,
+    );
+    _setAnnotationMode(widget.annotationModeNotifier?.value ?? false);
   }
 
   void _initializeAnalysisSession() {
@@ -322,6 +350,9 @@ class _GamePageInnerState extends State<_GamePageInner>
 
   @override
   void dispose() {
+    widget.annotationModeNotifier?.removeListener(
+      _onExternalAnnotationModeChanged,
+    );
     if (_ownsAnalysisSession) {
       // Engine searches belong to this analysis view. Leaving one running
       // after the route is popped keeps publishing state into the next page
@@ -351,17 +382,31 @@ class _GamePageInnerState extends State<_GamePageInner>
     super.dispose();
   }
 
-  // Toggle annotation mode without rebuilding the entire widget tree.
-  void _toggleAnnotationMode() {
+  void _onExternalAnnotationModeChanged() {
+    _setAnnotationMode(widget.annotationModeNotifier!.value);
+  }
+
+  void _setAnnotationMode(bool enabled) {
+    if (_isAnnotationMode == enabled) {
+      return;
+    }
     setState(() {
-      if (_isAnnotationMode) {
-        // Clear annotations when turning off annotation mode.
+      if (!enabled) {
         _annotationManager.clear();
       }
-      _isAnnotationMode = !_isAnnotationMode;
-      widget.controller.isAnnotationMode = _isAnnotationMode;
+      _isAnnotationMode = enabled;
+      widget.controller.isAnnotationMode = enabled;
     });
     debugPrint('Annotation mode is now: $_isAnnotationMode');
+  }
+
+  // Toggle annotation mode without rebuilding the entire widget tree.
+  void _toggleAnnotationMode() {
+    final bool enabled = !_isAnnotationMode;
+    _setAnnotationMode(enabled);
+    if (widget.annotationModeNotifier case final ValueNotifier<bool> notifier) {
+      notifier.value = enabled;
+    }
   }
 
   void _toggleTopAnnotationMode() {
@@ -530,7 +575,10 @@ class _GamePageInnerState extends State<_GamePageInner>
     final bool annotationToolbarEnabled =
         DB().displaySettings.isAnnotationToolbarShown;
     final bool hasAnnotationTopAction =
-        _isAnalysisPage || _isOfflineBoardGame || _isSetupPositionGame;
+        _isAnalysisPage ||
+        _isOfflineBoardGame ||
+        _isSetupPositionGame ||
+        (_isPuzzleGame && widget.annotationModeNotifier != null);
     final Widget toolbar =
         annotationToolbarEnabled &&
             (!hasAnnotationTopAction || _isAnnotationMode)
@@ -926,13 +974,16 @@ class _GamePageInnerState extends State<_GamePageInner>
     return OrientationBuilder(
       builder: (BuildContext context, Orientation orientation) {
         final bool isLandscape = orientation == Orientation.landscape;
+        final double annotationToolbarInset = _annotationToolbarBottomInset(
+          context,
+        );
 
         return Align(
           key: const Key('game_page_align_gameboard'),
           alignment: isLandscape ? Alignment.center : Alignment.topCenter,
           child: FutureBuilder<void>(
             key: const Key('game_page_future_builder'),
-            future: controller.startController(),
+            future: _controllerStartFuture,
             builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
@@ -943,15 +994,15 @@ class _GamePageInnerState extends State<_GamePageInner>
 
               return Padding(
                 key: const Key('game_page_padding'),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppTheme.boardMargin,
+                padding: EdgeInsetsDirectional.only(
+                  start: AppTheme.boardMargin,
+                  end: AppTheme.boardMargin,
+                  bottom: annotationToolbarInset,
                 ),
                 child: LayoutBuilder(
                   key: const Key('game_page_inner_layout_builder'),
                   builder: (BuildContext context, BoxConstraints constraints) {
-                    final double toolbarHeight = _calculateToolbarHeight(
-                      context,
-                    );
+                    final double toolbarHeight = _calculateToolbarHeight();
                     final double maxWidth = constraints.maxWidth;
                     final double maxHeight =
                         constraints.maxHeight - toolbarHeight;
@@ -1012,6 +1063,17 @@ class _GamePageInnerState extends State<_GamePageInner>
     );
   }
 
+  double _annotationToolbarBottomInset(BuildContext context) {
+    if (!DB().displaySettings.isAnnotationToolbarShown ||
+        !_isAnnotationMode ||
+        MediaQuery.orientationOf(context) != Orientation.portrait) {
+      return 0;
+    }
+    // The palette is an overlay, so reserve actual vertical space instead of
+    // only shrinking the board's width while it remains centered underneath.
+    return (GamePageToolbar.height + ButtonTheme.of(context).height) * 3;
+  }
+
   /// Builds the top-left back button when this route can pop.
   Widget _buildTopLeftButton(BuildContext context) {
     return ListenableBuilder(
@@ -1044,14 +1106,11 @@ class _GamePageInnerState extends State<_GamePageInner>
     );
   }
 
-  // Calculates the toolbar height based on display settings.
-  double _calculateToolbarHeight(BuildContext context) {
-    final DisplaySettings displaySettings = DB().displaySettings;
-    final double legacyToolbarHeight =
-        GamePageToolbar.height + ButtonTheme.of(context).height;
+  // Calculates the height reserved by the primary game controls.
+  double _calculateToolbarHeight() {
     final GameMode mode = widget.controller.gameInstance.gameMode;
 
-    double toolbarHeight = switch (mode) {
+    return switch (mode) {
       GameMode.setupPosition =>
         kLichessBottomBarHeight * 3 + AppTheme.boardMargin,
       GameMode.puzzle => AppTheme.boardMargin,
@@ -1059,14 +1118,6 @@ class _GamePageInnerState extends State<_GamePageInner>
       GameMode.analysis => kLichessBottomBarHeight + AppTheme.boardMargin,
       _ => kLichessBottomBarHeight + AppTheme.boardMargin,
     };
-
-    if (displaySettings.isAnnotationToolbarShown &&
-        _isAnnotationMode &&
-        MediaQuery.orientationOf(context) == Orientation.portrait) {
-      toolbarHeight += legacyToolbarHeight * 3;
-    }
-
-    return toolbarHeight;
   }
 }
 

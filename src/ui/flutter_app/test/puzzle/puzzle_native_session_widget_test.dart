@@ -28,6 +28,7 @@ import 'package:sanmill/puzzle/services/puzzle_auto_player.dart';
 import 'package:sanmill/puzzle/services/puzzle_manager.dart';
 import 'package:sanmill/puzzle/services/puzzle_rule_engine.dart';
 import 'package:sanmill/puzzle/services/puzzle_transform_service.dart';
+import 'package:sanmill/puzzle/widgets/puzzle_completion_confetti.dart';
 import 'package:sanmill/shared/database/database.dart';
 import 'package:sanmill/shared/services/environment_config.dart';
 import 'package:sanmill/shared/themes/app_theme.dart';
@@ -148,6 +149,7 @@ void main() {
     bool markFirstSolutionOptimal = false,
     String id = 'test_puzzle',
     String title = 'Test Puzzle',
+    PuzzleDifficulty difficulty = PuzzleDifficulty.easy,
   }) {
     final String fen = initialPosition ?? initialFen;
     final PuzzleRuleEngine? engine = PuzzleRuleEngine.tryLoad(fen);
@@ -179,7 +181,7 @@ void main() {
       title: title,
       description: 'Test puzzle for native-session auto-play behavior.',
       category: PuzzleCategory.formMill,
-      difficulty: PuzzleDifficulty.easy,
+      difficulty: difficulty,
       initialPosition: fen,
       solutions: puzzleSolutions,
       tags: const <String>['test'],
@@ -367,6 +369,10 @@ void main() {
     testWidgets(
       'shows Lichess-style puzzle bottom actions',
       (WidgetTester tester) async {
+        DB().displaySettings = const DisplaySettings(
+          animationDuration: 0.0,
+          isAnnotationToolbarShown: true,
+        );
         final PuzzleInfo puzzle = buildPuzzle(
           solutions: const <List<String>>[
             <String>['a1', 'd7'],
@@ -392,6 +398,33 @@ void main() {
         expect(
           find.byKey(const Key('puzzle_page_app_bar_more')),
           findsOneWidget,
+        );
+        final Finder annotationButton = find.byKey(
+          const Key('puzzle_page_app_bar_annotation_button'),
+        );
+        expect(annotationButton, findsOneWidget);
+        final IconButton annotationIconButton = tester.widget<IconButton>(
+          annotationButton,
+        );
+        expect(
+          annotationIconButton.style?.backgroundColor?.resolve(<WidgetState>{}),
+          Colors.transparent,
+        );
+        expect(
+          find.byKey(const Key('annotation_toolbar_collapsed_position')),
+          findsNothing,
+        );
+        await tester.tap(annotationButton);
+        await tester.pump();
+        expect(
+          find.byKey(const Key('annotation_toolbar_surface')),
+          findsOneWidget,
+        );
+        await tester.tap(annotationButton);
+        await tester.pump();
+        expect(
+          find.byKey(const Key('annotation_toolbar_surface')),
+          findsNothing,
         );
         expect(
           find.descendant(
@@ -457,6 +490,53 @@ void main() {
         await tester.tap(find.byKey(const Key('puzzle_page_action_reset')));
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 250));
+        await teardownPuzzlePage(tester);
+      },
+      skip: nativeLibrarySkipReason() != null,
+    );
+
+    testWidgets(
+      'keeps the puzzle screenshot tight while annotation tools are open',
+      (WidgetTester tester) async {
+        DB().displaySettings = const DisplaySettings(
+          animationDuration: 0.0,
+          isAnnotationToolbarShown: true,
+          isScreenshotGameInfoShown: false,
+        );
+        final PuzzleInfo puzzle = buildPuzzle(
+          solutions: const <List<String>>[
+            <String>['a1', 'd7'],
+          ],
+        );
+        await pumpPuzzlePage(tester, puzzle, viewSize: const Size(430, 800));
+
+        await tester.tap(
+          find.byKey(const Key('puzzle_page_app_bar_annotation_button')),
+        );
+        await tester.pump();
+
+        final Rect screenshotRect = tester.getRect(
+          find.byKey(const Key('play_area_native_screenshot')),
+        );
+        final Rect boardRect = tester.getRect(
+          find.byKey(const Key('play_area_game_board_container')),
+        );
+        expect(screenshotRect, boardRect);
+        expect(
+          screenshotRect.bottom,
+          lessThanOrEqualTo(
+            tester
+                .getRect(
+                  find.byKey(const Key('annotation_toolbar_expanded_position')),
+                )
+                .top,
+          ),
+        );
+
+        await tester.tap(find.byTooltip('Take screenshot'));
+        await tester.pump();
+        expect(tester.takeException(), isNull);
+
         await teardownPuzzlePage(tester);
       },
       skip: nativeLibrarySkipReason() != null,
@@ -757,6 +837,7 @@ void main() {
         await tester.pump(const Duration(milliseconds: 250));
 
         expect(find.text('⭐ Optimal · 2 actions:'), findsOneWidget);
+        expect(find.byType(PuzzleCompletionConfetti), findsNothing);
         expect(find.byType(MiniBoard), findsNWidgets(2));
         expect(
           find.byKey(const Key('puzzle_solution_1_miniboard_0')),
@@ -853,6 +934,7 @@ void main() {
         await drainUi(tester);
 
         expect(find.text('Puzzle solved!'), findsOneWidget);
+        expect(find.byType(PuzzleCompletionConfetti), findsOneWidget);
         expect(
           find.byKey(const Key('puzzle_completion_next_puzzle')),
           findsOneWidget,

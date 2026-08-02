@@ -389,8 +389,20 @@ class ImportService {
     if (action == null) {
       throw ImportFormatException(" $token → $move");
     }
-    history.appendMove(ExtMove(move, side: _sideToMoveOf(port)));
+    final ExtMove importedMove = ExtMove(move, side: _sideToMoveOf(port));
+    history.appendMove(importedMove);
     port.apply(action);
+    final String fen = port.exportFen();
+    final int boardEnd = fen.indexOf(' ');
+    if (boardEnd <= 0) {
+      throw StateError('Native PlayOK replay returned an invalid FEN: $fen');
+    }
+    final String boardLayout = fen.substring(0, boardEnd);
+    assert(
+      boardLayout.length == 26,
+      'Imported move board layout must contain 26 characters.',
+    );
+    importedMove.boardLayout = boardLayout;
   }
 
   /// Creates a private validation port configured with the user's active

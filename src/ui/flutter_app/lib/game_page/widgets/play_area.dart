@@ -810,6 +810,7 @@ class PlayAreaState extends State<PlayArea> {
   List<MoveAnalysisResult>? _scheduledAnalysisRefreshLineResults;
   static const double _kMoveListRouteTopInset = 80;
   static const double _kInlineMoveListHeight = 40;
+  static const double _kCompactMoveListMinHeight = 64;
   static const double _kRemoteMoveListHeight = 48;
   static const double _kWrappedMoveListMaxHeight = 104;
   static const double _kPlayerPanelHeight = 56;
@@ -981,20 +982,77 @@ class PlayAreaState extends State<PlayArea> {
     return Navigator.canPop(context) ? _kMoveListRouteTopInset : 0;
   }
 
-  Widget _withMoveListTopInset(BuildContext context, Widget child) {
-    final double topInset = _moveListRouteTopInset(context);
-    if (topInset == 0) {
-      return child;
+  _MoveListPresentation _moveListPresentation({
+    required BuildContext context,
+    required BoxConstraints constraints,
+    required double nonMoveHeight,
+    required double preferredHeight,
+    required bool includeRouteTopInset,
+  }) {
+    final double topInset = includeRouteTopInset
+        ? _moveListRouteTopInset(context)
+        : 0;
+    if (!GameController().isAnnotationMode || !constraints.hasBoundedHeight) {
+      return _MoveListPresentation(
+        density: _MoveListDensity.expanded,
+        height: preferredHeight,
+        topInset: topInset,
+      );
     }
-    return Padding(
-      key: const Key('play_area_move_list_route_top_inset'),
-      padding: EdgeInsets.only(top: topInset),
-      child: child,
+
+    // Protect a full-width board from the portrait annotation palette first.
+    // The move list spends only the vertical space left after the board and
+    // essential game chrome, then falls back through compact and one-line
+    // presentations before disappearing entirely.
+    final double availableHeight = math.max(
+      0,
+      constraints.maxHeight - constraints.maxWidth - nonMoveHeight - topInset,
     );
+    if (availableHeight >= preferredHeight) {
+      return _MoveListPresentation(
+        density: _MoveListDensity.expanded,
+        height: preferredHeight,
+        topInset: topInset,
+      );
+    }
+    if (availableHeight >= _kCompactMoveListMinHeight) {
+      return _MoveListPresentation(
+        density: _MoveListDensity.compact,
+        height: availableHeight,
+        topInset: topInset,
+      );
+    }
+    if (availableHeight >= _kInlineMoveListHeight) {
+      return _MoveListPresentation(
+        density: _MoveListDensity.singleLine,
+        height: _kInlineMoveListHeight,
+        topInset: topInset,
+      );
+    }
+    return const _MoveListPresentation.hidden();
   }
 
-  double _wrappedMoveListReservedHeightForRoute(BuildContext context) {
-    return _kWrappedMoveListMaxHeight + _moveListRouteTopInset(context);
+  Widget _applyMoveListPresentation({
+    required String keyPrefix,
+    required _MoveListPresentation presentation,
+    required Widget moveList,
+  }) {
+    if (!presentation.isVisible) {
+      return SizedBox.shrink(
+        key: Key('${keyPrefix}_move_list_hidden_for_annotation'),
+      );
+    }
+    final Widget positionedMoveList = presentation.topInset == 0
+        ? moveList
+        : Padding(
+            key: const Key('play_area_move_list_route_top_inset'),
+            padding: EdgeInsets.only(top: presentation.topInset),
+            child: moveList,
+          );
+    return KeyedSubtree(
+      key: Key('${keyPrefix}_move_list_${presentation.density.name}'),
+      child: positionedMoveList,
+    );
   }
 
   Color _actionSheetBackground(BuildContext context) {
@@ -3507,85 +3565,103 @@ class PlayAreaState extends State<PlayArea> {
     final int advantageValue = advantageData.isEmpty
         ? _getCurrentAdvantageValue()
         : advantageData.last;
-    return NativeScreenshot(
-      key: const Key('play_area_native_screenshot'),
-      controller: ScreenshotService.screenshotController,
-      child: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          assert(
-            constraints.hasBoundedWidth && constraints.hasBoundedHeight,
-            'The game board requires bounded screenshot dimensions.',
-          );
-          final double reserve = showAdvantageIndicator
-              ? _kAdvantageIndicatorReserve
-              : 0;
-          final double boardSize = math.min(
-            constraints.maxHeight,
-            math.max(0, constraints.maxWidth - reserve),
-          );
-          final Widget board = SizedBox.square(
-            dimension: boardSize,
-            child: Container(
-              key: const Key('play_area_game_board_container'),
-              alignment: Alignment.center,
-              child: RotatedBox(
-                key: const Key('play_area_board_orientation'),
-                quarterTurns: _isBoardFlipped ? 2 : 0,
-                child: widget.child,
-              ),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        assert(
+          constraints.hasBoundedWidth && constraints.hasBoundedHeight,
+          'The game board requires bounded screenshot dimensions.',
+        );
+        final double reserve = showAdvantageIndicator
+            ? _kAdvantageIndicatorReserve
+            : 0;
+        final double boardSize = math.min(
+          constraints.maxHeight,
+          math.max(0, constraints.maxWidth - reserve),
+        );
+        final Widget board = SizedBox.square(
+          dimension: boardSize,
+          child: Container(
+            key: const Key('play_area_game_board_container'),
+            alignment: Alignment.center,
+            child: RotatedBox(
+              key: const Key('play_area_board_orientation'),
+              quarterTurns: _isBoardFlipped ? 2 : 0,
+              child: widget.child,
             ),
-          );
-          if (!showAdvantageIndicator) {
-            return Center(child: board);
-          }
-          return Center(
-            child: SizedBox(
-              width: boardSize + reserve,
-              height: boardSize,
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    key: const Key('play_area_advantage_indicator_positioned'),
-                    width: _kAdvantageIndicatorWidth,
-                    height: boardSize,
-                    child: _PositionalAdvantageIndicator(
-                      value: advantageValue,
-                      whiteAtBottom: !_isBoardFlipped,
-                      appliedAiMoveEvaluation:
-                          LiveEvaluationService.state.appliedAiMoveEvaluation,
+          ),
+        );
+        final Widget screenshotContent = showAdvantageIndicator
+            ? SizedBox(
+                width: boardSize + reserve,
+                height: boardSize,
+                child: Row(
+                  children: <Widget>[
+                    SizedBox(
+                      key: const Key(
+                        'play_area_advantage_indicator_positioned',
+                      ),
+                      width: _kAdvantageIndicatorWidth,
+                      height: boardSize,
+                      child: _PositionalAdvantageIndicator(
+                        value: advantageValue,
+                        whiteAtBottom: !_isBoardFlipped,
+                        appliedAiMoveEvaluation:
+                            LiveEvaluationService.state.appliedAiMoveEvaluation,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: _kAdvantageIndicatorGap),
-                  board,
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+                    const SizedBox(width: _kAdvantageIndicatorGap),
+                    board,
+                  ],
+                ),
+              )
+            : board;
+        // The native controller crops the full-screen image using this render
+        // box. Keep it tight to the composed board so parent slack is excluded.
+        return Center(
+          child: NativeScreenshot(
+            key: const Key('play_area_native_screenshot'),
+            controller: ScreenshotService.screenshotController,
+            child: screenshotContent,
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildMoveListForHumanAi(BuildContext context) {
-    return _withMoveListTopInset(
-      context,
-      const _InlineMoveList(
-        key: Key('play_area_human_ai_move_list'),
-        wrapKey: Key('play_area_human_ai_move_list_wrap'),
+  Widget _buildMoveListForHumanAi(_MoveListPresentation presentation) {
+    if (!presentation.isVisible) {
+      return _applyMoveListPresentation(
+        keyPrefix: 'play_area_human_ai',
+        presentation: presentation,
+        moveList: const SizedBox.shrink(),
+      );
+    }
+    return _applyMoveListPresentation(
+      keyPrefix: 'play_area_human_ai',
+      presentation: presentation,
+      moveList: _InlineMoveList(
+        key: const Key('play_area_human_ai_move_list'),
+        wrapKey: const Key('play_area_human_ai_move_list_wrap'),
         roundKeyPrefix: 'play_area_human_ai_round_',
         moveKeyPrefix: 'play_area_human_ai_move_',
-        layout: _InlineMoveListLayout.stacked,
+        layout: presentation.layout,
         groupByRound: true,
         announceCompletedMove: true,
-        fixedHeight: _kWrappedMoveListMaxHeight,
+        fixedHeight: presentation.height,
       ),
     );
   }
 
-  Widget _buildMoveListForRegularGame(
-    BuildContext context, {
-    bool compact = false,
+  Widget _buildMoveListForRegularGame({
+    required _MoveListPresentation presentation,
   }) {
+    if (!presentation.isVisible) {
+      return _applyMoveListPresentation(
+        keyPrefix: 'play_area_regular',
+        presentation: presentation,
+        moveList: const SizedBox.shrink(),
+      );
+    }
     final Widget moveList = _InlineMoveList(
       key: const Key('play_area_regular_move_list'),
       wrapKey: const Key('play_area_regular_move_list_wrap'),
@@ -3596,16 +3672,16 @@ class PlayAreaState extends State<PlayArea> {
         _syncOfflineBoardClockToPosition();
       },
       showMovePreview: true,
-      layout: _InlineMoveListLayout.stacked,
+      layout: presentation.layout,
       groupByRound: true,
       announceCompletedMove: true,
-      fixedHeight: compact
-          ? _kRemoteMoveListHeight
-          : _kWrappedMoveListMaxHeight,
+      fixedHeight: presentation.height,
     );
-    return _isOfflineBoardMode || compact
-        ? moveList
-        : _withMoveListTopInset(context, moveList);
+    return _applyMoveListPresentation(
+      keyPrefix: 'play_area_regular',
+      presentation: presentation,
+      moveList: moveList,
+    );
   }
 
   Widget _buildHumanAiMainContent({
@@ -3626,11 +3702,6 @@ class PlayAreaState extends State<PlayArea> {
         left: false,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            final Widget moveList = showMoveList
-                ? _buildMoveListForHumanAi(context)
-                : const SizedBox.shrink(
-                    key: Key('play_area_human_ai_move_list_hidden'),
-                  );
             final Widget topTable = showPlayerPanels
                 ? const _HumanAiPlayerPanel(
                     key: Key('play_area_human_ai_robot_panel'),
@@ -3649,9 +3720,6 @@ class PlayAreaState extends State<PlayArea> {
                     key: Key('play_area_human_ai_tip_panel_hidden'),
                   );
 
-            final double moveListHeight = showMoveList
-                ? _wrappedMoveListReservedHeightForRoute(context)
-                : 0;
             final double gameTipHeight = showGameTip
                 ? _gameTipPanelHeightForLayout(context)
                 : 0;
@@ -3664,12 +3732,27 @@ class PlayAreaState extends State<PlayArea> {
             final double bottomPanelHeight =
                 (showPlayerPanels ? _playerPanelHeightForLayout(context) : 0) +
                 (showAdvantageGraph ? 112 : 0);
-            final double nonBoardHeight =
-                moveListHeight +
+            final double nonMoveHeight =
                 gameTipHeight +
                 boardRowsHeight +
                 topPanelHeight +
                 bottomPanelHeight;
+            final _MoveListPresentation moveListPresentation = showMoveList
+                ? _moveListPresentation(
+                    context: context,
+                    constraints: constraints,
+                    nonMoveHeight: nonMoveHeight,
+                    preferredHeight: _kWrappedMoveListMaxHeight,
+                    includeRouteTopInset: true,
+                  )
+                : const _MoveListPresentation.hidden();
+            final Widget moveList = showMoveList
+                ? _buildMoveListForHumanAi(moveListPresentation)
+                : const SizedBox.shrink(
+                    key: Key('play_area_human_ai_move_list_hidden'),
+                  );
+            final double moveListHeight = moveListPresentation.reservedHeight;
+            final double nonBoardHeight = moveListHeight + nonMoveHeight;
 
             // Shrink the board when the available height can't fit a
             // full-width board so it stays fully visible without scrolling.
@@ -4192,12 +4275,21 @@ class PlayAreaState extends State<PlayArea> {
           final double pieceRowsHeight = showPieceCountRows
               ? _pieceRowsHeightForLayout(context)
               : AppTheme.boardMargin * 2;
-          final double nonBoardHeight =
-              _kWrappedMoveListMaxHeight +
+          final double nonMoveHeight =
               (showContextualTip ? GameHeader.contextualHeight : 0) +
               _kOfflineBoardPlayerPanelHeight * 2 +
               pieceRowsHeight +
               _kOfflineBoardLayoutSafetyMargin;
+          final _MoveListPresentation moveListPresentation =
+              _moveListPresentation(
+                context: context,
+                constraints: constraints,
+                nonMoveHeight: nonMoveHeight,
+                preferredHeight: _kWrappedMoveListMaxHeight,
+                includeRouteTopInset: false,
+              );
+          final double nonBoardHeight =
+              moveListPresentation.reservedHeight + nonMoveHeight;
           final double boardSize = _boardSizeForConstraints(
             constraints,
             nonBoardHeight,
@@ -4206,7 +4298,7 @@ class PlayAreaState extends State<PlayArea> {
             key: const Key('play_area_offline_board_column'),
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              _buildMoveListForRegularGame(context),
+              _buildMoveListForRegularGame(presentation: moveListPresentation),
               if (showContextualTip)
                 const GameHeader(
                   key: Key('play_area_offline_board_game_header'),
@@ -4276,10 +4368,6 @@ class PlayAreaState extends State<PlayArea> {
           final GameController controller = GameController();
           final bool isRemoteGame =
               isPlayableGame && controller.isRemoteGameMode;
-          final Widget moveList = _buildMoveListForRegularGame(
-            context,
-            compact: isRemoteGame,
-          );
           final bool showRemoteGameTip =
               isRemoteGame && DB().generalSettings.showGameTips;
           // Remote games mirror the human-vs-computer composition: the
@@ -4322,22 +4410,34 @@ class PlayAreaState extends State<PlayArea> {
           final double bottomPlayerPanelHeight = isRemoteGame
               ? _playerPanelHeightForLayout(context)
               : 0;
-          final double moveListReserve = isPlayableGame
-              ? isRemoteGame
-                    ? _kRemoteMoveListHeight
-                    : _wrappedMoveListReservedHeightForRoute(context)
-              : 0;
           final double pieceRowsHeight = showPieceCountRows
               ? _pieceRowsHeightForLayout(context)
               : AppTheme.boardMargin * 2;
           final double advantageGraphHeight = showAdvantageGraph ? 150 : 0;
-          final double nonBoardHeight =
-              moveListReserve +
+          final double nonMoveHeight =
               topPanelHeight +
               bottomPlayerPanelHeight +
               pieceRowsHeight +
               advantageGraphHeight +
               AppTheme.boardMargin;
+          final _MoveListPresentation moveListPresentation = isPlayableGame
+              ? _moveListPresentation(
+                  context: context,
+                  constraints: constraints,
+                  nonMoveHeight: nonMoveHeight,
+                  preferredHeight: isRemoteGame
+                      ? _kRemoteMoveListHeight
+                      : _kWrappedMoveListMaxHeight,
+                  includeRouteTopInset: !isRemoteGame,
+                )
+              : const _MoveListPresentation.hidden();
+          final Widget moveList = isPlayableGame
+              ? _buildMoveListForRegularGame(presentation: moveListPresentation)
+              : const SizedBox.shrink(
+                  key: Key('play_area_regular_move_list_hidden'),
+                );
+          final double moveListReserve = moveListPresentation.reservedHeight;
+          final double nonBoardHeight = moveListReserve + nonMoveHeight;
 
           // Shrink the board when the available height can't fit a
           // full-width board so it stays fully visible without scrolling.
@@ -6955,6 +7055,33 @@ class _IndexedMoveNode {
 }
 
 enum _InlineMoveListLayout { wrap, horizontal, stacked, twoColumn }
+
+enum _MoveListDensity { expanded, compact, singleLine, hidden }
+
+class _MoveListPresentation {
+  const _MoveListPresentation({
+    required this.density,
+    required this.height,
+    required this.topInset,
+  });
+
+  const _MoveListPresentation.hidden()
+    : density = _MoveListDensity.hidden,
+      height = 0,
+      topInset = 0;
+
+  final _MoveListDensity density;
+  final double height;
+  final double topInset;
+
+  bool get isVisible => density != _MoveListDensity.hidden;
+
+  double get reservedHeight => isVisible ? height + topInset : 0;
+
+  _InlineMoveListLayout get layout => density == _MoveListDensity.singleLine
+      ? _InlineMoveListLayout.horizontal
+      : _InlineMoveListLayout.stacked;
+}
 
 /// Fixed size for analysis-panel move mini boards.
 ///

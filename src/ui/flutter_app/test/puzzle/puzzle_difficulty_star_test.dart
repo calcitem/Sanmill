@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/puzzle/models/puzzle_models.dart';
+import 'package:sanmill/puzzle/widgets/puzzle_completion_confetti.dart';
 import 'package:sanmill/shared/database/database.dart';
 
 import '../helpers/mocks/mock_database.dart';
@@ -95,6 +96,18 @@ void main() {
       expect(PuzzleDifficulty.values[3], PuzzleDifficulty.hard);
       expect(PuzzleDifficulty.values[4], PuzzleDifficulty.expert);
       expect(PuzzleDifficulty.values[5], PuzzleDifficulty.master);
+    });
+  });
+
+  group('Puzzle completion confetti', () {
+    test('particle count increases with every difficulty level', () {
+      final List<int> particleCounts = PuzzleDifficulty.values
+          .map(PuzzleCompletionConfetti.particlesPerWaveFor)
+          .toList(growable: false);
+
+      for (int i = 1; i < particleCounts.length; i++) {
+        expect(particleCounts[i], greaterThan(particleCounts[i - 1]));
+      }
     });
   });
 

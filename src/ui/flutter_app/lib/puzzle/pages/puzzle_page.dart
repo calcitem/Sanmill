@@ -5,9 +5,11 @@
 //
 // Main puzzle solving page
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -33,6 +35,7 @@ import '../services/puzzle_rule_engine.dart';
 import '../services/puzzle_selection_service.dart';
 import '../services/puzzle_transform_service.dart';
 import '../services/puzzle_validator.dart';
+import '../widgets/puzzle_completion_confetti.dart';
 import '../widgets/puzzle_game_board.dart';
 import '../widgets/puzzle_solution_view.dart';
 
@@ -83,6 +86,11 @@ class _PuzzlePageState extends State<PuzzlePage> {
   final PuzzleManager _puzzleManager = PuzzleManager();
   final PuzzleRatingService _ratingService = PuzzleRatingService();
   final ValueNotifier<int> _moveCountNotifier = ValueNotifier<int>(0);
+  final ValueNotifier<bool> _annotationModeNotifier = ValueNotifier<bool>(
+    false,
+  );
+  OverlayEntry? _confettiOverlayEntry;
+  Timer? _confettiTimer;
   bool _hintsUsed = false;
   bool _solutionViewed = false;
   int _lastRecordedMoveIndex = -1;
@@ -144,6 +152,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
   void didUpdateWidget(covariant PuzzlePage oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.puzzle.id != widget.puzzle.id) {
+      _removeSuccessConfetti();
+      _annotationModeNotifier.value = false;
       _activePuzzle = widget.puzzle;
       // New puzzle — pick a fresh random transformation.
       final TransformationType initialTransform =
@@ -161,6 +171,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
 
   @override
   void dispose() {
+    _removeSuccessConfetti();
+    _annotationModeNotifier.dispose();
     // Restore previous game state when leaving puzzle mode
     final GameController controller = GameController();
 
@@ -611,6 +623,32 @@ class _PuzzlePageState extends State<PuzzlePage> {
             ],
           ),
           actions: <Widget>[
+            if (DB().displaySettings.isAnnotationToolbarShown)
+              ValueListenableBuilder<bool>(
+                valueListenable: _annotationModeNotifier,
+                builder:
+                    (BuildContext context, bool isSelected, Widget? child) {
+                      return IconButton(
+                        key: const Key('puzzle_page_app_bar_annotation_button'),
+                        tooltip: isSelected
+                            ? s.exitAnnotationMode
+                            : s.enterAnnotationMode,
+                        isSelected: isSelected,
+                        selectedIcon: const Icon(
+                          FluentIcons.draw_image_24_filled,
+                        ),
+                        icon: const Icon(FluentIcons.draw_image_24_regular),
+                        style: const ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll<Color>(
+                            Colors.transparent,
+                          ),
+                        ),
+                        onPressed: canContinueOrSkipPuzzle
+                            ? () => _annotationModeNotifier.value = !isSelected
+                            : null,
+                      );
+                    },
+              ),
             PopupMenuButton<_PuzzleAppBarAction>(
               key: const Key('puzzle_page_app_bar_more'),
               tooltip: s.menu,
@@ -661,6 +699,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
               child: PuzzleGameBoard(
                 puzzle: _activePuzzle,
                 onMoveCompleted: _onPlayerMove,
+                annotationModeNotifier: _annotationModeNotifier,
               ),
             ),
           ],
@@ -1481,6 +1520,7 @@ class _PuzzlePageState extends State<PuzzlePage> {
       return;
     }
     _isSolved = true;
+    _showSuccessConfetti();
     final DateTime now = DateTime.now();
     final Duration timeSpent = now.difference(_attemptStartedAt);
     final int hintsUsed = _hintService.hintsGiven;
@@ -1552,6 +1592,39 @@ class _PuzzlePageState extends State<PuzzlePage> {
     // Always show the completion dialog in standalone puzzle mode, including
     // repeat solves, so the solver can continue directly to another puzzle.
     _showCompletionDialog(feedback);
+  }
+
+  void _showSuccessConfetti() {
+    _removeSuccessConfetti();
+    final OverlayState overlay = Overlay.of(context, rootOverlay: true);
+    final OverlayEntry entry = OverlayEntry(
+      builder: (BuildContext context) =>
+          PuzzleCompletionConfetti(difficulty: _activePuzzle.difficulty),
+    );
+    _confettiOverlayEntry = entry;
+
+    // Insert after the completion dialog route has been pushed so the
+    // celebration remains visible above its modal barrier.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || _confettiOverlayEntry != entry) {
+        return;
+      }
+      overlay.insert(entry);
+      _confettiTimer = Timer(
+        PuzzleCompletionConfetti.displayDuration,
+        _removeSuccessConfetti,
+      );
+    });
+  }
+
+  void _removeSuccessConfetti() {
+    _confettiTimer?.cancel();
+    _confettiTimer = null;
+    final OverlayEntry? entry = _confettiOverlayEntry;
+    _confettiOverlayEntry = null;
+    if (entry?.mounted ?? false) {
+      entry!.remove();
+    }
   }
 
   Future<void> _showCompletionDialog(ValidationFeedback feedback) async {
@@ -1734,6 +1807,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
   }
 
   void _loadNextPuzzle() {
+    _removeSuccessConfetti();
+    _annotationModeNotifier.value = false;
     // Keep continuous practice on the same guided difficulty curve as the
     // daily puzzle. Previously this selected randomly from every unsolved
     // puzzle, allowing a beginner puzzle to jump directly to expert.
@@ -1938,6 +2013,8 @@ class _PuzzlePageState extends State<PuzzlePage> {
   }
 
   void _resetPuzzle() {
+    _removeSuccessConfetti();
+    _annotationModeNotifier.value = false;
     // Record retry attempt if puzzle was already started
     if (_moveCountNotifier.value > 0 && !_isSolved) {
       _puzzleManager.recordAttempt(_activePuzzle.id);
