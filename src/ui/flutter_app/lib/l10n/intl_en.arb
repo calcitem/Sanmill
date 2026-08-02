@@ -7214,5 +7214,13 @@
     "onlineCreateCapacityMessage": "This application and its cloud play service are provided free of charge. The service uses limited free cloud resources, so creating a game may be temporarily unavailable when capacity is full. Please try again later; offline features are not affected.",
     "@onlineCreateCapacityMessage": {
         "description": "Explains limited free cloud capacity after creating a room is rejected"
+    },
+    "coordinateTrainingOptions": "Training options",
+    "@coordinateTrainingOptions": {
+        "description": "Accessible label for coordinate training orientation and time options"
+    },
+    "coordinateTrainingInstructions": "Training instructions",
+    "@coordinateTrainingInstructions": {
+        "description": "Accessible label for coordinate training instructions"
     }
 }

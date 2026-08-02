@@ -1015,6 +1015,8 @@ void main() {
     );
     expect(english.coordinateTrainingThirtySeconds, '30 seconds');
     expect(english.coordinateTrainingUntimed, 'Untimed');
+    expect(english.coordinateTrainingOptions, 'Training options');
+    expect(english.coordinateTrainingInstructions, 'Training instructions');
   });
 
   test('describes Chinese coordinate training modes directly', () {
@@ -1026,6 +1028,8 @@ void main() {
     );
     expect(chinese.coordinateTrainingThirtySeconds, '30 秒');
     expect(chinese.coordinateTrainingUntimed, '不限时');
+    expect(chinese.coordinateTrainingOptions, '训练选项');
+    expect(chinese.coordinateTrainingInstructions, '训练说明');
   });
 
   test('describes English puzzle streaks naturally', () {

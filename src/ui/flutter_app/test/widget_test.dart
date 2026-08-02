@@ -2687,12 +2687,19 @@ void main() {
   testWidgets('Coordinate training supports timed and untimed practice', (
     WidgetTester tester,
   ) async {
+    final SemanticsHandle semantics = tester.ensureSemantics();
     tester.view
       ..physicalSize = const Size(390, 844)
       ..devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     await DB().puzzleAnalyticsBox.delete(DB.coordinateTrainingStatsKey);
+    final ColorSettings previousColorSettings = DB().colorSettings;
+    addTearDown(() => DB().colorSettings = previousColorSettings);
+    DB().colorSettings = previousColorSettings.copyWith(
+      boardBackgroundColor: const Color(0xFF314A5B),
+      boardLineColor: const Color(0xFFF3C969),
+    );
 
     await tester.pumpWidget(
       MaterialApp(
@@ -2714,7 +2721,37 @@ void main() {
       findsNothing,
     );
     expect(find.byTooltip('Settings'), findsOneWidget);
-    expect(find.text('Board orientation'), findsOneWidget);
+    expect(find.text('Training options'), findsNothing);
+    expect(find.text('Training instructions'), findsNothing);
+    expect(find.bySemanticsLabel('Training options'), findsOneWidget);
+    expect(find.bySemanticsLabel('Training instructions'), findsOneWidget);
+
+    final ColoredBox boardSurface = tester.widget<ColoredBox>(
+      find.byKey(const Key('mill_coordinate_training_board_surface')),
+    );
+    expect(boardSurface.color, DB().colorSettings.boardBackgroundColor);
+
+    final Rect firstStatRow = tester.getRect(
+      find.byKey(const Key('mill_coordinate_training_stat_0')),
+    );
+    final double firstValueRight = tester
+        .getRect(find.byKey(const Key('mill_coordinate_training_stat_value_0')))
+        .right;
+    for (int index = 1; index < 5; index++) {
+      final Rect row = tester.getRect(
+        find.byKey(Key('mill_coordinate_training_stat_$index')),
+      );
+      expect(row.left, firstStatRow.left);
+      expect(row.right, firstStatRow.right);
+      expect(
+        tester
+            .getRect(
+              find.byKey(Key('mill_coordinate_training_stat_value_$index')),
+            )
+            .right,
+        firstValueRight,
+      );
+    }
 
     await tester.tap(
       find.byKey(const Key('mill_coordinate_training_settings_button')),
@@ -2783,21 +2820,26 @@ void main() {
       find.byKey(const Key('mill_coordinate_training_orientation_standard')),
     );
     await tester.pumpAndSettle();
-    String axisLabel(String key) {
-      return tester
-          .widget<Text>(
-            find.descendant(
-              of: find.byKey(Key(key)),
-              matching: find.byType(Text),
-            ),
-          )
-          .data!;
+    Text axisLabelWidget(String key) {
+      return tester.widget<Text>(
+        find.descendant(of: find.byKey(Key(key)), matching: find.byType(Text)),
+      );
     }
+
+    String axisLabel(String key) => axisLabelWidget(key).data!;
 
     expect(axisLabel('mill_coordinate_training_file_0'), 'a');
     expect(axisLabel('mill_coordinate_training_file_6'), 'g');
     expect(axisLabel('mill_coordinate_training_rank_0'), '7');
     expect(axisLabel('mill_coordinate_training_rank_6'), '1');
+    expect(
+      axisLabelWidget('mill_coordinate_training_file_0').style?.fontSize,
+      20,
+    );
+    expect(
+      axisLabelWidget('mill_coordinate_training_file_0').style?.color,
+      DB().colorSettings.boardLineColor,
+    );
 
     await tester.tap(
       find.byKey(const Key('mill_coordinate_training_menu_button')),
@@ -2899,6 +2941,7 @@ void main() {
     expect(storedStats['trainingSessions'], 2);
     expect(storedStats['thirtySecondSessions'], 1);
     expect(storedStats['thirtySecondBestCorrect'], 0);
+    semantics.dispose();
   });
 
   testWidgets('Tutorial explains configurable Mill rules clearly', (

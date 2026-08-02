@@ -6,13 +6,12 @@ import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_ce_flutter/hive_flutter.dart' show Box;
 
+import '../appearance_settings/models/display_settings.dart';
 import '../game_page/services/transform/transform.dart';
 import '../games/mill/mill_board_coordinate_maps.dart';
 import '../games/mill/mill_board_geometry.dart';
 import '../generated/intl/l10n.dart';
-import '../rule_settings/models/rule_settings.dart';
 import '../shared/database/database.dart';
 import '../shared/widgets/lichess_bottom_bar.dart';
 import '../shared/widgets/lichess_list_section.dart';
@@ -25,11 +24,33 @@ const double _kNextCoordinateScale = 0.42;
 const double _kCurrentCoordinateOpacity = 0.9;
 const double _kNextCoordinateOpacity = 0.68;
 const double _kTrainingPanelMinHeight = 96;
+const double _kBoardCoordinateFontSize = 20;
 const Duration _kTimedTrainingDuration = Duration(seconds: 30);
 
 enum _CoordinateTrainingOrientationChoice { standard, flipped, random }
 
 enum _CoordinateTrainingDurationChoice { thirtySeconds, untimed }
+
+@immutable
+class _TrainingBoardAppearance {
+  const _TrainingBoardAppearance({
+    required this.backgroundColor,
+    required this.lineColor,
+    required this.borderLineWidth,
+    required this.innerLineWidth,
+    required this.cornerRadius,
+    required this.pointPaintingStyle,
+    required this.pointWidth,
+  });
+
+  final Color backgroundColor;
+  final Color lineColor;
+  final double borderLineWidth;
+  final double innerLineWidth;
+  final double cornerRadius;
+  final PointPaintingStyle pointPaintingStyle;
+  final double pointWidth;
+}
 
 class MillCoordinateTrainingPage extends StatefulWidget {
   const MillCoordinateTrainingPage({super.key});
@@ -107,39 +128,47 @@ class _MillCoordinateTrainingPageState extends State<MillCoordinateTrainingPage>
         child: Column(
           children: <Widget>[
             Expanded(
-              child: ValueListenableBuilder<Box<RuleSettings>>(
-                valueListenable: DB().listenRuleSettings,
-                builder:
-                    (
-                      BuildContext context,
-                      Box<RuleSettings> box,
-                      Widget? child,
-                    ) {
-                      final bool hasDiagonalLines =
-                          DB().ruleSettings.hasDiagonalLines;
-                      return _TrainingLayout(
-                        hasDiagonalLines: hasDiagonalLines,
-                        showCoordinates: _showCoordinates,
-                        transform: _currentTransform,
-                        trainingActive: _trainingActive,
-                        isTimed:
-                            _durationChoice ==
-                            _CoordinateTrainingDurationChoice.thirtySeconds,
-                        trainingTimer: _trainingTimerController,
-                        score: _score,
-                        attempts: _attempts,
-                        lastScore: _lastScore,
-                        lastAttempts: _lastAttempts,
-                        statistics: _statistics,
-                        currentNode: _currentNode,
-                        nextNode: _nextNode,
-                        lastGuessNode: _lastGuessNode,
-                        lastGuessCorrect: _lastGuessCorrect,
-                        onGuess: _guessNode,
-                        onStart: _startTraining,
-                        onFinish: _finishTraining,
-                      );
-                    },
+              child: AnimatedBuilder(
+                animation: Listenable.merge(<Listenable>[
+                  DB().listenRuleSettings,
+                  DB().listenColorSettings,
+                  DB().listenDisplaySettings,
+                ]),
+                builder: (BuildContext context, Widget? child) {
+                  return _TrainingLayout(
+                    hasDiagonalLines: DB().ruleSettings.hasDiagonalLines,
+                    boardAppearance: _TrainingBoardAppearance(
+                      backgroundColor: DB().colorSettings.boardBackgroundColor,
+                      lineColor: DB().colorSettings.boardLineColor,
+                      borderLineWidth:
+                          DB().displaySettings.boardBorderLineWidth,
+                      innerLineWidth: DB().displaySettings.boardInnerLineWidth,
+                      cornerRadius: DB().displaySettings.boardCornerRadius,
+                      pointPaintingStyle:
+                          DB().displaySettings.pointPaintingStyle,
+                      pointWidth: DB().displaySettings.pointWidth,
+                    ),
+                    showCoordinates: _showCoordinates,
+                    transform: _currentTransform,
+                    trainingActive: _trainingActive,
+                    isTimed:
+                        _durationChoice ==
+                        _CoordinateTrainingDurationChoice.thirtySeconds,
+                    trainingTimer: _trainingTimerController,
+                    score: _score,
+                    attempts: _attempts,
+                    lastScore: _lastScore,
+                    lastAttempts: _lastAttempts,
+                    statistics: _statistics,
+                    currentNode: _currentNode,
+                    nextNode: _nextNode,
+                    lastGuessNode: _lastGuessNode,
+                    lastGuessCorrect: _lastGuessCorrect,
+                    onGuess: _guessNode,
+                    onStart: _startTraining,
+                    onFinish: _finishTraining,
+                  );
+                },
               ),
             ),
             if (!_trainingActive)
@@ -149,15 +178,13 @@ class _MillCoordinateTrainingPageState extends State<MillCoordinateTrainingPage>
                   LichessBottomBarButton(
                     key: const Key('mill_coordinate_training_menu_button'),
                     icon: Icons.tune_rounded,
-                    label: strings.boardOrientation,
-                    showLabel: true,
+                    label: strings.coordinateTrainingOptions,
                     onTap: _showTrainingMenuSheet,
                   ),
                   LichessBottomBarButton(
                     key: const Key('mill_coordinate_training_info_button'),
                     icon: Icons.info_outline_rounded,
-                    label: strings.about,
-                    showLabel: true,
+                    label: strings.coordinateTrainingInstructions,
                     onTap: _showInfoDialog,
                   ),
                 ],
@@ -424,6 +451,7 @@ class _MillCoordinateTrainingPageState extends State<MillCoordinateTrainingPage>
 class _TrainingLayout extends StatelessWidget {
   const _TrainingLayout({
     required this.hasDiagonalLines,
+    required this.boardAppearance,
     required this.showCoordinates,
     required this.transform,
     required this.trainingActive,
@@ -444,6 +472,7 @@ class _TrainingLayout extends StatelessWidget {
   });
 
   final bool hasDiagonalLines;
+  final _TrainingBoardAppearance boardAppearance;
   final bool showCoordinates;
   final TransformationType transform;
   final bool trainingActive;
@@ -482,6 +511,7 @@ class _TrainingLayout extends StatelessWidget {
           dimension: boardSize,
           child: _MillTrainingBoard(
             hasDiagonalLines: hasDiagonalLines,
+            boardAppearance: boardAppearance,
             showCoordinates: showCoordinates,
             transform: transform,
             trainingActive: trainingActive,
@@ -719,6 +749,7 @@ class _CoordinateTrainingStatistics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final S strings = S.of(context);
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final List<(String, String)> items = <(String, String)>[
       (
         strings.coordinateTrainingSessions,
@@ -742,53 +773,69 @@ class _CoordinateTrainingStatistics extends StatelessWidget {
       ),
     ];
 
-    return Column(
+    return Container(
       key: const Key('mill_coordinate_training_statistics'),
-      children: <Widget>[
-        Text(
-          strings.coordinateTrainingStatistics,
-          style: Theme.of(
-            context,
-          ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 6),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withValues(alpha: 0.7),
         ),
-        const SizedBox(height: 6),
-        LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            final double itemWidth = math.max(
-              112,
-              (constraints.maxWidth - 8) / 2,
-            );
-            return Wrap(
-              spacing: 8,
-              runSpacing: 6,
-              alignment: WrapAlignment.center,
-              children: <Widget>[
-                for (int index = 0; index < items.length; index++)
-                  SizedBox(
-                    key: Key('mill_coordinate_training_stat_$index'),
-                    width: itemWidth,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Flexible(
-                          child: Text(
-                            items[index].$1,
-                            overflow: TextOverflow.ellipsis,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Text(
+            strings.coordinateTrainingStatistics,
+            textAlign: TextAlign.start,
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 6),
+          for (int index = 0; index < items.length; index++) ...<Widget>[
+            if (index > 0)
+              Divider(height: 1, color: colorScheme.outlineVariant),
+            Semantics(
+              container: true,
+              label: '${items[index].$1}: ${items[index].$2}',
+              child: ExcludeSemantics(
+                child: Padding(
+                  key: Key('mill_coordinate_training_stat_$index'),
+                  padding: const EdgeInsets.symmetric(vertical: 7),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          items[index].$1,
+                          key: Key(
+                            'mill_coordinate_training_stat_label_$index',
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          items[index].$2,
-                          style: const TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(width: 16),
+                      Text(
+                        items[index].$2,
+                        key: Key('mill_coordinate_training_stat_value_$index'),
+                        textAlign: TextAlign.end,
+                        style: const TextStyle(
+                          fontFeatures: <FontFeature>[
+                            FontFeature.tabularFigures(),
+                          ],
+                          fontWeight: FontWeight.w700,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-              ],
-            );
-          },
-        ),
-      ],
+                ),
+              ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }
@@ -803,6 +850,7 @@ int _accuracyPercent(int correct, int attempts) {
 class _MillTrainingBoard extends StatelessWidget {
   const _MillTrainingBoard({
     required this.hasDiagonalLines,
+    required this.boardAppearance,
     required this.showCoordinates,
     required this.transform,
     required this.trainingActive,
@@ -814,6 +862,7 @@ class _MillTrainingBoard extends StatelessWidget {
   });
 
   final bool hasDiagonalLines;
+  final _TrainingBoardAppearance boardAppearance;
   final bool showCoordinates;
   final TransformationType transform;
   final bool trainingActive;
@@ -849,29 +898,38 @@ class _MillTrainingBoard extends StatelessWidget {
                   }
                 }
               : null,
-          child: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              CustomPaint(
-                size: size,
-                painter: _MillCoordinateTrainingPainter(
-                  colorScheme: Theme.of(context).colorScheme,
-                  hasDiagonalLines: hasDiagonalLines,
-                  transformMap: transformMap,
-                  lastGuessNode: lastGuessNode,
-                  lastGuessCorrect: lastGuessCorrect,
-                ),
-              ),
-              if (showCoordinates)
-                ..._buildCoordinateAxisLabels(context, size, isFlipped),
-              if (trainingActive && current != null && next != null)
-                IgnorePointer(
-                  child: _CoordinateDisplay(
-                    currentNode: current,
-                    nextNode: next,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(boardAppearance.cornerRadius),
+            child: ColoredBox(
+              key: const Key('mill_coordinate_training_board_surface'),
+              color: boardAppearance.backgroundColor,
+              child: Stack(
+                fit: StackFit.expand,
+                alignment: Alignment.center,
+                children: <Widget>[
+                  CustomPaint(
+                    key: const Key('mill_coordinate_training_board_paint'),
+                    painter: _MillCoordinateTrainingPainter(
+                      colorScheme: Theme.of(context).colorScheme,
+                      appearance: boardAppearance,
+                      hasDiagonalLines: hasDiagonalLines,
+                      transformMap: transformMap,
+                      lastGuessNode: lastGuessNode,
+                      lastGuessCorrect: lastGuessCorrect,
+                    ),
                   ),
-                ),
-            ],
+                  if (showCoordinates)
+                    ..._buildCoordinateAxisLabels(context, size, isFlipped),
+                  if (trainingActive && current != null && next != null)
+                    IgnorePointer(
+                      child: _CoordinateDisplay(
+                        currentNode: current,
+                        nextNode: next,
+                      ),
+                    ),
+                ],
+              ),
+            ),
           ),
         );
       },
@@ -888,9 +946,9 @@ class _MillTrainingBoard extends StatelessWidget {
     final double originY = (size.height - side) / 2;
     final double padding = side * MillBoardGeometry.defaultPaddingFraction;
     final double cell = (side - padding * 2) / 6;
-    final TextStyle style = Theme.of(context).textTheme.labelSmall!.copyWith(
-      color: Theme.of(context).colorScheme.onSurface,
-      fontWeight: FontWeight.w700,
+    final TextStyle style = TextStyle(
+      color: boardAppearance.lineColor,
+      fontSize: _kBoardCoordinateFontSize,
     );
     final List<Widget> labels = <Widget>[];
 
@@ -903,7 +961,7 @@ class _MillTrainingBoard extends StatelessWidget {
           key: Key('mill_coordinate_training_file_$index'),
           center: Offset(
             originX + padding + index * cell,
-            originY + side - padding * 0.34,
+            originY + side - padding / 2,
           ),
           label: file,
           style: style,
@@ -915,7 +973,7 @@ class _MillTrainingBoard extends StatelessWidget {
         _CoordinateAxisLabel(
           key: Key('mill_coordinate_training_rank_$index'),
           center: Offset(
-            originX + padding * 0.34,
+            originX + padding / 2,
             originY + padding + index * cell,
           ),
           label: rank.toString(),
@@ -941,11 +999,12 @@ class _CoordinateAxisLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double extent = 28;
     return Positioned(
-      left: center.dx - 10,
-      top: center.dy - 10,
-      width: 20,
-      height: 20,
+      left: center.dx - extent / 2,
+      top: center.dy - extent / 2,
+      width: extent,
+      height: extent,
       child: Center(child: Text(label, style: style)),
     );
   }
@@ -1091,6 +1150,7 @@ class _CoordinateDisplayState extends State<_CoordinateDisplay>
 class _MillCoordinateTrainingPainter extends CustomPainter {
   _MillCoordinateTrainingPainter({
     required this.colorScheme,
+    required this.appearance,
     required this.hasDiagonalLines,
     required this.transformMap,
     required this.lastGuessNode,
@@ -1098,6 +1158,7 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
   });
 
   final ColorScheme colorScheme;
+  final _TrainingBoardAppearance appearance;
   final bool hasDiagonalLines;
   final List<int> transformMap;
   final int? lastGuessNode;
@@ -1105,16 +1166,6 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final double side = size.shortestSide;
-    final RRect background = RRect.fromRectAndRadius(
-      Offset.zero & size,
-      Radius.circular(side * 0.035),
-    );
-    canvas.drawRRect(
-      background,
-      Paint()..color = colorScheme.surfaceContainerHigh,
-    );
-
     _drawLines(canvas, size);
     _drawPoints(canvas, size);
     _drawGuessHighlight(canvas, size);
@@ -1122,15 +1173,17 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
 
   void _drawLines(Canvas canvas, Size size) {
     final Paint paint = Paint()
-      ..color = colorScheme.onSurfaceVariant
-      ..strokeWidth = math.max(2, size.shortestSide * 0.007)
-      ..strokeCap = StrokeCap.round
+      ..color = appearance.lineColor
       ..style = PaintingStyle.stroke;
     final List<List<int>> lines = hasDiagonalLines
         ? MillBoardCoordinateMaps.diagonalMillNodeLines
         : MillBoardCoordinateMaps.standardMillNodeLines;
 
     for (final List<int> line in lines) {
+      final bool isOuterBorder = line.every((int node) => node >= 16);
+      paint.strokeWidth = isOuterBorder
+          ? appearance.borderLineWidth
+          : appearance.innerLineWidth;
       final Path path = Path();
       for (int i = 0; i < line.length; i++) {
         final Offset p = _transformedNodeOffset(line[i], size);
@@ -1170,18 +1223,26 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
   }
 
   void _drawPoints(Canvas canvas, Size size) {
-    final double side = size.shortestSide;
-    final double radius = side * 0.017;
-    final Paint fill = Paint()..color = colorScheme.surface;
-    final Paint stroke = Paint()
-      ..color = colorScheme.onSurfaceVariant
-      ..strokeWidth = math.max(1.2, side * 0.004)
-      ..style = PaintingStyle.stroke;
+    if (appearance.pointPaintingStyle == PointPaintingStyle.none) {
+      return;
+    }
+
+    final Paint pointPaint = Paint()
+      ..color = appearance.lineColor
+      ..strokeWidth = appearance.innerLineWidth
+      ..style = appearance.pointPaintingStyle == PointPaintingStyle.fill
+          ? PaintingStyle.fill
+          : PaintingStyle.stroke;
+    final Paint backgroundPaint = Paint()
+      ..color = appearance.backgroundColor
+      ..style = PaintingStyle.fill;
 
     for (int node = 0; node < MillBoardGeometry.nodeCount; node++) {
       final Offset center = _transformedNodeOffset(node, size);
-      canvas.drawCircle(center, radius, fill);
-      canvas.drawCircle(center, radius, stroke);
+      if (appearance.pointPaintingStyle == PointPaintingStyle.stroke) {
+        canvas.drawCircle(center, appearance.pointWidth, backgroundPaint);
+      }
+      canvas.drawCircle(center, appearance.pointWidth, pointPaint);
     }
   }
 
@@ -1200,6 +1261,13 @@ class _MillCoordinateTrainingPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _MillCoordinateTrainingPainter oldDelegate) {
     return oldDelegate.colorScheme != colorScheme ||
+        oldDelegate.appearance.backgroundColor != appearance.backgroundColor ||
+        oldDelegate.appearance.lineColor != appearance.lineColor ||
+        oldDelegate.appearance.borderLineWidth != appearance.borderLineWidth ||
+        oldDelegate.appearance.innerLineWidth != appearance.innerLineWidth ||
+        oldDelegate.appearance.pointPaintingStyle !=
+            appearance.pointPaintingStyle ||
+        oldDelegate.appearance.pointWidth != appearance.pointWidth ||
         oldDelegate.hasDiagonalLines != hasDiagonalLines ||
         !listEquals(oldDelegate.transformMap, transformMap) ||
         oldDelegate.lastGuessNode != lastGuessNode ||

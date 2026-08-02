@@ -7147,5 +7147,13 @@
     "onlineCreateCapacityMessage": "本程序及云端对战服务均免费提供。该服务使用有限的免费云端资源，容量已满时可能暂时无法创建对局。请稍后重试；离线功能不受影响。",
     "@onlineCreateCapacityMessage": {
         "description": "Explains limited free cloud capacity after creating a room is rejected"
+    },
+    "coordinateTrainingOptions": "训练选项",
+    "@coordinateTrainingOptions": {
+        "description": "Accessible label for coordinate training orientation and time options"
+    },
+    "coordinateTrainingInstructions": "训练说明",
+    "@coordinateTrainingInstructions": {
+        "description": "Accessible label for coordinate training instructions"
     }
 }
