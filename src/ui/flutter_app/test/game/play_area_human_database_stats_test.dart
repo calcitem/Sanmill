@@ -1876,6 +1876,68 @@ void main() {
     },
   );
 
+  testWidgets(
+    'human vs ai collapsed annotation button is clear and back-aligned',
+    (WidgetTester tester) async {
+      db = _GamePageDb(
+        generalSettings: const GeneralSettings(),
+        displaySettings: const DisplaySettings(
+          isAnnotationToolbarShown: true,
+          isUnplacedAndRemovedPiecesShown: false,
+        ),
+      );
+      DB.instance = db;
+      final NativeMillGameSession session = await _bindNativeGame(
+        GameMode.humanVsAi,
+      );
+
+      await tester.binding.setSurfaceSize(const Size(390, 844));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await _pumpGamePageRoute(
+        tester,
+        session: session,
+        gameMode: GameMode.humanVsAi,
+        openButtonKey: const Key('open_annotation_alignment_game_page'),
+        mediaQueryData: const MediaQueryData(
+          size: Size(390, 844),
+          padding: EdgeInsets.only(top: 36, bottom: 24),
+        ),
+      );
+
+      await tester.tap(
+        find.byKey(const Key('open_annotation_alignment_game_page')),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+
+      final Finder newGameSheet = find.byKey(
+        const Key('human_ai_new_game_sheet'),
+      );
+      if (newGameSheet.evaluate().isNotEmpty) {
+        Navigator.of(tester.element(newGameSheet)).pop();
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 300));
+      }
+
+      final Finder collapsedButton = find.byKey(
+        const Key('annotation_toolbar_collapsed_button'),
+      );
+      final Finder backButton = find.byKey(const Key('game_page_back_button'));
+      final Material toolbarSurface = tester.widget<Material>(
+        find.byKey(const Key('annotation_toolbar_surface')),
+      );
+
+      expect(toolbarSurface.color, Colors.transparent);
+      expect(collapsedButton, findsOneWidget);
+      expect(backButton, findsOneWidget);
+      expect(
+        tester.getCenter(collapsedButton).dy,
+        tester.getCenter(backButton).dy,
+      );
+      expect(tester.takeException(), isNull);
+    },
+  );
+
   testWidgets('human vs computer keeps a turn highlight when tips are off', (
     WidgetTester tester,
   ) async {
@@ -9210,35 +9272,34 @@ Future<void> _pumpGamePageRoute(
   required NativeMillGameSession session,
   required GameMode gameMode,
   required Key openButtonKey,
+  MediaQueryData? mediaQueryData,
 }) async {
+  Widget routeHost = Navigator(
+    onGenerateRoute: (RouteSettings settings) {
+      if (settings.name == '/game') {
+        return MaterialPageRoute<void>(builder: (_) => GamePage(gameMode));
+      }
+      return MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          return Scaffold(
+            body: Center(
+              child: TextButton(
+                key: openButtonKey,
+                onPressed: () => Navigator.of(context).pushNamed('/game'),
+                child: const Text('Open game'),
+              ),
+            ),
+          );
+        },
+      );
+    },
+  );
+  if (mediaQueryData != null) {
+    routeHost = MediaQuery(data: mediaQueryData, child: routeHost);
+  }
+
   await tester.pumpWidget(
-    _localizedApp(
-      GameSessionScope(
-        session: session,
-        child: Navigator(
-          onGenerateRoute: (RouteSettings settings) {
-            if (settings.name == '/game') {
-              return MaterialPageRoute<void>(
-                builder: (_) => GamePage(gameMode),
-              );
-            }
-            return MaterialPageRoute<void>(
-              builder: (BuildContext context) {
-                return Scaffold(
-                  body: Center(
-                    child: TextButton(
-                      key: openButtonKey,
-                      onPressed: () => Navigator.of(context).pushNamed('/game'),
-                      child: const Text('Open game'),
-                    ),
-                  ),
-                );
-              },
-            );
-          },
-        ),
-      ),
-    ),
+    _localizedApp(GameSessionScope(session: session, child: routeHost)),
   );
   await tester.pump();
 }

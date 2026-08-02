@@ -35,9 +35,11 @@ class AnnotationToolbarLayer extends StatelessWidget {
     if (!isAnnotationMode) {
       return PositionedDirectional(
         key: const Key('annotation_toolbar_collapsed_position'),
-        top: 8,
-        end: 8,
-        child: toolbar,
+        top: 0,
+        end: 0,
+        child: SafeArea(
+          child: Padding(padding: const EdgeInsets.all(8.0), child: toolbar),
+        ),
       );
     }
 
@@ -110,12 +112,15 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isExpanded = widget.isAnnotationMode;
     return Material(
       key: const Key('annotation_toolbar_surface'),
-      color: Colors.grey[850],
+      color: isExpanded ? Colors.grey[850] : Colors.transparent,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6.0),
-        child: widget.isAnnotationMode
+        padding: isExpanded
+            ? const EdgeInsets.symmetric(vertical: 6.0)
+            : EdgeInsets.zero,
+        child: isExpanded
             ? _buildExpandedToolbar(context)
             : _buildCollapsedToolbar(context),
       ),
@@ -125,6 +130,7 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
   Widget _buildCollapsedToolbar(BuildContext context) {
     return Center(
       child: IconButton(
+        key: const Key('annotation_toolbar_collapsed_button'),
         tooltip: S.of(context).enterAnnotationMode,
         icon: const Icon(
           FluentIcons.draw_image_24_regular,
