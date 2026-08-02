@@ -41,6 +41,7 @@ class NativeMillAiTurnController {
     this.generalSettings = const GeneralSettings(),
     this.maxStepsPerTurn = 8,
     this.bothSidesAi = false,
+    this.enablePonder = false,
     this.onBeforeRemoveApply,
     this.onRootEvaluation,
     this.openingBook,
@@ -66,6 +67,10 @@ class NativeMillAiTurnController {
   /// `Search::executeSearch` continuously running while
   /// `gameMode == GameMode::aiVsAi`.
   final bool bothSidesAi;
+
+  /// Enable standard opponent-turn pondering after this controller completes
+  /// an AI turn. Callers opt in only for local human-vs-AI play.
+  final bool enablePonder;
 
   /// When set, called before applying a remove action inside [playIfAiTurn].
   final BeforeRemoveApplyHook? onBeforeRemoveApply;
@@ -224,6 +229,7 @@ class NativeMillAiTurnController {
       }
       final GameAction? bookAction = openingBook?.lookup(session);
       if (bookAction != null) {
+        await session.cancelPonder();
         final GameAction action = _applyErrorPatch(session, bookAction);
         onRootEvaluation?.call(session, 0);
         if (action.type == MillActionTypes.remove) {
@@ -245,6 +251,7 @@ class NativeMillAiTurnController {
 
       final GameAction? humanDatabaseAction = humanDatabase?.lookup(session);
       if (humanDatabaseAction != null) {
+        await session.cancelPonder();
         final bool moverWasWhite =
             session.state.value.activeSeat == PlayerSeat.first;
         final HumanDatabaseMoveStats? stats = humanDatabase?.lastStats;
@@ -309,11 +316,14 @@ class NativeMillAiTurnController {
       // time, so toggling e.g. the shuffling switch mid-session would have no
       // effect — diverging from the master engine, which read `gameOptions`
       // live on every search.
-      final GameAction? searchedAction = await session.searchBestAction(
-        depth: searchDepth,
-        moveLimitMs: timeLimit,
-        engineSettings: generalSettings,
-      );
+      final GameAction? ponderedAction = await session.takePonderedAction();
+      final GameAction? searchedAction =
+          ponderedAction ??
+          await session.searchBestAction(
+            depth: searchDepth,
+            moveLimitMs: timeLimit,
+            engineSettings: generalSettings,
+          );
       if (searchedAction == null) {
         sw.stop();
         logger.w(
@@ -375,6 +385,18 @@ class NativeMillAiTurnController {
         );
       }
       lastApplied = action;
+    }
+    if (enablePonder &&
+        generalSettings.ponderEnabled &&
+        lastApplied != null &&
+        !session.outcome.isTerminal &&
+        session.state.value.activeSeat != startingSeat) {
+      session.startPonder(
+        lastAiAction: lastApplied,
+        depth: searchDepthForSession(session),
+        moveLimitMs: timeLimit,
+        engineSettings: generalSettings,
+      );
     }
     if (EnvironmentConfig.devMode) {
       logger.i(

@@ -220,6 +220,51 @@ class NativeMillRulesPort implements RulesPort {
     );
   }
 
+  /// Start a standard ponder search from the position reached by the
+  /// predicted opponent [moves]. The live kernel remains unchanged until the
+  /// real actions are applied through [apply].
+  Stream<tgf_simple.EngineEvent> millPonderEvents({
+    required int requestId,
+    required List<String> moves,
+    required int depth,
+    int moveLimitMs = 0,
+    GeneralSettings? engineSettings,
+  }) {
+    final List<tgf.TgfAction> predictedActions = moves
+        .map(MillActionCodec.tgfActionFromMoveString)
+        .whereType<tgf.TgfAction>()
+        .toList(growable: false);
+    assert(
+      predictedActions.length == moves.length,
+      'Every ponder PV move must use valid Mill notation.',
+    );
+    if (predictedActions.length != moves.length) {
+      throw ArgumentError.value(moves, 'moves', 'contains invalid notation');
+    }
+
+    final GeneralSettings settings = engineSettings ?? _generalSettings;
+    final bool usePerfectDatabase =
+        settings.usePerfectDatabase && isRuleSupportingPerfectDatabase();
+    return _session.ponderEvents(
+      requestId: requestId,
+      predictedActions: predictedActions,
+      depth: depth,
+      moveLimitMs: moveLimitMs,
+      usePerfectDatabase: usePerfectDatabase,
+      patchMakeTraps: settings.patchMakeTraps && isRuleSupportingErrorPatch(),
+      algorithm: millSearchAlgorithmFor(settings.searchAlgorithm),
+      aiIsLazy: settings.aiIsLazy,
+      skillLevel: settings.skillLevel,
+      shuffling: settings.shufflingEnabled,
+      useLazySmp: settings.useLazySmp,
+      engineThreads: settings.engineThreads,
+    );
+  }
+
+  bool millPonderHit(int requestId) => _session.ponderHit(requestId);
+
+  bool millPonderStop(int requestId) => _session.ponderStop(requestId);
+
   /// Query the perfect database for the current position without running
   /// search. Returns null when the setting is off, the rule set is unsupported,
   /// or the database has no action for the current sector.

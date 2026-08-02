@@ -22,6 +22,21 @@ pub(crate) fn stopped() -> EngineEvent {
     new("stopped")
 }
 
+/// Announce the exact opponent action chain a ponder worker accepted.
+///
+/// The request id and comma-separated Mill notation stay in `reason` so the
+/// existing `EngineEvent` wire shape remains backwards compatible.
+pub(crate) fn ponder_started(request_id: u32, expected_actions: &str) -> EngineEvent {
+    EngineEvent {
+        kind: "ponderStarted".to_owned(),
+        depth: 0,
+        score: 0,
+        nodes: 0,
+        to_node: -1,
+        reason: format!("requestId={request_id} expected={expected_actions}"),
+    }
+}
+
 /// Construct an "error" event.  The error text is stored in `reason`.
 pub(crate) fn error(reason: &str) -> EngineEvent {
     EngineEvent {

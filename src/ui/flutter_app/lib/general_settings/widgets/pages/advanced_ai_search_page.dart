@@ -99,6 +99,18 @@ class _AdvancedAiSearchPage extends StatelessWidget {
         key: const Key('advanced_ai_search_page_threading_title'),
       ),
       children: <Widget>[
+        if (!kIsWeb)
+          SettingsListTile.switchTile(
+            key: const Key(
+              'general_settings_page_settings_card_ais_play_style_ponder',
+            ),
+            value: generalSettings.ponderEnabled,
+            onChanged: (bool val) {
+              parent._setPonderEnabled(generalSettings, val);
+            },
+            titleString: S.of(context).ponderEnabled,
+            subtitleString: S.of(context).ponderEnabled_Detail,
+          ),
         SettingsListTile.switchTile(
           key: const Key(
             'general_settings_page_settings_card_ais_play_style_use_lazy_smp',

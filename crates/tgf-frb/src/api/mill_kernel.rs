@@ -364,6 +364,134 @@ pub fn tgf_kernel_mill_search_events_with_config(
     );
 }
 
+/// Search from the position expected after the opponent completes one full
+/// Mill turn. The live kernel is never mutated: the supplied PV actions are
+/// checked and replayed against local snapshots before the worker starts.
+///
+/// The returned stream emits `ready`, then `ponderStarted` with the accepted
+/// comma-separated action chain, followed by ordinary search progress. A
+/// `bestMove` is withheld until [tgf_kernel_mill_ponder_hit] succeeds.
+pub fn tgf_kernel_mill_ponder_events(
+    handle: u32,
+    request_id: u32,
+    predicted_actions: Vec<TgfAction>,
+    config: MillEngineConfig,
+    sink: StreamSink<EngineEvent>,
+) {
+    let (game_id, root_snapshot, root_history) = match with_kernel(handle, |kernel| {
+        (
+            kernel.game_id().to_owned(),
+            kernel.snapshot(),
+            kernel.history_snapshots().to_vec(),
+        )
+    }) {
+        Ok(state) => state,
+        Err(error) => {
+            spawn_kernel_search_error(error, sink);
+            return;
+        }
+    };
+    if game_id != "mill" {
+        spawn_kernel_search_error(format!("kernel game_id is {game_id}, expected mill"), sink);
+        return;
+    }
+    if predicted_actions.is_empty() {
+        spawn_kernel_search_error(
+            "ponder needs at least one predicted opponent action".to_owned(),
+            sink,
+        );
+        return;
+    }
+
+    let options = variant_extras::options_for(handle);
+    let rules = MillRules::new(options.clone());
+    let opponent_side = root_snapshot.side_to_move;
+    if !(0..=1).contains(&opponent_side) {
+        spawn_kernel_search_error(
+            "ponder cannot start from a terminal position".to_owned(),
+            sink,
+        );
+        return;
+    }
+
+    let mut predicted_snapshot = root_snapshot;
+    let mut predicted_history = root_history;
+    let mut accepted_actions = Vec::<Action>::new();
+    for predicted in predicted_actions {
+        if predicted_snapshot.side_to_move != opponent_side {
+            break;
+        }
+        let action = predicted.into_action();
+        if !rules.is_legal(&predicted_snapshot, action) {
+            spawn_kernel_search_error(
+                format!(
+                    "ponder prediction contains an illegal action at ply {}",
+                    accepted_actions.len() + 1
+                ),
+                sink,
+            );
+            return;
+        }
+        let next = rules.apply_with_history(&predicted_snapshot, action, &predicted_history);
+        predicted_history.push(predicted_snapshot);
+        predicted_snapshot = next;
+        accepted_actions.push(action);
+    }
+
+    if predicted_snapshot.side_to_move == opponent_side {
+        spawn_kernel_search_error(
+            "ponder prediction does not cover the opponent's complete turn".to_owned(),
+            sink,
+        );
+        return;
+    }
+    if predicted_snapshot.side_to_move < 0 {
+        spawn_kernel_search_error("ponder prediction ends the game".to_owned(), sink);
+        return;
+    }
+
+    let predicted_repetition_history =
+        MillRules::repetition_history_from_snapshots(&predicted_snapshot, &predicted_history);
+    let predicted_root_resets_repetition =
+        MillRules::root_position_resets_repetition_from_snapshots(
+            &predicted_snapshot,
+            &predicted_history,
+        );
+    let spec = search::PonderSearchSpec {
+        request_id,
+        expected_actions: accepted_actions,
+        predicted_snapshot,
+        predicted_repetition_history,
+        predicted_root_resets_repetition,
+    };
+    search::spawn_mill_ponder_event_stream(options, config.into(), spec, sink);
+}
+
+/// Confirm that the live kernel reached the speculative root and promote the
+/// matching ponder request to an ordinary timed search.
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_mill_ponder_hit(handle: u32, request_id: u32) -> Result<bool, String> {
+    let (snapshot, history) = with_kernel(handle, |kernel| {
+        (kernel.snapshot(), kernel.history_snapshots().to_vec())
+    })?;
+    let repetition_history = MillRules::repetition_history_from_snapshots(&snapshot, &history);
+    let root_resets_repetition =
+        MillRules::root_position_resets_repetition_from_snapshots(&snapshot, &history);
+    Ok(search::request_ponder_hit(
+        request_id,
+        snapshot,
+        &repetition_history,
+        root_resets_repetition,
+    ))
+}
+
+/// Stop only the matching ponder worker. Returns false for a stale request id
+/// or when the active search is an ordinary move search.
+#[flutter_rust_bridge::frb(sync)]
+pub fn tgf_kernel_mill_ponder_stop(request_id: u32) -> bool {
+    search::request_stop_ponder(request_id)
+}
+
 // ---------------------------------------------------------------------------
 // Setup-position editing API
 //

@@ -7206,5 +7206,13 @@
     "moreComputerSettings": "更多电脑设置",
     "@moreComputerSettings": {
         "description": "Opens the full computer settings page from self-play settings"
+    },
+    "ponderEnabled": "后台思考",
+    "@ponderEnabled": {
+        "description": "Enables standard opponent-turn background thinking in local human-computer games"
+    },
+    "ponderEnabled_Detail": "等待你走棋时在后台预测应招并继续搜索，可加快命中后的回复，但会增加耗电和发热。",
+    "@ponderEnabled_Detail": {
+        "description": "Explains the performance and power tradeoff of pondering"
     }
 }

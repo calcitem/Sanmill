@@ -71,27 +71,81 @@ class MillKernelSession {
     final Stream<tgf_simple.EngineEvent> events = tgf_mill
         .tgfKernelMillSearchEventsWithConfig(
           handle: kernel.rawHandle,
-          config: tgf_simple.MillEngineConfig(
-            algorithm: algorithm,
+          config: _engineConfig(
             depth: depth,
-            moveTimeMs: moveLimitMs,
-            aiIsLazy: aiIsLazy,
-            lastBestValue: _lastRawBestValue,
-            skillLevel: skillLevel,
+            moveLimitMs: moveLimitMs,
             usePerfectDatabase: usePerfectDatabase,
             patchMakeTraps: patchMakeTraps,
+            algorithm: algorithm,
+            aiIsLazy: aiIsLazy,
+            skillLevel: skillLevel,
             shuffling: shuffling,
             useLazySmp: useLazySmp,
             engineThreads: engineThreads,
             multiPv: multiPv,
           ),
         );
-    return events.map((tgf_simple.EngineEvent event) {
-      if (event.kind == 'bestMove') {
-        _lastRawBestValue = _rawScoreFromReason(event.reason);
-      }
-      return event;
-    });
+    return events.map(_trackBestValue);
+  }
+
+  /// Search from the speculative position reached after [predictedActions].
+  /// The result remains gated in Rust until [ponderHit] confirms that the
+  /// live kernel reached that exact position.
+  Stream<tgf_simple.EngineEvent> ponderEvents({
+    required int requestId,
+    required List<tgf.TgfAction> predictedActions,
+    required int depth,
+    int moveLimitMs = 0,
+    bool usePerfectDatabase = false,
+    bool patchMakeTraps = false,
+    tgf_simple.MillSearchAlgorithm algorithm =
+        tgf_simple.MillSearchAlgorithm.pvs,
+    bool aiIsLazy = false,
+    int skillLevel = 1,
+    bool shuffling = true,
+    bool useLazySmp = false,
+    int engineThreads = 4,
+  }) {
+    if (kernel.isDisposed) {
+      throw KernelException('handle already disposed');
+    }
+    final Stream<tgf_simple.EngineEvent> events = tgf_mill
+        .tgfKernelMillPonderEvents(
+          handle: kernel.rawHandle,
+          requestId: requestId,
+          predictedActions: predictedActions,
+          config: _engineConfig(
+            depth: depth,
+            moveLimitMs: moveLimitMs,
+            usePerfectDatabase: usePerfectDatabase,
+            patchMakeTraps: patchMakeTraps,
+            algorithm: algorithm,
+            aiIsLazy: aiIsLazy,
+            skillLevel: skillLevel,
+            shuffling: shuffling,
+            useLazySmp: useLazySmp,
+            engineThreads: engineThreads,
+            multiPv: 1,
+          ),
+        );
+    return events.map(_trackBestValue);
+  }
+
+  /// Promote the matching speculative search after the live kernel reaches
+  /// its predicted root.
+  bool ponderHit(int requestId) {
+    if (kernel.isDisposed) {
+      return false;
+    }
+    return tgf_mill.tgfKernelMillPonderHit(
+      handle: kernel.rawHandle,
+      requestId: requestId,
+    );
+  }
+
+  /// Stop only the matching speculative search. Stale request ids are no-ops.
+  bool ponderStop(int requestId) {
+    return tgf_mill.tgfKernelMillPonderStop(requestId: requestId);
   }
 
   /// Query the perfect database for the current kernel position without
@@ -241,5 +295,41 @@ class MillKernelSession {
       return 0;
     }
     return int.tryParse(match.group(1)!) ?? 0;
+  }
+
+  tgf_simple.EngineEvent _trackBestValue(tgf_simple.EngineEvent event) {
+    if (event.kind == 'bestMove') {
+      _lastRawBestValue = _rawScoreFromReason(event.reason);
+    }
+    return event;
+  }
+
+  tgf_simple.MillEngineConfig _engineConfig({
+    required int depth,
+    required int moveLimitMs,
+    required bool usePerfectDatabase,
+    required bool patchMakeTraps,
+    required tgf_simple.MillSearchAlgorithm algorithm,
+    required bool aiIsLazy,
+    required int skillLevel,
+    required bool shuffling,
+    required bool useLazySmp,
+    required int engineThreads,
+    required int multiPv,
+  }) {
+    return tgf_simple.MillEngineConfig(
+      algorithm: algorithm,
+      depth: depth,
+      moveTimeMs: moveLimitMs,
+      aiIsLazy: aiIsLazy,
+      lastBestValue: _lastRawBestValue,
+      skillLevel: skillLevel,
+      usePerfectDatabase: usePerfectDatabase,
+      patchMakeTraps: patchMakeTraps,
+      shuffling: shuffling,
+      useLazySmp: useLazySmp,
+      engineThreads: engineThreads,
+      multiPv: multiPv,
+    );
   }
 }

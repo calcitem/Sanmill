@@ -14,8 +14,8 @@
 // public `spawn_with_*` functions here so the FRB entry points remain
 // thin and game-neutral structurally.
 
-use std::sync::atomic::AtomicBool;
-use std::sync::{Arc, Mutex};
+use std::sync::atomic::{AtomicBool, AtomicU8, Ordering};
+use std::sync::{Arc, Condvar, Mutex};
 #[cfg(not(target_arch = "wasm32"))]
 use std::thread;
 use std::time::{Duration, Instant};
@@ -50,11 +50,90 @@ use crate::games::mill::perfect;
 // Cancellation handle for the most recent native Mill search worker.
 // ---------------------------------------------------------------------------
 
-/// Tracks the currently-running search worker so the FRB
-/// `native_mill_search_stop` entry point can request abort without owning
-/// a per-call handle.
-pub(crate) static ACTIVE_SEARCH: Lazy<Mutex<Option<SearchAbortHandle>>> =
-    Lazy::new(|| Mutex::new(None));
+const PONDER_THINKING: u8 = 0;
+const PONDER_HIT: u8 = 1;
+const PONDER_STOPPED: u8 = 2;
+
+#[derive(Debug)]
+struct PonderGate {
+    state: AtomicU8,
+    wake_mutex: Mutex<()>,
+    wake: Condvar,
+}
+
+impl PonderGate {
+    fn new() -> Self {
+        Self {
+            state: AtomicU8::new(PONDER_THINKING),
+            wake_mutex: Mutex::new(()),
+            wake: Condvar::new(),
+        }
+    }
+
+    fn hit(&self) -> bool {
+        if self
+            .state
+            .compare_exchange(
+                PONDER_THINKING,
+                PONDER_HIT,
+                Ordering::AcqRel,
+                Ordering::Acquire,
+            )
+            .is_err()
+        {
+            return false;
+        }
+        self.wake.notify_all();
+        true
+    }
+
+    fn stop(&self) {
+        self.state.store(PONDER_STOPPED, Ordering::Release);
+        self.wake.notify_all();
+    }
+
+    fn wait_for_release(&self) -> bool {
+        let mut guard = self.wake_mutex.lock().expect("ponder gate mutex poisoned");
+        while self.state.load(Ordering::Acquire) == PONDER_THINKING {
+            guard = self
+                .wake
+                .wait(guard)
+                .expect("ponder gate mutex poisoned while waiting");
+        }
+        self.state.load(Ordering::Acquire) == PONDER_HIT
+    }
+
+    fn is_hit(&self) -> bool {
+        self.state.load(Ordering::Acquire) == PONDER_HIT
+    }
+}
+
+#[derive(Clone)]
+pub(crate) struct PonderSearchSpec {
+    pub request_id: u32,
+    pub expected_actions: Vec<Action>,
+    pub predicted_snapshot: GameStateSnapshot,
+    pub predicted_repetition_history: Vec<u64>,
+    pub predicted_root_resets_repetition: bool,
+}
+
+struct ActiveMillSearch {
+    abort: SearchAbortHandle,
+    ponder: Option<ActivePonderSearch>,
+}
+
+struct ActivePonderSearch {
+    request_id: u32,
+    move_time_ms: u32,
+    predicted_snapshot: GameStateSnapshot,
+    predicted_repetition_history: Vec<u64>,
+    predicted_root_resets_repetition: bool,
+    gate: Arc<PonderGate>,
+}
+
+/// Tracks the currently-running search worker so the FRB stop and ponder-hit
+/// entry points can control it without owning the worker thread.
+static ACTIVE_SEARCH: Lazy<Mutex<Option<ActiveMillSearch>>> = Lazy::new(|| Mutex::new(None));
 
 static MILL_SHARED_TT: Lazy<SharedTt> = Lazy::new(|| {
     let tt = new_process_mill_tt();
@@ -863,6 +942,7 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
             root_position_resets_repetition,
             options,
             config,
+            None,
             sink,
         );
     });
@@ -874,8 +954,43 @@ pub(crate) fn spawn_mill_engine_config_event_stream(
         root_position_resets_repetition,
         options,
         config,
+        None,
         sink,
     );
+}
+
+/// Launch a native ponder worker rooted after the expected opponent action
+/// chain. The worker withholds `bestMove` until a matching ponder-hit request
+/// arrives and starts its ordinary move-time budget at that moment.
+pub(crate) fn spawn_mill_ponder_event_stream(
+    options: NativeMillVariantOptions,
+    config: MillEngineConfigPlan,
+    spec: PonderSearchSpec,
+    sink: StreamSink<EngineEvent>,
+) {
+    #[cfg(not(target_arch = "wasm32"))]
+    thread::spawn(move || {
+        run_mill_engine_config_event_stream(
+            spec.predicted_snapshot,
+            spec.predicted_repetition_history.clone(),
+            spec.predicted_root_resets_repetition,
+            options,
+            config,
+            Some(spec),
+            sink,
+        );
+    });
+
+    #[cfg(target_arch = "wasm32")]
+    {
+        let _ = options;
+        let _ = config;
+        let _ = spec;
+        let _ = sink.add(crate::engine_event::error(
+            "ponder is unavailable on WebAssembly",
+        ));
+        let _ = sink.add(crate::engine_event::stopped());
+    }
 }
 
 fn run_mill_engine_config_event_stream(
@@ -883,11 +998,18 @@ fn run_mill_engine_config_event_stream(
     root_repetition_history: Vec<u64>,
     root_position_resets_repetition: bool,
     options: NativeMillVariantOptions,
-    config: MillEngineConfigPlan,
+    mut config: MillEngineConfigPlan,
+    ponder: Option<PonderSearchSpec>,
     sink: StreamSink<EngineEvent>,
 ) {
-    if sink.add(crate::engine_event::ready()).is_err() {
+    if ponder.is_none() && sink.add(crate::engine_event::ready()).is_err() {
         return;
+    }
+    let ordinary_move_time_ms = config.move_time_ms;
+    if ponder.is_some() {
+        // Ponder time belongs to the opponent. A timer created by
+        // `request_ponder_hit` starts the ordinary budget only on a hit.
+        config.move_time_ms = 0;
     }
 
     let rules_options = options.clone();
@@ -906,15 +1028,62 @@ fn run_mill_engine_config_event_stream(
         game.set_eval_weights(weights);
     }
     let mut wb = game.build_workbench(&snapshot);
-    let mut searcher = mill_searcher_for_config(&config);
+    let mut searcher = if ponder.is_some() && config.multi_pv <= 1 {
+        // Preserve the TT generation populated by the preceding ordinary
+        // search or prediction pass. Normal searches keep their existing
+        // fake-clean lifecycle.
+        mill_searcher_with_shared_tt(MILL_SHARED_TT.clone())
+    } else {
+        mill_searcher_for_config(&config)
+    };
     let abort = Arc::new(AtomicBool::new(false));
     let search_context = search_context_for_config(&config);
     searcher.set_abort_flag(Arc::clone(&abort));
     searcher.set_options(configured_search_options(&config, search_context));
 
+    let ponder_gate = ponder.as_ref().map(|_| Arc::new(PonderGate::new()));
     {
         let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
-        *active = Some(searcher.abort_handle());
+        *active = Some(ActiveMillSearch {
+            abort: searcher.abort_handle(),
+            ponder: ponder
+                .as_ref()
+                .zip(ponder_gate.as_ref())
+                .map(|(spec, gate)| ActivePonderSearch {
+                    request_id: spec.request_id,
+                    move_time_ms: ordinary_move_time_ms,
+                    predicted_snapshot: spec.predicted_snapshot,
+                    predicted_repetition_history: spec.predicted_repetition_history.clone(),
+                    predicted_root_resets_repetition: spec.predicted_root_resets_repetition,
+                    gate: Arc::clone(gate),
+                }),
+        });
+    }
+
+    if ponder.is_some() && sink.add(crate::engine_event::ready()).is_err() {
+        request_abort_active_search();
+        clear_active_search(ponder.as_ref().map(|spec| spec.request_id));
+        return;
+    }
+    if let Some(spec) = ponder.as_ref() {
+        let expected = spec
+            .expected_actions
+            .iter()
+            .copied()
+            .map(action_to_uci_str)
+            .collect::<Vec<_>>()
+            .join(",");
+        if sink
+            .add(crate::engine_event::ponder_started(
+                spec.request_id,
+                &expected,
+            ))
+            .is_err()
+        {
+            request_abort_active_search();
+            clear_active_search(Some(spec.request_id));
+            return;
+        }
     }
 
     let requested_depth = if config.depth > 0 {
@@ -1189,6 +1358,14 @@ fn run_mill_engine_config_event_stream(
         }
     }
 
+    if let Some(gate) = ponder_gate.as_ref()
+        && !gate.wait_for_release()
+    {
+        let _ = sink.add(crate::engine_event::stopped());
+        clear_active_search(ponder.as_ref().map(|spec| spec.request_id));
+        return;
+    }
+
     result = apply_move_none_fallback(result, snapshot, &rules_options);
 
     let notation = action_to_uci_str(result.best_action);
@@ -1200,19 +1377,106 @@ fn run_mill_engine_config_event_stream(
         aimovetype,
     ));
     let _ = sink.add(crate::engine_event::stopped());
-    let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
-    *active = None;
+    clear_active_search(ponder.as_ref().map(|spec| spec.request_id));
 }
 
 /// Request that the currently-running native Mill search aborts.
 /// Returns false when no worker is active.
 pub(crate) fn request_abort_active_search() -> bool {
     let active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
-    if let Some(handle) = active.as_ref() {
-        handle.request_abort();
+    if let Some(active) = active.as_ref() {
+        if let Some(ponder) = active.ponder.as_ref() {
+            ponder.gate.stop();
+        }
+        active.abort.request_abort();
         true
     } else {
         false
+    }
+}
+
+/// Stop only the matching ponder request. Stale Dart callbacks are harmless.
+pub(crate) fn request_stop_ponder(request_id: u32) -> bool {
+    let active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
+    let Some(active) = active.as_ref() else {
+        return false;
+    };
+    let Some(ponder) = active.ponder.as_ref() else {
+        return false;
+    };
+    if ponder.request_id != request_id {
+        return false;
+    }
+    ponder.gate.stop();
+    active.abort.request_abort();
+    true
+}
+
+/// Promote the matching ponder worker to an ordinary timed search.
+///
+/// `current_*` must describe the live kernel after the opponent completed
+/// their turn. A mismatch stops the speculative worker instead of ever
+/// allowing a stale best move to reach Flutter.
+pub(crate) fn request_ponder_hit(
+    request_id: u32,
+    current_snapshot: GameStateSnapshot,
+    current_repetition_history: &[u64],
+    current_root_resets_repetition: bool,
+) -> bool {
+    let (gate, abort, move_time_ms) = {
+        let active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
+        let Some(active) = active.as_ref() else {
+            return false;
+        };
+        let Some(ponder) = active.ponder.as_ref() else {
+            return false;
+        };
+        if ponder.request_id != request_id {
+            return false;
+        }
+        let root_matches = ponder.predicted_snapshot == current_snapshot
+            && ponder.predicted_repetition_history == current_repetition_history
+            && ponder.predicted_root_resets_repetition == current_root_resets_repetition;
+        if !root_matches {
+            ponder.gate.stop();
+            active.abort.request_abort();
+            return false;
+        }
+        (
+            Arc::clone(&ponder.gate),
+            active.abort.clone(),
+            ponder.move_time_ms,
+        )
+    };
+
+    if !gate.hit() {
+        return false;
+    }
+
+    #[cfg(not(target_arch = "wasm32"))]
+    if move_time_ms > 0 {
+        thread::spawn(move || {
+            thread::sleep(Duration::from_millis(u64::from(move_time_ms)));
+            if gate.is_hit() {
+                abort.request_abort();
+            }
+        });
+    }
+    true
+}
+
+fn clear_active_search(ponder_request_id: Option<u32>) {
+    let mut active = ACTIVE_SEARCH.lock().expect("active search mutex poisoned");
+    let should_clear =
+        active.as_ref().is_some_and(
+            |current| match (ponder_request_id, current.ponder.as_ref()) {
+                (Some(expected), Some(ponder)) => ponder.request_id == expected,
+                (None, None) => true,
+                _ => false,
+            },
+        );
+    if should_clear {
+        *active = None;
     }
 }
 
@@ -1221,6 +1485,24 @@ mod tests {
     use super::*;
     use std::sync::atomic::Ordering;
     use tgf_mill::MillRules;
+
+    #[test]
+    fn ponder_gate_releases_only_after_hit() {
+        let gate = PonderGate::new();
+
+        assert!(gate.hit());
+        assert!(gate.wait_for_release());
+        assert!(!gate.hit(), "a ponder request can be hit only once");
+    }
+
+    #[test]
+    fn ponder_gate_stop_discards_the_speculative_result() {
+        let gate = PonderGate::new();
+
+        gate.stop();
+        assert!(!gate.wait_for_release());
+        assert!(!gate.hit(), "a stopped ponder request cannot be revived");
+    }
 
     #[test]
     fn constrained_target_tt_honors_its_physical_memory_budget() {

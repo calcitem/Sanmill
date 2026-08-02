@@ -7273,5 +7273,13 @@
     "moreComputerSettings": "More computer settings",
     "@moreComputerSettings": {
         "description": "Opens the full computer settings page from self-play settings"
+    },
+    "ponderEnabled": "Ponder",
+    "@ponderEnabled": {
+        "description": "Enables standard opponent-turn background thinking in local human-computer games"
+    },
+    "ponderEnabled_Detail": "Think in the background while waiting for your move. This can make replies faster, but increases power use and heat.",
+    "@ponderEnabled_Detail": {
+        "description": "Explains the performance and power tradeoff of pondering"
     }
 }

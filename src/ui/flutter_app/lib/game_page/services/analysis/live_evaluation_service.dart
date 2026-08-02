@@ -278,7 +278,7 @@ class LiveEvaluationService {
       return;
     }
     final NativeMillGameSession? session = controller.activeNativeMillSession;
-    if (session == null) {
+    if (session == null || session.isPondering) {
       return;
     }
     await _requestPosition(

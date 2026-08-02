@@ -38,7 +38,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.12.0";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 332608665;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -2091852686;
 
 // Section: executor
 
@@ -1600,6 +1600,121 @@ fn wire__crate__api__mill_kernel__tgf_kernel_mill_perfect_db_best_action_impl(
         },
     )
 }
+fn wire__crate__api__mill_kernel__tgf_kernel_mill_ponder_events_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "tgf_kernel_mill_ponder_events",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_handle = <u32>::sse_decode(&mut deserializer);
+            let api_request_id = <u32>::sse_decode(&mut deserializer);
+            let api_predicted_actions =
+                <Vec<crate::api::kernel::TgfAction>>::sse_decode(&mut deserializer);
+            let api_config = <crate::api::simple::MillEngineConfig>::sse_decode(&mut deserializer);
+            let api_sink = <StreamSink<
+                crate::api::simple::EngineEvent,
+                flutter_rust_bridge::for_generated::SseCodec,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| {
+                transform_result_sse::<_, ()>((move || {
+                    let output_ok = Result::<_, ()>::Ok({
+                        crate::api::mill_kernel::tgf_kernel_mill_ponder_events(
+                            api_handle,
+                            api_request_id,
+                            api_predicted_actions,
+                            api_config,
+                            api_sink,
+                        );
+                    })?;
+                    Ok(output_ok)
+                })())
+            }
+        },
+    )
+}
+fn wire__crate__api__mill_kernel__tgf_kernel_mill_ponder_hit_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "tgf_kernel_mill_ponder_hit",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_handle = <u32>::sse_decode(&mut deserializer);
+            let api_request_id = <u32>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, String>((move || {
+                let output_ok = crate::api::mill_kernel::tgf_kernel_mill_ponder_hit(
+                    api_handle,
+                    api_request_id,
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__mill_kernel__tgf_kernel_mill_ponder_stop_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "tgf_kernel_mill_ponder_stop",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_request_id = <u32>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let output_ok = Result::<_, ()>::Ok(
+                    crate::api::mill_kernel::tgf_kernel_mill_ponder_stop(api_request_id),
+                )?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
 fn wire__crate__api__mill_kernel__tgf_kernel_mill_search_events_impl(
     port_: flutter_rust_bridge::for_generated::MessagePort,
     ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
@@ -3055,13 +3170,19 @@ fn pde_ffi_dispatcher_primary_impl(
             rust_vec_len,
             data_len,
         ),
-        50 => wire__crate__api__mill_kernel__tgf_kernel_mill_search_events_impl(
+        50 => wire__crate__api__mill_kernel__tgf_kernel_mill_ponder_events_impl(
             port,
             ptr,
             rust_vec_len,
             data_len,
         ),
-        51 => wire__crate__api__mill_kernel__tgf_kernel_mill_search_events_with_config_impl(
+        53 => wire__crate__api__mill_kernel__tgf_kernel_mill_search_events_impl(
+            port,
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        54 => wire__crate__api__mill_kernel__tgf_kernel_mill_search_events_with_config_impl(
             port,
             ptr,
             rust_vec_len,
@@ -3218,34 +3339,44 @@ fn pde_ffi_dispatcher_sync_impl(
             rust_vec_len,
             data_len,
         ),
-        52 => wire__crate__api__kernel__tgf_kernel_outcome_impl(ptr, rust_vec_len, data_len),
-        53 => wire__crate__api__simple__tgf_kernel_player_info_impl(ptr, rust_vec_len, data_len),
-        54 => wire__crate__api__kernel__tgf_kernel_redo_impl(ptr, rust_vec_len, data_len),
-        55 => wire__crate__api__kernel__tgf_kernel_redo_depth_impl(ptr, rust_vec_len, data_len),
-        56 => {
+        51 => wire__crate__api__mill_kernel__tgf_kernel_mill_ponder_hit_impl(
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        52 => wire__crate__api__mill_kernel__tgf_kernel_mill_ponder_stop_impl(
+            ptr,
+            rust_vec_len,
+            data_len,
+        ),
+        55 => wire__crate__api__kernel__tgf_kernel_outcome_impl(ptr, rust_vec_len, data_len),
+        56 => wire__crate__api__simple__tgf_kernel_player_info_impl(ptr, rust_vec_len, data_len),
+        57 => wire__crate__api__kernel__tgf_kernel_redo_impl(ptr, rust_vec_len, data_len),
+        58 => wire__crate__api__kernel__tgf_kernel_redo_depth_impl(ptr, rust_vec_len, data_len),
+        59 => {
             wire__crate__api__mill_kernel__tgf_kernel_set_from_fen_impl(ptr, rust_vec_len, data_len)
         }
-        57 => {
+        60 => {
             wire__crate__api__mill_kernel__tgf_kernel_setup_clear_impl(ptr, rust_vec_len, data_len)
         }
-        58 => {
+        61 => {
             wire__crate__api__mill_kernel__tgf_kernel_setup_finish_impl(ptr, rust_vec_len, data_len)
         }
-        59 => wire__crate__api__mill_kernel__tgf_kernel_setup_set_piece_impl(
+        62 => wire__crate__api__mill_kernel__tgf_kernel_setup_set_piece_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        60 => wire__crate__api__mill_kernel__tgf_kernel_setup_set_side_impl(
+        63 => wire__crate__api__mill_kernel__tgf_kernel_setup_set_side_impl(
             ptr,
             rust_vec_len,
             data_len,
         ),
-        61 => wire__crate__api__kernel__tgf_kernel_snapshot_impl(ptr, rust_vec_len, data_len),
-        62 => wire__crate__api__simple__tgf_kernel_topology_impl(ptr, rust_vec_len, data_len),
-        63 => wire__crate__api__kernel__tgf_kernel_undo_impl(ptr, rust_vec_len, data_len),
-        64 => wire__crate__api__kernel__tgf_kernel_undo_depth_impl(ptr, rust_vec_len, data_len),
-        65 => wire__crate__api__simple__tgf_version_impl(ptr, rust_vec_len, data_len),
+        64 => wire__crate__api__kernel__tgf_kernel_snapshot_impl(ptr, rust_vec_len, data_len),
+        65 => wire__crate__api__simple__tgf_kernel_topology_impl(ptr, rust_vec_len, data_len),
+        66 => wire__crate__api__kernel__tgf_kernel_undo_impl(ptr, rust_vec_len, data_len),
+        67 => wire__crate__api__kernel__tgf_kernel_undo_depth_impl(ptr, rust_vec_len, data_len),
+        68 => wire__crate__api__simple__tgf_version_impl(ptr, rust_vec_len, data_len),
         _ => unreachable!(),
     }
 }

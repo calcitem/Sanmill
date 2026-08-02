@@ -197,6 +197,14 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag useLazySmp: $value");
   }
 
+  void _setPonderEnabled(GeneralSettings generalSettings, bool value) {
+    _settingsRepository.generalSettings = generalSettings.copyWith(
+      ponderEnabled: value,
+    );
+
+    logger.t("$_logTag ponderEnabled: $value");
+  }
+
   void _setEngineThreads(BuildContext context) => showModalBottomSheet<void>(
     context: context,
     builder: (_) => const _SearchThreadsPicker(),

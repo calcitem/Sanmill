@@ -184,6 +184,7 @@ class TapHandler {
     final NativeMillAiTurnController aiTurnController =
         NativeMillAiTurnController(
           generalSettings: DB().generalSettings,
+          enablePonder: true,
           onBeforeRemoveApply:
               controller.gameInstance.awaitPendingMillSoundBeforeRemove,
           onRootEvaluation: LiveEvaluationService.publishAiRootEvaluation,

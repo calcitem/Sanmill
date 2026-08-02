@@ -56,6 +56,7 @@ class DiagnosticConfigSchema {
     'PreferFavoredOpenings',
     'OpeningRandomness',
     'UseLazySmp',
+    'PonderEnabled',
     'EngineThreads',
     'PatchAvoidTraps',
     'PatchMakeTraps',

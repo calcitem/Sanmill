@@ -64,6 +64,38 @@ Stream<EngineEvent> tgfKernelMillSearchEventsWithConfig({
       config: config,
     );
 
+/// Search from the position expected after the opponent completes one full
+/// Mill turn. The live kernel is never mutated: the supplied PV actions are
+/// checked and replayed against local snapshots before the worker starts.
+///
+/// The returned stream emits `ready`, then `ponderStarted` with the accepted
+/// comma-separated action chain, followed by ordinary search progress. A
+/// `bestMove` is withheld until [tgf_kernel_mill_ponder_hit] succeeds.
+Stream<EngineEvent> tgfKernelMillPonderEvents({
+  required int handle,
+  required int requestId,
+  required List<TgfAction> predictedActions,
+  required MillEngineConfig config,
+}) => RustLib.instance.api.crateApiMillKernelTgfKernelMillPonderEvents(
+  handle: handle,
+  requestId: requestId,
+  predictedActions: predictedActions,
+  config: config,
+);
+
+/// Confirm that the live kernel reached the speculative root and promote the
+/// matching ponder request to an ordinary timed search.
+bool tgfKernelMillPonderHit({required int handle, required int requestId}) =>
+    RustLib.instance.api.crateApiMillKernelTgfKernelMillPonderHit(
+      handle: handle,
+      requestId: requestId,
+    );
+
+/// Stop only the matching ponder worker. Returns false for a stale request id
+/// or when the active search is an ordinary move search.
+bool tgfKernelMillPonderStop({required int requestId}) => RustLib.instance.api
+    .crateApiMillKernelTgfKernelMillPonderStop(requestId: requestId);
+
 /// Clear the board associated with a Mill kernel handle and reset all
 /// pieces, returning the fresh empty snapshot.  History and redo stacks
 /// are cleared.

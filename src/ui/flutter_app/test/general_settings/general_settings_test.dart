@@ -51,6 +51,7 @@ void main() {
       expect(s.lastPgnSaveDirectory, '');
       expect(s.trapAwareness, isFalse);
       expect(s.useLazySmp, isFalse);
+      expect(s.ponderEnabled, isFalse);
       expect(s.engineThreads, 4);
       expect(s.offlineBoardTimeSeconds, 300);
       expect(s.offlineBoardIncrementSeconds, 3);

@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (C) 2019-2026 The Sanmill developers (see AUTHORS file)
 
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart' as mill;
 import 'package:sanmill/game_platform/game_id.dart';
@@ -65,6 +67,51 @@ void main() {
           ),
           isTrue,
         );
+      },
+      skip: _nativeLibrarySkipReason,
+    );
+
+    test(
+      'ponder withholds and releases a best move after an exact hit',
+      () async {
+        const int requestId = 77;
+        final NativeMillRulesPort port = NativeMillRulesPort();
+        final Completer<void> started = Completer<void>();
+        final Completer<void> finished = Completer<void>();
+        final List<tgf.EngineEvent> events = <tgf.EngineEvent>[];
+        final StreamSubscription<tgf.EngineEvent> subscription = port
+            .millPonderEvents(
+              requestId: requestId,
+              moves: const <String>['a7'],
+              depth: 1,
+              moveLimitMs: 100,
+              engineSettings: const GeneralSettings(),
+            )
+            .listen((tgf.EngineEvent event) {
+              events.add(event);
+              if (event.kind == 'ponderStarted' && !started.isCompleted) {
+                started.complete();
+              }
+            }, onDone: finished.complete);
+        addTearDown(() async {
+          port.millPonderStop(requestId);
+          await subscription.cancel();
+          port.dispose();
+        });
+
+        await started.future;
+        expect(
+          events.any((tgf.EngineEvent e) => e.kind == 'bestMove'),
+          isFalse,
+        );
+        final GameAction predicted = port.legalActions.firstWhere(
+          (GameAction action) => MillActionCodec.moveStringFrom(action) == 'a7',
+        );
+        port.apply(predicted);
+
+        expect(port.millPonderHit(requestId), isTrue);
+        await finished.future;
+        expect(events.any((tgf.EngineEvent e) => e.kind == 'bestMove'), isTrue);
       },
       skip: _nativeLibrarySkipReason,
     );

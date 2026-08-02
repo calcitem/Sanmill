@@ -194,6 +194,7 @@ class GeneralSettings {
     this.preferFavoredOpenings = false,
     this.openingRandomness = 60,
     this.useLazySmp = false,
+    this.ponderEnabled = false,
     this.engineThreads = 4,
     this.patchAvoidTraps = false,
     this.patchMakeTraps = false,
@@ -426,6 +427,10 @@ class GeneralSettings {
   // Enable multi-threaded native AI search where supported.
   @HiveField(53, defaultValue: false)
   final bool useLazySmp;
+
+  // Think during the local human opponent's turn using the previous PV.
+  @HiveField(63, defaultValue: false)
+  final bool ponderEnabled;
 
   // Requested native AI search thread count. Used only when [useLazySmp] is
   // enabled, and still clamped by the Rust engine for safety.

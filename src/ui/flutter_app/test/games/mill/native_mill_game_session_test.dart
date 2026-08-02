@@ -286,6 +286,110 @@ void main() {
       },
     );
 
+    test('ponder hit reuses the speculative best move', () async {
+      const GameAction placeD7 = GameAction(
+        type: MillActionTypes.place,
+        payload: <String, Object?>{'move': 'd7'},
+      );
+      const GameAction placeA1 = GameAction(
+        type: MillActionTypes.place,
+        payload: <String, Object?>{'move': 'a1'},
+      );
+      final StreamController<tgf.EngineEvent> ponderEvents =
+          StreamController<tgf.EngineEvent>();
+      final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
+        legalActionsOverride: <GameAction>[
+          const GameAction(
+            type: MillActionTypes.place,
+            payload: <String, Object?>{'move': 'a7'},
+          ),
+          placeD7,
+          placeA1,
+        ],
+        alternateActiveSeat: true,
+        searchEvents: Stream<tgf.EngineEvent>.fromIterable(<tgf.EngineEvent>[
+          tgf.EngineEvent(
+            kind: 'pv',
+            depth: 4,
+            score: 20,
+            nodes: BigInt.from(64),
+            toNode: MillBoardCoordinateMaps.notationToNode('a7'),
+            reason: 'a7 rank=1 pv=a7,d7,a1',
+          ),
+          tgf.EngineEvent(
+            kind: 'bestMove',
+            depth: -1,
+            score: 20,
+            nodes: BigInt.from(64),
+            toNode: MillBoardCoordinateMaps.notationToNode('a7'),
+            reason: 'a7 aimovetype=search rawScore=20',
+          ),
+        ]),
+        ponderSearchEvents: ponderEvents.stream,
+      );
+      final NativeMillGameSession session = NativeMillGameSession(
+        rulesPort: rulesPort,
+      );
+      addTearDown(session.dispose);
+      addTearDown(() async {
+        if (!ponderEvents.isClosed) {
+          await ponderEvents.close();
+        }
+      });
+
+      final GameAction aiMove = (await session.searchBestAction(depth: 4))!;
+      await session.apply(aiMove);
+      session.startPonder(
+        lastAiAction: aiMove,
+        depth: 4,
+        moveLimitMs: 1000,
+        engineSettings: const GeneralSettings(ponderEnabled: true),
+      );
+      await rulesPort.ponderEventsRequested.future;
+
+      expect(rulesPort.lastPonderMoves, <String>['d7', 'a1']);
+      ponderEvents.add(
+        tgf.EngineEvent(
+          kind: 'ponderStarted',
+          depth: 0,
+          score: 0,
+          nodes: BigInt.zero,
+          toNode: -1,
+          reason: 'requestId=${rulesPort.lastPonderRequestId} expected=d7',
+        ),
+      );
+      await Future<void>.delayed(Duration.zero);
+      await session.apply(placeD7);
+      expect(rulesPort.ponderHitCount, 1);
+
+      ponderEvents
+        ..add(
+          tgf.EngineEvent(
+            kind: 'pv',
+            depth: 4,
+            score: 18,
+            nodes: BigInt.from(128),
+            toNode: MillBoardCoordinateMaps.notationToNode('a1'),
+            reason: 'a1 rank=1 pv=a1,g1',
+          ),
+        )
+        ..add(
+          tgf.EngineEvent(
+            kind: 'bestMove',
+            depth: -1,
+            score: 18,
+            nodes: BigInt.from(128),
+            toNode: MillBoardCoordinateMaps.notationToNode('a1'),
+            reason: 'a1 aimovetype=search rawScore=18',
+          ),
+        );
+      await ponderEvents.close();
+
+      final GameAction? pondered = await session.takePonderedAction();
+      expect(pondered?.payload['move'], 'a1');
+      expect(session.isPondering, isFalse);
+    });
+
     test('searchPrincipalVariations parses and sorts MultiPV lines', () async {
       final _FakeNativeMillRulesPort rulesPort = _FakeNativeMillRulesPort(
         searchEvents: Stream<tgf.EngineEvent>.fromIterable(<tgf.EngineEvent>[
@@ -916,6 +1020,8 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
     GameStateSnapshot? initial,
     this.legalActionsOverride,
     this.searchEvents,
+    this.ponderSearchEvents,
+    this.alternateActiveSeat = false,
     this.perfectDatabaseBestActionResult,
   }) : _snapshot = initial ?? _initialSnapshot;
 
@@ -934,12 +1040,19 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
   GameStateSnapshot _snapshot;
   final List<GameAction>? legalActionsOverride;
   final Stream<tgf.EngineEvent>? searchEvents;
+  final Stream<tgf.EngineEvent>? ponderSearchEvents;
+  final bool alternateActiveSeat;
   final GameAction? perfectDatabaseBestActionResult;
   int applyCount = 0;
   int isLegalCount = 0;
   int undoCount = 0;
   int redoCount = 0;
   int perfectDatabaseBestActionCount = 0;
+  int ponderHitCount = 0;
+  int ponderStopCount = 0;
+  int? lastPonderRequestId;
+  List<String>? lastPonderMoves;
+  final Completer<void> ponderEventsRequested = Completer<void>();
   bool disposed = false;
   GameAction? lastApplied;
 
@@ -978,7 +1091,11 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
     payload[0] = 1;
     _snapshot = GameStateSnapshot(
       gameId: GameId.mill,
-      activeSeat: PlayerSeat.second,
+      activeSeat: alternateActiveSeat
+          ? (_snapshot.activeSeat == PlayerSeat.first
+                ? PlayerSeat.second
+                : PlayerSeat.first)
+          : PlayerSeat.second,
       outcome: const GameOutcome.ongoing(),
       phase: 'placing',
       lastAction: action,
@@ -1023,6 +1140,34 @@ class _FakeNativeMillRulesPort implements NativeMillRulesPort {
     int multiPv = 1,
   }) {
     return searchEvents ?? const Stream<tgf.EngineEvent>.empty();
+  }
+
+  @override
+  Stream<tgf.EngineEvent> millPonderEvents({
+    required int requestId,
+    required List<String> moves,
+    required int depth,
+    int moveLimitMs = 0,
+    GeneralSettings? engineSettings,
+  }) {
+    lastPonderRequestId = requestId;
+    lastPonderMoves = moves;
+    if (!ponderEventsRequested.isCompleted) {
+      ponderEventsRequested.complete();
+    }
+    return ponderSearchEvents ?? const Stream<tgf.EngineEvent>.empty();
+  }
+
+  @override
+  bool millPonderHit(int requestId) {
+    ponderHitCount++;
+    return true;
+  }
+
+  @override
+  bool millPonderStop(int requestId) {
+    ponderStopCount++;
+    return true;
   }
 
   @override

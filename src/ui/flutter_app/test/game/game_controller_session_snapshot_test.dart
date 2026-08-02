@@ -369,6 +369,21 @@ class _SnapshotOnlyNativeMillRulesPort implements NativeMillRulesPort {
   }) => const Stream<tgf.EngineEvent>.empty();
 
   @override
+  Stream<tgf.EngineEvent> millPonderEvents({
+    required int requestId,
+    required List<String> moves,
+    required int depth,
+    int moveLimitMs = 0,
+    GeneralSettings? engineSettings,
+  }) => const Stream<tgf.EngineEvent>.empty();
+
+  @override
+  bool millPonderHit(int requestId) => false;
+
+  @override
+  bool millPonderStop(int requestId) => false;
+
+  @override
   platform.GameAction? perfectDatabaseBestAction({
     GeneralSettings? engineSettings,
   }) => null;

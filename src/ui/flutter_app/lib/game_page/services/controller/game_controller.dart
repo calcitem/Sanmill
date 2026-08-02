@@ -2493,6 +2493,7 @@ class GameController {
         NativeMillAiTurnController(
           generalSettings: DB().generalSettings,
           bothSidesAi: true,
+          enablePonder: true,
           onBeforeRemoveApply: gameInstance.awaitPendingMillSoundBeforeRemove,
           onRootEvaluation: LiveEvaluationService.publishAiRootEvaluation,
           openingBook: MillOpeningBookProvider(

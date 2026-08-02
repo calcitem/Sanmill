@@ -198,6 +198,11 @@ class _GameBoardState extends State<GameBoard>
 
           animationManager.completeAllAnimations();
           unawaited(LiveEvaluationService.stopAndWait());
+          final NativeMillGameSession? session =
+              GameController().activeNativeMillSession;
+          if (session != null) {
+            unawaited(session.cancelPonder());
+          }
 
           if (GameController().isEngineRunning) {
             tgf.nativeMillSearchStop();
@@ -225,6 +230,11 @@ class _GameBoardState extends State<GameBoard>
         // App is being terminated
         logger.i("$_logTag App detached, cleaning up engine");
         unawaited(LiveEvaluationService.stopAndWait());
+        final NativeMillGameSession? session =
+            GameController().activeNativeMillSession;
+        if (session != null) {
+          unawaited(session.cancelPonder());
+        }
         if (GameController().isEngineRunning) {
           tgf.nativeMillSearchStop();
         }
@@ -1003,6 +1013,11 @@ class _GameBoardState extends State<GameBoard>
     // issues during dispose.
     if (GameController().isEngineRunning) {
       tgf.nativeMillSearchStop();
+    }
+    final NativeMillGameSession? session =
+        GameController().activeNativeMillSession;
+    if (session != null) {
+      unawaited(session.cancelPonder());
     }
     unawaited(LiveEvaluationService.stopAndWait());
 

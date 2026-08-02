@@ -54,6 +54,26 @@ class NativeMillPrincipalVariation {
   final List<String> line;
 }
 
+class _ActiveMillPonder {
+  _ActiveMillPonder({
+    required this.requestId,
+    required this.opponentSeat,
+    required this.engineSettings,
+  });
+
+  final int requestId;
+  final PlayerSeat opponentSeat;
+  final GeneralSettings engineSettings;
+  final Completer<tgf.EngineEvent?> result = Completer<tgf.EngineEvent?>();
+  late final Future<void> worker;
+  List<String>? expectedActions;
+  List<String> latestPv = const <String>[];
+  int matchedActions = 0;
+  bool nativeStreamStarted = false;
+  bool hit = false;
+  bool cancelled = false;
+}
+
 @immutable
 class _MillPieceNumberState {
   const _MillPieceNumberState._(this.lastPlacedNumber, this.byNode);
@@ -148,6 +168,9 @@ class NativeMillGameSession implements GameSessionHandle {
   bool _disposed = false;
   bool _isReplayingMainline = false;
   GameAction? _lastSearchLegalAction;
+  List<String> _lastSearchPvLine = const <String>[];
+  _ActiveMillPonder? _activePonder;
+  static int _nextPonderRequestId = 0;
   final List<_MillPieceNumberState> _pieceNumberHistory =
       <_MillPieceNumberState>[_MillPieceNumberState.empty];
   final List<_MillPieceNumberState> _pieceNumberRedo =
@@ -270,6 +293,10 @@ class NativeMillGameSession implements GameSessionHandle {
     if (_disposed) {
       return;
     }
+    final _ActiveMillPonder? ponder = _activePonder;
+    if (ponder != null) {
+      _requestPonderCancellation(ponder);
+    }
     lastAiMoveType = AiMoveType.unknown;
     lastAiBestValue = null;
     lastHumanDatabaseMoveStats = null;
@@ -297,6 +324,10 @@ class NativeMillGameSession implements GameSessionHandle {
     if (_disposed) {
       return;
     }
+    final _ActiveMillPonder? ponder = _activePonder;
+    if (ponder != null) {
+      _requestPonderCancellation(ponder);
+    }
     final GameStateSnapshot next = rulesPort.setupClear();
     _resetPieceNumbers();
     _setState(next);
@@ -308,6 +339,10 @@ class NativeMillGameSession implements GameSessionHandle {
     if (_disposed) {
       return;
     }
+    final _ActiveMillPonder? ponder = _activePonder;
+    if (ponder != null) {
+      _requestPonderCancellation(ponder);
+    }
     final GameStateSnapshot next = rulesPort.setupSetPiece(node, owner);
     _resetPieceNumbers();
     _setState(next);
@@ -318,6 +353,10 @@ class NativeMillGameSession implements GameSessionHandle {
     if (_disposed) {
       return;
     }
+    final _ActiveMillPonder? ponder = _activePonder;
+    if (ponder != null) {
+      _requestPonderCancellation(ponder);
+    }
     final GameStateSnapshot next = rulesPort.setupSetSide(side);
     _setState(next);
   }
@@ -326,6 +365,10 @@ class NativeMillGameSession implements GameSessionHandle {
   void setupFinish() {
     if (_disposed) {
       return;
+    }
+    final _ActiveMillPonder? ponder = _activePonder;
+    if (ponder != null) {
+      _requestPonderCancellation(ponder);
     }
     final GameStateSnapshot next = rulesPort.setupFinish();
     _setState(next);
@@ -337,6 +380,10 @@ class NativeMillGameSession implements GameSessionHandle {
   bool loadFen(String fen) {
     if (_disposed) {
       return false;
+    }
+    final _ActiveMillPonder? ponder = _activePonder;
+    if (ponder != null) {
+      _requestPonderCancellation(ponder);
     }
     try {
       final GameStateSnapshot next = rulesPort.setFromFen(fen);
@@ -382,6 +429,10 @@ class NativeMillGameSession implements GameSessionHandle {
   void forceTerminal(GameOutcome outcome, {String? reason}) {
     if (_disposed) {
       return;
+    }
+    final _ActiveMillPonder? ponder = _activePonder;
+    if (ponder != null) {
+      _requestPonderCancellation(ponder);
     }
     assert(
       outcome.isTerminal,
@@ -454,6 +505,10 @@ class NativeMillGameSession implements GameSessionHandle {
   bool restoreMoveStrings(Iterable<String> moves) {
     if (_disposed) {
       return false;
+    }
+    final _ActiveMillPonder? ponder = _activePonder;
+    if (ponder != null) {
+      _requestPonderCancellation(ponder);
     }
 
     GameStateSnapshot restored = rulesPort.snapshot;
@@ -531,7 +586,11 @@ class NativeMillGameSession implements GameSessionHandle {
       'Native Mill snapshots must carry a tgfPayload board layout.',
     );
     _recordPieceNumbersAfter(action);
+    if (!alreadyMatchedLegalSearchAction) {
+      _lastSearchPvLine = const <String>[];
+    }
     _setState(next);
+    _observeAppliedActionForPonder(action, mover, next);
     _emit(MillEventTypes.moveApplied, <String, Object?>{
       'type': action.type,
       'mover': mover.name,
@@ -546,6 +605,7 @@ class NativeMillGameSession implements GameSessionHandle {
     if (_disposed) {
       return;
     }
+    await cancelPonder();
     try {
       lastHumanDatabaseMoveStats = null;
       final GameStateSnapshot next = rulesPort.undo();
@@ -562,6 +622,7 @@ class NativeMillGameSession implements GameSessionHandle {
     if (_disposed) {
       return;
     }
+    await cancelPonder();
     try {
       lastHumanDatabaseMoveStats = null;
       final GameStateSnapshot next = rulesPort.redo();
@@ -592,6 +653,259 @@ class NativeMillGameSession implements GameSessionHandle {
     );
   }
 
+  /// Whether this session owns a speculative opponent-turn search.
+  ///
+  /// Ponder deliberately does not set `GameController.isEngineRunning`:
+  /// human input stays enabled while this flag lets other background engine
+  /// consumers avoid competing for the native search slot.
+  bool get isPondering => _activePonder != null;
+
+  /// Start standard opponent-turn pondering without mutating the live kernel.
+  ///
+  /// The tail of the latest rank-1 PV is the preferred opponent prediction,
+  /// matching Stockfish's normal ponder flow. If the AI move came from a book
+  /// or database and no matching PV exists, a shallow untimed prediction pass
+  /// supplies the candidate line before the real ponder worker starts.
+  void startPonder({
+    required GameAction lastAiAction,
+    required int depth,
+    required int moveLimitMs,
+    required GeneralSettings engineSettings,
+  }) {
+    if (_disposed ||
+        outcome.isTerminal ||
+        kIsWeb ||
+        !engineSettings.ponderEnabled) {
+      return;
+    }
+    final PlayerSeat opponentSeat = state.value.activeSeat;
+    if (opponentSeat == PlayerSeat.none) {
+      return;
+    }
+    final _ActiveMillPonder? previous = _activePonder;
+    if (previous != null) {
+      _requestPonderCancellation(previous);
+      return;
+    }
+
+    _nextPonderRequestId = (_nextPonderRequestId + 1) & 0xffffffff;
+    if (_nextPonderRequestId == 0) {
+      _nextPonderRequestId = 1;
+    }
+    final _ActiveMillPonder ponder = _ActiveMillPonder(
+      requestId: _nextPonderRequestId,
+      opponentSeat: opponentSeat,
+      engineSettings: engineSettings,
+    );
+    _activePonder = ponder;
+    ponder.worker = _runPonder(
+      ponder,
+      lastAiMove: MillActionCodec.moveStringFrom(lastAiAction),
+      previousPv: List<String>.of(_lastSearchPvLine),
+      depth: depth.clamp(1, 64),
+      moveLimitMs: moveLimitMs,
+    );
+  }
+
+  /// Consume a ponder result after a successful hit. A miss, cancellation, or
+  /// failed speculative search returns null so the caller can run its normal
+  /// move search.
+  Future<GameAction?> takePonderedAction() async {
+    final _ActiveMillPonder? ponder = _activePonder;
+    if (ponder == null) {
+      return null;
+    }
+    if (!ponder.hit || ponder.cancelled) {
+      await cancelPonder();
+      return null;
+    }
+
+    final tgf.EngineEvent? event = await ponder.result.future;
+    await ponder.worker;
+    if (identical(_activePonder, ponder)) {
+      _activePonder = null;
+    }
+    if (event == null ||
+        event.kind != 'bestMove' ||
+        event.toNode < 0 ||
+        _disposed ||
+        outcome.isTerminal) {
+      return null;
+    }
+
+    _lastEngineFailureDetails = null;
+    lastAiBestValue = null;
+    if (_shouldResignFromSearch(event, ponder.engineSettings)) {
+      final PlayerSeat loser = state.value.activeSeat;
+      final PlayerSeat winner = _opponentSeat(loser);
+      assert(
+        winner != PlayerSeat.none,
+        'ResignIfMostLose requires an active player seat.',
+      );
+      forceTerminal(GameOutcome.win(winner), reason: 'loseResign');
+      return null;
+    }
+
+    lastAiMoveType = _aiMoveTypeFromReason(event.reason);
+    lastAiBestValue = event.score;
+    final GameAction? action = _legalActionForBestMove(event);
+    _lastSearchLegalAction = action;
+    _lastSearchPvLine = ponder.latestPv.isEmpty
+        ? <String>[event.reason.split(' ').first]
+        : List<String>.unmodifiable(ponder.latestPv);
+    return action;
+  }
+
+  /// Stop and drain the current ponder worker. Draining prevents a subsequent
+  /// ordinary search from racing the old worker for the native active-search
+  /// slot.
+  Future<void> cancelPonder() async {
+    final _ActiveMillPonder? ponder = _activePonder;
+    if (ponder == null) {
+      return;
+    }
+    _requestPonderCancellation(ponder);
+    await ponder.worker;
+    if (identical(_activePonder, ponder)) {
+      _activePonder = null;
+    }
+  }
+
+  Future<void> _runPonder(
+    _ActiveMillPonder ponder, {
+    required String? lastAiMove,
+    required List<String> previousPv,
+    required int depth,
+    required int moveLimitMs,
+  }) async {
+    tgf.EngineEvent? bestMove;
+    try {
+      List<String> prediction = const <String>[];
+      if (lastAiMove != null &&
+          previousPv.isNotEmpty &&
+          previousPv.first == lastAiMove) {
+        prediction = previousPv.skip(1).toList(growable: false);
+      }
+
+      if (prediction.isEmpty) {
+        final List<NativeMillPrincipalVariation> variations =
+            await _searchPrincipalVariations(
+              depth: depth.clamp(1, 4),
+              moveLimitMs: 0,
+              multiPv: 1,
+              engineSettings: ponder.engineSettings,
+              cancelPonderFirst: false,
+            );
+        if (variations.isNotEmpty) {
+          prediction = variations.first.line;
+        }
+      }
+      if (ponder.cancelled || prediction.isEmpty) {
+        return;
+      }
+
+      ponder.nativeStreamStarted = true;
+      await for (final tgf.EngineEvent event in rulesPort.millPonderEvents(
+        requestId: ponder.requestId,
+        moves: prediction,
+        depth: depth,
+        moveLimitMs: moveLimitMs,
+        engineSettings: ponder.engineSettings,
+      )) {
+        if (ponder.cancelled) {
+          continue;
+        }
+        if (event.kind == 'ponderStarted') {
+          final int? requestId = _integerAnnotationFromReason(
+            event.reason,
+            'requestId',
+          );
+          final List<String> expected = _ponderActionsFromReason(event.reason);
+          if (requestId != ponder.requestId || expected.isEmpty) {
+            _requestPonderCancellation(ponder);
+            continue;
+          }
+          ponder.expectedActions = expected;
+        } else if (event.kind == 'pv') {
+          final NativeMillPrincipalVariation variation =
+              _principalVariationFromEvent(event);
+          if (variation.rank == 1) {
+            ponder.latestPv = variation.line;
+          }
+        } else if (event.kind == 'bestMove' && event.toNode >= 0) {
+          bestMove = event;
+        } else if (event.kind == 'error') {
+          logger.w('$_logTag ponder error: ${event.reason}');
+        }
+      }
+    } catch (e) {
+      if (!ponder.cancelled) {
+        logger.w('$_logTag ponder stream failed: $e');
+      }
+    } finally {
+      if (!ponder.result.isCompleted) {
+        ponder.result.complete(
+          ponder.hit && !ponder.cancelled ? bestMove : null,
+        );
+      }
+      if (identical(_activePonder, ponder) &&
+          (ponder.cancelled || !ponder.hit)) {
+        _activePonder = null;
+      }
+    }
+  }
+
+  void _requestPonderCancellation(_ActiveMillPonder ponder) {
+    if (ponder.cancelled) {
+      return;
+    }
+    ponder.cancelled = true;
+    if (ponder.nativeStreamStarted) {
+      rulesPort.millPonderStop(ponder.requestId);
+    } else {
+      // The fallback prediction pass uses the ordinary search endpoint.
+      tgf.nativeMillSearchStop();
+    }
+  }
+
+  void _observeAppliedActionForPonder(
+    GameAction action,
+    PlayerSeat mover,
+    GameStateSnapshot next,
+  ) {
+    final _ActiveMillPonder? ponder = _activePonder;
+    if (ponder == null || ponder.cancelled || ponder.hit) {
+      return;
+    }
+    final List<String>? expected = ponder.expectedActions;
+    final String? notation = MillActionCodec.moveStringFrom(action);
+    if (expected == null ||
+        notation == null ||
+        mover != ponder.opponentSeat ||
+        ponder.matchedActions >= expected.length ||
+        expected[ponder.matchedActions] != notation) {
+      _requestPonderCancellation(ponder);
+      return;
+    }
+
+    ponder.matchedActions++;
+    final bool opponentTurnComplete =
+        next.activeSeat != ponder.opponentSeat || next.outcome.isTerminal;
+    if (!opponentTurnComplete) {
+      if (ponder.matchedActions >= expected.length) {
+        _requestPonderCancellation(ponder);
+      }
+      return;
+    }
+    if (next.outcome.isTerminal ||
+        ponder.matchedActions != expected.length ||
+        !rulesPort.millPonderHit(ponder.requestId)) {
+      _requestPonderCancellation(ponder);
+      return;
+    }
+    ponder.hit = true;
+  }
+
   /// Search the current kernel state and map the final bestMove event back to
   /// one of this session's current legal actions.  Matching uses the full
   /// UCI notation carried in the event's `reason` field, so place, move, and
@@ -607,6 +921,7 @@ class NativeMillGameSession implements GameSessionHandle {
     if (_disposed || outcome.isTerminal) {
       return null;
     }
+    await cancelPonder();
 
     // Serialization tripwire (fail-fast, not a fallback): exactly one engine
     // search may run on a session at a time.  Concurrent searches read the
@@ -631,6 +946,7 @@ class NativeMillGameSession implements GameSessionHandle {
     }
 
     _lastSearchLegalAction = null;
+    _lastSearchPvLine = const <String>[];
     _lastEngineFailureDetails = null;
     lastAiBestValue = null;
     GameAction? bestAction;
@@ -648,6 +964,14 @@ class NativeMillGameSession implements GameSessionHandle {
             'toNode=${event.toNode} score=${event.score} '
             'reason=${event.reason}',
           );
+        }
+        if (event.kind == 'pv') {
+          final NativeMillPrincipalVariation variation =
+              _principalVariationFromEvent(event);
+          if (variation.rank == 1) {
+            _lastSearchPvLine = variation.line;
+          }
+          continue;
         }
         if (event.kind != 'bestMove' || event.toNode < 0) {
           continue;
@@ -668,6 +992,9 @@ class NativeMillGameSession implements GameSessionHandle {
         lastAiBestValue = event.score;
         bestAction = _legalActionForBestMove(event);
         _lastSearchLegalAction = bestAction;
+        if (_lastSearchPvLine.isEmpty) {
+          _lastSearchPvLine = <String>[event.reason.split(' ').first];
+        }
         if (EnvironmentConfig.devMode) {
           logger.i(
             '$_logTag bestMove mapped: toNode=${event.toNode} -> '
@@ -707,9 +1034,30 @@ class NativeMillGameSession implements GameSessionHandle {
     required int multiPv,
     GeneralSettings? engineSettings,
     void Function(List<NativeMillPrincipalVariation> variations)? onUpdate,
+  }) {
+    return _searchPrincipalVariations(
+      depth: depth,
+      moveLimitMs: moveLimitMs,
+      multiPv: multiPv,
+      engineSettings: engineSettings,
+      onUpdate: onUpdate,
+      cancelPonderFirst: true,
+    );
+  }
+
+  Future<List<NativeMillPrincipalVariation>> _searchPrincipalVariations({
+    required int depth,
+    required int moveLimitMs,
+    required int multiPv,
+    required GeneralSettings? engineSettings,
+    void Function(List<NativeMillPrincipalVariation> variations)? onUpdate,
+    required bool cancelPonderFirst,
   }) async {
     if (_disposed || outcome.isTerminal) {
       return const <NativeMillPrincipalVariation>[];
+    }
+    if (cancelPonderFirst) {
+      await cancelPonder();
     }
     assert(
       multiPv >= 1,
@@ -988,6 +1336,20 @@ class NativeMillGameSession implements GameSessionHandle {
     return line.isEmpty ? <String>[fallbackMove] : line;
   }
 
+  static List<String> _ponderActionsFromReason(String reason) {
+    final RegExpMatch? match = RegExp(
+      r'(?:^|\s)expected=([^\s]+)(?:\s|$)',
+    ).firstMatch(reason);
+    if (match == null) {
+      return const <String>[];
+    }
+    return match
+        .group(1)!
+        .split(',')
+        .where((String move) => move.isNotEmpty)
+        .toList(growable: false);
+  }
+
   static int? _integerAnnotationFromReason(String reason, String name) {
     final RegExpMatch? match = RegExp(
       '(?:^|\\s)${RegExp.escape(name)}=(\\d+)(?:\\s|\$)',
@@ -1109,6 +1471,10 @@ class NativeMillGameSession implements GameSessionHandle {
   void dispose() {
     if (_disposed) {
       return;
+    }
+    final _ActiveMillPonder? ponder = _activePonder;
+    if (ponder != null) {
+      _requestPonderCancellation(ponder);
     }
     _disposed = true;
     rulesPort.dispose();
