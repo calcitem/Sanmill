@@ -84,7 +84,6 @@ class OnlinePlayContribution implements PlayModeContribution {
         GameModeCapability.remoteMultiplayer,
         GameModeCapability.reviewable,
       },
-      subtitle: s.onlineFriendGameDescription,
       icon: Icons.cloud_outlined,
       menuKey: const Key('drawer_item_human_vs_cloud'),
       contentKey: const Key('human_cloud'),

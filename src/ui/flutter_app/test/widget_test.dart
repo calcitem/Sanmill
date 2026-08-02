@@ -40,6 +40,7 @@ import 'package:sanmill/generated/intl/l10n.dart';
 import 'package:sanmill/learn/mill_coordinate_training_page.dart';
 import 'package:sanmill/main.dart';
 import 'package:sanmill/misc/mill_variants_page.dart';
+import 'package:sanmill/online_play/online_play_contribution.dart';
 import 'package:sanmill/puzzle/models/puzzle_models.dart';
 import 'package:sanmill/puzzle/pages/puzzle_creation_page.dart';
 import 'package:sanmill/puzzle/widgets/puzzle_card.dart';
@@ -516,8 +517,19 @@ void main() {
   );
 
   testWidgets(
-    'Home play sheet promotes LAN play with friend mode',
+    'Home play sheet orders remote and local modes without headings',
     (WidgetTester tester) async {
+      GameRegistry.instance.resetForTesting();
+      registerBuiltInGameModules(
+        GameRegistry.instance,
+        playModeContributions: const <OnlinePlayContribution>[
+          OnlinePlayContribution(),
+        ],
+      );
+      addTearDown(() {
+        GameRegistry.instance.resetForTesting();
+        registerBuiltInGameModules(GameRegistry.instance);
+      });
       tester.view
         ..physicalSize = const Size(390, 844)
         ..devicePixelRatio = 1.0;
@@ -529,23 +541,65 @@ void main() {
       await tester.tap(find.byKey(const Key('sanmill_home_play_fab')));
       await tester.pumpAndSettle();
 
-      final Finder quickStartCard = find.byKey(
+      final Finder playSheet = find.byKey(const Key('sanmill_home_play_sheet'));
+      final Finder playCard = find.byKey(
         const Key('sanmill_home_play_sheet_card'),
       );
-      final Finder moreModesCard = find.byKey(
-        const Key('sanmill_home_play_sheet_more_modes_card'),
-      );
-      final Finder lanMode = find.byKey(
-        const Key('sanmill_home_play_sheet_mill.play.humanVsLan'),
-      );
+      final List<Finder> orderedModes = <Finder>[
+        find.byKey(const Key('sanmill_home_play_sheet_mill.play.humanVsCloud')),
+        find.byKey(
+          const Key('sanmill_home_play_sheet_mill.play.humanVsBluetooth'),
+        ),
+        find.byKey(const Key('sanmill_home_play_sheet_mill.play.humanVsLan')),
+        find.byKey(const Key('sanmill_home_play_sheet_mill.play.humanVsAi')),
+        find.byKey(const Key('sanmill_home_play_sheet_mill.play.aiVsAi')),
+        find.byKey(const Key('sanmill_home_play_sheet_mill.play.humanVsHuman')),
+      ];
 
-      expect(find.byKey(const Key('sanmill_home_play_sheet')), findsOneWidget);
+      expect(playSheet, findsOneWidget);
+      expect(playCard, findsOneWidget);
       expect(
-        find.descendant(of: quickStartCard, matching: lanMode),
+        find.byKey(const Key('sanmill_home_play_sheet_quick_start_group')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_play_sheet_more_modes_group')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_play_sheet_more_modes_card')),
+        findsNothing,
+      );
+      for (final Finder mode in orderedModes) {
+        expect(find.descendant(of: playCard, matching: mode), findsOneWidget);
+      }
+      for (int i = 0; i < orderedModes.length - 1; i++) {
+        expect(
+          tester.getCenter(orderedModes[i]).dy,
+          lessThan(tester.getCenter(orderedModes[i + 1]).dy),
+        );
+      }
+      final Finder modeDivider = find.byKey(
+        const Key('sanmill_home_play_sheet_remote_local_divider'),
+      );
+      expect(modeDivider, findsOneWidget);
+      expect(
+        tester.getCenter(orderedModes[2]).dy,
+        lessThan(tester.getCenter(modeDivider).dy),
+      );
+      expect(
+        tester.getCenter(modeDivider).dy,
+        lessThan(tester.getCenter(orderedModes[3]).dy),
+      );
+      expect(
+        find.descendant(of: playSheet, matching: find.text('Cloud match')),
         findsOneWidget,
       );
       expect(
-        find.descendant(of: moreModesCard, matching: lanMode),
+        find.descendant(
+          of: playSheet,
+          matching: find.text('Invite a friend with a link or QR code.'),
+        ),
         findsNothing,
       );
 
@@ -1002,11 +1056,19 @@ void main() {
       expect(find.text('Quick pairing'), findsNothing);
       expect(
         find.byKey(const Key('sanmill_home_play_sheet_quick_start_group')),
-        findsOneWidget,
+        findsNothing,
       );
       expect(
         find.byKey(const Key('sanmill_home_play_sheet_more_modes_group')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_play_sheet_card')),
         findsOneWidget,
+      );
+      expect(
+        find.byKey(const Key('sanmill_home_play_sheet_more_modes_card')),
+        findsNothing,
       );
       expect(
         find.byKey(const Key('sanmill_home_play_sheet_mill.play.humanVsAi')),

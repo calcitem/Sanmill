@@ -2693,13 +2693,16 @@ class _PlayBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     assert(playModes.isNotEmpty, 'Play bottom sheet requires play modes.');
-    final S strings = S.of(context);
-    final List<GameModeEntry> quickStartModes = _quickStartModes(playModes);
-    final Set<String> quickStartIds = quickStartModes
-        .map((GameModeEntry mode) => mode.id.value)
-        .toSet();
-    final List<GameModeEntry> moreModes = playModes
-        .where((GameModeEntry mode) => !quickStartIds.contains(mode.id.value))
+    final List<GameModeEntry> orderedModes = playModes.toList(growable: false)
+      ..sort(
+        (GameModeEntry a, GameModeEntry b) =>
+            _modeOrder(a).compareTo(_modeOrder(b)),
+      );
+    final List<GameModeEntry> remoteModes = orderedModes
+        .where(_isRemoteMode)
+        .toList(growable: false);
+    final List<GameModeEntry> localModes = orderedModes
+        .where((GameModeEntry mode) => !_isRemoteMode(mode))
         .toList(growable: false);
 
     return SingleChildScrollView(
@@ -2710,28 +2713,29 @@ class _PlayBottomSheet extends StatelessWidget {
         0,
         ScreenInsets.modalBottomSheetPadding(context, extra: 16),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          LichessListSection(
-            header: Text(strings.play),
-            headerKey: const Key('sanmill_home_play_sheet_quick_start_group'),
-            cardKey: const Key('sanmill_home_play_sheet_card'),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppStyles.bodyPadding),
+        child: Card(
+          key: const Key('sanmill_home_play_sheet_card'),
+          margin: EdgeInsets.zero,
+          clipBehavior: Clip.hardEdge,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              for (final GameModeEntry mode in quickStartModes)
+              for (final GameModeEntry mode in remoteModes)
+                _buildModeTile(context, mode),
+              if (remoteModes.isNotEmpty && localModes.isNotEmpty)
+                const Divider(
+                  key: Key('sanmill_home_play_sheet_remote_local_divider'),
+                  height: 1,
+                  thickness: 1,
+                ),
+              for (final GameModeEntry mode in localModes)
                 _buildModeTile(context, mode),
             ],
           ),
-          LichessListSection(
-            header: Text(strings.more),
-            headerKey: const Key('sanmill_home_play_sheet_more_modes_group'),
-            cardKey: const Key('sanmill_home_play_sheet_more_modes_card'),
-            children: <Widget>[
-              for (final GameModeEntry mode in moreModes)
-                _buildModeTile(context, mode),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -2749,18 +2753,26 @@ class _PlayBottomSheet extends StatelessWidget {
     );
   }
 
-  static List<GameModeEntry> _quickStartModes(List<GameModeEntry> modes) {
-    final List<GameModeEntry> quickModes = modes
-        .where(_isQuickStartMode)
-        .toList(growable: false);
-    if (quickModes.isNotEmpty) {
-      return quickModes;
-    }
-    return modes.take(2).toList(growable: false);
+  static bool _isRemoteMode(GameModeEntry mode) {
+    return switch (mode.launchTarget) {
+      GameModeLaunchTarget.online ||
+      GameModeLaunchTarget.cloud ||
+      GameModeLaunchTarget.bluetooth ||
+      GameModeLaunchTarget.lan => true,
+      _ => false,
+    };
   }
 
-  static bool _isQuickStartMode(GameModeEntry mode) {
-    return mode.supports(GameModeCapability.quickStart);
+  static int _modeOrder(GameModeEntry mode) {
+    return switch (mode.launchTarget) {
+      GameModeLaunchTarget.online || GameModeLaunchTarget.cloud => 0,
+      GameModeLaunchTarget.bluetooth => 1,
+      GameModeLaunchTarget.lan => 2,
+      GameModeLaunchTarget.localAi => 3,
+      GameModeLaunchTarget.localSimulation => 4,
+      GameModeLaunchTarget.localTable => 5,
+      _ => 6,
+    };
   }
 }
 

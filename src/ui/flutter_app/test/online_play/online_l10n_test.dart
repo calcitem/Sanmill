@@ -94,11 +94,11 @@ void main() {
       }
       expect(entity.readAsStringSync(), isNot(contains('"onlineFriendGame"')));
     }
-    expect(lookupS(const Locale('fr')).onlineFriendGame, 'Play with a friend');
+    expect(lookupS(const Locale('fr')).onlineFriendGame, 'Cloud match');
   });
 
-  test('Simplified Chinese uses an action label for friend play', () {
-    expect(lookupS(const Locale('zh')).onlineFriendGame, '与好友对战');
+  test('Simplified Chinese labels cloud-hosted play explicitly', () {
+    expect(lookupS(const Locale('zh')).onlineFriendGame, '云端对战');
   });
 }
 

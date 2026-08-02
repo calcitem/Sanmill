@@ -64,7 +64,7 @@ void main() {
     );
     await tester.pump();
 
-    expect(find.text('Play with a friend'), findsOneWidget);
+    expect(find.text('Cloud match'), findsOneWidget);
     expect(
       find.text('Invite a friend with a link or QR code.'),
       findsOneWidget,
