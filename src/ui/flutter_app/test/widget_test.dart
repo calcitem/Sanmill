@@ -538,6 +538,28 @@ void main() {
 
       await tester.pumpWidget(const SanmillApp());
 
+      final Finder quickStartCard = find.byKey(
+        const Key('sanmill_home_quick_start_card'),
+      );
+      expect(
+        find.descendant(
+          of: quickStartCard,
+          matching: find.byKey(const Key('sanmill_home_quick_start_online')),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: quickStartCard,
+          matching: find.byKey(const Key('sanmill_home_quick_start_lan')),
+        ),
+        findsNothing,
+      );
+      expect(
+        find.descendant(of: quickStartCard, matching: find.text('Cloud match')),
+        findsOneWidget,
+      );
+
       await tester.tap(find.byKey(const Key('sanmill_home_play_fab')));
       await tester.pumpAndSettle();
 
@@ -655,7 +677,7 @@ void main() {
       );
       expect(
         find.byKey(const Key('sanmill_home_quick_start_lan')),
-        findsOneWidget,
+        findsNothing,
       );
       expect(
         find.byKey(const Key('sanmill_home_today_progress_group')),

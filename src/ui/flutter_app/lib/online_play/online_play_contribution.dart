@@ -81,6 +81,7 @@ class OnlinePlayContribution implements PlayModeContribution {
       launchTarget: GameModeLaunchTarget.online,
       availability: GameModeAvailability.experimental,
       capabilities: const <GameModeCapability>{
+        GameModeCapability.quickStart,
         GameModeCapability.remoteMultiplayer,
         GameModeCapability.reviewable,
       },

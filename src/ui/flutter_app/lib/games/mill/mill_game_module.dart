@@ -418,7 +418,6 @@ class MillGameModule extends GameModule {
         label: s.humanVsLAN,
         launchTarget: GameModeLaunchTarget.lan,
         capabilities: const <GameModeCapability>{
-          GameModeCapability.quickStart,
           GameModeCapability.remoteMultiplayer,
           GameModeCapability.reviewable,
         },
