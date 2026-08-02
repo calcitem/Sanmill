@@ -806,12 +806,32 @@ class _SheetValueHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Text titleText = Text(
+      title,
+      style: Theme.of(context).textTheme.bodyLarge,
+    );
+    final String? currentValue = value;
+    if (currentValue == null) {
+      return Row(children: <Widget>[Expanded(child: titleText)]);
+    }
+
+    // Keep the two columns stable while a slider value changes. Otherwise a
+    // wider localized value can steal width from the title, make it reflow,
+    // and resize the entire bottom sheet during the drag.
     return Row(
       children: <Widget>[
+        Expanded(flex: 3, child: titleText),
+        const SizedBox(width: 8),
         Expanded(
-          child: Text(title, style: Theme.of(context).textTheme.bodyLarge),
+          flex: 2,
+          child: Text(
+            currentValue,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.end,
+            style: valueStyle,
+          ),
         ),
-        if (value != null) Text(value!, style: valueStyle),
       ],
     );
   }

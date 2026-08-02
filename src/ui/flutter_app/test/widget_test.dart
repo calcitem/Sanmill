@@ -294,6 +294,57 @@ void main() {
   });
 
   testWidgets(
+    'Human-computer new-game sheet keeps its height across move times',
+    (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = const Size(320, 1200)
+        ..devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      final GeneralSettings originalSettings = DB().generalSettings;
+      addTearDown(() => DB().generalSettings = originalSettings);
+      DB().generalSettings = const GeneralSettings(moveTime: 0);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightThemeData,
+          localizationsDelegates: sanmillLocalizationsDelegates,
+          supportedLocales: S.supportedLocales,
+          locale: const Locale('en'),
+          home: Builder(
+            builder: (BuildContext context) => Scaffold(
+              body: FilledButton(
+                key: const Key('open_human_ai_new_game_sheet'),
+                onPressed: () {
+                  unawaited(GameOptionsModal.prepareHumanAiNewGame(context));
+                },
+                child: const Text('Open'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.byKey(const Key('open_human_ai_new_game_sheet')));
+      await tester.pumpAndSettle();
+
+      final Finder sheet = find.byType(BottomSheet);
+      final Finder sliderFinder = find.byKey(
+        const Key('human_ai_new_game_sheet_move_time_slider'),
+      );
+      final double unlimitedHeight = tester.getSize(sheet).height;
+      expect(tester.widget<Slider>(sliderFinder).label, 'No limit');
+
+      tester.widget<Slider>(sliderFinder).onChanged!(60);
+      await tester.pump();
+
+      expect(tester.widget<Slider>(sliderFinder).label, '60 seconds');
+      expect(tester.getSize(sheet).height, unlimitedHeight);
+    },
+    skip: nativeLibrarySkipReason() != null,
+  );
+
+  testWidgets(
     'Analysis entry resumes after the page mounts',
     (WidgetTester tester) async {
       tester.view
