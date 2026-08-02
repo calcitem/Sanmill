@@ -686,6 +686,7 @@ void main() {
         find.byKey(const Key('sanmill_home_empty_recent_games')),
         findsOneWidget,
       );
+      expect(find.text('None'), findsNWidgets(2));
       expect(
         find.byKey(const Key('sanmill_home_training_group')),
         findsNothing,

@@ -16,12 +16,14 @@ void main() {
     expect(strings.todayProgress, '今天');
     expect(strings.todayProgressSummary(2, 1), '完成 2 局 · 复盘 1 局');
     expect(strings.recentGames, '最近保存的棋局');
+    expect(strings.none, '无');
   });
 
   test('English identifies LAN play explicitly', () async {
     final S strings = await S.delegate.load(const Locale('en'));
 
     expect(strings.humanVsLAN, 'LAN match');
+    expect(strings.none, 'None');
   });
 
   test('Simplified Chinese uses step-based navigation labels', () async {

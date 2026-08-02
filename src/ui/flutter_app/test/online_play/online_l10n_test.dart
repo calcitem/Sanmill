@@ -100,6 +100,18 @@ void main() {
   test('Simplified Chinese labels cloud-hosted play explicitly', () {
     expect(lookupS(const Locale('zh')).onlineFriendGame, '云端对战');
   });
+
+  test('service unavailable guidance mentions capacity and proxy settings', () {
+    expect(
+      lookupS(const Locale('en')).onlineServiceUnavailable,
+      'Cloud play is temporarily unavailable. The service may be at capacity; '
+      'if needed, check your proxy settings.',
+    );
+    expect(
+      lookupS(const Locale('zh')).onlineServiceUnavailable,
+      '云端对战暂时不可用。云端服务可能已达到容量上限；如有需要，请检查代理服务器设置。',
+    );
+  });
 }
 
 Map<String, Object?> _readArb(String name) {

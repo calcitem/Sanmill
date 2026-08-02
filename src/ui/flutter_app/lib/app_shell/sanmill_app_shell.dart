@@ -1945,7 +1945,7 @@ class _HomeEmptyContent extends StatelessWidget {
             _MoreTile(
               key: const Key('sanmill_home_empty_ongoing_games'),
               icon: Icons.play_circle_outline_rounded,
-              title: strings.isEmpty,
+              title: strings.none,
               onTap: onShowAll,
             ),
           ],
@@ -1959,7 +1959,7 @@ class _HomeEmptyContent extends StatelessWidget {
             _MoreTile(
               key: const Key('sanmill_home_empty_recent_games'),
               icon: Icons.history_rounded,
-              title: strings.isEmpty,
+              title: strings.none,
               onTap: onShowAll,
             ),
           ],

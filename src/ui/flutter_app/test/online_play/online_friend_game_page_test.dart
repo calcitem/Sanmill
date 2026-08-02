@@ -152,7 +152,7 @@ void main() {
         findsNothing,
       );
       expect(
-        find.textContaining('Online play is temporarily unavailable'),
+        find.textContaining('Cloud play is temporarily unavailable'),
         findsNothing,
       );
       expect(find.byKey(const Key('online_create_game')), findsOneWidget);
