@@ -20,6 +20,7 @@ import 'package:sanmill/experience_recording/models/user_action_event.dart';
 import 'package:sanmill/game_page/services/analysis_mode.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/save_load/saved_game_catalog.dart';
+import 'package:sanmill/game_page/services/transform/transform.dart';
 import 'package:sanmill/game_page/widgets/mini_board.dart';
 import 'package:sanmill/game_page/widgets/modals/game_options_modal.dart';
 import 'package:sanmill/game_page/widgets/toolbars/game_toolbar.dart';
@@ -28,6 +29,7 @@ import 'package:sanmill/game_platform/game_registry.dart';
 import 'package:sanmill/game_platform/game_session.dart' as platform;
 import 'package:sanmill/game_shell/shell_route_ids.dart';
 import 'package:sanmill/games/built_in_game_modules.dart';
+import 'package:sanmill/games/mill/mill_board_coordinate_maps.dart';
 import 'package:sanmill/games/mill/mill_board_geometry.dart';
 import 'package:sanmill/games/mill/mill_route_ids.dart';
 import 'package:sanmill/games/mill/native_mill_game_session.dart';
@@ -2747,6 +2749,7 @@ void main() {
     expect(find.text('Training instructions'), findsNothing);
     expect(find.bySemanticsLabel('Training options'), findsOneWidget);
     expect(find.bySemanticsLabel('Training instructions'), findsOneWidget);
+    expect(find.text('Current board orientation: Standard'), findsOneWidget);
 
     final ColoredBox boardSurface = tester.widget<ColoredBox>(
       find.byKey(const Key('mill_coordinate_training_board_surface')),
@@ -2824,7 +2827,7 @@ void main() {
     expect(
       find.descendant(
         of: find.byKey(
-          const Key('mill_coordinate_training_orientation_random'),
+          const Key('mill_coordinate_training_orientation_standard'),
         ),
         matching: find.byIcon(Icons.check_rounded),
       ),
@@ -2842,6 +2845,7 @@ void main() {
       find.byKey(const Key('mill_coordinate_training_orientation_standard')),
     );
     await tester.pumpAndSettle();
+    expect(find.text('Current board orientation: Standard'), findsOneWidget);
     Text axisLabelWidget(String key) {
       return tester.widget<Text>(
         find.descendant(of: find.byKey(Key(key)), matching: find.byType(Text)),
@@ -2871,6 +2875,7 @@ void main() {
       find.byKey(const Key('mill_coordinate_training_orientation_flipped')),
     );
     await tester.pumpAndSettle();
+    expect(find.text('Current board orientation: Flipped'), findsOneWidget);
     expect(axisLabel('mill_coordinate_training_file_0'), 'g');
     expect(axisLabel('mill_coordinate_training_file_6'), 'a');
     expect(axisLabel('mill_coordinate_training_rank_0'), '1');
@@ -2913,6 +2918,26 @@ void main() {
       ),
       findsOneWidget,
     );
+    final int logicalTarget = MillBoardCoordinateMaps.notationToNode(
+      currentTarget,
+    );
+    expect(logicalTarget, greaterThanOrEqualTo(0));
+    final int visualTarget = getTransformMap(
+      TransformationType.rotate180,
+    )[logicalTarget];
+    final Finder boardFinder = find.byKey(
+      const Key('mill_coordinate_training_board'),
+    );
+    await tester.tapAt(
+      tester.getTopLeft(boardFinder) +
+          MillBoardGeometry.nodeOffset(
+            visualTarget,
+            tester.getSize(boardFinder),
+          ),
+    );
+    await tester.pump();
+    expect(find.text('1 correct · 1 attempt'), findsOneWidget);
+    expect(find.text('Current board orientation: Flipped'), findsOneWidget);
     await tester.pump(const Duration(seconds: 15));
     expect(find.text('15s remaining'), findsOneWidget);
     await tester.pump(const Duration(seconds: 15));
@@ -2925,7 +2950,10 @@ void main() {
       find.byKey(const Key('mill_coordinate_training_last_result')),
       findsOneWidget,
     );
-    expect(find.text('0 correct · 0 attempts · 0% accuracy'), findsOneWidget);
+    final Text lastResult = tester.widget<Text>(
+      find.byKey(const Key('mill_coordinate_training_last_result')),
+    );
+    expect(lastResult.data, '1 correct · 1 attempt · 100% accuracy');
 
     await tester.tap(
       find.byKey(const Key('mill_coordinate_training_menu_button')),
@@ -2962,7 +2990,7 @@ void main() {
             as Map<dynamic, dynamic>;
     expect(storedStats['trainingSessions'], 2);
     expect(storedStats['thirtySecondSessions'], 1);
-    expect(storedStats['thirtySecondBestCorrect'], 0);
+    expect(storedStats['thirtySecondBestCorrect'], 1);
     semantics.dispose();
   });
 

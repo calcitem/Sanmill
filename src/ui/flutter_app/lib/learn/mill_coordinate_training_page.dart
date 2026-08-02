@@ -81,7 +81,7 @@ class _MillCoordinateTrainingPageState extends State<MillCoordinateTrainingPage>
   int? _lastAttempts;
   bool _trainingActive = false;
   _CoordinateTrainingOrientationChoice _orientationChoice =
-      _CoordinateTrainingOrientationChoice.random;
+      _CoordinateTrainingOrientationChoice.standard;
   _CoordinateTrainingDurationChoice _durationChoice =
       _CoordinateTrainingDurationChoice.thirtySeconds;
   late TransformationType _currentTransform = _newTransformForChoice(
@@ -110,7 +110,26 @@ class _MillCoordinateTrainingPageState extends State<MillCoordinateTrainingPage>
       key: const Key('mill_coordinate_training_page_scaffold'),
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Text(strings.coordinateTraining),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(strings.coordinateTraining),
+            Text(
+              strings.coordinateTrainingOrientationStatus(
+                _currentTransform == TransformationType.rotate180
+                    ? strings.coordinateTrainingFlippedOrientation
+                    : strings.coordinateTrainingStandardOrientation,
+              ),
+              key: const Key('mill_coordinate_training_orientation_status'),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
+        ),
         actions: <Widget>[
           IconButton(
             key: const Key('mill_coordinate_training_settings_button'),

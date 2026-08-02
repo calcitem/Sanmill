@@ -6617,7 +6617,20 @@
     "coordinateTrainingTimeRemaining": "剩余 {seconds} 秒",
     "@coordinateTrainingTimeRemaining": {},
     "coordinateTrainingResultWithAccuracy": "答对 {correct} 个 · 尝试 {attempts} 次 · 正确率 {accuracy}%",
-    "@coordinateTrainingResultWithAccuracy": {},
+    "@coordinateTrainingResultWithAccuracy": {
+        "description": "Coordinate training session result with score and accuracy",
+        "placeholders": {
+            "correct": {
+                "type": "int"
+            },
+            "attempts": {
+                "type": "int"
+            },
+            "accuracy": {
+                "type": "int"
+            }
+        }
+    },
     "coordinateTrainingStatistics": "统计",
     "@coordinateTrainingStatistics": {},
     "coordinateTrainingSessions": "训练次数",
@@ -7155,5 +7168,15 @@
     "coordinateTrainingInstructions": "训练说明",
     "@coordinateTrainingInstructions": {
         "description": "Accessible label for coordinate training instructions"
+    },
+    "coordinateTrainingOrientationStatus": "当前棋盘方向：{orientation}",
+    "@coordinateTrainingOrientationStatus": {
+        "description": "Persistent status showing the board orientation currently used by coordinate training",
+        "placeholders": {
+            "orientation": {
+                "description": "The actual standard or flipped board orientation",
+                "type": "String"
+            }
+        }
     }
 }
