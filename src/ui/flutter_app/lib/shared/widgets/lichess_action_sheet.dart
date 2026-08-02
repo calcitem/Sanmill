@@ -61,7 +61,8 @@ Future<T?> _showCupertinoActionSheet<T>({
         title: title,
         message: content,
         actions: <Widget>[
-          for (final LichessActionSheetAction action in actions)
+          for (final LichessActionSheetAction action in actions) ...<Widget>[
+            if (action.sectionBreakBefore) const SizedBox(height: 8),
             Builder(
               builder: (BuildContext actionContext) {
                 return CupertinoActionSheetAction(
@@ -73,6 +74,7 @@ Future<T?> _showCupertinoActionSheet<T>({
                 );
               },
             ),
+          ],
         ],
         cancelButton: CupertinoActionSheetAction(
           isDefaultAction: true,
@@ -132,13 +134,20 @@ Future<T?> _showMaterialActionSheet<T>({
                         child: Center(child: title),
                       ),
                     ?content,
-                    for (int index = 0; index < actions.length; index++)
+                    for (
+                      int index = 0;
+                      index < actions.length;
+                      index++
+                    ) ...<Widget>[
+                      if (actions[index].sectionBreakBefore)
+                        const Divider(height: 12),
                       _MaterialActionSheetTile(
                         action: actions[index],
                         textStyle: actionTextStyle,
                         isFirst: index == 0,
                         isLast: index == actions.length - 1,
                       ),
+                    ],
                   ],
                 ),
               ),
@@ -157,6 +166,7 @@ class LichessActionSheetAction {
     this.onPressedWithContext,
     this.key,
     this.dismissOnPress = true,
+    this.sectionBreakBefore = false,
     this.leading,
     this.trailing,
     this.isDestructiveAction = false,
@@ -168,6 +178,7 @@ class LichessActionSheetAction {
   final VoidCallback onPressed;
   final void Function(BuildContext context)? onPressedWithContext;
   final bool dismissOnPress;
+  final bool sectionBreakBefore;
   final Widget? leading;
   final Widget? trailing;
   final bool isDestructiveAction;

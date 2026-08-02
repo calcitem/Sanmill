@@ -46,6 +46,7 @@ class _GameBoardState extends State<GameBoard>
   static const String _logTag = "[board]";
   late Future<GameImages> gameImagesFuture;
   late AnimationManager animationManager;
+  late double _configuredAnimationDuration;
   GameImages? _cachedGameImages;
   ImageProvider? _cachedBoardImageProvider;
   int _imageLoadEpoch = 0;
@@ -106,9 +107,9 @@ class _GameBoardState extends State<GameBoard>
     super.initState();
     _screenReaderWasActive = AccessibilityStatus.isScreenReaderActive;
     gameImagesFuture = _loadImages();
-    animationManager = DB().displaySettings.animationDuration == 0.0
-        ? HeadlessAnimationManager()
-        : AnimationManager(this);
+    _configuredAnimationDuration = DB().displaySettings.animationDuration;
+    animationManager = AnimationManager(this);
+    DB().listenDisplaySettings.addListener(_handleDisplaySettingsChanged);
 
     // Register lifecycle observer to handle app background/foreground transitions
     WidgetsBinding.instance.addObserver(this);
@@ -135,6 +136,15 @@ class _GameBoardState extends State<GameBoard>
     });
 
     GameController().animationManager = animationManager;
+  }
+
+  void _handleDisplaySettingsChanged() {
+    final double duration = DB().displaySettings.animationDuration;
+    if (duration == _configuredAnimationDuration) {
+      return;
+    }
+    _configuredAnimationDuration = duration;
+    animationManager.updateAnimationDuration(duration);
   }
 
   void _handleSemanticsEnabledChanged() {
@@ -843,12 +853,16 @@ class _GameBoardState extends State<GameBoard>
     }
 
     if (GameController().shouldAutoRestartAfterGameOver()) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) {
-          return;
-        }
-        GameController().performAutoRestartIfEnabled(context);
-      });
+      if (gameMode == GameMode.aiVsAi) {
+        _scheduleAiVsAiAutoRestart();
+      } else {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) {
+            return;
+          }
+          GameController().performAutoRestartIfEnabled(context);
+        });
+      }
     }
 
     // Check conditions for showing game result dialog
@@ -860,14 +874,8 @@ class _GameBoardState extends State<GameBoard>
         gameMode != GameMode.analysis &&
         gameMode != GameMode.puzzle;
 
-    // For AI vs AI mode, additional conditions must be met
-    final bool aiVsAiConditions =
-        gameMode != GameMode.aiVsAi ||
-        (DB().displaySettings.animationDuration == 0.0 &&
-            DB().generalSettings.shufflingEnabled == false);
-
     // Prevent duplicate dialog display
-    if (shouldShowDialog && aiVsAiConditions && !_isDialogShowing) {
+    if (shouldShowDialog && gameMode != GameMode.aiVsAi && !_isDialogShowing) {
       _isDialogShowing = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) {
@@ -938,8 +946,50 @@ class _GameBoardState extends State<GameBoard>
     }
   }
 
+  void _scheduleAiVsAiAutoRestart() {
+    final GameController controller = GameController();
+    final int restartToken = controller.aiVsAiAutoRestartToken;
+    final int loopEpoch = controller.aiLoopEpoch;
+    final GameSession? session = controller.activeNativeMillSession;
+    unawaited(
+      _restartAiVsAiAfterResultDwell(
+        restartToken: restartToken,
+        loopEpoch: loopEpoch,
+        session: session,
+      ),
+    );
+  }
+
+  Future<void> _restartAiVsAiAfterResultDwell({
+    required int restartToken,
+    required int loopEpoch,
+    required GameSession? session,
+  }) async {
+    await animationManager.waitForBoardAnimations();
+    await Future<void>.delayed(const Duration(seconds: 1));
+    if (!mounted) {
+      return;
+    }
+
+    final GameController controller = GameController();
+    final bool sameFinishedGame =
+        restartToken == controller.aiVsAiAutoRestartToken &&
+        loopEpoch == controller.aiLoopEpoch &&
+        identical(session, controller.activeNativeMillSession) &&
+        controller.activeBoardView.phase == Phase.gameOver &&
+        controller.gameResultNotifier.hasResult;
+    if (!sameFinishedGame || !controller.shouldAutoRestartAfterGameOver()) {
+      return;
+    }
+    controller.performAutoRestartIfEnabled(context);
+  }
+
   @override
   void dispose() {
+    DB().listenDisplaySettings.removeListener(_handleDisplaySettingsChanged);
+    if (GameController().gameInstance.gameMode == GameMode.aiVsAi) {
+      GameController().cancelPendingAiVsAiAutoRestart();
+    }
     // Remove lifecycle observer
     WidgetsBinding.instance.removeObserver(this);
     SemanticsBinding.instance.removeSemanticsEnabledListener(

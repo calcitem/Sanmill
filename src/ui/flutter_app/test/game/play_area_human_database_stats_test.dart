@@ -17,6 +17,7 @@ import 'package:sanmill/appearance_settings/models/color_settings.dart';
 import 'package:sanmill/appearance_settings/models/display_settings.dart';
 import 'package:sanmill/game_page/services/analysis/analysis_service.dart';
 import 'package:sanmill/game_page/services/analysis_mode.dart';
+import 'package:sanmill/game_page/services/animation/animation_manager.dart';
 import 'package:sanmill/game_page/services/import_export/pgn.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/game_page/services/offline_board_clock.dart';
@@ -463,6 +464,70 @@ void main() {
     expect(tester.widget<CustomPaint>(pieceFinder), isNot(same(piecesBefore)));
   });
 
+  testWidgets('board animation duration reconfigures without remounting', (
+    WidgetTester tester,
+  ) async {
+    db = _GamePageDb(
+      generalSettings: const GeneralSettings(),
+      displaySettings: const DisplaySettings(
+        animationDuration: 0,
+        isUnplacedAndRemovedPiecesShown: false,
+      ),
+    );
+    DB.instance = db;
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.aiVsAi,
+    );
+
+    await tester.pumpWidget(
+      _localizedApp(
+        GameSessionScope(
+          session: session,
+          child: const Scaffold(
+            body: SizedBox.square(
+              dimension: 390,
+              child: GameBoard(boardImage: null),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 1));
+
+    final AnimationManager manager = GameController().animationManager;
+    expect(manager.allowAnimations, isFalse);
+    expect(manager.placeAnimationController.duration, Duration.zero);
+
+    final DisplaySettings animatedSettings = db.displaySettings.copyWith(
+      animationDuration: 1.6,
+    );
+    db.displaySettings = animatedSettings;
+    (db as _GamePageDb)._displaySettingsListenable.value =
+        _SettingsBox<DisplaySettings>(DB.displaySettingsKey, animatedSettings);
+    await tester.pump();
+
+    expect(GameController().animationManager, same(manager));
+    expect(manager.allowAnimations, isTrue);
+    expect(
+      manager.placeAnimationController.duration,
+      const Duration(milliseconds: 1600),
+    );
+
+    final DisplaySettings instantSettings = db.displaySettings.copyWith(
+      animationDuration: 0,
+    );
+    db.displaySettings = instantSettings;
+    (db as _GamePageDb)._displaySettingsListenable.value =
+        _SettingsBox<DisplaySettings>(DB.displaySettingsKey, instantSettings);
+    await tester.pump();
+
+    expect(GameController().animationManager, same(manager));
+    expect(manager.allowAnimations, isFalse);
+    expect(manager.placeAnimationController.duration, Duration.zero);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('regular game board shows the last turn when enabled', (
     WidgetTester tester,
   ) async {
@@ -761,7 +826,7 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_new_game')),
-      findsOneWidget,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_playback')),
@@ -773,7 +838,14 @@ void main() {
     );
     expect(
       find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_move_list')),
-      findsOneWidget,
+      findsNothing,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_main_toolbar_bottom')),
+        matching: find.byType(LichessBottomBarButton),
+      ),
+      findsNWidgets(3),
     );
     expect(find.byKey(const Key('play_area_game_header')), findsOneWidget);
     expect(find.byKey(const Key('game_header_turn_indicator')), findsOneWidget);
@@ -787,8 +859,10 @@ void main() {
     final LichessBottomBarButton stepButton = tester.widget(
       find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_step')),
     );
-    expect(stepButton.label, 'Step forward');
+    expect(playbackButton.showLabel, isTrue);
+    expect(stepButton.label, 'Play one turn');
     expect(stepButton.enabled, isFalse);
+    expect(stepButton.showLabel, isTrue);
     expect(find.byKey(const Key('play_area_toolbar_item_info')), findsNothing);
 
     await tester.tap(
@@ -796,116 +870,103 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    expect(find.byKey(const Key('play_area_ai_vs_ai_menu_sheet')), findsOne);
     expect(
-      find.byKey(const Key('play_area_regular_game_menu_sheet')),
+      find.byKey(const Key('play_area_regular_game_menu_marker_guide')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_ai_vs_ai_menu_flip_board')),
       findsOne,
+    );
+    expect(
+      find.byKey(const Key('play_area_ai_vs_ai_menu_settings')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_ai_vs_ai_menu_new_game')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_ai_vs_ai_menu_move_list')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_ai_vs_ai_menu_share_export')),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('play_area_ai_vs_ai_menu_info')),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('play_area_ai_vs_ai_menu_sheet')),
+        matching: find.byType(Divider),
+      ),
+      findsNWidgets(2),
+    );
+    final List<Key> orderedMenuActions = <Key>[
+      const Key('play_area_ai_vs_ai_menu_settings'),
+      const Key('play_area_ai_vs_ai_menu_new_game'),
+      const Key('play_area_ai_vs_ai_menu_move_list'),
+      const Key('play_area_ai_vs_ai_menu_share_export'),
+      const Key('play_area_ai_vs_ai_menu_flip_board'),
+      const Key('play_area_ai_vs_ai_menu_info'),
+    ];
+    final List<double> menuActionY = orderedMenuActions
+        .map((Key key) => tester.getCenter(find.byKey(key)).dy)
+        .toList(growable: false);
+    expect(menuActionY, orderedEquals(menuActionY.toList()..sort()));
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_move_now')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const Key('play_area_regular_game_menu_game_tips')),
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_marker_guide')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_flip_board')),
-      findsOne,
-    );
-    final Finder gameTipsAction = find.byKey(
-      const Key('play_area_regular_game_menu_game_tips'),
-    );
-    expect(gameTipsAction, findsOneWidget);
-    expect(find.text('Show game tips'), findsOneWidget);
-    expect(db.generalSettings.showGameTips, isFalse);
-    await tester.ensureVisible(gameTipsAction);
-    await tester.tap(gameTipsAction);
-    await tester.pumpAndSettle();
-    expect(db.generalSettings.showGameTips, isTrue);
-    expect(find.byKey(const Key('play_area_game_header')), findsOneWidget);
-    expect(find.byKey(const Key('game_header_contextual_tip')), findsOneWidget);
-    expect(tester.takeException(), isNull);
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_sheet')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_live_evaluation')),
-      findsNothing,
-    );
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_board_orientation')),
-      findsNothing,
-    );
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_analysis')),
-      findsNothing,
-    );
-    expect(find.byKey(const Key('play_area_toolbar_item_game')), findsOne);
-    expect(find.text('New game'), findsOne);
-    expect(find.byKey(const Key('play_area_toolbar_item_move')), findsOne);
-    expect(
-      find.descendant(
-        of: find.byKey(const Key('play_area_toolbar_item_move')),
-        matching: find.text('Move list'),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_move_now')),
-      findsOneWidget,
-    );
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_previous')),
-      findsNothing,
-    );
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_next')),
       findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_take_back')),
-      findsOne,
+      findsNothing,
     );
     expect(
       find.byKey(const Key('play_area_regular_game_menu_resign')),
       findsNothing,
     );
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_result')),
-      findsNothing,
-    );
-
-    expect(
-      find.byKey(const Key('play_area_regular_game_menu_board_orientation')),
-      findsNothing,
-    );
-
     await tester.tap(
-      find.byKey(const Key('play_area_regular_game_menu_flip_board')),
+      find.byKey(const Key('play_area_ai_vs_ai_menu_flip_board')),
     );
     await tester.pumpAndSettle();
 
     expect(
-      find.byKey(const Key('play_area_regular_board_transform_sheet')),
+      find.byKey(const Key('play_area_ai_vs_ai_transform_sheet')),
       findsOne,
     );
     expect(
-      find.byKey(const Key('play_area_regular_game_menu_sheet')),
+      find.byKey(const Key('play_area_ai_vs_ai_menu_sheet')),
       findsNothing,
     );
     expect(
-      find.byKey(const Key('play_area_regular_board_transform_grid')),
+      find.byKey(const Key('play_area_ai_vs_ai_transform_grid')),
       findsOne,
     );
     for (final MillBoardTransformAction action
         in allMillBoardTransformActions) {
       expect(
-        find.byKey(Key('play_area_regular_board_transform_${action.id}')),
+        find.byKey(Key('play_area_ai_vs_ai_transform_${action.id}')),
         findsOne,
-        reason: 'Missing regular board transformation ${action.id}',
+        reason: 'Missing self-play board transformation ${action.id}',
       );
     }
 
     Navigator.of(
       tester.element(
-        find.byKey(const Key('play_area_regular_board_transform_sheet')),
+        find.byKey(const Key('play_area_ai_vs_ai_transform_sheet')),
       ),
     ).pop();
     await tester.pumpAndSettle();
@@ -2493,6 +2554,172 @@ void main() {
     expect(session.getFen(), fenBeforeTap);
     expect(controller.isEngineRunning, isFalse);
     expect(controller.loadedGameFilenamePrefix, 'loaded-game');
+  });
+
+  testWidgets('computer self-play shows pending pause state', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.aiVsAi,
+    );
+    await _pumpSessionPlayArea(tester, session);
+    final GameController controller = GameController();
+
+    controller.isEngineRunning = true;
+    controller.pauseAiVsAiPlayback();
+    await tester.pump();
+
+    final LichessBottomBarButton playback = tester.widget(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_playback')),
+    );
+    final LichessBottomBarButton step = tester.widget(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_step')),
+    );
+    expect(controller.aiVsAiPlaybackState, AiVsAiPlaybackState.pausePending);
+    expect(playback.label, 'Pausing…');
+    expect(playback.enabled, isFalse);
+    expect(playback.tooltip, 'Pausing after the current turn finishes');
+    expect(step.enabled, isFalse);
+
+    controller.isEngineRunning = false;
+    controller.reset(force: true);
+  });
+
+  testWidgets('computer self-play shows single-turn execution state', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.aiVsAi,
+    );
+    final GameController controller = GameController();
+    controller.pauseAiVsAiPlayback();
+    await _pumpSessionPlayArea(tester, session);
+
+    controller.isEngineRunning = true;
+    await tester.pump();
+
+    final LichessBottomBarButton playback = tester.widget(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_playback')),
+    );
+    final LichessBottomBarButton step = tester.widget(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_step')),
+    );
+    expect(playback.label, 'Resume');
+    expect(playback.enabled, isTrue);
+    expect(step.label, 'Playing turn…');
+    expect(step.enabled, isFalse);
+
+    controller.isEngineRunning = false;
+  });
+
+  testWidgets('computer self-play settings update shared preferences', (
+    WidgetTester tester,
+  ) async {
+    final SemanticsHandle semantics = tester.ensureSemantics();
+    db = _GamePageDb(
+      generalSettings: const GeneralSettings(skillLevel: 7, moveTime: 0),
+      displaySettings: const DisplaySettings(
+        animationDuration: 1.2,
+        isUnplacedAndRemovedPiecesShown: false,
+      ),
+    );
+    DB.instance = db;
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.aiVsAi,
+    );
+    GameController().pauseAiVsAiPlayback();
+    await _pumpSessionPlayArea(
+      tester,
+      session,
+      surfaceSize: const Size(320, 700),
+      mediaQueryData: const MediaQueryData(
+        size: Size(320, 700),
+        textScaler: TextScaler.linear(1.6),
+      ),
+    );
+
+    await tester.tap(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('play_area_ai_vs_ai_menu_settings')));
+    await tester.pumpAndSettle();
+
+    final Finder sheet = find.byKey(const Key('ai_vs_ai_settings_sheet'));
+    expect(sheet, findsOneWidget);
+    expect(find.text('7/30'), findsOneWidget);
+    expect(find.text('No limit'), findsOneWidget);
+    expect(find.text('1.2 seconds'), findsOneWidget);
+    expect(tester.getSemantics(sheet).label, contains('Self-play settings'));
+    expect(tester.takeException(), isNull);
+
+    await tester.tap(find.byKey(const Key('ai_vs_ai_settings_auto_restart')));
+    await tester.pump();
+    expect(db.generalSettings.isAutoRestart, isTrue);
+
+    final Slider animationSlider = tester.widget<Slider>(
+      find.byKey(const Key('ai_vs_ai_settings_animation_slider')),
+    );
+    animationSlider.onChanged!(0);
+    await tester.pump();
+    expect(db.displaySettings.animationDuration, 0);
+
+    tester
+        .widget<Slider>(
+          find.byKey(const Key('ai_vs_ai_settings_animation_slider')),
+        )
+        .onChanged!(2.4);
+    await tester.pump();
+    expect(db.displaySettings.animationDuration, 2.4);
+
+    await tester.ensureVisible(find.byKey(const Key('ai_vs_ai_settings_more')));
+    await tester.tap(find.byKey(const Key('ai_vs_ai_settings_more')));
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const Key('general_settings_page_scaffold')),
+      findsOneWidget,
+    );
+    expect(GameController().aiVsAiPlaybackState, AiVsAiPlaybackState.paused);
+    semantics.dispose();
+  });
+
+  testWidgets('computer self-play result is user opened', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.aiVsAi,
+    );
+    await _pumpSessionPlayArea(tester, session);
+    final GameController controller = GameController();
+    controller.activeSessionSnapshot = const platform.GameStateSnapshot(
+      gameId: GameId.mill,
+      activeSeat: platform.PlayerSeat.none,
+      outcome: platform.GameOutcome.win(platform.PlayerSeat.first),
+      phase: 'gameOver',
+    );
+    await tester.pump();
+
+    expect(find.byType(GameResultAlertDialog), findsNothing);
+    expect(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_new_game')),
+      findsOneWidget,
+    );
+    expect(
+      tester
+          .widget<LichessBottomBarButton>(
+            find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_playback')),
+          )
+          .label,
+      'Player 1 wins!',
+    );
+
+    final int restartToken = controller.aiVsAiAutoRestartToken;
+    await tester.tap(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_playback')),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byType(GameResultAlertDialog), findsOneWidget);
+    expect(controller.aiVsAiAutoRestartToken, greaterThan(restartToken));
   });
 
   testWidgets('computer self-play can pause, step once, and resume', (
@@ -9034,6 +9261,57 @@ void main() {
     expect(_currentPathMoves(), <String>['a1', 'd1', 'a4', 'd2']);
   });
 
+  testWidgets('computer self-play undo removes complete capture turns', (
+    WidgetTester tester,
+  ) async {
+    final NativeMillGameSession session = await _bindNativeGame(
+      GameMode.aiVsAi,
+    );
+    final MillSessionRecorderBridge recorderBridge =
+        MillSessionRecorderBridge.forGameController(session: session);
+    addTearDown(recorderBridge.dispose);
+
+    final List<ExtMove> fixture = _takeBackCaptureFixture();
+    expect(await session.replayMainline(fixture), isTrue);
+    fixture.forEach(GameController().gameRecorder.appendMove);
+    GameController().pauseAiVsAiPlayback();
+    await _pumpSessionPlayArea(tester, session);
+
+    final GameController controller = GameController();
+    expect(controller.gameRecorder.currentPath, hasLength(7));
+    expect(controller.aiVsAiPlaybackState, AiVsAiPlaybackState.paused);
+    expect(controller.isEngineRunning, isFalse);
+    expect(controller.isEngineInDelay, isFalse);
+    expect(controller.activeSessionPhase, isNot(Phase.gameOver));
+
+    await tester.tap(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+    expect(
+      find.byKey(const Key('play_area_ai_vs_ai_menu_take_back_turn')),
+      findsOneWidget,
+    );
+    await tester.tap(
+      find.byKey(const Key('play_area_ai_vs_ai_menu_take_back_turn')),
+    );
+    await tester.pumpAndSettle();
+    expect(_currentPathMoves(), <String>['a1', 'd1', 'a4', 'd2', 'a7', 'xd1']);
+    expect(GameController().aiVsAiPlaybackState, AiVsAiPlaybackState.paused);
+
+    await tester.tap(
+      find.byKey(const Key('play_area_ai_vs_ai_bottom_bar_menu')),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.byKey(const Key('play_area_ai_vs_ai_menu_take_back_turn')),
+    );
+    await tester.pumpAndSettle();
+
+    expect(_currentPathMoves(), <String>['a1', 'd1', 'a4', 'd2']);
+    expect(GameController().aiVsAiPlaybackState, AiVsAiPlaybackState.paused);
+  });
+
   for (final (
         GameMode mode,
         RemoteTransportKind transport,
@@ -9510,27 +9788,27 @@ List<ExtMove> _takeBackCaptureFixture() {
 
 Future<void> _pumpSessionPlayArea(
   WidgetTester tester,
-  NativeMillGameSession session,
-) async {
-  await tester.binding.setSurfaceSize(const Size(390, 844));
+  NativeMillGameSession session, {
+  Size surfaceSize = const Size(390, 844),
+  MediaQueryData? mediaQueryData,
+}) async {
+  await tester.binding.setSurfaceSize(surfaceSize);
   addTearDown(() => tester.binding.setSurfaceSize(null));
 
-  await tester.pumpWidget(
-    _localizedApp(
-      GameSessionScope(
-        session: session,
-        child: const Scaffold(
-          body: PlayArea(
-            boardImage: null,
-            child: SizedBox.square(
-              key: Key('test_board_square'),
-              dimension: 390,
-            ),
-          ),
-        ),
+  Widget playArea = GameSessionScope(
+    session: session,
+    child: const Scaffold(
+      body: PlayArea(
+        boardImage: null,
+        child: SizedBox.square(key: Key('test_board_square'), dimension: 390),
       ),
     ),
   );
+  if (mediaQueryData != null) {
+    playArea = MediaQuery(data: mediaQueryData, child: playArea);
+  }
+
+  await tester.pumpWidget(_localizedApp(playArea));
   await tester.pumpAndSettle();
 }
 

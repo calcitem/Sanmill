@@ -174,9 +174,13 @@ void main() {
     },
   );
 
-  test('shouldAutoRestartAfterGameOver mirrors master mode gating', () {
+  test('AI self-play auto restart supports animation and respects pause', () {
     final MockDB db = MockDB();
-    db.generalSettings = const GeneralSettings(isAutoRestart: true);
+    db.generalSettings = const GeneralSettings(
+      isAutoRestart: true,
+      shufflingEnabled: true,
+    );
+    db.displaySettings = const DisplaySettings(animationDuration: 1.5);
     DB.instance = db;
     addTearDown(() => DB.instance = null);
 
@@ -203,9 +207,60 @@ void main() {
     expect(controller.shouldAutoRestartAfterGameOver(), isFalse);
 
     controller.gameInstance.gameMode = GameMode.aiVsAi;
-    db.displaySettings = const DisplaySettings();
+    expect(controller.aiVsAiPlaybackState, AiVsAiPlaybackState.playing);
+    expect(controller.shouldAutoRestartAfterGameOver(), isTrue);
+
+    controller.activeSessionSnapshot = const platform.GameStateSnapshot(
+      gameId: GameId.mill,
+      activeSeat: platform.PlayerSeat.first,
+      outcome: platform.GameOutcome.ongoing(),
+      phase: 'placing',
+    );
+    controller.pauseAiVsAiPlayback();
+    controller.activeSessionSnapshot = const platform.GameStateSnapshot(
+      gameId: GameId.mill,
+      activeSeat: platform.PlayerSeat.none,
+      outcome: platform.GameOutcome.win(platform.PlayerSeat.first),
+      phase: 'gameOver',
+    );
     expect(controller.shouldAutoRestartAfterGameOver(), isFalse);
   });
+
+  test(
+    'AI self-play pause waiter settles or invalidates with its session',
+    () async {
+      DB.instance = MockDB();
+      final GameController controller = GameController.instance;
+      addTearDown(() {
+        controller.isEngineRunning = false;
+        controller.activeSessionSnapshot = null;
+        controller.gameInstance.gameMode = GameMode.humanVsAi;
+        DB.instance = null;
+      });
+
+      controller.gameInstance.gameMode = GameMode.aiVsAi;
+      controller.reset(force: true);
+      controller.activeSessionSnapshot = const platform.GameStateSnapshot(
+        gameId: GameId.mill,
+        activeSeat: platform.PlayerSeat.first,
+        outcome: platform.GameOutcome.ongoing(),
+        phase: 'placing',
+      );
+
+      expect(await controller.pauseAiVsAiPlaybackAndWait(), isTrue);
+      expect(controller.aiVsAiPlaybackState, AiVsAiPlaybackState.paused);
+
+      controller.reset(force: true);
+      controller.isEngineRunning = true;
+      final Future<bool> pendingPause = controller.pauseAiVsAiPlaybackAndWait();
+      expect(controller.aiVsAiPlaybackState, AiVsAiPlaybackState.pausePending);
+
+      controller.isEngineRunning = false;
+      controller.reset(force: true);
+
+      expect(await pendingPause, isFalse);
+    },
+  );
 
   test('loaded Human vs AI turns are claimed once for automatic resume', () {
     final MockDB db = MockDB();

@@ -7178,5 +7178,33 @@
                 "type": "String"
             }
         }
+    },
+    "aiVsAiSettings": "自弈设置",
+    "@aiVsAiSettings": {
+        "description": "Title and menu label for computer self-play settings"
+    },
+    "aiVsAiPausing": "正在暂停…",
+    "@aiVsAiPausing": {
+        "description": "Computer self-play toolbar state while waiting for a complete turn to finish"
+    },
+    "aiVsAiPausingDescription": "将在当前回合结束后暂停",
+    "@aiVsAiPausingDescription": {
+        "description": "Accessible explanation of the pending computer self-play pause"
+    },
+    "aiVsAiPlayOneTurn": "走一回合",
+    "@aiVsAiPlayOneTurn": {
+        "description": "Advances paused computer self-play by one complete Mill turn"
+    },
+    "aiVsAiExecutingTurn": "正在行棋…",
+    "@aiVsAiExecutingTurn": {
+        "description": "Computer self-play toolbar state while a requested single turn is running"
+    },
+    "aiVsAiTakeBackTurn": "撤回上一回合",
+    "@aiVsAiTakeBackTurn": {
+        "description": "Undoes the latest complete turn in computer self-play"
+    },
+    "moreComputerSettings": "更多电脑设置",
+    "@moreComputerSettings": {
+        "description": "Opens the full computer settings page from self-play settings"
     }
 }

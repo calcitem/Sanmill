@@ -7245,5 +7245,33 @@
                 "type": "String"
             }
         }
+    },
+    "aiVsAiSettings": "Self-play settings",
+    "@aiVsAiSettings": {
+        "description": "Title and menu label for computer self-play settings"
+    },
+    "aiVsAiPausing": "Pausing…",
+    "@aiVsAiPausing": {
+        "description": "Computer self-play toolbar state while waiting for a complete turn to finish"
+    },
+    "aiVsAiPausingDescription": "Pausing after the current turn finishes",
+    "@aiVsAiPausingDescription": {
+        "description": "Accessible explanation of the pending computer self-play pause"
+    },
+    "aiVsAiPlayOneTurn": "Play one turn",
+    "@aiVsAiPlayOneTurn": {
+        "description": "Advances paused computer self-play by one complete Mill turn"
+    },
+    "aiVsAiExecutingTurn": "Playing turn…",
+    "@aiVsAiExecutingTurn": {
+        "description": "Computer self-play toolbar state while a requested single turn is running"
+    },
+    "aiVsAiTakeBackTurn": "Take back last turn",
+    "@aiVsAiTakeBackTurn": {
+        "description": "Undoes the latest complete turn in computer self-play"
+    },
+    "moreComputerSettings": "More computer settings",
+    "@moreComputerSettings": {
+        "description": "Opens the full computer settings page from self-play settings"
     }
 }

@@ -58,7 +58,6 @@ import '../../statistics/services/stats_service.dart';
 import '../services/analysis/analysis_service.dart';
 import '../services/analysis_mode.dart';
 import '../services/animation/animation_manager.dart';
-import '../services/animation/headless_animation_manager.dart';
 import '../services/annotation/annotation_manager.dart';
 import '../services/board_recognition_import.dart';
 import '../services/import_export/pgn.dart';

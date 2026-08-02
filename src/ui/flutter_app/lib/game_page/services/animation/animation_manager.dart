@@ -12,6 +12,7 @@ import '../mill.dart';
 
 class AnimationManager {
   AnimationManager(this.vsync) {
+    allowAnimations = DB().displaySettings.animationDuration > 0;
     _initPlaceAnimation();
     _initMoveAnimation();
     _initRemoveAnimation();
@@ -52,6 +53,46 @@ class AnimationManager {
   bool _isDisposed = false; // Track whether dispose() was called
 
   bool allowAnimations = true;
+
+  /// Applies a changed board-animation duration without replacing the game
+  /// board or its listenable animation controllers.
+  void updateAnimationDuration(double seconds) {
+    assert(seconds >= 0, 'Animation duration cannot be negative.');
+    if (_isDisposed) {
+      return;
+    }
+
+    completeAllAnimations();
+    final double totalMilliseconds = seconds * 1000;
+    final int fullDuration = totalMilliseconds.toInt();
+    final int pickUpDuration = (totalMilliseconds * 0.2).toInt().clamp(
+      100,
+      300,
+    );
+    final int putDownDuration = (totalMilliseconds * 0.2).toInt().clamp(
+      100,
+      300,
+    );
+    int moveDuration = (totalMilliseconds - pickUpDuration - putDownDuration)
+        .toInt();
+    if (moveDuration < totalMilliseconds * 0.4) {
+      moveDuration = (totalMilliseconds * 0.4).toInt();
+    }
+    if (totalMilliseconds > 0 && moveDuration < 50) {
+      moveDuration = 50;
+    }
+
+    _placeAnimationController.duration = Duration(milliseconds: fullDuration);
+    _moveAnimationController.duration = Duration(milliseconds: moveDuration);
+    _removeAnimationController.duration = Duration(milliseconds: fullDuration);
+    _pickUpAnimationController.duration = Duration(
+      milliseconds: pickUpDuration,
+    );
+    _putDownAnimationController.duration = Duration(
+      milliseconds: putDownDuration,
+    );
+    allowAnimations = seconds > 0;
+  }
 
   // Place Animation
   late final AnimationController _placeAnimationController;
