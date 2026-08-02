@@ -14,6 +14,17 @@ import 'package:sanmill/remote_play/remote_models.dart';
 import 'package:sanmill/rule_settings/models/rule_settings.dart';
 
 void main() {
+  test('distinguishes capacity and service protocol codes', () {
+    expect(
+      onlineFailureForCode('capacity_reached'),
+      OnlineFailure.serviceAtCapacity,
+    );
+    expect(
+      onlineFailureForCode('service_unavailable'),
+      OnlineFailure.serviceUnavailable,
+    );
+  });
+
   test('waits for an opponent and commits an authoritative action', () async {
     final OnlineRoomSession session = _session(status: 'waiting');
     final _FakeSocket socket = _FakeSocket();

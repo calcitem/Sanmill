@@ -55,8 +55,13 @@ void main() {
     'onlineSavedRoomDescription',
     'onlineContinueWaiting',
     'onlineCancelRoom',
-    'onlineCreateServiceUnavailableTitle',
-    'onlineCreateServiceUnavailableMessage',
+    'onlineNotConfigured',
+    'onlineConnectionFailed',
+    'onlineServiceAtCapacity',
+    'onlineAuthorizationFailed',
+    'onlineProtocolError',
+    'onlineCreateCapacityTitle',
+    'onlineCreateCapacityMessage',
   ];
 
   test('online keys are appended to en and zh in identical order', () {
@@ -101,16 +106,43 @@ void main() {
     expect(lookupS(const Locale('zh')).onlineFriendGame, '云端对战');
   });
 
-  test('service unavailable guidance mentions capacity and proxy settings', () {
+  test('cloud failures have distinct English and Chinese guidance', () {
+    final S english = lookupS(const Locale('en'));
+    final S chinese = lookupS(const Locale('zh'));
+
     expect(
-      lookupS(const Locale('en')).onlineServiceUnavailable,
-      'Cloud play is temporarily unavailable. The service may be at capacity; '
-      'if needed, check your proxy settings.',
+      english.onlineNotConfigured,
+      'Cloud play is not supported in this version.',
     );
+    expect(chinese.onlineNotConfigured, '当前版本不支持云端对战。');
     expect(
-      lookupS(const Locale('zh')).onlineServiceUnavailable,
-      '云端对战暂时不可用。云端服务可能已达到容量上限；如有需要，请检查代理服务器设置。',
+      english.onlineConnectionFailed,
+      'Could not reach the cloud service. Check your network and proxy '
+      'settings, then try again.',
     );
+    expect(chinese.onlineConnectionFailed, '无法连接云端服务。请检查网络和代理服务器设置后重试。');
+    expect(
+      english.onlineServiceAtCapacity,
+      'Cloud play is temporarily at capacity. Please try again later.',
+    );
+    expect(chinese.onlineServiceAtCapacity, '云端可用资源暂时已满，请稍后重试。');
+    expect(
+      english.onlineServiceUnavailable,
+      'The cloud service is temporarily unavailable. Please try again later.',
+    );
+    expect(chinese.onlineServiceUnavailable, '云端服务暂时不可用，请稍后重试。');
+    expect(
+      english.onlineAuthorizationFailed,
+      'Cloud game authorization failed. Reopen the invitation or create a '
+      'new game.',
+    );
+    expect(chinese.onlineAuthorizationFailed, '云端对局授权失败。请重新打开邀请链接或创建新对局。');
+    expect(
+      english.onlineProtocolError,
+      'The cloud service returned an incompatible response. Update the app, '
+      'then try again.',
+    );
+    expect(chinese.onlineProtocolError, '云端服务返回了不兼容的响应。请更新软件后重试。');
   });
 }
 

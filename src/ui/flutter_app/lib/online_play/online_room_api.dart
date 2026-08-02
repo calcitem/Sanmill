@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 
 import '../experience_recording/services/diagnostic_reproduction_service.dart';
 import '../remote_play/remote_models.dart';
+import '../shared/services/logger.dart';
 import 'online_models.dart';
 
 abstract interface class OnlineRoomApi {
@@ -152,10 +153,15 @@ class HttpOnlineRoomApi implements OnlineRoomApi {
           .timeout(requestTimeout);
       final String source = await streamed.stream.bytesToString();
       if (streamed.statusCode != expectedStatus) {
-        throw OnlineApiException(
-          _failureFromResponse(source, streamed.statusCode),
-          statusCode: streamed.statusCode,
+        final OnlineFailure failure = _failureFromResponse(
+          source,
+          streamed.statusCode,
         );
+        logger.w(
+          '[Online][HTTP] REQUEST_REJECTED method=$method '
+          'status=${streamed.statusCode} failure=${failure.name}',
+        );
+        throw OnlineApiException(failure, statusCode: streamed.statusCode);
       }
       if (streamed.statusCode == 204) {
         return const <String, Object?>{};
@@ -168,35 +174,50 @@ class HttpOnlineRoomApi implements OnlineRoomApi {
     } on OnlineApiException {
       rethrow;
     } on TimeoutException {
-      throw const OnlineApiException(OnlineFailure.serviceUnavailable);
+      logger.w('[Online][HTTP] REQUEST_TIMEOUT method=$method');
+      throw const OnlineApiException(OnlineFailure.connectionFailed);
+    } on http.ClientException catch (error) {
+      logger.w(
+        '[Online][HTTP] CONNECTION_FAILED method=$method '
+        'error=${error.runtimeType}',
+      );
+      throw const OnlineApiException(OnlineFailure.connectionFailed);
     } on FormatException {
       throw const OnlineApiException(OnlineFailure.protocolError);
-    } on Object {
-      throw const OnlineApiException(OnlineFailure.serviceUnavailable);
     }
   }
 
   OnlineFailure _failureFromResponse(String source, int statusCode) {
-    try {
-      final Object? decoded = jsonDecode(source);
-      if (decoded is Map && decoded['error'] is String) {
-        return switch (decoded['error']) {
-          'invalid_invite' || 'invalid_request' => OnlineFailure.invalidInvite,
-          'invite_expired' => OnlineFailure.inviteExpired,
-          'invite_already_used' => OnlineFailure.inviteAlreadyUsed,
-          'room_unavailable' => OnlineFailure.roomUnavailable,
-          'room_full' => OnlineFailure.roomFull,
-          'version_mismatch' ||
-          'invalid_ruleset' => OnlineFailure.versionMismatch,
-          'unauthorized' => OnlineFailure.unauthorized,
-          'service_unavailable' => OnlineFailure.serviceUnavailable,
-          _ => OnlineFailure.protocolError,
-        };
-      }
-    } on FormatException {
-      return OnlineFailure.protocolError;
+    if (statusCode == 429) {
+      return OnlineFailure.serviceAtCapacity;
     }
-    return statusCode == 429 || statusCode >= 500
+    Object? decoded;
+    try {
+      decoded = jsonDecode(source);
+    } on FormatException {
+      decoded = null;
+    }
+    if (decoded is Map && decoded['error'] is String) {
+      final OnlineFailure? declaredFailure = switch (decoded['error']) {
+        'invalid_invite' || 'invalid_request' => OnlineFailure.invalidInvite,
+        'invite_expired' => OnlineFailure.inviteExpired,
+        'invite_already_used' => OnlineFailure.inviteAlreadyUsed,
+        'room_unavailable' => OnlineFailure.roomUnavailable,
+        'room_full' => OnlineFailure.roomFull,
+        'version_mismatch' ||
+        'invalid_ruleset' => OnlineFailure.versionMismatch,
+        'unauthorized' => OnlineFailure.unauthorized,
+        'capacity_reached' ||
+        'resource_exhausted' ||
+        'rate_limited' => OnlineFailure.serviceAtCapacity,
+        'service_unavailable' => OnlineFailure.serviceUnavailable,
+        _ => null,
+      };
+      if (declaredFailure != null) {
+        return declaredFailure;
+      }
+    }
+    return statusCode >= 500
         ? OnlineFailure.serviceUnavailable
         : OnlineFailure.protocolError;
   }

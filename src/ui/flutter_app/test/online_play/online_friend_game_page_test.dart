@@ -75,6 +75,28 @@ void main() {
     expect(find.byKey(const Key('online_join_game')), findsOneWidget);
   });
 
+  testWidgets('unconfigured build reports unsupported cloud play', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: S.localizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        home: OnlineFriendGamePage(
+          registration: _TestRegistration(),
+          sessionStore: _EmptyStore(),
+          proxySettingsStore: _MemoryProxyStore(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Cloud play is not supported in this version.'),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('pushed friend page gives its back button a spoken label', (
     WidgetTester tester,
   ) async {
@@ -117,7 +139,7 @@ void main() {
     'create sheet exposes fixed unlimited settings and stable errors',
     (WidgetTester tester) async {
       final _UnusedApi api = _UnusedApi(
-        createFailure: OnlineFailure.serviceUnavailable,
+        createFailure: OnlineFailure.serviceAtCapacity,
       );
       await tester.pumpWidget(_testApp(api: api));
       await tester.pump();
@@ -135,29 +157,59 @@ void main() {
       await tester.tap(find.widgetWithText(FilledButton, 'Create a game').last);
       await tester.pumpAndSettle();
       expect(
-        find.byKey(const Key('online_create_service_unavailable_dialog')),
+        find.byKey(const Key('online_create_capacity_dialog')),
         findsOneWidget,
       );
       expect(
-        find.text('Online service temporarily unavailable'),
+        find.text('Cloud play is temporarily at capacity'),
         findsOneWidget,
       );
-      expect(find.textContaining('free cloud resource limits'), findsOneWidget);
+      expect(
+        find.textContaining('limited free cloud resources'),
+        findsOneWidget,
+      );
       expect(api.createCalls, 1);
 
       await tester.tap(find.widgetWithText(TextButton, 'OK'));
       await tester.pumpAndSettle();
       expect(
-        find.byKey(const Key('online_create_service_unavailable_dialog')),
+        find.byKey(const Key('online_create_capacity_dialog')),
         findsNothing,
       );
       expect(
-        find.textContaining('Cloud play is temporarily unavailable'),
+        find.textContaining('Cloud play is temporarily at capacity'),
         findsNothing,
       );
       expect(find.byKey(const Key('online_create_game')), findsOneWidget);
     },
   );
+
+  testWidgets('service failure does not masquerade as capacity', (
+    WidgetTester tester,
+  ) async {
+    final _UnusedApi api = _UnusedApi(
+      createFailure: OnlineFailure.serviceUnavailable,
+    );
+    await tester.pumpWidget(_testApp(api: api));
+    await tester.pump();
+
+    await tester.tap(find.byKey(const Key('online_create_game')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(FilledButton, 'Create a game').last);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byKey(const Key('online_create_capacity_dialog')),
+      findsNothing,
+    );
+    expect(
+      find.text(
+        'The cloud service is temporarily unavailable. '
+        'Please try again later.',
+      ),
+      findsOneWidget,
+    );
+  });
 
   testWidgets('version mismatch shows a blocking software update dialog', (
     WidgetTester tester,
@@ -174,7 +226,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(
-      find.byKey(const Key('online_create_service_unavailable_dialog')),
+      find.byKey(const Key('online_create_capacity_dialog')),
       findsNothing,
     );
     expect(

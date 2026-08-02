@@ -13,6 +13,7 @@ import '../game_page/widgets/qr_scanner_page.dart';
 import '../generated/intl/l10n.dart';
 import '../remote_play/remote_match_controller.dart';
 import '../remote_play/remote_models.dart';
+import '../shared/services/logger.dart';
 import '../shared/widgets/snackbars/scaffold_messenger.dart';
 import 'cloud_match_coordinator.dart';
 import 'online_deep_links.dart';
@@ -73,6 +74,10 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
   int _connectionAttempt = 0;
   bool _versionMismatchDialogVisible = false;
 
+  OnlineFailure get _transportUnavailableFailure => _service == null
+      ? OnlineFailure.notConfigured
+      : OnlineFailure.connectionFailed;
+
   @override
   void initState() {
     super.initState();
@@ -82,7 +87,8 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
     try {
       _service = widget.service ?? OnlineServiceConfig.fromEnvironment();
     } on FormatException {
-      _failure = OnlineFailure.serviceUnavailable;
+      logger.w('[Online] SERVICE_NOT_CONFIGURED');
+      _failure = OnlineFailure.notConfigured;
     }
     _linkSubscription = OnlineDeepLinkController.instance.links.listen(
       _handleIncomingUri,
@@ -104,11 +110,15 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
       _installTransport(settings);
       setState(() => _transportReady = true);
       await _resumeOrJoin();
-    } on Object {
+    } on Object catch (error) {
+      logger.w(
+        '[Online] TRANSPORT_INITIALIZATION_FAILED '
+        'error=${error.runtimeType}',
+      );
       if (mounted) {
         setState(() {
           _transportReady = false;
-          _failure = OnlineFailure.serviceUnavailable;
+          _failure = _transportUnavailableFailure;
         });
       }
     }
@@ -189,9 +199,13 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
       if (mounted) {
         setState(() => _failure = error.failure);
       }
-    } on Object {
+    } on Object catch (error) {
+      logger.w(
+        '[Online] SAVED_SESSION_RESTORE_FAILED '
+        'error=${error.runtimeType}',
+      );
       if (mounted) {
-        setState(() => _failure = OnlineFailure.serviceUnavailable);
+        setState(() => _failure = OnlineFailure.protocolError);
       }
     }
   }
@@ -207,7 +221,7 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
     OnlineDeepLinkController.instance.consume(uri);
     final OnlineServiceConfig? service = _service;
     if (service == null) {
-      setState(() => _failure = OnlineFailure.serviceUnavailable);
+      setState(() => _failure = OnlineFailure.notConfigured);
       return;
     }
     final OnlineInvite? invite = OnlineInvite.tryParse(uri.toString(), service);
@@ -221,7 +235,7 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
   Future<void> _createGame(OnlineSidePreference side) async {
     final OnlineRoomApi? api = _roomApi;
     if (api == null) {
-      setState(() => _failure = OnlineFailure.serviceUnavailable);
+      setState(() => _failure = _transportUnavailableFailure);
       return;
     }
     setState(() {
@@ -236,14 +250,15 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
         eloRating: widget.registration.localEloRating,
       );
     } on OnlineApiException catch (error) {
-      if (error.failure == OnlineFailure.serviceUnavailable) {
-        await _showCreateServiceUnavailableDialog();
+      if (error.failure == OnlineFailure.serviceAtCapacity) {
+        await _showCreateCapacityDialog();
       } else {
         _showFailure(error.failure);
       }
       return;
-    } on Object {
-      _showFailure(OnlineFailure.serviceUnavailable);
+    } on Object catch (error) {
+      logger.w('[Online] CREATE_GAME_FAILED error=${error.runtimeType}');
+      _showFailure(OnlineFailure.protocolError);
       return;
     }
     if (!mounted) {
@@ -254,7 +269,7 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
     } on OnlineApiException catch (error) {
       _showFailure(error.failure);
     } on Object {
-      _showFailure(OnlineFailure.serviceUnavailable);
+      _showFailure(OnlineFailure.connectionFailed);
     }
   }
 
@@ -273,7 +288,7 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
   Future<void> _joinInvite(OnlineInvite invite) async {
     final OnlineRoomApi? api = _roomApi;
     if (api == null) {
-      _showFailure(OnlineFailure.serviceUnavailable);
+      _showFailure(_transportUnavailableFailure);
       return;
     }
     setState(() {
@@ -291,8 +306,9 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
       await _connectSession(session);
     } on OnlineApiException catch (error) {
       _showFailure(error.failure);
-    } on Object {
-      _showFailure(OnlineFailure.serviceUnavailable);
+    } on Object catch (error) {
+      logger.w('[Online] JOIN_GAME_FAILED error=${error.runtimeType}');
+      _showFailure(OnlineFailure.protocolError);
     }
   }
 
@@ -312,7 +328,7 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
     final OnlineSocketClientFactory? socketFactory = _socketFactory;
     final OnlineRoomApi? roomApi = _roomApi;
     if (socketFactory == null || roomApi == null) {
-      throw const OnlineApiException(OnlineFailure.serviceUnavailable);
+      throw OnlineApiException(_transportUnavailableFailure);
     }
     final CloudMatchCoordinator coordinator = await widget.registration
         .installCoordinator(
@@ -363,7 +379,7 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
           !identical(_coordinator, coordinator)) {
         return;
       }
-      _showSessionFailure(OnlineFailure.serviceUnavailable, session);
+      _showSessionFailure(OnlineFailure.connectionFailed, session);
     }
   }
 
@@ -469,7 +485,7 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
     }
   }
 
-  Future<void> _showCreateServiceUnavailableDialog() async {
+  Future<void> _showCreateCapacityDialog() async {
     if (!mounted) {
       return;
     }
@@ -481,9 +497,9 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
     await showDialog<void>(
       context: context,
       builder: (BuildContext dialogContext) => AlertDialog(
-        key: const Key('online_create_service_unavailable_dialog'),
-        title: Text(s.onlineCreateServiceUnavailableTitle),
-        content: Text(s.onlineCreateServiceUnavailableMessage),
+        key: const Key('online_create_capacity_dialog'),
+        title: Text(s.onlineCreateCapacityTitle),
+        content: Text(s.onlineCreateCapacityMessage),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),
@@ -566,15 +582,16 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
         } on OnlineApiException catch (error) {
           _showFailure(error.failure);
         } on Object {
-          _showSessionFailure(
-            OnlineFailure.serviceUnavailable,
-            reconnectSession,
-          );
+          _showSessionFailure(OnlineFailure.connectionFailed, reconnectSession);
         }
       }
-    } on Object {
+    } on Object catch (error) {
+      logger.w(
+        '[Online] PROXY_RECONFIGURATION_FAILED '
+        'error=${error.runtimeType}',
+      );
       if (mounted) {
-        setState(() => _failure = OnlineFailure.serviceUnavailable);
+        setState(() => _failure = _transportUnavailableFailure);
       }
     }
   }
@@ -614,7 +631,7 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
     } on OnlineApiException catch (error) {
       _showFailure(error.failure);
     } on Object {
-      _showFailure(OnlineFailure.serviceUnavailable);
+      _showFailure(OnlineFailure.connectionFailed);
     }
   }
 
@@ -640,11 +657,15 @@ class _OnlineFriendGamePageState extends State<OnlineFriendGamePage> {
         }
         return;
       }
-    } on Object {
+    } on Object catch (error) {
+      logger.w(
+        '[Online] SAVED_SESSION_CANCEL_FAILED '
+        'error=${error.runtimeType}',
+      );
       if (mounted) {
         setState(() {
           _stage = _OnlinePageStage.home;
-          _failure = OnlineFailure.serviceUnavailable;
+          _failure = OnlineFailure.connectionFailed;
         });
       }
       return;
@@ -1479,7 +1500,10 @@ String _failureText(S s, OnlineFailure failure) => switch (failure) {
   OnlineFailure.roomUnavailable => s.onlineRoomUnavailable,
   OnlineFailure.roomFull => s.onlineRoomFull,
   OnlineFailure.versionMismatch => s.onlineVersionMismatch,
-  OnlineFailure.serviceUnavailable ||
-  OnlineFailure.unauthorized ||
-  OnlineFailure.protocolError => s.onlineServiceUnavailable,
+  OnlineFailure.notConfigured => s.onlineNotConfigured,
+  OnlineFailure.connectionFailed => s.onlineConnectionFailed,
+  OnlineFailure.serviceAtCapacity => s.onlineServiceAtCapacity,
+  OnlineFailure.serviceUnavailable => s.onlineServiceUnavailable,
+  OnlineFailure.unauthorized => s.onlineAuthorizationFailed,
+  OnlineFailure.protocolError => s.onlineProtocolError,
 };

@@ -4904,8 +4904,8 @@
     "@onlineRoomFull": {"description": "房间已有两名玩家的错误信息。"},
     "onlineVersionMismatch": "此对局使用的软件版本不兼容。请更新软件后重试。",
     "@onlineVersionMismatch": {"description": "协议或规则版本不兼容的错误信息。"},
-    "onlineServiceUnavailable": "云端对战暂时不可用。云端服务可能已达到容量上限；如有需要，请检查代理服务器设置。",
-    "@onlineServiceUnavailable": {"description": "Error when the cloud service cannot be used."},
+    "onlineServiceUnavailable": "云端服务暂时不可用，请稍后重试。",
+    "@onlineServiceUnavailable": {"description": "Error when the cloud service reports a temporary fault."},
     "onlineSynchronizing": "正在同步对局…",
     "@onlineSynchronizing": {"description": "应用权威快照时的状态。"},
     "onlineReconnecting": "连接已中断，正在重连…",
@@ -6960,14 +6960,6 @@
     "@onlineCancelRoom": {
         "description": "Button that cancels a saved waiting room"
     },
-    "onlineCreateServiceUnavailableTitle": "在线服务暂时不可用",
-    "@onlineCreateServiceUnavailableTitle": {
-        "description": "Title shown when creating an online room fails because the service is unavailable"
-    },
-    "onlineCreateServiceUnavailableMessage": "本程序及在线对局服务均免费提供。在线服务在免费云资源额度内运行，高峰时段可能暂时无法创建或加入对局。如遇此情况，请稍后重试；离线功能不受影响。",
-    "@onlineCreateServiceUnavailableMessage": {
-        "description": "Explains free cloud capacity limits after creating an online room fails"
-    },
     "takeBackRequestSentWaitingForOpponentResponse": "已请求撤回自己最近的一次行棋及对方随后的一次应着，正在等待对方回应…",
     "@takeBackRequestSentWaitingForOpponentResponse": {
         "description": "Status shown while waiting to take back the requester's turn and the opponent's reply"
@@ -7127,5 +7119,33 @@
     "puzzleContinueNext": "继续下一题",
     "@puzzleContinueNext": {
         "description": "Menu action that continues to another puzzle after solving the current one"
+    },
+    "onlineNotConfigured": "当前版本不支持云端对战。",
+    "@onlineNotConfigured": {
+        "description": "Error when the installed build has no cloud service configuration"
+    },
+    "onlineConnectionFailed": "无法连接云端服务。请检查网络和代理服务器设置后重试。",
+    "@onlineConnectionFailed": {
+        "description": "Error for DNS, TLS, timeout, proxy, or other cloud connection failures"
+    },
+    "onlineServiceAtCapacity": "云端可用资源暂时已满，请稍后重试。",
+    "@onlineServiceAtCapacity": {
+        "description": "Error when the cloud service explicitly reports exhausted capacity or rate limits"
+    },
+    "onlineAuthorizationFailed": "云端对局授权失败。请重新打开邀请链接或创建新对局。",
+    "@onlineAuthorizationFailed": {
+        "description": "Error when a cloud room credential is missing, expired, or rejected"
+    },
+    "onlineProtocolError": "云端服务返回了不兼容的响应。请更新软件后重试。",
+    "@onlineProtocolError": {
+        "description": "Error when the cloud service response does not match the supported protocol"
+    },
+    "onlineCreateCapacityTitle": "云端资源暂时已满",
+    "@onlineCreateCapacityTitle": {
+        "description": "Title shown when cloud capacity prevents creating a room"
+    },
+    "onlineCreateCapacityMessage": "本程序及云端对战服务均免费提供。该服务使用有限的免费云端资源，容量已满时可能暂时无法创建对局。请稍后重试；离线功能不受影响。",
+    "@onlineCreateCapacityMessage": {
+        "description": "Explains limited free cloud capacity after creating a room is rejected"
     }
 }

@@ -1442,9 +1442,12 @@ class GameController {
       OnlineFailure.roomUnavailable => s.onlineRoomUnavailable,
       OnlineFailure.roomFull => s.onlineRoomFull,
       OnlineFailure.versionMismatch => s.onlineVersionMismatch,
-      OnlineFailure.serviceUnavailable ||
-      OnlineFailure.unauthorized ||
-      OnlineFailure.protocolError => s.onlineServiceUnavailable,
+      OnlineFailure.notConfigured => s.onlineNotConfigured,
+      OnlineFailure.connectionFailed => s.onlineConnectionFailed,
+      OnlineFailure.serviceAtCapacity => s.onlineServiceAtCapacity,
+      OnlineFailure.serviceUnavailable => s.onlineServiceUnavailable,
+      OnlineFailure.unauthorized => s.onlineAuthorizationFailed,
+      OnlineFailure.protocolError => s.onlineProtocolError,
     };
   }
 

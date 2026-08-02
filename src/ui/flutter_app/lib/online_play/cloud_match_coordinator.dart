@@ -151,14 +151,14 @@ class CloudMatchCoordinator
       rethrow;
     } on Object catch (error, stackTrace) {
       if (_disposed) {
-        throw const OnlineApiException(OnlineFailure.serviceUnavailable);
+        throw const OnlineApiException(OnlineFailure.connectionFailed);
       }
       _events.add(
         RemoteMatchFailure(_sanitizedDiagnosticError(error), stackTrace),
       );
-      _events.add(const RemoteOnlineFailure(OnlineFailure.serviceUnavailable));
+      _events.add(const RemoteOnlineFailure(OnlineFailure.connectionFailed));
       _setState(RemoteConnectionState.error);
-      throw const OnlineApiException(OnlineFailure.serviceUnavailable);
+      throw const OnlineApiException(OnlineFailure.connectionFailed);
     }
   }
 
@@ -825,7 +825,8 @@ bool isTerminalOnlineFailure(OnlineFailure failure) =>
     failure == OnlineFailure.roomUnavailable ||
     failure == OnlineFailure.unauthorized ||
     failure == OnlineFailure.inviteExpired ||
-    failure == OnlineFailure.versionMismatch;
+    failure == OnlineFailure.versionMismatch ||
+    failure == OnlineFailure.notConfigured;
 
 OnlineFailure onlineFailureForCode(String code) => switch (code) {
   'invalid_invite' || 'invalid_request' => OnlineFailure.invalidInvite,
@@ -835,6 +836,9 @@ OnlineFailure onlineFailureForCode(String code) => switch (code) {
   'room_full' => OnlineFailure.roomFull,
   'version_mismatch' => OnlineFailure.versionMismatch,
   'unauthorized' => OnlineFailure.unauthorized,
+  'capacity_reached' ||
+  'resource_exhausted' ||
+  'rate_limited' => OnlineFailure.serviceAtCapacity,
   'service_unavailable' => OnlineFailure.serviceUnavailable,
   _ => OnlineFailure.protocolError,
 };
