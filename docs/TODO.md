@@ -5,6 +5,8 @@
 - [ ] Make MCTS understand repetition and configured move-count draws while
   selecting a move.
 
+  Related issue: [#257](https://github.com/calcitem/Sanmill/issues/257).
+
   MCTS currently applies tree and rollout moves through
   `MillWorkbench::do_move`, which intentionally does not adjudicate threefold
   repetition or the configured regular/endgame move-count draw rules. Unlike
@@ -34,3 +36,10 @@
   in-tree repetition, repetition reset after capture, disabled repetition,
   regular move-count draw, endgame move-count draw, and single-thread/parallel
   consistency.
+
+## Engine strength
+
+- [ ] Investigate the AI's strong weakness in 6-vs-4 positions reported in
+  [#605](https://github.com/calcitem/Sanmill/issues/605). This is a complex
+  search/evaluation problem and should be handled as a dedicated follow-up on
+  its own branch.
