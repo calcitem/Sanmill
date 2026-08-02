@@ -2994,6 +2994,47 @@ void main() {
     semantics.dispose();
   });
 
+  testWidgets('Coordinate training keeps the start button below the board', (
+    WidgetTester tester,
+  ) async {
+    tester.view
+      ..physicalSize = const Size(390, 600)
+      ..devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await DB().puzzleAnalyticsBox.delete(DB.coordinateTrainingStatsKey);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.lightThemeData,
+        localizationsDelegates: sanmillLocalizationsDelegates,
+        supportedLocales: S.supportedLocales,
+        locale: const Locale('en'),
+        builder: (BuildContext context, Widget? child) {
+          final MediaQueryData mediaQuery = MediaQuery.of(context);
+          return MediaQuery(
+            data: mediaQuery.copyWith(textScaler: const TextScaler.linear(1.3)),
+            child: child!,
+          );
+        },
+        home: const MillCoordinateTrainingPage(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final Rect boardRect = tester.getRect(
+      find.byKey(const Key('mill_coordinate_training_board')),
+    );
+    final Rect startButtonRect = tester.getRect(
+      find.byKey(const Key('mill_coordinate_training_start_button')),
+    );
+
+    expect(boardRect.width, boardRect.height);
+    expect(boardRect.overlaps(startButtonRect), isFalse);
+    expect(startButtonRect.top - boardRect.bottom, greaterThanOrEqualTo(20));
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('Tutorial explains configurable Mill rules clearly', (
     WidgetTester tester,
   ) async {

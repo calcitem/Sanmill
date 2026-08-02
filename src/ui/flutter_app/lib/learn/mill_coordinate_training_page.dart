@@ -23,7 +23,9 @@ const Offset _kNextCoordinateTranslation = Offset(0.72, 0.32);
 const double _kNextCoordinateScale = 0.42;
 const double _kCurrentCoordinateOpacity = 0.9;
 const double _kNextCoordinateOpacity = 0.68;
-const double _kTrainingPanelMinHeight = 96;
+const double _kTrainingPanelMinHeight = 120;
+const double _kTrainingLayoutSpacing = 12;
+const EdgeInsets _kTrainingLayoutPadding = EdgeInsets.fromLTRB(12, 8, 12, 12);
 const double _kBoardCoordinateFontSize = 20;
 const Duration _kTimedTrainingDuration = Duration(seconds: 30);
 
@@ -516,14 +518,24 @@ class _TrainingLayout extends StatelessWidget {
       builder: (BuildContext context, BoxConstraints constraints) {
         final bool landscape = constraints.maxWidth > constraints.maxHeight;
         final Axis direction = landscape ? Axis.horizontal : Axis.vertical;
+        final double contentWidth = math.max(
+          0,
+          constraints.maxWidth - _kTrainingLayoutPadding.horizontal,
+        );
+        final double contentHeight = math.max(
+          0,
+          constraints.maxHeight - _kTrainingLayoutPadding.vertical,
+        );
         final double maxBoardHeight = landscape
-            ? constraints.maxHeight - 24
-            : constraints.maxHeight - _kTrainingPanelMinHeight;
+            ? contentHeight
+            : contentHeight -
+                  _kTrainingPanelMinHeight -
+                  _kTrainingLayoutSpacing;
         final double boardSize = math.max(
           0,
           landscape
-              ? math.min(maxBoardHeight, constraints.maxWidth * 0.62)
-              : math.min(constraints.maxWidth, maxBoardHeight),
+              ? math.min(maxBoardHeight, contentWidth * 0.62)
+              : math.min(contentWidth, maxBoardHeight),
         );
 
         final Widget board = SizedBox.square(
@@ -556,11 +568,15 @@ class _TrainingLayout extends StatelessWidget {
         );
 
         return Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+          padding: _kTrainingLayoutPadding,
           child: Flex(
             direction: direction,
             children: <Widget>[
               Align(alignment: Alignment.topCenter, child: board),
+              SizedBox(
+                width: landscape ? _kTrainingLayoutSpacing : 0,
+                height: landscape ? 0 : _kTrainingLayoutSpacing,
+              ),
               Expanded(child: panel),
             ],
           ),
