@@ -16,6 +16,9 @@ import '../../appearance_settings/models/display_settings.dart';
 import '../../general_settings/widgets/dialogs/llm_config_dialog.dart';
 import '../../general_settings/widgets/dialogs/llm_prompt_dialog.dart';
 import '../../generated/intl/l10n.dart';
+import '../../review/models/review_models.dart';
+import '../../review/services/review_launcher.dart';
+import '../../review/services/review_storage.dart';
 import '../../shared/config/prompt_defaults.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/environment_config.dart';
@@ -69,6 +72,10 @@ class MovesListPage extends StatefulWidget {
     this.initialLayout,
     this.initialShowBranchTree,
     this.initialScrollToStart = false,
+    this.importedGameRecord,
+    this.importedWithVariations = false,
+    this.reviewStorage = ReviewStorage.instance,
+    this.reviewPageBuilder,
   });
 
   /// Optional route-local layout used by callers that need a specific
@@ -82,6 +89,15 @@ class MovesListPage extends StatefulWidget {
   /// Whether this route should begin at the first move instead of following
   /// the active history node.
   final bool initialScrollToStart;
+
+  /// A record archived by an import route before this page was opened.
+  final PrivateGameRecord? importedGameRecord;
+
+  /// Whether the imported move tree retained side variations.
+  final bool importedWithVariations;
+
+  final ReviewStorage reviewStorage;
+  final ReviewPageBuilder? reviewPageBuilder;
 
   @override
   MovesListPageState createState() => MovesListPageState();
@@ -112,6 +128,11 @@ class MovesListPageState extends State<MovesListPage> {
   /// Current branch-tree mode, loaded from DB settings unless overridden.
   late bool _showBranchTree;
 
+  PrivateGameRecord? _importedGameRecord;
+  late bool _showImportedGameCard;
+  late bool _importedWithVariations;
+  bool _isOpeningReview = false;
+
   @override
   void initState() {
     super.initState();
@@ -119,6 +140,9 @@ class MovesListPageState extends State<MovesListPage> {
         widget.initialLayout ?? DB().displaySettings.movesViewLayout;
     _showBranchTree =
         widget.initialShowBranchTree ?? DB().displaySettings.showBranchTree;
+    _importedGameRecord = widget.importedGameRecord;
+    _showImportedGameCard = widget.importedGameRecord != null;
+    _importedWithVariations = widget.importedWithVariations;
     // Collect all nodes from the PGN tree into _allNodes.
     // For example:
     // final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
@@ -498,10 +522,79 @@ class MovesListPageState extends State<MovesListPage> {
 
   /// Helper method to import a game, then refresh.
   Future<void> _importGame() async {
-    await GameController.import(context, shouldPop: false);
-    // Wait briefly, then refresh our list of nodes.
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-    setState(_refreshAllNodes);
+    final GameImportResult result = await GameController.import(
+      context,
+      shouldPop: false,
+    );
+    if (!mounted) {
+      return;
+    }
+
+    PrivateGameRecord? archivedRecord;
+    if (result.success) {
+      try {
+        archivedRecord = await ReviewLauncher.archiveCurrentGame(
+          storage: widget.reviewStorage,
+          importedSourcePgn: result.sourceText,
+        );
+      } catch (exception, stackTrace) {
+        logger.e('Could not archive clipboard import: $exception\n$stackTrace');
+        if (mounted) {
+          rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+            S.of(context).importedGameSaveFailed,
+          );
+        }
+      }
+    }
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _refreshAllNodes();
+      if (result.success) {
+        _importedGameRecord = archivedRecord;
+        _showImportedGameCard = archivedRecord != null;
+        _importedWithVariations = result.includedVariations;
+      }
+    });
+  }
+
+  Future<void> _reviewCurrentGame() async {
+    if (_isOpeningReview || !ReviewLauncher.canReviewCurrentGame) {
+      return;
+    }
+    setState(() => _isOpeningReview = true);
+    try {
+      final int currentMoveCount =
+          GameController().gameRecorder.mainlineMoves.length;
+      PrivateGameRecord? record = _importedGameRecord;
+      if (record == null || record.moveCount != currentMoveCount) {
+        record = await ReviewLauncher.archiveCurrentGame(
+          storage: widget.reviewStorage,
+        );
+      }
+      if (record == null || !mounted) {
+        return;
+      }
+      _importedGameRecord = record;
+      await ReviewLauncher.open(
+        context,
+        record: record,
+        storage: widget.reviewStorage,
+        pageBuilder: widget.reviewPageBuilder,
+      );
+    } catch (exception, stackTrace) {
+      logger.e('Could not open game review: $exception\n$stackTrace');
+      if (mounted) {
+        rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+          S.of(context).reviewGameSaveFailed,
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isOpeningReview = false);
+      }
+    }
   }
 
   void _saveGame() {
@@ -2645,6 +2738,103 @@ class MovesListPageState extends State<MovesListPage> {
     );
   }
 
+  Widget _buildImportedGameCard(BuildContext context) {
+    final S strings = S.of(context);
+    final ThemeData theme = Theme.of(context);
+    final ColorScheme colors = theme.colorScheme;
+    return Semantics(
+      container: true,
+      liveRegion: true,
+      child: Card(
+        key: const Key('moves_list_imported_game_card'),
+        margin: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+        color: colors.secondaryContainer,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 8, 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  ExcludeSemantics(
+                    child: Icon(
+                      Icons.cloud_done_outlined,
+                      color: colors.onSecondaryContainer,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      strings.importedGameSavedToHistory,
+                      key: const Key('moves_list_imported_game_card_title'),
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        color: colors.onSecondaryContainer,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    key: const Key('moves_list_imported_game_card_dismiss'),
+                    tooltip: MaterialLocalizations.of(
+                      context,
+                    ).closeButtonTooltip,
+                    onPressed: () {
+                      setState(() => _showImportedGameCard = false);
+                    },
+                    icon: const Icon(Icons.close_rounded),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsetsDirectional.only(start: 36, end: 8),
+                child: Text(
+                  strings.importedGameReviewDescription,
+                  key: const Key('moves_list_imported_game_card_description'),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: colors.onSecondaryContainer,
+                  ),
+                ),
+              ),
+              if (_importedWithVariations)
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(
+                    start: 36,
+                    top: 4,
+                    end: 8,
+                  ),
+                  child: Text(
+                    strings.importedGameVariationsNotice,
+                    key: const Key(
+                      'moves_list_imported_game_variations_notice',
+                    ),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: colors.onSecondaryContainer,
+                    ),
+                  ),
+                ),
+              const SizedBox(height: 10),
+              Align(
+                alignment: AlignmentDirectional.centerEnd,
+                child: FilledButton.icon(
+                  key: const Key('moves_list_review_imported_game_button'),
+                  onPressed: _isOpeningReview ? null : _reviewCurrentGame,
+                  icon: _isOpeningReview
+                      ? const SizedBox.square(
+                          dimension: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.analytics_outlined),
+                  label: Text(strings.reviewGame),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -2768,6 +2958,9 @@ class MovesListPageState extends State<MovesListPage> {
                 case 'next_branch':
                   _jumpToNextBranchPoint();
                   break;
+                case 'review_game':
+                  await _reviewCurrentGame();
+                  break;
                 case 'save_game':
                   _saveGame();
                   break;
@@ -2850,6 +3043,22 @@ class MovesListPageState extends State<MovesListPage> {
                 ),
               ],
               const PopupMenuDivider(),
+              if (ReviewLauncher.canReviewCurrentGame)
+                PopupMenuItem<String>(
+                  key: const Key('moves_list_menu_review_game'),
+                  value: 'review_game',
+                  enabled: !_isOpeningReview,
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.analytics_outlined,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(S.of(context).reviewGame),
+                    ],
+                  ),
+                ),
               PopupMenuItem<String>(
                 value: 'save_game',
                 child: Row(
@@ -2980,6 +3189,8 @@ class MovesListPageState extends State<MovesListPage> {
       ),
       body: Column(
         children: <Widget>[
+          if (_showImportedGameCard && ReviewLauncher.canReviewCurrentGame)
+            _buildImportedGameCard(context),
           // Branch indicator banner (only for list view)
           if (!_showBranchTree && _isOnVariationBranch())
             _buildVariationBanner(),

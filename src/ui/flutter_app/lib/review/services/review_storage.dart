@@ -149,7 +149,8 @@ class ReviewStorage {
   int completedGamesOn(DateTime localDay) {
     return listGames().where((PrivateGameRecord record) {
       final DateTime local = record.completedAt.toLocal();
-      return record.humanSides.isNotEmpty &&
+      return record.isCompleted &&
+          record.humanSides.isNotEmpty &&
           local.year == localDay.year &&
           local.month == localDay.month &&
           local.day == localDay.day;

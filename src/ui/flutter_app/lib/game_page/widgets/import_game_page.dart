@@ -11,6 +11,10 @@ import 'package:flutter/services.dart';
 import '../../experience_recording/models/recording_models.dart';
 import '../../experience_recording/services/recording_service.dart';
 import '../../generated/intl/l10n.dart';
+import '../../review/models/review_models.dart';
+import '../../review/services/review_launcher.dart';
+import '../../review/services/review_storage.dart';
+import '../../shared/services/logger.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../services/mill.dart';
 import 'moves_list_page.dart';
@@ -18,7 +22,14 @@ import 'qr_scan_result_dialog.dart';
 import 'qr_scanner_page.dart';
 
 class ImportGamePage extends StatefulWidget {
-  const ImportGamePage({super.key});
+  const ImportGamePage({
+    super.key,
+    this.reviewStorage = ReviewStorage.instance,
+    this.reviewPageBuilder,
+  });
+
+  final ReviewStorage reviewStorage;
+  final ReviewPageBuilder? reviewPageBuilder;
 
   @override
   State<ImportGamePage> createState() => _ImportGamePageState();
@@ -115,8 +126,7 @@ class _ImportGamePageState extends State<ImportGamePage> {
       _importErrorMessage = null;
     });
 
-    final ({bool success, bool includedVariations, String? errorMessage})
-    importResult = await LoadService.importGameData(
+    final GameImportResult importResult = await LoadService.importGameData(
       context,
       text,
       showFailureSnackBar: false,
@@ -147,18 +157,52 @@ class _ImportGamePageState extends State<ImportGamePage> {
         includeVariations: importResult.includedVariations,
       );
     }
-    await LoadService.handleHistoryNavigation(
+    final bool replayed = await LoadService.handleHistoryNavigation(
       context,
       includedVariations: importResult.includedVariations,
+      showSuccessMessage: false,
     );
+    if (!mounted) {
+      return false;
+    }
+    if (!replayed) {
+      setState(() {
+        _isImporting = false;
+        _importErrorMessage = S.of(context).gameImportFailed;
+      });
+      return false;
+    }
+
+    PrivateGameRecord? archivedRecord;
+    try {
+      archivedRecord = await ReviewLauncher.archiveCurrentGame(
+        storage: widget.reviewStorage,
+        importedSourcePgn: text,
+      );
+    } catch (exception, stackTrace) {
+      logger.e('Could not archive imported game: $exception\n$stackTrace');
+      if (!mounted) {
+        return false;
+      }
+      setState(() {
+        _isImporting = false;
+        _importErrorMessage = S.of(context).importedGameSaveFailed;
+      });
+      return false;
+    }
     if (!mounted) {
       return false;
     }
 
     await Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
-        builder: (BuildContext context) =>
-            const MovesListPage(initialScrollToStart: true),
+        builder: (BuildContext context) => MovesListPage(
+          initialScrollToStart: true,
+          importedGameRecord: archivedRecord,
+          importedWithVariations: importResult.includedVariations,
+          reviewStorage: widget.reviewStorage,
+          reviewPageBuilder: widget.reviewPageBuilder,
+        ),
       ),
     );
     return true;

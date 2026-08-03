@@ -124,8 +124,30 @@ class MoveListDialog extends StatelessWidget {
                     S.of(context).paste,
                     style: _getButtonTextStyle(context),
                   ),
-                  onPressed: () {
-                    GameController.import(context);
+                  onPressed: () async {
+                    final String archiveFailure = S
+                        .of(context)
+                        .importedGameSaveFailed;
+                    final GameImportResult result = await GameController.import(
+                      context,
+                    );
+                    if (!result.success) {
+                      return;
+                    }
+                    try {
+                      await ReviewLauncher.archiveCurrentGame(
+                        storage: ReviewStorage.instance,
+                        importedSourcePgn: result.sourceText,
+                      );
+                    } catch (exception, stackTrace) {
+                      logger.e(
+                        'Could not archive move-list dialog import: '
+                        '$exception\n$stackTrace',
+                      );
+                      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+                        archiveFailure,
+                      );
+                    }
                   },
                 ),
               ),

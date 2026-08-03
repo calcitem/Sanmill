@@ -7289,5 +7289,29 @@
     "puzzleNotBestMove": "Not the best move. Try again.",
     "@puzzleNotBestMove": {
         "description": "Puzzle board feedback shown after a non-solution move"
+    },
+    "importedGameSavedToHistory": "Game imported · Saved to private history",
+    "@importedGameSavedToHistory": {
+        "description": "Confirmation shown above the move list after an imported game is privately archived"
+    },
+    "importedGameReviewDescription": "Run a local review of the imported main line.",
+    "@importedGameReviewDescription": {
+        "description": "Explains the review action offered after a game import"
+    },
+    "importedGameVariationsNotice": "Variations remain in the move list; review analyzes the main line.",
+    "@importedGameVariationsNotice": {
+        "description": "Clarifies how imported variations are handled by game review"
+    },
+    "importedGameSaveFailed": "The game was imported, but could not be saved to private history. Try again.",
+    "@importedGameSaveFailed": {
+        "description": "Error shown when an imported game cannot be privately archived"
+    },
+    "reviewGameSaveFailed": "Could not save this game for review. Try again.",
+    "@reviewGameSaveFailed": {
+        "description": "Error shown when the current game cannot be archived before review"
+    },
+    "unfinishedGame": "Unfinished",
+    "@unfinishedGame": {
+        "description": "Private-history result label for a game without a terminal result"
     }
 }

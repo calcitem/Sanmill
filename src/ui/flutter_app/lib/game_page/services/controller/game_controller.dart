@@ -2958,7 +2958,7 @@ class GameController {
   }
 
   /// S.of(context).starts a game import.
-  static Future<void> import(
+  static Future<GameImportResult> import(
     BuildContext context, {
     bool shouldPop = true,
   }) async {

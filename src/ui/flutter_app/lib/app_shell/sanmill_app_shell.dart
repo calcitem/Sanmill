@@ -1742,7 +1742,8 @@ class _PrivateHistorySection extends StatelessWidget {
                 ) ??
                 strings.game,
             subtitle:
-                '${localizations.formatShortDate(record.completedAt.toLocal())} · ${record.result}',
+                '${localizations.formatShortDate(record.completedAt.toLocal())} · '
+                '${record.isCompleted ? record.result : strings.unfinishedGame}',
             detail: strings.reviewGame,
             onTap: () => onReview(record),
             onReview: () => onReview(record),

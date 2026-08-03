@@ -5,6 +5,39 @@
 
 part of '../mill.dart';
 
+@immutable
+class GameImportResult {
+  const GameImportResult._({
+    required this.success,
+    required this.includedVariations,
+    required this.sourceText,
+    required this.errorMessage,
+  });
+
+  const GameImportResult.success({
+    required String sourceText,
+    bool includedVariations = false,
+  }) : this._(
+         success: true,
+         includedVariations: includedVariations,
+         sourceText: sourceText,
+         errorMessage: null,
+       );
+
+  const GameImportResult.failure({String? sourceText, String? errorMessage})
+    : this._(
+        success: false,
+        includedVariations: false,
+        sourceText: sourceText,
+        errorMessage: errorMessage,
+      );
+
+  final bool success;
+  final bool includedVariations;
+  final String? sourceText;
+  final String? errorMessage;
+}
+
 class ImportService {
   const ImportService._();
 
@@ -12,7 +45,7 @@ class ImportService {
 
   /// Tries to import the game saved in the device's clipboard.
   /// If the PGN contains variations, asks the user whether to include them.
-  static Future<void> importGame(
+  static Future<GameImportResult> importGame(
     BuildContext context, {
     bool shouldPop = true,
   }) async {
@@ -29,7 +62,7 @@ class ImportService {
 
     // Immediately check if context is still valid
     if (!context.mounted) {
-      return;
+      return const GameImportResult.failure();
     }
 
     final String? clipboardText = data?.text;
@@ -45,7 +78,7 @@ class ImportService {
       if (shouldPop) {
         navigator.pop();
       }
-      return;
+      return GameImportResult.failure(errorMessage: s.clipboardEmpty);
     }
 
     final String text = clipboardText;
@@ -60,7 +93,7 @@ class ImportService {
     }
 
     if (!context.mounted) {
-      return;
+      return GameImportResult.failure(sourceText: text);
     }
 
     // Perform import logic
@@ -68,7 +101,7 @@ class ImportService {
       import(text, includeVariations: includeVariations);
     } catch (exception) {
       if (!context.mounted) {
-        return;
+        return GameImportResult.failure(sourceText: text);
       }
 
       // Pop any overlay (e.g. the action menu) before showing the dialog so
@@ -78,13 +111,16 @@ class ImportService {
       }
 
       if (!context.mounted) {
-        return;
+        return GameImportResult.failure(sourceText: text);
       }
 
       // Show the clipboard content to the user so they can inspect it
       // and, if it is a URL, open it in a browser.
       await showQrScanResultDialog(context, text, title: s.importFailed);
-      return;
+      return GameImportResult.failure(
+        sourceText: text,
+        errorMessage: s.gameImportFailed,
+      );
     }
 
     // Record the import event BEFORE the history-navigation events so that
@@ -94,23 +130,28 @@ class ImportService {
 
     // Check context again before using it in navigation or showing tips
     if (!context.mounted) {
-      return;
+      return GameImportResult.failure(sourceText: text);
     }
 
     // Navigation or UI updates
-    await HistoryNavigator.takeBackAll(context, pop: false);
+    final HistoryResponse? rewindResult = await HistoryNavigator.takeBackAll(
+      context,
+      pop: false,
+    );
 
     if (!context.mounted) {
-      return;
+      return GameImportResult.failure(sourceText: text);
     }
 
-    final HistoryResponse? historyResult =
-        await HistoryNavigator.stepForwardAll(context, pop: false);
+    final HistoryResponse? historyResult = rewindResult == const HistoryOK()
+        ? await HistoryNavigator.stepForwardAll(context, pop: false)
+        : rewindResult;
 
     if (!context.mounted) {
-      return;
+      return GameImportResult.failure(sourceText: text);
     }
 
+    late final GameImportResult result;
     if (historyResult == const HistoryOK()) {
       // Include experimental warning in success message if variations were selected
       final String message = (hasVariations && includeVariations)
@@ -118,6 +159,10 @@ class ImportService {
           : s.gameImported;
       rootScaffoldMessengerKey.currentState?.showSnackBarClear(message);
       GameController().headerTipNotifier.showTip(message);
+      result = GameImportResult.success(
+        sourceText: text,
+        includedVariations: hasVariations && includeVariations,
+      );
     } else {
       final String tip = HistoryNavigator.importFailedStr.isEmpty
           ? s.gameImportFailed
@@ -126,11 +171,13 @@ class ImportService {
       GameController().headerTipNotifier.showTip(tip);
 
       HistoryNavigator.importFailedStr = "";
+      result = GameImportResult.failure(sourceText: text, errorMessage: tip);
     }
 
     if (shouldPop) {
       navigator.pop();
     }
+    return result;
   }
 
   /// Records a [RecordingEventType.gameImport] event so the import can be
@@ -210,7 +257,7 @@ class ImportService {
     return result ?? false;
   }
 
-  static String addTagPairs(String moveList) {
+  static String addTagPairs(String moveList, {String? resultOverride}) {
     final DateTime dateTime = DateTime.now();
     final String date = "${dateTime.year}.${dateTime.month}.${dateTime.day}";
 
@@ -239,7 +286,7 @@ class ImportService {
       black = "Human";
     }
 
-    result = GameController().gameRecorder.gameResultPgn;
+    result = resultOverride ?? GameController().gameRecorder.gameResultPgn;
 
     final RuleSettings activeRules =
         GameController().ruleSettingsForActiveBoard;

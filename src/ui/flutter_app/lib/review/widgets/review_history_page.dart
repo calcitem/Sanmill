@@ -46,6 +46,7 @@ class _ReviewHistoryPageState extends State<ReviewHistoryPage> {
     final String backLabel = materialStrings.backButtonTooltip;
     final List<PrivateGameRecord> visibleRecords = _visibleRecords(
       materialStrings,
+      strings,
     );
     final Scaffold scaffold = Scaffold(
       appBar: AppBar(
@@ -130,7 +131,8 @@ class _ReviewHistoryPageState extends State<ReviewHistoryPage> {
                         strings.game,
                   ),
                   subtitle: Text(
-                    '${MaterialLocalizations.of(context).formatShortDate(record.completedAt.toLocal())} · ${record.result}',
+                    '${MaterialLocalizations.of(context).formatShortDate(record.completedAt.toLocal())} · '
+                    '${record.isCompleted ? record.result : strings.unfinishedGame}',
                   ),
                   trailing: IconButton(
                     key: Key('review_history_open_${record.id}'),
@@ -159,6 +161,7 @@ class _ReviewHistoryPageState extends State<ReviewHistoryPage> {
 
   List<PrivateGameRecord> _visibleRecords(
     MaterialLocalizations materialStrings,
+    S strings,
   ) {
     final String query = _searchQuery.trim().toLowerCase();
     if (query.isEmpty) {
@@ -173,6 +176,7 @@ class _ReviewHistoryPageState extends State<ReviewHistoryPage> {
             record.white,
             record.black,
             record.result,
+            if (!record.isCompleted) strings.unfinishedGame,
             date,
           ].any((String value) => value.toLowerCase().contains(query));
         })

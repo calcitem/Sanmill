@@ -110,6 +110,27 @@ void main() {
     expect(find.text('Alice – Bob'), findsOneWidget);
     expect(find.text('Carol – Dana'), findsOneWidget);
   });
+
+  testWidgets('labels imported games without a result as unfinished', (
+    WidgetTester tester,
+  ) async {
+    final PrivateGameRecord record = _record(
+      pgn: '1. a7 b6 *',
+      result: '*',
+      completedAt: DateTime(2024, 1, 27),
+      white: 'Alice',
+      black: 'Bob',
+    );
+
+    await tester.pumpWidget(
+      makeTestableWidget(
+        ReviewHistoryPage(initialRecords: <PrivateGameRecord>[record]),
+      ),
+    );
+
+    expect(find.text('Jan 27, 2024 · Unfinished'), findsOneWidget);
+    expect(find.text('Jan 27, 2024 · *'), findsNothing);
+  });
 }
 
 PrivateGameRecord _record({

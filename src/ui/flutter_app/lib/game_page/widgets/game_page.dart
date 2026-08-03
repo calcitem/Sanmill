@@ -31,6 +31,7 @@ import '../../general_settings/models/general_settings.dart';
 import '../../generated/intl/l10n.dart';
 import '../../remote_play/remote_models.dart';
 import '../../review/models/review_models.dart';
+import '../../review/services/review_launcher.dart';
 import '../../review/services/review_record_factory.dart';
 import '../../review/services/review_storage.dart';
 import '../../review/widgets/review_page.dart';

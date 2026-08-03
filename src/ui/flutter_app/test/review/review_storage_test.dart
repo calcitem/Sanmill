@@ -94,13 +94,44 @@ void main() {
       );
     },
   );
+
+  test(
+    'unfinished games are retained but excluded from completion totals',
+    () async {
+      final DateTime today = DateTime(2026, 1, 3, 12);
+      final PrivateGameRecord unfinished = _record(1, today);
+      final PrivateGameRecord completed = _record(
+        2,
+        today.add(const Duration(minutes: 1)),
+        result: '1-0',
+      );
+
+      await storage.saveGame(unfinished);
+      await storage.saveGame(completed);
+
+      expect(storage.listGames(), hasLength(2));
+      expect(
+        storage.listGames().any(
+          (PrivateGameRecord record) => record.id == unfinished.id,
+        ),
+        isTrue,
+      );
+      expect(unfinished.isCompleted, isFalse);
+      expect(completed.isCompleted, isTrue);
+      expect(storage.completedGamesOn(today), 1);
+    },
+  );
 }
 
-PrivateGameRecord _record(int index, DateTime completedAt) {
+PrivateGameRecord _record(
+  int index,
+  DateTime completedAt, {
+  String result = '*',
+}) {
   return PrivateGameRecord.create(
     sourcePgn: '1. a7 {game $index} *',
     initialFen: null,
-    result: '*',
+    result: result,
     rules: const RuleSettings(),
     completedAt: completedAt,
     white: 'Human',

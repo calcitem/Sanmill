@@ -15,6 +15,8 @@ import '../../../games/mill/mill_variant_localization.dart';
 import '../../../general_settings/models/general_settings.dart';
 import '../../../generated/intl/l10n.dart';
 import '../../../puzzle/models/rule_variant.dart';
+import '../../../review/services/review_launcher.dart';
+import '../../../review/services/review_storage.dart';
 import '../../../shared/config/constants.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/accessibility_status.dart';
@@ -300,7 +302,7 @@ class GameOptionsModal extends StatelessWidget {
         if (!kIsWeb)
           SimpleDialogOption(
             key: const Key('import_game_option'),
-            onPressed: () {
+            onPressed: () async {
               RecordingService().recordEvent(
                 RecordingEventType.dialogAction,
                 <String, dynamic>{
@@ -310,7 +312,29 @@ class GameOptionsModal extends StatelessWidget {
                 },
               );
               GameController().loadedGameFilenamePrefix = null;
-              GameController.import(context);
+              final String archiveFailure = S
+                  .of(context)
+                  .importedGameSaveFailed;
+              final GameImportResult result = await GameController.import(
+                context,
+              );
+              if (!result.success) {
+                return;
+              }
+              try {
+                await ReviewLauncher.archiveCurrentGame(
+                  storage: ReviewStorage.instance,
+                  importedSourcePgn: result.sourceText,
+                );
+              } catch (exception, stackTrace) {
+                logger.e(
+                  'Could not archive game-options import: '
+                  '$exception\n$stackTrace',
+                );
+                rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+                  archiveFailure,
+                );
+              }
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),

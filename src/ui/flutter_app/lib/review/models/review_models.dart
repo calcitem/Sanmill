@@ -149,6 +149,8 @@ class PrivateGameRecord {
   final String? finalBoardLayout;
   final int moveCount;
 
+  bool get isCompleted => result.trim().isNotEmpty && result.trim() != '*';
+
   String get rulesFingerprint => ruleSettingsFingerprint(rules);
 
   Map<String, dynamic> toJson() => <String, dynamic>{

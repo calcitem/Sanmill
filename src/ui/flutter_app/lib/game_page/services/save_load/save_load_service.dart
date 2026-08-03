@@ -358,8 +358,10 @@ class LoadService {
         if (!context.mounted) {
           return false;
         }
-        final ({bool success, bool includedVariations, String? errorMessage})
-        importResult = await importGameData(context, fileContent);
+        final GameImportResult importResult = await importGameData(
+          context,
+          fileContent,
+        );
         if (importResult.success) {
           GameController().loadedGameSourcePath = File(filePath).absolute.path;
           if (!context.mounted) {
@@ -375,12 +377,11 @@ class LoadService {
                 'includeVariations': importResult.includedVariations,
               });
 
-          await handleHistoryNavigation(
+          loadSucceeded = await handleHistoryNavigation(
             context,
             includedVariations: importResult.includedVariations,
             showSuccessMessage: showSuccessMessage,
           );
-          loadSucceeded = true;
         }
         if (!context.mounted) {
           return false;
@@ -520,9 +521,9 @@ class LoadService {
 
   /// Import game data from file content.
   /// If the file contains variations, asks the user whether to include them.
-  /// Returns a record with (success, includedVariations, errorMessage).
-  static Future<({bool success, bool includedVariations, String? errorMessage})>
-  importGameData(
+  /// Returns a typed result that distinguishes parsing failure from a game
+  /// imported with variations.
+  static Future<GameImportResult> importGameData(
     BuildContext context,
     String fileContent, {
     bool showFailureSnackBar = true,
@@ -543,7 +544,7 @@ class LoadService {
       }
 
       if (!context.mounted) {
-        return (success: false, includedVariations: false, errorMessage: null);
+        return GameImportResult.failure(sourceText: fileContent);
       }
 
       ImportService.import(fileContent, includeVariations: includeVariations);
@@ -556,10 +557,9 @@ class LoadService {
         );
       }
 
-      return (
-        success: true,
+      return GameImportResult.success(
+        sourceText: fileContent,
         includedVariations: includedVariations,
-        errorMessage: null,
       );
     } catch (exception) {
       logger.w('$_logTag Game import failed: ${exception.runtimeType}');
@@ -573,7 +573,10 @@ class LoadService {
       }
       GameController().headerTipNotifier.showTip(tip);
 
-      return (success: false, includedVariations: false, errorMessage: tip);
+      return GameImportResult.failure(
+        sourceText: fileContent,
+        errorMessage: tip,
+      );
     }
   }
 
@@ -593,21 +596,27 @@ class LoadService {
   }
 
   /// Handle game history navigation.
-  static Future<void> handleHistoryNavigation(
+  static Future<bool> handleHistoryNavigation(
     BuildContext context, {
     bool includedVariations = false,
     bool showSuccessMessage = true,
   }) async {
-    await HistoryNavigator.takeBackAll(context, pop: false);
+    final HistoryResponse? rewindResult = await HistoryNavigator.takeBackAll(
+      context,
+      pop: false,
+    );
 
     if (!context.mounted) {
-      return;
+      return false;
     }
 
-    if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
-        const HistoryOK()) {
+    final HistoryResponse? historyResult = rewindResult == const HistoryOK()
+        ? await HistoryNavigator.stepForwardAll(context, pop: false)
+        : rewindResult;
+
+    if (historyResult == const HistoryOK()) {
       if (!context.mounted) {
-        return;
+        return false;
       }
 
       if (showSuccessMessage) {
@@ -618,9 +627,10 @@ class LoadService {
         rootScaffoldMessengerKey.currentState?.showSnackBarClear(message);
         GameController().headerTipNotifier.showTip(message);
       }
+      return true;
     } else {
       if (!context.mounted) {
-        return;
+        return false;
       }
 
       final String tip = HistoryNavigator.importFailedStr.isEmpty
@@ -630,6 +640,7 @@ class LoadService {
       GameController().headerTipNotifier.showTip(tip);
 
       HistoryNavigator.importFailedStr = "";
+      return false;
     }
   }
 

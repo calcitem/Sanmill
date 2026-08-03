@@ -7222,5 +7222,29 @@
     "puzzleNotBestMove": "不是最佳着法，请再试试。",
     "@puzzleNotBestMove": {
         "description": "Puzzle board feedback shown after a non-solution move"
+    },
+    "importedGameSavedToHistory": "棋局已导入 · 已保存到私有历史",
+    "@importedGameSavedToHistory": {
+        "description": "Confirmation shown above the move list after an imported game is privately archived"
+    },
+    "importedGameReviewDescription": "使用本地引擎复盘导入棋局的主线着法。",
+    "@importedGameReviewDescription": {
+        "description": "Explains the review action offered after a game import"
+    },
+    "importedGameVariationsNotice": "变例仍保留在走法列表中；复盘仅分析主线。",
+    "@importedGameVariationsNotice": {
+        "description": "Clarifies how imported variations are handled by game review"
+    },
+    "importedGameSaveFailed": "棋局已导入，但无法保存到私有历史，请重试。",
+    "@importedGameSaveFailed": {
+        "description": "Error shown when an imported game cannot be privately archived"
+    },
+    "reviewGameSaveFailed": "无法保存这局棋以进行复盘，请重试。",
+    "@reviewGameSaveFailed": {
+        "description": "Error shown when the current game cannot be archived before review"
+    },
+    "unfinishedGame": "未完成",
+    "@unfinishedGame": {
+        "description": "Private-history result label for a game without a terminal result"
     }
 }
