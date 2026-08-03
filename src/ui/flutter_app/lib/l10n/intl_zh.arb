@@ -7246,5 +7246,177 @@
     "unfinishedGame": "未完成",
     "@unfinishedGame": {
         "description": "Private-history result label for a game without a terminal result"
+    },
+    "reviewFinalPosition": "棋谱末端局面",
+    "@reviewFinalPosition": {
+        "description": "Heading for the independent assessment of the board reached by a reviewed record"
+    },
+    "reviewAssessingFinalPosition": "正在评估棋谱末端局面…",
+    "@reviewAssessingFinalPosition": {
+        "description": "Progress text while the review engine assesses the final recorded position"
+    },
+    "reviewRecordedResult": "记录结果：{result}",
+    "@reviewRecordedResult": {
+        "description": "Result declared by an imported or saved game record",
+        "placeholders": {
+            "result": {
+                "type": "String",
+                "example": "1–0 · 白方胜"
+            }
+        }
+    },
+    "reviewRecordedWhiteWin": "1–0 · 白方胜",
+    "@reviewRecordedWhiteWin": {
+        "description": "Readable label for a recorded White win"
+    },
+    "reviewRecordedBlackWin": "0–1 · 黑方胜",
+    "@reviewRecordedBlackWin": {
+        "description": "Readable label for a recorded Black win"
+    },
+    "reviewRecordedDraw": "½–½ · 和棋",
+    "@reviewRecordedDraw": {
+        "description": "Readable label for a recorded drawn result"
+    },
+    "reviewWhiteSide": "白方",
+    "@reviewWhiteSide": {
+        "description": "White side label in final-position review"
+    },
+    "reviewBlackSide": "黑方",
+    "@reviewBlackSide": {
+        "description": "Black side label in final-position review"
+    },
+    "reviewFinalBoardOngoing": "棋盘尚未自然结束 · 轮到{side}行棋",
+    "@reviewFinalBoardOngoing": {
+        "description": "Clarifies that a record ended before the board reached a natural result",
+        "placeholders": {
+            "side": {
+                "type": "String",
+                "example": "黑方"
+            }
+        }
+    },
+    "reviewNaturalBoardVerdict": "棋盘结果：{verdict}",
+    "@reviewNaturalBoardVerdict": {
+        "description": "Natural rule-engine result of the final board",
+        "placeholders": {
+            "verdict": {
+                "type": "String",
+                "example": "白方胜"
+            }
+        }
+    },
+    "reviewPerfectDatabaseVerdict": "完美数据库：{verdict}",
+    "@reviewPerfectDatabaseVerdict": {
+        "description": "Exact final-position verdict supplied by full Perfect Database coverage",
+        "placeholders": {
+            "verdict": {
+                "type": "String",
+                "example": "白方可强制获胜"
+            }
+        }
+    },
+    "reviewQuickEngineVerdict": "快速引擎评估：{verdict}",
+    "@reviewQuickEngineVerdict": {
+        "description": "Qualitative bounded-search estimate of a final position",
+        "placeholders": {
+            "verdict": {
+                "type": "String",
+                "example": "白方占优"
+            }
+        }
+    },
+    "reviewWhiteWon": "白方胜",
+    "@reviewWhiteWon": {
+        "description": "Natural final-board result where White won"
+    },
+    "reviewBlackWon": "黑方胜",
+    "@reviewBlackWon": {
+        "description": "Natural final-board result where Black won"
+    },
+    "reviewWhiteForcedWin": "白方可强制获胜",
+    "@reviewWhiteForcedWin": {
+        "description": "Exact Perfect Database verdict favoring White"
+    },
+    "reviewBlackForcedWin": "黑方可强制获胜",
+    "@reviewBlackForcedWin": {
+        "description": "Exact Perfect Database verdict favoring Black"
+    },
+    "reviewPerfectPlayDraw": "完美走法下为和棋",
+    "@reviewPerfectPlayDraw": {
+        "description": "Exact draw verdict under perfect play"
+    },
+    "reviewWhiteFavored": "白方占优",
+    "@reviewWhiteFavored": {
+        "description": "Heuristic final-position estimate favoring White"
+    },
+    "reviewBlackFavored": "黑方占优",
+    "@reviewBlackFavored": {
+        "description": "Heuristic final-position estimate favoring Black"
+    },
+    "reviewRoughlyEqual": "局面大致均势",
+    "@reviewRoughlyEqual": {
+        "description": "Heuristic final-position estimate near equality"
+    },
+    "reviewHeuristicDisclaimer": "这是限时启发式评估，不是强制结论或获胜概率。",
+    "@reviewHeuristicDisclaimer": {
+        "description": "Accuracy disclaimer below a quick engine final-position estimate"
+    },
+    "reviewAssessmentUnavailable": "暂时无法评估末端局面。",
+    "@reviewAssessmentUnavailable": {
+        "description": "Fallback when no final-position verdict is available"
+    },
+    "reviewHumanEvidence": "人类实战参考",
+    "@reviewHumanEvidence": {
+        "description": "Heading for historical Human Database results in review"
+    },
+    "reviewHumanEvidenceSummary": "轮到{side}行棋 · {total}局历史样本",
+    "@reviewHumanEvidenceSummary": {
+        "description": "Perspective and sample size for final-position Human Database results",
+        "placeholders": {
+            "side": {
+                "type": "String",
+                "example": "黑方"
+            },
+            "total": {
+                "type": "String",
+                "example": "12,345"
+            }
+        }
+    },
+    "reviewHistoricalResultsDisclaimer": "这些比例来自历史对局样本，不代表当前局面的理论胜率。",
+    "@reviewHistoricalResultsDisclaimer": {
+        "description": "Clarifies the observational nature of Human Database percentages"
+    },
+    "reviewHumanDatabaseOptional": "可选：加载人类对局数据库，查看相同局面的历史赛果。",
+    "@reviewHumanDatabaseOptional": {
+        "description": "Contextual explanation offered when Human Database review evidence is not configured"
+    },
+    "reviewSetUpHumanDatabase": "设置人类对局数据库",
+    "@reviewSetUpHumanDatabase": {
+        "description": "Action that opens Human Database download and file-selection guidance from review"
+    },
+    "reviewEnableHumanDatabase": "启用人类对局数据库",
+    "@reviewEnableHumanDatabase": {
+        "description": "Action that enables an already selected Human Database from review"
+    },
+    "reviewRepairHumanDatabase": "重新选择可用数据库",
+    "@reviewRepairHumanDatabase": {
+        "description": "Action offered when a configured Human Database cannot be opened"
+    },
+    "reviewHumanNoRecordsDetail": "已加载的数据库没有这个精确局面的样本，仍可参考上方的引擎评估。",
+    "@reviewHumanNoRecordsDetail": {
+        "description": "Explanation for a Human Database position miss during review"
+    },
+    "reviewHumanRulesUnsupportedDetail": "历史对局比较仅支持规则匹配的标准九子棋。",
+    "@reviewHumanRulesUnsupportedDetail": {
+        "description": "Explanation when review rules cannot be queried in Human Database"
+    },
+    "reviewHumanUnavailableDetail": "无法打开已选择的数据库，请重新选择兼容的 SQLite 数据库文件。",
+    "@reviewHumanUnavailableDetail": {
+        "description": "Recovery guidance when Human Database review evidence is unavailable"
+    },
+    "reviewNoMistakesPositionDisclaimer": "这只表示没有识别出可复习的真人失误，并不代表末端局面均势或已经自然结束。",
+    "@reviewNoMistakesPositionDisclaimer": {
+        "description": "Clarifies that an empty mistake list is independent from final-position assessment"
     }
 }

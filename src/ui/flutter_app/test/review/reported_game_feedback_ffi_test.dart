@@ -32,6 +32,38 @@ const String _reportedPgn = '''
 20. f6-f4 d2-d3xg1 0-1
 ''';
 
+const String _unfinishedBoardPgn = '''
+[Event "Sanmill-Game"]
+[Site "Sanmill"]
+[Date "2026.8.3"]
+[Round "0"]
+[White "AI"]
+[Black "Human"]
+[Result "1-0"]
+[Variant "Custom"]
+[PlyCount "37"]
+
+1. d5 d6
+2. d3 c5
+3. f4 e4
+4. b4 a4
+5. d7 d2
+6. d1 g7
+7. g4 a1
+8. a7 e3
+9. e5 f2
+10. b4-b2 a4-b4
+11. a7-a4 c5-c4
+12. d5-c5 d6-d5
+13. d7-d6 b4-b6
+14. b2-b4 d2-b2
+15. d1-d2 a1-d1
+16. a4-a1 g7-d7
+17. g4-g7 d7-a7
+18. g7-d7 a7-a4
+19. d7-a7 1-0
+''';
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -142,6 +174,43 @@ void main() {
     },
     skip: nativeLibrarySkipReason() != null,
     timeout: const Timeout(Duration(minutes: 2)),
+  );
+
+  test(
+    'reported 1-0 remains an ongoing board and gets a bounded outlook',
+    () async {
+      final PrivateGameRecord record = PrivateGameRecord.create(
+        sourcePgn: _unfinishedBoardPgn,
+        initialFen: null,
+        result: '1-0',
+        rules: const RuleSettings(),
+        completedAt: DateTime.utc(2026, 8, 3),
+        white: 'AI',
+        black: 'Human',
+        humanSides: const <ReviewSide>{ReviewSide.black},
+        finalBoardLayout: null,
+        moveCount: 37,
+      );
+      final ReviewAnalysisService service = ReviewAnalysisService.forTesting(
+        ReviewStorage.forTesting(_MemoryBox()),
+      );
+      addTearDown(service.cancel);
+
+      final ReviewPositionAssessment assessment = (await service
+          .assessFinalPosition(record))!;
+
+      expect(assessment.boardOutcome, ReviewBoardOutcome.ongoing);
+      expect(assessment.sideToMove, ReviewSide.black);
+      expect(assessment.source, ReviewPositionAssessmentSource.engine);
+      expect(assessment.verdict, ReviewPositionVerdict.whiteFavored);
+      expect(assessment.heuristicWhiteScore, greaterThan(3));
+      expect(
+        assessment.humanDatabase.state,
+        ReviewHumanDatabaseState.notConfigured,
+      );
+    },
+    skip: nativeLibrarySkipReason() != null,
+    timeout: const Timeout(Duration(minutes: 1)),
   );
 }
 

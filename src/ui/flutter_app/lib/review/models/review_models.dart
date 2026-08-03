@@ -65,6 +65,117 @@ enum ReviewWdlBand { loss, draw, win }
 
 enum ReviewStatus { complete, cancelled }
 
+/// Natural rule-engine status of the position at the end of the recorded
+/// mainline. This deliberately stays separate from the PGN result: a record
+/// may say `1-0` because somebody resigned while its final board is ongoing.
+enum ReviewBoardOutcome { ongoing, whiteWin, blackWin, draw, abandoned }
+
+enum ReviewPositionAssessmentSource {
+  board,
+  perfectDatabase,
+  engine,
+  unavailable,
+}
+
+enum ReviewPositionVerdict {
+  whiteForcedWin,
+  draw,
+  blackForcedWin,
+  whiteFavored,
+  roughlyEqual,
+  blackFavored,
+  unavailable,
+}
+
+enum ReviewHumanDatabaseState {
+  available,
+  disabled,
+  notConfigured,
+  rulesUnsupported,
+  unavailable,
+  noRecords,
+  capturePending,
+  notApplicable,
+}
+
+@immutable
+class ReviewHumanDatabaseEvidence {
+  const ReviewHumanDatabaseEvidence({
+    required this.state,
+    this.perspective,
+    this.wins = 0,
+    this.draws = 0,
+    this.losses = 0,
+  }) : assert(wins >= 0),
+       assert(draws >= 0),
+       assert(losses >= 0),
+       assert(
+         state != ReviewHumanDatabaseState.available || perspective != null,
+         'Human Database samples need a side-to-move perspective.',
+       ),
+       assert(
+         state == ReviewHumanDatabaseState.available ||
+             (wins == 0 && draws == 0 && losses == 0),
+         'Unavailable Human Database evidence cannot contain samples.',
+       );
+
+  final ReviewHumanDatabaseState state;
+
+  /// Human-game outcomes are stored from the side-to-move perspective.
+  final ReviewSide? perspective;
+  final int wins;
+  final int draws;
+  final int losses;
+
+  int get total => wins + draws + losses;
+}
+
+@immutable
+class ReviewPositionAssessment {
+  const ReviewPositionAssessment({
+    required this.boardOutcome,
+    required this.sideToMove,
+    required this.source,
+    required this.verdict,
+    required this.humanDatabase,
+    this.heuristicWhiteScore,
+  }) : assert(
+         boardOutcome != ReviewBoardOutcome.ongoing || sideToMove != null,
+         'An ongoing review position must identify the side to move.',
+       ),
+       assert(
+         source != ReviewPositionAssessmentSource.engine ||
+             heuristicWhiteScore != null,
+         'An engine assessment must carry its White-perspective score.',
+       );
+
+  final ReviewBoardOutcome boardOutcome;
+  final ReviewSide? sideToMove;
+  final ReviewPositionAssessmentSource source;
+  final ReviewPositionVerdict verdict;
+
+  /// Bounded-search score from White's perspective. It is intentionally not
+  /// exposed as a probability because native heuristic scores are not
+  /// calibrated win rates.
+  final int? heuristicWhiteScore;
+  final ReviewHumanDatabaseEvidence humanDatabase;
+
+  bool get isBoardTerminal => boardOutcome != ReviewBoardOutcome.ongoing;
+
+  ReviewPositionAssessment copyWith({
+    ReviewHumanDatabaseEvidence? humanDatabase,
+  }) {
+    return ReviewPositionAssessment(
+      boardOutcome: boardOutcome,
+      sideToMove: sideToMove,
+      source: source,
+      verdict: verdict,
+      heuristicWhiteScore: heuristicWhiteScore,
+      humanDatabase: humanDatabase ?? this.humanDatabase,
+    );
+  }
+}
+
 @immutable
 class PrivateGameRecord {
   const PrivateGameRecord({

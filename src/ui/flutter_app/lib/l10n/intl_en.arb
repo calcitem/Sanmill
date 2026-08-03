@@ -7313,5 +7313,177 @@
     "unfinishedGame": "Unfinished",
     "@unfinishedGame": {
         "description": "Private-history result label for a game without a terminal result"
+    },
+    "reviewFinalPosition": "Position at end of record",
+    "@reviewFinalPosition": {
+        "description": "Heading for the independent assessment of the board reached by a reviewed record"
+    },
+    "reviewAssessingFinalPosition": "Assessing the final board position…",
+    "@reviewAssessingFinalPosition": {
+        "description": "Progress text while the review engine assesses the final recorded position"
+    },
+    "reviewRecordedResult": "Recorded result: {result}",
+    "@reviewRecordedResult": {
+        "description": "Result declared by an imported or saved game record",
+        "placeholders": {
+            "result": {
+                "type": "String",
+                "example": "1–0 · White won"
+            }
+        }
+    },
+    "reviewRecordedWhiteWin": "1–0 · White won",
+    "@reviewRecordedWhiteWin": {
+        "description": "Readable label for a recorded White win"
+    },
+    "reviewRecordedBlackWin": "0–1 · Black won",
+    "@reviewRecordedBlackWin": {
+        "description": "Readable label for a recorded Black win"
+    },
+    "reviewRecordedDraw": "½–½ · Draw",
+    "@reviewRecordedDraw": {
+        "description": "Readable label for a recorded drawn result"
+    },
+    "reviewWhiteSide": "White",
+    "@reviewWhiteSide": {
+        "description": "White side label in final-position review"
+    },
+    "reviewBlackSide": "Black",
+    "@reviewBlackSide": {
+        "description": "Black side label in final-position review"
+    },
+    "reviewFinalBoardOngoing": "The board is still ongoing · {side} to move",
+    "@reviewFinalBoardOngoing": {
+        "description": "Clarifies that a record ended before the board reached a natural result",
+        "placeholders": {
+            "side": {
+                "type": "String",
+                "example": "Black"
+            }
+        }
+    },
+    "reviewNaturalBoardVerdict": "Board result: {verdict}",
+    "@reviewNaturalBoardVerdict": {
+        "description": "Natural rule-engine result of the final board",
+        "placeholders": {
+            "verdict": {
+                "type": "String",
+                "example": "White won"
+            }
+        }
+    },
+    "reviewPerfectDatabaseVerdict": "Perfect Database: {verdict}",
+    "@reviewPerfectDatabaseVerdict": {
+        "description": "Exact final-position verdict supplied by full Perfect Database coverage",
+        "placeholders": {
+            "verdict": {
+                "type": "String",
+                "example": "White has a forced win"
+            }
+        }
+    },
+    "reviewQuickEngineVerdict": "Quick engine estimate: {verdict}",
+    "@reviewQuickEngineVerdict": {
+        "description": "Qualitative bounded-search estimate of a final position",
+        "placeholders": {
+            "verdict": {
+                "type": "String",
+                "example": "White is favored"
+            }
+        }
+    },
+    "reviewWhiteWon": "White won",
+    "@reviewWhiteWon": {
+        "description": "Natural final-board result where White won"
+    },
+    "reviewBlackWon": "Black won",
+    "@reviewBlackWon": {
+        "description": "Natural final-board result where Black won"
+    },
+    "reviewWhiteForcedWin": "White has a forced win",
+    "@reviewWhiteForcedWin": {
+        "description": "Exact Perfect Database verdict favoring White"
+    },
+    "reviewBlackForcedWin": "Black has a forced win",
+    "@reviewBlackForcedWin": {
+        "description": "Exact Perfect Database verdict favoring Black"
+    },
+    "reviewPerfectPlayDraw": "Draw with perfect play",
+    "@reviewPerfectPlayDraw": {
+        "description": "Exact draw verdict under perfect play"
+    },
+    "reviewWhiteFavored": "White is favored",
+    "@reviewWhiteFavored": {
+        "description": "Heuristic final-position estimate favoring White"
+    },
+    "reviewBlackFavored": "Black is favored",
+    "@reviewBlackFavored": {
+        "description": "Heuristic final-position estimate favoring Black"
+    },
+    "reviewRoughlyEqual": "The position is roughly equal",
+    "@reviewRoughlyEqual": {
+        "description": "Heuristic final-position estimate near equality"
+    },
+    "reviewHeuristicDisclaimer": "This is a time-limited heuristic estimate, not a forced result or win probability.",
+    "@reviewHeuristicDisclaimer": {
+        "description": "Accuracy disclaimer below a quick engine final-position estimate"
+    },
+    "reviewAssessmentUnavailable": "The final position could not be assessed.",
+    "@reviewAssessmentUnavailable": {
+        "description": "Fallback when no final-position verdict is available"
+    },
+    "reviewHumanEvidence": "Human game evidence",
+    "@reviewHumanEvidence": {
+        "description": "Heading for historical Human Database results in review"
+    },
+    "reviewHumanEvidenceSummary": "{side} to move · {total} recorded games",
+    "@reviewHumanEvidenceSummary": {
+        "description": "Perspective and sample size for final-position Human Database results",
+        "placeholders": {
+            "side": {
+                "type": "String",
+                "example": "Black"
+            },
+            "total": {
+                "type": "String",
+                "example": "12,345"
+            }
+        }
+    },
+    "reviewHistoricalResultsDisclaimer": "These percentages describe historical game samples, not the theoretical win probability of this position.",
+    "@reviewHistoricalResultsDisclaimer": {
+        "description": "Clarifies the observational nature of Human Database percentages"
+    },
+    "reviewHumanDatabaseOptional": "Optional: load the human game database to compare outcomes from matching recorded positions.",
+    "@reviewHumanDatabaseOptional": {
+        "description": "Contextual explanation offered when Human Database review evidence is not configured"
+    },
+    "reviewSetUpHumanDatabase": "Set up human game database",
+    "@reviewSetUpHumanDatabase": {
+        "description": "Action that opens Human Database download and file-selection guidance from review"
+    },
+    "reviewEnableHumanDatabase": "Enable human game database",
+    "@reviewEnableHumanDatabase": {
+        "description": "Action that enables an already selected Human Database from review"
+    },
+    "reviewRepairHumanDatabase": "Choose a working database file",
+    "@reviewRepairHumanDatabase": {
+        "description": "Action offered when a configured Human Database cannot be opened"
+    },
+    "reviewHumanNoRecordsDetail": "The loaded database has no sample for this exact position. The engine estimate remains available above.",
+    "@reviewHumanNoRecordsDetail": {
+        "description": "Explanation for a Human Database position miss during review"
+    },
+    "reviewHumanRulesUnsupportedDetail": "Historical comparisons require a compatible Standard Nine Men's Morris ruleset.",
+    "@reviewHumanRulesUnsupportedDetail": {
+        "description": "Explanation when review rules cannot be queried in Human Database"
+    },
+    "reviewHumanUnavailableDetail": "The selected database could not be opened. Choose a compatible SQLite database file to restore historical comparisons.",
+    "@reviewHumanUnavailableDetail": {
+        "description": "Recovery guidance when Human Database review evidence is unavailable"
+    },
+    "reviewNoMistakesPositionDisclaimer": "This only means no reviewable human mistake was identified; it does not mean the final position is equal or naturally finished.",
+    "@reviewNoMistakesPositionDisclaimer": {
+        "description": "Clarifies that an empty mistake list is independent from final-position assessment"
     }
 }

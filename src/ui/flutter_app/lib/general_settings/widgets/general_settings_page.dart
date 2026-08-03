@@ -49,6 +49,8 @@ part 'pickers/search_threads_picker.dart';
 part 'sliders/move_time_slider.dart';
 part 'sliders/opening_randomness_slider.dart';
 
+enum _HumanDatabaseSetupAction { selectFile }
+
 class GeneralSettingsPage extends StatelessWidget {
   const GeneralSettingsPage({super.key});
 
@@ -59,6 +61,18 @@ class GeneralSettingsPage extends StatelessWidget {
       _settingsDrillInRoute<void>(
         const _AiKnowledgeSourcesPage(parent: GeneralSettingsPage()),
       );
+
+  /// Opens the same focused two-step setup used by the Human Database setting
+  /// and reports whether a compatible file was installed and enabled. This is
+  /// exposed for contextual entry points such as imported-game review, so
+  /// users are not dropped at the top of a generic settings page.
+  static Future<bool> showHumanDatabaseSetup(BuildContext context) {
+    const GeneralSettingsPage page = GeneralSettingsPage();
+    return page._showHumanDatabaseSetupGuide(
+      context: context,
+      generalSettings: page._settingsRepository.generalSettings,
+    );
+  }
 
   static void openAiKnowledgeSourcesPage(BuildContext context) {
     Navigator.of(context).push(aiKnowledgeSourcesRoute());
@@ -377,101 +391,106 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag humanDatabaseEnabled: true");
   }
 
-  Future<void> _showHumanDatabaseSetupGuide({
+  Future<bool> _showHumanDatabaseSetupGuide({
     required BuildContext context,
     required GeneralSettings generalSettings,
-  }) {
-    return showModalBottomSheet<void>(
-      context: context,
-      showDragHandle: true,
-      isScrollControlled: true,
-      builder: (BuildContext sheetContext) {
-        final S strings = S.of(sheetContext);
-        final ColorScheme colorScheme = Theme.of(sheetContext).colorScheme;
-        return SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            child: Column(
-              key: const Key('human_database_setup_guide'),
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  strings.humanDatabaseSetupTitle,
-                  style: Theme.of(sheetContext).textTheme.titleLarge,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  strings.humanDatabaseSetupDescription,
-                  style: Theme.of(sheetContext).textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Card(
-                  margin: EdgeInsets.zero,
-                  clipBehavior: Clip.antiAlias,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ListTile(
-                        key: const Key('human_database_setup_download_button'),
-                        leading: const Icon(Icons.download_rounded),
-                        title: Text(strings.humanDatabaseSetupDownload),
-                        subtitle: Text(
-                          strings.humanDatabaseSetupDownloadDescription,
-                        ),
-                        onTap: () {
-                          unawaited(_downloadHumanDatabase(context));
-                        },
-                      ),
-                      const Divider(height: 1),
-                      ListTile(
-                        key: const Key(
-                          'human_database_setup_select_file_button',
-                        ),
-                        leading: const Icon(Icons.folder_open_rounded),
-                        title: Text(strings.humanDatabaseSetupSelectFile),
-                        subtitle: Text(
-                          strings.humanDatabaseSetupSelectFileDescription,
-                        ),
-                        onTap: () {
-                          Navigator.of(sheetContext).pop();
-                          unawaited(
-                            _pickHumanDatabaseFile(
-                              context,
-                              generalSettings,
-                              enableAfterPick: true,
+  }) async {
+    final _HumanDatabaseSetupAction? action =
+        await showModalBottomSheet<_HumanDatabaseSetupAction>(
+          context: context,
+          showDragHandle: true,
+          isScrollControlled: true,
+          builder: (BuildContext sheetContext) {
+            final S strings = S.of(sheetContext);
+            final ColorScheme colorScheme = Theme.of(sheetContext).colorScheme;
+            return SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                child: Column(
+                  key: const Key('human_database_setup_guide'),
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      strings.humanDatabaseSetupTitle,
+                      style: Theme.of(sheetContext).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      strings.humanDatabaseSetupDescription,
+                      style: Theme.of(sheetContext).textTheme.bodyMedium
+                          ?.copyWith(color: colorScheme.onSurfaceVariant),
+                    ),
+                    const SizedBox(height: 16),
+                    Card(
+                      margin: EdgeInsets.zero,
+                      clipBehavior: Clip.antiAlias,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          ListTile(
+                            key: const Key(
+                              'human_database_setup_download_button',
                             ),
-                          );
-                        },
+                            leading: const Icon(Icons.download_rounded),
+                            title: Text(strings.humanDatabaseSetupDownload),
+                            subtitle: Text(
+                              strings.humanDatabaseSetupDownloadDescription,
+                            ),
+                            onTap: () {
+                              unawaited(_downloadHumanDatabase(context));
+                            },
+                          ),
+                          const Divider(height: 1),
+                          ListTile(
+                            key: const Key(
+                              'human_database_setup_select_file_button',
+                            ),
+                            leading: const Icon(Icons.folder_open_rounded),
+                            title: Text(strings.humanDatabaseSetupSelectFile),
+                            subtitle: Text(
+                              strings.humanDatabaseSetupSelectFileDescription,
+                            ),
+                            onTap: () {
+                              Navigator.of(
+                                sheetContext,
+                              ).pop(_HumanDatabaseSetupAction.selectFile);
+                            },
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Align(
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: TextButton(
+                        key: const Key('human_database_setup_cancel_button'),
+                        onPressed: () => Navigator.of(sheetContext).pop(),
+                        child: Text(strings.cancel),
+                      ),
+                    ),
+                  ],
                 ),
-                Align(
-                  alignment: AlignmentDirectional.centerEnd,
-                  child: TextButton(
-                    key: const Key('human_database_setup_cancel_button'),
-                    onPressed: () => Navigator.of(sheetContext).pop(),
-                    child: Text(strings.cancel),
-                  ),
-                ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
-      },
+    if (action != _HumanDatabaseSetupAction.selectFile || !context.mounted) {
+      return false;
+    }
+    return _pickHumanDatabaseFile(
+      context,
+      generalSettings,
+      enableAfterPick: true,
     );
   }
 
-  Future<void> _pickHumanDatabaseFile(
+  Future<bool> _pickHumanDatabaseFile(
     BuildContext context,
     GeneralSettings generalSettings, {
     bool enableAfterPick = false,
   }) async {
     if (EnvironmentConfig.test == true) {
-      return;
+      return false;
     }
 
     final FilePickerResult? result = await FilePicker.pickFiles(
@@ -480,10 +499,10 @@ class GeneralSettingsPage extends StatelessWidget {
       allowedExtensions: <String>['sqlite', 'sqlite3', 'db'],
     );
     if (result == null || result.files.single.path == null) {
-      return;
+      return false;
     }
     if (!context.mounted) {
-      return;
+      return false;
     }
 
     final String pickedPath = result.files.single.path!;
@@ -521,7 +540,7 @@ class GeneralSettingsPage extends StatelessWidget {
     }
 
     if (!context.mounted) {
-      return;
+      return false;
     }
     Navigator.of(context, rootNavigator: true).pop(); // dismiss progress
 
@@ -536,7 +555,7 @@ class GeneralSettingsPage extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(S.of(context).humanGameDatabaseInvalidFile)),
       );
-      return;
+      return false;
     }
 
     _settingsRepository.generalSettings = generalSettings.copyWith(
@@ -557,6 +576,7 @@ class GeneralSettingsPage extends StatelessWidget {
       ),
     );
     logger.t("$_logTag humanDatabaseFilePath: $persistentPath");
+    return true;
   }
 
   Future<void> _downloadHumanDatabase(BuildContext context) async {

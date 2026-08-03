@@ -10,7 +10,11 @@ import 'package:share_plus/share_plus.dart';
 import '../../game_page/services/analysis/move_feedback.dart';
 import '../../game_page/services/import_export/pgn.dart';
 import '../../game_page/widgets/mini_board.dart';
+import '../../general_settings/models/general_settings.dart';
+import '../../general_settings/widgets/general_settings_page.dart';
 import '../../generated/intl/l10n.dart';
+import '../../shared/database/database.dart';
+import '../../shared/services/human_database_service.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/widgets/move_feedback_reasons.dart';
 import '../../shared/widgets/quality_annotation_sheet.dart';
@@ -20,26 +24,34 @@ import '../services/review_nag_merge.dart';
 import '../services/review_piece_numbers.dart';
 import '../services/review_storage.dart';
 import 'review_correction_page.dart';
+import 'review_final_position_card.dart';
 
 class ReviewPage extends StatefulWidget {
   const ReviewPage({
     super.key,
     required this.record,
     this.initialReport,
+    this.initialPositionAssessment,
     this.autoAnalyze = true,
     this.analysisService,
     this.storage = ReviewStorage.instance,
     this.onCopyPgn,
     this.onSharePgn,
+    this.onConfigureHumanDatabase,
   });
 
   final PrivateGameRecord record;
   final ReviewReport? initialReport;
+  final ReviewPositionAssessment? initialPositionAssessment;
   final bool autoAnalyze;
   final ReviewAnalysisService? analysisService;
   final ReviewStorage storage;
   final Future<void> Function(String pgn)? onCopyPgn;
   final Future<void> Function(String pgn)? onSharePgn;
+
+  /// Test seam and optional host override for the contextual Human Database
+  /// setup flow. Returning true asks the page to reassess the final position.
+  final Future<bool> Function()? onConfigureHumanDatabase;
 
   @override
   State<ReviewPage> createState() => _ReviewPageState();
@@ -53,12 +65,17 @@ class _ReviewPageState extends State<ReviewPage> {
   late final List<ReviewTurnBoundary> _timeline;
 
   ReviewReport? _report;
+  ReviewPositionAssessment? _positionAssessment;
   Object? _error;
+  Object? _positionAssessmentError;
   int _completedActions = 0;
   int _analysisRun = 0;
+  int _positionAssessmentRun = 0;
   int _selectedGroup = 0;
   bool _analyzing = true;
   bool _deepening = false;
+  bool _assessingPosition = false;
+  bool _configuringHumanDatabase = false;
   bool _analysisCancelled = false;
 
   @override
@@ -74,6 +91,7 @@ class _ReviewPageState extends State<ReviewPage> {
     );
     _structuralVariationCount = _countVariations(game.moves);
     _report = widget.initialReport;
+    _positionAssessment = widget.initialPositionAssessment;
     _timeline = _report != null && _report!.turns.isNotEmpty
         ? List<ReviewTurnBoundary>.unmodifiable(_report!.turns)
         : _analysisService.buildTimeline(widget.record);
@@ -91,6 +109,7 @@ class _ReviewPageState extends State<ReviewPage> {
   @override
   void dispose() {
     _analysisRun++;
+    _positionAssessmentRun++;
     _analysisService.cancel();
     super.dispose();
   }
@@ -100,14 +119,24 @@ class _ReviewPageState extends State<ReviewPage> {
       _analysisService.cancel();
     }
     final int analysisRun = ++_analysisRun;
+    _positionAssessmentRun++;
     setState(() {
       _analyzing = true;
       _deepening = false;
+      _assessingPosition = false;
       _analysisCancelled = false;
       _error = null;
+      _positionAssessmentError = null;
       _completedActions = 0;
     });
     try {
+      // Give the user a useful end-position answer first. Detailed per-move
+      // grading can take many bounded searches for a long imported record,
+      // while this independent outlook needs only one root pass.
+      await _runPositionAssessment();
+      if (!mounted || analysisRun != _analysisRun) {
+        return;
+      }
       final ReviewReport report = await _analysisService.analyze(
         widget.record,
         ignoreCache: ignoreCache,
@@ -142,6 +171,105 @@ class _ReviewPageState extends State<ReviewPage> {
     }
   }
 
+  Future<void> _runPositionAssessment() async {
+    final int assessmentRun = ++_positionAssessmentRun;
+    setState(() {
+      _assessingPosition = true;
+      _positionAssessmentError = null;
+    });
+    try {
+      final ReviewPositionAssessment? assessment = await _analysisService
+          .assessFinalPosition(widget.record);
+      if (!mounted || assessmentRun != _positionAssessmentRun) {
+        return;
+      }
+      setState(() {
+        if (assessment != null) {
+          _positionAssessment = assessment;
+        }
+        _assessingPosition = false;
+      });
+    } on Object catch (error, stackTrace) {
+      if (!mounted || assessmentRun != _positionAssessmentRun) {
+        return;
+      }
+      logger.e(
+        '[Review] Final-position assessment failed: $error',
+        error: error,
+        stackTrace: stackTrace,
+      );
+      setState(() {
+        _positionAssessmentError = error;
+        _assessingPosition = false;
+      });
+    }
+  }
+
+  Future<void> _configureHumanDatabase() async {
+    if (_configuringHumanDatabase) {
+      return;
+    }
+    setState(() => _configuringHumanDatabase = true);
+    bool configured = false;
+    try {
+      final Future<bool> Function()? override = widget.onConfigureHumanDatabase;
+      if (override != null) {
+        configured = await override();
+      } else {
+        final GeneralSettings settings = DB().generalSettings;
+        final bool canEnableExisting =
+            _positionAssessment?.humanDatabase.state ==
+                ReviewHumanDatabaseState.disabled &&
+            settings.humanDatabaseFilePath.trim().isNotEmpty;
+        if (canEnableExisting) {
+          final HumanDatabaseReadyResult ready = await HumanDatabaseService
+              .instance
+              .ensureReady(settings.humanDatabaseFilePath);
+          if (ready.ready) {
+            DB().generalSettings = settings.copyWith(
+              humanDatabaseEnabled: true,
+            );
+            configured = true;
+          }
+        }
+        if (!configured && mounted) {
+          configured = await GeneralSettingsPage.showHumanDatabaseSetup(
+            context,
+          );
+        }
+      }
+    } on Object catch (error, stackTrace) {
+      logger.e(
+        '[Review] Human Database setup failed: $error',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _configuringHumanDatabase = false);
+      }
+    }
+    if (configured && mounted) {
+      try {
+        final ReviewHumanDatabaseEvidence evidence = _analysisService
+            .refreshFinalPositionHumanDatabase(widget.record);
+        if (mounted && _positionAssessment != null) {
+          setState(() {
+            _positionAssessment = _positionAssessment!.copyWith(
+              humanDatabase: evidence,
+            );
+          });
+        }
+      } on Object catch (error, stackTrace) {
+        logger.e(
+          '[Review] Human Database evidence refresh failed: $error',
+          error: error,
+          stackTrace: stackTrace,
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final S strings = S.of(context);
@@ -158,17 +286,19 @@ class _ReviewPageState extends State<ReviewPage> {
         ),
         title: Text(strings.reviewGame),
         actions: <Widget>[
-          if (_analyzing || _deepening)
+          if (_analyzing || _deepening || _assessingPosition)
             IconButton(
               key: const Key('review_cancel_analysis'),
               tooltip: strings.cancelAnalysis,
               onPressed: () {
                 final bool wasQuickAnalysis = _analyzing;
                 _analysisRun++;
+                _positionAssessmentRun++;
                 _analysisService.cancel();
                 setState(() {
                   _analyzing = false;
                   _deepening = false;
+                  _assessingPosition = false;
                   _analysisCancelled =
                       wasQuickAnalysis &&
                       (_report == null ||
@@ -473,6 +603,22 @@ class _ReviewPageState extends State<ReviewPage> {
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
       child: Column(
         children: <Widget>[
+          if (_positionAssessment != null ||
+              _assessingPosition ||
+              _positionAssessmentError != null) ...<Widget>[
+            ReviewFinalPositionCard(
+              recordedResult: widget.record.result,
+              assessment: _positionAssessment,
+              assessing: _assessingPosition,
+              hasError: _positionAssessmentError != null,
+              retryEnabled: !_analyzing && !_deepening,
+              configuringHumanDatabase: _configuringHumanDatabase,
+              onRetry: () => unawaited(_runPositionAssessment()),
+              onConfigureHumanDatabase: () =>
+                  unawaited(_configureHumanDatabase()),
+            ),
+            const SizedBox(height: 12),
+          ],
           if (completeReport != null &&
               completeReport.turns.isNotEmpty &&
               completeReport.actions.isNotEmpty)
@@ -486,7 +632,7 @@ class _ReviewPageState extends State<ReviewPage> {
             else
               _buildMoveList(context, completeReport),
           ],
-          if (_analyzing) ...<Widget>[
+          if (_analyzing && !_assessingPosition) ...<Widget>[
             const SizedBox(height: 12),
             _buildProgress(context),
           ] else if (_analysisCancelled) ...<Widget>[
@@ -948,6 +1094,7 @@ class _ReviewPageState extends State<ReviewPage> {
         child: ListTile(
           leading: const Icon(Icons.check_circle_outline_rounded),
           title: Text(strings.noHumanMistakesToCorrect),
+          subtitle: Text(strings.reviewNoMistakesPositionDisclaimer),
         ),
       );
     }

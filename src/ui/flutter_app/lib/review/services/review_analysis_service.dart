@@ -14,6 +14,7 @@ import '../../games/mill/mill_action_codec.dart';
 import '../../games/mill/native_mill_game_session.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../shared/database/database.dart';
+import '../../shared/services/human_database_service.dart';
 import '../../src/rust/api/simple.dart' as tgf;
 import '../models/review_models.dart';
 import 'review_causal_attribution.dart';
@@ -268,6 +269,144 @@ class ReviewAnalysisService {
     );
     await _storage.saveReport(report);
     return report;
+  }
+
+  /// Assesses the board reached by the recorded mainline independently from
+  /// move grading. A declared PGN result can come from resignation or
+  /// adjudication, so it must never be substituted for the natural board
+  /// outcome returned here.
+  Future<ReviewPositionAssessment?> assessFinalPosition(
+    PrivateGameRecord record,
+  ) async {
+    await LiveEvaluationService.stopAndWait();
+    final int generation = ++_generation;
+    final PgnGame<PgnNodeData> game = PgnGame.parsePgn(record.sourcePgn);
+    final NativeMillGameSession session = NativeMillGameSession(
+      rules: record.rules,
+      generalSettings: _engineSettings(),
+    );
+    final String setupFen = game.headers['FEN']?.trim() ?? record.initialFen;
+    if (setupFen.isNotEmpty && !session.loadFen(setupFen)) {
+      session.dispose();
+      throw StateError('Review record carries an invalid initial FEN.');
+    }
+
+    try {
+      for (final PgnNodeData groupedMove in game.moves.mainline()) {
+        for (final String move in splitMillSan(groupedMove.san)) {
+          if (generation != _generation) {
+            return null;
+          }
+          _applyMove(session, move);
+        }
+      }
+      if (generation != _generation) {
+        return null;
+      }
+
+      final GameOutcome outcome = session.outcome;
+      if (outcome.isTerminal) {
+        return _terminalPositionAssessment(outcome);
+      }
+
+      final ReviewSide sideToMove = _reviewSide(session.state.value.activeSeat);
+      final ReviewHumanDatabaseEvidence humanDatabase = _humanDatabaseEvidence(
+        session,
+        record,
+      );
+      final int? exactRootValue = moveFeedbackExactRootValue(
+        session.analyzePerfectDb(),
+        legalActionCount: session.legalActions.length,
+      );
+      if (exactRootValue != null) {
+        return ReviewPositionAssessment(
+          boardOutcome: ReviewBoardOutcome.ongoing,
+          sideToMove: sideToMove,
+          source: ReviewPositionAssessmentSource.perfectDatabase,
+          verdict: _exactVerdict(exactRootValue, sideToMove),
+          humanDatabase: humanDatabase,
+        );
+      }
+
+      if (session.legalActions.isEmpty) {
+        return ReviewPositionAssessment(
+          boardOutcome: ReviewBoardOutcome.ongoing,
+          sideToMove: sideToMove,
+          source: ReviewPositionAssessmentSource.unavailable,
+          verdict: ReviewPositionVerdict.unavailable,
+          humanDatabase: humanDatabase,
+        );
+      }
+
+      _searching = true;
+      final List<NativeMillPrincipalVariation> variations = await session
+          .searchPrincipalVariations(
+            depth: ReviewProfile.quick.depth,
+            moveLimitMs: ReviewProfile.quick.moveLimitMs,
+            multiPv: 1,
+            engineSettings: _engineSettings().copyWith(
+              usePerfectDatabase: false,
+            ),
+          );
+      _searching = false;
+      if (generation != _generation) {
+        return null;
+      }
+      if (variations.isEmpty) {
+        return ReviewPositionAssessment(
+          boardOutcome: ReviewBoardOutcome.ongoing,
+          sideToMove: sideToMove,
+          source: ReviewPositionAssessmentSource.unavailable,
+          verdict: ReviewPositionVerdict.unavailable,
+          humanDatabase: humanDatabase,
+        );
+      }
+      final int whiteScore = variations.first.score.clamp(-100, 100);
+      return ReviewPositionAssessment(
+        boardOutcome: ReviewBoardOutcome.ongoing,
+        sideToMove: sideToMove,
+        source: ReviewPositionAssessmentSource.engine,
+        verdict: _heuristicVerdict(whiteScore),
+        heuristicWhiteScore: whiteScore,
+        humanDatabase: humanDatabase,
+      );
+    } finally {
+      session.dispose();
+      _searching = false;
+    }
+  }
+
+  /// Re-queries only the optional Human Database layer after contextual setup.
+  /// This intentionally avoids a second engine search, so users can install or
+  /// enable the database while detailed per-move review continues safely.
+  ReviewHumanDatabaseEvidence refreshFinalPositionHumanDatabase(
+    PrivateGameRecord record,
+  ) {
+    final PgnGame<PgnNodeData> game = PgnGame.parsePgn(record.sourcePgn);
+    final NativeMillGameSession session = NativeMillGameSession(
+      rules: record.rules,
+      generalSettings: _engineSettings(),
+    );
+    final String setupFen = game.headers['FEN']?.trim() ?? record.initialFen;
+    if (setupFen.isNotEmpty && !session.loadFen(setupFen)) {
+      session.dispose();
+      throw StateError('Review record carries an invalid initial FEN.');
+    }
+    try {
+      for (final PgnNodeData groupedMove in game.moves.mainline()) {
+        for (final String move in splitMillSan(groupedMove.san)) {
+          _applyMove(session, move);
+        }
+      }
+      if (session.outcome.isTerminal) {
+        return const ReviewHumanDatabaseEvidence(
+          state: ReviewHumanDatabaseState.notApplicable,
+        );
+      }
+      return _humanDatabaseEvidence(session, record);
+    } finally {
+      session.dispose();
+    }
   }
 
   Future<ReviewReport> deepenTurn(
@@ -712,6 +851,153 @@ class ReviewAnalysisService {
       shufflingEnabled: false,
       useLazySmp: false,
       engineThreads: 1,
+    );
+  }
+
+  static ReviewPositionAssessment _terminalPositionAssessment(
+    GameOutcome outcome,
+  ) {
+    assert(outcome.isTerminal, 'A terminal assessment needs a final outcome.');
+    final (ReviewBoardOutcome, ReviewPositionVerdict) result =
+        switch (outcome.kind) {
+          GameOutcomeKind.win when outcome.winner == PlayerSeat.first => (
+            ReviewBoardOutcome.whiteWin,
+            ReviewPositionVerdict.whiteForcedWin,
+          ),
+          GameOutcomeKind.win when outcome.winner == PlayerSeat.second => (
+            ReviewBoardOutcome.blackWin,
+            ReviewPositionVerdict.blackForcedWin,
+          ),
+          GameOutcomeKind.draw => (
+            ReviewBoardOutcome.draw,
+            ReviewPositionVerdict.draw,
+          ),
+          GameOutcomeKind.abandoned => (
+            ReviewBoardOutcome.abandoned,
+            ReviewPositionVerdict.unavailable,
+          ),
+          GameOutcomeKind.win => throw StateError(
+            'A winning review outcome must identify its winner.',
+          ),
+          GameOutcomeKind.ongoing => throw StateError(
+            'An ongoing position is not terminal.',
+          ),
+        };
+    return ReviewPositionAssessment(
+      boardOutcome: result.$1,
+      sideToMove: null,
+      source: ReviewPositionAssessmentSource.board,
+      verdict: result.$2,
+      humanDatabase: const ReviewHumanDatabaseEvidence(
+        state: ReviewHumanDatabaseState.notApplicable,
+      ),
+    );
+  }
+
+  static ReviewPositionVerdict _exactVerdict(
+    int rootValue,
+    ReviewSide sideToMove,
+  ) {
+    assert(
+      rootValue >= -1 && rootValue <= 1,
+      'Perfect Database root values must be canonical W/D/L.',
+    );
+    if (rootValue == 0) {
+      return ReviewPositionVerdict.draw;
+    }
+    final bool sideToMoveWins = rootValue > 0;
+    final bool whiteWins = sideToMoveWins
+        ? sideToMove == ReviewSide.white
+        : sideToMove == ReviewSide.black;
+    return whiteWins
+        ? ReviewPositionVerdict.whiteForcedWin
+        : ReviewPositionVerdict.blackForcedWin;
+  }
+
+  static ReviewPositionVerdict _heuristicVerdict(int whiteScore) {
+    final int equalBand = MoveQualityThresholds.engineNoiseAllowance();
+    if (whiteScore > equalBand) {
+      return ReviewPositionVerdict.whiteFavored;
+    }
+    if (whiteScore < -equalBand) {
+      return ReviewPositionVerdict.blackFavored;
+    }
+    return ReviewPositionVerdict.roughlyEqual;
+  }
+
+  static ReviewHumanDatabaseEvidence _humanDatabaseEvidence(
+    NativeMillGameSession session,
+    PrivateGameRecord record,
+  ) {
+    if (!record.rules.isHumanGameDatabaseCompatible()) {
+      return const ReviewHumanDatabaseEvidence(
+        state: ReviewHumanDatabaseState.rulesUnsupported,
+      );
+    }
+    if (session.legalActions.any(
+      (GameAction action) => action.type == MillActionTypes.remove,
+    )) {
+      return const ReviewHumanDatabaseEvidence(
+        state: ReviewHumanDatabaseState.capturePending,
+      );
+    }
+
+    final GeneralSettings settings = DB().generalSettings;
+    final String path = settings.humanDatabaseFilePath.trim();
+    if (path.isEmpty) {
+      return const ReviewHumanDatabaseEvidence(
+        state: ReviewHumanDatabaseState.notConfigured,
+      );
+    }
+    if (!settings.humanDatabaseEnabled) {
+      return const ReviewHumanDatabaseEvidence(
+        state: ReviewHumanDatabaseState.disabled,
+      );
+    }
+
+    final HumanDatabaseReadyResult ready = HumanDatabaseService.instance
+        .ensureReadySync(path);
+    if (!ready.ready) {
+      return const ReviewHumanDatabaseEvidence(
+        state: ReviewHumanDatabaseState.unavailable,
+      );
+    }
+    final tgf.MillHumanDatabaseQuery query = tgf.millHumanDbQuery(
+      fen: session.getFen(),
+      // Human DB rows encode a complete turn, so a mill-forming root move can
+      // fan out into one row per legal removal. Keep the cap above the maximum
+      // practical Standard NMM root fan-out to avoid undercounting samples.
+      maxMoves: 1024,
+      minSamples: 1,
+    );
+    if (!query.available) {
+      return const ReviewHumanDatabaseEvidence(
+        state: ReviewHumanDatabaseState.unavailable,
+      );
+    }
+    int wins = 0;
+    int draws = 0;
+    int losses = 0;
+    for (final tgf.MillHumanDatabaseMove move in query.moves) {
+      assert(
+        move.total == move.wins + move.draws + move.losses,
+        'Human Database move totals must equal W/D/L samples.',
+      );
+      wins += move.wins;
+      draws += move.draws;
+      losses += move.losses;
+    }
+    if (wins + draws + losses == 0) {
+      return const ReviewHumanDatabaseEvidence(
+        state: ReviewHumanDatabaseState.noRecords,
+      );
+    }
+    return ReviewHumanDatabaseEvidence(
+      state: ReviewHumanDatabaseState.available,
+      perspective: _reviewSide(session.state.value.activeSeat),
+      wins: wins,
+      draws: draws,
+      losses: losses,
     );
   }
 

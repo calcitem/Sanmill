@@ -422,11 +422,13 @@ void main() {
     expect(exact.bestScore, 80);
     expect(exact.playedScore, 0);
     expect(exact.bestMoves, <String>{'a7'});
+    expect(moveFeedbackExactRootValue(complete, legalActionCount: 2), 1);
 
     expect(
       moveFeedbackExactScores(complete, playedMove: 'd6', legalActionCount: 3),
       isNull,
     );
+    expect(moveFeedbackExactRootValue(complete, legalActionCount: 3), isNull);
   });
 
   test('heuristic perfect-database fallback is not treated as exact WDL', () {
@@ -452,5 +454,6 @@ void main() {
       moveFeedbackExactScores(fallback, playedMove: 'd6', legalActionCount: 2),
       isNull,
     );
+    expect(moveFeedbackExactRootValue(fallback, legalActionCount: 2), isNull);
   });
 }

@@ -146,7 +146,7 @@ class _AiKnowledgeSourcesPage extends StatelessWidget {
               ? S.of(context).none
               : p.basename(generalSettings.humanDatabaseFilePath),
           onTap: () {
-            unawaited(parent._pickHumanDatabaseFile(context, generalSettings));
+            parent._pickHumanDatabaseFile(context, generalSettings).ignore();
           },
         ),
         SettingsListTile(

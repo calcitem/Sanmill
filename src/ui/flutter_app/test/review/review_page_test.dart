@@ -490,6 +490,180 @@ void main() {
     expect(find.byKey(const Key('review_nag_done')), findsOneWidget);
   });
 
+  testWidgets(
+    'separates a recorded result from the ongoing final board assessment',
+    (WidgetTester tester) async {
+      await tester.binding.setSurfaceSize(const Size(320, 780));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final PrivateGameRecord record = _assessmentRecord();
+      await tester.pumpWidget(
+        makeTestableWidget(
+          MediaQuery(
+            data: const MediaQueryData(
+              size: Size(320, 780),
+              textScaler: TextScaler.linear(1.45),
+            ),
+            child: ReviewPage(
+              record: record,
+              initialReport: _report(record, firstGrade: ReviewGrade.good),
+              initialPositionAssessment: _engineAssessment(
+                humanDatabaseState: ReviewHumanDatabaseState.notConfigured,
+              ),
+              autoAnalyze: false,
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      expect(
+        find.byKey(const Key('review_final_position_assessment')),
+        findsOneWidget,
+      );
+      expect(
+        tester
+            .getTopLeft(
+              find.byKey(const Key('review_final_position_assessment')),
+            )
+            .dy,
+        lessThan(
+          tester
+              .getTopLeft(find.byKey(const Key('review_quality_overview')))
+              .dy,
+        ),
+      );
+      expect(find.text('Position at end of record'), findsOneWidget);
+      expect(find.text('Recorded result: 1–0 · White won'), findsOneWidget);
+      expect(
+        find.text('The board is still ongoing · Black to move'),
+        findsOneWidget,
+      );
+      expect(
+        find.text('Quick engine estimate: White is favored'),
+        findsOneWidget,
+      );
+      expect(
+        find.text(
+          'This is a time-limited heuristic estimate, not a forced result or win probability.',
+        ),
+        findsOneWidget,
+      );
+      expect(find.text('No human game database selected'), findsOneWidget);
+      expect(
+        find.byKey(const Key('review_configure_human_database')),
+        findsOneWidget,
+      );
+      expect(
+        find.text(
+          'This only means no reviewable human mistake was identified; it does not mean the final position is equal or naturally finished.',
+        ),
+        findsOneWidget,
+      );
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'Human Database setup returns to review and refreshes historical evidence',
+    (WidgetTester tester) async {
+      await tester.binding.setSurfaceSize(const Size(390, 844));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final PrivateGameRecord record = _assessmentRecord();
+      final _FinalAssessmentService service = _FinalAssessmentService(
+        _engineAssessment(
+          humanDatabaseState: ReviewHumanDatabaseState.available,
+          wins: 6,
+          draws: 2,
+          losses: 4,
+        ),
+      );
+      int setupCalls = 0;
+      await tester.pumpWidget(
+        makeTestableWidget(
+          ReviewPage(
+            record: record,
+            initialReport: _report(record),
+            initialPositionAssessment: _engineAssessment(
+              humanDatabaseState: ReviewHumanDatabaseState.notConfigured,
+            ),
+            autoAnalyze: false,
+            analysisService: service,
+            onConfigureHumanDatabase: () async {
+              setupCalls++;
+              return true;
+            },
+          ),
+        ),
+      );
+      await tester.pump();
+
+      final Finder setupButton = find.byKey(
+        const Key('review_configure_human_database'),
+      );
+      await tester.ensureVisible(setupButton);
+      await tester.tap(setupButton);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+      await tester.pump();
+
+      expect(setupCalls, 1);
+      expect(service.assessmentCalls, 0);
+      expect(service.evidenceRefreshCalls, 1);
+      expect(
+        find.byKey(const Key('review_human_database_evidence')),
+        findsOneWidget,
+      );
+      expect(find.text('Black to move · 12 recorded games'), findsOneWidget);
+      expect(find.text('Wins 50%'), findsOneWidget);
+      expect(find.text('Draws 17%'), findsOneWidget);
+      expect(find.text('Losses 33%'), findsOneWidget);
+      expect(
+        find.byKey(const Key('review_human_database_result_bar')),
+        findsOneWidget,
+      );
+      expect(
+        find.text(
+          'These percentages describe historical game samples, not the theoretical win probability of this position.',
+        ),
+        findsOneWidget,
+      );
+    },
+  );
+
+  testWidgets('unsupported review rules do not offer a misleading DB setup', (
+    WidgetTester tester,
+  ) async {
+    final PrivateGameRecord record = _record();
+    await tester.pumpWidget(
+      makeTestableWidget(
+        ReviewPage(
+          record: record,
+          initialReport: _report(record),
+          initialPositionAssessment: _engineAssessment(
+            humanDatabaseState: ReviewHumanDatabaseState.rulesUnsupported,
+          ),
+          autoAnalyze: false,
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(
+      find.text('Human game database is unavailable for the current rules'),
+      findsOneWidget,
+    );
+    expect(
+      find.text(
+        "Historical comparisons require a compatible Standard Nine Men's Morris ruleset.",
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.byKey(const Key('review_configure_human_database')),
+      findsNothing,
+    );
+  });
+
   testWidgets('cancelling deep analysis keeps the completed report visible', (
     WidgetTester tester,
   ) async {
@@ -545,6 +719,14 @@ void main() {
     await tester.pump();
 
     expect(find.byKey(const Key('review_analysis_progress')), findsOneWidget);
+    expect(
+      find.byKey(const Key('review_final_position_assessment')),
+      findsOneWidget,
+    );
+    expect(
+      find.text('Quick engine estimate: White is favored'),
+      findsOneWidget,
+    );
     expect(find.byKey(const Key('review_turn_navigation')), findsOneWidget);
     expect(find.byKey(const Key('review_move_list')), findsOneWidget);
     expect(
@@ -587,6 +769,31 @@ void main() {
     expect(service.cancelCount, 1);
     expect(find.text('Analysis cancelled'), findsOneWidget);
     expect(find.text('Analyze again'), findsOneWidget);
+  });
+
+  testWidgets('final-position retry waits for detailed analysis to finish', (
+    WidgetTester tester,
+  ) async {
+    final _PendingReviewAnalysisService service = _PendingReviewAnalysisService(
+      unavailablePositionAssessment: true,
+    );
+    await tester.pumpWidget(
+      makeTestableWidget(
+        ReviewPage(record: _record(), analysisService: service),
+      ),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    expect(find.byKey(const Key('review_analysis_progress')), findsOneWidget);
+    final TextButton retry = tester.widget<TextButton>(
+      find.byKey(const Key('review_retry_final_assessment')),
+    );
+    expect(retry.onPressed, isNull);
+
+    await tester.tap(find.byKey(const Key('review_cancel_analysis')));
+    await tester.pump();
+    expect(service.cancelCount, 1);
   });
 }
 
@@ -640,9 +847,48 @@ PrivateGameRecord _record() {
   );
 }
 
+PrivateGameRecord _assessmentRecord() {
+  final DateTime now = DateTime.utc(2026, 8, 3);
+  return PrivateGameRecord.create(
+    sourcePgn: '1. a7 b6 1-0',
+    initialFen: null,
+    result: '1-0',
+    rules: const NineMensMorrisRuleSettings(),
+    completedAt: now,
+    white: 'AI',
+    black: 'Human',
+    humanSides: const <ReviewSide>{ReviewSide.black},
+    finalBoardLayout: 'O*******/********/@*******',
+    moveCount: 2,
+  );
+}
+
+ReviewPositionAssessment _engineAssessment({
+  required ReviewHumanDatabaseState humanDatabaseState,
+  int wins = 0,
+  int draws = 0,
+  int losses = 0,
+}) => ReviewPositionAssessment(
+  boardOutcome: ReviewBoardOutcome.ongoing,
+  sideToMove: ReviewSide.black,
+  source: ReviewPositionAssessmentSource.engine,
+  verdict: ReviewPositionVerdict.whiteFavored,
+  heuristicWhiteScore: 28,
+  humanDatabase: ReviewHumanDatabaseEvidence(
+    state: humanDatabaseState,
+    perspective: humanDatabaseState == ReviewHumanDatabaseState.available
+        ? ReviewSide.black
+        : null,
+    wins: wins,
+    draws: draws,
+    losses: losses,
+  ),
+);
+
 ReviewReport _report(
   PrivateGameRecord record, {
   ReviewStatus status = ReviewStatus.complete,
+  ReviewGrade firstGrade = ReviewGrade.mistake,
 }) {
   final DateTime now = DateTime.utc(2026, 7, 16);
   return ReviewReport(
@@ -660,13 +906,15 @@ ReviewReport _report(
               move: 'a7',
               side: ReviewSide.white,
               human: true,
-              grade: ReviewGrade.mistake,
-              automaticNag: 2,
-              feedbackReasons: const <MoveFeedbackReason>[
-                MoveFeedbackReason.losesWinningResult,
-                MoveFeedbackReason.decisiveMaterialLoss,
-                MoveFeedbackReason.terminalRuleLoss,
-              ],
+              grade: firstGrade,
+              automaticNag: firstGrade == ReviewGrade.mistake ? 2 : null,
+              feedbackReasons: firstGrade == ReviewGrade.mistake
+                  ? const <MoveFeedbackReason>[
+                      MoveFeedbackReason.losesWinningResult,
+                      MoveFeedbackReason.decisiveMaterialLoss,
+                      MoveFeedbackReason.terminalRuleLoss,
+                    ]
+                  : const <MoveFeedbackReason>[],
             ),
             _action(
               index: 1,
@@ -710,13 +958,36 @@ ReviewReport _report(
 }
 
 class _PendingReviewAnalysisService extends ReviewAnalysisService {
+  _PendingReviewAnalysisService({this.unavailablePositionAssessment = false});
+
   final Completer<ReviewReport> _completer = Completer<ReviewReport>();
+  final bool unavailablePositionAssessment;
   PrivateGameRecord? _record;
   int cancelCount = 0;
 
   @override
   List<ReviewTurnBoundary> buildTimeline(PrivateGameRecord record) =>
       _report(record).turns;
+
+  @override
+  Future<ReviewPositionAssessment?> assessFinalPosition(
+    PrivateGameRecord record,
+  ) async {
+    if (unavailablePositionAssessment) {
+      return const ReviewPositionAssessment(
+        boardOutcome: ReviewBoardOutcome.ongoing,
+        sideToMove: ReviewSide.white,
+        source: ReviewPositionAssessmentSource.unavailable,
+        verdict: ReviewPositionVerdict.unavailable,
+        humanDatabase: ReviewHumanDatabaseEvidence(
+          state: ReviewHumanDatabaseState.rulesUnsupported,
+        ),
+      );
+    }
+    return _engineAssessment(
+      humanDatabaseState: ReviewHumanDatabaseState.rulesUnsupported,
+    );
+  }
 
   @override
   Future<ReviewReport> analyze(
@@ -736,6 +1007,30 @@ class _PendingReviewAnalysisService extends ReviewAnalysisService {
     if (!_completer.isCompleted && record != null) {
       _completer.complete(_report(record, status: ReviewStatus.cancelled));
     }
+  }
+}
+
+class _FinalAssessmentService extends ReviewAnalysisService {
+  _FinalAssessmentService(this.assessment);
+
+  final ReviewPositionAssessment assessment;
+  int assessmentCalls = 0;
+  int evidenceRefreshCalls = 0;
+
+  @override
+  Future<ReviewPositionAssessment?> assessFinalPosition(
+    PrivateGameRecord record,
+  ) async {
+    assessmentCalls++;
+    return assessment;
+  }
+
+  @override
+  ReviewHumanDatabaseEvidence refreshFinalPositionHumanDatabase(
+    PrivateGameRecord record,
+  ) {
+    evidenceRefreshCalls++;
+    return assessment.humanDatabase;
   }
 }
 

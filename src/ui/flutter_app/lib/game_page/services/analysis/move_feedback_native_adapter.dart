@@ -13,28 +13,38 @@ typedef MoveFeedbackExactScores = ({
   bool allCandidatesLosing,
 });
 
+/// Returns the exact best root W/D/L value only when every legal action is
+/// covered by canonical Perfect Database output.
+///
+/// The native analysis API deliberately falls back to heuristic values for a
+/// database miss. Callers that present a proved position result must therefore
+/// fail closed through this shared validator instead of looking only at the
+/// first reported move.
+int? moveFeedbackExactRootValue(
+  tgf.MillAnalysisReport report, {
+  required int legalActionCount,
+}) {
+  final Map<String, int>? values = _exactMoveValues(
+    report,
+    legalActionCount: legalActionCount,
+  );
+  if (values == null) {
+    return null;
+  }
+  return values.values.reduce((int a, int b) => a >= b ? a : b);
+}
+
 /// Returns exact WDL scores only when the database covers every legal move.
 MoveFeedbackExactScores? moveFeedbackExactScores(
   tgf.MillAnalysisReport report, {
   required String playedMove,
   required int legalActionCount,
 }) {
-  if (report.moves.length != legalActionCount || legalActionCount == 0) {
-    return null;
-  }
-  // The native API falls back to a shallow heuristic search when no perfect
-  // database row is available. Only canonical WDL rows are exact; treating a
-  // fallback score such as 3 as a database value would scale it to 240 below.
-  if (report.moves.any(
-    (tgf.MillMoveAnalysis move) =>
-        _perfectDatabaseValue(move.outcome) != move.value,
-  )) {
-    return null;
-  }
-  final Map<String, int> values = <String, int>{
-    for (final tgf.MillMoveAnalysis move in report.moves) move.mv: move.value,
-  };
-  if (values.length != legalActionCount || !values.containsKey(playedMove)) {
+  final Map<String, int>? values = _exactMoveValues(
+    report,
+    legalActionCount: legalActionCount,
+  );
+  if (values == null || !values.containsKey(playedMove)) {
     return null;
   }
   final List<int> ordered = values.values.toList(growable: false)
@@ -53,6 +63,28 @@ MoveFeedbackExactScores? moveFeedbackExactScores(
         .toSet(),
     allCandidatesLosing: bestValue < 0,
   );
+}
+
+Map<String, int>? _exactMoveValues(
+  tgf.MillAnalysisReport report, {
+  required int legalActionCount,
+}) {
+  if (report.moves.length != legalActionCount || legalActionCount == 0) {
+    return null;
+  }
+  // The native API falls back to a shallow heuristic search when no perfect
+  // database row is available. Only canonical WDL rows are exact; treating a
+  // fallback score such as 3 as a database value would scale it to 240 below.
+  if (report.moves.any(
+    (tgf.MillMoveAnalysis move) =>
+        _perfectDatabaseValue(move.outcome) != move.value,
+  )) {
+    return null;
+  }
+  final Map<String, int> values = <String, int>{
+    for (final tgf.MillMoveAnalysis move in report.moves) move.mv: move.value,
+  };
+  return values.length == legalActionCount ? values : null;
 }
 
 int? _perfectDatabaseValue(String outcome) => switch (outcome) {
