@@ -125,7 +125,7 @@ const LINES: [[usize; 3]; 16] = [
     [7, 15, 23],
 ];
 
-const ADJACENCY: [&[usize]; 24] = [
+pub(super) const ADJACENCY: [&[usize]; 24] = [
     &[1, 7],
     &[0, 2, 9],
     &[1, 3],
@@ -357,6 +357,7 @@ pub(super) struct Manifest {
     pub(super) document_digest: String,
     repetition_count: u64,
     repetition_mode: String,
+    repetition_observation: String,
     movement_allowed: bool,
     minimum_live: u64,
     board_full: String,
@@ -378,6 +379,7 @@ impl Manifest {
         Ok(Self {
             repetition_count: member_u64(repetition, "count")?,
             repetition_mode: member_str(repetition, "mode")?.into(),
+            repetition_observation: member_str(repetition, "observation")?.into(),
             movement_allowed: pointer(&value, "/placing/movementAllowed")?
                 .as_bool()
                 .ok_or_else(|| invalid_manifest("placing.movementAllowed must be boolean"))?,
@@ -422,6 +424,10 @@ impl Manifest {
 
     fn repetition_enabled(&self) -> bool {
         self.repetition_count > 0
+    }
+
+    pub(super) fn movement_allowed(&self) -> bool {
+        self.movement_allowed
     }
 }
 
@@ -506,6 +512,14 @@ fn validate_runtime_manifest(value: &Value) -> Result<()> {
     {
         return Err(unsupported(
             "turn-boundary or offer-expiry profile is not implemented",
+        ));
+    }
+    if !matches!(
+        pointer(value, "/draw/repetition/observation")?.as_str(),
+        Some("stable-moving-v1" | "stable-primary-decision-v1")
+    ) {
+        return Err(unsupported(
+            "selected repetition observation profile is not implemented",
         ));
     }
     Ok(())
@@ -734,12 +748,13 @@ impl Engine {
             .ok_or_else(|| illegal("coordinate-invalid", "move source is invalid", seq))?;
         let to = coord_index(to)
             .ok_or_else(|| illegal("coordinate-invalid", "move target is invalid", seq))?;
-        let flying = self
-            .manifest
-            .value
-            .pointer("/flying/enabled")
-            .and_then(Value::as_bool)
-            == Some(true)
+        let flying = self.state.phase == 'm'
+            && self
+                .manifest
+                .value
+                .pointer("/flying/enabled")
+                .and_then(Value::as_bool)
+                == Some(true)
             && self.state.live_count(actor)
                 <= self
                     .manifest
@@ -983,11 +998,12 @@ impl Engine {
     fn claim_draw(&mut self, event: &Value, actor: &str, seq: u64) -> Result<()> {
         let actor = self.require_actor(actor, seq)?;
         if self.state.obligations != "-" {
-            return Err(illegal(
+            return Err(Diagnostic::new(
+                "inconsistent",
                 "claim-during-obligation",
                 "cannot claim during removal",
-                seq,
-            ));
+            )
+            .at_event(seq));
         }
         let reason = event.get("reason").and_then(Value::as_str).unwrap_or("");
         let available = self
@@ -1068,12 +1084,13 @@ impl Engine {
         if !self.state.board.contains(&'.') {
             return false;
         }
-        let flying = self
-            .manifest
-            .value
-            .pointer("/flying/enabled")
-            .and_then(Value::as_bool)
-            == Some(true)
+        let flying = self.state.phase == 'm'
+            && self
+                .manifest
+                .value
+                .pointer("/flying/enabled")
+                .and_then(Value::as_bool)
+                == Some(true)
             && self.state.live_count(player)
                 <= self
                     .manifest
@@ -1203,7 +1220,13 @@ impl Engine {
     }
 
     fn should_observe(&self) -> bool {
-        self.manifest.repetition_enabled() && self.state.stable()
+        self.manifest.repetition_enabled()
+            && self.state.stable()
+            && match self.manifest.repetition_observation.as_str() {
+                "stable-moving-v1" => self.state.phase == 'm',
+                "stable-primary-decision-v1" => matches!(self.state.phase, 'p' | 'm'),
+                _ => false,
+            }
     }
 
     fn observation(&self) -> Value {
@@ -1260,7 +1283,7 @@ impl Engine {
         if no_progress_limit > 0 && self.state.no_progress >= no_progress_limit {
             reasons.push(json!("no-progress"));
         }
-        if self.manifest.repetition_mode == "claim" && self.manifest.repetition_count > 0 {
+        if self.manifest.repetition_mode == "claim" && self.should_observe() {
             let current = self.observation();
             let count = self
                 .repetition_history
@@ -1395,6 +1418,26 @@ impl Engine {
     }
 }
 
+pub(super) fn projection_state(manifest: &Manifest, current: &str) -> Result<State> {
+    let state = State::parse(current)?;
+    if state.canonical() != current {
+        return Err(Diagnostic::new(
+            "canonical",
+            "mfen-not-canonical",
+            "legal action projection requires canonical MFEN",
+        ));
+    }
+    let stabilized = Engine::new(manifest.clone(), current, Vec::new(), Vec::new())?;
+    if stabilized.state != state {
+        return Err(Diagnostic::new(
+            "inconsistent",
+            "unstabilized-boundary",
+            "legal action projection requires a stable, pending-obligation, or terminal state",
+        ));
+    }
+    Ok(state)
+}
+
 fn semantic_state(state: &State) -> Value {
     let mut semantic = Map::new();
     for extension in &state.extensions {
@@ -1456,18 +1499,18 @@ fn removal_targets(board: &[char; 24], owner: char) -> u32 {
 }
 
 #[derive(Clone)]
-struct Obligation {
-    actor: char,
+pub(super) struct Obligation {
+    pub(super) actor: char,
     cause: String,
-    zone: char,
-    owner: char,
+    pub(super) zone: char,
+    pub(super) owner: char,
     remaining: u64,
-    targets: u32,
-    targets_deferred: bool,
+    pub(super) targets: u32,
+    pub(super) targets_deferred: bool,
     after: char,
 }
 
-fn parse_obligation_branches(value: &str) -> Result<Vec<Vec<Obligation>>> {
+pub(super) fn parse_obligation_branches(value: &str) -> Result<Vec<Vec<Obligation>>> {
     value
         .split('|')
         .map(|branch| branch.split(';').map(parse_obligation).collect())
@@ -1597,6 +1640,17 @@ fn canonicalize_mpk(value: &str, manifest_value: Option<&Value>) -> Result<Value
         )
     })?)?;
     let fields: Vec<_> = value.split_ascii_whitespace().collect();
+    if fields.len() == 8
+        && fields.first() == Some(&"MPK/1.0")
+        && fields.get(1) == Some(&"mill24-state-v1")
+        && fields.get(3) == Some(&"structural-d4-v1")
+    {
+        return Err(Diagnostic::new(
+            "integrity",
+            "mpk-semantic-digest-missing",
+            "MPK semantic digest is missing",
+        ));
+    }
     if fields.len() != 9 || fields[0] != "MPK/1.0" || fields[1] != "mill24-state-v1" {
         return Err(Diagnostic::new(
             "syntax",
@@ -1604,6 +1658,7 @@ fn canonicalize_mpk(value: &str, manifest_value: Option<&Value>) -> Result<Value
             "MPK/1.0 value is incomplete",
         ));
     }
+    validate_mpk_digest(fields[3])?;
     let expected_reference = format!(
         "{}@{}",
         manifest
@@ -1620,7 +1675,7 @@ fn canonicalize_mpk(value: &str, manifest_value: Option<&Value>) -> Result<Value
     if fields[2] != expected_reference {
         return Err(Diagnostic::new(
             "integrity",
-            "ruleset-identity-mismatch",
+            "manifest-conflict",
             "MPK ruleset reference does not match manifest",
         ));
     }
@@ -1693,6 +1748,38 @@ fn canonicalize_mpk(value: &str, manifest_value: Option<&Value>) -> Result<Value
     }
     candidates.sort();
     Ok(json!({ "value": candidates.remove(0) }))
+}
+
+fn validate_mpk_digest(value: &str) -> Result<()> {
+    let Some((algorithm, digest)) = value.split_once(':') else {
+        return Err(Diagnostic::new(
+            "syntax",
+            "digest-invalid",
+            "MPK semantic digest must be SHA-256 text",
+        ));
+    };
+    if algorithm.eq_ignore_ascii_case("sha256")
+        && digest.len() == 64
+        && digest.bytes().all(|byte| byte.is_ascii_hexdigit())
+    {
+        if algorithm == "sha256"
+            && digest
+                .bytes()
+                .all(|byte| byte.is_ascii_digit() || matches!(byte, b'a'..=b'f'))
+        {
+            return Ok(());
+        }
+        return Err(Diagnostic::new(
+            "canonical",
+            "non-canonical-digest",
+            "MPK semantic digest is not canonical lowercase SHA-256 text",
+        ));
+    }
+    Err(Diagnostic::new(
+        "syntax",
+        "digest-invalid",
+        "MPK semantic digest must be SHA-256 text",
+    ))
 }
 
 pub(super) fn execute_request(payload: &Value) -> Result<Value> {

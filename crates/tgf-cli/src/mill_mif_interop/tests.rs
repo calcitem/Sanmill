@@ -83,26 +83,31 @@ fn example_manifest() -> Value {
     })
 }
 
+fn diagnostic(result: model::Result<Value>) -> Value {
+    result.expect_err("request must be rejected").into_value()
+}
+
 #[test]
-fn capabilities_bind_candidate_2_baseline() {
+fn capabilities_bind_candidate_3_baseline() {
     let capability = capabilities();
     assert_eq!(
         capability["testedCorpora"],
         json!([{
-            "digest": "sha256:a6d292f4d19381172fbc19f89d3ee42145a6d5533d6d81fd719394e25342bb53",
+            "digest": "sha256:c2d7017b2a8583914aff1eeea38bc02b078814ca11346c484e0a2b38b5e94f0c",
             "classes": ["identity", "position", "replay", "ruleset", "transform"]
         }])
     );
     assert_eq!(
         capability["annotations"],
         json!({
-            "mifCommit": "f37ddfeb5fb8479991fa38eeb03c797bef8ae408",
+            "mifCommit": "0693353fe0821dcbbf547cc1eb9b679dcf2f90b8",
             "mifEnglishSpec": "sha256:330e65145ceb26fe582e58b89405d87bd73e8be200b476aef82c0ee27731d995",
             "mifChineseSpec": "sha256:9cc06abb57425e2bc2e26432b6da53abe503e9b5415ea0b4f854f19f68722cc1",
-            "mifIndex": "sha256:3849a70897829d6d994c790b64e63484469483a940887fe828a1a0d421d78e90",
+            "mifIndex": "sha256:2bd247cd7e27ff4b0e142d8a0b2d6dececd619c882bb67f0be11bf763a794895",
             "mifExecutableCorpus": "sha256:a48c50352caebce30deb1de11f8f73dbc4540ee538651c3a139d9bcb166ba983",
-            "mifAdapterProtocol": "sha256:a59e5e5af3e948f6c7cac6a39a490c6eae6338151741b6c7fcdde5c88d991e2d",
-            "mifSmokeCorpus": "sha256:a6d292f4d19381172fbc19f89d3ee42145a6d5533d6d81fd719394e25342bb53"
+            "mifAdapterProtocol": "sha256:253c1d201ea1db625e0c534da445ca4ecaa0b07597dfc7dbf59fbd6adf89874f",
+            "mifSmokeCorpus": "sha256:a6d292f4d19381172fbc19f89d3ee42145a6d5533d6d81fd719394e25342bb53",
+            "mifDeterministicCorpus": "sha256:c2d7017b2a8583914aff1eeea38bc02b078814ca11346c484e0a2b38b5e94f0c"
         })
     );
 }
@@ -422,6 +427,209 @@ fn structural_d4_mpk_is_orientation_independent() {
     )
     .unwrap();
     assert_eq!(first, rotated);
+}
+
+#[test]
+fn mpk_binding_diagnostics_follow_candidate_3_categories() {
+    let cases = [
+        (
+            concat!(
+                "MPK/1.0 mill24-state-v1 example-morris@1 structural-d4-v1 ",
+                "........................ b p 9,9"
+            ),
+            "integrity",
+            "mpk-semantic-digest-missing",
+        ),
+        (
+            concat!(
+                "MPK/1.0 mill24-state-v1 example-morris@1 ",
+                "sha256:224F7E368E322A4CC8C1225A025FB548D5B41EB096D34B7AE0543182D1AA9393 ",
+                "structural-d4-v1 ........................ b p 9,9"
+            ),
+            "canonical",
+            "non-canonical-digest",
+        ),
+        (
+            concat!(
+                "MPK/1.0 mill24-state-v1 other-morris@1 ",
+                "sha256:224f7e368e322a4cc8c1225a025fb548d5b41eb096d34b7ae0543182d1aa9393 ",
+                "structural-d4-v1 ........................ b p 9,9"
+            ),
+            "integrity",
+            "manifest-conflict",
+        ),
+    ];
+    for (value, category, code) in cases {
+        let error = diagnostic(dispatch(
+            "canonicalize",
+            &json!({
+                "format": "MPK/1.0",
+                "manifest": example_manifest(),
+                "value": value,
+            }),
+        ));
+        assert_eq!(error["category"], category);
+        assert_eq!(error["code"], code);
+    }
+}
+
+#[test]
+fn stable_moving_repetition_ignores_placing_boundaries() {
+    let mut manifest = example_manifest();
+    manifest["placing"]["movementAllowed"] = json!(true);
+    manifest["draw"]["repetition"]["observation"] = json!("stable-moving-v1");
+    let execution = model::execute_request(&json!({
+        "manifest": manifest,
+        "origin": "MFEN/1.0 mill24-state-v1 W......./B......./........ w p p 8,8 - 0 0 -",
+        "events": [
+            { "actor": "w", "from": "a7", "seq": 1, "to": "a4", "type": "move" },
+            { "actor": "b", "from": "b6", "seq": 2, "to": "b4", "type": "move" },
+            { "actor": "w", "from": "a4", "seq": 3, "to": "a7", "type": "move" },
+            { "actor": "b", "from": "b4", "seq": 4, "to": "b6", "type": "move" }
+        ],
+        "repetitionSeed": [],
+        "preOriginClaims": []
+    }))
+    .unwrap();
+    assert!(
+        execution["trace"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .all(|snapshot| {
+                snapshot["repetitionHistory"]
+                    .as_array()
+                    .is_some_and(Vec::is_empty)
+            })
+    );
+    assert_eq!(
+        execution["final"]["decisionState"]["repetitionSummary"]["root"],
+        "sha256:e9fbf966ccdff764594a5e199e6aea0cc36034b46c8057cc3df88a088c20101a"
+    );
+}
+
+#[test]
+fn claim_during_obligation_is_inconsistent() {
+    let error = diagnostic(model::execute_request(&json!({
+        "manifest": example_manifest(),
+        "origin": "MFEN/1.0 mill24-state-v1 BB....../......../W....... b p p 8,7 - 0 3 -",
+        "events": [
+            { "actor": "b", "at": "g7", "seq": 1, "type": "place" },
+            { "actor": "b", "reason": "repetition", "seq": 2, "type": "claim-draw" }
+        ],
+        "repetitionSeed": [],
+        "preOriginClaims": []
+    })));
+    assert_eq!(error["category"], "inconsistent");
+    assert_eq!(error["code"], "claim-during-obligation");
+    assert_eq!(error["eventSeq"], 2);
+}
+
+#[test]
+fn legal_action_projection_orders_place_move_and_flying_templates() {
+    let initial = dispatch(
+        "project-legal-actions",
+        &json!({
+            "manifest": example_manifest(),
+            "current": "MFEN/1.0 mill24-state-v1 ......../......../........ b p p 9,9 - 0 0 -"
+        }),
+    )
+    .unwrap();
+    let actions = initial["document"]["actions"].as_array().unwrap();
+    assert_eq!(actions.len(), 24);
+    assert_eq!(
+        actions.first().unwrap(),
+        &json!({ "actor": "b", "at": "a7", "type": "place" })
+    );
+    assert_eq!(
+        actions.last().unwrap(),
+        &json!({ "actor": "b", "at": "c4", "type": "place" })
+    );
+
+    let mut placing_manifest = example_manifest();
+    placing_manifest["placing"]["movementAllowed"] = json!(true);
+    let placing = dispatch(
+        "project-legal-actions",
+        &json!({
+            "manifest": placing_manifest,
+            "current": "MFEN/1.0 mill24-state-v1 W......./B......./........ w p p 8,8 - 0 0 -"
+        }),
+    )
+    .unwrap();
+    let actions = placing["document"]["actions"].as_array().unwrap();
+    assert_eq!(actions.len(), 24);
+    assert_eq!(
+        actions[21],
+        json!({ "actor": "w", "at": "c4", "type": "place" })
+    );
+    assert_eq!(
+        actions[22],
+        json!({ "actor": "w", "from": "a7", "to": "d7", "type": "move" })
+    );
+    assert_eq!(
+        actions[23],
+        json!({ "actor": "w", "from": "a7", "to": "a4", "type": "move" })
+    );
+
+    let flying = dispatch(
+        "project-legal-actions",
+        &json!({
+            "manifest": example_manifest(),
+            "current": "MFEN/1.0 mill24-state-v1 WWW...../BBB...../........ w m m 0,0 - 0 18 -"
+        }),
+    )
+    .unwrap();
+    let actions = flying["document"]["actions"].as_array().unwrap();
+    assert_eq!(actions.len(), 54);
+    assert_eq!(
+        actions.first().unwrap(),
+        &json!({ "actor": "w", "from": "a7", "to": "g4", "type": "move" })
+    );
+    assert_eq!(
+        actions.last().unwrap(),
+        &json!({ "actor": "w", "from": "g7", "to": "c4", "type": "move" })
+    );
+}
+
+#[test]
+fn legal_action_projection_handles_obligation_terminal_and_unstable_states() {
+    let removal = dispatch(
+        "project-legal-actions",
+        &json!({
+            "manifest": example_manifest(),
+            "current": "MFEN/1.0 mill24-state-v1 BBB...../......../W....... b p r 8,6 b:mill:b:w:1:010000:w 0 4 -"
+        }),
+    )
+    .unwrap();
+    assert_eq!(
+        removal["document"]["actions"],
+        json!([{
+            "actor": "b", "type": "remove",
+            "target": { "zone": "board", "at": "c5" }
+        }])
+    );
+
+    let mut full_board_manifest = example_manifest();
+    full_board_manifest["pieces"] = json!({ "black": 13, "minimumLive": 3, "white": 13 });
+    let terminal = dispatch(
+        "project-legal-actions",
+        &json!({
+            "manifest": full_board_manifest.clone(),
+            "current": "MFEN/1.0 mill24-state-v1 WBWBWBWB/BWBWBWBW/WBWBWBWB - o o 1,1 - 0 0 b:no-legal-primary-action"
+        }),
+    )
+    .unwrap();
+    assert_eq!(terminal["document"]["actions"], json!([]));
+
+    let error = diagnostic(dispatch(
+        "project-legal-actions",
+        &json!({
+            "manifest": full_board_manifest,
+            "current": "MFEN/1.0 mill24-state-v1 WBWBWBWB/BWBWBWBW/WBWBWBWB w p p 1,1 - 0 0 -"
+        }),
+    ));
+    assert_eq!(error["category"], "inconsistent");
+    assert_eq!(error["code"], "unstabilized-boundary");
 }
 
 #[test]

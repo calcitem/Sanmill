@@ -6,6 +6,7 @@
 //! Python reference runner.
 
 mod identity;
+mod legal_actions;
 mod model;
 mod transform;
 
@@ -279,6 +280,7 @@ fn dispatch(operation: &str, payload: &Value) -> model::Result<Value> {
         "capabilities" => Ok(json!({ "capabilities": capabilities() })),
         "canonicalize" => model::canonicalize(payload),
         "execute" => model::execute_request(payload),
+        "project-legal-actions" => legal_actions::project(payload),
         "replay" => model::replay_request(payload),
         "transform" => transform::transform_request(payload),
         "project-logical-turns" => model::project_logical_turns(payload),
@@ -312,6 +314,7 @@ fn validate_payload_members(operation: &str, payload: &Value) -> model::Result<(
             &[],
         ),
         "replay" | "project-logical-turns" => (&["mstate"], &["manifest"]),
+        "project-legal-actions" => (&["manifest", "current"], &[]),
         "transform" => (
             &[
                 "kind",
@@ -478,18 +481,19 @@ fn capabilities() -> Value {
         ],
         "testedCorpora": [
             {
-                "digest": "sha256:a6d292f4d19381172fbc19f89d3ee42145a6d5533d6d81fd719394e25342bb53",
+                "digest": "sha256:c2d7017b2a8583914aff1eeea38bc02b078814ca11346c484e0a2b38b5e94f0c",
                 "classes": ["identity", "position", "replay", "ruleset", "transform"]
             }
         ],
         "annotations": {
-            "mifCommit": "f37ddfeb5fb8479991fa38eeb03c797bef8ae408",
+            "mifCommit": "0693353fe0821dcbbf547cc1eb9b679dcf2f90b8",
             "mifEnglishSpec": "sha256:330e65145ceb26fe582e58b89405d87bd73e8be200b476aef82c0ee27731d995",
             "mifChineseSpec": "sha256:9cc06abb57425e2bc2e26432b6da53abe503e9b5415ea0b4f854f19f68722cc1",
-            "mifIndex": "sha256:3849a70897829d6d994c790b64e63484469483a940887fe828a1a0d421d78e90",
+            "mifIndex": "sha256:2bd247cd7e27ff4b0e142d8a0b2d6dececd619c882bb67f0be11bf763a794895",
             "mifExecutableCorpus": "sha256:a48c50352caebce30deb1de11f8f73dbc4540ee538651c3a139d9bcb166ba983",
-            "mifAdapterProtocol": "sha256:a59e5e5af3e948f6c7cac6a39a490c6eae6338151741b6c7fcdde5c88d991e2d",
-            "mifSmokeCorpus": "sha256:a6d292f4d19381172fbc19f89d3ee42145a6d5533d6d81fd719394e25342bb53"
+            "mifAdapterProtocol": "sha256:253c1d201ea1db625e0c534da445ca4ecaa0b07597dfc7dbf59fbd6adf89874f",
+            "mifSmokeCorpus": "sha256:a6d292f4d19381172fbc19f89d3ee42145a6d5533d6d81fd719394e25342bb53",
+            "mifDeterministicCorpus": "sha256:c2d7017b2a8583914aff1eeea38bc02b078814ca11346c484e0a2b38b5e94f0c"
         }
     })
 }
