@@ -481,19 +481,19 @@ fn capabilities() -> Value {
         ],
         "testedCorpora": [
             {
-                "digest": "sha256:c2d7017b2a8583914aff1eeea38bc02b078814ca11346c484e0a2b38b5e94f0c",
+                "digest": "sha256:d11317a090300f8a47f77afed647bdbd236dcdb1996c0147a81c874fa39dfd82",
                 "classes": ["identity", "position", "replay", "ruleset", "transform"]
             }
         ],
         "annotations": {
-            "mifCommit": "0693353fe0821dcbbf547cc1eb9b679dcf2f90b8",
+            "mifCommit": "7e45d5a3fa970a535ed6a8a8ff5981aba4b9c978",
             "mifEnglishSpec": "sha256:330e65145ceb26fe582e58b89405d87bd73e8be200b476aef82c0ee27731d995",
             "mifChineseSpec": "sha256:9cc06abb57425e2bc2e26432b6da53abe503e9b5415ea0b4f854f19f68722cc1",
-            "mifIndex": "sha256:2bd247cd7e27ff4b0e142d8a0b2d6dececd619c882bb67f0be11bf763a794895",
-            "mifExecutableCorpus": "sha256:a48c50352caebce30deb1de11f8f73dbc4540ee538651c3a139d9bcb166ba983",
+            "mifIndex": "sha256:5acbb714bed77e24eaac72fa5f24d2e54d1e17aaf568a8b60718c840281a6541",
+            "mifExecutableCorpus": "sha256:350b7ff02772e820a57431e11c4e2f15a874d0779fb6e7afb01e9b16f6992741",
             "mifAdapterProtocol": "sha256:253c1d201ea1db625e0c534da445ca4ecaa0b07597dfc7dbf59fbd6adf89874f",
             "mifSmokeCorpus": "sha256:a6d292f4d19381172fbc19f89d3ee42145a6d5533d6d81fd719394e25342bb53",
-            "mifDeterministicCorpus": "sha256:c2d7017b2a8583914aff1eeea38bc02b078814ca11346c484e0a2b38b5e94f0c"
+            "mifDeterministicCorpus": "sha256:d11317a090300f8a47f77afed647bdbd236dcdb1996c0147a81c874fa39dfd82"
         }
     })
 }

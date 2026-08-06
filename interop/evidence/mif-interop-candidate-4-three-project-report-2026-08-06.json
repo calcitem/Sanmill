@@ -1,0 +1,422 @@
+{
+  "adapters": [
+    "mif-reference",
+    "sanmill-rust",
+    "nmm-llm-python"
+  ],
+  "cases": [
+    {
+      "comparison": "schema-only",
+      "errors": [],
+      "id": "capabilities",
+      "operation": "capabilities",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "canonicalize-mfen-initial-black",
+      "operation": "canonicalize",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "canonicalize-mfen-missing-manifest",
+      "operation": "canonicalize",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "canonicalize-mpk-empty",
+      "operation": "canonicalize",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "canonicalize-mpk-orientation-a7",
+      "operation": "canonicalize",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "canonicalize-mpk-orientation-a1",
+      "operation": "canonicalize",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "canonicalize-mpk-digest-mismatch",
+      "operation": "canonicalize",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "canonicalize-mpk-digest-missing",
+      "operation": "canonicalize",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "canonicalize-mpk-digest-uppercase",
+      "operation": "canonicalize",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "canonicalize-mpk-missing-manifest",
+      "operation": "canonicalize",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "canonicalize-mpk-ruleset-conflict",
+      "operation": "canonicalize",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "execute-initial-black",
+      "operation": "execute",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "execute-origin-phase-sync-asymmetric-reserve",
+      "operation": "execute",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "execute-white-loses-initial-black",
+      "operation": "execute",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "execute-placing-full-board-loss",
+      "operation": "execute",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "execute-placing-full-board-draw",
+      "operation": "execute",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "execute-invalid-placing-policy",
+      "operation": "execute",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "execute-placing-cycle-stable-primary",
+      "operation": "execute",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "execute-placing-cycle-stable-moving",
+      "operation": "execute",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "execute-claim-negotiation-preserves-right",
+      "operation": "execute",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "execute-primary-expires-old-claim-right",
+      "operation": "execute",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "execute-claim-forbidden-during-removal",
+      "operation": "execute",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "replay-offer-r1",
+      "operation": "replay",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "replay-offer-r2",
+      "operation": "replay",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "replay-offer-r1-portable",
+      "operation": "replay",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "replay-origin-stabilization",
+      "operation": "replay",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "replay-reference-without-manifest",
+      "operation": "replay",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "project-draw-negotiation-empty",
+      "operation": "project-logical-turns",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "project-origin-stabilization",
+      "operation": "project-logical-turns",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-mstate-i",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-mstate-r90ccw",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-mstate-r180",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-mstate-r90cw",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-mstate-mirror-v",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-mstate-mirror-h",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-mstate-mirror-main",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-mstate-mirror-anti",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-mstate-without-invariance",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-decision-i",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-decision-r90ccw",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-decision-r180",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-decision-r90cw",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-decision-mirror-v",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-decision-mirror-h",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-decision-mirror-main",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-decision-mirror-anti",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-decision-missing-history",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-mifpos-r90ccw",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-mifpos-mirror-anti",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "transform-mifpos-portable-jcs-boundaries",
+      "operation": "transform",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "project-legal-actions-initial-black",
+      "operation": "project-legal-actions",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "project-legal-actions-placing-movement",
+      "operation": "project-legal-actions",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "project-legal-actions-asymmetric-reserve-moving",
+      "operation": "project-legal-actions",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "project-legal-actions-asymmetric-reserve-unstabilized",
+      "operation": "project-legal-actions",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "project-legal-actions-moving-flying",
+      "operation": "project-legal-actions",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "project-legal-actions-pending-remove",
+      "operation": "project-legal-actions",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "project-legal-actions-terminal",
+      "operation": "project-legal-actions",
+      "status": "passed"
+    },
+    {
+      "comparison": "semantic-equality",
+      "errors": [],
+      "id": "project-legal-actions-unstabilized",
+      "operation": "project-legal-actions",
+      "status": "passed"
+    }
+  ],
+  "casesDigest": "sha256:d11317a090300f8a47f77afed647bdbd236dcdb1996c0147a81c874fa39dfd82",
+  "configDigest": "sha256:4184d56c696b2e5031d95cc18918757af9f91fa5634dded579ecfae2ef3cf70f",
+  "protocol": "MIF-INTEROP-REPORT/1",
+  "summary": {
+    "failed": 0,
+    "passed": 58
+  }
+}

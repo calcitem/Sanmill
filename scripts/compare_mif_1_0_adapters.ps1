@@ -9,20 +9,22 @@ param(
 
     [string]$Cases = 'interop/cases/deterministic-v1.json',
 
-    [string]$Python = 'python'
+    [string]$Python = 'python',
+
+    [string]$Report
 )
 
 $ErrorActionPreference = 'Stop'
 
-$expectedCommit = '0693353fe0821dcbbf547cc1eb9b679dcf2f90b8'
+$expectedCommit = '7e45d5a3fa970a535ed6a8a8ff5981aba4b9c978'
 $expectedFiles = [ordered]@{
     'mif-1.0.md' = '330e65145ceb26fe582e58b89405d87bd73e8be200b476aef82c0ee27731d995'
     'docs/zh-CN/mif-1.0.md' = '9cc06abb57425e2bc2e26432b6da53abe503e9b5415ea0b4f854f19f68722cc1'
-    'artifacts/mif-1.0/index.json' = '2bd247cd7e27ff4b0e142d8a0b2d6dececd619c882bb67f0be11bf763a794895'
-    'artifacts/mif-1.0/corpus/executable/reference-cases.json' = 'a48c50352caebce30deb1de11f8f73dbc4540ee538651c3a139d9bcb166ba983'
+    'artifacts/mif-1.0/index.json' = '5acbb714bed77e24eaac72fa5f24d2e54d1e17aaf568a8b60718c840281a6541'
+    'artifacts/mif-1.0/corpus/executable/reference-cases.json' = '350b7ff02772e820a57431e11c4e2f15a874d0779fb6e7afb01e9b16f6992741'
     'interop/adapter-protocol-v1.md' = '253c1d201ea1db625e0c534da445ca4ecaa0b07597dfc7dbf59fbd6adf89874f'
     'interop/cases/smoke-v1.json' = 'a6d292f4d19381172fbc19f89d3ee42145a6d5533d6d81fd719394e25342bb53'
-    'interop/cases/deterministic-v1.json' = 'c2d7017b2a8583914aff1eeea38bc02b078814ca11346c484e0a2b38b5e94f0c'
+    'interop/cases/deterministic-v1.json' = 'd11317a090300f8a47f77afed647bdbd236dcdb1996c0147a81c874fa39dfd82'
 }
 
 $repositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
@@ -85,7 +87,37 @@ $utf8WithoutBom = [System.Text.UTF8Encoding]::new($false)
 [System.IO.File]::WriteAllText($config, "$configJson`n", $utf8WithoutBom)
 
 $comparator = Join-Path $mifRoot 'tools/compare_mif_1_0_adapters.py'
-& $Python -B $comparator --config $config --cases (Join-Path $mifRoot $Cases)
-if ($LASTEXITCODE -ne 0) {
-    throw 'MIF three-project comparison failed'
+$arguments = @('-B', $comparator, '--config', $config, '--cases', (Join-Path $mifRoot $Cases))
+$temporaryReport = $null
+$reportPath = $null
+if ($Report) {
+    $reportPath = if ([System.IO.Path]::IsPathRooted($Report)) {
+        [System.IO.Path]::GetFullPath($Report)
+    } else {
+        [System.IO.Path]::GetFullPath((Join-Path $repositoryRoot $Report))
+    }
+    $relativeReport = [System.IO.Path]::GetRelativePath($repositoryRoot, $reportPath)
+    $parentPrefix = "..$([System.IO.Path]::DirectorySeparatorChar)"
+    if ([System.IO.Path]::IsPathRooted($relativeReport) -or
+        $relativeReport -eq '..' -or
+        $relativeReport.StartsWith($parentPrefix, [System.StringComparison]::Ordinal)) {
+        throw 'Report path must remain inside the Sanmill repository'
+    }
+    [System.IO.Directory]::CreateDirectory((Split-Path -Parent $reportPath)) | Out-Null
+    # The harness confines report writes to the MIF root; copy only after success.
+    $temporaryReport = Join-Path $mifRoot ".mif-interop-report-$PID-$([System.Guid]::NewGuid().ToString('N')).json"
+    $arguments += @('--report', $temporaryReport)
+}
+try {
+    & $Python @arguments
+    if ($LASTEXITCODE -ne 0) {
+        throw 'MIF three-project comparison failed'
+    }
+    if ($reportPath) {
+        Copy-Item -LiteralPath $temporaryReport -Destination $reportPath
+    }
+} finally {
+    if ($temporaryReport -and (Test-Path -LiteralPath $temporaryReport -PathType Leaf)) {
+        Remove-Item -LiteralPath $temporaryReport
+    }
 }
