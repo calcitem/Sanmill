@@ -84,6 +84,30 @@ fn example_manifest() -> Value {
 }
 
 #[test]
+fn capabilities_bind_candidate_2_baseline() {
+    let capability = capabilities();
+    assert_eq!(
+        capability["testedCorpora"],
+        json!([{
+            "digest": "sha256:a6d292f4d19381172fbc19f89d3ee42145a6d5533d6d81fd719394e25342bb53",
+            "classes": ["identity", "position", "replay", "ruleset", "transform"]
+        }])
+    );
+    assert_eq!(
+        capability["annotations"],
+        json!({
+            "mifCommit": "f37ddfeb5fb8479991fa38eeb03c797bef8ae408",
+            "mifEnglishSpec": "sha256:330e65145ceb26fe582e58b89405d87bd73e8be200b476aef82c0ee27731d995",
+            "mifChineseSpec": "sha256:9cc06abb57425e2bc2e26432b6da53abe503e9b5415ea0b4f854f19f68722cc1",
+            "mifIndex": "sha256:3849a70897829d6d994c790b64e63484469483a940887fe828a1a0d421d78e90",
+            "mifExecutableCorpus": "sha256:a48c50352caebce30deb1de11f8f73dbc4540ee538651c3a139d9bcb166ba983",
+            "mifAdapterProtocol": "sha256:a59e5e5af3e948f6c7cac6a39a490c6eae6338151741b6c7fcdde5c88d991e2d",
+            "mifSmokeCorpus": "sha256:a6d292f4d19381172fbc19f89d3ee42145a6d5533d6d81fd719394e25342bb53"
+        })
+    );
+}
+
+#[test]
 fn candidate_manifest_and_empty_tree_identities_match() {
     let (semantic, document) = identity::manifest_identities(&example_manifest()).unwrap();
     assert_eq!(

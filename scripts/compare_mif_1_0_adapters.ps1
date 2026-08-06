@@ -14,12 +14,14 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-$expectedCommit = '83e4b758f624f3059c7ba289d4d4429eed0a710a'
+$expectedCommit = 'f37ddfeb5fb8479991fa38eeb03c797bef8ae408'
 $expectedFiles = [ordered]@{
     'mif-1.0.md' = '330e65145ceb26fe582e58b89405d87bd73e8be200b476aef82c0ee27731d995'
     'docs/zh-CN/mif-1.0.md' = '9cc06abb57425e2bc2e26432b6da53abe503e9b5415ea0b4f854f19f68722cc1'
-    'artifacts/mif-1.0/index.json' = '176db4d3701af8aa66c1691e87f99fddb71bf484f07ce9d9380e79e8fa62e10b'
-    'artifacts/mif-1.0/corpus/executable/reference-cases.json' = 'e3af2bd5e2d88774a8ce7a4344702c0878ddffba8b77fa0740f3d3104a1258dd'
+    'artifacts/mif-1.0/index.json' = '3849a70897829d6d994c790b64e63484469483a940887fe828a1a0d421d78e90'
+    'artifacts/mif-1.0/corpus/executable/reference-cases.json' = 'a48c50352caebce30deb1de11f8f73dbc4540ee538651c3a139d9bcb166ba983'
+    'interop/adapter-protocol-v1.md' = 'a59e5e5af3e948f6c7cac6a39a490c6eae6338151741b6c7fcdde5c88d991e2d'
+    'interop/cases/smoke-v1.json' = 'a6d292f4d19381172fbc19f89d3ee42145a6d5533d6d81fd719394e25342bb53'
 }
 
 $repositoryRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
