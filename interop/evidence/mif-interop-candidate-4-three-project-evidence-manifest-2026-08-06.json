@@ -1,0 +1,72 @@
+{
+  "protocol": "SANMILL-MIF-INTEROP-EVIDENCE/1",
+  "status": "candidate-interoperability-evidence-only",
+  "suiteConformance": false,
+  "baseline": {
+    "mifCommit": "7e45d5a3fa970a535ed6a8a8ff5981aba4b9c978",
+    "inputs": [
+      {
+        "path": "mif-1.0.md",
+        "sha256": "sha256:330e65145ceb26fe582e58b89405d87bd73e8be200b476aef82c0ee27731d995"
+      },
+      {
+        "path": "docs/zh-CN/mif-1.0.md",
+        "sha256": "sha256:9cc06abb57425e2bc2e26432b6da53abe503e9b5415ea0b4f854f19f68722cc1"
+      },
+      {
+        "path": "artifacts/mif-1.0/index.json",
+        "sha256": "sha256:5acbb714bed77e24eaac72fa5f24d2e54d1e17aaf568a8b60718c840281a6541"
+      },
+      {
+        "path": "artifacts/mif-1.0/corpus/executable/reference-cases.json",
+        "sha256": "sha256:350b7ff02772e820a57431e11c4e2f15a874d0779fb6e7afb01e9b16f6992741"
+      },
+      {
+        "path": "interop/adapter-protocol-v1.md",
+        "sha256": "sha256:253c1d201ea1db625e0c534da445ca4ecaa0b07597dfc7dbf59fbd6adf89874f"
+      },
+      {
+        "path": "interop/cases/smoke-v1.json",
+        "sha256": "sha256:a6d292f4d19381172fbc19f89d3ee42145a6d5533d6d81fd719394e25342bb53"
+      },
+      {
+        "path": "interop/cases/deterministic-v1.json",
+        "sha256": "sha256:d11317a090300f8a47f77afed647bdbd236dcdb1996c0147a81c874fa39dfd82"
+      }
+    ]
+  },
+  "adapters": [
+    {
+      "name": "mif-reference",
+      "project": "MIF",
+      "branch": "master",
+      "commit": "7e45d5a3fa970a535ed6a8a8ff5981aba4b9c978",
+      "published": true
+    },
+    {
+      "name": "sanmill-rust",
+      "project": "Sanmill",
+      "branch": "master",
+      "commit": "e6d639d41f079b15ca697268d0c2c21dad5c2bc3",
+      "published": true
+    },
+    {
+      "name": "nmm-llm-python",
+      "project": "NMM_LLM",
+      "branch": "dev",
+      "commit": "11bebd14e0d538a41a4b43aebfe57ee74c2a2601",
+      "published": true
+    }
+  ],
+  "report": {
+    "path": "interop/evidence/mif-interop-candidate-4-three-project-report-2026-08-06.json",
+    "sha256": "sha256:895c04cd69fc00e50bdcd349b150293e52fcc4150c63321d8c9771015f70aaaf",
+    "protocol": "MIF-INTEROP-REPORT/1",
+    "casesDigest": "sha256:d11317a090300f8a47f77afed647bdbd236dcdb1996c0147a81c874fa39dfd82",
+    "configDigest": "sha256:4184d56c696b2e5031d95cc18918757af9f91fa5634dded579ecfae2ef3cf70f",
+    "summary": {
+      "passed": 58,
+      "failed": 0
+    }
+  }
+}
