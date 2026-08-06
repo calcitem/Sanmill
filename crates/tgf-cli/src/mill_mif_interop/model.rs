@@ -843,11 +843,12 @@ impl Engine {
     fn apply_remove(&mut self, event: &Value, actor: &str, seq: u64) -> Result<()> {
         let actor = self.require_actor(actor, seq)?;
         if self.state.action != 'r' || self.state.obligations == "-" {
-            return Err(illegal(
+            return Err(Diagnostic::new(
+                "inconsistent",
                 "remove-without-obligation",
                 "remove requires an active obligation",
-                seq,
-            ));
+            )
+            .at_event(seq));
         }
         let target = event
             .get("target")

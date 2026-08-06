@@ -88,7 +88,7 @@ fn diagnostic(result: model::Result<Value>) -> Value {
 }
 
 #[test]
-fn capabilities_bind_candidate_4_baseline() {
+fn capabilities_bind_candidate_4_m4_baseline() {
     let capability = capabilities();
     assert_eq!(
         capability["testedCorpora"],
@@ -101,6 +101,9 @@ fn capabilities_bind_candidate_4_baseline() {
         capability["annotations"],
         json!({
             "mifCommit": "7e45d5a3fa970a535ed6a8a8ff5981aba4b9c978",
+            "mifM4Commit": "40718e80d36ec9c060fc17997568d637a74e6d9f",
+            "mifM4Launch": "sha256:560ef369fde248bd96d3468a4336442db1d970ede04f488821509e69925fd48e",
+            "mifM4ReferenceBaseline": "sha256:29d198dbcf8221fa0235af6a72db9d6a82646b45fc653c584071821a9a4bb61b",
             "mifEnglishSpec": "sha256:330e65145ceb26fe582e58b89405d87bd73e8be200b476aef82c0ee27731d995",
             "mifChineseSpec": "sha256:9cc06abb57425e2bc2e26432b6da53abe503e9b5415ea0b4f854f19f68722cc1",
             "mifIndex": "sha256:5acbb714bed77e24eaac72fa5f24d2e54d1e17aaf568a8b60718c840281a6541",
@@ -523,6 +526,28 @@ fn claim_during_obligation_is_inconsistent() {
     assert_eq!(error["category"], "inconsistent");
     assert_eq!(error["code"], "claim-during-obligation");
     assert_eq!(error["eventSeq"], 2);
+}
+
+#[test]
+fn remove_without_obligation_is_inconsistent() {
+    let error = diagnostic(dispatch(
+        "execute",
+        &json!({
+            "manifest": example_manifest(),
+            "origin": "MFEN/1.0 mill24-state-v1 ......../......../........ b p p 9,9 - 0 0 -",
+            "events": [{
+                "actor": "b",
+                "seq": 1,
+                "target": { "zone": "board", "at": "a7" },
+                "type": "remove"
+            }],
+            "repetitionSeed": [],
+            "preOriginClaims": []
+        }),
+    ));
+    assert_eq!(error["category"], "inconsistent");
+    assert_eq!(error["code"], "remove-without-obligation");
+    assert_eq!(error["eventSeq"], 1);
 }
 
 #[test]

@@ -487,6 +487,9 @@ fn capabilities() -> Value {
         ],
         "annotations": {
             "mifCommit": "7e45d5a3fa970a535ed6a8a8ff5981aba4b9c978",
+            "mifM4Commit": "40718e80d36ec9c060fc17997568d637a74e6d9f",
+            "mifM4Launch": "sha256:560ef369fde248bd96d3468a4336442db1d970ede04f488821509e69925fd48e",
+            "mifM4ReferenceBaseline": "sha256:29d198dbcf8221fa0235af6a72db9d6a82646b45fc653c584071821a9a4bb61b",
             "mifEnglishSpec": "sha256:330e65145ceb26fe582e58b89405d87bd73e8be200b476aef82c0ee27731d995",
             "mifChineseSpec": "sha256:9cc06abb57425e2bc2e26432b6da53abe503e9b5415ea0b4f854f19f68722cc1",
             "mifIndex": "sha256:5acbb714bed77e24eaac72fa5f24d2e54d1e17aaf568a8b60718c840281a6541",
