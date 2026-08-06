@@ -1,0 +1,32 @@
+{
+  "protocol": "MIF-INTEROP-CONFIG/1",
+  "adapters": [
+    {
+      "name": "mif-reference",
+      "command": [
+        "{python}",
+        "-B",
+        "tools/mif_1_0_reference_adapter.py"
+      ],
+      "workingDirectory": "{repo}"
+    },
+    {
+      "name": "sanmill-rust",
+      "command": [
+        "{sanmill-adapter}",
+        "mill",
+        "mif-interop"
+      ],
+      "workingDirectory": "{repo}"
+    },
+    {
+      "name": "nmm-llm-python",
+      "command": [
+        "{python}",
+        "-B",
+        "{nmm-llm-adapter}"
+      ],
+      "workingDirectory": "{repo}"
+    }
+  ]
+}

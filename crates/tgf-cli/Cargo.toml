@@ -17,5 +17,6 @@ perfect-db = { path = "../perfect-db", default-features = false }
 rusqlite   = { version = "0.32", features = ["bundled"] }
 serde      = { version = "1", features = ["derive"] }
 serde_json = "1"
+serde_json_canonicalizer = "0.3.2"
 zstd = "0.13.3"
 sha2 = "0.11.0"

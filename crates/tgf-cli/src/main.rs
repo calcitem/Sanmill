@@ -14,6 +14,7 @@ mod mill_arena;
 mod mill_data_query;
 mod mill_endgame;
 mod mill_h2h_analyze;
+mod mill_mif_interop;
 mod mill_mine;
 mod mill_pack;
 mod mill_puzzle;

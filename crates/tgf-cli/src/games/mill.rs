@@ -24,6 +24,7 @@ const CMD_ARENA: CommandId = CommandId::new("arena");
 const CMD_DATA_QUERY: CommandId = CommandId::new("data-query");
 const CMD_H2H_ANALYZE: CommandId = CommandId::new("h2h-analyze");
 const CMD_H2H_BASELINE: CommandId = CommandId::new("h2h-baseline");
+const CMD_MIF_INTEROP: CommandId = CommandId::new("mif-interop");
 
 const MILL_COMMANDS: &[CommandSpec] = &[
     CommandSpec {
@@ -128,6 +129,12 @@ const MILL_COMMANDS: &[CommandSpec] = &[
         aliases: &[],
         description: "explicitly accept an eligible H2H forensic baseline",
     },
+    CommandSpec {
+        id: CMD_MIF_INTEROP,
+        name: "mif-interop",
+        aliases: &[],
+        description: "run the independent MIF-INTEROP/1 adapter loop",
+    },
 ];
 
 impl CliGame for MillCli {
@@ -168,6 +175,10 @@ impl CliGame for MillCli {
             CMD_DATA_QUERY => crate::mill_data_query::run(args),
             CMD_H2H_ANALYZE => crate::mill_h2h_analyze::run_h2h_analyze(args),
             CMD_H2H_BASELINE => crate::mill_h2h_analyze::run_h2h_baseline(args),
+            CMD_MIF_INTEROP => {
+                warn_unused_args("mif-interop", args);
+                crate::mill_mif_interop::run();
+            }
             CMD_UCI => {
                 warn_unused_args("uci", args);
                 crate::mill_uci::run_uci_loop();

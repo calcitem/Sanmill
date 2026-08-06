@@ -1,0 +1,457 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+use std::io::Cursor;
+
+use serde_json::{Value, json};
+
+use super::{
+    InputRecord, MAX_EVENTS, MAX_INTEROP_REQUEST_BYTES, capabilities, dispatch, handle_line,
+    identity, model, read_record, transform,
+};
+
+fn example_manifest() -> Value {
+    json!({
+        "boardFull": { "action": "disabled" },
+        "captures": {
+            "custodian": {
+                "enabled": false,
+                "lines": { "cross": false, "diagonal": false, "squareEdges": false },
+                "maximumOwnLivePieces": null,
+                "phases": ["moving"]
+            },
+            "intervention": {
+                "enabled": false,
+                "lines": { "cross": false, "diagonal": false, "squareEdges": false },
+                "maximumOwnLivePieces": null,
+                "phases": ["moving"]
+            },
+            "leap": {
+                "enabled": false,
+                "lines": { "cross": false, "diagonal": false, "squareEdges": false },
+                "maximumOwnLivePieces": null,
+                "phases": ["moving"]
+            },
+            "resolution": "target-commits-v1"
+        },
+        "draw": {
+            "claimRights": { "profile": "stable-claim-rights-v1" },
+            "noProgress": {
+                "countedPrimaryActions": ["move"],
+                "endgameLimit": 0,
+                "endgamePredicate": "none",
+                "evaluationBoundary": "stable-after-primary-sequence-v1",
+                "mode": "automatic",
+                "normalLimit": 0,
+                "resetEvents": ["board-remove"]
+            },
+            "offers": { "expiry": "explicit-only" },
+            "repetition": {
+                "count": 3,
+                "mode": "claim",
+                "observation": "stable-primary-decision-v1",
+                "projection": "repetition-observation-v1",
+                "resetEvents": ["board-remove"],
+                "summary": "reset-count-smt-v1"
+            }
+        },
+        "flying": { "enabled": true, "maximumLive": 3 },
+        "format": "MRS/1.0",
+        "id": "example-morris",
+        "mills": {
+            "delayedClearBoundary": "on-enter-moving-v1",
+            "lineReuse": "unlimited",
+            "movingEffect": "remove-opponent-board",
+            "placingEffect": "remove-opponent-board",
+            "removalMultiplicity": "one-per-primary",
+            "reverseReformation": "allowed",
+            "targetProtection": "outside-mill-first"
+        },
+        "pieces": { "black": 9, "minimumLive": 3, "white": 9 },
+        "placing": {
+            "earlyStop": { "boundary": "after-unobligated-place-v1", "emptyPoints": 0 },
+            "movementAllowed": false,
+            "noLegalPrimaryAction": "loss"
+        },
+        "semanticState": [],
+        "semanticsProfile": "mif-finite-rules-v3",
+        "stalemate": { "action": "loss", "boardRemovalTargets": "adjacent-opponent" },
+        "status": "fixture",
+        "title": "Example Morris",
+        "topology": "mill24-orthogonal-v1",
+        "turn": { "initial": "b", "placingEndActivePlayer": "retain" },
+        "version": 1
+    })
+}
+
+#[test]
+fn candidate_manifest_and_empty_tree_identities_match() {
+    let (semantic, document) = identity::manifest_identities(&example_manifest()).unwrap();
+    assert_eq!(
+        semantic,
+        "sha256:224f7e368e322a4cc8c1225a025fb548d5b41eb096d34b7ae0543182d1aa9393"
+    );
+    assert_eq!(
+        document,
+        "sha256:62479b6f40efb8ab478bab3d2b725647213604fcd3cc9cd4c1f69357535ae257"
+    );
+    assert_eq!(
+        identity::empty_repetition_root(),
+        "sha256:e9fbf966ccdff764594a5e199e6aea0cc36034b46c8057cc3df88a088c20101a"
+    );
+}
+
+#[test]
+fn initial_execution_matches_frozen_candidate_vector() {
+    let result = dispatch(
+        "execute",
+        &json!({
+            "manifest": example_manifest(),
+            "origin": "MFEN/1.0 mill24-state-v1 ......../......../........ b p p 9,9 - 0 0 -",
+            "events": [],
+            "repetitionSeed": [],
+            "preOriginClaims": []
+        }),
+    )
+    .unwrap();
+    assert_eq!(
+        result["final"]["decisionDigest"],
+        "sha256:3e178ce2bd4583f8a24b28b648b88f2ab1575d210e6fb295faca13e8cca47b46"
+    );
+    assert_eq!(result["trace"].as_array().unwrap().len(), 1);
+}
+
+#[test]
+fn unsupported_gameplay_profile_fails_closed() {
+    let mut manifest = example_manifest();
+    manifest["captures"]["leap"]["enabled"] = json!(true);
+    let error = model::execute_request(&json!({
+        "manifest": manifest,
+        "origin": "MFEN/1.0 mill24-state-v1 ......../......../........ b p p 9,9 - 0 0 -",
+        "events": [],
+        "repetitionSeed": [],
+        "preOriginClaims": []
+    }))
+    .unwrap_err();
+    assert_eq!(error.into_value()["code"], "manifest-profile-unsupported");
+}
+
+#[test]
+fn parser_rejects_duplicate_members_after_unescaping() {
+    let response = handle_line(
+        r#"{"protocol":"MIF-INTEROP/1","kind":"request","requestId":"one","requestId":"two","operation":"capabilities","payload":{}}"#,
+    );
+    assert_eq!(response["status"], "error");
+    assert_eq!(response["diagnostics"]["errors"][0]["code"], "invalid-json");
+}
+
+#[test]
+fn execute_payload_rejects_unknown_members() {
+    let error = dispatch(
+        "execute",
+        &json!({
+            "manifest": example_manifest(),
+            "origin": "MFEN/1.0 mill24-state-v1 ......../......../........ b p p 9,9 - 0 0 -",
+            "events": [],
+            "repetitionSeed": [],
+            "preOriginClaims": [],
+            "unexpected": true
+        }),
+    )
+    .unwrap_err();
+    assert_eq!(error.into_value()["code"], "closed-object-mismatch");
+}
+
+#[test]
+fn reference_ruleset_may_omit_document_digest() {
+    let manifest = example_manifest();
+    let (semantic_digest, _) = identity::manifest_identities(&manifest).unwrap();
+    let origin = "MFEN/1.0 mill24-state-v1 ......../......../........ b p p 9,9 - 0 0 -";
+    let execution = dispatch(
+        "execute",
+        &json!({
+            "manifest": manifest.clone(),
+            "origin": origin,
+            "events": [],
+            "repetitionSeed": [],
+            "preOriginClaims": []
+        }),
+    )
+    .unwrap();
+    let final_snapshot = &execution["final"];
+    let replay = dispatch(
+        "replay",
+        &json!({
+            "manifest": manifest.clone(),
+            "mstate": {
+                "format": "MSTATE/1.0",
+                "positionFormat": "MFEN/1.0",
+                "stateProfile": "mill24-state-v1",
+                "ruleset": {
+                    "mode": "reference",
+                    "id": "example-morris",
+                    "version": 1,
+                    "semanticDigest": semantic_digest
+                },
+                "origin": origin,
+                "events": [],
+                "current": final_snapshot["current"],
+                "repetitionHistory": final_snapshot["repetitionHistory"],
+                "preOriginClaims": [],
+                "claims": []
+            }
+        }),
+    )
+    .unwrap();
+    assert_eq!(replay["current"], origin);
+}
+
+#[test]
+fn ruleset_mode_is_validated_before_caller_manifest_is_used() {
+    let manifest = example_manifest();
+    let (semantic_digest, _) = identity::manifest_identities(&manifest).unwrap();
+    let missing_portable_manifest = json!({
+        "ruleset": {
+            "mode": "portable",
+            "id": "example-morris",
+            "version": 1,
+            "semanticDigest": semantic_digest
+        }
+    });
+    let error = model::resolve_manifest(Some(&manifest), &missing_portable_manifest).unwrap_err();
+    assert_eq!(error.into_value()["code"], "manifest-missing");
+
+    let embedded_reference_manifest = json!({
+        "ruleset": {
+            "mode": "reference",
+            "id": "example-morris",
+            "version": 1,
+            "semanticDigest": semantic_digest,
+            "manifest": manifest.clone()
+        }
+    });
+    let error = model::resolve_manifest(Some(&manifest), &embedded_reference_manifest).unwrap_err();
+    assert_eq!(error.into_value()["code"], "closed-object-mismatch");
+}
+
+#[test]
+fn jcs_uses_utf16_member_order_and_ecmascript_numbers() {
+    let utf16_order = json!({
+        "\u{e000}": 2,
+        "\u{10000}": 1
+    });
+    let expected = format!("{{\"{}\":1,\"{}\":2}}", '\u{10000}', '\u{e000}');
+    assert_eq!(
+        String::from_utf8(identity::jcs_bytes(&utf16_order)).unwrap(),
+        expected
+    );
+
+    let numbers: Value = serde_json::from_str(
+        "[333333333.33333329,1E30,4.50,2e-3,0.000000000000000000000000001,1e-6,1e-7,-0.0]",
+    )
+    .unwrap();
+    assert_eq!(
+        String::from_utf8(identity::jcs_bytes(&numbers)).unwrap(),
+        "[333333333.3333333,1e+30,4.5,0.002,1e-27,0.000001,1e-7,0]"
+    );
+}
+
+#[test]
+fn portable_manifest_accepts_non_bmp_annotation_identity() {
+    let mut manifest = example_manifest();
+    manifest["annotations"] = json!({
+        "\u{e000}": "bmp-private-use",
+        "\u{10000}": "non-bmp"
+    });
+    let (semantic_digest, document_digest) = identity::manifest_identities(&manifest).unwrap();
+    assert_eq!(
+        document_digest,
+        "sha256:bfe3b3a3fe2ddca524670130f1f79e99990d413acfb39f5e44be51ef6ac994a5"
+    );
+    let origin = "MFEN/1.0 mill24-state-v1 ......../......../........ b p p 9,9 - 0 0 -";
+    let execution = dispatch(
+        "execute",
+        &json!({
+            "manifest": manifest.clone(),
+            "origin": origin,
+            "events": [],
+            "repetitionSeed": [],
+            "preOriginClaims": []
+        }),
+    )
+    .unwrap();
+    let final_snapshot = &execution["final"];
+    let replay = dispatch(
+        "replay",
+        &json!({
+            "mstate": {
+                "format": "MSTATE/1.0",
+                "positionFormat": "MFEN/1.0",
+                "stateProfile": "mill24-state-v1",
+                "ruleset": {
+                    "mode": "portable",
+                    "id": "example-morris",
+                    "version": 1,
+                    "semanticDigest": semantic_digest,
+                    "documentDigest": document_digest,
+                    "manifest": manifest
+                },
+                "origin": origin,
+                "events": [],
+                "current": final_snapshot["current"],
+                "repetitionHistory": final_snapshot["repetitionHistory"],
+                "preOriginClaims": [],
+                "claims": []
+            }
+        }),
+    )
+    .unwrap();
+    assert_eq!(replay["current"], origin);
+}
+
+#[test]
+fn process_reader_requires_lf_only_framing() {
+    let mut valid = Cursor::new(b"{}\n");
+    assert!(matches!(
+        read_record(&mut valid).unwrap(),
+        Some(InputRecord::Request(bytes)) if bytes == b"{}"
+    ));
+
+    let mut crlf = Cursor::new(b"{}\r\n");
+    assert_eq!(
+        read_record(&mut crlf).unwrap_err().kind(),
+        std::io::ErrorKind::InvalidData
+    );
+
+    let mut missing_lf = Cursor::new(b"{}");
+    assert_eq!(
+        read_record(&mut missing_lf).unwrap_err().kind(),
+        std::io::ErrorKind::InvalidData
+    );
+}
+
+#[test]
+fn request_and_semantic_resource_limits_are_enforced() {
+    assert_eq!(
+        capabilities()["resourceLimits"],
+        json!([
+            { "name": "events", "limit": 100_000 },
+            { "name": "interop-request-bytes", "limit": 16_777_216 },
+            { "name": "repetition-entries", "limit": 100_000 }
+        ])
+    );
+
+    let mut oversized = vec![b' '; MAX_INTEROP_REQUEST_BYTES + 1];
+    oversized.push(b'\n');
+    assert!(matches!(
+        read_record(&mut Cursor::new(oversized)).unwrap(),
+        Some(InputRecord::ResourceLimit { actual }) if actual == MAX_INTEROP_REQUEST_BYTES + 1
+    ));
+
+    let error = dispatch(
+        "execute",
+        &json!({
+            "manifest": null,
+            "origin": "",
+            "events": vec![Value::Null; MAX_EVENTS + 1],
+            "repetitionSeed": [],
+            "preOriginClaims": []
+        }),
+    )
+    .unwrap_err()
+    .into_value();
+    assert_eq!(error["code"], "resource-limit");
+    assert_eq!(error["resourceLimit"]["name"], "events");
+}
+
+#[test]
+fn r90ccw_maps_a7_to_a1_and_round_trips() {
+    let source = "MFEN/1.0 mill24-state-v1 W......./......../........ b p p 8,9 - 0 1 -";
+    let rotated = transform::transform_mfen(source, "r90ccw").unwrap();
+    assert!(rotated.contains("......W./......../........"));
+    let restored = transform::transform_mfen(&rotated, "r90cw").unwrap();
+    assert_eq!(restored, source);
+}
+
+#[test]
+fn structural_d4_mpk_is_orientation_independent() {
+    let prefix = concat!(
+        "MPK/1.0 mill24-state-v1 example-morris@1 ",
+        "sha256:224f7e368e322a4cc8c1225a025fb548d5b41eb096d34b7ae0543182d1aa9393 ",
+        "structural-d4-v1 "
+    );
+    let first = dispatch(
+        "canonicalize",
+        &json!({
+            "format": "MPK/1.0",
+            "manifest": example_manifest(),
+            "value": format!("{prefix}W....................... b p 8,9")
+        }),
+    )
+    .unwrap();
+    let rotated = dispatch(
+        "canonicalize",
+        &json!({
+            "format": "MPK/1.0",
+            "manifest": example_manifest(),
+            "value": format!("{prefix}......W................. b p 8,9")
+        }),
+    )
+    .unwrap();
+    assert_eq!(first, rotated);
+}
+
+#[test]
+fn origin_stabilization_projects_one_fragment() {
+    let mut manifest = example_manifest();
+    manifest["boardFull"]["action"] = json!("white-then-black-remove");
+    manifest["pieces"] = json!({ "black": 12, "minimumLive": 3, "white": 12 });
+    manifest["id"] = json!("x-origin-stabilization");
+    manifest["title"] = json!("Origin stabilization executable fixture");
+    let (semantic, document) = identity::manifest_identities(&manifest).unwrap();
+    let origin = "MFEN/1.0 mill24-state-v1 WBWBWBWB/BWBWBWBW/WBWBWBWB w m m 0,0 - 0 24 -";
+    let events = json!([
+        { "actor": "w", "seq": 1, "target": { "at": "d7", "zone": "board" }, "type": "remove" },
+        { "actor": "b", "seq": 2, "target": { "at": "a7", "zone": "board" }, "type": "remove" }
+    ]);
+    let execution = model::execute_request(&json!({
+        "manifest": manifest,
+        "origin": origin,
+        "events": events,
+        "repetitionSeed": [],
+        "preOriginClaims": []
+    }))
+    .unwrap();
+    let final_snapshot = &execution["final"];
+    let mstate = json!({
+        "format": "MSTATE/1.0",
+        "positionFormat": "MFEN/1.0",
+        "stateProfile": "mill24-state-v1",
+        "ruleset": {
+            "mode": "reference", "id": "x-origin-stabilization", "version": 1,
+            "semanticDigest": semantic, "documentDigest": document
+        },
+        "origin": origin,
+        "events": events,
+        "current": final_snapshot["current"],
+        "repetitionHistory": final_snapshot["repetitionHistory"],
+        "preOriginClaims": [],
+        "claims": []
+    });
+    let projected = model::project_logical_turns(&json!({
+        "manifest": manifest,
+        "mstate": mstate
+    }))
+    .unwrap();
+    assert_eq!(
+        projected["document"]["fragments"],
+        json!([{
+            "kind": "origin-stabilization",
+            "removeEventSeqs": [1, 2],
+            "status": "complete"
+        }])
+    );
+    assert_eq!(
+        projected["document"]["sourceResumptionDigest"],
+        "sha256:846a5d9523b1a959b86f8c29fb2b53536c54b9babdffcbee2046899d21c6acc8"
+    );
+}
