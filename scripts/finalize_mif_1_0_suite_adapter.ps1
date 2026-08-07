@@ -17,6 +17,8 @@ $ErrorActionPreference = 'Stop'
 
 $expectedMifCommit = '3ee7e57c7d4c7208be91f62914f344a587fb0f70'
 $expectedWireCommit = '7e45d5a3fa970a535ed6a8a8ff5981aba4b9c978'
+$expectedImplementationCommit = '7e86de7e8156a7d7f46a6a6179a8878051699505'
+$expectedEvidenceCommit = '9d36d04b4d2a8cd5c660e9582426bedeb888b591'
 $expectedSuiteJcs = 'sha256:81a5feabc281bfc4f830addabc2c6846d1f191bbbcf04e548f04b35dd358ae6f'
 $expectedSuiteRaw = 'sha256:088ca33234289b06d9276aa4c430758222aa85d61621dee7bef4bfc6dcc069a4'
 $expectedArtifactIndexRaw = 'sha256:5acbb714bed77e24eaac72fa5f24d2e54d1e17aaf568a8b60718c840281a6541'
@@ -37,6 +39,7 @@ $artifactIndex = Join-Path $mifRoot 'artifacts/mif-1.0/index.json'
 $deterministicCases = Join-Path $mifRoot 'interop/cases/deterministic-v1.json'
 $differentialLaunch = Join-Path $mifRoot 'interop/differential-candidate-4-v1.json'
 $releaseManifest = Join-Path $mifRoot 'release/mif-1.0-release-manifest.json'
+$evidenceManifest = Join-Path $repositoryRoot 'interop/evidence/mif-suite-1.0-sanmill-adapter-evidence-2026-08-07.json'
 $utf8WithoutBom = [System.Text.UTF8Encoding]::new($false)
 
 function Get-RawDigest([string]$Path) {
@@ -271,10 +274,30 @@ if ($differential.protocol -ne 'MIF-INTEROP-DIFFERENTIAL-REPORT/1' -or
     throw 'Differential adapter report did not pass 10/10 runs and 5/5 mutations'
 }
 
+$capabilityRawSha256 = Get-RawDigest $capabilityPath
+$deterministicReportRawSha256 = Get-RawDigest $deterministicPath
+$differentialReportRawSha256 = Get-RawDigest $differentialPath
+$publishedEvidence = Get-Content -Raw -LiteralPath $evidenceManifest | ConvertFrom-Json -Depth 32
+if ($publishedEvidence.protocol -ne 'MIF-SUITE-ADAPTER-EVIDENCE/1' -or
+    $publishedEvidence.implementationCommit -ne $expectedImplementationCommit -or
+    $publishedEvidence.evidenceCommit -ne $expectedEvidenceCommit) {
+    throw 'Published Suite adapter evidence has stale commit bindings'
+}
+if ($publishedEvidence.PSObject.Properties.Name -contains 'threeProjectEvidenceCommit') {
+    throw 'Published Suite adapter evidence must not retain the legacy M4 commit binding'
+}
+if ($publishedEvidence.capabilityRawSha256 -ne $capabilityRawSha256 -or
+    $publishedEvidence.deterministicReportRawSha256 -ne $deterministicReportRawSha256 -or
+    $publishedEvidence.differentialReportRawSha256 -ne $differentialReportRawSha256) {
+    throw 'Published Suite adapter evidence does not bind the generated raw artifacts'
+}
+
 [pscustomobject]@{
-    CapabilityRawSha256 = Get-RawDigest $capabilityPath
-    DeterministicReportRawSha256 = Get-RawDigest $deterministicPath
-    DifferentialReportRawSha256 = Get-RawDigest $differentialPath
+    EvidenceManifestRawSha256 = Get-RawDigest $evidenceManifest
+    EvidenceCommit = $publishedEvidence.evidenceCommit
+    CapabilityRawSha256 = $capabilityRawSha256
+    DeterministicReportRawSha256 = $deterministicReportRawSha256
+    DifferentialReportRawSha256 = $differentialReportRawSha256
     DeterministicConfigDigest = $deterministic.configDigest
     DifferentialConfigDigest = $differential.configDigest
     UnexplainedDifferences = 0

@@ -731,3 +731,19 @@ fn origin_stabilization_projects_one_fragment() {
         "sha256:846a5d9523b1a959b86f8c29fb2b53536c54b9babdffcbee2046899d21c6acc8"
     );
 }
+
+#[test]
+fn suite_adapter_evidence_binds_published_commit_without_legacy_m4_field() {
+    let evidence: Value = serde_json::from_str(include_str!(concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../interop/evidence/mif-suite-1.0-sanmill-adapter-evidence-2026-08-07.json"
+    )))
+    .unwrap();
+
+    assert_eq!(evidence["protocol"], "MIF-SUITE-ADAPTER-EVIDENCE/1");
+    assert_eq!(
+        evidence["evidenceCommit"],
+        "9d36d04b4d2a8cd5c660e9582426bedeb888b591"
+    );
+    assert!(evidence.get("threeProjectEvidenceCommit").is_none());
+}
