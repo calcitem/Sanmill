@@ -1,0 +1,72 @@
+{
+  "protocol": "MIF-SUITE-ADAPTER-EVIDENCE/1",
+  "status": "suite-bound-evidence",
+  "classification": "exact-for-tested-domain",
+  "suiteConformance": true,
+  "fullConformance": false,
+  "conversionClaimed": false,
+  "unexplainedDifferences": 0,
+  "adapter": "sanmill-rust",
+  "mifCommit": "3ee7e57c7d4c7208be91f62914f344a587fb0f70",
+  "implementationCommit": "7e86de7e8156a7d7f46a6a6179a8878051699505",
+  "evidenceCommit": "9431b95f151502f415f096c7d96ca944e5d578de",
+  "threeProjectEvidenceCommit": "2a53a89893daae528af64503cc87e34bf07e66e3",
+  "suiteJcsSha256": "sha256:81a5feabc281bfc4f830addabc2c6846d1f191bbbcf04e548f04b35dd358ae6f",
+  "suiteRawSha256": "sha256:088ca33234289b06d9276aa4c430758222aa85d61621dee7bef4bfc6dcc069a4",
+  "artifactIndexRawSha256": "sha256:5acbb714bed77e24eaac72fa5f24d2e54d1e17aaf568a8b60718c840281a6541",
+  "capabilityRawSha256": "sha256:219f444661d9d8362bb4924e0482040ef08555481f7fcea9028aa7738349e2b0",
+  "deterministicReportRawSha256": "sha256:cde7b3d9ce3192c3d05f97e2a5fdc3cff5a64717c687e1d69e5be537a8d012e1",
+  "differentialReportRawSha256": "sha256:9085c0e188c84428b9fa65378011d99fab13350800c3baeae5060c88da5d3dd4",
+  "rulesetSemanticDigests": [
+    "sha256:173caf8189defd1ab7d4a3e8b9e26688a07fd77976bf09d56bff5fe0c273e1a1",
+    "sha256:224f7e368e322a4cc8c1225a025fb548d5b41eb096d34b7ae0543182d1aa9393"
+  ],
+  "testedClasses": [
+    "identity",
+    "key",
+    "position",
+    "replay",
+    "ruleset",
+    "transform"
+  ],
+  "artifacts": {
+    "capability": {
+      "path": "interop/evidence/mif-suite-1.0-sanmill-capability-2026-08-07.json",
+      "rawSha256": "sha256:219f444661d9d8362bb4924e0482040ef08555481f7fcea9028aa7738349e2b0",
+      "format": "MIFCAP/1.0"
+    },
+    "deterministicReport": {
+      "path": "interop/evidence/mif-suite-1.0-sanmill-deterministic-report-2026-08-07.json",
+      "rawSha256": "sha256:cde7b3d9ce3192c3d05f97e2a5fdc3cff5a64717c687e1d69e5be537a8d012e1",
+      "protocol": "MIF-INTEROP-REPORT/1",
+      "configDigest": "sha256:fd028a4217804a7f86607b3c0cfe9566ce0e3a64b5d1bccf2bc8cf2911f8153f",
+      "summary": {
+        "passed": 58,
+        "failed": 0
+      }
+    },
+    "differentialReport": {
+      "path": "interop/evidence/mif-suite-1.0-sanmill-differential-report-2026-08-07.json",
+      "rawSha256": "sha256:9085c0e188c84428b9fa65378011d99fab13350800c3baeae5060c88da5d3dd4",
+      "protocol": "MIF-INTEROP-DIFFERENTIAL-REPORT/1",
+      "configDigest": "sha256:fd028a4217804a7f86607b3c0cfe9566ce0e3a64b5d1bccf2bc8cf2911f8153f",
+      "summary": {
+        "runsPassed": 10,
+        "runsFailed": 0,
+        "mutationFamiliesPassed": 5,
+        "mutationFamiliesFailed": 0
+      }
+    }
+  },
+  "verification": {
+    "finalizationLaunchRawSha256": "sha256:3ab079c44158979eb78221a64abe5347e9e3697b33972673659a0ea80053536d",
+    "rawArtifactsByteIdenticalAcrossRuns": true,
+    "focusedTests": {
+      "passed": 21,
+      "failed": 0
+    },
+    "workspaceTests": "passed",
+    "format": "passed",
+    "clippy": "passed"
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "annotations": {
+    "mifAdapterProtocol": "sha256:253c1d201ea1db625e0c534da445ca4ecaa0b07597dfc7dbf59fbd6adf89874f",
+    "mifChineseSpec": "sha256:9cc06abb57425e2bc2e26432b6da53abe503e9b5415ea0b4f854f19f68722cc1",
+    "mifCommit": "7e45d5a3fa970a535ed6a8a8ff5981aba4b9c978",
+    "mifDeterministicCorpus": "sha256:d11317a090300f8a47f77afed647bdbd236dcdb1996c0147a81c874fa39dfd82",
+    "mifEnglishSpec": "sha256:330e65145ceb26fe582e58b89405d87bd73e8be200b476aef82c0ee27731d995",
+    "mifExecutableCorpus": "sha256:350b7ff02772e820a57431e11c4e2f15a874d0779fb6e7afb01e9b16f6992741",
+    "mifIndex": "sha256:5acbb714bed77e24eaac72fa5f24d2e54d1e17aaf568a8b60718c840281a6541",
+    "mifM4Commit": "40718e80d36ec9c060fc17997568d637a74e6d9f",
+    "mifM4Launch": "sha256:560ef369fde248bd96d3468a4336442db1d970ede04f488821509e69925fd48e",
+    "mifM4ReferenceBaseline": "sha256:29d198dbcf8221fa0235af6a72db9d6a82646b45fc653c584071821a9a4bb61b",
+    "mifSmokeCorpus": "sha256:a6d292f4d19381172fbc19f89d3ee42145a6d5533d6d81fd719394e25342bb53",
+    "mifSuiteCommit": "3ee7e57c7d4c7208be91f62914f344a587fb0f70",
+    "mifSuiteJcs": "sha256:81a5feabc281bfc4f830addabc2c6846d1f191bbbcf04e548f04b35dd358ae6f",
+    "mifSuiteRaw": "sha256:088ca33234289b06d9276aa4c430758222aa85d61621dee7bef4bfc6dcc069a4"
+  },
+  "classes": [
+    {
+      "id": "conversion",
+      "level": "none"
+    },
+    {
+      "id": "identity",
+      "level": "tested"
+    },
+    {
+      "id": "key",
+      "level": "tested"
+    },
+    {
+      "id": "position",
+      "level": "tested"
+    },
+    {
+      "id": "replay",
+      "level": "tested"
+    },
+    {
+      "id": "ruleset",
+      "level": "tested"
+    },
+    {
+      "id": "transform",
+      "level": "tested"
+    }
+  ],
+  "conversions": [],
+  "format": "MIFCAP/1.0",
+  "formats": [
+    {
+      "id": "MFEN/1.0",
+      "read": "implemented",
+      "write": "implemented"
+    },
+    {
+      "id": "MIFCAP/1.0",
+      "read": "none",
+      "write": "implemented"
+    },
+    {
+      "id": "MIFCONV/1.0",
+      "read": "none",
+      "write": "none"
+    },
+    {
+      "id": "MIFDIAG/1.0",
+      "read": "none",
+      "write": "implemented"
+    },
+    {
+      "id": "MIFINV/1.0",
+      "read": "implemented",
+      "write": "none"
+    },
+    {
+      "id": "MIFPOS/1.0",
+      "read": "implemented",
+      "write": "implemented"
+    },
+    {
+      "id": "MIFSUITE/1.0",
+      "read": "none",
+      "write": "none"
+    },
+    {
+      "id": "MIFTURN/1.0",
+      "read": "none",
+      "write": "implemented"
+    },
+    {
+      "id": "MPK/1.0",
+      "read": "implemented",
+      "write": "implemented"
+    },
+    {
+      "id": "MRS/1.0",
+      "read": "implemented",
+      "write": "none"
+    },
+    {
+      "id": "MSTATE/1.0",
+      "read": "implemented",
+      "write": "implemented"
+    }
+  ],
+  "implementation": {
+    "name": "sanmill-rust-mif-adapter",
+    "version": "0.1.0"
+  },
+  "invarianceDeclarations": [],
+  "profiles": {
+    "claimLifecycle": [
+      "stable-claim-rights-v1"
+    ],
+    "decision": [
+      "decision-state-v1"
+    ],
+    "key": [
+      "structural-d4-v1"
+    ],
+    "logicalTurn": [
+      "logical-turn-v1"
+    ],
+    "mpkBinding": [
+      "inline-semantic-digest-v1"
+    ],
+    "observation": [
+      "stable-moving-v1",
+      "stable-primary-decision-v1"
+    ],
+    "placingLiveness": [
+      "apply-board-full",
+      "draw",
+      "loss"
+    ],
+    "repetitionProjection": [
+      "repetition-observation-v1"
+    ],
+    "repetitionSummary": [
+      "reset-count-smt-v1"
+    ],
+    "resumption": [
+      "resumption-state-v1"
+    ],
+    "semanticProjection": [
+      "mrs-semantic-v1"
+    ],
+    "semantics": [
+      "mif-finite-rules-v3"
+    ],
+    "state": [
+      "mill24-state-v1"
+    ],
+    "transform": [
+      "mill24-full-state-v1"
+    ]
+  },
+  "resourceLimits": [
+    {
+      "limit": 100000,
+      "name": "events"
+    },
+    {
+      "limit": 16777216,
+      "name": "interop-request-bytes"
+    },
+    {
+      "limit": 100000,
+      "name": "repetition-entries"
+    }
+  ],
+  "rulesets": [
+    {
+      "documentDigest": "sha256:62479b6f40efb8ab478bab3d2b725647213604fcd3cc9cd4c1f69357535ae257",
+      "id": "example-morris",
+      "level": "implemented",
+      "semanticDigest": "sha256:224f7e368e322a4cc8c1225a025fb548d5b41eb096d34b7ae0543182d1aa9393",
+      "version": 1
+    },
+    {
+      "documentDigest": "sha256:9e8a7aa8f71fe2d8cc4d0d3bc5571f2c09e21f98b12b336b691f1cdbe5bb2833",
+      "id": "x-origin-stabilization",
+      "level": "implemented",
+      "semanticDigest": "sha256:173caf8189defd1ab7d4a3e8b9e26688a07fd77976bf09d56bff5fe0c273e1a1",
+      "version": 1
+    }
+  ],
+  "suites": [
+    "sha256:81a5feabc281bfc4f830addabc2c6846d1f191bbbcf04e548f04b35dd358ae6f"
+  ],
+  "testedCorpora": [
+    {
+      "classes": [
+        "identity",
+        "key",
+        "position",
+        "replay",
+        "ruleset",
+        "transform"
+      ],
+      "digest": "sha256:d11317a090300f8a47f77afed647bdbd236dcdb1996c0147a81c874fa39dfd82"
+    }
+  ]
+}
