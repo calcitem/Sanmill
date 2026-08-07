@@ -7,12 +7,13 @@
 
 use serde::Serialize;
 use serde_json::json;
+use sha2::{Digest, Sha256};
 use tgf_cli::h2h_trace::{mill_rules_identity, mill_ruleset_id};
 use tgf_core::{ActionList, GameRules, OutcomeKind};
 use tgf_mill::{MillRules, MillUciCodec, MillVariantOptions};
 
-use super::UciMachineError;
 use super::board::{ParsedPosition, PositionHistoryOrigin};
+use super::{StrictRefereeProfile, UciMachineError};
 
 const STATE_PROTOCOL_VERSION: u32 = 1;
 const STATE_PREFIX: &str = "info string sanmill_state ";
@@ -24,11 +25,34 @@ struct RulesIdentity {
 }
 
 #[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+struct RefereeRulesIdentity {
+    format: &'static str,
+    profile: &'static str,
+    repetition_observation: &'static str,
+    origin_counted: bool,
+    semantic_digest: String,
+}
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+struct RefereeSemanticMaterial<'a> {
+    format: &'static str,
+    rules_options: &'a MillVariantOptions,
+    profile: &'static str,
+    repetition_observation: &'static str,
+    origin_counted: bool,
+    repetition_reset_events: [&'static str; 2],
+    logical_turn: &'static str,
+}
+
+#[derive(Serialize)]
 struct StateResponse<'a> {
     protocol_version: u32,
     status: &'static str,
     ruleset_id: &'static str,
     rules_identity: RulesIdentity,
+    strict_referee_identity: RefereeRulesIdentity,
     rules_options: &'a MillVariantOptions,
     history_origin: &'static str,
     fen: String,
@@ -54,12 +78,30 @@ struct StateResponse<'a> {
     outcome_reason_code: &'static str,
 }
 
+#[cfg(test)]
 pub(super) fn state_info_line(
     options: &MillVariantOptions,
     rules: &MillRules,
     position: &ParsedPosition,
     rejected_position: Option<&UciMachineError>,
 ) -> String {
+    state_info_line_with_profile(
+        options,
+        rules,
+        position,
+        rejected_position,
+        StrictRefereeProfile::SanmillLiveV1,
+    )
+}
+
+pub(super) fn state_info_line_with_profile(
+    options: &MillVariantOptions,
+    rules: &MillRules,
+    position: &ParsedPosition,
+    rejected_position: Option<&UciMachineError>,
+    profile: StrictRefereeProfile,
+) -> String {
+    let strict_referee_identity = referee_rules_identity(options, profile);
     if let Some(error) = rejected_position {
         return prefixed_json(&json!({
             "protocol_version": STATE_PROTOCOL_VERSION,
@@ -67,6 +109,7 @@ pub(super) fn state_info_line(
             "code": "position_unavailable",
             "message": "the most recent position command was rejected",
             "position_error_code": error.code,
+            "strict_referee_identity": strict_referee_identity,
         }));
     }
 
@@ -141,6 +184,7 @@ pub(super) fn state_info_line(
         status: if terminal { "terminal" } else { "ok" },
         ruleset_id: ruleset_id(options),
         rules_identity: rules_identity(options),
+        strict_referee_identity,
         rules_options: options,
         history_origin: match position.history_origin {
             PositionHistoryOrigin::GameStart => "game_start",
@@ -169,6 +213,35 @@ pub(super) fn state_info_line(
         outcome_reason: summary.outcome.reason,
     };
     prefixed_json(&response)
+}
+
+fn referee_rules_identity(
+    options: &MillVariantOptions,
+    profile: StrictRefereeProfile,
+) -> RefereeRulesIdentity {
+    let material = RefereeSemanticMaterial {
+        format: "SANMILL-STRICT-REFEREE-RULES/1",
+        rules_options: options,
+        profile: profile.id(),
+        repetition_observation: profile.repetition_observation(),
+        origin_counted: profile.origin_counted(),
+        repetition_reset_events: ["board-remove", "place"],
+        logical_turn: "primary-with-required-removal-v1",
+    };
+    let canonical = serde_json_canonicalizer::to_vec(&material)
+        .expect("strict referee identity must be valid RFC 8785 JSON");
+    let digest = Sha256::digest(canonical);
+    let semantic_digest = digest
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect::<String>();
+    RefereeRulesIdentity {
+        format: material.format,
+        profile: profile.id(),
+        repetition_observation: profile.repetition_observation(),
+        origin_counted: profile.origin_counted(),
+        semantic_digest: format!("sha256:{semantic_digest}"),
+    }
 }
 
 fn ruleset_id(options: &MillVariantOptions) -> &'static str {
@@ -247,6 +320,16 @@ mod tests {
         assert_eq!(
             value["rules_identity"]["sha256"].as_str().unwrap().len(),
             64
+        );
+        assert_eq!(
+            value["strict_referee_identity"]["profile"],
+            "sanmill-live-v1"
+        );
+        assert_eq!(value["strict_referee_identity"]["originCounted"], false);
+        assert!(
+            value["strict_referee_identity"]["semanticDigest"]
+                .as_str()
+                .is_some_and(|digest| digest.starts_with("sha256:") && digest.len() == 71)
         );
     }
 

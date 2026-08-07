@@ -110,6 +110,7 @@ life of the process; you do not need to resend them for every move.
 | `MoveTimeMs` | spin 0..60000 | 1000 | Per-move thinking time in **milliseconds** (Sanmill only) |
 | `Shuffling` | check | true | Random tie-breaking; set false for deterministic output |
 | `StrictFailurePolicy` | check | false | Fail closed on rejected histories or a missing/illegal search move |
+| `StrictRefereeProfile` | combo | `sanmill-live-v1` | Use `mif-stable-moving-v1` for a portable MIF/NMM referee |
 | `AiIsLazy` | check | false | When true, skips re-searching when score already good |
 | `IDSEnabled` | check | false | Iterative deepening; auto-enabled when MoveTimeMs > 0 |
 
@@ -134,6 +135,25 @@ must distinguish a real search result from recovery behavior:
 ```
 setoption name StrictFailurePolicy value true
 ```
+
+For a MIF `stable-moving-v1` referee, also select the portable profile before
+loading the position:
+
+```
+setoption name StrictRefereeProfile value mif-stable-moving-v1
+```
+
+That profile counts an imported, ongoing, stable moving/flying origin as
+repetition occurrence 1. It continues to clear the active repetition window
+on placement and removal, never observes a pending-removal state, and treats
+the required removal as part of the same logical turn. The default
+`sanmill-live-v1` profile retains the historical post-move-only origin
+behavior. Changing the profile clears the loaded position so the caller must
+issue `position` again under the selected identity.
+
+Geographical labels such as German, Hungarian, or English do not by
+themselves select either behavior: a machine referee needs a versioned rule
+authority/profile. MIF `stable-moving-v1` is unambiguously origin-counted.
 
 Strict errors use one stable line format. The text after
 `info string sanmill_error ` is compact JSON:
@@ -437,6 +457,8 @@ Protocol version 1 includes:
 
 - the ruleset ID, complete serialized rule options, and a SHA-256 identity for
   those options;
+- `strict_referee_identity`, which binds those options to the selected origin
+  profile and reports its RFC 8785 `semanticDigest`;
 - the authoritative FEN, side, phase, current atomic action, pending-removal
   count, and stable rule-order legal action list;
 - atomic action count, logical-ply count and per-side counts;
@@ -450,6 +472,11 @@ an explicit FEN. Counts and the history digest cover the canonical action
 tokens supplied after that origin. A mill-forming primary action therefore
 increments `action_token_count` but not `logical_ply_count`; its removal
 increments both the action count and the completed logical-ply count.
+
+The strict-referee digest identifies Sanmill's complete option/profile
+combination (`SANMILL-STRICT-REFEREE-RULES/1`). It is not an MRS document
+digest and must not be substituted for the `semanticDigest` of a portable
+ruleset manifest.
 
 The command only reads the live state. It runs no search, database, patch, or
 random code. Pending removal remains visible as such. Terminal positions use

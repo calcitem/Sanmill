@@ -11,6 +11,31 @@
 use super::*;
 
 impl MillRules {
+    /// Seed a caller-provided stable moving/flying origin as the first
+    /// repetition observation.
+    ///
+    /// This is an explicit import/referee operation. Normal game creation and
+    /// the search hot path do not call it. Placement origins, pending-removal
+    /// origins, terminal states, and disabled repetition rules are unchanged.
+    pub fn seed_stable_moving_repetition_origin(
+        &self,
+        snap: &GameStateSnapshot,
+    ) -> GameStateSnapshot {
+        let mut state = self.decode_with_options(snap);
+        let is_stable_moving = self.options.threefold_repetition_rule
+            && state.phase == MillPhase::Moving
+            && state.action_for_legal_generation() == MillActionState::Select
+            && state.pending_removals == [0, 0]
+            && (0..=1).contains(&state.side_to_move)
+            && state.winner < 0;
+        if !is_stable_moving || !state.key_history.is_empty() {
+            return *snap;
+        }
+
+        push_key_and_check_threefold(&mut state, &self.options, false);
+        self.encode(state)
+    }
+
     fn hydrate_repetition_history_from_snapshots(
         &self,
         state: &mut MillState,
@@ -31,10 +56,12 @@ impl MillRules {
     /// stack without expanding the compact snapshot payload.
     ///
     /// The history slice must be chronological and must not include `snap`.
-    /// Each snapshot after a reversible Move carries `key_history_len > 0`;
-    /// Place and Remove transitions clear it, which gives us an exact reset
-    /// marker.  Scanning backwards is bounded to master's 256-key cap and is
-    /// only used at runtime boundaries, never inside the search tree.
+    /// An appended observation changes the serialized rolling window; a
+    /// pending-removal snapshot leaves it byte-identical. Place and Remove
+    /// transitions change material and delimit the active window even when an
+    /// import/referee profile immediately observes the new stable state after
+    /// that reset. Scanning backwards is bounded to master's 256-key cap and
+    /// is only used at runtime boundaries, never inside the search tree.
     pub fn repetition_history_from_snapshots(
         snap: &GameStateSnapshot,
         history: &[GameStateSnapshot],
@@ -44,24 +71,39 @@ impl MillRules {
         }
 
         let mut reversed = Vec::new();
-        for candidate in history.iter().chain(std::iter::once(snap)).rev() {
-            if snapshot_repetition_window_len(candidate) == 0 {
+        let snapshot_count = history.len() + 1;
+        for index in (0..snapshot_count).rev() {
+            let candidate = if index == history.len() {
+                snap
+            } else {
+                &history[index]
+            };
+            let candidate_window_len = snapshot_repetition_window_len(candidate);
+            if candidate_window_len == 0 {
                 break;
             }
-            let key = candidate.zobrist_key;
-            debug_assert_ne!(key, 0, "Mill snapshots must carry a non-zero key");
-            reversed.push(key);
+
+            let previous = index
+                .checked_sub(1)
+                .map(|previous_index| &history[previous_index]);
+            if previous
+                .is_none_or(|previous| !snapshot_repetition_windows_equal(previous, candidate))
+            {
+                let key = snapshot_last_repetition_key(candidate, candidate_window_len);
+                debug_assert_ne!(key, 0, "Mill repetition keys must be non-zero");
+                reversed.push(key);
+            }
             if reversed.len() == MILL_REPETITION_HISTORY_CAP {
                 break;
             }
+            if previous.is_some_and(|previous| {
+                snapshot_material_count(previous) != snapshot_material_count(candidate)
+            }) {
+                break;
+            }
         }
-
-        if reversed.is_empty() {
-            Self::decode(snap).key_history
-        } else {
-            reversed.reverse();
-            reversed
-        }
+        reversed.reverse();
+        reversed
     }
 
     /// Return whether the root position was reached by a Remove action.
@@ -88,8 +130,28 @@ impl MillRules {
     }
 }
 
+fn snapshot_material_count(snapshot: &GameStateSnapshot) -> u16 {
+    u16::from(snapshot.opaque_payload[26]) + u16::from(snapshot.opaque_payload[27])
+}
+
 fn snapshot_repetition_window_len(snapshot: &GameStateSnapshot) -> usize {
     usize::from(snapshot.opaque_payload[236].min(MILL_REPETITION_SNAPSHOT_WINDOW as u8))
+}
+
+fn snapshot_repetition_windows_equal(left: &GameStateSnapshot, right: &GameStateSnapshot) -> bool {
+    let left_len = snapshot_repetition_window_len(left);
+    let right_len = snapshot_repetition_window_len(right);
+    left_len == right_len
+        && left.opaque_payload[44..44 + left_len * 8]
+            == right.opaque_payload[44..44 + right_len * 8]
+}
+
+fn snapshot_last_repetition_key(snapshot: &GameStateSnapshot, window_len: usize) -> u64 {
+    debug_assert!(window_len > 0);
+    let offset = 44 + (window_len - 1) * 8;
+    let mut bytes = [0_u8; 8];
+    bytes.copy_from_slice(&snapshot.opaque_payload[offset..offset + 8]);
+    u64::from_le_bytes(bytes)
 }
 
 impl GameRules for MillRules {

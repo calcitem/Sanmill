@@ -5,7 +5,7 @@
 
 use tgf_mill::MillVariantOptions;
 
-use super::EngineConfig;
+use super::{EngineConfig, StrictRefereeProfile};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(super) enum SetoptionResult {
@@ -16,6 +16,8 @@ pub(super) enum SetoptionResult {
     SearchConfig,
     /// Option is valid and stored but has no side-effect on game rules.
     Acknowledged,
+    /// The imported-position referee identity changed and must be reloaded.
+    RefereeProfile,
     Unknown,
 }
 
@@ -136,6 +138,19 @@ pub(super) fn apply_setoption(
                 SetoptionResult::Acknowledged
             })
             .unwrap_or(SetoptionResult::Unknown),
+        "strictrefereeprofile" | "strict referee profile" => {
+            let profile = match value.to_ascii_lowercase().as_str() {
+                "sanmill-live-v1" => Some(StrictRefereeProfile::SanmillLiveV1),
+                "mif-stable-moving-v1" => Some(StrictRefereeProfile::MifStableMovingV1),
+                _ => None,
+            };
+            profile
+                .map(|profile| {
+                    engine_cfg.strict_referee_profile = profile;
+                    SetoptionResult::RefereeProfile
+                })
+                .unwrap_or(SetoptionResult::Unknown)
+        }
         "uselazysmp" | "use lazy smp" => parse_bool(value)
             .map(|v| {
                 engine_cfg.use_lazy_smp = v;

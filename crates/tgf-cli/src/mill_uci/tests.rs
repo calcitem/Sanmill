@@ -110,6 +110,48 @@ fn strict_failure_policy_is_explicit_and_default_off() {
 }
 
 #[test]
+fn strict_referee_profile_is_explicit_and_rejects_unknown_values() {
+    let mut options = MillVariantOptions::default();
+    let mut threads = 1;
+    let mut qsearch = 0;
+    let mut cfg = EngineConfig::default();
+    assert_eq!(
+        cfg.strict_referee_profile,
+        StrictRefereeProfile::SanmillLiveV1
+    );
+
+    assert_eq!(
+        apply_setoption(
+            "setoption name StrictRefereeProfile value mif-stable-moving-v1",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut cfg,
+        ),
+        SetoptionResult::RefereeProfile
+    );
+    assert_eq!(
+        cfg.strict_referee_profile,
+        StrictRefereeProfile::MifStableMovingV1
+    );
+
+    assert_eq!(
+        apply_setoption(
+            "setoption name StrictRefereeProfile value guessed-standard",
+            &mut options,
+            &mut threads,
+            &mut qsearch,
+            &mut cfg,
+        ),
+        SetoptionResult::Unknown
+    );
+    assert_eq!(
+        cfg.strict_referee_profile,
+        StrictRefereeProfile::MifStableMovingV1
+    );
+}
+
+#[test]
 fn setoption_accepts_legacy_piece_count_names() {
     let mut options = MillVariantOptions::default();
     let mut threads = 1;

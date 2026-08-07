@@ -43,11 +43,40 @@ pub(crate) use bench::print_benchmark_toml;
 use board::board_ascii_lines;
 use board::{
     GoOptions, ParsedPosition, PositionHistoryOrigin, action_to_uci, parse_go_options,
-    parse_position_command, parse_position_command_strict, print_board_ascii, print_uci_options,
+    print_board_ascii, print_uci_options,
 };
+#[cfg(test)]
+use board::{parse_position_command, parse_position_command_strict};
 use setoption::{SetoptionResult, apply_setoption};
 
 const UCI_ERROR_PROTOCOL_VERSION: u32 = 1;
+
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+enum StrictRefereeProfile {
+    #[default]
+    SanmillLiveV1,
+    MifStableMovingV1,
+}
+
+impl StrictRefereeProfile {
+    const fn id(self) -> &'static str {
+        match self {
+            Self::SanmillLiveV1 => "sanmill-live-v1",
+            Self::MifStableMovingV1 => "mif-stable-moving-v1",
+        }
+    }
+
+    const fn repetition_observation(self) -> &'static str {
+        match self {
+            Self::SanmillLiveV1 => "post-move-only-v1",
+            Self::MifStableMovingV1 => "stable-moving-v1",
+        }
+    }
+
+    const fn origin_counted(self) -> bool {
+        matches!(self, Self::MifStableMovingV1)
+    }
+}
 
 /// Stable machine-readable error payload for opt-in strict UCI sessions.
 ///
@@ -231,6 +260,10 @@ struct EngineConfig {
     /// engine path does not construct this CLI configuration, and the
     /// historical UCI behavior remains the default.
     strict_failure_policy: bool,
+    /// CLI-only repetition observation profile. The default preserves the
+    /// historical live-game behavior; the MIF profile is opt-in for portable
+    /// referee sessions and counts a stable moving/flying import origin.
+    strict_referee_profile: StrictRefereeProfile,
     draw_on_human_experience: bool,
     developer_mode: bool,
     hash_mb: u32,
@@ -291,6 +324,7 @@ impl Default for EngineConfig {
             move_time_ms: 1000,
             shuffling: true,
             strict_failure_policy: false,
+            strict_referee_profile: StrictRefereeProfile::SanmillLiveV1,
             draw_on_human_experience: true,
             developer_mode: true,
             hash_mb: 16,
@@ -527,6 +561,18 @@ pub(crate) fn run_uci_loop() {
                         engine_cfg.patch_make_traps,
                     );
                 }
+                SetoptionResult::RefereeProfile => {
+                    // A loaded FEN may have been seeded under the previous
+                    // origin policy. Require callers to re-issue `position`
+                    // instead of silently relabelling that state.
+                    state = rules.initial_state(&[]);
+                    state_history.clear();
+                    state_action_tokens.clear();
+                    state_counts = MillPlyCount::default();
+                    state_history_origin = PositionHistoryOrigin::GameStart;
+                    rejected_position = None;
+                    shared_tt.bump_age();
+                }
                 SetoptionResult::Threads | SetoptionResult::Acknowledged => {}
                 SetoptionResult::Unknown => {
                     println!("info string unsupported setoption: {line}");
@@ -537,7 +583,11 @@ pub(crate) fn run_uci_loop() {
         } else if line.starts_with("position") {
             finish_active_search(&mut active_search, &mut engine_cfg);
             if engine_cfg.strict_failure_policy {
-                match parse_position_command_strict(&rules, line) {
+                match board::parse_position_command_strict_with_profile(
+                    &rules,
+                    line,
+                    engine_cfg.strict_referee_profile,
+                ) {
                     Ok(parsed) => {
                         state = parsed.state;
                         state_history = parsed.history;
@@ -553,7 +603,11 @@ pub(crate) fn run_uci_loop() {
                     }
                 }
             } else {
-                let parsed = parse_position_command(&rules, line);
+                let parsed = board::parse_position_command_with_profile(
+                    &rules,
+                    line,
+                    engine_cfg.strict_referee_profile,
+                );
                 state = parsed.state;
                 state_history = parsed.history;
                 state_action_tokens = parsed.action_tokens;
@@ -572,11 +626,12 @@ pub(crate) fn run_uci_loop() {
             };
             println!(
                 "{}",
-                state_json::state_info_line(
+                state_json::state_info_line_with_profile(
                     &options,
                     &rules,
                     &position,
                     rejected_position.as_ref(),
+                    engine_cfg.strict_referee_profile,
                 )
             );
         } else if line == "d" {

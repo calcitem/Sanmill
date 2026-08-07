@@ -7,7 +7,7 @@
 //   * action_to_uci / action_from_uci                    — UCI move codec
 
 use tgf_core::{Action, ActionList, GameRules, GameStateSnapshot};
-use tgf_mill::{MillPlyCount, MillRules, MillUciCodec, MillVariantOptions};
+use tgf_mill::{MillActionKind, MillPlyCount, MillRules, MillUciCodec, MillVariantOptions};
 
 use super::{EngineConfig, UciMachineError};
 
@@ -131,6 +131,9 @@ pub(super) fn print_uci_options() {
     println!("option name nodestime type spin default 0 min 0 max 10000");
     println!("option name Shuffling type check default true");
     println!("option name StrictFailurePolicy type check default false");
+    println!(
+        "option name StrictRefereeProfile type combo default sanmill-live-v1 var sanmill-live-v1 var mif-stable-moving-v1"
+    );
     println!("option name UseLazySmp type check default false");
     println!("option name Algorithm type spin default 2 min 0 max 4");
     println!("option name DrawOnHumanExperience type check default true");
@@ -207,7 +210,16 @@ pub(super) enum PositionHistoryOrigin {
     FreshSetup,
 }
 
+#[cfg(test)]
 pub(super) fn parse_position_command(rules: &MillRules, line: &str) -> ParsedPosition {
+    parse_position_command_with_profile(rules, line, super::StrictRefereeProfile::SanmillLiveV1)
+}
+
+pub(super) fn parse_position_command_with_profile(
+    rules: &MillRules,
+    line: &str,
+    profile: super::StrictRefereeProfile,
+) -> ParsedPosition {
     let tokens = line.split_whitespace().collect::<Vec<_>>();
 
     let moves_idx = tokens.iter().position(|t| *t == "moves");
@@ -226,6 +238,9 @@ pub(super) fn parse_position_command(rules: &MillRules, line: &str) -> ParsedPos
         }
         _ => (rules.initial_state(&[]), PositionHistoryOrigin::GameStart),
     };
+    if profile.origin_counted() {
+        state = rules.seed_stable_moving_repetition_origin(&state);
+    }
     let mut history = Vec::new();
     let mut action_tokens = Vec::new();
     let mut counts = MillPlyCount::default();
@@ -241,7 +256,16 @@ pub(super) fn parse_position_command(rules: &MillRules, line: &str) -> ParsedPos
     };
     for mv in tokens.iter().skip(moves_idx + 1) {
         if let Some(action) = action_from_uci(rules, &state, mv) {
-            let next = rules.apply_with_history(&state, action, &history);
+            let mut next = rules.apply_with_history(&state, action, &history);
+            if profile.origin_counted()
+                && matches!(
+                    action.kind_tag,
+                    x if x == MillActionKind::Place as i16
+                        || x == MillActionKind::Remove as i16
+                )
+            {
+                next = rules.seed_stable_moving_repetition_origin(&next);
+            }
             counts
                 .record(rules, &state, &next)
                 .expect("a legal Mill action must have a valid side to move");
@@ -269,9 +293,22 @@ pub(super) fn parse_position_command(rules: &MillRules, line: &str) -> ParsedPos
 /// successfully replayed prefix active. Strict machine clients must not
 /// inherit either fallback, so this parser rejects the whole command and
 /// leaves the caller's previous position untouched.
+#[cfg(test)]
 pub(super) fn parse_position_command_strict(
     rules: &MillRules,
     line: &str,
+) -> Result<ParsedPosition, UciMachineError> {
+    parse_position_command_strict_with_profile(
+        rules,
+        line,
+        super::StrictRefereeProfile::SanmillLiveV1,
+    )
+}
+
+pub(super) fn parse_position_command_strict_with_profile(
+    rules: &MillRules,
+    line: &str,
+    profile: super::StrictRefereeProfile,
 ) -> Result<ParsedPosition, UciMachineError> {
     let tokens = line.split_whitespace().collect::<Vec<_>>();
     if tokens.first().copied() != Some("position") {
@@ -330,6 +367,9 @@ pub(super) fn parse_position_command_strict(
             ));
         }
     };
+    if profile.origin_counted() {
+        state = rules.seed_stable_moving_repetition_origin(&state);
+    }
     let mut history = Vec::new();
     let mut action_tokens = Vec::new();
     let mut counts = MillPlyCount::default();
@@ -370,7 +410,16 @@ pub(super) fn parse_position_command_strict(
             )
             .with_history_action(action_index, token));
         }
-        let next = rules.apply_with_history(&state, action, &history);
+        let mut next = rules.apply_with_history(&state, action, &history);
+        if profile.origin_counted()
+            && matches!(
+                action.kind_tag,
+                x if x == MillActionKind::Place as i16
+                    || x == MillActionKind::Remove as i16
+            )
+        {
+            next = rules.seed_stable_moving_repetition_origin(&next);
+        }
         counts.record(rules, &state, &next).map_err(|error| {
             UciMachineError::new(
                 "position_history_invalid_state",

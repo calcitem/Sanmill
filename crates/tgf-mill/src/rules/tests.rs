@@ -3487,6 +3487,42 @@ fn moving_phase_swap_state(side_to_move: i8) -> MillState {
 }
 
 #[test]
+fn stable_moving_origin_seed_is_explicit_and_idempotent() {
+    let rules = MillRules::default();
+    let origin = rules.encode(moving_phase_swap_state(0));
+
+    assert!(MillRules::repetition_history_from_snapshots(&origin, &[]).is_empty());
+    let seeded = rules.seed_stable_moving_repetition_origin(&origin);
+    let history = MillRules::repetition_history_from_snapshots(&seeded, &[]);
+    assert_eq!(history, vec![seeded.zobrist_key]);
+
+    let seeded_again = rules.seed_stable_moving_repetition_origin(&seeded);
+    assert_eq!(
+        seeded_again, seeded,
+        "seeding one imported origin is idempotent"
+    );
+}
+
+#[test]
+fn stable_moving_origin_seed_ignores_placement_and_removal_states() {
+    let rules = MillRules::default();
+    let placing = rules.initial_state(&[]);
+    assert_eq!(
+        rules.seed_stable_moving_repetition_origin(&placing),
+        placing
+    );
+
+    let mut removal_state = moving_phase_swap_state(0);
+    removal_state.pending_removals = [1, 0];
+    removal_state.action = MillActionState::Remove;
+    let removal = rules.encode(removal_state);
+    assert_eq!(
+        rules.seed_stable_moving_repetition_origin(&removal),
+        removal
+    );
+}
+
+#[test]
 fn threefold_triggers_after_three_repetitions() {
     let rules = MillRules::default();
     let mut state = moving_phase_swap_state(0);
@@ -3551,6 +3587,9 @@ fn history_marker_snapshot(key: u64) -> GameStateSnapshot {
         zobrist_key: key,
         ..GameStateSnapshot::default()
     };
+    snap.opaque_payload[26] = 3;
+    snap.opaque_payload[27] = 3;
+    snap.opaque_payload[44..52].copy_from_slice(&key.to_le_bytes());
     snap.opaque_payload[236] = 1;
     snap
 }

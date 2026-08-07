@@ -7,6 +7,9 @@ use serde_json::Value;
 
 const STATE_PREFIX: &str = "info string sanmill_state ";
 const LOGICAL_TURN_PREFIX: &str = "info string sanmill_logical_turn ";
+const MOVING_CYCLE_FEN: &str =
+    "O*@*****/O*@*****/*@*****O w m s 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes";
+const FOUR_PLY_CYCLE: &str = "d5-e5 e4-e3 e5-d5 e3-e4";
 
 fn run_uci(script: &str) -> String {
     let mut child = Command::new(env!("CARGO_BIN_EXE_tgf"))
@@ -59,6 +62,12 @@ fn strict_policy_is_advertised_as_default_off() {
     assert!(
         output.contains("option name StrictFailurePolicy type check default false"),
         "strict failure handling must remain opt-in:\n{output}"
+    );
+    assert!(
+        output.contains(
+            "option name StrictRefereeProfile type combo default sanmill-live-v1 var sanmill-live-v1 var mif-stable-moving-v1"
+        ),
+        "the portable referee profile must be explicit and default off:\n{output}"
     );
 }
 
@@ -128,6 +137,7 @@ fn strict_position_history_errors_block_search_without_bestmove() {
 fn statejson_tracks_atomic_actions_and_complete_logical_turns() {
     let output = run_uci(
         "setoption name StrictFailurePolicy value true\n\
+         setoption name StrictRefereeProfile value mif-stable-moving-v1\n\
          position startpos\n\
          statejson\n\
          position startpos moves d7 a1 g7 d1 a7\n\
@@ -144,6 +154,11 @@ fn statejson_tracks_atomic_actions_and_complete_logical_turns() {
     assert_eq!(states[0]["action_token_count"], 0);
     assert_eq!(states[0]["logical_ply_count"], 0);
     assert_eq!(states[0]["legal_actions"].as_array().unwrap().len(), 24);
+    assert_eq!(
+        states[0]["strict_referee_identity"]["profile"],
+        "mif-stable-moving-v1"
+    );
+    assert_eq!(states[0]["strict_referee_identity"]["originCounted"], true);
 
     assert_eq!(states[1]["action"], "remove");
     assert_eq!(states[1]["pending_removal"], true);
@@ -203,10 +218,149 @@ fn statejson_reports_terminal_reasons_and_rule_counters() {
 }
 
 #[test]
+fn legacy_live_profile_keeps_post_move_repetition_origin_semantics() {
+    let moves4 = FOUR_PLY_CYCLE;
+    let moves8 = [FOUR_PLY_CYCLE, FOUR_PLY_CYCLE].join(" ");
+    let moves9 = format!("{moves8} d5-e5");
+    let script = format!(
+        "setoption name StrictFailurePolicy value true\n\
+         position fen {MOVING_CYCLE_FEN}\n\
+         statejson\n\
+         position fen {MOVING_CYCLE_FEN} moves {moves4}\n\
+         statejson\n\
+         position fen {MOVING_CYCLE_FEN} moves {moves8}\n\
+         statejson\n\
+         position fen {MOVING_CYCLE_FEN} moves {moves9}\n\
+         statejson\n\
+         quit\n"
+    );
+    let output = run_uci(&script);
+    let states = prefixed_json_lines(&output, STATE_PREFIX);
+    assert_eq!(states.len(), 4, "{output}");
+
+    for (index, expected) in [0, 1, 2, 3].into_iter().enumerate() {
+        assert_eq!(states[index]["repetition_current_count"], expected);
+    }
+    for state in &states[..3] {
+        assert_eq!(state["status"], "ok");
+        assert_eq!(state["terminal"], false);
+        assert_eq!(state["outcome_reason_code"], "ongoing");
+    }
+    assert_eq!(states[3]["status"], "terminal");
+    assert_eq!(states[3]["terminal"], true);
+    assert_eq!(
+        states[3]["outcome_reason_code"],
+        "draw_threefold_repetition"
+    );
+    assert_eq!(states[3]["logical_ply_count"], 9);
+}
+
+#[test]
+fn mif_stable_moving_profile_counts_origin_and_draws_at_ply_eight() {
+    let moves4 = FOUR_PLY_CYCLE;
+    let moves8 = [FOUR_PLY_CYCLE, FOUR_PLY_CYCLE].join(" ");
+    let moves9 = format!("{moves8} d5-e5");
+    let script = format!(
+        "setoption name StrictFailurePolicy value true\n\
+         setoption name StrictRefereeProfile value mif-stable-moving-v1\n\
+         position fen {MOVING_CYCLE_FEN}\n\
+         statejson\n\
+         position fen {MOVING_CYCLE_FEN} moves {moves4}\n\
+         statejson\n\
+         position fen {MOVING_CYCLE_FEN} moves {moves8}\n\
+         statejson\n\
+         position fen {MOVING_CYCLE_FEN} moves {moves9}\n\
+         statejson\n\
+         quit\n"
+    );
+    let output = run_uci(&script);
+    let states = prefixed_json_lines(&output, STATE_PREFIX);
+    assert_eq!(states.len(), 4, "{output}");
+
+    assert_eq!(states[0]["repetition_current_count"], 1);
+    assert_eq!(states[0]["repetition_history_length"], 1);
+    assert_eq!(states[0]["status"], "ok");
+    assert_eq!(states[0]["terminal"], false);
+    assert_eq!(states[0]["outcome_reason_code"], "ongoing");
+
+    assert_eq!(states[1]["repetition_current_count"], 2);
+    assert_eq!(states[1]["repetition_history_length"], 5);
+    assert_eq!(states[1]["status"], "ok");
+    assert_eq!(states[1]["terminal"], false);
+    assert_eq!(states[1]["outcome_reason_code"], "ongoing");
+
+    assert_eq!(states[2]["repetition_current_count"], 3);
+    assert_eq!(states[2]["repetition_history_length"], 9);
+    assert_eq!(states[2]["status"], "terminal");
+    assert_eq!(states[2]["terminal"], true);
+    assert_eq!(
+        states[2]["outcome_reason_code"],
+        "draw_threefold_repetition"
+    );
+    assert_eq!(states[2]["logical_ply_count"], 8);
+    assert_eq!(
+        states[2]["strict_referee_identity"]["profile"],
+        "mif-stable-moving-v1"
+    );
+    assert_eq!(
+        states[2]["strict_referee_identity"]["repetitionObservation"],
+        "stable-moving-v1"
+    );
+    assert!(
+        states[2]["strict_referee_identity"]["semanticDigest"]
+            .as_str()
+            .is_some_and(|value| value.starts_with("sha256:") && value.len() == 71)
+    );
+
+    assert_eq!(states[3]["status"], "position_unavailable");
+    assert_eq!(
+        states[3]["position_error_code"],
+        "position_history_illegal_action"
+    );
+    assert!(states[3].get("terminal").is_none());
+}
+
+#[test]
+fn mif_profile_resets_then_observes_after_required_removal() {
+    let output = run_uci(
+        "setoption name StrictFailurePolicy value true\n\
+         setoption name StrictRefereeProfile value mif-stable-moving-v1\n\
+         position startpos moves d6 f4 d2 b4 g4 d7 a4 d1 e4 d5 c4 d3 f6 b6 b2 f2 g7 g1\n\
+         statejson\n\
+         position startpos moves d6 f4 d2 b4 g4 d7 a4 d1 d5 d3 e4 f6 f2 b2 b6 g7 a7 c3 d5-c5 c3-c4 e4-e5 c4-c3 d6-d5 xd3\n\
+         statejson\n\
+         quit\n",
+    );
+    let states = prefixed_json_lines(&output, STATE_PREFIX);
+    assert_eq!(states.len(), 2, "{output}");
+    let after_final_placement = &states[0];
+    assert_eq!(after_final_placement["status"], "ok");
+    assert_eq!(after_final_placement["phase"], "moving");
+    assert_eq!(after_final_placement["repetition_current_count"], 1);
+    assert_eq!(after_final_placement["repetition_history_length"], 1);
+    assert_eq!(after_final_placement["no_capture_count"], 0);
+
+    let state = &states[1];
+    assert_eq!(state["status"], "ok", "{output}");
+    assert_eq!(state["phase"], "moving");
+    assert_eq!(state["action"], "select");
+    assert_eq!(state["pending_removal"], false);
+    assert_eq!(state["repetition_current_count"], 1);
+    assert_eq!(state["repetition_history_length"], 1);
+    assert_eq!(state["no_capture_count"], 0);
+    assert_eq!(
+        state["action_token_count"].as_u64().unwrap(),
+        state["logical_ply_count"].as_u64().unwrap() + 1,
+        "the required removal is atomic but remains in the same logical turn"
+    );
+}
+
+#[test]
 fn statejson_counts_exactly_one_hundred_no_capture_logical_plies() {
     let cycle = ["d5-e5", "e4-e3", "e5-d5", "e3-e4"].repeat(25).join(" ");
     let script = format!(
         "setoption name StrictFailurePolicy value true\n\
+         setoption name StrictRefereeProfile value mif-stable-moving-v1\n\
          setoption name ThreefoldRepetitionRule value false\n\
          position fen O*@*****/O*@*****/*@*****O w m s 3 0 3 0 0 0 -1 -1 -1 -1 0 0 1 ids:nodes moves {cycle}\n\
          statejson\n\
@@ -257,18 +411,24 @@ fn rejected_position_makes_statejson_unavailable() {
 
 #[test]
 fn statejson_and_history_digest_are_reproducible_across_processes() {
-    let script = "setoption name StrictFailurePolicy value true\n\
-                  position startpos moves d2 d6 f4 b4 f2 g4 f6 xg4\n\
-                  statejson\n\
-                  quit\n";
-    let first = run_uci(script);
-    let second = run_uci(script);
+    let moves8 = [FOUR_PLY_CYCLE, FOUR_PLY_CYCLE].join(" ");
+    let script = format!(
+        "setoption name StrictFailurePolicy value true\n\
+         setoption name StrictRefereeProfile value mif-stable-moving-v1\n\
+         position fen {MOVING_CYCLE_FEN} moves {moves8}\n\
+         statejson\n\
+         quit\n"
+    );
+    let first = run_uci(&script);
+    let second = run_uci(&script);
     assert_eq!(first, second);
     let state = prefixed_json_lines(&first, STATE_PREFIX)
         .pop()
         .expect("statejson response");
     assert_eq!(state["action_token_count"], 8);
-    assert_eq!(state["logical_ply_count"], 7);
+    assert_eq!(state["logical_ply_count"], 8);
+    assert_eq!(state["status"], "terminal");
+    assert_eq!(state["repetition_current_count"], 3);
     assert_eq!(state["history_sha256"].as_str().unwrap().len(), 64);
 }
 
