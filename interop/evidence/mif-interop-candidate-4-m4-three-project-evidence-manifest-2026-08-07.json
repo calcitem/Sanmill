@@ -1,0 +1,63 @@
+{
+  "protocol": "SANMILL-MIF-INTEROP-EVIDENCE/1",
+  "milestone": "M4-differential",
+  "status": "candidate-interoperability-evidence-only",
+  "suiteConformance": false,
+  "baseline": {
+    "mifM4Commit": "40718e80d36ec9c060fc17997568d637a74e6d9f",
+    "mifWireCommit": "7e45d5a3fa970a535ed6a8a8ff5981aba4b9c978",
+    "launch": {
+      "path": "interop/differential-candidate-4-v1.json",
+      "sha256": "sha256:560ef369fde248bd96d3468a4336442db1d970ede04f488821509e69925fd48e",
+      "resourceCount": 29
+    },
+    "referenceBaseline": {
+      "path": "interop/evidence/mif-1.0-candidate-4-m4-reference-baseline.json",
+      "sha256": "sha256:29d198dbcf8221fa0235af6a72db9d6a82646b45fc653c584071821a9a4bb61b"
+    }
+  },
+  "adapters": [
+    {
+      "name": "mif-reference",
+      "project": "MIF",
+      "branch": "master",
+      "commit": "40718e80d36ec9c060fc17997568d637a74e6d9f",
+      "published": true
+    },
+    {
+      "name": "sanmill-rust",
+      "project": "Sanmill",
+      "branch": "master",
+      "commit": "9431b95f151502f415f096c7d96ca944e5d578de",
+      "implementationCommit": "ae9a1d8a16261478631a3a7583cbf35c7b6e0df5",
+      "published": true
+    },
+    {
+      "name": "nmm-llm-python",
+      "project": "NMM_LLM",
+      "branch": "dev",
+      "commit": "382eddd1c5a3364c0056e152b524f517d126a113",
+      "implementationCommit": "6c1538082fc551203d827782d137a5799c810535",
+      "evidenceCommit": "382eddd1c5a3364c0056e152b524f517d126a113",
+      "published": true
+    }
+  ],
+  "report": {
+    "path": "interop/evidence/mif-interop-candidate-4-m4-three-project-report-2026-08-07.json",
+    "sha256": "sha256:7956c320cf771767dcb3ecf1fbdb5b10c7313028f25aab3a53f9f0d42021d967",
+    "protocol": "MIF-INTEROP-DIFFERENTIAL-REPORT/1",
+    "launchDigest": "sha256:560ef369fde248bd96d3468a4336442db1d970ede04f488821509e69925fd48e",
+    "configDigest": "sha256:4184d56c696b2e5031d95cc18918757af9f91fa5634dded579ecfae2ef3cf70f",
+    "summary": {
+      "runsPassed": 10,
+      "runsFailed": 0,
+      "negativePassed": 5,
+      "negativeFailed": 0
+    }
+  },
+  "determinism": {
+    "consecutiveRuns": 2,
+    "rawReportsByteIdentical": true,
+    "sha256": "sha256:7956c320cf771767dcb3ecf1fbdb5b10c7313028f25aab3a53f9f0d42021d967"
+  }
+}

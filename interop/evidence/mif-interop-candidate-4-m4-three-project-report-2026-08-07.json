@@ -1,0 +1,625 @@
+{
+  "adapters": [
+    "mif-reference",
+    "sanmill-rust",
+    "nmm-llm-python"
+  ],
+  "configDigest": "sha256:4184d56c696b2e5031d95cc18918757af9f91fa5634dded579ecfae2ef3cf70f",
+  "implementations": [
+    {
+      "adapter": "mif-reference",
+      "capabilitiesDigest": "sha256:f2a9890b9d3b4bca6f2197a8ba48e0075db88e2d25007536431d883d4ca76f8a",
+      "name": "mif-python-reference-runner",
+      "version": "candidate-4"
+    },
+    {
+      "adapter": "sanmill-rust",
+      "capabilitiesDigest": "sha256:aee5a113c70d40bdb387fa32d10967518ea35d7372c019001fb4fceee8f4c249",
+      "name": "sanmill-rust-mif-adapter",
+      "version": "0.1.0"
+    },
+    {
+      "adapter": "nmm-llm-python",
+      "capabilitiesDigest": "sha256:bff35a3d67e1b52afea67b19f42b3479f6fdb39b065722b9de20c10776290af9",
+      "name": "nmm-llm-independent-mif-adapter",
+      "version": "mif-1.0-7e45d5a3fa97"
+    }
+  ],
+  "launchDigest": "sha256:560ef369fde248bd96d3468a4336442db1d970ede04f488821509e69925fd48e",
+  "negativeCases": [
+    {
+      "expectedCode": "remove-without-obligation",
+      "family": "illegal-event",
+      "id": "mutation-illegal-remove-without-obligation",
+      "responseDigest": "sha256:af22eda8128d3a420d8b6b7fcdec915c506d230f240d74e6e93b4179ce0f3a8c",
+      "status": "passed"
+    },
+    {
+      "expectedCode": "non-canonical-digest",
+      "family": "noncanonical-text",
+      "id": "mutation-noncanonical-mpk-digest-uppercase",
+      "responseDigest": "sha256:f82a4e7d1d9bcec7ebc77ab9590577d07acda75c28d213a9c72620bc3729a68f",
+      "status": "passed"
+    },
+    {
+      "expectedCode": "semantic-digest-mismatch",
+      "family": "digest-envelope-conflict",
+      "id": "mutation-envelope-semantic-digest-mismatch",
+      "responseDigest": "sha256:c7cd9e47d841e18967a8bfe572fc3c84a011b74bc7ca69cb862affd8dacaf97a",
+      "status": "passed"
+    },
+    {
+      "expectedCode": "repetition-history-mismatch",
+      "family": "truncated-history",
+      "id": "mutation-repetition-history-truncated",
+      "responseDigest": "sha256:90642334cd0b870383841d096ff54c651d3ce418047d052f6b30123d628a5b1a",
+      "status": "passed"
+    },
+    {
+      "expectedCode": null,
+      "family": "resource-limit",
+      "id": "mutation-harness-resource-limit",
+      "responseDigest": "sha256:8add1556cb0db88f80fe9e0782923b195a1a772f9cf231483dcd26982f249fbc",
+      "status": "passed"
+    }
+  ],
+  "protocol": "MIF-INTEROP-DIFFERENTIAL-REPORT/1",
+  "runs": [
+    {
+      "coverage": [
+        "placing",
+        "repetition"
+      ],
+      "eventCount": 8,
+      "events": [
+        {
+          "actor": "b",
+          "at": "a4",
+          "seq": 1,
+          "type": "place"
+        },
+        {
+          "actor": "w",
+          "at": "e3",
+          "seq": 2,
+          "type": "place"
+        },
+        {
+          "actor": "b",
+          "at": "d7",
+          "seq": 3,
+          "type": "place"
+        },
+        {
+          "actor": "w",
+          "at": "d1",
+          "seq": 4,
+          "type": "place"
+        },
+        {
+          "actor": "b",
+          "at": "f6",
+          "seq": 5,
+          "type": "place"
+        },
+        {
+          "actor": "w",
+          "at": "c5",
+          "seq": 6,
+          "type": "place"
+        },
+        {
+          "actor": "b",
+          "at": "b6",
+          "seq": 7,
+          "type": "place"
+        },
+        {
+          "actor": "w",
+          "at": "b4",
+          "seq": 8,
+          "type": "place"
+        }
+      ],
+      "eventsDigest": "sha256:ec273aa02fb328c2b91d54cfb405f1dd7d11ffb49062d6878d45e91a9117f679",
+      "finalCurrent": "MFEN/1.0 mill24-state-v1 .B...W.B/B.B....W/W...W... b p p 5,5 - 0 8 -",
+      "finalDecisionDigest": "sha256:f5ff4530ca0f66f828ac5a8e632a741307dd7910ce1803ae12905e5de5400435",
+      "logicalTurns": 8,
+      "prngDraws": 8,
+      "prngState": "f1bbcdcbfa53e0a8",
+      "scenario": "placing-standard",
+      "seed": "0000000000000000",
+      "status": "passed",
+      "stopReason": "logical-turn-limit",
+      "transcriptDigest": "sha256:db3b6a1ac3bd10670eb2ecb3facfa34e2b42e95483affd959c6d8be79006e347"
+    },
+    {
+      "coverage": [
+        "placing",
+        "repetition"
+      ],
+      "eventCount": 8,
+      "events": [
+        {
+          "actor": "b",
+          "at": "d5",
+          "seq": 1,
+          "type": "place"
+        },
+        {
+          "actor": "w",
+          "at": "g7",
+          "seq": 2,
+          "type": "place"
+        },
+        {
+          "actor": "b",
+          "at": "a7",
+          "seq": 3,
+          "type": "place"
+        },
+        {
+          "actor": "w",
+          "at": "c5",
+          "seq": 4,
+          "type": "place"
+        },
+        {
+          "actor": "b",
+          "at": "g4",
+          "seq": 5,
+          "type": "place"
+        },
+        {
+          "actor": "w",
+          "at": "e5",
+          "seq": 6,
+          "type": "place"
+        },
+        {
+          "actor": "b",
+          "at": "f2",
+          "seq": 7,
+          "type": "place"
+        },
+        {
+          "actor": "w",
+          "at": "d6",
+          "seq": 8,
+          "type": "place"
+        }
+      ],
+      "eventsDigest": "sha256:a0d7f1121810321272dd0cfd2ee42ed4af278d680169762bbf6521ef16d50b94",
+      "finalCurrent": "MFEN/1.0 mill24-state-v1 B.WB..../.W..B.../WBW..... b p p 5,5 - 0 8 -",
+      "finalDecisionDigest": "sha256:0ec790f56edcec61b65ec7e9daf2b614cd95e0e4596a2ff5f25ff129fbbbd169",
+      "logicalTurns": 8,
+      "prngDraws": 8,
+      "prngState": "f1bbcdcbfa53e0a9",
+      "scenario": "placing-standard",
+      "seed": "0000000000000001",
+      "status": "passed",
+      "stopReason": "logical-turn-limit",
+      "transcriptDigest": "sha256:5e0877581a8c1399f160c6ff90c6d61cb9ab83fef226dc12661affb820913d44"
+    },
+    {
+      "coverage": [
+        "moving",
+        "flying",
+        "removal",
+        "repetition"
+      ],
+      "eventCount": 9,
+      "events": [
+        {
+          "actor": "w",
+          "from": "g4",
+          "seq": 1,
+          "to": "g1",
+          "type": "move"
+        },
+        {
+          "actor": "b",
+          "from": "f4",
+          "seq": 2,
+          "to": "f2",
+          "type": "move"
+        },
+        {
+          "actor": "w",
+          "from": "g1",
+          "seq": 3,
+          "to": "g4",
+          "type": "move"
+        },
+        {
+          "actor": "b",
+          "from": "b6",
+          "seq": 4,
+          "to": "b4",
+          "type": "move"
+        },
+        {
+          "actor": "w",
+          "from": "g4",
+          "seq": 5,
+          "to": "f4",
+          "type": "move"
+        },
+        {
+          "actor": "b",
+          "from": "b4",
+          "seq": 6,
+          "to": "b6",
+          "type": "move"
+        },
+        {
+          "actor": "b",
+          "seq": 7,
+          "target": {
+            "at": "f4",
+            "zone": "board"
+          },
+          "type": "remove"
+        },
+        {
+          "actor": "w",
+          "from": "d7",
+          "seq": 8,
+          "to": "c4",
+          "type": "move"
+        },
+        {
+          "actor": "b",
+          "from": "f2",
+          "seq": 9,
+          "to": "d2",
+          "type": "move"
+        }
+      ],
+      "eventsDigest": "sha256:a909fb611758f09e83c077d391a77066b7e56be74d002c679568b8d09d397745",
+      "finalCurrent": "MFEN/1.0 mill24-state-v1 W.W...../BBB..B../.......W w m m 0,0 - 0 24 -",
+      "finalDecisionDigest": "sha256:d9544c567bd358e17ebd96e688ca8428f2c5e24ed71ca85b38b58827f33421b8",
+      "logicalTurns": 8,
+      "prngDraws": 9,
+      "prngState": "91168ced034a2aac",
+      "scenario": "moving-standard",
+      "seed": "0123456789abcdef",
+      "status": "passed",
+      "stopReason": "logical-turn-limit",
+      "transcriptDigest": "sha256:73d6400b338762dd1e52573fb82bb62aa977a2ae2a79f1a55af9959d2dd6dc13"
+    },
+    {
+      "coverage": [
+        "moving",
+        "repetition"
+      ],
+      "eventCount": 8,
+      "events": [
+        {
+          "actor": "w",
+          "from": "g4",
+          "seq": 1,
+          "to": "g1",
+          "type": "move"
+        },
+        {
+          "actor": "b",
+          "from": "f4",
+          "seq": 2,
+          "to": "f2",
+          "type": "move"
+        },
+        {
+          "actor": "w",
+          "from": "a7",
+          "seq": 3,
+          "to": "a4",
+          "type": "move"
+        },
+        {
+          "actor": "b",
+          "from": "f2",
+          "seq": 4,
+          "to": "d2",
+          "type": "move"
+        },
+        {
+          "actor": "w",
+          "from": "a4",
+          "seq": 5,
+          "to": "b4",
+          "type": "move"
+        },
+        {
+          "actor": "b",
+          "from": "d6",
+          "seq": 6,
+          "to": "d5",
+          "type": "move"
+        },
+        {
+          "actor": "w",
+          "from": "g1",
+          "seq": 7,
+          "to": "g4",
+          "type": "move"
+        },
+        {
+          "actor": "b",
+          "from": "d2",
+          "seq": 8,
+          "to": "d3",
+          "type": "move"
+        }
+      ],
+      "eventsDigest": "sha256:180120edf10f0e6639fc46af1d094a44235b7e04c8c843414816b4e19786e3af",
+      "finalCurrent": "MFEN/1.0 mill24-state-v1 .WWW..../B.B....W/.B...B.. w m m 0,0 - 0 24 -",
+      "finalDecisionDigest": "sha256:145031bf5d9e6f8621ae4f65ea0bde9b8df4c43b7d7b81850a0802ad20786b90",
+      "logicalTurns": 8,
+      "prngDraws": 8,
+      "prngState": "d0698cbbc552d0b5",
+      "scenario": "moving-standard",
+      "seed": "deadbeefcafef00d",
+      "status": "passed",
+      "stopReason": "logical-turn-limit",
+      "transcriptDigest": "sha256:78fa34a2c483006be260f5a57dda29a71da7bc55ef3d65cf3650ba4da9795b56"
+    },
+    {
+      "coverage": [
+        "moving",
+        "flying",
+        "repetition"
+      ],
+      "eventCount": 6,
+      "events": [
+        {
+          "actor": "w",
+          "from": "a7",
+          "seq": 1,
+          "to": "a4",
+          "type": "move"
+        },
+        {
+          "actor": "b",
+          "from": "f6",
+          "seq": 2,
+          "to": "e3",
+          "type": "move"
+        },
+        {
+          "actor": "w",
+          "from": "d7",
+          "seq": 3,
+          "to": "b2",
+          "type": "move"
+        },
+        {
+          "actor": "b",
+          "from": "d6",
+          "seq": 4,
+          "to": "d5",
+          "type": "move"
+        },
+        {
+          "actor": "w",
+          "from": "g7",
+          "seq": 5,
+          "to": "f6",
+          "type": "move"
+        },
+        {
+          "actor": "b",
+          "from": "d5",
+          "seq": 6,
+          "to": "d3",
+          "type": "move"
+        }
+      ],
+      "eventsDigest": "sha256:226c021ce3f1835c9189ec21a35781511a02ad303edf92ee1ea18c2ebaf58ec5",
+      "finalCurrent": "MFEN/1.0 mill24-state-v1 .......W/B.W...W./....BB.. w m m 0,0 - 0 24 -",
+      "finalDecisionDigest": "sha256:18b1ccf31c153a84471dbaf45b3bb84fa0f21fd212db9bdcc06b4bcc10ec56df",
+      "logicalTurns": 6,
+      "prngDraws": 6,
+      "prngState": "b54cda58fbbee880",
+      "scenario": "flying-three-pieces",
+      "seed": "0000000000000002",
+      "status": "passed",
+      "stopReason": "logical-turn-limit",
+      "transcriptDigest": "sha256:7f88ce0b4bc3f76b6253d97bd906d81a3b7ad12265d415d8e879cd315f7a93a4"
+    },
+    {
+      "coverage": [
+        "moving",
+        "flying",
+        "removal",
+        "repetition",
+        "terminal"
+      ],
+      "eventCount": 6,
+      "events": [
+        {
+          "actor": "w",
+          "from": "g7",
+          "seq": 1,
+          "to": "b4",
+          "type": "move"
+        },
+        {
+          "actor": "b",
+          "from": "f6",
+          "seq": 2,
+          "to": "d1",
+          "type": "move"
+        },
+        {
+          "actor": "w",
+          "from": "b4",
+          "seq": 3,
+          "to": "a1",
+          "type": "move"
+        },
+        {
+          "actor": "b",
+          "from": "d6",
+          "seq": 4,
+          "to": "f4",
+          "type": "move"
+        },
+        {
+          "actor": "w",
+          "from": "a1",
+          "seq": 5,
+          "to": "g7",
+          "type": "move"
+        },
+        {
+          "actor": "w",
+          "seq": 6,
+          "target": {
+            "at": "b6",
+            "zone": "board"
+          },
+          "type": "remove"
+        }
+      ],
+      "eventsDigest": "sha256:ca5e91bbc6f50893d317fd616580ceb9df42ef41ba0e898f9e88579925d2c12a",
+      "finalCurrent": "MFEN/1.0 mill24-state-v1 WWW..B../...B..../........ - o o 0,0 - 0 23 w:fewer-than-minimum",
+      "finalDecisionDigest": "sha256:58e767bb79b015d189af0e8a2c4f88bdb5505facc95cac15f783088dda213457",
+      "logicalTurns": 5,
+      "prngDraws": 6,
+      "prngState": "b54cda58fbbee881",
+      "scenario": "flying-three-pieces",
+      "seed": "0000000000000003",
+      "status": "passed",
+      "stopReason": "terminal",
+      "transcriptDigest": "sha256:3c340473c14eda62a51e3e5a4dd97c3e9c77b1fdf0dc5f23dd6f71719461855a"
+    },
+    {
+      "coverage": [
+        "placing",
+        "removal",
+        "repetition"
+      ],
+      "eventCount": 5,
+      "events": [
+        {
+          "actor": "b",
+          "seq": 1,
+          "target": {
+            "at": "c5",
+            "zone": "board"
+          },
+          "type": "remove"
+        },
+        {
+          "actor": "w",
+          "at": "e4",
+          "seq": 2,
+          "type": "place"
+        },
+        {
+          "actor": "b",
+          "at": "g4",
+          "seq": 3,
+          "type": "place"
+        },
+        {
+          "actor": "w",
+          "at": "d5",
+          "seq": 4,
+          "type": "place"
+        },
+        {
+          "actor": "b",
+          "at": "b6",
+          "seq": 5,
+          "type": "place"
+        }
+      ],
+      "eventsDigest": "sha256:51fe7263a8a34e138b0af955b84155952c1665feda9e3a430953a5fe5d749170",
+      "finalCurrent": "MFEN/1.0 mill24-state-v1 BBBB..../B......./.W.W.... w p p 6,4 - 0 8 -",
+      "finalDecisionDigest": "sha256:6a1f0eda261eefc17ff35e55ff11a3bce048c337accf44eaf02c060e718e55b5",
+      "logicalTurns": 4,
+      "prngDraws": 5,
+      "prngState": "282671b08d857d7a",
+      "scenario": "pending-removal",
+      "seed": "1111111111111111",
+      "status": "passed",
+      "stopReason": "logical-turn-limit",
+      "transcriptDigest": "sha256:216fd53f9c8a12cbeed457b01b1a3ccfd839c3afe9652787c7290b35be28f543"
+    },
+    {
+      "coverage": [
+        "placing",
+        "claim-right",
+        "repetition"
+      ],
+      "eventCount": 1,
+      "events": [
+        {
+          "actor": "b",
+          "at": "b4",
+          "seq": 1,
+          "type": "place"
+        }
+      ],
+      "eventsDigest": "sha256:fd498aded3c4523f1786f1e83d73156d61b87da6dd957398ed279a0ace9e955e",
+      "finalCurrent": "MFEN/1.0 mill24-state-v1 ......../.......B/........ w p p 9,8 - 0 1 -",
+      "finalDecisionDigest": "sha256:2116487681f5c976c6ab1c703b6da968e8d263261f3134e7b24e9931450970a3",
+      "logicalTurns": 1,
+      "prngDraws": 1,
+      "prngState": "c0599bdba16c9e37",
+      "scenario": "claim-right-at-origin",
+      "seed": "2222222222222222",
+      "status": "passed",
+      "stopReason": "logical-turn-limit",
+      "transcriptDigest": "sha256:ebf82c491f97bee7fde4188222bc9b0a847573cc6c5d8f5bfe6b5822a23a6b58"
+    },
+    {
+      "coverage": [
+        "terminal"
+      ],
+      "eventCount": 0,
+      "events": [],
+      "eventsDigest": "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "finalCurrent": "MFEN/1.0 mill24-state-v1 WBWBWBWB/BWBWBWBW/WBWBWBWB - o o 1,1 - 0 0 b:no-legal-primary-action",
+      "finalDecisionDigest": "sha256:976a6e0ce973b29b7f6b6d42d8cc9b33d6448acf8b8152dc6dc9a132398ea808",
+      "logicalTurns": 0,
+      "prngDraws": 0,
+      "prngState": "3333333333333333",
+      "scenario": "terminal-full-board",
+      "seed": "3333333333333333",
+      "status": "passed",
+      "stopReason": "terminal",
+      "transcriptDigest": "sha256:5b79bd5dd2854beafd73f7138d7963a2fbf1d0b0871e4828166a317261d76195"
+    },
+    {
+      "coverage": [
+        "placing",
+        "repetition",
+        "resource-limit"
+      ],
+      "eventCount": 0,
+      "events": [],
+      "eventsDigest": "sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "finalCurrent": "MFEN/1.0 mill24-state-v1 ......../......../........ b p p 9,9 - 0 0 -",
+      "finalDecisionDigest": "sha256:3e178ce2bd4583f8a24b28b648b88f2ab1575d210e6fb295faca13e8cca47b46",
+      "logicalTurns": 0,
+      "prngDraws": 0,
+      "prngState": "4444444444444444",
+      "scenario": "resource-limit-probe",
+      "seed": "4444444444444444",
+      "status": "passed",
+      "stopReason": "logical-turn-limit",
+      "transcriptDigest": "sha256:b932260b4a83e09c8500b8db39bf3ee037b984601ef24923a791a3c8e655e0fe"
+    }
+  ],
+  "status": "passed",
+  "suiteConformance": false,
+  "summary": {
+    "negativeFailed": 0,
+    "negativePassed": 5,
+    "runsFailed": 0,
+    "runsPassed": 10
+  }
+}
