@@ -88,13 +88,29 @@ fn diagnostic(result: model::Result<Value>) -> Value {
 }
 
 #[test]
-fn capabilities_bind_candidate_4_m4_baseline() {
+fn capabilities_bind_suite_1_0_finalization() {
     let capability = capabilities();
+    assert_eq!(
+        capability["suites"],
+        json!(["sha256:81a5feabc281bfc4f830addabc2c6846d1f191bbbcf04e548f04b35dd358ae6f"])
+    );
+    assert_eq!(
+        capability["classes"],
+        json!([
+            { "id": "conversion", "level": "none" },
+            { "id": "identity", "level": "tested" },
+            { "id": "key", "level": "tested" },
+            { "id": "position", "level": "tested" },
+            { "id": "replay", "level": "tested" },
+            { "id": "ruleset", "level": "tested" },
+            { "id": "transform", "level": "tested" }
+        ])
+    );
     assert_eq!(
         capability["testedCorpora"],
         json!([{
             "digest": "sha256:d11317a090300f8a47f77afed647bdbd236dcdb1996c0147a81c874fa39dfd82",
-            "classes": ["identity", "position", "replay", "ruleset", "transform"]
+            "classes": ["identity", "key", "position", "replay", "ruleset", "transform"]
         }])
     );
     assert_eq!(
@@ -110,7 +126,10 @@ fn capabilities_bind_candidate_4_m4_baseline() {
             "mifExecutableCorpus": "sha256:350b7ff02772e820a57431e11c4e2f15a874d0779fb6e7afb01e9b16f6992741",
             "mifAdapterProtocol": "sha256:253c1d201ea1db625e0c534da445ca4ecaa0b07597dfc7dbf59fbd6adf89874f",
             "mifSmokeCorpus": "sha256:a6d292f4d19381172fbc19f89d3ee42145a6d5533d6d81fd719394e25342bb53",
-            "mifDeterministicCorpus": "sha256:d11317a090300f8a47f77afed647bdbd236dcdb1996c0147a81c874fa39dfd82"
+            "mifDeterministicCorpus": "sha256:d11317a090300f8a47f77afed647bdbd236dcdb1996c0147a81c874fa39dfd82",
+            "mifSuiteCommit": "3ee7e57c7d4c7208be91f62914f344a587fb0f70",
+            "mifSuiteJcs": "sha256:81a5feabc281bfc4f830addabc2c6846d1f191bbbcf04e548f04b35dd358ae6f",
+            "mifSuiteRaw": "sha256:088ca33234289b06d9276aa4c430758222aa85d61621dee7bef4bfc6dcc069a4"
         })
     );
 }

@@ -419,15 +419,15 @@ fn capabilities() -> Value {
     json!({
         "format": "MIFCAP/1.0",
         "implementation": { "name": "sanmill-rust-mif-adapter", "version": env!("CARGO_PKG_VERSION") },
-        "suites": [],
+        "suites": ["sha256:81a5feabc281bfc4f830addabc2c6846d1f191bbbcf04e548f04b35dd358ae6f"],
         "classes": [
             { "id": "conversion", "level": "none" },
-            { "id": "identity", "level": "implemented" },
-            { "id": "key", "level": "implemented" },
-            { "id": "position", "level": "implemented" },
-            { "id": "replay", "level": "implemented" },
-            { "id": "ruleset", "level": "implemented" },
-            { "id": "transform", "level": "implemented" }
+            { "id": "identity", "level": "tested" },
+            { "id": "key", "level": "tested" },
+            { "id": "position", "level": "tested" },
+            { "id": "replay", "level": "tested" },
+            { "id": "ruleset", "level": "tested" },
+            { "id": "transform", "level": "tested" }
         ],
         "formats": [
             { "id": "MFEN/1.0", "read": "implemented", "write": "implemented" },
@@ -482,7 +482,7 @@ fn capabilities() -> Value {
         "testedCorpora": [
             {
                 "digest": "sha256:d11317a090300f8a47f77afed647bdbd236dcdb1996c0147a81c874fa39dfd82",
-                "classes": ["identity", "position", "replay", "ruleset", "transform"]
+                "classes": ["identity", "key", "position", "replay", "ruleset", "transform"]
             }
         ],
         "annotations": {
@@ -496,7 +496,10 @@ fn capabilities() -> Value {
             "mifExecutableCorpus": "sha256:350b7ff02772e820a57431e11c4e2f15a874d0779fb6e7afb01e9b16f6992741",
             "mifAdapterProtocol": "sha256:253c1d201ea1db625e0c534da445ca4ecaa0b07597dfc7dbf59fbd6adf89874f",
             "mifSmokeCorpus": "sha256:a6d292f4d19381172fbc19f89d3ee42145a6d5533d6d81fd719394e25342bb53",
-            "mifDeterministicCorpus": "sha256:d11317a090300f8a47f77afed647bdbd236dcdb1996c0147a81c874fa39dfd82"
+            "mifDeterministicCorpus": "sha256:d11317a090300f8a47f77afed647bdbd236dcdb1996c0147a81c874fa39dfd82",
+            "mifSuiteCommit": "3ee7e57c7d4c7208be91f62914f344a587fb0f70",
+            "mifSuiteJcs": "sha256:81a5feabc281bfc4f830addabc2c6846d1f191bbbcf04e548f04b35dd358ae6f",
+            "mifSuiteRaw": "sha256:088ca33234289b06d9276aa4c430758222aa85d61621dee7bef4bfc6dcc069a4"
         }
     })
 }
