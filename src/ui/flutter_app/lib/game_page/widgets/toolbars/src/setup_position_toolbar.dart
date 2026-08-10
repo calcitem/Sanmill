@@ -1158,16 +1158,15 @@ class SetupPositionButtonsContainer extends StatelessWidget {
   const SetupPositionButtonsContainer({
     super.key,
     required this.backgroundColor,
-    required EdgeInsets margin,
-    required EdgeInsets padding,
+    required this.margin,
+    required this.padding,
     required this.itemColor,
     required this.child,
-  }) : _margin = margin,
-       _padding = padding;
+  });
 
   final Color? backgroundColor;
-  final EdgeInsets _margin;
-  final EdgeInsets _padding;
+  final EdgeInsets margin;
+  final EdgeInsets padding;
   final Color? itemColor;
   final List<Widget> child;
 
@@ -1179,8 +1178,8 @@ class SetupPositionButtonsContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         color: backgroundColor,
       ),
-      margin: _margin,
-      padding: _padding,
+      margin: margin,
+      padding: padding,
       child: ToolbarItemTheme(
         key: const Key('toolbar_item_theme_container'),
         data: ToolbarItemThemeData(

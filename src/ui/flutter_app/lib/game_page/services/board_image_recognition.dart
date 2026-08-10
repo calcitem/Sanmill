@@ -2293,10 +2293,6 @@ math.Rectangle<int>? detectBoardGridFromImage(
   math.Rectangle<int> boardRect,
   Color boardLineColor,
 ) {
-  if (image == null || boardRect == null) {
-    return boardRect;
-  }
-
   // Convert Flutter's Color to internal Rgb representation
   final Rgb lineRgb = BoardImageRecognitionService._rgbFromColor(
     boardLineColor,

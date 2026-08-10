@@ -6,6 +6,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
@@ -495,7 +496,7 @@ class _LogsPageState extends State<LogsPage> {
       itemCount: _logs.length,
       // Limit the cache extent to reduce memory usage during stress testing.
       // Only pre-render a small amount of off-screen content.
-      cacheExtent: 100,
+      scrollCacheExtent: const ScrollCacheExtent.pixels(100),
       itemBuilder: (BuildContext context, int index) {
         return _LogItem(
           log: _logs[index],

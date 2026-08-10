@@ -131,9 +131,6 @@ final GlobalKey<NavigatorState> navigatorStateKey = GlobalKey();
 
 GlobalKey<NavigatorState> get currentNavigatorKey {
   if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-    if (Catcher2.navigatorKey == null) {
-      return navigatorStateKey;
-    }
     return Catcher2.navigatorKey;
   } else {
     return navigatorStateKey;
