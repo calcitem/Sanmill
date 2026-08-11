@@ -3,9 +3,9 @@
 # Get current branch name
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-# Only allow release from master or stable branch
-if [ "$CURRENT_BRANCH" != "master" ] && [ "$CURRENT_BRANCH" != "stable" ]; then
-  echo "Error: Release is only allowed from 'master' or 'stable' branch."
+# Only allow release from stable branch
+if [ "$CURRENT_BRANCH" != "stable" ]; then
+  echo "Error: Release is only allowed from 'stable' branch."
   echo "Current branch: $CURRENT_BRANCH"
   exit 1
 fi
