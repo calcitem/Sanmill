@@ -798,6 +798,28 @@ class GameController {
     final GameMode gameMode = gameInstance.gameMode;
     final bool isGameRunning = position.winner == PieceColor.nobody;
 
+    // Move Now while a search is already running: ask the engine to finish
+    // the current search early. The loop that started that search is still
+    // waiting inside `Engine.search()`, so it receives the interrupted
+    // bestmove and applies it.
+    //
+    // We must NOT spawn a second engineToGo() loop on top of it: both loops
+    // would poll the same FIFO native response queue while sharing one
+    // `position`, so one of them applies a bestmove the other has already
+    // applied, `Game.doMove()` rejects it and it surfaces as
+    // EngineNoBestMove.
+    //
+    // This runs before the turn and game-over checks so that a running search
+    // is always stopped, whatever the board state looks like from here.
+    // When the engine is idle the branch is not taken and we fall through to
+    // the regular dispatch below, so the AI starts thinking on demand (e.g.
+    // Move Now pressed on a human turn after `moveNow()` swapped roles).
+    if (isMoveNow && isEngineRunning) {
+      logger.i("$tag isMoveNow && isEngineRunning -> stop the running search.");
+      await engine.stopSoft();
+      return const EngineResponseSkip();
+    }
+
     // If isMoveNow but it's actually humanToMove, skip
     if (isMoveNow && gameInstance.isHumanToMove) {
       return const EngineResponseSkip();
@@ -814,6 +836,9 @@ class GameController {
       return const EngineGameIsOver();
     }
 
+    // Never start a second concurrent search while one is in flight. Move Now
+    // is the only exception and is handled above by stopping the running
+    // search instead of starting another one.
     if (isEngineRunning && !isMoveNow) {
       // TODO: Monkey test trigger
       logger.t("$tag engineToGo() is still running, skip.");
@@ -1009,6 +1034,9 @@ class GameController {
 
     GameController().disableStats = true;
 
+    // `isMoveNow` only selects the interrupt path, which is needed when a
+    // search is already in flight. With the engine idle the regular dispatch
+    // is preferable because it still consults the opening book.
     final EngineResponse engineResponse = await engineToGo(
       context,
       isMoveNow: isEngineRunning,

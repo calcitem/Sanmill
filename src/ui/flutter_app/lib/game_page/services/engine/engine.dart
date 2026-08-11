@@ -22,6 +22,9 @@ class Engine {
   // Flag to indicate if current search has been cancelled
   bool _isSearchCancelled = false;
 
+  // Guards `search()` against re-entrancy; see its doc comment.
+  bool _isSearchInFlight = false;
+
   // Track whether native engine thread has been started to avoid redundant restarts
   bool _started = false;
 
@@ -241,7 +244,27 @@ class Engine {
     }
   }
 
+  /// Runs one engine search.
+  ///
+  /// Searches are strictly serialized: the native response queue is FIFO and
+  /// shared, so two concurrent searches would consume each other's `bestmove`
+  /// and apply a move to a position that has already advanced.
   Future<EngineRet> search({bool moveNow = false}) async {
+    assert(!_isSearchInFlight, 'Engine.search() is not re-entrant');
+    if (_isSearchInFlight) {
+      logger.e("$_logTag search() re-entered while a search is in flight");
+      throw const EngineCancelled();
+    }
+
+    _isSearchInFlight = true;
+    try {
+      return await _search(moveNow: moveNow);
+    } finally {
+      _isSearchInFlight = false;
+    }
+  }
+
+  Future<EngineRet> _search({required bool moveNow}) async {
     await ensureReady();
 
     // Clear any existing analysis markers when AI makes a move
