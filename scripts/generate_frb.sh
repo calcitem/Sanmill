@@ -1,7 +1,7 @@
 #!/bin/bash
 # Install flutter_rust_bridge_codegen (if needed) and regenerate FRB bindings.
-# Produces crates/tgf-frb/src/frb_generated.rs (gitignored) and updates Dart
-# files under src/ui/flutter_app/lib/src/rust/.
+# Produces crates/tgf-frb/src/frb_generated.rs and updates Dart files under
+# src/ui/flutter_app/lib/src/rust/. Both bridge halves are committed together.
 
 set -euo pipefail
 

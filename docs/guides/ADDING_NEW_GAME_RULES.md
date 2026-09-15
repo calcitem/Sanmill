@@ -137,6 +137,12 @@ When adding a Rust option:
 5. Add or update Flutter rule settings UI and localization when the field is
    user-facing.
 
+For new message keys, use the four-locale tail gate and translation quality
+rules in [arb-translation-updater](../../.agents/skills/arb-translation-updater/SKILL.md).
+Do not copy English placeholders into other locales or duplicate the scope
+policy here. Preserve existing preset identities and Hive field indices when
+persisted rule settings change.
+
 ## FEN Extensions
 
 Extend FEN only for dynamic state that cannot be recomputed from the board and
@@ -166,26 +172,23 @@ cargo test -p rust_lib_sanmill <test_name>
 cd src/ui/flutter_app && flutter test <test_path>
 ```
 
-Before committing Rust rule changes, run:
-
-```bash
-cargo test -p tgf-mill
-cargo test -p tgf-cli mill_uci
-cargo test -p rust_lib_sanmill mill_kernel
-./format.sh s
-```
+Complete the validation and authorized commit workflow in
+[AGENTS.md](../../AGENTS.md), including `cargo test --workspace` for Rust
+engine changes. Select relevant Flutter mapping, save/restore, widget, and
+native integration tests; report unavailable platform coverage separately.
 
 For search-sensitive changes, also run:
 
 ```bash
-cargo run --release -p tgf-cli -- bench
+python scripts/record_rust_perf_baseline.py --release --output target/tgf_perf_result.toml
 python scripts/check_perf_baseline.py \
   --baseline tests/perf_baseline.toml \
   --result target/tgf_perf_result.toml
 ```
 
-Use `scripts/run_head_to_head.sh` when the change may affect engine strength
-or parity with the master reference engine.
+Use `scripts/run_head_to_head.sh` when the change may affect engine strength.
+For a parity comparison, identify the actual reference revision and declare
+the equivalent configuration; branch names do not establish architecture.
 
 ## Review Checklist
 

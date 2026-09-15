@@ -506,6 +506,7 @@ nul
 
 # OpenAI Codex Config & Cache
 .codex/
+/.codex-remote-attachments/
 
 # Perfect DB error-patch mining working data (see mining/README.md):
 # large, fully regenerable-from-the-database entries.jsonl/checkpoint.json

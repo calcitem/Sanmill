@@ -1,45 +1,37 @@
 # Sanmill Agent Skills
 
-Project-level Skills for Codex live in this directory. Each Skill packages a
-focused repository workflow in a `SKILL.md` file and is selected from its YAML
-frontmatter when a task matches its description.
+Project Skills live here and are selected by their name and description.
+An explicit request can also invoke a Skill. Follow the user's task mode and
+existing authorization; reading a Skill does not authorize unrelated changes.
 
-## Available Skills
+## Catalog
 
-| Directory | Skill | Purpose |
-| --- | --- | --- |
-| `arb-translation-updater/` | ARB Translation Updater | Choose en/zh-only or all-locale ARB updates from en/de/hu/zh tail alignment. |
-| `cpp-formatter/` | C++ Code Formatter | Format or check the remaining C++ code with the repository conventions. |
-| `engine-performance-audit/` | engine-performance-audit | Find Rust/TGF performance regressions, hotspots, and deterministic H2H engine anomalies. |
-| `flutter-test-runner/` | Flutter Test Runner | Run Sanmill unit, widget, and integration tests. |
-| `game-rule-validator/` | New Rule Completeness Validator | Check that a new game rule or variant updates every required layer. |
-| `refactor-parity-audit/` | refactor-parity-audit | Audit Rust/TGF refactors and ports against a reference implementation. |
+| Skill directory / name | Use when |
+| --- | --- |
+| [arb-translation-updater](arb-translation-updater/SKILL.md) | Adding ARB message keys or synchronizing translations; applies the en/de/hu/zh tail gate |
+| [cpp-formatter](cpp-formatter/SKILL.md) | Formatting or checking changed C/C++ files in this repository |
+| [engine-performance-audit](engine-performance-audit/SKILL.md) | Diagnosing engine performance regressions or deterministic H2H anomalies |
+| [flutter-test-runner](flutter-test-runner/SKILL.md) | Selecting, running, or diagnosing Sanmill Flutter tests or coverage |
+| [game-rule-validator](game-rule-validator/SKILL.md) | Adding a Mill variant, changing mechanics or option structure, or reviewing those changes |
+| [refactor-parity-audit](refactor-parity-audit/SKILL.md) | Comparing behavior against an identified implementation or revision during a port or refactor |
 
-Codex selects a matching Skill automatically. A request can also name a Skill
-explicitly when that workflow must be used.
+Descriptions identify the workflow, not every file type that might participate.
+A generic test request does not imply Flutter; a wording-only rule or locale
+change does not require a full rule audit or translation synchronization.
 
-## Creating or Updating a Skill
+## Maintenance
 
-Use the following layout:
+Use lowercase hyphenated names matching the directory and YAML frontmatter
+with `name` and `description`. Keep simple Skills self-contained. Larger
+Skills link conditional procedures from `references/`; do not load every
+reference when a single mode is sufficient.
 
-```text
-.agents/skills/my-skill/
-└── SKILL.md
-```
+Project-wide safety, validation, generated-code, and commit requirements live
+in [AGENTS.md](../../AGENTS.md). Reference those requirements instead of
+copying a second policy into every Skill. Translation scope is defined once in
+the translation Skill.
 
-Every `SKILL.md` starts with YAML frontmatter:
-
-```markdown
----
-name: "Skill Name"
-description: "What the Skill does and when Codex should use it."
----
-```
-
-Keep each Skill focused on one workflow. Prefer repository commands and
-authoritative project documentation over copied explanations. When paths,
-commands, or architecture change, update the affected Skill in the same
-change and keep the catalog above synchronized.
-
-`.agents/skills/` is the canonical location. Do not maintain a second copy in
-a tool-specific directory.
+Keep dated experiments as explicitly historical evidence, not current tasks
+or acceptance rules. Update affected references and this catalog when paths,
+commands, or architecture change. Do not maintain another copy of the Skills
+under a tool-specific directory.

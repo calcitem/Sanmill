@@ -1,503 +1,221 @@
-# AGENT INSTRUCTIONS
-
-This document defines a practical playbook for AI Agents working within
-the Sanmill repository. It balances safety with productivity, ensuring
-consistent, high-quality contributions.
-
----
-
-## 1) Purpose & Scope
-
-* Provide consistent guidance for AI Agents (primarily Codex, plus code
-  assistants and automation bots).
-* Cover planning, execution, safety, testing, and collaboration practices.
-* Maintain code quality across Rust/TGF, Flutter/Dart, and build tooling.
-
----
-
-## 2) Project Context
-
-* **Project Name:** Sanmill
-* **Description:** A free, powerful Mill (N Men's Morris) game with Flutter GUI and a native Rust/TGF AI engine.
-* **License:** GNU Affero General Public License version 3 (AGPL v3)
-* **Primary Goals:**
-  - Deliver a high-quality, cross-platform Mill game
-  - Provide excellent user experience through Flutter frontend
-  - Support multiple platforms: Android, iOS, Windows, macOS, Linux
-* **Key Constraints:**
-  - AGPL v3 compliance for all code contributions
-  - Cross-platform compatibility required
-  - Performance-critical AI/search paths (Rust/TGF framework)
-  - Mobile-first UI/UX design (Flutter)
-
-### Technology Stack
-
-**Rust / TGF Framework:**
-- `crates/tgf-core`: game-neutral traits and POD types
-- `crates/tgf-search`: generic monomorphised searchers (PVS, MTD(f), MCTS)
-- `crates/tgf-mill`: Mill rules, topology, evaluator, and presets
-- `crates/tgf-othello`: second-game pressure test
-- `crates/tgf-frb`: Flutter Rust Bridge API surface (`rust_lib_sanmill`)
-- See `docs/FRAMEWORK_API.md` for the current API contract
-
-**Frontend (Flutter/Dart):**
-- Cross-platform UI (Android, iOS, Windows, macOS, Linux)
-- Internationalization (Many languages via ARB files)
-- Build system: Flutter CLI, platform-specific tools
-
-**Testing:**
-- Rust unit / integration tests: `cargo test --workspace`
-- Flutter widget tests and integration tests
-- UI automation: Appium
-- Monkey testing for stability
-
-All gameplay logic and AI search live in the Rust/TGF stack.
-
-**Build & Automation:**
-- Shell scripts for initialization and deployment
-- CI/CD: GitHub Actions
-- Code formatting: dart format (Dart), cargo fmt/clippy (Rust)
-
-### Project Structure
-
-```
-/
-├── .agents/
-│   └── skills/                # Project-level Codex workflows
-├── crates/                    # Rust/TGF workspace
-│   ├── tgf-core/              # Game-neutral traits and POD types
-│   ├── tgf-search/            # Generic searchers (PVS, MTD(f), MCTS)
-│   ├── tgf-mill/              # Mill rules, evaluator, presets
-│   ├── tgf-othello/           # Second-game pressure test
-│   ├── tgf-frb/               # FRB API surface (rust_lib_sanmill)
-│   └── tgf-cli/               # Rust CLI / bench tool
-├── src/                       # Source root
-│   └── ui/
-│       └── flutter_app/      # Flutter frontend (PRIMARY)
-│           ├── lib/          # Dart source code
-│           ├── l10n.yaml     # Localization config
-│           ├── pubspec.yaml  # Flutter dependencies
-│           └── android/ios/linux/macos/windows/
-├── tests/                    # Integration / UI / perf tests
-│   ├── appium/               # UI automation tests
-│   ├── golden/               # Golden-image baselines
-│   ├── monkey/               # Stability testing
-│   └── perf_baseline.toml    # Search perf baseline
-├── scripts/                  # Utility scripts
-├── fastlane/metadata/        # App store metadata
-├── format.sh                 # Code formatting script
-├── flutter-init.sh           # Flutter setup
-└── *.sh                      # Various build/deploy scripts
-```
-
----
-
-## 3) Core Principles
-
-1. **Safety by Default:** Analyze first, modify second. Understand the
-   impact of changes on performance-critical code.
-2. **Transparency:** State what you'll do, why, and expected impact before
-   doing it.
-3. **Incrementalism:** Ship small, testable changes; avoid big-bang
-   rewrites.
-4. **Reversibility:** Ensure every change has a rollback path via git.
-5. **Observability:** Validate changes through tests and manual
-   verification.
-6. **Cross-Platform Compatibility:** Test changes across target platforms
-   when possible.
-7. **Auditability:** Leave a clear trail in commits.
-
----
-
-## 4) Commit Workflow
-
-**CRITICAL:** Always follow this sequence:
-
-1. Make your code changes
-2. Run `./format.sh s` from repository root and **wait for completion**
-3. Run `git add .` to stage changes
-4. Run `git commit` with proper message (see §5)
-
-**Never skip the formatting step.** The script runs:
-- `dart format` on all Dart/Flutter code
-- `cargo fmt --all` on Rust code (when `Cargo.toml` is present)
-- `cargo clippy --workspace --all-targets --all-features -- -D warnings`
-
-The `format.sh` script no longer invokes `clang-format`.
-
----
-
-## 5) Commit Message Rules
-
-### Format
-
-```
-<subject line - imperative mood, max 72 chars>
-
-<body paragraph explaining WHY and WHAT, wrapped at 72 chars>
-<additional paragraphs if needed>
-```
-
-### Requirements
-
-* **Subject line:** Imperative mood (e.g., "Add", "Fix", "Refactor"),
-  capitalize first word, no period at end, max 72 characters
-* **Body:** Must be present (even for small changes), wrapped at 72
-  characters per line
-* **Language:** Use English subject + body
-* **References:** Include issue numbers if applicable (`Fix #123`,
-  `Refs #456`)
-
-### Examples
-
-```
-Add support for 12 Men's Morris variant
-
-This commit introduces support for the 12 Men's Morris game variant,
-extending the existing 9 Men's Morris implementation. The AI engine
-now handles the additional piece placement phase.
-
-Related changes:
-- Add new rule validation in rule.cpp
-- Update UI to show 12-piece board option
-- Add unit tests for 12-piece game logic
-
-Refs #789
-```
-
----
-
-## 6) Code Quality and Style Guidelines
-
-### General Rules (apply to all languages)
-
-**Error Handling:**
-* **Use assertions** (`assert!` / `debug_assert!` in Rust,
-  `assert(...)` in Dart) for preconditions and invariants.
-* **Avoid fallback mechanisms** that hide errors; prefer fail-fast
-  behavior so root causes surface immediately during development.
-* Errors should be surfaced rather than masked with default values.
-
-**Code Extension:**
-* **Modify existing functions directly** rather than creating wrapper
-  functions whose only purpose is to intercept calls.
-* **Avoid "Enhanced" / "Extended" class names** (e.g., no
-  `EnhancedSearch`); prefer editing the original implementation.
-
-The remaining native code (small iOS / macOS / Android Runner shims)
-follows the conventions of the corresponding platform tooling and
-is rarely touched.
-
-### Rust/TGF Specific Rules
-
-**Architecture:**
-* Keep `tgf-core` and `tgf-search` game-neutral.
-* Concrete games belong in `crates/tgf-<game_id>/`.
-* Search hot paths must use `Searcher<G: Game>`, not `dyn GameRules`.
-**Performance:**
-* Preserve monomorphised `Game / Workbench / Evaluator` call paths.
-* Avoid heap allocation in move generation hot paths unless justified by tests
-  or benchmarks.
-* The oracle snapshots in `crates/tgf-mill/testdata/legacy_oracle/` provide
-  the reference for regression testing; regeneration is no longer possible
-  after the C++ engine was removed.
-
-**Style:**
-* Follow `cargo fmt` and pass `cargo clippy --workspace --all-targets
-  --all-features -- -D warnings`.
-
-### Dart/Flutter Specific Rules
-
-**Style:**
-* Follow `dart format` conventions (automatically applied)
-
-**State Management:**
-* Use existing state management approach consistently
-* Avoid introducing new state management libraries without discussion
-* Keep business logic separate from UI widgets
-
-**Localization:**
-* All user-facing strings must go through ARB localization files
-* Use existing localization patterns in `lib/generated/l10n/`
-
----
-
-## 7) Tool Usage Guidelines
-
-### Project Skills
-
-* Project-level Skills live in `.agents/skills/<skill-name>/SKILL.md`.
-* `.agents/skills/` is the single source of truth. Do not duplicate Skills
-  under tool-specific directories.
-* Codex selects Skills from their `name` and `description` frontmatter. Keep
-  descriptions specific enough to state both what the Skill does and when it
-  should be used.
-* When repository paths, commands, or architecture change, update affected
-  Skills in the same change.
-* Keep `.agents/skills/README.md` synchronized with the available project
-  Skills.
-
-### Version Control (git)
-
-* Keep commits atomic (one logical change per commit)
-
-### Build Tools
-
-**Rust / TGF engine:**
-```bash
-cargo test --workspace
-cargo clippy --workspace --all-targets --all-features -- -D warnings
-cargo run -p tgf-cli -- bench
-```
-
-**Flutter App:**
-```bash
-./flutter-init.sh      # Set up Flutter + Rust/FRB when tools exist
-cd src/ui/flutter_app
-flutter_rust_bridge_codegen generate
-flutter build linux --debug -v      # Linux
-flutter run
-flutter test
-```
-
-**Agentic Flutter debug loop (Flutter 3.44+):**
-
-* When a debug `flutter run` session is already active, prefer using any
-  available Flutter/Dart MCP or Dart Tooling Daemon (DTD) integration to
-  inspect the running app, read widget/tree state, and trigger hot reload after
-  Dart-only edits.
-* If no MCP/DTD bridge is available in the current environment, keep the
-  `flutter run` process alive and send `r` for hot reload or `R` for hot
-  restart instead of stopping and rebuilding for every UI tweak.
-* Do not rely on hot reload after native, generated-code, dependency, asset,
-  platform, or Rust/FRB boundary changes. Re-run `./flutter-init.sh` and the
-  relevant `flutter build ...` command for those changes.
-* Treat hot reload as a fast feedback loop, not final validation. Before
-  finishing Flutter work, still run `flutter analyze`, focused tests, and the
-  relevant platform build.
-
-**Code Generation:**
-
-The project uses code generation for several purposes. Understanding this
-is critical to avoid common mistakes.
-
-* **Generated Files (*.g.dart):**
-  - Files with `.g.dart` extension are auto-generated by build_runner
-  - These files are gitignored (matched by `*generated*` pattern)
-  - They exist only in local development environments
-  - Never manually create or edit `.g.dart` files
-  - Always run `./flutter-init.sh` after cloning or when dependencies change
-
-* **FlutterGen Assets (`lib/generated/assets/assets.gen.dart`):**
-  - Generated by `flutter_gen_runner` via `build_runner` from `pubspec.yaml`
-    asset declarations
-  - Provides the `Assets` accessor used for images, audio, and bundled files
-  - Gitignored under `lib/generated/`; regenerated by `./flutter-init.sh`
-  - If the file is missing but `build_runner` skips output (stale cache), run
-    `cd src/ui/flutter_app && dart run build_runner clean && dart run build_runner build`
-
-* **FRB Generated Files (`lib/src/rust/frb_generated*.dart` and
-  `crates/tgf-frb/src/frb_generated.rs`):**
-  - These files are auto-generated by `flutter_rust_bridge_codegen generate`
-    (one run regenerates BOTH bridge halves)
-  - They are intentionally committed: Flutter builds need the loader with
-    the correct native library stem (`rust_lib_sanmill`), and the Rust half
-    encodes the same struct layouts as the Dart half -- committing only one
-    side leaves every other checkout with a stale bridge that fails
-    `cargo check -p rust_lib_sanmill` after any FRB API change
-  - Do not edit them manually; regenerate after Rust FRB API changes and
-    commit both halves in the same commit as the API change
-
-* **Hive Type Adapters:**
-  - Use `@HiveType(typeId: N)` and `@HiveField(N)` annotations on models
-  - Adapters are automatically generated, never write them manually
-  - Include `part 'filename.g.dart';` directive in the model file
-  - Example pattern (see `lib/appearance_settings/models/color_settings.dart`):
-    ```dart
-    import 'package:hive_ce_flutter/hive_flutter.dart';
-    part 'my_model.g.dart';  // Reference generated file
-    
-    @HiveType(typeId: 42)
-    class MyModel {
-      @HiveField(0)
-      final String field1;
-      // ...
-    }
-    ```
-
-* **When to Regenerate:**
-  - After adding/modifying `@HiveType` or `@HiveField` annotations
-  - After changing `@JsonSerializable()` models
-  - After updating `@CopyWith()` classes
-  - Run: `cd src/ui/flutter_app && dart run build_runner build`
-
-* **Common Pitfalls:**
-  - ❌ Don't commit `.g.dart` files to git
-  - ❌ Don't write manual Hive adapters when annotations exist
-  - ❌ Don't forget the `part 'xxx.g.dart';` directive
-  - ✅ Do run `./flutter-init.sh` when setting up the project
-  - ✅ Do add `@HiveField` annotations when adding new fields
-  - ✅ Do increment field indices sequentially for backward compatibility
-
-**Formatting:**
-```bash
-./format.sh s          # Format without committing
-./format.sh            # Format and commit (don't use manually)
-```
-
-### Testing
-
-**Rust unit tests:**
-```bash
-cargo test --workspace
-cargo test -p rust_lib_sanmill --lib -- --ignored random_walk_extended
-```
-
-**Flutter Tests:**
-```bash
-cd src/ui/flutter_app
-flutter test                    # Unit/widget tests
-flutter test integration_test/  # Integration tests
-```
-
----
-
-## 8) Testing & Validation
-
-### Test Requirements
-
-For every code change:
-
-* **Rust engine changes:**
-  - Add or update unit tests in `crates/tgf-*/src/`
-  - Ensure all existing tests pass: `cargo test --workspace`
-* **Flutter UI changes:**
-  - Add widget tests for new UI components
-  - Verify accessibility (screen readers, keyboard navigation)
-
-### Validation Checklist
-
-Before submitting changes:
-
-- [ ] Code compiles without warnings
-- [ ] All unit tests pass
-- [ ] Code is properly formatted (`./format.sh s`)
-- [ ] Generated files (.g.dart) are NOT committed
-- [ ] Part directives for generated files are present if needed
-- [ ] No performance regression (if applicable)
-- [ ] Commit message follows guidelines
-
----
-
-## 9) Documentation
-
-### What NOT to Create
-
-* **Do not create new Markdown documents solely to summarize code
- changes**
-* Do not create redundant documentation
-* Do not document obvious code
-
-### Puzzle Format Documentation
-
-* Refer to `docs/PUZZLE_FORMAT.md` for the current puzzle JSON format
- specification
-* Version 1.0 format uses structured `PuzzleSolution` and `PuzzleMove`
- objects with explicit side-to-move information
-
-### Rust module organisation conventions
-
-To keep individual files reviewable and to make the repo easy to
-navigate, follow these rules when a module crosses ~1k lines or
-needs new sibling helpers:
-
-* **Single-file module → directory:** when adding a sibling that
- belongs to the same module, convert `foo.rs` to `foo/mod.rs` and
- add the sibling as `foo/<sibling>.rs`.  Existing examples:
- `crates/tgf-mill/src/rules/`, `crates/tgf-cli/src/mill_uci/`,
- `crates/tgf-search/src/searcher/`, `crates/tgf-othello/src/`.
-* **Tests next to a single-file module:** if the module is still a
- flat `foo.rs` (e.g. `crates/tgf-frb/src/api/simple.rs`) and the
- inline `#[cfg(test)] mod tests { … }` block is large, hoist the
- tests into a sibling `foo_tests.rs` and reference it via:
-
- ```rust
- #[cfg(test)]
- #[path = "foo_tests.rs"]
- mod tests;
- ```
-
- The trailing `_tests.rs` suffix and the `#[path]` attribute are
- the convention; do not invent variants.
-* **Tests inside a directory module:** when the module is already a
- `foo/` directory, host the test file as `foo/tests.rs` and pull
- it in with `#[cfg(test)] mod tests;` from `foo/mod.rs`.  Do not
- use `#[path]` in this shape — the regular module declaration is
- the convention.
-* **Cross-module helpers:** prefer `pub(super)` over `pub(crate)`
- unless the helper is truly used outside the immediate parent
- module.  This keeps the crate-wide grep noise low and makes it
- obvious where sibling files draw their dependencies from.
-
----
-
-## 10) Internationalization (i18n)
-
-### Adding/Modifying Strings
-
-1. Add string to `src/ui/flutter_app/lib/l10n/intl_en.arb` (master file)
-2. Run localization generation: `flutter gen-l10n`
-3. Use string in code via `S.of(context).yourStringKey`
-4. Translation to other languages handled separately (Weblate)
-
-### Guidelines
-
-* Use descriptive, context-rich keys
-* Avoid concatenating localized strings
-* Support plural forms where needed
-* Test with longest translations (German, Russian) for layout
-* Maintain space between Chinese and English in mixed text
-
----
-
-## 11) Quick Reference
-
-### Essential Commands
-
-```bash
-# Format/check code (ALWAYS before commit)
-./format.sh s
-
-# Build Rust engine
-cargo build --workspace --release
-
-# Run Rust/TGF tests + benchmarks
-cargo test --workspace
-cargo clippy --workspace --all-targets --all-features -- -D warnings
-
-# Initialize Flutter + Rust/FRB (includes code generation)
-./flutter-init.sh
-
-# Regenerate code (after model changes)
-cd src/ui/flutter_app
-dart run build_runner build
-
-# Run Flutter app
-cd src/ui/flutter_app
-flutter run
-
-# Run Flutter tests
-cd src/ui/flutter_app
-flutter test
-```
-
-### Key Files
-
-* `src/ui/flutter_app/pubspec.yaml` - Flutter dependencies
-* `src/ui/flutter_app/lib/` - Flutter source code
-* `src/ui/flutter_app/l10n.yaml` - Localization configuration
-* `format.sh` - Code formatting/check script (Dart, Rust fmt/clippy)
-* `AGENTS.md` - This file
-* `.agents/skills/README.md` - Project-level Codex Skill catalog
-* `docs/FRAMEWORK_API.md` - Rust/TGF framework API contract
-* `README.md` - User-facing documentation
+# Sanmill Agent Instructions
+
+Sanmill is an AGPL v3 Mill game with a Flutter UI and a Rust/TGF rules and
+search engine. Contributions must remain AGPL v3 compatible. Preserve support
+for Android, iOS, Windows, macOS, and Linux, mobile-first usability, and the
+correctness and performance constraints below.
+
+## Scope and completion
+
+- Follow the user's requested outcome and existing authorization. A request
+  for an audit or recommendations is complete when the findings are delivered;
+  do not implement changes in that mode.
+- For implementation work, continue through the requested implementation,
+  relevant validation, and repair of failures caused by the change. Routine
+  local edits, diagnosis, and reruns within that scope do not need repeated
+  confirmation. A first draft or a failed test is not a review gate by itself.
+- Explain consequential choices and assumptions briefly. A progress update
+  does not require waiting for approval.
+- Ask when an unresolved business decision would materially change the result,
+  or the next action needs authorization that has not been given. Continue
+  independent work while that decision is pending.
+- User instructions take precedence over workflow advice in project Skills,
+  subject to higher-priority execution and safety requirements. If an
+  instruction blocks work, identify the file and exact requirement and explain
+  the remaining obstacle; do not silently stop or repeatedly ask to continue.
+- Preserve unrelated work, user data, credentials, database assets, and
+  historical evidence. Do not clean or reset a worktree to obtain a clean
+  status. Scope any rollback to changes made for the current task.
+- Local tests may run without repeated approval when their data and access
+  are known to be isolated. Do not assume all device or integration tests use
+  disposable data. Production changes, destructive data operations, privileged
+  commands, and external publication must remain within explicit authorization
+  and the environment's permission boundaries.
+
+## Architecture and task-specific references
+
+| Area | Source of truth / when to read |
+| --- | --- |
+| Framework and bridge contracts | [docs/FRAMEWORK_API.md](docs/FRAMEWORK_API.md), when changing framework or FRB boundaries |
+| Mill rules, presets, and option mapping | [docs/guides/ADDING_NEW_GAME_RULES.md](docs/guides/ADDING_NEW_GAME_RULES.md), when adding or changing rules |
+| Puzzle import/export | [docs/PUZZLE_FORMAT.md](docs/PUZZLE_FORMAT.md), when changing the puzzle format |
+| Flutter dependencies and localization output | `src/ui/flutter_app/pubspec.yaml` and `src/ui/flutter_app/l10n.yaml` |
+| Specialized agent workflows | [.agents/skills/README.md](.agents/skills/README.md), when a listed workflow fits the task |
+
+Read the references needed for the task; this table is not a prerequisite
+reading list for every edit.
+
+- `crates/tgf-core` defines game-neutral traits and POD types;
+  `crates/tgf-search` contains generic searchers. Keep both game-neutral.
+- Concrete games belong in `crates/tgf-<game_id>/`. Mill rules, topology,
+  evaluation, and presets live in `crates/tgf-mill`; `tgf-othello` exercises
+  the framework with a second game.
+- `crates/tgf-frb` exposes `rust_lib_sanmill` to Flutter. The app is under
+  `src/ui/flutter_app`; CLI and benchmark tools are in `crates/tgf-cli`.
+- Gameplay decisions and AI search belong in Rust/TGF. Flutter maps options,
+  presents native state, and manages UI interactions; do not recreate the
+  removed C++/Dart position-engine mirror.
+- Remaining C/C++ includes platform Runner code and the optional Perfect DB
+  oracle in `crates/perfect-db/csrc`, built with the `cpp-oracle` feature.
+  Third-party native code is not a general formatting target.
+- Checked-in `crates/tgf-mill/testdata/legacy_oracle/` snapshots are preserved
+  regression evidence from the removed engine. Do not regenerate or rewrite
+  them just to make a changed implementation pass, or describe replaying them
+  as a fresh run of the legacy binary.
+- Resolve reference and candidate revisions from the task and actual Git
+  state. Branch names such as `master` and `next` do not identify an
+  implementation language.
+
+## Implementation constraints
+
+### Rust and native code
+
+- Preserve monomorphized `Searcher<G: Game>` and
+  `Game / Workbench / Evaluator` search paths. Do not introduce `dyn
+  GameRules` or unmeasured heap allocation into move-generation hot paths.
+- Assert internal preconditions and invariants. Surface errors rather than
+  masking impossible states with fallback results. External input still needs
+  explicit validation and errors; assertions do not replace it.
+- Modify the owning implementation directly. Avoid interception-only wrappers
+  or `Enhanced` / `Extended` replacements for existing types.
+- For performance work, use a declared baseline and comparable measurements.
+  Preserve exact declared behavior for parity-preserving changes. Algorithmic
+  changes require appropriate correctness and strength evidence.
+- Introduce `unsafe` only for a measured need, with local invariants,
+  `SAFETY:` comments, focused tests, and benchmark evidence. Keep optional
+  diagnostics out of release hot paths.
+
+When a Rust module grows beyond roughly 1,000 lines or needs sibling helpers:
+
+- Convert `foo.rs` to `foo/mod.rs` when adding implementation siblings.
+- A large test block for a still-flat module belongs in `foo_tests.rs`,
+  referenced with `#[cfg(test)] #[path = "foo_tests.rs"] mod tests;`.
+- A directory module uses `foo/tests.rs` with `#[cfg(test)] mod tests;`;
+  no `#[path]` is needed.
+- Prefer `pub(super)` for sibling helpers unless broader access is necessary.
+
+### Flutter, persistence, and localization
+
+- Use the existing state management approach and keep business logic out of
+  widgets. Discuss introducing a new state management library unless that
+  architectural choice is already authorized.
+- Keep user-facing strings in ARB files and use `S.of(context)` from
+  `lib/generated/intl/l10n.dart`. Use descriptive keys, plural forms where
+  needed, and complete localized messages instead of concatenation.
+- For new message keys or batch translation synchronization, follow
+  [.agents/skills/arb-translation-updater/SKILL.md](.agents/skills/arb-translation-updater/SKILL.md).
+  That Skill owns the en/de/hu/zh tail gate and translation quality rules.
+  A wording-only edit does not imply adding keys to other locales.
+- Preserve persisted preset identities, Hive type IDs, and existing field
+  indices. Add new `@HiveField` indices sequentially; do not reuse old
+  indices. Provide compatible defaults or a deliberate migration.
+- Check relevant long translations, RTL layouts, and accessibility for UI
+  changes. Keep spaces between Chinese and English in mixed text.
+
+## Generated code and initialization
+
+Run `./flutter-init.sh` from the repository root when setting up a checkout
+or after dependency changes. For an already initialized checkout, regenerate
+only the outputs affected by the change.
+
+| Change / output | Required action |
+| --- | --- |
+| Hive, `@JsonSerializable`, or `@CopyWith` models | Run `dart run build_runner build` from `src/ui/flutter_app` |
+| Asset declarations / FlutterGen | Regenerate `lib/generated/assets/assets.gen.dart` through build_runner |
+| ARB messages | Run `flutter gen-l10n` from the Flutter app directory |
+| Rust FRB API | Regenerate both bridge halves with `flutter_rust_bridge_codegen generate` from the Flutter app directory |
+
+- Never hand-create or edit generated code, including Hive adapters.
+  Keep the model's `part 'filename.g.dart';` directive.
+- `*.g.dart` and FlutterGen/localization output are ignored. Do not commit
+  them. If FlutterGen output is missing because of a stale build_runner cache,
+  run `dart run build_runner clean` followed by `dart run build_runner build`.
+- FRB is the intentional exception: commit the generated Dart bindings under
+  `lib/src/rust/` and `crates/tgf-frb/src/frb_generated.rs` together with an
+  API change. Both halves must agree on layouts and the native library stem
+  `rust_lib_sanmill`.
+- Native, dependency, asset, generated-code, or Rust/FRB changes need the
+  relevant regeneration and platform rebuild. Hot reload is not sufficient.
+
+For Dart-only iteration in an active debug session, use available Flutter/Dart
+MCP or DTD tools for inspection and hot reload. Otherwise keep `flutter run`
+alive and send `r` for reload or `R` for restart. Validate the final result
+according to the next section.
+
+## Validation
+
+Choose checks for the changed behavior and complete the required checks below.
+Run focused checks after a coherent change; do not rerun broad suites after
+each individual file edit. Once checks pass, repeat or broaden them only for
+new changes, failures, or unresolved risks.
+
+| Change | Required validation |
+| --- | --- |
+| Rust engine behavior | Add or update meaningful regression tests; run focused tests, then `cargo test --workspace` |
+| New Flutter UI components | Widget tests plus relevant screen-reader and keyboard behavior checks |
+| Flutter implementation | `flutter analyze`, focused tests, and the relevant platform build; hot reload alone is insufficient |
+| Rule / state / bridge / persistence changes | Relevant round-trip, mapping, compatibility, and native integration checks |
+| Search hot paths | Comparable correctness and performance evidence; use the appropriate audit workflow |
+| Documentation / Skill / ignore-rule changes only | Validate references, commands, Skill metadata, and scope; application suites are not required solely for prose changes |
+
+For Flutter tests, use
+[.agents/skills/flutter-test-runner/SKILL.md](.agents/skills/flutter-test-runner/SKILL.md)
+when selecting or diagnosing the appropriate runner. Device and cross-platform
+checks depend on the affected path and release requirements. If an environment
+is unavailable, report that coverage gap, continue other checks, and do not
+claim full platform validation.
+
+Report pass, fail, and skip counts separately. Fix regressions caused by this
+task; distinguish unrelated existing failures without hiding them or expanding
+the assignment into unrelated repairs. Never change expectations or a formal
+baseline merely to make a failure disappear.
+
+## Commit and push workflow
+
+This section applies when committing is authorized. A formatting request alone
+does not authorize a commit. Existing commit/push authorization persists across
+routine fixes and validation reruns.
+
+If unrelated Dart or Rust edits are present, run repository-wide formatting
+and linting in an isolated checkout containing the task's changes and required
+generated prerequisites. Preserve the original working files and do not copy
+unrelated formatting changes back. This isolation does not waive the checks.
+Inspect both the worktree and index before staging. If unrelated changes are
+already staged, preserve those entries and use a scoped commit or isolated
+index/checkout; a plain commit must not absorb them. Do not unstage the user's
+work merely to simplify delivery, including when a file contains mixed changes.
+
+1. Finish the scoped changes and relevant checks.
+2. Run `./format.sh s` from the repository root and wait for completion.
+   It runs Dart formatting, `cargo fmt --all`, and
+   `cargo clippy --workspace --all-targets --all-features -- -D warnings`.
+   It does not run clang-format. Use Git Bash on Windows.
+3. Review the resulting diff; preserve unrelated work and stage only the
+   intended files with explicit paths. Run `git diff --cached --check`.
+4. Commit one logical change with the message format below.
+5. When push is authorized, fetch the target remote, check divergence, handle
+   related conflicts, push the intended branch, and verify the remote commit.
+   Do not force-push or rewrite unrelated history without authorization.
+
+Do not invoke bare `./format.sh`: its legacy default stages all changes and
+auto-commits. After committing, compare remaining changes with the initial
+worktree state; a user's unrelated edits may legitimately remain.
+
+Commit messages use an English imperative subject, capitalized, at most
+72 characters, without a final period. Include an English body explaining what
+changed and why, wrapped at 72 characters. Include issue references when relevant.
+
+## Maintaining instructions and documentation
+
+- Write project instructions and documentation in English.
+- Keep `.agents/skills/` as the single source of truth and synchronize its
+  catalog when Skills change. Use concise, task-specific descriptions.
+- Keep the Skill entrypoint focused. Put substantial conditional procedures
+  in linked references and load them only when that mode is needed.
+- Preserve dated experiment records as evidence, clearly separated from
+  current requirements. Verify historical paths, defaults, and results before
+  relying on them for current work.
+- Update affected instructions when architecture, paths, or commands change.
+  Do not create standalone Markdown files merely to summarize code changes or
+  duplicate obvious code. Task-specific guides and Skill references should
+  have an ongoing operational purpose.

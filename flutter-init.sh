@@ -120,7 +120,8 @@ fi
 # ---------------------------------------------------------------------------
 # Phase 1+: FRB code generation and Rust workspace build.
 # The Rust crate imports generated glue from crates/tgf-frb/src/frb_generated.rs,
-# so codegen must run before cargo builds the workspace.  The file is gitignored;
+# so codegen must run before cargo builds the workspace. Both bridge halves are
+# committed together; regenerate them when the FRB API changes.
 # scripts/generate_frb.sh installs flutter_rust_bridge_codegen when missing.
 # ---------------------------------------------------------------------------
 echo "[flutter-init] Generating FRB bindings..."
